@@ -19,9 +19,10 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.*
-import kotlinx.android.synthetic.main.button_bet.view.*
+import kotlinx.android.synthetic.main.button_bet.view.cl_bet
+import kotlinx.android.synthetic.main.button_bet.view.tv_login
+import kotlinx.android.synthetic.main.button_bet.view.tv_remove_closed_selections
 import kotlinx.android.synthetic.main.fragment_bet_list.*
-import kotlinx.android.synthetic.main.publicity_promotion_announcement_view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetListBinding
@@ -39,10 +40,10 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
-import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.game.betList.adapter.BetSingleListAdapter
 import org.cxct.sportlottery.ui.game.betList.listener.OnItemClickListener
+import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.results.StatusType
@@ -57,7 +58,7 @@ import timber.log.Timber
  * 畫面會依照注單數量(viewModel.betInfoList)動態調整高度
  * if (size == 1) { 單一注單 } else { 多筆注單 or 空注單 }
  */
-class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
+class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::class) {
 
 
     companion object {
@@ -223,13 +224,12 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
     }
 
-
     private fun initBtnEvent() {
         binding.btnBet.apply {
             tv_login.setOnClickListener {
                 needUpdateBetLimit = true
                 MultiLanguagesApplication.mInstance.doNotReStartPublicity = true
-                requireActivity().startLogin()
+                startActivity(Intent(requireContext(), LoginActivity::class.java))
             }
 
             cl_bet.setOnClickListener {
@@ -409,7 +409,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 if (viewModel.getLoginBoolean()) {
                     startActivity(Intent(context, MoneyRechargeActivity::class.java))
                 } else {
-                    requireActivity().startLogin()
+                    startActivity(Intent(context, LoginActivity::class.java))
                 }
             }
 
@@ -435,6 +435,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 betListRefactorAdapter?.closeAllKeyboard()
                 betSingleListAdapter?.closeAllKeyboard()
                 betParlayListRefactorAdapter?.closeAllKeyboard()
+                Timber.d("关闭键盘")
             }
 
             override fun saveOddsHasChanged(matchOdd: MatchOdd) {
@@ -601,8 +602,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 //            }
             //endregion
             tvTotalBetAmount.text = TextUtil.formatForOdd(totalBetAmount)
-            tvTotalWinnableAmount.text =
-                "${sConfigData?.systemCurrencySign} ${TextUtil.formatForOdd(winnableAmount)}"
+            tvTotalWinnableAmount.text =  "${sConfigData?.systemCurrencySign} ${TextUtil.formatInputMoney(winnableAmount)}"
         }
 
         val betCount = if (currentBetType == 0) {

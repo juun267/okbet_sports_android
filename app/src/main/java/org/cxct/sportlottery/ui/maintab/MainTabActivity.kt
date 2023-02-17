@@ -46,8 +46,7 @@ import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
-import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
-import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.accountHistory.next.AccountHistoryNextFragment
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment
@@ -230,7 +229,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                     when (menuItem.itemId) {
                         R.id.i_betlist, R.id.i_favorite, R.id.i_user -> {
                             if (viewModel.isLogin.value == false) {
-                                startLogin()
+                                startActivity(
+                                    Intent(
+                                        this@MainTabActivity, LoginActivity::class.java
+                                    )
+                                )
                                 return@OnNavigationItemSelectedListener false
                             }
                         }
@@ -480,16 +483,16 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     override fun navOneSportPage(thirdGameCategory: ThirdGameCategory?) {
-        if (thirdGameCategory != null) {
-            val intent = Intent(this, MainActivity::class.java).putExtra(
-                MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory
-            )
-            startActivity(intent)
-
-            return
-        }
-
-        startActivity(Intent(this, GamePublicityActivity::class.java))
+//        if (thirdGameCategory != null) {
+//            val intent = Intent(this, MainActivity::class.java).putExtra(
+//                MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory
+//            )
+//            startActivity(intent)
+//
+//            return
+//        }
+//
+//        startActivity(Intent(this, GamePublicityActivity::class.java))
     }
 
     override fun initToolBar() {

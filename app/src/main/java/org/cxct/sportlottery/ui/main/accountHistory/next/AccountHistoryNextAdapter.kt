@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.main.accountHistory.next
 
-import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,35 +8,25 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.view_account_history_next_title_bar.view.*
-import kotlinx.android.synthetic.main.view_back_to_top.view.*
-import kotlinx.android.synthetic.main.view_status_selector.view.*
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemAccountHistoryNextContentBinding
 import org.cxct.sportlottery.databinding.ItemAccountHistoryNextContentParlayBinding
-import org.cxct.sportlottery.databinding.ItemAccountHistoryNextTotalBinding
 import org.cxct.sportlottery.network.bet.settledDetailList.MatchOdd
 import org.cxct.sportlottery.network.bet.settledDetailList.Other
 import org.cxct.sportlottery.network.bet.settledDetailList.Row
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
 
-class AccountHistoryNextAdapter(
-    private val itemClickListener: ItemClickListener,
-    private val backClickListener: BackClickListener,
-    private val sportSelectListener: SportSelectListener,
-    private val dateSelectListener: DateSelectListener,
-    private val scrollToTopListener: ScrollToTopListener
+
+class AccountHistoryNextAdapter(private val itemClickListener: ItemClickListener
 ) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     enum class ItemType {
@@ -52,18 +41,6 @@ class AccountHistoryNextAdapter(
         }
 
     var mOther: Other? = null
-
-    var nowSelectedDate: String? = ""
-        set(value) {
-            field = value
-            notifyItemChanged(0)
-        }
-
-    var nowSelectedSport: String? = ""
-        set(value) {
-            field = value
-            notifyItemChanged(0)
-        }
 
     private var mRowList: List<Row>? = listOf() //資料清單
     private var mIsLastPage: Boolean = false //是否最後一頁資料
@@ -429,108 +406,6 @@ class AccountHistoryNextAdapter(
 
     }
 
-    class FooterViewHolder private constructor(val binding: ItemAccountHistoryNextTotalBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: Other?) {
-            binding.other = data
-            binding.executePendingBindings()
-            binding.tvStatusMoney.text = "${sConfigData?.systemCurrencySign} ${TextUtil.format(data?.win as Double)}"
-        }
-
-        companion object {
-            fun from(parent: ViewGroup): RecyclerView.ViewHolder {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val binding =
-                    ItemAccountHistoryNextTotalBinding.inflate(layoutInflater, parent, false)
-                return FooterViewHolder(binding)
-            }
-        }
-
-    }
-
-    class TitleBarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val dateString by lazy {
-            { minusDate: Int ->
-                "${TimeUtil.getMinusDate(minusDate)} ${
-                    itemView.context.getString(
-                        TimeUtil.getMinusDayOfWeek(
-                            minusDate
-                        )
-                    )
-                }"
-            }
-        }
-
-        private val dateStatusList = mutableListOf<StatusSheetData>().apply {
-            for (i in 0..7) {
-                this.add(StatusSheetData(TimeUtil.getMinusDate(i, YMD_FORMAT), dateString(i)))
-            }
-        }
-
-        fun bind(
-            sportSpinnerList: List<StatusSheetData>,
-            nowSelectedDate: String?,
-            nowSelectedSport: String?,
-            backClickListener: BackClickListener,
-            sportSelectListener: SportSelectListener,
-            dateSelectListener: DateSelectListener
-        ) {
-            itemView.apply {
-
-                iv_back.setOnClickListener {
-                    backClickListener.onClick()
-                }
-
-//                tv_title.setTextWithStrokeWidth(context?.getString(R.string.bet_num_and_bet_date) ?: "", 0.7f)
-
-                date_selector.cl_root.layoutParams.height = 40.dp
-                sport_selector.cl_root.layoutParams.height = 40.dp
-
-                //sport
-                sport_selector.setItemData(sportSpinnerList.toMutableList())
-
-                sport_selector.setSelectCode(nowSelectedSport)
-
-                sport_selector.setOnItemSelectedListener {
-                    sportSelectListener.onSelect(it.code)
-                }
-
-                //date
-                date_selector.setItemData(dateStatusList)
-
-                date_selector.setSelectCode(nowSelectedDate)
-
-                date_selector.setOnItemSelectedListener {
-                    dateSelectListener.onSelect(it.code)
-                }
-
-            }
-        }
-
-        companion object {
-            fun from(parent: ViewGroup) =
-                TitleBarViewHolder(
-                    LayoutInflater.from(parent.context)
-                        .inflate(R.layout.view_account_history_next_title_bar, parent, false)
-                )
-        }
-    }
-
-    class BackToTopViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(scrollToTopListener: ScrollToTopListener) {
-            itemView.btn_back_to_top.setOnClickListener {
-                scrollToTopListener.onClick()
-            }
-        }
-
-        companion object {
-            fun from(parent: ViewGroup) =
-                BackToTopViewHolder(
-                    LayoutInflater.from(parent.context)
-                        .inflate(R.layout.view_back_to_top, parent, false)
-                )
-        }
-    }
 
     class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         companion object {

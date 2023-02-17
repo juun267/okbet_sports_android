@@ -13,7 +13,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.list.SportBillResult
 import org.cxct.sportlottery.util.TextUtil
 
-@SuppressLint("NotifyDataSetChanged")
 class AccountHistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class ItemType {

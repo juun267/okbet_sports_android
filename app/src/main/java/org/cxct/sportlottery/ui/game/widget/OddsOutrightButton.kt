@@ -6,13 +6,10 @@ import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
-import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.button_odd.view.*
 import kotlinx.android.synthetic.main.button_odd_outright.view.*
 import kotlinx.android.synthetic.main.button_odd_outright.view.button_odd_detail
 import kotlinx.android.synthetic.main.button_odd_outright.view.img_odd_lock
@@ -93,9 +90,7 @@ open class OddsOutrightButton @JvmOverloads constructor(
             typedArray.getDrawable(R.styleable.OddsButton_ob_background)
                 ?: context.theme.getDrawable(R.drawable.selector_button_radius_4_odds)
         try {
-            inflate(context, R.layout.button_odd_outright, this).apply {
-
-            }
+            inflate(context, R.layout.button_odd_outright, this)
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {
@@ -121,11 +116,7 @@ open class OddsOutrightButton @JvmOverloads constructor(
                 "$extInfoStr ${(odd?.nameMap?.get(languae) ?: odd?.name)}"
             }
 
-
-            visibility = if (odd?.name.isNullOrEmpty() || "disable".equals(gameType)) View.GONE else View.VISIBLE
-
-
-
+            visibility = if ("disable".equals(gameType)) View.GONE else View.VISIBLE
         }
 
 
@@ -411,7 +402,7 @@ open class OddsOutrightButton @JvmOverloads constructor(
         if (status) {
             ll_odd_outright.tag = ll_odd_outright.flashAnimation(1000,2,0.3f).apply {
                 addListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator) {
+                    override fun onAnimationEnd(animation: Animator?) {
                         resetOddsValueState()
                     }
                 })

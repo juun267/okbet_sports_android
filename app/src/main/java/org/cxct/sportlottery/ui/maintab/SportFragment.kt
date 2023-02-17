@@ -24,17 +24,17 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
-import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
-import org.cxct.sportlottery.ui.main.MainActivity
-import org.cxct.sportlottery.ui.main.MainActivity.Companion.ARGS_THIRD_GAME_CATE
-import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.sport.SportListFragment
 import org.cxct.sportlottery.ui.sport.SportTabViewModel
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
-import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
+import org.cxct.sportlottery.util.HomePageStatusManager
+import org.cxct.sportlottery.util.isUAT
+import org.cxct.sportlottery.util.phoneNumCheckDialog
+import org.cxct.sportlottery.util.startRegister
 import org.greenrobot.eventbus.EventBus
 
 
@@ -102,10 +102,10 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
             (activity as MainTabActivity).jumpToHome(0)
         }
         btn_register.setOnClickListener {
-            requireActivity().startRegister()
+            startRegister(requireContext())
         }
         btn_login.setOnClickListener {
-            requireActivity().startLogin()
+            startActivity(Intent(requireActivity(), LoginActivity::class.java))
         }
         lin_search.setOnClickListener {
             startActivity(Intent(requireActivity(), SportSearchtActivity::class.java))
@@ -239,22 +239,6 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
             updateUiWithResult(it)
         }
     }
-
-    fun setupBetData(fastBetDataBean: FastBetDataBean) {
-        viewModel.updateMatchBetListData(fastBetDataBean)
-    }
-
-    fun navOneSportPage(thirdGameCategory: ThirdGameCategory?) {
-        if (thirdGameCategory != null) {
-            val intent = Intent(requireActivity(), MainActivity::class.java)
-                .putExtra(ARGS_THIRD_GAME_CATE, thirdGameCategory)
-            startActivity(intent)
-            return
-        }
-
-        GamePublicityActivity.reStart(requireContext())
-    }
-
 
     private fun updateUiWithResult(sportMenuResult: SportMenuResult?) {
         if (sportMenuResult?.success == true) {

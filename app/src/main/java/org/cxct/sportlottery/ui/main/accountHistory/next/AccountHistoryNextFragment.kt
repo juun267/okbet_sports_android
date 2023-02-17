@@ -38,18 +38,6 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
             intent.putExtra(ResultsSettlementActivity.EXTRA_START_TIME, matchData.startTime)
             intent.putExtra(ResultsSettlementActivity.EXTRA_MATCH_ID, matchData.matchId)
             startActivity(intent)
-    }, BackClickListener {
-//        findNavController().navigateUp()
-//            if(activity is MainTabActivity){
-//                ((activity as MainTabActivity).goneBottomNavBar())
-//            }
-//            activity?.onBackPressed()
-    }, SportSelectListener {
-        viewModel.setSelectedSport(it)
-    }, DateSelectListener {
-        viewModel.setSelectedDate(it)
-    }, ScrollToTopListener {
-        rv_account_history.smoothScrollToPosition(0)
     })
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {

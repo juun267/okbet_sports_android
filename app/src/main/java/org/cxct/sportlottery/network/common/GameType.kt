@@ -1,11 +1,8 @@
 package org.cxct.sportlottery.network.common
 
 import android.content.Context
-import android.content.res.Configuration
 import androidx.annotation.StringRes
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.util.LanguageManager
-import java.util.*
 
 enum class GameType(val key: String, @StringRes val string: Int) {
     ALL("ALL", R.string.label_all),
@@ -88,51 +85,6 @@ enum class GameType(val key: String, @StringRes val string: Int) {
             return context.getString(getGameTypeStringRes(gameType))
         }
 
-        fun getSpecificLanguageString(
-            context: Context,
-            gameType: String?,
-            language: String?,
-        ): String {
-            return when (language) {
-                LanguageManager.Language.EN.key ->
-                    context.getStringByLocale(getGameTypeStringRes(gameType), Locale.ENGLISH)
-                else ->
-                    context.getString(getGameTypeStringRes(gameType))
-            }
-        }
-
-        private fun Context.getStringByLocale(@StringRes stringRes: Int, locale: Locale): String {
-            val configuration = Configuration(resources.configuration)
-            configuration.setLocale(locale)
-            return createConfigurationContext(configuration).resources.getString(stringRes)
-        }
-
-        fun getGameTypeMenuIcon(gameType: GameType): Int {
-            return when (gameType) {
-                ALL -> R.drawable.selector_sport_all
-                FT -> R.drawable.selector_sport_football
-                BK -> R.drawable.selector_sport_basketball
-                TN -> R.drawable.selector_sport_tennis
-                VB -> R.drawable.selector_sport_volleyball
-                BM -> R.drawable.selector_sport_badminton
-                TT -> R.drawable.selector_sport_pingpong
-                IH -> R.drawable.selector_sport_icehockey
-                BX -> R.drawable.selector_sport_boxing
-                CB -> R.drawable.selector_sport_snooker
-                CK -> R.drawable.selector_sport_electronic
-                BB -> R.drawable.selector_sport_baseball
-                RB -> R.drawable.selector_sport_rugby
-                AFT -> R.drawable.selector_sport_amfootball
-                MR -> R.drawable.selector_sport_racing
-                GF -> R.drawable.selector_sport_golf
-                FB -> R.drawable.ic_home_finance_piechart
-                ES -> R.drawable.selector_sport_gaming
-                OTHER -> R.drawable.ic_home_champ
-                BB_COMING_SOON -> R.drawable.selector_sport_baseball
-                ES_COMING_SOON -> R.drawable.selector_sport_gaming
-            }
-        }
-
 
         fun getGameTypeMenuIcon(gameType: String): Int {
             return when (gameType) {
@@ -161,31 +113,6 @@ enum class GameType(val key: String, @StringRes val string: Int) {
             }
         }
 
-
-        fun getGameTypeWhiteIcon(gameType: String): Int {
-            return when (gameType) {
-                FT.key -> R.drawable.img_soccer_white
-                BK.key -> R.drawable.img_basketball_white
-                TN.key -> R.drawable.img_tennis_white
-                VB.key -> R.drawable.img_volleyball_white
-                BM.key -> R.drawable.img_badminton_white
-                TT.key -> R.drawable.img_pingpong_white
-                IH.key -> R.drawable.img_ice_hockey_white
-                BX.key -> R.drawable.img_boxing_white
-                CB.key -> R.drawable.img_snooker_white
-                CK.key -> R.drawable.img_cricket_white
-                BB.key -> R.drawable.img_baseball_white
-                RB.key -> R.drawable.img_rugby_white
-                AFT.key -> R.drawable.img_amfootball_white
-                MR.key -> R.drawable.img_racing_white
-                GF.key -> R.drawable.img_golf_white
-                FB.key -> R.drawable.img_finance_white
-                ES.key -> R.drawable.img_esports_white
-                BB_COMING_SOON.key -> R.drawable.img_baseball_white
-                ES_COMING_SOON.key -> R.drawable.img_esports_white
-                else -> R.drawable.ic_game_champ
-            }
-        }
 
         fun getBetListGameTypeIcon(gameType: GameType): Int {
             return when (gameType) {
@@ -281,30 +208,6 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                     R.drawable.img_soccer_mobile01
             }
         }
-
-//        fun getInplayIcon(gameType: String): Int {
-//            return when (gameType) {
-//                FT.key -> R.drawable.ic_menu_inplay_football
-//                BK.key -> R.drawable.ic_menu_inplay_basketball
-//                TN.key -> R.drawable.ic_menu_inplay_tennis
-//                VB.key -> R.drawable.ic_menu_inplay_volleyball
-//                BM.key -> R.drawable.ic_menu_inplay_badminton
-//                TT.key -> R.drawable.ic_menu_inplay_tabletennis
-//                IH.key -> R.drawable.ic_menu_inplay_icehockey
-//                BX.key -> R.drawable.ic_menu_inplay_boxing
-//                CB.key -> R.drawable.ic_menu_inplay_billiards
-//                CK.key -> R.drawable.ic_menu_inplay_electronic
-//                BB.key -> R.drawable.ic_menu_inplay_baseball
-//                RB.key -> R.drawable.ic_menu_inplay_rugby
-//                AFT.key -> R.drawable.ic_menu_inplay_usfootball
-//                MR.key -> R.drawable.ic_menu_inplay_car
-//                GF.key -> R.drawable.ic_menu_inplay_golf
-//                FB.key -> R.drawable.ic_home_finance_piechart
-//                ES.key -> R.drawable.ic_menu_inplay_electronic
-//                OTHER.key -> R.drawable.ic_home_champ
-//                else -> R.drawable.ic_game_champ
-//            }
-//        }
 
         fun getInplayIcon(gameType: String): Int {
             return when (gameType) {
