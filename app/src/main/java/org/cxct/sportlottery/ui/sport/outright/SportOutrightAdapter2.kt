@@ -173,7 +173,7 @@ class SportOutrightAdapter2(val lifecycle: LifecycleOwner, val onItemClick:(Int,
                 if (oddsMap.containsKey(key)) {
                     var oddList = oddsMap[key]
                     if (oddList == null) { // 二级节点下面增加三级节点列表
-                        oddsMap[key] = oddList
+                        oddsMap[key] = value
                         nodeReplaceChildData(matchOdd.categoryOddsMap[key]!!, value)
                     } else {
                         isNeedRefresh = updateMatchOdds(key, matchOdd, oddList, value)
