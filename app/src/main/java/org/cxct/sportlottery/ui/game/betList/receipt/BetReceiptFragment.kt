@@ -19,8 +19,8 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.repository.showCurrencySign
-import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.game.betList.BetListViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.BetsFailedReasonUtil
 import org.cxct.sportlottery.util.LocalUtils
@@ -34,7 +34,7 @@ import timber.log.Timber
  * @app_destination 注單收據
  */
 class BetReceiptFragment :
-    BaseSocketFragment<BaseBottomNavViewModel>(BaseBottomNavViewModel::class) {
+    BaseSocketFragment<BetListViewModel>(BetListViewModel::class) {
 
     private var betResultData: Receipt? = null
 
