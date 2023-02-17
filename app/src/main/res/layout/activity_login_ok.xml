@@ -105,7 +105,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             app:hintText="@string/hint_verification_code"
-                            app:iconSignifier="@drawable/ic_valid"
+                            app:iconSignifier="@drawable/ic_verfication"
                             app:isResponsiveIconColor="false"
                             app:labelText="@string/verification_code"
                             app:labelTextStyle="normal"

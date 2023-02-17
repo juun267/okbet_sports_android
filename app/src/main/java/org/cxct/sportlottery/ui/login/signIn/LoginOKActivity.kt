@@ -179,19 +179,25 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             )
             viewModel.loginOrReg(loginRequest)
         } else {
-            val account = binding.eetUsername.text.toString()
-            val password = binding.eetPassword.text.toString()
-            val loginRequest = LoginRequest(
-                account = account,
-                password = MD5Util.MD5Encode(password),
-                loginSrc = LOGIN_SRC,
-                deviceSn = deviceSn,
-                appVersion = appVersion,
-                loginEnvInfo = deviceId,
-                securityCode = null,
-                validCode = null
-            )
-            viewModel.login(loginRequest, password)
+            VerifyCodeDialog(callBack = { identity, validCode ->
+
+                val account = binding.eetUsername.text.toString()
+                val password = binding.eetPassword.text.toString()
+                val loginRequest = LoginRequest(
+                    account = account,
+                    password = MD5Util.MD5Encode(password),
+                    loginSrc = LOGIN_SRC,
+                    deviceSn = deviceSn,
+                    appVersion = appVersion,
+                    loginEnvInfo = deviceId,
+                    securityCode = null,
+                    validCodeIdentity = identity,
+                    validCode = validCode
+                )
+                viewModel.login(loginRequest, password)
+
+            }).show(supportFragmentManager, null)
+
         }
     }
 

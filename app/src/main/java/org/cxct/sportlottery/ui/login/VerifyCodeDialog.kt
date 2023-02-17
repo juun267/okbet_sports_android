@@ -56,6 +56,9 @@ class VerifyCodeDialog(val callBack: (identity: String?, validCode: String) -> U
                 eet_verification_code.text.toString())
             dismiss()
         }
+        iv_close.setOnClickListener {
+            dismiss()
+        }
     }
 
     override fun onDismiss(dialog: DialogInterface) {
