@@ -54,8 +54,6 @@ import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.component.StatusSpinnerAdapter
 import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
-import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
-import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.live.HomeLiveAdapter
 import org.cxct.sportlottery.ui.maintab.live.ItemHomeLiveHolder
@@ -1222,12 +1220,13 @@ fun Activity.startRegister() {
     if (isUAT()) {
         return
     }
-    this.startActivity(Intent(this,
-        if (isOKPlat())
-            RegisterOkActivity::class.java
-        else
-            RegisterActivity::class.java)
-    )
+    startLogin()
+//    this.startActivity(Intent(this,
+//        if (isOKPlat())
+//            RegisterOkActivity::class.java
+//        else
+//            RegisterActivity::class.java)
+//    )
 }
 
 fun Activity.startLogin() {

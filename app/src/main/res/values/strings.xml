@@ -1279,5 +1279,8 @@
     <string name="hint_link_google">Link account with Google</string>
     <string name="hint_link_facebook">Link account with Facebook</string>
     <string name="login_hint_account_all">Username / Phone Number / Email</string>
+    <string name="edit">Edit</string>
+    <string name="verification_not_correct">Verification Code is not correct</string>
+    <string name="send">Send</string>
 
 </resources>

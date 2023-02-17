@@ -27,9 +27,11 @@ import org.cxct.sportlottery.ui.sport.SportListFragment
 import org.cxct.sportlottery.ui.sport.SportTabViewModel
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
-import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
+import org.cxct.sportlottery.util.HomePageStatusManager
+import org.cxct.sportlottery.util.phoneNumCheckDialog
+import org.cxct.sportlottery.util.startLogin
 import org.greenrobot.eventbus.EventBus
 
 
@@ -95,9 +97,6 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         }
         iv_logo.setOnClickListener {
             (activity as MainTabActivity).jumpToHome(0)
-        }
-        btn_register.setOnClickListener {
-            requireActivity().startRegister()
         }
         btn_login.setOnClickListener {
             requireActivity().startLogin()
@@ -280,8 +279,8 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
     }
 
     private fun setupLogin() {
+        btn_login.text = "${getString(R.string.btn_register)} / ${getString(R.string.btn_login)}"
         viewModel.isLogin.value?.let {
-            btn_register.isVisible = !it && !isUAT()
             btn_login.isVisible = !it
             lin_search.visibility = if (it) View.VISIBLE else View.INVISIBLE
         }

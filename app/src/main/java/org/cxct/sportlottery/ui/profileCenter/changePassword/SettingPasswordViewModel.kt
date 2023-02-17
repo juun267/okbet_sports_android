@@ -119,10 +119,14 @@ class SettingPasswordViewModel(
     }
 
     fun checkCurrentPwd(currentPwd: String) {
-        _currentPwdError.value = when {
-            currentPwd.isEmpty() -> LocalUtils.getString(R.string.error_input_empty)
-            currentPwd.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
-            else -> ""
+        if (userInfo.value?.passwordSet == true) {
+            _currentPwdError.value = ""
+        } else {
+            _currentPwdError.value = when {
+                currentPwd.isEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+                currentPwd.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
+                else -> ""
+            }
         }
         checkInputComplete()
     }
@@ -155,7 +159,8 @@ class SettingPasswordViewModel(
     }
 
     private fun checkInputComplete() {
-        _submitEnable.value = _currentPwdError.value.isNullOrEmpty() == true && _newPwdError.value?.isEmpty() == true && _confirmPwdError.value?.isEmpty() == true
+        _submitEnable.value =
+            (userInfo.value?.passwordSet == true || _currentPwdError.value.isNullOrEmpty()) && _newPwdError.value?.isEmpty() == true && _confirmPwdError.value?.isEmpty() == true
     }
 
 }

@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.profileCenter.changePassword
 
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_setting_password.*
 import kotlinx.android.synthetic.main.text_form_field_boxes_layout.view.*
@@ -56,6 +57,7 @@ class SettingPasswordActivity :
             AsteriskPasswordTransformationMethod()
 
         val bottomLineColorRes = R.color.color_80334266_E3E8EE
+        et_current_password.isVisible = viewModel.userInfo.value?.passwordSet == false
         et_current_password.bottom_line.setBackgroundResource(bottomLineColorRes)
         et_new_password.bottom_line.setBackgroundResource(bottomLineColorRes)
         et_confirm_password.bottom_line.setBackgroundResource(bottomLineColorRes)
@@ -226,6 +228,7 @@ class SettingPasswordActivity :
         viewModel.userInfo.observe(this, Observer {
             mUserInfo = it
             updateCurrentPwdEditTextHint(mPwdPage, mUserInfo?.updatePayPw)
+            et_current_password.isVisible = it?.passwordSet == false
         })
     }
 

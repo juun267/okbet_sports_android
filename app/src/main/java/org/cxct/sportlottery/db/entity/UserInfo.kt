@@ -92,4 +92,6 @@ data class UserInfo(
     var facebookBind: Boolean = false,
 
     var googleBind: Boolean = false,
+
+    var passwordSet: Boolean = true,//true 密码为空
 )

@@ -35,6 +35,7 @@ import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity.Companion.MODIFY_INFO
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.phoneNumCheckDialog
 import timber.log.Timber
@@ -141,7 +142,10 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             ll_real_name.visibility =
                 if (enableWithdrawFullName == FLAG_OPEN) View.VISIBLE else View.GONE
         }
-
+        LogUtil.toJson(viewModel.userInfo.value)
+        tv_pass_word.text =
+            if (viewModel.userInfo.value?.passwordSet == true) getString(R.string.set) else getString(
+                R.string.edit)
     }
 
     private fun initButton() {
@@ -234,7 +238,10 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             tv_member_account.text = it?.userName
             tv_id.text = it?.userId?.toString()
             tv_real_name.text = it?.fullName
-            ll_verified.isVisible = sConfigData?.realNameWithdrawVerified == VerifySwitchType.OPEN.value || sConfigData?.realNameRechargeVerified == VerifySwitchType.OPEN.value
+            ll_verified.isVisible =
+                sConfigData?.realNameWithdrawVerified == VerifySwitchType.OPEN.value || sConfigData?.realNameRechargeVerified == VerifySwitchType.OPEN.value
+            tv_pass_word.text =
+                if (it?.passwordSet == true) getString(R.string.set) else getString(R.string.edit)
             when (it?.verified) {
                 VerifiedType.PASSED.value -> {
                     ll_verified.isEnabled = false

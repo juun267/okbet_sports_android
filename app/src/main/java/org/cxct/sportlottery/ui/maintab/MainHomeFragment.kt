@@ -50,8 +50,6 @@ import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.dialog.ThirdGameDialog
 import org.cxct.sportlottery.ui.game.publicity.PublicityAnnouncementMarqueeAdapter
-import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
-import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
@@ -266,9 +264,6 @@ class MainHomeFragment :
         iv_menu_left.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(true))
             getMainTabActivity().showLeftFrament(0, 0)
-        }
-        btn_register.setOnClickListener {
-            requireActivity().startRegister()
         }
         btn_login.setOnClickListener {
             requireActivity().startLogin()
@@ -888,10 +883,8 @@ class MainHomeFragment :
                 getString(R.string.prompt),
                 result.errorMsg ?: ""
             ) {}
-            EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.startActivity(
-                Intent(context,
-                     if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java)
-            )
+            EnterThirdGameResult.ResultType.NEED_REGISTER -> requireActivity().startRegister()
+
             EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(
                 getString(R.string.error),
                 result.errorMsg ?: ""
@@ -917,27 +910,30 @@ class MainHomeFragment :
         }
     }
 
-    /**
-     * 跳轉至體育指定球種
-     */
-    private fun jumpToTheSport(matchType: MatchType, gameType: GameType) {
-        getMainTabActivity().jumpToTheSport(matchType, gameType)
-    }
+        /**
+         * 跳轉至體育指定球種
+         */
+        private fun jumpToTheSport(matchType: MatchType, gameType: GameType) {
+            getMainTabActivity().jumpToTheSport(matchType, gameType)
+        }
 
-    private fun setupLogin() = viewModel.isLogin.value?.let {
-        btn_register.isVisible = !it
-        btn_login.isVisible = !it
-        ll_user_money.visibility = if (it) View.VISIBLE else View.INVISIBLE
-    }
-
-    private fun initHotHandicap() {
-        selector_order_status.setItemData(mHandicapCodeList as MutableList<StatusSheetData>)
-        selector_order_status.setOnItemSelectedListener { statusSheetData ->
-            if (statusSheetData.code.isEmptyStr()) {
-                return@setOnItemSelectedListener
+        private fun setupLogin() {
+            btn_login.text =
+                "${getString(R.string.btn_register)} / ${getString(R.string.btn_login)}"
+            viewModel.isLogin.value?.let {
+                btn_login.isVisible = !it
+                ll_user_money.visibility = if (it) View.VISIBLE else View.INVISIBLE
             }
+        }
 
-            viewModel.getHandicapConfig(statusSheetData.code.toIntS())
+        private fun initHotHandicap() {
+            selector_order_status.setItemData(mHandicapCodeList as MutableList<StatusSheetData>)
+            selector_order_status.setOnItemSelectedListener { statusSheetData ->
+                if (statusSheetData.code.isEmptyStr()) {
+                    return@setOnItemSelectedListener
+                }
+
+                viewModel.getHandicapConfig(statusSheetData.code.toIntS())
             hotHandicapAdapter.playType = statusSheetData.code!!
         }
     }

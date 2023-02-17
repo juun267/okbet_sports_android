@@ -1250,4 +1250,7 @@
     <string name="set">Cài đặt</string>
     <string name="linked">Có liên kết</string>
     <string name="link">Liên kết</string>
+    <string name="verification_not_correct">Mã xác nhận sai</string>
+    <string name="edit">Sửa</string>
+    <string name="send">Gửi</string>
 </resources>

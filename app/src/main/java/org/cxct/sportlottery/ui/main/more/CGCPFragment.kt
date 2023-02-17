@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.main.more
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +8,11 @@ import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_cgcp.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.startRegister
 
 class CGCPFragment(private val gameCateData: GameCateData) :
     BaseFragment<MainViewModel>(MainViewModel::class) {
@@ -62,7 +61,7 @@ class CGCPFragment(private val gameCateData: GameCateData) :
                 result.errorMsg ?: ""
             ) {}
             EnterThirdGameResult.ResultType.NEED_REGISTER ->
-                context?.startActivity(Intent(context, RegisterOkActivity::class.java))
+                requireActivity().startRegister()
 
             EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(
                 getString(R.string.error),

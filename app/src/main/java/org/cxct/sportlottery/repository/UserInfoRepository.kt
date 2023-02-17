@@ -213,6 +213,7 @@ object UserInfoRepository {
             oddsChangeOption = userInfoData.oddsChangeOption,
             googleBind = userInfoData.googleBind,
             facebookBind = userInfoData.facebookBind,
+            passwordSet = userInfoData.passwordSet,
         )
 
 }

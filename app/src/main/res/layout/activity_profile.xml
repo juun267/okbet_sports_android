@@ -173,7 +173,7 @@
                         android:maxLines="1"
                         android:textColor="@color/color_6C7BA8_A7B2C4"
                         android:textSize="@dimen/textSize14sp"
-                        android:text="@string/reset_password" />
+                        android:text="@string/set" />
 
                     <ImageView
                         android:layout_width="wrap_content"

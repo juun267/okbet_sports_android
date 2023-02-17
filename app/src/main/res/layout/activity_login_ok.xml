@@ -137,7 +137,7 @@
                             android:alpha="0.5"
                             android:background="@drawable/btn_send_sms"
                             android:enabled="false"
-                            android:text="@string/get_phone_code"
+                            android:text="@string/send"
                             android:textAllCaps="false"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/textSize14sp" />
@@ -310,6 +310,7 @@
                         android:id="@+id/btn_facebook"
                         android:layout_width="33dp"
                         android:layout_height="33dp"
+                        android:visibility="gone"
                         android:layout_marginLeft="@dimen/margin_45"
                         android:src="@drawable/ic_facebook" />
 

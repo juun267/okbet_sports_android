@@ -1263,4 +1263,7 @@
     <string name="linked">已关联</string>
     <string name="link">关联</string>
     <string name="login_hint_account_all">用户名 / 手机号码 / 邮箱</string>
+    <string name="edit">编辑</string>
+    <string name="verification_not_correct">验证码错误</string>
+    <string name="send">发送</string>
 </resources>

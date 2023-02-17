@@ -29,7 +29,9 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.HomeFragment
 import org.cxct.sportlottery.ui.maintab.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.EventBusUtil
+import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.startLogin
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -208,9 +210,6 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
         iv_logo.setOnClickListener {
             (activity as MainTabActivity).jumpToHome(0)
         }
-        btn_register.setOnClickListener {
-            requireActivity().startRegister()
-        }
         btn_login.setOnClickListener {
             requireActivity().startLogin()
         }
@@ -256,8 +255,8 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
 
 
     private fun setupLogin() {
+        btn_login.text = "${getString(R.string.btn_register)} / ${getString(R.string.btn_login)}"
         viewModel.isLogin.value?.let {
-            btn_register.isVisible = !it && !isUAT()
             btn_login.isVisible = !it
             ll_user_money.visibility = if (it) View.VISIBLE else View.INVISIBLE
         }

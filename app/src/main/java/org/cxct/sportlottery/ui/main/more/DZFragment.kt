@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.main.more
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,12 +10,12 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.ui.main.entity.GameTabData
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.startRegister
 
 class DZFragment(private val gameCateData: GameCateData, private val defaultSelectFirmCode: String) : BaseFragment<MainViewModel>(MainViewModel::class) {
 
@@ -77,7 +76,7 @@ class DZFragment(private val gameCateData: GameCateData, private val defaultSele
             EnterThirdGameResult.ResultType.SUCCESS -> context?.run { JumpUtil.toThirdGameWeb(this, result.url ?: "") }
             EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
             EnterThirdGameResult.ResultType.NEED_REGISTER ->
-                context?.startActivity(Intent(context, RegisterOkActivity::class.java))
+                requireActivity().startRegister()
 
             EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
             EnterThirdGameResult.ResultType.NONE -> {

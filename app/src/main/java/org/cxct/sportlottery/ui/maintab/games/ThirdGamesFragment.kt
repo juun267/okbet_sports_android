@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.maintab.games
 
-import android.content.Intent
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
@@ -26,8 +25,6 @@ import org.cxct.sportlottery.repository.ThirdGameRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
-import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
-import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.maintab.HomeFragment
 import org.cxct.sportlottery.ui.maintab.HomeTabAdapter
@@ -79,9 +76,6 @@ class ThirdGamesFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHo
         iv_logo.setOnClickListener {
             (activity as MainTabActivity).jumpToHome(0)
         }
-        btn_register.setOnClickListener {
-            requireActivity().startRegister()
-        }
         btn_login.setOnClickListener {
             requireActivity().startLogin()
         }
@@ -102,8 +96,8 @@ class ThirdGamesFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHo
     }
 
     private fun setupLogin() {
+        btn_login.text = "${getString(R.string.btn_register)} / ${getString(R.string.btn_login)}"
         viewModel.isLogin.value?.let {
-            btn_register.isVisible = !it
             btn_login.isVisible = !it
             ll_user_money.visibility = if (it) View.VISIBLE else View.INVISIBLE
         }
@@ -207,11 +201,8 @@ class ThirdGamesFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHo
                 getString(R.string.prompt),
                 result.errorMsg ?: ""
             ) {}
-            EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.startActivity(
-                Intent(
-                    context,
-                    if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java)
-            )
+            EnterThirdGameResult.ResultType.NEED_REGISTER -> requireActivity().startRegister()
+
             EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(
                 getString(R.string.error),
                 result.errorMsg ?: ""

@@ -109,9 +109,6 @@ class HomeElecFragment :
         iv_logo.setOnClickListener {
             (activity as MainTabActivity).jumpToHome(0)
         }
-        btn_register.setOnClickListener {
-            requireActivity().startRegister()
-        }
         btn_login.setOnClickListener {
             requireActivity().startLogin()
         }
@@ -215,8 +212,8 @@ class HomeElecFragment :
     }
 
     private fun setupLogin() {
+        btn_login.text = "${getString(R.string.btn_register)} / ${getString(R.string.btn_login)}"
         viewModel.isLogin.value?.let {
-            btn_register.isVisible = !it && !isUAT()
             btn_login.isVisible = !it
             ll_user_money.visibility = if (it) View.VISIBLE else View.INVISIBLE
         }
