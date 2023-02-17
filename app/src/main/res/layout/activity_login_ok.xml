@@ -221,7 +221,7 @@
                 android:layout_marginTop="8dp"
                 android:button="@drawable/effect_login_select_checkbox"
                 android:paddingStart="6dp"
-                android:text="验证码登录"
+                android:text="@string/otp_login"
                 android:textColor="@color/color_025BE8_025BE8"
                 android:textSize="@dimen/textSize14sp"
                 android:visibility="gone"
