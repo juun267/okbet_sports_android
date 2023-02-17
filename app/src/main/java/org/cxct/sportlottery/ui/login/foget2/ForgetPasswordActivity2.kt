@@ -129,7 +129,7 @@ class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewModel::cl
                 tag = null
                 setBtnEnable(true)
                 setTextColor(Color.WHITE)
-                setText(R.string.reget_phone_code_for)
+                setText(R.string.get_phone_code)
             }
         )
     }
