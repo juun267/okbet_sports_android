@@ -9,8 +9,8 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityForgetPassword2Binding
 import org.cxct.sportlottery.extentions.*
 import org.cxct.sportlottery.network.index.forgetPassword.SendSmsResult
-import org.cxct.sportlottery.service.YidunCaptcha
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.login.VerifyCodeDialog
 import org.cxct.sportlottery.ui.login.checkEmail
 import org.cxct.sportlottery.ui.login.checkPhoneNum
 import org.cxct.sportlottery.ui.login.checkSMSCode
@@ -61,7 +61,13 @@ class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewModel::cl
         bindFinish(btnBack)
         clLiveChat.setServiceClick(supportFragmentManager)
         btnPut.setOnClickListener { next() }
-        btnSendSms.setOnClickListener { YidunCaptcha.validateAction(this@ForgetPasswordActivity2,this@ForgetPasswordActivity2, { sendCode() }) }
+//        btnSendSms.setOnClickListener { YidunCaptcha.validateAction(this@ForgetPasswordActivity2,this@ForgetPasswordActivity2, { sendCode() }) }
+
+        btnSendSms.setOnClickListener {
+            VerifyCodeDialog(callBack = { identity, validCode ->
+                sendCode(identity, validCode)
+            }).show(supportFragmentManager, null)
+        }
 
         eetSmsCode.checkSMSCode(etSmsValidCode) {
             smsCode = it
@@ -104,12 +110,12 @@ class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewModel::cl
         }
     }
 
-    private fun sendCode() = binding.btnSendSms.run {
+    private fun sendCode(identity: String?, validCode: String) = binding.btnSendSms.run {
         loading()
         if (isPhoneWays()) {
-            viewModel.getSendSms("$inputPhoneNo")
+            viewModel.getSendSms("$inputPhoneNo", "$identity", validCode)
         } else {
-            viewModel.sendEmail("$inputEmail")
+            viewModel.sendEmail("$inputEmail", "$identity", validCode)
         }
     }
 

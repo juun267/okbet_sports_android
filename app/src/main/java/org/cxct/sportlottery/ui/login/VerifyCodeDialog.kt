@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.dialog_verify_code.*
 import org.cxct.sportlottery.R
@@ -12,6 +13,7 @@ import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
 import org.cxct.sportlottery.util.BitmapUtil
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.adjustEnableButton
 
@@ -44,6 +46,13 @@ class VerifyCodeDialog(val callBack: (identity: String?, validCode: String) -> U
                 btn_sure.adjustEnableButton(it.isNullOrBlank())
             }
         }
+
+        //不分手机上弹窗宽度会撑满，需重新设置下左右间距
+        (view.layoutParams as MarginLayoutParams?)?.run {
+            leftMargin = 15.dp
+            rightMargin = 15.dp
+        }
+
         initObserve()
         setupValidCode()
         initClick()

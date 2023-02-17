@@ -206,8 +206,8 @@ class ForgetViewModel(
         return data.value?.first != null || data.value?.second != true
     }
 
-    fun sendEmail(email: String) {
-        val params = mapOf("email" to email)
+    fun sendEmail(email: String,  identity: String, validCode: String) {
+        val params = mapOf("email" to email, "validCodeIdentity" to identity, "validCode" to validCode)
         doRequest(androidContext, { OneBoSportApi.indexService.sendEmailForget(params) }) {
             _smsResult.value = it
         }
@@ -231,12 +231,12 @@ class ForgetViewModel(
      * @phoneNum 手机号码
      *  获取短信你验证码
      */
-    fun getSendSms(phone: String/*, userName: String*/) {
+    fun getSendSms(phone: String, identity: String, validCode: String) {
         //先检测手机号 暂时做假数据处理
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.indexService.sendSmsForget(
-                    SendSmsRequest(phone)
+                    SendSmsRequest(phone, identity, validCode)
                 )
             }
             _smsResult.postValue(result)

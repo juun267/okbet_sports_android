@@ -43,8 +43,6 @@ class ResetPasswordActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::clas
         setContentView(binding.root)
         initView()
         initObserver()
-
-        onResetSuccess(userName)
     }
 
     private fun initView() = binding.run {
