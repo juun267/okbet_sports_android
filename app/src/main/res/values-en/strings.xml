@@ -839,7 +839,7 @@
     <string name="responsible">Responsible</string>
     <string name="terms_conditions">T&amp;C</string>
     <string name="privacy_policy">Privacy</string>
-    <string name="help">NEED HELP NOW?</string>
+    <string name="help">Need Help?</string>
     <string name="official_partner">Official Partner</string>
     <string name="faqs">FAQs</string>
     <string name="live_chat">Live Chat</string>
@@ -1126,8 +1126,6 @@
     <string name="has_send_message_to_phone">A verification code has been sent to your phone</string>
     <string name="get_phone_code">Obtain</string>
     <string name="reget_phone_code">Reacquire</string>
-    <string name="error_confirm_password_forget">Password confirmation does not match</string>
-    <string name="tips_password_success">Password has been changed successfully, please log in again!</string>
     <string name="error_wechat">Wechat ID formatted incorrectly</string>
     <string name="comingsoon">Coming soon</string>
     <string name="forget_password">Forgot Password</string>
@@ -1238,4 +1236,27 @@
     <string name="closing_time">Closing Time</string>
     <string name="end_time">End Time</string>
     <string name="draw_countdown">Draw Countdown</string>
+    <string name="recover_password">Recover password</string>
+    <string name="need_help">Need Help?</string>
+    <string name="reset_pwd_by_mobile">Retrieve Password via Phone Number</string>
+    <string name="reset_pwd_by_email">Retrieve Password via Email</string>
+    <string name="email_address">Email address</string>
+    <string name="mobile">Mobile</string>
+    <string name="login_again">Please Login Again.</string>
+    <string name="change_password">Change Password</string>
+    <string name="login_hint_account">Phone Number / Email</string>
+    <string name="password_login">Password Login</string>
+    <string name="or">Or</string>
+    <string name="login_privacy">By Signing up, you are confirming that you are above 21 years old, and agreed to our Privacy Policy and Terms &amp; Conditions.</string>
+    <string name="login_terms_conditions">Terms &amp; Condition</string>
+    <string name="login_privacy_policy">Privacy Policy</string>
+    <string name="otp_login">OTP Login</string>
+    <string name="auth_login">Authorization Login</string>
+    <string name="set">Set</string>
+    <string name="link">Link</string>
+    <string name="linked">Linked</string>
+    <string name="google">Google</string>
+    <string name="hint_link_google">Link account with Google</string>
+    <string name="hint_link_facebook">Link account with Facebook</string>
+    <string name="login_hint_account_all">Username / Phone Number / Email</string>
 </resources>

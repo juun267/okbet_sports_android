@@ -628,8 +628,6 @@
     <string name="odd_type_hk">HK</string>
     <string name="odd_type_mys">MY</string>
     <string name="odd_type_idn">ID</string>
-    <string name="submit_time">thời gian gửi</string>
-    <string name="feedback_time">Thời gian phản hồi</string>
     <string name="not_reply_yet">Chưa có phản hồi</string>
     <string name="match_not_exist">trận đấu không tồn tại</string>
     <string name="odds_not_exist">Tỷ lệ trò chơi không tồn tại</string>
@@ -1230,4 +1228,26 @@
     <string name="closing_time">Thời gian đóng</string>
     <string name="end_time">Thời gian kết thúc</string>
     <string name="draw_countdown">Đếm ngược rút thăm</string>
+    <string name="recover_password">Tìm lại mật khẩu</string>
+    <string name="need_help">Cần hỗ trợ?</string>
+    <string name="reset_pwd_by_mobile">Lấy lại mật khẩu bằng SĐT</string>
+    <string name="reset_pwd_by_email">Lấy lại mật khẩu bằng email</string>
+    <string name="email_address">Địa chỉ email</string>
+    <string name="mobile">SĐT</string>
+    <string name="login_again">Vui lòng đăng nhập lại.</string>
+    <string name="change_password">Đổi mật khẩu</string>
+    <string name="login_terms_conditions">chúng tôi</string>
+    <string name="login_privacy_policy">Điều khoản sử dụng</string>
+    <string name="hint_link_google">Liên kết tài khoản Google</string>
+    <string name="hint_link_facebook">Liên kết tài khoản Facebook</string>
+    <string name="login_hint_account">SĐT / Email</string>
+    <string name="login_hint_account_all">Tên người dùng / SĐT / Email</string>
+    <string name="password_login">Mật khẩu đăng nhập</string>
+    <string name="or">hoặc</string>
+    <string name="login_privacy">Đăng ký biểu thị xác nhận rằng bạn trên 21 tuổi và đồng ý với Chính sách quyền riêng tư và Điều khoản sử dụng của chúng tôi.</string>
+    <string name="otp_login">Mã xác minh đăng nhập</string>
+    <string name="auth_login">Uỷ quyền Đăng nhập</string>
+    <string name="set">Cài đặt</string>
+    <string name="linked">Có liên kết</string>
+    <string name="link">Liên kết</string>
 </resources>

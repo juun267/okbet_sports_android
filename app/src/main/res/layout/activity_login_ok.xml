@@ -104,7 +104,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            app:hintText="@string/hint_verification_code"
+                            app:hintText="@string/verification_code"
                             app:iconSignifier="@drawable/ic_verfication"
                             app:isResponsiveIconColor="false"
                             app:labelText="@string/verification_code"

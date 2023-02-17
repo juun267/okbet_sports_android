@@ -19,9 +19,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.*
-import kotlinx.android.synthetic.main.button_bet.view.cl_bet
-import kotlinx.android.synthetic.main.button_bet.view.tv_login
-import kotlinx.android.synthetic.main.button_bet.view.tv_remove_closed_selections
+import kotlinx.android.synthetic.main.button_bet.view.*
 import kotlinx.android.synthetic.main.fragment_bet_list.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -43,7 +41,6 @@ import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.game.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.game.betList.adapter.BetSingleListAdapter
 import org.cxct.sportlottery.ui.game.betList.listener.OnItemClickListener
-import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.results.StatusType
@@ -229,7 +226,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             tv_login.setOnClickListener {
                 needUpdateBetLimit = true
                 MultiLanguagesApplication.mInstance.doNotReStartPublicity = true
-                startActivity(Intent(requireContext(), LoginActivity::class.java))
+                requireActivity().startLogin()
             }
 
             cl_bet.setOnClickListener {
@@ -409,7 +406,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 if (viewModel.getLoginBoolean()) {
                     startActivity(Intent(context, MoneyRechargeActivity::class.java))
                 } else {
-                    startActivity(Intent(context, LoginActivity::class.java))
+                    requireActivity().startLogin()
                 }
             }
 

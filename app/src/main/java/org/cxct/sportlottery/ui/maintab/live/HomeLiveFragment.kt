@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.maintab.live
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -31,7 +30,6 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
-import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.maintab.HomeFragment
 import org.cxct.sportlottery.ui.maintab.HomeTabAdapter
 import org.cxct.sportlottery.ui.maintab.MainHomeViewModel
@@ -128,10 +126,10 @@ class HomeLiveFragment :
             (activity as MainTabActivity).jumpToHome(0)
         }
         btn_register.setOnClickListener {
-            startRegister(requireContext())
+            requireActivity().startRegister()
         }
         btn_login.setOnClickListener {
-            startActivity(Intent(requireActivity(), LoginActivity::class.java))
+            requireActivity().startLogin()
         }
         iv_money_refresh.setOnClickListener {
             iv_money_refresh.startAnimation(RotateAnimation(0f,

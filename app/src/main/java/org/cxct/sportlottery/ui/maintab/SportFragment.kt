@@ -17,24 +17,19 @@ import kotlinx.android.synthetic.main.view_toolbar_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.extentions.fitsSystemStatus
-import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
-import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.sport.SportListFragment
 import org.cxct.sportlottery.ui.sport.SportTabViewModel
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
-import org.cxct.sportlottery.util.HomePageStatusManager
-import org.cxct.sportlottery.util.isUAT
-import org.cxct.sportlottery.util.phoneNumCheckDialog
-import org.cxct.sportlottery.util.startRegister
 import org.greenrobot.eventbus.EventBus
 
 
@@ -102,10 +97,10 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
             (activity as MainTabActivity).jumpToHome(0)
         }
         btn_register.setOnClickListener {
-            startRegister(requireContext())
+            requireActivity().startRegister()
         }
         btn_login.setOnClickListener {
-            startActivity(Intent(requireActivity(), LoginActivity::class.java))
+            requireActivity().startLogin()
         }
         lin_search.setOnClickListener {
             startActivity(Intent(requireActivity(), SportSearchtActivity::class.java))
