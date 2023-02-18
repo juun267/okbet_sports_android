@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.widget.EditText
-import android.widget.Toast
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.activity_forget_password.*
 import org.cxct.sportlottery.R
@@ -137,15 +136,14 @@ class ResetPasswordActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::clas
             hideLoading()
             binding.btnNext.setBtnEnable(true)
             if (it?.success != true) {
-                ToastUtil.showToast(this@ResetPasswordActivity, it?.msg,Toast.LENGTH_LONG)
+                val msg = it?.ResetPasswordData?.msg ?: it?.msg
+                if (!msg.isEmptyStr()) {
+                    ToastUtil.showToast(this@ResetPasswordActivity, msg)
+                }
                 return@observe
             }
 
             onResetSuccess(userName)
-            val msg = it.ResetPasswordData?.msg
-            if (!msg.isEmptyStr()) {
-                ToastUtil.showToast(this@ResetPasswordActivity, msg)
-            }
         }
     }
 

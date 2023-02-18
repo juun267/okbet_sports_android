@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.Constants.FEEDBACK_QUERYLIST
 import org.cxct.sportlottery.network.Constants.FEEDBACK_REPLY
 import org.cxct.sportlottery.network.Constants.FEEDBACK_SAVE
 import org.cxct.sportlottery.network.Constants.FORGET_PASSWORD_SMS
+import org.cxct.sportlottery.network.Constants.FORGET_PASSWORD_VALIDATE_EMAIL
 import org.cxct.sportlottery.network.Constants.GET_TWO_FACTOR_STATUS
 import org.cxct.sportlottery.network.Constants.GOOGLE_LOGIN
 import org.cxct.sportlottery.network.Constants.HOT_LIVE_LIST
@@ -200,7 +201,7 @@ object ErrorUtils {
                         @Suppress("UNCHECKED_CAST")
                         return HotMatchLiveResult(it.code, it.msg, it.success, null) as T
                     }
-                    (url.contains(Constants.SEND_SMS_FORGET)) -> {
+                    (url.contains(Constants.SEND_SMS_FORGET) or url.contains(Constants.SEND_EMAIL_FORGET)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return SendSmsResult(it.code, it.msg, it.success, null) as T
                     }
@@ -573,11 +574,11 @@ object ErrorUtils {
                         @Suppress("UNCHECKED_CAST")
                         return UploadVerifyPhotoResult(it.code, it.msg, it.success,null) as T
                     }
-                    (url.contains(FORGET_PASSWORD_SMS)) -> {
+                    (url.contains(FORGET_PASSWORD_SMS) or url.contains(FORGET_PASSWORD_VALIDATE_EMAIL)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return ForgetSmsResult(it.code, it.msg, it.success) as T
                     }
-                    (url.contains(RESET_FORGET_PASSWORD)) -> {
+                    (url.contains(RESET_FORGET_PASSWORD) or url.contains(FORGET_PASSWORD_VALIDATE_EMAIL)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return ResetPasswordResult(it.code, it.msg, it.success,null) as T
                     }
