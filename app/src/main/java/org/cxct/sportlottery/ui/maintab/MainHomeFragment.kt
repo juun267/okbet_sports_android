@@ -873,6 +873,8 @@ class MainHomeFragment :
             }
         }
 
+        // itemAnimator = null 绕过：java.lang.IllegalArgumentException: Tmp detached view should be removed from RecyclerView before it can be recycled
+        rv_hot_handicap.itemAnimator = null
         rv_hot_handicap.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         rv_hot_handicap.adapter = hotHandicapAdapter
     }
