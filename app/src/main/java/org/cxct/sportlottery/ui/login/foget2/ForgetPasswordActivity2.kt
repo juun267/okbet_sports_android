@@ -10,10 +10,7 @@ import org.cxct.sportlottery.databinding.ActivityForgetPassword2Binding
 import org.cxct.sportlottery.extentions.*
 import org.cxct.sportlottery.network.index.forgetPassword.SendSmsResult
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.login.VerifyCodeDialog
-import org.cxct.sportlottery.ui.login.checkEmail
-import org.cxct.sportlottery.ui.login.checkPhoneNum
-import org.cxct.sportlottery.ui.login.checkSMSCode
+import org.cxct.sportlottery.ui.login.*
 import org.cxct.sportlottery.ui.login.foget.ForgetViewModel
 import org.cxct.sportlottery.ui.login.foget2.rest.ResetPasswordActivity
 import org.cxct.sportlottery.util.CountDownUtil
@@ -83,6 +80,7 @@ class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewModel::cl
         }
 
         etPhone.gone()
+        eetEMail.setEmailFilter()
         eetEMail.checkEmail(etEMail) {
             inputEmail = it
             onNewSMSStatus()

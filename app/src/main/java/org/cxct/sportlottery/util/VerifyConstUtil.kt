@@ -10,7 +10,8 @@ object VerifyConstUtil {
     private const val ENGLISH_WORD = "a-zA-Z"
     private const val SYMBOL = "!#\$%&'*+-/=?^_`{|}~"
 
-    private const val EMAIL_REGEX = "^([_$ENGLISH_WORD$NUMBER$SYMBOL]+)+@[-$ENGLISH_WORD$NUMBER$SYMBOL]+([.][-$ENGLISH_WORD$NUMBER$SYMBOL]+)*[.]((?=.*[$ENGLISH_WORD$SYMBOL])[$ENGLISH_WORD$NUMBER$SYMBOL]+([-$ENGLISH_WORD$NUMBER$SYMBOL]*[$ENGLISH_WORD$NUMBER$SYMBOL]+)*)\$"
+//    private const val EMAIL_REGEX = "^([_$ENGLISH_WORD$NUMBER$SYMBOL]+)+@[-$ENGLISH_WORD$NUMBER$SYMBOL]+([.][-$ENGLISH_WORD$NUMBER$SYMBOL]+)*[.]((?=.*[$ENGLISH_WORD$SYMBOL])[$ENGLISH_WORD$NUMBER$SYMBOL]+([-$ENGLISH_WORD$NUMBER$SYMBOL]*[$ENGLISH_WORD$NUMBER$SYMBOL]+)*)\$"
+    private const val EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
     private const val CRYPTO_COMMON_WALLET_ADDRESS_REGEX = "^(?=.*[$ENGLISH_WORD])(?=.*[$NUMBER])[$ENGLISH_WORD$NUMBER]+$"
 
     //是否為越南文文字
@@ -18,12 +19,8 @@ object VerifyConstUtil {
         return Pattern.matches("[${ENGLISH_WORD}${VIETNAM_WORD}\\s]+", inputStr)
     }
 
-    private fun isVerifyEmailFormat(inputStr: CharSequence, strLength: String): Boolean {
-        return if (!Pattern.matches(".$strLength", inputStr))
-            false
-        else {
-            Pattern.matches(EMAIL_REGEX, inputStr)
-        }
+    private fun isVerifyEmailFormat(inputStr: CharSequence): Boolean {
+       return Pattern.matches(EMAIL_REGEX, inputStr)
     }
 
     //是否為中文文字
@@ -132,14 +129,18 @@ object VerifyConstUtil {
         return Pattern.matches("[$NUMBER]{5,11}", qqAcount)
     }
 
-    //mail
+    //mail  , "{0,50}"
     fun verifyMail(mail: CharSequence): Boolean {
-        return isVerifyEmailFormat(mail, "{0,50}")
+        if (mail.isNullOrEmpty() || mail.length > 50) {
+            return false
+        }
+        return isVerifyEmailFormat(mail)
     }
 
     //手機號碼 //以0开头加上后面11位数字组成的手机号码
     fun verifyPhone(phone: CharSequence): Boolean {
-        return Pattern.matches("[0]\\d{10}", phone)
+        val result = Pattern.matches("[0]\\d{10}", phone)
+        return result
     }
     //微信 //英文第一位大小寫 後面可以數字或英文6~20
     fun verifyWeChat(weChat: CharSequence): Boolean {
@@ -148,12 +149,15 @@ object VerifyConstUtil {
 
     //Facebook //50個內英數組合電子郵件格式(含特殊字元)
     fun verifyFacebook(facebook: CharSequence): Boolean {
-        return isVerifyEmailFormat(facebook, "{0,50}")
+        if (facebook.isNullOrEmpty() || facebook.length > 50) {
+            return false
+        }
+        return isVerifyEmailFormat(facebook)
     }
 
     //WhatsApp //25個內英數組合電子郵件格式(含特殊字元)
     fun verifyWhatsApp(whatsApp: CharSequence): Boolean {
-        return isVerifyEmailFormat(whatsApp, "{0,25}")
+        return isVerifyEmailFormat(whatsApp)
     }
 
     //Zalo //11個內全數字組合(通常是由中國或越南手機註冊認證)
