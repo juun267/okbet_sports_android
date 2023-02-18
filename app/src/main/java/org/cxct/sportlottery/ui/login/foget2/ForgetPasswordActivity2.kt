@@ -10,10 +10,7 @@ import org.cxct.sportlottery.databinding.ActivityForgetPassword2Binding
 import org.cxct.sportlottery.extentions.*
 import org.cxct.sportlottery.network.index.forgetPassword.SendSmsResult
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.login.VerifyCodeDialog
-import org.cxct.sportlottery.ui.login.checkEmail
-import org.cxct.sportlottery.ui.login.checkPhoneNum
-import org.cxct.sportlottery.ui.login.checkSMSCode
+import org.cxct.sportlottery.ui.login.*
 import org.cxct.sportlottery.ui.login.foget.ForgetViewModel
 import org.cxct.sportlottery.ui.login.foget2.rest.ResetPasswordActivity
 import org.cxct.sportlottery.util.CountDownUtil
@@ -62,6 +59,7 @@ class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewModel::cl
 //        btnSendSms.setOnClickListener { YidunCaptcha.validateAction(this@ForgetPasswordActivity2,this@ForgetPasswordActivity2, { sendCode() }) }
 
         btnSendSms.setOnClickListener {
+            hideSoftKeyboard(this@ForgetPasswordActivity2)
             VerifyCodeDialog(callBack = { identity, validCode ->
                 sendCode(identity, validCode)
             }).show(supportFragmentManager, null)
@@ -82,6 +80,7 @@ class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewModel::cl
         }
 
         etPhone.gone()
+        eetEMail.setEmailFilter()
         eetEMail.checkEmail(etEMail) {
             inputEmail = it
             onNewSMSStatus()
@@ -109,6 +108,7 @@ class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewModel::cl
 
     private fun sendCode(identity: String?, validCode: String) = binding.btnSendSms.run {
         loading()
+        setBtnEnable(false)
         if (isPhoneWays()) {
             viewModel.getSendSms("$inputPhoneNo", "$identity", validCode)
         } else {
@@ -136,6 +136,7 @@ class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewModel::cl
 
     private fun next() {
         loading()
+        hideSoftKeyboard(this@ForgetPasswordActivity2)
         if (isPhoneWays()) {
             viewModel.getCheckPhone("$inputPhoneNo", "$smsCode")
         } else {
@@ -179,6 +180,7 @@ class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewModel::cl
         }
 
         binding.btnSendSms.setBtnEnable(true)
+        ToastUtil.showToast(this@ForgetPasswordActivity2, smsResult?.msg, Toast.LENGTH_SHORT)
         //做异常处理
         if (smsResult?.code == 2765 || smsResult?.code == 2766) {
             binding.etPhone.setError(smsResult.msg,false)

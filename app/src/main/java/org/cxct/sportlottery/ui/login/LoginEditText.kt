@@ -2,11 +2,8 @@ package org.cxct.sportlottery.ui.login
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.text.Editable
-import android.text.InputFilter
+import android.text.*
 import android.text.InputFilter.LengthFilter
-import android.text.InputType
-import android.text.TextWatcher
 import android.text.method.DigitsKeyListener
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
@@ -29,6 +26,7 @@ import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.VerifyConstUtil
 import org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
 import org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
+import java.util.regex.Pattern
 
 class LoginEditText @JvmOverloads constructor(
     context: Context,
@@ -375,4 +373,19 @@ fun EditText.checkEmail(textFieldBoxes: TextFormFieldBoxes, onResult: ((String?)
         textFieldBoxes.setError(msg, false)
         onResult?.invoke(if (msg == null) email else null)
     }
+}
+
+fun EditText.setEmailFilter() {
+    val patterns = Pattern.compile("[a-zA-Z0-9.@]+")
+    val inputFilter = InputFilter { source, _, _, _, _, _ ->
+        return@InputFilter if (patterns.matcher(source.toString()).matches()) {
+            null
+        } else {
+            ""
+        }
+    }
+
+    val allFilter = filters.toMutableList()
+    allFilter.add(inputFilter)
+    filters = allFilter.toTypedArray()
 }
