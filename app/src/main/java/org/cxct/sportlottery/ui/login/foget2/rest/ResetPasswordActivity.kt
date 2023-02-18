@@ -119,6 +119,7 @@ class ResetPasswordActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::clas
             return
         }
 
+        hideSoftKeyboard(this@ResetPasswordActivity)
         loading()
         binding.btnNext.setBtnEnable(false)
         val encodedPassword = MD5Util.MD5Encode(confirmPassword)
