@@ -2,8 +2,6 @@ package org.cxct.sportlottery.ui.login.signIn
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.provider.Settings
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
@@ -25,18 +23,15 @@ import org.cxct.sportlottery.network.index.login.LoginCodeRequest
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.repository.LOGIN_SRC
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.SelfLimitFrozeErrorDialog
-import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.login.VerifyCodeDialog
 import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.login.foget2.ForgetWaysActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.widget.boundsEditText.SimpleTextChangedWatcher
-import java.util.*
 
 
 /**
@@ -53,6 +48,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         const val LOGIN_TYPE_CODE = 0
         const val LOGIN_TYPE_PWD = 1
     }
+    private var countDownGoing = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -254,7 +250,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 it.first,
                 false
             )
-            if (mSmsTimer == null) {
+            if (!countDownGoing) {
                 binding.btnSendSms.setBtnEnable(it.first.isNullOrBlank())
             }
         }
@@ -295,7 +291,17 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
         viewModel.msgCodeResult.observe(this, Observer {
             if (it?.success == true) {
-                showCountDown()
+                CountDownUtil.smsCountDown(this, {
+                    binding.btnSendSms.setBtnEnable(false)
+                    countDownGoing = true
+                }, {
+                    binding.btnSendSms.setBtnEnable(false)
+                    binding.btnSendSms.text = "${it}s"
+                }, {
+                    binding.btnSendSms.setBtnEnable(viewModel.accountMsg?.value?.first.isNullOrBlank())
+                    binding.btnSendSms.text = getString(R.string.send)
+                    countDownGoing = false
+                })
             } else {
                 it?.msg?.let { msg -> showErrorPromptDialog(msg) {} }
             }
@@ -386,44 +392,6 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                     binding.etPassword.setError(null, false)
                 }
             }
-        }
-    }
-
-    private var mSmsTimer: Timer? = null
-    private fun showCountDown() {
-        try {
-            stopSmeTimer()
-
-            var sec = 90
-            mSmsTimer = Timer()
-            mSmsTimer?.schedule(object : TimerTask() {
-                override fun run() {
-                    Handler(Looper.getMainLooper()).post {
-                        if (sec-- > 0) {
-                            binding.btnSendSms.setBtnEnable(false)
-                            binding.btnSendSms.text = "${sec}s"
-                        } else {
-                            stopSmeTimer()
-                            binding.btnSendSms.setBtnEnable(viewModel.accountMsg?.value?.first.isNullOrBlank())
-                            binding.btnSendSms.text =
-                                getString(R.string.send)
-                        }
-                    }
-                }
-            }, 0, 1000) //在 0 秒後，每隔 1000L 毫秒執行一次
-        } catch (e: Exception) {
-            e.printStackTrace()
-
-            stopSmeTimer()
-            binding.btnSendSms.setBtnEnable(viewModel.accountMsg?.value?.first.isNullOrBlank())
-            binding.btnSendSms.text = getString(R.string.get_verification_code)
-        }
-    }
-
-    private fun stopSmeTimer() {
-        if (mSmsTimer != null) {
-            mSmsTimer?.cancel()
-            mSmsTimer = null
         }
     }
 

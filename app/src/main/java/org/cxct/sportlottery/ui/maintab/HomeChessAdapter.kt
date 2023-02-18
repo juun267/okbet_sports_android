@@ -13,10 +13,13 @@ import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ScreenUtil
 
-class HomeChessAdapter(data: MutableList<QueryGameEntryData>):
-    BaseQuickAdapter<QueryGameEntryData, BaseViewHolder>(0, data) {
+class HomeChessAdapter :
+    BaseQuickAdapter<QueryGameEntryData, BaseViewHolder>(0) {
 
-    private val params by lazy {  ViewGroup.LayoutParams((ScreenUtil.getScreenWidth(context) - 40.dp) / 2, -2) }
+    private val params by lazy {
+        ViewGroup.LayoutParams((ScreenUtil.getScreenWidth(context) - 40.dp) / 2,
+            -2)
+    }
     private val options = RequestOptions.bitmapTransform(RoundedCorners(8.dp))
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .placeholder(R.drawable.icon_chess_and_card)

@@ -265,7 +265,7 @@ class MainHomeFragment :
             viewModel.getMoney()
         }
 
-        btn_login.setOnClickListener { startActivity(Intent(requireActivity(), LoginActivity::class.java)) }
+        btn_login.setOnClickListener { requireActivity().startLogin() }
         iv_money_refresh.setOnClickListener { onRefreshMoney() }
         setupLogin()
     }
@@ -837,10 +837,6 @@ class MainHomeFragment :
             viewModel.clearThirdGame()
     }
 
-    private fun setupLogin() = viewModel.isLogin.value?.let {
-        btn_login.isVisible = !it
-        ll_user_money.visibility = if (it) View.VISIBLE else View.INVISIBLE
-    }
     /**
      * 檢查信用盤狀態下是否已登入
      * @param eventFun 處於信用盤時若已登入則執行該function, 若非信用盤則直接執行
