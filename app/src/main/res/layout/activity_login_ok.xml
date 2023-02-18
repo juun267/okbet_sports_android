@@ -76,7 +76,7 @@
                         app:hintText="@string/login_hint_account"
                         app:iconSignifier="@drawable/ic_login"
                         app:isResponsiveIconColor="false"
-                        app:labelText="@string/login_account"
+                        app:labelText="@string/title_payer"
                         app:labelTextStyle="normal"
                         app:primaryColor="@color/color_AFAFB1">
 
@@ -158,7 +158,7 @@
                         app:hintText="@string/login_hint_account_all"
                         app:iconSignifier="@drawable/ic_login"
                         app:isResponsiveIconColor="false"
-                        app:labelText="@string/member_account"
+                        app:labelText="@string/title_payer"
                         app:labelTextStyle="normal"
                         app:primaryColor="@color/color_AFAFB1">
 

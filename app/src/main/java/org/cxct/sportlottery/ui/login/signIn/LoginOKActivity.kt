@@ -168,6 +168,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 appVersion = appVersion,
                 loginEnvInfo = deviceId,
                 securityCode = smsCode,
+                inviteCode = Constants.getInviteCode()
             )
             viewModel.loginOrReg(loginRequest)
         } else {
@@ -367,13 +368,13 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private fun switchLoginType(loginType: Int) {
         viewModel.loginType = loginType
+        hideSoftKeyboard(this)
         (loginType == 0).let {
             lin_login_pwd.isVisible = !it
             lin_login_code.isVisible = it
             tv_pwd_login.isVisible = it
             tv_code_login.isVisible = !it
             tv_forget_password.isVisible = !it
-            hideSoftKeyboard(this)
             if (it) {
                 binding.btnLogin.text =
                     "${getString(R.string.btn_login)} / ${getString(R.string.btn_register)}"
