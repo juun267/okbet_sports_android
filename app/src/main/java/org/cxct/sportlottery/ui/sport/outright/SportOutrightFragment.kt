@@ -322,10 +322,7 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
                 }
             }
 
-            matchOdds.forEach {
-                subscribeChannelHall(it)
-                it.matchInfo?.let { Log.e("[subscribe]","訂閱 ${it.name} -> " + "${it.homeName} vs " + "${it.awayName}") }
-            }
+            matchOdds.forEach { subscribeChannelHall(it) }
         }
     }
 
@@ -661,6 +658,7 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
         gameType?.let {
             subscribedMatchOdd.add(matchOdd)
             subscribeChannelHall(it.key, matchOdd?.matchInfo?.id)
+            matchOdd?.matchInfo?.let { Log.e("[subscribe]","訂閱 ${it.name} ${it.id} -> " + "${it.homeName} vs " + "${it.awayName}") }
         }
     }
 

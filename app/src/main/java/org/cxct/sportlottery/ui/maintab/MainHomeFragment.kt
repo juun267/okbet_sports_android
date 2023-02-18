@@ -30,9 +30,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.event.MoneyEvent
-import org.cxct.sportlottery.extentions.isEmptyStr
-import org.cxct.sportlottery.extentions.load
-import org.cxct.sportlottery.extentions.toIntS
+import org.cxct.sportlottery.extentions.*
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.index.config.ImageData
@@ -57,7 +55,6 @@ import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.widget.OKVideoPlayer
-import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -68,10 +65,6 @@ class MainHomeFragment :
     {
 
     private  var mMatchInfo: MatchInfo?=null
-    interface TimerListener {
-        fun onTimerUpdate(timeMillis: Long)
-    }
-    var listener: TimerListener? = null
 
     companion object {
         fun newInstance(): MainHomeFragment {
@@ -80,6 +73,7 @@ class MainHomeFragment :
             return fragment
         }
     }
+
     private val homeHotLiveAdapter by lazy {//热门直播
 
         HotLiveAdapter(HotLiveAdapter.ItemClickListener { data ->
@@ -108,65 +102,51 @@ class MainHomeFragment :
     }
 
     private val hotHandicapAdapter by lazy {
-        HotHandicapAdapter(this, mutableListOf()).apply {
-            homeRecommendListener = HomeRecommendListener(
+        HotHandicapAdapter(this, HomeRecommendListener(
 
-                onItemClickListener = { matchInfo ->
-                    if (isCreditSystem() && viewModel.isLogin.value != true) {
-                        getMainTabActivity().showLoginNotify()
-                    }else{
-                        matchInfo?.let {
-                            navOddsDetailFragment(MatchType.IN_PLAY, it)
-                        }
+            onItemClickListener = { matchInfo ->
+                if (isCreditSystem() && viewModel.isLogin.value != true) {
+                    getMainTabActivity().showLoginNotify()
+                } else {
+                    matchInfo?.let {
+                        navOddsDetailFragment(MatchType.IN_PLAY, it)
                     }
-                },
-                onGoHomePageListener = {
-
-                },
-                onClickBetListener = { gameType, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
-                    if (!mIsEnabled) {
-                        return@HomeRecommendListener
-                    }
-
-                    avoidFastDoubleClick()
-                    if (isCreditSystem() &&  viewModel.isLogin.value != true) {
-                        getMainTabActivity().showLoginNotify()
-                        return@HomeRecommendListener
-                    }
-
-                    addOddsDialog(gameType,
-                        matchType,
-                        matchInfo,
-                        odd,
-                        playCateCode,
-                        playCateName,
-                        betPlayCateNameMap,
-                        playCateMenuCode
-                    )
-
-                },
-                onClickFavoriteListener = {
-
-                },
-                onClickStatisticsListener = { _ ->
-
-                }, onClickPlayTypeListener = { _, _, _, _ ->
-
-                }, onClickLiveIconListener = { _, _, _, _ ->
-
                 }
-            ) { _, _, _, _ ->
+            },
+
+            onClickBetListener = { gameType, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
+                if (!mIsEnabled) {
+                    return@HomeRecommendListener
+                }
+
+                avoidFastDoubleClick()
+                if (isCreditSystem() &&  viewModel.isLogin.value != true) {
+                    getMainTabActivity().showLoginNotify()
+                    return@HomeRecommendListener
+                }
+
+                addOddsDialog(gameType,
+                    matchType,
+                    matchInfo,
+                    odd,
+                    playCateCode,
+                    playCateName,
+                    betPlayCateNameMap,
+                    playCateMenuCode
+                )
+
+            }, onClickPlayTypeListener = { _, _, _, _ ->
 
             }
-        }
+        ))
     }
-    private val hotElectronicAdapter by lazy {//电子
-        HomeElectronicAdapter(mutableListOf())
-    }
-    private val homeChessAdapter by lazy {//棋牌
-        HomeChessAdapter(mutableListOf())
-    }
+
+    //电子
+    private val hotElectronicAdapter by lazy { HomeElectronicAdapter() }
+    //棋牌
+    private val homeChessAdapter by lazy { HomeChessAdapter() }
     private val mPublicityVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
+
     private val mHandicapCodeList by lazy {
         resources.getStringArray(R.array.handicap_type_list).mapIndexed { index, data ->
             StatusSheetData((index + 1).toString(), data)
@@ -207,22 +187,26 @@ class MainHomeFragment :
 //        LogUtil.d("onPause")
         iv_publicity.onVideoPause()
         rv_marquee.stopAuto()
+        rv_marquee.postDelayed({
+            hotHandicapAdapter.removeAt(1)
+        }, 1000)
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-        if (!hidden) {
-            viewModel.getLiveRoundCount()
-            viewModel.getHotLiveList()
-            onRefreshMoney()
-            viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
-            viewModel.getGameEntryConfig(1, null)
-            setupOddsChangeListener()
-            iv_publicity.setUp(mMatchInfo?.pullRtmpUrl, true, "");
-            iv_publicity.startPlayLogic()
-        } else {
+        if (hidden) {
             iv_publicity.onVideoPause()
+            return
         }
+
+        viewModel.getLiveRoundCount()
+        viewModel.getHotLiveList()
+        onRefreshMoney()
+        viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
+        viewModel.getGameEntryConfig(1, null)
+        setupOddsChangeListener()
+        iv_publicity.setUp(mMatchInfo?.pullRtmpUrl, true, "");
+        iv_publicity.startPlayLogic()
     }
 
     private fun initView() {
@@ -260,9 +244,10 @@ class MainHomeFragment :
     }
 
     fun initToolBar() {
+
         view?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
         iv_menu_left.setOnClickListener {
-            EventBus.getDefault().post(MenuEvent(true))
+            EventBusUtil.post(MenuEvent(true))
             getMainTabActivity().showLeftFrament(0, 0)
         }
         btn_login.setOnClickListener {
@@ -280,29 +265,31 @@ class MainHomeFragment :
             viewModel.getMoney()
         }
 
+        btn_login.setOnClickListener { startActivity(Intent(requireActivity(), LoginActivity::class.java)) }
+        iv_money_refresh.setOnClickListener { onRefreshMoney() }
         setupLogin()
     }
+
     @SuppressLint("SetTextI18n")
     private fun initObservable() {
+
         if (viewModel == null) {
             return
         }
+
         viewModel.isLogin.observe(viewLifecycleOwner) {
             setupLogin()
         }
+
         viewModel.userMoney.observe(viewLifecycleOwner) {
             it?.let {
                 tv_home_money.text = "${sConfigData?.systemCurrencySign} ${TextUtil.format(it)}"
             }
         }
         viewModel.liveRoundCount.observe(viewLifecycleOwner) {
-           // tv_live_count.text = it
             tv_hot_live_find_more.text = getString(R.string.see_more) + (if (it == "0") "" else it)
         }
 
-//        viewModel.userMoney.observe(viewLifecycleOwner) {
-//
-//        }
         viewModel.oddsType.observe(this.viewLifecycleOwner) {
             it?.let { oddsType ->
                 hotHandicapAdapter.oddsType = oddsType
@@ -310,166 +297,146 @@ class MainHomeFragment :
         }
 
         viewModel.betInfoList.observe(viewLifecycleOwner) { event ->
-            event.peekContent().let { betInfoList ->
-                hotHandicapAdapter.betInfoList = betInfoList
-            }
+            hotHandicapAdapter.betInfoList = event.peekContent()
         }
+
         viewModel.gotConfig.observe(viewLifecycleOwner) { event ->
-            event.peekContent().let { isReload ->
-                if (isReload) {
-                    setupBanner()
-                    viewModel.getPublicityPromotion()
+            val isReload = event.peekContent() ?: return@observe
+            if (isReload) {
+                setupBanner()
+                viewModel.getPublicityPromotion()
+            }
+
+            viewModel.getSportMenuFilter()
+            if (!ThirdGameDialog.firstShow) {
+                MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
+                return@observe
+            }
+
+            ThirdGameDialog().apply {
+                onClick = {
+                    getHomeFragment().onTabClickByPosition(
+                        HomeTabAdapter.getItems().indexOfFirst { it.name == R.string.home_on_game }
+                    )
                 }
-                viewModel.getSportMenuFilter()
-                if (ThirdGameDialog.firstShow) {
-                    ThirdGameDialog().apply {
-                        onClick = {
-                            (this@MainHomeFragment.parentFragment as HomeFragment).onTabClickByPosition(
-                                HomeTabAdapter.getItems()
-                                    .indexOfFirst { it.name == R.string.home_on_game })
-                        }
-                        onDismiss = {
-                            MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
-                        }
-                    }.show(childFragmentManager, ThirdGameDialog::class.simpleName)
-                } else {
+                onDismiss = {
                     MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
                 }
-            }
+            }.show(childFragmentManager, ThirdGameDialog::class.simpleName)
         }
 //
         //新版宣傳頁
         viewModel.messageListResult.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { messageListResult ->
-                val titleList: MutableList<String> = mutableListOf()
-                messageListResult.rows?.forEach { data ->
-                    if (data.type.toInt() == 1) titleList.add(data.title + " - " + data.message)
+
+            val messageListResult = it.getContentIfNotHandled() ?: return@observe
+
+            val titleList: MutableList<String> = mutableListOf()
+            messageListResult.rows?.forEach { data ->
+                if (data.type.toInt() == 1)  {
+                    titleList.add(data.title + " - " + data.message)
                 }
-                setupAnnouncement(titleList)
             }
+            setupAnnouncement(titleList)
         }
 
         viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {
-            if (isVisible)
+            if (isVisible) {
                 enterThirdGame(it)
+            }
         }
-
 
         viewModel.homeGameData.observe(viewLifecycleOwner) {
-            it?.let { gameList->
-                //棋牌
-                val mHotChessList = gameList.filter { data->
-                    data.gameType?.equals("1") == true
-                }
-                if (mHotChessList.isNullOrEmpty()){
-                    hot_card_game_include.visibility = View.GONE
+            val gameList = it ?: return@observe
 
-                    view1.visibility = View.GONE
-                }else{
-                    view1.visibility = View.VISIBLE
-                    hot_card_game_include.visibility = View.VISIBLE
-
-                }
-                homeChessAdapter.setNewData(mHotChessList?.toMutableList())
-
-                //电子
-                val mHotelList = gameList.filter {data->
-                    data.gameType?.equals("2") == true
-                }
-                if (mHotelList.isNullOrEmpty()){
-                    hot_gaming_include.visibility = View.GONE
-                    view2.visibility = View.GONE
-                }else{
-                    hot_gaming_include.visibility = View.VISIBLE
-                    view2.visibility = View.VISIBLE
-                }
-                hotElectronicAdapter.setNewData(mHotelList?.toMutableList())
+            //棋牌
+            val mHotChessList = gameList.filter { it.gameType?.equals("1") == true }
+            if (mHotChessList.isNullOrEmpty()) {
+                setViewGone(view1, hot_card_game_include)
+            } else {
+                setViewVisible(view1, hot_card_game_include)
             }
+
+            homeChessAdapter.setNewData(mHotChessList?.toMutableList())
+
+            //电子
+            val mHotelList = gameList.filter { it.gameType?.equals("2") == true }
+            if (mHotelList.isNullOrEmpty()){
+                setViewGone(view2, hot_gaming_include)
+            } else {
+                setViewVisible(view2, hot_gaming_include)
+            }
+            hotElectronicAdapter.setNewData(mHotelList?.toMutableList())
         }
+
         viewModel.hotLiveData.observe(viewLifecycleOwner){ list->
-            if (list.isNullOrEmpty()){
-                hot_live_match.visibility = View.GONE
-            }else{
-                list[0].apply {
-                        tv_match_type_name.text = sportName
-                        tv_match_name.text = league.name
-                        tv_first_half_game.text = matchInfo.statusName18n
-                        tv_match_time.text = runningTime
-                        context?.let {mContext->
-
-                            Glide.with(mContext)
-                                .load(matchInfo.frontCoverUrl)
-                                .apply(RequestOptions().placeholder(R.drawable.icon_novideodata))
-                                .into(iv_live_type)
-                            Glide.with(mContext)
-                                .load(matchInfo.streamerIcon)
-                                .apply(RequestOptions().placeholder(R.drawable.icon_avatar))
-                                .into(iv_avatar_live)
-
-                        }
-                    mMatchInfo = matchInfo
-                    tv_introduction.text = matchInfo.streamerName
-
-                    matchInfo.roundNo?.let {
-                        viewModel.getLiveInfo(it, 0)
-                    }
-                }
-                    if(homeHotLiveAdapter.data.isNullOrEmpty()){
-                        homeHotLiveAdapter.mSelectedId = list.firstOrNull()?.matchInfo?.id
-                    }
-                    homeHotLiveAdapter.data = list
-
-                     //订阅直播
-                     subScribeLiveData(list)
-
-                    rv_match_list.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-                    rv_match_list.adapter = homeHotLiveAdapter
+            if (list.isNullOrEmpty()) {
+                hot_live_match.gone()
+                return@observe
             }
 
+
+            list[0].apply {
+                tv_match_type_name.text = sportName
+                tv_match_name.text = league.name
+                tv_first_half_game.text = matchInfo.statusName18n
+                tv_match_time.text = runningTime
+                iv_live_type.load("${matchInfo.frontCoverUrl}", R.drawable.icon_novideodata)
+                iv_avatar_live.load("${matchInfo.streamerIcon}", R.drawable.icon_avatar)
+                mMatchInfo = matchInfo
+                tv_introduction.text = matchInfo.streamerName
+                matchInfo.roundNo?.let { viewModel.getLiveInfo(it, 0) }
+            }
+
+            if(homeHotLiveAdapter.data.isNullOrEmpty()){
+                homeHotLiveAdapter.mSelectedId = list.firstOrNull()?.matchInfo?.id
+            }
+
+            homeHotLiveAdapter.data = list
+            subScribeLiveData(list) //订阅直播
+
+            rv_match_list.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+            rv_match_list.adapter = homeHotLiveAdapter
         }
+
         //热门盘口
         viewModel.hotHandicap.observe(viewLifecycleOwner) {
             val list = it.getContentIfNotHandled()
            if ( list.isNullOrEmpty()){
-               rv_hot_handicap.visibility = View.GONE
-           }else{
-               rv_hot_handicap.visibility = View.VISIBLE
-               list.let {
-                   hideLoading()
-                   it.forEach { handi ->
-                       handi.matchInfos.forEach { hotdata ->
-                           hotdata.getBuildMatchInfo()
-                           hotdata.leagueId = handi.league.id
-                           hotdata.oddsSort = handi.oddsSort
-                           // 將儲存的賠率表指定的賽事列表裡面
-                           val leagueOddFromMap = leagueOddMap[hotdata.id]
-                           leagueOddFromMap?.let {
-                               hotdata.oddsMap = leagueOddFromMap.oddsMap
-                           }
-                       }
-                   }
-                   hotHandicapAdapter.data.forEach { item->
-                       item.matchInfos.forEach {
-                           unSubscribeChannelHall(it.gameType, it.id)
-                       }
-                   }
+               rv_hot_handicap.gone()
+               return@observe
+           }
 
-                   hotHandicapAdapter.setNewInstance(list?.toMutableList())
-                   //订阅赛事
-                   subscribeQueryData(list)
+           rv_hot_handicap.visible()
+           hideLoading()
+           list.forEach { handi ->
+               handi.matchInfos.forEach { hotdata ->
+                   hotdata.getBuildMatchInfo()
+                   hotdata.leagueId = handi.league.id
+                   hotdata.oddsSort = handi.oddsSort
+                   // 將儲存的賠率表指定的賽事列表裡面
+                   leagueOddMap[hotdata.id]?.let { hotdata.oddsMap = it.oddsMap }
                }
            }
+
+           hotHandicapAdapter.data.forEach { item->
+               item.matchInfos.forEach { unSubscribeChannelHall(it.gameType, it.id)  }
+           }
+
+           hotHandicapAdapter.setNewInstance(list?.toMutableList())
+           //订阅赛事
+           subscribeQueryData(list)
         }
+
         viewModel.homeMatchLiveInfo.observe(viewLifecycleOwner) { event ->
-            event?.peekContent()?.let { matchRound ->
-                homeHotLiveAdapter.data.forEachIndexed { index, hotMatchLiveData ->
-                    if (hotMatchLiveData.matchInfo.roundNo == matchRound.roundNo) {
-                        hotMatchLiveData.matchInfo.pullRtmpUrl = matchRound.pullRtmpUrl
-                        hotMatchLiveData.matchInfo.pullFlvUrl = matchRound.pullFlvUrl
-                        homeHotLiveAdapter.notifyItemChanged(index, hotMatchLiveData)
-                        mMatchInfo = hotMatchLiveData.matchInfo
-                        playMatchVideo(hotMatchLiveData.matchInfo)
-                    }
+
+            val matchRound = event?.peekContent()?: return@observe
+            homeHotLiveAdapter.data.forEachIndexed { index, hotMatchLiveData ->
+                if (hotMatchLiveData.matchInfo.roundNo == matchRound.roundNo) {
+                    hotMatchLiveData.matchInfo.pullRtmpUrl = matchRound.pullRtmpUrl
+                    hotMatchLiveData.matchInfo.pullFlvUrl = matchRound.pullFlvUrl
+                    homeHotLiveAdapter.notifyItemChanged(index, hotMatchLiveData)
+                    mMatchInfo = hotMatchLiveData.matchInfo
+                    playMatchVideo(hotMatchLiveData.matchInfo)
                 }
             }
         }
@@ -494,171 +461,147 @@ class MainHomeFragment :
         }
 
         //观察比赛状态改变
-        receiver.matchStatusChange.observe(viewLifecycleOwner) { event ->
-
-            event?.let { matchStatusChangeEvent ->
-                hotHandicapAdapter.data.forEachIndexed { index, handicapData ->
-
-                    var needUpdate = false
-                    handicapData.matchInfos.iterator().let {
-
-                        while (!needUpdate && it.hasNext()) {
-
-                            val next = it.next()
-                            if (SocketUpdateUtil.updateMatchStatus(next.gameType,
-                                    handicapData.matchInfos as MutableList<MatchOdd>,
-                                    matchStatusChangeEvent,
-                                    context)) {
-
-                                needUpdate = true
-                            }
-                        }
-                    }
-//                    handicapData.matchInfos.forEach { hotMatchInfo ->
-//
-//                        if (SocketUpdateUtil.updateMatchStatus(
-//                                hotMatchInfo.gameType,
-//                                handicapData.matchInfos as MutableList<MatchOdd>,
-//                                matchStatusChangeEvent,
-//                                context
-//                            )
-//                        ) {
-//                            needUpdate = true
-//                            return@forEach
-//                        }
-//                    }
-                    if (needUpdate) {
-                        hotHandicapAdapter.notifyItemChanged(index)
-                    }
-                }
-
-                val targetList = homeHotLiveAdapter.data
-                var needUpdate = false // 记录是否要更新赛事清单
-                 targetList.forEachIndexed { index, hotMatchLiveData ->
-
-                     var matchList = listOf(hotMatchLiveData).toMutableList()
-                     if (hotMatchLiveData.matchInfo.id==matchStatusChangeEvent.matchStatusCO?.matchId){
-
-                     }
-                     if (SocketUpdateUtil.updateMatchStatus(
-                             hotMatchLiveData.matchInfo.gameType,
-                             matchList as MutableList<MatchOdd>,
-                             matchStatusChangeEvent,
-                             context
-                     )){
-
-                         needUpdate = true
-                         return@forEachIndexed
-                     }
-                 }
-                if (needUpdate) {
-                    homeHotLiveAdapter.data = targetList
-                }
+        receiver.matchStatusChange.observe(viewLifecycleOwner) { matchStatusChangeEvent ->
+            if (matchStatusChangeEvent == null) {
+                return@observe
             }
-        }
 
-        receiver.matchClock.observe(viewLifecycleOwner) {
-            it?.let { matchClockEvent ->
-                val targetList = hotHandicapAdapter.data
-                targetList.forEachIndexed { index, handicapData ->
-                    var needUpdate = false
-                    handicapData.matchInfos.forEach{ hotMatchInfo->
-                        if (
-                            SocketUpdateUtil.updateMatchClock(
-                                hotMatchInfo,
-                                matchClockEvent
-                            )
-                        ) {
+            hotHandicapAdapter.data.forEachIndexed { index, handicapData ->
+
+                var needUpdate = false
+                handicapData.matchInfos.iterator().let {
+
+                    while (!needUpdate && it.hasNext()) {
+                        val next = it.next()
+                        if (SocketUpdateUtil.updateMatchStatus(next.gameType,
+                                handicapData.matchInfos as MutableList<MatchOdd>,
+                                matchStatusChangeEvent,
+                                context)) {
+
                             needUpdate = true
-
                         }
                     }
-                    if (needUpdate)
-                        hotHandicapAdapter.notifyItemChanged(index)
+                }
+
+                if (needUpdate) {
+                    hotHandicapAdapter.notifyItemChanged(index)
+                }
+            }
+
+            val targetList = homeHotLiveAdapter.data
+            var needUpdate = false // 记录是否要更新赛事清单
+             targetList.forEachIndexed { index, hotMatchLiveData ->
+
+                 var matchList = listOf(hotMatchLiveData).toMutableList()
+                 if (hotMatchLiveData.matchInfo.id==matchStatusChangeEvent.matchStatusCO?.matchId){
+
+                 }
+                 if (SocketUpdateUtil.updateMatchStatus(
+                         hotMatchLiveData.matchInfo.gameType,
+                         matchList as MutableList<MatchOdd>,
+                         matchStatusChangeEvent,
+                         context
+                 )){
+
+                     needUpdate = true
+                     return@forEachIndexed
+                 }
+             }
+            if (needUpdate) {
+                homeHotLiveAdapter.data = targetList
+            }
+        }
+
+        receiver.matchClock.observe(viewLifecycleOwner) { matchClockEvent ->
+            if (matchClockEvent == null) {
+                return@observe
+            }
+
+            val targetList = hotHandicapAdapter.data
+            targetList.forEachIndexed { index, handicapData ->
+                var needUpdate = false
+                handicapData.matchInfos.forEach{ hotMatchInfo ->
+                    if (SocketUpdateUtil.updateMatchClock(hotMatchInfo, matchClockEvent)) {
+                        needUpdate = true
+                    }
+                }
+
+                if (needUpdate) {
+                    hotHandicapAdapter.notifyItemChanged(index)
                 }
             }
         }
-//        receiver.matchOddsChange.observe(viewLifecycleOwner) {
-//
-//        }
+
         setupOddsChangeListener()
 
-        receiver.matchOddsLock.observe(viewLifecycleOwner) {
-            it?.let { matchOddsLockEvent ->
-                // 紀錄是否需要更新整個推薦賽事清單
-                hotHandicapAdapter.data.forEachIndexed { index, handicapData ->
-                    var needUpdate = false
-                    handicapData.matchInfos.forEach { hotMatchInfo ->
-                        if (SocketUpdateUtil.updateOddStatus(
-                                hotMatchInfo, matchOddsLockEvent
-                            )
-                        ) {
-                            needUpdate = true
-                            //TODO 更新邏輯待補，跟進GameV3Fragment
-                        }
-                    }
-                    if (needUpdate) {
-                        hotHandicapAdapter.notifyItemChanged(index)
+        receiver.matchOddsLock.observe(viewLifecycleOwner) { matchOddsLockEvent ->
+            if (matchOddsLockEvent == null) {
+                return@observe
+            }
+
+            // 紀錄是否需要更新整個推薦賽事清單
+            hotHandicapAdapter.data.forEachIndexed { index, handicapData ->
+                var needUpdate = false
+                handicapData.matchInfos.forEach { hotMatchInfo ->
+                    if (SocketUpdateUtil.updateOddStatus(hotMatchInfo, matchOddsLockEvent)) {
+                        needUpdate = true
                     }
                 }
-
+                if (needUpdate) {
+                    hotHandicapAdapter.notifyItemChanged(index)
+                }
             }
         }
 
+        receiver.globalStop.observe(viewLifecycleOwner) { globalStopEvent ->
+            if (globalStopEvent == null) {
+                return@observe
+            }
 
-        receiver.globalStop.observe(viewLifecycleOwner) {
-            it?.let { globalStopEvent ->
-                hotHandicapAdapter.data.forEachIndexed { index, handicapData ->
-                    var needUpdate = false
-                    handicapData.matchInfos.forEach {
-                        if (SocketUpdateUtil.updateOddStatus(
-                                it,
-                                globalStopEvent
-                            )
-                        ) {
-                            needUpdate = true
-                            //TODO 更新邏輯待補，跟進GameV3Fragment
-                        }
+            hotHandicapAdapter.data.forEachIndexed { index, handicapData ->
+                var needUpdate = false
+                handicapData.matchInfos.forEach {
+                    if (SocketUpdateUtil.updateOddStatus(it, globalStopEvent)) {
+                        needUpdate = true
                     }
-                    if (needUpdate) {
-                        hotHandicapAdapter.notifyItemChanged(index)
-                    }
+                }
+                if (needUpdate) {
+                    hotHandicapAdapter.notifyItemChanged(index)
                 }
             }
         }
 
         receiver.producerUp.observe(viewLifecycleOwner) {
-            it?.let {
-                //先解除全部賽事訂閱
-                unSubscribeChannelHallAll()
-                subscribeQueryData(hotHandicapAdapter.data)
-                subScribeLiveData(homeHotLiveAdapter.data)
+            if (it == null) {
+                return@observe
             }
+            //先解除全部賽事訂閱
+            unSubscribeChannelHallAll()
+            subscribeQueryData(hotHandicapAdapter.data)
+            subScribeLiveData(homeHotLiveAdapter.data)
         }
 
         receiver.closePlayCate.observe(viewLifecycleOwner) { event ->
-            event?.getContentIfNotHandled()?.let {
-                hotHandicapAdapter.data.forEach { handicapData ->
+            val it = event?.getContentIfNotHandled() ?: return@observe
+
+            hotHandicapAdapter.data.forEach { handicapData ->
                     handicapData.matchInfos.forEach { hotMatchInfo ->
                         if (hotMatchInfo.gameType == it.gameType) {
-                            hotMatchInfo.oddsMap?.forEach{map->
+                            hotMatchInfo.oddsMap?.forEach { map->
                                 if (map.key == it.playCateCode) {
-                                    map.value?.forEach { odd ->
-                                    odd?.status = BetStatus.DEACTIVATED.code
-                                    }
+                                    map.value?.forEach { it?.status = BetStatus.DEACTIVATED.code }
                                 }
                             }
                         }
 
                     }
                 }
-                hotHandicapAdapter.notifyDataSetChanged()
-            }
+            hotHandicapAdapter.notifyDataSetChanged()
         }
 
     }
 
-    fun setupOddsChangeListener() {
+    private fun setupOddsChangeListener() {
         receiver.oddsChangeListener = mOddsChangeListener
     }
 
@@ -801,8 +744,6 @@ class MainHomeFragment :
         }
     }
 
-
-
     /**
      * 若投注單處於未開啟狀態且有加入注單的賠率項資訊有變動時, 更新投注單內資訊
      */
@@ -896,6 +837,10 @@ class MainHomeFragment :
             viewModel.clearThirdGame()
     }
 
+    private fun setupLogin() = viewModel.isLogin.value?.let {
+        btn_login.isVisible = !it
+        ll_user_money.visibility = if (it) View.VISIBLE else View.INVISIBLE
+    }
     /**
      * 檢查信用盤狀態下是否已登入
      * @param eventFun 處於信用盤時若已登入則執行該function, 若非信用盤則直接執行
@@ -941,52 +886,34 @@ class MainHomeFragment :
     private fun initListView(){
 
         //热门电子游戏
-        with(rv_egame) {
-            if (layoutManager == null) {
-                layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-            }
-            if (adapter == null) {
-                adapter = hotElectronicAdapter
-            }
-
-            hotElectronicAdapter.setOnItemClickListener{adapter, view, position ->
-                //点击跳转到哪里
-                if (viewModel.isLogin.value != true) {
-                    getMainTabActivity().showLoginNotify()
-                } else {
-                    viewModel.requestEnterThirdGame(hotElectronicAdapter.data[position])
-                }
+        rv_egame.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        rv_egame.adapter = hotElectronicAdapter
+        hotElectronicAdapter.setOnItemClickListener{_, _, position ->
+            //点击跳转到哪里
+            if (viewModel.isLogin.value != true) {
+                getMainTabActivity().showLoginNotify()
+            } else {
+                viewModel.requestEnterThirdGame(hotElectronicAdapter.data[position])
             }
         }
 
         //棋牌
-        with(rv_chess){
-            if (layoutManager == null) {
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            }
-            if (adapter == null) {
-                addItemDecoration(SpaceItemDecoration(context, R.dimen.recyclerview_news_item_dec_spec))
-                adapter = homeChessAdapter
-            }
-
-            homeChessAdapter.setOnItemClickListener { _, _, position ->
-                //点击跳转到哪里
-                if (viewModel.isLogin.value != true) {
-                    getMainTabActivity().showLoginNotify()
-                } else {
-                    viewModel.requestEnterThirdGame(homeChessAdapter.data[position])
-                }
+        rv_chess.layoutManager = LinearLayoutManager(rv_chess.context, LinearLayoutManager.HORIZONTAL, false)
+        rv_chess.addItemDecoration(SpaceItemDecoration(rv_chess.context, R.dimen.recyclerview_news_item_dec_spec))
+        rv_chess.adapter = homeChessAdapter
+        homeChessAdapter.setOnItemClickListener { _, _, position ->
+            //点击跳转到哪里
+            if (viewModel.isLogin.value != true) {
+                getMainTabActivity().showLoginNotify()
+            } else {
+                viewModel.requestEnterThirdGame(homeChessAdapter.data[position])
             }
         }
 
-        with(rv_hot_handicap){
-            if (layoutManager == null) {
-                layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-            }
-            if (adapter == null) {
-                adapter = hotHandicapAdapter
-            }
-        }
+        // itemAnimator = null 绕过：java.lang.IllegalArgumentException: Tmp detached view should be removed from RecyclerView before it can be recycled
+        rv_hot_handicap.itemAnimator = null
+        rv_hot_handicap.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        rv_hot_handicap.adapter = hotHandicapAdapter
     }
 
     private inline fun getMainTabActivity() = activity as MainTabActivity
@@ -1022,7 +949,6 @@ class MainHomeFragment :
     private fun initPlayView() {
         iv_publicity.setOnOkListener(this)
         iv_publicity.setIsTouchWigetFull(false)
-
     }
 
     private fun playMatchVideo(matchInfo: MatchInfo?){
@@ -1031,13 +957,12 @@ class MainHomeFragment :
             return
         }
 
-        val it = matchInfo
-        if (!it.pullRtmpUrl.isNullOrEmpty()) {
-            iv_publicity.setUp(it.pullRtmpUrl, false, "");
-        } else if (!it.pullFlvUrl.isNullOrEmpty()) {
-            iv_publicity.setUp(it.pullFlvUrl, false, "");
+        if (!matchInfo.pullRtmpUrl.isNullOrEmpty()) {
+            iv_publicity.setUp(matchInfo.pullRtmpUrl, false, "");
+        } else if (!matchInfo.pullFlvUrl.isNullOrEmpty()) {
+            iv_publicity.setUp(matchInfo.pullFlvUrl, false, "");
         }
-        if (!it.pullRtmpUrl.isNullOrEmpty()||!it.pullFlvUrl.isNullOrEmpty()) {
+        if (!matchInfo.pullRtmpUrl.isNullOrEmpty()|| !matchInfo.pullFlvUrl.isNullOrEmpty()) {
             iv_publicity.startPlayLogic()
         }
     }
