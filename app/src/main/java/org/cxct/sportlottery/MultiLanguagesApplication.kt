@@ -175,6 +175,7 @@ class MultiLanguagesApplication : Application() {
         single { WithdrawRepository }
         single { PlayQuotaComRepository() }
         single { MyFavoriteRepository() }
+        single { SelfLimitRepository() }
     }
 
 

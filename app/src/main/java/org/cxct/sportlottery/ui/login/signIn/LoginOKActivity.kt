@@ -383,6 +383,8 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             tv_forget_password.isVisible = !it
             hideSoftKeyboard(this)
             if (it) {
+                binding.btnLogin.text =
+                    "${getString(R.string.btn_login)} / ${getString(R.string.btn_register)}"
                 if (binding.eetAccount.text.isNullOrBlank()) {
                     binding.etAccount.setError(null, false)
                 }
@@ -390,6 +392,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                     binding.etVerificationCode.setError(null, false)
                 }
             } else {
+                binding.btnLogin.text = getString(R.string.btn_login)
                 if (binding.eetUsername.text.isNullOrBlank()) {
                     binding.etUsername.setError(null, false)
                 }
@@ -417,7 +420,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                             stopSmeTimer()
                             binding.btnSendSms.setBtnEnable(viewModel.accountMsg?.value?.first.isNullOrBlank())
                             binding.btnSendSms.text =
-                                getString(R.string.get_security_code)
+                                getString(R.string.send)
                         }
                     }
                 }
