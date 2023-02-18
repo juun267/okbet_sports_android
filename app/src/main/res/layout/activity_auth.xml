@@ -168,7 +168,7 @@
             android:drawableLeft="@drawable/ic_customer_service"
             android:textColor="@color/color_025BE8"
             android:textSize="@dimen/textSize13sp"
-            android:text="@string/customer_service_title" />
+            android:text="@string/live_service" />
     </LinearLayout>
 
 </LinearLayout>

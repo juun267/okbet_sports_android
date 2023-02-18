@@ -807,7 +807,7 @@
     <string name="text_cant_play">An error occurred. Please try again later.</string>
     <string name="text_security_money">Security deposit: %1$s</string>
     <string name="text_security_money2">%1$s days left</string>
-    <string name="customer_service_title">Customer Service</string>
+    <string name="customer_service_title">Customer</string>
 
     <!--自我禁制-->
     <string name="self_limit">Self-exclusion</string>
