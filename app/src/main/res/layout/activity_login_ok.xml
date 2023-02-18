@@ -264,6 +264,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:visibility="invisible"
                 android:layout_marginTop="@dimen/margin_30"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -316,46 +317,49 @@
 
                 </LinearLayout>
 
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvPrivacy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/lin_third"
+                android:layout_marginTop="13dp"
+                android:gravity="center"
+                android:textColor="@color/color_535D76"
+                android:textColorLink="@color/color_025BE8"
+                android:textSize="@dimen/textSize13sp"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/login_privacy" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                app:layout_constraintTop_toBottomOf="@id/tvPrivacy"
+                android:layout_marginTop="30dp">
+
                 <TextView
-                    android:id="@+id/tvPrivacy"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="13dp"
-                    android:gravity="center"
+                    android:gravity="left"
                     android:textColor="@color/color_535D76"
                     android:textColorLink="@color/color_025BE8"
                     android:textSize="@dimen/textSize13sp"
                     android:lineSpacingExtra="3dp"
-                    android:text="@string/login_privacy" />
+                    android:text="@string/help" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/tv_customer_service"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:layout_marginTop="30dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="left"
-                        android:textColor="@color/color_535D76"
-                        android:textColorLink="@color/color_025BE8"
-                        android:textSize="@dimen/textSize13sp"
-                        android:lineSpacingExtra="3dp"
-                        android:text="@string/help" />
-
-                    <TextView
-                        android:id="@+id/tv_customer_service"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:drawablePadding="3dp"
-                        android:gravity="left"
-                        android:drawableLeft="@drawable/ic_customer_service"
-                        android:textColor="@color/color_025BE8"
-                        android:textSize="@dimen/textSize13sp"
-                        android:text="@string/customer_service_title" />
-                </LinearLayout>
+                    android:layout_marginLeft="5dp"
+                    android:drawablePadding="3dp"
+                    android:gravity="left"
+                    android:drawableLeft="@drawable/ic_customer_service"
+                    android:textColor="@color/color_025BE8"
+                    android:textSize="@dimen/textSize13sp"
+                    android:text="@string/live_service" />
             </LinearLayout>
 
 

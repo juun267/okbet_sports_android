@@ -29,7 +29,8 @@ object AuthManager {
             .requestIdToken(activity.getString(R.string.server_client_id))
             .requestEmail()
             .build()
-        var mGoogleSignInClient = GoogleSignIn.getClient(activity, gso);
+        var mGoogleSignInClient = GoogleSignIn.getClient(activity, gso)
+        mGoogleSignInClient.signOut()
         val signInIntent = mGoogleSignInClient.signInIntent
         activity.startActivityForResult(signInIntent, RC_SIGN_IN)
     }

@@ -188,6 +188,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/margin_0.5"
                     android:layout_marginStart="14dp"
+                    android:visibility="gone"
                     android:background="@color/color_F0F5FA" />
 
                 <LinearLayout
@@ -195,6 +196,7 @@
                     android:id="@+id/lin_auth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:gravity="center"
                     android:minHeight="46dp"
                     android:orientation="horizontal">

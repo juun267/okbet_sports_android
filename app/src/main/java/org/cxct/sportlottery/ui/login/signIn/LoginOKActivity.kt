@@ -125,7 +125,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         })
         binding.btnLogin.requestFocus()
         if (binding.eetAccount.text.length > 0) {
-            binding.btnLogin.adjustEnableButton(true)
+            binding.btnLogin.setBtnEnable(true)
         }
     }
 
@@ -268,10 +268,18 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 it.first,
                 false
             )
-            binding.btnSendSms.adjustEnableButton(it.first.isNullOrBlank())
+            if (mSmsTimer == null) {
+                binding.btnSendSms.setBtnEnable(it.first.isNullOrBlank())
+            }
         }
         viewModel.msgCodeMsg.observe(this) {
             binding.etVerificationCode.setError(
+                it.first,
+                false
+            )
+        }
+        viewModel.userNameMsg.observe(this) {
+            binding.etUsername.setError(
                 it.first,
                 false
             )
@@ -290,7 +298,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         }
 
         viewModel.loginEnable.observe(this) {
-            binding.btnLogin.adjustEnableButton(it)
+            binding.btnLogin.setBtnEnable(it)
         }
 
         viewModel.loginResult.observe(this, Observer {
@@ -373,6 +381,22 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             tv_pwd_login.isVisible = it
             tv_code_login.isVisible = !it
             tv_forget_password.isVisible = !it
+            hideSoftKeyboard(this)
+            if (it) {
+                if (binding.eetAccount.text.isNullOrBlank()) {
+                    binding.etAccount.setError(null, false)
+                }
+                if (binding.eetVerificationCode.text.isNullOrBlank()) {
+                    binding.etVerificationCode.setError(null, false)
+                }
+            } else {
+                if (binding.eetUsername.text.isNullOrBlank()) {
+                    binding.etUsername.setError(null, false)
+                }
+                if (binding.eetPassword.text.isNullOrBlank()) {
+                    binding.etPassword.setError(null, false)
+                }
+            }
         }
     }
 
@@ -387,11 +411,11 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 override fun run() {
                     Handler(Looper.getMainLooper()).post {
                         if (sec-- > 0) {
-                            binding.btnSendSms.adjustEnableButton(false)
+                            binding.btnSendSms.setBtnEnable(false)
                             binding.btnSendSms.text = "${sec}s"
                         } else {
                             stopSmeTimer()
-                            binding.btnSendSms.adjustEnableButton(true)
+                            binding.btnSendSms.setBtnEnable(viewModel.accountMsg?.value?.first.isNullOrBlank())
                             binding.btnSendSms.text =
                                 getString(R.string.get_security_code)
                         }
@@ -402,7 +426,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             e.printStackTrace()
 
             stopSmeTimer()
-            binding.btnSendSms.adjustEnableButton(true)
+            binding.btnSendSms.setBtnEnable(viewModel.accountMsg?.value?.first.isNullOrBlank())
             binding.btnSendSms.text = getString(R.string.get_verification_code)
         }
     }
