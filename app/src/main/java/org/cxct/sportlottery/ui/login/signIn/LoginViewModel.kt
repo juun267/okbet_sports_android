@@ -307,7 +307,7 @@ class LoginViewModel(
             if (checkInputPair(accountMsg)) {
                 return false
             }
-            if (checkInputPair(validateCodeMsg)) {
+            if (checkInputPair(msgCodeMsg)) {
                 return false
             }
         } else {

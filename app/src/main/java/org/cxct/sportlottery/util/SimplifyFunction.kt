@@ -512,16 +512,6 @@ fun TextView.setTitleLetterSpacing2F() {
         }
 }
 
-fun View.adjustEnableButton(isEnable: Boolean) {
-    if (isEnable) {
-        isEnabled = true
-        alpha = 1.0f
-    } else {
-        isEnabled = false
-        alpha = 0.5f
-    }
-}
-
 /**
  * 设置textview文字渐变
  */

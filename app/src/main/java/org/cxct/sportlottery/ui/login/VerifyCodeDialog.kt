@@ -15,7 +15,7 @@ import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
 import org.cxct.sportlottery.util.BitmapUtil
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ToastUtil
-import org.cxct.sportlottery.util.adjustEnableButton
+import org.cxct.sportlottery.util.setBtnEnable
 
 /**
  * 顯示棋牌彈窗
@@ -43,7 +43,7 @@ class VerifyCodeDialog(val callBack: (identity: String?, validCode: String) -> U
         super.onViewCreated(view, savedInstanceState)
         eet_verification_code.checkRegisterListener {
             viewModel.checkValidCode(it).let {
-                btn_sure.adjustEnableButton(it.isNullOrBlank())
+                btn_sure.setBtnEnable(it.isNullOrBlank())
             }
         }
 

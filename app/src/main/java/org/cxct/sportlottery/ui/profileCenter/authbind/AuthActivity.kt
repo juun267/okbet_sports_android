@@ -11,7 +11,6 @@ import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.util.AuthManager
 import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.setStartDrawable
 
 /**
@@ -53,10 +52,27 @@ class AuthActivity : BaseSocketActivity<AuthViewModel>(AuthViewModel::class) {
 
     private fun initObserve() {
         viewModel.userInfo.observe(this) {
-            LogUtil.toJson(it)
             it?.let {
                 tv_check_google.setChecked(it.googleBind)
                 tv_check_facebook.setChecked(it.facebookBind)
+            }
+        }
+        viewModel.bindGoogleResult.observe(this) {
+            it.peekContent().let {
+                if (it.success) {
+                    viewModel.getUserInfo()
+                } else {
+                    showErrorPromptDialog(it.msg) {}
+                }
+            }
+        }
+        viewModel.bindFacebookResult.observe(this) {
+            it.peekContent().let {
+                if (it.success) {
+                    viewModel.getUserInfo()
+                } else {
+                    showErrorPromptDialog(it.msg) {}
+                }
             }
         }
     }
