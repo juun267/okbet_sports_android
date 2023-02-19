@@ -120,6 +120,7 @@
                                 android:imeOptions="actionNext"
                                 android:inputType="number"
                                 android:maxLines="1"
+                                android:maxLength="4"
                                 android:singleLine="true"
                                 android:textColor="@color/color_FFFFFF_DE000000"
                                 android:textSize="@dimen/textSize14sp" />
@@ -180,7 +181,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         app:endIcon="@drawable/ic_eye_close"
-                        app:hintText="@string/password_hint"
+                        app:hintText="@string/login_password"
                         app:iconSignifier="@drawable/ic_icon_okbet_login_password"
                         app:isResponsiveIconColor="false"
                         app:labelText="@string/login_password"
