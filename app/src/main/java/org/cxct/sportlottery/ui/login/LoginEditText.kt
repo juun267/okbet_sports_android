@@ -341,7 +341,7 @@ fun EditText.checkPhoneNum(textFieldBoxes: TextFormFieldBoxes, onResult: ((Strin
         val msg = when {
             phoneNum.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyPhone(phoneNum) -> {
-                LocalUtils.getString(R.string.error_phone_number)
+                LocalUtils.getString(R.string.pls_enter_correct_mobile)
             }
             else -> null
         }
@@ -378,7 +378,7 @@ fun EditText.checkEmail(textFieldBoxes: TextFormFieldBoxes, onResult: ((String?)
 }
 
 fun EditText.setEmailFilter() {
-    val patterns = Pattern.compile("[a-zA-Z0-9.@]+")
+    val patterns = Pattern.compile("[a-zA-Z0-9_.@]+")
     val inputFilter = InputFilter { source, _, _, _, _, _ ->
         return@InputFilter if (patterns.matcher(source.toString()).matches()) {
             null
