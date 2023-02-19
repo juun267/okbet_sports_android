@@ -1255,5 +1255,8 @@
     <string name="send">Gửi</string>
     <string name="pls_enter_correct_mobile_email">Mời nhập chính xác SĐT/Email</string>
     <string name="pls_enter_correct_mobile_email_username">Mời nhập chính xác tên người dùng/SĐT/Email</string>
-    <string name="live_service">Trò Chuyện Trực Tuyến</string>
+    <string name="live_service">Liên hệ CSKH</string>
+    <string name="pls_enter_correct_mobile">Mời nhập chính xác SĐT</string>
+    <string name="pls_enter_correct_email">Mời nhập chính xác Email</string>
+    <string name="next">Bước tiếp theo</string>
 </resources>

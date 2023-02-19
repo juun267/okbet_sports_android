@@ -1285,5 +1285,8 @@
     <string name="pls_enter_correct_mobile_email">Please enter the correct mobile/email</string>
     <string name="pls_enter_correct_mobile_email_username">Please enter the correct username/mobile/email</string>
     <string name="live_service">Customer Service</string>
+    <string name="pls_enter_correct_mobile">Please enter the correct mobile</string>
+    <string name="pls_enter_correct_email">Please enter the correct email</string>
+    <string name="next">Next</string>
 
 </resources>

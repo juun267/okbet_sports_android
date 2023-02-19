@@ -1123,7 +1123,7 @@
     <string name="hint_game_maintenance">该游戏维护中，请稍后尝试</string>
     <string name="please_get_forget_password">请找回您的OKBet密码！</string>
     <string name="has_send_message_to_phone">验证码已经发送到你的手机</string>
-    <string name="to_back_login">返回登录</string>
+    <string name="to_back_login">返回登录页</string>
     <string name="get_phone_code">发送</string>
     <string name="new_login_password">新登录密码</string>
     <string name="new_login_password_confirm">确认新登录密码</string>
@@ -1268,5 +1268,8 @@
     <string name="send">发送</string>
     <string name="pls_enter_correct_mobile_email">请输入正确的手机/邮箱</string>
     <string name="pls_enter_correct_mobile_email_username">请输入正确的用户名/手机/电子邮件</string>
-    <string name="live_service">在线客服</string>
+    <string name="live_service">联系客服</string>
+    <string name="pls_enter_correct_mobile">请输入正确的手机</string>
+    <string name="pls_enter_correct_email">请输入正确的邮箱</string>
+    <string name="next">下一步</string>
 </resources>

@@ -81,7 +81,7 @@ class ResetPasswordActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::clas
 
         val msg = when {
             input.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyPwd(input) -> LocalUtils.getString(R.string.error_new_password)
+            !VerifyConstUtil.verifyPwd(input) -> LocalUtils.getString(R.string.error_register_password)
             else -> null
         }
 

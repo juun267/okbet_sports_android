@@ -7,7 +7,10 @@ import android.os.Bundle
 import android.widget.Toast
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityForgetPassword2Binding
-import org.cxct.sportlottery.extentions.*
+import org.cxct.sportlottery.extentions.bindFinish
+import org.cxct.sportlottery.extentions.finishWithOK
+import org.cxct.sportlottery.extentions.gone
+import org.cxct.sportlottery.extentions.isEmptyStr
 import org.cxct.sportlottery.network.index.forgetPassword.SendSmsResult
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.login.*
@@ -62,6 +65,7 @@ class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewModel::cl
             hideSoftKeyboard(this@ForgetPasswordActivity2)
             VerifyCodeDialog(callBack = { identity, validCode ->
                 sendCode(identity, validCode)
+                eetSmsCode.requestFocus()
             }).show(supportFragmentManager, null)
         }
 

@@ -2,8 +2,11 @@ package org.cxct.sportlottery.ui.login
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.text.*
+import android.text.Editable
+import android.text.InputFilter
 import android.text.InputFilter.LengthFilter
+import android.text.InputType
+import android.text.TextWatcher
 import android.text.method.DigitsKeyListener
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
@@ -24,7 +27,6 @@ import org.cxct.sportlottery.extentions.isEmptyStr
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.VerifyConstUtil
-import org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
 import org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
 import java.util.regex.Pattern
 
@@ -366,7 +368,7 @@ fun EditText.checkEmail(textFieldBoxes: TextFormFieldBoxes, onResult: ((String?)
     checkRegisterListener { email->
         val msg = when {
             email.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyMail(email) -> LocalUtils.getString(R.string.error_e_mail)
+            !VerifyConstUtil.verifyMail(email) -> LocalUtils.getString(R.string.pls_enter_correct_email)
             else -> null
         }
 
