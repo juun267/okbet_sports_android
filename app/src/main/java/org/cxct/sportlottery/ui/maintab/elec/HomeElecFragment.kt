@@ -212,7 +212,7 @@ class HomeElecFragment :
     }
 
     private fun setupLogin() {
-        btn_login.text = "${getString(R.string.btn_register)} / ${getString(R.string.btn_login)}"
+        btn_login.text = "${getString(R.string.btn_login)} / ${getString(R.string.btn_register)}"
         viewModel.isLogin.value?.let {
             btn_login.isVisible = !it
             ll_user_money.visibility = if (it) View.VISIBLE else View.INVISIBLE
