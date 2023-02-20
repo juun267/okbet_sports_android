@@ -6,12 +6,11 @@ import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityNewsBinding
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 
 /**
  * @app_destination 最新消息
  */
-class NewsActivity : BaseSocketActivity<BaseSocketViewModel>(BaseSocketViewModel::class) {
+class NewsActivity : BaseSocketActivity<NewsViewModel>(NewsViewModel::class) {
     private lateinit var binding: ActivityNewsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -17,13 +17,13 @@ android {
         applicationId "com.okbet.ph"
         minSdk 23
         targetSdk 31
-        versionName "1.1.35"
-        versionCode 57
+        versionName "1.1.36"
+        versionCode 58
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         ndk {
-            abiFilters 'arm64-v8a', 'armeabi-v7a'/*, 'armeabi'*/ /*, 'x86','x86_64'*/           \
+            abiFilters 'arm64-v8a', 'armeabi-v7a'/*, 'armeabi'*/ /*, 'x86','x86_64'*/            \
 
         }
         resValue "string", "app_name", "OKBET"
@@ -98,7 +98,8 @@ android {
             buildConfigField "String", "CHANNEL_NAME", "\"spplat1\""
             applicationId "com.happysport.sl.test"
             manifestPlaceholders = [
-                    JPUSH_APPKEY           : "2efc0f50829574b4db4b1dc8", //JPush上注册的包名对应的appkey.
+                    JPUSH_PKGNAME: applicationId,
+                    JPUSH_APPKEY : "2efc0f50829574b4db4b1dc8", //JPush上注册的包名对应的appkey.
             ]
         }
         OkbetPH {

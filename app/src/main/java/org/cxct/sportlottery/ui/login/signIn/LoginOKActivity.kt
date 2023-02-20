@@ -216,7 +216,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                     JumpUtil.toInternalWeb(
                         this,
                         Constants.getPrivacyRuleUrl(this),
-                        resources.getString(R.string.privacy_policy)
+                        resources.getString(R.string.login_privacy_policy)
                     )
                 })
         )
