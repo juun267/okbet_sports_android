@@ -111,9 +111,10 @@ class ModifyProfileInfoViewModel(
             doNetwork(androidContext) {
                 OneBoSportApi.userService.setWithdrawUserInfo(createWithdrawInfoRequest(modifyType, inputContent))
             }?.let { result ->
+                hideLoading()
+                _withdrawInfoResult.value = result
                 if (result.success) {
                     updateUserInfoDao(modifyType, inputContent)
-                    _withdrawInfoResult.value = result
                 }
             }
         }
