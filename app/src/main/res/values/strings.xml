@@ -1288,7 +1288,7 @@
     <string name="pls_enter_correct_mobile">Please enter the correct mobile</string>
     <string name="pls_enter_correct_email">Please enter the correct email</string>
     <string name="next">Next</string>
-    <string name="edittext_digits_email">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@.</string>
+    <string name="edittext_digits_email">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@._%+-</string>
     <string name="edittext_digits_int">0123456789</string>
 
 </resources>
