@@ -44,6 +44,8 @@ object BetInfoRepository {
 
     var betListTabPosition = 0 //記錄betListTab位置
 
+    var isTouched =  false
+
     var currentBetType:Int = BetListFragment.SINGLE
 
     private val _showBetInfoSingle = MutableLiveData<Event<Boolean?>>()

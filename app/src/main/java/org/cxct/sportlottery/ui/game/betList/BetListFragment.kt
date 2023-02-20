@@ -347,6 +347,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             )
             line_shadow.visible()
         }
+        BetInfoRepository.isTouched = false
         checkAllAmountCanBet()
         refreshAllAmount()
         checkSingleAndParlayBetLayoutVisible()
@@ -681,6 +682,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                     )
                     BetInfoRepository.switchSingleMode()
                     EventBusUtil.post(BetModeChangeEvent(SINGLE))
+                    BetInfoRepository.isTouched = false
                 }
                 //串關投注
                 PARLAY -> {
@@ -761,6 +763,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 if (list.size == 0) {
                     setCurrentBetModeSingle()
                     EventBusUtil.post(BetModeChangeEvent(SINGLE))
+                    BetInfoRepository.isTouched = false
                     activity?.supportFragmentManager?.popBackStack()
                     return@observe
                 }

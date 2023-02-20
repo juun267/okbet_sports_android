@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.content_bet_info_item_v3_2.view.*
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v3.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
@@ -33,7 +34,7 @@ abstract class BatchParlayViewHolder(
     private var inputMaxMoney: Double = 0.0
     private var inputMinMoney: Double = 0.0
     private var mHasBetClosed: Boolean = false
-    private var isTouched = false
+//    private var isTouched = false
 
     protected fun setupParlayItem(
         itemData: ParlayOdd?,
@@ -123,12 +124,12 @@ abstract class BatchParlayViewHolder(
                 setSelection(text.length)
             }
 
-//            if (!isTouched && position == 0) {
-//                Timber.d("1 进来了- - - -- - - - - - - :isTouched:${isTouched}")
-//                et_bet_parlay.requestFocus()
-//                data.isInputBet = true
-//                keyboardView.showKeyboard(et_bet_parlay,0)
-//            }
+            if (!BetInfoRepository.isTouched && position == 0) {
+                Timber.d("1 进来了- - - -- - - - - - - :isTouched:${false}")
+                et_bet_parlay.requestFocus()
+                data.isInputBet = true
+                keyboardView.showKeyboard(et_bet_parlay,0)
+            }
 
             onFocusChangeListener = null
 
@@ -179,8 +180,8 @@ abstract class BatchParlayViewHolder(
             }
 
             et_bet_parlay.setOnTouchListener { view, event ->
-                isTouched = true
-                Timber.d("2 进来了- - - -- - - - - - - :isTouched:${isTouched}")
+                BetInfoRepository.isTouched = true
+                Timber.d("2 进来了- - - -- - - - - - - :isTouched:${BetInfoRepository.isTouched}")
                 if (event.action == MotionEvent.ACTION_UP) {
 //                    et_bet_parlay.isFocusable = true
                     et_bet_parlay.requestFocus()
