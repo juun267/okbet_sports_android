@@ -84,7 +84,6 @@ class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewModel::cl
         }
 
         etPhone.gone()
-        eetEMail.setEmailFilter()
         eetEMail.checkEmail(etEMail) {
             inputEmail = it
             onNewSMSStatus()
