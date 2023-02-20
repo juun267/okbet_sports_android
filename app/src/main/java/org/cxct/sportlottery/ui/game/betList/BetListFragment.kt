@@ -8,9 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.animation.Animation
-import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,13 +16,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.btn_close
-import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.tv_parlay_rule
-import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.tv_parlay_type
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.*
-import kotlinx.android.synthetic.main.button_bet.view.cl_bet
-import kotlinx.android.synthetic.main.button_bet.view.tv_login
-import kotlinx.android.synthetic.main.button_bet.view.tv_remove_closed_selections
+import kotlinx.android.synthetic.main.button_bet.view.*
 import kotlinx.android.synthetic.main.fragment_bet_list.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -265,12 +258,12 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
     /**
      * 檢查是否顯示填充單注or串關layout
      */
-    private fun checkSingleAndParlayBetLayoutVisible() {
-        binding.apply {
-//            clSingleList.isVisible = getCurrentBetList().size > 1 && currentBetType == 0
-//            if (currentBetType == 1) refreshLlMoreOption()
-        }
-    }
+//    private fun checkSingleAndParlayBetLayoutVisible() {
+//        binding.apply {
+////            clSingleList.isVisible = getCurrentBetList().size > 1 && currentBetType == 0
+////            if (currentBetType == 1) refreshLlMoreOption()
+//        }
+//    }
 
     private fun refreshLlMoreOption(showParlayList: Boolean = true) {
         binding.apply {
@@ -350,7 +343,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         BetInfoRepository.isTouched = false
         checkAllAmountCanBet()
         refreshAllAmount()
-        checkSingleAndParlayBetLayoutVisible()
+//        checkSingleAndParlayBetLayoutVisible()
 
         clExpandOrStacked.setOnClickListener {
             if (isOpen) {
@@ -702,7 +695,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             betListRefactorAdapter?.notifyDataSetChanged()
             checkAllAmountCanBet()
             refreshAllAmount()
-            checkSingleAndParlayBetLayoutVisible()
+//            checkSingleAndParlayBetLayoutVisible()
         }
     }
 
@@ -772,7 +765,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 betSingleListAdapter?.betList = list
                 betParlayListRefactorAdapter?.betList = list
 
-                checkSingleAndParlayBetLayoutVisible()
+//                checkSingleAndParlayBetLayoutVisible()
 
                 subscribeChannel(list)
                 refreshAllAmount(list)
