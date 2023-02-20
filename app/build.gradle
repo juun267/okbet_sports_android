@@ -351,9 +351,13 @@ dependencies {
 
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
+    implementation "com.squareup.retrofit2:converter-gson:$version_retrofit"
     implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
     implementation "com.squareup.okhttp3:okhttp:4.7.2"
     implementation 'com.squareup.okhttp3:logging-interceptor:4.1.1'
+
+    // Gson 解析容错
+    implementation 'com.github.getActivity:GsonFactory:6.5'
 
     //ViewModel
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
