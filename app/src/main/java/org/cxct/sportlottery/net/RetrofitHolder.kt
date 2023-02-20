@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.net
 
 import com.hjq.gson.factory.GsonFactory
+import me.jessyan.retrofiturlmanager.RetrofitUrlManager
 import okhttp3.OkHttpClient
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication
@@ -24,6 +25,10 @@ object RetrofitHolder {
 
     fun <T> createApiService(service: Class<T>): T {
         return retrofit.create(service)
+    }
+
+    fun changeHost(baseUrl: String) {
+        RetrofitUrlManager.getInstance().setGlobalDomain(baseUrl)
     }
 
     private val retrofit by lazy { createRetrofit(Constants.getBaseUrl()) }
@@ -80,6 +85,7 @@ object RetrofitHolder {
             // Create an ssl socket factory with our all-trusting manager
             val sslSocketFactory: SSLSocketFactory = sslContext.socketFactory
             val builder: OkHttpClient.Builder = OkHttpClient.Builder()
+            RetrofitUrlManager.getInstance().with(builder) // 通过拦截器实现的动态切换域名
             builder.sslSocketFactory(sslSocketFactory, trustAllCerts[0] as X509TrustManager)
             builder.hostnameVerifier { _, _ -> true }
             builder

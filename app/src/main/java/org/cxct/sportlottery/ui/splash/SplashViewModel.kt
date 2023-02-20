@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.httpFormat
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -202,6 +203,7 @@ class SplashViewModel(
         Timber.i("Final choice host: $baseUrl")
         Constants.setBaseUrl(baseUrl)
         RequestManager.instance.retrofit = retrofit
+        RetrofitHolder.changeHost(baseUrl)
     }
 
     private fun setStoreBaseUrl(baseUrl: String) {

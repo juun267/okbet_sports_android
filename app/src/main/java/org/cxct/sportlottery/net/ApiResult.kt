@@ -23,8 +23,7 @@ open class ApiResult<T>() {
             return field ?: ""
         }
 
-    var success: Boolean = false
-        private set
+    private var success: Boolean = false
         get() {
             return field ?: false
         }
