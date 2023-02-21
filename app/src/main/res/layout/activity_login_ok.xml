@@ -348,7 +348,7 @@
                     android:textColorLink="@color/color_025BE8"
                     android:textSize="@dimen/textSize13sp"
                     android:lineSpacingExtra="3dp"
-                    android:text="@string/help" />
+                    android:text="@string/need_help" />
 
                 <TextView
                     android:id="@+id/tv_customer_service"

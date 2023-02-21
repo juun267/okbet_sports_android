@@ -290,7 +290,7 @@ class LoginViewModel(
     fun checkMsgCode(validCode: String): String? {
         val msg = when {
             validCode.isNullOrBlank() -> LocalUtils.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyValidCode(validCode) -> LocalUtils.getString(R.string.error_verification_code_forget)
+            !VerifyConstUtil.verifyValidCode(validCode) -> LocalUtils.getString(R.string.verification_not_correct)
             else -> null
         }
         _msgCodeMsg.value = Pair(msg, msg == null)
