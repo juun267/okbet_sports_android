@@ -13,9 +13,12 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.extentions.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.DisplayUtil.pxToDp
+import timber.log.Timber
 
 class OddBtnList @JvmOverloads constructor(
     context: Context,
+    oddListWidth: Double = 66.dp.toDouble(),
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
 ) : LinearLayout(context, attrs, defStyleAttr) {
@@ -26,10 +29,10 @@ class OddBtnList @JvmOverloads constructor(
     private var oddBtnDraw: OddsButton2? = null
     private var oddBtnOther: OddsButton2? = null
 
-    val oddWidth = 66.dp
-    val marging = context.dp2px(4.5f)
-    val oddBtnParams = LayoutParams(oddWidth, 43.dp).apply {
-        topMargin = marging
+    private val oddWidth = ((oddListWidth.toInt().pxToDp - 4.dp) / 3).dp
+    private val margin = context.dp2px(4.5f)
+    private val oddBtnParams = LayoutParams(oddWidth, 44.dp).apply {
+        topMargin = margin
     }
 
 
@@ -44,13 +47,16 @@ class OddBtnList @JvmOverloads constructor(
             maxLines = 3
             gravity = Gravity.CENTER
         }
+        Timber.d("OddBtnList：oddWidth: $oddWidth")
         addView(oddBtnType, LayoutParams(oddWidth, 29.dp))
 
         oddBtnHome = createOddBtn()
-        oddBtnAway = createOddBtn()
         addView(oddBtnHome, LayoutParams(oddWidth, 43.dp).apply {
             topMargin = context.dp2px(4.5f)
         })
+
+
+        oddBtnAway = createOddBtn()
         addView(oddBtnAway, LayoutParams(oddWidth, 43.dp).apply {
             topMargin = context.dp2px(4.5f)
         })
@@ -78,11 +84,10 @@ class OddBtnList @JvmOverloads constructor(
     }
 
     private fun createOddBtn(): OddsButton2 {
-        val oddsBtn = OddsButton2(context)
-        return oddsBtn
+        return OddsButton2(context)
     }
 
-    fun setOddsInvisiable() {
+    fun setOddsInvisible() {
         setViewInvisible(oddBtnType, oddBtnHome, oddBtnAway)
         oddBtnDraw?.inVisible()
         oddBtnOther?.gone()
@@ -112,8 +117,8 @@ class OddBtnList @JvmOverloads constructor(
         oddBtnOther?.betStatus = deactivated
     }
 
-    fun setBtnTypeVisiable(visiable: Boolean) {
-        oddBtnType.isVisible = visiable
+    fun setBtnTypeVisible(visible: Boolean) {
+        oddBtnType.isVisible = visible
     }
 
     fun recyclerAll() {

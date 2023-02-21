@@ -1127,7 +1127,9 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
             )
         }
 
-        val oddButtonPagerAdapter = OddButtonPagerAdapter()
+        val oddButtonPagerAdapter by lazy {
+            OddButtonPagerAdapter(ScreenUtil.getScreenWidth(itemView.context)* (5/8.7))
+        }
         private fun setupOddsButton(
             matchType: MatchType,
             item: MatchOdd,

@@ -14,50 +14,28 @@
 
         <TextView
             android:id="@+id/tvNum1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/bg_radius_6_num_keyboard"
-            android:fontFamily="@font/roboto_medium_12"
-            android:gravity="center"
             android:text="1"
-            android:textColor="@color/color_FFFFFF_414655"
-            android:textSize="@dimen/textSize18sp" />
+            style="@style/tv_keyboard_number" />
 
         <TextView
             android:id="@+id/tvNum2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/margin_5"
-            android:layout_weight="1"
-            android:background="@drawable/bg_radius_6_num_keyboard"
-            android:fontFamily="@font/roboto_medium_12"
-            android:gravity="center"
             android:text="2"
-            android:textColor="@color/color_FFFFFF_414655"
-            android:textSize="@dimen/textSize18sp" />
+            android:layout_marginStart="5dp"
+            style="@style/tv_keyboard_number" />
 
         <TextView
             android:id="@+id/tvNum3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/margin_5"
-            android:layout_weight="1"
-            android:background="@drawable/bg_radius_6_num_keyboard"
-            android:fontFamily="@font/roboto_medium_12"
-            android:gravity="center"
             android:text="3"
-            android:textColor="@color/color_FFFFFF_414655"
-            android:textSize="@dimen/textSize18sp" />
+            android:layout_marginStart="5dp"
+            style="@style/tv_keyboard_number" />
 
         <TextView
             android:id="@+id/tvPlus1"
-            android:layout_width="match_parent"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_5"
-            android:layout_weight="1"
             android:background="@drawable/bg_radius_6_num_keyboard_plus"
-            android:fontFamily="@font/roboto_medium_12"
+            android:fontFamily="@font/d_din_bold"
             android:gravity="center"
             android:text="+100"
             android:textColor="@color/color_FFFFFF"
@@ -71,51 +49,29 @@
 
         <TextView
             android:id="@+id/tvNum4"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/bg_radius_6_num_keyboard"
-            android:fontFamily="@font/roboto_medium_12"
-            android:gravity="center"
             android:text="4"
-            android:textColor="@color/color_FFFFFF_414655"
-            android:textSize="@dimen/textSize18sp" />
+            style="@style/tv_keyboard_number" />
 
         <TextView
             android:id="@+id/tvNum5"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/margin_5"
-            android:layout_weight="1"
-            android:background="@drawable/bg_radius_6_num_keyboard"
-            android:fontFamily="@font/roboto_medium_12"
-            android:gravity="center"
             android:text="5"
-            android:textColor="@color/color_FFFFFF_414655"
-            android:textSize="@dimen/textSize18sp" />
+            android:layout_marginStart="5dp"
+            style="@style/tv_keyboard_number" />
 
         <TextView
             android:id="@+id/tvNum6"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/margin_5"
-            android:layout_weight="1"
-            android:background="@drawable/bg_radius_6_num_keyboard"
-            android:fontFamily="@font/roboto_medium_12"
-            android:gravity="center"
             android:text="6"
-            android:textColor="@color/color_FFFFFF_414655"
-            android:textSize="@dimen/textSize18sp" />
+            android:layout_marginStart="5dp"
+            style="@style/tv_keyboard_number"/>
 
 
         <TextView
             android:id="@+id/tvPlus2"
-            android:layout_width="match_parent"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_5"
-            android:layout_weight="1"
             android:background="@drawable/bg_radius_6_num_keyboard_plus"
-            android:fontFamily="@font/roboto_medium_12"
+            android:fontFamily="@font/d_din_bold"
             android:gravity="center"
             android:text="+500"
             android:textColor="@color/color_FFFFFF"
@@ -131,51 +87,29 @@
 
         <TextView
             android:id="@+id/tvNum7"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/bg_radius_6_num_keyboard"
-            android:fontFamily="@font/roboto_medium_12"
-            android:gravity="center"
             android:text="7"
-            android:textColor="@color/color_FFFFFF_414655"
-            android:textSize="@dimen/textSize18sp" />
+            style="@style/tv_keyboard_number"/>
 
         <TextView
             android:id="@+id/tvNum8"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/margin_5"
-            android:layout_weight="1"
-            android:background="@drawable/bg_radius_6_num_keyboard"
-            android:fontFamily="@font/roboto_medium_12"
-            android:gravity="center"
             android:text="8"
-            android:textColor="@color/color_FFFFFF_414655"
-            android:textSize="@dimen/textSize18sp" />
+            android:layout_marginStart="5dp"
+            style="@style/tv_keyboard_number" />
 
         <TextView
             android:id="@+id/tvNum9"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/margin_5"
-            android:layout_weight="1"
-            android:background="@drawable/bg_radius_6_num_keyboard"
-            android:fontFamily="@font/roboto_medium_12"
-            android:gravity="center"
             android:text="9"
-            android:textColor="@color/color_FFFFFF_414655"
-            android:textSize="@dimen/textSize18sp" />
+            android:layout_marginStart="5dp"
+            style="@style/tv_keyboard_number"/>
 
 
         <TextView
             android:id="@+id/tvPlus3"
-            android:layout_width="match_parent"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_5"
-            android:layout_weight="1"
             android:background="@drawable/bg_radius_6_num_keyboard_plus"
-            android:fontFamily="@font/roboto_medium_12"
+            android:fontFamily="@font/d_din_bold"
             android:gravity="center"
             android:text="+1000"
             android:textColor="@color/color_FFFFFF"
@@ -204,22 +138,16 @@
                 android:layout_width="6dp"
                 android:layout_height="6dp"
                 android:layout_gravity="center"
+                android:layout_marginTop="3dp"
                 android:background="@drawable/bg_rectangle_gray6_f414655" />
 
         </FrameLayout>
 
         <TextView
             android:id="@+id/tvNum0"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/margin_5"
-            android:layout_weight="1"
-            android:background="@drawable/bg_radius_6_num_keyboard"
-            android:fontFamily="@font/roboto_medium_12"
-            android:gravity="center"
             android:text="0"
-            android:textColor="@color/color_FFFFFF_414655"
-            android:textSize="@dimen/textSize18sp" />
+            android:layout_marginStart="5dp"
+            style="@style/tv_keyboard_number" />
 
         <ImageView
             android:id="@+id/tvDel"
@@ -236,12 +164,11 @@
 
         <TextView
             android:id="@+id/tvMax"
-            android:layout_width="match_parent"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_5"
-            android:layout_weight="1"
             android:background="@drawable/bg_radius_6_num_keyboard_plus"
-            android:fontFamily="@font/roboto_medium_12"
+            android:fontFamily="@font/d_din_bold"
             android:gravity="center"
             android:text="Max"
             android:textColor="@color/color_FFFFFF"

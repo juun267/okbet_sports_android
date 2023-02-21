@@ -26,7 +26,11 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TextUtil
 
 
-class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
+class OddButtonPagerAdapter(
+    private val oddListWidth:Double
+) :RecyclerView.Adapter<OddButtonPagerViewHolder>(
+
+) {
     private var matchInfo: MatchInfo?= null
     private var oddsSort: String?= null
     private var playCateNameMap: MutableMap<String?, Map<String?, String?>?>?= null
@@ -34,7 +38,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
     private var matchOdd: MatchOdd? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OddButtonPagerViewHolder {
-        return OddButtonPagerViewHolder(OddBtnList(parent.context), oddStateRefreshListener)
+        return OddButtonPagerViewHolder(OddBtnList(parent.context,oddListWidth), oddStateRefreshListener)
     }
 
     override fun onViewRecycled(holder: OddButtonPagerViewHolder) {
@@ -525,9 +529,9 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
 
 }
 
-class OddButtonPagerViewHolder constructor(
+class OddButtonPagerViewHolder(
     val oddBtnList: OddBtnList,
-    private val oddStateRefreshListener: OddStateChangeListener
+    private val oddStateRefreshListener: OddStateChangeListener,
 ) : OddStateViewHolder(oddBtnList) {
 
     fun update(
@@ -538,7 +542,7 @@ class OddButtonPagerViewHolder constructor(
         betPlayCateNameMap: Map<String?, Map<String?, String?>?>?,
         odds: Pair<String?, List<Odd?>?>,
         oddsType: OddsType,
-        matchType: MatchType?
+        matchType: MatchType?,
     ) {
 
         updateOddsButton2(
@@ -714,7 +718,7 @@ class OddButtonPagerViewHolder constructor(
             || odds == null
             || odds.first == null
             || odds.second.isNullOrEmpty()) {
-            oddBtnList.setOddsInvisiable()
+            oddBtnList.setOddsInvisible()
             return true
         }
 
@@ -729,7 +733,7 @@ class OddButtonPagerViewHolder constructor(
             return true
         }
 
-        oddBtnList.setBtnTypeVisiable(matchType != MatchType.CS)
+        oddBtnList.setBtnTypeVisible(matchType != MatchType.CS)
         if (odds!!.second?.all { odd -> odd == null || odd.status == BetStatus.DEACTIVATED.code } != false) {
             oddBtnList.setOddsDeactivated()
             return true
@@ -746,7 +750,8 @@ class OddButtonPagerViewHolder constructor(
         betPlayCateNameMap: Map<String?, Map<String?, String?>?>?,
         odds: Pair<String?, List<Odd?>?>?,
         oddsType: OddsType,
-        matchType: MatchType?) {
+        matchType: MatchType?,
+    ) {
 
         if (setOddsButtonStatu(
                 position,
@@ -769,7 +774,7 @@ class OddButtonPagerViewHolder constructor(
 
         val isDeactivated = (odds.second == null || odds.second!!.all { it == null })
 
-        if (matchType == MatchType.CS && odds?.second?.size == 1) {
+        if (matchType == MatchType.CS && odds.second?.size == 1) {
             val oddBtnOther = oddBtnList.getOtherOddsBtn()
             bindOddBtn(oddBtnOther,
                 isDeactivated,
@@ -796,7 +801,7 @@ class OddButtonPagerViewHolder constructor(
             oddsType,
             isDrawBtn = odds.second?.getOrNull(1)?.name == "Draw")
 
-        if (odds.second?.size ?: 0 > 2) {
+        if ((odds.second?.size ?: 0) > 2) {
             bindOddBtn(oddBtnList.getDrawOddsBtn(),
                 isDeactivated,
                 playCateCode,

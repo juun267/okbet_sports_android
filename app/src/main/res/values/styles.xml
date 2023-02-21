@@ -82,6 +82,17 @@
 <!--        <item name="android:paddingBottom">10dp</item>-->
     </style>
 
+    <style name="tv_keyboard_number">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/bg_radius_6_num_keyboard</item>
+        <item name="android:fontFamily">@font/d_din_bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/color_FFFFFF_414655</item>
+        <item name="android:textSize">@dimen/textSize18sp</item>
+    </style>
+
     <declare-styleable name="SwipeMenuLayout">
         <attr format="boolean" name="swipeEnable"/>
         <attr format="boolean" name="ios"/>

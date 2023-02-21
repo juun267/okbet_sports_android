@@ -48,17 +48,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="44dp" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="@dimen/bet_list_bar_height"
-                    android:background="@color/color_80334266_E3E8EE" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_bet_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="45dp"
+                    android:layout_marginTop="44dp"
                     android:background="@color/color_202541_FFFFFF"
                     android:overScrollMode="never"
                     tools:itemCount="2"
