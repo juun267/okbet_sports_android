@@ -11,7 +11,6 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.graphics.Rect
 import android.os.Environment
-import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.util.Log
@@ -31,7 +30,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.item_favorite.view.*
-import kotlinx.android.synthetic.main.itemview_league_v5.view.*
 import kotlinx.android.synthetic.main.view_account_balance_2.*
 import kotlinx.coroutines.flow.*
 import org.cxct.sportlottery.BuildConfig
@@ -57,7 +55,6 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.live.HomeLiveAdapter
 import org.cxct.sportlottery.ui.maintab.live.ItemHomeLiveHolder
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.ui.sport.SportLeagueAdapter
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteAdapter
 import org.cxct.sportlottery.util.DisplayUtil.dpToPx
 import org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
@@ -92,28 +89,6 @@ fun RecyclerView.addScrollWithItemVisibility(
                     val visibleRangePair = mutableListOf<Pair<Int, Int>>()
 
                     when (currentAdapter) {
-
-                        is SportLeagueAdapter -> {
-                            getVisibleRangePosition().forEach { leaguePosition ->
-                                val viewByPosition =
-                                    layoutManager?.findViewByPosition(leaguePosition)
-                                viewByPosition?.let {
-                                    if (getChildViewHolder(it) is SportLeagueAdapter.ItemViewHolder) {
-                                        val viewHolder =
-                                            getChildViewHolder(it) as SportLeagueAdapter.ItemViewHolder
-                                        viewHolder.itemView.league_odd_list.getVisibleRangePosition()
-                                            .forEach { matchPosition ->
-                                                visibleRangePair.add(
-                                                    Pair(
-                                                        leaguePosition,
-                                                        matchPosition
-                                                    )
-                                                )
-                                            }
-                                    }
-                                }
-                            }
-                        }
 
                         is FavoriteAdapter -> {
                             getVisibleRangePosition().forEach { leaguePosition ->
