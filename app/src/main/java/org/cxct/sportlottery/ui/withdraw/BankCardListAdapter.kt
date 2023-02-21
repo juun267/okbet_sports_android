@@ -5,13 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_rv_bank_card_list.view.*
-import kotlinx.android.synthetic.main.content_rv_bank_list_edit.view.*
-import kotlinx.android.synthetic.main.content_rv_bank_list_edit.view.iv_bank_icon
-import kotlinx.android.synthetic.main.content_rv_bank_list_edit.view.tv_bank_name
-import kotlinx.android.synthetic.main.content_rv_bank_list_edit.view.tv_tail_number
-import kotlinx.android.synthetic.main.content_rv_bank_list_new.view.*
-import kotlinx.android.synthetic.main.content_rv_bank_list_new_no_card.view.*
-import kotlinx.android.synthetic.main.fragment_bank_list.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.money.config.MoneyRechCfg
@@ -20,8 +13,6 @@ import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.MoneyManager
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TimeUtil.stampToDateHMS
 
 class BankCardListAdapter(private val mBankCardListClickListener: BankCardListClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
