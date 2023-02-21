@@ -47,21 +47,21 @@ class KeyboardView @JvmOverloads constructor(
                     tvPlus1.text = "+$i"
                     tvPlus1.visibility = View.VISIBLE
                     tvPlus1.setOnClickListener {
-                        plus(i.toLong())
+                        plus(i.toDouble())
                     }
                 }
                 if (index == 1) {
                     tvPlus2.text = "+$i"
                     tvPlus2.visibility = View.VISIBLE
                     tvPlus2.setOnClickListener {
-                        plus(i.toLong())
+                        plus(i.toDouble())
                     }
                 }
                 if (index == 2) {
                     tvPlus3.text = "+$i"
                     tvPlus3.visibility = View.VISIBLE
                     tvPlus3.setOnClickListener {
-                        plus(i.toLong())
+                        plus(i.toDouble())
                     }
                 }
             }
@@ -221,15 +221,15 @@ class KeyboardView @JvmOverloads constructor(
         }
     }
 
-    private fun plus(count: Long) {
+    private fun plus(count: Double) {
         if (!this::mEditText.isInitialized){
             return
         }
         val input = if (mEditText.text.toString() == "") "0" else mEditText.text.toString()
         val tran = if (input.contains(".")) {
             input.toDouble() + count
-        } else input.toDouble() + count
-        mEditText.setText(tran.toLong().toString())
+        } else input.toLong() + count.toLong()
+        mEditText.setText(tran.toString())
         mEditText.setSelection(mEditText.text.length)
     }
 
