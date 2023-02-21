@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.maintab
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,14 +7,9 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.RequestOptions
 
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.index.home.HomeLiveData
 import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchLiveData
-import org.cxct.sportlottery.util.LogUtil
 
 import org.cxct.sportlottery.util.setTeamLogo
 

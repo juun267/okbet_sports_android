@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.network.odds.detail
 
 
-import android.util.Log
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.odds.Odd

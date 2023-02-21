@@ -46,7 +46,6 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.CateDetailData
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchLiveData
-import org.cxct.sportlottery.network.outright.odds.OutrightItem
 import org.cxct.sportlottery.network.service.close_play_cate.ClosePlayCateEvent
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
@@ -61,7 +60,6 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.sport.SportLeagueAdapter
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteAdapter
 import org.cxct.sportlottery.util.DisplayUtil.dpToPx
-import org.cxct.sportlottery.widget.FakeBoldSpan
 import org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
 import org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
 import org.json.JSONArray
@@ -494,15 +492,6 @@ fun TextView.setGradientSpan(startColor: Int, endColor: Int, isLeftToRight: Bool
         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
     )
     setText(spannableStringBuilder, TextView.BufferType.SPANNABLE)
-}
-
-/**
- * 目前需求有font weight 500 約等於0.7f
- */
-fun TextView.setTextWithStrokeWidth(str: String, width: Float) {
-    val span = SpannableString(str)
-    span.setSpan(FakeBoldSpan(width), 0, span.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-    text = span
 }
 
 /**

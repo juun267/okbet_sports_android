@@ -1,16 +1,13 @@
 package org.cxct.sportlottery.ui.aboutMe
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_about_us.*
-import kotlinx.android.synthetic.main.fragment_help_center.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.feedback.FeedbackMainActivity
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterViewModel
 import org.cxct.sportlottery.util.JumpUtil
 

@@ -1,11 +1,9 @@
 package org.cxct.sportlottery.util
 
-import android.icu.util.ULocale.canonicalize
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
-import com.squareup.moshi.internal.Util
 import com.squareup.moshi.internal.Util.canonicalize
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okio.Buffer
