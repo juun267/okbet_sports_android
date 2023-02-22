@@ -2,12 +2,7 @@ package org.cxct.sportlottery.ui.maintab
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.RotateAnimation
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -24,12 +19,10 @@ import kotlinx.android.synthetic.main.hot_card_game_include.*
 import kotlinx.android.synthetic.main.hot_gaming_include.*
 import kotlinx.android.synthetic.main.hot_handicap_include.*
 import kotlinx.android.synthetic.main.hot_live_match_include.*
-import kotlinx.android.synthetic.main.view_toolbar_home.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.event.MenuEvent
-import org.cxct.sportlottery.event.MoneyEvent
 import org.cxct.sportlottery.extentions.*
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -56,24 +49,14 @@ import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.widget.OKVideoPlayer
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class MainHomeFragment :
-    BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class), OKVideoPlayer.OnOkListener
-    {
+class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class), OKVideoPlayer.OnOkListener {
 
-    private  var mMatchInfo: MatchInfo?=null
+    override fun layoutId() = R.layout.fragment_main_home
 
-    companion object {
-        fun newInstance(): MainHomeFragment {
-            val fragment = MainHomeFragment()
-            fragment.arguments = Bundle()
-            return fragment
-        }
-    }
+    private var mMatchInfo: MatchInfo? = null
 
     private val homeHotLiveAdapter by lazy {//热门直播
 
@@ -154,16 +137,7 @@ class MainHomeFragment :
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?): View? {
-
-        return inflater.inflate(R.layout.fragment_main_home, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onBindView(view: View) {
         viewModel.getGameEntryConfig(1, null)
 
         viewModel.getHotLiveList()
@@ -188,9 +162,6 @@ class MainHomeFragment :
 //        LogUtil.d("onPause")
         iv_publicity.onVideoPause()
         rv_marquee.stopAuto()
-        rv_marquee.postDelayed({
-            hotHandicapAdapter.removeAt(1)
-        }, 1000)
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -202,7 +173,7 @@ class MainHomeFragment :
 
         viewModel.getLiveRoundCount()
         viewModel.getHotLiveList()
-        onRefreshMoney()
+        homeToolbar.onRefreshMoney()
         viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
         viewModel.getGameEntryConfig(1, null)
         setupOddsChangeListener()
@@ -245,30 +216,12 @@ class MainHomeFragment :
     }
 
     fun initToolBar() {
-
         view?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
-        iv_menu_left.setOnClickListener {
+        homeToolbar.attach(this, getMainTabActivity(), viewModel)
+        homeToolbar.ivMenuLeft.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
             getMainTabActivity().showLeftFrament(0, 0)
         }
-        btn_login.setOnClickListener {
-            requireActivity().startLogin()
-        }
-        iv_money_refresh.setOnClickListener {
-            iv_money_refresh.startAnimation(RotateAnimation(0f,
-                720f,
-                Animation.RELATIVE_TO_SELF,
-                0.5f,
-                Animation.RELATIVE_TO_SELF,
-                0.5f).apply {
-                duration = 1000
-            })
-            viewModel.getMoney()
-        }
-
-        btn_login.setOnClickListener { requireActivity().startLogin() }
-        iv_money_refresh.setOnClickListener { onRefreshMoney() }
-        setupLogin()
     }
 
     @SuppressLint("SetTextI18n")
@@ -278,15 +231,6 @@ class MainHomeFragment :
             return
         }
 
-        viewModel.isLogin.observe(viewLifecycleOwner) {
-            setupLogin()
-        }
-
-        viewModel.userMoney.observe(viewLifecycleOwner) {
-            it?.let {
-                tv_home_money.text = "${sConfigData?.systemCurrencySign} ${TextUtil.format(it)}"
-            }
-        }
         viewModel.liveRoundCount.observe(viewLifecycleOwner) {
             tv_hot_live_find_more.text = getString(R.string.see_more) + (if (it == "0") "" else it)
         }
@@ -494,9 +438,7 @@ class MainHomeFragment :
              targetList.forEachIndexed { index, hotMatchLiveData ->
 
                  var matchList = listOf(hotMatchLiveData).toMutableList()
-                 if (hotMatchLiveData.matchInfo.id==matchStatusChangeEvent.matchStatusCO?.matchId){
 
-                 }
                  if (SocketUpdateUtil.updateMatchStatus(
                          hotMatchLiveData.matchInfo.gameType,
                          matchList as MutableList<MatchOdd>,
@@ -640,12 +582,11 @@ class MainHomeFragment :
 
     private fun HotMatchInfo.sortOddsMap() {
         this.oddsMap?.forEach { (_, value) ->
-            if ((value?.size
-                    ?: 0) > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)
-            ) {
-                value?.sortBy {
-                    it?.marketSort
-                }
+            if ((value?.size?: 0) > 3
+                && value?.first()?.marketSort != 0
+                && (value?.first()?.odds != value?.first()?.malayOdds))
+            {
+                value?.sortBy { it?.marketSort }
             }
         }
     }
@@ -809,6 +750,8 @@ class MainHomeFragment :
     //直播订阅
     private fun  subScribeLiveData(liveDataList: List<HotMatchLiveData> ){
         liveDataList.forEach { subscribeChannelHall(it.matchInfo.gameType, it.matchInfo.id) }
+
+
     }
 
     private fun enterThirdGame(result: EnterThirdGameResult) {
@@ -857,15 +800,6 @@ class MainHomeFragment :
          */
         private fun jumpToTheSport(matchType: MatchType, gameType: GameType) {
             getMainTabActivity().jumpToTheSport(matchType, gameType)
-        }
-
-        private fun setupLogin() {
-            btn_login.text =
-                "${getString(R.string.btn_login)} / ${getString(R.string.btn_register)}"
-            viewModel.isLogin.value?.let {
-                btn_login.isVisible = !it
-                ll_user_money.visibility = if (it) View.VISIBLE else View.INVISIBLE
-            }
         }
 
         private fun initHotHandicap() {
@@ -971,24 +905,6 @@ class MainHomeFragment :
         if (!matchInfo.pullRtmpUrl.isNullOrEmpty()|| !matchInfo.pullFlvUrl.isNullOrEmpty()) {
             iv_publicity.startPlayLogic()
         }
-    }
-
-     @Subscribe(threadMode = ThreadMode.MAIN)
-     fun refreshMoney(moneyEvent: MoneyEvent){
-         if (moneyEvent.refresh) {
-             viewModel.getMoney()
-         }
-     }
-    private fun onRefreshMoney(){
-        iv_money_refresh.startAnimation(RotateAnimation(0f,
-            720f,
-            Animation.RELATIVE_TO_SELF,
-            0.5f,
-            Animation.RELATIVE_TO_SELF,
-            0.5f).apply {
-            duration = 1000
-        })
-        viewModel.getMoney()
     }
 
     override fun onDestroyView() {

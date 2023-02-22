@@ -302,9 +302,10 @@
         android:orientation="vertical"
         android:background="@color/background">
 
-        <include
-            android:id="@+id/lin_toolbar"
-            layout="@layout/view_toolbar_home" />
+        <org.cxct.sportlottery.ui.maintab.HomeToolbarView
+            android:id="@+id/homeToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_tab_home"

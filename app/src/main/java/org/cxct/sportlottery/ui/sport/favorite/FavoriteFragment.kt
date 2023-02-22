@@ -24,7 +24,6 @@ import kotlinx.android.synthetic.main.fragment_favorite.iv_menu_left
 import kotlinx.android.synthetic.main.fragment_favorite.lin_search
 import kotlinx.android.synthetic.main.fragment_favorite.view.*
 import kotlinx.android.synthetic.main.view_status_bar.*
-import kotlinx.android.synthetic.main.view_toolbar_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.bet.FastBetDataBean

@@ -1,22 +1,18 @@
 package org.cxct.sportlottery.ui.maintab.slot
 
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.RotateAnimation
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.fragment_home_slot.*
-import kotlinx.android.synthetic.main.view_toolbar_home.*
+import kotlinx.android.synthetic.main.fragment_home_slot.homeToolbar
+import kotlinx.android.synthetic.main.fragment_home_slot.lin_empty_game
+import kotlinx.android.synthetic.main.fragment_home_slot.rv_tab_home
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.extentions.fitsSystemStatus
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
@@ -32,6 +28,8 @@ import org.cxct.sportlottery.util.*
 class HomeSlotFragment :
     BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
 
+    override fun layoutId() = R.layout.fragment_home_slot
+
     private val homeTabAdapter by lazy {
         HomeTabAdapter(HomeTabAdapter.getItems(),
             requireArguments().getInt("position"),
@@ -40,16 +38,7 @@ class HomeSlotFragment :
 
     private val homeSlotAdapter by lazy { HomeSlotAdapter() }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        return inflater.inflate(R.layout.fragment_home_slot, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onBindView(view: View) {
         view.fitsSystemStatus()
         initView()
         initObservable()
@@ -71,42 +60,15 @@ class HomeSlotFragment :
 
     fun initToolBar() {
         view?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
-        iv_menu_left.setOnClickListener {
+        homeToolbar.attach(this, (activity as MainTabActivity), viewModel)
+        homeToolbar.ivMenuLeft.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
             (activity as MainTabActivity).showLeftFrament(0, 5)
         }
-        iv_logo.setOnClickListener {
-            (activity as MainTabActivity).jumpToHome(0)
-        }
-        btn_login.setOnClickListener {
-            requireActivity().startLogin()
-        }
-        iv_money_refresh.setOnClickListener {
-            iv_money_refresh.startAnimation(RotateAnimation(0f,
-                720f,
-                Animation.RELATIVE_TO_SELF,
-                0.5f,
-                Animation.RELATIVE_TO_SELF,
-                0.5f).apply {
-                duration = 1000
-            })
-            viewModel.getMoney()
-        }
-//        lin_search.setOnClickListener {
-//            startActivity(Intent(requireActivity(), SportSearchtActivity::class.java))
-//        }
-        setupLogin()
     }
 
     private fun initObservable() {
-        viewModel.userMoney.observe(viewLifecycleOwner) {
-            it?.let {
-                tv_home_money.text = "${sConfigData?.systemCurrencySign} ${TextUtil.format(it)}"
-            }
-        }
-        viewModel.isLogin.observe(viewLifecycleOwner) {
-            setupLogin()
-        }
+
         viewModel.slotGameData.observe(viewLifecycleOwner) {
             if (it.isNullOrEmpty()) {
                 lin_empty_game.isVisible = true
@@ -176,14 +138,6 @@ class HomeSlotFragment :
                     }
                 }
             }
-        }
-    }
-
-    private fun setupLogin() {
-        btn_login.text = "${getString(R.string.btn_login)} / ${getString(R.string.btn_register)}"
-        viewModel.isLogin.value?.let {
-            btn_login.isVisible = !it
-            ll_user_money.visibility = if (it) View.VISIBLE else View.INVISIBLE
         }
     }
 

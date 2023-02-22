@@ -1,22 +1,20 @@
 package org.cxct.sportlottery.ui.maintab
 
-import android.content.Intent
 import android.graphics.Color
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.distinctUntilChanged
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_sport.*
+import kotlinx.android.synthetic.main.fragment_sport.homeToolbar
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
-import kotlinx.android.synthetic.main.view_toolbar_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.extentions.fitsSystemStatus
+import org.cxct.sportlottery.extentions.gone
+import org.cxct.sportlottery.extentions.startActivity
+import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.sport.SportMenuResult
@@ -28,28 +26,16 @@ import org.cxct.sportlottery.ui.sport.SportTabViewModel
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
 import org.cxct.sportlottery.util.HomePageStatusManager
 import org.cxct.sportlottery.util.phoneNumCheckDialog
-import org.cxct.sportlottery.util.startLogin
-import org.greenrobot.eventbus.EventBus
-
 
 class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabViewModel::class) {
 
+    override fun layoutId() = R.layout.fragment_sport
+
     companion object {
-        fun newInstance(matchType: MatchType? = null, gameType: GameType? = null): SportFragment {
-            val args = Bundle()
-            val fragment = SportFragment()
-            matchType?.let {
-                args.putSerializable("matchType", it)
-            }
-            gameType?.let {
-                args.putSerializable("gameType", it)
-            }
-            fragment.arguments = args
-            return fragment
-        }
 
         val matchTypeTabPositionMap = mapOf<MatchType, Int>(
             MatchType.IN_PLAY to 0,
@@ -69,16 +55,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
     var jumpMatchType: MatchType? = null
     var jumpGameType: GameType? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        return inflater.inflate(R.layout.fragment_sport, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onBindView(view: View) {
         initToolBar()
         initTabLayout()
         initObserve()
@@ -87,24 +64,17 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         navGameFragment(jumpMatchType ?: MatchType.IN_PLAY)
     }
 
-    fun initToolBar() {
-        lin_toolbar.fitsSystemStatus()
-//        lin_toolbar.toolBar.setBackgroundColor(Color.parseColor("#ffffff"))
-        lin_toolbar.setBackgroundColor(Color.parseColor("#ffffff"))
-        iv_menu_left.setOnClickListener {
-            (activity as MainTabActivity).showLeftFrament(1, tabLayout.selectedTabPosition)
-            EventBus.getDefault().post(MenuEvent(true))
+    private inline fun getMainTabActivity() = activity as MainTabActivity
+
+    fun initToolBar() = homeToolbar.run {
+        attach(this@SportFragment, getMainTabActivity(), viewModel, false)
+        fitsSystemStatus()
+        setBackgroundColor(Color.parseColor("#ffffff"))
+        searchView.setOnClickListener { startActivity(SportSearchtActivity::class.java) }
+        ivMenuLeft.setOnClickListener {
+            getMainTabActivity().showLeftFrament(1, tabLayout.selectedTabPosition)
+            EventBusUtil.post(MenuEvent(true))
         }
-        iv_logo.setOnClickListener {
-            (activity as MainTabActivity).jumpToHome(0)
-        }
-        btn_login.setOnClickListener {
-            requireActivity().startLogin()
-        }
-        lin_search.setOnClickListener {
-            startActivity(Intent(requireActivity(), SportSearchtActivity::class.java))
-        }
-        setupLogin()
     }
 
     fun showLoginNotify() {
@@ -207,12 +177,6 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
     }
 
     private fun initObserve() {
-        viewModel.isLogin.observe(viewLifecycleOwner) {
-            setupLogin()
-        }
-        viewModel.userMoney.observe(viewLifecycleOwner) {
-
-        }
 
         //使用者沒有電話號碼
         viewModel.showPhoneNumberMessageDialog.observe(viewLifecycleOwner) {
@@ -237,7 +201,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
     private fun updateUiWithResult(sportMenuResult: SportMenuResult?) {
         if (sportMenuResult?.success == true) {
             refreshTabLayout(sportMenuResult)
-            EventBus.getDefault().post(sportMenuResult)
+            EventBusUtil.post(sportMenuResult)
         }
     }
 
@@ -278,15 +242,6 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         super.onDestroy()
     }
 
-    private fun setupLogin() {
-        btn_login.text = "${getString(R.string.btn_login)} / ${getString(R.string.btn_register)}"
-        viewModel.isLogin.value?.let {
-            btn_login.isVisible = !it
-            lin_search.visibility = if (it) View.VISIBLE else View.INVISIBLE
-        }
-    }
-
-
     private fun navGameFragment(matchType: MatchType) {
         var gameType = jumpGameType?.key
         showFragment = when (matchType) {
@@ -311,7 +266,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
     private fun setTabElevation(elevation: Double) {
         val elevation = (elevation * elevation * maxElevation).toFloat()
         tabLayout.elevation = elevation
-        lin_toolbar.elevation = elevation
+        homeToolbar.elevation = elevation
         vDivider1.elevation = elevation
         vDivider2.elevation = elevation
     }
