@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.sport
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -18,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_sport_list.*
 import kotlinx.android.synthetic.main.fragment_sport_list.view.*
-import kotlinx.android.synthetic.main.itemview_league_v5.view.*
+import kotlinx.android.synthetic.main.item_league.view.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.extentions.rotationAnimation

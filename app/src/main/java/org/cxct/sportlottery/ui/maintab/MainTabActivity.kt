@@ -26,7 +26,6 @@ import kotlinx.android.synthetic.main.activity_main_tab.*
 import kotlinx.android.synthetic.main.bet_bar_layout.*
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import kotlinx.android.synthetic.main.bet_bar_layout2.*
-import kotlinx.android.synthetic.main.dialog_pop_image.*
 import kotlinx.android.synthetic.main.fragment_sport_list.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding

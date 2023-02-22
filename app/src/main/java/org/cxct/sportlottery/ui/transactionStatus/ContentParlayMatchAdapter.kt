@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.transactionStatus
 
-import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

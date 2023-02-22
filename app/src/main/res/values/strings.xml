@@ -1293,5 +1293,6 @@
     <string name="hint_phone_format">Phone number must be 11 digits &amp; starting with 09</string>
     <string name="username_">Username：</string>
     <string name="hint_referral_code">Referral code (Optional)</string>
+    <string name="promo">Promo</string>
 
 </resources>

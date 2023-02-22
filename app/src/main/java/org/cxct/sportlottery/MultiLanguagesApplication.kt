@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.preference.PreferenceManager
 import cn.jpush.android.api.JPushInterface
 import com.adjust.sdk.Adjust
 import com.adjust.sdk.AdjustConfig
@@ -196,13 +195,17 @@ class MultiLanguagesApplication : Application() {
         MultiLanguage.onConfigurationChanged(applicationContext)
     }
 
+    private fun getDefaultSharedPreferences(): SharedPreferences {
+        return getSharedPreferences(packageName + "_preferences", MODE_PRIVATE)
+    }
+
     override fun onCreate() {
         super.onCreate()
         appContext = applicationContext
         instance = this
         mInstance = this
         AppManager.init(this)
-        myPref = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        myPref = getDefaultSharedPreferences()
 
         MultiLanguage.init { context ->
             //返回自己本地保存选择的语言设置

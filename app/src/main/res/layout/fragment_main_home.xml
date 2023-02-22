@@ -114,8 +114,7 @@
                     android:clipChildren="false"
                     tl:speed_dp_sec="60dp"
                     tools:itemCount="1"
-                    tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/content_marquee" />
+                    tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 
                 <ImageView

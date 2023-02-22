@@ -29,14 +29,6 @@
     <!--game hall-->
 
     <!--keyboard-->
-    <string name="keyboard_code_delete">-5</string>
-    <string name="keyboard_code_insert_dot">-48</string>
-    <string name="keyboard_code_insert_0">48</string>
-    <string name="keyboard_code_plus_25">-25</string>
-    <string name="keyboard_code_plus_75">-75</string>
-    <string name="keyboard_code_plus_50">-50</string>
-    <string name="keyboard_code_plus_100">-100</string>
-    <string name="keyboard_code_max">-6</string>
 
     <!--Time-->
     <string name="time_null">--:--</string>
@@ -54,4 +46,7 @@
     <string name="language_en">English</string>
     <string name="language_vi">Tiếng Việt</string>
     <string name="language_th">ภาษาไทย</string>
+
+    <string name="edittext_digits_email">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@._%+-</string>
+    <string name="edittext_digits_int">0123456789</string>
 </resources>

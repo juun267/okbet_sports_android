@@ -32,31 +32,6 @@ fun ViewModel.releaseVM() {
     field.invoke(this)
 }
 
-suspend fun <T : BaseResult> safeApi(block: suspend() -> Response<T>): Response<T> {
-    return try {
-        block()
-    } catch (e: Exception) {
-        e.printStackTrace()
-        Response.error(BaseResult.errorNetCode, BaseResult.errorNetResult.toResponseBody())
-    }
-}
-
-fun <T : BaseResult> LifecycleOwner.callApi(apiCall: suspend() -> Response<T>, block: (Response<T>) -> Unit)  = lifecycleScope.callApi(apiCall, block)
-
-fun <T : BaseResult> CoroutineScope.callApi(apiCall: suspend() -> Response<T>, block: (Response<T>) -> Unit) {
-    launch(Dispatchers.IO) {
-        val result = safeApi(apiCall)
-        launch(Dispatchers.Main) { block(result) }
-    }
-}
-
-fun <T : BaseResult> callApiWithNoCancel(apiCall: suspend() -> Response<T>, block: (Response<T>) -> Unit) {
-    GlobalScope.launch(Dispatchers.IO) {
-        val result = safeApi(apiCall)
-        GlobalScope.launch(Dispatchers.Main) { block(result) }
-    }
-}
-
 fun LifecycleOwner.doOnResume(block: () -> Unit, interval: Int = 30_000) {
     doWhenLife(Lifecycle.Event.ON_RESUME, interval, block)
 }

@@ -41,6 +41,7 @@ class VerifyCodeDialog(val callBack: (identity: String?, validCode: String) -> U
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        eet_verification_code.requestFocus()
         eet_verification_code.checkRegisterListener {
             viewModel.checkValidCode(it).let {
                 btn_sure.setBtnEnable(it.isNullOrBlank())

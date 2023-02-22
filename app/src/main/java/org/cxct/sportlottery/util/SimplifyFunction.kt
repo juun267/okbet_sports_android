@@ -11,7 +11,6 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.graphics.Rect
 import android.os.Environment
-import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.util.Log
@@ -31,7 +30,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.item_favorite.view.*
-import kotlinx.android.synthetic.main.itemview_league_v5.view.*
 import kotlinx.android.synthetic.main.view_account_balance_2.*
 import kotlinx.coroutines.flow.*
 import org.cxct.sportlottery.BuildConfig
@@ -46,7 +44,6 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.CateDetailData
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchLiveData
-import org.cxct.sportlottery.network.outright.odds.OutrightItem
 import org.cxct.sportlottery.network.service.close_play_cate.ClosePlayCateEvent
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
@@ -58,10 +55,8 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.live.HomeLiveAdapter
 import org.cxct.sportlottery.ui.maintab.live.ItemHomeLiveHolder
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.ui.sport.SportLeagueAdapter
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteAdapter
 import org.cxct.sportlottery.util.DisplayUtil.dpToPx
-import org.cxct.sportlottery.widget.FakeBoldSpan
 import org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
 import org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
 import org.json.JSONArray
@@ -94,28 +89,6 @@ fun RecyclerView.addScrollWithItemVisibility(
                     val visibleRangePair = mutableListOf<Pair<Int, Int>>()
 
                     when (currentAdapter) {
-
-                        is SportLeagueAdapter -> {
-                            getVisibleRangePosition().forEach { leaguePosition ->
-                                val viewByPosition =
-                                    layoutManager?.findViewByPosition(leaguePosition)
-                                viewByPosition?.let {
-                                    if (getChildViewHolder(it) is SportLeagueAdapter.ItemViewHolder) {
-                                        val viewHolder =
-                                            getChildViewHolder(it) as SportLeagueAdapter.ItemViewHolder
-                                        viewHolder.itemView.league_odd_list.getVisibleRangePosition()
-                                            .forEach { matchPosition ->
-                                                visibleRangePair.add(
-                                                    Pair(
-                                                        leaguePosition,
-                                                        matchPosition
-                                                    )
-                                                )
-                                            }
-                                    }
-                                }
-                            }
-                        }
 
                         is FavoriteAdapter -> {
                             getVisibleRangePosition().forEach { leaguePosition ->
@@ -494,15 +467,6 @@ fun TextView.setGradientSpan(startColor: Int, endColor: Int, isLeftToRight: Bool
         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
     )
     setText(spannableStringBuilder, TextView.BufferType.SPANNABLE)
-}
-
-/**
- * 目前需求有font weight 500 約等於0.7f
- */
-fun TextView.setTextWithStrokeWidth(str: String, width: Float) {
-    val span = SpannableString(str)
-    span.setSpan(FakeBoldSpan(width), 0, span.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-    text = span
 }
 
 /**
