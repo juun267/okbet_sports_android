@@ -2,16 +2,13 @@ package org.cxct.sportlottery.ui.thirdGame
 
 import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.os.Handler
-import androidx.lifecycle.viewModelScope
 import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_third_game.*
-import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
-import org.cxct.sportlottery.event.MoneyEvent
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
@@ -25,9 +22,9 @@ import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
-import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.isThirdTransferOpen
 import org.cxct.sportlottery.util.startLogin
 
 open class ThirdGameActivity : WebActivity() {
@@ -61,14 +58,16 @@ open class ThirdGameActivity : WebActivity() {
     override fun onBackPressed() {
         if (web_view.canGoBack()) {
             super.onBackPressed()
-        } else {
-            viewModel.viewModelScope.launch {
-                viewModel.allTransferOut()
-                super.onBackPressed()
-                Handler().postDelayed({
-                    EventBusUtil.post(MoneyEvent(true))
-                }, 2000)
-            }
+            return
+        }
+
+        super.onBackPressed()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (isThirdTransferOpen()) {
+            LoginRepository.allTransferOut()
         }
     }
 

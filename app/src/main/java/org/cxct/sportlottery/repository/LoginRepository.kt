@@ -6,8 +6,7 @@ import android.os.Build
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -52,6 +51,12 @@ object LoginRepository {
     val _isLogin = MutableLiveData<Boolean>()
     val _kickedOut = MutableLiveData<Event<String?>>()
     private val _transNum = MutableLiveData<Int?>()
+
+    private val mUserMoney = MutableLiveData<Double?>()
+    val userMoney: LiveData<Double?> //使用者餘額
+        get() = mUserMoney
+
+    fun isLogined() = isLogin.value == true
 
     var platformId
         get() = sharedPref.getLong(KEY_PLATFORM_ID, -1)
@@ -123,6 +128,58 @@ object LoginRepository {
         }
 
     var isCheckToken = false
+
+    fun updateMoney(money: Double?) {
+        mUserMoney.postValue(money)
+    }
+
+    var lastMoneyTime = 0L
+    suspend fun getMoney() {
+        if (isLogin.value == false) {
+            mUserMoney.postValue(0.0)
+            return
+        }
+
+        val time = System.currentTimeMillis()
+        if (time - lastMoneyTime < 100) {
+            return
+        }
+
+        lastMoneyTime = time
+        withContext(Dispatchers.IO) {
+            try {
+                val userMoneyResult = OneBoSportApi.userService.getMoney()
+                if (userMoneyResult?.isSuccessful) {
+                    mUserMoney.postValue(userMoneyResult?.body()?.money)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun allTransferOut(callback: ((Boolean) -> Unit)? = null) {
+        if (!isLogined()) {
+            return
+        }
+
+        GlobalScope.launch(Dispatchers.IO) {
+            val respnose = OneBoSportApi.thirdGameService.allTransferOut()
+            callback?.let {
+                withContext(Dispatchers.Main) {
+                    it.invoke(respnose?.body()?.success == true)
+                }
+            }
+
+            if (respnose.isSuccessful) {
+                getMoney()
+            }
+
+            delay(2_000)
+            getMoney()
+        }
+
+    }
 
     suspend fun register(registerRequest: RegisterRequest): Response<LoginResult> {
         val loginResponse = OneBoSportApi.indexService.register(registerRequest)

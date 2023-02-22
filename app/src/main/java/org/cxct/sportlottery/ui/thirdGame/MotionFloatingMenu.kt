@@ -19,7 +19,7 @@ class MotionFloatingMenu @JvmOverloads constructor(context: Context, attrs: Attr
     private var mOnMenuListener: OnMenuListener? = null
 
     init {
-        addView(LayoutInflater.from(context).inflate(R.layout.menu_motion_floating, this, false))
+        LayoutInflater.from(context).inflate(R.layout.menu_motion_floating, this, true)
     }
 
     override fun onAttachedToWindow() {
