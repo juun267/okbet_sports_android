@@ -83,8 +83,9 @@
 
         <Constraint
             android:id="@id/motion_close"
-            android:layout_width="1dp"
-            android:layout_height="1dp"
+            android:layout_width="1px"
+            android:layout_height="1px"
+            android:alpha="0"
             android:visibility="invisible"
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
@@ -93,8 +94,9 @@
 
         <Constraint
             android:id="@id/motion_back_home"
-            android:layout_width="1dp"
-            android:layout_height="1dp"
+            android:layout_width="1px"
+            android:layout_height="1px"
+            android:alpha="0"
             android:visibility="invisible"
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
@@ -103,8 +105,9 @@
 
         <Constraint
             android:id="@id/motion_cash_save"
-            android:layout_width="1dp"
-            android:layout_height="1dp"
+            android:layout_width="1px"
+            android:layout_height="1px"
+            android:alpha="0"
             android:visibility="invisible"
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
@@ -113,9 +116,10 @@
 
         <Constraint
             android:id="@id/motion_cash_get"
-            android:layout_width="1dp"
-            android:layout_height="1dp"
+            android:layout_width="1px"
+            android:layout_height="1px"
             android:visibility="invisible"
+            android:alpha="0"
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
@@ -139,6 +143,7 @@
             android:id="@id/motion_close"
             android:layout_width="65dp"
             android:layout_height="65dp"
+            android:alpha="1"
             android:visibility="visible"
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
@@ -149,6 +154,7 @@
             android:id="@id/motion_back_home"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:alpha="1"
             android:layout_marginBottom="30dp"
             android:visibility="visible"
             motion:layout_constraintBottom_toTopOf="@id/motion_close"
@@ -159,6 +165,7 @@
             android:id="@id/motion_cash_save"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:alpha="1"
             android:layout_marginStart="20dp"
             android:layout_marginTop="38.75dp"
             android:visibility="visible"
@@ -169,6 +176,7 @@
             android:id="@id/motion_cash_get"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:alpha="1"
             android:layout_marginTop="30dp"
             android:visibility="visible"
             motion:layout_constraintStart_toStartOf="@id/motion_cash_save"
