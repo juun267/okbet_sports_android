@@ -237,7 +237,7 @@
                 android:paddingStart="6dp"
                 android:text="@string/password_login"
                 android:textColor="@color/color_025BE8_025BE8"
-                android:textSize="@dimen/textSize14sp"
+                android:textSize="@dimen/textSize12sp"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fl_input" />
@@ -251,7 +251,7 @@
                 android:paddingStart="6dp"
                 android:text="@string/otp_login"
                 android:textColor="@color/color_025BE8_025BE8"
-                android:textSize="@dimen/textSize14sp"
+                android:textSize="@dimen/textSize12sp"
                 android:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fl_input" />
@@ -266,7 +266,7 @@
                 android:focusable="true"
                 android:text="@string/forget_password"
                 android:textColor="@color/color_025BE8_025BE8"
-                android:textSize="@dimen/textSize14sp"
+                android:textSize="@dimen/textSize12sp"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fl_input" />
