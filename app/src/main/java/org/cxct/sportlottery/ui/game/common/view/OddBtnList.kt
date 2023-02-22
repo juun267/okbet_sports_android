@@ -50,9 +50,9 @@ class OddBtnList @JvmOverloads constructor(
 //        Timber.d("OddBtnList：oddWidth: $oddWidth")
 //        Timber.d("OddBtnList：10.dp: ${10.dp}")
 //        Timber.d("OddBtnList：context.dp2px(10): ${context.dp2px(10)}")
-        Timber.d("OddBtnList：Resources.getSystem().displayMetrics.density: ${Resources.getSystem().displayMetrics.density}")
-        Timber.d("OddBtnList：resources.displayMetrics.density: ${resources.displayMetrics.density}")
-        Timber.d("OddBtnList：resources.displayMetrics.widthPixels: ${resources.displayMetrics.widthPixels}")
+//        Timber.d("OddBtnList：Resources.getSystem().displayMetrics.density: ${Resources.getSystem().displayMetrics.density}")
+//        Timber.d("OddBtnList：resources.displayMetrics.density: ${resources.displayMetrics.density}")
+//        Timber.d("OddBtnList：resources.displayMetrics.widthPixels: ${resources.displayMetrics.widthPixels}")
         addView(oddBtnType, LayoutParams(oddWidth, 29.dp))
 
         oddBtnHome = createOddBtn()

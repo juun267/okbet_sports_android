@@ -39,7 +39,6 @@ import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
@@ -135,6 +134,7 @@ abstract class BaseOddButtonViewModel(
                 matchType = MatchType.OUTRIGHT,
                 gameType = data.gameType,
                 playCateCode = data.playCateCode ?: "",
+                playCateName = data.playCateName ?: "",
                 matchOdd = data.matchOdd!!,
                 odd = data.odd
             )
@@ -215,20 +215,10 @@ abstract class BaseOddButtonViewModel(
         matchType: MatchType,
         gameType: GameType,
         playCateCode: String,
+        playCateName: String,
         matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd,
         odd: org.cxct.sportlottery.network.odds.Odd
     ) {
-        val outrightCateName = matchOdd.dynamicMarkets[odd.outrightCateKey].let {
-            when (LanguageManager.getSelectLanguage(androidContext)) {
-                LanguageManager.Language.ZH -> {
-                    it?.zh
-                }
-
-                else -> {
-                    it?.en
-                }
-            }
-        }
 
         val betItem = betInfoRepository.betInfoList.value?.peekContent()
             ?.find { it.matchOdd.oddsId == odd.id }
@@ -256,7 +246,7 @@ abstract class BaseOddButtonViewModel(
                                 matchType = matchType,
                                 gameType = gameType,
                                 playCateCode = playCateCode,
-                                playCateName = outrightCateName ?: "",
+                                playCateName = playCateName ?: "",
                                 playName = odd.nameMap?.get(
                                     LanguageManager.getSelectLanguage(
                                         androidContext
@@ -461,8 +451,11 @@ abstract class BaseOddButtonViewModel(
                                 failedReason = it.code
                             }
                         }
-                        withContext(Dispatchers.Main){
-                            SingleToast.showSingleToastNoImage(androidContext,BetsFailedReasonUtil.getFailedReasonByCode(failedReason))
+                        withContext(Dispatchers.Main) {
+                            SingleToast.showSingleToastNoImage(
+                                androidContext,
+                                BetsFailedReasonUtil.getFailedReasonByCode(failedReason)
+                            )
                         }
                         result?.success = false
 
@@ -470,7 +463,7 @@ abstract class BaseOddButtonViewModel(
 //                        //处理赔率更新
                         _betFailed.postValue(Pair(true, failedReason))
                     }
-                }else{
+                } else {
                     result?.success = false
                     _betAddResult.postValue(Event(result))
                 }

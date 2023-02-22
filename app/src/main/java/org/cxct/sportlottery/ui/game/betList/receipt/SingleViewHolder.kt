@@ -40,21 +40,29 @@ class SingleViewHolder private constructor(itemView: View) :
     }
 
 
-    fun bind(betConfirmTime: Long? = 0,itemData: BetResult, oddsType: OddsType, interfaceStatusChangeListener: BetReceiptDiffAdapter.InterfaceStatusChangeListener?, position: Int) {
+    fun bind(
+        betConfirmTime: Long? = 0,
+        itemData: BetResult,
+        oddsType: OddsType,
+        interfaceStatusChangeListener: BetReceiptDiffAdapter.InterfaceStatusChangeListener?,
+        position: Int
+    ) {
         itemView.apply {
 //            top_space.visibility = if (position == 0) View.VISIBLE else View.GONE
 
             val inPlay = System.currentTimeMillis() > (itemData.matchOdds?.get(0)?.startTime ?: 0)
 
 
-            if(inPlay){
+            if (inPlay) {
                 tvTypeMatch.visible()
                 tvTypeMatch.text = LocalUtils.getString(R.string.home_tab_in_play) //滚球
-                tvTypeMatch.background =  AppCompatResources.getDrawable(context,R.drawable.bg_match_type_red_circle)
-            }else{
+                tvTypeMatch.background =
+                    AppCompatResources.getDrawable(context, R.drawable.bg_match_type_red_circle)
+            } else {
                 tvTypeMatch.visible()
                 tvTypeMatch.text = LocalUtils.getString(R.string.home_tab_early) //早盘
-                tvTypeMatch.background =  AppCompatResources.getDrawable(context,R.drawable.bg_match_type_green_circle)
+                tvTypeMatch.background =
+                    AppCompatResources.getDrawable(context, R.drawable.bg_match_type_green_circle)
             }
 
             if (itemData.matchType == MatchType.OUTRIGHT) {
@@ -87,18 +95,13 @@ class SingleViewHolder private constructor(itemView: View) :
 //                    )
 
                     tv_play_content.text = playName
-                    tvSpread.text = if(matchType!=MatchType.OUTRIGHT) spread else ""
+                    tvSpread.text = if (matchType != MatchType.OUTRIGHT) spread else ""
 
                     tv_odds.text = "@ $formatForOdd"
 
                     tv_league.text = leagueName
                     tv_team_names.setTeamNames(15, homeName, awayName)
-                    if (matchType != MatchType.OUTRIGHT) {
-                        tv_match_type.tranByPlayCode(playCode, playCateCode, playCateName, rtScore)
-                    }else{
-                        tv_match_type.text = "冠军体育"
-                    }
-
+                    tv_match_type.tranByPlayCode(playCode, playCateCode, playCateName, rtScore)
                 }
 
                 tv_bet_amount.text = "$currencySign${TextUtil.formatForOdd(itemData.stake ?: 0.0)}"

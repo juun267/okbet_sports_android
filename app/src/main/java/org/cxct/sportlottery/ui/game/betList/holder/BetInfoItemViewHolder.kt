@@ -21,6 +21,7 @@ import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import kotlinx.android.synthetic.main.item_match_receipt.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ContentBetInfoItemV32Binding
 import org.cxct.sportlottery.enum.BetStatus
@@ -489,7 +490,9 @@ class BetInfoItemViewHolder(
         if (itemData.matchType == MatchType.OUTRIGHT) {
             tvMatchType.gone()
         }
-
+//        tv_match_type.tranByPlayCode(playCode, playCateCode, playCateName, rtScore)
+        Timber.d("itemData:${itemData.matchOdd}")
+        Timber.d("itemData:${false}")
         when {
             itemData.betPlayCateNameMap.isNullOrEmpty() -> {
                 tvName.text = when (inPlay && itemData.matchType != MatchType.OUTRIGHT) {
