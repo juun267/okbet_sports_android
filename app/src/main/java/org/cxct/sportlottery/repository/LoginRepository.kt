@@ -135,7 +135,7 @@ object LoginRepository {
 
     var lastMoneyTime = 0L
     suspend fun getMoney() {
-        if (isLogin.value == false) {
+        if (!isLogined()) {
             mUserMoney.postValue(0.0)
             return
         }
@@ -147,13 +147,15 @@ object LoginRepository {
 
         lastMoneyTime = time
         withContext(Dispatchers.IO) {
-            try {
-                val userMoneyResult = OneBoSportApi.userService.getMoney()
-                if (userMoneyResult?.isSuccessful) {
-                    mUserMoney.postValue(userMoneyResult?.body()?.money)
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
+
+            if (isThirdTransferOpen()) { //如果三方游戏额度自动转换开启
+                kotlin.runCatching { OneBoSportApi.thirdGameService.allTransferOut() }
+            }
+
+            val result = kotlin.runCatching { OneBoSportApi.userService.getMoney() }
+            val userMoneyResult = result.getOrNull()
+            if (result.isSuccess && userMoneyResult?.isSuccessful == true) {
+                mUserMoney.postValue(userMoneyResult?.body()?.money)
             }
         }
     }
@@ -170,15 +172,7 @@ object LoginRepository {
                     it.invoke(respnose?.body()?.success == true)
                 }
             }
-
-            if (respnose.isSuccessful) {
-                getMoney()
-            }
-
-            delay(2_000)
-            getMoney()
         }
-
     }
 
     suspend fun register(registerRequest: RegisterRequest): Response<LoginResult> {
