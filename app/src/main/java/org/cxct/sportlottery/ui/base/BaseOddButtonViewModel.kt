@@ -246,7 +246,7 @@ abstract class BaseOddButtonViewModel(
                                 matchType = matchType,
                                 gameType = gameType,
                                 playCateCode = playCateCode,
-                                playCateName = playCateName ?: "",
+                                playCateName = playCateName,
                                 playName = odd.nameMap?.get(
                                     LanguageManager.getSelectLanguage(
                                         androidContext
