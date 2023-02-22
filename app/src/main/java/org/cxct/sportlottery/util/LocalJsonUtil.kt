@@ -15,12 +15,13 @@ object LocalJsonUtil {
 
     fun getLocalJson(context: Context, assetPath: String): String {
         val stringBuilder = StringBuilder()
+        var bf: BufferedReader? = null
         try {
             //获取assets资源管理器
             val assetManager: AssetManager = context.assets
 
             //通过管理器打开文件并读取
-            val bf = BufferedReader(InputStreamReader(assetManager.open(assetPath)))
+            bf = BufferedReader(InputStreamReader(assetManager.open(assetPath)))
             var line = bf.readLine()
             while (line != null) {
                 stringBuilder.append(line)
@@ -28,6 +29,8 @@ object LocalJsonUtil {
             }
         } catch (e: IOException) {
             e.printStackTrace()
+        } finally {
+            bf?.let { kotlin.runCatching { it.close() } }
         }
         return stringBuilder.toString()
     }
