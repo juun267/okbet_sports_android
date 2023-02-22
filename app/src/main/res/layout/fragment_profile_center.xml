@@ -152,7 +152,7 @@
                         android:layout_below="@+id/tv_user_nickname"
                         android:layout_marginStart="16dp"
                         android:layout_toEndOf="@+id/rl_head"
-                        android:text="@string/member_account"
+                        android:text="@string/username"
                         android:textColor="@color/color_7F7F7F_999999"
                         android:textSize="@dimen/textSize12sp" />
 

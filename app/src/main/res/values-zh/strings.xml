@@ -1275,4 +1275,5 @@
     <string name="hint_phone_format">手机号码需为09开头的11位数字</string>
     <string name="hint_referral_code">推荐码(选填)</string>
     <string name="promo">优惠</string>
+    <string name="username">用户名</string>
 </resources>

@@ -654,7 +654,7 @@ class ProfileCenterFragment :
 
         btn_edit_nickname.visibility =
             if (userInfo?.setted == FLAG_NICKNAME_IS_SET) View.GONE else View.VISIBLE
-        label_user_name.text = "${getString(R.string.member_account)}："
+        label_user_name.text = "${getString(R.string.username)}："
         tv_user_username.text = userInfo?.userName
 //        if (getRemainDay(userInfo?.uwEnableTime) > 0) {
 //            ivNotice.visibility = View.VISIBLE
