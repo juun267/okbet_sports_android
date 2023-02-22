@@ -1288,5 +1288,6 @@
     <string name="pls_enter_correct_mobile">Please enter the correct mobile</string>
     <string name="pls_enter_correct_email">Please enter the correct email</string>
     <string name="next">Next</string>
+    <string name="promo">Promo</string>
 
 </resources>

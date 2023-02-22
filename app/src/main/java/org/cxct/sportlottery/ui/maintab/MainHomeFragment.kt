@@ -31,6 +31,7 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.event.MoneyEvent
 import org.cxct.sportlottery.extentions.*
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.index.config.ImageData
@@ -923,13 +924,22 @@ class MainHomeFragment :
         }
     }
 
-    private fun changeFragment(tabName: Int) = when(tabName)  {
+    private fun changeFragment(tabName: Int) = when (tabName) {
         //点击直播跳转
         R.string.home_live -> getHomeFragment().onTabClickByPosition(1)
         //点击滚球跳转
         R.string.home_in_play -> getHomeFragment().onTabClickByPosition(2)
         //点击体育跳转
         R.string.home_sports -> getHomeFragment().onTabClickByPosition(3)
+        //跳转优惠
+        R.string.promo -> JumpUtil.toInternalWeb(
+            requireContext(),
+            Constants.getPromotionUrl(
+                viewModel.token,
+                LanguageManager.getSelectLanguage(requireContext())
+            ),
+            getString(R.string.promotion)
+        )
         // 点击真人跳转
         R.string.live -> getHomeFragment().onTabClickByPosition(4)
         // 点击老虎机跳转
@@ -939,7 +949,7 @@ class MainHomeFragment :
         //点击彩票跳转
 //        R.string.lottery -> getHomeFragment().onTabClickByPosition(5)
 
-        else -> { }
+        else -> {}
     }
 
     private fun initPlayView() {

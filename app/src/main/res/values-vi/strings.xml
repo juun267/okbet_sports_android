@@ -1259,4 +1259,5 @@
     <string name="pls_enter_correct_mobile">Mời nhập chính xác SĐT</string>
     <string name="pls_enter_correct_email">Mời nhập chính xác Email</string>
     <string name="next">Bước tiếp theo</string>
+    <string name="promo">Promo</string>
 </resources>
