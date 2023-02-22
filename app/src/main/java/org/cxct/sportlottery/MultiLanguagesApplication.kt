@@ -46,7 +46,6 @@ import org.cxct.sportlottery.ui.maintenance.MaintenanceViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechViewModel
 import org.cxct.sportlottery.ui.news.NewsViewModel
-import org.cxct.sportlottery.ui.permission.GooglePermissionViewModel
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.authbind.AuthViewModel
 import org.cxct.sportlottery.ui.profileCenter.cancelaccount.CancelAccountViewModel
@@ -143,7 +142,6 @@ class MultiLanguagesApplication : Application() {
         viewModel { AccountHistoryViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { TransactionStatusViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { MyFavoriteViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { GooglePermissionViewModel(get(), get(), get()) }
         viewModel { NewsViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { RedEnveLopeModel(get(), get(), get(), get(), get(), get()) }
         viewModel { MainTabViewModel(get(), get(), get(), get(), get(), get()) }
