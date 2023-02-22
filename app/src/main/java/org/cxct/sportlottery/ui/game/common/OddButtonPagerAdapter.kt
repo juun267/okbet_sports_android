@@ -27,7 +27,6 @@ import org.cxct.sportlottery.util.TextUtil
 
 
 class OddButtonPagerAdapter(
-    private val oddListWidth:Double
 ) :RecyclerView.Adapter<OddButtonPagerViewHolder>(
 
 ) {
@@ -38,7 +37,7 @@ class OddButtonPagerAdapter(
     private var matchOdd: MatchOdd? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OddButtonPagerViewHolder {
-        return OddButtonPagerViewHolder(OddBtnList(parent.context,oddListWidth), oddStateRefreshListener)
+        return OddButtonPagerViewHolder(OddBtnList(parent.context), oddStateRefreshListener)
     }
 
     override fun onViewRecycled(holder: OddButtonPagerViewHolder) {

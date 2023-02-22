@@ -8,8 +8,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     app:srlDragRate="0.3"
     app:srlEnableLoadMore="true"
-    app:srlEnablePureScrollMode="true"
-    tools:context=".ui.game.hall.GameV3Fragment">
+    app:srlEnablePureScrollMode="true">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar_layout"

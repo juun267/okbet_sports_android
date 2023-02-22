@@ -236,7 +236,7 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
     ) : ViewHolderTimer(itemView) {
 
         private val oddButtonPagerAdapter by lazy {
-                OddButtonPagerAdapter(ScreenUtil.getScreenWidth(itemView.context) * (5/8.7))
+                OddButtonPagerAdapter()
         }
 
         init {

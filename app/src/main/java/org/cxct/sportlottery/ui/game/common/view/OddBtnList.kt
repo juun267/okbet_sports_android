@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.game.common.view
 
 import android.content.Context
+import android.content.res.Resources
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
@@ -18,7 +19,6 @@ import timber.log.Timber
 
 class OddBtnList @JvmOverloads constructor(
     context: Context,
-    oddListWidth: Double = 66.dp.toDouble(),
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
 ) : LinearLayout(context, attrs, defStyleAttr) {
@@ -29,7 +29,7 @@ class OddBtnList @JvmOverloads constructor(
     private var oddBtnDraw: OddsButton2? = null
     private var oddBtnOther: OddsButton2? = null
 
-    private val oddWidth = ((oddListWidth.toInt().pxToDp - 4.dp) / 3).dp
+    private val oddWidth = context.dp2px(66)
     private val margin = context.dp2px(4.5f)
     private val oddBtnParams = LayoutParams(oddWidth, 44.dp).apply {
         topMargin = margin
@@ -47,7 +47,12 @@ class OddBtnList @JvmOverloads constructor(
             maxLines = 3
             gravity = Gravity.CENTER
         }
-        Timber.d("OddBtnList：oddWidth: $oddWidth")
+//        Timber.d("OddBtnList：oddWidth: $oddWidth")
+//        Timber.d("OddBtnList：10.dp: ${10.dp}")
+//        Timber.d("OddBtnList：context.dp2px(10): ${context.dp2px(10)}")
+        Timber.d("OddBtnList：Resources.getSystem().displayMetrics.density: ${Resources.getSystem().displayMetrics.density}")
+        Timber.d("OddBtnList：resources.displayMetrics.density: ${resources.displayMetrics.density}")
+        Timber.d("OddBtnList：resources.displayMetrics.widthPixels: ${resources.displayMetrics.widthPixels}")
         addView(oddBtnType, LayoutParams(oddWidth, 29.dp))
 
         oddBtnHome = createOddBtn()
