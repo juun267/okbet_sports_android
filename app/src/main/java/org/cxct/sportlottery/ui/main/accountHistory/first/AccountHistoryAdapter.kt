@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.main.accountHistory.first
 
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
