@@ -45,6 +45,8 @@ class LoginViewModel(
         get() = _validResult
     val isLoading: LiveData<Boolean> //使用者餘額
         get() = _isLoading
+    val inviteCodeMsg: LiveData<String?>
+        get() = _inviteCodeMsg
 
     private val _isLoading = MutableLiveData<Boolean>()
     private val _loginFormState = MutableLiveData<LoginFormState>()
@@ -53,6 +55,7 @@ class LoginViewModel(
     private val _validCodeResult = MutableLiveData<ValidCodeResult?>()
     private val _validResult = MutableLiveData<LogoutResult>()
     private val _msgCodeResult = MutableLiveData<SmsResult?>()
+    private val _inviteCodeMsg = MutableLiveData<String?>()
 
     val accountMsg: LiveData<Pair<String?, Boolean>>
         get() = _accountMsg
@@ -224,6 +227,23 @@ class LoginViewModel(
             }
             _msgCodeResult.postValue(result)
         }
+    }
+
+    /**
+     * 输入邀请码
+     */
+    fun checkInviteCode(inviteCode: String?) {
+        _inviteCodeMsg.value = when {
+            inviteCode.isNullOrEmpty() -> {
+                if (sConfigData?.enableInviteCode != FLAG_OPEN)
+                    null
+                else
+                    LocalUtils.getString(R.string.error_input_empty)
+            }
+            !VerifyConstUtil.verifyInviteCode(inviteCode) -> LocalUtils.getString(if (sConfigData?.enableBettingStation == FLAG_OPEN) R.string.error_recommend_code else R.string.error_recommend_agent)
+            else -> null
+        }
+        focusChangeCheckAllInputComplete()
     }
 
     /**

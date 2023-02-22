@@ -1272,4 +1272,6 @@
     <string name="pls_enter_correct_mobile">请输入正确的手机</string>
     <string name="pls_enter_correct_email">请输入正确的邮箱</string>
     <string name="next">下一步</string>
+    <string name="hint_phone_format">手机号码需为09开头的11位数字</string>
+    <string name="hint_referral_code">推荐码(选填)</string>
 </resources>

@@ -1259,4 +1259,6 @@
     <string name="pls_enter_correct_mobile">Mời nhập chính xác SĐT</string>
     <string name="pls_enter_correct_email">Mời nhập chính xác Email</string>
     <string name="next">Bước tiếp theo</string>
+    <string name="hint_phone_format">SĐT gồm 11 số, và 09 bắt đầu</string>
+    <string name="hint_referral_code">Mã giới thiệu (Chọn nhập)</string>
 </resources>

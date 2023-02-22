@@ -146,28 +146,28 @@
 
 
                     <TextView
-                        android:id="@+id/label_user_id"
+                        android:id="@+id/label_user_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_user_nickname"
                         android:layout_marginStart="16dp"
                         android:layout_toEndOf="@+id/rl_head"
-                        android:text="@string/user_id_colon"
+                        android:text="@string/member_account"
                         android:textColor="@color/color_7F7F7F_999999"
                         android:textSize="@dimen/textSize12sp" />
 
                     <TextView
-                        android:id="@+id/tv_user_id"
+                        android:id="@+id/tv_user_username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_user_nickname"
                         android:layout_marginEnd="20dp"
-                        android:layout_toEndOf="@+id/label_user_id"
+                        android:layout_toEndOf="@+id/label_user_name"
                         android:textColor="@color/color_6C7BA8_A7B2C4"
                         android:textSize="@dimen/textSize12sp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/label_user_id"
-                        app:layout_constraintTop_toTopOf="@id/label_user_id"
+                        app:layout_constraintStart_toEndOf="@id/label_user_name"
+                        app:layout_constraintTop_toTopOf="@id/label_user_name"
                         tools:text="48745884554" />
 
                     <ImageView
