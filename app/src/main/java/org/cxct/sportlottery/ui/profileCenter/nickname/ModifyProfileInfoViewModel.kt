@@ -212,7 +212,7 @@ class ModifyProfileInfoViewModel(
     private fun checkPhone(context: Context, phone: String?) {
         _phoneErrorMsg.value = when {
             phone.isNullOrBlank() -> context.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyPhone(phone) -> context.getString(R.string.error_phone_number)
+            !VerifyConstUtil.verifyPhone(phone) -> context.getString(R.string.hint_phone_format)
             else -> ""
         }
     }
