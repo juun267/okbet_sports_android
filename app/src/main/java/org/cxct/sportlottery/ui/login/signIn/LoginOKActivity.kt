@@ -169,12 +169,12 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         val deviceId = Settings.Secure.getString(applicationContext.contentResolver,
             Settings.Secure.ANDROID_ID)
         var appVersion = org.cxct.sportlottery.BuildConfig.VERSION_NAME
-        if (lin_login_code.isVisible) {
+        if (viewModel.loginType == LOGIN_TYPE_CODE) {
             loading()
             val account = binding.eetAccount.text.toString()
             val smsCode = binding.eetVerificationCode.text.toString()
             var inviteCode =
-                if (viewModel.inviteCodeMsg.value.isNullOrEmpty()) null else binding.eetRecommendCode.text.toString()
+                if (viewModel.inviteCodeMsg.value.isNullOrEmpty()) binding.eetRecommendCode.text.toString() else null
             val loginRequest = LoginRequest(
                 account = account,
                 password = null,
@@ -265,6 +265,9 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 it,
                 false
             )
+            if (it == null) {
+                viewModel.queryPlatform(binding.eetRecommendCode.text.toString())
+            }
         }
         viewModel.accountMsg.observe(this) {
             binding.etAccount.setError(

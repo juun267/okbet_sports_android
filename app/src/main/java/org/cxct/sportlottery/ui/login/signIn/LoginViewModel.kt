@@ -19,6 +19,7 @@ import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity.Companion.LOGIN_TYPE_PWD
 import org.cxct.sportlottery.util.AFInAppEventUtil
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.VerifyConstUtil
@@ -84,7 +85,7 @@ class LoginViewModel(
     val account by lazy { loginRepository.account }
     val password by lazy { loginRepository.password }
 
-    var loginType = 1
+    var loginType = LOGIN_TYPE_PWD
         set(value) {
             field = value
             checkAllInputComplete()
@@ -235,9 +236,6 @@ class LoginViewModel(
     fun checkInviteCode(inviteCode: String?) {
         _inviteCodeMsg.value = when {
             inviteCode.isNullOrEmpty() -> {
-                if (sConfigData?.enableInviteCode != FLAG_OPEN)
-                    null
-                else
                     LocalUtils.getString(R.string.error_input_empty)
             }
             !VerifyConstUtil.verifyInviteCode(inviteCode) -> LocalUtils.getString(if (sConfigData?.enableBettingStation == FLAG_OPEN) R.string.error_recommend_code else R.string.error_recommend_agent)
@@ -353,4 +351,17 @@ class LoginViewModel(
         _isLoading.postValue(false)
     }
 
+    fun queryPlatform(inviteCode: String) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.bettingStationService.queryPlatform(inviteCode)
+            }
+            if (result?.success == true) {
+
+            } else {
+                _inviteCodeMsg.value = result?.msg
+                focusChangeCheckAllInputComplete()
+            }
+        }
+    }
 }
