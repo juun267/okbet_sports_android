@@ -84,7 +84,7 @@ class LoginViewModel(
     val account by lazy { loginRepository.account }
     val password by lazy { loginRepository.password }
 
-    var loginType = 0
+    var loginType = 1
         set(value) {
             field = value
             checkAllInputComplete()

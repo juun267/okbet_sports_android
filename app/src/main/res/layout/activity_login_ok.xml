@@ -78,7 +78,7 @@
                         app:hintText="@string/hint_referral_code"
                         app:isResponsiveIconColor="false"
                         app:labelText="@string/hint_referral_code"
-                        app:iconSignifier="@drawable/ic_login_recommend"
+                        app:iconSignifier="@drawable/ic_referral_code"
                         app:labelTextStyle="normal"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
