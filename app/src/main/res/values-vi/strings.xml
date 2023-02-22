@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="language_setting">Ngôn ngữ</string>
     <string name="loading">đang tải</string>
     <string name="connect_first">vui lòng kết nối mạng</string>
     <string name="error_url_fail">chuyển đổi địa chỉ bị lỗi</string>
@@ -116,7 +115,6 @@
     <string name="dialog_security_error">Bạn đã nhập một mã xác minh sai.</string>
     <string name="hint_security_code">Nhập mã</string>
     <string name="dialog_security_need_phone">Thông tin cá nhân của bạn chưa hoàn chỉnh, vui lòng liên hệ với bộ phận chăm sóc khách hàng.</string>
-    <string name="btn_agreement">Thỏa thuận mở tài khoản</string>
     <string name="have_account">Bạn đã có tài khoản?</string>
     <string name="btn_login">Đăng nhập</string>
     <string name="btn_register">Đăng ký</string>
@@ -124,7 +122,6 @@
     <string name="poker">Cờ vua</string>
     <string name="slot">"Trò Chơi "</string>
     <string name="fishing">Bắn cá</string>
-    <string name="more">hơn</string>
     <string name="home_tan_main">THỂ THAO</string>
     <string name="home_tab_in_play">TRONG TRẬN</string>
     <string name="home_tab_today">HÔM NAY</string>
@@ -136,8 +133,6 @@
     <string name="home_tab_eps">CƯỢC ĐẶC BIỆT</string>
     <string name="label_all">Tất cả</string>
     <string name="display_more">Hiển thị nhiều hơn</string>
-    <string name="label_account_history">Lịch sử</string>
-    <string name="label_transaction_status">Đã cược</string>
     <string name="conspire">Xiên</string>
     <string name="champion">CƯỢC CHUNG CUỘC</string>
     <string name="league">Giải đấu</string>
@@ -148,16 +143,9 @@
     <string name="friday">Thứ sáu</string>
     <string name="saturday">Thứ bảy</string>
     <string name="sunday">Chủ nhật</string>
-    <string name="game_announcement">Thông báo trò trơi</string>
-    <string name="member_benefits">Quyền lợi thành viên</string>
-    <string name="transfer_notes">Ghi chú chuyển khoản</string>
-    <string name="best_recommend">Đề xuất tốt nhất</string>
-    <string name="navigation_web">Mạng điều hướng</string>
     <string name="other">Sắp tới</string>
     <string name="unknown_name"></string>
-    <string name="sport_game">Sport</string>
     <string name="left_menu_odds_type_setting">Cài đặt thị trường</string>
-    <string name="profile_center">Trang cá nhân</string>
     <string name="member_level">Cấp bậc hội viên</string>
     <string name="game_settlement">Kết quả trận đấu</string>
     <string name="app_download">Tải xuống ứng dụng</string>
@@ -465,8 +453,6 @@
     <string name="message_withdraw_maintain">Hệ thống rút tiền đang được nâng cấp, vui lòng đợi</string>
     <string name="text_money_get_success">Rút tiền thành công vui lòng đợi nhân viên CSKH kiểm duyệt</string>
     <string name="withdraw_setting">Cài đặt rút tiền</string>
-    <string name="tail_number">Số đuôi</string>
-    <string name="bind_start_time">mặc định</string>
     <string name="select_bank">Chọn ngân hàng</string>
     <string name="withdraw_amount">Số tiền rút</string>
     <string name="withdraw_password">Mật khẩu rút tiền</string>
@@ -476,7 +462,6 @@
     <string name="withdraw_crypto_fee_hint">Phí rút tiền(%1$s)：%2$s</string>
     <string name="hint_four_number_password">Vui lòng nhập mật khẩu rút tiền</string>
     <string name="hint_please_enter_withdraw_password">Mật khẩu rút tiền</string>
-    <string name="add_new">Thêm mới</string>
     <string name="add_credit_card">Thêm mới thẻ ngân hàng</string>
     <string name="add_crypto_card">Thêm mới tiền ảo</string>
     <string name="add_e_wallet">Thêm mới eWallet</string>
@@ -604,7 +589,6 @@
     <string name="sorry_website_is_now_maintenance">Trang web hiện đang được bảo trì</string>
     <string name="if_there_is_any_question_please_consult">Nếu bạn có bất kỳ câu hỏi nào, xin vui lòng đi đến tư vấn%1$s</string>
     <string name="bottom_nav_home">Trang chủ</string>
-    <string name="bottom_nav_my_account">Của tôi</string>
     <string name="sport">Thể thao</string>
     <string name="live">Live</string>
     <string name="lottery_description">Có hơn trăm cách chơi xổ số để bạn trúng thưởng! Chúng tôi cung cấp cho người chơi nhiều nội dung trò chơi phong phú khác nhau, \ n cam kết tạo ra một môi trường trò chơi giải trí chất lượng cao, mang lại kết quả công bằng và mở thưởng công khai minh bạch nhất</string>
@@ -643,7 +627,6 @@
     <string name="available_amount">Số tiền hợp lệ</string>
     <string name="win_lose">Thắng/ thua</string>
     <string name="all_sport">Tất cả các môn thể thao</string>
-    <string name="back_to_top">Quay lại đầu trang</string>
     <string name="total">Tổng</string>
     <string name="keyboard_max">Tối đa</string>
     <string name="odds_button_name_first">Thứ nhất</string>
@@ -876,20 +859,16 @@
     <!--自我禁制-->
 
     <!--登入手機驗證-->
-    <string name="other_link">LIÊN KẾT HỮU DỤNG KHÁC</string>
     <string name="about_us">Chúng tôi</string>
     <string name="responsible">Trách nhiệm</string>
     <string name="terms_conditions">Thoả thuận</string>
     <string name="privacy_policy">Bảo mật</string>
     <string name="help">CẦN TRỢ GIÚP?</string>
-    <string name="official_partner">Đối tác chính thức</string>
     <string name="faqs">Q&amp;A</string>
     <string name="live_chat">Trò Chuyện Trực Tuyến</string>
     <string name="contact">Liên Hệ</string>
-    <string name="btm_navigation_hint">%s is a Registered Trade Mark, brand and registered business name.</string>
     <string name="front_side_result">Kết quả phía trước</string>
     <string name="reverse_side_result">Kết quả ngược lại</string>
-    <string name="btm_navigation_language">Tiếng Việt</string>
     <string name="btm_navigation_affiliate">Đại lý</string>
     <string name="expire_date">Thời gian hết hạn chứng chỉ</string>
     <string name="self_limit_froze_impotent_1">Tự loại trừ có hiệu lực ngay sau khi thiết lập</string>
@@ -898,7 +877,6 @@
     <string name="self_limit_froze_impotent_4">Trong thời gian tự loại trừ, nếu bạn cố gắng mở một tài khoản mới, tài khoản có thể bị đóng băng sau khi hệ thống phát hiện ra.</string>
     <string name="self_limit_froze_impotent_5">Trong thời gian tự loại trừ, bạn có thể liên hệ với bộ phận dịch vụ khách hàng để hủy chức năng tự loại trừ.</string>
     <string name="self_limit_froze_impotent_6">Sau khi quá trình tự loại trừ hết hạn, tài khoản của bạn sẽ tự động được kích hoạt lại.</string>
-    <string name="text_chose_language">Chọn ngôn ngữ của bạn</string>
     <!-- 複式串關詳情 -->
     <string name="password_hint">Vui lòng nhập mật khẩu đăng nhập của bạn</string>
     <string name="account_hint">Vui lòng nhập tài khoản hội viên của bạn</string>
@@ -974,8 +952,6 @@
     <string name="bet_info_bet_lock_hint">Kèo chấp đã đóng</string>
     <string name="bet_info_no_parlay_hint">Trận đấu không hỗ trợ đá xiên.</string>
     <string name="sport_relative">Liên quan thể thao</string>
-    <string name="setting">Cài đặt hệ thống</string>
-    <string name="service">Phục vụ</string>
     <string name="red_envelope_congratulations">Chúc mừng</string>
     <string name="pls_check_amount">Mời tra cứu số dư trong tài khoản</string>
     <string name="redenvelope_fail">Thật không may</string>
@@ -994,7 +970,6 @@
     <string name="redenvelope_amount">Số tiền</string>
     <string name="tran_type">Loại giao dịch</string>
     <string name="redenvelope_record">lịch Sử  Tiền lì xì</string>
-    <string name="redenvelope_amount_sub">Số tiền nhận thực tế：</string>
     <string name="btn_sure">Xác nhận</string>
     <string name="Outlets_Reserve">Trang web đặt hẹn</string>
     <string name="current_balance">Số dư hiện tại</string>
@@ -1093,7 +1068,6 @@
     <string name="km">Km</string>
     <string name="league_filter">Lọc trận đấu</string>
     <string name="outlet">Trạm cược</string>
-    <string name="reset_password">Đặt lại mật khẩu</string>
     <string name="my_bank_card">" Của tôi %1$s</string>
     <string name="local_time">Giờ địa phương:</string>
     <string name="half_first_short">Hiệp 1</string>
@@ -1111,9 +1085,6 @@
     <string name="new_login_password">Mật khẩu đăng nhập mới</string>
     <string name="new_login_password_confirm">Xác nhận mật khẩu đăng nhập mới</string>
     <string name="to_back_login">Trở về trang đăng nhập</string>
-     <string name="has_send_message_to_phone">Mã xác minh đã gửi đến SĐT của bạn</string>
-    <string name="get_phone_code">Nhận</string>
-    <string name="reget_phone_code">Nhận lại</string>
     <string name="reget_phone_code_for">Nhận lại</string>
     <string name="error_wechat">Lỗi định dạng ID WeChat</string>
     <string name="comingsoon">Sắp ra mắt</string>
@@ -1218,7 +1189,6 @@
     <string name="str_odds_description">Mô tả tỷ lệ cược</string>
     <string name="str_bet_parlay">CƯỢC XÂU</string>
     <string name="str_bet_way">Kiểu cược</string>
-    <string name="new_games_new_discovery">Game mới, khám phá mới</string>
     <string name="pls_enter_days_format">Mời nhập số ngày (≥%d ngày)</string>
     <string name="more_than_days_format">Phải hơn %d ngày</string>
     <string name="regular_score">Chính thức</string>
