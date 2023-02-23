@@ -425,6 +425,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                     binding.etPassword.setError(null, false)
                 }
             }
+            viewModel.focusChangeCheckAllInputComplete()
         }
     }
 
