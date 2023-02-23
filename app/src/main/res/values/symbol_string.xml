@@ -46,6 +46,7 @@
     <string name="language_en">English</string>
     <string name="language_vi">Tiếng Việt</string>
     <string name="language_th">ภาษาไทย</string>
+    <string name="language_phi">Tagalog</string>
 
     <string name="edittext_digits_email">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@._%+-</string>
     <string name="edittext_digits_int">0123456789</string>

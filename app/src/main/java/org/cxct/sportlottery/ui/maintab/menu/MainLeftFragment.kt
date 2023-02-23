@@ -253,8 +253,9 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private fun initLanguageView() {
         languageAdapter = LanguageAdapter(
             listOf(
-                LanguageManager.Language.ZH,
                 LanguageManager.Language.EN,
+                LanguageManager.Language.PHI,
+                LanguageManager.Language.ZH,
                 LanguageManager.Language.VI,
             )
         )

@@ -96,6 +96,9 @@ class RechargePicSelectorDialog(
             LanguageManager.Language.EN -> LanguageConfig.ENGLISH
             LanguageManager.Language.VI -> LanguageConfig.VIETNAM
             LanguageManager.Language.TH -> LanguageConfig.ENGLISH // 套件無支援
+            else ->{
+                LanguageConfig.ENGLISH
+            }
         }
     }
 

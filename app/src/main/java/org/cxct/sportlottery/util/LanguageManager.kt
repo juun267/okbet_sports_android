@@ -10,7 +10,7 @@ import java.util.*
 
 object LanguageManager {
 
-    enum class Language(val key: String) { ZH("zh"), ZHT("zht"), EN("en"), VI("vi"), TH("th") }
+    enum class Language(val key: String) { ZH("zh"), ZHT("zht"), EN("en"), VI("vi"), TH("th"), PHI("phi") }
 
     /**
      * 获取系统的locale
@@ -32,6 +32,7 @@ object LanguageManager {
             Language.EN.key -> Language.EN
             Language.VI.key -> Language.VI
             Language.TH.key -> Language.TH
+            Language.PHI.key -> Language.PHI
             else -> {
                 //若APP local 未設定過語系，就使用系統語系判斷
                 val local = getSystemLocale(context)
@@ -39,6 +40,7 @@ object LanguageManager {
                     local.language == Locale.ENGLISH.language -> Language.EN
                     local.language == Locale("vi").language -> Language.VI
                     local.language == Locale("th").language -> Language.TH
+                    local.language == Locale("phi").language -> Language.PHI
                     (local.language == Locale.SIMPLIFIED_CHINESE.language && local.country == Locale.SIMPLIFIED_CHINESE.country)
                             || local.language == Locale.TRADITIONAL_CHINESE.language -> Language.ZH
                     else -> Language.values().find { it.key == BuildConfig.DEFAULT_LANGUAGE }
@@ -54,6 +56,7 @@ object LanguageManager {
             Language.ZH -> R.drawable.ic_flag_cn
             Language.VI -> R.drawable.ic_flag_vi
             Language.TH -> R.drawable.ic_flag_th
+            Language.PHI -> R.drawable.ic_flag_phi
             else -> R.drawable.ic_flag_en
         }
     }
@@ -63,6 +66,7 @@ object LanguageManager {
             Language.ZH -> "zh"
             Language.VI -> "vi"
             Language.TH -> "th"
+            Language.PHI -> "phi"
             else -> "en"
         }
     }
@@ -72,6 +76,7 @@ object LanguageManager {
             Language.ZH -> context?.resources?.getString(R.string.language_cn) ?: ""
             Language.VI -> context?.resources?.getString(R.string.language_vi) ?: ""
             Language.TH -> context?.resources?.getString(R.string.language_th) ?: ""
+            Language.PHI -> context?.resources?.getString(R.string.language_phi) ?: ""
             else -> context?.resources?.getString(R.string.language_en) ?: ""
         }
     }
@@ -82,6 +87,8 @@ object LanguageManager {
             context?.resources?.getString(R.string.language_en) ?: "",
             context?.resources?.getString(R.string.language_vi) ?: "",
             context?.resources?.getString(R.string.language_th) ?: "",
+            context?.resources?.getString(R.string.language_phi) ?: "",
+            ""
         )
     }
 
@@ -97,6 +104,7 @@ object LanguageManager {
             Language.EN -> Locale.ENGLISH
             Language.VI -> Locale("vi")
             Language.TH -> Locale("th")
+            Language.PHI -> Locale("phi")
         }
     }
 
