@@ -10,8 +10,8 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES
 import androidx.core.content.FileProvider
+import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.network.Constants
-import org.cxct.sportlottery.network.Constants.getStoreName
 import timber.log.Timber
 import java.io.File
 import java.util.*
@@ -135,7 +135,7 @@ object AppUpdateManager {
     }
 
     fun jumpMarketApp(context: Context, url: String) {
-        when (getStoreName()) {
+        when (BuildConfig.FLAVOR) {
             "google" -> {
                 val intent = Intent(Intent.ACTION_VIEW).apply {
                     data = Uri.parse(url)

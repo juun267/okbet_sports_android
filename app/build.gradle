@@ -20,13 +20,13 @@ android {
         applicationId "com.okbet.ph"
         minSdk 23
         targetSdk 31
-        versionName "1.1.37"
-        versionCode 59
+        versionName "1.1.34"
+        versionCode 56
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         ndk {
-            abiFilters 'arm64-v8a', 'armeabi-v7a'/*, 'armeabi'*/ /*, 'x86','x86_64'*/             \
+            abiFilters 'arm64-v8a', 'armeabi-v7a'/*, 'armeabi'*/ /*, 'x86','x86_64'*/              \
 
         }
         resValue "string", "app_name", "OKBET"
@@ -36,9 +36,7 @@ android {
         buildConfigField "String", "SYSTEM_CURREMCY_SIGN", "\"₱\""
         buildConfigField 'Boolean', 'MOCK', 'false'
         manifestPlaceholders = [
-                JPUSH_PKGNAME          : applicationId,
-                JPUSH_APPKEY           : "6ce6dade62a7563b526bf021", //JPush上注册的包名对应的appkey.
-                JPUSH_CHANNEL          : "default", //暂时填写默认值即可.
+                CHANNEL                : "default",
                 NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
                 INVITE_CODE            : ""
         ]
@@ -99,11 +97,7 @@ android {
     productFlavors {
         forqa {
             buildConfigField "String", "CHANNEL_NAME", "\"spplat1\""
-            applicationId "com.happysport.sl.test"
-            manifestPlaceholders = [
-                    JPUSH_PKGNAME: applicationId,
-                    JPUSH_APPKEY : "2efc0f50829574b4db4b1dc8", //JPush上注册的包名对应的appkey.
-            ]
+            applicationId "com.okbet.sport.test"
         }
         OkbetPH {
         }
@@ -113,43 +107,43 @@ android {
         }
         google {
             manifestPlaceholders = [
-                    JPUSH_CHANNEL: "google",
+                    CHANNEL: productFlavors,
             ]
         }
         huawei {
             manifestPlaceholders = [
-                    JPUSH_CHANNEL: "huawei",
-                    INVITE_CODE  : "huawei8"
+                    CHANNEL    : "huawei",
+                    INVITE_CODE: "huawei8"
             ]
         }
         xiaomi {
             manifestPlaceholders = [
-                    JPUSH_CHANNEL: "xiaomi",
-                    INVITE_CODE  : "xiaomi8"
+                    CHANNEL    : "xiaomi",
+                    INVITE_CODE: "xiaomi8"
             ]
         }
         oppo {
             manifestPlaceholders = [
-                    JPUSH_CHANNEL: "oppo",
-                    INVITE_CODE  : "oppo8"
+                    CHANNEL    : "oppo",
+                    INVITE_CODE: "oppo8"
             ]
         }
         vivo {
             manifestPlaceholders = [
-                    JPUSH_CHANNEL: "vivo",
-                    INVITE_CODE  : "vivo8"
+                    CHANNEL    : "vivo",
+                    INVITE_CODE: "vivo8"
             ]
         }
         samgsung {
             manifestPlaceholders = [
-                    JPUSH_CHANNEL: "samgsung",
-                    INVITE_CODE  : "samsung8"
+                    CHANNEL    : "samgsung",
+                    INVITE_CODE: "samsung8"
             ]
         }
         inmobi {
             manifestPlaceholders = [
-                    JPUSH_CHANNEL: "inmobi",
-                    INVITE_CODE  : "inmobi"
+                    CHANNEL    : "inmobi",
+                    INVITE_CODE: "inmobi"
             ]
         }
         //okbet9测试环境
@@ -157,20 +151,12 @@ android {
             buildConfigField "String", "CHANNEL_NAME", "\"cdplat1\""
             resValue "string", "app_name", "OKbet9"
             applicationId "com.okbet.cdplat1"
-            manifestPlaceholders = [
-                    JPUSH_PKGNAME: applicationId,
-                    JPUSH_APPKEY : "0ef3e0b1b397bd252f23b2ac",
-            ]
         }
         //okbet9正式环境
         spk9 {
             buildConfigField "String", "CHANNEL_NAME", "\"spk9\""
             resValue "string", "app_name", "OKbet9"
             applicationId "com.okbet.spcd"
-            manifestPlaceholders = [
-                    JPUSH_PKGNAME: applicationId,
-                    JPUSH_APPKEY : "0cf211236261e69cc4bf682e",
-            ]
         }
     }
 
@@ -340,11 +326,6 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:31.2.2')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
-    implementation 'com.google.firebase:firebase-auth-ktx'
-    implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
-    implementation 'com.facebook.android:facebook-android-sdk:8.x'
-
-
     //mmkv
     implementation 'com.tencent:mmkv:1.2.13'
     implementation 'com.github.FlyJingFish:GradientTextView:1.0.7'

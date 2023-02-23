@@ -62,10 +62,6 @@ object Constants {
         return mSocketUrl
     }
 
-    fun getStoreName(): String {
-        return getMetaDataDefValue(MultiLanguagesApplication.appContext, "JPUSH_CHANNEL", "default")
-    }
-
     fun getInviteCode(): String {
         return getMetaDataDefValue(MultiLanguagesApplication.appContext, "INVITE_CODE", "")
     }
@@ -283,7 +279,7 @@ object Constants {
 
     //獲取檢查APP是否有更新版本的URL //輪詢 SERVER_URL_LIST 成功的那組 serverUrl 用來 download .apk
     fun getCheckAppUpdateUrl(serverUrl: String?): String {
-        return "https://download." + serverUrl + (if (isUAT()) "/platform/" else "/sportnative/platform/") + BuildConfig.CHANNEL_NAME + "/version-Android" + (if (getStoreName() != "google") "" else "-${getStoreName()}") + ".json"
+        return "https://download." + serverUrl + (if (isUAT()) "/platform/" else "/sportnative/platform/") + BuildConfig.CHANNEL_NAME + "/version-Android" + (if (BuildConfig.FLAVOR != "google") "" else "-${BuildConfig.FLAVOR}") + ".json"
     }
 
     //.apk 下載 url

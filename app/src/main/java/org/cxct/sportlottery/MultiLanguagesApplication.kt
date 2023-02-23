@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import cn.jpush.android.api.JPushInterface
 import com.adjust.sdk.Adjust
 import com.adjust.sdk.AdjustConfig
 import com.adjust.sdk.LogLevel
@@ -225,9 +224,6 @@ class MultiLanguagesApplication : Application() {
         NetworkStatusManager.init(this)
 
         setupTimber()
-
-        initJPush()
-
         setNightMode()
 
         //生成UUID作為設備識別碼
@@ -265,19 +261,6 @@ class MultiLanguagesApplication : Application() {
             Timber.plant(DebugTree())
         }
     }
-
-    //極光推播
-    private fun initJPush() {
-        JPushInterface.setDebugMode(false) //参数为 true 表示打开调试模式，可看到 sdk 的日志。
-        JPushInterface.init(this)
-
-        //参数为 true 表示打开调试模式，可看到 sdk 的日志。
-        //[Martin] 拔掉JAnalytics功能是因為上架被阻擋
-//        JAnalyticsInterface.init(this);
-//        JAnalyticsInterface.initCrashHandler(this);
-//        JAnalyticsInterface.setDebugMode(false);
-    }
-
     private fun setNightMode() {
         if (isNightMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
