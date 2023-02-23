@@ -15,7 +15,7 @@
     <string name="error_identity_photo">Hindi na-upload ang larawan ng ID</string>
     <string name="congratulation_win">Binabati kita! Bet suffix:%1$s Panalo:%2$s</string>
     <string name="warning_cancel">Paalaala ang bet suffix code:%s ay nakansela</string>
-    <string name="prompt">提示</string>
+    <string name="prompt">prompt</string>
     <string name="btn_confirm">Kumpirmahin</string>
     <string name="btn_cancel">Kanselahin</string>
     <string name="btn_retry">Subukan ulit</string>
@@ -150,7 +150,7 @@
     <string name="friday2"> Biyernes</string>
     <string name="saturday2">Sabado</string>
     <string name="sunday2">Linggo</string>
-    <string name="sunday2_cn">周日</string>
+    <string name="sunday2_cn">Linggo</string>
     <string name="january">Isa</string>
     <string name="february">Dalawa</string>
     <string name="march">Tatlo</string>
@@ -207,7 +207,7 @@
     <string name="total_score">Kabuuang puntos</string>
     <string name="total_score_over_time">Kabuuang puntos\nOvertime</string>
     <string name="plat">Line</string>
-    <string name="round">局</string>
+    <string name="round">Set</string>
     <string name="score">Set</string>
     <string name="first_plat">Unang set</string>
     <string name="second_plat">Pangalawang set</string>
@@ -1066,8 +1066,8 @@
     <string name="cancel_account">Mag-logout</string>
     <string name="match_analyze">Match analysis</string>
     <string name="half">Kalahati</string>
-    <string name="click_upload_id_photo">点击上传证件照片</string>
-    <string name="main_tab_sport">体育赛事</string>
+    <string name="click_upload_id_photo">I-click para mag-upload ng ID na larawan</string>
+    <string name="main_tab_sport">Sports</string>
     <string name="main_tab_betlist">Bet slip</string>
     <string name="main_tab_mine">Akin</string>
     <string name="skin_mode">Mode: Araw/Gabi</string>

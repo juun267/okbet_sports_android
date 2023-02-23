@@ -553,9 +553,9 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_language"
+                    android:paddingStart="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="@dimen/dp_10"
                     android:background="@color/color_bbbbbb_ffffff"
                     android:visibility="gone"
                     tools:itemCount="3"
