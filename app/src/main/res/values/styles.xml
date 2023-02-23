@@ -90,7 +90,7 @@
         <item name="android:fontFamily">@font/d_din_bold</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/color_FFFFFF_414655</item>
-        <item name="android:textSize">@dimen/textSize18sp</item>
+        <item name="android:textSize">22sp</item>
     </style>
 
     <declare-styleable name="SwipeMenuLayout">

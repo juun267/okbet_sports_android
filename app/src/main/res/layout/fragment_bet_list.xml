@@ -239,7 +239,6 @@
                         <ProgressBar
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:layout_marginStart="12dp"
                             android:indeterminateDrawable="@drawable/rotate_bet_loading_view" />
                     </LinearLayout>
 
@@ -260,11 +259,10 @@
                     android:id="@+id/tvBalance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/din_pro_medium"
+                    android:fontFamily="@font/d_din_bold"
                     android:text="12.6445.45.45"
                     android:textColor="@color/color_414655"
                     android:textSize="@dimen/textSize14sp"
-                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/btnParlaySingle"
                     app:layout_constraintStart_toStartOf="@+id/textView6"
                     app:layout_constraintTop_toBottomOf="@+id/textView6" />

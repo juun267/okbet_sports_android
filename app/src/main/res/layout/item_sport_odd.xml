@@ -83,7 +83,7 @@
                         android:src="@drawable/ic_n"
                         android:visibility="gone"
                         tools:ignore="ContentDescription"
-                        tools:visibility="visible" />
+                        tools:visibility="gone" />
 
                     <TextView
                         android:id="@+id/league_corner_kicks"
@@ -96,7 +96,7 @@
                         android:textSize="@dimen/textSize10sp"
                         android:visibility="gone"
                         tools:text="1-5"
-                        tools:visibility="visible" />
+                        tools:visibility="gone" />
 
                     <TextView
                         android:id="@+id/league_spt"
@@ -120,6 +120,8 @@
                         android:textColor="@color/color_6C7BA8"
                         android:textSize="@dimen/textSize10sp"
                         android:visibility="gone"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         tools:text="第二盘"
                         tools:visibility="visible" />
 

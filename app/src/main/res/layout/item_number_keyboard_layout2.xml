@@ -39,7 +39,7 @@
             android:gravity="center"
             android:text="+100"
             android:textColor="@color/color_FFFFFF"
-            android:textSize="@dimen/textSize18sp" />
+            android:textSize="22sp" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -75,7 +75,7 @@
             android:gravity="center"
             android:text="+500"
             android:textColor="@color/color_FFFFFF"
-            android:textSize="@dimen/textSize18sp" />
+            android:textSize="22sp" />
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -172,7 +172,7 @@
             android:gravity="center"
             android:text="Max"
             android:textColor="@color/color_FFFFFF"
-            android:textSize="@dimen/textSize18sp" />
+            android:textSize="22sp" />
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>

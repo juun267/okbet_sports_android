@@ -25,7 +25,8 @@
             android:id="@+id/ll_control_connect"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingVertical="7.5dp"
+            android:paddingTop="7.5dp"
+            android:paddingBottom="3dp"
             app:layout_constraintHeight_default="wrap">
 
             <androidx.constraintlayout.widget.ConstraintLayout

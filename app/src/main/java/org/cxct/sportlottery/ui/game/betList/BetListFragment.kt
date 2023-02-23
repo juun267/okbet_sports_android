@@ -336,7 +336,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.PARLAY_SINGLE
             refreshLlMoreOption()
             binding.clTitle.ivArrow.setImageResource(
-                R.drawable.ic_arrow_up_double
+                R.drawable.ic_arrow_down_double
             )
             line_shadow.visible()
         }
@@ -469,7 +469,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                     tvTextSelect.setCompoundDrawablesWithIntrinsicBounds(
                         null,
                         null,
-                        ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_up_blue, null),
+                        ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_down_double, null),
                         null
                     )
                     val popupWindow = OkPopupWindow(
@@ -683,7 +683,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                         BetListRefactorAdapter.BetRvType.PARLAY_SINGLE
 //                    binding.clTotalInfo.gone()
                     binding.clTitle.ivArrow.setImageResource(
-                        R.drawable.ic_arrow_up_double
+                        R.drawable.ic_arrow_down_double
                     )
                     refreshLlMoreOption()
                     BetInfoRepository.switchParlayMode()
