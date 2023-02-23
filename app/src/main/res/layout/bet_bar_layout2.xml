@@ -5,12 +5,12 @@
     android:layout_width="wrap_content"
     android:id="@+id/flContentFloating"
     android:background="@drawable/bg_rect_ffffff"
-    android:layout_height="wrap_content">
+    android:layout_height="40dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:paddingVertical="3dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@drawable/bg_parlay_float_window">
 
         <TextView

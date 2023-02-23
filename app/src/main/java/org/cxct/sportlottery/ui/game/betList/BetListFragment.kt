@@ -336,7 +336,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.PARLAY_SINGLE
             refreshLlMoreOption()
             binding.clTitle.ivArrow.setImageResource(
-                R.drawable.ic_arrow_down_double
+                R.drawable.ic_arrow_up_double
             )
             line_shadow.visible()
         }
@@ -683,7 +683,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                         BetListRefactorAdapter.BetRvType.PARLAY_SINGLE
 //                    binding.clTotalInfo.gone()
                     binding.clTitle.ivArrow.setImageResource(
-                        R.drawable.ic_arrow_down_double
+                        R.drawable.ic_single_bet_delete
                     )
                     refreshLlMoreOption()
                     BetInfoRepository.switchParlayMode()
