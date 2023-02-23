@@ -769,122 +769,122 @@
     <string name="commission_detail_desc_20">因两笔皆未完成打码，所以依下列公式</string>
     <string name="commission_detail_desc_21">存款(1000+2000)-已完成打码(500+1000)=1500</string>
     <string name="commission_detail_desc_22">得出尚需达成1500打码后，方能进行提款</string>
-    <string name="commissiom_completed">完成</string>
-    <string name="commission_example">范例</string>
-    <string name="bet_slip">投注单</string>
-    <string name="bank_list_not_bink">您尚未绑定%1$s</string>
-    <string name="bank_list_add">新增%1$s</string>
-    <string name="bank_list_bank">银行卡</string>
-    <string name="bank_list_crypto">虚拟币</string>
-    <string name="bank_list_e_wallet">eWallet</string>
-    <string name="type_of_certificate">证件类型</string>
-    <string name="take_id_photo">拍摄证件照片</string>
-    <string name="prepare_your_id_photo">注备好您的证件照片</string>
-    <string name="id_description1">・请确认您的证件照正确朝上</string>
-    <string name="id_description2">・请确认您的证件照清晰可见</string>
-    <string name="id_description3">・请避免闪光或是反射</string>
+    <string name="commissiom_completed">Tapos</string>
+    <string name="commission_example">Halimbawa</string>
+    <string name="bet_slip">Bet slip</string>
+    <string name="bank_list_not_bink">Hindi nakatali %1$s</string>
+    <string name="bank_list_add">Magdagdag ng %1$s</string>
+    <string name="bank_list_bank">Bank card</string>
+    <string name="bank_list_crypto">Virtual currency</string>
+    <string name="bank_list_e_wallet">EWallet</string>
+    <string name="type_of_certificate">Uri ng certificate</string>
+    <string name="take_id_photo">Kumuha ng mga larawan ng ID</string>
+    <string name="prepare_your_id_photo">Ihanda ang iyong ID photo</string>
+    <string name="id_description1">・Pakikumpirma na ang iyong ID na larawan ay nakaharap nang tama</string>
+    <string name="id_description2">・Pakitiyak na malinaw na nakikita ang iyong ID na larawan</string>
+    <string name="id_description3">・Mangyaring iwasan ang flash o reflection</string>
     <string name="identity_card">Identity Card</string>
     <string name="passport">Passport</string>
-    <string name="face_scan_result">脸部扫描结果</string>
-    <string name="verify_failed_please_retry">验证失败 请重新再试</string>
-    <string name="not_verify">未验证</string>
-    <string name="select_id_type">选择身份证件类型</string>
-    <string name="scan_tool_bar">扫描结果</string>
-    <string name="text_us_east_time">• 以美东 (UTC-4) 时间计算</string>
-    <string name="text_us_east_time_bet_record">以美东（UTC-4）时间计算</string>
-    <string name="text_cant_play">发生错误,请稍后再试。</string>
+    <string name="face_scan_result">Resulta ng pag-scan sa mukha</string>
+    <string name="verify_failed_please_retry">Nabigo ang pag-verify, pakisubukang muli</string>
+    <string name="not_verify">Hindi na-verify</string>
+    <string name="select_id_type">Piliin ang Uri ng ID</string>
+    <string name="scan_tool_bar">Resulta ng pag-scan</string>
+    <string name="text_us_east_time">• Calculated in US Eastern (UTC-4) time</string>
+    <string name="text_us_east_time_bet_record">Calculated in US Eastern (UTC-4) time</string>
+    <string name="text_cant_play">May naganap na error. Mangyaring subukan muli sa ibang pagkakataon.</string>
     <string name="text_security_money">存款押金：%s</string>
-    <string name="text_security_money2">%s 日后解冻</string>
-    <string name="customer_service_title">客服中心</string>
+    <string name="text_security_money2">%s Mag-unfreeze mamaya</string>
+    <string name="customer_service_title">Customer Service</string>
 
     <!--自我禁制-->
-    <string name="self_limit">自我禁制</string>
-    <string name="self_limit_impotent">重要事项</string>
-    <string name="self_limit_confirm">确认申请</string>
-    <string name="self_limit_fix_confirm">确认修改</string>
-    <string name="self_limit_confirm_done">申请已生效</string>
-    <string name="self_limit_fix_confirm_done">修改已生效</string>
-    <string name="self_limit_account_login_limit">账号登入限制</string>
-    <string name="self_limit_froze_content">为了保护您的权益，您可以随时申请\"自我禁制\"，当您申请自我禁制后，在自我禁制时间内您将无法登入游戏享受我们提供的服务，提供的选项如下：</string>
-    <string name="self_limit_froze_days">天数</string>
-    <string name="self_limit_froze_input_days">请输入天数</string>
-    <string name="self_limit_per_bet_limit">每次投注上限</string>
-    <string name="self_limit_per_bet_limit_content">您可以申请\"每次投注上限\"来限制您每次的投注额。申请每次投注上限后，您每次的投注总额将不得超过您的设定值：</string>
-    <string name="self_limit_per_bet_limit_highest">上限</string>
-    <string name="self_limit_per_bet_limit_input_highest">请输入数字</string>
-    <string name="self_limit_per_bet_limit_impotent">您随时可以修改您的每次投注上限。修改将于申请送出后生效</string>
-    <string name="self_limit_per_bet_limit_user">• 已设置投注上限：%1$s %2$s</string>
-    <string name="self_limit_per_bet_limit_user_none">无</string>
-    <string name="self_limit_per_bet_limit_user_limit">• 最高可设定:%1$s %2$s-%1$s %3$s</string>
-    <string name="self_limit_error">资料格式不符，请输入整数</string>
-    <string name="self_limit_input_password_for_confirm">请输入登录密码以确认申请</string>
-    <string name="self_limit_input_password_for_modification">请输入登录密码以确认修改</string>
-    <string name="self_limit_submit_input_password_hint">请输入密码</string>
+    <string name="self_limit">Self restraint</string>
+    <string name="self_limit_impotent">Mahahalagang bagay</string>
+    <string name="self_limit_confirm">Kumpirmahin ang aplikasyon</string>
+    <string name="self_limit_fix_confirm">Kumpirmahin ang mga pagbabago</string>
+    <string name="self_limit_confirm_done">May bisa ang aplikasyon</string>
+    <string name="self_limit_fix_confirm_done">Nagkaroon ng bisa ang mga pagbabago</string>
+    <string name="self_limit_account_login_limit">Account login restrictions</string>
+    <string name="self_limit_froze_content">Upang maprotektahan ang iyong mga karapatan at interes, maaari kang mag-aplay para sa \"self-exclusion\" anumang oras. Pagkatapos mong mag-apply para sa self-exclusion, hindi ka na makakapag-log in sa laro upang tamasahin ang mga serbisyong ibinibigay namin sa panahon ng sarili. -panahon ng pagbubukod. Ang mga opsyon ay ang mga sumusunod:</string>
+    <string name="self_limit_froze_days">Bilang ng mga araw</string>
+    <string name="self_limit_froze_input_days">Paki lagay ang bilang ng araw</string>
+    <string name="self_limit_per_bet_limit">Limitasyon sa bawat taya</string>
+    <string name="self_limit_per_bet_limit_content">Maaari kang mag-aplay para sa \"Bawat limitasyon sa pagtaya\" upang limitahan ang halaga ng iyong pagtaya sa bawat oras. Pagkatapos mag-apply para sa pinakamataas na limitasyon ng pagtaya sa bawat oras, ang iyong kabuuang halaga ng pagtaya sa bawat oras ay hindi lalampas sa iyong itinakdang halaga:</string>
+    <string name="self_limit_per_bet_limit_highest">Upper limit</string>
+    <string name="self_limit_per_bet_limit_input_highest"> ipasok ang mga numero</string>
+    <string name="self_limit_per_bet_limit_impotent">Maaari mong baguhin ang iyong limitasyon sa bawat taya anumang oras. Magiging epektibo ang mga pagbabago pagkatapos maipadala ang aplikasyon.</string>
+    <string name="self_limit_per_bet_limit_user">• Betting upper limit has been set：%1$s %2$s</string>
+    <string name="self_limit_per_bet_limit_user_none">Wala</string>
+    <string name="self_limit_per_bet_limit_user_limit">• Maximum configurable:%1$s %2$s-%1$s %3$s</string>
+    <string name="self_limit_error">Hindi tumutugma ang format ng data, mangyaring ilagay ang integer</string>
+    <string name="self_limit_input_password_for_confirm">Mangyaring ipasok ang login password upang kumpirmahin ang application</string>
+    <string name="self_limit_input_password_for_modification">Mangyaring ipasok ang password sa pag-login upang kumpirmahin ang pagbabago</string>
+    <string name="self_limit_submit_input_password_hint">Pakilagay ang password</string>
 
     <!--自我禁制-->
-    <string name="e_address">详细地址</string>
-    <string name="hint_e_address">请输入联系地址</string>
-    <string name="initial_withdrawal_needs_credited">初次提款需入账：%1$s %2$s</string>
-    <string name="make_sure_valid_account">初次提款会暂时扣留 %1$s %2$s，以确保您是有效账户。此款项于 30 天后会返还。</string>
+    <string name="e_address">Address</string>
+    <string name="hint_e_address">Pakilagay ang contact address</string>
+    <string name="initial_withdrawal_needs_credited">Ang unang withdrawal kailangan ma credited: %1$s %2$s</string>
+    <string name="make_sure_valid_account">Pansamantalang pipigilan ang %1$s %2$s para sa mga paunang withdrawal upang matiyak na mayroon kang wastong account. Ire-refund ang halagang ito pagkatapos ng 30 araw.</string>
     <!--登入手機驗證-->
-    <string name="about_us">关于我们</string>
-    <string name="responsible">博彩责任</string>
-    <string name="terms_conditions">规则与条款</string>
-    <string name="privacy_policy">隐私与政策</string>
+    <string name="about_us">Tungkol sa Amin</string>
+    <string name="responsible">Gambling Responsibility</string>
+    <string name="terms_conditions">Tuntunin at Kundisyon</string>
+    <string name="privacy_policy">Pagkapribado at Patakaran</string>
     <string name="help">需要帮助？</string>
-    <string name="faqs">常见问题</string>
-    <string name="live_chat">在线客服</string>
-    <string name="contact">联系我们</string>
-    <string name="front_side_result">证件正面扫描结果</string>
-    <string name="reverse_side_result">证件反面扫描结果</string>
-    <string name="btm_navigation_affiliate">代理加盟</string>
-    <string name="expire_date">证件过期时间</string>
-    <string name="self_limit_froze_impotent_1">自我禁制设定后立即生效</string>
-    <string name="self_limit_froze_impotent_2">我们将在您设定的自我排除期限内保留您的全部余额。 但是如果自上次登录时间起超过6个月的话，OKBET将保留收和您收取月度管理费的权利，直至账户余额为零。</string>
-    <string name="self_limit_froze_impotent_3">若您在其他的博弈游戏中申请自我禁制，并不会自动适用于本游戏中。</string>
-    <string name="self_limit_froze_impotent_4">在自我禁制期间内，若您尝试开设新账号，在系统检测后属实，该账号可能被冻结。</string>
-    <string name="self_limit_froze_impotent_5">在自我排除期间内，您将无法停用这项功能，直到最短的排除时间期限届满。</string>
-    <string name="self_limit_froze_impotent_6">在自我禁制到期后，您的账号将自动恢复激活。</string>
+    <string name="faqs">Karaniwang problema</string>
+    <string name="live_chat">Online serbisyo</string>
+    <string name="contact">Kontakin kami</string>
+    <string name="front_side_result">Front side scan resulta ng dokumento</string>
+    <string name="reverse_side_result">I-scan ang resulta ng likod ng dokumento</string>
+    <string name="btm_navigation_affiliate">Ahente para sumali</string>
+    <string name="expire_date">Oras ng pag-expire ng sertipiko</string>
+    <string name="self_limit_froze_impotent_1">Self-exclusions take effect immediately upon setting</string>
+    <string name="self_limit_froze_impotent_2">Hahawakan namin ang iyong buong balanse para sa panahon ng self-exclusion na itinakda mo. Gayunpaman, kung ito ay higit sa 6 na buwan mula noong huling oras ng pag-log in, inilalaan ng OKBET ang karapatang singilin ka ng buwanang bayarin sa pamamahala hanggang sa zero ang balanse ng account.</string>
+    <string name="self_limit_froze_impotent_3">Kung mag-aplay ka para sa self-exclusion sa iba pang mga laro sa pagsusugal, hindi ito awtomatikong malalapat sa larong ito.</string>
+    <string name="self_limit_froze_impotent_4">Sa panahon ng pagbubukod sa sarili, kung susubukan mong magbukas ng bagong account at totoo ito pagkatapos matukoy ng system, maaaring ma-freeze ang account.</string>
+    <string name="self_limit_froze_impotent_5">Sa panahon ng self-exclusion period, hindi mo magagawang i-disable ang feature na ito hanggang sa mag-expire ang minimum exclusion period.</string>
+    <string name="self_limit_froze_impotent_6">Pagkatapos mag-expire ang self-exclusion, awtomatikong muling maa-activate ang iyong account.</string>
     <!-- 複式串關詳情 -->
-    <string name="password_hint">请输入您的登录密码</string>
-    <string name="account_hint">请输入您的会员帐号</string>
-    <string name="submit_success">提交成功</string>
+    <string name="password_hint">Pakipasok ang iyong password sa pag-log in</string>
+    <string name="account_hint">Pakilagay ang iyong member account number</string>
+    <string name="submit_success">Matagumpay na naisumite ang feedback</string>
     <!-- 搜尋 -->
-    <string name="text_search">搜索赛事</string>
-    <string name="text_clear">清除</string>
-    <string name="text_search_history">搜索历史</string>
-    <string name="text_search_no_result">搜寻结果为空</string>
+    <string name="text_search">Search events</string>
+    <string name="text_clear">I- clear</string>
+    <string name="text_search_history">Search history</string>
+    <string name="text_search_no_result">Walang laman ang resulta</string>
     <!-- 搜尋end -->
-    <string name="text_combo_title">复式串关</string>
-    <string name="text_combo_item">项次</string>
+    <string name="text_combo_title">Double chain</string>
+    <string name="text_combo_item">Aytem</string>
     <!-- 注單內球員玩法 -->
-    <string name="sco_name_first">最先进球球员</string>
-    <string name="sco_name_any">任何时间进球球员</string>
-    <string name="sco_name_last">最后进球球员</string>
+    <string name="sco_name_first">Most goalscorer</string>
+    <string name="sco_name_any">Goal scorer anumang oras</string>
+    <string name="sco_name_last">Huling goal scorer</string>
     <string name="plus">+</string>
 
     <!--google位置存取-->
-    <string name="allow_location_permission">允许位置使用权</string>
+    <string name="allow_location_permission">Payagan ang access sa lokasyon</string>
 
     <!--歷史紀錄start-->
-    <string name="text_account_history_time">交易时间</string>
-    <string name="text_account_history_number">订单号</string>
-    <string name="text_account_history_amount">交易金额</string>
-    <string name="text_account_history_balance">余额</string>
+    <string name="text_account_history_time">Oras ng transaksyon</string>
+    <string name="text_account_history_number">Numero ng order</string>
+    <string name="text_account_history_amount">Halaga ng transaksyon</string>
+    <string name="text_account_history_balance">Balanse</string>
 
-    <string name="text_account_history_bet">注单</string>
-    <string name="text_account_history_recharge">存款</string>
-    <string name="text_account_history_withdraw">提款</string>
-    <string name="text_account_history_activity">活动金额</string>
-    <string name="text_account_history_credit">信用账户金额</string>
-    <string name="waiting">待成立注单</string>
+    <string name="text_account_history_bet">Bet slip</string>
+    <string name="text_account_history_recharge">Deposito</string>
+    <string name="text_account_history_withdraw">Withdraw pera</string>
+    <string name="text_account_history_activity">Presyo ng actividad</string>
+    <string name="text_account_history_credit">Credit account amount</string>
+    <string name="waiting">Pending bet</string>
     <!--歷史紀錄end-->
 
     <!--region 最新消息-->
-    <string name="news_tab_game">游戏</string>
-    <string name="news_tab_system">系统</string>
-    <string name="news_tab_plat">平台</string>
-    <string name="news_detail">详细</string>
+    <string name="news_tab_game">Laro</string>
+    <string name="news_tab_system">Sistema</string>
+    <string name="news_tab_plat">Platform</string>
+    <string name="news_detail">Detalyado</string>
     <!--endregion 最新消息-->
 
     <!--region 宣傳頁-->
@@ -893,289 +893,288 @@
     <!--region 我的賽事-->
     <!--endregion-->
 
-    <string name="current_corner">当前总数:</string>
-    <string name="cancel_auto">注單未成立</string>
-    <string name="cancel_manual">退款</string>
-    <string name="error_input_has_blank">输入错误，仅限输入英文，请勿输入连续空格。</string>
+    <string name="current_corner">Current total:</string>
+    <string name="cancel_auto">Ang taya ay hindi itinatag</string>
+    <string name="cancel_manual">Refund</string>
+    <string name="error_input_has_blank">Error sa pag-input, English lang ang ipasok, mangyaring huwag magpasok ng mga tuluy-tuloy na espasyo.</string>
 
     <!--region 確認年齡彈窗-->
     <string name="dialog_age_verify_statement">
-        OKBET 致力于为所有客户提供安全、舒适的游戏体验。
-        \n\n对于绝大多数人来说，游戏是一项令人愉快的休闲活动。但是，我们意识到有时候游戏对某些客户来说不再有趣。
-        \n\n我们强烈建议您在继续之前花一些时间阅读我们的博彩责任和声明。并且，严禁 21 岁及以下的用户使用。
-        \n\n我们的责任是帮助我们的客户安全、负责任地赌博，降低伤害风险，并帮助需要治疗的人得到治疗。
-        \n\n如果您或您的家人遇到游戏问题，请随时联系 keepitfun@pagcor.ph。
-        \n\n博彩
-        \n\n博彩是指涉及投注、赔率和奖品的活动。虽然它被认为是一种娱乐形式，但如果过度沉迷，可能会对玩家、他的家人和社区产生负面影响。
-        \n\n不允许参与博彩人群
-        \n• 21 岁以下的人；任何学校、学院或大学的学生
-        \n• 政府官员及其直系亲属（配偶、子女和父母）
-        \n• 菲律宾武装部队 (AFP) 和菲律宾国家警察 (PNP) 的成员及其直系亲属（配偶、子女和父母）
-        \n\n博彩责任提示
-        \n\n了解游戏
-        \n在您了解游戏的玩法和获胜几率之前，请不要进行投注。
-        \n随时向工作人员询问游戏规则和机会。
-        \n\n规划性娱乐\n除了博彩以外还有其他消遣可以像赌博一样轻松或愉快。
-        \n去赌场只是众多休闲活动之一。
-        \n\n设定时间和金钱限制
-        \n计划好你的博彩娱乐日程，确定起立和离开的时间。为什么不设置闹钟提醒您？
-        \n您也可以安排人在一两个小时后接您。
-        \n\n自我意识
-        \n以放松的状态和清晰的思路开始您的游戏。
-        \n不要鲁莽。在玩游戏时，在压力下或情绪激动的时候做出的快速决定可能是有害的。
-        \n\n保持健康的社会心态
-        \n不要把游戏看得太认真。对与你一起玩的人更加开放和友好，让游戏变得更加有趣和令人兴奋。
-        \n\n如果您觉得您或您的家人有赌博问题，您可以通过以下方式联系我们的客户支持：（客户服务电子邮件/电话）。
-        \n此外，OKBET 已与支持设施合作，以解决与赌博问题相关的问题。您可以直接联系以下帮助中心：
-        \n\nLife Change Recovery Center
-        \nDr. Randy Misael S. Dellosa
-        \n105 Scout Rallos Street, Kamuning
-        \nBrgy. Sacred Heart, Quezon City
-        \nTelephone numbers: (02) 415-7964 / 415-6529
-        \nWebsite: www.lifechangerecoverycenter.com
-        \n\nBridges of Hope Drugs and Alcohol Rehabilitation Foundation, Inc. Headquarters:
-        \n364 Aguirre Avenue, Phase 3, BF Homes, Parañaque City, Metro Manila
-        \nTel. No. (02) 622-0193
-        \nNew Manila Branch:
-        \n12 Orestes Lane, Mariposa Street
-        \nTel. No. (02) 502-0600; (0917) 856-0623
-        \nEmail: help@bridgesofhope.ph
-        \n\n我同意 OKBET 条款和条件以及以下声明：
-        \n1.我允许OKBET根据隐私政策向我发送更新和促销信息
-        \n2.我已年满 21 岁并已阅读并同意 OKBET 的条款和条件
-        \n3.我不是与菲律宾政府或其任何机构的运作直接相关的政府官员和/或雇员。
-        \n4.我不是菲律宾任何学校、学院或大学的学生。
-        \n5.我明白，如果我提供的信息被发现不正确，OKBET 有权根据其条款和条件对我的帐户进行处罚最终权利。</string>
-    <string name="dialog_age_verify_hint">我接受并同意OKBET</string>
-    <string name="dialog_age_verify_confirm">我已年满21岁</string>
-    <string name="dialog_age_verify_exit">离开</string>
+        Ang OKbet ay nakatuon sa pagbibigay ng ligtas at komportableng karanasan sa paglalaro para sa lahat ng mga customer.
+         \n\nPara sa karamihan ng mga tao, ang paglalaro ay isang kasiya-siyang aktibidad sa paglilibang. Gayunpaman, napagtanto namin na kung minsan ang mga laro ay hindi na masaya para sa ilang mga customer.
+         \n\nLubos naming inirerekomenda na maglaan ka ng ilang oras upang basahin ang aming Responsableng Pagsusugal at Disclaimer bago magpatuloy. Gayundin, ang mga user na 21 pababa ay mahigpit na ipinagbabawal.
+         \n\nAng aming responsibilidad ay tulungan ang aming mga customer na magsugal nang ligtas at responsable, bawasan ang panganib ng pinsala, at tulungan ang mga nangangailangan ng paggamot na makuha ito.
+         \n\nKung ikaw o ang iyong mga miyembro ng pamilya ay nakakaranas ng mga isyu sa laro, mangyaring huwag mag-atubiling makipag-ugnayan sa keepitfun@pagcor.ph.
+         \n\nPagsusugal
+         \n\nAng pagsusugal ay tumutukoy sa mga aktibidad na kinasasangkutan ng pagtaya, odds at premyo. Bagama\'t ito ay itinuturing na isang anyo ng libangan, maaari itong magkaroon ng negatibong epekto sa manlalaro, sa kanyang pamilya at sa komunidad kung labis na nagpapakasawa.
+         \n\nHindi pinapayagan ang mga nagsusugal
+         \n• Mga taong wala pang 21 taong gulang; mga mag-aaral ng anumang paaralan, kolehiyo o unibersidad
+         \n• Mga opisyal ng gobyerno at kanilang mga kapamilya (asawa, anak at magulang)
+         \n• Mga miyembro ng Armed Forces of the Philippines (AFP) at Philippine National Police (PNP) at ang kanilang mga malapit na miyembro ng pamilya (asawa, anak at magulang)
+         \n\nPaalala sa Responsableng Pagsusugal
+         \n\nAlamin ang tungkol sa laro
+         \nMangyaring huwag maglagay ng taya hangga\'t hindi mo naiintindihan kung paano nilalaro ang laro at ang posibilidad na manalo.
+         \n Huwag mag-atubiling magtanong sa staff tungkol sa mga panuntunan at pagkakataon ng laro.
+         \n\nPlanned Recreation\nMay iba pang mga libangan bukod sa pagsusugal na maaaring maging kasing-relax o kasiya-siya gaya ng pagsusugal.
+         \nAng pagpunta sa casino ay isa lamang sa maraming aktibidad sa paglilibang.
+         \n\nMagtakda ng mga limitasyon sa oras at pera
+         \nPlano ang iyong iskedyul ng paglalaro at entertainment at tukuyin kung kailan tatayo at aalis. Bakit hindi magtakda ng alarm para paalalahanan ka?
+         \nMaaari ka ring magsaayos na may susundo sa iyo sa loob ng isa o dalawang oras.
+         \n\nPagkamalayan sa sarili
+         \nSimulan ang iyong laro sa isang nakakarelaks na estado at may malinaw na pag-iisip.
+         \nHuwag maging walang ingat. Kapag naglalaro, ang mga desisyong snap na ginawa sa ilalim ng stress o sa mga emosyonal na sandali ay maaaring makapinsala.
+         \n\nPanatilihin ang isang malusog na saloobin sa lipunan
+         \nHuwag masyadong seryosohin ang laro. Ang pagiging mas bukas at palakaibigan sa mga taong kalaro mo ay ginagawang mas masaya at kapana-panabik ang laro.
+         \n\nKung sa tingin mo ikaw o ang isang tao sa iyong pamilya ay may problema sa pagsusugal, maaari kang makipag-ugnayan sa aming customer support sa: (customer service email/telepono).
+         \nDagdag pa rito, ang OKbet ay nakipagtulungan sa mga pasilidad ng suporta upang matugunan ang mga isyung nauugnay sa problema sa pagsusugal. Maaari kang direktang makipag-ugnayan sa mga sumusunod na help center:                      \n\nLife Change Recovery Center
+         \nDr Randy Misael S. Dellosa
+         \n105 Scout Rallos Street, Kamuning
+         \nBrgy. Sacred Heart, Quezon City
+         \nMga numero ng telepono: (02) 415-7964 / 415-6529
+         \nWebsite: www.lifechangerecoverycenter.com
+         \n\nBridges of Hope Drugs and Alcohol Rehabilitation Foundation, Inc. Headquarters:
+         \n364 Aguirre Avenue, Phase 3, BF Homes, Parañaque City, Metro Manila
+         \nTel. No. (02) 622-0193
+         \nSangay ng Bagong Maynila:
+         \n12 Orestes Lane, Mariposa Street
+         \nTel. No. (02) 502-0600; (0917) 856-0623
+         \nEmail: help@bridgesofhope.ph
+         \n\nSumasang-ayon ako sa mga tuntunin at kundisyon ng OKbet at sa sumusunod na pahayag:
+         \n1. Pinapayagan ko ang OKbet na magpadala sa akin ng mga update at promosyon alinsunod sa Patakaran sa Privacy
+         \n2. Ako ay higit sa 21 taong gulang at nabasa at sumasang-ayon sa mga tuntunin at kundisyon ng OKbet
+         \n3. Hindi ako opisyal ng gobyerno at/o empleyadong direktang nauugnay sa pagpapatakbo ng gobyerno ng Pilipinas o anumang ahensya nito.
+         \n4. Hindi ako estudyante ng anumang paaralan, kolehiyo o unibersidad sa Pilipinas.
+         \n5. Naiintindihan ko na kung ang impormasyong ibinigay ko ay napatunayang mali, ang OKbet ay may panghuling karapatan na parusahan ang aking account ayon sa mga tuntunin at kundisyon nito.
+    </string>
+    <string name="dialog_age_verify_hint">Tinatanggap at sumasang-ayon ako sa OKbet</string>
+    <string name="dialog_age_verify_confirm">Ako ay higit sa 21 taong gulang</string>
+    <string name="dialog_age_verify_exit">Umalis</string>
     <string name="dialog_age_verify_hint_and_terms_conditions">我接受并同意OKBET规则与条款</string>
     <!--endregion-->
 
-    <string name="esports">电子竞技</string>
-    <string name="coming_soon">即将推出</string>
-    <string name="timezone_change">时区切换</string>
-    <string name="timezone">时区</string>
+    <string name="esports">E-sports</string>
+    <string name="coming_soon">Malapit na</string>
+    <string name="timezone_change">Paglipat ng time zone</string>
+    <string name="timezone">Time zone</string>
 
     <!--region 大廳賠率按鈕-->
-    <string name="none">无</string>
+    <string name="none">Wala</string>
     <!--endregion-->
     <!--region 注單模塊調整-->
-    <string name="bet_info_bet_lock_hint">注单盘口已关闭</string>
-    <string name="bet_info_no_parlay_hint">赛事暂无支持串关</string>
-    <string name="sport_relative">体育相关</string>
-    <string name="red_envelope_congratulations">恭喜您抢到</string>
-    <string name="pls_check_amount">请至您的帐户内查询入帐金额</string>
-    <string name="redenvelope_fail">很遗憾</string>
-    <string name="redenvelope_fail_desp">很可惜没抢到红包</string>
-    <string name="hint_enter_city">请输入所在城市</string>
-    <string name="redenvelope_close_hint">确定关闭红包倒数？\n关闭倒数则不进入抢红包</string>
+    <string name="bet_info_bet_lock_hint">Ang bet line ay sarado</string>
+    <string name="bet_info_no_parlay_hint">Kasalukuyan walang suporta para sa kumpetisyon</string>
+    <string name="sport_relative">May kinalaman sa sports</string>
+    <string name="red_envelope_congratulations">Congratulation</string>
+    <string name="pls_check_amount">Mangyaring pumunta sa iyong account upang suriin ang na-kredito na halaga</string>
+    <string name="redenvelope_fail">Unfortunately</string>
+    <string name="redenvelope_fail_desp">Sayang hindi ko nakuha yung red envelope</string>
+    <string name="hint_enter_city">Paki lagay ang inyong lungsod</string>
+    <string name="redenvelope_close_hint">Sigurado ka bang isasara ang red envelope countdown? \n Kapag isasara mo ang countdown, hindi ka papasok sa red envelope grab</string>
     <!--endregion-->
 
-    <string name="verification_status">身份证验证</string>
+    <string name="verification_status">Pag-verify ng ID</string>
     <string name="register_identity_photo_front">上传身份证正面</string>
     <string name="register_identity_photo_hint_front">请点击上传身份证正面照</string>
     <string name="register_identity_photo_back">上传身份证背面</string>
     <string name="register_identity_photo_hint_back">请点击上传身份证背面照</string>
-    <string name="redenvelope_trantype_send">发红包</string>
-    <string name="redenvelope_trantype_received">收红包</string>
-    <string name="redenvelope_amount">红包金额</string>
-    <string name="tran_type">交易类型</string>
-    <string name="redenvelope_record">红包纪录</string>
-    <string name="btn_sure">确定</string>
-    <string name="Outlets_Reserve">网点预约</string>
-    <string name="current_balance">当前余额</string>
-    <string name="select_area">选择地区</string>
-    <string name="select_city">选择城市</string>
+    <string name="redenvelope_trantype_send">Pulang envelope</string>
+    <string name="redenvelope_trantype_received">Tumanggap ng pulang envelope</string>
+    <string name="redenvelope_amount">Halaga ng pulang sobre</string>
+    <string name="tran_type">Uri ng transaksyon</string>
+    <string name="redenvelope_record">Rekord ng pulang sobre</string>
+    <string name="btn_sure">Oo</string>
+    <string name="Outlets_Reserve">Network map about</string>
+    <string name="current_balance">Kasalukuyang balanse</string>
+    <string name="select_area">Piliin ang rehiyon</string>
+    <string name="select_city">Piliin ang lungsod</string>
     <string name="outlets_address">str_press_again_to_exit_the_program</string>
-    <string name="appointment_time">预约时间</string>
-    <string name="select_date">请选择日期</string>
-    <string name="select_time">请选择时间</string>
+    <string name="appointment_time">Appointment</string>
+    <string name="select_date">Mangyaring pumili ng petsa</string>
+    <string name="select_time">Mangyaring pumili ng oras</string>
 
     <!--region 20220714 新版投注單-->
-    <string name="bet_win">可赢</string>
-    <string name="bet_stake">投注</string>
-    <string name="total_capital">本金：%s</string>
-    <string name="total_win_amount">可赢：</string>
-    <string name="delete_bet">删除</string>
-    <string name="delete_bet_all">全部删除</string>
-    <string name="btn_login_bet">登录后可投注</string>
-    <string name="btn_remove_closed_selections">移除已关闭的选项</string>
-    <string name="bet_info_list_bet">投注</string>
-    <string name="bet_info_bet">投注</string>
+    <string name="bet_win">Maaaring manalo</string>
+    <string name="bet_stake">Taya</string>
+    <string name="total_capital">Stake：%s</string>
+    <string name="total_win_amount">Maaaring manalo：</string>
+    <string name="delete_bet">Tanggalin</string>
+    <string name="delete_bet_all">Delete lahat</string>
+    <string name="btn_login_bet">Tumaya pagkatapos mag-login</string>
+    <string name="btn_remove_closed_selections">Isara ang option</string>
+    <string name="bet_info_list_bet">Taya</string>
+    <string name="bet_info_bet">Taya</string>
     <!--endregion-->
 
-    <string name="new_games_beta">新游戏，测试版</string>
-    <string name="new_games">新游戏</string>
+    <string name="new_games_beta">Bagong laro, beta</string>
+    <string name="new_games">Bagong laro</string>
 
-    <string name="work_time_">营业时间：</string>
-    <string name="phone_">电话：</string>
-    <string name="appointment_">预约时间：</string>
-    <string name="outlets_address_">投注站地址：</string>
+    <string name="work_time_">Oras ng operation：</string>
+    <string name="phone_">Phone：</string>
+    <string name="appointment_">Appointment：</string>
+    <string name="outlets_address_">Betting shop address：</string>
     <string name="error_recharge_amount_format">充值额格式有誤</string>
     <string name="error_amount_limit_exceeded">金额超过限额</string>
 
-    <string name="kyc_type">证件类型</string>
-    <string name="kyc_num">证件号码</string>
-    <string name="kyc_type2">证件类型2</string>
-    <string name="kyc_num2">证件号码2</string>
-    <string name="kyc_pick_upload_id">请选择上传身份证明文件</string>
-    <string name="kyc_size_2_mb">文件大小不超过2MB</string>
-    <string name="kyc_contact_service">遇到问题？请联系在线客服</string>
-    <string name="kyc_contact_service_hilight">在线客服</string>
-    <string name="kyc_verify_first">请先进行实名验证。</string>
-    <string name="kyc_go_verify">立即前往认证</string>
+    <string name="kyc_type">Uri ng dokumento</string>
+    <string name="kyc_num">ID number</string>
+    <string name="kyc_type2">Uri ng dokumento 2</string>
+    <string name="kyc_num2">ID number 2</string>
+    <string name="kyc_pick_upload_id">Mangyaring piliin ang pag-upload ng dokumento ng pagkakakilanlan</string>
+    <string name="kyc_size_2_mb">Ang laki ng file ay hindi dapat lumampas sa 2MB</string>
+    <string name="kyc_contact_service">Nakasalubong problema? Mangyaring makipag-ugnayan sa online na serbisyo sa customer</string>
+    <string name="kyc_contact_service_hilight">Online na serbisyo</string>
+    <string name="kyc_verify_first">Mangyaring gawin muna ang tunay na pangalan na pag-verify.</string>
+    <string name="kyc_go_verify">Pumunta sa certification ngayon</string>
     <string name="kyc_you_wait">请点击"在线客服"按钮, 进行视频通话完成实名认证。</string>
-    <string name="kyc_verify_successful">您已完成实名验证！</string>
-    <string name="kyc_unverified">未验证</string>
-    <string name="kyc_passed">已验证</string>
-    <string name="kyc_enter_id_num">请输入证件号码</string>
+    <string name="kyc_verify_successful">Nakumpleto mo na ang tunay na pag-verify ng pangalan！</string>
+    <string name="kyc_unverified">Hindi na-verify</string>
+    <string name="kyc_passed">Na-verify</string>
+    <string name="kyc_enter_id_num">Pakilagay ang ID number</string>
 
-    <string name="next_step">下一步</string>
-    <string name="hint_select_document_type">请选择证件类型</string>
-    <string name="hint_select_document_number">请填写证件号码</string>
-    <string name="identity_number">证件号码</string>
-    <string name="identity_two_number">证件2号码</string>
-    <string name="hint_no_file_selected">未选择档案</string>
-    <string name="upload_id_photo">上传证件照片</string>
-    <string name="hint_file_selected">已选择档案</string>
-    <string name="select_file">选择档案</string>
-    <string name="select_file1">选择文件</string>
-    <string name="correct">波胆</string>
-    <string name="betting_setting">投注设置</string>
-    <string name="filter">筛选</string>
+    <string name="next_step">Next</string>
+    <string name="hint_select_document_type">Nakalimutan ang account/password</string>
+    <string name="hint_select_document_number">Pakilagay ang ID number</string>
+    <string name="identity_number">ID number</string>
+    <string name="identity_two_number">ID number 2</string>
+    <string name="hint_no_file_selected">Walang napiling file</string>
+    <string name="upload_id_photo">Mag-upload ng ID na larawan</string>
+    <string name="hint_file_selected">Piniling file</string>
+    <string name="select_file">Walang napiling file</string>
+    <string name="select_file1">Piliin ang file</string>
+    <string name="correct">Correct score</string>
+    <string name="betting_setting">Betting settings</string>
+    <string name="filter">Filter</string>
     <string name="league_filter">赛事筛选</string>
-    <string name="reverse_select">反选</string>
+    <string name="reverse_select">Invert selection</string>
     <string name="video">视频</string>
-    <string name="anime">动画</string>
+    <string name="anime">Animation</string>
 
     <string name="hint_bet_limit_range">%1$s-%2$s</string>
-    <string name="submitting">注单提交中</string>
-    <string name="bet_receipt_bet_quota_with_sign">投注</string>
-    <string name="bet_receipt_win_quota_with_sign">可赢</string>
-    <string name="bet_receipt_bet_quota_with_sign_money">投注金额：</string>
-    <string name="bet_receipt_win_quota_with_sign_max">最高可赢：</string>
+    <string name="submitting">Pagsumite ng taya</string>
+    <string name="bet_receipt_bet_quota_with_sign">Taya</string>
+    <string name="bet_receipt_win_quota_with_sign">Maaaring manalo</string>
+    <string name="bet_receipt_bet_quota_with_sign_money">Halaga ng taya：</string>
+    <string name="bet_receipt_win_quota_with_sign_max">Pinaka malaking mapapanalunan：</string>
 
-    <string name="bet_record_single">单串</string>
-    <string name="bet_record_parlay">复式</string>
+    <string name="bet_record_single">Iisang string</string>
+    <string name="bet_record_parlay">Multiple bets</string>
     <string name="bet_slip_id_is_copied">下注单ID已经复制到剪贴板</string>
 
-    <string name="main_tab_favorite">收藏赛事</string>
-    <string name="my_favorite_empty">您还没有收藏赛事</string>
-    <string name="cruel_write_off">残忍注销</string>
-    <string name="cancel_account">注销账号</string>
-    <string name="match_analyze">赛事分析</string>
-    <string name="half">半</string>
+    <string name="main_tab_favorite">Paboritong events</string>
+    <string name="my_favorite_empty">Wala kang paboritong mga event</string>
+    <string name="cruel_write_off">Still delete</string>
+    <string name="cancel_account">Mag-logout</string>
+    <string name="match_analyze">Match analysis</string>
+    <string name="half">Kalahati</string>
     <string name="click_upload_id_photo">点击上传证件照片</string>
     <string name="main_tab_sport">体育赛事</string>
-    <string name="main_tab_betlist">注单</string>
-    <string name="main_tab_mine">我的</string>
-    <string name="skin_mode">皮肤: 日/夜间</string>
-    <string name="live_streaming">直播</string>
-    <string name="transaction_record">交易记录明细</string>
-    <string name="current_version">当前版本</string>
-    <string name="payment_method">支付方式</string>
-    <string name="error_recommend_agent">未匹配到相关代理</string>
+    <string name="main_tab_betlist">Bet slip</string>
+    <string name="main_tab_mine">Akin</string>
+    <string name="skin_mode">Mode: Araw/Gabi</string>
+    <string name="live_streaming">Live streaming</string>
+    <string name="transaction_record">Transaction record details</string>
+    <string name="current_version">Kasalukuyang bersyon</string>
+    <string name="payment_method">Paraan ng Pagbayad</string>
+    <string name="error_recommend_agent">Walang kaugnay na proxy ang naitugma</string>
     <string name="login_welcome">Hi, 欢迎来到OKBET～</string>
-    <string name="betting">投注</string>
-    <string name="other_bet">其他投注</string>
-    <string name="sport_match">场赛事</string>
-    <string name="remove_account_warning">您确定要注销当前账号吗？</string>
-    <string name="km">千米</string>
-    <string name="outlet">投注站</string>
-    <string name="my_bank_card">我的%1$s</string>
-    <string name="local_time">当地时间:</string>
-    <string name="half_first_short">上</string>
-    <string name="half_second_short">下</string>
-    <string name="unbound_bank_card">您尚未绑定%1$s</string>
-    <string name="change_other_ID_photos">变更其他证件照</string>
-    <string name="customer_service">如需帮助，请</string>
-    <string name="error_full_name">您输入的姓名不正确</string>
-    <string name="hint_verification_code">请输入验证码</string>
-    <string name="hint_game_maintenance">该游戏维护中，请稍后尝试</string>
-    <string name="please_get_forget_password">请找回您的OKBet密码！</string>
-    <string name="to_back_login">返回登录页</string>
-    <string name="new_login_password">新登录密码</string>
-    <string name="new_login_password_confirm">确认新登录密码</string>
-    <string name="error_wechat">微信ID格式错误</string>
+    <string name="betting">Taya</string>
+    <string name="other_bet">Ibang taya</string>
+    <string name="sport_match">competition</string>
+    <string name="remove_account_warning">Sigurado ka bang nais mong kanselahin ang kasalukuyang account？</string>
+    <string name="km">Km</string>
+    <string name="outlet">Betting</string>
+    <string name="my_bank_card">Akin%1$s</string>
+    <string name="local_time">Lokal na Oras:</string>
+    <string name="half_first_short">Unang kalahati</string>
+    <string name="half_second_short">Ikalawang kalahati</string>
+    <string name="unbound_bank_card">Hindi mo natali ang %1$s</string>
+    <string name="change_other_ID_photos">Baguhin ang iba pang larawan ng ID</string>
+    <string name="customer_service">Kung kailangan ng tulong, mangyaring&#160;</string>
+    <string name="error_full_name">Pangalan na iyong inilagay ay mali</string>
+    <string name="hint_verification_code">Pakilagay ang verification code</string>
+    <string name="hint_game_maintenance">Ang laro ay maintenance, mangyaring subukan sa ibang pagkakataon</string>
+    <string name="please_get_forget_password">Paki hanap ulit ang iyong password sa OKBet!</string>
+    <string name="to_back_login">Bumalik sa login page</string>
+    <string name="new_login_password">Bagong login password</string>
+    <string name="new_login_password_confirm">Kumpirmahin ang bagong password sa pag-login</string>
+    <string name="error_wechat">Wechat ID ay mali</string>
     <string name="comingsoon">敬请期待</string>
-    <string name="forget_password">忘记密码</string>
-    <string name="member_name">会员</string>
-    <string name="home_recommend">推荐</string>
-    <string name="no_search_match">没有搜索到赛事</string>
-    <string name="match_live">赛事直播</string>
-    <string name="tiger_machine">老虎机</string>
-    <string name="hot_handicap">热门盘口</string>
-    <string name="hot_live_match">热门赛事直播</string>
-    <string name="hot_gaming_electronics">热门电子游戏</string>
-    <string name="hot_poker_game">棋牌游戏</string>
-    <string name="worldcup">世界杯</string>
-    <string name="sport_classify">体育分类</string>
-    <string name="check_all_inplay">查看全部滚球</string>
-    <string name="expand_live">观看直播</string>
-    <string name="home_live">直播</string>
-    <string name="home_sports">体育</string>
-    <string name="home_word_cup">世界杯</string>
-    <string name="home_slot">老虎机</string>
-    <string name="home_on_game">棋牌</string>
-    <string name="langugae_setting">语言设置</string>
-    <string name="setting_center">设置中心</string>
-    <string name="ou_odd">欧赔率</string>
-    <string name="home_in_play">滚球</string>
-    <string name="total_reward_amount">累计头奖金额</string>
-    <string name="hot_elec_game">热门大奖游戏</string>
-    <string name="win_line">独赢盘</string>
-    <string name="home_all_game">全部游戏</string>
+    <string name="forget_password">Nakalimutan ang password</string>
+    <string name="member_name">Miyembro</string>
+    <string name="home_recommend">Rekomenda</string>
+    <string name="no_search_match">No matches found</string>
+    <string name="match_live">Live event</string>
+    <string name="tiger_machine">Slot machine</string>
+    <string name="hot_handicap">Popular markets</string>
+    <string name="hot_live_match">Mga sikat na laban live</string>
+    <string name="hot_gaming_electronics">E-games</string>
+    <string name="hot_poker_game">Board game</string>
+    <string name="worldcup">World Cup</string>
+    <string name="sport_classify">Pag-uuri ng sports</string>
+    <string name="check_all_inplay">Tingnan lahat ng in-play</string>
+    <string name="expand_live">Manood ng live</string>
+    <string name="home_live">Live streaming</string>
+    <string name="home_sports">Sports</string>
+    <string name="home_word_cup">World Cup</string>
+    <string name="home_slot">Slot machine</string>
+    <string name="home_on_game">Chess</string>
+    <string name="langugae_setting">Setting ng wika</string>
+    <string name="setting_center">Itakda ang sentro</string>
+    <string name="ou_odd">European odds</string>
+    <string name="home_in_play">In-Play</string>
+    <string name="total_reward_amount">Pinagsama-samang halaga ng jackpot</string>
+    <string name="hot_elec_game">Mga Nangungunang Jackpot na Laro</string>
+    <string name="win_line">Linya ng pera</string>
+    <string name="home_all_game">Lahat ng laro</string>
 
-    <string name="draw_name">和局</string>
-    <string name="collse_live">收起直播</string>
-    <string name="home_back">返回</string>
-    <string name="enter_live">进入直播间</string>
+    <string name="draw_name">Tabla</string>
+    <string name="collse_live">Alisin ang live na broadcast</string>
+    <string name="home_back">Bumalik</string>
+    <string name="enter_live">Pumasok sa live room</string>
     <string name="text_1">1</string>
     <string name="text_2">2</string>
     <string name="text_x">X</string>
-    <string name="your_bet_order_success">您的注单下注成功</string>
-    <string name="your_bet_order_fail">投注失败,赔率己改变</string>
-    <string name="big_or_small">大小盘</string>
-    <string name="ou_hdp_hdp">让球盘</string>
-    <string name="see_more">查看更多</string>
+    <string name="your_bet_order_success">Matagumpay na nailagay ang iyong taya</string>
+    <string name="your_bet_order_fail">Hindi nataya ang inyong taya, nagbago ang odds</string>
+    <string name="big_or_small">Over/under na taya</string>
+    <string name="ou_hdp_hdp">Handicap</string>
+    <string name="see_more">Tingnan pa</string>
     <string name="less_than_the">小于</string>
     <string name="more_than_the">大于</string>
-    <string name="dont_have_game">暂无大奖游戏</string>
-    <string name="okbet_live_name">OKBET主播</string>
-    <string name="cs_center">帮助中心</string>
-    <string name="Pinned">已置顶</string>
-    <string name="Unpin">取消置顶</string>
-    <string name="new_game_and_testing">(新游戏，测试版)</string>
-    <string name="dont_have_slot_game">暂无棋牌游戏</string>
-    <string name="deadline">截止</string>
-    <string name="error_verification_code_forget">验证码错误</string>
-    <string name="place_enter_your_account">请输入用户名</string>
-    <string name="tips_login_password_success">登陆密码修改成功，请重新登录。</string>
-    <string name="error_tips_confirm_password">您输入的密码不一致，请重新输入</string>
-    <string name="hide_confirm_password">确认新登录密码</string>
-    <string name="error_new_password">密码为6-20个字符必须含有数字和字母的组合！</string>
+    <string name="dont_have_game">Wala pang jackpot game</string>
+    <string name="okbet_live_name">OKBET anchor</string>
+    <string name="cs_center">Help center</string>
+    <string name="Pinned">Naka-pin</string>
+    <string name="Unpin">I-unpin</string>
+    <string name="new_game_and_testing">(Bagong laro, beta)</string>
+    <string name="dont_have_slot_game">Walang board games</string>
+    <string name="deadline">Cut off</string>
+    <string name="error_verification_code_forget">Error sa verification code</string>
+    <string name="place_enter_your_account">Pakilagay ang user name</string>
+    <string name="tips_login_password_success">Matagumpay na napalitan ang password sa pag-log in, mangyaring mag-log in muli</string>
+    <string name="error_tips_confirm_password">Ang mga password na iyong inilagay ay hindi tugma, pakipasok muli</string>
+    <string name="hide_confirm_password">Kumpirmahin ang bagong login password</string>
+    <string name="error_new_password">Ang password ay 6-20 character at dapat maglaman ng kumbinasyon ng mga numero at titik!</string>
     <!--投注改版-->
-    <string name="accept_any_change_in_odds">接受任何赔率变化</string>
-    <string name="accept_better_change_in_odds">接受更好赔率变化</string>
-    <string name="accept_never_change_in_odds">永不接受赔率变化</string>
-    <string name="expand_more_combinations">展开组合</string>
-    <string name="stacked_combination">收起组合</string>
-    <string name="bet_parlay">+串关</string>
-    <string name="str_bet_parlay">串</string>
-    <string name="bet_single">单注</string>
-    <string name="str_if_accept_odds_changes_title">是否接受赔率变化说明</string>
-    <string name="str_if_accept_odds_changes_des_subtitle">因为赛事赔率可能随时会产生变化（特别是滚球阶段）。为了让您有能更好的下注体验。您可以选择以下三种投注方式。</string>
-    <string name="str_if_accept_odds_changes_des1">1.接受任何赔率变化—选择该选项时.我们会按照最新的赔率给您生成注单。</string>
-    <string name="str_if_accept_odds_changes_des2">2.接受最优赔率变化—选择该选项时 如果最新的赔率优于您选择的赔率，我们会生成注单。如果最新的赔率低于您选择的赔率，我们不会生成注单，并提醒您赔率变化。
-</string>
-    <string name="str_if_accept_odds_changes_des3">3.不接受赔率变化—选择该选项时：如果最新的赔率和您选择的赔率不同，我们不会生成注单，并提醒您赔率变化。</string>
-    <string name="str_ok_i_got_it">好的,我知道了</string>
-    <string name="str_return_last_step">返回上一步</string>
-    <string name="str_bet_other_game">下注其他盘口</string>
-    <string name="str_check_bets">查看注单</string>
-    <string name="str_press_again_to_exit_the_program">再按一次退出程序</string>
-    <string name="str_odds_changed">赔率已变化</string>
+    <string name="accept_any_change_in_odds">Tanggapin ang anumang pagbabago sa odds</string>
+    <string name="accept_better_change_in_odds">Tanggapin ang mas mahusay na mga pagbabago sa odds</string>
+    <string name="accept_never_change_in_odds">Huwag tanggapin ang mga pagbabago sa odds</string>
+    <string name="expand_more_combinations">Palawakin ang mas maraming kumbinasyon</string>
+    <string name="stacked_combination">Pinagsama-samang kumbinasyon</string>
+    <string name="bet_parlay">+Link up</string>
+    <string name="str_bet_parlay">String</string>
+    <string name="bet_single">Single bet</string>
+    <string name="str_if_accept_odds_changes_title">Kung tatanggapin ang paliwanag ng mga posibilidad na baguhin</string>
+    <string name="str_if_accept_odds_changes_des_subtitle">Dahil ang posibilidad ng event ay maaaring magbago anumang oras (lalo na sa live). Upang hayaan kang magkaroon ng mas magandang karanasan sa pagtaya. Maaari kang pumili mula sa sumusunod na tatlong paraan ng pagtaya.</string>
+    <string name="str_if_accept_odds_changes_des1">1. Tanggapin ang anumang pagbabago sa odds - kapag pinili mo ang opsyong ito, bubuo kami ng bet slip para sa iyo ayon sa pinakabagong odds.</string>
+    <string name="str_if_accept_odds_changes_des2">2. Tanggapin ang pinakamahusay na pagbabago ng odds - kapag pinili mo ang opsyong ito, kung ang pinakabagong logro ay mas mahusay kaysa sa odds na iyong pinili, bubuo kami ng bet slip. Kung ang pinakabagong mga logro ay mas mababa kaysa sa iyong mga napiling odds, hindi kami bubuo ng slip ng taya at ipaalala sa iyo ang pagbabago ng odds.</string>
+    <string name="str_if_accept_odds_changes_des3">3. Huwag tumanggap ng mga pagbabago sa odds--kapag pinili mo ang opsyong ito: kung ang pinakabagong odds ay iba sa iyong napiling odds, hindi kami gagawa ng slip ng taya at ipaalala sa iyo ang mga pagbabago sa odds.</string>
+    <string name="str_ok_i_got_it">Okay, alam ko na</string>
+    <string name="str_return_last_step">Bumalik sa nakaraang hakbang</string>
+    <string name="str_bet_other_game">Tumaya sa ibang market</string>
+    <string name="str_check_bets">Tingnan bet slip</string>
+    <string name="str_press_again_to_exit_the_program">Pindutin muli upang lumabas sa programa</string>
+    <string name="str_odds_changed">Nagbago ang mga odds</string>
     <string name="str_bet_slip_not_confirm_for_a_long_time">注单长时间未确认</string>
     <string name="str_exceeding_limit_for_the_event_or_market">超出赛事或盘口投注上限</string>
     <string name="str_market_closed_please_try_later">盘口关闭，请稍后再试</string>
@@ -1185,44 +1184,44 @@
     <string name="str_less_than_min_bet">低于最小投注额</string>
     <string name="str_only_one_type_of_ball_can_be_used_parlay">串关只能同一种球类</string>
     <string name="str_parlay_exceed_the_ties_limit">串关数量超出限制</string>
-    <string name="str_self_exclusion">自我禁制</string>
+    <string name="str_self_exclusion">Self restraint</string>
     <string name="str_match_be_suspended_or_closed_please_check">某场赛事处于暂停或关闭中，请检查</string>
     <string name="str_parlay_is_not_allowed_in_championship_matches">冠军赛事禁止串关</string>
     <string name="str_parlay_type_wrong">串关类型错误</string>
     <!--投注改版-->
-    <string name="reget_phone_code_for">重新获取</string>
-    <string name="format_error">格式不符</string>
-    <string name="over_size">文件过大</string>
-    <string name="optional_tips">选填:仅支持PNG或者JPG格式的文件，且小于2MB</string>
-    <string name="error_amount_limit_less">充值额小于最低限额</string>
-    <string name="update_voucher">上传凭证</string>
-    <string name="no_select_file">未选择文件</string>
-    <string name="pls_enter_days_format">请输入天数 (≥%d 天)</string>
-    <string name="more_than_days_format">必须多于%d天</string>
-    <string name="regular_score">常规比分</string>
-    <string name="score_with_overtime">总分\n（含加时）</string>
-    <string name="self_limit_error_format">资料格式不符，请输入 %d~%d 整数</string>
-    <string name="str_bet_way">投注方式</string>
-    <string name="str_in_play_bet_confirmed">滚球注单确认中</string>
-    <string name="str_odds_description">赔率说明</string>
+    <string name="reget_phone_code_for">Reacquire</string>
+    <string name="format_error">Hindi tugma ang format</string>
+    <string name="over_size">Napakalaki ng file</string>
+    <string name="optional_tips">Opsyonal: Tanging mga PNG o JPG na format na mga file ang sinusuportahan at mas mababa sa 2MB</string>
+    <string name="error_amount_limit_less">Ang halaga ng recharge ay mas mababa sa minimum na limitasyon</string>
+    <string name="update_voucher">Mag-upload ng sertipiko</string>
+    <string name="no_select_file">Walang napiling file</string>
+    <string name="pls_enter_days_format">Pakilagay ang bilang ng mga araw (≥%d araw)</string>
+    <string name="more_than_days_format">Dapat ay higit sa %d araw</string>
+    <string name="regular_score">Regular na iskor</string>
+    <string name="score_with_overtime">Kabuuang iskor\n (kabilang ang overtime)</string>
+    <string name="self_limit_error_format">Hindi tumutugma ang format ng data, mangyaring maglagay ng integer mula %d hanggang %d</string>
+    <string name="str_bet_way">Paraan ng pagtaya</string>
+    <string name="str_in_play_bet_confirmed">Live na kumpirmasyon sa taya</string>
+    <string name="str_odds_description">Paglalarawan ng  odds</string>
     <string name="draw_time">抽奖时间</string>
     <string name="closing_time">"抽奖关闭时间 "</string>
     <string name="end_time">活动结束时间</string>
     <string name="draw_countdown">抽奖倒计时</string>
-    <string name="recover_password">密码找回</string>
+    <string name="recover_password">Pagbawi ng password</string>
     <string name="need_help">需要帮助?</string>
     <string name="reset_pwd_by_mobile">通过手机号码找回密码</string>
     <string name="reset_pwd_by_email">通过邮箱找回密码</string>
     <string name="email_address">邮箱地址</string>
-    <string name="mobile">手机</string>
+    <string name="mobile">Mobile</string>
     <string name="login_again">请重新登录.</string>
     <string name="change_password">修改密码</string>
     <string name="login_hint_account">手机号码 / 邮箱</string>
     <string name="password_login">密码登录</string>
-    <string name="or">或</string>
+    <string name="or">O</string>
     <string name="login_privacy">注册即表示您确认您已年满 21 岁, 并且同意我们的隐私保护 和 规则条款.</string>
-    <string name="login_terms_conditions">规则条款</string>
-    <string name="login_privacy_policy">隐私保护</string>
+    <string name="login_terms_conditions">Rules at regulation</string>
+    <string name="login_privacy_policy">Proteksyon sa privacy</string>
     <string name="otp_login">验证码登录</string>
     <string name="auth_login">授权登录</string>
     <string name="set">设定</string>
@@ -1233,12 +1232,12 @@
     <string name="link">关联</string>
     <string name="login_hint_account_all">用户名 / 手机号码 / 邮箱</string>
     <string name="edit">编辑</string>
-    <string name="verification_not_correct">验证码错误</string>
+    <string name="verification_not_correct">Error sa verification code</string>
     <string name="send">发送</string>
     <string name="pls_enter_correct_mobile_email">请输入正确的手机/邮箱</string>
     <string name="pls_enter_correct_mobile_email_username">请输入正确的用户名/手机/电子邮件</string>
-    <string name="live_service">联系客服</string>
-    <string name="pls_enter_correct_mobile">请输入正确的手机</string>
+    <string name="live_service">Tawagan ang Customer Service</string>
+    <string name="pls_enter_correct_mobile">Pakilagay ang tamang numero ng telepono</string>
     <string name="pls_enter_correct_email">请输入正确的邮箱</string>
-    <string name="next">下一步</string>
+    <string name="next">Next</string>
 </resources>
