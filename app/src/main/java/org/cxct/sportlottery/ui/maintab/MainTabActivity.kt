@@ -30,7 +30,6 @@ import kotlinx.android.synthetic.main.fragment_sport_list.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding
 import org.cxct.sportlottery.event.BetModeChangeEvent
-import org.cxct.sportlottery.event.HomeTabEvent
 import org.cxct.sportlottery.event.MainTabEvent
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.extentions.gone
@@ -140,44 +139,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         LotteryManager.instance.getLotteryInfo()
     }
 
-    var isWorldCupModel = false
-
-    @SuppressLint("RestrictedApi")
-    private fun resetBottomTheme(worldcupModel: Boolean) {
-        isWorldCupModel = worldcupModel
-        var textColor: ColorStateList
-        val iconArray = if (worldcupModel) {
-            iv_home_back.setImageResource(R.drawable.icon01_arrow_back_sel)
-            tv_home_back.setTextColor(resources.getColor(R.color.color_CC0054))
-            bottom_navigation_view.setBackgroundResource(R.color.color_B2_FFFFFF)
-            ((bottom_navigation_view.parent as View).layoutParams as MarginLayoutParams).topMargin =
-                0
-            textColor = resources.getColorStateList(R.color.main_tab_cup_text_selector)
-            cupTabIcons
-        } else {
-            iv_home_back.setImageResource(R.drawable.icon01_arrow_back)
-            tv_home_back.setTextColor(resources.getColor(R.color.color_025BE8))
-            bottom_navigation_view.setBackgroundResource(R.drawable.bg_icon_bottom_bar)
-            ((bottom_navigation_view.parent as View).layoutParams as MarginLayoutParams).topMargin =
-                -8.dp
-            textColor = resources.getColorStateList(R.color.main_tab_text_selector)
-            norTabIcons
-        }
-
-
-        repeat(bottom_navigation_view.itemCount) {
-            bottom_navigation_view.getBottomNavigationItemView(it).run {
-                setIcon(resources.getDrawable(iconArray[it]))
-                setTextColor(textColor)
-            }
-        }
-    }
-
-    @Subscribe
-    fun onHomeTab(event: HomeTabEvent) {
-        resetBottomTheme(event.isWorldCupTab())
-    }
-
     override fun onNightModeChanged(mode: Int) {
         super.onNightModeChanged(mode)
         reStart(this)
@@ -223,7 +184,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
             onNavigationItemSelectedListener =
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
-                    var wordcupModel = false
                     when (menuItem.itemId) {
                         R.id.i_betlist, R.id.i_favorite, R.id.i_user -> {
                             if (viewModel.isLogin.value == false) {
@@ -231,16 +191,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                                 return@OnNavigationItemSelectedListener false
                             }
                         }
-
-                        R.id.i_home -> {
-                            wordcupModel = isWorldCupModel
-                        }
                     }
 
-                    resetBottomTheme(wordcupModel)
-
                     val position = getMenuItemPosition(menuItem)
-
                     val fragment = fragmentHelper.showFragment(position)
                     if (position == 0) {
                         (fragmentHelper.getFragment(0) as HomeFragment).switchTabByPosition(0)
@@ -324,13 +277,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             sportLeftFragment.gameType = currentFragment.getCurGameType()
             return
         }
-
-        if (currentFragment is HomeFragment) {
-            if (currentFragment.isWorldCupTab()) {
-                sportLeftFragment.selectWorldCup()
-            }
-        }
-
 
     }
 
