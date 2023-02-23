@@ -1,4 +1,5 @@
 import java.text.SimpleDateFormat
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -6,6 +7,8 @@ plugins {
     id("multi-languages")
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
+    id('com.google.gms.google-services')
+    id('com.google.firebase.crashlytics')
 }
 
 android {
@@ -305,22 +308,6 @@ dependencies {
     implementation 'io.github.youth5201314:banner:2.2.2'
 
 
-    //極光推送sdk
-    implementation 'cn.jiguang.sdk:jpush-google:4.6.6'
-    implementation 'cn.jiguang.sdk:jcore-google:3.2.4'
-    //implementation 'cn.jiguang.sdk:janalytics:2.1.4'
-
-    //room
-//    implementation "androidx.room:room-runtime:$version_room"
-//    implementation "androidx.room:room-ktx:$version_room"
-//    kapt "androidx.room:room-compiler:$version_room"
-
-
-    //ExoPlayer
-    implementation 'com.google.android.exoplayer:exoplayer-core:2.16.0'
-    implementation 'com.google.android.exoplayer:exoplayer-ui:2.16.0'
-    implementation 'com.google.android.exoplayer:exoplayer-dash:2.16.0'
-
     //下拉刷新，上拉加載 元件 (豎屏、橫屏) https://github.com/scwang90/SmartRefreshLayout
     implementation 'com.scwang.smart:refresh-layout-kernel:2.0.3'
 
@@ -349,6 +336,15 @@ dependencies {
     //appsflyer
     implementation 'com.appsflyer:af-android-sdk:6.9.0'
     implementation 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer:v8.3.4-release-jitpack'
+    //firebase
+    implementation platform('com.google.firebase:firebase-bom:31.2.2')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
+    implementation 'com.facebook.android:facebook-android-sdk:8.x'
+
+
     //mmkv
     implementation 'com.tencent:mmkv:1.2.13'
     implementation 'com.github.FlyJingFish:GradientTextView:1.0.7'
