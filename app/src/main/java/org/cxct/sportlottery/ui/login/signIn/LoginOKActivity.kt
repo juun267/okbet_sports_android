@@ -91,6 +91,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         }
         binding.eetRecommendCode.setText(defaultInviteCode)
         binding.eetRecommendCode.isEnabled = defaultInviteCode.isNullOrEmpty()
+        binding.etRecommendCode.isVisible = !defaultInviteCode.isNullOrEmpty()
     }
 
     private fun setupAccount() {
