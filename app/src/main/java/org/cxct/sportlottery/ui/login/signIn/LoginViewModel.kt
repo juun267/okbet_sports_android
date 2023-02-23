@@ -236,9 +236,9 @@ class LoginViewModel(
     fun checkInviteCode(inviteCode: String?) {
         _inviteCodeMsg.value = when {
             inviteCode.isNullOrEmpty() -> {
-                    LocalUtils.getString(R.string.error_input_empty)
+                LocalUtils.getString(R.string.error_input_empty)
             }
-            !VerifyConstUtil.verifyInviteCode(inviteCode) -> LocalUtils.getString(if (sConfigData?.enableBettingStation == FLAG_OPEN) R.string.error_recommend_code else R.string.error_recommend_agent)
+            !VerifyConstUtil.verifyInviteCode(inviteCode) -> LocalUtils.getString(R.string.referral_code_invalid)
             else -> null
         }
         focusChangeCheckAllInputComplete()
