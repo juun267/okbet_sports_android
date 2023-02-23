@@ -11,7 +11,6 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_bet_receipt.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.event.MoneyEvent
 import org.cxct.sportlottery.extentions.gone
 import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
@@ -22,11 +21,7 @@ import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.betList.BetListViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.util.BetsFailedReasonUtil
-import org.cxct.sportlottery.util.LocalUtils
-import org.cxct.sportlottery.util.LogUtil
-import org.cxct.sportlottery.util.TextUtil
-import org.greenrobot.eventbus.EventBus
+import org.cxct.sportlottery.util.*
 import timber.log.Timber
 
 
@@ -140,7 +135,6 @@ class BetReceiptFragment :
                 }
                 //不管成功与否刷新当前金额
                 viewModel.getMoney()
-                EventBus.getDefault().post(MoneyEvent(true))
             }
         }
 
@@ -155,20 +149,16 @@ class BetReceiptFragment :
         setupReceiptStatusTips()
     }
 
-    enum class BetStatus(val value: Int) {
-        CANCELED(7)
-    }
-
     private fun setupTotalValue() {
         var betCount = 0
         var totalCount = 0
         betResultData?.singleBets?.forEach {
-            if (it.status != BetStatus.CANCELED.value) betCount += (it.num ?: 0)
+            if (!it.isFailed()) betCount += (it.num ?: 0)
             totalCount += (it.num ?: 0)
         }
 
         betResultData?.parlayBets?.forEach {
-            if (it.status != BetStatus.CANCELED.value) betCount += (it.num ?: 0)
+            if (!it.isFailed()) betCount += (it.num ?: 0)
             totalCount += (it.num ?: 0)
         }
 
@@ -268,9 +258,9 @@ class BetReceiptFragment :
     private fun setupReceiptStatusTips() {
         //全部都失敗才會顯示投注失敗
         val hasBetSuccess =
-            betResultData?.singleBets?.find { it.status != BetStatus.CANCELED.value } != null
+            betResultData?.singleBets?.find { !it.isFailed() } != null
         val hasParlaySuccess =
-            betResultData?.parlayBets?.find { it.status != BetStatus.CANCELED.value } != null
+            betResultData?.parlayBets?.find { !it.isFailed() } != null
 //        tv_already_bet_complete.apply {
 //            when (hasBetSuccess || hasParlaySuccess) {
 //                true -> {

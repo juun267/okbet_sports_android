@@ -1,19 +1,13 @@
 package org.cxct.sportlottery.ui.maintab.live
 
-import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.RotateAnimation
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.fragment_home_live.*
-import kotlinx.android.synthetic.main.view_toolbar_home.*
+import kotlinx.android.synthetic.main.fragment_home_live.homeToolbar
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.event.MenuEvent
@@ -26,7 +20,6 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchLiveData
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
@@ -37,10 +30,11 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.greenrobot.eventbus.EventBus
 
 class HomeLiveFragment :
     BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
+
+    override fun layoutId() = R.layout.fragment_home_live
 
     private val homeTabAdapter by lazy {
         HomeTabAdapter(HomeTabAdapter.getItems(), 1, (parentFragment as HomeFragment))
@@ -76,22 +70,14 @@ class HomeLiveFragment :
         )
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        return inflater.inflate(R.layout.fragment_home_live, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onBindView(view: View) {
         view.fitsSystemStatus()
         initView()
         initObservable()
         initSocketObservers()
         viewModel.getLiveRoundHall()
     }
+
     override fun onPause() {
         super.onPause()
         homeLiveAdapter.playerView?.onVideoPause()
@@ -116,47 +102,22 @@ class HomeLiveFragment :
 
     }
 
-    fun initToolBar() {
-        view?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
-        iv_menu_left.setOnClickListener {
-            EventBus.getDefault().post(MenuEvent(true))
-            (activity as MainTabActivity).showLeftFrament(0, 1)
+    private inline fun getMainTabActivity() = activity as MainTabActivity
+
+    fun initToolBar() = homeToolbar.run {
+        view?.setPadding(0, ImmersionBar.getStatusBarHeight(this@HomeLiveFragment), 0, 0)
+        attach(this@HomeLiveFragment, getMainTabActivity(), viewModel)
+        ivMenuLeft.setOnClickListener {
+            EventBusUtil.post(MenuEvent(true))
+            getMainTabActivity().showLeftFrament(0, 1)
         }
-        iv_logo.setOnClickListener {
-            (activity as MainTabActivity).jumpToHome(0)
-        }
-        btn_login.setOnClickListener {
-            requireActivity().startLogin()
-        }
-        iv_money_refresh.setOnClickListener {
-            iv_money_refresh.startAnimation(RotateAnimation(0f,
-                720f,
-                Animation.RELATIVE_TO_SELF,
-                0.5f,
-                Animation.RELATIVE_TO_SELF,
-                0.5f).apply {
-                duration = 1000
-            })
-            viewModel.getMoney()
-        }
-//        lin_search.setOnClickListener {
-//            startActivity(Intent(requireActivity(), SportSearchtActivity::class.java))
-//        }
-        setupLogin()
     }
 
     private fun initObservable() {
         if (viewModel == null) {
             return
         }
-        viewModel.userMoney.observe(viewLifecycleOwner) {
-            it?.let {
-                tv_home_money.text = "${sConfigData?.systemCurrencySign} ${TextUtil.format(it)}"
-            }
-        }
-        viewModel.isLogin.observe(viewLifecycleOwner) {
-            setupLogin()
-        }
+
         viewModel.oddsType.observe(this.viewLifecycleOwner) {
             it?.let { oddsType ->
                 homeLiveAdapter.oddsType = oddsType
@@ -496,15 +457,6 @@ class HomeLiveFragment :
             }
         } else {
             eventFun()
-        }
-    }
-
-    private fun setupLogin() {
-        btn_login.text = "${getString(R.string.btn_login)} / ${getString(R.string.btn_register)}"
-        viewModel.isLogin.value?.let {
-            btn_login.isVisible = !it
-//            lin_search.visibility = if (it) View.VISIBLE else View.GONE
-            ll_user_money.visibility = if (it) View.VISIBLE else View.INVISIBLE
         }
     }
 

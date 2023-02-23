@@ -14,30 +14,35 @@ import org.cxct.sportlottery.util.isCreditSystem
 
 object MainHomeItemHelper {
 
-    private data class HomeItem(@StringRes val name: Int,
-                        @DrawableRes val icon: Int,
-                        @DrawableRes val background: Int = R.drawable.bg_tab_open_unselector,
-                        @ColorRes val nameColor: Int = R.color.color_535D76,
-                        val nameSize: Int = 10)
+    private data class HomeItem(
+        @StringRes val name: Int,
+        @DrawableRes val icon: Int,
+        @DrawableRes val background: Int = R.drawable.bg_tab_open_unselector,
+        @ColorRes val nameColor: Int = R.color.color_535D76,
+        val nameSize: Int = 10,
+    )
 
-    private val items = arrayOf(HomeItem(R.string.home_recommend,
-        R.drawable.icon_recommend,
-        R.drawable.bg_tab_open_selector,
-        R.color.color_E9F4FA,
-        11), // 推荐
+    private val items = arrayOf(
+        HomeItem(R.string.home_recommend,
+            R.drawable.icon_recommend,
+            R.drawable.bg_tab_open_selector,
+            R.color.color_E9F4FA,
+            11),
         HomeItem(R.string.home_live, R.drawable.live0), //直播
-//        HomeItem(R.string.home_word_cup, R.drawable.word_cup0), //世界杯
         HomeItem(R.string.home_in_play, R.drawable.icon_in_play0), //滚球
         HomeItem(R.string.home_sports, R.drawable.sport0), //体育
         HomeItem(R.string.tiger_machine, R.drawable.ic_home_okgame_nor), //老虎机
         HomeItem(R.string.home_on_game, R.drawable.icon_on_game0), //棋牌
+//        HomeItem(R.string.promo, R.drawable.ic_home_promo_nor), // 优惠
+
     )
 
-    private val items1 = arrayOf(HomeItem(R.string.home_recommend,
-        R.drawable.icon_recommend,
-        R.drawable.bg_tab_open_selector,
-        R.color.color_E9F4FA,
-        11), // 推荐
+    private val items1 = arrayOf(
+        HomeItem(R.string.home_recommend,
+            R.drawable.icon_recommend,
+            R.drawable.bg_tab_open_selector,
+            R.color.color_E9F4FA,
+            11), // 推荐
         HomeItem(R.string.home_live, R.drawable.live0), //直播
 //        HomeItem(R.string.home_word_cup, R.drawable.word_cup0), //世界杯
         HomeItem(R.string.home_in_play, R.drawable.icon_in_play0), //滚球

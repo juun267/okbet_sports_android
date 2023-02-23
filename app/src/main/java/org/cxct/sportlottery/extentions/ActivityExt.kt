@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.view.View
 import androidx.annotation.MainThread
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import kotlinx.coroutines.*
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -64,6 +65,10 @@ fun LifecycleOwner.doWhenLife(lifeEvent: Lifecycle.Event, interval: Int = 0, blo
 inline fun Activity.finishWithOK() {
     setResult(Activity.RESULT_OK)
     finish()
+}
+
+inline fun Fragment.startActivity(activity: Class<out Activity>) {
+    startActivity(Intent(requireActivity(), activity))
 }
 
 inline fun Activity.startActivity(activity: Class<out Activity>) {

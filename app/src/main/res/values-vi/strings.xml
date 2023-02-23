@@ -1236,7 +1236,7 @@
     <string name="mobile">SĐT</string>
     <string name="login_again">Vui lòng đăng nhập lại.</string>
     <string name="change_password">Đổi mật khẩu</string>
-    <string name="login_terms_conditions">Điều khoản &amp; điều kiện</string>
+    <string name="login_terms_conditions">Điều khoản &amp; điều kiện của chúng tôi</string>
     <string name="login_privacy_policy">Chính sách bảo mật</string>
     <string name="hint_link_google">Liên kết tài khoản Google</string>
     <string name="hint_link_facebook">Liên kết tài khoản Facebook</string>
@@ -1245,7 +1245,7 @@
     <string name="password_login">Mật khẩu đăng nhập</string>
     <string name="or">hoặc</string>
     <string name="login_privacy">Đăng ký biểu thị xác nhận rằng bạn trên 21 tuổi và đồng ý với Chính sách bảo mật,Điều khoản &amp; điều kiện của chúng tôi.</string>
-    <string name="otp_login">Mã xác minh đăng nhập</string>
+    <string name="otp_login">Đăng nhập/đăng ký captcha</string>
     <string name="auth_login">Uỷ quyền Đăng nhập</string>
     <string name="set">Cài đặt</string>
     <string name="linked">Có liên kết</string>
@@ -1259,4 +1259,8 @@
     <string name="pls_enter_correct_mobile">Mời nhập chính xác SĐT</string>
     <string name="pls_enter_correct_email">Mời nhập chính xác Email</string>
     <string name="next">Bước tiếp theo</string>
+    <string name="hint_phone_format">SĐT gồm 11 số, và 09 bắt đầu</string>
+    <string name="hint_referral_code">Mã giới thiệu (Chọn nhập)</string>
+    <string name="promo">Promo</string>
+    <string name="username">Tài khoản</string>
 </resources>

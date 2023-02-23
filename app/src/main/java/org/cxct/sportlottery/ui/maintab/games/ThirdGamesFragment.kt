@@ -1,15 +1,13 @@
 package org.cxct.sportlottery.ui.maintab.games
 
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.RotateAnimation
-import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.fragment_home_slot.*
-import kotlinx.android.synthetic.main.view_toolbar_home.*
+import kotlinx.android.synthetic.main.fragment_home_slot.homeToolbar
+import kotlinx.android.synthetic.main.fragment_home_slot.rv_tab_home
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -22,7 +20,6 @@ import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.third_game.third_games.GameCategory
 import org.cxct.sportlottery.network.third_game.third_games.GameFirmValues
 import org.cxct.sportlottery.repository.ThirdGameRepository
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
@@ -67,39 +64,14 @@ class ThirdGamesFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHo
         viewModel.getThirdGame()
     }
 
-    fun initToolBar() {
-        view?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
-        iv_menu_left.setOnClickListener {
+    private inline fun getMainTabActivity() = activity as MainTabActivity
+
+    fun initToolBar() = homeToolbar.run {
+        view?.setPadding(0, ImmersionBar.getStatusBarHeight(this@ThirdGamesFragment), 0, 0)
+        attach(this@ThirdGamesFragment, getMainTabActivity(), viewModel)
+        ivMenuLeft.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
-            (activity as MainTabActivity).showLeftFrament(0, 5)
-        }
-        iv_logo.setOnClickListener {
-            (activity as MainTabActivity).jumpToHome(0)
-        }
-        btn_login.setOnClickListener {
-            requireActivity().startLogin()
-        }
-        iv_money_refresh.setOnClickListener {
-            iv_money_refresh.startAnimation(
-                RotateAnimation(0f,
-                720f,
-                Animation.RELATIVE_TO_SELF,
-                0.5f,
-                Animation.RELATIVE_TO_SELF,
-                0.5f).apply {
-                duration = 1000
-            })
-            viewModel.getMoney()
-        }
-
-        setupLogin()
-    }
-
-    private fun setupLogin() {
-        btn_login.text = "${getString(R.string.btn_login)} / ${getString(R.string.btn_register)}"
-        viewModel.isLogin.value?.let {
-            btn_login.isVisible = !it
-            ll_user_money.visibility = if (it) View.VISIBLE else View.INVISIBLE
+            getMainTabActivity().showLeftFrament(0, 5)
         }
     }
 
@@ -127,14 +99,6 @@ class ThirdGamesFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHo
 
     private fun initObserver() {
 
-        viewModel.userMoney.observe(viewLifecycleOwner) {
-            it?.let {
-                tv_home_money.text = "${sConfigData?.systemCurrencySign} ${TextUtil.format(it)}"
-            }
-        }
-        viewModel.isLogin.observe(viewLifecycleOwner) {
-            setupLogin()
-        }
         ThirdGameRepository.thirdGameData.observe(this) {
             if (it == null || it.gameCategories.isNullOrEmpty() || it.gameFirmMap.isNullOrEmpty()) {
                 return@observe

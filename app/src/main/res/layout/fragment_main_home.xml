@@ -11,9 +11,12 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <include
-        android:id="@+id/lin_toolbar"
-        layout="@layout/view_toolbar_home" />
+
+    <org.cxct.sportlottery.ui.maintab.HomeToolbarView
+        android:id="@+id/homeToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <View
         android:background="@color/color_FFFFFF"
         android:layout_width="match_parent"

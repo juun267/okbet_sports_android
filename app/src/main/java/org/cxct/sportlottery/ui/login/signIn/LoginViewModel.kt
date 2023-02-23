@@ -19,6 +19,7 @@ import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity.Companion.LOGIN_TYPE_PWD
 import org.cxct.sportlottery.util.AFInAppEventUtil
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.VerifyConstUtil
@@ -45,6 +46,8 @@ class LoginViewModel(
         get() = _validResult
     val isLoading: LiveData<Boolean> //使用者餘額
         get() = _isLoading
+    val inviteCodeMsg: LiveData<String?>
+        get() = _inviteCodeMsg
 
     private val _isLoading = MutableLiveData<Boolean>()
     private val _loginFormState = MutableLiveData<LoginFormState>()
@@ -53,6 +56,7 @@ class LoginViewModel(
     private val _validCodeResult = MutableLiveData<ValidCodeResult?>()
     private val _validResult = MutableLiveData<LogoutResult>()
     private val _msgCodeResult = MutableLiveData<SmsResult?>()
+    private val _inviteCodeMsg = MutableLiveData<String?>()
 
     val accountMsg: LiveData<Pair<String?, Boolean>>
         get() = _accountMsg
@@ -81,7 +85,7 @@ class LoginViewModel(
     val account by lazy { loginRepository.account }
     val password by lazy { loginRepository.password }
 
-    var loginType = 0
+    var loginType = LOGIN_TYPE_PWD
         set(value) {
             field = value
             checkAllInputComplete()
@@ -227,6 +231,20 @@ class LoginViewModel(
     }
 
     /**
+     * 输入邀请码
+     */
+    fun checkInviteCode(inviteCode: String?) {
+        _inviteCodeMsg.value = when {
+            inviteCode.isNullOrEmpty() -> {
+                    LocalUtils.getString(R.string.error_input_empty)
+            }
+            !VerifyConstUtil.verifyInviteCode(inviteCode) -> LocalUtils.getString(if (sConfigData?.enableBettingStation == FLAG_OPEN) R.string.error_recommend_code else R.string.error_recommend_agent)
+            else -> null
+        }
+        focusChangeCheckAllInputComplete()
+    }
+
+    /**
      * 手机号/邮箱
      */
     fun checkAccount(username: String): String? {
@@ -290,7 +308,7 @@ class LoginViewModel(
     fun checkMsgCode(validCode: String): String? {
         val msg = when {
             validCode.isNullOrBlank() -> LocalUtils.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyValidCode(validCode) -> LocalUtils.getString(R.string.error_verification_code_forget)
+            !VerifyConstUtil.verifyValidCode(validCode) -> LocalUtils.getString(R.string.verification_not_correct)
             else -> null
         }
         _msgCodeMsg.value = Pair(msg, msg == null)
@@ -333,4 +351,17 @@ class LoginViewModel(
         _isLoading.postValue(false)
     }
 
+    fun queryPlatform(inviteCode: String) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.bettingStationService.queryPlatform(inviteCode)
+            }
+            if (result?.success == true) {
+
+            } else {
+                _inviteCodeMsg.value = result?.msg
+                focusChangeCheckAllInputComplete()
+            }
+        }
+    }
 }

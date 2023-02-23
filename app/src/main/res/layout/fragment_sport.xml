@@ -6,9 +6,10 @@
     android:background="@color/color_1A1A1A_FFFFFF"
     android:orientation="vertical">
 
-    <include
-        android:id="@+id/lin_toolbar"
-        layout="@layout/view_toolbar_home" />
+    <org.cxct.sportlottery.ui.maintab.HomeToolbarView
+        android:id="@+id/homeToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <View
         android:id="@+id/vDivider1"

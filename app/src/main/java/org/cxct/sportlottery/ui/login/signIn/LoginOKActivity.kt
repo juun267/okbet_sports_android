@@ -61,6 +61,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         binding = ActivityLoginOkBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initOnClick()
+        setupInvite()
         setupAccount()
         setupPassword()
         setupValidCode()
@@ -77,6 +78,19 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         tv_pwd_login.setOnClickListener { switchLoginType(LOGIN_TYPE_PWD) }
         tv_code_login.setOnClickListener { switchLoginType(LOGIN_TYPE_CODE) }
         tv_forget_password.setOnClickListener { startActivity(ForgetWaysActivity::class.java) }
+    }
+
+    private fun setupInvite() {
+        val defaultInviteCode = Constants.getInviteCode()
+        binding.eetRecommendCode.apply {
+            checkRegisterListener {
+                if (it != "") {
+                    viewModel.checkInviteCode(it)
+                }
+            }
+        }
+        binding.eetRecommendCode.setText(defaultInviteCode)
+        binding.eetRecommendCode.isEnabled = defaultInviteCode.isNullOrEmpty()
     }
 
     private fun setupAccount() {
@@ -134,7 +148,6 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun setupLoginButton() {
-        btn_login.text = "${getString(R.string.btn_login)} / ${getString(R.string.btn_register)}"
         binding.btnLogin.setOnClickListener {
             login()
         }
@@ -156,10 +169,12 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         val deviceId = Settings.Secure.getString(applicationContext.contentResolver,
             Settings.Secure.ANDROID_ID)
         var appVersion = org.cxct.sportlottery.BuildConfig.VERSION_NAME
-        if (lin_login_code.isVisible) {
+        if (viewModel.loginType == LOGIN_TYPE_CODE) {
             loading()
             val account = binding.eetAccount.text.toString()
             val smsCode = binding.eetVerificationCode.text.toString()
+            var inviteCode =
+                if (viewModel.inviteCodeMsg.value.isNullOrEmpty()) binding.eetRecommendCode.text.toString() else null
             val loginRequest = LoginRequest(
                 account = account,
                 password = null,
@@ -168,7 +183,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 appVersion = appVersion,
                 loginEnvInfo = deviceId,
                 securityCode = smsCode,
-                inviteCode = Constants.getInviteCode()
+                inviteCode = inviteCode
             )
             viewModel.loginOrReg(loginRequest)
         } else {
@@ -245,7 +260,15 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 hideLoading()
             }
         }
-
+        viewModel.inviteCodeMsg.observe(this) {
+            binding.etRecommendCode.setError(
+                it,
+                false
+            )
+            if (it == null) {
+                viewModel.queryPlatform(binding.eetRecommendCode.text.toString())
+            }
+        }
         viewModel.accountMsg.observe(this) {
             binding.etAccount.setError(
                 it.first,

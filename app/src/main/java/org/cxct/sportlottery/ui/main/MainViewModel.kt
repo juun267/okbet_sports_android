@@ -273,12 +273,10 @@ class MainViewModel(
         }
     }
 
-    suspend fun allTransferOut() {
+    fun allTransferOut() {
         if (isThirdTransferOpen()) {
             //若自動轉換功能開啟，離開遊戲要全額轉出
-            doNetwork(androidContext) {
-                OneBoSportApi.thirdGameService.allTransferOut()
-            }
+            LoginRepository.allTransferOut()
         }
     }
 

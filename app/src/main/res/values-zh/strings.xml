@@ -1254,7 +1254,7 @@
     <string name="login_privacy">注册即表示您确认您已年满 21 岁, 并且同意我们的隐私保护 和 规则条款.</string>
     <string name="login_terms_conditions">规则条款</string>
     <string name="login_privacy_policy">隐私保护</string>
-    <string name="otp_login">验证码登录</string>
+    <string name="otp_login">验证码登录/注册</string>
     <string name="auth_login">授权登录</string>
     <string name="set">设定</string>
     <string name="google">Google</string>
@@ -1272,4 +1272,8 @@
     <string name="pls_enter_correct_mobile">请输入正确的手机</string>
     <string name="pls_enter_correct_email">请输入正确的邮箱</string>
     <string name="next">下一步</string>
+    <string name="hint_phone_format">手机号码需为09开头的11位数字</string>
+    <string name="hint_referral_code">推荐码(选填)</string>
+    <string name="promo">优惠</string>
+    <string name="username">会员账号</string>
 </resources>
