@@ -70,32 +70,6 @@
                     android:visibility="gone">
 
                     <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
-                        android:id="@+id/et_recommend_code"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:textSize="@dimen/textSize12sp"
-                        app:hintText="@string/hint_referral_code"
-                        app:isResponsiveIconColor="false"
-                        app:labelText="@string/hint_referral_code"
-                        app:iconSignifier="@drawable/ic_referral_code"
-                        app:labelTextStyle="normal"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:primaryColor="@color/color_AFAFB1"> <!--  app:iconSignifier="@drawable/ic_login_recommend" -->
-
-                        <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
-                            android:id="@+id/eet_recommend_code"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:imeOptions="actionNext"
-                            android:inputType="text"
-                            android:maxLines="1"
-                            android:textColor="@color/color_FFFFFF_DE000000"
-                            android:textSize="@dimen/textSize14sp" />
-
-                    </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>
-                    <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
                         android:id="@+id/et_account"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -169,6 +143,32 @@
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/textSize14sp" />
                     </FrameLayout>
+
+                    <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
+                        android:id="@+id/et_recommend_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:textSize="@dimen/textSize12sp"
+                        android:visibility="gone"
+                        app:hintText="@string/hint_referral_code"
+                        app:isResponsiveIconColor="false"
+                        app:labelText="@string/hint_referral_code"
+                        app:iconSignifier="@drawable/ic_referral_code"
+                        app:labelTextStyle="normal"
+                        app:primaryColor="@color/color_AFAFB1"> <!--  app:iconSignifier="@drawable/ic_login_recommend" -->
+
+                        <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
+                            android:id="@+id/eet_recommend_code"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:imeOptions="actionNext"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:textColor="@color/color_FFFFFF_DE000000"
+                            android:textSize="@dimen/textSize14sp" />
+
+                    </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>
                 </LinearLayout>
 
                 <LinearLayout

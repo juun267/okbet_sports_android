@@ -22,7 +22,6 @@ import org.cxct.sportlottery.network.Constants.LOGIN_OR_REG
 import org.cxct.sportlottery.network.Constants.LOGIN_OR_REG_SEND_VALIDCODE
 import org.cxct.sportlottery.network.Constants.RESET_FORGET_PASSWORD
 import org.cxct.sportlottery.network.Constants.RESET_FORGET_PASSWORD_BY_EMAIL
-import org.cxct.sportlottery.network.Constants.SEND_EMAIL_CODE
 import org.cxct.sportlottery.network.Constants.SEND_EMAIL_FORGET
 import org.cxct.sportlottery.network.Constants.SEND_SMS_FORGET
 import org.cxct.sportlottery.network.Constants.VALIDATE_USER
@@ -136,12 +135,8 @@ interface IndexService {
     @POST(GOOGLE_LOGIN)
     suspend fun googleLogin(@Body loginTokenRequest: LoginTokenRequest): Response<LoginResult>
 
-
-    @POST(SEND_EMAIL_CODE)
-    suspend fun sendEmailCode(
-        @Field("email") email: String,
-        @Field("verification") verification: String,
-    ): Response<ValidateUserResult>
+    @POST(Constants.INDEX_CHECK_EXIST_NEW)
+    suspend fun checkUserExist(@Body checkUserRequest: CheckUserRequest): Response<CheckAccountResult>
 
     @POST(BIND_GOOGLE)
     suspend fun bindGoogle(@Body loginTokenRequest: LoginTokenRequest): Response<AuthBindResult>

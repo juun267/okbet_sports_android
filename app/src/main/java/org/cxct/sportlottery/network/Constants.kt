@@ -316,6 +316,7 @@ object Constants {
     const val LOGIN_FOR_GUEST = "/api/front/index/loginforguest" //游客登录
     const val INDEX_PROMOTENOTICE =
         "/api/front/index/promotenotice" //公告API 未登入不帶token 在投注区查询的时候带[1] 在首页的时候带[2,3]
+    const val INDEX_CHECK_EXIST_NEW = "/api/front/index/checkExistNew" //检查账号名称是否已存在
 
     //登录或注册(新版优化登录注册->使用)
     const val LOGIN_OR_REG = "/api/front/index/loginOrReg"

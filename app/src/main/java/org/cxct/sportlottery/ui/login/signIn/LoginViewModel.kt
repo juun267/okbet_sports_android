@@ -9,10 +9,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.index.login.LoginCodeRequest
-import org.cxct.sportlottery.network.index.login.LoginRequest
-import org.cxct.sportlottery.network.index.login.LoginResult
-import org.cxct.sportlottery.network.index.login.ValidateLoginDeviceSmsRequest
+import org.cxct.sportlottery.network.index.login.*
 import org.cxct.sportlottery.network.index.logout.LogoutResult
 import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
@@ -48,6 +45,8 @@ class LoginViewModel(
         get() = _isLoading
     val inviteCodeMsg: LiveData<String?>
         get() = _inviteCodeMsg
+    val checkUserExist: LiveData<Boolean>
+        get() = _checkUserExist
 
     private val _isLoading = MutableLiveData<Boolean>()
     private val _loginFormState = MutableLiveData<LoginFormState>()
@@ -57,6 +56,7 @@ class LoginViewModel(
     private val _validResult = MutableLiveData<LogoutResult>()
     private val _msgCodeResult = MutableLiveData<SmsResult?>()
     private val _inviteCodeMsg = MutableLiveData<String?>()
+    private val _checkUserExist = MutableLiveData<Boolean>()
 
     val accountMsg: LiveData<Pair<String?, Boolean>>
         get() = _accountMsg
@@ -361,6 +361,16 @@ class LoginViewModel(
             } else {
                 _inviteCodeMsg.value = result?.msg
                 focusChangeCheckAllInputComplete()
+            }
+        }
+    }
+
+    fun checkUserExist(phoneNumberOrEmail: String) {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.indexService.checkUserExist(CheckUserRequest(phoneNumberOrEmail))
+            }?.let {
+                _checkUserExist.value = it.success
             }
         }
     }
