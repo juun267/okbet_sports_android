@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.event.HomeTabEvent
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.StaticData
@@ -15,7 +14,6 @@ import org.cxct.sportlottery.ui.maintab.elec.HomeElecFragment
 import org.cxct.sportlottery.ui.maintab.live.HomeLiveFragment
 import org.cxct.sportlottery.ui.maintab.games.ThirdGamesFragment
 import org.cxct.sportlottery.ui.maintab.slot.HomeSlotFragment
-import org.cxct.sportlottery.ui.maintab.worldcup.HomeWorldCupFragment
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.FragmentHelper
 import org.cxct.sportlottery.util.isCreditSystem
@@ -27,7 +25,7 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
             FragmentHelper(childFragmentManager, R.id.fl_content, arrayOf(
                 Pair(MainHomeFragment::class.java, null),
                 Pair(HomeLiveFragment::class.java, null),
-                Pair(HomeWorldCupFragment::class.java, null),
+                Pair(HomeLiveFragment::class.java, null), // 占个坑，删除了索引会变
                 Pair(ThirdGamesFragment::class.java, Bundle().apply {
                     putInt("position", 4)
                     putString("GAME_CODE", "LIVE")
@@ -46,7 +44,7 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
             FragmentHelper(childFragmentManager, R.id.fl_content, arrayOf(
                 Pair(MainHomeFragment::class.java, null),
                 Pair(HomeLiveFragment::class.java, null),
-                Pair(HomeWorldCupFragment::class.java, null),
+                Pair(HomeLiveFragment::class.java, null),// 占个坑，删除了索引会变
                 Pair(HomeElecFragment::class.java, null),
                 Pair(HomeSlotFragment::class.java, Bundle().apply { putInt("position", 5) }),
             ))
@@ -69,13 +67,7 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
 
     fun switchTabByPosition(position: Int) {
         (activity as MainTabActivity).homeBackView(position > 0)
-        val lastPosition = fragmentHelper.getCurrentPosition()
-        val fragment = fragmentHelper.showFragment(position)
-        EventBusUtil.post(HomeTabEvent(fragment))
-
-        if (fragment is HomeWorldCupFragment && (lastPosition != position) && fragment.isInitedWeb) {
-            fragment.reloadWeb()
-        }
+        fragmentHelper.showFragment(position)
     }
 
     fun onTabClickByPosition(position: Int) {
@@ -111,7 +103,4 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
         }
     }
 
-    fun isWorldCupTab(): Boolean {
-        return fragmentHelper.getCurrentFragment() is HomeWorldCupFragment
-    }
 }
