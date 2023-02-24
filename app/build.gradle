@@ -316,8 +316,6 @@ dependencies {
 
     implementation 'com.orhanobut:logger:2.2.0'
     implementation 'com.github.promeg:tinypinyin:2.0.3'
-    //adjust 第三方统计
-    implementation 'com.adjust.sdk:adjust-android:4.32.0'
     //appsflyer
     implementation 'com.appsflyer:af-android-sdk:6.9.0'
     implementation 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer:v8.3.4-release-jitpack'

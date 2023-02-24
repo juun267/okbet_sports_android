@@ -147,7 +147,6 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
         queryData()
         initSocketObservers()
 //        viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
-        EventBusUtil.targetLifecycle(this)
     }
 
     override fun onResume() {
@@ -636,7 +635,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
                     holder.imageView.setOnClickListener {
                         data?.imageLink?.let {
                             if (it.isNotBlank()) {
-                                JumpUtil.toExternalWeb(requireContext(), it)
+                                JumpUtil.toInternalWeb(requireContext(), it, "")
                             }
                         }
                     }

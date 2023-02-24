@@ -9,9 +9,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.adjust.sdk.Adjust
-import com.adjust.sdk.AdjustConfig
-import com.adjust.sdk.LogLevel
 import com.appsflyer.AppsFlyerLib
 import com.didichuxing.doraemonkit.DoKit
 import com.github.jokar.multilanguages.library.MultiLanguage
@@ -228,7 +225,6 @@ class MultiLanguagesApplication : Application() {
 
         //生成UUID作為設備識別碼
         setupDeviceCode()
-        initAdjustSDK()
         initAppsFlyerSDK()
 
         if (BuildConfig.DEBUG) {
@@ -237,18 +233,8 @@ class MultiLanguagesApplication : Application() {
                 .build()
         }
 
-
-
     }
 
-    private fun initAdjustSDK() {
-        val appToken = "i0n6zrmvo4jk"
-        val environment =
-            if (BuildConfig.DEBUG) AdjustConfig.ENVIRONMENT_SANDBOX else AdjustConfig.ENVIRONMENT_PRODUCTION
-        val config = AdjustConfig(this, appToken, environment)
-        config.setLogLevel(LogLevel.VERBOSE)
-        Adjust.onCreate(config)
-    }
 
     private fun initAppsFlyerSDK() {
         AppsFlyerLib.getInstance().init("G7q8UBYftYQfKAxnortTSN", null, this)
