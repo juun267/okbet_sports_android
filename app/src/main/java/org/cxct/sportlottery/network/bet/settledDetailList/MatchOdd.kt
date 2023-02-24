@@ -5,12 +5,7 @@ import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.settledList.PlayCateMatchResult
-import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.AppManager
-import kotlin.coroutines.coroutineContext
 
 @Parcelize
 @JsonClass(generateAdapter = true)

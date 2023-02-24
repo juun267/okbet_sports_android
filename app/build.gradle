@@ -3,7 +3,6 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-android-extensions") //kotlin-parcelize
-    id("multi-languages")
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
 }
@@ -245,6 +244,7 @@ dependencies {
 
     //Moshi
     implementation "com.squareup.moshi:moshi-kotlin:1.11.0"
+//    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.11.0")
 
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
@@ -263,9 +263,6 @@ dependencies {
     //navigation
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.2'
-
-    //multiLanguages //https://github.com/MichaelJokAr/MultiLanguages
-    implementation "com.github.jokar:multi-languages:0.1.4"
 
     //live data
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
@@ -371,8 +368,4 @@ dependencies {
 }
 repositories {
     mavenCentral()
-}
-
-multiLanguages {
-    enable = true
 }
