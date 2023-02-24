@@ -92,10 +92,17 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         }
         binding.eetRecommendCode.setText(defaultInviteCode)
         binding.eetRecommendCode.isEnabled = defaultInviteCode.isNullOrEmpty()
+        binding.etRecommendCode.isVisible = !defaultInviteCode.isNullOrEmpty()
     }
 
     private fun setupAccount() {
-        binding.eetAccount.checkRegisterListener { viewModel.checkAccount(it) }
+        binding.eetAccount.checkRegisterListener {
+            viewModel.checkAccount(it).let { result ->
+                if (result.isNullOrBlank() && !binding.eetAccount.isFocused) {
+                    viewModel.checkUserExist(it)
+                }
+            }
+        }
         binding.eetPassword.checkRegisterListener { viewModel.checkPassword(it) }
         binding.eetUsername.checkRegisterListener { viewModel.checkUserName(it) }
         binding.eetVerificationCode.checkRegisterListener { viewModel.checkMsgCode(it) }
@@ -177,7 +184,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             val account = binding.eetAccount.text.toString()
             val smsCode = binding.eetVerificationCode.text.toString()
             var inviteCode =
-                if (viewModel.inviteCodeMsg.value.isNullOrEmpty()) binding.eetRecommendCode.text.toString() else null
+                if (viewModel.inviteCodeMsg.value.isNullOrEmpty() && binding.etRecommendCode.isVisible) binding.eetRecommendCode.text.toString() else null
             val loginRequest = LoginRequest(
                 account = account,
                 password = null,
@@ -271,6 +278,9 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             if (it == null) {
                 viewModel.queryPlatform(binding.eetRecommendCode.text.toString())
             }
+        }
+        viewModel.checkUserExist.observe(this) {
+            et_recommend_code.isVisible = !it
         }
         viewModel.accountMsg.observe(this) {
             binding.etAccount.setError(
@@ -419,6 +429,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                     binding.etPassword.setError(null, false)
                 }
             }
+            viewModel.focusChangeCheckAllInputComplete()
         }
     }
 

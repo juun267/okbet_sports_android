@@ -1263,4 +1263,5 @@
     <string name="hint_referral_code">Mã giới thiệu (Chọn nhập)</string>
     <string name="promo">Promo</string>
     <string name="username">Tài khoản</string>
+    <string name="referral_code_invalid">Mã giới thiệu hết hạn</string>
 </resources>

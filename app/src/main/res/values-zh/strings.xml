@@ -1276,4 +1276,5 @@
     <string name="hint_referral_code">推荐码(选填)</string>
     <string name="promo">优惠</string>
     <string name="username">会员账号</string>
+    <string name="referral_code_invalid">邀请码无效</string>
 </resources>
