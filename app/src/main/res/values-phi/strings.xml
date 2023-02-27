@@ -829,7 +829,7 @@
     <!--登入手機驗證-->
     <string name="about_us">Tungkol sa Amin</string>
     <string name="responsible">Gambling Responsibility</string>
-    <string name="terms_conditions">tERmino at kondisyon</string>
+    <string name="terms_conditions">Termino at kondisyon</string>
     <string name="privacy_policy">Pagkapribado at Patakaran</string>
     <string name="help">Kailangan ng tulong？</string>
     <string name="faqs">Karaniwang problema</string>
@@ -1146,7 +1146,7 @@
     <string name="cs_center">Help center</string>
     <string name="Pinned">Naka-pin</string>
     <string name="Unpin">I-unpin</string>
-    <string name="new_game_and_testing">(New Games | Beta)</string>
+    <string name="new_game_and_testing">(Bagong Laro| Beta)</string>
     <string name="dont_have_slot_game">Walang board games</string>
     <string name="deadline">Cut off</string>
     <string name="error_verification_code_forget">Error sa verification code</string>
@@ -1216,9 +1216,9 @@
     <string name="login_hint_account">Mobile Number / Email</string>
     <string name="password_login">Login password</string>
     <string name="or">O</string>
-    <string name="login_privacy">Sa pamamagitan ng pag-sign up, kinukumpirma mo na ikaw ay higit sa 21 taong gulang at sumasang-ayon sa aming Patakaran sa Pagkapribado at Mga Tuntunin ng Paggamit.</string>
-    <string name="login_terms_conditions">Termino at kondisyon</string>
-    <string name="login_privacy_policy">Proteksyon sa privacy</string>
+    <string name="login_privacy">Sa pamamagitan ng pag-sign up, kinukumpirma mo na ikaw ay higit sa 21 taong gulang at sumasang-ayon sa aming Patakaran sa Pagkapribado at Mga Tuntunin at Kundisyon</string>
+    <string name="login_terms_conditions">Mga Tuntunin at Kundisyon </string>
+    <string name="login_privacy_policy">Patakaran sa Pagkapribado</string>
     <string name="otp_login">OTP Login </string>
     <string name="auth_login">Awtorisadong pag-login</string>
     <string name="set">Set up</string>
@@ -1236,5 +1236,5 @@
     <string name="live_service">Customer Service</string>
     <string name="pls_enter_correct_mobile">Pakilagay ang tamang numero ng telepono</string>
     <string name="pls_enter_correct_email">Pakilagay ang tamang email</string>
-    <string name="next">Next</string>
+    <string name="next">Susunod</string>
 </resources>
