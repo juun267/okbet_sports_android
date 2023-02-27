@@ -15,6 +15,7 @@ import com.adjust.sdk.AdjustConfig
 import com.adjust.sdk.LogLevel
 import com.appsflyer.AppsFlyerLib
 import com.didichuxing.doraemonkit.DoKit
+import com.github.jokar.multilanguages.library.MultiLanguage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.cxct.sportlottery.db.entity.UserInfo
@@ -182,13 +183,15 @@ class MultiLanguagesApplication : Application() {
 
     override fun attachBaseContext(base: Context) {
         //第一次进入app时保存系统选择语言(为了选择随系统语言时使用，如果不保存，切换语言后就拿不到了）
-        LanguageManager.attachBaseContext(base)
-        super.attachBaseContext(base)
+        LanguageManager.saveSystemCurrentLanguage(base)
+        super.attachBaseContext(MultiLanguage.setLocal(base))
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        LanguageManager.onConfigurationChanged(applicationContext, newConfig)
+        //用户在系统设置页面切换语言时保存系统选择语言(为了选择随系统语言时使用，如果不保存，切换语言后就拿不到了）
+        LanguageManager.saveSystemCurrentLanguage(applicationContext, newConfig)
+        MultiLanguage.onConfigurationChanged(applicationContext)
     }
 
     private fun getDefaultSharedPreferences(): SharedPreferences {
@@ -203,13 +206,11 @@ class MultiLanguagesApplication : Application() {
         AppManager.init(this)
         myPref = getDefaultSharedPreferences()
 
-//        MultiLanguage.init { context ->
-//            //返回自己本地保存选择的语言设置
-//            return@init LanguageManager.getSetLanguageLocale(context)
-//        }
-//        MultiLanguage.setApplicationLanguage(this)
-        LanguageManager.bindLocalChange(this)
-
+        MultiLanguage.init { context ->
+            //返回自己本地保存选择的语言设置
+            return@init LanguageManager.getSetLanguageLocale(context)
+        }
+        MultiLanguage.setApplicationLanguage(this)
         TimeZone.setDefault(timeZone)
         startKoin {
             androidContext(this@MultiLanguagesApplication)

@@ -1,14 +1,9 @@
 package org.cxct.sportlottery.util
 
-import android.app.Activity
-import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
-import android.content.res.Resources
-import android.os.Build
-import android.os.Bundle
-import android.os.LocaleList
+import com.github.jokar.multilanguages.library.MultiLanguage
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import java.util.*
@@ -22,7 +17,7 @@ object LanguageManager {
      *
      * @return Locale对象
      */
-    private fun getSystemLocale(context: Context?): Locale {
+    fun getSystemLocale(context: Context?): Locale {
         return SPUtil.getInstance(context).systemCurrentLocal
     }
 
@@ -56,7 +51,7 @@ object LanguageManager {
         }
     }
 
-    private fun getLanguageFlag(context: Context?): Int {
+    fun getLanguageFlag(context: Context?): Int {
         return when (getSelectLanguage(context)) {
             Language.ZH -> R.drawable.ic_flag_cn
             Language.VI -> R.drawable.ic_flag_vi
@@ -117,107 +112,26 @@ object LanguageManager {
         }
     }
 
-    private fun saveSystemCurrentLanguage(context: Context, local: Locale) {
-        SPUtil.getInstance(context).systemCurrentLocal = local
-    }
-
-    private fun getSystemLocal(newConfig: Configuration): Locale {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            newConfig.locales[0]
-        } else {
-            newConfig.locale
-        }
-    }
-
-    private fun getSystemLocal(): Locale {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            LocaleList.getDefault()[0]
-        } else {
-            Locale.getDefault()
-        }
-    }
-
-    fun saveSelectLanguage(context: Context, select: Language) {
-        SPUtil.getInstance(context).saveLanguage(select.key)
-        updateResources(context, context.applicationContext.resources, convert(select))
-    }
-
-    fun attachBaseContext(context: Context) {
-        saveSystemCurrentLanguage(context, getSystemLocal())
-        val local = getSetLanguageLocale(context)
-        updateResources(context, local)
-    }
-
-    fun onConfigurationChanged(context: Context, newConfig: Configuration) {
-        saveSystemCurrentLanguage(context, getSystemLocal(newConfig))
-        val local = getSetLanguageLocale(context)
-        updateResources(context, local)
-        updateResources(context, context.applicationContext.resources, local)
+    fun saveSystemCurrentLanguage(context: Context?) {
+        SPUtil.getInstance(context).systemCurrentLocal = MultiLanguage.getSystemLocal(context)
     }
 
     /**
-     * 更新语言设置
-     *
+     * 保存系统语言
      * @param context
-     * @param locale
-     * @return
+     * @param newConfig
      */
-    private fun updateResources(context: Context, locale: Locale) {
-        Locale.setDefault(locale)
-        val res = context.resources
-        val config = Configuration(res.configuration)
-        if (Build.VERSION.SDK_INT >= 17) {
-            config.setLocale(locale)
-            context.createConfigurationContext(config)
-        } else {
-            config.locale = locale
-            res.updateConfiguration(config, res.displayMetrics)
-        }
+    fun saveSystemCurrentLanguage(
+        context: Context?,
+        newConfig: Configuration?
+    ) {
+        SPUtil.getInstance(context).systemCurrentLocal = MultiLanguage.getSystemLocal(newConfig)
     }
 
-    private fun updateResources(context: Context, resources: Resources, locale: Locale) {
-        val dm = resources.displayMetrics
-        val config = resources.configuration
-        config.locale = locale
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            val localeList = LocaleList(locale)
-            LocaleList.setDefault(localeList)
-            config.setLocales(localeList)
-            context!!.applicationContext.createConfigurationContext(config)
-            Locale.setDefault(locale)
-        }
-        resources.updateConfiguration(config, dm)
+    fun saveSelectLanguage(context: Context?, select: Language) {
+        SPUtil.getInstance(context).saveLanguage(select.key)
+        MultiLanguage.setApplicationLanguage(context)
     }
-
-    fun bindLocalChange(application: Application) {
-        application.registerActivityLifecycleCallbacks(LanguageResourceActivityCallback())
-    }
-
-    private class LanguageResourceActivityCallback: Application.ActivityLifecycleCallbacks {
-        override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-            updateResources(activity, activity.resources, getSetLanguageLocale(activity))
-        }
-
-        override fun onActivityStarted(activity: Activity) {
-        }
-
-        override fun onActivityResumed(activity: Activity) {
-        }
-
-        override fun onActivityPaused(activity: Activity) {
-        }
-
-        override fun onActivityStopped(activity: Activity) {
-        }
-
-        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
-        }
-
-        override fun onActivityDestroyed(activity: Activity) {
-        }
-
-    }
-
 }
 
 object SPUtil {
