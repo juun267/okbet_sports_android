@@ -234,7 +234,7 @@
     <string name="money_recycle_succeed">Matagumpay na nabawi ang quota</string>
     <string name="news_center">Message Center</string>
     <string name="help_center">Help center</string>
-    <string name="fund_detail">Nakaraang ikot</string>
+    <string name="fund_detail">Detalye ng Pondo</string>
     <string name="feedback">Feedback</string>
     <string name="promotion">Promosyon</string>
     <string name="need_improve">Kailangan ayusin</string>
@@ -508,9 +508,9 @@
     <string name="bet_list_single">Solong laro</string>
     <string name="bet_list_cant_parlay_warn">Paalalahanan na kung ang parehong kaganapan, ang iba\'t ibang uri ng mga bola, kampeon at iba pang mga bagay sa pagtaya ay hindi maaaring iugnay nang magkasama</string>
     <string name="complete">Tapus</string>
-    <string name="record_recharge">Rekord ng deposito</string>
+    <string name="record_recharge">Rekord ng Deposito</string>
     <string name="record_withdrawal">Rekord ng Withdrawal</string>
-    <string name="record_conversion">Rekord ng Withdrawal</string>
+    <string name="record_conversion">Rekord ng Conversion</string>
     <string name="record_history">History</string>
     <string name="recharge_state_success">Matagumpay</string>
     <string name="recharge_state_failed">Failed</string>
