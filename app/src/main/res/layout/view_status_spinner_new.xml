@@ -1,36 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cl_root_new"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center_vertical|center_horizontal"
-    tools:context=".ui.component.StatusSelectorView"
-    tools:background="@drawable/frame_color_silver_light_stroke">
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+    android:gravity="center">
 
     <TextView
         android:id="@+id/tv_name"
-        android:paddingStart="@dimen/margin_5"
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:gravity="center"
+        android:layout_gravity="center_vertical"
         android:singleLine="true"
         android:textColor="@color/color_79839F_6C7BA8"
-        android:textSize="@dimen/textSize12sp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="12sp"
         tools:text="@string/all_order_status" />
 
     <ImageView
         android:id="@+id/iv_arrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="4dp"
-        android:src="@drawable/ic_arrow_gray"
-        app:layout_constraintBottom_toBottomOf="@id/tv_name"
-        app:layout_constraintStart_toEndOf="@id/tv_name"
-        app:layout_constraintTop_toTopOf="@id/tv_name" />
+        android:layout_marginLeft="1dp"
+        android:src="@drawable/ic_arrow_gray" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
