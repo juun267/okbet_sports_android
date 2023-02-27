@@ -1261,7 +1261,7 @@
     <string name="next">Bước tiếp theo</string>
     <string name="hint_phone_format">SĐT gồm 11 số, và 09 bắt đầu</string>
     <string name="hint_referral_code">Mã giới thiệu (Chọn nhập)</string>
-    <string name="promo">Promo</string>
+    <string name="promo">Ưu đãi</string>
     <string name="username">Tài khoản</string>
     <string name="referral_code_invalid">Mã giới thiệu hết hạn</string>
 </resources>
