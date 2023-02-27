@@ -56,5 +56,5 @@ data class LoginData(
     @Json(name = "liveSyncUserInfoVO")
     var liveSyncUserInfoVO: LiveSyncUserInfoVO?,
     @Json(name = "ifnew")
-    var ifnew: Boolean,
+    var ifnew: Boolean?,
 ) : java.io.Serializable
