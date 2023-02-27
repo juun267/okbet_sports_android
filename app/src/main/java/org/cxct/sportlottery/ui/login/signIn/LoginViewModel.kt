@@ -129,7 +129,11 @@ class LoginViewModel(
             }?.let { result ->
                 userInfoRepository.getUserInfo()
                 _loginResult.postValue(result)
-                AFInAppEventUtil.login(result.loginData?.uid.toString())
+                if (result.loginData?.ifnew == true) {
+                    AFInAppEventUtil.register("username")
+                } else {
+                    AFInAppEventUtil.login(result.loginData?.uid.toString())
+                }
             }
         }
     }
