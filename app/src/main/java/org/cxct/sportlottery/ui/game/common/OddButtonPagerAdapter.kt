@@ -119,23 +119,11 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
             }
         }
 
-    val sizeCount = { gameType: String? ->
-        when (gameType) {
-            GameType.BM.key -> 4
-            GameType.TT.key -> 4
-            GameType.IH.key -> 4
-            GameType.BX.key -> 2
-            GameType.CB.key -> 6
-            GameType.CK.key -> 4
-            GameType.RB.key -> 4
-            GameType.AFT.key -> 6
-            GameType.BK.key -> 8
-            GameType.VB.key -> 4
-            GameType.FT.key -> 8
-            GameType.TN.key -> 6
-            else -> 8
-        }
-    }
+    /**
+     * 2023/02/28
+     * manta需求，最大赔率数量统一改成6
+     */
+    val sizeCount = { gameType: String? -> 6 }
 
     var oddsType: OddsType = OddsType.EU
         set(value) {
