@@ -20,6 +20,7 @@ import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.util.JsonUtil
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.setTitleLetterSpacing
+import timber.log.Timber
 
 /**
  * @app_destination 外觀(日間/夜間)切換-时区切换
@@ -93,6 +94,7 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         val curTimeZone = java.util.TimeZone.getDefault()
         val displayName = curTimeZone.getDisplayName(false, java.util.TimeZone.SHORT)
         val id = curTimeZone.id
+        Timber.d(originItems.toString())
         return originItems.find {
             displayName.contains(it.name, true)
                     && id.contains(it.city_en, true)
@@ -124,8 +126,8 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                     LanguageManager.Language.VI -> {
                         it.city_vi.contains(key, true)
                     }
-                    LanguageManager.Language.TH -> {
-                        it.city_th.contains(key, true)
+                    LanguageManager.Language.PHI ->{
+                        it.city_ph.contains(key,true)
                     }
                     else -> {
                         it.city_en.contains(key, true)

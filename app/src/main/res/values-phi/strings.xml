@@ -379,7 +379,7 @@
     <string name="hint_pay1">1. Pagkatapos ng matagumpay na pagbabayad, awtomatikong maikredito ang account, at may lalabas na paalala.</string>
     <string name="hint_pay2">2. Matagal na walang tugon, mangyaring makipag-ugnayan sa customer service。</string>
     <string name="btn_look_for">Tingnan ang transaksyon</string>
-    <string name="btn_service">makipag ugnayan sa CS</string>
+    <string name="btn_service"> makipag ugnayan sa CS</string>
     <string name="txv_transfer_pay">Transfer payment</string>
     <string name="txv_crypto_pay">Virtual currency transfer</string>
     <string name="error_first_recharge_amount">Ang halaga ng unang deposito ay hindi maaaring mas mababa sa %s</string>
@@ -1019,7 +1019,7 @@
     <string name="kyc_num">ID number</string>
     <string name="kyc_type2">Uri ng ID2</string>
     <string name="kyc_num2">ID number 2</string>
-    <string name="kyc_pick_upload_id">MMangyaring piliin ang pag-upload ng dokumento ng pagkakakilanlan</string>
+    <string name="kyc_pick_upload_id">Mangyaring piliin ang pag-upload ng dokumento ng pagkakakilanlan</string>
     <string name="kyc_size_2_mb">Ang laki ng file ay hindi dapat lumampas sa 2MB</string>
     <string name="kyc_contact_service">Nakasalubong problema? Mangyaring makipag-ugnayan sa online na serbisyo sa customer</string>
     <string name="kyc_contact_service_hilight">Online na serbisyo</string>
