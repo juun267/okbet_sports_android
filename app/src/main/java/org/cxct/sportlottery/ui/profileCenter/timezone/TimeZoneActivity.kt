@@ -84,7 +84,7 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         originItems = JsonUtil.listFrom(String(data), TimeZone::class.java) ?: listOf()
         selectItem = findCurrentZone()
 
-        withContext(Dispatchers.IO) {
+        withContext(Dispatchers.Main) {
             rv_list.adapter = adapter
             sortList()
         }
