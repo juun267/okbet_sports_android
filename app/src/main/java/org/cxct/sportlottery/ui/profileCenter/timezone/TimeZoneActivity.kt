@@ -7,6 +7,8 @@ import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.common.reflect.TypeToken
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_timezone.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import kotlinx.coroutines.Dispatchers
@@ -21,11 +23,16 @@ import org.cxct.sportlottery.util.JsonUtil
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 import timber.log.Timber
+import java.lang.ref.WeakReference
 
 /**
  * @app_destination 外觀(日間/夜間)切換-时区切换
  */
 class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
+
+    companion object {
+        private var timeZones: WeakReference<List<TimeZone>>? = null
+    }
 
     lateinit var adapter: TimeZoneAdapter
     private var originItems = listOf<TimeZone>()
@@ -81,7 +88,13 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         val data = inputSystem.readBytes()
         inputSystem.safeClose()
 
-        originItems = JsonUtil.listFrom(String(data), TimeZone::class.java) ?: listOf()
+        var zoneList = timeZones?.get()
+        if (zoneList == null) {
+            zoneList = JsonUtil.listFrom(String(data), TimeZone::class.java) ?: listOf()
+            timeZones = WeakReference(zoneList)
+        }
+
+        originItems = zoneList
         selectItem = findCurrentZone()
 
         withContext(Dispatchers.Main) {
