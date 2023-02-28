@@ -51,6 +51,7 @@ class DateRangeCalendarView : LinearLayout, DateRangeCalendarViewApi {
         locale = when (selectedLocale) {
             Language.ZH, Language.ZHT -> Locale.CHINESE
             Language.VI -> Locale("vi")
+            Language.PHI -> Locale("phi")
             null -> Locale.getDefault()
             else -> Locale.US
         }
@@ -86,6 +87,7 @@ class DateRangeCalendarView : LinearLayout, DateRangeCalendarViewApi {
             when (selectedLocale) {
                 Language.ZH, Language.ZHT -> Locale.CHINESE
                 Language.VI -> Locale("vi")
+                Language.PHI ->Locale("phi")
                 null -> Locale.getDefault()
                 else -> Locale.US
             }
@@ -96,6 +98,7 @@ class DateRangeCalendarView : LinearLayout, DateRangeCalendarViewApi {
                 when (selectedLocale) {
                     Language.ZH, Language.ZHT -> Locale.CHINESE
                     Language.VI -> Locale("vi")
+                    Language.PHI ->Locale("phi")
                     null -> Locale.getDefault()
                     else -> Locale.US
                 }
@@ -178,7 +181,7 @@ class DateRangeCalendarView : LinearLayout, DateRangeCalendarViewApi {
                     )
                 }"
             }
-            Language.VI -> {
+            Language.VI,Language.PHI -> {
                 "${context.getLocalString(R.string.month)} ${currentCalendarMonth[Calendar.MONTH] + 1} ${
                     context.getLocalString(
                         R.string.year

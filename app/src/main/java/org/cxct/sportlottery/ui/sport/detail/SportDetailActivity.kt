@@ -80,12 +80,14 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             matchType: MatchType? = null,
             intoLive: Boolean = false,
         ) {
-            matchInfo?.let {
+            matchInfo.let {
                 val intent = Intent(context, SportDetailActivity::class.java)
                 intent.putExtra("matchInfo", matchInfo)
-                intent.putExtra("matchType",
+                intent.putExtra(
+                    "matchType",
                     matchType
-                        ?: if (TimeUtil.isTimeInPlay(it.startTime)) MatchType.IN_PLAY else MatchType.DETAIL)
+                        ?: if (TimeUtil.isTimeInPlay(it.startTime)) MatchType.IN_PLAY else MatchType.DETAIL
+                )
                 intent.putExtra("intoLive", intoLive)
                 context.startActivity(intent)
             }
@@ -135,8 +137,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             }
             //过滤部分球类
             if (when (matchInfo?.gameType) {
-                    GameType.BB.key, GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.BM.key ->
-                        true
+                    GameType.BB.key, GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.BM.key -> true
                     else -> {
                         false
                     }
@@ -195,7 +196,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
 
-
     override fun initToolBar() {
         iv_back.setOnClickListener {
             onBackPressed()
@@ -227,12 +227,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             initAllObserve()
         }
 
-        ImmersionBar.with(this)
-            .fitsSystemWindows(false)
-            .statusBarDarkFont(false)
-            .transparentStatusBar()
-            .hideBar(BarHide.FLAG_HIDE_NAVIGATION_BAR)
-            .init()
+        ImmersionBar.with(this).fitsSystemWindows(false).statusBarDarkFont(false)
+            .transparentStatusBar().hideBar(BarHide.FLAG_HIDE_NAVIGATION_BAR).init()
         ImmersionBar.getStatusBarHeight(this).let {
             v_statusbar.minimumHeight = it
             live_view_tool_bar.v_statusbar_live.layoutParams.apply {
@@ -332,28 +328,24 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
     override fun showBetListPage() {
-        betListFragment =
-            BetListFragment.newInstance(object : BetListFragment.BetResultListener {
-                override fun onBetResult(
-                    betResultData: Receipt?,
-                    betParlayList: List<ParlayOdd>,
-                    isMultiBet: Boolean,
-                ) {
-                    showBetReceiptDialog(betResultData, betParlayList, isMultiBet, R.id.fl_bet_list)
-                }
+        betListFragment = BetListFragment.newInstance(object : BetListFragment.BetResultListener {
+            override fun onBetResult(
+                betResultData: Receipt?,
+                betParlayList: List<ParlayOdd>,
+                isMultiBet: Boolean,
+            ) {
+                showBetReceiptDialog(betResultData, betParlayList, isMultiBet, R.id.fl_bet_list)
+            }
 
-            })
+        })
 
-        supportFragmentManager.beginTransaction()
-            .setCustomAnimations(
-                R.anim.push_bottom_to_top_enter,
-                R.anim.pop_bottom_to_top_exit,
-                R.anim.push_bottom_to_top_enter,
-                R.anim.pop_bottom_to_top_exit
-            )
-            .add(R.id.fl_bet_list, betListFragment)
-            .addToBackStack(BetListFragment::class.java.simpleName)
-            .commit()
+        supportFragmentManager.beginTransaction().setCustomAnimations(
+            R.anim.push_bottom_to_top_enter,
+            R.anim.pop_bottom_to_top_exit,
+            R.anim.push_bottom_to_top_enter,
+            R.anim.pop_bottom_to_top_exit
+        ).add(R.id.fl_bet_list, betListFragment)
+            .addToBackStack(BetListFragment::class.java.simpleName).commit()
     }
 
     override fun updateUiWithLogin(isLogin: Boolean) {
@@ -368,6 +360,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         Timber.e("num: $num")
         if (num > 0) viewModel.getMoney()
     }
+
     override fun updateBetListOdds(list: MutableList<BetInfoListData>) {
         if (list.size > 1) {
             val multipleOdds = getMultipleOdds(list)
@@ -432,10 +425,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
     private fun releaseWebView() {
-        if(::wv_analyze.isInitialized) {
+        if (::wv_analyze.isInitialized) {
             wv_analyze.destroy()
         }
-        if(::wv_chat.isInitialized) {
+        if (::wv_chat.isInitialized) {
             wv_chat.destroy()
         }
     }
@@ -450,13 +443,20 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 //                cl_bottom.layoutParams = it
 //            }
         }
-        iv_detail_bg.setImageResource(GameType.getGameTypeDetailBg(GameType.getGameType(matchInfo?.gameType)
-            ?: GameType.FT))
-        collaps_toolbar.iv_toolbar_bg.setImageResource(GameType.getGameTypeDetailBg(GameType.getGameType(
-            matchInfo?.gameType)
-            ?: GameType.FT))
-        oddsDetailListAdapter = OddsDetailListAdapter(
-            OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
+        iv_detail_bg.setImageResource(
+            GameType.getGameTypeDetailBg(
+                GameType.getGameType(matchInfo?.gameType) ?: GameType.FT
+            )
+        )
+        collaps_toolbar.iv_toolbar_bg.setImageResource(
+            GameType.getGameTypeDetailBg(
+                GameType.getGameType(
+                    matchInfo?.gameType
+                ) ?: GameType.FT
+            )
+        )
+        oddsDetailListAdapter =
+            OddsDetailListAdapter(OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
                 if (mIsEnabled) {
                     avoidFastDoubleClick()
                     matchOdd?.let { matchOdd ->
@@ -475,16 +475,15 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         viewModel.updateMatchBetListData(fastBetDataBean)
                     }
                 }
-            }
-        ).apply {
-            discount = viewModel.userInfo.value?.discount ?: 1.0F
+            }).apply {
+                discount = viewModel.userInfo.value?.discount ?: 1.0F
 
-            oddsDetailListener = OddsDetailListener {
-                viewModel.pinFavorite(FavoriteType.PLAY_CATE, it, matchInfo?.gameType)
-            }
+                oddsDetailListener = OddsDetailListener {
+                    viewModel.pinFavorite(FavoriteType.PLAY_CATE, it, matchInfo?.gameType)
+                }
 
-            sportCode = GameType.getGameType(matchInfo?.gameType)
-        }
+                sportCode = GameType.getGameType(matchInfo?.gameType)
+            }
         rv_detail.apply {
             (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             adapter = oddsDetailListAdapter
@@ -628,8 +627,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     it.isPin = true
 
                     oddsDetailListAdapter.oddsDetailDataList.add(
-                        epsSize,
-                        oddsDetailListAdapter.oddsDetailDataList.removeAt(
+                        epsSize, oddsDetailListAdapter.oddsDetailDataList.removeAt(
                             oddsDetailListAdapter.oddsDetailDataList.indexOf(
                                 it
                             )
@@ -668,11 +666,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
 
         viewModel.showBetUpperLimit.observe(this) {
-            if (it.getContentIfNotHandled() == true)
-                snackBarBetUpperLimitNotify.apply {
-                    setAnchorView(R.id.cl_bet_list_bar)
-                    show()
-                }
+            if (it.getContentIfNotHandled() == true) snackBarBetUpperLimitNotify.apply {
+                setAnchorView(R.id.cl_bet_list_bar)
+                show()
+            }
         }
         viewModel.liveLoginInfo.observe(this) {
             it.getContentIfNotHandled()?.let {
@@ -726,9 +723,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         img_away_logo.setTeamLogo(matchInfo.awayIcon)
         //endregion
         //region 比賽延期判斷
-        if (matchInfo.status == GameStatus.POSTPONED.code
-            && (matchInfo.gameType == GameType.FT.name || matchInfo.gameType == GameType.BK.name || matchInfo.gameType == GameType.TN.name)
-        ) {
+        if (matchInfo.status == GameStatus.POSTPONED.code && (matchInfo.gameType == GameType.FT.name || matchInfo.gameType == GameType.BK.name || matchInfo.gameType == GameType.TN.name)) {
             toolBar.tv_score.text = getString(R.string.game_postponed)
             tv_toolbar_home_score.text = "-"
             tv_toolbar_away_score.text = "-"
@@ -829,23 +824,18 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         receiver.matchOddsChange.observe(this) {
             it?.getContentIfNotHandled()?.let { matchOddsChangeEvent ->
                 oddsDetailListAdapter?.oddsDetailDataList?.let { oddsDetailListDataList ->
-                    SocketUpdateUtil.updateMatchOddsMap(
-                        oddsDetailListDataList,
+                    SocketUpdateUtil.updateMatchOddsMap(oddsDetailListDataList,
                         matchOddsChangeEvent,
                         viewModel.favorPlayCateList.value?.find { playCate ->
                             playCate.gameType == matchInfo?.gameType
-                        }
-                    )
-                        ?.let { updatedDataList ->
-                            oddsDetailListAdapter?.oddsDetailDataList = updatedDataList
-                        } ?: run {
+                        })?.let { updatedDataList ->
+                        oddsDetailListAdapter?.oddsDetailDataList = updatedDataList
+                    } ?: run {
                         var needUpdate = false
                         oddsDetailListDataList.forEachIndexed { index, oddsDetailListData ->
                             if (SocketUpdateUtil.updateMatchOdds(
-                                    oddsDetailListData,
-                                    matchOddsChangeEvent
-                                )
-                                && oddsDetailListData.isExpand
+                                    oddsDetailListData, matchOddsChangeEvent
+                                ) && oddsDetailListData.isExpand
                             ) {
                                 needUpdate = true
                                 updateBetInfo(oddsDetailListData, matchOddsChangeEvent)
@@ -878,8 +868,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             it?.let { globalStopEvent ->
                 oddsDetailListAdapter?.oddsDetailDataList?.forEachIndexed { index, oddsDetailListData ->
                     if (SocketUpdateUtil.updateOddStatus(
-                            oddsDetailListData,
-                            globalStopEvent
+                            oddsDetailListData, globalStopEvent
                         ) && oddsDetailListData.isExpand
                     ) {
                         oddsDetailListAdapter?.notifyItemChanged(index)
@@ -899,15 +888,13 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             event?.getContentIfNotHandled()?.let {
                 if (matchInfo?.gameType != it.gameType) return@observe
                 oddsDetailListAdapter?.oddsDetailDataList?.apply {
-                    indexOf(
-                        find { date ->
-                            date.gameType == it.playCateCode //命名待優化 此處gameType並非球種 而為玩法code
-                        }?.apply {
-                            this.oddArrayList.forEach { odd ->
-                                odd?.status = BetStatus.DEACTIVATED.code
-                            }
+                    indexOf(find { date ->
+                        date.gameType == it.playCateCode //命名待優化 此處gameType並非球種 而為玩法code
+                    }?.apply {
+                        this.oddArrayList.forEach { odd ->
+                            odd?.status = BetStatus.DEACTIVATED.code
                         }
-                    ).let { index ->
+                    }).let { index ->
                         if (index < 0) return@observe
                         oddsDetailListAdapter?.notifyItemChanged(index)
                     }
@@ -979,10 +966,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     fun updateMenu(matchInfo: MatchInfo) {
         toolBar.apply {
-            lin_live.isVisible =
-                matchInfo?.isLive == 1
-            lin_video.isVisible =
-                matchInfo?.liveVideo == 1
+            lin_live.isVisible = matchInfo?.isLive == 1
+            lin_video.isVisible = matchInfo?.liveVideo == 1
             lin_anime.isVisible =
                 !(matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
                     ?.getGameDetailAnimationNeedShow() == true
@@ -1148,8 +1133,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             setAttack(matchInfo)
             setBBStatus(matchInfo)
             setCurrentPeroid(matchInfo)
-        } else
-            setBkScoreText(matchInfo)
+        } else setBkScoreText(matchInfo)
     }
 
     private fun setCkScoreText(matchInfo: MatchInfo) {
@@ -1198,6 +1182,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             tv_toolbar_match_status.text = tv_match_status.text.trim()
         }
     }
+
     /**
      * 设置足球半场比分
      */
@@ -1274,12 +1259,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private fun setFbKicks(matchInfo: MatchInfo) {
         league_corner_kicks.apply {
             visibility = when {
-                TimeUtil.isTimeInPlay(matchInfo.startTime)
-                        && (matchInfo.homeCornerKicks ?: 0 > 0 || matchInfo.awayCornerKicks ?: 0 > 0) -> View.VISIBLE
+                TimeUtil.isTimeInPlay(matchInfo.startTime) && (matchInfo.homeCornerKicks ?: 0 > 0 || matchInfo.awayCornerKicks ?: 0 > 0) -> View.VISIBLE
                 else -> View.GONE
             }
-            text = (matchInfo.homeCornerKicks
-                ?: 0).toString() + "-" + (matchInfo.awayCornerKicks ?: 0)
+            text =
+                (matchInfo.homeCornerKicks ?: 0).toString() + "-" + (matchInfo.awayCornerKicks ?: 0)
         }
     }
 
@@ -1340,8 +1324,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     val spanScore = "${it.homeScore ?: 0}-${it.awayScore ?: 0}"
                     //9表示已结束，其他代表进行中的
                     if (index == peroid) {
-                        spanny.append(spanScore,
-                            ForegroundColorSpan(getColor(R.color.color_F0A536)))
+                        spanny.append(
+                            spanScore, ForegroundColorSpan(getColor(R.color.color_F0A536))
+                        )
                     } else if (index < peroid) {
                         spanny.append(spanScore)
                         spanny.append("  ")
@@ -1357,8 +1342,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         spanny.append(spanScore)
                         spanny.append("  ")
                     } else {
-                        spanny.append(spanScore,
-                            ForegroundColorSpan(getColor(R.color.color_F0A536)))
+                        spanny.append(
+                            spanScore, ForegroundColorSpan(getColor(R.color.color_F0A536))
+                        )
                     }
                 }
                 tv_peroids_score.isVisible = true
@@ -1371,19 +1357,13 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     private fun setStatusText(matchInfo: MatchInfo) {
         tv_match_status.text = when {
-            (TimeUtil.isTimeInPlay(matchInfo.startTime)
-                    && matchInfo.status == GameStatus.POSTPONED.code
-                    && (matchInfo.gameType == GameType.FT.name || matchInfo.gameType == GameType.BK.name || matchInfo.gameType == GameType.TN.name)) -> {
+            (TimeUtil.isTimeInPlay(matchInfo.startTime) && matchInfo.status == GameStatus.POSTPONED.code && (matchInfo.gameType == GameType.FT.name || matchInfo.gameType == GameType.BK.name || matchInfo.gameType == GameType.TN.name)) -> {
                 getString(R.string.game_postponed) + setSptText(matchInfo)
             }
             TimeUtil.isTimeInPlay(matchInfo.startTime) -> {
                 if (matchInfo.statusName18n != null) {
                     //网球，排球，乒乓，羽毛球，就不显示
-                    if (matchInfo.gameType == GameType.TN.name
-                        || matchInfo.gameType == GameType.VB.name
-                        || matchInfo.gameType == GameType.TT.name
-                        || matchInfo.gameType == GameType.BM.name
-                    ) {
+                    if (matchInfo.gameType == GameType.TN.name || matchInfo.gameType == GameType.VB.name || matchInfo.gameType == GameType.TT.name || matchInfo.gameType == GameType.BM.name) {
                         "" + setSptText(matchInfo)
                     } else {
                         matchInfo.statusName18n + (setSptText(matchInfo))
@@ -1394,10 +1374,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 }
             }
             else -> {
-                if (TimeUtil.isTimeToday(matchInfo.startTime))
-                    getString((R.string.home_tab_today))
-                else
-                    matchInfo.startDateDisplay
+                if (TimeUtil.isTimeToday(matchInfo.startTime)) getString((R.string.home_tab_today))
+                else matchInfo.startDateDisplay
             }
         }
         tv_toolbar_match_status.text = tv_match_status.text.trim()
@@ -1413,8 +1391,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         league_odd_match_halfStatus.isVisible = false
 
         txvOut.apply {
-            text = getString(R.string.game_out,
-                matchInfo.outNumber ?: "")
+            text = getString(
+                R.string.game_out, matchInfo.outNumber ?: ""
+            )
             isVisible = true
         }
         tv_match_time.apply {
@@ -1444,7 +1423,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     private lateinit var wv_analyze: WebView
     private fun initAnalyzeWV() {
-        if(!::wv_analyze.isInitialized) {
+        if (!::wv_analyze.isInitialized) {
             wv_analyze = WebView(this)
             wv_analyze.isNestedScrollingEnabled = false
             ns_analyze.addView(wv_analyze, FrameLayout.LayoutParams(-1, -1))
@@ -1458,8 +1437,15 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
             webViewClient = WebViewClient()
 
-            sConfigData?.analysisUrl?.replace("{lang}",
-                LanguageManager.getSelectLanguage(this@SportDetailActivity).key)
+            sConfigData?.analysisUrl?.replace(
+                "{lang}",
+                if (LanguageManager.getSelectLanguage(this@SportDetailActivity).key == LanguageManager.Language.PHI.key) {
+                    LanguageManager.Language.EN.key
+                } else {
+                    LanguageManager.getSelectLanguage(this@SportDetailActivity).key
+                }
+            )
+
                 ?.replace("{eventId}", matchId)?.let {
                     loadUrl(it)
                 }
@@ -1490,7 +1476,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     private lateinit var wv_chat: WebView
     private fun initChatWV() {
-        if(!::wv_chat.isInitialized) {
+        if (!::wv_chat.isInitialized) {
             wv_chat = WebView(this)
             val lp = FrameLayout.LayoutParams(-1, 60.dp)
             lp.gravity = Gravity.BOTTOM
@@ -1601,9 +1587,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     var showEmoji = false
     var onMini = true
     fun setUpBetBarVisible() {
-        cl_bet_list_bar.isVisible =
-            !BetInfoRepository.betInfoList.value?.peekContent().isNullOrEmpty()
-                    && (!showEmoji && onMini)
+        cl_bet_list_bar.isVisible = !BetInfoRepository.betInfoList.value?.peekContent()
+            .isNullOrEmpty() && (!showEmoji && onMini)
     }
 
 

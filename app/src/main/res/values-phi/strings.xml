@@ -25,7 +25,7 @@
     <string name="btn_pass">Skip</string>
     <string name="login_account">Login account</string>
     <string name="please_input_account">Paki lagay ang inyong account number</string>
-    <string name="login_password">Paki lagay ang password</string>
+    <string name="login_password">Paki Lagay Ang Password</string>
     <string name="remember_password">Paki tandaan ang password</string>
     <string name="forget_password_question">Nakalimutan ang password?</string>
     <string name="sign_up_know">Mag-sign up</string>
@@ -126,7 +126,7 @@
     <string name="home_tab_today">Ngayon</string>
     <string name="home_tab_early">Maaga</string>
     <string name="home_tab_cs">Correct score</string>
-    <string name="home_tab_parlay">Link up</string>
+    <string name="home_tab_parlay">Parlay</string>
     <string name="home_tab_outright">Kampeon</string>
     <string name="home_tab_at_start">MALAPIT NA</string>
     <string name="home_tab_eps">Premium</string>
@@ -255,7 +255,7 @@
     <string name="new_password">Bagong password</string>
     <string name="hint_withdrawal_new_password">Password ay 4 na numero</string>
     <string name="error_password_cannot_be_same">Ang bagong password ay hindi maaaring pareho sa lumang password</string>
-    <string name="update_login_pwd">Matagumpay na nabago ang inyong password. maaari niyo gamitin ang bagong password</string>
+    <string name="update_login_pwd">Matagumpay na napalitan ang password sa pag-log in, mangyaring mag-log in muli</string>
     <string name="update_withdrawal_pwd">Matagumpay ng nabago ang inyong password</string>
     <string name="download_fail">Download failed</string>
     <string name="error_file">Error sa file</string>
@@ -274,7 +274,7 @@
     <string name="record_time">Oras ng conversion</string>
     <string name="choose_bet_state">Pumili ng tamang taya</string>
     <string name="champion_play">Championship play</string>
-    <string name="inquire">Tanong</string>
+    <string name="inquire">Hanapin</string>
     <string name="order_number">Numero ng taya</string>
     <string name="order_number_colon">Note number：</string>
     <string name="bet_type">投注玩法</string>
@@ -290,7 +290,7 @@
     <string name="not_settled_order">Hindi na ayos na taya</string>
     <string name="settled_order">Naayos na</string> <!--I046-->
     <string name="start_date">Petsa ng pagsisimula</string>
-    <string name="end_date">Petsa ng pagtatapos</string>
+    <string name="end_date">Huling Petsa</string>
     <string name="no_data">Wala nang data</string>
     <string name="uncheck">Hindi kumpirmado</string>
     <string name="undone">Pagpoproseso</string>
@@ -514,7 +514,7 @@
     <string name="record_history">History</string>
     <string name="recharge_state_success">Matagumpay</string>
     <string name="recharge_state_failed">Failed</string>
-    <string name="all_order_status">All order status</string>
+    <string name="all_order_status">All Status</string>
     <string name="recharge_channel_online">Bayad online</string>
     <string name="recharge_channel_bank">Bank card transfer</string>
     <string name="recharge_channel_alipay">Alipay transfer</string>
@@ -524,7 +524,7 @@
     <string name="recharge_channel_gcash">Gcash</string>
     <string name="recharge_channel_grabpay">GrabPay</string>
     <string name="recharge_channel_paymaya">PayMaya</string>
-    <string name="recharge_channel_admin">Dagdag pera gamit ang systema</string>
+    <string name="recharge_channel_admin">Manual Deposit</string>
     <string name="recharge_log_order_time">Order time</string>
     <string name="recharge_log_recharge_amount">Halaga ng deposito</string>
     <string name="recharge_log_channel_type">Uri ng channel</string>
@@ -532,7 +532,7 @@
     <string name="log_state_processing">Pinoproseso</string>
     <string name="withdraw_log_state_pass">Pumasa</string>
     <string name="withdraw_log_state_un_pass">Hindi pumasa</string>
-    <string name="log_type_all">Lahat ng uri ng channel</string>
+    <string name="log_type_all">All Method</string>
     <string name="withdraw_log_type_bank_trans">Pag-withdraw sa bangko</string>
     <string name="withdraw_log_type_admin">Bawas sa background</string>
     <string name="withdraw_log_crypto_transfer">Virtual currency withdrawal</string>
@@ -540,14 +540,14 @@
     <string name="betting_station_withdraw">Cash withdrawal outlets</string>
     <string name="betting_station_deposit">Branch deposit</string>
     <string name="log_detail_title">Suriin ang mga detalye</string>
-    <string name="log_detail_trans_num_sub">Numero ng transaksyon：</string>
-    <string name="log_detail_trans_num_sub2">Numero ng transaksyon</string>
+    <string name="log_detail_trans_num_sub">Transaction No.：</string>
+    <string name="log_detail_trans_num_sub2">Trading number</string>
     <string name="log_detail_time_sub">Oras ng pagsisimla：</string>
     <string name="log_detail_status_sub">Trading status：</string>
     <string name="log_detail_handle_fee">Handling fee：</string>
     <string name="log_detail_rebate_money">Halaga ng rebate：</string>
     <string name="log_detail_review_time">Oras ng pagsusuri：</string>
-    <string name="log_detail_reason">Puna：</string>
+    <string name="log_detail_reason">Remarks：</string>
     <string name="finance_log_selector_until">Dumating na</string>
     <string name="finance_list_no_record">Walang laman</string>
     <string name="feedback_detail">Detalye ng Feedback</string>
@@ -869,7 +869,7 @@
     <!--歷史紀錄start-->
     <string name="text_account_history_time">Oras ng transaksyon</string>
     <string name="text_account_history_number">Numero ng order</string>
-    <string name="text_account_history_amount">Halaga ng transaksyon</string>
+    <string name="text_account_history_amount">Transaction amount</string>
     <string name="text_account_history_balance">Balanse</string>
 
     <string name="text_account_history_bet">Bet slip</string>
@@ -980,7 +980,7 @@
     <string name="redenvelope_trantype_send">Pulang envelope</string>
     <string name="redenvelope_trantype_received">Tumanggap ng pulang envelope</string>
     <string name="redenvelope_amount">Halaga ng pulang sobre</string>
-    <string name="tran_type">Uri ng transaksyon</string>
+    <string name="tran_type">Type</string>
     <string name="redenvelope_record">Rekord ng pulang sobre</string>
     <string name="btn_sure">Oo</string>
     <string name="Outlets_Reserve">Network map about</string>
@@ -1044,9 +1044,9 @@
     <string name="correct">Correct score</string>
     <string name="betting_setting">Betting settings</string>
     <string name="filter">Filter</string>
-    <string name="league_filter">赛事筛选</string>
+    <string name="league_filter">Match filter</string>
     <string name="reverse_select">Invert selection</string>
-    <string name="video">视频</string>
+    <string name="video">Video</string>
     <string name="anime">Animation</string>
 
     <string name="hint_bet_limit_range">%1$s-%2$s</string>
@@ -1058,7 +1058,7 @@
 
     <string name="bet_record_single">Iisang string</string>
     <string name="bet_record_parlay">Multiple bets</string>
-    <string name="bet_slip_id_is_copied">下注单ID已经复制到剪贴板</string>
+    <string name="bet_slip_id_is_copied">Bet Slip ID is copied to clipboard</string>
 
     <string name="main_tab_favorite">Paborito</string>
     <string name="my_favorite_empty">Wala kang paboritong mga event</string>
@@ -1161,7 +1161,7 @@
     <string name="accept_never_change_in_odds">Huwag tanggapin ang mga pagbabago sa odds</string>
     <string name="expand_more_combinations">Palawakin ang mas maraming kumbinasyon</string>
     <string name="stacked_combination">Pinagsama-samang kumbinasyon</string>
-    <string name="bet_parlay">+Link up</string>
+    <string name="bet_parlay">+Parlay</string>
     <string name="str_bet_parlay">String</string>
     <string name="bet_single">Single bet</string>
     <string name="str_if_accept_odds_changes_title">Kung tatanggapin ang paliwanag ng mga posibilidad na baguhin</string>
