@@ -316,7 +316,7 @@
     <string name="match_names_3">Host %s V.S %s Guest</string>
     <string name="bet_item">Bagay sa pagtaya -</string>
     <string name="at_start_remain_minute">%sMinuto</string>
-    <string name="date_row_all">Mga petsa</string>
+    <string name="date_row_all">Lahat ng Petsa</string>
     <string name="date_row_live">Inplay competision</string>
     <string name="date_row_today">Laro ngayon</string>
     <string name="ou_hdp_1x2_title">Home&amp;Away</string>
@@ -569,7 +569,7 @@
     <string name="transfer_money">Halaga ng conversion</string>
     <string name="transfer_money_minimum">Quota %s o higit pa</string>
     <string name="confirm_transform">Kumpirmahin ang conversion</string>
-    <string name="plat_money">Balanse sa platform</string>
+    <string name="plat_money">Platform balance</string>
     <string name="money">Halaga ng conversion</string>
     <string name="transfer_platform">Palit platform</string>
     <string name="transfer_money_succeed">Matagumpay na na-convert ang quota</string>
@@ -620,7 +620,7 @@
     <string name="bet_info_content_has_been_changed">Mga uri na pinili ng inyong odds ay may binago. paki bet ulit</string>
     <string name="date">Petsa</string>
     <string name="bet_amount">Halaga ng taya</string>
-    <string name="available_amount">Wastong Halaga ng taya</string>
+    <string name="available_amount">Valid na taya</string>
     <string name="win_lose">Panalo / talo</string>
     <string name="all_sport">Lahat ng sports</string>
     <string name="total">Kabuuan</string>
