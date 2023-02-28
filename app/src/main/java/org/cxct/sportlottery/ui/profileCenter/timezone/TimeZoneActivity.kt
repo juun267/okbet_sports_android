@@ -4,16 +4,20 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.common.reflect.TypeToken
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_timezone.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.extentions.safeClose
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
+import org.cxct.sportlottery.util.JsonUtil
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
@@ -52,7 +56,9 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
             }
             override fun afterTextChanged(s: Editable?) {
-                sortList()
+                if (originItems.isNotEmpty()) {
+                    sortList()
+                }
             }
         })
         rv_list.layoutManager=LinearLayoutManager(this,RecyclerView.VERTICAL,false)
@@ -66,13 +72,21 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             rv_list.smoothScrollToPosition(0)
         })
 
-        originItems = Gson().fromJson(
-            String(assets.open("timezone.json").readBytes()),
-            object : TypeToken<ArrayList<TimeZone>>() {}.type
-        )
+        setup()
+    }
+
+    private fun setup() = lifecycleScope.launch(Dispatchers.IO) {
+        val inputSystem = assets.open("timezone.json")
+        val data = inputSystem.readBytes()
+        inputSystem.safeClose()
+
+        originItems = JsonUtil.listFrom(String(data), TimeZone::class.java) ?: listOf()
         selectItem = findCurrentZone()
-        rv_list.adapter = adapter
-        sortList()
+
+        withContext(Dispatchers.IO) {
+            rv_list.adapter = adapter
+            sortList()
+        }
     }
 
     private fun findCurrentZone(): TimeZone? {
@@ -98,8 +112,9 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             it.isSelected = true
         }
         if (key.isNotEmpty()) {
+            val currentLanguage = LanguageManager.getSelectLanguage(this)
             currentItems = currentItems.filter {
-                when (LanguageManager.getSelectLanguage(this)) {
+                when (currentLanguage) {
                     LanguageManager.Language.ZH -> {
                         it.city_zh.contains(key, true)
                     }
@@ -118,6 +133,7 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                 }
             } as ArrayList<TimeZone>
         }
+
         adapter.setItems(currentItems)
         adapter.notifyDataSetChanged()
         lin_empty.visibility = if (currentItems.isNullOrEmpty()) View.VISIBLE else View.GONE
