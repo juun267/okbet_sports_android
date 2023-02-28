@@ -9,7 +9,7 @@ import java.util.*
 
 object LanguageManager {
 
-    enum class Language(val key: String) { ZH("zh"), ZHT("zht"), EN("en"), VI("vi") }
+    enum class Language(val key: String) { ZH("zh"), ZHT("zht"), EN("en"), VI("vi"),PHI("phi") }
 
     fun getSelectLanguage(context: Context): Language {
         val savedLanguage = Language.values()
@@ -37,6 +37,7 @@ object LanguageManager {
             Language.ZH, Language.ZHT -> Locale.SIMPLIFIED_CHINESE
             Language.EN -> Locale.ENGLISH
             Language.VI -> Locale("vi")
+            Language.PHI -> Locale("phi")
         }
     }
 }
