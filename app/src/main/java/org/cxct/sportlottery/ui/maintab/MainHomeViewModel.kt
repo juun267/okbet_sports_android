@@ -289,12 +289,12 @@ class MainHomeViewModel(
             return
         }
 
-        if (isThirdTransferOpen()) { // 额度自动转换开启
+//        if (isThirdTransferOpen()) { // 额度自动转换开启
             requestEnterThirdGame("${gameData.firmType}", "${gameData.gameCode}", "${gameData.gameCategory}")
-            return
-        }
-
-        getGameBalance(gameData, baseFragment)
+//            return
+//        }
+//
+//        getGameBalance(gameData, baseFragment)
     }
 
 
