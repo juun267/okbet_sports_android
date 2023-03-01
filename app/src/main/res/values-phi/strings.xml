@@ -542,7 +542,7 @@
     <string name="log_detail_title">Suriin ang mga detalye</string>
     <string name="log_detail_trans_num_sub">Transaction No.：</string>
     <string name="log_detail_trans_num_sub2">Trading number</string>
-    <string name="log_detail_time_sub">Oras ng pagsisimla：</string>
+    <string name="log_detail_time_sub">Time：</string>
     <string name="log_detail_status_sub">Trading status：</string>
     <string name="log_detail_handle_fee">Handling fee：</string>
     <string name="log_detail_rebate_money">Halaga ng rebate：</string>

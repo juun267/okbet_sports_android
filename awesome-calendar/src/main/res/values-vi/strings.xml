@@ -22,4 +22,17 @@
 
     <string name="year">năm</string>
     <string name="month">tháng</string>
+
+    <string name="month_1">tháng 1</string>
+    <string name="month_2">tháng 2</string>
+    <string name="month_3">tháng 3</string>
+    <string name="month_4">tháng 4</string>
+    <string name="month_5">tháng 5</string>
+    <string name="month_6">tháng 6</string>
+    <string name="month_7">tháng 7</string>
+    <string name="month_8">tháng 8</string>
+    <string name="month_9">tháng 9</string>
+    <string name="month_10">tháng 10</string>
+    <string name="month_11">tháng 11</string>
+    <string name="month_12">tháng 12</string>
 </resources>

@@ -22,4 +22,17 @@
 
     <string name="year">Taon</string>
     <string name="month">Buwan</string>
+
+    <string name="month_1">Enero</string>
+    <string name="month_2">Pebrero</string>
+    <string name="month_3">Marso</string>
+    <string name="month_4">Abril</string>
+    <string name="month_5">May</string>
+    <string name="month_6">Hunyo</string>
+    <string name="month_7">Hulyo</string>
+    <string name="month_8">Agosto</string>
+    <string name="month_9">Setyembre</string>
+    <string name="month_10">Oktubre</string>
+    <string name="month_11">Nobyembre</string>
+    <string name="month_12">Disyembre</string>
 </resources>

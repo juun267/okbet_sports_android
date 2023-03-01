@@ -170,33 +170,40 @@ class DateRangeCalendarView : LinearLayout, DateRangeCalendarViewApi {
      */
     private fun setCalendarYearTitle(position: Int) {
         val currentCalendarMonth = mDateRangeCalendarManager.getVisibleMonthDataList()[position]
-        var dateText = DateFormatSymbols(locale).months[currentCalendarMonth[Calendar.MONTH]]
-        dateText = dateText.substring(0, 1).toUpperCase(Locale.getDefault()) + dateText.subSequence(1, dateText.length)
+//        var dateText = DateFormatSymbols(locale).months[currentCalendarMonth[Calendar.MONTH]]
+//        dateText = dateText.substring(0, 1).toUpperCase(Locale.getDefault()) + dateText.subSequence(1, dateText.length)
 //        val yearTitle = dateText + " " + currentCalendarMonth[Calendar.YEAR]
+
+        val month = currentCalendarMonth[Calendar.MONTH] + 1
         val yearTitle: String = when (selectedLocale) {
             Language.ZH, Language.ZHT -> {
-                "${currentCalendarMonth[Calendar.YEAR]}${context.getLocalString(R.string.year)} ${currentCalendarMonth[Calendar.MONTH] + 1}${
-                    context.getLocalString(
-                        R.string.month
-                    )
-                }"
+                "${currentCalendarMonth[Calendar.YEAR]}${getLocalString(R.string.year)} ${getLocalString(getMonthText(month))}"
             }
-            Language.VI,Language.PHI -> {
-                "${context.getLocalString(R.string.month)} ${currentCalendarMonth[Calendar.MONTH] + 1} ${
-                    context.getLocalString(
-                        R.string.year
-                    )
-                } ${currentCalendarMonth[Calendar.YEAR]}"
-            }
+
             else -> {
-                "$dateText ${currentCalendarMonth[Calendar.YEAR]}"
+                "${getLocalString(getMonthText(month))} ${currentCalendarMonth[Calendar.YEAR]}"
             }
         }
         tvYearTitle.text = yearTitle
         tvYearTitle.setTextColor(calendarStyleAttr.titleColor)
     }
 
-    fun Context.getLocalString(resId: Int): String {
+    private fun getMonthText(month: Int) = when (month) {
+        1 -> R.string.month_1
+        2 -> R.string.month_2
+        3 -> R.string.month_3
+        4 -> R.string.month_4
+        5 -> R.string.month_5
+        6 -> R.string.month_6
+        7 -> R.string.month_7
+        8 -> R.string.month_8
+        9 -> R.string.month_9
+        10 -> R.string.month_10
+        11 -> R.string.month_11
+        else -> R.string.month_12
+    }
+
+    fun getLocalString(resId: Int): String {
         val localizedContext = getLocalizedContext(context)
         return localizedContext.resources.getString(resId)
     }

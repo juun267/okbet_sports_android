@@ -27,7 +27,6 @@ import com.archit.calendardaterangepicker.customviews.DateView.DateState.MIDDLE
 import com.archit.calendardaterangepicker.customviews.DateView.DateState.SELECTABLE
 import com.archit.calendardaterangepicker.customviews.DateView.DateState.START
 import com.archit.calendardaterangepicker.customviews.DateView.OnDateClickListener
-import com.archit.calendardaterangepicker.manager.LanguageManager
 import com.archit.calendardaterangepicker.models.CalendarStyleAttributes
 import com.archit.calendardaterangepicker.models.CalendarStyleAttributes.DateSelectionMode.FIXED_RANGE
 import com.archit.calendardaterangepicker.models.CalendarStyleAttributes.DateSelectionMode.FREE_RANGE
