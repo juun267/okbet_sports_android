@@ -1312,6 +1312,7 @@
     <string name="language_en">English</string>
     <string name="language_vi">Tiếng Việt</string>
     <string name="language_th">ภาษาไทย</string>
+    <string name="language_phi">Tagalog</string>
     <string name="referral_code_invalid">Referral code invalid</string>
     <string name="str_market_is_closed">Market closed</string>
 </resources>
