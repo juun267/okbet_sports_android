@@ -1212,7 +1212,7 @@
     <string name="email_address">Email address</string>
     <string name="mobile">Mobile</string>
     <string name="login_again">Paki-login muli.</string>
-    <string name="change_password">Magpalit ng Password</string>
+    <string name="change_password">Matagumapy na napalitan ang apssword sa pag-log in!</string>
     <string name="login_hint_account">Mobile Number / Email</string>
     <string name="password_login">Login password</string>
     <string name="or">O</string>
