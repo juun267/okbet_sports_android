@@ -39,7 +39,7 @@ abstract class BaseSocketViewModel(
     }
 
     fun updateMoney(money: Double?) {
-        mUserMoney.postValue(money)
+        LoginRepository.updateMoney(money)
     }
 
     fun updateLockMoney(money: Double?) {

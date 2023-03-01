@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.login.signUp
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Paint
@@ -22,7 +23,6 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
-import cn.jpush.android.api.JPushInterface
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
@@ -1007,7 +1007,9 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 val deviceId = Settings.Secure.getString(
                     applicationContext.contentResolver, Settings.Secure.ANDROID_ID
                 )
-                val deviceSn = JPushInterface.getRegistrationID(applicationContext)
+                val deviceSn = getSharedPreferences(MultiLanguagesApplication.UUID_DEVICE_CODE,
+                    Context.MODE_PRIVATE).getString(
+                    MultiLanguagesApplication.UUID, "") ?: ""
                 binding.apply {
                     var phone = eetPhone.text.toString()
                     if (phone.isNotEmpty() && phone.substring(0, 1) == "0") {

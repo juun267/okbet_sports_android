@@ -11,7 +11,6 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_bet_receipt.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.event.MoneyEvent
 import org.cxct.sportlottery.extentions.gone
 import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
@@ -22,11 +21,7 @@ import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.betList.BetListViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.util.BetsFailedReasonUtil
-import org.cxct.sportlottery.util.LocalUtils
-import org.cxct.sportlottery.util.LogUtil
-import org.cxct.sportlottery.util.TextUtil
-import org.greenrobot.eventbus.EventBus
+import org.cxct.sportlottery.util.*
 import timber.log.Timber
 
 
@@ -110,7 +105,13 @@ class BetReceiptFragment :
                     betResultData?.parlayBets ?: listOf(),
                     this@BetReceiptFragment.betParlayList ?: listOf(),
                     betResultData?.betConfirmTime ?: 0
-                )
+                ) { it2 ->
+                    if (it2 == BetReceiptDiffAdapter.ItemType.SINGLE) {
+                        line_shadow.gone()
+                    } else {
+                        line_shadow.visible()
+                    }
+                }
             }
         }
         //投注結果
@@ -130,7 +131,13 @@ class BetReceiptFragment :
                                     betResultData?.parlayBets ?: listOf(),
                                     this@BetReceiptFragment.betParlayList ?: listOf(),
                                     betResultData?.betConfirmTime ?: 0
-                                )
+                                ) { it2 ->
+                                    if (it2 == BetReceiptDiffAdapter.ItemType.SINGLE) {
+                                        line_shadow.gone()
+                                    } else {
+                                        line_shadow.visible()
+                                    }
+                                }
                             }
                         }
                     } else {
@@ -140,7 +147,6 @@ class BetReceiptFragment :
                 }
                 //不管成功与否刷新当前金额
                 viewModel.getMoney()
-                EventBus.getDefault().post(MoneyEvent(true))
             }
         }
 
@@ -155,20 +161,16 @@ class BetReceiptFragment :
         setupReceiptStatusTips()
     }
 
-    enum class BetStatus(val value: Int) {
-        CANCELED(7)
-    }
-
     private fun setupTotalValue() {
         var betCount = 0
         var totalCount = 0
         betResultData?.singleBets?.forEach {
-            if (it.status != BetStatus.CANCELED.value) betCount += (it.num ?: 0)
+            if (!it.isFailed()) betCount += (it.num ?: 0)
             totalCount += (it.num ?: 0)
         }
 
         betResultData?.parlayBets?.forEach {
-            if (it.status != BetStatus.CANCELED.value) betCount += (it.num ?: 0)
+            if (!it.isFailed()) betCount += (it.num ?: 0)
             totalCount += (it.num ?: 0)
         }
 
@@ -228,7 +230,9 @@ class BetReceiptFragment :
 
     private fun initRecyclerView() {
         rv_bet_receipt.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            val layoutMana  = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            layoutManager = layoutMana
+            layoutMana.stackFromEnd = true
             LogUtil.toJson(betResultData?.singleBets)
             betReceiptDiffAdapter = BetReceiptDiffAdapter().apply {
                 betResultData?.apply {
@@ -237,7 +241,13 @@ class BetReceiptFragment :
                         betResultData?.parlayBets ?: listOf(),
                         this@BetReceiptFragment.betParlayList ?: listOf(),
                         betResultData?.betConfirmTime ?: 0
-                    )
+                    ) { it2 ->
+                        if (it2 == BetReceiptDiffAdapter.ItemType.SINGLE) {
+                            line_shadow.gone()
+                        } else {
+                            line_shadow.visible()
+                        }
+                    }
                 }
                 interfaceStatusChangeListener =
                     object : BetReceiptDiffAdapter.InterfaceStatusChangeListener {
@@ -268,9 +278,9 @@ class BetReceiptFragment :
     private fun setupReceiptStatusTips() {
         //全部都失敗才會顯示投注失敗
         val hasBetSuccess =
-            betResultData?.singleBets?.find { it.status != BetStatus.CANCELED.value } != null
+            betResultData?.singleBets?.find { !it.isFailed() } != null
         val hasParlaySuccess =
-            betResultData?.parlayBets?.find { it.status != BetStatus.CANCELED.value } != null
+            betResultData?.parlayBets?.find { !it.isFailed() } != null
 //        tv_already_bet_complete.apply {
 //            when (hasBetSuccess || hasParlaySuccess) {
 //                true -> {
@@ -313,7 +323,7 @@ class BetReceiptFragment :
         Timber.d("滑动位置:${betReceiptDiffAdapter?.items?.size?.minus(1) ?: 0}")
         rv_bet_receipt.postDelayed({
             rv_bet_receipt.scrollToPosition(betReceiptDiffAdapter?.items?.size?.minus(1) ?: 0)
-        },100)
+        }, 100)
 
         if (betFailed.first) {
             //投注失败
@@ -340,7 +350,7 @@ class BetReceiptFragment :
             tv_result_status.setTextColor(requireContext().getColor(R.color.color_1EB65B))
 
             tv_result_status.text = getString(R.string.your_bet_order_success)
-            btnLastStep.text = getString(R.string.str_check_bets)
+            btnLastStep.text = getString(R.string.commission_detail)
             btnLastStep.setTextColor(resources.getColor(R.color.color_414655, null))
             btnLastStep.background =
                 ResourcesCompat.getDrawable(resources, R.drawable.bg_radius_8_check_bet, null)

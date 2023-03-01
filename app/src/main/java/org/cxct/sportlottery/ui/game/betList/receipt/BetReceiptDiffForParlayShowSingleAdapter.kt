@@ -4,19 +4,21 @@ import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_match_receipt.view.*
-import kotlinx.android.synthetic.main.item_match_receipt.view.top_space
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.extentions.gone
+import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.bet.add.betReceipt.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
@@ -89,11 +91,24 @@ class BetReceiptDiffForParlayShowSingleAdapter : ListAdapter<MatchOdd, RecyclerV
 
         fun bind(itemData: MatchOdd?, oddsType: OddsType, position: Int, matchType: MatchType?) {
             itemView.apply {
-                top_space.visibility = if (position == 0) View.VISIBLE else View.GONE
 
                 //展示串單內容，其中狀態和金額不用顯示
                 tv_bet_status_single.isVisible = false
                 match_receipt_bet_layout.isVisible = false
+                val inPlay = System.currentTimeMillis() > (itemData?.startTime ?: 0)
+                if(inPlay){
+                    tvTypeMatch.visible()
+                    tvTypeMatch.text = LocalUtils.getString(R.string.home_tab_in_play) //滚球
+                    tvTypeMatch.background =  AppCompatResources.getDrawable(context,R.drawable.bg_match_type_red_circle)
+                }else{
+                    tvTypeMatch.visible()
+                    tvTypeMatch.text = LocalUtils.getString(R.string.home_tab_early) //早盘
+                    tvTypeMatch.background =  AppCompatResources.getDrawable(context,R.drawable.bg_match_type_green_circle)
+                }
+
+                if (matchType== MatchType.OUTRIGHT){
+                    tvTypeMatch.gone()
+            }
 
                 itemData?.apply {
                     val formatForOdd =
@@ -106,6 +121,8 @@ class BetReceiptDiffForParlayShowSingleAdapter : ListAdapter<MatchOdd, RecyclerV
                         if (matchType != MatchType.OUTRIGHT) spread else ""
                     )
                     tv_odds.text = "@ $formatForOdd"
+
+                    tv_name_type.text = context.getString(oddsType.res)
 
                     tv_league.text = leagueName
                     tv_team_names.setTeamNames(15, homeName, awayName)

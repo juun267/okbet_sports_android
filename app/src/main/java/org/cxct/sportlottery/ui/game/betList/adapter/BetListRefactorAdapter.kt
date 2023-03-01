@@ -3,10 +3,9 @@ package org.cxct.sportlottery.ui.game.betList.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.layoutKeyBoard
+import kotlinx.android.synthetic.main.content_bet_info_item_v3_2.view.layoutKeyBoard
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.ContentBetInfoItemV3Binding
-import org.cxct.sportlottery.databinding.ItemBetListBatchControlV3Binding
+import org.cxct.sportlottery.databinding.ContentBetInfoItemV32Binding
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
@@ -16,16 +15,19 @@ import org.cxct.sportlottery.ui.game.betList.adapter.BetListRefactorAdapter.BetR
 import org.cxct.sportlottery.ui.game.betList.adapter.BetListRefactorAdapter.BetRvType.SINGLE
 import org.cxct.sportlottery.ui.game.betList.holder.BatchParlayConnectViewHolder as BpcVh
 import org.cxct.sportlottery.ui.game.betList.holder.BatchSingleInMoreOptionViewHolder as bsiMoVh
-import org.cxct.sportlottery.ui.game.betList.holder.BetInfoChangeViewHolder
 import org.cxct.sportlottery.ui.game.betList.holder.BetInfoItemViewHolder as BiVh
 import org.cxct.sportlottery.ui.game.betList.holder.OddsChangedWarnViewHolder as OcWvH
 import org.cxct.sportlottery.ui.game.betList.listener.OnItemClickListener
 import org.cxct.sportlottery.ui.game.betList.listener.OnSelectedPositionListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.KeyboardView
+import timber.log.Timber
 
-class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListener,
-                             private val userBalance: ()-> Double) :
+class BetListRefactorAdapter(
+    private val keyboardView: KeyboardView,
+    private val onItemClickListener: OnItemClickListener,
+    private val userBalance: () -> Double
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private enum class ViewType { Bet, Parlay, Warn, Single, OddsWarn }
@@ -119,12 +121,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         val layoutInflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             ViewType.Bet.ordinal -> BiVh(
-                ContentBetInfoItemV3Binding.inflate(layoutInflater), userBalance
+                ContentBetInfoItemV32Binding.inflate(layoutInflater), userBalance
             )
 
-            ViewType.Single.ordinal -> bsiMoVh(
-                ItemBetListBatchControlV3Binding.inflate(layoutInflater)
-            )
+//            ViewType.Single.ordinal -> bsiMoVh(
+//                ItemBetListBatchControlV3Binding.inflate(layoutInflater)
+//            )
 
             ViewType.OddsWarn.ordinal -> OcWvH(
                 layoutInflater.inflate(
@@ -135,7 +137,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             else -> BpcVh(
                 layoutInflater.inflate(
                     R.layout.item_bet_list_batch_control_connect_v3, parent, false
-                )
+                ),keyboardView
             )
         }
     }
@@ -186,7 +188,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     position,
                     userMoney,
                     userLogin,
-                    betList
+                    betList,
                 )
             }
 
@@ -241,9 +243,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
     override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
         //隐藏键盘
-        if ((holder is BiVh) or (holder is bsiMoVh) or (holder is BpcVh)) {
-            holder.itemView.layoutKeyBoard.hideKeyboard()
-        }
+//        if ((holder is BiVh) or (holder is bsiMoVh) or (holder is BpcVh)) {
+////            holder.itemView.layoutKeyBoard.hideKeyboard()
+//        }
         super.onViewDetachedFromWindow(holder)
         attachedViewSet.remove(holder)
     }

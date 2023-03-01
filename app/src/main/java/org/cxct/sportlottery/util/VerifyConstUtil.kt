@@ -137,9 +137,9 @@ object VerifyConstUtil {
         return isVerifyEmailFormat(mail)
     }
 
-    //手機號碼 //以0开头加上后面11位数字组成的手机号码
+    //手機號碼 //以09开头加上后面11位数字组成的手机号码
     fun verifyPhone(phone: CharSequence): Boolean {
-        val result = Pattern.matches("[0]\\d{10}", phone)
+        val result = Pattern.matches("^(09)\\d{9}", phone)
         return result
     }
     //微信 //英文第一位大小寫 後面可以數字或英文6~20

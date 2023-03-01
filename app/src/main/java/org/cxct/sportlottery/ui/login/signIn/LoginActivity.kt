@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.login.signIn
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
@@ -9,7 +10,6 @@ import android.text.method.PasswordTransformationMethod
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import cn.jpush.android.api.JPushInterface
 import com.bumptech.glide.Glide
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.view_status_bar.*
@@ -17,6 +17,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.BuildConfig
+import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID
+import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID_DEVICE_CODE
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityLoginBinding
 import org.cxct.sportlottery.network.index.login.LoginRequest
@@ -163,10 +165,8 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         val password = binding.eetPassword.text.toString()
         val validCodeIdentity = viewModel.validCodeResult.value?.validCodeData?.identity
         val validCode = binding.eetVerificationCode.text.toString()
-        val deviceSn = JPushInterface.getRegistrationID(applicationContext)
-//        val deviceSn =
-//            getSharedPreferences(UUID_DEVICE_CODE, Context.MODE_PRIVATE).getString(UUID, "") ?: ""
-//        Timber.d("UUID = $deviceSn")
+        val deviceSn =
+            getSharedPreferences(UUID_DEVICE_CODE, Context.MODE_PRIVATE).getString(UUID, "") ?: ""
         val deviceId = Settings.Secure.getString(
             applicationContext.contentResolver, Settings.Secure.ANDROID_ID
         )

@@ -459,10 +459,18 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
             }
 //            滚球动画 直播 显示控制
             //itemView.space2.isVisible = (item.matchInfo?.eps == 1 || item.matchInfo?.liveVideo == 1)
-            itemView.iv_live.isVisible =
-                item.matchInfo?.isLive == 1
-            itemView.iv_play.isVisible =
-                item.matchInfo?.liveVideo == 1
+            if (item.matchInfo?.isLive == 1) {
+                if (item.matchInfo?.liveVideo == 1) {
+                    itemView.iv_live.isVisible = true
+                    itemView.iv_play.isVisible = false
+                } else {
+                    itemView.iv_live.isVisible = false
+                    itemView.iv_play.isVisible = true
+                }
+            } else {
+                itemView.iv_live.isVisible = false
+                itemView.iv_play.isVisible = false
+            }
             itemView.iv_animation.isVisible =
                 !(item.matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
                     ?.getGameDetailAnimationNeedShow() == true
@@ -1119,7 +1127,9 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
             )
         }
 
-        val oddButtonPagerAdapter = OddButtonPagerAdapter()
+        val oddButtonPagerAdapter by lazy {
+            OddButtonPagerAdapter()
+        }
         private fun setupOddsButton(
             matchType: MatchType,
             item: MatchOdd,

@@ -23,6 +23,9 @@
     <uses-permission android:name="android.permission.MICROPHONE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+    <uses-permission
+        android:name="android.permission.INTERACT_ACROSS_USERS"
+        tools:ignore="ProtectedPermissions" />
 
     <uses-feature
         android:name="android.hardware.microphone"
@@ -205,31 +208,7 @@
             android:screenOrientation="portrait" />
 
         <service android:name=".service.BackService" /> <!-- broadCast -->
-        <!-- Since JCore2.0.0 Required SDK核心功能 -->
-        <!-- 可配置android:process参数将Service放在其他进程中；android:enabled属性不能是false -->
-        <!-- 这个是自定义Service，要继承极光JCommonService，可以在更多手机平台上使得推送通道保持的更稳定 -->
-        <service
-            android:name=".service.PushService"
-            android:enabled="true"
-            android:exported="false"
-            android:process=":pushcore">
-            <intent-filter>
-                <action android:name="cn.jiguang.user.service.action" />
-            </intent-filter>
-        </service> <!-- Required since 3.0.7 -->
-        <!-- 新的 tag/alias 接口结果返回需要开发者配置一个自定的广播 -->
-        <!-- 3.3.0开始所有事件将通过该类回调 -->
-        <!-- 该广播需要继承 JPush 提供的 JPushMessageReceiver 类, 并如下新增一个 Intent-Filter -->
-        <receiver
-            android:name=".receiver.PushMessageReceiver"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
 
-                <category android:name="${JPUSH_PKGNAME}" />
-            </intent-filter>
-        </receiver> <!-- SDK 24 以上 要使用 FileProvider 獲取 File 的 Uri，才能提供 file 給外部 app 使用 -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -247,7 +226,7 @@
             android:value="portrait|landscape" />
         <meta-data
             android:name="AF_STORE"
-            android:value="${JPUSH_CHANNEL}" />
+            android:value="${CHANNEL}" />
         <meta-data
             android:name="INVITE_CODE"
             android:value="${INVITE_CODE}" />

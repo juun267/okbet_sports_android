@@ -26,7 +26,10 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TextUtil
 
 
-class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
+class OddButtonPagerAdapter(
+) :RecyclerView.Adapter<OddButtonPagerViewHolder>(
+
+) {
     private var matchInfo: MatchInfo?= null
     private var oddsSort: String?= null
     private var playCateNameMap: MutableMap<String?, Map<String?, String?>?>?= null
@@ -119,23 +122,11 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
             }
         }
 
-    val sizeCount = { gameType: String? ->
-        when (gameType) {
-            GameType.BM.key -> 4
-            GameType.TT.key -> 4
-            GameType.IH.key -> 4
-            GameType.BX.key -> 2
-            GameType.CB.key -> 6
-            GameType.CK.key -> 4
-            GameType.RB.key -> 4
-            GameType.AFT.key -> 6
-            GameType.BK.key -> 8
-            GameType.VB.key -> 4
-            GameType.FT.key -> 8
-            GameType.TN.key -> 6
-            else -> 8
-        }
-    }
+    /**
+     * 2023/02/28
+     * manta需求，最大赔率数量统一改成6
+     */
+    val sizeCount = { gameType: String? -> 6 }
 
     var oddsType: OddsType = OddsType.EU
         set(value) {
@@ -525,9 +516,9 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
 
 }
 
-class OddButtonPagerViewHolder constructor(
+class OddButtonPagerViewHolder(
     val oddBtnList: OddBtnList,
-    private val oddStateRefreshListener: OddStateChangeListener
+    private val oddStateRefreshListener: OddStateChangeListener,
 ) : OddStateViewHolder(oddBtnList) {
 
     fun update(
@@ -538,7 +529,7 @@ class OddButtonPagerViewHolder constructor(
         betPlayCateNameMap: Map<String?, Map<String?, String?>?>?,
         odds: Pair<String?, List<Odd?>?>,
         oddsType: OddsType,
-        matchType: MatchType?
+        matchType: MatchType?,
     ) {
 
         updateOddsButton2(
@@ -714,7 +705,7 @@ class OddButtonPagerViewHolder constructor(
             || odds == null
             || odds.first == null
             || odds.second.isNullOrEmpty()) {
-            oddBtnList.setOddsInvisiable()
+            oddBtnList.setOddsInvisible()
             return true
         }
 
@@ -729,7 +720,7 @@ class OddButtonPagerViewHolder constructor(
             return true
         }
 
-        oddBtnList.setBtnTypeVisiable(matchType != MatchType.CS)
+        oddBtnList.setBtnTypeVisible(matchType != MatchType.CS)
         if (odds!!.second?.all { odd -> odd == null || odd.status == BetStatus.DEACTIVATED.code } != false) {
             oddBtnList.setOddsDeactivated()
             return true
@@ -746,7 +737,8 @@ class OddButtonPagerViewHolder constructor(
         betPlayCateNameMap: Map<String?, Map<String?, String?>?>?,
         odds: Pair<String?, List<Odd?>?>?,
         oddsType: OddsType,
-        matchType: MatchType?) {
+        matchType: MatchType?,
+    ) {
 
         if (setOddsButtonStatu(
                 position,
@@ -769,7 +761,7 @@ class OddButtonPagerViewHolder constructor(
 
         val isDeactivated = (odds.second == null || odds.second!!.all { it == null })
 
-        if (matchType == MatchType.CS && odds?.second?.size == 1) {
+        if (matchType == MatchType.CS && odds.second?.size == 1) {
             val oddBtnOther = oddBtnList.getOtherOddsBtn()
             bindOddBtn(oddBtnOther,
                 isDeactivated,
@@ -796,7 +788,7 @@ class OddButtonPagerViewHolder constructor(
             oddsType,
             isDrawBtn = odds.second?.getOrNull(1)?.name == "Draw")
 
-        if (odds.second?.size ?: 0 > 2) {
+        if ((odds.second?.size ?: 0) > 2) {
             bindOddBtn(oddBtnList.getDrawOddsBtn(),
                 isDeactivated,
                 playCateCode,
@@ -870,7 +862,7 @@ class OddButtonPagerViewHolder constructor(
     }
 
     private val textSpanned by lazy {
-        ForegroundColorSpan(Color.parseColor(if (MultiLanguagesApplication.isNightMode) "#a3a3a3" else "#6C7BA8"))
+        ForegroundColorSpan(Color.parseColor(if (MultiLanguagesApplication.isNightMode) "#a3a3a3" else "#00181E"))
     }
     private val colorSpanned = ForegroundColorSpan(Color.parseColor("#b73a20"))
 

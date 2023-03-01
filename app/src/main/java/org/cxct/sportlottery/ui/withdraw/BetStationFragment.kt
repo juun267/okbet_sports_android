@@ -20,16 +20,9 @@ import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
 import com.google.android.gms.location.*
 import com.tbruyelle.rxpermissions2.RxPermissions
-import kotlinx.android.synthetic.main.crypto_pay_fragment.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_bank_card.btn_submit
 import kotlinx.android.synthetic.main.fragment_bet_station.*
-import kotlinx.android.synthetic.main.fragment_bet_station.btn_info
-import kotlinx.android.synthetic.main.fragment_bet_station.ll_commission
-import kotlinx.android.synthetic.main.fragment_bet_station.tv_balance
-import kotlinx.android.synthetic.main.fragment_bet_station.tv_commission
-import kotlinx.android.synthetic.main.fragment_bet_station.tv_detail
-import kotlinx.android.synthetic.main.fragment_withdraw.*
 import kotlinx.android.synthetic.main.view_status_spinner.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemBetStationBinding
@@ -708,7 +701,6 @@ class BetStationAdapter(
                 } else {
                     imgCheck.visibility = View.GONE
                     llSelectBankCard.setBackgroundResource(R.drawable.ic_white_site)
-
 
                 }
             }

@@ -462,7 +462,7 @@
                             android:layout_width="16dp"
                             android:layout_height="16dp"
                             android:layout_marginEnd="5dp"
-                            android:src="@drawable/ic_live"
+                            android:src="@drawable/ic_live_with_anchor"
                             android:visibility="gone"
                             tools:ignore="ContentDescription"
                             tools:visibility="visible" />
@@ -517,6 +517,7 @@
             </LinearLayout>
 
             <LinearLayout
+
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
@@ -570,13 +571,12 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_league_odd_btn_pager_main"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_weight="1"
                     android:nestedScrollingEnabled="false"
                     android:orientation="horizontal"
                     android:overScrollMode="never"
-                    tools:itemCount="1"
-                    tools:listitem="@layout/itemview_odd_btn_2x2_v6" />
+                    tools:itemCount="1" />
             </LinearLayout>
 
         </LinearLayout>

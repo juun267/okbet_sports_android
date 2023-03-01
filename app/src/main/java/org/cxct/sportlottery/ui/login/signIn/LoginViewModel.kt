@@ -9,16 +9,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.index.login.LoginCodeRequest
-import org.cxct.sportlottery.network.index.login.LoginRequest
-import org.cxct.sportlottery.network.index.login.LoginResult
-import org.cxct.sportlottery.network.index.login.ValidateLoginDeviceSmsRequest
+import org.cxct.sportlottery.network.index.login.*
 import org.cxct.sportlottery.network.index.logout.LogoutResult
 import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity.Companion.LOGIN_TYPE_PWD
 import org.cxct.sportlottery.util.AFInAppEventUtil
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.VerifyConstUtil
@@ -45,6 +43,10 @@ class LoginViewModel(
         get() = _validResult
     val isLoading: LiveData<Boolean> //使用者餘額
         get() = _isLoading
+    val inviteCodeMsg: LiveData<String?>
+        get() = _inviteCodeMsg
+    val checkUserExist: LiveData<Boolean>
+        get() = _checkUserExist
 
     private val _isLoading = MutableLiveData<Boolean>()
     private val _loginFormState = MutableLiveData<LoginFormState>()
@@ -53,6 +55,8 @@ class LoginViewModel(
     private val _validCodeResult = MutableLiveData<ValidCodeResult?>()
     private val _validResult = MutableLiveData<LogoutResult>()
     private val _msgCodeResult = MutableLiveData<SmsResult?>()
+    private val _inviteCodeMsg = MutableLiveData<String?>()
+    private val _checkUserExist = MutableLiveData<Boolean>()
 
     val accountMsg: LiveData<Pair<String?, Boolean>>
         get() = _accountMsg
@@ -81,7 +85,7 @@ class LoginViewModel(
     val account by lazy { loginRepository.account }
     val password by lazy { loginRepository.password }
 
-    var loginType = 0
+    var loginType = LOGIN_TYPE_PWD
         set(value) {
             field = value
             checkAllInputComplete()
@@ -125,7 +129,11 @@ class LoginViewModel(
             }?.let { result ->
                 userInfoRepository.getUserInfo()
                 _loginResult.postValue(result)
-                AFInAppEventUtil.login(result.loginData?.uid.toString())
+                if (result.loginData?.ifnew == true) {
+                    AFInAppEventUtil.register("username")
+                } else {
+                    AFInAppEventUtil.login(result.loginData?.uid.toString())
+                }
             }
         }
     }
@@ -227,6 +235,20 @@ class LoginViewModel(
     }
 
     /**
+     * 输入邀请码
+     */
+    fun checkInviteCode(inviteCode: String?) {
+        _inviteCodeMsg.value = when {
+            inviteCode.isNullOrEmpty() -> {
+                LocalUtils.getString(R.string.error_input_empty)
+            }
+            !VerifyConstUtil.verifyInviteCode(inviteCode) -> LocalUtils.getString(R.string.referral_code_invalid)
+            else -> null
+        }
+        focusChangeCheckAllInputComplete()
+    }
+
+    /**
      * 手机号/邮箱
      */
     fun checkAccount(username: String): String? {
@@ -290,7 +312,7 @@ class LoginViewModel(
     fun checkMsgCode(validCode: String): String? {
         val msg = when {
             validCode.isNullOrBlank() -> LocalUtils.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyValidCode(validCode) -> LocalUtils.getString(R.string.error_verification_code_forget)
+            !VerifyConstUtil.verifyValidCode(validCode) -> LocalUtils.getString(R.string.verification_not_correct)
             else -> null
         }
         _msgCodeMsg.value = Pair(msg, msg == null)
@@ -333,4 +355,27 @@ class LoginViewModel(
         _isLoading.postValue(false)
     }
 
+    fun queryPlatform(inviteCode: String) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.bettingStationService.queryPlatform(inviteCode)
+            }
+            if (result?.success == true) {
+
+            } else {
+                _inviteCodeMsg.value = result?.msg
+                focusChangeCheckAllInputComplete()
+            }
+        }
+    }
+
+    fun checkUserExist(phoneNumberOrEmail: String) {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.indexService.checkUserExist(CheckUserRequest(phoneNumberOrEmail))
+            }?.let {
+                _checkUserExist.value = it.success
+            }
+        }
+    }
 }

@@ -8,8 +8,6 @@ import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.os.Process;
 
-import com.adjust.sdk.Adjust;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -239,11 +237,10 @@ public class AppManager {
 
         public void onActivityResumed(Activity activity) {
             AppManager.currentActivity = activity;
-            Adjust.onResume();
         }
 
         public void onActivityPaused(Activity activity) {
-            Adjust.onPause();
+
         }
 
         public void onActivityStopped(Activity activity) {

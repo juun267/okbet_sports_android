@@ -118,6 +118,7 @@
     <string name="have_account">已有账号?</string>
     <string name="btn_login">登录</string>
     <string name="btn_register">注册</string>
+    <string name="no_announcement">暂无公告</string>
     <string name="lottery">彩票</string>
     <string name="poker">棋牌</string>
     <string name="slot">电子</string>
@@ -507,6 +508,10 @@
     <string name="bet_info_odd_content_changed2">球线或赔率已变更</string>
     <string name="bet_list_single_warn">可用相同的投注额填充所有单项选择</string>
     <string name="bet_list_single">单场</string>
+    <string name="bet_list_single_type">单项投注</string>
+    <string name="bet_list_parlay_type">串关投注</string>
+    <string name="bet_list_view_more_options">更多投注选项</string>
+    <string name="bet_list_receipt">注单收据</string>
     <string name="bet_list_cant_parlay_warn">提醒若同一赛事,不同球种,冠军等投注项目不可进行串关</string>
     <string name="complete">完成</string>
     <string name="record_recharge">存款记录</string>
@@ -964,6 +969,7 @@
     <!--region 注單模塊調整-->
     <string name="bet_info_bet_lock_hint">注单盘口已关闭</string>
     <string name="bet_info_no_parlay_hint">赛事暂无支持串关</string>
+    <string name="function">常用功能</string>
     <string name="sport_relative">体育相关</string>
     <string name="red_envelope_congratulations">恭喜您抢到</string>
     <string name="pls_check_amount">请至您的帐户内查询入帐金额</string>
@@ -992,6 +998,7 @@
     <string name="appointment_time">预约时间</string>
     <string name="select_date">请选择日期</string>
     <string name="select_time">请选择时间</string>
+    <string name="current_time">当前时间</string>
 
     <!--region 20220714 新版投注單-->
     <string name="bet_win">可赢</string>
@@ -1001,11 +1008,18 @@
     <string name="delete_bet">删除</string>
     <string name="delete_bet_all">全部删除</string>
     <string name="btn_login_bet">登录后可投注</string>
+    <string name="confirm_single_bets">确认%d单注投注</string>
+    <string name="confirm_multiple_bets">确认%d串关投注</string>
     <string name="btn_remove_closed_selections">移除已关闭的选项</string>
+    <string name="please_enter_correct_amount">请输入正确投注额</string>
     <string name="bet_info_list_bet">投注</string>
     <string name="bet_info_bet">投注</string>
     <!--endregion-->
 
+    <string name="publicity_contact">联络</string>
+    <string name="publicity_faqs">常见问题</string>
+    <string name="more_info">更多信息</string>
+    <string name="e_game">棋牌</string>
     <string name="new_games_beta">新游戏，测试版</string>
     <string name="new_games">新游戏</string>
 
@@ -1224,7 +1238,7 @@
     <string name="login_privacy">注册即表示您确认您已年满 21 岁, 并且同意我们的隐私保护 和 规则条款.</string>
     <string name="login_terms_conditions">规则条款</string>
     <string name="login_privacy_policy">隐私保护</string>
-    <string name="otp_login">验证码登录</string>
+    <string name="otp_login">验证码登录/注册</string>
     <string name="auth_login">授权登录</string>
     <string name="set">设定</string>
     <string name="google">Google</string>
@@ -1242,4 +1256,10 @@
     <string name="pls_enter_correct_mobile">请输入正确的手机</string>
     <string name="pls_enter_correct_email">请输入正确的邮箱</string>
     <string name="next">下一步</string>
+    <string name="hint_phone_format">手机号码需为09开头的11位数字</string>
+    <string name="hint_referral_code">推荐码(选填)</string>
+    <string name="promo">优惠</string>
+    <string name="username">会员账号</string>
+    <string name="referral_code_invalid">邀请码无效</string>
+    <string name="str_market_is_closed">盘口已关闭，无法投注</string>
 </resources>

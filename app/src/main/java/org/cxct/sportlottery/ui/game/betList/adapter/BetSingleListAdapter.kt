@@ -25,7 +25,10 @@ import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 import kotlin.math.abs
 
-class BetSingleListAdapter(val onItemClickListener: OnItemClickListener) :
+class BetSingleListAdapter(
+    val onItemClickListener: OnItemClickListener,
+    val keyboardView: KeyboardView
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class BetViewType { SINGLE, PARLAY, NULL }
@@ -121,7 +124,8 @@ class BetSingleListAdapter(val onItemClickListener: OnItemClickListener) :
                     position,
                     hasBetClosedForSingle,
                     userMoney,
-                    userLogin
+                    userLogin,
+                    keyboardView
                 )
             }
         }
@@ -140,7 +144,7 @@ class BetSingleListAdapter(val onItemClickListener: OnItemClickListener) :
         //隱藏畫面外的鍵盤
         when (holder) {
             is BatchSingleInMoreOptionViewHolder -> {
-                holder.itemView.layoutKeyBoard.hideKeyboard()
+//                holder.itemView.layoutKeyBoard.hideKeyboard()
             }
         }
         super.onViewDetachedFromWindow(holder)
@@ -160,7 +164,7 @@ class BetSingleListAdapter(val onItemClickListener: OnItemClickListener) :
 
     fun closeAllKeyboard() {
         attachedViewSet.forEach {
-            it.itemView.findViewById<KeyboardView>(R.id.layoutKeyBoard)?.hideKeyboard()
+//            it.itemView.findViewById<KeyboardView>(R.id.layoutKeyBoard)?.hideKeyboard()
         }
     }
 
@@ -171,6 +175,7 @@ class BetSingleListAdapter(val onItemClickListener: OnItemClickListener) :
         private var mHasBetClosedForSingle: Boolean = false
         private var maxBet: Double = 0.0
         private var minBet: Double = 0.0
+
         fun bind(
             itemData: ParlayOdd?,
             betList: MutableList<BetInfoListData>,
@@ -182,7 +187,8 @@ class BetSingleListAdapter(val onItemClickListener: OnItemClickListener) :
             position: Int,
             hasBetClosedForSingle: Boolean,
             userMoney: Double,
-            userLogin: Boolean
+            userLogin: Boolean,
+            keyboardView: KeyboardView
         ) {
             mUserMoney = userMoney
             mUserLogin = userLogin
@@ -200,7 +206,8 @@ class BetSingleListAdapter(val onItemClickListener: OnItemClickListener) :
                         notifyAllBet,
                         mSelectedPosition,
                         mBetView,
-                        position
+                        position,
+                        keyboardView
                     )
                 }
             }
@@ -215,7 +222,8 @@ class BetSingleListAdapter(val onItemClickListener: OnItemClickListener) :
             notifyAllBet: () -> Unit,
             mSelectedPosition: Int,
             mBetView: BetViewType,
-            position: Int
+            position: Int,
+            keyboardView: KeyboardView
         ) {
             itemView.apply {
 
@@ -234,7 +242,7 @@ class BetSingleListAdapter(val onItemClickListener: OnItemClickListener) :
                 val initValue = if (itemData.singleInput != null) itemData.allSingleInput else ""
 
                 if (itemData.isInputBet) {
-                    layoutKeyBoard.setupMaxBetMoney(getMaxOrMinAmount(isGetMax = true, betList))
+//                    layoutKeyBoard.setupMaxBetMoney(getMaxOrMinAmount(isGetMax = true, betList))
                 }
 
                 et_bet_single.apply {
@@ -381,8 +389,8 @@ class BetSingleListAdapter(val onItemClickListener: OnItemClickListener) :
                     if (event.action == MotionEvent.ACTION_UP) {
                         et_bet_single.isFocusable = true
                         onItemClickListener.onHideKeyBoard()
-                        layoutKeyBoard.setupMaxBetMoney(getMaxOrMinAmount(isGetMax = true, betList))
-                        layoutKeyBoard.showKeyboard(
+                        keyboardView.setupMaxBetMoney(getMaxOrMinAmount(isGetMax = true, betList))
+                        keyboardView.showKeyboard(
                             et_bet_single,
                             position
                         )
@@ -391,7 +399,7 @@ class BetSingleListAdapter(val onItemClickListener: OnItemClickListener) :
                 }
 
                 et_bet_single.setOnFocusChangeListener { _, hasFocus ->
-                    if (!hasFocus) layoutKeyBoard?.hideKeyboard()
+//                    if (!hasFocus) layoutKeyBoard?.hideKeyboard()
                     itemData.isInputBet = hasFocus
                     if (hasFocus) et_bet_single.setSelection(et_bet_single.text.length)
                     setEtBetSingleBackground(itemData)

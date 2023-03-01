@@ -16,8 +16,6 @@ import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.fragment_bet_record.*
 import kotlinx.android.synthetic.main.fragment_bet_record.iv_logo
 import kotlinx.android.synthetic.main.view_status_bar.*
-import kotlinx.android.synthetic.main.view_toolbar_home.*
-import kotlinx.android.synthetic.main.view_toolbar_home.iv_menu_left
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.service.order_settlement.Status
@@ -31,7 +29,7 @@ import org.cxct.sportlottery.ui.main.accountHistory.first.AccountHistoryAdapter
 import org.cxct.sportlottery.ui.main.accountHistory.first.ItemClickListener
 import org.cxct.sportlottery.ui.sport.favorite.SportTypeTextAdapter
 import org.cxct.sportlottery.ui.transactionStatus.TransactionRecordDiffAdapter
-import org.greenrobot.eventbus.EventBus
+import org.cxct.sportlottery.util.EventBusUtil
 import timber.log.Timber
 
 class BetRecordFragment :
@@ -173,7 +171,7 @@ class BetRecordFragment :
             .init()
 
         iv_menu_left.setOnClickListener {
-            EventBus.getDefault().post(MenuEvent(true))
+            EventBusUtil.post(MenuEvent(true))
         }
         iv_logo.setOnClickListener {
             (activity as MainTabActivity).jumpToHome(0)

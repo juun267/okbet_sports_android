@@ -9,10 +9,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import cn.jpush.android.api.JPushInterface
-import com.adjust.sdk.Adjust
-import com.adjust.sdk.AdjustConfig
-import com.adjust.sdk.LogLevel
 import com.appsflyer.AppsFlyerLib
 import com.didichuxing.doraemonkit.DoKit
 import com.github.jokar.multilanguages.library.MultiLanguage
@@ -45,7 +41,6 @@ import org.cxct.sportlottery.ui.maintenance.MaintenanceViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechViewModel
 import org.cxct.sportlottery.ui.news.NewsViewModel
-import org.cxct.sportlottery.ui.permission.GooglePermissionViewModel
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.authbind.AuthViewModel
 import org.cxct.sportlottery.ui.profileCenter.cancelaccount.CancelAccountViewModel
@@ -142,7 +137,6 @@ class MultiLanguagesApplication : Application() {
         viewModel { AccountHistoryViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { TransactionStatusViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { MyFavoriteViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { GooglePermissionViewModel(get(), get(), get()) }
         viewModel { NewsViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { RedEnveLopeModel(get(), get(), get(), get(), get(), get()) }
         viewModel { MainTabViewModel(get(), get(), get(), get(), get(), get()) }
@@ -225,14 +219,10 @@ class MultiLanguagesApplication : Application() {
         RequestManager.init(this)
 
         setupTimber()
-
-        initJPush()
-
         setNightMode()
 
         //生成UUID作為設備識別碼
         setupDeviceCode()
-        initAdjustSDK()
         initAppsFlyerSDK()
 
         if (BuildConfig.DEBUG) {
@@ -241,18 +231,8 @@ class MultiLanguagesApplication : Application() {
                 .build()
         }
 
-
-
     }
 
-    private fun initAdjustSDK() {
-        val appToken = "i0n6zrmvo4jk"
-        val environment =
-            if (BuildConfig.DEBUG) AdjustConfig.ENVIRONMENT_SANDBOX else AdjustConfig.ENVIRONMENT_PRODUCTION
-        val config = AdjustConfig(this, appToken, environment)
-        config.setLogLevel(LogLevel.VERBOSE)
-        Adjust.onCreate(config)
-    }
 
     private fun initAppsFlyerSDK() {
         AppsFlyerLib.getInstance().init("G7q8UBYftYQfKAxnortTSN", null, this)
@@ -265,19 +245,6 @@ class MultiLanguagesApplication : Application() {
             Timber.plant(DebugTree())
         }
     }
-
-    //極光推播
-    private fun initJPush() {
-        JPushInterface.setDebugMode(false) //参数为 true 表示打开调试模式，可看到 sdk 的日志。
-        JPushInterface.init(this)
-
-        //参数为 true 表示打开调试模式，可看到 sdk 的日志。
-        //[Martin] 拔掉JAnalytics功能是因為上架被阻擋
-//        JAnalyticsInterface.init(this);
-//        JAnalyticsInterface.initCrashHandler(this);
-//        JAnalyticsInterface.setDebugMode(false);
-    }
-
     private fun setNightMode() {
         if (isNightMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)

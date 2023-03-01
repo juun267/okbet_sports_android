@@ -903,7 +903,7 @@
     <string name="text_account_history_time">Giờ giao dịch</string>
     <string name="text_account_history_number">Số đơn hàng</string>
     <string name="text_account_history_amount">Số tiền giao dịch</string>
-    <string name="text_account_history_balance">Sự cân bằng</string>
+    <string name="text_account_history_balance">Số dư</string>
 
     <string name="text_account_history_bet">Cá cược</string>
     <string name="text_account_history_recharge">Nạp điện</string>
@@ -949,7 +949,7 @@
     <string name="timezone_change">Múi giờ</string>
     <string name="timezone">Múi giờ</string>
     <!--region 注單模塊調整-->
-    <string name="bet_info_bet_lock_hint">Kèo chấp đã đóng</string>
+    <string name="bet_info_bet_lock_hint">Thị trường đã đóng</string>
     <string name="bet_info_no_parlay_hint">Trận đấu không hỗ trợ đá xiên.</string>
     <string name="sport_relative">Liên quan thể thao</string>
     <string name="red_envelope_congratulations">Chúc mừng</string>
@@ -1030,7 +1030,7 @@
 
     <string name="correct">Cược tỷ số</string>
     <string name="hint_bet_limit_range">%1$s-%2$s</string>
-    <string name="submitting">Đơn cược đang gửi</string>
+    <string name="submitting">Đang gửi</string>
     <string name="bet_receipt_bet_quota_with_sign">Tiền Cược</string>
     <string name="bet_receipt_win_quota_with_sign">Thắng</string>
 
@@ -1146,8 +1146,8 @@
     <string name="accept_any_change_in_odds">Nhận mọi thay đổi</string>
     <string name="accept_better_change_in_odds">Nhận thay đổi tốt hơn</string>
     <string name="accept_never_change_in_odds">Không nhận thay đổi</string>
-    <string name="expand_more_combinations">Hiện tổ hợp</string>
-    <string name="stacked_combination">Ẩn tổ hợp</string>
+    <string name="expand_more_combinations">Hiện</string>
+    <string name="stacked_combination">Ẩn</string>
     <string name="bet_parlay">+Xâu</string>
     <string name="bet_single">Đơn</string>
     <string name="str_if_accept_odds_changes_title">Có nhận thay đổi tỷ lệ cược không?</string>
@@ -1158,7 +1158,7 @@
     <string name="str_if_accept_odds_changes_des3">3. Không nhận thay đổi - khi bạn chọn tùy chọn này: Nếu tỷ lệ cược mới nhất khác với tỷ lệ cược bạn đã chọn, chúng tôi sẽ không tạo đơn cược và nhắc bạn về những thay đổi tỷ lệ cược.</string>
     <string name="str_ok_i_got_it">Tôi biết rồi.</string>
     <string name="str_return_last_step">Trở về</string>
-    <string name="str_bet_other_game">Cược thị trường khác</string>
+    <string name="str_bet_other_game">Đặt cược khác</string>
     <string name="str_check_bets">Chi tiết</string>
     <string name="str_press_again_to_exit_the_program">Vui lòng xác nhận lại lối thoát</string>
     <string name="str_odds_changed">Tỷ lệ cược thay đổi</string>
@@ -1206,7 +1206,7 @@
     <string name="mobile">SĐT</string>
     <string name="login_again">Vui lòng đăng nhập lại.</string>
     <string name="change_password">Đổi mật khẩu</string>
-    <string name="login_terms_conditions">Điều khoản &amp; điều kiện</string>
+    <string name="login_terms_conditions">Điều khoản &amp; điều kiện của chúng tôi</string>
     <string name="login_privacy_policy">Chính sách bảo mật</string>
     <string name="hint_link_google">Liên kết tài khoản Google</string>
     <string name="hint_link_facebook">Liên kết tài khoản Facebook</string>
@@ -1215,7 +1215,7 @@
     <string name="password_login">Mật khẩu đăng nhập</string>
     <string name="or">hoặc</string>
     <string name="login_privacy">Đăng ký biểu thị xác nhận rằng bạn trên 21 tuổi và đồng ý với Chính sách bảo mật,Điều khoản &amp; điều kiện của chúng tôi.</string>
-    <string name="otp_login">Mã xác minh đăng nhập</string>
+    <string name="otp_login">Đăng nhập/đăng ký captcha</string>
     <string name="auth_login">Uỷ quyền Đăng nhập</string>
     <string name="set">Cài đặt</string>
     <string name="linked">Có liên kết</string>
@@ -1229,4 +1229,10 @@
     <string name="pls_enter_correct_mobile">Mời nhập chính xác SĐT</string>
     <string name="pls_enter_correct_email">Mời nhập chính xác Email</string>
     <string name="next">Bước tiếp theo</string>
+    <string name="hint_phone_format">SĐT gồm 11 số, và 09 bắt đầu</string>
+    <string name="hint_referral_code">Mã giới thiệu (Chọn nhập)</string>
+    <string name="promo">Ưu đãi</string>
+    <string name="username">Tài khoản</string>
+    <string name="referral_code_invalid">Mã giới thiệu hết hạn</string>
+    <string name="str_market_is_closed">Thị trường đã đóng</string>
 </resources>

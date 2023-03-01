@@ -62,10 +62,6 @@ object Constants {
         return mSocketUrl
     }
 
-    fun getStoreName(): String {
-        return getMetaDataDefValue(MultiLanguagesApplication.appContext, "JPUSH_CHANNEL", "default")
-    }
-
     fun getInviteCode(): String {
         return getMetaDataDefValue(MultiLanguagesApplication.appContext, "INVITE_CODE", "")
     }
@@ -283,7 +279,7 @@ object Constants {
 
     //獲取檢查APP是否有更新版本的URL //輪詢 SERVER_URL_LIST 成功的那組 serverUrl 用來 download .apk
     fun getCheckAppUpdateUrl(serverUrl: String?): String {
-        return "https://download." + serverUrl + (if (isUAT()) "/platform/" else "/sportnative/platform/") + BuildConfig.CHANNEL_NAME + "/version-Android" + (if (getStoreName() != "google") "" else "-${getStoreName()}") + ".json"
+        return "https://download." + serverUrl + (if (isUAT()) "/platform/" else "/sportnative/platform/") + BuildConfig.CHANNEL_NAME + "/version-Android" + (if (BuildConfig.FLAVOR != "google") "" else "-${BuildConfig.FLAVOR}") + ".json"
     }
 
     //.apk 下載 url
@@ -316,6 +312,7 @@ object Constants {
     const val LOGIN_FOR_GUEST = "/api/front/index/loginforguest" //游客登录
     const val INDEX_PROMOTENOTICE =
         "/api/front/index/promotenotice" //公告API 未登入不帶token 在投注区查询的时候带[1] 在首页的时候带[2,3]
+    const val INDEX_CHECK_EXIST_NEW = "/api/front/index/checkExistNew" //检查账号名称是否已存在
 
     //登录或注册(新版优化登录注册->使用)
     const val LOGIN_OR_REG = "/api/front/index/loginOrReg"

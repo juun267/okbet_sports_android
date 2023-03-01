@@ -67,7 +67,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
                         android:id="@+id/et_account"
@@ -143,6 +143,32 @@
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/textSize14sp" />
                     </FrameLayout>
+
+                    <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
+                        android:id="@+id/et_recommend_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:textSize="@dimen/textSize12sp"
+                        android:visibility="gone"
+                        app:hintText="@string/hint_referral_code"
+                        app:isResponsiveIconColor="false"
+                        app:labelText="@string/hint_referral_code"
+                        app:iconSignifier="@drawable/ic_referral_code"
+                        app:labelTextStyle="normal"
+                        app:primaryColor="@color/color_AFAFB1"> <!--  app:iconSignifier="@drawable/ic_login_recommend" -->
+
+                        <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
+                            android:id="@+id/eet_recommend_code"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:imeOptions="actionNext"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:textColor="@color/color_FFFFFF_DE000000"
+                            android:textSize="@dimen/textSize14sp" />
+
+                    </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>
                 </LinearLayout>
 
                 <LinearLayout
@@ -150,7 +176,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
                         android:id="@+id/et_username"
@@ -211,7 +237,8 @@
                 android:paddingStart="6dp"
                 android:text="@string/password_login"
                 android:textColor="@color/color_025BE8_025BE8"
-                android:textSize="@dimen/textSize14sp"
+                android:textSize="@dimen/textSize12sp"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fl_input" />
 
@@ -224,8 +251,8 @@
                 android:paddingStart="6dp"
                 android:text="@string/otp_login"
                 android:textColor="@color/color_025BE8_025BE8"
-                android:textSize="@dimen/textSize14sp"
-                android:visibility="gone"
+                android:textSize="@dimen/textSize12sp"
+                android:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fl_input" />
 
@@ -239,8 +266,8 @@
                 android:focusable="true"
                 android:text="@string/forget_password"
                 android:textColor="@color/color_025BE8_025BE8"
-                android:textSize="@dimen/textSize14sp"
-                android:visibility="gone"
+                android:textSize="@dimen/textSize12sp"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fl_input" />
 
@@ -348,7 +375,7 @@
                     android:textColorLink="@color/color_025BE8"
                     android:textSize="@dimen/textSize13sp"
                     android:lineSpacingExtra="3dp"
-                    android:text="@string/help" />
+                    android:text="@string/need_help" />
 
                 <TextView
                     android:id="@+id/tv_customer_service"

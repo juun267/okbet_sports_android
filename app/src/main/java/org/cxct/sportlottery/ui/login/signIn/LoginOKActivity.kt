@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.login.signIn
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
@@ -8,13 +9,13 @@ import android.text.method.PasswordTransformationMethod
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import cn.jpush.android.api.JPushInterface
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_login_ok.*
 import kotlinx.android.synthetic.main.view_status_bar.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityLoginOkBinding
 import org.cxct.sportlottery.extentions.startActivity
@@ -61,6 +62,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         binding = ActivityLoginOkBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initOnClick()
+        setupInvite()
         setupAccount()
         setupPassword()
         setupValidCode()
@@ -79,8 +81,28 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         tv_forget_password.setOnClickListener { startActivity(ForgetWaysActivity::class.java) }
     }
 
+    private fun setupInvite() {
+        val defaultInviteCode = Constants.getInviteCode()
+        binding.eetRecommendCode.apply {
+            checkRegisterListener {
+                if (it != "") {
+                    viewModel.checkInviteCode(it)
+                }
+            }
+        }
+        binding.eetRecommendCode.setText(defaultInviteCode)
+        binding.eetRecommendCode.isEnabled = defaultInviteCode.isNullOrEmpty()
+        binding.etRecommendCode.isVisible = !defaultInviteCode.isNullOrEmpty()
+    }
+
     private fun setupAccount() {
-        binding.eetAccount.checkRegisterListener { viewModel.checkAccount(it) }
+        binding.eetAccount.checkRegisterListener {
+            viewModel.checkAccount(it).let { result ->
+                if (result.isNullOrBlank() && !binding.eetAccount.isFocused) {
+                    viewModel.checkUserExist(it)
+                }
+            }
+        }
         binding.eetPassword.checkRegisterListener { viewModel.checkPassword(it) }
         binding.eetUsername.checkRegisterListener { viewModel.checkUserName(it) }
         binding.eetVerificationCode.checkRegisterListener { viewModel.checkMsgCode(it) }
@@ -134,7 +156,6 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun setupLoginButton() {
-        btn_login.text = "${getString(R.string.btn_login)} / ${getString(R.string.btn_register)}"
         binding.btnLogin.setOnClickListener {
             login()
         }
@@ -152,14 +173,18 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun login() {
-        val deviceSn = JPushInterface.getRegistrationID(applicationContext)
+        val deviceSn = getSharedPreferences(MultiLanguagesApplication.UUID_DEVICE_CODE,
+            Context.MODE_PRIVATE).getString(
+            MultiLanguagesApplication.UUID, "") ?: ""
         val deviceId = Settings.Secure.getString(applicationContext.contentResolver,
             Settings.Secure.ANDROID_ID)
         var appVersion = org.cxct.sportlottery.BuildConfig.VERSION_NAME
-        if (lin_login_code.isVisible) {
+        if (viewModel.loginType == LOGIN_TYPE_CODE) {
             loading()
             val account = binding.eetAccount.text.toString()
             val smsCode = binding.eetVerificationCode.text.toString()
+            var inviteCode =
+                if (viewModel.inviteCodeMsg.value.isNullOrEmpty() && binding.etRecommendCode.isVisible) binding.eetRecommendCode.text.toString() else null
             val loginRequest = LoginRequest(
                 account = account,
                 password = null,
@@ -168,7 +193,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 appVersion = appVersion,
                 loginEnvInfo = deviceId,
                 securityCode = smsCode,
-                inviteCode = Constants.getInviteCode()
+                inviteCode = inviteCode
             )
             viewModel.loginOrReg(loginRequest)
         } else {
@@ -245,7 +270,18 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 hideLoading()
             }
         }
-
+        viewModel.inviteCodeMsg.observe(this) {
+            binding.etRecommendCode.setError(
+                it,
+                false
+            )
+            if (it == null) {
+                viewModel.queryPlatform(binding.eetRecommendCode.text.toString())
+            }
+        }
+        viewModel.checkUserExist.observe(this) {
+            et_recommend_code.isVisible = !it
+        }
         viewModel.accountMsg.observe(this) {
             binding.etAccount.setError(
                 it.first,
@@ -393,6 +429,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                     binding.etPassword.setError(null, false)
                 }
             }
+            viewModel.focusChangeCheckAllInputComplete()
         }
     }
 

@@ -110,15 +110,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <org.cxct.sportlottery.util.KeyboardView
-                android:id="@+id/layoutKeyBoard"
-                android:layout_width="match_parent"
-                android:layout_marginHorizontal="@dimen/margin_24"
-                android:layout_height="@dimen/keyboard_height"
-                android:paddingTop="@dimen/margin_15"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@+id/clInputLayout"
-                tools:visibility="visible" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </FrameLayout>
