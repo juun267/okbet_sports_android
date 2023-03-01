@@ -403,7 +403,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     }
 
     private fun needPayerField(): Boolean = when (mMoneyPayWay?.onlineType) {
-        OnlineType.PAYMAYA.type, OnlineType.DRAGON_PAY.type -> true
+        OnlineType.DRAGON_PAY.type -> true
         else -> false
     }
 
