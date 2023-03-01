@@ -108,9 +108,9 @@ class MainHomeViewModel(
     private val _liveRoundCount = MutableLiveData<String>()
     val liveRoundCount: LiveData<String>
         get() = _liveRoundCount
-    val gameBalanceResult: LiveData<Event<Pair<QueryGameEntryData, Double>>>
+    val gameBalanceResult: LiveData<Event<Triple<String, EnterThirdGameResult, Double>>>
         get() = _gameBalanceResult
-    private var _gameBalanceResult = MutableLiveData<Event<Pair<QueryGameEntryData, Double>>>()
+    private var _gameBalanceResult = MutableLiveData<Event<Triple<String, EnterThirdGameResult, Double>>>()
 
     //region 宣傳頁用
     fun getRecommend() {
@@ -289,65 +289,49 @@ class MainHomeViewModel(
             return
         }
 
-//        if (isThirdTransferOpen()) { // 额度自动转换开启
-            requestEnterThirdGame("${gameData.firmType}", "${gameData.gameCode}", "${gameData.gameCategory}")
-//            return
-//        }
-//
-//        getGameBalance(gameData, baseFragment)
+        requestEnterThirdGame("${gameData.firmType}", "${gameData.gameCode}", "${gameData.gameCategory}", baseFragment)
     }
-
 
     //避免多次请求游戏
     var jumpingGame = false
-    fun requestEnterThirdGame(firmType: String, gameCode: String, gameCategory: String) {
+    fun requestEnterThirdGame(firmType: String, gameCode: String, gameCategory: String, baseFragment: BaseFragment<*>) {
 //        Timber.e("gameData: $gameData")
-        when {
-            loginRepository.isLogin.value != true -> {
-                _enterThirdGameResult.postValue(
-                    EnterThirdGameResult(
-                        resultType = EnterThirdGameResult.ResultType.NEED_REGISTER,
-                        url = null,
-                        errorMsg = null
-                    )
-                )
-            }
-            else -> {
-                if (jumpingGame) {
-                    return
-                }
-                jumpingGame = true
-                viewModelScope.launch {
-                    val thirdLoginResult = thirdGameLogin(firmType!!, gameCode!!)
-                    //20210526 result == null，代表 webAPI 處理跑出 exception，exception 處理統一在 BaseActivity 實作，這邊 result = null 直接略過
-                    thirdLoginResult?.let {
-                        if (it.success) {
-                            //先调用三方游戏的登入接口, 确认返回成功200之后再接著调用自动转换额度的接口, 如果没有登入成功, 后面就不做额度自动转换的调用了
-                            autoTransfer(firmType) //第三方自動轉換
-
-                            _enterThirdGameResult.postValue(
-                                EnterThirdGameResult(
-                                    resultType = EnterThirdGameResult.ResultType.SUCCESS,
-                                    url = thirdLoginResult.msg,
-                                    thirdGameCategoryCode = gameCategory
-                                )
-                            )
-                        } else {
-                            _enterThirdGameResult.postValue(
-                                EnterThirdGameResult(
-                                    resultType = EnterThirdGameResult.ResultType.FAIL,
-                                    url = null,
-                                    errorMsg = thirdLoginResult?.msg
-                                )
-                            )
-                        }
-                        jumpingGame = false
-                    }
-
-                }
-            }
+        if(loginRepository.isLogin.value != true) {
+            _enterThirdGameResult.postValue(EnterThirdGameResult(EnterThirdGameResult.ResultType.NEED_REGISTER,null))
+            return
         }
 
+        if (jumpingGame) {
+            return
+        }
+
+        jumpingGame = true
+        baseFragment.loading()
+        viewModelScope.launch {
+            val thirdLoginResult = thirdGameLogin(firmType!!, gameCode!!)
+            jumpingGame = false
+            //20210526 result == null，代表 webAPI 處理跑出 exception，exception 處理統一在 BaseActivity 實作，這邊 result = null 直接略過
+            if (thirdLoginResult == null) {
+                baseFragment.hideLoading()
+                return@launch
+            }
+
+            //先调用三方游戏的登入接口, 确认返回成功200之后再接著调用自动转换额度的接口, 如果没有登入成功, 后面就不做额度自动转换的调用了
+            if (!thirdLoginResult.success) {
+                _enterThirdGameResult.postValue(EnterThirdGameResult(EnterThirdGameResult.ResultType.FAIL,  null, thirdLoginResult?.msg))
+                baseFragment.hideLoading()
+                return@launch
+            }
+
+            val thirdGameResult = EnterThirdGameResult(EnterThirdGameResult.ResultType.SUCCESS, thirdLoginResult.msg, gameCategory)
+            if (autoTransfer(firmType)) { //第三方自動轉換
+                _enterThirdGameResult.postValue(thirdGameResult)
+                baseFragment.hideLoading()
+                return@launch
+            }
+
+            getGameBalance(firmType, thirdGameResult, baseFragment)
+        }
     }
 
     //20200302 記錄問題：新增一個 NONE type，來清除狀態，避免 fragment 畫面重啟馬上就會觸發 observe，重複開啟第三方遊戲
@@ -367,14 +351,17 @@ class MainHomeViewModel(
         }
     }
 
-    private suspend fun autoTransfer(firmType: String) {
+    private suspend fun autoTransfer(firmType: String): Boolean {
         if (isThirdTransferOpen()) {
             //若自動轉換功能開啟，要先把錢都轉過去再進入遊戲
             val result = doNetwork(androidContext) {
                 OneBoSportApi.thirdGameService.autoTransfer(firmType)
             }
             if (result?.success == true) getMoney() //金額有變動，通知刷新
+            return true
         }
+
+        return false
     }
 
     fun setSportClosePromptMessage(sport: String) {
@@ -569,12 +556,11 @@ class MainHomeViewModel(
         }
     }
 
-    private fun getGameBalance(gameData: QueryGameEntryData, baseFragment: BaseFragment<*>) {
-        baseFragment.loading()
+    private fun getGameBalance(firmType: String, thirdGameResult: EnterThirdGameResult, baseFragment: BaseFragment<*>) {
         doRequest(androidContext, { OneBoSportApi.thirdGameService.getAllBalance() }) { result ->
             baseFragment.hideLoading()
-            var balance: Double = result?.resultMap?.get(gameData.firmCode)?.money ?: (0).toDouble()
-            _gameBalanceResult.postValue(Event(Pair(gameData, balance)))
+            var balance: Double = result?.resultMap?.get(firmType)?.money ?: (0).toDouble()
+            _gameBalanceResult.postValue(Event(Triple(firmType, thirdGameResult, balance)))
         }
     }
 

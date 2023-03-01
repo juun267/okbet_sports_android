@@ -388,13 +388,13 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
         }
 
         viewModel.gameBalanceResult.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let {
+            it.getContentIfNotHandled()?.let { it ->
                 //            if (it.second < 0) {
 //                return@observe
 //            }
 
-                TransformInDialog(it.first, it.second) {
-                    viewModel.requestEnterThirdGame("${it.firmType}", "${it.gameCode}", "${it.gameCategory}")
+                TransformInDialog(it.first, it.second, it.third) {
+                    enterThirdGame(it)
                 }.show(childFragmentManager, null)
             }
         }
@@ -748,6 +748,10 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
         hideLoading()
         when (result.resultType) {
             EnterThirdGameResult.ResultType.SUCCESS -> context?.run {
+
+                if (isThirdTransferOpen()) {
+
+                }
                 JumpUtil.toThirdGameWeb(
                     this,
                     result.url ?: "",

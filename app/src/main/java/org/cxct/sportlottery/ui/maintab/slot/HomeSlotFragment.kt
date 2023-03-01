@@ -111,8 +111,8 @@ class HomeSlotFragment :
 //                return@observe
 //            }
 
-                TransformInDialog(it.first, it.second) {
-                    viewModel.requestEnterThirdGame("${it.firmType}", "${it.gameCode}", "${it.gameCategory}")
+                TransformInDialog(it.first, it.second, it.third) {
+                    enterThirdGame(it)
                 }.show(childFragmentManager, null)
             }
         }

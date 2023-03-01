@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.common.transform
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,22 +8,19 @@ import androidx.core.widget.addTextChangedListener
 import kotlinx.android.synthetic.main.dialog_transfer_money.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.extentions.*
-import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
-import org.cxct.sportlottery.ui.maintab.MainHomeViewModel
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
-import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.JsonUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.setBtnEnable
 
-class TransformInDialog(val gameData: QueryGameEntryData,
+class TransformInDialog(val firmType: String,
+                        val thirdGameResult: EnterThirdGameResult,
                         val gameBalance: Double,
-                        val callback:(QueryGameEntryData) -> Unit):
+                        val callback:(EnterThirdGameResult) -> Unit):
     BaseDialog<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
 
     init {
@@ -42,7 +38,7 @@ class TransformInDialog(val gameData: QueryGameEntryData,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         //不分手机上弹窗宽度会撑满，需重新设置下左右间距
         (view.layoutParams as ViewGroup.MarginLayoutParams?)?.run {
-            val m = 40.dp
+            val m = view.context.dp2px(40f)
             leftMargin = m
             rightMargin = m
         }
@@ -97,7 +93,7 @@ class TransformInDialog(val gameData: QueryGameEntryData,
         if (num > 0) {
             loading.visible()
             tvEnter.isEnabled = false
-            viewModel.transfer(false, "CG", gameData.firmCode, num)
+            viewModel.transfer(false, "CG", firmType, num)
             return
         }
 
@@ -121,6 +117,6 @@ class TransformInDialog(val gameData: QueryGameEntryData,
 
     private fun enter() {
         dismiss()
-        callback.invoke(gameData)
+        callback.invoke(thirdGameResult)
     }
 }
