@@ -45,7 +45,6 @@ class OddBtnList @JvmOverloads constructor(
             setAutoSizeTextTypeUniformWithConfiguration(6, 10, 1, TypedValue.COMPLEX_UNIT_SP)
             maxLines = 3
             gravity = Gravity.CENTER
-            setBackgroundResource(R.color.colorRedLight)
         }
 
         val odd_btn_row1_typeParam = LayoutParams(oddWidth, typeNameHeight)
