@@ -13,6 +13,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.setBtnEnable
@@ -38,7 +39,7 @@ class TransformInDialog(val firmType: String,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         //不分手机上弹窗宽度会撑满，需重新设置下左右间距
         (view.layoutParams as ViewGroup.MarginLayoutParams?)?.run {
-            val m = view.context.dp2px(40f)
+            val m = 40f.dp
             leftMargin = m
             rightMargin = m
         }
