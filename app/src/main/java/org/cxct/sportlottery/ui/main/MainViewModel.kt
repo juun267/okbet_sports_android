@@ -152,7 +152,7 @@ class MainViewModel(
         return ThirdGameRepository.createSingleThirdGame(gameCategory, gameFirm)
     }
 
-    fun requestEnterThirdGame(gameData: ThirdDictValues?) {
+    private fun requestEnterThirdGame(gameData: ThirdDictValues?) {
         when {
             gameData == null -> {
                 _enterThirdGameResult.postValue(
