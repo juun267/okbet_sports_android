@@ -25,6 +25,7 @@ import org.cxct.sportlottery.network.third_game.third_games.hot.HandicapData
 import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchLiveData
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.publicity.PublicityPromotionItemData
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.main.entity.GameCateData
@@ -107,6 +108,9 @@ class MainHomeViewModel(
     private val _liveRoundCount = MutableLiveData<String>()
     val liveRoundCount: LiveData<String>
         get() = _liveRoundCount
+    val gameBalanceResult: LiveData<Event<Pair<QueryGameEntryData, Double>>>
+        get() = _gameBalanceResult
+    private var _gameBalanceResult = MutableLiveData<Event<Pair<QueryGameEntryData, Double>>>()
 
     //region 宣傳頁用
     fun getRecommend() {
@@ -272,7 +276,7 @@ class MainHomeViewModel(
         }
     }
 
-    fun requestEnterThirdGame(gameData: QueryGameEntryData?) {
+    fun requestEnterThirdGame(gameData: QueryGameEntryData, baseFragment: BaseFragment<*>) {
         if (gameData == null) {
             _enterThirdGameResult.postValue(
                 EnterThirdGameResult(
@@ -285,7 +289,12 @@ class MainHomeViewModel(
             return
         }
 
-        requestEnterThirdGame("${gameData.firmType}", "${gameData.gameCode}", "${gameData.gameCategory}")
+//        if (isThirdTransferOpen()) { // 额度自动转换开启
+            requestEnterThirdGame("${gameData.firmType}", "${gameData.gameCode}", "${gameData.gameCategory}")
+//            return
+//        }
+//
+//        getGameBalance(gameData, baseFragment)
     }
 
 
@@ -559,5 +568,15 @@ class MainHomeViewModel(
             }
         }
     }
+
+    private fun getGameBalance(gameData: QueryGameEntryData, baseFragment: BaseFragment<*>) {
+        baseFragment.loading()
+        doRequest(androidContext, { OneBoSportApi.thirdGameService.getAllBalance() }) { result ->
+            baseFragment.hideLoading()
+            var balance: Double = result?.resultMap?.get(gameData.firmCode)?.money ?: (0).toDouble()
+            _gameBalanceResult.postValue(Event(Pair(gameData, balance)))
+        }
+    }
+
     //endregion
 }

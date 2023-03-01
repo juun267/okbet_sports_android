@@ -1343,4 +1343,10 @@
     <string name="language_th">ภาษาไทย</string>
     <string name="referral_code_invalid">Referral code invalid</string>
     <string name="str_market_is_closed">Market closed</string>
+    <string name="enter_game">Enter game</string>
+    <string name="hint_transform_money">Transfer prompt</string>
+    <string name="confirm_transform_in_money">Please confirm amount transferred to game account</string>
+    <string name="game_account_money">Game account balance</string>
+    <string name="transform_in_amount">Halaga ng paglipat</string>
+    <string name="hint_transform_in_amount">Only supported the amount transferred from 0 to the platform account balance</string>
 </resources>
