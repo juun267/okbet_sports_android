@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="cdrp_mon">Lunes</string>
-    <string name="cdrp_tue">Martes</string>
-    <string name="cdrp_wed">Miyerkules</string>
-    <string name="cdrp_thu">Huwebes</string>
-    <string name="cdrp_fri">Biyernes</string>
-    <string name="cdrp_sat">Sabado</string>
-    <string name="cdrp_sun">Linggo</string>
+<!--    <string name="cdrp_mon">Lunes</string>-->
+<!--    <string name="cdrp_tue">Martes</string>-->
+<!--    <string name="cdrp_wed">Miyerkules</string>-->
+<!--    <string name="cdrp_thu">Huwebes</string>-->
+<!--    <string name="cdrp_fri">Biyernes</string>-->
+<!--    <string name="cdrp_sat">Sabado</string>-->
+<!--    <string name="cdrp_sun">Linggo</string>-->
+
+    <string name="cdrp_mon">Mon</string>
+    <string name="cdrp_tue">Tue</string>
+    <string name="cdrp_wed">Wed</string>
+    <string name="cdrp_thu">Thu</string>
+    <string name="cdrp_fri">Fri</string>
+    <string name="cdrp_sat">Sat</string>
+    <string name="cdrp_sun">Sun</string>
 
     <string-array name="week_sun_sat">
         <item>@string/cdrp_sun</item>
