@@ -47,6 +47,7 @@
     <color name="color_616161">#616161</color>
     <color name="color_b4b4b4">#b4b4b4</color>
     <color name="color_8F8F8F">#8F8F8F</color>
+    <color name="color_F8F8F8">#F8F8F8</color>
     <color name="color_e5e5e5">#e5e5e5</color>
     <color name="color_000000">#000000</color>
     <color name="color_333333">#333333</color>
@@ -302,9 +303,12 @@
     <color name="color_E23434">#E23434</color>
     <color name="color_C9CFD7">#C9CFD7</color>
     <color name="color_414655">#414655</color>
+    <color name="color_f1f3f6">#F1F3F6</color>
     <color name="color_111216">#111216</color>
     <color name="color_025BE8">#025BE8</color>
     <color name="color_A5A9B3">#A5A9B3</color>
+    <color name="color_EFF4FF">#EFF4FF</color>
+    <color name="color_B73A20">#B73A20</color>
     <color name="background">@color/color_F0F5FA</color>
     <color name="color_A7B2C4">#A7B2C4</color>
     <color name="color_E8F4FF">#E8F4FF</color>
@@ -314,6 +318,8 @@
     <color name="color_D3DEF5">#D3DEF5</color>
     <color name="color_8071ADFF">#8071ADFF</color>
     <color name="color_801971FD">#801971FD</color>
+    <color name="color_01ce84">#01ce84</color>
+    <color name="color_01FFA3">#01FFA3</color>
     <color name="color_F2F9FF">#F2F9FF</color>
     <color name="color_996A7797">#996A7797</color>
     <color name="color_E38902">#E38902</color>
@@ -355,6 +361,8 @@
     <color name="color_05025BE8">#05025BE8</color>
     <color name="color_181922">#181922</color>
     <color name="color_F1A027">#F1A027</color>
+    <color name="color_0500181E">#0500181E</color>
+    <color name="color_00181E">#00181E</color>
     <color name="color_80C9CFD7">#80C9CFD7</color>
     <color name="color_EC4139">#EC4139</color>
     <color name="color_F73C6C">#F73C6C</color>
@@ -368,6 +376,10 @@
     <color name="color_E5EFFF">#E5EFFF</color>
     <color name="color_EC9007">#EC9007</color>
     <color name="color_C0CCEC">#C0CCEC</color>
+    <color name="color_e3e8ee">#E3E8EE</color>
+    <color name="color_EAEFF8">#EAEFF8</color>
+    <color name="color_261B3A98">#261B3A98</color>
+
     <!--region keyboard-->
     <color name="color_43546F">#43546F</color>
     <color name="color_5A799E">#5A799E</color>

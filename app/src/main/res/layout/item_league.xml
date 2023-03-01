@@ -10,12 +10,13 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/color_D3DEF5" />
+        android:background="@color/color_D4E1F1" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:gravity="center_vertical">
+        android:layout_height="36dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/bg_gradient_item_league">
 
         <ImageView
             android:id="@+id/iv_country"
@@ -52,7 +53,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/color_D3DEF5" />
+        android:background="@color/color_D4E1F1" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/league_odd_list"
@@ -63,8 +64,8 @@
         tools:itemCount="1"
         tools:listitem="@layout/item_sport_odd" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/color_D3DEF5" />
+    <!--    <View-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="0.5dp"-->
+    <!--        android:background="@color/color_D3DEF5" />-->
 </LinearLayout>

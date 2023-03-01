@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab.menu
 
 import android.os.Bundle
+import android.view.Gravity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +12,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.HandicapType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.maintab.LanguageAdapter
@@ -26,6 +28,11 @@ class SettingCenterActivity : BaseActivity<MainViewModel>(MainViewModel::class) 
     }
     private val oddsTypeAdapter by lazy {
         OddsTypeAdapter(oddsTypeList)
+    }
+    private val betWayAdapter by lazy {
+        BetWayAdapter(listOf(LocalUtils.getString(R.string.accept_any_change_in_odds),
+            LocalUtils.getString(R.string.accept_better_change_in_odds),
+            LocalUtils.getString(R.string.accept_never_change_in_odds)))
     }
 
     private lateinit var languageAdapter: LanguageAdapter
@@ -49,6 +56,7 @@ class SettingCenterActivity : BaseActivity<MainViewModel>(MainViewModel::class) 
     private fun initView() {
         initOddsTypeView()
         initLanguageView()
+        initBetWayView()
         getOddsType()
         iv_btn_service.setOnClickListener {
             val serviceUrl = sConfigData?.customerServiceUrl
@@ -176,4 +184,58 @@ class SettingCenterActivity : BaseActivity<MainViewModel>(MainViewModel::class) 
         }
     }
 
+    private fun initBetWayView() {
+        betWayAdapter.setOnItemClickListener { adapter, view, position ->
+            betWayAdapter.setSelectPos(position)
+            val option: Int = when (position) {
+                0 -> {
+                    OddsModeUtil.accept_any_odds
+                }
+                1 -> {
+                    OddsModeUtil.accept_better_odds
+                }
+                else -> {
+                    OddsModeUtil.never_accept_odds_change
+                }
+            }
+            viewModel.updateOddsChangeOption(option)
+        }
+        rv_betway.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        rv_betway.adapter = betWayAdapter
+        val userInfo = MultiLanguagesApplication.getInstance()?.userInfo()
+        when (userInfo?.oddsChangeOption ?: 0) {
+            OddsModeUtil.accept_any_odds -> betWayAdapter.setSelectPos(0)
+            OddsModeUtil.accept_better_odds -> betWayAdapter.setSelectPos(1)
+            OddsModeUtil.never_accept_odds_change -> betWayAdapter.setSelectPos(2)
+        }
+
+        tvOddsChangedTips.setOnClickListener {
+            showOddsChangeTips()
+        }
+    }
+
+    private fun showOddsChangeTips() {
+        val dialog = CustomAlertDialog(this)
+        dialog.setTitle(getString(R.string.str_if_accept_odds_changes_title))
+        val message = """
+                    ${getString(R.string.str_if_accept_odds_changes_des_subtitle)}
+                    
+                    ${getString(R.string.str_if_accept_odds_changes_des1)}
+                    
+                    ${getString(R.string.str_if_accept_odds_changes_des2)}
+                    
+                     ${getString(R.string.str_if_accept_odds_changes_des3)}
+                """.trimIndent()
+        dialog.setMessage(message)
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.isCancelable = true
+        dialog.setNegativeButtonText(null)
+        dialog.setPositiveButtonText(getString(R.string.str_ok_i_got_it))
+        dialog.setGravity(Gravity.START)
+        dialog.mScrollViewMarginHorizon = 20
+        dialog.setPositiveClickListener {
+            dialog.dismiss()
+        }
+        dialog.show(supportFragmentManager, null)
+    }
 }

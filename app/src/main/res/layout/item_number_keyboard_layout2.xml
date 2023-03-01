@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="@dimen/margin_14"
+    android:paddingTop="@dimen/margin_3"
+    android:paddingEnd="@dimen/margin_14"
+    android:paddingBottom="@dimen/margin_10">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="44dp">
+
+        <TextView
+            android:id="@+id/tvNum1"
+            android:text="1"
+            style="@style/tv_keyboard_number" />
+
+        <TextView
+            android:id="@+id/tvNum2"
+            android:text="2"
+            android:layout_marginStart="5dp"
+            style="@style/tv_keyboard_number" />
+
+        <TextView
+            android:id="@+id/tvNum3"
+            android:text="3"
+            android:layout_marginStart="5dp"
+            style="@style/tv_keyboard_number" />
+
+        <TextView
+            android:id="@+id/tvPlus1"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_5"
+            android:background="@drawable/bg_radius_6_num_keyboard_plus"
+            android:fontFamily="@font/d_din_bold"
+            android:gravity="center"
+            android:text="+100"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="22sp" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:id="@+id/tvNum4"
+            android:text="4"
+            style="@style/tv_keyboard_number" />
+
+        <TextView
+            android:id="@+id/tvNum5"
+            android:text="5"
+            android:layout_marginStart="5dp"
+            style="@style/tv_keyboard_number" />
+
+        <TextView
+            android:id="@+id/tvNum6"
+            android:text="6"
+            android:layout_marginStart="5dp"
+            style="@style/tv_keyboard_number"/>
+
+
+        <TextView
+            android:id="@+id/tvPlus2"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_5"
+            android:background="@drawable/bg_radius_6_num_keyboard_plus"
+            android:fontFamily="@font/d_din_bold"
+            android:gravity="center"
+            android:text="+500"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="22sp" />
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:id="@+id/tvNum7"
+            android:text="7"
+            style="@style/tv_keyboard_number"/>
+
+        <TextView
+            android:id="@+id/tvNum8"
+            android:text="8"
+            android:layout_marginStart="5dp"
+            style="@style/tv_keyboard_number" />
+
+        <TextView
+            android:id="@+id/tvNum9"
+            android:text="9"
+            android:layout_marginStart="5dp"
+            style="@style/tv_keyboard_number"/>
+
+
+        <TextView
+            android:id="@+id/tvPlus3"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_5"
+            android:background="@drawable/bg_radius_6_num_keyboard_plus"
+            android:fontFamily="@font/d_din_bold"
+            android:gravity="center"
+            android:text="+1000"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="@dimen/textSize18sp" />
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="5dp">
+
+        <FrameLayout
+            android:id="@+id/flDot"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/bg_radius_6_num_keyboard"
+            android:gravity="center"
+            android:textColor="@color/color_FFFFFF_414655"
+            android:textSize="@dimen/textSize18sp"
+            android:textStyle="bold">
+
+            <TextView
+                android:layout_width="6dp"
+                android:layout_height="6dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/bg_rectangle_gray6_f414655" />
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tvNum0"
+            android:text="0"
+            android:layout_marginStart="5dp"
+            style="@style/tv_keyboard_number" />
+
+        <ImageView
+            android:id="@+id/tvDel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_weight="1"
+            android:background="@drawable/bg_radius_6_num_keyboard"
+            android:gravity="center"
+            android:padding="@dimen/margin_6"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_keyboard_delete_num" />
+
+
+        <TextView
+            android:id="@+id/tvMax"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_5"
+            android:background="@drawable/bg_radius_6_num_keyboard_plus"
+            android:fontFamily="@font/d_din_bold"
+            android:gravity="center"
+            android:text="Max"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="22sp" />
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</LinearLayout>

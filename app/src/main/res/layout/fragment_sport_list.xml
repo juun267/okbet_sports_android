@@ -8,8 +8,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     app:srlDragRate="0.3"
     app:srlEnableLoadMore="true"
-    app:srlEnablePureScrollMode="true"
-    tools:context=".ui.game.hall.GameV3Fragment">
+    app:srlEnablePureScrollMode="true">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar_layout"
@@ -27,7 +26,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/color_E8F4FF"
+                android:background="@color/color_EAEFF8"
                 android:orientation="vertical">
 
 
@@ -36,8 +35,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="78dp"
                     android:paddingTop="7dp"
-                    android:elevation="4dp"
-                    android:background="@drawable/bg_white_radius_10_bottom"
+                    android:elevation="1dp"
+                    android:background="@color/color_FFFFFF"
                     android:gravity="center_horizontal"
                     tools:ignore="MissingConstraints">
 
@@ -57,7 +56,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:layout_marginTop="-10dp"
-                    android:background="@color/color_E8F4FF"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
                     app:layout_constraintLeft_toLeftOf="parent"

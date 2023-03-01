@@ -47,7 +47,6 @@ import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.ui.sport.favorite.LeagueListener
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.widget.VerticalDecoration
 import org.greenrobot.eventbus.Subscribe
 import timber.log.Timber
 import java.util.*
@@ -401,7 +400,7 @@ class SportListFragment :
 
         this.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
         adapter = sportLeagueAdapter
-        addItemDecoration(VerticalDecoration(context, R.drawable.bg_divide_light_blue_8))
+//        addItemDecoration(VerticalDecoration(context, R.drawable.bg_divide_light_blue_8))
         game_list.addOnScrollListener(object : OnScrollListener() {
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {

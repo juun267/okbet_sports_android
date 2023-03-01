@@ -1,14 +1,12 @@
 package org.cxct.sportlottery.ui.game.betList.receipt
 
-import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.text.HtmlCompat
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_match_receipt.view.*
 import kotlinx.android.synthetic.main.view_match_receipt_bet.view.*
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.extentions.gone
 import org.cxct.sportlottery.extentions.visible
@@ -42,15 +40,43 @@ class SingleViewHolder private constructor(itemView: View) :
     }
 
 
-    fun bind(betConfirmTime: Long? = 0,itemData: BetResult, oddsType: OddsType, interfaceStatusChangeListener: BetReceiptDiffAdapter.InterfaceStatusChangeListener?, position: Int) {
+    fun bind(
+        betConfirmTime: Long? = 0,
+        itemData: BetResult,
+        oddsType: OddsType,
+        interfaceStatusChangeListener: BetReceiptDiffAdapter.InterfaceStatusChangeListener?,
+        position: Int
+    ) {
         itemView.apply {
-            top_space.visibility = if (position == 0) View.VISIBLE else View.GONE
+//            top_space.visibility = if (position == 0) View.VISIBLE else View.GONE
+
+            val inPlay = System.currentTimeMillis() > (itemData.matchOdds?.get(0)?.startTime ?: 0)
+
+
+            if (inPlay) {
+                tvTypeMatch.visible()
+                tvTypeMatch.text = LocalUtils.getString(R.string.home_tab_in_play) //滚球
+                tvTypeMatch.background =
+                    AppCompatResources.getDrawable(context, R.drawable.bg_match_type_red_circle)
+            } else {
+                tvTypeMatch.visible()
+                tvTypeMatch.text = LocalUtils.getString(R.string.home_tab_early) //早盘
+                tvTypeMatch.background =
+                    AppCompatResources.getDrawable(context, R.drawable.bg_match_type_green_circle)
+            }
+
+            if (itemData.matchType == MatchType.OUTRIGHT) {
+                tvTypeMatch.gone()
+            }
+
 
             val currencySign = sConfigData?.systemCurrencySign
             tv_winnable_amount_title.text =
                 context.getString(R.string.bet_receipt_win_quota_with_sign) + "："
             tv_bet_amount_title.text =
                 context.getString(R.string.bet_receipt_bet_quota_with_sign) + "："
+
+            tv_name_type.text = context.getString(oddsType.res)
 
             itemData.apply {
                 matchOdds?.firstOrNull()?.apply {
@@ -60,13 +86,17 @@ class SingleViewHolder private constructor(itemView: View) :
                         ) else TextUtil.formatForOdd(
                             getOdds(this, oddsType)
                         )
-                    tv_play_content.text = setSpannedString(
-                        PlayCate.needShowSpread(playCateCode) && (matchType != MatchType.OUTRIGHT),
-                        playName,
-                        if (matchType != MatchType.OUTRIGHT) spread else "",
-                        formatForOdd,
-                        context.getString(getOddTypeRes(this, oddsType))
-                    )
+//                    tv_play_content.text = setSpannedString(
+//                        PlayCate.needShowSpread(playCateCode) && (matchType != MatchType.OUTRIGHT),
+//                        playName,
+//                        if (matchType != MatchType.OUTRIGHT) spread else "",
+//                        formatForOdd,
+//                        context.getString(getOddTypeRes(this, oddsType))
+//                    )
+
+                    tv_play_content.text = playName
+                    tvSpread.text = if (matchType != MatchType.OUTRIGHT) spread else ""
+
                     tv_odds.text = "@ $formatForOdd"
 
                     tv_league.text = leagueName
@@ -82,7 +112,7 @@ class SingleViewHolder private constructor(itemView: View) :
                     llcOrder.gone()
                 } else {
                     llcOrder.visible()
-                    tvBetOrder.text = if (orderNo.isEmpty()) "-" else ":${orderNo}"
+                    tvBetOrder.text = if (orderNo.isEmpty()) "-" else "：${orderNo}"
                     tvBetTime.text = TimeUtil.timeFormat(betConfirmTime, "yyyy-MM-dd HH:mm:ss")
                 }
 
@@ -100,30 +130,5 @@ class SingleViewHolder private constructor(itemView: View) :
                 }
             }
         }
-    }
-
-    private fun setSpannedString(
-        isShowSpread: Boolean,
-        playName: String?,
-        spread: String?,
-        formatForOdd: String,
-        oddsType: String
-    ): Spanned {
-        val color_FFFFFF_414655 =
-            MultiLanguagesApplication.getChangeModeColorCode("#414655", "#FFFFFF")
-//            val color_e5e5e5_333333 = MultiLanguagesApplication.getChangeModeColorCode("#333333", "#e5e5e5")
-//            val color_F75452_b73a20 = MultiLanguagesApplication.getChangeModeColorCode("#B73A20", "#F75452")
-
-        val playNameStr =
-            if (!playName.isNullOrEmpty()) "<font color=$color_FFFFFF_414655>$playName</font> " else ""
-        val spreadStr =
-            if (!spread.isNullOrEmpty() || isShowSpread) "<font color=$color_FFFFFF_414655>$spread</font> " else ""
-
-//            return HtmlCompat.fromHtml(
-//                playNameStr +
-//                        spreadStr +
-//                        "<font color=$color_e5e5e5_333333>@ $formatForOdd</font> ", HtmlCompat.FROM_HTML_MODE_LEGACY
-//            )
-        return HtmlCompat.fromHtml(playNameStr + spreadStr, HtmlCompat.FROM_HTML_MODE_LEGACY)
     }
 }

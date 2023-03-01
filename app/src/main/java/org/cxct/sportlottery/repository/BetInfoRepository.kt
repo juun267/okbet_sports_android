@@ -44,7 +44,9 @@ object BetInfoRepository {
 
     var betListTabPosition = 0 //記錄betListTab位置
 
-    var currentBetType:Int = BetListFragment.SINGLE
+    var isTouched = false
+
+    var currentBetType: Int = BetListFragment.SINGLE
 
     private val _showBetInfoSingle = MutableLiveData<Event<Boolean?>>()
 
@@ -134,7 +136,7 @@ object BetInfoRepository {
 
         var hasPointMark = false //若有被標記就進行串關組合了
         //先檢查有沒有冠軍類別, 若有則全部紅色標記
-        val hasMatchType = betList.find { it.matchType == MatchType.OUTRIGHT } != null
+//        val hasMatchType = betList.find { it.matchType == MatchType.OUTRIGHT } != null
 
         //檢查有沒有反波膽
         val hasLcsGameType = betList.find { it.matchOdd.playCode == PlayCate.LCS.name } != null
@@ -154,8 +156,10 @@ object BetInfoRepository {
         betList.forEach {
             //parlay (是否可以参加过关，0：否，1：是)
             val cannotParlay = it.outrightMatchInfo?.parlay == 0
+            //是否是冠军
+            val hashOutRight = it.matchType == MatchType.OUTRIGHT
 //            Timber.e("parlay: ${it.outrightMatchInfo?.parlay}, cannotParlay: $cannotParlay")
-            if (cannotParlay || hasLcsGameType || hasMatchType || hasDiffGameType || (matchIdList[it.matchOdd.matchId]?.size
+            if (cannotParlay || hasLcsGameType || hashOutRight || hasDiffGameType || (matchIdList[it.matchOdd.matchId]?.size
                     ?: 0) > 1
             ) {
                 hasPointMark = true
@@ -291,7 +295,7 @@ object BetInfoRepository {
         }
 
         oddIDArray.takeIf {
-            it.size>1
+            it.size > 1
         }?.apply {
             oddIDArray = subList(0, 1)
         }

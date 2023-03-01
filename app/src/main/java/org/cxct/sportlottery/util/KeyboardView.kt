@@ -10,7 +10,7 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.item_number_keyboard_layout.view.*
+import kotlinx.android.synthetic.main.item_number_keyboard_layout2.view.*
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.LoginRepository
@@ -26,7 +26,7 @@ class KeyboardView @JvmOverloads constructor(
 ) {
 
     private val view: View by lazy {
-        LayoutInflater.from(context).inflate(R.layout.item_number_keyboard_layout, null, false)
+        LayoutInflater.from(context).inflate(R.layout.item_number_keyboard_layout2, null, false)
     }
 
     /**键盘点击事件*/
@@ -47,21 +47,21 @@ class KeyboardView @JvmOverloads constructor(
                     tvPlus1.text = "+$i"
                     tvPlus1.visibility = View.VISIBLE
                     tvPlus1.setOnClickListener {
-                        plus(i.toLong())
+                        plus(i.toDouble())
                     }
                 }
                 if (index == 1) {
                     tvPlus2.text = "+$i"
                     tvPlus2.visibility = View.VISIBLE
                     tvPlus2.setOnClickListener {
-                        plus(i.toLong())
+                        plus(i.toDouble())
                     }
                 }
                 if (index == 2) {
                     tvPlus3.text = "+$i"
                     tvPlus3.visibility = View.VISIBLE
                     tvPlus3.setOnClickListener {
-                        plus(i.toLong())
+                        plus(i.toDouble())
                     }
                 }
             }
@@ -102,14 +102,14 @@ class KeyboardView @JvmOverloads constructor(
         flDot.setOnClickListener {
             insertDot()
         }
-        tvClear.setOnClickListener {
-            //清除
-            mEditText.text.clear()
-        }
-        ivClose.setOnClickListener {
-            //關閉鍵盤
-            hideKeyboard()
-        }
+//        tvClear.setOnClickListener {
+//            //清除
+//            mEditText.text.clear()
+//        }
+//        ivClose.setOnClickListener {
+//            //關閉鍵盤
+//            hideKeyboard()
+//        }
         tvMax.setOnClickListener {
             if (isLogin) {
                 plusAll(maxBetMoney)
@@ -221,22 +221,31 @@ class KeyboardView @JvmOverloads constructor(
         }
     }
 
-    private fun plus(count: Long) {
+    private fun plus(count: Double) {
+        if (!this::mEditText.isInitialized){
+            return
+        }
         val input = if (mEditText.text.toString() == "") "0" else mEditText.text.toString()
         val tran = if (input.contains(".")) {
             input.toDouble() + count
-        } else input.toDouble() + count
-        mEditText.setText(tran.toLong().toString())
+        } else input.toLong() + count.toLong()
+        mEditText.setText(tran.toString())
         mEditText.setSelection(mEditText.text.length)
     }
 
     private fun plusAll(all: String) {
+        if (!this::mEditText.isInitialized){
+            return
+        }
         mEditText.setText(all)
         mEditText.setSelection(mEditText.text.length)
 
     }
 
     private fun insert(count: Long) {
+        if (!this::mEditText.isInitialized){
+            return
+        }
         val editable = mEditText.text
         val start = mEditText.selectionStart
         editable.insert(start, count.toString())
@@ -244,6 +253,9 @@ class KeyboardView @JvmOverloads constructor(
     }
 
     private fun insertDot() {
+        if (!this::mEditText.isInitialized){
+            return
+        }
         val editable = mEditText.text
         val start = mEditText.selectionStart
         editable.apply {
@@ -259,6 +271,9 @@ class KeyboardView @JvmOverloads constructor(
     }
 
     private fun delete() {
+        if (!this::mEditText.isInitialized){
+            return
+        }
         val editable = mEditText.text
         val start = mEditText.selectionStart
         if (start > 0) {

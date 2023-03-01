@@ -981,7 +981,7 @@
     <!--endregion-->
 
     <!--region 注單模塊調整-->
-    <string name="bet_info_bet_lock_hint">Markets of your bet has changed</string>
+    <string name="bet_info_bet_lock_hint">Markets of bet is closed</string>
     <string name="bet_info_no_parlay_hint">The match hasn\'t supported parlay</string>
     <!--endregion-->
     <string name="timezone_change">Time Zone</string>
@@ -1123,6 +1123,7 @@
     <string name="match_analyze">Match analysis</string>
     <string name="no_search_match">No matches were found</string>
     <string name="reset_password">Reset password</string>
+    <string name="transact_type">Transaction Type：</string>
     <string name="login_welcome">Hi, Welcome to OKBET~</string>
     <string name="betting">Betting</string>
     <string name="unbound_bank_card">You do not have %1$s bound</string>
@@ -1200,8 +1201,8 @@
     <string name="accept_any_change_in_odds">Accept any odds</string>
     <string name="accept_better_change_in_odds">Accept better odds</string>
     <string name="accept_never_change_in_odds">Never accept odds change</string>
-    <string name="expand_more_combinations">More combinations</string>
-    <string name="stacked_combination">Hide combination</string>
+    <string name="expand_more_combinations">More</string>
+    <string name="stacked_combination">Hide</string>
     <string name="bet_parlay">+Parlay</string>
     <string name="bet_single">Single</string>
     <string name="str_if_accept_odds_changes_title">Whether to accept the odds change</string>
@@ -1341,4 +1342,5 @@
     <string name="language_vi">Tiếng Việt</string>
     <string name="language_th">ภาษาไทย</string>
     <string name="referral_code_invalid">Referral code invalid</string>
+    <string name="str_market_is_closed">Market closed</string>
 </resources>

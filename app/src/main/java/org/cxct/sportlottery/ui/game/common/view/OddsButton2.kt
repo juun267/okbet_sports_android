@@ -46,8 +46,6 @@ class OddsButton2 @JvmOverloads constructor(
         private val oddsUnknownCaches = mutableListOf<TextView>()
         private val params1 = LayoutParams(-2, -2).apply {
             gravity = Gravity.CENTER_HORIZONTAL
-            topMargin = 1.dp
-            bottomMargin = 1.dp
         }
         private val params2 = LayoutParams(-1, -1)
 

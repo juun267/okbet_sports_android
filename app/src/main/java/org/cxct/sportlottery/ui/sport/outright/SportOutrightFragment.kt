@@ -641,7 +641,7 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
                 matchType = MatchType.OUTRIGHT,
                 gameType = it,
                 playCateCode = playCateCode,
-                playCateName = "",
+                playCateName = odd.parentNode.name,
                 matchInfo = matchOdd.matchInfo!!,
                 matchOdd = matchOdd,
                 odd = odd,

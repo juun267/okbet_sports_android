@@ -16,14 +16,15 @@ import org.cxct.sportlottery.ui.game.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.game.betList.listener.OnItemClickListener
 import org.cxct.sportlottery.ui.game.betList.listener.OnSelectedPositionListener
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.KeyboardView
 import org.cxct.sportlottery.util.MoneyInputFilter
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 import java.lang.Math.abs
 
 //填充單注
-class BatchSingleInMoreOptionViewHolder(private val contentView: ItemBetListBatchControlV3Binding) :
-    BatchParlayViewHolder(contentView.root) {
+class BatchSingleInMoreOptionViewHolder(private val contentView: ItemBetListBatchControlV3Binding,private val keyboardView: KeyboardView) :
+    BatchParlayViewHolder(contentView.root,keyboardView) {
     private var mUserMoney: Double = 0.0
     private var mUserLogin: Boolean = false
     private var mHasBetClosedForSingle: Boolean = false
@@ -42,7 +43,7 @@ class BatchSingleInMoreOptionViewHolder(private val contentView: ItemBetListBatc
         position: Int,
         hasBetClosedForSingle: Boolean,
         userMoney: Double,
-        userLogin: Boolean
+        userLogin: Boolean,
     ) {
         mUserMoney = userMoney
         mUserLogin = userLogin
@@ -93,7 +94,7 @@ class BatchSingleInMoreOptionViewHolder(private val contentView: ItemBetListBatc
             val initValue = if (itemData.singleInput != null) itemData.allSingleInput else ""
 
             if (itemData.isInputBet) {
-                layoutKeyBoard.setupMaxBetMoney(getMaxOrMinAmount(isGetMax = true, betList))
+//                layoutKeyBoard.setupMaxBetMoney(getMaxOrMinAmount(isGetMax = true, betList))
             }
 
             etBetSingle.apply {
@@ -225,10 +226,10 @@ class BatchSingleInMoreOptionViewHolder(private val contentView: ItemBetListBatc
                 if (event.action == MotionEvent.ACTION_UP) {
                     etBetSingle.isFocusable = true
                     onItemClickListener.onHideKeyBoard()
-                    layoutKeyBoard.setupMaxBetMoney(getMaxOrMinAmount(isGetMax = true, betList))
-                    layoutKeyBoard.showKeyboard(
-                        etBetSingle, position
-                    )
+//                    layoutKeyBoard.setupMaxBetMoney(getMaxOrMinAmount(isGetMax = true, betList))
+//                    layoutKeyBoard.showKeyboard(
+//                        etBetSingle, position
+//                    )
                     //onItemClickListener.onShowParlayKeyboard(etBetSingle, itemData, position, getMaxOrMinAmount(isGetMax = true, betList))
                     onSelectedPositionListener.onSelectChange(
                         bindingAdapterPosition, BetListRefactorAdapter.BetViewType.SINGLE
@@ -238,12 +239,12 @@ class BatchSingleInMoreOptionViewHolder(private val contentView: ItemBetListBatc
                 false
             }
 
-            etBetSingle.setOnFocusChangeListener { _, hasFocus ->
-                if (!hasFocus) layoutKeyBoard?.hideKeyboard()
-                itemData.isInputBet = hasFocus
-                if (hasFocus) etBetSingle.setSelection(etBetSingle.text.length)
-                setEtBetSingleBackground(itemData)
-            }
+//            etBetSingle.setOnFocusChangeListener { _, hasFocus ->
+//                if (!hasFocus) layoutKeyBoard?.hideKeyboard()
+//                itemData.isInputBet = hasFocus
+//                if (hasFocus) etBetSingle.setSelection(etBetSingle.text.length)
+//                setEtBetSingleBackground(itemData)
+//            }
 
             clItemBackgroundSingle.setOnClickListener {
                 onItemClickListener.onHideKeyBoard()
