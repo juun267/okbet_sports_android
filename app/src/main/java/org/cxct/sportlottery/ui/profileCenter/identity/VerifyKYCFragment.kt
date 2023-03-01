@@ -311,7 +311,7 @@ class VerifyKYCFragment :
         firstFile?.let { file ->
             identity_1st.apply {
                 this.btn_add_pic.isVisible = true
-                tv_upload_id_photo.text = getString(R.string.change_other_ID_photos)
+                tv_upload_id_photo.text = LocalUtils.getString(R.string.change_other_ID_photos)
                 Glide.with(this.img_pic.context).load(file.absolutePath)
                     .apply(RequestOptions().placeholder(R.drawable.img_avatar_default))
                     .into(this.img_pic)
@@ -325,7 +325,7 @@ class VerifyKYCFragment :
         secondFile?.let { file ->
             identity_2nd.apply {
                 this.btn_add_pic.isVisible = true
-                tv_upload_id_photo.text = getString(R.string.change_other_ID_photos)
+                tv_upload_id_photo.text = LocalUtils.getString(R.string.change_other_ID_photos)
                 Glide.with(this.img_pic.context).load(file.absolutePath)
                     .apply(RequestOptions().placeholder(R.drawable.img_avatar_default))
                     .into(this.img_pic)

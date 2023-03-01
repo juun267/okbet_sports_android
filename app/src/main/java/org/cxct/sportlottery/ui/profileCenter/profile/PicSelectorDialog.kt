@@ -17,6 +17,7 @@ import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.dialog_selector_dialog.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.LocalUtils
 
 class PicSelectorDialog(
     val activity: Activity,
@@ -41,10 +42,10 @@ class PicSelectorDialog(
     }
 
     private fun initView() {
-        tv_title.text = String.format(resources.getString(R.string.prompt))
-        tv_message.text = String.format(resources.getString(R.string.upload_dialog_content))
-        btn_negative.text = String.format(resources.getString(R.string.upload_dialog_camera))
-        btn_positive.text = String.format(resources.getString(R.string.upload_dialog_gallery))
+        tv_title.text = String.format(LocalUtils.getString(R.string.prompt))
+        tv_message.text = String.format(LocalUtils.getString(R.string.upload_dialog_content))
+        btn_negative.text = String.format(LocalUtils.getString(R.string.upload_dialog_camera))
+        btn_positive.text = String.format(LocalUtils.getString(R.string.upload_dialog_gallery))
     }
 
     private fun initEvent() {
