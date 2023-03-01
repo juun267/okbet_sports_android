@@ -288,14 +288,14 @@
     <string name="select_all">Piliin lahat</string>
     <string name="all_order">Lahat ng taya</string>
     <string name="not_settled_order">Hindi na ayos na taya</string>
-    <string name="settled_order">Naayos na</string> <!--I046-->
+    <string name="settled_order">Na-settle</string> <!--I046-->
     <string name="start_date">Petsa ng pagsisimula</string>
     <string name="end_date">Huling Petsa</string>
     <string name="no_data">Wala nang data</string>
     <string name="uncheck">Hindi kumpirmado</string>
     <string name="undone">Pagpoproseso</string>
     <string name="not_settled">Unsettlement</string>
-    <string name="settled">Naayos na</string>
+    <string name="settled">Na-settle</string>
     <string name="win">Panalo</string>
     <string name="win_half">Manalo kalahati</string>
     <string name="lose">Talo</string>
