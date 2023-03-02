@@ -72,26 +72,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         )
     }
 
-    private val norTabIcons by lazy {
-        arrayOf(
-            R.drawable.selector_tab_home,
-            R.drawable.selector_tab_sport,
-            R.drawable.selector_tab_betlist,
-            R.drawable.selector_tab_fav,
-            R.drawable.selector_tab_user
-        )
-    }
-
-    val cupTabIcons by lazy {
-        arrayOf(
-            R.drawable.selector_tab_home_cup,
-            R.drawable.selector_tab_sport_cup,
-            R.drawable.selector_tab_betlist_cup,
-            R.drawable.selector_tab_fav_cup,
-            R.drawable.selector_tab_user_cup
-        )
-    }
-
     private var betListFragment: BetListFragment? = null
     private val homeLeftFragment by lazy { MainLeftFragment() }
     private val sportLeftFragment by lazy { SportLeftFragment() }
