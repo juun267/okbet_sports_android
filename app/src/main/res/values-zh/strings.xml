@@ -1295,7 +1295,8 @@
     <string name="enter_game">进入游戏</string>
     <string name="hint_transform_money">转账提示</string>
     <string name="confirm_transform_in_money">请确认转入游戏账户的金额</string>
-    <string name="game_account_money">游戏账户余额</string>
+    <string name="game_account_money">游戏余额</string>
     <string name="transform_in_amount">转入金额</string>
     <string name="account_balance_unenough">平台账户余额不足</string>
+    <string name="platform_user_money">平台余额</string>
 </resources>

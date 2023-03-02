@@ -4,10 +4,10 @@
     <string name="enter_game">Pumasok sa laro</string>
     <string name="hint_transform_money">Mga Tip sa Paglipat</string>
     <string name="confirm_transform_in_money">Pakikumpirma ang halagang inilipat sa game account</string>
-    <string name="game_account_money">Balanse ng laro sa account</string>
+    <string name="game_account_money">Balanse sa laro</string>
     <string name="transform_in_amount">Halaga ng paglipat</string>
     <string name="hint_transform_in_amount">Sinusuportahan lamang ang paglilipat ng halaga sa pagitan ng 0 at balanse ng platform account</string>
     <string name="account_balance_unenough">Balanse ng platform account ay hindi sapat</string>
-    <string name="account_transfer">Số dư tài khoản nền tảng không đủ</string>
-
+    <string name="account_transfer">Ilipat ang balanse</string>
+    <string name="platform_user_money">Balanse sa platform</string>
 </resources>
