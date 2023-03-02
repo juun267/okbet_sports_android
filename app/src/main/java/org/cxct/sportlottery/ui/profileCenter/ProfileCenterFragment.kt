@@ -603,10 +603,10 @@ class ProfileCenterFragment :
 
         viewModel.isRechargeShowVerifyDialog.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
-//                if (b)
+                if (b)
                     showKYCVerifyDialog()
-//                else
-//                    viewModel.checkRechargeSystem()
+                else
+                    viewModel.checkRechargeSystem()
             }
         }
 
