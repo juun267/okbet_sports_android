@@ -15,6 +15,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.component.UploadImageView
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
+import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.getCompressFile
 import org.cxct.sportlottery.util.setTitleLetterSpacing
@@ -50,7 +51,7 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
                     throw FileNotFoundException()
             } catch (e: Exception) {
                 e.printStackTrace()
-                ToastUtil.showToastInCenter(activity, getString(R.string.error_reading_file))
+                ToastUtil.showToastInCenter(activity, LocalUtils.getString(R.string.error_reading_file))
             }
         }
 
@@ -82,7 +83,7 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
                     throw FileNotFoundException()
             } catch (e: Exception) {
                 e.printStackTrace()
-                ToastUtil.showToastInCenter(activity, getString(R.string.error_reading_file))
+                ToastUtil.showToastInCenter(activity, LocalUtils.getString(R.string.error_reading_file))
             }
         }
 
@@ -112,7 +113,7 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as VerifyIdentityActivity).setToolBar(getString(R.string.identity))
+        (activity as VerifyIdentityActivity).setToolBar(LocalUtils.getString(R.string.identity))
         initObserve()
         setupButton()
         setupUploadView()
@@ -130,7 +131,7 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
             it.getContentIfNotHandled()?.let { result ->
                 if (!result.success) {
                     hideLoading()
-                    showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
+                    showErrorPromptDialog(LocalUtils.getString(R.string.prompt), result.msg) {}
                 }
             }
         })
@@ -160,15 +161,15 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
                 hideLoading()
                 if (result.success) {
                     showPromptDialog(
-                        title = getString(R.string.prompt),
-                        message = getString(R.string.upload_success),
+                        title = LocalUtils.getString(R.string.prompt),
+                        message = LocalUtils.getString(R.string.upload_success),
                         success = true
                     ) {
                         activity?.onBackPressed()
 
                     }
                 } else {
-                    showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
+                    showErrorPromptDialog(LocalUtils.getString(R.string.prompt), result.msg) {}
                 }
             }
         })
@@ -178,10 +179,10 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
         btn_submit.setOnClickListener {
             when {
                 docFile == null -> {
-                    showErrorPromptDialog(getString(R.string.prompt), getString(R.string.upload_fail)) {}
+                    showErrorPromptDialog(LocalUtils.getString(R.string.prompt), LocalUtils.getString(R.string.upload_fail)) {}
                 }
                 photoFile == null -> {
-                    showErrorPromptDialog(getString(R.string.prompt), getString(R.string.upload_fail)) {}
+                    showErrorPromptDialog(LocalUtils.getString(R.string.prompt), LocalUtils.getString(R.string.upload_fail)) {}
                 }
                 else -> {
                     loading()
@@ -206,9 +207,9 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
         activity?.let { activityNotNull ->
             view_identity_doc.apply {
                 imgUploaded(false)
-                tv_upload_title.text = getString(R.string.upload_title)
+                tv_upload_title.text = LocalUtils.getString(R.string.upload_title)
                 tv_upload_tips.visibility = View.GONE
-                tv_upload.text = getString(R.string.upload_content)
+                tv_upload.text = LocalUtils.getString(R.string.upload_content)
                 uploadListener = UploadImageView.UploadListener {
                     PicSelectorDialog(
                         activityNotNull,
@@ -220,9 +221,9 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
 
             view_identity_photo.apply {
                 imgUploaded(false)
-                tv_upload_title.text = getString(R.string.upload_photo_title)
+                tv_upload_title.text = LocalUtils.getString(R.string.upload_photo_title)
                 tv_upload_tips.visibility = View.GONE
-                tv_upload.text = getString(R.string.upload_photo_content)
+                tv_upload.text = LocalUtils.getString(R.string.upload_photo_content)
                 uploadListener = UploadImageView.UploadListener {
                     PicSelectorDialog(
                         activityNotNull,

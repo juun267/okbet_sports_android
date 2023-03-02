@@ -202,8 +202,8 @@ class VerifyKYCFragment :
                 hideLoading()
                 if (result.success) {
                     showPromptDialog(
-                        title = getString(R.string.prompt),
-                        message = getString(R.string.upload_success),
+                        title = LocalUtils.getString(R.string.prompt),
+                        message = LocalUtils.getString(R.string.upload_success),
                         success = true
                     ) {
                         mNavController.navigate(R.id.action_verifyKYCFragment_to_verifyStatusFragment)
