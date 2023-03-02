@@ -9,8 +9,7 @@ import androidx.constraintlayout.motion.widget.MotionLayout
 import kotlinx.android.synthetic.main.motion_view_service_floating.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.game.ServiceDialog
-import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.setServiceClick
 
 class ServiceFloatingButton @JvmOverloads constructor(
     context: Context,
@@ -19,16 +18,10 @@ class ServiceFloatingButton @JvmOverloads constructor(
 ) :
     MotionLayout(context, attributeSet, defStyle) {
 
-    var serviceFloatingListener: ServiceFloatingListener? = null
-
     init {
-        addView(LayoutInflater.from(context).inflate(R.layout.motion_view_service_floating, this, false))
-        initClickEvent()
+        LayoutInflater.from(context).inflate(R.layout.motion_view_service_floating, this, true)
     }
 
-    private fun initClickEvent(){
-        movable_layout.setOnClickListener { serviceFloatingListener?.serviceClick() }
-    }
 
     class ServiceFloatingListener(private val buttonClick: () -> Unit) {
         fun serviceClick() = buttonClick.invoke()
@@ -50,20 +43,6 @@ class ServiceFloatingButton @JvmOverloads constructor(
     }
 
     private fun setupClickEvent(activity: AppCompatActivity) {
-        serviceFloatingListener = ServiceFloatingListener {
-            val serviceUrl = sConfigData?.customerServiceUrl
-            val serviceUrl2 = sConfigData?.customerServiceUrl2
-            when {
-                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    ServiceDialog().show(activity?.supportFragmentManager, null)
-                }
-                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(activity, serviceUrl2)
-                }
-                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(activity, serviceUrl)
-                }
-            }
-        }
+        movable_layout.setServiceClick(activity.supportFragmentManager)
     }
 }

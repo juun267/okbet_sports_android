@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter.identity
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -7,11 +8,9 @@ import android.view.*
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialog_verify_identity.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.util.setServiceClick
 
 class VerifyIdentityDialog: DialogFragment() {
-
-    var positiveClickListener: PositiveClickListener? = null
-    var serviceClickListener: PositiveClickListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,15 +28,11 @@ class VerifyIdentityDialog: DialogFragment() {
     }
 
     private fun initButton() {
-        btn_close.setOnClickListener {
-            dismiss()
-        }
+        btn_close.setOnClickListener { dismiss() }
+        btn_service.setServiceClick(childFragmentManager)
         btn_check.setOnClickListener {
-            positiveClickListener?.onClick("")
+            startActivity(Intent(context, VerifyIdentityActivity::class.java))
             dismiss()
-        }
-        btn_service.setOnClickListener {
-            serviceClickListener?.onClick("")
         }
     }
 
@@ -47,10 +42,6 @@ class VerifyIdentityDialog: DialogFragment() {
         dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
         dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
         dialog?.setCanceledOnTouchOutside(false)
-    }
-
-    class PositiveClickListener(private val clickListener: (string:String) -> Unit) {
-        fun onClick(string:String) = clickListener(string)
     }
 
 }

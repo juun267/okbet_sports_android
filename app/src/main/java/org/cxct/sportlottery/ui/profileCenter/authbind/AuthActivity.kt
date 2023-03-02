@@ -6,11 +6,9 @@ import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_auth.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.util.AuthManager
-import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.setServiceClick
 import org.cxct.sportlottery.util.setStartDrawable
 
 /**
@@ -95,21 +93,7 @@ class AuthActivity : BaseSocketActivity<AuthViewModel>(AuthViewModel::class) {
     }
 
     private fun setupServiceButton() {
-        tv_customer_service.setOnClickListener {
-            val serviceUrl = sConfigData?.customerServiceUrl
-            val serviceUrl2 = sConfigData?.customerServiceUrl2
-            when {
-                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    ServiceDialog().show(supportFragmentManager, null)
-                }
-                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(this@AuthActivity, serviceUrl2)
-                }
-                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(this@AuthActivity, serviceUrl)
-                }
-            }
-        }
+        tv_customer_service.setServiceClick(supportFragmentManager)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

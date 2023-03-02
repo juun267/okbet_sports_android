@@ -41,8 +41,8 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
         return inflater.inflate(layoutId(), container, false)
     }
 
-    open protected fun layoutId() = 0
-    open protected fun onBindView(view: View) { }
+    protected open fun layoutId() = 0
+    protected open fun onBindView(view: View) { }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
