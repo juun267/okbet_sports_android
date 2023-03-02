@@ -1349,4 +1349,5 @@
     <string name="game_account_money">Game account balance</string>
     <string name="transform_in_amount">Transfer-in amount</string>
     <string name="hint_transform_in_amount">Only supported the amount transferred from 0 to the platform account balance</string>
+    <string name="account_balance_unenough">Platform account balance not enough</string>
 </resources>

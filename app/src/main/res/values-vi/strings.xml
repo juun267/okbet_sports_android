@@ -1270,5 +1270,5 @@
     <string name="confirm_transform_in_money">Vui lòng xác nhận số tiền đã chuyển vào tài khoản trò chơi</string>
     <string name="game_account_money">số dư tài khoản trò chơi</string>
     <string name="transform_in_amount">Số tiền chuyển khoản</string>
-    <string name="hint_transform_in_amount">Chỉ hỗ trợ chuyển số tiền 0 ～ Giữa số dư tài khoản nền tảng</string>
+    <string name="account_balance_unenough">Số dư tài khoản nền tảng không đủ</string>
 </resources>

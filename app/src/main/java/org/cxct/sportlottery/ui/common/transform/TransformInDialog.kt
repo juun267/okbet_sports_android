@@ -39,7 +39,7 @@ class TransformInDialog(val firmType: String,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         //不分手机上弹窗宽度会撑满，需重新设置下左右间距
         (view.layoutParams as ViewGroup.MarginLayoutParams?)?.run {
-            val m = 40f.dp
+            val m = 30f.dp
             leftMargin = m
             rightMargin = m
         }

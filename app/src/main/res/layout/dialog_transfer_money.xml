@@ -150,17 +150,16 @@
 
                 <TextView
                     android:id="@+id/tvError"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="3dp"
                     android:textColor="@color/color_E23434"
                     android:gravity="left"
                     android:textSize="12sp"
                     android:visibility="gone"
-                    android:text="@string/hint_transform_in_amount"/>
+                    android:text="@string/account_balance_unenough"/>
 
             </LinearLayout>
-
 
         </LinearLayout>
 

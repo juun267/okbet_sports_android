@@ -1297,5 +1297,5 @@
     <string name="confirm_transform_in_money">请确认转入游戏账户的金额</string>
     <string name="game_account_money">游戏账户余额</string>
     <string name="transform_in_amount">转入金额</string>
-    <string name="hint_transform_in_amount">只支持转入0～平台账户余额之间的金额</string>
+    <string name="account_balance_unenough">平台账户余额不足</string>
 </resources>

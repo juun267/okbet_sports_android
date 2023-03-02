@@ -7,5 +7,7 @@
     <string name="game_account_money">Balanse ng laro sa account</string>
     <string name="transform_in_amount">Halaga ng paglipat</string>
     <string name="hint_transform_in_amount">Sinusuportahan lamang ang paglilipat ng halaga sa pagitan ng 0 at balanse ng platform account</string>
+    <string name="account_balance_unenough">Balanse ng platform account ay hindi sapat</string>
+    <string name="account_transfer">Số dư tài khoản nền tảng không đủ</string>
 
 </resources>
