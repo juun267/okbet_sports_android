@@ -200,11 +200,6 @@ class MultiLanguagesApplication : Application() {
         AppManager.init(this)
         myPref = getDefaultSharedPreferences()
 
-        MultiLanguage.init { context ->
-            //返回自己本地保存选择的语言设置
-            return@init LanguageManager.getSetLanguageLocale(context)
-        }
-        MultiLanguage.setApplicationLanguage(this)
         TimeZone.setDefault(timeZone)
         startKoin {
             androidContext(this@MultiLanguagesApplication)

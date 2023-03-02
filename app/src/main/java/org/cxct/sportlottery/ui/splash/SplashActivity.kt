@@ -1,8 +1,10 @@
 package org.cxct.sportlottery.ui.splash
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import com.github.jokar.multilanguages.library.MultiLanguage
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.cxct.sportlottery.BuildConfig
@@ -16,6 +18,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.LanguageManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -23,9 +26,27 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
+    companion object {
+
+        var multiLanguageInited = false
+        private fun initMultiLanguage(context: Context) {
+            if (!multiLanguageInited) {
+                multiLanguageInited = true
+                MultiLanguage.init { context ->
+                    //返回自己本地保存选择的语言设置
+                    return@init LanguageManager.getSetLanguageLocale(context)
+                }
+                MultiLanguage.setApplicationLanguage(context)
+            }
+        }
+    }
+
     private val mVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        initMultiLanguage(this)
         super.onCreate(savedInstanceState)
         ImmersionBar.with(this)
             .statusBarDarkFont(true)

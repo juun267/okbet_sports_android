@@ -234,27 +234,15 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun setupPrivacy() {
+        val privacyText = getString(R.string.login_privacy_policy)
+        val conditionsText = getString(R.string.login_terms_conditions)
+        makeLinks(privacyText, "${Constants.getPrivacyRuleUrl(this)}")
+        makeLinks(conditionsText, "${Constants.getAgreementRuleUrl(this)}")
+    }
+
+    private fun makeLinks(text: String, url: String) {
         binding.tvPrivacy.makeLinks(
-            Pair(
-                applicationContext.getString(R.string.login_privacy_policy),
-                View.OnClickListener {
-                    JumpUtil.toInternalWeb(
-                        this,
-                        Constants.getPrivacyRuleUrl(this),
-                        resources.getString(R.string.login_privacy_policy)
-                    )
-                })
-        )
-        binding.tvPrivacy.makeLinks(
-            Pair(
-                applicationContext.getString(R.string.login_terms_conditions),
-                View.OnClickListener {
-                    JumpUtil.toInternalWeb(
-                        this,
-                        Constants.getAgreementRuleUrl(this),
-                        resources.getString(R.string.login_terms_conditions)
-                    )
-                })
+            Pair(text, View.OnClickListener {JumpUtil.toInternalWeb(this, url, text) })
         )
     }
 
