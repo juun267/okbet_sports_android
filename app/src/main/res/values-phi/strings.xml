@@ -230,7 +230,7 @@
     <string name="account_balance">Kabuuang asset</string>
     <string name="user_id_colon">用戶ID：</string>
     <string name="recharge">Deposito</string>
-    <string name="account_transfer">Pagbabago ng quota</string>
+    <string name="account_transfer">Ilipat ang balanse</string>
     <string name="money_recycle_succeed">Matagumpay na nabawi ang quota</string>
     <string name="news_center">Message Center</string>
     <string name="help_center">Help center</string>
@@ -271,7 +271,6 @@
     <string name="inbox">Inbox (%1$d)</string>
     <string name="unread_letters">Unread mail (%1$d)</string>
     <string name="title">Pamagat</string>
-    <string name="record_time">Oras ng conversion</string>
     <string name="choose_bet_state">Pumili ng tamang taya</string>
     <string name="champion_play">Championship play</string>
     <string name="inquire">Hanapin</string>
@@ -512,40 +511,15 @@
     <string name="record_withdrawal">Rekord ng Withdrawal</string>
     <string name="record_conversion">Rekord ng Conversion</string>
     <string name="record_history">History</string>
-    <string name="recharge_state_success">Matagumpay</string>
-    <string name="recharge_state_failed">Failed</string>
-    <string name="all_order_status">All Status</string>
-    <string name="recharge_channel_online">Bayad online</string>
-    <string name="recharge_channel_bank">Bank card transfer</string>
-    <string name="recharge_channel_alipay">Alipay transfer</string>
-    <string name="recharge_channel_weixin">WeChat transfer</string>
-    <string name="recharge_channel_cft">Tenpay transfer</string>
-    <string name="recharge_channel_crypto">Virtual currency transfer</string>
-    <string name="recharge_channel_gcash">Gcash</string>
-    <string name="recharge_channel_grabpay">GrabPay</string>
-    <string name="recharge_channel_paymaya">PayMaya</string>
-    <string name="recharge_channel_admin">Manual Deposit</string>
-    <string name="recharge_log_order_time">Order time</string>
-    <string name="recharge_log_recharge_amount">Halaga ng deposito</string>
-    <string name="recharge_log_channel_type">Uri ng channel</string>
-    <string name="recharge_log_order_state">Order Status</string>
-    <string name="log_state_processing">Pinoproseso</string>
-    <string name="withdraw_log_state_pass">Pumasa</string>
-    <string name="withdraw_log_state_un_pass">Hindi pumasa</string>
-    <string name="log_type_all">All Method</string>
-    <string name="withdraw_log_type_bank_trans">Pag-withdraw sa bangko</string>
-    <string name="withdraw_log_type_admin">Bawas sa background</string>
-    <string name="withdraw_log_crypto_transfer">Virtual currency withdrawal</string>
+
+
     <string name="betting_station_reserve">Network map about</string>
     <string name="betting_station_withdraw">Cash withdrawal outlets</string>
     <string name="betting_station_deposit">Branch deposit</string>
     <string name="log_detail_title">Suriin ang mga detalye</string>
-    <string name="log_detail_trans_num_sub">Transaction No.：</string>
-    <string name="log_detail_trans_num_sub2">Trading number</string>
     <string name="log_detail_time_sub">Time：</string>
     <string name="log_detail_status_sub">Trading status：</string>
     <string name="log_detail_handle_fee">Handling fee：</string>
-    <string name="log_detail_rebate_money">Halaga ng rebate：</string>
     <string name="log_detail_review_time">Oras ng pagsusuri：</string>
     <string name="log_detail_reason">Remarks：</string>
     <string name="finance_log_selector_until">Dumating na</string>
@@ -561,17 +535,12 @@
     <string name="feedback_content_description">Paglalarawan ng nilalaman</string>
     <string name="feedback_replied">Feedback</string>
     <string name="feedback_not_reply_yet">Pending feedback</string>
-    <string name="one_key_recovery">Pag-click sa pagbawi</string>
-    <string name="platform_account_money">Balanse ng platform account</string>
-    <string name="one_button_click_will_recycle_all_money_into_account">*One-click na pagbawi upang ilipat ang lahat ng iba pang balanse ng account sa platform account.</string>
-    <string name="out_account">Palit account</string>
-    <string name="in_account">Ilipat sa account</string>
-    <string name="transfer_money">Halaga ng conversion</string>
+    <string name="one_key_recovery">Bawiin</string>
+    <string name="platform_account_money">Balanse sa platform</string>
+    <string name="one_button_click_will_recycle_all_money_into_account">Bawiin ang lahat ng nailipat na balanse</string>
     <string name="transfer_money_minimum">Quota %s o higit pa</string>
     <string name="confirm_transform">Kumpirmahin ang conversion</string>
     <string name="plat_money">Platform balance</string>
-    <string name="money">Halaga ng conversion</string>
-    <string name="transfer_platform">Palit platform</string>
     <string name="transfer_money_succeed">Matagumpay na na-convert ang quota</string>
     <string name="third_game_df">Defeng Pangingisda</string>
     <string name="third_game_sbty">Sabah Sports</string>
@@ -866,19 +835,7 @@
     <!--google位置存取-->
     <string name="allow_location_permission">Payagan ang access sa lokasyon</string>
 
-    <!--歷史紀錄start-->
-    <string name="text_account_history_time">Oras ng transaksyon</string>
-    <string name="text_account_history_number">Numero ng order</string>
-    <string name="text_account_history_amount">Transaction amount</string>
-    <string name="text_account_history_balance">Balanse</string>
 
-    <string name="text_account_history_bet">Bet slip</string>
-    <string name="text_account_history_recharge">Deposito</string>
-    <string name="text_account_history_withdraw">Withdraw pera</string>
-    <string name="text_account_history_activity">Presyo ng actividad</string>
-    <string name="text_account_history_credit">Credit account amount</string>
-    <string name="waiting">Pending bet</string>
-    <!--歷史紀錄end-->
 
     <!--region 最新消息-->
     <string name="news_tab_game">Laro</string>
