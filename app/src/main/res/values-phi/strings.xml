@@ -289,7 +289,7 @@
     <string name="all_order">Lahat ng taya</string>
     <string name="not_settled_order">Hindi pa settle</string>
     <string name="settled_order">Na-settle</string> <!--I046-->
-    <string name="start_date">Petsa ng pagsisimula</string>
+    <string name="start_date">Unang Petsa</string>
     <string name="end_date">Huling Petsa</string>
     <string name="no_data">Wala nang data</string>
     <string name="uncheck">Hindi kumpirmado</string>
