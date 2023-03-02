@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.widget.EditText
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.activity_forget_password.*
+import kotlinx.android.synthetic.main.activity_rest_password.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityRestPasswordBinding
 import org.cxct.sportlottery.extentions.*
