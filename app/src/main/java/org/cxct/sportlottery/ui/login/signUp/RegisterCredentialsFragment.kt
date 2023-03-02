@@ -17,6 +17,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.component.UploadImageView
 import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
+import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.getCompressFile
 import org.cxct.sportlottery.util.setTitleLetterSpacing
@@ -169,8 +170,8 @@ class RegisterCredentialsFragment : BaseSocketFragment<RegisterViewModel>(Regist
                     showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
                 else {
                     showPromptDialog(
-                        title = getString(R.string.prompt),
-                        message = getString(R.string.upload_success),
+                        title = LocalUtils.getString(R.string.prompt),
+                        message = LocalUtils.getString(R.string.upload_success),
                         success = true
                     ) {
                         registerCredentialsListener?.onCloseFragment()

@@ -91,16 +91,16 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         when (mBankCardStatus) {
             true -> {
                 when (transferType) {
-                    TransferType.BANK -> (activity as BankActivity).changeTitle(getString(R.string.edit_bank_card))
-                    TransferType.CRYPTO -> (activity as BankActivity).changeTitle(getString(R.string.edit_crypto_card))
-                    TransferType.E_WALLET -> (activity as BankActivity).changeTitle(getString(R.string.edit_e_wallet))
+                    TransferType.BANK -> (activity as BankActivity).changeTitle(LocalUtils.getString(R.string.edit_bank_card))
+                    TransferType.CRYPTO -> (activity as BankActivity).changeTitle(LocalUtils.getString(R.string.edit_crypto_card))
+                    TransferType.E_WALLET -> (activity as BankActivity).changeTitle(LocalUtils.getString(R.string.edit_e_wallet))
                 }
             }
             false -> {
                 when (transferType) {
-                    TransferType.BANK -> (activity as BankActivity).changeTitle(getString(R.string.add_credit_card))
-                    TransferType.CRYPTO -> (activity as BankActivity).changeTitle(getString(R.string.add_crypto_card))
-                    TransferType.E_WALLET -> (activity as BankActivity).changeTitle(getString(R.string.add_e_wallet))
+                    TransferType.BANK -> (activity as BankActivity).changeTitle(LocalUtils.getString(R.string.add_credit_card))
+                    TransferType.CRYPTO -> (activity as BankActivity).changeTitle(LocalUtils.getString(R.string.add_crypto_card))
+                    TransferType.E_WALLET -> (activity as BankActivity).changeTitle(LocalUtils.getString(R.string.add_e_wallet))
                 }
             }
         }
