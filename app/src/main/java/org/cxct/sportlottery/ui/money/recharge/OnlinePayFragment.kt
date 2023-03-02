@@ -22,7 +22,6 @@ import org.cxct.sportlottery.network.money.OnlineType
 import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.util.*
 import kotlin.math.abs
 
@@ -410,28 +409,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     //联系客服
     private fun setupServiceButton() {
-        View.OnClickListener {
-            val serviceUrl = sConfigData?.customerServiceUrl
-            val serviceUrl2 = sConfigData?.customerServiceUrl2
-            when {
-                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    activity?.supportFragmentManager?.let { it1 ->
-                        ServiceDialog().show(
-                            it1,
-                            null
-                        )
-                    }
-                }
-                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    context?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl2) }
-                }
-                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                    context?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }
-                }
-            }
-        }.let {
-            iv_btn_service.setOnClickListener(it)
-            tv_service.setOnClickListener(it)
-        }
+        iv_btn_service.setServiceClick(childFragmentManager)
+        tv_service.setServiceClick(childFragmentManager)
     }
 }

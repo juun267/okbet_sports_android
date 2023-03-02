@@ -30,12 +30,8 @@ import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.login.LoginEditText
-import org.cxct.sportlottery.util.ArithUtil
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.setTitleLetterSpacing
+import org.cxct.sportlottery.util.*
 import java.util.ArrayList
 import kotlin.math.abs
 
@@ -391,25 +387,6 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
     }
     //联系客服
     private fun setupServiceButton() {
-        tv_service_online.setOnClickListener {
-            val serviceUrl = sConfigData?.customerServiceUrl
-            val serviceUrl2 = sConfigData?.customerServiceUrl2
-            when {
-                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    activity?.supportFragmentManager?.let { it1 ->
-                        ServiceDialog().show(
-                            it1,
-                            null
-                        )
-                    }
-                }
-                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    context?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl2) }
-                }
-                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                    context?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }
-                }
-            }
-        }
+        tv_service_online.setServiceClick(childFragmentManager)
     }
 }

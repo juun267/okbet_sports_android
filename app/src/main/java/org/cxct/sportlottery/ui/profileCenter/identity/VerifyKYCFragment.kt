@@ -20,7 +20,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.StatusSheetData
-import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
 import org.cxct.sportlottery.util.*
@@ -252,27 +251,7 @@ class VerifyKYCFragment :
         }
 
         btn_submit.setTitleLetterSpacing()
-
-        tv_service.setOnClickListener {
-            val serviceUrl = sConfigData?.customerServiceUrl
-            val serviceUrl2 = sConfigData?.customerServiceUrl2
-            when {
-                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    activity?.supportFragmentManager?.let { it1 ->
-                        ServiceDialog().show(
-                            it1,
-                            null
-                        )
-                    }
-                }
-                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl2) }
-                }
-                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                    activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }
-                }
-            }
-        }
+        tv_service.setServiceClick(childFragmentManager)
     }
 
     private fun setupUploadView() {
