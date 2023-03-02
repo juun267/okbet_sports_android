@@ -44,6 +44,3 @@ data class ExtIdInfo(
 
 ) : Parcelable
 
-enum class DocErrorType {
-    NO_REQUIRED_ID, BLUR, NO_FACE_DETECTED, NOT_REAL_DOC, EXPOSURE, UNKNOWN
-}

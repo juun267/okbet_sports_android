@@ -30,7 +30,6 @@ import kotlinx.android.synthetic.main.fragment_sport_list.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding
 import org.cxct.sportlottery.event.BetModeChangeEvent
-import org.cxct.sportlottery.event.MainTabEvent
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.extentions.gone
 import org.cxct.sportlottery.extentions.visible
@@ -202,7 +201,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                     }
 
                     setupBetBarVisiblity(position)
-                    EventBusUtil.post(MainTabEvent(fragment))
                     return@OnNavigationItemSelectedListener true
                 }
         }

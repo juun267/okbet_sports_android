@@ -15,7 +15,3 @@ data class CredentialDetailData(
     @Json(name = "resultMessage")
     val resultMessage: String?,
 ): Parcelable
-
-enum class ResultStatus(val value: String) {
-    SUCCESS("S"), FAILED("F"), UNKNOWN("U")
-}
