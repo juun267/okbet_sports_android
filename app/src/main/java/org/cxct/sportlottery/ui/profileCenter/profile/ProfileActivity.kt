@@ -34,10 +34,7 @@ import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity.Companion.MODIFY_INFO
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.LogUtil
-import org.cxct.sportlottery.util.ToastUtil
-import org.cxct.sportlottery.util.phoneNumCheckDialog
+import org.cxct.sportlottery.util.*
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
@@ -88,7 +85,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 e.printStackTrace()
                 ToastUtil.showToastInCenter(
                     this@ProfileActivity,
-                    getString(R.string.error_reading_file)
+                    LocalUtils.getString(R.string.error_reading_file)
                 )
             }
         }
@@ -131,7 +128,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     }
 
     private fun initView() {
-        custom_tool_bar.titleText = getString(R.string.profile_info)
+        custom_tool_bar.titleText = LocalUtils.getString(R.string.profile_info)
         sConfigData?.apply {
             ll_qq_number.visibility = if (enableWithdrawQQ == FLAG_OPEN) View.VISIBLE else View.GONE
             ll_e_mail.visibility = if (enableWithdrawEmail == FLAG_OPEN) View.VISIBLE else View.GONE
@@ -144,7 +141,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         }
         LogUtil.toJson(viewModel.userInfo.value)
         tv_pass_word.text =
-            if (viewModel.userInfo.value?.passwordSet == true) getString(R.string.set) else getString(
+            if (viewModel.userInfo.value?.passwordSet == true) LocalUtils.getString(R.string.set) else LocalUtils.getString(
                 R.string.edit)
     }
 
@@ -225,8 +222,8 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             val iconUrlResult = it?.getContentIfNotHandled()
             if (iconUrlResult?.success == true) {
                 showPromptDialog(
-                    getString(R.string.prompt),
-                    getString(R.string.save_avatar_success)
+                    LocalUtils.getString(R.string.prompt),
+                    LocalUtils.getString(R.string.save_avatar_success)
                 ) {}
             } else
                 iconUrlResult?.msg?.let { msg -> showErrorPromptDialog(msg) {} }
@@ -241,33 +238,33 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             ll_verified.isVisible =
                 sConfigData?.realNameWithdrawVerified == VerifySwitchType.OPEN.value || sConfigData?.realNameRechargeVerified == VerifySwitchType.OPEN.value
             tv_pass_word.text =
-                if (it?.passwordSet == true) getString(R.string.set) else getString(R.string.edit)
+                if (it?.passwordSet == true) LocalUtils.getString(R.string.set) else LocalUtils.getString(R.string.edit)
             when (it?.verified) {
                 VerifiedType.PASSED.value -> {
                     ll_verified.isEnabled = false
                     ll_verified.isClickable = false
-                    tv_verified.text = getString(R.string.kyc_passed)
+                    tv_verified.text = LocalUtils.getString(R.string.kyc_passed)
 
                     icon_identity.visibility = View.GONE
                 }
                 VerifiedType.NOT_YET.value -> {
                     ll_verified.isEnabled = true
                     ll_verified.isClickable = true
-                    tv_verified.text = getString(R.string.kyc_unverified)
+                    tv_verified.text = LocalUtils.getString(R.string.kyc_unverified)
 
                     icon_identity.visibility = View.VISIBLE
                 }
                 VerifiedType.VERIFYING.value -> {
                     ll_verified.isEnabled = false
                     ll_verified.isClickable = false
-                    tv_verified.text = getString(R.string.kyc_unverified)
+                    tv_verified.text = LocalUtils.getString(R.string.kyc_unverified)
 
                     icon_identity.visibility = View.GONE
                 }
                 else -> {
                     ll_verified.isEnabled = true
                     ll_verified.isClickable = true
-                    tv_verified.text = getString(R.string.kyc_unverified)
+                    tv_verified.text = LocalUtils.getString(R.string.kyc_unverified)
 
                     icon_identity.visibility = View.VISIBLE
                 }
@@ -319,7 +316,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
         //簡訊驗證失敗
         viewModel.errorMessageDialog.observe(this) {
-            val errorMsg = it ?: getString(R.string.unknown_error)
+            val errorMsg = it ?: LocalUtils.getString(R.string.unknown_error)
             CustomAlertDialog(this).apply {
                 setMessage(errorMsg)
                 setNegativeButtonText(null)
@@ -400,7 +397,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     ) {
         tvInfo.apply {
             if (infoData.isNullOrEmpty()) {
-                text = getString(R.string.need_improve)
+                text = LocalUtils.getString(R.string.need_improve)
 
                 iconModify.visibility = View.VISIBLE
                 itemLayout.isEnabled = true

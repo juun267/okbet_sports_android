@@ -408,7 +408,7 @@ class MultiLanguagesApplication : Application() {
                                 token,
                                 LanguageManager.getSelectLanguage(activity)
                             ),
-                            activity.getString(R.string.promotion)
+                            LocalUtils.getString(R.string.promotion)
                         )
                     })
                 ).show()

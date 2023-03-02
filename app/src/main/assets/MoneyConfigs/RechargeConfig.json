@@ -3,7 +3,8 @@
     "titleNameMap": {
       "zh": "在线网银",
       "en": "Banking",
-      "vi": "Internet banking"
+      "vi": "Internet banking",
+      "phi": "Banking"
     },
     "subtitle": "支持多家银行，转账更便捷",
     "image": "ic_online_pay",
@@ -23,6 +24,7 @@
     "titleNameMap": {
       "zh": "在线支付宝",
       "en": "Alipay",
+      "phi": "Alipay",
       "vi": "Alipay trực tuyến"
     },
     "subtitle": "支付宝在线支付",
@@ -34,6 +36,7 @@
     "titleNameMap": {
       "zh": "在线微信",
       "en": "Wechat",
+      "phi": "Wechat",
       "vi": "WeChat trực tuyến"
     },
     "subtitle": "微信在线支付",
@@ -45,6 +48,7 @@
     "titleNameMap": {
       "zh": "虚拟币",
       "en": "USDT Transactions",
+      "phi": "USDT Transactions",
       "vi": "Tiền ảo"
     },
     "subtitle": "在线虚拟币支付",
@@ -83,6 +87,7 @@
     "titleNameMap": {
       "zh": "银行卡转账",
       "en": "Bank card",
+      "phi": "Bank card",
       "vi": "Chuyển khoản thẻ ngân hàng"
     },
     "subtitle": "线下入款，您的首选",
@@ -94,6 +99,7 @@
     "titleNameMap": {
       "zh": "JuanCash",
       "en": "JuanCash",
+      "phi": "JuanCash",
       "vi": "JuanCash"
     },
     "subtitle": "菲律賓在線網銀 JuanCash",
@@ -105,6 +111,7 @@
     "titleNameMap": {
       "zh": "财付通转账",
       "en": "Tenpay",
+      "phi": "Tenpay",
       "vi": "Chuyển khoản Tenpay"
     },
     "subtitle": "财付通转账支付",
@@ -116,6 +123,7 @@
     "titleNameMap": {
       "zh": "支付宝转账",
       "en": "Alipay",
+      "phi": "Alipay",
       "vi": "Chuyển khoản Alipay"
     },
     "subtitle": "支付宝转账支付",
@@ -127,6 +135,7 @@
     "titleNameMap": {
       "zh": "微信转账",
       "en": "Wechat",
+      "phi": "Wechat",
       "vi": "Chuyển khoản WeChat"
     },
     "subtitle": "微信转账支付",
@@ -147,6 +156,7 @@
     "titleNameMap": {
       "zh": "虚拟币转账",
       "en": "USDT",
+      "phi": "USDT",
       "vi": "Chuyển khoản tiền ảo"
     },
     "subtitle": "虚拟币支付",
@@ -158,6 +168,7 @@
     "titleNameMap": {
       "zh": "出款",
       "en": "Withdraw",
+      "phi": "Withdraw",
       "vi": "Rút tiền"
     },
     "subtitle": "菲律賓在線網銀",
@@ -169,6 +180,7 @@
     "titleNameMap": {
       "zh": "MoMoPay",
       "en": "MoMoPay",
+      "phi": "MoMoPay",
       "vi": "MoMoPay"
     },
     "subtitle": "MoMoPay",
@@ -180,6 +192,7 @@
     "titleNameMap": {
       "zh": "ZaloPay",
       "en": "ZaloPay",
+      "phi": "ZaloPay",
       "vi": "ZaloPay"
     },
     "subtitle": "ZaloPay",
@@ -191,6 +204,7 @@
     "titleNameMap": {
       "zh": "ViettelPay",
       "en": "ViettelPay",
+      "phi": "ViettelPay",
       "vi": "ViettelPay"
     },
     "subtitle": "ViettelPay",
@@ -202,6 +216,7 @@
     "titleNameMap": {
       "zh": "Recharge Card",
       "en": "Recharge Card",
+      "phi": "Recharge Card",
       "vi": "Recharge Card"
     },
     "subtitle": "Recharge Card",
@@ -213,6 +228,7 @@
     "titleNameMap": {
       "zh": "Gcash",
       "en": "Gcash",
+      "phi": "Gcash",
       "vi": "Gcash"
     },
     "subtitle": "菲律賓在線網銀 Gcash",
@@ -224,6 +240,7 @@
     "titleNameMap": {
       "zh": "DragonPay",
       "en": "DragonPay",
+      "phi": "DragonPay",
       "vi": "DragonPay"
     },
     "subtitle": "DragonPay",
@@ -235,6 +252,7 @@
     "titleNameMap": {
       "zh": "GrabPay",
       "en": "GrabPay",
+      "phi": "GrabPay",
       "vi": "GrabPay"
     },
     "subtitle": "菲律賓在線網銀 GrabPay",
@@ -246,6 +264,7 @@
     "titleNameMap": {
       "zh": "PayMaya",
       "en": "PayMaya",
+      "phi": "PayMaya",
       "vi": "PayMaya"
     },
     "subtitle": "菲律賓在線網銀 PayMaya",
@@ -257,6 +276,7 @@
     "titleNameMap": {
       "zh": "Paypal",
       "en": "Paypal",
+      "phi": "Paypal",
       "vi": "Paypal"
     },
     "subtitle": "Paypal",
@@ -268,6 +288,7 @@
     "titleNameMap": {
       "zh": "PayMaya",
       "en": "PayMaya",
+      "phi": "PayMaya",
       "vi": "PayMaya"
     },
     "subtitle": "微信转账支付",
@@ -279,6 +300,7 @@
     "titleNameMap": {
       "zh": "Gcash",
       "en": "Gcash",
+      "phi": "Gcash",
       "vi": "Gcash"
     },
     "subtitle": "Gcash转账支付",
@@ -290,6 +312,7 @@
     "titleNameMap": {
       "zh": "GrabPay",
       "en": "GrabPay",
+      "phi": "GrabPay",
       "vi": "GrabPay"
     },
     "subtitle": "GrabPay转账支付",
@@ -301,6 +324,7 @@
     "titleNameMap": {
       "zh": "FortunePay",
       "en": "FortunePay",
+      "phi": "FortunePay",
       "vi": "FortunePay"
     },
     "subtitle": "FortunePay支付",
@@ -312,6 +336,7 @@
     "titleNameMap": {
       "zh": "Online Banking",
       "en": "Online Banking",
+      "phi": "Online Banking",
       "vi": "Online Banking"
     },
     "subtitle": "菲律賓在線網銀",
