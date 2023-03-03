@@ -16,7 +16,6 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.LanguageManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -28,7 +27,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        LanguageManager.init(this)
+
         super.onCreate(savedInstanceState)
         ImmersionBar.with(this)
             .statusBarDarkFont(true)

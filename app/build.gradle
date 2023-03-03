@@ -4,7 +4,7 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-android-extensions") //kotlin-parcelize
-    id("multi-languages")
+//    id("multi-languages")
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
     id('com.google.gms.google-services')
@@ -254,7 +254,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.2'
 
     //multiLanguages //https://github.com/MichaelJokAr/MultiLanguages
-    implementation "com.github.jokar:multi-languages:0.1.5"
+//    implementation "com.github.jokar:multi-languages:0.1.5"
 
     //live data
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
