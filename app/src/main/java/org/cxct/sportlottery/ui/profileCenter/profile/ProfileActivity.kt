@@ -257,7 +257,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 VerifiedType.VERIFYING.value -> {
                     ll_verified.isEnabled = false
                     ll_verified.isClickable = false
-                    tv_verified.text = LocalUtils.getString(R.string.kyc_unverified)
+                    tv_verified.text = LocalUtils.getString(R.string.kyc_unverifing)
 
                     icon_identity.visibility = View.GONE
                 }

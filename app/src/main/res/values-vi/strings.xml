@@ -1235,6 +1235,7 @@
     <string name="username">Tài khoản</string>
     <string name="referral_code_invalid">Mã giới thiệu hết hạn</string>
     <string name="str_market_is_closed">Thị trường đã đóng</string>
+    <string name="kyc_unverifing">Đang xác minh</string>
     <string name="enter_game">Vào trò chơi</string>
     <string name="hint_transform_money">Mẹo chuyển khoản</string>
     <string name="confirm_transform_in_money">Vui lòng xác nhận số tiền đã chuyển vào tài khoản trò chơi</string>

@@ -1043,6 +1043,7 @@
     <string name="kyc_you_wait">请点击"在线客服"按钮, 进行视频通话完成实名认证。</string>
     <string name="kyc_verify_successful">您已完成实名验证！</string>
     <string name="kyc_unverified">未验证</string>
+    <string name="kyc_unverifing">验证中</string>
     <string name="kyc_passed">已验证</string>
     <string name="kyc_enter_id_num">请输入证件号码</string>
 

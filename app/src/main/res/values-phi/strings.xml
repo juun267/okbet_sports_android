@@ -446,7 +446,7 @@
     <string name="go_to_setting">Pumunta sa  setting</string>
     <string name="message_withdraw_maintain">Ang witdrawal system namin ay na upgrade. maaaring mag anty ng sandali</string>
     <string name="text_money_get_success">Matagumpay ang widrawal, antayin upang suriin muna ng customer service</string>
-    <string name="withdraw_setting">Setting sa Pag-withdraw</string>
+    <string name="withdraw_setting">Withdraw Setting</string>
     <string name="select_bank">Pumili ng bangko</string>
     <string name="withdraw_amount">Withdrawal amount</string>
     <string name="withdraw_password">Withdrawal password</string>
@@ -464,8 +464,8 @@
     <string name="create_bank">Bank of deposit</string>
     <string name="create_name">Pangalan ng cardholder</string>
     <string name="hint_please_enter_create_name">Pakilagay ang pangalan ng iyong bank card</string>
-    <string name="edit_bank_card">Matagumpay na na-edit ang bank card</string>
-    <string name="edit_crypto_card">Matagumpay na na-edit ang virtual currency</string>
+    <string name="edit_bank_card">I-edit ang bank card</string>
+    <string name="edit_crypto_card">I-edit ang virtual currency</string>
     <string name="edit_e_wallet">I-edit ang eWallet</string>
     <string name="bank_card_number">Numero ng bank card</string>
     <string name="wallet_address">Wallet address</string>
@@ -1196,4 +1196,5 @@
     <string name="next">Susunod</string>
     <string name="hint_phone_format">Ang mobile number format ay 11 numero at nagsisimula sa 09</string>
     <string name="username">Account ng miyembro</string>
+    <string name="kyc_unverifing">Nag veverify</string>
 </resources>
