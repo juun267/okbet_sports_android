@@ -38,9 +38,9 @@
     <string name="error_member_account">Account number ay kumbinasyon ng 4~16 numero at letra</string>
     <string name="error_member_nickname">Ang palayaw ay %1$d-%2$d mga kumbinasyong Tsino at Ingles</string>
     <string name="error_register_id_exist">Account na ito ay may ibang kapareho</string>
-    <string name="hint_register_password">Ang haba kailangang 6-20 character kasama ang mga letra at numero</string>
+    <string name="hint_register_password">6-20 Karakter kombinasyon ng letra at numero</string>
     <string name="error_register_password">Password ay kumbinasyon ng 6~20 numero at letra</string>
-    <string name="error_password_format">Kailangang kumbinasyon ng 6~20 letra</string>
+    <string name="error_password_format">Kailangang kumbinasyon ng 6-20 Letra at Numero</string>
     <string name="register_please_read">Mangyaring basahin mabuti ang aming</string>
     <string name="register_responsibilities"><u>Gambling Responsibility</u></string>
     <string name="register_privacy_policy">Patakaran sa privacy</string>
@@ -55,7 +55,7 @@
     <string name="register_recharge_now">Deposito ngayon</string>
     <string name="confirm_password">Kumpirmahin ang password</string>
     <string name="hint_confirm_password">Kumpirmahin ang password</string>
-    <string name="error_confirm_password">Dalawang beses na nilagay ay mali</string>
+    <string name="error_confirm_password">Ang dalawang password na nilagay ay hindi tugma</string>
     <string name="withdrawal_pwd">Withdrawal password</string>
     <string name="hint_withdrawal_pwd">Password ay 4 na numero</string>
     <string name="phone_number">Mobile number</string>
