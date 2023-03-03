@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
+import android.content.res.Resources
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
@@ -14,6 +15,7 @@ import com.didichuxing.doraemonkit.DoKit
 import com.github.jokar.multilanguages.library.MultiLanguage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import org.cxct.sportlottery.common.ResourceWrapper
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.manager.RequestManager
@@ -211,8 +213,8 @@ class MultiLanguagesApplication : Application() {
                 )
             )
         }
-        RequestManager.init(this)
 
+        RequestManager.init(this)
         setupTimber()
         setNightMode()
 
@@ -228,6 +230,10 @@ class MultiLanguagesApplication : Application() {
 
     }
 
+    private val localeResources by lazy { ResourceWrapper(this@MultiLanguagesApplication, super.getResources()) }
+    override fun getResources(): Resources {
+        return localeResources
+    }
 
     private fun initAppsFlyerSDK() {
         AppsFlyerLib.getInstance().init("G7q8UBYftYQfKAxnortTSN", null, this)

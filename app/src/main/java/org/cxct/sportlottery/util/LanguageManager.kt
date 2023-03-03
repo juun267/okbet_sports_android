@@ -12,6 +12,14 @@ object LanguageManager {
 
     enum class Language(val key: String) { ZH("zh"), ZHT("zht"), EN("en"), VI("vi"), TH("th"), PHI("phi") }
 
+    fun init(context: Context) {
+        MultiLanguage.init { context ->
+            //返回自己本地保存选择的语言设置
+            return@init getSetLanguageLocale(context)
+        }
+        MultiLanguage.setApplicationLanguage(context)
+    }
+
     /**
      * 获取系统的locale
      *
@@ -49,6 +57,10 @@ object LanguageManager {
 //                Language.EN //2021/10/04 與PM確認過，不管手機是什麼語系，都預先使用英文版本
             }
         }
+    }
+
+    fun getSelectLanguageName(): String {
+        return "${SPUtil.getSelectLanguage()}"
     }
 
     fun getLanguageFlag(context: Context?): Int {
@@ -92,6 +104,8 @@ object LanguageManager {
         )
     }
 
+    private lateinit var selectedLocale: Locale
+
     /**
      * 获取选择的语言设置
      *
@@ -99,7 +113,10 @@ object LanguageManager {
      * @return
      */
     fun getSetLanguageLocale(context: Context?): Locale {
-        return convert(getSelectLanguage(context))
+        if (!::selectedLocale.isInitialized) {
+            selectedLocale = convert(getSelectLanguage(context))
+        }
+        return selectedLocale
     }
 
     private fun convert(language: Language): Locale {
@@ -112,7 +129,7 @@ object LanguageManager {
         }
     }
 
-    fun saveSystemCurrentLanguage(context: Context?) {
+    fun saveSystemCurrentLanguage(context: Context) {
         SPUtil.getInstance(context).systemCurrentLocal = MultiLanguage.getSystemLocal(context)
     }
 
@@ -122,19 +139,20 @@ object LanguageManager {
      * @param newConfig
      */
     fun saveSystemCurrentLanguage(
-        context: Context?,
-        newConfig: Configuration?
+        context: Context,
+        newConfig: Configuration
     ) {
         SPUtil.getInstance(context).systemCurrentLocal = MultiLanguage.getSystemLocal(newConfig)
     }
 
-    fun saveSelectLanguage(context: Context?, select: Language) {
+    fun saveSelectLanguage(context: Context, select: Language) {
+        selectedLocale = convert(select)
         SPUtil.getInstance(context).saveLanguage(select.key)
         MultiLanguage.setApplicationLanguage(context)
     }
 }
 
-object SPUtil {
+private object SPUtil {
     private const val SP_NAME = "language_setting"
     private const val TAG_LANGUAGE = "language_select"
     private var mSharedPreferences: SharedPreferences? = null
@@ -155,5 +173,4 @@ object SPUtil {
     fun getSelectLanguage(): String? {
         return mSharedPreferences?.getString(TAG_LANGUAGE, null)
     }
-
 }
