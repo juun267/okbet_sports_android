@@ -96,7 +96,7 @@ android {
     productFlavors {
         forqa {
             buildConfigField "String", "CHANNEL_NAME", "\"spplat1\""
-            applicationId "com.okbet.sport.test"
+            applicationId "com.happysport.sl.test"
         }
         OkbetPH {
         }
