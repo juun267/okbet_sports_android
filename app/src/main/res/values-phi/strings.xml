@@ -309,7 +309,7 @@
     <string name="bet_time2">Oras ng pagtaya</string>
     <string name="league_name">Pangalan ng liga：</string>
     <string name="game_match">Kompetisyon：</string>
-    <string name="play_type">Pagtaya：</string>
+    <string name="play_type">limit：</string>
     <string name="game_odds">Handicap odds：</string>
     <string name="match_names">Host) %s vs %s (Guest)</string>
     <string name="match_names_3">Host %s V.S %s Guest</string>
@@ -339,7 +339,7 @@
     <string name="title_address">Address：</string>
     <string name="title_deposit_money">Halaga ng deposito</string>
     <string name="title_payer">Account</string>
-    <string name="edt_hint_deposit_money">pagtaya%1$s%2$s～%3$s</string>
+    <string name="edt_hint_deposit_money">limit%1$s%2$s～%3$s</string>
     <string name="edt_hint_payer">Pakilagay ang account</string>
     <string name="title_real_name">Tunay na pangalan</string>
     <string name="title_nick_name">Nickname</string>
@@ -359,7 +359,7 @@
     <string name="title_fee_rate">・Handling fee：</string>
     <string name="title_fee_amount">・Amount of Service fee：</string>
     <string name="title_rebate_rate">・Rebate：</string>
-    <string name="title_rebate_amount">・Rebate amount:</string>
+    <string name="title_rebate_amount">・Halaga ng rebate:</string>
     <string name="wx_recharge_hint">Mag-log in at suriin ang weChat account ay ginagamit sa deposito. Ang kumpanya ay hindi mananagot para sa deposito sa nag-expire na account!</string>
     <string name="ali_recharge_hint">Mag-log in at suriin ang Alipay account ay ginagamit sa deposito. Ang kumpanya ay hindi mananagot para sa deposito sa nag-expire na account!</string>
     <string name="cft_recharge_hint">Mag-log in at suriin ang Tenpay account ay ginagamit sa deposito. Ang kumpanya ay hindi mananagot para sa deposito sa nag-expire na account!</string>
@@ -394,7 +394,7 @@
     <string name="hint_fee_rate">・Handling fee：%1$s</string>
     <string name="hint_fee_amount">・・Amount of Service fee：%1$s %2$s</string>
     <string name="hint_feeback_rate">・Rebate：%1$s</string>
-    <string name="hint_feeback_amount">・Rebate amount：%1$s %2$s</string>
+    <string name="hint_feeback_amount">・Halaga ng rebate：%1$s %2$s</string>
     <string name="txv_recharge_money">・Halaga ng deposito：%1$s %2$s</string>
     <string name="title_recharge_account">Deposit account</string>
     <string name="title_choose_recharge_account">Pumili ng deposit account</string>
@@ -557,6 +557,7 @@
     <string name="bottom_nav_home">Home</string>
     <string name="sport">Sports</string>
     <string name="live">Live </string>
+    <string name="log_detail_rebate_money">Halaga ng rebate：</string>
     <string name="lottery_description">Higit sa 100 uri ng mga laro sa lottery para manalo ka! Magbigay sa mga manlalaro ng iba\'t ibang nilalaman ng laro,</string>
     <string name="sport_bet_record">Tala sa pagtaya sa sports</string>
     <string name="my_favorite">Paboritong event</string>
@@ -969,8 +970,8 @@
     <string name="phone_">Phone：</string>
     <string name="appointment_">Appointment：</string>
     <string name="outlets_address_">Betting shop address：</string>
-    <string name="error_recharge_amount_format">充值额格式有誤</string>
-    <string name="error_amount_limit_exceeded">金额超过限额</string>
+    <string name="error_recharge_amount_format">Mali ang halaga ng recharge</string>
+    <string name="error_amount_limit_exceeded">Lampas sa maximum na limitasyon ang halaga ng recharge</string>
 
     <string name="kyc_type">Uri ng ID</string>
     <string name="kyc_num">ID number</string>
@@ -1148,7 +1149,7 @@
     <string name="over_size">Napakalaki ng file</string>
     <string name="optional_tips">Opsyonal: Tanging mga PNG o JPG na format na mga file ang sinusuportahan at mas mababa sa 2MB</string>
     <string name="error_amount_limit_less">Ang halaga ng recharge ay mas mababa sa minimum na limitasyon</string>
-    <string name="update_voucher">Mag-upload ng sertipiko</string>
+    <string name="update_voucher">Mag-upload ng resibo</string>
     <string name="no_select_file">Walang napiling file</string>
     <string name="pls_enter_days_format">Pakilagay ang bilang ng mga araw (≥%d araw)</string>
     <string name="more_than_days_format">Dapat ay higit sa %d araw</string>
