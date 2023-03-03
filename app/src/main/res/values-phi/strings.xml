@@ -189,16 +189,16 @@
     <string name="game_rule">Patakaran ng laro</string>
     <string name="news">Pinaka bagong balita</string>
     <string name="select_all_league">Piliin lahat</string>
-    <string name="select_cancel">Kansela ang pagpili</string>
+    <string name="select_cancel">Kanselahin ang pagpili</string>
     <string name="search">Hanapin</string>
     <string name="winner">Nagwagi</string>
-    <string name="first_half_game">Unang kalahati</string>
-    <string name="second_half_game">Ikalawang kalahati</string>
+    <string name="first_half_game">1st Half</string>
+    <string name="second_half_game">2st Half</string>
     <string name="full_game">Buong game</string>
     <string name="game_result">Resulta</string>
     <string name="game_yellow_card">Penalty card</string>
     <string name="game_corner_kick">Corner kick</string>
-    <string name="soccer">Soccer</string>
+    <string name="soccer">Football</string>
     <string name="basketball">Basketball</string>
     <string name="tennis">Tennis</string>
     <string name="badminton">Badminton</string>
@@ -490,8 +490,8 @@
     <string name="text_bank_card_modify_success">Matagumpay na na-edit ang bank card</string>
     <string name="text_e_wallet_modify_success">Matagumpay na na-edit ang eWallet</string>
     <string name="text_crypto_modify_success">Matagumpay na na-edit ang virtual currency</string>
-    <string name="bet_receipt_bet_quota">Halaga ng taya:</string>
-    <string name="bet_info_list_win_quota">Mapanalo:</string>
+    <string name="bet_receipt_bet_quota">Taya:</string>
+    <string name="bet_info_list_win_quota">Mapapanalunan:</string>
     <string name="bet_receipt_win_quota">Halagang Mapanalo</string>
 
     <string name="bet_info_add_bet_failed">Lost bet</string>
@@ -499,7 +499,7 @@
     <string name="bet_info_in_play_score">%1$s (%2$s-%3$s)</string>
     <string name="bet_info_bet_balance_insufficient">Hindi sapat na balanse</string>
     <string name="bet_info_check_maximum_limit">I-check ang pinakamalaking taya</string>
-    <string name="bet_info_bet_quota">Halaga ng taya</string>
+    <string name="bet_info_bet_quota">taya</string>
     <string name="bet_info_win_quota">Halagang Mapanalo</string>
     <string name="bet_info_odd_content_changed">Isa o higit pa na pagpipilian odds. ang score ng bola ay may pinagbago</string>
     <string name="bet_info_odd_content_changed2">球线或赔率已变更</string>
@@ -564,7 +564,7 @@
     <string name="all_plat_type">Lahat ng uri ng platform</string>
     <string name="visit_first">Welcome</string>
     <string name="bet_number">Bilang ng taya</string>
-    <string name="bet_money">Halaga ng taya</string>
+    <string name="bet_money">Taya</string>
     <string name="profit_and_loss">Kabuuang kita at talo</string>
     <string name="total_bet_number">Kabuuang bilang：</string>
     <string name="total_profit_and_loss">Kabuuang kita at talo：</string>
@@ -588,7 +588,7 @@
     <string name="odds_have_changed">Ang Handicap odds ay nabago, paki ulit s pagtaya</string>
     <string name="bet_info_content_has_been_changed">Mga uri na pinili ng inyong odds ay may binago. paki bet ulit</string>
     <string name="date">Petsa</string>
-    <string name="bet_amount">Halaga ng taya</string>
+    <string name="bet_amount">Taya</string>
     <string name="available_amount">Valid na taya</string>
     <string name="win_lose">Panalo / talo</string>
     <string name="all_sport">Lahat ng sports</string>
@@ -950,10 +950,10 @@
     <string name="select_time">Mangyaring pumili ng oras</string>
 
     <!--region 20220714 新版投注單-->
-    <string name="bet_win">Mapapanalunan</string>
+    <string name="bet_win">Win</string>
     <string name="bet_stake">Taya</string>
     <string name="total_capital">Stake：%s</string>
-    <string name="total_win_amount">Mapapanalunan：</string>
+    <string name="total_win_amount">Winning：</string>
     <string name="delete_bet">Tanggalin</string>
     <string name="delete_bet_all">Delete lahat</string>
     <string name="btn_login_bet">Tumaya pagkatapos mag-login</string>
@@ -985,7 +985,7 @@
     <string name="kyc_you_wait">请点击"在线客服"按钮, 进行视频通话完成实名认证。</string>
     <string name="kyc_verify_successful">Nakumpleto mo na ang tunay na pag-verify ng pangalan！</string>
     <string name="kyc_unverified">Hindi na-verify</string>
-    <string name="kyc_passed">Na-verify</string>
+    <string name="kyc_passed">Pumasa</string>
     <string name="kyc_enter_id_num">Pakilagay ang ID number</string>
 
     <string name="next_step">Susunod</string>
@@ -1009,8 +1009,8 @@
     <string name="hint_bet_limit_range">%1$s-%2$s</string>
     <string name="submitting">Pagsumite ng taya</string>
     <string name="bet_receipt_bet_quota_with_sign">Taya</string>
-    <string name="bet_receipt_win_quota_with_sign">Mapapanalunan</string>
-    <string name="bet_receipt_bet_quota_with_sign_money">Halaga ng taya：</string>
+    <string name="bet_receipt_win_quota_with_sign">Win</string>
+    <string name="bet_receipt_bet_quota_with_sign_money">Taya：</string>
     <string name="bet_receipt_win_quota_with_sign_max">Pinaka malaking mapapanalunan：</string>
 
     <string name="bet_record_single">Iisang string</string>

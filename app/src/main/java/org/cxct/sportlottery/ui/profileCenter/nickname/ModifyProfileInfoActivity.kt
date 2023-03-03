@@ -53,6 +53,7 @@ class ModifyProfileInfoActivity :
         //根據傳入的ModifyType當前編輯的欄位做顯示
         when (modifyType) {
             ModifyType.RealName -> {
+
                 tv_toolbar_title.text = getString(R.string.real_name)
                 ll_real_name.visibility = View.VISIBLE
             }
@@ -64,7 +65,6 @@ class ModifyProfileInfoActivity :
                 ll_qq_number.visibility = View.VISIBLE
             }
             ModifyType.Email -> {
-                tv_toolbar_title.text = getString(R.string.e_mail)
                 ll_e_mail.visibility = View.VISIBLE
             }
             ModifyType.PhoneNumber -> {
