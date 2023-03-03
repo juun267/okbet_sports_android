@@ -83,7 +83,7 @@ class ThirdGamesFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHo
         rv_slot.adapter = gamesAdapter
         gamesAdapter.setOnItemClickListener { _, _, position ->
             val item = gamesAdapter.getItem(position)
-            viewModel.requestEnterThirdGame("${item.firmType}", "${item.playCode}", GAME_CODE)
+            viewModel.requestEnterThirdGame("${item.firmType}", "${item.playCode}", GAME_CODE, this@ThirdGamesFragment)
         }
     }
 

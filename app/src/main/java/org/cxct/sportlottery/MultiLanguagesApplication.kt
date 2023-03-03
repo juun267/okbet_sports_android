@@ -2,7 +2,6 @@ package org.cxct.sportlottery
 
 import android.app.Application
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
@@ -27,7 +26,6 @@ import org.cxct.sportlottery.ui.dialog.promotion.PromotionPopupDialog
 import org.cxct.sportlottery.ui.favorite.MyFavoriteViewModel
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.ui.finance.FinanceViewModel
-import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.game.betList.BetListViewModel
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterViewModel
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterViewModel
@@ -47,7 +45,6 @@ import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.authbind.AuthViewModel
 import org.cxct.sportlottery.ui.profileCenter.cancelaccount.CancelAccountViewModel
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordViewModel
-import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoViewModel
@@ -426,31 +423,7 @@ class MultiLanguagesApplication : Application() {
         }
 
         fun showKYCVerifyDialog(activity: FragmentActivity) {
-            VerifyIdentityDialog().apply {
-                positiveClickListener = VerifyIdentityDialog.PositiveClickListener { number ->
-                    startActivity(Intent(context, VerifyIdentityActivity::class.java))
-                }
-                serviceClickListener = VerifyIdentityDialog.PositiveClickListener { number ->
-                    val serviceUrl = sConfigData?.customerServiceUrl
-                    val serviceUrl2 = sConfigData?.customerServiceUrl2
-                    when {
-                        !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                            activity?.supportFragmentManager?.let { it1 ->
-                                ServiceDialog().show(
-                                    it1,
-                                    null
-                                )
-                            }
-                        }
-                        serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                            activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl2) }
-                        }
-                        !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                            activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }
-                        }
-                    }
-                }
-            }.show(activity.supportFragmentManager, null)
+            VerifyIdentityDialog().show(activity.supportFragmentManager, null)
         }
     }
 

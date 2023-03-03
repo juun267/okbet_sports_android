@@ -92,7 +92,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         }
         binding.eetRecommendCode.setText(defaultInviteCode)
         binding.eetRecommendCode.isEnabled = defaultInviteCode.isNullOrEmpty()
-        binding.etRecommendCode.isVisible = !defaultInviteCode.isNullOrEmpty()
+        setupRecommendCodeVisible()
     }
 
     private fun setupAccount() {
@@ -268,7 +268,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             }
         }
         viewModel.checkUserExist.observe(this) {
-            et_recommend_code.isVisible = !it
+            setupRecommendCodeVisible()
         }
         viewModel.accountMsg.observe(this) {
             binding.etAccount.setError(
@@ -417,8 +417,14 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                     binding.etPassword.setError(null, false)
                 }
             }
+            setupRecommendCodeVisible()
             viewModel.focusChangeCheckAllInputComplete()
         }
+    }
+
+    fun setupRecommendCodeVisible() {
+        binding.etRecommendCode.isVisible =
+            viewModel.loginType == LOGIN_TYPE_CODE && viewModel.checkUserExist.value == true
     }
 
 }

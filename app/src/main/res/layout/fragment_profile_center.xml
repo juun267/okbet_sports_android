@@ -140,9 +140,9 @@
                         android:gravity="center_vertical"
                         android:maxWidth="200dp"
                         android:maxLines="1"
-                        android:text="akkk"
                         android:textColor="@color/color_535D76"
-                        android:textSize="@dimen/textSize20sp" />
+                        android:textSize="@dimen/textSize20sp"
+                        tools:text="akkk" />
 
 
                     <TextView

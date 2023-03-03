@@ -1798,7 +1798,7 @@ class SportViewModel(
 
     //避免多次请求游戏
     var jumpingGame = false
-    fun requestEnterThirdGame(gameData: ThirdDictValues?) {
+    private fun requestEnterThirdGame(gameData: ThirdDictValues?) {
 //        Timber.e("gameData: $gameData")
         when {
             gameData == null -> {

@@ -257,7 +257,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 VerifiedType.VERIFYING.value -> {
                     ll_verified.isEnabled = false
                     ll_verified.isClickable = false
-                    tv_verified.text = LocalUtils.getString(R.string.kyc_unverified)
+                    tv_verified.text = LocalUtils.getString(R.string.kyc_unverifing)
 
                     icon_identity.visibility = View.GONE
                 }
@@ -416,30 +416,6 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     }
 
     private fun showKYCVerifyDialog() {
-        VerifyIdentityDialog().apply {
-            positiveClickListener = VerifyIdentityDialog.PositiveClickListener { number ->
-                startActivity(Intent(context, VerifyIdentityActivity::class.java))
-            }
-            serviceClickListener = VerifyIdentityDialog.PositiveClickListener { number ->
-                val serviceUrl = sConfigData?.customerServiceUrl
-                val serviceUrl2 = sConfigData?.customerServiceUrl2
-                when {
-                    !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                        activity?.supportFragmentManager?.let { it1 ->
-                            ServiceDialog().show(
-                                it1,
-                                null
-                            )
-                        }
-                    }
-                    serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                        activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl2) }
-                    }
-                    !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                        activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }
-                    }
-                }
-            }
-        }.show(supportFragmentManager, null)
+        VerifyIdentityDialog().show(supportFragmentManager, null)
     }
 }

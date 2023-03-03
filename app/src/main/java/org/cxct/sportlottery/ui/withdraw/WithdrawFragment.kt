@@ -26,7 +26,6 @@ import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
-import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.withdraw.BankActivity.Companion.ModifyBankTypeKey
 import org.cxct.sportlottery.ui.withdraw.BankActivity.Companion.TransferTypeAddSwitch
 import org.cxct.sportlottery.util.*
@@ -67,26 +66,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     }
 
     private fun setupServiceButton() {
-        tv_service.setOnClickListener {
-            val serviceUrl = sConfigData?.customerServiceUrl
-            val serviceUrl2 = sConfigData?.customerServiceUrl2
-            when {
-                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    activity?.supportFragmentManager?.let { it1 ->
-                        ServiceDialog().show(
-                            it1,
-                            null
-                        )
-                    }
-                }
-                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    context?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl2) }
-                }
-                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                    context?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }
-                }
-            }
-        }
+        tv_service.setServiceClick(childFragmentManager)
     }
     private fun initView() {
         et_withdrawal_amount.apply {

@@ -133,8 +133,7 @@ class SettingPasswordViewModel(
 
     fun checkNewPwd(pwdPage: SettingPasswordActivity.PwdPage, currentPwd: String, newPwd: String) {
         _newPwdError.value = when {
-            newPwd.isEmpty() -> LocalUtils.getString(R.string.error_input_empty)
-            newPwd.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
+            newPwd.isNullOrBlank() -> LocalUtils.getString(R.string.error_input_empty)
             pwdPage == SettingPasswordActivity.PwdPage.LOGIN_PWD -> when {
                 !VerifyConstUtil.verifyPwdFormat(newPwd) -> LocalUtils.getString(R.string.error_password_format)
                 newPwd.length !in 6..20 -> LocalUtils.getString(R.string.error_password_format)

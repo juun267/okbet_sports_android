@@ -13,10 +13,7 @@ import kotlinx.android.synthetic.main.view_status_spinner.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.credential.CredentialCompleteData
 import org.cxct.sportlottery.network.credential.DocType
-import org.cxct.sportlottery.network.credential.EkycResultType
-import org.cxct.sportlottery.network.credential.ResultStatus
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
-import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.util.LanguageManager
@@ -147,8 +144,7 @@ class VerifyIdentityFragment :
         viewModel.credentialCompleteResult.observe(viewLifecycleOwner) { event ->
             hideLoading()
             event.getContentIfNotHandled()?.data?.let { data ->
-                val isComplete = (data.result?.resultStatus == ResultStatus.SUCCESS.value)
-                        && (data.ekycResult == EkycResultType.SUCCESS.value)
+                val isComplete = data.isSuccessed()
 
                 if (isComplete) changePage(data)
                 else showPromptDialog(

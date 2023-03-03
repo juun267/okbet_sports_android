@@ -17,7 +17,6 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.HandicapType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.maintab.LanguageAdapter
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -119,22 +118,7 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             lin_odds_type.isSelected = isSelected
             rv_odds_type.isVisible = isSelected
         }
-        lin_contactus.setOnClickListener {
-            EventBusUtil.post(MenuEvent(false))
-            val serviceUrl = sConfigData?.customerServiceUrl
-            val serviceUrl2 = sConfigData?.customerServiceUrl2
-            when {
-                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    ServiceDialog().show(childFragmentManager, null)
-                }
-                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(requireContext(), serviceUrl2)
-                }
-                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(requireContext(), serviceUrl)
-                }
-            }
-        }
+        lin_contactus.setServiceClick(childFragmentManager) { EventBusUtil.post(MenuEvent(false)) }
         lin_language.setOnClickListener {
             var isSelected = !lin_language.isSelected
             clearAllSelect()
