@@ -690,7 +690,7 @@
     <string name="upload_photo_content"> i-click upang i-upload ang iyong larawan </string>
     <string name="upload_media_reset">Ulitin ang pagkuha</string>
     <string name="upload_fail">Hindi na-upload</string>
-    <string name="upload_success">Tagumpay sapag-upload</string>
+    <string name="upload_success">Tagumpay sa pag-upload</string>
     <string name="upload_dialog_content">Mangyaring kumuha ng larawan o pumili ng larawan mula sa iyong album</string>
     <string name="upload_dialog_gallery">Album</string>
     <string name="upload_dialog_camera">Kunin ang larawan</string>
