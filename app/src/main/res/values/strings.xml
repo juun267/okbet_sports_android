@@ -1315,6 +1315,7 @@
     <string name="language_phi">Tagalog</string>
     <string name="referral_code_invalid">Referral code invalid</string>
     <string name="str_market_is_closed">Market closed</string>
+    <string name="kyc_unverifing">Verifying</string>
     <string name="enter_game">Enter game</string>
     <string name="hint_transform_money">Transfer prompt</string>
     <string name="confirm_transform_in_money">Please confirm amount transferred to game account</string>
