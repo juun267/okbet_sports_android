@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.util.LanguageManager
@@ -169,18 +170,6 @@ object Constants {
         }
     }
 
-    /**
-     * 英文为空
-     */
-    fun getLanguageTag1(context: Context): String {
-        return when (getSelectLanguage(context)) {
-            LanguageManager.Language.ZH -> "zh/"
-            LanguageManager.Language.VI -> "vi/"
-            LanguageManager.Language.TH -> "th/"
-            else -> ""
-        }
-    }
-
     //遊戲規則 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
     fun getGameRuleUrl(context: Context): String? {
 
@@ -269,12 +258,15 @@ object Constants {
         return base + "sports-rule/#/${language}sweepstakes?platform=${context.getString(R.string.app_name)}&d=android&token=${token}"
     }
 
-    //web页面增加夜间模式参数
-    fun appendMode(url: String?): String? {
-        if (url.isNullOrEmpty() || url.contains("mode=")) {
+    /**
+     * 给h5地址加上统一参数
+     */
+    fun appendParams(url: String?): String? {
+        if (url.isNullOrEmpty()) {
             return url
         }
-        return url + (if (url.contains("?")) "&" else "?") + "mode=" + (if (MultiLanguagesApplication.isNightMode) "night" else "day") + "&from=android"
+        return url + (if (url.contains("?")) "&" else "?") +
+                "mode=${(if (MultiLanguagesApplication.isNightMode) "night" else "day")}&from=android&version=${BuildConfig.VERSION_NAME}&token=${LoginRepository.token}"
     }
 
     //獲取檢查APP是否有更新版本的URL //輪詢 SERVER_URL_LIST 成功的那組 serverUrl 用來 download .apk
