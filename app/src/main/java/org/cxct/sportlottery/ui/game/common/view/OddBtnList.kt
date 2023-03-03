@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.game.common.view
 
 import android.content.Context
-import android.content.res.Resources
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
@@ -14,8 +13,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.extentions.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.DisplayUtil.pxToDp
-import timber.log.Timber
 
 class OddBtnList @JvmOverloads constructor(
     context: Context,
@@ -29,15 +26,17 @@ class OddBtnList @JvmOverloads constructor(
     private var oddBtnDraw: OddsButton2? = null
     private var oddBtnOther: OddsButton2? = null
 
-    private val oddWidth = context.dp2px(66)
-    private val margin = context.dp2px(4.5f)
-    private val oddBtnParams = LayoutParams(oddWidth, 44.dp).apply {
+    private val oddWidth = 66.dp
+    private val oddHeight = 44.dp
+    private val margin = 5.dp
+    private val typeNameHeight = 30.dp
+    private val oddBtnParams = LayoutParams(oddWidth, oddHeight).apply {
         topMargin = margin
     }
 
 
     init {
-        setPadding(0, 0, 6.dp, 0)
+        setPadding(0, 0, margin, 0)
         orientation = VERTICAL
         oddBtnType = AppCompatTextView(context).apply {
             setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10f)
@@ -47,31 +46,22 @@ class OddBtnList @JvmOverloads constructor(
             maxLines = 3
             gravity = Gravity.CENTER
         }
-//        Timber.d("OddBtnList：oddWidth: $oddWidth")
-//        Timber.d("OddBtnList：10.dp: ${10.dp}")
-//        Timber.d("OddBtnList：context.dp2px(10): ${context.dp2px(10)}")
-//        Timber.d("OddBtnList：Resources.getSystem().displayMetrics.density: ${Resources.getSystem().displayMetrics.density}")
-//        Timber.d("OddBtnList：resources.displayMetrics.density: ${resources.displayMetrics.density}")
-//        Timber.d("OddBtnList：resources.displayMetrics.widthPixels: ${resources.displayMetrics.widthPixels}")
-        addView(oddBtnType, LayoutParams(oddWidth, 29.dp))
+
+        val odd_btn_row1_typeParam = LayoutParams(oddWidth, typeNameHeight)
+        addView(oddBtnType, odd_btn_row1_typeParam)
 
         oddBtnHome = createOddBtn()
-        addView(oddBtnHome, LayoutParams(oddWidth, 43.dp).apply {
-            topMargin = context.dp2px(4.5f)
-        })
-
-
         oddBtnAway = createOddBtn()
-        addView(oddBtnAway, LayoutParams(oddWidth, 43.dp).apply {
-            topMargin = context.dp2px(4.5f)
-        })
 
+        addView(oddBtnHome, oddBtnParams)
+        addView(oddBtnAway, oddBtnParams)
     }
 
     fun getOtherOddsBtn(): OddsButton2 {
         if (oddBtnOther == null) {
             oddBtnOther = createOddBtn()
-            addView(oddBtnOther, LayoutParams(66.dp, 142.dp).apply { topMargin = 5.dp })
+            addView(oddBtnOther,
+                LayoutParams(oddWidth, oddHeight * 3 + margin * 2).apply { topMargin = margin })
         }
         return oddBtnOther!!
     }

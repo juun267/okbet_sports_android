@@ -1168,7 +1168,9 @@ fun View.refreshMoneyLoading() {
 }
 
 // 绑定'联系客服'点击事件
-fun View.setServiceClick(fragmentManager: FragmentManager) = setOnClickListener {
+fun View.setServiceClick(fragmentManager: FragmentManager, block: (() -> Unit)? = null) = setOnClickListener {
+
+    block?.invoke()
 
     val serviceUrl = sConfigData?.customerServiceUrl
     val serviceUrl2 = sConfigData?.customerServiceUrl2

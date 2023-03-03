@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.location.Location
-import android.os.Bundle
 import android.os.Looper
 import android.text.TextUtils
 import android.view.Gravity
@@ -34,7 +33,6 @@ import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.StatusSheetData
-import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.*
 import java.math.RoundingMode
@@ -64,51 +62,23 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                 (TimeUtil.dateToDateFormat(value, TimeUtil.YMD_HMS_FORMAT) ?: "") + "(GTM+8)"
             field = value
         }
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_bet_station, container, false).apply {
-        }
 
+    override fun layoutId() = R.layout.fragment_bet_station
+
+    override fun onBindView(view: View) {
+        checkPermissionGranted();
+        initView()
+        setupEvent()
+        setupObserve()
+        setupServiceButton()
+        initTimePickerForYMD()
+        initTimePickerForHMS()
     }
+
     //联系客服
     private fun setupServiceButton() {
-        tv_service_show.setOnClickListener {
-            val serviceUrl = sConfigData?.customerServiceUrl
-            val serviceUrl2 = sConfigData?.customerServiceUrl2
-            when {
-                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    activity?.supportFragmentManager?.let { it1 ->
-                        ServiceDialog().show(
-                            it1,
-                            null
-                        )
-                    }
-                }
-                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    context?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl2) }
-                }
-                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                    context?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }
-                }
-            }
-        }
+        tv_service_show.setServiceClick(childFragmentManager)
     }
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        view.apply {
-            checkPermissionGranted();
-            initView()
-            setupEvent()
-            setupObserve()
-            setupServiceButton()
-            initTimePickerForYMD()
-            initTimePickerForHMS()
-        }
-    }
-
 
     private fun initView() {
         et_amount.apply {

@@ -15,6 +15,7 @@ import org.cxct.sportlottery.extentions.fitsSystemStatus
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
+import org.cxct.sportlottery.ui.common.transform.TransformInDialog
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.maintab.HomeFragment
 import org.cxct.sportlottery.ui.maintab.HomeTabAdapter
@@ -114,6 +115,18 @@ class HomeElecFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
             if (isVisible)
                 enterThirdGame(it)
         }
+
+        viewModel.gameBalanceResult.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let {
+                //            if (it.second < 0) {
+//                return@observe
+//            }
+
+                TransformInDialog(it.first, it.second, it.third) {
+                    enterThirdGame(it)
+                }.show(childFragmentManager, null)
+            }
+        }
     }
 
     private fun initTabView() {
@@ -145,7 +158,7 @@ class HomeElecFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
                     if (viewModel.isLogin.value != true) {
                         (activity as MainTabActivity).showLoginNotify()
                     } else {
-                        viewModel.requestEnterThirdGame(homeElecAdapter.data[position])
+                        viewModel.requestEnterThirdGame(homeElecAdapter.data[position], this@HomeElecFragment)
                     }
                 }
             }

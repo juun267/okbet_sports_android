@@ -30,7 +30,6 @@ import kotlinx.android.synthetic.main.fragment_sport_list.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding
 import org.cxct.sportlottery.event.BetModeChangeEvent
-import org.cxct.sportlottery.event.MainTabEvent
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.extentions.gone
 import org.cxct.sportlottery.extentions.visible
@@ -70,26 +69,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 Pair(FavoriteFragment::class.java, null),
                 Pair(ProfileCenterFragment::class.java, null)
             )
-        )
-    }
-
-    private val norTabIcons by lazy {
-        arrayOf(
-            R.drawable.selector_tab_home,
-            R.drawable.selector_tab_sport,
-            R.drawable.selector_tab_betlist,
-            R.drawable.selector_tab_fav,
-            R.drawable.selector_tab_user
-        )
-    }
-
-    val cupTabIcons by lazy {
-        arrayOf(
-            R.drawable.selector_tab_home_cup,
-            R.drawable.selector_tab_sport_cup,
-            R.drawable.selector_tab_betlist_cup,
-            R.drawable.selector_tab_fav_cup,
-            R.drawable.selector_tab_user_cup
         )
     }
 
@@ -202,7 +181,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                     }
 
                     setupBetBarVisiblity(position)
-                    EventBusUtil.post(MainTabEvent(fragment))
                     return@OnNavigationItemSelectedListener true
                 }
         }

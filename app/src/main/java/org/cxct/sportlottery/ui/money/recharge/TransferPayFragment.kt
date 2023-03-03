@@ -5,11 +5,9 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -44,7 +42,6 @@ import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.ui.profileCenter.profile.RechargePicSelectorDialog
 import org.cxct.sportlottery.util.*
@@ -164,22 +161,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             bankBottomSheet.show()
         }
 
-        tv_customer_service.setOnClickListener {
-            val serviceUrl = sConfigData?.customerServiceUrl
-            val serviceUrl2 = sConfigData?.customerServiceUrl2
-            when {
-                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    ServiceDialog().show(activity?.supportFragmentManager!!, null)
-                }
-                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(activity?.applicationContext!!, serviceUrl2)
-                }
-                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(activity?.applicationContext!!, serviceUrl)
-                }
-            }
-        }
-
+        tv_customer_service.setServiceClick(childFragmentManager)
     }
 
     private fun initView() {

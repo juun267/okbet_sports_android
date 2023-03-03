@@ -30,7 +30,6 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.SelfLimitFrozeErrorDialog
-import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.login.foget2.ForgetWaysActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -213,21 +212,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun setupServiceButton() {
-        binding.btnCustomSerivce.setOnClickListener {
-            val serviceUrl = sConfigData?.customerServiceUrl
-            val serviceUrl2 = sConfigData?.customerServiceUrl2
-            when {
-                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    ServiceDialog().show(supportFragmentManager, null)
-                }
-                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(this@LoginActivity, serviceUrl2)
-                }
-                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(this@LoginActivity, serviceUrl)
-                }
-            }
-        }
+        binding.btnCustomSerivce.setServiceClick(supportFragmentManager)
     }
 
     private fun initObserve() {

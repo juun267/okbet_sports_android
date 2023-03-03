@@ -3,10 +3,7 @@ package org.cxct.sportlottery.ui.profileCenter
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.children
@@ -30,13 +27,11 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.finance.FinanceActivity
-import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity.Companion.PWD_PAGE
-import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferActivity
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordActivity
@@ -50,7 +45,6 @@ import org.cxct.sportlottery.ui.vip.VipActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.*
-import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import java.io.File
@@ -68,16 +62,9 @@ class ProfileCenterFragment :
     private var noticeCount: Int? = null
     private var isGuest: Boolean? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_profile_center, container, false)
-    }
+    override fun layoutId() = R.layout.fragment_profile_center
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onBindView(view: View) {
         initToolBar()
         setupNoticeButton()
         initView()
@@ -96,21 +83,7 @@ class ProfileCenterFragment :
     }
 
     private fun setupServiceButton() {
-        iv_customer_service.setOnClickListener {
-            val serviceUrl = sConfigData?.customerServiceUrl
-            val serviceUrl2 = sConfigData?.customerServiceUrl2
-            when {
-                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    ServiceDialog().show(childFragmentManager, null)
-                }
-                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(requireContext(), serviceUrl2)
-                }
-                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(requireContext(), serviceUrl)
-                }
-            }
-        }
+        iv_customer_service.setServiceClick(childFragmentManager)
     }
 
     private fun initView() {
@@ -150,7 +123,7 @@ class ProfileCenterFragment :
             .init()
 //        v_statusbar?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
         iv_menu.setOnClickListener {
-            EventBus.getDefault().post(MenuEvent(true))
+            EventBusUtil.post(MenuEvent(true))
         }
 
     }
@@ -403,7 +376,7 @@ class ProfileCenterFragment :
                 tv_account_balance.text = TextUtil.format(it)
             }
         }
-          viewModel.isWithdrawShowVerifyDialog.observe(this) {
+          viewModel.isWithdrawShowVerifyDialog.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b)
                     showKYCVerifyDialog()
@@ -619,7 +592,7 @@ class ProfileCenterFragment :
         }
 
 
-        viewModel.isWithdrawShowVerifyDialog.observe(this) {
+        viewModel.isWithdrawShowVerifyDialog.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b)
                     showKYCVerifyDialog()
@@ -628,7 +601,7 @@ class ProfileCenterFragment :
             }
         }
 
-        viewModel.isRechargeShowVerifyDialog.observe(this) {
+        viewModel.isRechargeShowVerifyDialog.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b)
                     showKYCVerifyDialog()
@@ -718,30 +691,6 @@ class ProfileCenterFragment :
     }
     //实名验证
     private fun showKYCVerifyDialog() {
-        VerifyIdentityDialog().apply {
-            positiveClickListener = VerifyIdentityDialog.PositiveClickListener { number ->
-                startActivity(Intent(context, VerifyIdentityActivity::class.java))
-            }
-            serviceClickListener = VerifyIdentityDialog.PositiveClickListener { number ->
-                val serviceUrl = sConfigData?.customerServiceUrl
-                val serviceUrl2 = sConfigData?.customerServiceUrl2
-                when {
-                    !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                        activity?.supportFragmentManager?.let { it1 ->
-                            ServiceDialog().show(
-                                it1,
-                                null
-                            )
-                        }
-                    }
-                    serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                        activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl2) }
-                    }
-                    !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                        activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }
-                    }
-                }
-            }
-        }.show(childFragmentManager, null)
+        VerifyIdentityDialog().show(childFragmentManager, null)
     }
 }

@@ -32,6 +32,7 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
+import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 import org.cxct.sportlottery.network.third_game.third_games.hot.HandicapData
 import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchInfo
 import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchLiveData
@@ -40,6 +41,7 @@ import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.common.transform.TransformInDialog
 import org.cxct.sportlottery.ui.dialog.ThirdGameDialog
 import org.cxct.sportlottery.ui.game.publicity.PublicityAnnouncementMarqueeAdapter
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
@@ -382,6 +384,18 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
                     mMatchInfo = hotMatchLiveData.matchInfo
                     playMatchVideo(hotMatchLiveData.matchInfo)
                 }
+            }
+        }
+
+        viewModel.gameBalanceResult.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { it ->
+                //            if (it.second < 0) {
+//                return@observe
+//            }
+
+                TransformInDialog(it.first, it.second, it.third) {
+                    enterThirdGame(it)
+                }.show(childFragmentManager, null)
             }
         }
     }
@@ -734,6 +748,10 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
         hideLoading()
         when (result.resultType) {
             EnterThirdGameResult.ResultType.SUCCESS -> context?.run {
+
+                if (isThirdTransferOpen()) {
+
+                }
                 JumpUtil.toThirdGameWeb(
                     this,
                     result.url ?: "",
@@ -800,7 +818,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
             if (viewModel.isLogin.value != true) {
                 getMainTabActivity().showLoginNotify()
             } else {
-                viewModel.requestEnterThirdGame(hotElectronicAdapter.data[position])
+                viewModel.requestEnterThirdGame(hotElectronicAdapter.data[position], this@MainHomeFragment)
             }
         }
 
@@ -813,7 +831,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
             if (viewModel.isLogin.value != true) {
                 getMainTabActivity().showLoginNotify()
             } else {
-                viewModel.requestEnterThirdGame(homeChessAdapter.data[position])
+                viewModel.requestEnterThirdGame(homeChessAdapter.data[position], this@MainHomeFragment)
             }
         }
 

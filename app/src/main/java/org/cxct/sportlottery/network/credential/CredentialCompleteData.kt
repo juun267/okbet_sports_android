@@ -32,13 +32,19 @@ data class CredentialCompleteData(
 
     @Json(name = "extIdInfo")
     val extIdInfo: ExtIdInfo?, //面部相关信息
-): Parcelable
+): Parcelable {
 
-enum class EkycResultType(val value: String) {
-    SUCCESS("Success"),
-    PENDING("Pending"),
-    FAILURE("Failure"),
-    IN_PROCESS("InProcess"),
-    VOID_CANCELLED("VoidCancelled"),
-    VOID_TIMEOUT("VoidTimeout")
+    private val SUCCESS = "Success"
+    fun isSuccessed(): Boolean {
+        return SUCCESS == ekycResult && SUCCESS == result?.resultStatus
+    }
 }
+
+//enum class EkycResultType(val value: String) {
+//    SUCCESS("Success"),
+//    PENDING("Pending"),
+//    FAILURE("Failure"),
+//    IN_PROCESS("InProcess"),
+//    VOID_CANCELLED("VoidCancelled"),
+//    VOID_TIMEOUT("VoidTimeout")
+//}
