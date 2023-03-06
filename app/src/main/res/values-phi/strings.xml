@@ -155,7 +155,7 @@
     <string name="february">Dalawa</string>
     <string name="march">Tatlo</string>
     <string name="april">Apat</string>
-    <string name="may">Lima</string>
+    <string name="may">Mayo</string>
     <string name="june">Anim</string>
     <string name="july">Pito</string>
     <string name="august">Agosto</string>
@@ -183,7 +183,7 @@
     <string name="select_plat">Pumili ng platform</string>
     <string name="daily_bet_range">Epektibong halaga ng pagitan ng code bawat araw</string>
     <string name="title_rebates_rate">Rebate %</string>
-    <string name="daily_rebates">Pinakamataas na rebate bawat araw</string>
+    <string name="daily_rebates">Pinakamataas na rebate sa isang araw</string>
     <string name="hint_recharge_growth">存款 %s %d 可获得 %d 点成长值  </string>
     <string name="hint_bet_growth">投注 %s %d 可获得 %d 点成长值</string>
     <string name="game_rule">Patakaran ng laro</string>
@@ -305,8 +305,8 @@
     <string name="pending">Maiaayos %1$s segdundo</string>
     <string name="confirmed">Nakumpirma</string>
     <string name="bet_detail">Detalye ng taya</string>
-    <string name="bet_time">Oras ng pagtaya：</string>
-    <string name="bet_time2">Oras ng pagtaya</string>
+    <string name="bet_time">Betting time：</string>
+    <string name="bet_time2">Betting time</string>
     <string name="league_name">Pangalan ng liga：</string>
     <string name="game_match">Kompetisyon：</string>
     <string name="play_type">limit：</string>
@@ -330,7 +330,7 @@
     <string name="odds_detail_play_type_dc_1X">1/X</string>
     <string name="odds_detail_play_type_dc_2X">2/X</string>
     <string name="odds_detail_play_type_dc_12">1/2</string>
-    <string name="bottom_sheet_close">Pagsasara</string>
+    <string name="bottom_sheet_close">Isara</string>
     <string name="message_recharge_maintain">Ang sistemang nauugnay sa deposito ay ina-upgrade, mangyaring maghintay ng ilang sandali</string>
     <string name="title_bank">Pumili ng bangko</string>
     <string name="title_main_account">Pumili ng account</string>
@@ -356,8 +356,8 @@
     <string name="btn_copy">Kopya</string>
     <string name="title_qr_pay">Scan code payment：</string>
     <string name="title_hint_qr_pay">Scan bayad, kung anuman tanong, mangyaring makipag-ugnay sa customer service</string>
-    <string name="title_fee_rate">・Bayad sa serbisyo:</string>
-    <string name="title_fee_amount">・Halaga ng bayad:</string>
+    <string name="title_fee_rate">・Service fee：</string>
+    <string name="title_fee_amount">・Amount of Service fee：</string>
     <string name="title_rebate_rate">・Rebate：</string>
     <string name="title_rebate_amount">・Halaga ng rebate:</string>
     <string name="wx_recharge_hint">Mag-log in at suriin ang weChat account ay ginagamit sa deposito. Ang kumpanya ay hindi mananagot para sa deposito sa nag-expire na account!</string>
@@ -561,14 +561,14 @@
     <string name="lottery_description">Higit sa 100 uri ng mga laro sa lottery para manalo ka! Magbigay sa mga manlalaro ng iba\'t ibang nilalaman ng laro,</string>
     <string name="sport_bet_record">Tala sa pagtaya sa sports</string>
     <string name="my_favorite">Paboritong event</string>
-    <string name="other_bet_record">Iba pang rekord ng pagtaya</string>
+    <string name="other_bet_record">Ibang taya</string>
     <string name="all_plat_type">Lahat ng uri ng platform</string>
     <string name="visit_first">Welcome</string>
     <string name="bet_number">Bilang ng taya</string>
     <string name="bet_money">Taya</string>
-    <string name="profit_and_loss">Kabuuang kita at talo</string>
-    <string name="total_bet_number">Kabuuang bilang：</string>
-    <string name="total_profit_and_loss">Kabuuang kita at talo：</string>
+    <string name="profit_and_loss">Kabuuang Panalo</string>
+    <string name="total_bet_number">Kabuuang taya：</string>
+    <string name="total_profit_and_loss">Kabuuang Panalo：</string>
     <string name="game_name">Pangalan ng laro</string>
     <string name="all_out_plat">All out</string>
     <string name="all_in_plat">All in</string>
@@ -609,7 +609,7 @@
     <string name="bet_notify_max_limit">Hanggang 10 mga pagpipilian ang maaaring idagdag sa slip ng taya</string>
     <string name="myfavorite_notify_league_add">Idinagdag sa aking liga</string>
     <string name="myfavorite_notify_league_remove">Tanggalin sa liga ko</string>
-    <string name="myfavorite_notify_match_add">Idagdag sa akin kompetisyon</string>
+    <string name="myfavorite_notify_match_add">nadagdag sa aking event</string>
     <string name="myfavorite_notify_match_remove">Tanggalin sa event ko</string>
     <!--F039-->
     <string name="bet_receipt_all_bet">Kabuuang halaga ng taya</string>
@@ -776,13 +776,13 @@
     <string name="self_limit_fix_confirm_done">Nagkaroon ng bisa ang mga pagbabago</string>
     <string name="self_limit_account_login_limit">Account login restrictions</string>
     <string name="self_limit_froze_content">Upang maprotektahan ang iyong mga karapatan at interes, maaari kang mag-aplay para sa \"self-exclusion\" anumang oras. Pagkatapos mong mag-apply para sa self-exclusion, hindi ka na makakapag-log in sa laro upang tamasahin ang mga serbisyong ibinibigay namin sa panahon ng sarili. -panahon ng pagbubukod. Ang mga opsyon ay ang mga sumusunod:</string>
-    <string name="self_limit_froze_days">Bilang ng mga araw</string>
+    <string name="self_limit_froze_days">Bilang ng araw</string>
     <string name="self_limit_froze_input_days">Paki lagay ang bilang ng araw</string>
     <string name="self_limit_per_bet_limit">Limitasyon sa bawat taya</string>
     <string name="self_limit_per_bet_limit_content">Maaari kang mag-aplay para sa \"Bawat limitasyon sa pagtaya\" upang limitahan ang halaga ng iyong pagtaya sa bawat oras. Pagkatapos mag-apply para sa pinakamataas na limitasyon ng pagtaya sa bawat oras, ang iyong kabuuang halaga ng pagtaya sa bawat oras ay hindi lalampas sa iyong itinakdang halaga:</string>
     <string name="self_limit_per_bet_limit_highest">Upper limit</string>
     <string name="self_limit_per_bet_limit_input_highest"> ipasok ang mga numero</string>
-    <string name="self_limit_per_bet_limit_impotent">Maaari mong baguhin ang iyong limitasyon sa bawat taya anumang oras. Magiging epektibo ang mga pagbabago pagkatapos maipadala ang aplikasyon.</string>
+    <string name="self_limit_per_bet_limit_impotent">Maaari mong baguhin ang iyong limitasyon sa bawat taya anumang oras. Magkakabisa ang mga pagbabago pagkatapos maipadala ang aplikasyon</string>
     <string name="self_limit_per_bet_limit_user">• Betting upper limit has been set：%1$s %2$s</string>
     <string name="self_limit_per_bet_limit_user_none">Wala</string>
     <string name="self_limit_per_bet_limit_user_limit">• Maximum configurable:%1$s %2$s-%1$s %3$s</string>
@@ -809,11 +809,11 @@
     <string name="reverse_side_result">I-scan ang resulta ng likod ng dokumento</string>
     <string name="btm_navigation_affiliate">Ahente para sumali</string>
     <string name="expire_date">Oras ng pag-expire ng sertipiko</string>
-    <string name="self_limit_froze_impotent_1">Self-exclusions take effect immediately upon setting</string>
-    <string name="self_limit_froze_impotent_2">Hahawakan namin ang iyong buong balanse para sa panahon ng self-exclusion na itinakda mo. Gayunpaman, kung ito ay higit sa 6 na buwan mula noong huling oras ng pag-log in, inilalaan ng OKBET ang karapatang singilin ka ng buwanang bayarin sa pamamahala hanggang sa zero ang balanse ng account.</string>
-    <string name="self_limit_froze_impotent_3">Kung mag-aplay ka para sa self-exclusion sa iba pang mga laro sa pagsusugal, hindi ito awtomatikong malalapat sa larong ito.</string>
-    <string name="self_limit_froze_impotent_4">Sa panahon ng pagbubukod sa sarili, kung susubukan mong magbukas ng bagong account at totoo ito pagkatapos matukoy ng system, maaaring ma-freeze ang account.</string>
-    <string name="self_limit_froze_impotent_5">Sa panahon ng self-exclusion period, hindi mo magagawang i-disable ang feature na ito hanggang sa mag-expire ang minimum exclusion period.</string>
+    <string name="self_limit_froze_impotent_1">Ang self-exclusion ay magiging mabisa kaagad pagkatapos itakda</string>
+    <string name="self_limit_froze_impotent_2">Hahawakan namin ang iyong balanse sa panahon ng self-exclusion.</string>
+    <string name="self_limit_froze_impotent_3">Kung mag-apply ka para sa self-exclusion sa iba pang mga laro sa pagsusugal, hindi ito awtomatikong mag aapply sa larong ito.</string>
+    <string name="self_limit_froze_impotent_4">Sa panahon ng self-exclusion, kung susubukan mong magbukas ng bagong account, maaaring ma-freeze ang account pagkatapos itong matukoy ng system.</string>
+    <string name="self_limit_froze_impotent_5">Sa panahon ng self restrain period, maaari kang makipag-ugnayan sa serbisyo sa customer para i-release ang function ng self restrain period,.</string>
     <string name="self_limit_froze_impotent_6">Pagkatapos mag-expire ang self-exclusion, awtomatikong muling maa-activate ang iyong account.</string>
     <!-- 複式串關詳情 -->
     <string name="password_hint">Pakipasok ang iyong password sa pag-log in</string>
@@ -912,7 +912,7 @@
 
     <string name="esports">E-sports</string>
     <string name="coming_soon">Malapit na</string>
-    <string name="timezone_change">Paglipat ng time zone</string>
+    <string name="timezone_change">Time zone</string>
     <string name="timezone">Time zone</string>
 
     <!--region 大廳賠率按鈕-->
@@ -957,7 +957,7 @@
     <string name="total_win_amount">Winning：</string>
     <string name="delete_bet">Tanggalin</string>
     <string name="delete_bet_all">Delete lahat</string>
-    <string name="btn_login_bet">Tumaya pagkatapos mag-login</string>
+    <string name="btn_login_bet">Log in muna Bago tumaya</string>
     <string name="btn_remove_closed_selections">Isara ang option</string>
     <string name="bet_info_list_bet">Taya</string>
     <string name="bet_info_bet">Taya</string>
@@ -1150,7 +1150,7 @@
     <string name="error_amount_limit_less">Ang halaga ng recharge ay mas mababa sa minimum na limitasyon</string>
     <string name="update_voucher">Mag-upload ng resibo</string>
     <string name="no_select_file">Walang napiling file</string>
-    <string name="pls_enter_days_format">Pakilagay ang bilang ng mga araw (≥%d araw)</string>
+    <string name="pls_enter_days_format">Pakilagay ang bilang ng araw (≥%d araw)</string>
     <string name="more_than_days_format">Dapat ay higit sa %d araw</string>
     <string name="regular_score">Regular na iskor</string>
     <string name="score_with_overtime">Kabuuang iskor\n (kabilang ang overtime)</string>
