@@ -772,23 +772,23 @@
     <string name="self_limit_impotent">Mahahalagang bagay</string>
     <string name="self_limit_confirm">Kumpirmahin ang aplikasyon</string>
     <string name="self_limit_fix_confirm">Kumpirmahin ang mga pagbabago</string>
-    <string name="self_limit_confirm_done">May bisa ang aplikasyon</string>
+    <string name="self_limit_confirm_done">Permohonan sedang berkuat kuasa</string>
     <string name="self_limit_fix_confirm_done">Nagkaroon ng bisa ang mga pagbabago</string>
-    <string name="self_limit_account_login_limit">Account login restrictions</string>
-    <string name="self_limit_froze_content">Upang maprotektahan ang iyong mga karapatan at interes, maaari kang mag-aplay para sa \"self-exclusion\" anumang oras. Pagkatapos mong mag-apply para sa self-exclusion, hindi ka na makakapag-log in sa laro upang tamasahin ang mga serbisyong ibinibigay namin sa panahon ng sarili. -panahon ng pagbubukod. Ang mga opsyon ay ang mga sumusunod:</string>
+    <string name="self_limit_account_login_limit">Restriktong Paglogin</string>
+    <string name="self_limit_froze_content">Upang maprotektahan ang iyong mga karapatan at interes, maaari kang mag-apply para sa "self-exclusion" anumang oras. Pagkatapos mong mag-apply para sa self-exclusion, hindi ka na makakapag log-in sa laro upang tamasahin ang mga serbisyong ibinibigay namin sa panahon ng self-exclusion. Ang mga opsyon ay ang mga sumusunod:</string>
     <string name="self_limit_froze_days">Bilang ng araw</string>
     <string name="self_limit_froze_input_days">Paki lagay ang bilang ng araw</string>
-    <string name="self_limit_per_bet_limit">Limitasyon sa bawat taya</string>
-    <string name="self_limit_per_bet_limit_content">Maaari kang mag-aplay para sa \"Bawat limitasyon sa pagtaya\" upang limitahan ang halaga ng iyong pagtaya sa bawat oras. Pagkatapos mag-apply para sa pinakamataas na limitasyon ng pagtaya sa bawat oras, ang iyong kabuuang halaga ng pagtaya sa bawat oras ay hindi lalampas sa iyong itinakdang halaga:</string>
-    <string name="self_limit_per_bet_limit_highest">Upper limit</string>
-    <string name="self_limit_per_bet_limit_input_highest"> ipasok ang mga numero</string>
+    <string name="self_limit_per_bet_limit">Limitasyon sa Pagtaya</string>
+    <string name="self_limit_per_bet_limit_content">Maaari kang mag-aplay para sa "Limitasyon sa Pagtaya" upang limitahan ang halaga ng iyong pagtaya sa bawat oras. Pagkatapos mag-apply para sa pinakamataas na limitasyon ng pagtaya sa bawat oras, ang iyong kabuuang halaga ng pagtaya sa bawat oras ay hindi lalampas sa iyong itinakdang halaga:</string>
+    <string name="self_limit_per_bet_limit_highest">Limitasyon</string>
+    <string name="self_limit_per_bet_limit_input_highest"> Numero</string>
     <string name="self_limit_per_bet_limit_impotent">Maaari mong baguhin ang iyong limitasyon sa bawat taya anumang oras. Magkakabisa ang mga pagbabago pagkatapos maipadala ang aplikasyon</string>
-    <string name="self_limit_per_bet_limit_user">• Betting upper limit has been set：%1$s %2$s</string>
+    <string name="self_limit_per_bet_limit_user">• Kasalukuyang limitasyon ng taya：%1$s %2$s</string>
     <string name="self_limit_per_bet_limit_user_none">Wala</string>
     <string name="self_limit_per_bet_limit_user_limit">• Maximum configurable:%1$s %2$s-%1$s %3$s</string>
     <string name="self_limit_error">Hindi tumutugma ang format ng data, mangyaring ilagay ang integer</string>
     <string name="self_limit_input_password_for_confirm">Paki lagay ang password</string>
-    <string name="self_limit_input_password_for_modification">Mangyaring ipasok ang password sa pag-login upang kumpirmahin ang pagbabago</string>
+    <string name="self_limit_input_password_for_modification">Mangyaring ipasok ang login password upang kumpirmahin ang application</string>
     <string name="self_limit_submit_input_password_hint">Pakilagay ang password</string>
 
     <!--自我禁制-->
@@ -813,7 +813,7 @@
     <string name="self_limit_froze_impotent_2">Hahawakan namin ang iyong balanse sa panahon ng self-exclusion.</string>
     <string name="self_limit_froze_impotent_3">Kung mag-apply ka para sa self-exclusion sa iba pang mga laro sa pagsusugal, hindi ito awtomatikong mag aapply sa larong ito.</string>
     <string name="self_limit_froze_impotent_4">Sa panahon ng self-exclusion, kung susubukan mong magbukas ng bagong account, maaaring ma-freeze ang account pagkatapos itong matukoy ng system.</string>
-    <string name="self_limit_froze_impotent_5">Sa panahon ng self restrain period, maaari kang makipag-ugnayan sa serbisyo sa customer para i-release ang function ng self restrain period,.</string>
+    <string name="self_limit_froze_impotent_5">Semasa tempoh menahan diri, anda boleh menghubungi perkhidmatan pelanggan untuk melepaskan fungsi menahan diri.</string>
     <string name="self_limit_froze_impotent_6">Pagkatapos mag-expire ang self-exclusion, awtomatikong muling maa-activate ang iyong account.</string>
     <!-- 複式串關詳情 -->
     <string name="password_hint">Pakipasok ang iyong password sa pag-log in</string>
@@ -1053,7 +1053,7 @@
     <string name="please_get_forget_password">Paki hanap ulit ang iyong password sa OKBet!</string>
     <string name="to_back_login">Bumalik sa login page</string>
     <string name="new_login_password">Bagong login password</string>
-    <string name="new_login_password_confirm">Kumpirmahin ang bagong password sa pag-login</string>
+    <string name="new_login_password_confirm">dikonfirmasi</string>
     <string name="error_wechat">Wechat ID ay mali</string>
     <string name="comingsoon">coming soon</string>
     <string name="forget_password">Nakalimutan ang password</string>
@@ -1132,16 +1132,7 @@
     <string name="str_check_bets">Tingnan bet slip</string>
     <string name="str_press_again_to_exit_the_program">Pindutin muli upang lumabas sa programa</string>
     <string name="str_odds_changed">Nagbago ang mga odds</string>
-    <string name="str_match_closed">赛事关闭</string>
-    <string name="str_match_be_suspended">赛事暂停中</string>
-    <string name="str_amount_wrong">金额不正确</string>
-    <string name="str_less_than_min_bet">低于最小投注额</string>
-    <string name="str_only_one_type_of_ball_can_be_used_parlay">串关只能同一种球类</string>
-    <string name="str_parlay_exceed_the_ties_limit">串关数量超出限制</string>
-    <string name="str_self_exclusion">Self restraint</string>
-    <string name="str_match_be_suspended_or_closed_please_check">某场赛事处于暂停或关闭中，请检查</string>
-    <string name="str_parlay_is_not_allowed_in_championship_matches">冠军赛事禁止串关</string>
-    <string name="str_parlay_type_wrong">串关类型错误</string>
+    <string name="str_self_exclusion">Self-exclusion</string>
     <!--投注改版-->
     <string name="reget_phone_code_for">Reacquire</string>
     <string name="format_error">Hindi tugma ang format</string>
@@ -1150,7 +1141,7 @@
     <string name="error_amount_limit_less">Ang halaga ng recharge ay mas mababa sa minimum na limitasyon</string>
     <string name="update_voucher">Mag-upload ng resibo</string>
     <string name="no_select_file">Walang napiling file</string>
-    <string name="pls_enter_days_format">Pakilagay ang bilang ng araw (≥%d araw)</string>
+    <string name="pls_enter_days_format">Pakilagay ang bilang ng araw(≥%d araw)</string>
     <string name="more_than_days_format">Dapat ay higit sa %d araw</string>
     <string name="regular_score">Regular na iskor</string>
     <string name="score_with_overtime">Kabuuang iskor\n (kabilang ang overtime)</string>
