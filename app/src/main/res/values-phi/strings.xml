@@ -499,7 +499,7 @@
     <string name="bet_info_in_play_score">%1$s (%2$s-%3$s)</string>
     <string name="bet_info_bet_balance_insufficient">Hindi sapat na balanse</string>
     <string name="bet_info_check_maximum_limit">I-check ang pinakamalaking taya</string>
-    <string name="bet_info_bet_quota">taya</string>
+    <string name="bet_info_bet_quota">Taya</string>
     <string name="bet_info_win_quota">Halagang Mapanalo</string>
     <string name="bet_info_odd_content_changed">Isa o higit pa na pagpipilian odds. ang score ng bola ay may pinagbago</string>
     <string name="bet_info_odd_content_changed2">球线或赔率已变更</string>
