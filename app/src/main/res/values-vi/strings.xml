@@ -1029,7 +1029,6 @@
     <string name="hint_file_selected">Đã chọn tập tin</string>
 
     <string name="correct">Cược tỷ số</string>
-    <string name="hint_bet_limit_range">%1$s-%2$s</string>
     <string name="submitting">Đang gửi</string>
     <string name="bet_receipt_bet_quota_with_sign">Tiền Cược</string>
     <string name="bet_receipt_win_quota_with_sign">Thắng</string>

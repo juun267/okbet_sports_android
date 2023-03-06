@@ -3,6 +3,8 @@ package org.cxct.sportlottery.common
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.os.Build
+import android.os.LocaleList
 import org.cxct.sportlottery.util.LanguageManager
 import java.util.*
 
@@ -14,11 +16,6 @@ class ResourceWrapper(private val context: Context, origin: Resources): Resource
     override fun getString(id: Int): String {
         checkLocal()
         return localeContext.getString(id)
-    }
-
-    override fun getString(id: Int, vararg formatArgs: Any?): String {
-        checkLocal()
-        return localeContext.getString(id, formatArgs)
     }
 
     private fun checkLocal() {
@@ -33,6 +30,16 @@ class ResourceWrapper(private val context: Context, origin: Resources): Resource
     private fun getLocalizedContext(selectedLocal: Locale): Context {
         val conf = Configuration(configuration)
         conf.setLocale(selectedLocal)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            val localeList = LocaleList(selectedLocal)
+            LocaleList.setDefault(localeList)
+            conf.setLocales(localeList)
+            Locale.setDefault(selectedLocal)
+        }
+
+        updateConfiguration(conf, displayMetrics)
         return context.createConfigurationContext(conf)
     }
+
+
 }
