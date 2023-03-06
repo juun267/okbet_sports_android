@@ -176,7 +176,7 @@
             android:background="@color/color_666666"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintTop_toBottomOf="@+id/tv_match"
             app:layout_goneMarginTop="10dp">
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -220,7 +220,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:leftSwipe="true"
             app:swipeEnable="true"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <!--左部分-->
             <RelativeLayout
@@ -244,7 +244,7 @@
             <!--右部分-->
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="100dp"
-                android:layout_height="match_parent">
+                android:layout_height="82dp">
 
                 <Button
                     android:id="@+id/btnDelete"
@@ -268,7 +268,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/viewDivider"
-            tools:visibility="visible">
+            tools:visibility="gone">
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/llContainer"

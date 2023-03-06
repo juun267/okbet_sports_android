@@ -186,7 +186,7 @@
     <string name="daily_rebates">Pinakamataas na rebate sa isang araw</string>
     <string name="hint_recharge_growth">存款 %s %d 可获得 %d 点成长值  </string>
     <string name="hint_bet_growth">投注 %s %d 可获得 %d 点成长值</string>
-    <string name="game_rule">Patakaran ng laro</string>
+    <string name="game_rule">Alituntunin ng Laro</string>
     <string name="news">Pinaka bagong balita</string>
     <string name="select_all_league">Piliin lahat</string>
     <string name="select_cancel">Kanselahin ang pagpili</string>
@@ -564,9 +564,9 @@
     <string name="other_bet_record">Ibang taya</string>
     <string name="all_plat_type">Lahat ng uri ng platform</string>
     <string name="visit_first">Welcome</string>
-    <string name="bet_number">Bilang ng taya</string>
+    <string name="bet_number">Count</string>
     <string name="bet_money">Taya</string>
-    <string name="profit_and_loss">Kabuuang Panalo</string>
+    <string name="profit_and_loss">Result</string>
     <string name="total_bet_number">Kabuuang taya：</string>
     <string name="total_profit_and_loss">Kabuuang Panalo：</string>
     <string name="game_name">Pangalan ng laro</string>
@@ -619,8 +619,8 @@
     <string name="odds_button_name_n">Hindi</string>
     <string name="odds_button_name_singular">Odd</string>
     <string name="odds_button_name_dual">Even</string>
-    <string name="odds_button_name_home">Home team</string>
-    <string name="odds_button_name_away">Away team</string>
+    <string name="odds_button_name_home">Home</string>
+    <string name="odds_button_name_away">Away</string>
     <string name="odds_button_name_hdh">Home Team o Tie - Home Team</string>
     <string name="odds_button_name_hdc">Home Team o Tie-Away Team</string>
     <string name="odds_button_name_cdh">Away or Draw - Home</string>
@@ -768,11 +768,11 @@
     <string name="customer_service_title">Customer Service</string>
 
     <!--自我禁制-->
-    <string name="self_limit">Self restraint</string>
+    <string name="self_limit">Self-exclusion</string>
     <string name="self_limit_impotent">Mahahalagang bagay</string>
     <string name="self_limit_confirm">Kumpirmahin ang aplikasyon</string>
     <string name="self_limit_fix_confirm">Kumpirmahin ang mga pagbabago</string>
-    <string name="self_limit_confirm_done">Permohonan sedang berkuat kuasa</string>
+    <string name="self_limit_confirm_done">Ang aplikasyon ay naging epektibo</string>
     <string name="self_limit_fix_confirm_done">Nagkaroon ng bisa ang mga pagbabago</string>
     <string name="self_limit_account_login_limit">Restriktong Paglogin</string>
     <string name="self_limit_froze_content">Upang maprotektahan ang iyong mga karapatan at interes, maaari kang mag-apply para sa "self-exclusion" anumang oras. Pagkatapos mong mag-apply para sa self-exclusion, hindi ka na makakapag log-in sa laro upang tamasahin ang mga serbisyong ibinibigay namin sa panahon ng self-exclusion. Ang mga opsyon ay ang mga sumusunod:</string>
@@ -785,9 +785,9 @@
     <string name="self_limit_per_bet_limit_impotent">Maaari mong baguhin ang iyong limitasyon sa bawat taya anumang oras. Magkakabisa ang mga pagbabago pagkatapos maipadala ang aplikasyon</string>
     <string name="self_limit_per_bet_limit_user">• Kasalukuyang limitasyon ng taya：%1$s %2$s</string>
     <string name="self_limit_per_bet_limit_user_none">Wala</string>
-    <string name="self_limit_per_bet_limit_user_limit">• Maximum configurable:%1$s %2$s-%1$s %3$s</string>
+    <string name="self_limit_per_bet_limit_user_limit">• Saklaw ng taya:%1$s %2$s-%1$s %3$s</string>
     <string name="self_limit_error">Hindi tumutugma ang format ng data, mangyaring ilagay ang integer</string>
-    <string name="self_limit_input_password_for_confirm">Paki lagay ang password</string>
+    <string name="self_limit_input_password_for_confirm">Mangyaring ipasok ang login password upang kumpirmahin ang application</string>
     <string name="self_limit_input_password_for_modification">Mangyaring ipasok ang login password upang kumpirmahin ang application</string>
     <string name="self_limit_submit_input_password_hint">Pakilagay ang password</string>
 
@@ -813,7 +813,7 @@
     <string name="self_limit_froze_impotent_2">Hahawakan namin ang iyong balanse sa panahon ng self-exclusion.</string>
     <string name="self_limit_froze_impotent_3">Kung mag-apply ka para sa self-exclusion sa iba pang mga laro sa pagsusugal, hindi ito awtomatikong mag aapply sa larong ito.</string>
     <string name="self_limit_froze_impotent_4">Sa panahon ng self-exclusion, kung susubukan mong magbukas ng bagong account, maaaring ma-freeze ang account pagkatapos itong matukoy ng system.</string>
-    <string name="self_limit_froze_impotent_5">Semasa tempoh menahan diri, anda boleh menghubungi perkhidmatan pelanggan untuk melepaskan fungsi menahan diri.</string>
+    <string name="self_limit_froze_impotent_5">Sa panahon ng self-exclusion period, maaari kang makipag-ugnayan sa serbisyo sa customer para i-release ang function ng self-exclusion period</string>
     <string name="self_limit_froze_impotent_6">Pagkatapos mag-expire ang self-exclusion, awtomatikong muling maa-activate ang iyong account.</string>
     <!-- 複式串關詳情 -->
     <string name="password_hint">Pakipasok ang iyong password sa pag-log in</string>
@@ -836,7 +836,11 @@
     <!--google位置存取-->
     <string name="allow_location_permission">Payagan ang access sa lokasyon</string>
 
-
+    <!--歷史紀錄start-->
+    <string name="text_account_history_time">Oras ng transaksyon</string>
+    <string name="text_account_history_number">Numero ng order</string>
+    <string name="text_account_history_amount">Halaga ng transaksyon</string>
+    <string name="text_account_history_balance">Balanse</string>
 
     <!--region 最新消息-->
     <string name="news_tab_game">Laro</string>
@@ -957,7 +961,7 @@
     <string name="total_win_amount">Winning：</string>
     <string name="delete_bet">Tanggalin</string>
     <string name="delete_bet_all">Delete lahat</string>
-    <string name="btn_login_bet">Log in muna Bago tumaya</string>
+    <string name="btn_login_bet">Login muna</string>
     <string name="btn_remove_closed_selections">Isara ang option</string>
     <string name="bet_info_list_bet">Taya</string>
     <string name="bet_info_bet">Taya</string>
@@ -1128,7 +1132,7 @@
     <string name="str_if_accept_odds_changes_des3">3. Huwag tumanggap ng mga pagbabago sa odds--kapag pinili mo ang opsyong ito: kung ang pinakabagong odds ay iba sa iyong napiling odds, hindi kami gagawa ng slip ng taya at ipaalala sa iyo ang mga pagbabago sa odds.</string>
     <string name="str_ok_i_got_it">Okay, alam ko na</string>
     <string name="str_return_last_step">Bumalik sa nakaraang hakbang</string>
-    <string name="str_bet_other_game">Tumaya sa ibang market</string>
+    <string name="str_bet_other_game">Tumaya sa Iba</string>
     <string name="str_check_bets">Tingnan bet slip</string>
     <string name="str_press_again_to_exit_the_program">Pindutin muli upang lumabas sa programa</string>
     <string name="str_odds_changed">Nagbago ang mga odds</string>
@@ -1141,14 +1145,14 @@
     <string name="error_amount_limit_less">Ang halaga ng recharge ay mas mababa sa minimum na limitasyon</string>
     <string name="update_voucher">Mag-upload ng resibo</string>
     <string name="no_select_file">Walang napiling file</string>
-    <string name="pls_enter_days_format">Pakilagay ang bilang ng araw(≥%d araw)</string>
+    <string name="pls_enter_days_format">Pakilagay ang bilang ng araw (≥%d araw)</string>
     <string name="more_than_days_format">Dapat ay higit sa %d araw</string>
     <string name="regular_score">Regular na iskor</string>
     <string name="score_with_overtime">Kabuuang iskor\n (kabilang ang overtime)</string>
     <string name="self_limit_error_format">Hindi tumutugma ang format ng data, mangyaring maglagay ng integer mula %d hanggang %d</string>
     <string name="str_bet_way">Paraan ng pagtaya</string>
     <string name="str_in_play_bet_confirmed">Live na kumpirmasyon sa taya</string>
-    <string name="str_odds_description">Paglalarawan ng  odds</string>
+    <string name="str_odds_description">Paglalarawan ng odds</string>
     <string name="draw_time">Draw time</string>
     <string name="closing_time">Oras ng Pagsara ng Sweepstakes</string>
     <string name="end_time">Oras ng pagtatapos ng event</string>
