@@ -251,12 +251,12 @@
     <string name="current_login_password">Kasalukuyang login password</string>
     <string name="current_withdrawal_password">Kasalukuyang withdrawal password</string>
     <string name="hint_current_login_password">Paki lagay ang password</string>
-    <string name="hint_current_withdrawal_password">Paki lagay ang inyong witdrawal password</string>
+    <string name="hint_current_withdrawal_password">Paki lagay ang inyong withdrawal password</string>
     <string name="new_password">Bagong password</string>
     <string name="hint_withdrawal_new_password">Password ay 4 na numero</string>
     <string name="error_password_cannot_be_same">Ang bagong password ay hindi maaaring pareho sa lumang password</string>
     <string name="update_login_pwd">Matagumpay na napalitan ang password sa pag-log in, mangyaring mag-log in muli</string>
-    <string name="update_withdrawal_pwd">Matagumpay ng nabago ang inyong password</string>
+    <string name="update_withdrawal_pwd">Matagumpay na nabago ang iyong Withdrawal Password</string>
     <string name="download_fail">Download failed</string>
     <string name="error_file">Error sa file</string>
     <string name="new_version">May bagong bersyon</string>
@@ -479,7 +479,7 @@
     <string name="delete_e_wallet">burahin eWallet</string>
     <string name="select_currency_protocol">Piliin ang Protocol/Currency</string>
     <string name="error_withdraw_password">Mali ang inilagay mong password</string>
-    <string name="error_withdraw_password_for_new">Dapat na kumbinasyon ng 4 na numero ang password</string> <!--J170-->
+    <string name="error_withdraw_password_for_new">4 na numero kumbinasyon lamang</string> <!--J170-->
     <string name="error_wallet_address">Ang address na nilagay ninyo ay mali</string>
     <string name="text_bank_card_delete_success">Matagumpay na natanggal ang bank card</string>
     <string name="text_crypto_delete_success">Matagumpay ang pag tangal virtual currency</string>
@@ -518,9 +518,6 @@
     <string name="betting_station_deposit">Branch deposit</string>
     <string name="log_detail_title">Suriin ang mga detalye</string>
     <string name="log_detail_time_sub">Time：</string>
-    <string name="log_detail_status_sub">Trading status：</string>
-    <string name="log_detail_handle_fee">Handling fee：</string>
-    <string name="log_detail_review_time">Oras ng pagsusuri：</string>
     <string name="log_detail_reason">Remarks：</string>
     <string name="finance_log_selector_until">Dumating na</string>
     <string name="finance_list_no_record">Walang laman</string>
@@ -716,7 +713,6 @@
     <string name="commission_check_type">Paki check</string>
     <string name="commission_not_completed">Hindi pa tapus</string>
     <string name="commission_total_deducted_amount">Aggregate deductions :</string>
-    <string name="log_detail_commission">Halaga ng bawas：</string>
     <string name="commission_deducted_amount_detail">Mga detalye ng halaga ng bawas</string>
     <string name="commission_detail_title">Detalyadong Paglalarawan</string>
     <string name="commission_detail_desc_1">Upang maiwasan ang mga hindi autorisadong na withdrawal, Pagkatapos magdeposito, kailangan mong makatangap ng wastong code bago ka makapag-withdraw</string>
@@ -1112,7 +1108,7 @@
     <string name="deadline">Cut off</string>
     <string name="error_verification_code_forget">Error sa verification code</string>
     <string name="place_enter_your_account">Pakilagay ang user name</string>
-    <string name="tips_login_password_success">Matagumpay na napalitan ang password sa pag-log in,Paki-login muli</string>
+    <string name="tips_login_password_success">Matagumpay na napalitan ang password sa pag-log in, Paki-login muli</string>
     <string name="error_tips_confirm_password">Ang mga password na iyong inilagay ay hindi tugma, pakipasok muli</string>
     <string name="hide_confirm_password">Kumpirmahin ang bagong login password</string>
     <string name="error_new_password">Ang password ay 6-20 character at dapat maglaman ng kumbinasyon ng mga numero at titik!</string>
