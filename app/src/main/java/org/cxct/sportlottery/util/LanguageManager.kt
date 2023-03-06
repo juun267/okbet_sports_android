@@ -1,13 +1,9 @@
 package org.cxct.sportlottery.util
 
-import android.app.Activity
-import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
-import android.content.res.Resources
 import android.os.Build
-import android.os.Bundle
 import android.os.LocaleList
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
@@ -16,46 +12,6 @@ import java.util.*
 object LanguageManager {
 
     enum class Language(val key: String) { ZH("zh"), ZHT("zht"), EN("en"), VI("vi"), TH("th"), PHI("phi") }
-
-    fun init(application: Application) {
-        application.registerActivityLifecycleCallbacks(object : Application.ActivityLifecycleCallbacks {
-            override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-                val resources: Resources = activity.resources
-                val dm = resources.displayMetrics
-                val config = resources.configuration
-                val locale = getSetLanguageLocale(activity)
-                config.locale = locale
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    val localeList = LocaleList(locale)
-                    LocaleList.setDefault(localeList)
-                    config.setLocales(localeList)
-                    activity.createConfigurationContext(config)
-                    Locale.setDefault(locale)
-                }
-                resources.updateConfiguration(config, dm)
-            }
-
-            override fun onActivityStarted(activity: Activity) {
-            }
-
-            override fun onActivityResumed(activity: Activity) {
-            }
-
-            override fun onActivityPaused(activity: Activity) {
-            }
-
-            override fun onActivityStopped(activity: Activity) {
-            }
-
-            override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
-            }
-
-            override fun onActivityDestroyed(activity: Activity) {
-
-            }
-
-        })
-    }
 
     /**
      * 获取系统的locale

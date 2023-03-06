@@ -209,7 +209,7 @@ class MultiLanguagesApplication : Application() {
                 )
             )
         }
-        LanguageManager.init(this)
+
         RequestManager.init(this)
         setupTimber()
         setNightMode()
