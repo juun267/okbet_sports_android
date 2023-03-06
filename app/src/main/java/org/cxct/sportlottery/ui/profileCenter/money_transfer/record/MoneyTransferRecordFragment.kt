@@ -141,13 +141,6 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
             selector_out_plat.setItemData(it as MutableList<StatusSheetData>)
             selector_out_plat.setSelectCode(it.first().code)
         }
-        viewModel.loading.observe(this.viewLifecycleOwner) {
-            if (it) {
-                loading()
-            } else {
-                hideLoading()
-            }
-        }
     }
 
 }

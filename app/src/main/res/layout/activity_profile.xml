@@ -196,7 +196,7 @@
                     android:id="@+id/lin_auth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:gravity="center"
                     android:minHeight="46dp"
                     android:orientation="horizontal">

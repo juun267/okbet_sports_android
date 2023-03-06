@@ -41,11 +41,11 @@
     </string-array>
 
     <string-array name="account_history_state_array">
+        <item>@string/label_all</item>
         <item>@string/text_account_history_bet</item>
         <item>@string/text_account_history_recharge</item>
         <item>@string/text_account_history_withdraw</item>
         <item>@string/text_account_history_activity</item>
-        <item>@string/text_account_history_credit</item>
     </string-array>
 
     <string-array name="account_history_state_by_credit_array">

@@ -108,13 +108,6 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewMode
 
         selector_order_status.setItemData(accountHistoryStateList as MutableList<StatusSheetData>)
 
-        viewModel.isLoading.observe(this.viewLifecycleOwner, {
-            if (it) {
-                loading()
-            } else {
-                hideLoading()
-            }
-        })
 
         viewModel.isFinalPage.observe(this.viewLifecycleOwner, {
             accountHistoryAdapter.isFinalPage = it
@@ -165,6 +158,9 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewMode
         } else {
             this.resources.getStringArray(R.array.account_history_state_array).map {
                 when (it) {
+                    getString(R.string.label_all) -> {
+                        StatusSheetData(AccountHistory.ALL.tranTypeGroup, it)
+                    }
                     getString(R.string.text_account_history_bet) -> {
                         StatusSheetData(AccountHistory.BET.tranTypeGroup, it)
                     }
