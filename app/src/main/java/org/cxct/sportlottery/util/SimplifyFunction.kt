@@ -581,6 +581,9 @@ fun isThirdTransferOpen(): Boolean {
 //    return true // for test
 }
 
+inline fun String?.isStatusOpen(): Boolean {
+    return this == FLAG_OPEN
+}
 
 fun getLevelName(context: Context, level: Int): String {
     val jsonString = LocalJsonUtil.getLocalJson(

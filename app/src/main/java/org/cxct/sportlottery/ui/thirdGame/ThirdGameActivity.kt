@@ -63,6 +63,7 @@ open class ThirdGameActivity : WebActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        web_view.destroy()
         if (isThirdTransferOpen()) {
             LoginRepository.allTransferOut()
         }
@@ -256,4 +257,5 @@ open class ThirdGameActivity : WebActivity() {
     private fun showKYCVerifyDialog() {
         VerifyIdentityDialog().show(supportFragmentManager, null)
     }
+
 }

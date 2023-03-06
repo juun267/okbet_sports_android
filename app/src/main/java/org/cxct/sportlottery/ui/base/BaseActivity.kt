@@ -457,6 +457,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
     override fun onDestroy() {
         super.onDestroy()
+        LotteryManager.instance.onDestroy(this)
         if (hasHandler) {
             mHandler.removeCallbacksAndMessages(null)
         }

@@ -1,19 +1,10 @@
 package org.cxct.sportlottery.util
 
-import android.app.Activity
 import android.content.Context
 import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.RelativeLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.StringRes
-import androidx.core.content.ContextCompat
-import kotlinx.android.synthetic.main.activity_web.view.*
-import org.cxct.sportlottery.R
-import org.w3c.dom.Text
+import java.lang.ref.WeakReference
 
 /**
  * Created by pengweiqiang on 16/3/15.
@@ -22,7 +13,8 @@ import org.w3c.dom.Text
  * 解决方案：为了解决解决Toast重复显示问题，每次创建Toast我们先做下判断，如果有Toast显示，直接改变Toast里面的文字即可
  */
 object ToastUtil {
-    private var mToast: Toast? = null
+
+    private var mToast: WeakReference<Toast>? = null
 
     /**
      * @param context  上下文对象
@@ -33,10 +25,11 @@ object ToastUtil {
         try {
             if (context != null && !text.isNullOrEmpty()) {
                 //部分手機系統的Toast在UI上消失後並不會直接 = null，此情況下Toast不會顯示。
-                if (mToast != null) mToast!!.cancel()
-                mToast = Toast.makeText(context, text, duration)
-                if (isCenter) mToast?.setGravity(Gravity.CENTER, 0, 0)
-                mToast?.show()
+                mToast?.get()?.cancel()
+                val toast = Toast.makeText(context, text, duration)
+                mToast = WeakReference(toast)
+                if (isCenter) toast.setGravity(Gravity.CENTER, 0, 0)
+                toast?.show()
             }
         } catch (e: Exception) {
             e.printStackTrace()
