@@ -1065,7 +1065,6 @@
     <string name="video">视频</string>
     <string name="anime">动画</string>
 
-    <string name="hint_bet_limit_range">%1$s-%2$s</string>
     <string name="submitting">注单提交中</string>
     <string name="bet_receipt_bet_quota_with_sign">投注</string>
     <string name="bet_receipt_win_quota_with_sign">可赢</string>

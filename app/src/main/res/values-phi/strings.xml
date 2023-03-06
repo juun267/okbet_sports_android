@@ -369,9 +369,9 @@
     <string name="title_pay_channel">Channel ng pagbabayad</string>
     <string name="title_choose_pay_channel">Pumili ng paraan ng pagbabayad</string>
     <string name="title_pay_gap">Payment account</string>
-    <string name="title_choose_pay_gap">Pumili ng account para bayaran</string>
+    <string name="title_choose_pay_gap">Pumili ng account</string>
     <string name="title_pay_bank">Bangko magbabayad</string>
-    <string name="title_choose_pay_bank">Pumili ng bangko para bayaran</string>
+    <string name="title_choose_pay_bank">Pumili ng bangko</string>
     <string name="title_pay_msg">Impormasyon sa Pagbabayad</string>
     <string name="title_pay_way">Paraan ng Pagbayad：</string>
     <string name="title_pay_money">Halaga ng bayad：</string>
@@ -1007,7 +1007,6 @@
     <string name="video">Video</string>
     <string name="anime">Animation</string>
 
-    <string name="hint_bet_limit_range">%1$s-%2$s</string>
     <string name="submitting">Pagsumite ng taya</string>
     <string name="bet_receipt_bet_quota_with_sign">Taya</string>
     <string name="bet_receipt_win_quota_with_sign">Win</string>
