@@ -6,25 +6,6 @@
     app:startDestination="@id/verifyKYCFragment">
 
     <fragment
-        android:id="@+id/verifyIdentityFragment"
-        android:name="org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityFragment"
-        android:label="fragment_verifyIdentity_new"
-        tools:layout="@layout/fragment_verify_identity_new">
-        <action
-            android:id="@+id/action_verifyIdentityFragment_to_verifyDetailFragment"
-            app:destination="@id/verifyIdentityDetailFragment">
-            <argument
-                android:name="data"
-                app:argType="org.cxct.sportlottery.network.credential.CredentialCompleteData"
-                app:nullable="false" />
-        </action>
-
-        <action
-            android:id="@+id/action_verifyIdentityFragment_to_credentialsFragment"
-            app:destination="@id/credentialsFragment" />
-    </fragment>
-
-    <fragment
         android:id="@+id/verifyIdentityDetailFragment"
         android:name="org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDetailFragment"
         android:label="VerifyIdentityDetailFragment"

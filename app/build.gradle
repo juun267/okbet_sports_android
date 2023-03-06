@@ -305,9 +305,6 @@ dependencies {
     //簡易封裝的Adapter
     implementation 'com.zhy:base-rvadapter:3.0.3'
 
-    //實名認證影像辨識套件
-    implementation 'com.zoloz.android.build:zolozkit:1.2.1'
-
     implementation 'com.github.JessYanCoding:AndroidAutoSize:v1.2.1'
 
     implementation 'com.facebook.shimmer:shimmer:0.5.0'

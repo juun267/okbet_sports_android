@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_141414_F3F4F5"
     android:paddingHorizontal="14dp"
-    android:paddingVertical="15dp"
-    tools:context=".ui.profileCenter.identity.VerifyIdentityFragment">
+    android:paddingVertical="15dp">
 
 
     <!-- 選擇銀行 -->
