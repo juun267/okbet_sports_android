@@ -490,7 +490,7 @@
     <string name="text_bank_card_modify_success">Matagumpay na na-edit ang bank card</string>
     <string name="text_e_wallet_modify_success">Matagumpay na na-edit ang eWallet</string>
     <string name="text_crypto_modify_success">Matagumpay na na-edit ang virtual currency</string>
-    <string name="bet_receipt_bet_quota">Taya:</string>
+    <string name="bet_receipt_bet_quota">Pagtaya:</string>
     <string name="bet_info_list_win_quota">Mapapanalunan:</string>
     <string name="bet_receipt_win_quota">Halagang Mapanalo</string>
 
@@ -499,7 +499,7 @@
     <string name="bet_info_in_play_score">%1$s (%2$s-%3$s)</string>
     <string name="bet_info_bet_balance_insufficient">Hindi sapat na balanse</string>
     <string name="bet_info_check_maximum_limit">I-check ang pinakamalaking taya</string>
-    <string name="bet_info_bet_quota">Taya</string>
+    <string name="bet_info_bet_quota">Pagtaya</string>
     <string name="bet_info_win_quota">Halagang Mapanalo</string>
     <string name="bet_info_odd_content_changed">Isa o higit pa na pagpipilian odds. ang score ng bola ay may pinagbago</string>
     <string name="bet_info_odd_content_changed2">球线或赔率已变更</string>
@@ -562,7 +562,7 @@
     <string name="all_plat_type">Lahat ng uri ng platform</string>
     <string name="visit_first">Welcome</string>
     <string name="bet_number">Count</string>
-    <string name="bet_money">Taya</string>
+    <string name="bet_money">Amount</string>
     <string name="profit_and_loss">Result</string>
     <string name="total_bet_number">Kabuuang taya：</string>
     <string name="total_profit_and_loss">Kabuuang Panalo：</string>
@@ -586,7 +586,7 @@
     <string name="odds_have_changed">Ang Handicap odds ay nabago, paki ulit s pagtaya</string>
     <string name="bet_info_content_has_been_changed">Mga uri na pinili ng inyong odds ay may binago. paki bet ulit</string>
     <string name="date">Petsa</string>
-    <string name="bet_amount">Taya</string>
+    <string name="bet_amount">Pagtaya</string>
     <string name="available_amount">Valid na taya</string>
     <string name="win_lose">Panalo / talo</string>
     <string name="all_sport">Lahat ng sports</string>
@@ -674,7 +674,7 @@
     <string name="snooker">Bilyar</string>
     <string name="cricket">Cricket</string>
     <string name="baseball">Baseball</string>
-    <string name="rugby_football">Football</string>
+    <string name="rugby_football">Soccer</string>
     <string name="america_football">American football</string>
     <string name="motor_racing">Motor Racing</string>
     <string name="golf">Golf</string>
@@ -940,7 +940,7 @@
     <string name="redenvelope_amount">Halaga ng pulang sobre</string>
     <string name="tran_type">Type</string>
     <string name="redenvelope_record">Rekord ng pulang sobre</string>
-    <string name="btn_sure">Oo</string>
+    <string name="btn_sure">Kumpirmahin</string>
     <string name="Outlets_Reserve">Network map about</string>
     <string name="current_balance">Kasalukuyang balanse</string>
     <string name="select_area">Piliin ang rehiyon</string>
@@ -1003,7 +1003,7 @@
     <string name="betting_setting">Betting settings</string>
     <string name="filter">Filter</string>
     <string name="league_filter">Match filter</string>
-    <string name="reverse_select">Invert selection</string>
+    <string name="reverse_select">Baligtarin</string>
     <string name="video">Video</string>
     <string name="anime">Animation</string>
 
@@ -1034,7 +1034,7 @@
     <string name="payment_method">Paraan ng Pagbayad</string>
     <string name="error_recommend_agent">Walang kaugnay na proxy ang naitugma</string>
     <string name="login_welcome">Hi, 欢迎来到OKBET～</string>
-    <string name="betting">Taya</string>
+    <string name="betting">Pagtaya</string>
     <string name="other_bet">Ibang taya</string>
     <string name="sport_match">competition</string>
     <string name="remove_account_warning">Sigurado ka bang nais mong kanselahin ang kasalukuyang account？</string>
@@ -1188,4 +1188,5 @@
     <string name="hint_phone_format">Ang mobile number format ay 11 numero at nagsisimula sa 09</string>
     <string name="username">Account ng miyembro</string>
     <string name="kyc_unverifing">Nag veverify</string>
+
 </resources>
