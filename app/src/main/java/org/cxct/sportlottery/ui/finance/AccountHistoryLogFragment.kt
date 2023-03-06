@@ -108,13 +108,6 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewMode
 
         selector_order_status.setItemData(accountHistoryStateList as MutableList<StatusSheetData>)
 
-        viewModel.isLoading.observe(this.viewLifecycleOwner, {
-            if (it) {
-                loading()
-            } else {
-                hideLoading()
-            }
-        })
 
         viewModel.isFinalPage.observe(this.viewLifecycleOwner, {
             accountHistoryAdapter.isFinalPage = it
