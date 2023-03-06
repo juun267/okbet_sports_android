@@ -518,9 +518,6 @@
     <string name="betting_station_deposit">Branch deposit</string>
     <string name="log_detail_title">Suriin ang mga detalye</string>
     <string name="log_detail_time_sub">Time：</string>
-    <string name="log_detail_status_sub">Trading status：</string>
-    <string name="log_detail_handle_fee">Handling fee：</string>
-    <string name="log_detail_review_time">Oras ng pagsusuri：</string>
     <string name="log_detail_reason">Remarks：</string>
     <string name="finance_log_selector_until">Dumating na</string>
     <string name="finance_list_no_record">Walang laman</string>
@@ -716,7 +713,6 @@
     <string name="commission_check_type">Paki check</string>
     <string name="commission_not_completed">Hindi pa tapus</string>
     <string name="commission_total_deducted_amount">Aggregate deductions :</string>
-    <string name="log_detail_commission">Halaga ng bawas：</string>
     <string name="commission_deducted_amount_detail">Mga detalye ng halaga ng bawas</string>
     <string name="commission_detail_title">Detalyadong Paglalarawan</string>
     <string name="commission_detail_desc_1">Upang maiwasan ang mga hindi autorisadong na withdrawal, Pagkatapos magdeposito, kailangan mong makatangap ng wastong code bago ka makapag-withdraw</string>

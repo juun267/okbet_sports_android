@@ -958,6 +958,8 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
                                 matchInfo.leagueTime = (timeMillis / 1000).toInt()
                             }
                         }
+                        Log.d("hjq",
+                            matchInfo.id + "," + matchInfo.homeName + "," + matchInfo.leagueTime)
 
                         updateTimer(
                             isTimerEnable,
