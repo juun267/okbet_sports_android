@@ -1,11 +1,11 @@
 package org.cxct.sportlottery.ui.game.betList.receipt
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -313,11 +313,7 @@ class BetReceiptFragment :
         lin_result_status.isVisible = true
         //下注其他盘口
         btn_complete.text = getString(R.string.str_bet_other_game)
-        btn_complete.setTextColor(
-            ContextCompat.getColor(
-                btn_complete.context, R.color.white
-            )
-        )
+        btn_complete.setTextColor(Color.WHITE)
 //        Timber.d("投注成功或失败: ${betFailed.first}")
 
         Timber.d("滑动位置:${betReceiptDiffAdapter?.items?.size?.minus(1) ?: 0}")

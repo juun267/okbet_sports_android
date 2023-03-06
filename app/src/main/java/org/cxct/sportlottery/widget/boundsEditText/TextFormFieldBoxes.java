@@ -26,8 +26,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
 
-import com.alipay.zoloz.hardware.log.Log;
-
 import org.cxct.sportlottery.R;
 import org.cxct.sportlottery.util.MetricsUtil;
 

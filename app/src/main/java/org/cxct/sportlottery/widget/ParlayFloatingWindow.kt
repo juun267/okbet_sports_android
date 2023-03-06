@@ -7,11 +7,9 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
-import com.alipay.mobile.security.bio.utils.ScreenUtil
 import me.jessyan.autosize.utils.ScreenUtils
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.DisplayUtil.pxToDp
 import timber.log.Timber
 import kotlin.math.abs
 
