@@ -944,7 +944,7 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
                     }
                     val socketValue = matchInfo.socketMatchStatus
 
-                    if (needCountStatus(socketValue)) {
+                    if (needCountStatus(socketValue) && matchInfo.leagueTime != 0) {
                         itemView.league_odd_match_time.visibility = View.VISIBLE
                         listener = object : TimerListener {
                             override fun onTimerUpdate(timeMillis: Long) {

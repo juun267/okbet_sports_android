@@ -162,6 +162,7 @@
             android:paddingStart="@dimen/margin_10"
             android:textColor="@color/okb1_app_text_color_gray01"
             android:textSize="@dimen/textSize12sp"
+            android:visibility="gone"
             tools:text="80：02" />
 
         <TextView

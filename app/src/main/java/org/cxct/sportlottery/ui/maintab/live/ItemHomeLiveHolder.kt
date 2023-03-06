@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.maintab.live
 
 import android.os.Build
 import android.view.View
-import android.view.ViewGroup.MarginLayoutParams
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.Glide
@@ -21,7 +20,6 @@ import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.ui.game.widget.OddsButtonHome
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.widget.OKVideoPlayer
 
 class ItemHomeLiveHolder(
@@ -490,7 +488,7 @@ class ItemHomeLiveHolder(
             TimeUtil.isTimeInPlay(item.matchInfo?.startTime) -> {
                 val socketValue = item.matchInfo?.socketMatchStatus
 
-                if (needCountStatus(socketValue)) {
+                if (needCountStatus(socketValue) && item.matchInfo?.leagueTime != 0) {
                     binding.tvGamePlayTime.text = item.runningTime
                     binding.tvGamePlayTime.visibility = View.VISIBLE
                     listener = object : TimerListener {

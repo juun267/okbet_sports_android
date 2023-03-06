@@ -311,7 +311,7 @@ class ItemHandicapHolder(
             return
         }
 
-        if (!needCountStatus(item.matchInfo?.socketMatchStatus)) {
+        if (!needCountStatus(item.matchInfo?.socketMatchStatus) || item.matchInfo?.leagueTime == 0) {
             stopTimer()
             binding.tvGamePlayTime.visibility = View.GONE
             return
