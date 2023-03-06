@@ -165,6 +165,7 @@ object Constants {
             LanguageManager.Language.ZH -> ""
             LanguageManager.Language.VI -> "vi/"
             LanguageManager.Language.TH -> "th/"
+            LanguageManager.Language.PHI -> "ph/"
             else -> "us/"
         }
     }
@@ -177,6 +178,7 @@ object Constants {
             LanguageManager.Language.ZH -> "zh/"
             LanguageManager.Language.VI -> "vi/"
             LanguageManager.Language.TH -> "th/"
+            LanguageManager.Language.PHI -> "ph/"
             else -> ""
         }
     }
