@@ -833,9 +833,6 @@
     <string name="allow_location_permission">Payagan ang access sa lokasyon</string>
 
     <!--歷史紀錄start-->
-    <string name="text_account_history_time">Oras ng transaksyon</string>
-    <string name="text_account_history_number">Numero ng order</string>
-    <string name="text_account_history_amount">Halaga ng transaksyon</string>
     <string name="text_account_history_balance">Balanse</string>
 
     <!--region 最新消息-->
