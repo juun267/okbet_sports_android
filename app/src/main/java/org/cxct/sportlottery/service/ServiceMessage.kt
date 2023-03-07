@@ -21,36 +21,39 @@ import org.cxct.sportlottery.network.service.user_level_config_change.UserLevelC
 import org.cxct.sportlottery.network.service.user_money.LockMoneyEvent
 import org.cxct.sportlottery.network.service.user_money.UserMoneyEvent
 import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
+import org.cxct.sportlottery.util.fastjson.FastJsonUtils
 
 
 object ServiceMessage {
 
     private val moshi: Moshi by lazy { Moshi.Builder().add(KotlinJsonAdapterFactory()).build() }
 
+
     fun getGlobalStop(messageStr: String): GlobalStopEvent? {
-        val adapter = moshi.adapter(GlobalStopEvent::class.java)
-        return adapter.fromJson(messageStr)
+//        val adapter = moshi.adapter(GlobalStopEvent::class.java)
+
+        return FastJsonUtils.jsonToObject(messageStr,GlobalStopEvent::class.java)
     }
 
     fun getProducerUp(messageStr: String): ProducerUpEvent? {
-        val adapter = moshi.adapter(ProducerUpEvent::class.java)
-        return adapter.fromJson(messageStr)
+//        val adapter = moshi.adapter(ProducerUpEvent::class.java)
+        return FastJsonUtils.jsonToObject(messageStr,ProducerUpEvent::class.java)
     }
 
     fun getSysMaintenance(messageStr: String): SysMaintenanceEvent? {
-        val adapter = moshi.adapter(SysMaintenanceEvent::class.java)
-        return adapter.fromJson(messageStr)
+//        val adapter = moshi.adapter(SysMaintenanceEvent::class.java)
+        return FastJsonUtils.jsonToObject(messageStr,SysMaintenanceEvent::class.java)
     }
 
     fun getMatchClock(messageStr: String): MatchClockEvent? {
-        val adapter = moshi.adapter(MatchClockEvent::class.java)
-        return adapter.fromJson(messageStr)
+//        val adapter = moshi.adapter(MatchClockEvent::class.java)
+        return FastJsonUtils.jsonToObject(messageStr,MatchClockEvent::class.java)
     }
 
     fun getMatchStatusChange(messageStr: String): MatchStatusChangeEvent? {
         return try {
-            val adapter = moshi.adapter(MatchStatusChangeEvent::class.java)
-            return adapter.fromJson(messageStr)
+//            val adapter = moshi.adapter(MatchStatusChangeEvent::class.java)
+            return FastJsonUtils.jsonToObject(messageStr,MatchStatusChangeEvent::class.java)
         } catch (e: Exception) {
             e.printStackTrace()
             null
@@ -58,78 +61,95 @@ object ServiceMessage {
     }
 
     fun getNotice(messageStr: String): NoticeEvent? {
-        val adapter = moshi.adapter(NoticeEvent::class.java)
-        return adapter.fromJson(messageStr)
+//        val adapter = moshi.adapter(NoticeEvent::class.java)
+//        return adapter.fromJson(messageStr)
+        return  FastJsonUtils.jsonToObject(messageStr,NoticeEvent::class.java)
     }
 
     fun getMatchOddsChange(messageStr: String): MatchOddsChangeEvent? {
-        val adapter = moshi.adapter(MatchOddsChangeEvent::class.java)
-        return adapter.fromJson(messageStr)
+//        val adapter = moshi.adapter(MatchOddsChangeEvent::class.java)
+//        return adapter.fromJson(messageStr)
+        return  FastJsonUtils.jsonToObject(messageStr,MatchOddsChangeEvent::class.java)
     }
 
     fun getOddsChange(messageStr: String): OddsChangeEvent? {
-        val adapter = moshi.adapter(OddsChangeEvent::class.java)
-        return adapter.fromJson(messageStr)
+//        val adapter = moshi.adapter(OddsChangeEvent::class.java)
+//        return adapter.fromJson(messageStr)
+
+        return  FastJsonUtils.jsonToObject(messageStr,OddsChangeEvent::class.java)
+
     }
 
     fun getOrderSettlement(messageStr: String): OrderSettlementEvent? {
-        val adapter = moshi.adapter(OrderSettlementEvent::class.java)
-        return adapter.fromJson(messageStr)
+//        val adapter = moshi.adapter(OrderSettlementEvent::class.java)
+//        return adapter.fromJson(messageStr)
+        return FastJsonUtils.jsonToObject(messageStr,OrderSettlementEvent::class.java)
     }
 
     fun getPingPong(messageStr: String): PingPongEvent? {
-        val adapter = moshi.adapter(PingPongEvent::class.java)
-        return adapter.fromJson(messageStr)
+//        val adapter = moshi.adapter(PingPongEvent::class.java)
+//        return adapter.fromJson(messageStr)
+        return FastJsonUtils.jsonToObject(messageStr,PingPongEvent::class.java)
     }
 
     fun getUserMoney(messageStr: String): UserMoneyEvent? {
-        val adapter = moshi.adapter(UserMoneyEvent::class.java)
-        return adapter.fromJson(messageStr)
+//        val adapter = moshi.adapter(UserMoneyEvent::class.java)
+//        return adapter.fromJson(messageStr)
+        return FastJsonUtils.jsonToObject(messageStr,UserMoneyEvent::class.java)
     }
 
     fun getLockMoney(messageStr: String): LockMoneyEvent? {
-        val adapter = moshi.adapter(LockMoneyEvent::class.java)
-        return adapter.fromJson(messageStr)
+//        val adapter = moshi.adapter(LockMoneyEvent::class.java)
+//        return adapter.fromJson(messageStr)
+        return FastJsonUtils.jsonToObject(messageStr,LockMoneyEvent::class.java)
     }
 
     fun getUserNotice(messageStr: String): UserNoticeEvent? {
-        val adapter = moshi.adapter(UserNoticeEvent::class.java)
-        return adapter.fromJson(messageStr)
+//        val adapter = moshi.adapter(UserNoticeEvent::class.java)
+//        return adapter.fromJson(messageStr)
+        return FastJsonUtils.jsonToObject(messageStr,UserNoticeEvent::class.java)
     }
 
     fun getPlayQuotaChange(messageStr: String): PlayQuotaChangeEvent? {
-        val adapter = moshi.adapter(PlayQuotaChangeEvent::class.java)
-        return adapter.fromJson(messageStr)
+//        val adapter = moshi.adapter(PlayQuotaChangeEvent::class.java)
+//        return adapter.fromJson(messageStr)
+        return FastJsonUtils.jsonToObject(messageStr,PlayQuotaChangeEvent::class.java)
     }
 
     fun getLeagueChange(messageStr: String): LeagueChangeEvent? {
-        val adapter = moshi.adapter(LeagueChangeEvent::class.java)
-        return adapter.fromJson(messageStr)
+//        val adapter = moshi.adapter(LeagueChangeEvent::class.java)
+//        return adapter.fromJson(messageStr)
+        return FastJsonUtils.jsonToObject(messageStr,LeagueChangeEvent::class.java)
     }
 
     fun getMatchOddsLock(messageStr: String): MatchOddsLockEvent? {
-        val adapter = moshi.adapter(MatchOddsLockEvent::class.java)
-        return adapter.fromJson(messageStr)
+//        val adapter = moshi.adapter(MatchOddsLockEvent::class.java)
+//        return adapter.fromJson(messageStr)
+        return FastJsonUtils.jsonToObject(messageStr,MatchOddsLockEvent::class.java)
     }
 
     fun getUserDiscountChange(messageStr: String): UserDiscountChangeEvent? {
-        val adapter = moshi.adapter(UserDiscountChangeEvent::class.java)
-        return adapter.fromJson(messageStr)
+//        val adapter = moshi.adapter(UserDiscountChangeEvent::class.java)
+//        return adapter.fromJson(messageStr)
+        return FastJsonUtils.jsonToObject(messageStr,UserDiscountChangeEvent::class.java)
     }
 
     fun getUserMaxBetMoney(messageStr: String): UserLevelConfigListEvent? {
-        val adapter = moshi.adapter(UserLevelConfigListEvent::class.java)
-        return adapter.fromJson(messageStr)
+//        val adapter = moshi.adapter(UserLevelConfigListEvent::class.java)
+//        return adapter.fromJson(messageStr)
+        return FastJsonUtils.jsonToObject(messageStr,UserLevelConfigListEvent::class.java)
     }
 
     fun getUserInfoChange(messageStr: String): UserLevelConfigListEvent? {
-        val adapter = moshi.adapter(UserLevelConfigListEvent::class.java)
-        return adapter.fromJson(messageStr)
+//        val adapter = moshi.adapter(UserLevelConfigListEvent::class.java)
+//        return adapter.fromJson(messageStr)
+        return FastJsonUtils.jsonToObject(messageStr,UserLevelConfigListEvent::class.java)
     }
 
     fun getClosePlayCate(messageStr: String): ClosePlayCateEvent? {
-        val adapter = moshi.adapter(ClosePlayCateEvent::class.java)
-        return adapter.fromJson(messageStr)
+//        val adapter = moshi.adapter(ClosePlayCateEvent::class.java)
+//        return adapter.fromJson(messageStr)
+        return FastJsonUtils.jsonToObject(messageStr,ClosePlayCateEvent::class.java)
     }
 
 }

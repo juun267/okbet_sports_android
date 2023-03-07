@@ -228,7 +228,7 @@
     <string name="add_time_first_half_game">Ovevtime sa 1st Half</string>
     <string name="add_time_second_half_game">Overtime sa 2nd Half</string>
     <string name="account_balance">Kabuuang asset</string>
-    <string name="user_id_colon">用戶ID：</string>
+    <string name="user_id_colon">User ID：</string>
     <string name="recharge">Deposito</string>
     <string name="recharge_channel_online">Online Bayad</string>
     <string name="account_transfer">Ilipat ang balanse</string>
@@ -379,7 +379,7 @@
     <string name="hint_pay1">1. Pagkatapos ng matagumpay na pagbabayad, awtomatikong maikredito ang account, at may lalabas na paalala.</string>
     <string name="hint_pay2">2. Matagal na walang tugon, mangyaring makipag-ugnayan sa customer service。</string>
     <string name="btn_look_for">Suriin ang transaksyon</string>
-    <string name="btn_service">Tawagan ang CS</string>
+    <string name="btn_service">makipag ugnayan sa CS</string>
     <string name="txv_transfer_pay">Ilipat</string>
     <string name="txv_crypto_pay">Virtual currency transfer</string>
     <string name="error_first_recharge_amount">Ang halaga ng unang deposito ay hindi maaaring mas mababa sa %s</string>
@@ -458,10 +458,10 @@
     <string name="withdraw_crypto_fee_hint">Withdrawal fee:(%1$s)：%2$s</string>
     <string name="hint_four_number_password">Paki lagay ang withdrawal password</string>
     <string name="hint_please_enter_withdraw_password">Paki lagay ang withdrawal password</string>
-    <string name="add_credit_card">Magdagdag ng bank card</string>
-    <string name="add_crypto_card">Magdagdag ng virtual currency address</string>
-    <string name="add_e_wallet">Magdagdag ng eWallet bank</string>
-    <string name="add_credit_or_virtual">Madagdag%1$s</string>
+    <string name="add_credit_card">Mag-add ng bank card</string>
+    <string name="add_crypto_card">Mag-add ng virtual currency add</string>
+    <string name="add_e_wallet">Mag-add ng eWallet bank</string>
+    <string name="add_credit_or_virtual">Mag-add ng %1$s</string>
     <string name="create_bank">Bank of deposit</string>
     <string name="create_name">Pangalan ng cardholder</string>
     <string name="hint_please_enter_create_name">Pakilagay ang pangalan ng iyong bank card</string>
@@ -1038,7 +1038,7 @@
     <string name="remove_account_warning">Sigurado ka bang nais mong kanselahin ang kasalukuyang account？</string>
     <string name="km">Km</string>
     <string name="outlet">Betting</string>
-    <string name="my_bank_card">Akin%1$s</string>
+    <string name="my_bank_card">Aking %1$s</string>
     <string name="local_time">Lokal na Oras:</string>
     <string name="half_first_short">1st half</string>
     <string name="half_second_short">Ikalawang kalahati</string>
