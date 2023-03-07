@@ -248,7 +248,7 @@
     <string name="take_a_picture">Kumuha ng litrato</string>
     <string name="save_avatar_success">Matagumpay na na-upload ang avatar</string>
     <string name="change_nickname">Baguhin ang palayaw</string>
-    <string name="withdrawal_password">Witdrawal password</string>
+    <string name="withdrawal_password">Withdrawal password</string>
     <string name="current_login_password">Kasalukuyang login password</string>
     <string name="current_withdrawal_password">Kasalukuyang withdrawal password</string>
     <string name="hint_current_login_password">Paki lagay ang password</string>
@@ -424,7 +424,7 @@
     <string name="online_weixin">Online na Wechat</string>
     <string name="online_qq">Online na QQ</string>
     <string name="online_credit_card">Online na credit card</string>
-    <string name="bank_card">bank card</string>
+    <string name="bank_card">Bank card</string>
     <string name="crypto">Virtual currency</string>
     <string name="ewallet">eWallet</string>
     <string name="currency_protocol">Protocol/Currency</string>
@@ -449,7 +449,7 @@
     <string name="text_money_get_success">Matagumpay ang widrawal, antayin upang suriin muna ng customer service</string>
     <string name="withdraw_setting">Withdraw Setting</string>
     <string name="select_bank">Pumili ng bangko</string>
-    <string name="withdraw_amount">Withdrawal amount</string>
+    <string name="withdraw_amount">Withdraw</string>
     <string name="withdraw_password">Withdrawal password</string>
     <string name="total_withdrawal">Kabuuang Pag-withdraw</string>
     <string name="withdraw_all">I-extract lahat</string>
@@ -514,7 +514,7 @@
     <string name="record_history">History</string>
 
 
-    <string name="betting_station_reserve">Network map about</string>
+    <string name="betting_station_reserve">Outlets Reserve</string>
     <string name="betting_station_withdraw">Cash withdrawal outlets</string>
     <string name="betting_station_deposit">Branch deposit</string>
     <string name="log_detail_title">Detalye</string>
@@ -675,7 +675,7 @@
     <string name="snooker">Bilyar</string>
     <string name="cricket">Cricket</string>
     <string name="baseball">Baseball</string>
-    <string name="rugby_football">Soccer</string>
+    <string name="rugby_football">Football</string>
     <string name="america_football">American football</string>
     <string name="motor_racing">Motor Racing</string>
     <string name="golf">Golf</string>
@@ -939,7 +939,7 @@
     <string name="tran_type">Type</string>
     <string name="redenvelope_record">Rekord ng pulang sobre</string>
     <string name="btn_sure">Kumpirmahin</string>
-    <string name="Outlets_Reserve">Network map about</string>
+    <string name="Outlets_Reserve">Outlets Reserve</string>
     <string name="current_balance">Kasalukuyang balanse</string>
     <string name="select_area">Piliin ang rehiyon</string>
     <string name="select_city">Piliin ang lungsod</string>
