@@ -168,7 +168,7 @@
     <string name="left_menu_odds_type_setting">Handicap setting</string>
     <string name="member_level">Membership level</string>
     <string name="game_settlement">Resulta</string>
-    <string name="app_download">Pag-download ng APP</string>
+    <string name="app_download">App Download</string>
     <string name="version_update">Bagong bersyon update</string>
     <string name="sign_out">Mag sign out</string>
     <string name="label_version">Bersyon</string>
@@ -431,7 +431,7 @@
     <string name="select_crypto_address">Piliin ang address</string>
     <string name="withdraw_number">Number of withdrawals</string>
     <string name="now_balance">Kasalukuyang balanse</string>
-    <string name="withdraw">Witdraw</string>
+    <string name="withdraw">Withdraw</string>
     <string name="submit">Ipasa</string>
     <string name="selected_bank_card">%1$s (karugtong%2$s)</string>
     <string name="error_withdraw_amount_bigger_than_balance">Ang halaga ng pag-withdraw ay mas malaki kaysa sa balanse ng account</string>
@@ -445,7 +445,7 @@
     <string name="please_setting_crypto_ewallet">Mangyaring mag-set up muna ng virtual currency/eWallet</string>
     <string name="please_setting_money_card">Mangyaring i-set up muna ang bank card/virtual currency/eWallet</string>
     <string name="go_to_setting">Pumunta sa  setting</string>
-    <string name="message_withdraw_maintain">Ang witdrawal system namin ay na upgrade. maaaring mag anty ng sandali</string>
+    <string name="message_withdraw_maintain">Ang withdrawal system namin ay na upgrade. maaaring mag anty ng sandali</string>
     <string name="text_money_get_success">Matagumpay ang widrawal, antayin upang suriin muna ng customer service</string>
     <string name="withdraw_setting">Withdraw Setting</string>
     <string name="select_bank">Pumili ng bangko</string>
@@ -794,10 +794,10 @@
     <string name="initial_withdrawal_needs_credited">Ang unang withdrawal kailangan ma credited: %1$s %2$s</string>
     <string name="make_sure_valid_account">Pansamantalang pipigilan ang %1$s %2$s para sa mga paunang withdrawal upang matiyak na mayroon kang wastong account. Ire-refund ang halagang ito pagkatapos ng 30 araw.</string>
     <!--登入手機驗證-->
-    <string name="about_us">Tungkol sa Amin</string>
-    <string name="responsible">Gambling Responsibility</string>
-    <string name="terms_conditions">Termino at kondisyon</string>
-    <string name="privacy_policy">Pagkapribado at Patakaran</string>
+    <string name="about_us">Tungkol sa amin</string>
+    <string name="responsible">Responsableng Paglalaro</string>
+    <string name="terms_conditions">Termino at Kundisyon</string>
+    <string name="privacy_policy">Proteksyon sa privacy</string>
     <string name="help">Kailangan ng tulong？</string>
     <string name="faqs">Karaniwang problema</string>
     <string name="live_chat">Online serbisyo</string>
