@@ -38,16 +38,16 @@ class ThirdGamesFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHo
 
     override fun layoutId() = R.layout.fragment_home_slot
 
-    private val gamesAdapter by lazy { ThirdGamesAdapter2().apply {
-        val datas = when(GAME_CODE) {
-            CODE_LIVE -> ThirdGames.live
-            CODE_POKER -> ThirdGames.qipai
-            else -> ThirdGames.caipiao
-        }
-
-        datas.forEach { LIVE_OPEN_FILTER.add(it.playCode) }
-        setNewInstance(datas)
-    } }
+//    private val gamesAdapter by lazy { ThirdGamesAdapter2().apply {
+//        val datas = when(GAME_CODE) {
+//            CODE_LIVE -> ThirdGames.live
+//            CODE_POKER -> ThirdGames.qipai
+//            else -> ThirdGames.caipiao
+//        }
+//
+//        datas.forEach { LIVE_OPEN_FILTER.add(it.playCode) }
+//        setNewInstance(datas)
+//    } }
 
     private val homeTabAdapter by lazy {
         HomeTabAdapter(HomeTabAdapter.getItems(),
@@ -80,11 +80,11 @@ class ThirdGamesFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHo
         lin_empty_game.gone()
 
         rv_slot.layoutManager = LinearLayoutManager(context)
-        rv_slot.adapter = gamesAdapter
-        gamesAdapter.setOnItemClickListener { _, _, position ->
-            val item = gamesAdapter.getItem(position)
-            viewModel.requestEnterThirdGame("${item.firmType}", "${item.playCode}", GAME_CODE, this@ThirdGamesFragment)
-        }
+//        rv_slot.adapter = gamesAdapter
+//        gamesAdapter.setOnItemClickListener { _, _, position ->
+//            val item = gamesAdapter.getItem(position)
+//            viewModel.requestEnterThirdGame("${item.firmType}", "${item.playCode}", GAME_CODE, this@ThirdGamesFragment)
+//        }
     }
 
     private fun initTab() = rv_tab_home.run {
@@ -135,7 +135,7 @@ class ThirdGamesFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHo
             }
 
             withContext(Dispatchers.Main) {
-                gamesAdapter.update(liveGames)
+//                gamesAdapter.update(liveGames)
             }
 
 //            withContext(Dispatchers.Main) {

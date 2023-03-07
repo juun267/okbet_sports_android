@@ -7,7 +7,7 @@
     <string name="error_reading_file">Error sa pagbasa ng file</string>
     <string name="message_guest_no_permission">Ang demo account ay hindi awtorisadong mag-access, mangyaring magparehistro muna</string>
     <string name="message_socket_connect">Nag-time out ang koneksyon sa network, mangyaring kumonekta muli</string>
-    <string name="message_network_no_connect">Pakisuri ang koneksyon sa network at subukang muli.</string>
+    <string name="message_network_no_connect">Nag-time out ang koneksyon sa network. Pakisubukang muli.</string>
     <string name="message_network_timeout">Nag-time out ang koneksyon sa network. Pakisubukang muli.</string>
     <string name="error">error</string>
     <string name="error_input_amount">Ang halagang iyong inilagay ay may maling format</string>
@@ -198,7 +198,7 @@
     <string name="game_result">Resulta</string>
     <string name="game_yellow_card">Penalty card</string>
     <string name="game_corner_kick">Corner kick</string>
-    <string name="soccer">Football</string>
+    <string name="soccer">Soccer</string>
     <string name="basketball">Basketball</string>
     <string name="tennis">Tennis</string>
     <string name="badminton">Badminton</string>
@@ -230,6 +230,7 @@
     <string name="account_balance">Kabuuang asset</string>
     <string name="user_id_colon">用戶ID：</string>
     <string name="recharge">Deposito</string>
+    <string name="recharge_channel_online">Online Bayad</string>
     <string name="account_transfer">Ilipat ang balanse</string>
     <string name="money_recycle_succeed">Matagumpay na nabawi ang quota</string>
     <string name="news_center">Message Center</string>
@@ -516,7 +517,7 @@
     <string name="betting_station_reserve">Network map about</string>
     <string name="betting_station_withdraw">Cash withdrawal outlets</string>
     <string name="betting_station_deposit">Branch deposit</string>
-    <string name="log_detail_title">Suriin ang mga detalye</string>
+    <string name="log_detail_title">Detalye</string>
     <string name="log_detail_time_sub">Time：</string>
     <string name="log_detail_reason">Remarks：</string>
     <string name="finance_log_selector_until">Dumating na</string>
@@ -703,16 +704,16 @@
     <string name="day_mode">Day mode</string>
     <string name="night_mode">Night mode</string>
     <string name="commission_detail">Detalye</string>
-    <string name="commission_desc_1">Kapag hindi nakamit ang epektibong coding, upang maiwasan ang mga abnormal na withdrawal,Ang tiyak na porsyento ng halaga ng recharge ay kailangang ibawas bilang maagang bayad sa pag-withdraw </string>
-    <string name="commission_desc_2">Kapag nakamit ang epektibong coding, walang karagdagang handling fee ang sisingilin</string>
+    <string name="commission_desc_1">Kapag hindi naabot ang wastong halaga, kailangan nating ibawas ang isang tiyak na porsyento ng halaga ng deposito upang maging bayad sa pag-withdraw at maiwasan ang abnormal na deposito. </string>
+    <string name="commission_desc_2">Kapag naabot na ang wastong halaga, hindi na namin sisingilin ang handing fee.</string>
     <string name="notice">Mga tip</string>
     <string name="commission_check_time">Suriin ang oras :</string>
-    <string name="commission_deducted_amount">Aggregate deductions</string>
+    <string name="commission_deducted_amount">Ibabawas</string>
     <string name="commission_required_size">Kailangan i type ang amount</string>
     <string name="commission_amount_of_coding_completed">Paki tapus ang ang lagay ng amount</string>
     <string name="commission_check_type">Paki check</string>
     <string name="commission_not_completed">Hindi pa tapus</string>
-    <string name="commission_total_deducted_amount">Aggregate deductions :</string>
+    <string name="commission_total_deducted_amount">Ibabawas :</string>
     <string name="commission_deducted_amount_detail">Mga detalye ng halaga ng bawas</string>
     <string name="commission_detail_title">Detalyadong Paglalarawan</string>
     <string name="commission_detail_desc_1">Upang maiwasan ang mga hindi autorisadong na withdrawal, Pagkatapos magdeposito, kailangan mong makatangap ng wastong code bago ka makapag-withdraw</string>
