@@ -69,7 +69,6 @@
                         android:textColor="@color/color_414655"
                         android:textFontWeight="700"
                         android:textSize="@dimen/textSize10sp"
-                        android:visibility="gone"
                         tools:text="00:43"
                         tools:visibility="visible" />
 

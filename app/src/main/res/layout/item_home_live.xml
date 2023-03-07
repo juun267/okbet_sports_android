@@ -188,7 +188,6 @@
                     android:textSize="@dimen/textSize12sp"
                     app:layout_constraintStart_toEndOf="@id/tvGameStatus"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:visibility="gone"
                     tools:text="09:15"
                     tools:visibility="visible" />
 

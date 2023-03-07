@@ -98,7 +98,6 @@
                         android:textColor="@color/color_6C7BA8"
                         android:textFontWeight="700"
                         android:textSize="@dimen/textSize10sp"
-                        android:visibility="gone"
                         tools:text="00:43"
                         tools:visibility="visible" />
 
@@ -110,7 +109,6 @@
                         android:adjustViewBounds="true"
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_n"
-                        android:visibility="gone"
                         tools:ignore="ContentDescription"
                         tools:visibility="gone" />
 
