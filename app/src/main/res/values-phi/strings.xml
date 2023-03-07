@@ -10,4 +10,5 @@
     <string name="account_balance_unenough">Balanse ng platform account ay hindi sapat</string>
     <string name="account_transfer">Ilipat ang balanse</string>
     <string name="platform_user_money">Balanse sa platform</string>
+    <string name="third_party">3rd party</string>
 </resources>

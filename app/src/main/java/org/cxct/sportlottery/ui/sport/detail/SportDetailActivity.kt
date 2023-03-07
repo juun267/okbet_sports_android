@@ -147,7 +147,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 return@Handler false
             }
             tv_match_time?.apply {
-                if (needCountStatus(matchOdd?.matchInfo?.socketMatchStatus) && matchOdd?.matchInfo?.leagueTime != 0) {
+                if (needCountStatus(matchOdd?.matchInfo?.socketMatchStatus) && matchOdd?.matchInfo?.leagueTime ?: 0 != 0) {
                     if (timeMillis >= 1000) {
                         text = TimeUtil.longToMmSs(timeMillis)
                         startTime = timeMillis / 1000L

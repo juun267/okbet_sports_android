@@ -176,6 +176,9 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewMode
                     getString(R.string.text_account_history_credit) -> {
                         StatusSheetData(AccountHistory.CREDIT.tranTypeGroup, it)
                     }
+                    getString(R.string.third_party) -> {
+                        StatusSheetData(AccountHistory.THIRD.tranTypeGroup, it)
+                    }
                     else -> {
                         StatusSheetData(AccountHistory.BET.tranTypeGroup, it)
                     }

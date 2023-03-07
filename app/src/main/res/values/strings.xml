@@ -1028,7 +1028,7 @@
     <string name="total_win_amount">Winning：</string>
     <string name="delete_bet">Delete</string>
     <string name="delete_bet_all">Delete All</string>
-    <string name="btn_login_bet">Log in before betting</string>
+    <string name="btn_login_bet">Login</string>
     <string name="btn_remove_closed_selections">Remove closed selections</string>
     <string name="bet_info_list_bet">Betting</string>
     <string name="bet_info_bet">Stake</string>
@@ -1352,4 +1352,5 @@
     <string name="account_balance_unenough">Platform account balance not enough</string>
     <string name="platform_user_money">Platform balance</string>
     <string name="N589">Sign In With Google</string>
+    <string name="third_party">3rd party</string>
 </resources>

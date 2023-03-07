@@ -6,5 +6,6 @@ enum class AccountHistory(val tranTypeGroup: String) {
     RECHARGE("recharge"),
     WITHDRAW("withdraw"),
     ACTIVITY("activity"),
-    CREDIT("credit")
+    CREDIT("credit"),
+    THIRD("third")
 }

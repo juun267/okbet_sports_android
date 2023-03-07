@@ -488,7 +488,7 @@ class ItemHomeLiveHolder(
             TimeUtil.isTimeInPlay(item.matchInfo?.startTime) -> {
                 val socketValue = item.matchInfo?.socketMatchStatus
 
-                if (needCountStatus(socketValue) && item.matchInfo?.leagueTime != 0) {
+                if (needCountStatus(socketValue) && item.matchInfo?.leagueTime ?: 0 != 0) {
                     binding.tvGamePlayTime.text = item.runningTime
                     binding.tvGamePlayTime.visibility = View.VISIBLE
                     listener = object : TimerListener {
