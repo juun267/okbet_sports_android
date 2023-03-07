@@ -872,6 +872,9 @@
 
     <!--歷史紀錄start-->
     <string name="text_account_history_time">Transaction time</string>
+    <string name="text_account_history_number">Order no</string>
+    <string name="text_account_history_amount">Transaction amount</string>
+    <string name="text_account_history_balance">Balance</string>
 
     <string name="text_account_history_bet">Bet</string>
     <string name="text_account_history_recharge">Amount</string>
