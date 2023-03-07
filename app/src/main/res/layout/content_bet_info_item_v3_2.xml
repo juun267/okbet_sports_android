@@ -244,7 +244,7 @@
             <!--右部分-->
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="100dp"
-                android:layout_height="82dp">
+                android:layout_height="match_parent">
 
                 <Button
                     android:id="@+id/btnDelete"
