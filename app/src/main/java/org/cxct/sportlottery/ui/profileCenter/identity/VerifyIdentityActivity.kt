@@ -1,12 +1,9 @@
 package org.cxct.sportlottery.ui.profileCenter.identity
 
 import android.os.Bundle
-import androidx.core.app.ActivityCompat
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.index.config.VerifySwitchType
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
@@ -59,9 +56,6 @@ class VerifyIdentityActivity :
 
     override fun onBackPressed() {
         when (mNavController.currentDestination?.id) {
-            R.id.verifyIdentityFragment -> {
-                finish()
-            }
             R.id.credentialsFragment -> {
                 finish()
             }

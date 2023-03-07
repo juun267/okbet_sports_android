@@ -304,9 +304,6 @@ dependencies {
     //簡易封裝的Adapter
     implementation 'com.zhy:base-rvadapter:3.0.3'
 
-    //實名認證影像辨識套件
-    implementation 'com.zoloz.android.build:zolozkit:1.2.1'
-
     implementation 'com.github.JessYanCoding:AndroidAutoSize:v1.2.1'
 
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
@@ -318,7 +315,13 @@ dependencies {
     implementation 'com.github.promeg:tinypinyin:2.0.3'
     //appsflyer
     implementation 'com.appsflyer:af-android-sdk:6.9.0'
-    implementation 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer:v8.3.4-release-jitpack'
+//    implementation 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer:v8.3.4-release-jitpack'   // 全量包引入
+
+    // 基本功能需求引入
+    implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-java:v8.3.4-release-jitpack'
+    implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-arm64:v8.3.4-release-jitpack'
+    implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-armv7a:v8.3.4-release-jitpack'
+
     //firebase
     implementation platform('com.google.firebase:firebase-bom:31.2.2')
     implementation 'com.google.firebase:firebase-analytics-ktx'
