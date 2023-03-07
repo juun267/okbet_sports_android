@@ -357,8 +357,8 @@
     <string name="btn_copy">Kopya</string>
     <string name="title_qr_pay">Scan code payment：</string>
     <string name="title_hint_qr_pay">Scan bayad, kung anuman tanong, mangyaring makipag-ugnay sa customer service</string>
-    <string name="title_fee_rate">・Service fee：</string>
-    <string name="title_fee_amount">・Amount of Service fee：</string>
+    <string name="title_fee_rate">・Bayad sa serbisyo:</string>
+    <string name="title_fee_amount">・Halaga ng bayad:</string>
     <string name="title_rebate_rate">・Rebate：</string>
     <string name="title_rebate_amount">・Halaga ng rebate:</string>
     <string name="wx_recharge_hint">Mag-log in at suriin ang weChat account ay ginagamit sa deposito. Ang kumpanya ay hindi mananagot para sa deposito sa nag-expire na account!</string>
