@@ -110,9 +110,6 @@
             android:name=".ui.results.ResultsSettlementActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.profileCenter.sportRecord.BetRecordActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.helpCenter.HelpCenterActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -126,10 +123,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".ui.login.signIn.LoginActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.login.signIn.LoginOKActivity"
             android:screenOrientation="portrait"
@@ -173,9 +166,6 @@
             android:name=".ui.selflimit.SelfLimitActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity
-            android:name=".ui.profileCenter.AppearanceActivity"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.profileCenter.timezone.TimeZoneActivity"
             android:screenOrientation="portrait" />
