@@ -312,6 +312,7 @@ class MultiLanguagesApplication : Application() {
         const val UUID = "uuid"
         private var instance: MultiLanguagesApplication? = null
         lateinit var mInstance: MultiLanguagesApplication
+        const val isGooglePlayVersion = BuildConfig.FLAVOR.equals("google")
 
         private val loginSharedPref: SharedPreferences by lazy {
             mInstance.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)

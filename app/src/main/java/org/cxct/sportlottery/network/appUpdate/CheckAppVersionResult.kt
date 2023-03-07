@@ -19,4 +19,6 @@ data class CheckAppVersionResult(
     val storeURL: String?,
     @Json(name = "storeURL1")
     val storeURL1: String?,
+    @Json(name = "control_version")
+    val controlVersion: String?,
 )
