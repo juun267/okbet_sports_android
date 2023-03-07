@@ -25,7 +25,6 @@ import org.cxct.sportlottery.repository.ThirdGameRepository
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TimeUtil.DM_HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.MD_FORMAT
-import org.cxct.sportlottery.util.TimeUtil.MD_HMS_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT_2
 import org.cxct.sportlottery.util.TimeUtil.YMD_HMS_FORMAT
@@ -424,8 +423,9 @@ fun TextView.setMoneyColorWhite(profit: Double = 0.0) {
 
 
 //需顯示計時器 -> [1:第一节, 2:第二节, 6:上半场, 7:下半场, 13:第一节, 14:第二节, 15:第三节, 16:第四节, 106:加时赛上半场, 107:加时赛下半场]
+//31 半场状态不显示时间
 fun needCountStatus(status: Int?): Boolean {
-    return (status ?: 0) < 99
+    return (status ?: 0) < 99 || status != 31
 }
 
 fun EditText.countTextAmount(textAmount: (Int) -> Unit) {
