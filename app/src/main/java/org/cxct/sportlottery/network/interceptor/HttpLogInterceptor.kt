@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.network.interceptor
 
 import android.util.Log
-import com.google.common.net.HttpHeaders
 import okhttp3.Headers
 import okhttp3.Interceptor
 import okhttp3.Response
