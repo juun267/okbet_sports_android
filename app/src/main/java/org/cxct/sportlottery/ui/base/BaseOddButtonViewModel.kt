@@ -5,7 +5,9 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID
 import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID_DEVICE_CODE
@@ -115,6 +117,7 @@ abstract class BaseOddButtonViewModel(
     fun updateMatchBetListData(data: FastBetDataBean) {
         val oddId = data.odd.id
 //        Timber.e("oddId: $oddId")
+        if (SPUtil.getMarketSwitch()) return
         if (savedOddId == oddId) return
         savedOddId = oddId.orEmpty()
         if (data.matchType == MatchType.OUTRIGHT) {

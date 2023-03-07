@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.NetworkUtil
+import org.cxct.sportlottery.util.SPUtil
 import timber.log.Timber
 
 class VersionUpdateViewModel(
@@ -97,7 +98,10 @@ class VersionUpdateViewModel(
                     val result = response.body()
 
                     serverUrlStatusMap[serverUrl] = true //標記該伺服器已檢查過
-
+                    //当前版本是否处于控制
+                    var isVersonControl =
+                        result?.controlVersion?.split(",")?.contains(BuildConfig.VERSION_NAME)
+                    SPUtil.saveMarketSwitch(isVersonControl == true)
                     //已有獲取的最新版本資訊
                     if (appVersionChecked) {
                         return@launch
