@@ -1268,8 +1268,8 @@
     <string name="login_hint_account">Phone Number / Email</string>
     <string name="password_login">Password Login</string>
     <string name="or">Or</string>
-    <string name="login_privacy">By Signing up, you are confirming that you are above 21 years old, and agreed to our Privacy Policy and Terms &amp; Conditions.</string>
-    <string name="login_terms_conditions">Terms &amp; Conditions</string>
+    <string name="login_privacy">Agree to T&amp;C and Privacy Policy\n and confirm that I am at least 21 years old.</string>
+    <string name="login_terms_conditions">T&amp;C</string>
     <string name="login_privacy_policy">Privacy Policy</string>
     <string name="otp_login">Verification Code Login/Register</string>
     <string name="auth_login">Authorization Login</string>
@@ -1351,6 +1351,6 @@
     <string name="hint_transform_in_amount">Only supported the amount transferred from 0 to the platform account balance</string>
     <string name="account_balance_unenough">Platform account balance not enough</string>
     <string name="platform_user_money">Platform balance</string>
-    <string name="N589">Sign In With Google</string>
+    <string name="N589">Login with google</string>
     <string name="third_party">3rd party</string>
 </resources>

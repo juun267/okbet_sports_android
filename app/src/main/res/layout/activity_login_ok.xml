@@ -363,10 +363,13 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tvPrivacy"
+
+            <CheckBox
+                android:id="@+id/cbPrivacy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:checked="true"
+                android:button="@drawable/checkbox_style"
                 app:layout_constraintTop_toBottomOf="@id/lin_third"
                 android:layout_marginTop="13dp"
                 android:gravity="center"
@@ -380,7 +383,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                app:layout_constraintTop_toBottomOf="@id/tvPrivacy"
+                app:layout_constraintTop_toBottomOf="@id/cbPrivacy"
                 android:layout_marginTop="30dp">
 
                 <TextView

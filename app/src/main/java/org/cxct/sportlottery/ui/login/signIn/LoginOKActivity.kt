@@ -221,7 +221,8 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private fun setupAuthLogin() {
         btn_google.setOnClickListener {
-            AuthManager.authGoogle(this@LoginOKActivity)
+            if (binding.cbPrivacy.isChecked)
+                AuthManager.authGoogle(this@LoginOKActivity)
         }
 
         btn_facebook.setOnClickListener {
@@ -234,7 +235,10 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun setupPrivacy() {
-        binding.tvPrivacy.makeLinks(
+        binding.cbPrivacy.setOnCheckedChangeListener { buttonView, isChecked ->
+            viewModel.agreeChecked = isChecked
+        }
+        binding.cbPrivacy.makeLinks(
             Pair(
                 applicationContext.getString(R.string.login_privacy_policy),
                 View.OnClickListener {
@@ -245,7 +249,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                     )
                 })
         )
-        binding.tvPrivacy.makeLinks(
+        binding.cbPrivacy.makeLinks(
             Pair(
                 applicationContext.getString(R.string.login_terms_conditions),
                 View.OnClickListener {

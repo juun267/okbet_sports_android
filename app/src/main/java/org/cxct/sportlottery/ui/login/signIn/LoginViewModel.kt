@@ -97,6 +97,11 @@ class LoginViewModel(
         set(value) {
             loginRepository.isRememberPWD = value
         }
+    var agreeChecked = true
+        set(value) {
+            field = value
+            focusChangeCheckAllInputComplete()
+        }
 
     fun login(loginRequest: LoginRequest, originalPassword: String) {
         viewModelScope.launch {
@@ -341,7 +346,7 @@ class LoginViewModel(
                 return false
             }
         }
-        return true
+        return agreeChecked
     }
 
     private fun checkInputPair(data: LiveData<Pair<String?, Boolean>>): Boolean {
