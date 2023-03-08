@@ -20,7 +20,7 @@ data class CredentialCompleteData(
      * InProcess :身份证明过程正在进行中。
      * VoidCancelled :身份证明过程被取消。
      * VoidTimeout :身份证明过程超时。
-*/
+     */
     @Json(name = "ekycResult")
     val ekycResult: String?,
 
@@ -34,6 +34,7 @@ data class CredentialCompleteData(
     val extIdInfo: ExtIdInfo?, //面部相关信息
 ): Parcelable {
 
+    @Transient
     private val SUCCESS = "Success"
     fun isSuccessed(): Boolean {
         return SUCCESS == ekycResult && SUCCESS == result?.resultStatus

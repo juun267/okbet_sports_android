@@ -37,15 +37,36 @@
 -keep class com.qiniu.qplayer2ext.** {*;}
 
 #====== 网易滑块验证 ============ start
--keepattributes *Annotation*
--keep public class com.netease.nis.captcha.**{*;}
-
--keep public class android.webkit.**
-
--keepattributes SetJavaScriptEnabled
--keepattributes JavascriptInterface
-
--keepclassmembers class * {
-    @android.webkit.JavascriptInterface <methods>;
-}
+#-keepattributes *Annotation*
+#-keep public class com.netease.nis.captcha.**{*;}
+#
+#-keep public class android.webkit.**
+#
+#-keepattributes SetJavaScriptEnabled
+#-keepattributes JavascriptInterface
+#
+#-keepclassmembers class * {
+#    @android.webkit.JavascriptInterface <methods>;
+#}
 #====== 网易滑块验证 ============ end
+
+-keep public class org.cxct.sportlottery.databinding.* implements androidx.viewbinding.ViewBinding {
+    public static * inflate(android.view.LayoutInflater, android.view.ViewGroup, boolean);
+    public static * inflate(android.view.LayoutInflater);
+}
+
+#====== GSYVideoPlayer ============ start
+-keep class com.shuyu.gsyvideoplayer.video.** { *; }
+-dontwarn com.shuyu.gsyvideoplayer.video.**
+-keep class com.shuyu.gsyvideoplayer.video.base.** { *; }
+-dontwarn com.shuyu.gsyvideoplayer.video.base.**
+-keep class com.shuyu.gsyvideoplayer.utils.** { *; }
+-dontwarn com.shuyu.gsyvideoplayer.utils.**
+-keep class tv.danmaku.ijk.** { *; }
+-dontwarn tv.danmaku.ijk.**
+-keep class com.google.android.exoplayer2.** {*;}
+-keep interface com.google.android.exoplayer2.**
+
+-keep class com.shuyu.alipay.** {*;}
+-keep interface com.shuyu.alipay.**
+#====== GSYVideoPlayer ============ end

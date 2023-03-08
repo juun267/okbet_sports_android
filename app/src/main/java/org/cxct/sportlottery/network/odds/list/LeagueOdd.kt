@@ -16,7 +16,7 @@ data class LeagueOdd(
     @Json(name = "sort")
     val sort: Int?,
     @Json(name = "unfold")
-    private var unfold: Int? = FoldState.UNFOLD.code, // 服务端字段，不读取该状态
+    var unfold: Int? = FoldState.UNFOLD.code, // 服务端字段，不读取该状态
     @Json(name = "playCateNameMap")
     var playCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null,
 ) {
