@@ -6,7 +6,10 @@ import android.os.Build
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -216,8 +219,9 @@ object LoginRepository {
         return loginResponse
     }
 
-    suspend fun googleLogin(token: String): Response<LoginResult> {
-        val loginResponse = OneBoSportApi.indexService.googleLogin(LoginTokenRequest(token))
+    suspend fun googleLogin(token: String, inviteCode: String?): Response<LoginResult> {
+        val loginResponse = OneBoSportApi.indexService.googleLogin(LoginTokenRequest(token,
+            inviteCode = inviteCode))
 
         if (loginResponse.isSuccessful) {
             loginResponse.body()?.let {
@@ -228,8 +232,9 @@ object LoginRepository {
         return loginResponse
     }
 
-    suspend fun facebookLogin(token: String): Response<LoginResult> {
-        val loginResponse = OneBoSportApi.indexService.facebookLogin(LoginTokenRequest(token))
+    suspend fun facebookLogin(token: String, inviteCode: String?): Response<LoginResult> {
+        val loginResponse = OneBoSportApi.indexService.facebookLogin(LoginTokenRequest(token,
+            inviteCode = inviteCode))
 
         if (loginResponse.isSuccessful) {
             loginResponse.body()?.let {

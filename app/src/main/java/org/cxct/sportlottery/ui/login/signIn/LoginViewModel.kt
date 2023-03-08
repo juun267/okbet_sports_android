@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.login.*
 import org.cxct.sportlottery.network.index.logout.LogoutResult
@@ -143,7 +144,7 @@ class LoginViewModel(
         viewModelScope.launch {
             //預設存帳號
             doNetwork(androidContext) {
-                loginRepository.googleLogin(token)
+                loginRepository.googleLogin(token, inviteCode = Constants.getInviteCode())
             }?.let { result ->
                 userInfoRepository.getUserInfo()
                 _loginResult.postValue(result)
@@ -158,7 +159,7 @@ class LoginViewModel(
         viewModelScope.launch {
             //預設存帳號
             doNetwork(androidContext) {
-                loginRepository.facebookLogin(token)
+                loginRepository.facebookLogin(token, inviteCode = Constants.getInviteCode())
             }?.let { result ->
                 userInfoRepository.getUserInfo()
                 _loginResult.postValue(result)
