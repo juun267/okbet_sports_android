@@ -7,20 +7,49 @@
     <com.youth.banner.Banner
         android:id="@+id/banner"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        app:banner_loop_time="3000"
+        app:banner_infinite_loop="false"
+        app:banner_indicator_normal_width="8dp"
+        app:banner_indicator_height="6dp"
+        app:banner_indicator_selected_width="20dp"
+        app:banner_indicator_radius="3dp"
+        app:banner_indicator_space="8dp"
+        app:banner_indicator_normal_color="@color/color_CDD8EA"
+        app:banner_indicator_selected_color="@color/color_025BE8"
+        app:banner_indicator_gravity="center"
+        app:banner_indicator_marginBottom="120dp" />
 
-    <org.cxct.sportlottery.widget.CircleProgressBar
-        android:id="@+id/circle_progress"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:gravity="center"
-        android:textColor="#80cc33"
-        android:textSize="22sp"
+    <Button
+        android:id="@+id/btn_start"
+        android:layout_width="148dp"
+        android:layout_height="44dp"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_marginBottom="120dp"
+        android:background="@drawable/bg_blue_radius_8"
+        android:textSize="@dimen/textSize16sp"
+        android:textColor="@color/color_FFFFFF"
+        android:text="Start Now"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_skip"
+        android:layout_width="wrap_content"
+        android:layout_height="26dp"
+        android:minWidth="64dp"
+        android:gravity="center"
+        android:layout_marginTop="60dp"
+        android:layout_marginRight="20dp"
+        android:paddingHorizontal="13dp"
+        android:background="@drawable/bg_gray_radius_13"
+        android:textColor="@color/color_FFFFFF"
+        android:textSize="@dimen/textSize14sp"
         android:text="Skip"
-        app:progressBackColor="#e0e0e0"
-        app:progressColor="#80cc33"
-        app:progressWidth="16dp" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
