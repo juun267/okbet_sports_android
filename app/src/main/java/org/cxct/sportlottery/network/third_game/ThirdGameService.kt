@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.network.third_game
 
-import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.HOT_HANDICAP_LIST
 import org.cxct.sportlottery.network.Constants.HOT_LIVE_LIST
 import org.cxct.sportlottery.network.Constants.QUERY_FIRST_ORDERS

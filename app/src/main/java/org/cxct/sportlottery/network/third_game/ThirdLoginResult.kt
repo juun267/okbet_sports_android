@@ -1,7 +1,9 @@
 package org.cxct.sportlottery.network.third_game
 
+import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.common.BaseResult
 
+@JsonClass(generateAdapter = true)
 class ThirdLoginResult(
     override val code: Int,
     override val msg: String,

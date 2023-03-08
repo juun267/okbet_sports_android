@@ -14,7 +14,5 @@ data class WithdrawInfoResult(
     @Json(name = "success")
     override val success: Boolean,
     @Json(name = "t")
-    val info: Info?
+    val info: Any?
 ) : BaseResult()
-
-class Info
