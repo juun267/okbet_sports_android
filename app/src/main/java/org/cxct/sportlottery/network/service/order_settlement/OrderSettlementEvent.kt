@@ -13,7 +13,7 @@ data class OrderSettlementEvent(
     val sportBet: SportBet? //返回消息，正常消息： pong, 已过期： timeout
 ) : ServiceEventType
 
-
+@JsonClass(generateAdapter = true)
 data class SportBet(
     val uniqNo: String?,
     val orderNo: String?,
@@ -44,6 +44,7 @@ data class SportBet(
     val isChampionship: Int?, //0：普通投注，1：冠军投注
 )
 
+@JsonClass(generateAdapter = true)
 data class MatchOdds(
     val oddsId: String?,
     val matchId: String?,
