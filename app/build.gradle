@@ -44,6 +44,8 @@ android {
         resValue "string", "fb_login_protocol_scheme", "fb2339087372931297"
         resValue "string", "server_client_id", "1037678190731-qqog3vk9ndm5ovjsk7rpm4nqf5cbm071.apps.googleusercontent.com"
 
+        resConfigs "zh", "en", "vi", "phi", "xxhdpi"   //三方库只保留指定语言类型的资源 与 xxhdpi的图片资源
+
         //防止谷歌商店 删除包内的多语言等资源
         bundle {
             language {
@@ -335,6 +337,9 @@ dependencies {
     implementation 'com.facebook.android:facebook-login:latest.release'
     //https://developers.google.com/identity/sign-in/android/sign-in?hl=zh-cn
     implementation 'com.google.android.gms:play-services-auth:20.4.1'
+
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    implementation "com.alibaba:fastjson:1.2.73"
 
     //compose
 //    implementation 'androidx.activity:activity-compose:1.6.1'
