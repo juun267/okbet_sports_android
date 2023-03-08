@@ -1003,7 +1003,7 @@
     <string name="total_win_amount">Winning：</string>
     <string name="delete_bet">Delete</string>
     <string name="delete_bet_all">Delete All</string>
-    <string name="btn_login_bet">Log in before betting</string>
+    <string name="btn_login_bet">Login first</string>
     <string name="btn_remove_closed_selections">Remove closed selections</string>
     <string name="bet_info_list_bet">Betting</string>
     <string name="bet_info_bet">Stake</string>

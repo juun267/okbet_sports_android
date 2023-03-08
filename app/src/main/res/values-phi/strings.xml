@@ -386,7 +386,7 @@
     <string name="error_hashcode">Blockchain transaction ID format error</string>
     <string name="text_money_copy_success">Copy successfully</string>
     <string name="title_currency">Protocol/Currency</string>
-    <string name="title_choose_currency">Piliin ang Protocol/Currency</string>
+    <string name="title_choose_currency">Pumili ng Protocol/Currency</string>
     <string name="txv_recharge_count">Bilang ng mga deposito</string>
     <string name="edt_hint_crypto_pay_count">Quota %1$s ~ %2$s</string>
     <string name="hint_rate">・Halaga ng palitan：%1$s</string>
@@ -613,7 +613,7 @@
     <string name="bet_receipt_all_bet">Kabuuang halaga ng taya</string>
     <string name="third_game_vncp">CG Vietnam Lottery</string>
     <string name="third_game_leg">OKGames</string>
-    <string name="odds_button_name_y">Uo</string>
+    <string name="odds_button_name_y">Oo</string>
     <string name="odds_button_name_n">Hindi</string>
     <string name="odds_button_name_singular">Odd</string>
     <string name="odds_button_name_dual">Even</string>
@@ -949,10 +949,10 @@
     <string name="select_time">Mangyaring pumili ng oras</string>
 
     <!--region 20220714 新版投注單-->
-    <string name="bet_win">Win</string>
+    <string name="bet_win">Mapapanalo</string>
     <string name="bet_stake">Taya</string>
     <string name="total_capital">Stake：%s</string>
-    <string name="total_win_amount">Winning：</string>
+    <string name="total_win_amount">Mapapanalo：</string>
     <string name="delete_bet">Tanggalin</string>
     <string name="delete_bet_all">Delete lahat</string>
     <string name="btn_login_bet">Login muna</string>
@@ -1009,7 +1009,7 @@
     <string name="bet_receipt_bet_quota_with_sign">Taya</string>
     <string name="bet_receipt_win_quota_with_sign">Win</string>
     <string name="bet_receipt_bet_quota_with_sign_money">Taya：</string>
-    <string name="bet_receipt_win_quota_with_sign_max">Pinaka malaking mapapanalunan：</string>
+    <string name="bet_receipt_win_quota_with_sign_max">Mapapanalunan：</string>
 
     <string name="bet_record_single">Iisang string</string>
     <string name="bet_record_parlay">Multiple bets</string>
@@ -1020,7 +1020,7 @@
     <string name="cruel_write_off">Still delete</string>
     <string name="cancel_account">Mag-logout</string>
     <string name="match_analyze">Match analysis</string>
-    <string name="half">Kalahati</string>
+    <string name="half">Half</string>
     <string name="click_upload_id_photo">I-click para mag-upload ng ID</string>
     <string name="main_tab_sport">Sports</string>
     <string name="main_tab_betlist">Bet slip</string>
@@ -1057,7 +1057,7 @@
     <string name="forget_password">Nakalimutan ang password</string>
     <string name="member_name">Miyembro</string>
     <string name="home_recommend">Popular</string>
-    <string name="no_search_match">No matches found</string>
+    <string name="no_search_match">Walang nakitang laban</string>
     <string name="match_live">Live match</string>
     <string name="tiger_machine">Slot</string>
     <string name="hot_handicap">Hot Handicap</string>
@@ -1118,7 +1118,7 @@
     <string name="stacked_combination">Itago</string>
     <string name="bet_parlay">+Parlay</string>
     <string name="str_bet_parlay">Parlay</string>
-    <string name="bet_single">Single bet</string>
+    <string name="bet_single">Single</string>
     <string name="str_if_accept_odds_changes_title">Kung tatanggapin ang paliwanag ng mga posibilidad na baguhin</string>
     <string name="str_if_accept_odds_changes_des_subtitle">Dahil ang posibilidad ng event ay maaaring magbago anumang oras (lalo na sa live). Upang hayaan kang magkaroon ng mas magandang karanasan sa pagtaya. Maaari kang pumili mula sa sumusunod na tatlong paraan ng pagtaya.</string>
     <string name="str_if_accept_odds_changes_des1">1. Tanggapin ang anumang pagbabago sa odds - kapag pinili mo ang opsyong ito, bubuo kami ng bet slip para sa iyo ayon sa pinakabagong odds.</string>
