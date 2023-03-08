@@ -1,5 +1,8 @@
 package org.cxct.sportlottery.network.index.config
 
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
 data class Lhc(
     val blue: String?, //蓝
     val green: String?, //绿

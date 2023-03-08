@@ -72,9 +72,10 @@ android {
 
     buildTypes {
         debug {
-            minifyEnabled false
+            minifyEnabled true
             zipAlignEnabled true
             debuggable true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
             versionNameSuffix ".debug"
         }
@@ -234,7 +235,8 @@ dependencies {
     implementation 'com.makeramen:roundedimageview:2.3.0'
 
     //Moshi
-    implementation "com.squareup.moshi:moshi-kotlin:1.11.0"
+    implementation "com.squareup.moshi:moshi-kotlin:1.14.0"
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
 
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
