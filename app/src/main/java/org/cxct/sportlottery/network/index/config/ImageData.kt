@@ -1,5 +1,8 @@
 package org.cxct.sportlottery.network.index.config
 
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
 data class ImageData(
     val id: Int?, //图片id
     val imageLink: String?, //图片跳转地址(可空)
