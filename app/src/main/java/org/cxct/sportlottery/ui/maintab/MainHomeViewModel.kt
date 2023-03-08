@@ -76,6 +76,9 @@ class MainHomeViewModel(
     val homeGameData: LiveData<List<QueryGameEntryData>?>
         get() = _homeGameData
     private val _homeGameData = MutableLiveData<List<QueryGameEntryData>?>()
+    val elecGameData: LiveData<List<QueryGameEntryData>?>
+        get() = _elecGameData
+    private val _elecGameData = MutableLiveData<List<QueryGameEntryData>?>()
     val slotGameData: LiveData<List<QueryGameEntryData>?>
         get() = _slotGameData
     private val _slotGameData = MutableLiveData<List<QueryGameEntryData>?>()
@@ -458,8 +461,12 @@ class MainHomeViewModel(
                 )
             }
             result?.rows.let {
-                if (position==2){
-                    _slotGameData.postValue(it)
+                if (position==2) {
+                    if (gameType == 1) {
+                        _slotGameData.postValue(it)
+                    } else {
+                        _elecGameData.postValue(it)
+                    }
                 }else{
                     _homeGameData.postValue(it)
                 }
