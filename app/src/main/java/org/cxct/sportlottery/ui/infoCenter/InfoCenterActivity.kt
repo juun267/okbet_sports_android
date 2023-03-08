@@ -7,10 +7,7 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemClickListener
 import kotlinx.android.synthetic.main.activity_info_center.*
-import kotlinx.android.synthetic.main.activity_info_center.iv_scroll_to_top
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.infoCenter.InfoCenterData
@@ -97,7 +94,7 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        setStatusbar(R.color.color_232C4F_FFFFFF, true)
         viewModel.getMsgCount(MsgType.NOTICE_UNREAD)//未讀資料比數
         viewModel.getMsgCount(MsgType.NOTICE_READED)//已讀資料筆數
         setContentView(R.layout.activity_info_center)
