@@ -6,7 +6,7 @@
     <string name="unknown_error">Unknown error</string>
     <string name="error_reading_file">Error sa pagbasa ng file</string>
     <string name="message_guest_no_permission">Ang demo account ay hindi awtorisadong mag-access, mangyaring magparehistro muna</string>
-    <string name="message_socket_connect">Nag-time out ang koneksyon sa network, mangyaring kumonekta muli</string>
+    <string name="message_socket_connect">Nag-time out ang koneksyon sa network. Pakisubukang muli.</string>
     <string name="message_network_no_connect">Nag-time out ang koneksyon sa network. Pakisubukang muli.</string>
     <string name="message_network_timeout">Nag-time out ang koneksyon sa network. Pakisubukang muli.</string>
     <string name="error">error</string>
@@ -340,7 +340,7 @@
     <string name="title_address">Address：</string>
     <string name="title_deposit_money">Halaga ng deposito</string>
     <string name="title_payer">Account</string>
-    <string name="edt_hint_deposit_money">limit%1$s%2$s～%3$s</string>
+    <string name="edt_hint_deposit_money">limit %1$s%2$s～%3$s</string>
     <string name="edt_hint_payer">Pakilagay ang account</string>
     <string name="title_real_name">Tunay na pangalan</string>
     <string name="title_nick_name">Nickname</string>
@@ -387,10 +387,10 @@
     <string name="text_money_copy_success">Copy successfully</string>
     <string name="title_currency">Protocol/Currency</string>
     <string name="title_choose_currency">Pumili ng Protocol/Currency</string>
-    <string name="txv_recharge_count">Bilang ng mga deposito</string>
-    <string name="edt_hint_crypto_pay_count">Quota %1$s ~ %2$s</string>
+    <string name="txv_recharge_count">Halaga ng deposito</string>
+    <string name="edt_hint_crypto_pay_count">Limit %1$s ~ %2$s</string>
     <string name="hint_rate">・Halaga ng palitan：%1$s</string>
-    <string name="title_transaction_id">transaction ID</string>
+    <string name="title_transaction_id">Block chain trading ID</string>
     <string name="hint_transaction_id">Pakilagay ang inyong blockchain ID</string>
     <string name="hint_fee_rate">・Handling fee：%1$s</string>
     <string name="hint_fee_amount">・・Amount of Service fee：%1$s %2$s</string>
@@ -459,7 +459,7 @@
     <string name="hint_four_number_password">Paki lagay ang withdrawal password</string>
     <string name="hint_please_enter_withdraw_password">Paki lagay ang withdrawal password</string>
     <string name="add_credit_card">Mag-add ng bank card</string>
-    <string name="add_crypto_card">Mag-add ng virtual currency add</string>
+    <string name="add_crypto_card">Mag-add ng virtual currency add.</string>
     <string name="add_e_wallet">Mag-add ng eWallet bank</string>
     <string name="add_credit_or_virtual">Mag-add ng %1$s</string>
     <string name="create_bank">Bank of deposit</string>
@@ -536,7 +536,7 @@
     <string name="one_key_recovery">Bawiin</string>
     <string name="platform_account_money">Balanse sa platform</string>
     <string name="one_button_click_will_recycle_all_money_into_account">Bawiin ang lahat ng nailipat na balanse</string>
-    <string name="transfer_money_minimum">Quota %s o higit pa</string>
+    <string name="transfer_money_minimum">Limit %s o higit pa</string>
     <string name="confirm_transform">Kumpirmahin ang conversion</string>
     <string name="plat_money">Platform balance</string>
     <string name="transfer_money_succeed">Matagumpay na na-convert ang quota</string>
@@ -981,7 +981,7 @@
     <string name="kyc_contact_service_hilight">Online na serbisyo</string>
     <string name="kyc_verify_first">Mangyaring gawin muna ang tunay na pangalan na pag-verify.</string>
     <string name="kyc_go_verify">Pumunta sa certification ngayon</string>
-    <string name="kyc_you_wait">请点击"在线客服"按钮, 进行视频通话完成实名认证。</string>
+    <string name="kyc_you_wait">Unable to check the "Tagumpay sa pag-upload" popup modal due to error.</string>
     <string name="kyc_verify_successful">Nakumpleto mo na ang tunay na pag-verify ng pangalan！</string>
     <string name="kyc_unverified">Hindi na-verify</string>
     <string name="kyc_passed">Pumasa</string>
