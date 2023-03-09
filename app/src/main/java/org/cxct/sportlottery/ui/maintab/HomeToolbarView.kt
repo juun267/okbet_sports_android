@@ -133,7 +133,8 @@ class HomeToolbarView: LinearLayout {
             ellipsize = TextUtils.TruncateAt.END
             gravity = Gravity.CENTER
             textSize = 14f
-            setText(R.string.btn_login)
+            text =
+                "${resources.getString(R.string.btn_login)} / ${resources.getString(R.string.btn_register)}"
             val padding = 10.dp
             setPadding(padding, 0, padding, 0)
             setBackgroundResource(R.drawable.bg_blue_radius_15)
@@ -159,8 +160,6 @@ class HomeToolbarView: LinearLayout {
     }
 
     private fun setupLogin() {
-        tvLogin.text = "${resources.getString(R.string.btn_login)} / ${resources.getString(R.string.btn_register)}"
-
         if (viewModel.isLogin.value == true) {
             loginLayout.gone()
             if (userModelEnable) {
