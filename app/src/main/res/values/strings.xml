@@ -1351,6 +1351,6 @@
     <string name="hint_transform_in_amount">Only supported the amount transferred from 0 to the platform account balance</string>
     <string name="account_balance_unenough">Platform account balance not enough</string>
     <string name="platform_user_money">Platform balance</string>
-    <string name="N589">Sign In With Google</string>
+    <string name="N589">Login with google</string>
     <string name="third_party">3rd party</string>
 </resources>
