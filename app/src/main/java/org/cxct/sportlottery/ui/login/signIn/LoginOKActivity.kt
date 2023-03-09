@@ -436,7 +436,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     fun setupRecommendCodeVisible() {
         binding.etRecommendCode.isVisible =
-            viewModel.loginType == LOGIN_TYPE_CODE && viewModel.checkUserExist.value == true
+            viewModel.loginType == LOGIN_TYPE_CODE && viewModel.checkUserExist.value == false
     }
 
 }
