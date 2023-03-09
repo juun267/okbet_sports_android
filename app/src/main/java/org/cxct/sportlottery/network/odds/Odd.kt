@@ -92,6 +92,7 @@ data class Odd(
 
     var leagueExpanded: Boolean = true //所屬MatchOdd是否為展開
 
+    @Transient
     override val childNode: MutableList<BaseNode>? = null
 
     // 列表的父节点

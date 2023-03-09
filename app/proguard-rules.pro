@@ -84,3 +84,14 @@
     <init>(java.lang.Throwable);
 }
 #====== EventBus ============ end
+
+-keep class com.google.android.material.bottomnavigation.BottomNavigationItemView {*;}
+-keep class com.google.android.material.bottomnavigation.BottomNavigationView {*;}
+-keep class com.google.android.material.bottomnavigation.BottomNavigationMenuView {*;}
+
+# 所有的类都不混淆（不得已，不要使用）
+#-keep class ** { *; }
+
+-keep @org.cxct.sportlottery.common.KeepNotProguard class * {*;}
+-keep class * { @org.cxct.sportlottery.common.KeepNotProguard <fields>; }
+-keepclassmembers class * { @org.cxct.sportlottery.common.KeepNotProguard <methods>; }
