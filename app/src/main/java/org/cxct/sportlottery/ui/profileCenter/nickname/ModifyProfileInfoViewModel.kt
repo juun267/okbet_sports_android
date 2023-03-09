@@ -7,9 +7,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.user.nickname.NicknameRequest
-import org.cxct.sportlottery.network.user.nickname.NicknameResult
 import org.cxct.sportlottery.network.user.setWithdrawInfo.WithdrawInfoRequest
 import org.cxct.sportlottery.network.user.setWithdrawInfo.WithdrawInfoResult
 import org.cxct.sportlottery.repository.*
@@ -33,7 +33,7 @@ class ModifyProfileInfoViewModel(
 ) {
 
     private val _loading = MutableLiveData<Boolean>()
-    private val _nicknameResult = MutableLiveData<NicknameResult?>()
+    private val _nicknameResult = MutableLiveData<NetResult?>()
     private val _withdrawInfoResult = MutableLiveData<WithdrawInfoResult?>()
     private val _fullNameErrorMsg = MutableLiveData<String>()
     private val _qqErrorMsg = MutableLiveData<String>()
@@ -58,7 +58,7 @@ class ModifyProfileInfoViewModel(
         get() = _weChatErrorMsg
     val nickNameErrorMsg: LiveData<String>
         get() = _nickNameErrorMsg
-    val nicknameResult: LiveData<NicknameResult?>
+    val nicknameResult: LiveData<NetResult?>
         get() = _nicknameResult
     val withdrawInfoResult: LiveData<WithdrawInfoResult?>
         get() = _withdrawInfoResult

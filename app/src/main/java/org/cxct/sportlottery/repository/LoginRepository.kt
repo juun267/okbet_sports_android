@@ -12,12 +12,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.db.entity.UserInfo
+import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.index.checktoken.CheckTokenResult
 import org.cxct.sportlottery.network.index.login.*
 import org.cxct.sportlottery.network.index.login_for_guest.LoginForGuestRequest
 import org.cxct.sportlottery.network.index.logout.LogoutRequest
-import org.cxct.sportlottery.network.index.logout.LogoutResult
 import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.network.user.authbind.AuthBindResult
 import org.cxct.sportlottery.util.*
@@ -279,14 +278,14 @@ object LoginRepository {
         updateUserInfo(loginData)
     }
 
-    suspend fun sendLoginDeviceSms(token: String): Response<LogoutResult> {
+    suspend fun sendLoginDeviceSms(token: String): Response<NetResult> {
         return OneBoSportApi.indexService.sendLoginDeviceSms(token)
     }
 
     suspend fun validateLoginDeviceSms(
         token: String,
         validateLoginDeviceSmsRequest: ValidateLoginDeviceSmsRequest,
-    ): Response<LogoutResult> {
+    ): Response<NetResult> {
         return OneBoSportApi.indexService.validateLoginDeviceSms(token,
             validateLoginDeviceSmsRequest)
     }
@@ -332,7 +331,7 @@ object LoginRepository {
         }
     }
 
-    suspend fun checkToken(): Response<CheckTokenResult> {
+    suspend fun checkToken(): Response<NetResult> {
         val checkTokenResponse = OneBoSportApi.indexService.checkToken()
 
         if (checkTokenResponse.isSuccessful) {
@@ -350,11 +349,11 @@ object LoginRepository {
         return checkTokenResponse
     }
 
-    suspend fun checkIsUserAlive(): Response<CheckTokenResult> {
+    suspend fun checkIsUserAlive(): Response<NetResult> {
         return OneBoSportApi.indexService.checkToken()
     }
 
-    suspend fun logoutAPI(): Response<LogoutResult> {
+    suspend fun logoutAPI(): Response<NetResult> {
         _isLogin.value = false
         val emptyList = mutableListOf<String>()
         MultiLanguagesApplication.saveSearchHistory(emptyList)

@@ -25,17 +25,15 @@ import org.cxct.sportlottery.network.Constants.RESET_FORGET_PASSWORD_BY_EMAIL
 import org.cxct.sportlottery.network.Constants.SEND_EMAIL_FORGET
 import org.cxct.sportlottery.network.Constants.SEND_SMS_FORGET
 import org.cxct.sportlottery.network.Constants.VALIDATE_USER
+import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
-import org.cxct.sportlottery.network.index.checktoken.CheckTokenResult
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.index.forgetPassword.*
 import org.cxct.sportlottery.network.index.login.*
 import org.cxct.sportlottery.network.index.login_for_guest.LoginForGuestRequest
 import org.cxct.sportlottery.network.index.logout.LogoutRequest
-import org.cxct.sportlottery.network.index.logout.LogoutResult
 import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.network.index.sendSms.SmsRequest
-import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.network.user.authbind.AuthBindResult
@@ -50,16 +48,16 @@ interface IndexService {
     suspend fun login(@Body loginRequest: LoginRequest): Response<LoginResult>
 
     @POST(INDEX_SEND_LOGIN_DEVICE_SMS)
-    suspend fun sendLoginDeviceSms(@Header("x-session-token") token: String): Response<LogoutResult>
+    suspend fun sendLoginDeviceSms(@Header("x-session-token") token: String): Response<NetResult>
 
     @POST(INDEX_VALIDATE_LOGIN_DEVICE_SMS)
     suspend fun validateLoginDeviceSms(
         @Header("x-session-token") token: String,
         @Body validateLoginDeviceSmsRequest: ValidateLoginDeviceSmsRequest,
-    ): Response<LogoutResult>
+    ): Response<NetResult>
 
     @POST(INDEX_LOGOUT)
-    suspend fun logout(@Body logoutRequest: LogoutRequest): Response<LogoutResult>
+    suspend fun logout(@Body logoutRequest: LogoutRequest): Response<NetResult>
 
     @GET(INDEX_CONFIG)
     suspend fun getConfig(): Response<ConfigResult>
@@ -71,13 +69,13 @@ interface IndexService {
     suspend fun register(@Body registerRequest: RegisterRequest): Response<LoginResult>
 
     @POST(INDEX_SEND_SMS)
-    suspend fun sendSms(@Body smsRequest: SmsRequest): Response<SmsResult>
+    suspend fun sendSms(@Body smsRequest: SmsRequest): Response<NetResult>
 
     @GET(Constants.INDEX_CHECK_EXIST)
     suspend fun checkAccountExist(@Path("userName") userName: String): Response<CheckAccountResult>
 
     @POST(INDEX_CHECK_TOKEN)
-    suspend fun checkToken(): Response<CheckTokenResult>
+    suspend fun checkToken(): Response<NetResult>
 
     @POST(LOGIN_FOR_GUEST)
     suspend fun loginForGuest(@Body loginForGuestRequest: LoginForGuestRequest): Response<LoginResult>
@@ -86,7 +84,7 @@ interface IndexService {
     suspend fun cancelAccount(@Path("password") password: String ):Response<CancelAccountResult>
 
     @POST(FORGET_PASSWORD_SMS)
-    suspend fun forgetPasswordSMS(@Body smsRequest: ForgetPasswordSmsRequest): Response<ForgetSmsResult>
+    suspend fun forgetPasswordSMS(@Body smsRequest: ForgetPasswordSmsRequest): Response<NetResult>
 
     @POST(RESET_FORGET_PASSWORD)
     suspend fun resetPassWord(@Body resetPasswordRequest: ResetPasswordRequest): Response<ResetPasswordResult>
@@ -101,7 +99,7 @@ interface IndexService {
     suspend fun sendEmailForget(@Body params: Map<String, String>): Response<SendSmsResult>
 
     @POST(FORGET_PASSWORD_VALIDATE_EMAIL)
-    suspend fun validateEmailCode(@Body params: Map<String, String>): Response<ForgetSmsResult>
+    suspend fun validateEmailCode(@Body params: Map<String, String>): Response<NetResult>
 
     @POST(VALIDATE_USER)
     suspend fun checkValidateUser(@Body sendSmsRequest: ValidateUserRequest): Response<ValidateUserResult>
@@ -126,7 +124,7 @@ interface IndexService {
 
 
     @POST(LOGIN_OR_REG_SEND_VALIDCODE)
-    suspend fun loginOrRegSendValidCode(@Body loginCodeRequest: LoginCodeRequest): Response<SmsResult>
+    suspend fun loginOrRegSendValidCode(@Body loginCodeRequest: LoginCodeRequest): Response<NetResult>
 
     @POST(FACEBOOK_LOGIN)
     suspend fun facebookLogin(@Body loginTokenRequest: LoginTokenRequest): Response<LoginResult>

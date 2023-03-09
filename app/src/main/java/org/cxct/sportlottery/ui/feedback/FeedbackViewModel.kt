@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.feedback.*
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
@@ -31,9 +32,9 @@ class FeedbackViewModel(
     val allStatusTag = "ALL_STATUS"
 
     //API回傳成功
-    val feedBackBaseResult: LiveData<Event<FeedBackBaseResult>>
+    val feedBackBaseResult: LiveData<Event<NetResult>>
         get() = _feedBackBaseResult
-    private var _feedBackBaseResult = MutableLiveData<Event<FeedBackBaseResult>>()
+    private var _feedBackBaseResult = MutableLiveData<Event<NetResult>>()
 
     //Loading
     val isLoading: LiveData<Boolean>

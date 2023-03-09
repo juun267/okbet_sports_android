@@ -14,6 +14,7 @@ import org.cxct.sportlottery.network.Constants.THIRD_GET_ALL_BALANCE
 import org.cxct.sportlottery.network.Constants.THIRD_LOGIN
 import org.cxct.sportlottery.network.Constants.THIRD_QUERY_TRANSFERS
 import org.cxct.sportlottery.network.Constants.THIRD_TRANSFER
+import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.third_game.money_transfer.GetAllBalanceResult
 import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersRequest
 import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersResult
@@ -36,7 +37,7 @@ interface ThirdGameService {
 
     @GET(THIRD_ALL_TRANSFER_OUT)
     suspend fun allTransferOut(
-    ): Response<BlankResult>
+    ): Response<NetResult>
 
     @GET(THIRD_GAMES)
     suspend fun getThirdGames(
@@ -47,7 +48,7 @@ interface ThirdGameService {
         @Path("outPlat") outPlat: String,
         @Path("inPlat") inPlat: String,
         @Query("amount") amount: Long
-    ): Response<BlankResult>
+    ): Response<NetResult>
 
     @POST(THIRD_QUERY_TRANSFERS)
     suspend fun queryTransfers(
@@ -57,14 +58,14 @@ interface ThirdGameService {
     @GET(THIRD_AUTO_TRANSFER)
     suspend fun autoTransfer(
         @Path("inPlat") inPlat: String?
-    ): Response<AutoTransferResult>
+    ): Response<NetResult>
 
     @GET(THIRD_LOGIN)
     suspend fun thirdLogin(
         @Path("firmType") firmType: String?,
         @Query("gameCode") gameCode: String?,
         @Query("loginSrc") loginSrc: Int = 2, //登录来源（0：WEB, 1：MOBILE_BROWSER, 2：ANDROID, 3：IOS）
-    ): Response<ThirdLoginResult>
+    ): Response<NetResult>
 
     @POST(QUERY_FIRST_ORDERS)
     suspend fun queryFirstOrders(

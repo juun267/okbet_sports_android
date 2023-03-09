@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.repository
 
+import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.feedback.*
 import retrofit2.Response
@@ -10,11 +11,11 @@ class FeedbackRepository {
         return OneBoSportApi.feedbackService.getFbQueryList(feedbackListRequest)
     }
 
-    suspend fun fbSave(feedbackSaveRequest: FeedbackSaveRequest): Response<FeedBackBaseResult> {
+    suspend fun fbSave(feedbackSaveRequest: FeedbackSaveRequest): Response<NetResult> {
         return OneBoSportApi.feedbackService.fbSave(feedbackSaveRequest)
     }
 
-    suspend fun fbReply(feedbackReplyRequest: FeedbackReplyRequest): Response<FeedBackBaseResult> {
+    suspend fun fbReply(feedbackReplyRequest: FeedbackReplyRequest): Response<NetResult> {
         return OneBoSportApi.feedbackService.fbReply(feedbackReplyRequest)
     }
 

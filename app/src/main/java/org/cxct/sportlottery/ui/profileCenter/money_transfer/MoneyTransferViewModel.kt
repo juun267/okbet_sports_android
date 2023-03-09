@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.third_game.BlankResult
 import org.cxct.sportlottery.network.third_game.money_transfer.GameData
 import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersRequest
 import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersResult
@@ -84,10 +84,10 @@ class MoneyTransferViewModel(
     val recordOutPlatSheetList: LiveData<List<StatusSheetData>>
         get() = _recordOutPlatSheetList
 
-    val recycleAllMoneyResult: LiveData<Event<BlankResult?>>
+    val recycleAllMoneyResult: LiveData<Event<NetResult?>>
         get() = _recycleAllMoneyResult
 
-    val transferResult: LiveData<Event<BlankResult?>>
+    val transferResult: LiveData<Event<NetResult?>>
         get() = _transferResult
 
     val queryTransfersResult: LiveData<QueryTransfersResult>
@@ -110,8 +110,8 @@ class MoneyTransferViewModel(
     private val _loading = MutableLiveData<Boolean>()
     private val _toolbarName = MutableLiveData<String>()
     private var _allBalanceResultList = MutableLiveData<List<GameData>>()
-    private var _recycleAllMoneyResult = MutableLiveData<Event<BlankResult?>>()
-    private var _transferResult = MutableLiveData<Event<BlankResult?>>()
+    private var _recycleAllMoneyResult = MutableLiveData<Event<NetResult?>>()
+    private var _transferResult = MutableLiveData<Event<NetResult?>>()
     private var _queryTransfersResult = MutableLiveData<QueryTransfersResult>()
 
     fun showTitleBar(visible: Boolean) {
