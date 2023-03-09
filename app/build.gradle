@@ -277,6 +277,8 @@ dependencies {
 
     //glide 處理圖片加載(支援.gif檔)
     implementation 'com.github.bumptech.glide:glide:4.11.0'
+//    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+//    implementation 'jp.wasabeef:glide-transformations:4.3.0'
 
     //WebSocket
     implementation project(':stomp_protocol_android')

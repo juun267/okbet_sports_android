@@ -804,7 +804,14 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 betParlayListRefactorAdapter?.hasParlayList = true
                 betParlayListRefactorAdapter?.parlayList = it
             }
-            binding.clParlayList.requestLayout()
+
+            if(isOpen){
+                betParlayListRefactorAdapter?.let { it1 ->
+                    BetListRcvUtil.setWrapHeight(binding.rvParlayList,
+                        it1
+                    )
+                }
+            }
         }
 
         viewModel.betParlaySuccess.observe(viewLifecycleOwner) {

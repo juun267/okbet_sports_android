@@ -172,13 +172,13 @@
             android:id="@+id/llViewContent"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="11dp"
             android:background="@color/color_666666"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:visibility="visible"
             app:layout_constraintTop_toBottomOf="@+id/tv_match"
-            app:layout_goneMarginTop="10dp">
+            app:layout_goneMarginTop="11dp">
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <View
