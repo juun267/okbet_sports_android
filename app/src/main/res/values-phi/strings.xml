@@ -538,7 +538,7 @@
     <string name="one_button_click_will_recycle_all_money_into_account">Bawiin ang lahat ng nailipat na balanse</string>
     <string name="transfer_money_minimum">Quota %s o higit pa</string>
     <string name="confirm_transform">Kumpirmahin ang conversion</string>
-    <string name="plat_money">Platform balance</string>
+    <string name="plat_money">Balanse sa platform</string>
     <string name="transfer_money_succeed">Matagumpay na na-convert ang quota</string>
     <string name="third_game_df">Defeng Pangingisda</string>
     <string name="third_game_sbty">Sabah Sports</string>
