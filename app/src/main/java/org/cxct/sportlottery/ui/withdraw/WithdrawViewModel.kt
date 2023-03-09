@@ -9,18 +9,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bank.add.BankAddRequest
-import org.cxct.sportlottery.network.bank.add.BankAddResult
 import org.cxct.sportlottery.network.bank.delete.BankDeleteRequest
-import org.cxct.sportlottery.network.bank.delete.BankDeleteResult
 import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.bank.my.BankMyResult
 import org.cxct.sportlottery.network.bettingStation.AreaAll
 import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.network.money.config.*
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
-import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.network.withdraw.uwcheck.CheckList
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
@@ -67,20 +65,20 @@ class WithdrawViewModel(
         get() = _moneyCardList
     private var _moneyCardList = MutableLiveData<MyMoneyCard>()
 
-    val bankAddResult: LiveData<BankAddResult>
+    val bankAddResult: LiveData<NetResult>
         get() = _bankAddResult
-    private var _bankAddResult = MutableLiveData<BankAddResult>()
+    private var _bankAddResult = MutableLiveData<NetResult>()
 
-    val bankDeleteResult: LiveData<BankDeleteResult>
+    val bankDeleteResult: LiveData<NetResult>
         get() = _bankDeleteResult
-    private var _bankDeleteResult = MutableLiveData<BankDeleteResult>()
+    private var _bankDeleteResult = MutableLiveData<NetResult>()
 
-    val withdrawAddResult: LiveData<WithdrawAddResult>
+    val withdrawAddResult: LiveData<NetResult>
         get() = _withdrawAddResult
-    private var _withdrawAddResult = MutableLiveData<WithdrawAddResult>()
-    val withdrawAddResultData: LiveData<WithdrawAddResult>
+    private var _withdrawAddResult = MutableLiveData<NetResult>()
+    val withdrawAddResultData: LiveData<NetResult>
         get() = _withdrawAddResultData
-    private var _withdrawAddResultData = MutableLiveData<WithdrawAddResult>()
+    private var _withdrawAddResultData = MutableLiveData<NetResult>()
 
     //獲取資金設定
     val rechargeConfigs: LiveData<MoneyRechCfgData>
@@ -1040,7 +1038,7 @@ class WithdrawViewModel(
         _withdrawAmountMsg.value = ""
         _withdrawPasswordMsg.value = ""
         _withdrawAppointmentMsg.value = ""
-        _withdrawAddResult = MutableLiveData<WithdrawAddResult>()
+        _withdrawAddResult = MutableLiveData<NetResult>()
     }
 
     private fun loading() {

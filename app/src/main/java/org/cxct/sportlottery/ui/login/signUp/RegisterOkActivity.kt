@@ -35,8 +35,8 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityRegisterOkBinding
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.index.login.LoginResult
-import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
@@ -1491,7 +1491,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         }
     }
 
-    private fun updateUiWithResult(smsResult: SmsResult?) {
+    private fun updateUiWithResult(smsResult: NetResult?) {
         binding.btnSendSms.isEnabled = true
         if (smsResult?.success == true) {
             showSmeTimer300()

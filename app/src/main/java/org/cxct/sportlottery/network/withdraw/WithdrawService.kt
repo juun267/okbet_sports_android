@@ -6,9 +6,8 @@ import org.cxct.sportlottery.network.Constants.VALIDATE_TWO_FACTOR
 import org.cxct.sportlottery.network.Constants.WITHDRAW_ADD
 import org.cxct.sportlottery.network.Constants.WITHDRAW_LIST
 import org.cxct.sportlottery.network.Constants.WITHDRAW_UW_CHECK
-import org.cxct.sportlottery.network.common.BaseSecurityCodeResult
+import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
-import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListRequest
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListResult
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
@@ -22,7 +21,7 @@ interface WithdrawService {
     @POST(WITHDRAW_ADD)
     suspend fun addWithdraw(
         @Body withdrawAddRequest: WithdrawAddRequest
-    ): Response<WithdrawAddResult>
+    ): Response<NetResult>
 
     @POST(WITHDRAW_LIST)
     suspend fun getWithdrawList(
@@ -33,14 +32,14 @@ interface WithdrawService {
     suspend fun getWithdrawUwCheck(): Response<WithdrawUwCheckResult>
 
     @GET(GET_TWO_FACTOR_STATUS)
-    suspend fun getTwoFactorStatus(): Response<BaseSecurityCodeResult>
+    suspend fun getTwoFactorStatus(): Response<NetResult>
 
     @POST(SEND_TWO_FACTOR)
-    suspend fun sendTwoFactor(): Response<BaseSecurityCodeResult>
+    suspend fun sendTwoFactor(): Response<NetResult>
 
     @POST(VALIDATE_TWO_FACTOR)
     suspend fun validateTwoFactor(
         @Body validateTwoFactorRequest: ValidateTwoFactorRequest
-    ): Response<BaseSecurityCodeResult>
+    ): Response<NetResult>
 
 }

@@ -78,15 +78,6 @@ class RequestManager private constructor(context: Context) {
         .add(KotlinJsonAdapterFactory())
         .add(NullValueAdapter())
         .build()
-        .apply {
-            adapter<Map<String, CateDetailData>>(
-                Types.newParameterizedType(
-                    MutableMap::class.java,
-                    String::class.java,
-                    CateDetailData::class.java
-                )
-            )
-        }
 
     init {
         retrofit = createRetrofit(Constants.getBaseUrl())

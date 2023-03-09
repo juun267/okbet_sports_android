@@ -10,13 +10,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.infoCenter.InfoCenterRequest
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.Item
-import org.cxct.sportlottery.network.third_game.ThirdLoginResult
 import org.cxct.sportlottery.network.third_game.third_games.GameCategory
 import org.cxct.sportlottery.network.third_game.third_games.GameFirmValues
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
@@ -225,7 +225,7 @@ class MainViewModel(
             getMoney() //金額有變動，通知刷新
     }
 
-    private suspend fun thirdGameLogin(gameData: ThirdDictValues): ThirdLoginResult? {
+    private suspend fun thirdGameLogin(gameData: ThirdDictValues): NetResult? {
         return doNetwork(androidContext) {
             OneBoSportApi.thirdGameService.thirdLogin(gameData.firmType, gameData.gameCode)
         }

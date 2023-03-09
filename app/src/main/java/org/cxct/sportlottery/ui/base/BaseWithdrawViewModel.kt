@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.common.BaseSecurityCodeResult
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.repository.BetInfoRepository
@@ -62,9 +62,9 @@ abstract class BaseWithdrawViewModel(
     val showPhoneNumberMessageDialog = withdrawRepository.hasPhoneNumber
 
     //發送簡訊碼之後60s無法再發送
-    val twoFactorResult: LiveData<BaseSecurityCodeResult?>
+    val twoFactorResult: LiveData<NetResult?>
         get() = _twoFactorResult
-    private val _twoFactorResult = MutableLiveData<BaseSecurityCodeResult?>()
+    private val _twoFactorResult = MutableLiveData<NetResult?>()
 
     //錯誤提示
     val errorMessageDialog: LiveData<String?>

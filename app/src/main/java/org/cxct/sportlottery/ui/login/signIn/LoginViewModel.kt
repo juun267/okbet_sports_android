@@ -9,10 +9,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.login.*
-import org.cxct.sportlottery.network.index.logout.LogoutResult
-import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.*
@@ -34,13 +33,13 @@ class LoginViewModel(
         get() = _loginFormState
     val loginResult: LiveData<LoginResult>
         get() = _loginResult
-    val loginSmsResult: LiveData<LogoutResult>
+    val loginSmsResult: LiveData<NetResult>
         get() = _loginSmsResult
     val validCodeResult: LiveData<ValidCodeResult?>
         get() = _validCodeResult
-    val msgCodeResult: LiveData<SmsResult?>
+    val msgCodeResult: LiveData<NetResult?>
         get() = _msgCodeResult
-    val validResult: LiveData<LogoutResult>
+    val validResult: LiveData<NetResult>
         get() = _validResult
     val isLoading: LiveData<Boolean> //使用者餘額
         get() = _isLoading
@@ -52,10 +51,10 @@ class LoginViewModel(
     private val _isLoading = MutableLiveData<Boolean>()
     private val _loginFormState = MutableLiveData<LoginFormState>()
     private val _loginResult = MutableLiveData<LoginResult>()
-    private val _loginSmsResult = MutableLiveData<LogoutResult>()
+    private val _loginSmsResult = MutableLiveData<NetResult>()
     private val _validCodeResult = MutableLiveData<ValidCodeResult?>()
-    private val _validResult = MutableLiveData<LogoutResult>()
-    private val _msgCodeResult = MutableLiveData<SmsResult?>()
+    private val _validResult = MutableLiveData<NetResult>()
+    private val _msgCodeResult = MutableLiveData<NetResult?>()
     private val _inviteCodeMsg = MutableLiveData<String?>()
     private val _checkUserExist = MutableLiveData<Boolean>()
 

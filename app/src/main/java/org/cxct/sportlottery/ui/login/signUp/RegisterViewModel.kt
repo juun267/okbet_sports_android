@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.OneBoSportApi.bettingStationService
 import org.cxct.sportlottery.network.index.chechBetting.CheckBettingResult
@@ -17,7 +18,6 @@ import org.cxct.sportlottery.network.index.config.NationCurrency
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.network.index.sendSms.SmsRequest
-import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.network.uploadImg.UploadImgResult
@@ -119,7 +119,7 @@ class RegisterViewModel(
     val validCodeResult: LiveData<ValidCodeResult?>
         get() = _validCodeResult
 
-    val smsResult: LiveData<SmsResult?>
+    val smsResult: LiveData<NetResult?>
         get() = _smsResult
     val loginForGuestResult: LiveData<LoginResult>
         get() = _loginForGuestResult
@@ -172,7 +172,7 @@ class RegisterViewModel(
     private val _registerEnable = MutableLiveData<Boolean>()
 
     private val _validCodeResult = MutableLiveData<ValidCodeResult?>()
-    private val _smsResult = MutableLiveData<SmsResult?>()
+    private val _smsResult = MutableLiveData<NetResult?>()
     private val _loginForGuestResult = MutableLiveData<LoginResult>()
 
     private val _cbAgreeAllChecked = MutableLiveData<Boolean?>()

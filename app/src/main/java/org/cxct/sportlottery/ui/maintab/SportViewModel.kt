@@ -13,6 +13,7 @@ import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.OddSpreadForSCO
+import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.common.*
@@ -44,7 +45,6 @@ import org.cxct.sportlottery.network.sport.coupon.SportCouponMenuResult
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.network.sport.query.*
 import org.cxct.sportlottery.network.sport.query.Play
-import org.cxct.sportlottery.network.third_game.ThirdLoginResult
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.network.today.MatchCategoryQueryRequest
 import org.cxct.sportlottery.network.today.MatchCategoryQueryResult
@@ -1780,7 +1780,7 @@ class SportViewModel(
         }
     }
 
-    private suspend fun thirdGameLogin(gameData: ThirdDictValues): ThirdLoginResult? {
+    private suspend fun thirdGameLogin(gameData: ThirdDictValues): NetResult? {
         return doNetwork(androidContext) {
             OneBoSportApi.thirdGameService.thirdLogin(gameData.firmType, gameData.gameCode)
         }
