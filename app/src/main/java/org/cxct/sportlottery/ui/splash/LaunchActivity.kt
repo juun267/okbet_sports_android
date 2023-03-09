@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.gyf.immersionbar.ImmersionBar
+import com.tencent.mmkv.MMKV
 import com.youth.banner.Banner
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
@@ -27,13 +28,9 @@ import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
  */
 class LaunchActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
-    private val imageUrls = listOf(
-        "https://jira.phgogogw.com/secure/attachment/24551/image-2023-02-17-18-41-01-001.png",
-        "https://jira.phgogogw.com/secure/thumbnail/27629/_thumb_27629.png",
-        "https://jira.phgogogw.com/secure/thumbnail/27498/_thumb_27498.png",
-    )
-    private val needAutoloop = false
+    private var imageUrls = mutableListOf<String?>()
     private val skipHomePage by lazy { intent.getBooleanExtra("skipHomePage", true) }
+    private val isFirstOpen by lazy { MMKV.defaultMMKV().getBoolean("isFirstOpen", true) }
 
     companion object {
         fun start(context: Context, skipHomePage: Boolean) {
@@ -52,6 +49,11 @@ class LaunchActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
             .fitsSystemWindows(false)
             .init()
         setContentView(R.layout.activity_launch)
+        sConfigData?.imageList?.filter { it.imageType == 7 && !it.imgUrl.isNullOrBlank() }
+            ?.map { it.imgUrl }?.let {
+            imageUrls.addAll(it)
+        }
+        tv_skip.isVisible = !isFirstOpen
         setupBanner()
         tv_skip.setOnClickListener {
             startNow()
@@ -59,6 +61,7 @@ class LaunchActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         btn_start.setOnClickListener {
             startNow()
         }
+        MMKV.defaultMMKV().putBoolean("isFirstOpen", false)
     }
 
     private fun setupBanner() {
@@ -97,10 +100,7 @@ class LaunchActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                 }
 
             })
-            .setOnBannerListener { data, position ->
-
-            }
-        if (needAutoloop) {
+        if (isFirstOpen) {
             banner.isAutoLoop(true)
                 .start()
         }

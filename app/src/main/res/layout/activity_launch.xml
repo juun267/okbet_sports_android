@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <com.youth.banner.Banner
         android:id="@+id/banner"
@@ -48,6 +49,8 @@
         android:textColor="@color/color_FFFFFF"
         android:textSize="@dimen/textSize14sp"
         android:text="Skip"
+        android:visibility="gone"
+        tools:visibility="visible"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
