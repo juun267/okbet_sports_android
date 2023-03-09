@@ -1301,4 +1301,6 @@
     <string name="platform_user_money">平台余额</string>
     <string name="N589">用谷歌登录</string>
     <string name="third_party">第三方</string>
+    <string name="N643">请前往Glife小程序进行充值</string>
+    <string name="N644">请前往Glife小程序进行提款</string>
 </resources>

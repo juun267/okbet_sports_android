@@ -1274,4 +1274,6 @@
     <string name="platform_user_money">Số dư nền tảng</string>
     <string name="third_party">Bên thứ ba</string>
     <string name="N589">Đăng nhập với Google</string>
+    <string name="N643">Mời vào app Glife nạp tiền</string>
+    <string name="N644">Mời vào app Glife rút tiền</string>
 </resources>

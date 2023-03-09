@@ -11,4 +11,6 @@
     <string name="account_transfer">Ilipat ang balanse</string>
     <string name="platform_user_money">Balanse sa platform</string>
     <string name="third_party">3rd party</string>
+    <string name="N643">Maaring pumunta sa Glife applet para mag-recharge</string>
+    <string name="N644">Maaring pumunta sa Glife applet para mag-withdraw ng pera</string>
 </resources>

@@ -195,14 +195,29 @@ class ProfileCenterFragment :
     private fun setupRechargeButton() {
         btn_recharge.setOnClickListener {
             avoidFastDoubleClick()
-            viewModel.checkRechargeKYCVerify()
+            //Glife用户
+            if (viewModel.userInfo.value?.vipType == 1) {
+                showPromptDialog(title = getString(R.string.prompt),
+                    message = getString(R.string.N643),
+                    {})
+            } else {
+                viewModel.checkRechargeKYCVerify()
+            }
         }
     }
 
     private fun setupWithdrawButton() {
         btn_withdraw.setOnClickListener {
             avoidFastDoubleClick()
-            viewModel.checkWithdrawKYCVerify()
+            //Glife用户
+            if (viewModel.userInfo.value?.vipType == 1) {
+                showPromptDialog(title = getString(R.string.prompt),
+                    message = getString(R.string.N644),
+                    {})
+            } else {
+                viewModel.checkWithdrawKYCVerify()
+            }
+
         }
     }
 

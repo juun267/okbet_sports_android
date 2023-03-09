@@ -214,6 +214,7 @@ object UserInfoRepository {
             googleBind = userInfoData.googleBind,
             facebookBind = userInfoData.facebookBind,
             passwordSet = userInfoData.passwordSet,
+            vipType = userInfoData.vipType,
         )
 
 }

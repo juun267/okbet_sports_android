@@ -1353,4 +1353,6 @@
     <string name="platform_user_money">Platform balance</string>
     <string name="N589">Login with google</string>
     <string name="third_party">3rd party</string>
+    <string name="N643">Please go to Glife app to deposit</string>
+    <string name="N644">Please go to Glife app to withdraw</string>
 </resources>
