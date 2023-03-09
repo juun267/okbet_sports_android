@@ -149,9 +149,13 @@ class HomeToolbarView: LinearLayout {
         if (userModelEnable) {
             isLogin.observe(fragment) { setupLogin() }
             userMoney.observe(fragment) {
-                it?.let { tvUserMoney.text = "${sConfigData?.systemCurrencySign} ${TextUtil.format(it)}" }
+                it?.let { bindMoneyText(it) }
             }
         }
+    }
+
+    private fun bindMoneyText(money: Double) {
+        tvUserMoney.text = "${sConfigData?.systemCurrencySign} ${TextUtil.format(money)}"
     }
 
     private fun setupLogin() {
@@ -162,10 +166,13 @@ class HomeToolbarView: LinearLayout {
             if (userModelEnable) {
                 searchView.gone()
                 userMoneyView.visible()
+                bindMoneyText(viewModel.userMoney?.value ?: 0.0)
             } else {
                 searchView.visible()
                 userMoneyView.gone()
             }
+
+
             return
         }
 
