@@ -65,7 +65,14 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 rech_log_time.text = item.withdrawTime
                 rech_log_amount.text = item.displayMoney
                 rech_log_type.text = item.withdrawType
-                rech_log_state.text = item.withdrawState
+                //用于前端显示单单订单状态 1: 處理中 2:提款成功 3:提款失败 4：待投注站出款
+                rech_log_state.text = when (item.orderState) {
+                    1 -> context.getString(R.string.log_state_processing)
+                    2 -> context.getString(R.string.L019)
+                    3 -> context.getString(R.string.withdraw_fail)
+                    4 -> context.getString(R.string.pls_wihthdraw_from_bettingstation)
+                    else -> null
+                }
             }
 
             itemView.setOnClickListener {

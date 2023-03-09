@@ -55,4 +55,6 @@ data class Row(
     var withdrawType: String? = null
     var displayMoney: String? = null
     var withdrawDeductMoney: String? = null
+    var orderState: Int? = null
+    var child: List<Row>? = null
 }

@@ -1353,4 +1353,8 @@
     <string name="platform_user_money">Platform balance</string>
     <string name="N589">Sign In With Google</string>
     <string name="third_party">3rd party</string>
+    <string name="L019">Succeed</string>
+    <string name="withdraw_fail">提款失败</string>
+    <string name="pls_wihthdraw_from_bettingstation">请到投注站取款</string>
+    <string name="N618">Sub-order transaction number</string>
 </resources>

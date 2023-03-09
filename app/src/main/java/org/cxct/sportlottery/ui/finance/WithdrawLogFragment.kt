@@ -227,10 +227,10 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                 getString(R.string.log_state_processing) -> {
                     StatusSheetData(CheckStatus.PROCESSING.code.toString(), it)
                 }
-                getString(R.string.withdraw_log_state_pass) -> {
+                getString(R.string.L019) -> {
                     StatusSheetData(CheckStatus.PASS.code.toString(), it)
                 }
-                getString(R.string.withdraw_log_state_un_pass) -> {
+                getString(R.string.withdraw_fail) -> {
                     StatusSheetData(CheckStatus.UN_PASS.code.toString(), it)
                 }
                 else -> {
