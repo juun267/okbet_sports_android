@@ -56,8 +56,8 @@ class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
                 wd_log_detail_status.text = when (it.orderState) {
                     1 -> getString(R.string.log_state_processing)
                     2 -> getString(R.string.L019)
-                    3 -> getString(R.string.withdraw_fail)
-                    4 -> getString(R.string.pls_wihthdraw_from_bettingstation)
+                    3 -> getString(R.string.N626)
+                    4 -> getString(R.string.N627)
                     else -> null
                 }
                 when (it.withdrawState) {

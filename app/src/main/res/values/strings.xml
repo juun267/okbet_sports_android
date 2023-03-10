@@ -1354,7 +1354,8 @@
     <string name="N589">Sign In With Google</string>
     <string name="third_party">3rd party</string>
     <string name="L019">Succeed</string>
-    <string name="withdraw_fail">提款失败</string>
-    <string name="pls_wihthdraw_from_bettingstation">请到投注站取款</string>
+    <string name="N627">Please go to the betting station to withdraw money</string>
     <string name="N618">Sub-order transaction number</string>
+    <string name="N626">Withdrawal failed</string>
+    <string name="N628">Total bill transaction number</string>
 </resources>
