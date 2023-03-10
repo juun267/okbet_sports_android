@@ -1,10 +1,10 @@
 package org.cxct.sportlottery.network.sport
 
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 import com.squareup.moshi.Json
 import org.cxct.sportlottery.network.common.BaseResult
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class SearchResponse(
     @Json(name = "code")
     override val code: Int = 0,
@@ -17,7 +17,7 @@ data class SearchResponse(
     @Json(name = "total")
     val total: Int = 0
 ): BaseResult() {
-    @JsonClass(generateAdapter = true)
+    @JsonClass(generateAdapter = true) @KeepMembers
     data class Row(
         @Json(name = "gameName")
         val gameName: String = "",
@@ -28,7 +28,7 @@ data class SearchResponse(
         @Json(name = "sort")
         val sort: Int = 0
     ) {
-        @JsonClass(generateAdapter = true)
+        @JsonClass(generateAdapter = true) @KeepMembers
         data class LeagueMatch(
             @Json(name = "leagueName")
             val leagueName: String = "",
@@ -37,7 +37,7 @@ data class SearchResponse(
             @Json(name = "sort")
             val sort: Int = 0
         ) {
-            @JsonClass(generateAdapter = true)
+            @JsonClass(generateAdapter = true) @KeepMembers
             data class MatchInfo(
                 @Json(name = "awayName")
                 val awayName: String = "",

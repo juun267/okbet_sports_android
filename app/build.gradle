@@ -72,9 +72,10 @@ android {
 
     buildTypes {
         debug {
-            minifyEnabled false
+            minifyEnabled true
             zipAlignEnabled true
             debuggable true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
             versionNameSuffix ".debug"
         }
@@ -98,7 +99,7 @@ android {
     productFlavors {
         forqa {
             buildConfigField "String", "CHANNEL_NAME", "\"spplat1\""
-            applicationId "com.okbet.sport.test"
+            applicationId "com.happysport.sl.test"
         }
         OkbetPH {
         }
@@ -202,14 +203,11 @@ android {
 
 dependencies {
 
-//    debugImplementation 'com.github.markzhai:blockcanary-android:1.5.0'
-//    releaseImplementation 'com.github.markzhai:blockcanary-no-op:1.5.0'
-//
+
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.5'
 
     debugImplementation 'io.github.didi.dokit:dokitx:3.5.0.1'
     releaseImplementation 'io.github.didi.dokit:dokitx-no-op:3.5.0.1'
-
 
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -234,8 +232,8 @@ dependencies {
     implementation 'com.makeramen:roundedimageview:2.3.0'
 
     //Moshi
-    implementation "com.squareup.moshi:moshi-kotlin:1.11.0"
-//    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.11.0")
+    implementation "com.squareup.moshi:moshi-kotlin:1.14.0"
+//    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
 
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$version_retrofit"

@@ -1,30 +1,30 @@
 package org.cxct.sportlottery.network.bet.settledDetailList
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class BetInfo(
     @Json(name = "playMaxBetSingleBet")
-    private val playMaxBetSingleBetString: String?,
+    val playMaxBetSingleBetString: String?,
     @Json(name = "maxBetMoney")
-    private val maxBetMoneyString: String?,
+    val maxBetMoneyString: String?,
     @Json(name = "minBetMoney")
-    private val minBetMoneyString: String?,
+    val minBetMoneyString: String?,
     @Json(name = "maxPayout")
-    private val maxPayoutString: String?,
+    val maxPayoutString: String?,
     @Json(name = "maxParlayBetMoney")
-    private val maxParlayBetMoneyString: String?,
+    val maxParlayBetMoneyString: String?,
     @Json(name = "minParlayBetMoney")
-    private val minParlayBetMoneyString: String?,
+    val minParlayBetMoneyString: String?,
     @Json(name = "maxParlayPayout")
-    private val maxParlayPayoutString: String?,
+    val maxParlayPayoutString: String?,
     @Json(name = "maxCpBetMoney")
-    private val maxCpBetMoneyString: String?,
+    val maxCpBetMoneyString: String?,
     @Json(name = "minCpBetMoney")
-    private val minCpBetMoneyString: String?,
+    val minCpBetMoneyString: String?,
     @Json(name = "maxCpPayout")
-    private val maxCpPayoutString: String?
+    val maxCpPayoutString: String?
 ) {
     val playMaxBetSingleBet get() = playMaxBetSingleBetString?.toBigDecimal()
     val maxBetMoney get() = maxBetMoneyString?.toBigDecimal()

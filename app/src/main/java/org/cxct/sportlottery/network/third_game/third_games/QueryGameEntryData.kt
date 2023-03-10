@@ -1,9 +1,9 @@
 package org.cxct.sportlottery.network.third_game.third_games
 
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 import org.cxct.sportlottery.network.service.match_status_change.StatusNameI18n
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class QueryGameEntryData(
     val id: Int?, //主键
     val gameCategory: String?, //一级分类

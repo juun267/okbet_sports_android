@@ -2,8 +2,10 @@ package org.cxct.sportlottery.network.common
 
 import androidx.annotation.StringRes
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.proguard.KeepMembers
 
-enum class MatchType(val postValue: String, @StringRes val resId: Int) {
+@KeepMembers
+enum class MatchType private constructor(val postValue: String, @StringRes val resId: Int) {
     MAIN("MAIN", R.string.home_tan_main),
     IN_PLAY("INPLAY", R.string.home_tab_in_play),
     TODAY("TODAY", R.string.home_tab_today),

@@ -123,13 +123,6 @@ class RedEnvelopeHistoryFragment : BaseFragment<FinanceViewModel>(FinanceViewMod
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.isLoading.observe(this.viewLifecycleOwner) {
-            if (it) {
-                loading()
-            } else {
-                hideLoading()
-            }
-        }
 
         viewModel.redEnvelopeListResult.observe(this.viewLifecycleOwner) {
             it?.let {

@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.archit.calendardaterangepicker.manager.SPUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.BuildConfig
@@ -97,7 +98,10 @@ class VersionUpdateViewModel(
                     val result = response.body()
 
                     serverUrlStatusMap[serverUrl] = true //標記該伺服器已檢查過
-
+                    //当前版本是否处于控制
+                    var isVersonControl =
+                        result?.controlVersion?.split(",")?.contains(BuildConfig.VERSION_NAME)
+                    SPUtil.saveMarketSwitch(isVersonControl == true)
                     //已有獲取的最新版本資訊
                     if (appVersionChecked) {
                         return@launch

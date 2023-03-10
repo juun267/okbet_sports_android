@@ -195,7 +195,7 @@ class FinanceViewModel(
         isFirstFetch: Boolean = false,
         startTime: String? = TimeUtil.getDefaultTimeStamp().startTime,
         endTime: String? = TimeUtil.getDefaultTimeStamp().endTime,
-        tranTypeGroup: String? = "bet",
+        tranTypeGroup: String? = "",
     ) {
         if (isFinalPage.value == true && !isFirstFetch) {
             return

@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.fragment_home_elec.*
-import kotlinx.android.synthetic.main.fragment_home_elec.homeToolbar
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.extentions.fitsSystemStatus
@@ -101,7 +100,7 @@ class HomeElecFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
             }
         }
 
-        viewModel.slotGameData.observe(viewLifecycleOwner) {
+        viewModel.elecGameData.observe(viewLifecycleOwner) {
             if (it.isNullOrEmpty()) {
                 lin_empty_game.isVisible = true
                 rv_elec.isVisible = false

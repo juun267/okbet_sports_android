@@ -37,15 +37,63 @@
 -keep class com.qiniu.qplayer2ext.** {*;}
 
 #====== 网易滑块验证 ============ start
--keepattributes *Annotation*
--keep public class com.netease.nis.captcha.**{*;}
-
--keep public class android.webkit.**
-
--keepattributes SetJavaScriptEnabled
--keepattributes JavascriptInterface
-
--keepclassmembers class * {
-    @android.webkit.JavascriptInterface <methods>;
-}
+#-keepattributes *Annotation*
+#-keep public class com.netease.nis.captcha.**{*;}
+#
+#-keep public class android.webkit.**
+#
+#-keepattributes SetJavaScriptEnabled
+#-keepattributes JavascriptInterface
+#
+#-keepclassmembers class * {
+#    @android.webkit.JavascriptInterface <methods>;
+#}
 #====== 网易滑块验证 ============ end
+
+-keepclassmembers public class * implements androidx.viewbinding.ViewBinding {
+    public static * inflate(android.view.LayoutInflater, android.view.ViewGroup, boolean);
+    public static * inflate(android.view.LayoutInflater);
+}
+
+#====== GSYVideoPlayer ============ start
+-keep class com.shuyu.gsyvideoplayer.video.** { *; }
+-dontwarn com.shuyu.gsyvideoplayer.video.**
+-keep class com.shuyu.gsyvideoplayer.video.base.** { *; }
+-dontwarn com.shuyu.gsyvideoplayer.video.base.**
+-keep class com.shuyu.gsyvideoplayer.utils.** { *; }
+-dontwarn com.shuyu.gsyvideoplayer.utils.**
+-keep class tv.danmaku.ijk.** { *; }
+-dontwarn tv.danmaku.ijk.**
+-keep class com.google.android.exoplayer2.** {*;}
+-keep interface com.google.android.exoplayer2.**
+
+-keep class com.shuyu.alipay.** {*;}
+-keep interface com.shuyu.alipay.**
+#====== GSYVideoPlayer ============ end
+
+#====== EventBus ============ start
+-keepattributes *Annotation*
+-keepclassmembers class * {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
+#====== EventBus ============ end
+
+-keepclasseswithmembers class com.google.android.material.bottomnavigation.BottomNavigationItemView {*;}
+-keepclasseswithmembers class com.google.android.material.bottomnavigation.BottomNavigationView {*;}
+-keepclasseswithmembers class com.google.android.material.bottomnavigation.BottomNavigationMenuView {*;}
+
+# 所有的类都不混淆（不得已，不要使用）
+#-keep class * { *; }
+
+-keepclasseswithmembers @org.cxct.sportlottery.proguard.KeepClasses class * { *; }
+-keepclassmembers @org.cxct.sportlottery.proguard.KeepMembers class * { *; }
+-keepclassmembers class * { @org.cxct.sportlottery.proguard.KeepMembers <fields>; }
+-keepclassmembers class * { @org.cxct.sportlottery.proguard.KeepMembers <methods>; }
+
+-keepclassmembers class * extends org.cxct.sportlottery.network.common.BaseResult { *;}
+-keepclassmembers class * extends org.cxct.sportlottery.net.ApiResult { *;}
+
+#kotlin  与Moshi反序列化有关（@kotlin.Metadata涉及太广，应尽量降低keep范围）
+-keepclasseswithmembers @kotlin.Metadata class org.cxct.sportlottery.network.** { *; }
+-keepclasseswithmembers @kotlin.Metadata class org.cxct.sportlottery.ui.** { *; }
+-keepclasseswithmembers @kotlin.Metadata class org.cxct.sportlottery.util.** { *; }

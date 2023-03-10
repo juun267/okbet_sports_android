@@ -2,10 +2,10 @@ package org.cxct.sportlottery.network.match
 
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 import org.cxct.sportlottery.network.common.MatchType
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class MatchPreloadData(
     @Json(name = "datas")
     val datas: List<Data>,

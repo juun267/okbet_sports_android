@@ -1,13 +1,12 @@
 package org.cxct.sportlottery.network.odds.detail
 
 
-import android.util.Log
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.util.sortOddsMapByDetail
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class MatchOdd(
     @Json(name = "betPlayCateNameMap")
     var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null,

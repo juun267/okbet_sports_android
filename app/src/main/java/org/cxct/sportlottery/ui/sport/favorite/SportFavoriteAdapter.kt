@@ -953,7 +953,7 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
                         return
                     }
                     val socketValue = matchInfo.socketMatchStatus
-                    if (needCountStatus(socketValue)) {
+                    if (needCountStatus(socketValue, matchInfo.leagueTime)) {
                         itemView.league_odd_match_time.visibility = View.VISIBLE
                         listener = object : TimerListener {
                             override fun onTimerUpdate(timeMillis: Long) {

@@ -183,8 +183,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             loading()
             val account = binding.eetAccount.text.toString()
             val smsCode = binding.eetVerificationCode.text.toString()
-            var inviteCode =
-                if (viewModel.inviteCodeMsg.value.isNullOrEmpty() && binding.etRecommendCode.isVisible) binding.eetRecommendCode.text.toString() else null
+            var inviteCode = binding.eetRecommendCode.text.toString()
             val loginRequest = LoginRequest(
                 account = account,
                 password = null,
@@ -424,7 +423,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     fun setupRecommendCodeVisible() {
         binding.etRecommendCode.isVisible =
-            viewModel.loginType == LOGIN_TYPE_CODE && viewModel.checkUserExist.value == true
+            viewModel.loginType == LOGIN_TYPE_CODE && viewModel.checkUserExist.value == false
     }
 
 }

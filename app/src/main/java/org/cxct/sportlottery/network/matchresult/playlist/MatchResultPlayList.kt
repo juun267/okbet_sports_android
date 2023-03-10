@@ -2,9 +2,9 @@ package org.cxct.sportlottery.network.matchresult.playlist
 
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class MatchResultPlayList(
     @Json(name = "matchId")
     val matchId: String,

@@ -1,12 +1,12 @@
 package org.cxct.sportlottery.util
 
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -50,6 +50,17 @@ class LotteryManager {
         startShow()
     }
 
+    fun onDestroy(activity: BaseActivity<*>) {
+        if (this.activity == activity) {
+            this.activity = null
+            this.viewModel = null
+        }
+
+        if (floatRootView?.context == activity) {
+            floatRootView = null
+        }
+    }
+
     /**
      * 限定指定页面不能显示
      */
@@ -82,17 +93,17 @@ class LotteryManager {
     }
     private fun startShow() {
         if (!allowdShowRedEnvelope() || lotteryInfo == null) {
-            GlobalScope.launch(Dispatchers.Main) {
+            activity?.lifecycleScope?.launch(Dispatchers.Main) {
                 removeFloateBtn()
             }
             return
         }
         if (System.currentTimeMillis() in showStartTime..showEndTime) {
-            GlobalScope.launch(Dispatchers.Main) {
+            activity?.lifecycleScope?.launch(Dispatchers.Main) {
                 showFloatBtn()
             }
         } else {
-            GlobalScope.launch(Dispatchers.Main) {
+            activity?.lifecycleScope?.launch(Dispatchers.Main) {
                 removeFloateBtn()
             }
         }
@@ -122,48 +133,52 @@ class LotteryManager {
     }
 
     fun setUpFloatButton() {
-        lotteryInfo?.let {
-            val nowMoment = System.currentTimeMillis()
-            val nextDrawTime = it.nextDrawTime ?: 0
-            val nextCloseTime = nextDrawTime - 15 * 60 * 1000
-            val isSameDay =
-                TimeUtil.timeFormat(nextDrawTime, TimeUtil.YMD_FORMAT) == TimeUtil.timeFormat(
-                    nowMoment,
-                    TimeUtil.YMD_FORMAT)
-            var countdownTitle = ""
-            var countdownTime = ""
-            if (nextDrawTime == 0L) {
-                countdownTitle = LocalUtils.getString(R.string.end_time)
-                countdownTime = TimeUtil.timeFormat(it.endTime, TimeUtil.YMD_HMS_FORMAT)
-            } else if (!isSameDay) {
-                // 1 非当天 显示 开奖时间（抽奖前 抽奖后）
-                countdownTitle = LocalUtils.getString(R.string.draw_time)
-                countdownTime = TimeUtil.timeFormat(nextDrawTime, TimeUtil.YMD_HMS_FORMAT)
-            } else if (nowMoment < nextCloseTime || nowMoment > nextDrawTime) {
-                // 2 当天 入口未关闭（15分钟）
-                countdownTitle = LocalUtils.getString(R.string.closing_time)
-                countdownTime = TimeUtil.timeFormat(nextCloseTime, TimeUtil.YMD_HMS_FORMAT)
-            } else {
-                // 3 入口关闭 进入倒计时
-                countdownTitle = LocalUtils.getString(R.string.draw_countdown)
-                var diff = nextDrawTime - nowMoment
-                countdownTime = TimeUtil.timeFormat(diff, TimeUtil.HM_FORMAT_MS)
-                if (countdownTime == "00:00") {
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        getLotteryInfo()
-                    }, 1000)
+        if (floatRootView == null || lotteryInfo == null) {
+            return
+        }
+
+        val it = lotteryInfo!!
+        val nowMoment = System.currentTimeMillis()
+        val nextDrawTime = it.nextDrawTime ?: 0
+        val nextCloseTime = nextDrawTime - 15 * 60 * 1000
+        val isSameDay =
+            TimeUtil.timeFormat(nextDrawTime, TimeUtil.YMD_FORMAT) == TimeUtil.timeFormat(
+                nowMoment,
+                TimeUtil.YMD_FORMAT)
+        var countdownTitle = ""
+        var countdownTime = ""
+        if (nextDrawTime == 0L) {
+            countdownTitle = LocalUtils.getString(R.string.end_time)
+            countdownTime = TimeUtil.timeFormat(it.endTime, TimeUtil.YMD_HMS_FORMAT)
+        } else if (!isSameDay) {
+            // 1 非当天 显示 开奖时间（抽奖前 抽奖后）
+            countdownTitle = LocalUtils.getString(R.string.draw_time)
+            countdownTime = TimeUtil.timeFormat(nextDrawTime, TimeUtil.YMD_HMS_FORMAT)
+        } else if (nowMoment < nextCloseTime || nowMoment > nextDrawTime) {
+            // 2 当天 入口未关闭（15分钟）
+            countdownTitle = LocalUtils.getString(R.string.closing_time)
+            countdownTime = TimeUtil.timeFormat(nextCloseTime, TimeUtil.YMD_HMS_FORMAT)
+        } else {
+            // 3 入口关闭 进入倒计时
+            countdownTitle = LocalUtils.getString(R.string.draw_countdown)
+            var diff = nextDrawTime - nowMoment
+            countdownTime = TimeUtil.timeFormat(diff, TimeUtil.HM_FORMAT_MS)
+            if (countdownTime == "00:00") {
+                activity?.lifecycleScope?.launch(Dispatchers.Main) {
+                    delay(1000)
+                    getLotteryInfo()
                 }
             }
-            floatRootView?.setTime(countdownTitle, countdownTime)
         }
+        floatRootView?.setTime(countdownTitle, countdownTime)
     }
 
     fun removeFloateBtn() {
-        if (floatRootView != null) {
+        if (floatRootView != null && activity != null) {
             var viewGroup = activity!!.findViewById<ViewGroup>(android.R.id.content)
             viewGroup.removeView(floatRootView)
-            floatRootView = null
         }
+        floatRootView = null
     }
 
     fun clickOpenFloatBtn() {

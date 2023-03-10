@@ -32,7 +32,6 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
-import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 import org.cxct.sportlottery.network.third_game.third_games.hot.HandicapData
 import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchInfo
 import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchLiveData
@@ -649,7 +648,13 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
                     holder.imageView.setOnClickListener {
                         data?.imageLink?.let {
                             if (it.isNotBlank()) {
-                                JumpUtil.toInternalWeb(requireContext(), it, "")
+                                if (it.contains("sweepstakes")) {
+                                    JumpUtil.toLottery(requireContext(),
+                                        Constants.getLotteryH5Url(requireContext(),
+                                            viewModel!!.loginRepository.token))
+                                } else {
+                                    JumpUtil.toInternalWeb(requireContext(), it, "")
+                                }
                             }
                         }
                     }

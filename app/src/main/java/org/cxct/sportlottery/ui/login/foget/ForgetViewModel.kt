@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
 import org.cxct.sportlottery.network.index.forgetPassword.*
@@ -71,9 +72,9 @@ class ForgetViewModel(
         get() = _smsResult
     private val _smsResult = MutableLiveData<SendSmsResult?>()
     //短信验证码返回值
-    val smsCodeResult: LiveData<ForgetSmsResult?>
+    val smsCodeResult: LiveData<NetResult?>
         get() = _smsCodeResult
-    private val _smsCodeResult = MutableLiveData<ForgetSmsResult?>()
+    private val _smsCodeResult = MutableLiveData<NetResult?>()
     //重设密码数据
     val resetPasswordResult: LiveData<ResetPasswordResult?>
         get() = _resetPasswordResult

@@ -2,8 +2,10 @@ package org.cxct.sportlottery.network.lottery
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.proguard.KeepMembers
 
 @JsonClass(generateAdapter = true)
+@KeepMembers
 data class AllWin(
     @Json(name = "prizeName")
     val prizeName: String,

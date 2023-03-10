@@ -6,10 +6,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.user.info.UserInfoResult
 import org.cxct.sportlottery.network.user.passwordVerify.PasswordVerifyRequest
-import org.cxct.sportlottery.network.user.passwordVerify.PasswordVerifyResult
 import org.cxct.sportlottery.network.user.selflimit.FrozeRequest
 import org.cxct.sportlottery.network.user.selflimit.FrozeResult
 import org.cxct.sportlottery.network.user.selflimit.PerBetLimitRequest
@@ -66,9 +66,9 @@ class SelfLimitViewModel(
         get() = _isFrozeEditTextError
     private val _isFrozeEditTextError = MutableLiveData<Boolean>()
 
-    val passwordVerifyResult: LiveData<Event<PasswordVerifyResult>>
+    val passwordVerifyResult: LiveData<Event<NetResult>>
         get() = _passwordVerifyResult
-    private val _passwordVerifyResult = MutableLiveData<Event<PasswordVerifyResult>>()
+    private val _passwordVerifyResult = MutableLiveData<Event<NetResult>>()
 
     //使用者ID
     var userID: Long? = null

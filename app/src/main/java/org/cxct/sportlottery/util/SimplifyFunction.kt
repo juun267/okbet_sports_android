@@ -25,6 +25,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
+import com.archit.calendardaterangepicker.manager.SPUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
@@ -537,7 +538,7 @@ fun TextView.setTeamNames(countCheck: Int, homeName: String?, awayName: String?)
     text =
 //        if ((homeName?.length ?: 0) > countCheck) "$homeName  v$awayName"
 //        else
-            "$homeName  VS  $awayName"
+        "$homeName  VS  $awayName"
 }
 
 /**
@@ -545,6 +546,10 @@ fun TextView.setTeamNames(countCheck: Int, homeName: String?, awayName: String?)
  */
 fun View.setVisibilityByCreditSystem() {
     visibility = if (isCreditSystem()) View.GONE else View.VISIBLE
+}
+
+fun View.setVisibilityByMarketSwitch() {
+    visibility = if (SPUtil.getMarketSwitch()) View.GONE else View.VISIBLE
 }
 
 /**
@@ -581,6 +586,9 @@ fun isThirdTransferOpen(): Boolean {
 //    return true // for test
 }
 
+inline fun String?.isStatusOpen(): Boolean {
+    return this == FLAG_OPEN
+}
 
 fun getLevelName(context: Context, level: Int): String {
     val jsonString = LocalJsonUtil.getLocalJson(

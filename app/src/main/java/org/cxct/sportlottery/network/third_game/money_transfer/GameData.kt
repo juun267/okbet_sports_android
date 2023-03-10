@@ -3,11 +3,11 @@ package org.cxct.sportlottery.network.third_game.money_transfer
 
 import android.os.Parcelable
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class GameData(
     @Json(name = "money")
     val money: Double? = null,
