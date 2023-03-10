@@ -1,10 +1,16 @@
 package org.cxct.sportlottery.util
 
+import android.app.Activity
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
+import android.content.res.Resources
 import android.os.Build
+import android.os.Bundle
 import android.os.LocaleList
+import android.util.DisplayMetrics
+import com.luck.picture.lib.PictureSelectorActivity
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import java.util.*
@@ -50,6 +56,43 @@ object LanguageManager {
 //                Language.EN //2021/10/04 與PM確認過，不管手機是什麼語系，都預先使用英文版本
             }
         }
+    }
+
+    fun init(application: Application) {
+        application.registerActivityLifecycleCallbacks(object : Application.ActivityLifecycleCallbacks {
+            override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+                if (activity::class.java.name == PictureSelectorActivity::class.java.name){
+                    val resources: Resources = activity.resources
+                    val config = resources.configuration
+                    val locale = config.locale
+                    val dm: DisplayMetrics = resources.getDisplayMetrics()
+                    config.setLocale(locale)
+                    activity.createConfigurationContext(config)
+                    resources.updateConfiguration(config, dm)
+                }
+
+            }
+
+            override fun onActivityStarted(activity: Activity) {
+            }
+
+            override fun onActivityResumed(activity: Activity) {
+            }
+
+            override fun onActivityPaused(activity: Activity) {
+            }
+
+            override fun onActivityStopped(activity: Activity) {
+            }
+
+            override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
+            }
+
+            override fun onActivityDestroyed(activity: Activity) {
+
+            }
+
+        })
     }
 
     fun getSelectLanguageName(): String {

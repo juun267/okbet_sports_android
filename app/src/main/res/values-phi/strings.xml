@@ -456,8 +456,8 @@
     <string name="withdraw_handling_fee_hint">Rate ng bayad: %1$s%% Mga bayarin na babayaran: (%2$s)：%3$s</string>
     <string name="withdraw_crypto_amount_hint">Withdrawal amount(%1$s)：%2$s</string>
     <string name="withdraw_crypto_fee_hint">Withdrawal fee:(%1$s)：%2$s</string>
-    <string name="hint_four_number_password">Paki lagay ang withdrawal password</string>
-    <string name="hint_please_enter_withdraw_password">Paki lagay ang withdrawal password</string>
+    <string name="hint_four_number_password">Withdrawal password</string>
+    <string name="hint_please_enter_withdraw_password">Paki lagay ang inyong withdrawal password</string>
     <string name="add_credit_card">Mag-add ng bank card</string>
     <string name="add_crypto_card">Mag-add ng virtual currency add.</string>
     <string name="add_e_wallet">Mag-add ng eWallet bank</string>
@@ -475,7 +475,7 @@
     <string name="please_enter_network_point">Paki lagay ang account opening branch</string>
     <string name="wallet_phone_number">Numero ng telepono</string>
     <string name="please_enter_wallet_phone_number">Paki lagay ang telephone #</string>
-    <string name="delete_bank_card">burahin bank card</string>
+    <string name="delete_bank_card">Tanggalin</string>
     <string name="delete_crypto">burahin virtual currency</string>
     <string name="delete_e_wallet">burahin eWallet</string>
     <string name="select_currency_protocol">Piliin ang Protocol/Currency</string>
@@ -920,8 +920,8 @@
     <string name="bet_info_bet_lock_hint">Ang bet line ay sarado</string>
     <string name="bet_info_no_parlay_hint">Kasalukuyan walang suporta para sa kumpetisyon</string>
     <string name="sport_relative">May kinalaman sa sports</string>
-    <string name="red_envelope_congratulations">Congratulation</string>
-    <string name="pls_check_amount">Mangyaring pumunta sa iyong account upang suriin ang na-kredito na halaga</string>
+    <string name="red_envelope_congratulations">Congratulations</string>
+    <string name="pls_check_amount">Paki-check ang balanse ng account</string>
     <string name="redenvelope_fail">Unfortunately</string>
     <string name="redenvelope_fail_desp">Sayang hindi ko nakuha yung red envelope</string>
     <string name="hint_enter_city">Paki lagay ang inyong lungsod</string>
@@ -981,7 +981,7 @@
     <string name="kyc_contact_service_hilight">Online na serbisyo</string>
     <string name="kyc_verify_first">Mangyaring gawin muna ang tunay na pangalan na pag-verify.</string>
     <string name="kyc_go_verify">Pumunta sa certification ngayon</string>
-    <string name="kyc_you_wait">Unable to check the "Tagumpay sa pag-upload" popup modal due to error.</string>
+    <string name="kyc_you_wait">Mangyaring pindutin ang "Live Chat" button upang gumawa ng isang video call para makumpleto ang proseso</string>
     <string name="kyc_verify_successful">Nakumpleto mo na ang tunay na pag-verify ng pangalan！</string>
     <string name="kyc_unverified">Hindi na-verify</string>
     <string name="kyc_passed">Pumasa</string>
@@ -1007,7 +1007,7 @@
 
     <string name="submitting">Pagsumite ng taya</string>
     <string name="bet_receipt_bet_quota_with_sign">Taya</string>
-    <string name="bet_receipt_win_quota_with_sign">Win</string>
+    <string name="bet_receipt_win_quota_with_sign">Mapapanalo</string>
     <string name="bet_receipt_bet_quota_with_sign_money">Taya：</string>
     <string name="bet_receipt_win_quota_with_sign_max">Mapapanalunan：</string>
 

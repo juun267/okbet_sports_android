@@ -37,6 +37,7 @@ class ResourceWrapper(private val context: Context, origin: Resources): Resource
             Locale.setDefault(selectedLocal)
         }
 
+
         updateConfiguration(conf, displayMetrics)
         return context.createConfigurationContext(conf)
     }
