@@ -222,11 +222,11 @@ class MultiLanguagesApplication : Application() {
         setupDeviceCode()
         initAppsFlyerSDK()
 
-//        if (BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             CrashHandler.setup(this) //错误日志收集
-//            DoKit.Builder(this) //性能监控模块
-//                .build()
-//        }
+            DoKit.Builder(this) //性能监控模块
+                .build()
+        }
 
     }
 
