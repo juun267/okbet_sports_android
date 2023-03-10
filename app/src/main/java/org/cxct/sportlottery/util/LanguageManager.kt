@@ -61,7 +61,7 @@ object LanguageManager {
     fun init(application: Application) {
         application.registerActivityLifecycleCallbacks(object : Application.ActivityLifecycleCallbacks {
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-                if (activity::class.java.name == PictureSelectorActivity::class.java.name){
+                if (activity is PictureSelectorActivity){
                     val resources: Resources = activity.resources
                     val config = resources.configuration
                     val locale = config.locale
