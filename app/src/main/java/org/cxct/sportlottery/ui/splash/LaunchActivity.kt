@@ -28,15 +28,16 @@ import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
  */
 class LaunchActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
-    private var imageUrls = mutableListOf<String?>()
     private val skipHomePage by lazy { intent.getBooleanExtra("skipHomePage", true) }
+    private val imageUrls by lazy { intent.getSerializableExtra("imageUrls") as ArrayList<String> }
     private val isFirstOpen by lazy { MMKV.defaultMMKV().getBoolean("isFirstOpen", true) }
 
     companion object {
-        fun start(context: Context, skipHomePage: Boolean) {
+        fun start(context: Context, skipHomePage: Boolean, imageUrls: ArrayList<String>) {
             context.startActivity(Intent(context, LaunchActivity::class.java)
                 .apply {
                     putExtra("skipHomePage", skipHomePage)
+                    putExtra("imageUrls", imageUrls)
                 })
         }
     }
@@ -49,10 +50,7 @@ class LaunchActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
             .fitsSystemWindows(false)
             .init()
         setContentView(R.layout.activity_launch)
-        sConfigData?.imageList?.filter { it.imageType == 7 && !it.imgUrl.isNullOrBlank() }
-            ?.map { it.imgUrl }?.let {
-            imageUrls.addAll(it)
-        }
+
         tv_skip.isVisible = !isFirstOpen
         setupBanner()
         tv_skip.setOnClickListener {
@@ -76,8 +74,10 @@ class LaunchActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                     position: Int,
                     size: Int,
                 ) {
+                    val url = sConfigData?.resServerHost + data
+
                     Glide.with(holder.itemView)
-                        .load(data)
+                        .load(url)
                         .apply(requestOptions)
                         .into(holder.imageView)
                 }
@@ -97,13 +97,11 @@ class LaunchActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                 }
 
                 override fun onPageScrollStateChanged(state: Int) {
-                }
 
+                }
             })
-        if (isFirstOpen) {
-            banner.isAutoLoop(true)
-                .start()
-        }
+            .isAutoLoop(!isFirstOpen)
+            .start()
         updateStartBtn()
     }
 

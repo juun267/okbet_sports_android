@@ -123,6 +123,7 @@ data class ConfigData(
     val enableLockBalance: String?,//个人中心押金后台配置0或者null隐藏1显示
     val uwEnableTime: String?,//锁定额度限制解锁时间
     var minFrozeDay: Int = 0,//最小限制天数
+    var androidCarouselStatus: Int = 0,//是否开启安卓轮播状态(1：开启，0：关闭)
 ) {
     var enterCertified: Int? = -1 //ProfileCenterViewModel.SecurityEnter
     var hasGetTwoFactorResult: Boolean? = false //判斷是不是已經成功發送過簡訊認證碼 (關掉彈窗要重新設置為false)
