@@ -1,12 +1,12 @@
 package org.cxct.sportlottery.network.common
 
-
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import org.cxct.sportlottery.network.common.BaseResult
+import org.cxct.sportlottery.proguard.KeepMembers
 
 @JsonClass(generateAdapter = true)
-data class BaseSecurityCodeResult(
+@KeepMembers
+class BaseSecurityCodeResult(
     @Json(name = "code")
     override val code: Int,
     @Json(name = "msg")

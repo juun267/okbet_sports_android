@@ -1,12 +1,12 @@
 package org.cxct.sportlottery.network.third_game.third_games.hot
 
-
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.proguard.KeepMembers
 import org.cxct.sportlottery.network.common.BaseResult
-import org.cxct.sportlottery.network.odds.list.MatchLiveData
 
 @JsonClass(generateAdapter = true)
+@KeepMembers
 data class HotMatchLiveResult(
     @Json(name = "code")
     override val code: Int,

@@ -1,9 +1,9 @@
 package org.cxct.sportlottery.network.third_game
 
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 import org.cxct.sportlottery.network.common.BaseResult
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class BlankResult (
     override val code: Int,
     override val msg: String,

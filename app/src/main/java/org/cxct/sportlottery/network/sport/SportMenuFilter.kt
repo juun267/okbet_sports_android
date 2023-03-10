@@ -1,9 +1,9 @@
 package org.cxct.sportlottery.network.sport
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class SportMenuFilter(
     @Json(name = "code")
     val code: String,

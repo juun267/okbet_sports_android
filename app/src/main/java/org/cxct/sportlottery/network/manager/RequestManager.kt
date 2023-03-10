@@ -65,10 +65,10 @@ class RequestManager private constructor(context: Context) {
 
         .apply {
             //debug版本才打印api內容
-            if (BuildConfig.DEBUG) {
-//                addInterceptor(logging)
+//            if (BuildConfig.DEBUG) {
+////                addInterceptor(logging)
                 addInterceptor(HttpLogInterceptor())
-            }
+//            }
             // mock data, 必須擺在最後
             if (BuildConfig.MOCK)
                 addInterceptor(MockApiInterceptor(context))

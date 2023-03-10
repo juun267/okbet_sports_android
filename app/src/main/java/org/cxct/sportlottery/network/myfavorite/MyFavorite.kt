@@ -1,9 +1,9 @@
 package org.cxct.sportlottery.network.myfavorite
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class MyFavorite(
     @Json(name = "playCate")
     val playCate: List<PlayCate>?,

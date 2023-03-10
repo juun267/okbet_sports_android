@@ -2,12 +2,12 @@ package org.cxct.sportlottery.network.credential
 
 import android.os.Parcelable
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 import kotlinx.android.parcel.Parcelize
 
 
 @Parcelize
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class ExtFaceInfo (
     /**
      * 指定人脸验证进程的运行状态。可能的值及其含义如下：

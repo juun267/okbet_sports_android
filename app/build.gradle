@@ -233,7 +233,7 @@ dependencies {
 
     //Moshi
     implementation "com.squareup.moshi:moshi-kotlin:1.14.0"
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")  // 如果不使用Moshi的注解模式会对minifyEnabled true有影响
+//    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
 
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$version_retrofit"

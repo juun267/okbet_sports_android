@@ -1,8 +1,8 @@
 package org.cxct.sportlottery.network.index.config
 
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class Lhc(
     val blue: String?, //蓝
     val green: String?, //绿

@@ -4,7 +4,7 @@ import android.os.Parcelable
 import com.chad.library.adapter.base.entity.node.BaseExpandNode
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.parcel.RawValue
@@ -17,6 +17,7 @@ import org.cxct.sportlottery.ui.common.PlayCateMapItem
 
 @Parcelize
 @JsonClass(generateAdapter = true)
+@KeepMembers
 data class MatchOdd(
     @Json(name = "matchInfo")
     override val matchInfo: MatchInfo?,
@@ -35,22 +36,24 @@ data class MatchOdd(
     @Json(name = "playCateNameMap")
     override var playCateNameMap: MutableMap<String?, Map<String?, String?>?>? = mutableMapOf(),
 
-    ) : MatchOdd, BaseExpandNode(),
-
-
-    Parcelable {
+    ) : MatchOdd, BaseExpandNode(), Parcelable {
+    @Transient
     @IgnoredOnParcel
     override val oddsEps: EpsOdd? = null
 
+    @Transient
     @IgnoredOnParcel
     override var playCateMappingList: List<PlayCateMapItem>? = null
 
+    @Transient
     @IgnoredOnParcel
     var startDate: String = ""
 
+    @Transient
     @IgnoredOnParcel
     var startTime: String = ""
 
+    @Transient
     @IgnoredOnParcel
     //預設為第一項玩法展開
     var oddsExpand: MutableMap<String, Boolean>? = oddsMap?.mapValues {
@@ -68,9 +71,11 @@ data class MatchOdd(
             return oddsNode
         }
 
+    @Transient
     @IgnoredOnParcel
     var oddIdsMap: MutableMap<String, MutableMap<String, Odd>> = mutableMapOf()  //用于本地计算
 
+    @Transient
     @IgnoredOnParcel
     var categoryOddsMap = mutableMapOf<String, CategoryOdds>()    //用于本地计算
 

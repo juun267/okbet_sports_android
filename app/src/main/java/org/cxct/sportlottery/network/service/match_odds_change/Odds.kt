@@ -2,10 +2,10 @@ package org.cxct.sportlottery.network.service.match_odds_change
 
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 import org.cxct.sportlottery.network.odds.Odd
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class Odds(
     @Json(name = "typeCodes")
     val typeCodes: String,
