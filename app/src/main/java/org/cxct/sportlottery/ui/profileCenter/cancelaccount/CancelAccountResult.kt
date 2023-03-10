@@ -1,10 +1,10 @@
 package org.cxct.sportlottery.ui.profileCenter.cancelaccount
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 import org.cxct.sportlottery.network.common.BaseResult
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class CancelAccountResult(
     @Json(name = "code")
     override val code: Int,

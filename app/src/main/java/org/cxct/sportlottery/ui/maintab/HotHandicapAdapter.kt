@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab
 
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
@@ -63,6 +64,7 @@ class HotHandicapAdapter(val lifecycleOwner: LifecycleOwner, private val homeRec
 
     override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BindingVH<ItemHotHandicapBinding> {
         val vh = super.onCreateDefViewHolder(parent, viewType)
+//        val vh = BindingVH(ItemHotHandicapBinding.inflate(LayoutInflater.from(context), parent, false))
         vh.vb.rvHandicapItem.layoutManager = LinearLayoutManager(parent.context, LinearLayoutManager.VERTICAL, false)
         vh.vb.rvHandicapItem.adapter = ItemHandicapAdapter(lifecycleOwner, homeRecommendListener)
         vh.vb.tvTitle2.text = LocalUtils.getString(R.string.text_x)

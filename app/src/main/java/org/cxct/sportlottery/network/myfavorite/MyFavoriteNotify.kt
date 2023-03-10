@@ -1,10 +1,10 @@
 package org.cxct.sportlottery.network.myfavorite
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 import org.cxct.sportlottery.network.common.FavoriteType
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class MyFavoriteNotify(
     @Json(name = "type")
     val type: FavoriteType?,

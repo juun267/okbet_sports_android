@@ -1,11 +1,11 @@
 package org.cxct.sportlottery.network.service.order_settlement
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.ServiceEventType
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class OrderSettlementEvent(
     @Json(name = "eventType")
     override val eventType: String? = EventType.ORDER_SETTLEMENT.value,
@@ -13,7 +13,7 @@ data class OrderSettlementEvent(
     val sportBet: SportBet? //返回消息，正常消息： pong, 已过期： timeout
 ) : ServiceEventType
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class SportBet(
     val uniqNo: String?,
     val orderNo: String?,
@@ -44,7 +44,7 @@ data class SportBet(
     val isChampionship: Int?, //0：普通投注，1：冠军投注
 )
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class MatchOdds(
     val oddsId: String?,
     val matchId: String?,

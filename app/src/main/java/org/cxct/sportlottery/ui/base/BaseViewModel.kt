@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.base
 
 import android.content.Context
 import android.content.res.Configuration
+import android.util.Log
 import androidx.annotation.Nullable
 import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
@@ -133,6 +134,7 @@ abstract class BaseViewModel(
             doApiFun(apiFun)
         } catch (e: Exception) {
             Timber.e("doNetwork: $e")
+            Log.e("For Test", "=====>>> doNetwork ${apiFun?.javaClass?.name} ${e.localizedMessage} ")
             e.printStackTrace()
             if (exceptionHandle)
                 doOnException(context, e)

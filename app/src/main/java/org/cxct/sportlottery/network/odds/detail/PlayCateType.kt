@@ -2,9 +2,9 @@ package org.cxct.sportlottery.network.odds.detail
 
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class PlayCateType(
     @Json(name = "code")
     val code: String,
