@@ -153,14 +153,15 @@
 
         <TextView
             android:id="@+id/wd_log_detail_status"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="224dp"
+            android:layout_height="33dp"
+            android:ellipsize="end"
             android:textColor="@color/color_1EB65B"
             android:textSize="@dimen/textSize14sp"
-            android:ellipsize="end"
+            android:gravity="start"
             app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_status_subtitle"
-            app:layout_constraintStart_toEndOf="@id/wd_log_detail_status_subtitle"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/wd_log_detail_status_subtitle"
+            app:layout_constraintRight_toRightOf="parent"
             tools:text="处理中" />
 
         <View

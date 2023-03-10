@@ -86,6 +86,7 @@ class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
                 }
                 it.children?.let {
                     if (it.isNotEmpty()) {
+                        wd_log_detail_trans_num_subtitle.text = "${getString(R.string.N628)}："
                         rv_child.layoutManager =
                             LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
                         rv_child.adapter = WithdrawLogDetailAdapter(it)
