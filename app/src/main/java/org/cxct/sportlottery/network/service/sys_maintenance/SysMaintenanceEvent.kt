@@ -1,11 +1,11 @@
 package org.cxct.sportlottery.network.service.sys_maintenance
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.ServiceEventType
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class SysMaintenanceEvent(
     @Json(name = "eventType")
     override val eventType: String? = EventType.SYS_MAINTENANCE.value,

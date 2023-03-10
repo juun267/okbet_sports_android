@@ -14,17 +14,15 @@ import org.cxct.sportlottery.network.user.info.UserInfoResult
 import org.cxct.sportlottery.network.Constants.USER_UPDATE_FUND_PWD
 import org.cxct.sportlottery.network.Constants.USER_UPDATE_PWD
 import org.cxct.sportlottery.network.Constants.USER_WITHDRAW_INFO
+import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.user.credit.CreditCircleHistoryRequest
 import org.cxct.sportlottery.network.user.credit.CreditCircleHistoryResult
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlRequest
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.network.user.nickname.NicknameRequest
-import org.cxct.sportlottery.network.user.nickname.NicknameResult
 import org.cxct.sportlottery.network.user.odds.OddsChangeOptionRequest
-import org.cxct.sportlottery.network.user.odds.OddsChangeOptionResult
 import org.cxct.sportlottery.network.user.passwordVerify.PasswordVerifyRequest
-import org.cxct.sportlottery.network.user.passwordVerify.PasswordVerifyResult
 import org.cxct.sportlottery.network.user.selflimit.FrozeRequest
 import org.cxct.sportlottery.network.user.selflimit.FrozeResult
 import org.cxct.sportlottery.network.user.selflimit.PerBetLimitRequest
@@ -32,13 +30,9 @@ import org.cxct.sportlottery.network.user.selflimit.PerBetLimitResult
 import org.cxct.sportlottery.network.user.setWithdrawInfo.WithdrawInfoRequest
 import org.cxct.sportlottery.network.user.setWithdrawInfo.WithdrawInfoResult
 import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdRequest
-import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdResult
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdRequest
-import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
 import retrofit2.Response
 import retrofit2.http.Body
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -55,16 +49,16 @@ interface UserService {
     suspend fun getMoney(): Response<UserMoneyResult>
 
     @POST(USER_EDIT_NICKNAME)
-    suspend fun editNickname(@Body nicknameRequest: NicknameRequest): Response<NicknameResult>
+    suspend fun editNickname(@Body nicknameRequest: NicknameRequest): Response<NetResult>
 
     @POST(USER_EDIT_ICON_URL)
     suspend fun editIconUrl(@Body editIconUrlRequest: IconUrlRequest): Response<IconUrlResult>
 
     @POST(USER_UPDATE_PWD)
-    suspend fun updatePwd(@Body updatePwdRequest: UpdatePwdRequest): Response<UpdatePwdResult>
+    suspend fun updatePwd(@Body updatePwdRequest: UpdatePwdRequest): Response<NetResult>
 
     @POST(USER_UPDATE_FUND_PWD)
-    suspend fun updateFundPwd(@Body updateFundPwdRequest: UpdateFundPwdRequest): Response<UpdateFundPwdResult>
+    suspend fun updateFundPwd(@Body updateFundPwdRequest: UpdateFundPwdRequest): Response<NetResult>
 
     @POST(USER_WITHDRAW_INFO)
     suspend fun setWithdrawUserInfo(@Body withdrawInfoRequest: WithdrawInfoRequest): Response<WithdrawInfoResult>
@@ -82,9 +76,9 @@ interface UserService {
     suspend fun lockMoney(): Response<UserMoneyResult>
 
     @POST(PASSWORD_VERIFY)
-    suspend fun passwordVerify(@Body passwordVerifyRequest: PasswordVerifyRequest): Response<PasswordVerifyResult>
+    suspend fun passwordVerify(@Body passwordVerifyRequest: PasswordVerifyRequest): Response<NetResult>
 
     @POST(ODDS_CHANGE_OPTION)
-    suspend fun oddsChangeOption(@Body oddsChangeOption : OddsChangeOptionRequest) : Response<OddsChangeOptionResult>
+    suspend fun oddsChangeOption(@Body oddsChangeOption : OddsChangeOptionRequest) : Response<NetResult>
 
 }

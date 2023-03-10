@@ -232,6 +232,8 @@
     <string name="recharge">Deposito</string>
     <string name="recharge_channel_online">Online Bayad</string>
     <string name="account_transfer">Ilipat ang balanse</string>
+    <string name="platform_user_money">Balanse sa platform</string>
+    <string name="third_party">3rd party</string>
     <string name="money_recycle_succeed">Matagumpay na nabawi ang quota</string>
     <string name="news_center">Message Center</string>
     <string name="help_center">Help center</string>

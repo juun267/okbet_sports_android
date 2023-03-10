@@ -3,8 +3,10 @@ package org.cxct.sportlottery.network.common
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsOdd
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
+import org.cxct.sportlottery.proguard.KeepMembers
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
 
+@KeepMembers
 interface MatchOdd {
     var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
     var playCateNameMap: MutableMap<String?, Map<String?, String?>?>?

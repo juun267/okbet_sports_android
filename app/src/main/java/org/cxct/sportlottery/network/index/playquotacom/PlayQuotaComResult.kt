@@ -1,11 +1,11 @@
 package org.cxct.sportlottery.network.index.playquotacom
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.index.playquotacom.t.BasePlayQuota
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class PlayQuotaComResult(
     @Json(name = "code")
     override val code: Int,

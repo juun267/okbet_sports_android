@@ -109,7 +109,6 @@
                         android:adjustViewBounds="true"
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_n"
-                        android:visibility="gone"
                         tools:ignore="ContentDescription"
                         tools:visibility="gone" />
 

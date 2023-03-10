@@ -1,10 +1,10 @@
 package org.cxct.sportlottery.network.service.close_play_cate
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 import org.cxct.sportlottery.network.service.ServiceEventType
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class ClosePlayCateEvent(
     @Json(name = "eventType")
     override val eventType: String,

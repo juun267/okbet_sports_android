@@ -208,7 +208,7 @@ class SettlementViewModel(
     }
 
     fun clickResultItem(gameType: String? = null, expandPosition: Int) {
-        val clickedItem = showMatchResultData.value?.get(expandPosition)
+        val clickedItem = showMatchResultData.value?.getOrNull(expandPosition)
 
         when (clickedItem?.dataType) {
             ListType.TITLE -> {

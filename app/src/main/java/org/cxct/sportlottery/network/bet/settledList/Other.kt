@@ -2,9 +2,9 @@ package org.cxct.sportlottery.network.bet.settledList
 
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class Other(
     @Json(name = "addTime")
     val addTime: String?,

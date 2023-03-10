@@ -26,7 +26,7 @@ object JumpUtil {
         LogUtil.d(href)
         context.startActivity(
             Intent(context, WebActivity::class.java).apply {
-                putExtra(WebActivity.KEY_URL, Constants.appendMode(href))
+                putExtra(WebActivity.KEY_URL, Constants.appendParams(href))
                 putExtra(WebActivity.KEY_TITLE, title)
                 putExtra(WebActivity.KEY_TOOLBAR_VISIBILITY, toolbarVisibility)
                 putExtra(WebActivity.KEY_BACK_EVENT, backEvent)

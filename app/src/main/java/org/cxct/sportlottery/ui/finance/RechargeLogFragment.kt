@@ -143,13 +143,6 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         selector_method_status.setItemData(rechargeChannelList as MutableList<StatusSheetData>)
         selector_order_status.setItemData(rechargeStateList as MutableList<StatusSheetData>)
 
-        viewModel.isLoading.observe(this.viewLifecycleOwner) {
-            if (it) {
-                loading()
-            } else {
-                hideLoading()
-            }
-        }
 
         viewModel.userRechargeListResult.observe(this.viewLifecycleOwner) {
             it?.apply {

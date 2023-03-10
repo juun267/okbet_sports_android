@@ -2,10 +2,10 @@ package org.cxct.sportlottery.network.user.info
 
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 import org.cxct.sportlottery.network.common.UserRebate
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class UserInfoData(
     @Json(name = "bankName") val bankName: String?,
     @Json(name = "cardNo") val cardNo: String?,

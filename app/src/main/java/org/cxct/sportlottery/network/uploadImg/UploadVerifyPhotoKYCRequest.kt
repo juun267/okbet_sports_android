@@ -1,9 +1,9 @@
 package org.cxct.sportlottery.network.uploadImg
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class UploadVerifyPhotoKYCRequest(
     @Json(name = "identityPhoto")
     val identityPhoto: String?= null,

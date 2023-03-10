@@ -9,8 +9,7 @@ import kotlinx.android.synthetic.main.text_form_field_boxes_layout.view.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
-import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdResult
-import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
+import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.repository.FLAG_IS_NEED_UPDATE_PAY_PW
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.login.afterTextChanged
@@ -222,7 +221,7 @@ class SettingPasswordActivity :
         })
 
         viewModel.updateFundPwdResult.observe(this, Observer {
-            updateUiWithResult(it)
+            updateFundPwdUiWithResult(it)
         })
 
         viewModel.userInfo.observe(this, Observer {
@@ -232,7 +231,7 @@ class SettingPasswordActivity :
         })
     }
 
-    private fun updateUiWithResult(updatePwdResult: UpdatePwdResult?) {
+    private fun updateUiWithResult(updatePwdResult: NetResult?) {
         hideLoading()
         if (updatePwdResult?.success == true) {
             showPromptDialog(
@@ -245,7 +244,7 @@ class SettingPasswordActivity :
         }
     }
 
-    private fun updateUiWithResult(updateFundPwdResult: UpdateFundPwdResult?) {
+    private fun updateFundPwdUiWithResult(updateFundPwdResult: NetResult?) {
         hideLoading()
         if (updateFundPwdResult?.success == true) {
             showPromptDialog(

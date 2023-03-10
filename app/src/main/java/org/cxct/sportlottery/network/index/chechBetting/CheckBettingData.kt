@@ -1,9 +1,9 @@
 package org.cxct.sportlottery.network.index.chechBetting
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 class CheckBettingData(
     @Json(name = "id")
     val id: String? = null,

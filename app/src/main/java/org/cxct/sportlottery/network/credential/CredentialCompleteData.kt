@@ -2,12 +2,11 @@ package org.cxct.sportlottery.network.credential
 
 import android.os.Parcelable
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.parcel.RawValue
 
 @Parcelize
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class CredentialCompleteData(
     @Json(name = "result")
     val result: CredentialDetailData?,
@@ -20,7 +19,7 @@ data class CredentialCompleteData(
      * InProcess :身份证明过程正在进行中。
      * VoidCancelled :身份证明过程被取消。
      * VoidTimeout :身份证明过程超时。
-*/
+     */
     @Json(name = "ekycResult")
     val ekycResult: String?,
 
@@ -34,6 +33,7 @@ data class CredentialCompleteData(
     val extIdInfo: ExtIdInfo?, //面部相关信息
 ): Parcelable {
 
+    @Transient
     private val SUCCESS = "Success"
     fun isSuccessed(): Boolean {
         return SUCCESS == ekycResult && SUCCESS == result?.resultStatus

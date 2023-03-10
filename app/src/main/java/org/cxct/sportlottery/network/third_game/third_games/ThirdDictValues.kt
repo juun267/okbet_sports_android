@@ -1,8 +1,8 @@
 package org.cxct.sportlottery.network.third_game.third_games
 
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class ThirdDictValues(
     val id: Int?, //主键
     val gameCategory: String?, //一级分类

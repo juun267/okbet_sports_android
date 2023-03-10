@@ -133,7 +133,8 @@ class HomeToolbarView: LinearLayout {
             ellipsize = TextUtils.TruncateAt.END
             gravity = Gravity.CENTER
             textSize = 14f
-            setText(R.string.btn_login)
+            text =
+                "${resources.getString(R.string.btn_login)} / ${resources.getString(R.string.btn_register)}"
             val padding = 10.dp
             setPadding(padding, 0, padding, 0)
             setBackgroundResource(R.drawable.bg_blue_radius_15)
@@ -149,23 +150,28 @@ class HomeToolbarView: LinearLayout {
         if (userModelEnable) {
             isLogin.observe(fragment) { setupLogin() }
             userMoney.observe(fragment) {
-                it?.let { tvUserMoney.text = "${sConfigData?.systemCurrencySign} ${TextUtil.format(it)}" }
+                it?.let { bindMoneyText(it) }
             }
         }
     }
 
-    private fun setupLogin() {
-        tvLogin.text = "${resources.getString(R.string.btn_login)} / ${resources.getString(R.string.btn_register)}"
+    private fun bindMoneyText(money: Double) {
+        tvUserMoney.text = "${sConfigData?.systemCurrencySign} ${TextUtil.format(money)}"
+    }
 
+    private fun setupLogin() {
         if (viewModel.isLogin.value == true) {
             loginLayout.gone()
             if (userModelEnable) {
                 searchView.gone()
                 userMoneyView.visible()
+                bindMoneyText(viewModel.userMoney?.value ?: 0.0)
             } else {
                 searchView.visible()
                 userMoneyView.gone()
             }
+
+
             return
         }
 

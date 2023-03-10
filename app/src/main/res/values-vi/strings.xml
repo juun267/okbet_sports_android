@@ -1242,4 +1242,6 @@
     <string name="transform_in_amount">Số tiền chuyển khoản</string>
     <string name="account_balance_unenough">Số dư tài khoản nền tảng không đủ</string>
     <string name="platform_user_money">Số dư nền tảng</string>
+    <string name="third_party">Bên thứ ba</string>
+    <string name="N589">Đăng nhập với Google</string>
 </resources>

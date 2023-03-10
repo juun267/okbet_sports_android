@@ -6,11 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdRequest
-import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdResult
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdRequest
-import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.LocalUtils
@@ -33,15 +32,15 @@ class SettingPasswordViewModel(
     favoriteRepository
 ) {
 
-    private val _updatePwdResult = MutableLiveData<UpdatePwdResult?>()
-    private val _updateFundPwdResult = MutableLiveData<UpdateFundPwdResult?>()
+    private val _updatePwdResult = MutableLiveData<NetResult?>()
+    private val _updateFundPwdResult = MutableLiveData<NetResult?>()
     private val _currentPwdError = MutableLiveData<String>()
     private val _newPwdError = MutableLiveData<String>()
     private val _confirmPwdError = MutableLiveData<String>()
 
-    val updatePwdResult: LiveData<UpdatePwdResult?>
+    val updatePwdResult: LiveData<NetResult?>
         get() = _updatePwdResult
-    val updateFundPwdResult: LiveData<UpdateFundPwdResult?>
+    val updateFundPwdResult: LiveData<NetResult?>
         get() = _updateFundPwdResult
     val currentPwdError: LiveData<String>
         get() = _currentPwdError

@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.MatchType
@@ -17,7 +18,6 @@ import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuFilter
 import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendRequest
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
-import org.cxct.sportlottery.network.third_game.ThirdLoginResult
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryConfigRequest
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 import org.cxct.sportlottery.network.third_game.third_games.TotalRewardAmountData
@@ -76,6 +76,9 @@ class MainHomeViewModel(
     val homeGameData: LiveData<List<QueryGameEntryData>?>
         get() = _homeGameData
     private val _homeGameData = MutableLiveData<List<QueryGameEntryData>?>()
+    val elecGameData: LiveData<List<QueryGameEntryData>?>
+        get() = _elecGameData
+    private val _elecGameData = MutableLiveData<List<QueryGameEntryData>?>()
     val slotGameData: LiveData<List<QueryGameEntryData>?>
         get() = _slotGameData
     private val _slotGameData = MutableLiveData<List<QueryGameEntryData>?>()
@@ -345,7 +348,7 @@ class MainHomeViewModel(
         )
     }
 
-    private suspend fun thirdGameLogin(firmType: String, gameCode: String): ThirdLoginResult? {
+    private suspend fun thirdGameLogin(firmType: String, gameCode: String): NetResult? {
         return doNetwork(androidContext) {
             OneBoSportApi.thirdGameService.thirdLogin(firmType, gameCode)
         }
@@ -458,8 +461,12 @@ class MainHomeViewModel(
                 )
             }
             result?.rows.let {
-                if (position==2){
-                    _slotGameData.postValue(it)
+                if (position==2) {
+                    if (gameType == 1) {
+                        _slotGameData.postValue(it)
+                    } else {
+                        _elecGameData.postValue(it)
+                    }
                 }else{
                     _homeGameData.postValue(it)
                 }

@@ -187,14 +187,6 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
         }
 
-        viewModel.isLoading.observe(this.viewLifecycleOwner) {
-            if (it) {
-                loading()
-            } else {
-                hideLoading()
-            }
-        }
-
         viewModel.userWithdrawListResult.observe(this.viewLifecycleOwner) {
             it?.let {
                 withdrawLogAdapter.data = it

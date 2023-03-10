@@ -30,9 +30,4 @@ data class Row(
     val userId: Int?,
     @Json(name = "userName")
     val userName: String?
-) {
-    var period = ""
-    var formatCreditBalance = "–"
-    var formatBalance = "–"
-    var formatReward = "–"
-}
+)

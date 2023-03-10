@@ -1,8 +1,8 @@
 package org.cxct.sportlottery.network.third_game.third_games
 
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class GameFirmValues(
     val id: Int?, //id主键
     val firmName: String?, //厂商名称

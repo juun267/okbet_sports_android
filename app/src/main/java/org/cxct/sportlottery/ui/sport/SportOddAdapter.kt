@@ -944,7 +944,7 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
                     }
                     val socketValue = matchInfo.socketMatchStatus
 
-                    if (needCountStatus(socketValue)) {
+                    if (needCountStatus(socketValue, matchInfo.leagueTime)) {
                         itemView.league_odd_match_time.visibility = View.VISIBLE
                         listener = object : TimerListener {
                             override fun onTimerUpdate(timeMillis: Long) {
@@ -958,8 +958,7 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
                                 matchInfo.leagueTime = (timeMillis / 1000).toInt()
                             }
                         }
-                        Log.d("hjq",
-                            matchInfo.id + "," + matchInfo.homeName + "," + matchInfo.leagueTime)
+//                        Log.d("hjq", matchInfo.id + "," + matchInfo.homeName + "," + matchInfo.leagueTime+ "," +socketValue)
 
                         updateTimer(
                             isTimerEnable,
