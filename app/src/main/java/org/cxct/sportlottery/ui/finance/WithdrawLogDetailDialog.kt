@@ -60,9 +60,9 @@ class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
                     4 -> getString(R.string.N627)
                     else -> null
                 }
-                when (it.withdrawState) {
-                    "通过" -> wd_log_detail_status.setTextColor(resources.getColor(R.color.color_1EB65B))
-                    "未通过" -> wd_log_detail_status.setTextColor(resources.getColor(R.color.color_E23434))
+                when (it.orderState) {
+                    2 -> wd_log_detail_status.setTextColor(resources.getColor(R.color.color_1EB65B))
+                    3 -> wd_log_detail_status.setTextColor(resources.getColor(R.color.color_E23434))
                     else -> wd_log_detail_status.setTextColor(resources.getColor(R.color.color_BBBBBB_333333))
                 }
 //                wd_log_detail_review_time.text = it.operatorDateAndTime ?: ""

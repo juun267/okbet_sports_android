@@ -31,9 +31,9 @@ class WithdrawLogDetailAdapter(data: List<Row>?) :
                 4 -> context.getString(R.string.N627)
                 else -> null
             }
-            when (item.withdrawState) {
-                "通过" -> it.setTextColor(context.getColor(R.color.color_1EB65B))
-                "未通过" -> it.setTextColor(context.getColor(R.color.color_E23434))
+            when (item.orderState) {
+                2 -> it.setTextColor(context.getColor(R.color.color_1EB65B))
+                3 -> it.setTextColor(context.getColor(R.color.color_E23434))
                 else -> it.setTextColor(context.getColor(R.color.color_BBBBBB_333333))
             }
         }
