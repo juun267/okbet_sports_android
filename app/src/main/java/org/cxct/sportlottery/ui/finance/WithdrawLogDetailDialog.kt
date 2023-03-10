@@ -84,7 +84,7 @@ class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
                         if ((fee) > 0.0) getString(R.string.log_detail_rebate_money)
                         else getString(R.string.log_detail_handle_fee)
                 }
-                it.child?.let {
+                it.children?.let {
                     if (it.isNotEmpty()) {
                         rv_child.layoutManager =
                             LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)

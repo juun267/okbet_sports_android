@@ -6,13 +6,6 @@
     android:layout_height="wrap_content"
     android:background="@color/color_191919_FCFCFC">
 
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/color_191919_EEEFF0"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/wd_log_detail_trans_num_subtitle" />
 
         <TextView
             android:id="@+id/wd_log_detail_trans_num_subtitle"
@@ -24,7 +17,7 @@
             android:textColor="@color/color_FFFFFF_414655"
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/wd_log_detail_trans_num"
@@ -81,7 +74,6 @@
             app:layout_constraintStart_toEndOf="@id/wd_log_detail_status_subtitle"
             tools:text="处理中" />
 
-
         <View
             android:id="@+id/log_detail_divider"
             android:layout_width="match_parent"
@@ -90,6 +82,5 @@
             android:background="@color/color_191919_EEEFF0"
             app:layout_constraintVertical_bias="1"
             app:layout_constraintTop_toBottomOf="@id/wd_log_detail_status_subtitle" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
