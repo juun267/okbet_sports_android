@@ -172,19 +172,20 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
 
         viewModel.queryByBettingStationIdResult.observe(this.viewLifecycleOwner) {
-            if (it.success) {
-                it.data.appointmentTime = reserveTime
-                JumpUtil.toInternalWeb(
-                    requireContext(),
-                    "https://maps.google.com/?q=@" + it.data.lon + "," + it.data.lat,
-                    getString(R.string.outlets_address),
-                    true,
-                    true,
-                    it.data
-                )
+            it.getContentIfNotHandled()?.let {
+                if (it.success) {
+                    it.data.appointmentTime = reserveTime
+                    JumpUtil.toInternalWeb(
+                        requireContext(),
+                        "https://maps.google.com/?q=@" + it.data.lon + "," + it.data.lat,
+                        getString(R.string.outlets_address),
+                        true,
+                        true,
+                        it.data
+                    )
 
+                }
             }
-
         }
 
         viewModel.userWithdrawListResult.observe(this.viewLifecycleOwner) {

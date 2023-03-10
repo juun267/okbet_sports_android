@@ -13,10 +13,7 @@ import org.cxct.sportlottery.network.withdraw.list.WithdrawListRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.finance.df.*
-import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.*
 
 const val pageSize = 20
 
@@ -86,8 +83,9 @@ class FinanceViewModel(
     val redEnvelopeListResult: LiveData<MutableList<RedEnvelopeRow>?>
         get() = _redEnvelopeListResult
 
-    private val _queryByBettingStationIdResult = MutableLiveData<QueryByBettingStationIdResult>()
-    val queryByBettingStationIdResult: LiveData<QueryByBettingStationIdResult>
+    private val _queryByBettingStationIdResult =
+        MutableLiveData<Event<QueryByBettingStationIdResult>>()
+    val queryByBettingStationIdResult: LiveData<Event<QueryByBettingStationIdResult>>
         get() = _queryByBettingStationIdResult
 
     fun setRecordType(recordType: String) {
@@ -147,24 +145,24 @@ class FinanceViewModel(
 
             result?.rows?.map {
                 it.rechState = when (it.status) {
-                    Status.SUCCESS.code -> androidContext.getString(R.string.recharge_state_success)
-                    Status.FAILED.code -> androidContext.getString(R.string.recharge_state_failed)
-                    Status.PROCESSING.code, Status.RECHARGING.code -> androidContext.getString(R.string.log_state_processing)
+                    Status.SUCCESS.code -> LocalUtils.getString(R.string.recharge_state_success)
+                    Status.FAILED.code -> LocalUtils.getString(R.string.recharge_state_failed)
+                    Status.PROCESSING.code, Status.RECHARGING.code -> LocalUtils.getString(R.string.log_state_processing)
                     else -> ""
                 }
 
                 it.rechTypeDisplay = when (it.rechType) {
-                    RechType.ONLINE_PAYMENT.type -> androidContext.getString(R.string.recharge_channel_online)
-                    RechType.ADMIN_ADD_MONEY.type -> androidContext.getString(R.string.recharge_channel_admin)
-                    RechType.CFT.type -> androidContext.getString(R.string.recharge_channel_cft)
-                    RechType.WEIXIN.type -> androidContext.getString(R.string.recharge_channel_weixin)
-                    RechType.ALIPAY.type -> androidContext.getString(R.string.recharge_channel_alipay)
-                    RechType.BANK_TRANSFER.type -> androidContext.getString(R.string.recharge_channel_bank)
-                    RechType.CRYPTO.type -> androidContext.getString(R.string.recharge_channel_crypto)
-                    RechType.GCASH.type -> androidContext.getString(R.string.recharge_channel_gcash)
-                    RechType.GRABPAY.type -> androidContext.getString(R.string.recharge_channel_grabpay)
-                    RechType.PAYMAYA.type -> androidContext.getString(R.string.recharge_channel_paymaya)
-                    RechType.BETTING_STATION.type -> androidContext.getString(R.string.betting_station_deposit)
+                    RechType.ONLINE_PAYMENT.type -> LocalUtils.getString(R.string.recharge_channel_online)
+                    RechType.ADMIN_ADD_MONEY.type -> LocalUtils.getString(R.string.recharge_channel_admin)
+                    RechType.CFT.type -> LocalUtils.getString(R.string.recharge_channel_cft)
+                    RechType.WEIXIN.type -> LocalUtils.getString(R.string.recharge_channel_weixin)
+                    RechType.ALIPAY.type -> LocalUtils.getString(R.string.recharge_channel_alipay)
+                    RechType.BANK_TRANSFER.type -> LocalUtils.getString(R.string.recharge_channel_bank)
+                    RechType.CRYPTO.type -> LocalUtils.getString(R.string.recharge_channel_crypto)
+                    RechType.GCASH.type -> LocalUtils.getString(R.string.recharge_channel_gcash)
+                    RechType.GRABPAY.type -> LocalUtils.getString(R.string.recharge_channel_grabpay)
+                    RechType.PAYMAYA.type -> LocalUtils.getString(R.string.recharge_channel_paymaya)
+                    RechType.BETTING_STATION.type -> LocalUtils.getString(R.string.betting_station_deposit)
                     else -> ""
                 }
 
@@ -300,19 +298,20 @@ class FinanceViewModel(
                 it.withdrawState = when (it.checkStatus) {
                     CheckStatus.PROCESSING_TWO.code,
                     CheckStatus.BetStation.code,
-                    CheckStatus.PROCESSING.code -> androidContext.getString(R.string.log_state_processing)
-                    CheckStatus.UN_PASS.code -> androidContext.getString(R.string.withdraw_log_state_un_pass)
-                    CheckStatus.PASS.code -> androidContext.getString(R.string.withdraw_log_state_pass)
+                    CheckStatus.PROCESSING.code,
+                    -> LocalUtils.getString(R.string.log_state_processing)
+                    CheckStatus.UN_PASS.code -> LocalUtils.getString(R.string.withdraw_log_state_un_pass)
+                    CheckStatus.PASS.code -> LocalUtils.getString(R.string.withdraw_log_state_pass)
                     else -> ""
                 }
 
                 it.withdrawType = when (it.uwType) {
-                    UWType.ADMIN_SUB_MONEY.type -> androidContext.getString(R.string.withdraw_log_type_admin)
-                    UWType.BANK_TRANSFER.type -> androidContext.getString(R.string.withdraw_log_type_bank_trans)
-                    UWType.CRYPTO.type -> androidContext.getString(R.string.withdraw_log_crypto_transfer)
-                    UWType.E_WALLET.type -> androidContext.getString(R.string.ewallet)
-                    UWType.BETTING_STATION.type -> androidContext.getString(R.string.betting_station_reserve)
-                    UWType.BETTING_STATION_ADMIN.type -> androidContext.getString(R.string.betting_station_withdraw)
+                    UWType.ADMIN_SUB_MONEY.type -> LocalUtils.getString(R.string.withdraw_log_type_admin)
+                    UWType.BANK_TRANSFER.type -> LocalUtils.getString(R.string.withdraw_log_type_bank_trans)
+                    UWType.CRYPTO.type -> LocalUtils.getString(R.string.withdraw_log_crypto_transfer)
+                    UWType.E_WALLET.type -> LocalUtils.getString(R.string.ewallet)
+                    UWType.BETTING_STATION.type -> LocalUtils.getString(R.string.betting_station_reserve)
+                    UWType.BETTING_STATION_ADMIN.type -> LocalUtils.getString(R.string.betting_station_withdraw)
                     else -> ""
                 }
 
@@ -391,8 +390,8 @@ class FinanceViewModel(
             result?.rows?.map {
 
                 it.tranTypeDisplay = when (it.tranType) {
-                    TranType.ENVELOPE_SEND.type -> androidContext.getString(R.string.redenvelope_trantype_send)
-                    TranType.ENVELOPE_RECEIVE.type -> androidContext.getString(R.string.redenvelope_trantype_received)
+                    TranType.ENVELOPE_SEND.type -> LocalUtils.getString(R.string.redenvelope_trantype_send)
+                    TranType.ENVELOPE_RECEIVE.type -> LocalUtils.getString(R.string.redenvelope_trantype_received)
                     else -> ""
                 }
 
@@ -432,7 +431,7 @@ class FinanceViewModel(
             doNetwork(androidContext){
                 OneBoSportApi.bettingStationService.queryByBettingStationId(bettingStationId = bettingStationId)
             }?.let {
-                _queryByBettingStationIdResult.value = it
+                _queryByBettingStationIdResult.postValue(Event(it))
             }
         }
     }

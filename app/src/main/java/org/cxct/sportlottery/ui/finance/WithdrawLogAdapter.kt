@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.finance
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import org.cxct.sportlottery.network.withdraw.list.Row
 import org.cxct.sportlottery.ui.finance.df.CheckStatus
 import org.cxct.sportlottery.ui.finance.df.UWType
 import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.LocalUtils
 
 class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -67,11 +69,13 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 rech_log_type.text = item.withdrawType
                 //用于前端显示单单订单状态 1: 處理中 2:提款成功 3:提款失败 4：待投注站出款
                 rech_log_state.text = when (item.orderState) {
-                    1 -> context.getString(R.string.log_state_processing)
-                    2 -> context.getString(R.string.L019)
-                    3 -> context.getString(R.string.N626)
-                    4 -> context.getString(R.string.N627)
+                    1 -> LocalUtils.getString(R.string.log_state_processing)
+                    2 -> LocalUtils.getString(R.string.L019)
+                    3 -> LocalUtils.getString(R.string.N626)
+                    4 -> LocalUtils.getString(R.string.N627)
                     else -> null
+                }.apply {
+                    Log.d("hjq", "rech_log_state=" + this)
                 }
             }
 
@@ -83,6 +87,8 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 itemView.rech_log_type.setOnClickListener {
                     withdrawLogListener?.onBettingStationClick(item)
                 }
+            } else {
+                itemView.rech_log_type.setOnClickListener(null)
             }
 
             setupStateTextColor(item)
