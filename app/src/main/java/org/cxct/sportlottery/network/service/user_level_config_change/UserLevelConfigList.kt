@@ -1,7 +1,9 @@
 package org.cxct.sportlottery.network.service.user_level_config_change
 
 import com.squareup.moshi.Json
+import org.cxct.sportlottery.proguard.KeepMembers
 
+@KeepMembers
 data class UserLevelConfigList(
     @Json(name = "id")
     val id: Int,
