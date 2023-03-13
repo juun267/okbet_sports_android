@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.dialog_withdraw_log_detail.*
 import kotlinx.android.synthetic.main.dialog_withdraw_log_detail.view.*
+import kotlinx.android.synthetic.main.item_withdraw_log.view.*
 import kotlinx.android.synthetic.main.view_item_recharge_log.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
@@ -46,10 +47,9 @@ class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
 
         viewModel.withdrawLogDetail.observe(this.viewLifecycleOwner) { event ->
             event.peekContent().let { it ->
-
+                wd_log_detail_trans_num_subtitle.text = "${getString(R.string.N628)}："
                 wd_log_detail_amount_subtitle.text =
                     "${getString(R.string.text_account_history_amount)}："
-
                 wd_log_detail_trans_num.text = it.orderNo ?: ""
                 wd_log_detail_time.text = it.withdrawDateAndTime ?: ""
                 //用于前端显示单单订单状态 1: 處理中 2:提款成功 3:提款失败 4：待投注站出款
@@ -63,7 +63,7 @@ class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
                 when (it.orderState) {
                     2 -> wd_log_detail_status.setTextColor(resources.getColor(R.color.color_1EB65B))
                     3 -> wd_log_detail_status.setTextColor(resources.getColor(R.color.color_E23434))
-                    else -> wd_log_detail_status.setTextColor(resources.getColor(R.color.color_BBBBBB_333333))
+                    else -> wd_log_detail_status.setTextColor(resources.getColor(R.color.color_414655))
                 }
 //                wd_log_detail_review_time.text = it.operatorDateAndTime ?: ""
 //                wd_log_detail_reason.text = it.reason ?: ""
@@ -86,7 +86,6 @@ class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
                 }
                 it.children?.let {
                     if (it.isNotEmpty()) {
-                        wd_log_detail_trans_num_subtitle.text = "${getString(R.string.N628)}："
                         rv_child.layoutManager =
                             LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
                         rv_child.adapter = WithdrawLogDetailAdapter(it)

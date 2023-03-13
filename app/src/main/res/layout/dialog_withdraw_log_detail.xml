@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="14dp"
-            android:text="@string/log_detail_trans_num_sub"
+            android:text="@string/N628"
             android:textColor="@color/color_FFFFFF_414655"
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintStart_toStartOf="parent"

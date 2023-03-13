@@ -23,10 +23,11 @@
             android:id="@+id/wd_log_detail_trans_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:textColor="@color/color_FFFFFF_414655"
             android:textSize="@dimen/textSize14sp"
-            app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_trans_num_subtitle"
-            app:layout_constraintStart_toEndOf="@id/wd_log_detail_trans_num_subtitle"
+            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_trans_num_subtitle"
+            app:layout_constraintStart_toStartOf="@id/wd_log_detail_trans_num_subtitle"
             tools:text="10201223151804075637" />
 
         <TextView
@@ -38,7 +39,7 @@
             android:text="@string/text_account_history_amount"
             android:textColor="@color/color_FFFFFF_414655"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_trans_num_subtitle" />
+            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_trans_num" />
 
         <TextView
             android:id="@+id/wd_log_detail_amount"

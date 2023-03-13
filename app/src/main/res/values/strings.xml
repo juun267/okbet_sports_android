@@ -1358,4 +1358,5 @@
     <string name="N618">Sub-order transaction number</string>
     <string name="N626">Withdrawal failed</string>
     <string name="N628">Total bill transaction number</string>
+    <string name="N646">Received amount</string>
 </resources>
