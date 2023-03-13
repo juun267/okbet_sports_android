@@ -6,8 +6,6 @@
     android:layout_height="wrap_content"
     android:minWidth="60dp"
     android:paddingHorizontal="7.5dp"
-    android:background="@color/color_141414_FCFCFC"
-    tools:context=".ui.game.home.HomeGameCard"
     tools:ignore="SpUsage">
 
     <ImageView
