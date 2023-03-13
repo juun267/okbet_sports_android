@@ -258,12 +258,22 @@ class LoginViewModel(
      * 手机号/邮箱
      */
     fun checkAccount(username: String): String? {
-        val msg = when {
-            username.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
-            !(VerifyConstUtil.verifyPhone(username) || VerifyConstUtil.verifyMail(username)) -> {
-                LocalUtils.getString(R.string.pls_enter_correct_mobile_email)
+        val msg = if (sConfigData?.enableMailRegister == false) {
+            when {
+                username.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
+                !VerifyConstUtil.verifyPhone(username) -> {
+                    LocalUtils.getString(R.string.pls_enter_correct_mobile)
+                }
+                else -> null
             }
-            else -> null
+        } else {
+            when {
+                username.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
+                !(VerifyConstUtil.verifyPhone(username) || VerifyConstUtil.verifyMail(username)) -> {
+                    LocalUtils.getString(R.string.pls_enter_correct_mobile_email)
+                }
+                else -> null
+            }
         }
         _accountMsg.value = Pair(msg, msg == null)
         focusChangeCheckAllInputComplete()

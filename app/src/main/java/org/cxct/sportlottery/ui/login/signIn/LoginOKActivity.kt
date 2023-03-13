@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
+import android.text.InputType
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
@@ -24,6 +25,7 @@ import org.cxct.sportlottery.network.index.login.LoginCodeRequest
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.repository.LOGIN_SRC
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.SelfLimitFrozeErrorDialog
@@ -102,6 +104,11 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                     viewModel.checkUserExist(it)
                 }
             }
+        }
+        if (sConfigData?.enableMailRegister == false) {
+            binding.etAccount.setHintText(getString(R.string.phone_number))
+            binding.eetAccount.inputType = InputType.TYPE_CLASS_PHONE
+            binding.eetAccount.maxEms = 11
         }
         binding.eetPassword.checkRegisterListener { viewModel.checkPassword(it) }
         binding.eetUsername.checkRegisterListener { viewModel.checkUserName(it) }
