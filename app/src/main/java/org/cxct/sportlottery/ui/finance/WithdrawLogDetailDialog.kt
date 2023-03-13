@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.dialog_withdraw_log_detail.*
@@ -14,6 +15,7 @@ import kotlinx.android.synthetic.main.view_item_recharge_log.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
 import kotlin.math.abs
 
@@ -84,8 +86,16 @@ class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
                         if ((fee) > 0.0) getString(R.string.log_detail_rebate_money)
                         else getString(R.string.log_detail_handle_fee)
                 }
-                it.children?.let {
-                    if (it.isNotEmpty()) {
+                it.children.let {
+                    if (it.isNullOrEmpty()) {
+                        nsv_content.layoutParams.apply {
+                            height = LinearLayout.LayoutParams.WRAP_CONTENT
+                        }
+                    } else {
+                        nsv_content.layoutParams.apply {
+                            height = 310.dp
+                            nsv_content.layoutParams = this
+                        }
                         rv_child.layoutManager =
                             LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
                         rv_child.adapter = WithdrawLogDetailAdapter(it)
