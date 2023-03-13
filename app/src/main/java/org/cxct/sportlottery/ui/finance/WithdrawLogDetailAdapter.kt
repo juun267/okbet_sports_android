@@ -14,7 +14,7 @@ class WithdrawLogDetailAdapter(data: List<Row>?) :
 
     override fun convert(helper: BaseViewHolder, item: Row) {
         helper.setText(R.id.wd_log_detail_trans_num_subtitle,
-            "${context.getString(R.string.N618)}：")
+            "${context.getString(R.string.N618)}${helper.layoutPosition + 1}：")
         helper.setText(R.id.wd_log_detail_amount_subtitle,
             "${context.getString(R.string.text_account_history_amount)}：")
         helper.setText(R.id.wd_log_detail_trans_num, item.orderNo)
@@ -34,7 +34,7 @@ class WithdrawLogDetailAdapter(data: List<Row>?) :
             when (item.orderState) {
                 2 -> it.setTextColor(context.getColor(R.color.color_1EB65B))
                 3 -> it.setTextColor(context.getColor(R.color.color_E23434))
-                else -> it.setTextColor(context.getColor(R.color.color_BBBBBB_333333))
+                else -> it.setTextColor(context.getColor(R.color.color_414655))
             }
         }
     }
