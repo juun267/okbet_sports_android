@@ -115,12 +115,12 @@ class OtherBetRecordFragment : BaseSocketFragment<OtherBetRecordViewModel>(Other
     }
 
     private fun initObserver() {
-        viewModel.loading.observe(viewLifecycleOwner) {
-            if (it)
-                loading()
-            else
-                hideLoading()
-        }
+//        viewModel.loading.observe(viewLifecycleOwner) {
+//            if (it)
+//                loading()
+//            else
+//                hideLoading()
+//        }
 
         viewModel.thirdGamesResult.observe(viewLifecycleOwner) {
             status_selector.setItemData((it ?: listOf()) as MutableList<StatusSheetData>)

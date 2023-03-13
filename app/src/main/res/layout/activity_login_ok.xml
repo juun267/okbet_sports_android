@@ -43,17 +43,18 @@
         android:paddingBottom="30dp"
         android:layout_marginTop="35dp"
         android:elevation="2dp"
-        android:layout_marginHorizontal="5dp"
-        android:background="@drawable/bg_login_card_backgroud"
+        android:layout_marginHorizontal="15dp"
+        android:background="@drawable/bg_white_radius_8"
         android:overScrollMode="never"
         android:scrollbars="none"
+        android:fadingEdge="none"
         app:layout_constraintTop_toBottomOf="@id/ivLogo">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingVertical="15dp"
-            android:paddingHorizontal="34dp">
+            android:paddingTop="15dp"
+            android:paddingHorizontal="20dp">
 
             <FrameLayout
                 android:id="@+id/fl_input"
