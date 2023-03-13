@@ -258,7 +258,7 @@ class LoginViewModel(
      * 手机号/邮箱
      */
     fun checkAccount(username: String): String? {
-        val msg = if (sConfigData?.enableMailRegister == false) {
+        val msg = if (sConfigData?.enableEmailReg == "0") {
             when {
                 username.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
                 !VerifyConstUtil.verifyPhone(username) -> {

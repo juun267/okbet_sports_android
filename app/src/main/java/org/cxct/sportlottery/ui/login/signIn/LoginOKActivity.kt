@@ -105,7 +105,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 }
             }
         }
-        if (sConfigData?.enableMailRegister == false) {
+        if (sConfigData?.enableEmailReg == "0") {
             binding.etAccount.setHintText(getString(R.string.phone_number))
             binding.eetAccount.inputType = InputType.TYPE_CLASS_PHONE
             binding.eetAccount.maxEms = 11
