@@ -454,7 +454,7 @@
     <string name="withdraw_amount">Withdraw</string>
     <string name="withdraw_password">Withdrawal password</string>
     <string name="total_withdrawal">Kabuuang Pag-withdraw</string>
-    <string name="withdraw_all">I-extract lahat</string>
+    <string name="withdraw_all">Kunin lahat</string>
     <string name="withdraw_handling_fee_hint">Rate ng bayad: %1$s%% Mga bayarin na babayaran: (%2$s)：%3$s</string>
     <string name="withdraw_crypto_amount_hint">Withdrawal amount(%1$s)：%2$s</string>
     <string name="withdraw_crypto_fee_hint">Withdrawal fee:(%1$s)：%2$s</string>
