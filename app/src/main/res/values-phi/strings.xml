@@ -254,7 +254,7 @@
     <string name="current_login_password">Kasalukuyang login password</string>
     <string name="current_withdrawal_password">Kasalukuyang withdrawal password</string>
     <string name="hint_current_login_password">Paki lagay ang password</string>
-    <string name="hint_current_withdrawal_password">Paki lagay ang inyong withdrawal password</string>
+    <string name="hint_current_withdrawal_password">Withdrawal password</string>
     <string name="new_password">Bagong password</string>
     <string name="hint_withdrawal_new_password">Password ay 4 na numero</string>
     <string name="error_password_cannot_be_same">Ang bagong password ay hindi maaaring pareho sa lumang password</string>
@@ -589,7 +589,7 @@
     <string name="odds_have_changed">Ang Handicap odds ay nabago, paki ulit s pagtaya</string>
     <string name="bet_info_content_has_been_changed">Mga uri na pinili ng inyong odds ay may binago. paki bet ulit</string>
     <string name="date">Petsa</string>
-    <string name="bet_amount">Pagtaya</string>
+    <string name="bet_amount">Taya</string>
     <string name="available_amount">Valid na taya</string>
     <string name="win_lose">Panalo / talo</string>
     <string name="all_sport">Lahat ng sports</string>
@@ -710,13 +710,13 @@
     <string name="commission_desc_2">Kapag naabot na ang wastong halaga, hindi na namin sisingilin ang handing fee.</string>
     <string name="notice">Mga tip</string>
     <string name="commission_check_time">Suriin ang oras :</string>
-    <string name="commission_deducted_amount">Ibabawas</string>
-    <string name="commission_required_size">Kailangan i type ang amount</string>
-    <string name="commission_amount_of_coding_completed">Paki tapus ang ang lagay ng amount</string>
+    <string name="commission_deducted_amount">Kabuuang bawas</string>
+    <string name="commission_required_size">Hiniling na halaga</string>
+    <string name="commission_amount_of_coding_completed">Wastong halaga</string>
     <string name="commission_check_type">Paki check</string>
-    <string name="commission_not_completed">Hindi pa tapus</string>
-    <string name="commission_total_deducted_amount">Ibabawas :</string>
-    <string name="commission_deducted_amount_detail">Mga detalye ng halaga ng bawas</string>
+    <string name="commission_not_completed">Tapos na</string>
+    <string name="commission_total_deducted_amount">Kabuuang Bawas :</string>
+    <string name="commission_deducted_amount_detail">Detalye ng Deduction</string>
     <string name="commission_detail_title">Detalyadong Paglalarawan</string>
     <string name="commission_detail_desc_1">Upang maiwasan ang mga hindi autorisadong na withdrawal, Pagkatapos magdeposito, kailangan mong makatangap ng wastong code bago ka makapag-withdraw</string>
     <string name="commission_detail_desc_2">Kapag hindi naabot ang epektibong coding, ang withdrawal ay bubuo ng halaga ng bawas, na kinakalkula bilang maagang bayad sa pag-withdraw gaya ng sumusunod: halaga ng recharge x ratio ng bawas = halaga ng bawas</string>
@@ -907,7 +907,7 @@
     <string name="dialog_age_verify_hint">Tinatanggap at sumasang-ayon ako sa OKbet</string>
     <string name="dialog_age_verify_confirm">Ako ay higit sa 21 taong gulang</string>
     <string name="dialog_age_verify_exit">Umalis</string>
-    <string name="dialog_age_verify_hint_and_terms_conditions">我接受并同意OKBET规则与条款</string>
+    <string name="dialog_age_verify_hint_and_terms_conditions">I agree to the OKBET Terms &amp; Conditions</string>
     <!--endregion-->
 
     <string name="esports">E-sports</string>
