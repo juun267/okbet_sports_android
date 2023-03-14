@@ -236,6 +236,9 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                 getString(R.string.N626) -> {
                     StatusSheetData(CheckStatus.UN_PASS.code.toString(), it)
                 }
+                getString(R.string.N653) -> {
+                    StatusSheetData(CheckStatus.PENDING.code.toString(), it)
+                }
                 else -> {
                     StatusSheetData(viewModel.allTag, it).apply { isChecked = true }
                 }

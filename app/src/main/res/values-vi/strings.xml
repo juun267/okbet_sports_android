@@ -1281,4 +1281,6 @@
     <string name="N646">Tiền vào TK</string>
     <string name="N647">Số tiền của đơn</string>
     <string name="N653">Chờ chuyển tiền</string>
+    <string name="J630">Số đơn hàng</string>
+    <string name="N618">Mã giao dịch phụ</string>
 </resources>

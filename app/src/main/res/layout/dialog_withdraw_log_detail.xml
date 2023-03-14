@@ -1,213 +1,219 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_margin="40dp"
-    app:cardCornerRadius="8dp"
-    app:cardBackgroundColor="@color/color_FFFFFF"
-    tools:context="org.cxct.sportlottery.ui.finance.WithdrawLogDetailDialog">
-<LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/wd_log_detail_title"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:gravity="center"
-        android:padding="9dp"
-        android:text="@string/log_detail_title"
-        android:textColor="@color/color_CCCCCC_000000"
-        android:textStyle="bold"
-        android:textSize="@dimen/textSize16sp"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nsv_content"
-        android:layout_width="match_parent"
-        android:layout_height="310dp"
-        android:scrollbars="vertical">
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="40dp"
+        app:cardCornerRadius="8dp"
+        app:cardBackgroundColor="@color/color_FFFFFF"
+        tools:context="org.cxct.sportlottery.ui.finance.WithdrawLogDetailDialog">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <TextView
+                android:id="@+id/wd_log_detail_title"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="44dp"
+                android:gravity="center"
+                android:padding="9dp"
+                android:text="@string/log_detail_title"
+                android:textColor="@color/color_CCCCCC_000000"
+                android:textStyle="bold"
+                android:textSize="@dimen/textSize16sp"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/wd_log_detail_trans_num_subtitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="14dp"
-                    android:text="@string/N628"
-                    android:textColor="@color/color_FFFFFF_414655"
-                    android:textSize="@dimen/textSize14sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/nsv_content"
+                android:layout_width="match_parent"
+                android:layout_height="310dp"
+                android:scrollbars="vertical">
 
-        <TextView
-            android:id="@+id/wd_log_detail_trans_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/color_FFFFFF_414655"
-            android:textSize="@dimen/textSize14sp"
-            app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_trans_num_subtitle"
-            app:layout_constraintStart_toEndOf="@id/wd_log_detail_trans_num_subtitle"
-            tools:text="10201223151804075637" />
-
-        <TextView
-            android:id="@+id/wd_log_detail_time_subtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/log_detail_time_sub"
-            android:textColor="@color/color_FFFFFF_414655"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_trans_num_subtitle" />
-
-        <TextView
-            android:id="@+id/wd_log_detail_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/color_FFFFFF_414655"
-            android:textSize="@dimen/textSize14sp"
-            app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_time_subtitle"
-            app:layout_constraintStart_toEndOf="@id/wd_log_detail_time_subtitle"
-            tools:text="2020-12-12 19:58:22" />
-
-        <TextView
-            android:id="@+id/wd_log_detail_amount_subtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/text_account_history_amount"
-            android:textColor="@color/color_FFFFFF_414655"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_time_subtitle" />
-
-        <TextView
-            android:id="@+id/wd_log_detail_amount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/color_FFFFFF_414655"
-            android:ellipsize="end"
-            android:textSize="@dimen/textSize14sp"
-            app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_amount_subtitle"
-            app:layout_constraintStart_toEndOf="@id/wd_log_detail_amount_subtitle"
-            tools:text="₱ 1,000,000.00" />
-
-        <TextView
-            android:id="@+id/wd_log_detail_handle_fee_subtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/log_detail_handle_fee"
-            android:textColor="@color/color_FFFFFF_414655"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_amount_subtitle" />
-
-        <TextView
-            android:id="@+id/wd_log_detail_handle_fee"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/color_BBBBBB_333333"
-            android:textSize="@dimen/textSize14sp"
-            app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_handle_fee_subtitle"
-            app:layout_constraintStart_toEndOf="@id/wd_log_detail_handle_fee_subtitle"
-            tools:text="₱ -50" />
-
-        <TextView
-            android:id="@+id/wd_log_detail_commission_subtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/log_detail_commission"
-            android:textColor="@color/color_AEAEAE_404040"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_handle_fee" />
-
-        <TextView
-            android:id="@+id/wd_log_detail_commission"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/color_FFFFFF_414655"
-            android:textSize="@dimen/textSize14sp"
-            app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_commission_subtitle"
-            app:layout_constraintStart_toEndOf="@id/wd_log_detail_commission_subtitle"
-            tools:text="₱ -600" />
-
-        <TextView
-            android:id="@+id/wd_log_detail_status_subtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/log_detail_status_sub"
-            android:textColor="@color/color_FFFFFF_414655"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_commission_subtitle" />
-
-        <TextView
-            android:id="@+id/wd_log_detail_status"
-            android:layout_width="224dp"
-            android:layout_height="33dp"
-            android:ellipsize="end"
-            android:textColor="@color/color_1EB65B"
-            android:textSize="@dimen/textSize14sp"
-            android:gravity="start"
-            app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_status_subtitle"
-            app:layout_constraintLeft_toRightOf="@id/wd_log_detail_status_subtitle"
-            app:layout_constraintRight_toRightOf="parent"
-            tools:text="处理中" />
-
-                <View
-                    android:id="@+id/log_detail_divider"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/margin_0.5"
-                    android:layout_marginTop="17dp"
-                    android:layout_marginHorizontal="@dimen/margin_16"
-                    android:background="@color/color_E3E8EE"
-                    app:layout_constraintVertical_bias="1"
-                    app:layout_constraintTop_toBottomOf="@id/wd_log_detail_status_subtitle" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_child"
+                        <TextView
+                            android:id="@+id/wd_log_detail_trans_num_subtitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="14dp"
+                            android:text="@string/J630"
+                            android:textColor="@color/color_FFFFFF_414655"
+                            android:textSize="@dimen/textSize14sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/wd_log_detail_trans_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/color_FFFFFF_414655"
+                            android:textSize="@dimen/textSize14sp"
+                            app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_trans_num_subtitle"
+                            app:layout_constraintStart_toEndOf="@id/wd_log_detail_trans_num_subtitle"
+                            tools:text="10201223151804075637" />
+
+                        <TextView
+                            android:id="@+id/wd_log_detail_time_subtitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/log_detail_time_sub"
+                            android:textColor="@color/color_FFFFFF_414655"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_trans_num_subtitle" />
+
+                        <TextView
+                            android:id="@+id/wd_log_detail_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/color_FFFFFF_414655"
+                            android:textSize="@dimen/textSize14sp"
+                            app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_time_subtitle"
+                            app:layout_constraintStart_toEndOf="@id/wd_log_detail_time_subtitle"
+                            tools:text="2020-12-12 19:58:22" />
+
+                        <TextView
+                            android:id="@+id/wd_log_detail_amount_subtitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/text_account_history_amount"
+                            android:textColor="@color/color_FFFFFF_414655"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_time_subtitle" />
+
+                        <TextView
+                            android:id="@+id/wd_log_detail_amount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/color_FFFFFF_414655"
+                            android:ellipsize="end"
+                            android:textSize="@dimen/textSize14sp"
+                            app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_amount_subtitle"
+                            app:layout_constraintStart_toEndOf="@id/wd_log_detail_amount_subtitle"
+                            tools:text="₱ 1,000,000.00" />
+
+                        <TextView
+                            android:id="@+id/wd_log_detail_handle_fee_subtitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/log_detail_handle_fee"
+                            android:textColor="@color/color_FFFFFF_414655"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_amount_subtitle" />
+
+                        <TextView
+                            android:id="@+id/wd_log_detail_handle_fee"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/color_BBBBBB_333333"
+                            android:textSize="@dimen/textSize14sp"
+                            app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_handle_fee_subtitle"
+                            app:layout_constraintStart_toEndOf="@id/wd_log_detail_handle_fee_subtitle"
+                            tools:text="₱ -50" />
+
+                        <TextView
+                            android:id="@+id/wd_log_detail_commission_subtitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/log_detail_commission"
+                            android:textColor="@color/color_AEAEAE_404040"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_handle_fee" />
+
+                        <TextView
+                            android:id="@+id/wd_log_detail_commission"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/color_FFFFFF_414655"
+                            android:textSize="@dimen/textSize14sp"
+                            app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_commission_subtitle"
+                            app:layout_constraintStart_toEndOf="@id/wd_log_detail_commission_subtitle"
+                            tools:text="₱ -600" />
+
+                        <TextView
+                            android:id="@+id/wd_log_detail_status_subtitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/log_detail_status_sub"
+                            android:textColor="@color/color_FFFFFF_414655"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_commission_subtitle" />
+
+                        <TextView
+                            android:id="@+id/wd_log_detail_status"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:textColor="@color/color_1EB65B"
+                            android:textSize="@dimen/textSize14sp"
+                            android:gravity="start"
+                            app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_status_subtitle"
+                            app:layout_constraintLeft_toRightOf="@id/wd_log_detail_status_subtitle"
+                            app:layout_constraintRight_toRightOf="parent"
+                            tools:text="处理中" />
+
+                        <View
+                            android:id="@+id/log_detail_divider"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/margin_0.5"
+                            android:layout_marginTop="17dp"
+                            android:layout_marginHorizontal="@dimen/margin_16"
+                            android:background="@color/color_E3E8EE"
+                            app:layout_constraintVertical_bias="1"
+                            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_status_subtitle" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_child"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        app:layout_constraintTop_toBottomOf="@id/log_detail_divider"
+                        tools:itemCount="2"
+                        tools:listitem="@layout/item_withdraw_log_detail" />
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                app:layout_constraintTop_toBottomOf="@id/log_detail_divider"
-                tools:itemCount="2"
-                tools:listitem="@layout/item_withdraw_log_detail" />
+                android:layout_height="@dimen/margin_0.5"
+                android:background="@color/color_E3E8EE" />
+
+            <Button
+                android:id="@+id/log_detail_confirm"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:text="@string/btn_confirm"
+                android:textColor="@color/color_317FFF_0760D4"
+                android:textSize="@dimen/textSize14sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent" />
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/margin_0.5"
-        android:background="@color/color_E3E8EE" />
-
-    <Button
-        android:id="@+id/log_detail_confirm"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:text="@string/btn_confirm"
-        android:textColor="@color/color_317FFF_0760D4"
-        android:textSize="@dimen/textSize14sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.cardview.widget.CardView>
 </LinearLayout>
-</androidx.cardview.widget.CardView>

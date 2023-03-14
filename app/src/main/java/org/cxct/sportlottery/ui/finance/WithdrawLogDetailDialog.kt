@@ -51,12 +51,11 @@ class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
 
         viewModel.withdrawLogDetail.observe(this.viewLifecycleOwner) { event ->
             event.peekContent().let { it ->
-                wd_log_detail_trans_num_subtitle.text = "${getString(R.string.N628)}："
+                wd_log_detail_trans_num_subtitle.text = "${getString(R.string.J630)}："
                 wd_log_detail_amount_subtitle.text =
                     "${getString(R.string.text_account_history_amount)}："
                 wd_log_detail_trans_num.text = it.orderNo ?: ""
                 wd_log_detail_time.text = it.withdrawDateAndTime ?: ""
-                //用于前端显示单单订单状态 1: 處理中 2:提款成功 3:提款失败 4：待投注站出款
                 //用于前端显示单单订单状态 1: 處理中 2:提款成功 3:提款失败 4：待投注站出款
                 wd_log_detail_status.apply {
                     when (it.orderState) {
