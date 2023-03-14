@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.dialog_withdraw_log_detail.*
@@ -16,6 +17,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.TextUtil
 import kotlin.math.abs
 
@@ -55,18 +57,28 @@ class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
                 wd_log_detail_trans_num.text = it.orderNo ?: ""
                 wd_log_detail_time.text = it.withdrawDateAndTime ?: ""
                 //用于前端显示单单订单状态 1: 處理中 2:提款成功 3:提款失败 4：待投注站出款
-                wd_log_detail_status.text = when (it.orderState) {
-                    1 -> getString(R.string.log_state_processing)
-                    2 -> getString(R.string.L019)
-                    3 -> getString(R.string.N626)
-                    4 -> getString(R.string.N653)
-                    else -> null
+                //用于前端显示单单订单状态 1: 處理中 2:提款成功 3:提款失败 4：待投注站出款
+                wd_log_detail_status.apply {
+                    when (it.orderState) {
+                        1 -> {
+                            text = LocalUtils.getString(R.string.log_state_processing)
+                            setTextColor(ContextCompat.getColor(context, R.color.color_414655))
+                        }
+                        2 -> {
+                            text = LocalUtils.getString(R.string.L019)
+                            setTextColor(ContextCompat.getColor(context, R.color.color_1EB65B))
+                        }
+                        3 -> {
+                            text = LocalUtils.getString(R.string.N626)
+                            setTextColor(ContextCompat.getColor(context, R.color.color_E23434))
+                        }
+                        4 -> {
+                            text = LocalUtils.getString(R.string.N653)
+                            setTextColor(ContextCompat.getColor(context, R.color.color_414655))
+                        }
+                    }
                 }
-                when (it.orderState) {
-                    2 -> wd_log_detail_status.setTextColor(resources.getColor(R.color.color_1EB65B))
-                    3 -> wd_log_detail_status.setTextColor(resources.getColor(R.color.color_E23434))
-                    else -> wd_log_detail_status.setTextColor(resources.getColor(R.color.color_414655))
-                }
+
 //                wd_log_detail_review_time.text = it.operatorDateAndTime ?: ""
 //                wd_log_detail_reason.text = it.reason ?: ""
                 it.displayMoney?.let { nonNullDisplayMoney ->

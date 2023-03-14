@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_withdraw_log.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.withdraw.list.Row
-import org.cxct.sportlottery.ui.finance.df.CheckStatus
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.TextUtil
@@ -68,36 +67,34 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 rech_log_amount.text = item.displayMoney
                 tv_receive_amount.text = TextUtil.formatMoney(item.actualMoney ?: 0.0)
                 //用于前端显示单单订单状态 1: 處理中 2:提款成功 3:提款失败 4：待投注站出款
-                rech_log_state.text = when (item.orderState) {
-                    1 -> LocalUtils.getString(R.string.log_state_processing)
-                    2 -> LocalUtils.getString(R.string.L019)
-                    3 -> LocalUtils.getString(R.string.N626)
-                    4 -> LocalUtils.getString(R.string.N653)
-                    else -> null
+                rech_log_state.apply {
+                    when (item.orderState) {
+                        1 -> {
+                            text = LocalUtils.getString(R.string.log_state_processing)
+                            setTextColor(ContextCompat.getColor(itemView.context,
+                                R.color.color_414655))
+                        }
+                        2 -> {
+                            text = LocalUtils.getString(R.string.L019)
+                            setTextColor(ContextCompat.getColor(itemView.context,
+                                R.color.color_1EB65B))
+                        }
+                        3 -> {
+                            text = LocalUtils.getString(R.string.N626)
+                            setTextColor(ContextCompat.getColor(itemView.context,
+                                R.color.color_E23434))
+                        }
+                        4 -> {
+                            text = LocalUtils.getString(R.string.N653)
+                            setTextColor(ContextCompat.getColor(itemView.context,
+                                R.color.color_414655))
+                        }
+                    }
                 }
             }
 
             itemView.setOnClickListener {
                 withdrawLogListener?.onClick(Event(item))
-            }
-            setupStateTextColor(item)
-        }
-
-        private fun setupStateTextColor(item: Row) {
-            when (item.checkStatus) {
-                CheckStatus.PROCESSING.code -> {
-                    itemView.rech_log_state.setTextColor(ContextCompat.getColor(itemView.context,
-                        R.color.color_414655))
-                }
-                CheckStatus.PASS.code -> {
-                    itemView.rech_log_state.setTextColor(ContextCompat.getColor(itemView.context,
-                        R.color.color_1EB65B))
-                }
-
-                CheckStatus.UN_PASS.code -> {
-                    itemView.rech_log_state.setTextColor(ContextCompat.getColor(itemView.context,
-                        R.color.color_E23434))
-                }
             }
         }
 

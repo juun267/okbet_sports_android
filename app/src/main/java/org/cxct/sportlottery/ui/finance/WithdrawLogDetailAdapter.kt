@@ -1,11 +1,13 @@
 package org.cxct.sportlottery.ui.finance
 
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.withdraw.list.Row
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.util.LocalUtils
 
 
 class WithdrawLogDetailAdapter(data: List<Row>?) :
@@ -22,19 +24,25 @@ class WithdrawLogDetailAdapter(data: List<Row>?) :
             helper.setText(R.id.wd_log_detail_amount,
                 "${sConfigData?.systemCurrencySign} $nonNullDisplayMoney")
         }
-        helper.getView<TextView>(R.id.wd_log_detail_status).let {
+        helper.getView<TextView>(R.id.wd_log_detail_status).apply {
             //用于前端显示单单订单状态 1: 處理中 2:提款成功 3:提款失败 4：待投注站出款
-            it.text = when (item.orderState) {
-                1 -> context.getString(R.string.log_state_processing)
-                2 -> context.getString(R.string.L019)
-                3 -> context.getString(R.string.N626)
-                4 -> context.getString(R.string.N653)
-                else -> null
-            }
             when (item.orderState) {
-                2 -> it.setTextColor(context.getColor(R.color.color_1EB65B))
-                3 -> it.setTextColor(context.getColor(R.color.color_E23434))
-                else -> it.setTextColor(context.getColor(R.color.color_414655))
+                1 -> {
+                    text = LocalUtils.getString(R.string.log_state_processing)
+                    setTextColor(ContextCompat.getColor(context, R.color.color_414655))
+                }
+                2 -> {
+                    text = LocalUtils.getString(R.string.L019)
+                    setTextColor(ContextCompat.getColor(context, R.color.color_1EB65B))
+                }
+                3 -> {
+                    text = LocalUtils.getString(R.string.N626)
+                    setTextColor(ContextCompat.getColor(context, R.color.color_E23434))
+                }
+                4 -> {
+                    text = LocalUtils.getString(R.string.N653)
+                    setTextColor(ContextCompat.getColor(context, R.color.color_414655))
+                }
             }
         }
     }
