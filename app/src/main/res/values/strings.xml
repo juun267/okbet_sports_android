@@ -1037,7 +1037,7 @@
     <string name="kyc_contact_service_hilight">Contact Us </string>
     <string name="kyc_verify_first">Please get verified.</string>
     <string name="kyc_go_verify">Verify Now</string>
-    <string name="kyc_you_wait">Please click the " Live Chat " button to process a video call for verification.</string>
+    <string name="kyc_you_wait">Please click the "Contact Us" button to make a video call to complete the real-name authentication</string>
     <string name="kyc_verify_successful">Verify successful </string>
     <string name="kyc_unverified">Unverified</string>
     <string name="kyc_passed">Verified</string>

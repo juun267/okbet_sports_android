@@ -751,7 +751,7 @@
     <string name="commission_amount_of_coding_completed">已完成打码量</string>
     <string name="commission_check_type">检查</string>
     <string name="commission_not_completed">未完成</string>
-    <string name="commission_total_deducted_amount">加总扣除金额 :</string>
+    <string name="commission_total_deducted_amount">总扣除金额 :</string>
     <string name="log_detail_commission">扣除金额：</string>
     <string name="commission_deducted_amount_detail">扣除金额明细</string>
     <string name="commission_detail_title">详细说明</string>
