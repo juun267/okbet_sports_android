@@ -80,9 +80,10 @@
         <View
             android:id="@+id/log_detail_divider"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/margin_0.5"
             android:layout_marginTop="17dp"
-            android:background="@color/color_191919_EEEFF0"
+            android:layout_marginHorizontal="@dimen/margin_16"
+            android:background="@color/color_E3E8EE"
             app:layout_constraintVertical_bias="1"
             app:layout_constraintTop_toBottomOf="@id/wd_log_detail_status_subtitle" />
 

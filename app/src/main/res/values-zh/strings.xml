@@ -1307,4 +1307,6 @@
     <string name="N627">请到投注站取款</string>
     <string name="N628">总单交易编号</string>
     <string name="N646">到账金额</string>
+    <string name="N647">订单金额</string>
+    <string name="N653">待出款</string>
 </resources>

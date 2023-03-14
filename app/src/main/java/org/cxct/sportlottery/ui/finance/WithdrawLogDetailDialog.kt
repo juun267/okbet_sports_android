@@ -59,7 +59,7 @@ class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
                     1 -> getString(R.string.log_state_processing)
                     2 -> getString(R.string.L019)
                     3 -> getString(R.string.N626)
-                    4 -> getString(R.string.N627)
+                    4 -> getString(R.string.N653)
                     else -> null
                 }
                 when (it.orderState) {

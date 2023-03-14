@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="40dp"
     app:cardCornerRadius="8dp"
+    app:cardBackgroundColor="@color/color_FFFFFF"
     tools:context="org.cxct.sportlottery.ui.finance.WithdrawLogDetailDialog">
 <LinearLayout
     android:layout_width="match_parent"
@@ -23,12 +24,6 @@
         android:textStyle="bold"
         android:textSize="@dimen/textSize16sp"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/color_191919_EEEFF0" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nsv_content"
@@ -179,9 +174,10 @@
                 <View
                     android:id="@+id/log_detail_divider"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="@dimen/margin_0.5"
                     android:layout_marginTop="17dp"
-                    android:background="@color/color_191919_EEEFF0"
+                    android:layout_marginHorizontal="@dimen/margin_16"
+                    android:background="@color/color_E3E8EE"
                     app:layout_constraintVertical_bias="1"
                     app:layout_constraintTop_toBottomOf="@id/wd_log_detail_status_subtitle" />
 
@@ -200,8 +196,8 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/color_191919_EEEFF0" />
+        android:layout_height="@dimen/margin_0.5"
+        android:background="@color/color_E3E8EE" />
 
     <Button
         android:id="@+id/log_detail_confirm"

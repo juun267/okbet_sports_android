@@ -72,7 +72,7 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     1 -> LocalUtils.getString(R.string.log_state_processing)
                     2 -> LocalUtils.getString(R.string.L019)
                     3 -> LocalUtils.getString(R.string.N626)
-                    4 -> LocalUtils.getString(R.string.N627)
+                    4 -> LocalUtils.getString(R.string.N653)
                     else -> null
                 }
             }

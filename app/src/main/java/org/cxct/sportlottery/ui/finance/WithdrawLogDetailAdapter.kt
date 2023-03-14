@@ -28,7 +28,7 @@ class WithdrawLogDetailAdapter(data: List<Row>?) :
                 1 -> context.getString(R.string.log_state_processing)
                 2 -> context.getString(R.string.L019)
                 3 -> context.getString(R.string.N626)
-                4 -> context.getString(R.string.N627)
+                4 -> context.getString(R.string.N653)
                 else -> null
             }
             when (item.orderState) {

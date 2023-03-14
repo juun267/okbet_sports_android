@@ -126,7 +126,7 @@
                     android:gravity="center"
                     android:maxLines="1"
                     android:ellipsize="end"
-                    android:text="@string/recharge_log_recharge_amount"
+                    android:text="@string/N647"
                     android:textColor="@color/color_414655"
                     android:textSize="@dimen/textSize12sp" />
 

@@ -1359,4 +1359,6 @@
     <string name="N626">Withdrawal failed</string>
     <string name="N628">Total bill transaction number</string>
     <string name="N646">Received amount</string>
+    <string name="N647">Order amount</string>
+    <string name="N653">Pending payment</string>
 </resources>
