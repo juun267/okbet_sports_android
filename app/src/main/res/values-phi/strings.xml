@@ -718,26 +718,26 @@
     <string name="commission_total_deducted_amount">Kabuuang Bawas :</string>
     <string name="commission_deducted_amount_detail">Detalye ng Deduction</string>
     <string name="commission_detail_title">Detalyadong Paglalarawan</string>
-    <string name="commission_detail_desc_1">Upang maiwasan ang mga hindi autorisadong na withdrawal, Pagkatapos magdeposito, kailangan mong makatangap ng wastong code bago ka makapag-withdraw</string>
-    <string name="commission_detail_desc_2">Kapag hindi naabot ang epektibong coding, ang withdrawal ay bubuo ng halaga ng bawas, na kinakalkula bilang maagang bayad sa pag-withdraw gaya ng sumusunod: halaga ng recharge x ratio ng bawas = halaga ng bawas</string>
-    <string name="commission_detail_desc_3">Kapag hindi na-withdraw ang unang recharge, i-recharge ang pangalawang recharge, at ang "kinakailangang halaga ng coding" ng dalawang transaksyon ay idadagdag nang magkasama. Sa oras na ito, ang kinakailangang halaga ng coding ng una at pangalawang recharge ay dapat kumpletuhin sa parehong oras, at ang pag-withdraw ay walang bawas na matatanggap</string>
-    <string name="commission_detail_desc_4">Pagkatapos ng pag-withdraw, ang halaga ng code dapat pong suriin mabuti. </string>
+    <string name="commission_detail_desc_1">Iniiwasan ng kumpanya ang abnormal na pag-withdraw, dapat maabot ng user ang wastong halaga bago mag-withdraw</string>
+    <string name="commission_detail_desc_2">Kapag hindi naabot ang valid na halaga, kailangan nating ibawas ang halaga para maging withdrawal fee. Ang formula ng pagkalkula ay wastong halaga multiply deduction ratio = halaga ng bawas.</string>
+    <string name="commission_detail_desc_3">Kapag hindi na-withdraw ang unang recharge, at nag-recharge ang user sa pangalawang pagkakataon, magdadagdag ang dalawang "Hiniling na halaga." Sa oras na ito, kailangang kumpletuhin ng user ang una at pangalawang wastong halaga nang sabay at ang pag-withdraw ay hindi nagreresulta sa pagbawas ng halaga.</string>
+    <string name="commission_detail_desc_4">Ang natapos na wastong halaga ay muling kakalkulahin kapag nag-withdraw ka.</string>
     <string name="commission_detail_desc_5">[Sitwasyon 1]</string>
-    <string name="commission_detail_desc_6">Ang unang recharge ng 1000 ay na-code na 2000 → Gumawa ng withdrawal sa oras na ito</string>
+    <string name="commission_detail_desc_6">Ang unang trade ay top up 1,000 at kumpletong valid na halaga 2,000. → Ang gumagamit ay nag-withdraw ng pera ngayon</string>
     <string name="commission_detail_desc_7">Ang pangalawang recharge na 2,000 ay na-code na 1,000 → sa ngayon, 1,000 na mga code ang kinakailangan upang maiwasan ang pagbawas ng halaga ng withdrawal</string>
-    <string name="commission_detail_desc_8">Dahil ang unang pag-withdraw ay ginawa, hindi ito isasama sa pagkalkula, at ang pangalawang recharge na 2000 lamang ang gagamitin upang kalkulahin ang halaga ng bawas.</string>
+    <string name="commission_detail_desc_8">Dahil ang unang trade ay nag-withdraw, hindi ito magkalkula, ang sistema ay nagkalkula lamang ng pangalawang kalakalan.</string>
     <string name="commission_detail_desc_11">[Sitwasyon 2]</string>
-    <string name="commission_detail_desc_12">Ang unang recharge ng 1000 ay na-code na 1000 → walang withdrawal sa oras na ito, ang pangalawang recharge</string>
-    <string name="commission_detail_desc_13">Ang pangalawang recharge na 2,000 ay na-code na 1,000 → sa ngayon, 1,000 na mga code ang kinakailangan upang maiwasan ang pagbawas ng halaga ng withdrawal</string>
-    <string name="commission_detail_desc_14">Bagama\'t nakumpleto ang coding ng unang transaksyon, hindi natutugunan ang mga kinakailangan sa coding ng pangalawang transaksyon, kaya ginamit ang sumusunod na formula</string>
-    <string name="commission_detail_desc_15">I-recharge ang 2000-code na nakumpleto 1000=1000</string>
-    <string name="commission_detail_desc_16">Napagpasyahan na ang pangalawang pagbabayad ay kailangan pang umabot sa 1000  bago magawa ang pag-withdraw</string>
+    <string name="commission_detail_desc_12">Ang unang trade ay top up 1,000 at kumpletong valid na halaga 1,000. → Ang user ay hindi nag-withdraw at nagre-recharge sa pangalawang trade.</string>
+    <string name="commission_detail_desc_13">Ang pangalawang trade ay top up 2,000 at kumpletong valid na halaga 1,000. → Dapat kumpletuhin ng user ang wastong halaga na 1,000 hanggang walang bawas.</string>
+    <string name="commission_detail_desc_14">Bagama\'t ang unang kalakalan ay nakumpleto ang wastong halaga, ang pangalawang kalakalan ay ang hindi natapos na wastong halaga, pagkatapos ay kinakalkula sa pamamagitan ng formula na sundin bilang.</string>
+    <string name="commission_detail_desc_15">Halaga ng recharge (2,000) - natapos na wastong halaga (1,000) = 1,000</string>
+    <string name="commission_detail_desc_16">Ang pangalawang kalakalan ay kailangan pa ring umabot sa 1,000 para mag-withdraw.</string>
     <string name="commission_detail_desc_17">[Sitwasyon 3]</string>
-    <string name="commission_detail_desc_18">Ang unang recharge ng 1000 ay na-code na 500 → walang withdrawal sa oras na ito, ang pangalawang recharge</string>
-    <string name="commission_detail_desc_19">Ang pangalawang recharge ng 2000 ay na-code na 1000 → sa oras na ito, kinakailangan na mag-code ng 1500 upang hindi makabuo ng halaga ng withdrawal deduction</string>
-    <string name="commission_detail_desc_20">Dahil hindi pa nakumpleto ang coding ng dalawang transaksyon, ginamit ang sumusunod na formula</string>
-    <string name="commission_detail_desc_21">Mag-recharge (1000+2000)-nakumpletong coding (500+1000)=1500</string>
-    <string name="commission_detail_desc_22">Pagkatapos lamang maabot ang 1500 na mga code ay maaaring gawin ang pag-withdraw</string>
+    <string name="commission_detail_desc_18">Ang unang trade ay top up 1,000 at kumpletong valid na halaga 500. → Ang user ay hindi nag-withdraw at nagre-recharge sa pangalawang trade.</string>
+    <string name="commission_detail_desc_19">Ang pangalawang trade ay top up 2,000 at kumpletong valid na halaga 1,000. → Dapat kumpletuhin ng user ang wastong halaga na 1,500 hanggang walang bawas.</string>
+    <string name="commission_detail_desc_20">Dahil dalawang trades ay hindi natapos pareho, kaya kalkulahin sa pamamagitan ng formula sundin bilang</string>
+    <string name="commission_detail_desc_21">Halaga ng recharge (1,000+2,000 ) - Wastong Halaga (500+1,000) = 1,500</string>
+    <string name="commission_detail_desc_22">Ang wastong halaga ay nangangailangan ng 1,500 upang ma-withdraw</string>
     <string name="commissiom_completed">Tapos</string>
     <string name="commission_example">Halimbawa</string>
     <string name="bet_slip">Bet slip</string>
