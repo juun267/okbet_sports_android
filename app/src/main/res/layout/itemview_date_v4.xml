@@ -16,6 +16,7 @@
         android:ellipsize="end"
         android:gravity="center"
         android:textAllCaps="true"
+        android:maxLines="1"
         android:textColor="@android:color/white"
         android:textSize="@dimen/textSize12sp"
         android:fontFamily="@font/din_regular"

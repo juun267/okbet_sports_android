@@ -166,7 +166,21 @@ object Constants {
             LanguageManager.Language.ZH -> ""
             LanguageManager.Language.VI -> "vi/"
             LanguageManager.Language.TH -> "th/"
+            LanguageManager.Language.PHI -> "ph/"
             else -> "us/"
+        }
+    }
+
+    /**
+     * 英文为空
+     */
+    fun getLanguageTag1(context: Context): String {
+        return when (getSelectLanguage(context)) {
+            LanguageManager.Language.ZH -> "zh/"
+            LanguageManager.Language.VI -> "vi/"
+            LanguageManager.Language.TH -> "th/"
+            LanguageManager.Language.PHI -> "ph/"
+            else -> ""
         }
     }
 

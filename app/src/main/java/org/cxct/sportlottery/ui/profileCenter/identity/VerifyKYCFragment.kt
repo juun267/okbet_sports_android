@@ -201,8 +201,8 @@ class VerifyKYCFragment :
                 hideLoading()
                 if (result.success) {
                     showPromptDialog(
-                        title = getString(R.string.prompt),
-                        message = getString(R.string.upload_success),
+                        title = LocalUtils.getString(R.string.prompt),
+                        message = LocalUtils.getString(R.string.upload_success),
                         success = true
                     ) {
                         mNavController.navigate(R.id.action_verifyKYCFragment_to_verifyStatusFragment)
@@ -290,7 +290,7 @@ class VerifyKYCFragment :
         firstFile?.let { file ->
             identity_1st.apply {
                 this.btn_add_pic.isVisible = true
-                tv_upload_id_photo.text = getString(R.string.change_other_ID_photos)
+                tv_upload_id_photo.text = LocalUtils.getString(R.string.change_other_ID_photos)
                 Glide.with(this.img_pic.context).load(file.absolutePath)
                     .apply(RequestOptions().placeholder(R.drawable.img_avatar_default))
                     .into(this.img_pic)
@@ -304,7 +304,7 @@ class VerifyKYCFragment :
         secondFile?.let { file ->
             identity_2nd.apply {
                 this.btn_add_pic.isVisible = true
-                tv_upload_id_photo.text = getString(R.string.change_other_ID_photos)
+                tv_upload_id_photo.text = LocalUtils.getString(R.string.change_other_ID_photos)
                 Glide.with(this.img_pic.context).load(file.absolutePath)
                     .apply(RequestOptions().placeholder(R.drawable.img_avatar_default))
                     .into(this.img_pic)

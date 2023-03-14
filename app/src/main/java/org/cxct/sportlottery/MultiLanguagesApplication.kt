@@ -4,18 +4,18 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
+import android.content.res.Resources
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.appsflyer.AppsFlyerLib
 import com.didichuxing.doraemonkit.DoKit
-import com.github.jokar.multilanguages.library.MultiLanguage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import org.cxct.sportlottery.common.ResourceWrapper
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.Constants
-import org.cxct.sportlottery.network.manager.NetworkStatusManager
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.money.RedEnveLopeModel
 import org.cxct.sportlottery.repository.*
@@ -80,7 +80,7 @@ class MultiLanguagesApplication : Application() {
     }
     private val _userInfo = MutableLiveData<UserInfo?>()
     val userInfo: LiveData<UserInfo?>
-        get() =_userInfo
+        get() = _userInfo
     private var isNewsShowed = false
     private var isAgeVerifyNeedShow = true
 
@@ -93,7 +93,7 @@ class MultiLanguagesApplication : Application() {
     var sOddsType: String?
         get() {
             val handicapType = sharedPref.getString(KEY_ODDS_TYPE, HandicapType.NULL.name)
-            if(handicapType != HandicapType.NULL.name && !isOddsTypeEnable(handicapType ?: "")) {
+            if (handicapType != HandicapType.NULL.name && !isOddsTypeEnable(handicapType ?: "")) {
                 updateDefaultHandicapType()
                 return HandicapType.NULL.name
             }
@@ -174,14 +174,14 @@ class MultiLanguagesApplication : Application() {
     override fun attachBaseContext(base: Context) {
         //第一次进入app时保存系统选择语言(为了选择随系统语言时使用，如果不保存，切换语言后就拿不到了）
         LanguageManager.saveSystemCurrentLanguage(base)
-        super.attachBaseContext(MultiLanguage.setLocal(base))
+        super.attachBaseContext(base)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         //用户在系统设置页面切换语言时保存系统选择语言(为了选择随系统语言时使用，如果不保存，切换语言后就拿不到了）
         LanguageManager.saveSystemCurrentLanguage(applicationContext, newConfig)
-        MultiLanguage.onConfigurationChanged(applicationContext)
+//        MultiLanguage.onConfigurationChanged(applicationContext)
     }
 
     private fun getDefaultSharedPreferences(): SharedPreferences {
@@ -196,28 +196,20 @@ class MultiLanguagesApplication : Application() {
         AppManager.init(this)
         myPref = getDefaultSharedPreferences()
 
-        MultiLanguage.init { context ->
-            //返回自己本地保存选择的语言设置
-            return@init LanguageManager.getSetLanguageLocale(context)
-        }
-        MultiLanguage.setApplicationLanguage(this)
         TimeZone.setDefault(timeZone)
         startKoin {
             androidContext(this@MultiLanguagesApplication)
             modules(
                 listOf(
-                    viewModelModule,
-                    repoModule,
-                    serviceModule
+                    viewModelModule, repoModule, serviceModule
                 )
             )
         }
-        RequestManager.init(this)
-        NetworkStatusManager.init(this)
 
+        RequestManager.init(this)
         setupTimber()
         setNightMode()
-
+        LanguageManager.init(this)
         //生成UUID作為設備識別碼
         setupDeviceCode()
         initAppsFlyerSDK()
@@ -230,6 +222,15 @@ class MultiLanguagesApplication : Application() {
 
     }
 
+    private val localeResources by lazy {
+        ResourceWrapper(
+            this@MultiLanguagesApplication, super.getResources()
+        )
+    }
+
+    override fun getResources(): Resources {
+        return localeResources
+    }
 
     private fun initAppsFlyerSDK() {
         AppsFlyerLib.getInstance().init("G7q8UBYftYQfKAxnortTSN", null, this)
@@ -242,6 +243,7 @@ class MultiLanguagesApplication : Application() {
             Timber.plant(DebugTree())
         }
     }
+
     private fun setNightMode() {
         if (isNightMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
@@ -252,11 +254,8 @@ class MultiLanguagesApplication : Application() {
 
     private fun setupDeviceCode() {
         val devicePreferences = getSharedPreferences(UUID_DEVICE_CODE, Context.MODE_PRIVATE)
-        if (devicePreferences.getString(UUID, null).isNullOrEmpty())
-            devicePreferences
-                .edit()
-                .putString(UUID, java.util.UUID.randomUUID().toString())
-                .apply()
+        if (devicePreferences.getString(UUID, null).isNullOrEmpty()) devicePreferences.edit()
+            .putString(UUID, java.util.UUID.randomUUID().toString()).apply()
     }
 
     fun saveUserInfo(userInfoData: UserInfo?) {
@@ -355,23 +354,25 @@ class MultiLanguagesApplication : Application() {
         fun getChangeModeColorCode(defaultColor: String, nightModeColor: String): String {
             return if (isNightMode) nightModeColor else defaultColor
         }
+
         var timeZone: TimeZone
             get() {
-                var displayName=myPref ?. getString ("timeZone", null)
-                if (displayName.isNullOrBlank()){
+                var displayName = myPref?.getString("timeZone", null)
+                if (displayName.isNullOrBlank()) {
                     return TimeZone.getDefault()
-                }else{
-                    var zone=TimeZone.getTimeZone(displayName)
-                    zone.id=myPref ?. getString ("timeZoneId", null)
+                } else {
+                    var zone = TimeZone.getTimeZone(displayName)
+                    zone.id = myPref?.getString("timeZoneId", null)
                     return zone
                 }
             }
             set(zone) {
                 val editor = myPref?.edit()
-                editor?.putString("timeZone", zone.getDisplayName(false,TimeZone.SHORT))
+                editor?.putString("timeZone", zone.getDisplayName(false, TimeZone.SHORT))
                 editor?.putString("timeZoneId", zone.id)
                 editor?.apply()
             }
+
         fun getInstance(): MultiLanguagesApplication? {
             if (instance == null) throw IllegalStateException("Application not be created yet.")
             return instance
@@ -381,40 +382,33 @@ class MultiLanguagesApplication : Application() {
         fun showAgeVerifyDialog(activity: FragmentActivity) {
             if (isCreditSystem()) return //信用盤不顯示彈窗
             if (getInstance()?.isAgeVerifyNeedShow() == false) return
-            AgeVerifyDialog(
-                activity,
-                object : AgeVerifyDialog.OnAgeVerifyCallBack {
-                    override fun onConfirm() {
-                        //當玩家點擊"I AM OVER 21 YEARS OLD"後，關閉此視窗
-                        getInstance()?.setIsAgeVerifyShow(false)
-                        showPromotionPopupDialog(activity)
-                    }
+            AgeVerifyDialog(activity, object : AgeVerifyDialog.OnAgeVerifyCallBack {
+                override fun onConfirm() {
+                    //當玩家點擊"I AM OVER 21 YEARS OLD"後，關閉此視窗
+                    getInstance()?.setIsAgeVerifyShow(false)
+                    showPromotionPopupDialog(activity)
+                }
 
-                    override fun onExit() {
-                        //當玩家點擊"EXIT"後，徹底關閉APP
-                        AppManager.AppExit()
-                    }
+                override fun onExit() {
+                    //當玩家點擊"EXIT"後，徹底關閉APP
+                    AppManager.AppExit()
+                }
 
-                }).show()
+            }).show()
         }
 
         open fun showPromotionPopupDialog(activity: FragmentActivity) {
             val token = loginSharedPref.getString(KEY_TOKEN, "")
 
-            if (!isCreditSystem() && sConfigData?.imageList?.any { it.imageType == ImageType.PROMOTION.code && !it.imageName3.isNullOrEmpty() } == true)
-                PromotionPopupDialog(
-                    activity,
-                    PromotionPopupDialog.PromotionPopupListener(onClickImageListener = {
-                        JumpUtil.toInternalWeb(
-                            activity,
-                            Constants.getPromotionUrl(
-                                token,
-                                LanguageManager.getSelectLanguage(activity)
-                            ),
-                            activity.getString(R.string.promotion)
-                        )
-                    })
-                ).show()
+            if (!isCreditSystem() && sConfigData?.imageList?.any { it.imageType == ImageType.PROMOTION.code && !it.imageName3.isNullOrEmpty() } == true) PromotionPopupDialog(
+                activity, PromotionPopupDialog.PromotionPopupListener(onClickImageListener = {
+                    JumpUtil.toInternalWeb(
+                        activity, Constants.getPromotionUrl(
+                            token, LanguageManager.getSelectLanguage(activity)
+                        ), LocalUtils.getString(R.string.promotion)
+                    )
+                })
+            ).show()
         }
 
         fun saveOddsType(oddsType: OddsType) {

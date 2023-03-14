@@ -236,7 +236,7 @@ class SettingPasswordActivity :
         if (updatePwdResult?.success == true) {
             showPromptDialog(
                 getString(R.string.prompt),
-                getString(R.string.update_login_pwd)
+                getString(R.string.tips_login_password_success)
             ) { finish() }
         } else {
             val errorMsg = updatePwdResult?.msg ?: getString(R.string.unknown_error)

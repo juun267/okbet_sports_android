@@ -24,10 +24,15 @@ class LanguageAdapter(data: List<LanguageManager.Language>?) :
                 helper.setImageResource(R.id.iv_logo, R.drawable.ic_flag_th)
                 helper.setText(R.id.tv_name, R.string.language_th)
             }
+            LanguageManager.Language.PHI ->{
+                helper.setImageResource(R.id.iv_logo,R.drawable.ic_flag_phi)
+                    .setText(R.id.tv_name,R.string.language_phi)
+            }
             else -> {
                 helper.setImageResource(R.id.iv_logo, R.drawable.ic_flag_en)
                 helper.setText(R.id.tv_name, R.string.language_en)
             }
+
         }
 
     }

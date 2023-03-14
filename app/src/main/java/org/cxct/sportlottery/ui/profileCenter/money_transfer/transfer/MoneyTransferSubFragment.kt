@@ -59,7 +59,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
 
     private fun initView() {
 
-        tv_balance.setText(R.string.current_balance)
+        tv_balance.setText(R.string.title_current_money)
         moveAnim(isPlatReversed)
         viewModel.initCode()
         //region 靠左置中＆移除padding

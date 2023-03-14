@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.component
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -109,13 +110,19 @@ class StatusSpinnerNewView @JvmOverloads constructor(
 
     private fun calculateWidth() {
         var text = ""
+        var length = 0f
+        val paint = Paint()
+        paint.textSize = 1f
         dataList.forEach {
             it.showName?.let {
-                if (it.length > text.length) {
+                val textLength = paint.measureText(it)
+                if (textLength > length) {
                     text = it
+                    length = textLength
                 }
             }
         }
+
         val binding = ItemPlaySpinnerNewBinding.inflate(LayoutInflater.from(context), this, false)
         binding.tvPlay.text = text
         binding.root.measure(0, 0)

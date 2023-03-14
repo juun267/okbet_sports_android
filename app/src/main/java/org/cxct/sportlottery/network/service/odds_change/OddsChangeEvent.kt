@@ -35,6 +35,7 @@ data class OddsChangeEvent(
     var odds: MutableMap<String, MutableList<Odd>?> = mutableMapOf() //key=>玩法类型code, value=>赔率列表
 }
 
+@KeepMembers
 data class OddsList (
     @Json(name = "playCateCode")
     val playCateCode:String?,

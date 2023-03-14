@@ -26,6 +26,7 @@ import kotlinx.coroutines.launch
 import me.jessyan.autosize.AutoSizeCompat
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.ResourceWrapper
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
@@ -437,15 +438,17 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         mRunnable = null
     }
 
+    private val localeResources by lazy { ResourceWrapper(this@BaseActivity, super.getResources()) }
+
     /**
      * 修正 auto size 偶發失效問題
      * */
     override fun getResources(): Resources {
 
         if (Looper.myLooper() == Looper.getMainLooper()) {
-            AutoSizeCompat.autoConvertDensityOfGlobal(super.getResources())
+            AutoSizeCompat.autoConvertDensityOfGlobal(localeResources)
         }
-        return super.getResources()
+        return localeResources
     }
 
     open fun setStatusbar(bgColor: Int, darkFont: Boolean) {

@@ -97,3 +97,11 @@
 -keepclasseswithmembers @kotlin.Metadata class org.cxct.sportlottery.network.** { *; }
 -keepclasseswithmembers @kotlin.Metadata class org.cxct.sportlottery.ui.** { *; }
 -keepclasseswithmembers @kotlin.Metadata class org.cxct.sportlottery.util.** { *; }
+
+#====== fastjson ============ start
+-keepclassmembers class com.alibaba.fastjson.** { *; }
+-keepclassmembers public class * {
+    public void set*(***);
+    public *** get*();
+}
+#====== fastjson ============ end

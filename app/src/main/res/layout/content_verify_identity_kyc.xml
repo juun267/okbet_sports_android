@@ -118,7 +118,8 @@
         <LinearLayout
             android:id="@+id/btn_add_pic"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
             android:layout_gravity="center"
             android:background="@drawable/ic_rectangle_268"
             android:gravity="center"

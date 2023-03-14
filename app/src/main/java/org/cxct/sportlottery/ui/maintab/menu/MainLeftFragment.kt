@@ -237,8 +237,9 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private fun initLanguageView() {
         languageAdapter = LanguageAdapter(
             listOf(
-                LanguageManager.Language.ZH,
                 LanguageManager.Language.EN,
+                LanguageManager.Language.PHI,
+                LanguageManager.Language.ZH,
                 LanguageManager.Language.VI,
             )
         )
@@ -251,7 +252,7 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun selectLanguage(select: LanguageManager.Language) {
-        if (SPUtil.getInstance(context).getSelectLanguage() != select.key) {
+        if (LanguageManager.getSelectLanguageName() != select.key) {
             context?.let {
                 LanguageManager.saveSelectLanguage(it, select)
                 MainTabActivity.reStart(it)

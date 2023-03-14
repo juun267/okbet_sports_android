@@ -4,23 +4,35 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_timezone.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.extentions.safeClose
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
+import org.cxct.sportlottery.util.JsonUtil
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.setTitleLetterSpacing
+import timber.log.Timber
+import java.lang.ref.WeakReference
 
 /**
  * @app_destination 外觀(日間/夜間)切換-时区切换
  */
 class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
+
+    companion object {
+        private var timeZones: WeakReference<List<TimeZone>>? = null
+    }
 
     lateinit var adapter: TimeZoneAdapter
     private var originItems = listOf<TimeZone>()
@@ -52,7 +64,9 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
             }
             override fun afterTextChanged(s: Editable?) {
-                sortList()
+                if (originItems.isNotEmpty()) {
+                    sortList()
+                }
             }
         })
         rv_list.layoutManager=LinearLayoutManager(this,RecyclerView.VERTICAL,false)
@@ -66,19 +80,34 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             rv_list.smoothScrollToPosition(0)
         })
 
-        originItems = Gson().fromJson(
-            String(assets.open("timezone.json").readBytes()),
-            object : TypeToken<ArrayList<TimeZone>>() {}.type
-        )
+        setup()
+    }
+
+    private fun setup() = lifecycleScope.launch(Dispatchers.IO) {
+        val inputSystem = assets.open("timezone.json")
+        val data = inputSystem.readBytes()
+        inputSystem.safeClose()
+
+        var zoneList = timeZones?.get()
+        if (zoneList == null) {
+            zoneList = JsonUtil.listFrom(String(data), TimeZone::class.java) ?: listOf()
+            timeZones = WeakReference(zoneList)
+        }
+
+        originItems = zoneList
         selectItem = findCurrentZone()
-        rv_list.adapter = adapter
-        sortList()
+
+        withContext(Dispatchers.Main) {
+            rv_list.adapter = adapter
+            sortList()
+        }
     }
 
     private fun findCurrentZone(): TimeZone? {
         val curTimeZone = java.util.TimeZone.getDefault()
         val displayName = curTimeZone.getDisplayName(false, java.util.TimeZone.SHORT)
         val id = curTimeZone.id
+        Timber.d(originItems.toString())
         return originItems.find {
             displayName.contains(it.name, true)
                     && id.contains(it.city_en, true)
@@ -98,8 +127,9 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             it.isSelected = true
         }
         if (key.isNotEmpty()) {
+            val currentLanguage = LanguageManager.getSelectLanguage(this)
             currentItems = currentItems.filter {
-                when (LanguageManager.getSelectLanguage(this)) {
+                when (currentLanguage) {
                     LanguageManager.Language.ZH -> {
                         it.city_zh.contains(key, true)
                     }
@@ -109,8 +139,8 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                     LanguageManager.Language.VI -> {
                         it.city_vi.contains(key, true)
                     }
-                    LanguageManager.Language.TH -> {
-                        it.city_th.contains(key, true)
+                    LanguageManager.Language.PHI ->{
+                        it.city_ph.contains(key,true)
                     }
                     else -> {
                         it.city_en.contains(key, true)
@@ -118,6 +148,7 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                 }
             } as ArrayList<TimeZone>
         }
+
         adapter.setItems(currentItems)
         adapter.notifyDataSetChanged()
         lin_empty.visibility = if (currentItems.isNullOrEmpty()) View.VISIBLE else View.GONE

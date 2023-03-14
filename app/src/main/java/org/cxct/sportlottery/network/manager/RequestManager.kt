@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.interceptor.HttpLogInterceptor
 import org.cxct.sportlottery.network.interceptor.MoreBaseUrlInterceptor
 import org.cxct.sportlottery.network.interceptor.RequestInterceptor
 import org.cxct.sportlottery.util.NullValueAdapter
+import org.cxct.sportlottery.util.fastjson.FastJsonConverterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.security.SecureRandom

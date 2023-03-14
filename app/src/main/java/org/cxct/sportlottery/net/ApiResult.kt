@@ -3,7 +3,7 @@ package org.cxct.sportlottery.net
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.LocalUtils
 
-open class ApiResult<T>() {
+open class ApiResult<T>(): java.io.Serializable {
 
     private constructor(code: Int, msg: String, success: Boolean): this() {
         this.code = code

@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.archit.calendardaterangepicker.manager.SPUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.BuildConfig
@@ -15,7 +16,6 @@ import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.NetworkUtil
-import org.cxct.sportlottery.util.SPUtil
 import timber.log.Timber
 
 class VersionUpdateViewModel(

@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.fragment_self_limit_bet.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentSelfLimitBetBinding
 import org.cxct.sportlottery.enum.PassVerifyEnum
+import org.cxct.sportlottery.extentions.toIntS
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
@@ -25,10 +26,10 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
     View.OnClickListener {
 
     val perBetMinAmount =
-        if (sConfigData?.perBetMinAmount.isNullOrEmpty()) 0 else sConfigData?.perBetMinAmount?.toInt()
+        if (sConfigData?.perBetMinAmount.isNullOrEmpty()) 0 else sConfigData?.perBetMinAmount?.toIntS()
             ?: 0
     val perBetMaxAmount =
-        if (sConfigData?.perBetMaxAmount.isNullOrEmpty()) 0 else sConfigData?.perBetMaxAmount?.toInt()
+        if (sConfigData?.perBetMaxAmount.isNullOrEmpty()) 0 else sConfigData?.perBetMaxAmount?.toIntS()
             ?: 0
     private lateinit var binding: FragmentSelfLimitBetBinding
     private var textWatch: TextWatcher = object : TextWatcher {

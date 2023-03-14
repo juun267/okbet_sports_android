@@ -49,21 +49,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
+            android:layout_marginHorizontal="20dp"
             android:text="@string/kyc_verify_first"
             android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize14sp"
-            tools:text="请先通过实名验证" />
+            tools:text="@string/kyc_verify_first" />
 
         <Button
             android:id="@+id/btn_check"
-            android:layout_width="124dp"
-            android:layout_height="34dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/bg_radius_4_gradient_3b78ff_0065e9"
             android:text="@string/kyc_go_verify"
             android:textColor="@color/home_card_text_color"
             android:textSize="@dimen/textSize14sp"
-            tools:text="立即前往验证" />
+            tools:text="@string/kyc_go_verify" />
 
         <include
             android:id="@+id/btn_service"
