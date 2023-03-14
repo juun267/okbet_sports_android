@@ -6,44 +6,51 @@
     android:layout_height="wrap_content"
     android:layout_margin="40dp"
     app:cardCornerRadius="8dp"
+    app:cardBackgroundColor="@color/color_FFFFFF"
     tools:context="org.cxct.sportlottery.ui.finance.WithdrawLogDetailDialog">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="300dp"
-        android:layout_height="match_parent"
-        android:background="@color/color_191919_FCFCFC">
+    <TextView
+        android:id="@+id/wd_log_detail_title"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:gravity="center"
+        android:padding="9dp"
+        android:text="@string/log_detail_title"
+        android:textColor="@color/color_CCCCCC_000000"
+        android:textStyle="bold"
+        android:textSize="@dimen/textSize16sp"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/wd_log_detail_title"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsv_content"
+        android:layout_width="match_parent"
+        android:layout_height="310dp"
+        android:scrollbars="vertical">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:gravity="center"
-            android:padding="9dp"
-            android:text="@string/log_detail_title"
-            android:textColor="@color/color_CCCCCC_000000"
-            android:textStyle="bold"
-            android:textSize="@dimen/textSize16sp"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/color_191919_EEEFF0"
-            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_title"
-            app:layout_constraintBottom_toTopOf="@id/wd_log_detail_trans_num_subtitle"/>
-
-        <TextView
-            android:id="@+id/wd_log_detail_trans_num_subtitle"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="14dp"
-            android:text="@string/log_detail_trans_num_sub"
-            android:textColor="@color/color_FFFFFF_414655"
-            android:textSize="@dimen/textSize14sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider" />
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/wd_log_detail_trans_num_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="14dp"
+                    android:text="@string/N628"
+                    android:textColor="@color/color_FFFFFF_414655"
+                    android:textSize="@dimen/textSize14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/wd_log_detail_trans_num"
@@ -153,89 +160,54 @@
 
         <TextView
             android:id="@+id/wd_log_detail_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="224dp"
+            android:layout_height="33dp"
+            android:ellipsize="end"
             android:textColor="@color/color_1EB65B"
             android:textSize="@dimen/textSize14sp"
-            android:ellipsize="end"
+            android:gravity="start"
             app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_status_subtitle"
-            app:layout_constraintStart_toEndOf="@id/wd_log_detail_status_subtitle"
+            app:layout_constraintLeft_toRightOf="@id/wd_log_detail_status_subtitle"
+            app:layout_constraintRight_toRightOf="parent"
             tools:text="处理中" />
 
-        <TextView
+                <View
+                    android:id="@+id/log_detail_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/margin_0.5"
+                    android:layout_marginTop="17dp"
+                    android:layout_marginHorizontal="@dimen/margin_16"
+                    android:background="@color/color_E3E8EE"
+                    app:layout_constraintVertical_bias="1"
+                    app:layout_constraintTop_toBottomOf="@id/wd_log_detail_status_subtitle" />
 
-            android:id="@+id/wd_log_detail_review_time_subtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/log_detail_review_time"
-            android:textColor="@color/color_AEAEAE_404040"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_status_subtitle" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_child"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintTop_toBottomOf="@id/log_detail_divider"
+                tools:itemCount="2"
+                tools:listitem="@layout/item_withdraw_log_detail" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-            android:id="@+id/wd_log_detail_review_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/color_BBBBBB_333333"
-            android:textSize="@dimen/textSize14sp"
-            app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_review_time_subtitle"
-            app:layout_constraintStart_toEndOf="@id/wd_log_detail_review_time_subtitle"
-            tools:text="2020-12-12 19:58:22" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_0.5"
+        android:background="@color/color_E3E8EE" />
 
-
-        <TextView
-            android:id="@+id/wd_log_detail_reason_subtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
-            android:gravity="end"
-            android:text="@string/log_detail_reason"
-            android:textColor="@color/color_AEAEAE_404040"
-            android:textSize="@dimen/textSize14sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_review_time_subtitle" />
-
-        <TextView
-
-            android:id="@+id/wd_log_detail_reason"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:gravity="start"
-            android:textColor="@color/color_BBBBBB_333333"
-            android:textSize="@dimen/textSize14sp"
-            app:layout_constraintBottom_toTopOf="@id/log_detail_divider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/wd_log_detail_reason_subtitle"
-            app:layout_constraintTop_toTopOf="@+id/wd_log_detail_reason_subtitle"
-            app:layout_constraintVertical_bias="0"
-            tools:text="请求第三方接口失败" />
-
-        <View
-            android:id="@+id/log_detail_divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="17dp"
-            android:background="@color/color_191919_EEEFF0"
-            app:layout_constraintBottom_toTopOf="@id/log_detail_confirm"
-            app:layout_constraintVertical_bias="1"
-            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_reason" />
-
-        <Button
-            android:id="@+id/log_detail_confirm"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:text="@string/btn_confirm"
-            android:textColor="@color/color_317FFF_0760D4"
-            android:textSize="@dimen/textSize14sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+    <Button
+        android:id="@+id/log_detail_confirm"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:text="@string/btn_confirm"
+        android:textColor="@color/color_317FFF_0760D4"
+        android:textSize="@dimen/textSize14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</LinearLayout>
 </androidx.cardview.widget.CardView>

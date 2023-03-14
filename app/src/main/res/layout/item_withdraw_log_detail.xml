@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_191919_FCFCFC">
+
+
+        <TextView
+            android:id="@+id/wd_log_detail_trans_num_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="14dp"
+            android:text="@string/log_detail_trans_num_sub"
+            android:textColor="@color/color_FFFFFF_414655"
+            android:textSize="@dimen/textSize14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/wd_log_detail_trans_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/color_FFFFFF_414655"
+            android:textSize="@dimen/textSize14sp"
+            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_trans_num_subtitle"
+            app:layout_constraintStart_toStartOf="@id/wd_log_detail_trans_num_subtitle"
+            tools:text="10201223151804075637" />
+
+        <TextView
+            android:id="@+id/wd_log_detail_amount_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/text_account_history_amount"
+            android:textColor="@color/color_FFFFFF_414655"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_trans_num" />
+
+        <TextView
+            android:id="@+id/wd_log_detail_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_FFFFFF_414655"
+            android:ellipsize="end"
+            android:textSize="@dimen/textSize14sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_amount_subtitle"
+            app:layout_constraintStart_toEndOf="@id/wd_log_detail_amount_subtitle"
+            tools:text="₱ 1,000,000.00" />
+
+
+        <TextView
+            android:id="@+id/wd_log_detail_status_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/log_detail_status_sub"
+            android:textColor="@color/color_FFFFFF_414655"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_amount_subtitle" />
+
+        <TextView
+            android:id="@+id/wd_log_detail_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_1EB65B"
+            android:textSize="@dimen/textSize14sp"
+            android:ellipsize="end"
+            android:gravity="start"
+            app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_status_subtitle"
+            app:layout_constraintLeft_toRightOf="@id/wd_log_detail_status_subtitle"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:text="处理中" />
+
+        <View
+            android:id="@+id/log_detail_divider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_0.5"
+            android:layout_marginTop="17dp"
+            android:layout_marginHorizontal="@dimen/margin_16"
+            android:background="@color/color_E3E8EE"
+            app:layout_constraintVertical_bias="1"
+            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_status_subtitle" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

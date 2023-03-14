@@ -266,7 +266,9 @@ object Constants {
             return url
         }
         return url + (if (url.contains("?")) "&" else "?") +
-                "mode=${(if (MultiLanguagesApplication.isNightMode) "night" else "day")}&from=android&version=${BuildConfig.VERSION_NAME}&token=${LoginRepository.token}"
+                "mode=${(if (MultiLanguagesApplication.isNightMode) "night" else "day")}&from=android&version=${BuildConfig.VERSION_NAME}lang=${
+                    getLanguageTag(MultiLanguagesApplication.appContext)
+                }&token=${LoginRepository.token}"
     }
 
     //獲取檢查APP是否有更新版本的URL //輪詢 SERVER_URL_LIST 成功的那組 serverUrl 用來 download .apk

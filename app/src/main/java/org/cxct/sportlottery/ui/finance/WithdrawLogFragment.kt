@@ -10,8 +10,8 @@ import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_recharge_log.*
-import kotlinx.android.synthetic.main.activity_recharge_log.view.*
+import kotlinx.android.synthetic.main.activity_withdraw_log.*
+import kotlinx.android.synthetic.main.activity_withdraw_log.view.*
 import kotlinx.android.synthetic.main.component_date_range_selector.view.*
 import kotlinx.android.synthetic.main.view_no_record.view.*
 import org.cxct.sportlottery.R
@@ -28,7 +28,6 @@ import org.cxct.sportlottery.util.JumpUtil
  */
 class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
     private var reserveTime: String = ""
-    private var isSlidingToLast:Boolean = false
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener =
         object : RecyclerView.OnScrollListener() {
             //TODO 位置改动 这个后续要删除掉 暂时隐藏
@@ -88,12 +87,15 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     private val withdrawLogAdapter by lazy {
         WithdrawLogAdapter().apply {
             withdrawLogListener = WithdrawLogListener(
-                clickListener = {
-                    viewModel.setWithdrawLogDetail(it)
-                },
-                bettingStationClick = {
-                    reserveTime= it.withdrawDateAndTime.toString()
-                    viewModel.getQueryByBettingStationId(it.channel)
+                clickListener = { event ->
+                    event.peekContent()?.let {
+                        if (it.uwType == UWType.BETTING_STATION.type) {
+                            reserveTime = it.withdrawDateAndTime.toString()
+                            viewModel.getQueryByBettingStationId(it.channel)
+                        } else {
+                            viewModel.setWithdrawLogDetail(event)
+                        }
+                    }
                 }
             )
         }
@@ -104,7 +106,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_recharge_log, container, false).apply {
+        return inflater.inflate(R.layout.activity_withdraw_log, container, false).apply {
             this.selector_order_status.setItemData(withdrawStateList as MutableList<StatusSheetData>)
             this.selector_method_status.setItemData(withdrawTypeList as MutableList<StatusSheetData>)
             setupListColumn(this)
@@ -172,19 +174,20 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
 
         viewModel.queryByBettingStationIdResult.observe(this.viewLifecycleOwner) {
-            if (it.success) {
-                it.data.appointmentTime = reserveTime
-                JumpUtil.toInternalWeb(
-                    requireContext(),
-                    "https://maps.google.com/?q=@" + it.data.lon + "," + it.data.lat,
-                    getString(R.string.outlets_address),
-                    true,
-                    true,
-                    it.data
-                )
+            it.getContentIfNotHandled()?.let { it ->
+                if (it.success) {
+                    it.data.appointmentTime = reserveTime
+                    JumpUtil.toInternalWeb(
+                        requireContext(),
+                        "https://maps.google.com/?q=@" + it.data.lon + "," + it.data.lat,
+                        getString(R.string.outlets_address),
+                        true,
+                        true,
+                        it.data
+                    )
 
+                }
             }
-
         }
 
         viewModel.userWithdrawListResult.observe(this.viewLifecycleOwner) {
@@ -227,10 +230,10 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                 getString(R.string.log_state_processing) -> {
                     StatusSheetData(CheckStatus.PROCESSING.code.toString(), it)
                 }
-                getString(R.string.withdraw_log_state_pass) -> {
+                getString(R.string.L019) -> {
                     StatusSheetData(CheckStatus.PASS.code.toString(), it)
                 }
-                getString(R.string.withdraw_log_state_un_pass) -> {
+                getString(R.string.N626) -> {
                     StatusSheetData(CheckStatus.UN_PASS.code.toString(), it)
                 }
                 else -> {
