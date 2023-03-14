@@ -18,7 +18,6 @@ import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.Status
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LocalUtils
-import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TimeUtil
 
 class MoneyTransferViewModel(
@@ -158,7 +157,6 @@ class MoneyTransferViewModel(
 //                        })
 //                    }
 //                }
-                LogUtil.toJson(resultList)
                 setRecordInSheetDataList(resultList)
                 setRecordOutSheetDataList(resultList)
             }
@@ -310,10 +308,6 @@ class MoneyTransferViewModel(
     ) {
 
         loading()
-        if (page == 1) {
-            nowPage = 1
-            recordDataList.clear()
-        }
         viewModelScope.launch {
             doNetwork(androidContext) {
                 val firmFilter = { item: String? -> if (item == allPlat || item.isNullOrEmpty()) null else item }
@@ -328,6 +322,10 @@ class MoneyTransferViewModel(
             }?.let { result ->
                 hideLoading()
                 isLoading = false
+                if (page == 1) {
+                    nowPage = 1
+                    recordDataList.clear()
+                }
                 recordDataList.addAll(result.rows as List<Row>)
                 isLastPage = (recordDataList.size >= (result.total ?: 0))
                 _queryTransfersResult.value = result
