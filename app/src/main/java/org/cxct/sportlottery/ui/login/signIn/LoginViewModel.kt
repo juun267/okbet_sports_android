@@ -96,6 +96,11 @@ class LoginViewModel(
         set(value) {
             loginRepository.isRememberPWD = value
         }
+    var agreeChecked = true
+        set(value) {
+            field = value
+            focusChangeCheckAllInputComplete()
+        }
 
     fun login(loginRequest: LoginRequest, originalPassword: String) {
         viewModelScope.launch {
@@ -252,12 +257,22 @@ class LoginViewModel(
      * 手机号/邮箱
      */
     fun checkAccount(username: String): String? {
-        val msg = when {
-            username.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
-            !(VerifyConstUtil.verifyPhone(username) || VerifyConstUtil.verifyMail(username)) -> {
-                LocalUtils.getString(R.string.pls_enter_correct_mobile_email)
+        val msg = if (sConfigData?.enableEmailReg == "0") {
+            when {
+                username.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
+                !VerifyConstUtil.verifyPhone(username) -> {
+                    LocalUtils.getString(R.string.pls_enter_correct_mobile)
+                }
+                else -> null
             }
-            else -> null
+        } else {
+            when {
+                username.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
+                !(VerifyConstUtil.verifyPhone(username) || VerifyConstUtil.verifyMail(username)) -> {
+                    LocalUtils.getString(R.string.pls_enter_correct_mobile_email)
+                }
+                else -> null
+            }
         }
         _accountMsg.value = Pair(msg, msg == null)
         focusChangeCheckAllInputComplete()
@@ -340,7 +355,7 @@ class LoginViewModel(
                 return false
             }
         }
-        return true
+        return agreeChecked
     }
 
     private fun checkInputPair(data: LiveData<Pair<String?, Boolean>>): Boolean {
