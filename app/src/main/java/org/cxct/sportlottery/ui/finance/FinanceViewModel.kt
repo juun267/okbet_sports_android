@@ -118,7 +118,6 @@ class FinanceViewModel(
 
         when {
             isFirstFetch -> {
-                rechargeLogList.clear()
                 _isFinalPage.postValue(false)
                 page = 1
             }
@@ -172,7 +171,9 @@ class FinanceViewModel(
 
                 it.displayMoney = TextUtil.formatMoney(it.rechMoney)
             }
-
+            if (isFirstFetch) {
+                rechargeLogList.clear()
+            }
             result?.rows?.let {
                 rechargeLogList.addAll(it)
             }
