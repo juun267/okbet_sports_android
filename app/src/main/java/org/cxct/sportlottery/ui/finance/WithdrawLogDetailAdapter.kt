@@ -7,6 +7,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.withdraw.list.Row
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.finance.df.OrderState
 import org.cxct.sportlottery.util.LocalUtils
 
 
@@ -27,19 +28,19 @@ class WithdrawLogDetailAdapter(data: List<Row>?) :
         helper.getView<TextView>(R.id.wd_log_detail_status).apply {
             //用于前端显示单单订单状态 1: 處理中 2:提款成功 3:提款失败 4：待投注站出款
             when (item.orderState) {
-                1 -> {
+                OrderState.PROCESSING.code -> {
                     text = LocalUtils.getString(R.string.log_state_processing)
                     setTextColor(ContextCompat.getColor(context, R.color.color_414655))
                 }
-                2 -> {
+                OrderState.SUCCESS.code -> {
                     text = LocalUtils.getString(R.string.L019)
                     setTextColor(ContextCompat.getColor(context, R.color.color_1EB65B))
                 }
-                3 -> {
+                OrderState.FAILED.code -> {
                     text = LocalUtils.getString(R.string.N626)
                     setTextColor(ContextCompat.getColor(context, R.color.color_E23434))
                 }
-                4 -> {
+                OrderState.PENGING.code -> {
                     text = LocalUtils.getString(R.string.N653)
                     setTextColor(ContextCompat.getColor(context, R.color.color_414655))
                 }
