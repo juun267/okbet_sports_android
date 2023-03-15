@@ -72,8 +72,8 @@
     <string-array name="withdraw_state_array">
         <item>@string/all_order_status</item>
         <item>@string/log_state_processing</item>
-        <item>@string/N626</item>
-        <item>@string/L019</item>
+        <item>@string/recharge_state_success</item>
+        <item>@string/recharge_state_failed</item>
         <item>@string/N653</item>
     </string-array>
 

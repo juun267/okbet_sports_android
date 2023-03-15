@@ -65,11 +65,11 @@ class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
                             setTextColor(ContextCompat.getColor(context, R.color.color_414655))
                         }
                         OrderState.SUCCESS.code -> {
-                            text = LocalUtils.getString(R.string.L019)
+                            text = LocalUtils.getString(R.string.recharge_state_success)
                             setTextColor(ContextCompat.getColor(context, R.color.color_1EB65B))
                         }
                         OrderState.FAILED.code -> {
-                            text = LocalUtils.getString(R.string.N626)
+                            text = LocalUtils.getString(R.string.recharge_state_failed)
                             setTextColor(ContextCompat.getColor(context, R.color.color_E23434))
                         }
                         OrderState.PENGING.code -> {
