@@ -478,7 +478,7 @@
     <string name="wallet_phone_number">Telephone number</string>
     <string name="please_enter_wallet_phone_number">Paki lagay ang phone #</string>
     <string name="delete_bank_card">Tanggalin</string>
-    <string name="delete_crypto">burahin virtual currency</string>
+    <string name="delete_crypto">Tanggalin</string>
     <string name="delete_e_wallet">Tanggalin</string>
     <string name="select_currency_protocol">Piliin ang Protocol/Currency</string>
     <string name="error_withdraw_password">Mali ang inilagay mong password</string>
