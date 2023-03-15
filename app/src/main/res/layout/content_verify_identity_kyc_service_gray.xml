@@ -7,6 +7,7 @@
 
     <org.cxct.sportlottery.widget.highLightTextView.HighlightTextView
         android:layout_width="0dp"
+        android:id="@+id/hltv"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="25dp"
         android:gravity="center"

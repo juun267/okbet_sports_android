@@ -74,7 +74,7 @@ android {
         debug {
             minifyEnabled true
             zipAlignEnabled true
-            debuggable false
+            debuggable true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
             versionNameSuffix ".debug"

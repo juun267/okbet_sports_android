@@ -1,80 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_F0F5FA"
     tools:context=".ui.profileCenter.identity.VerifyStatusFragment">
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:layout_marginStart="@dimen/margin_15"
         android:layout_marginTop="7dp"
         android:layout_marginEnd="@dimen/margin_15"
-        android:background="@drawable/ic_bg"
-        android:gravity="center"
-        android:orientation="vertical">
-
-
-        <TextView
-            android:id="@+id/txv_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_20"
-            android:layout_marginEnd="@dimen/margin_15"
-            android:text="@string/kyc_verify_successful"
-            android:textColor="@color/color_414655"
-            android:textSize="@dimen/textSize18sp"
-            android:gravity="center"
-            android:visibility="invisible"
-            tools:text="@string/kyc_you_wait"
-            tools:visibility="visible" />
-
-
-        <ImageView
-            android:id="@+id/img_status"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:background="@null"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_done"
-            android:visibility="invisible"
-            tools:src="@drawable/ic_icon_timev_01"
-            tools:visibility="visible" />
-
+        app:cardCornerRadius="10dp"
+        app:cardElevation="0dp"
+        app:contentPaddingBottom="20dp"
+        app:contentPaddingTop="20dp">
 
         <LinearLayout
-            android:id="@+id/btn_kyc_verify"
-            android:layout_width="200dp"
-            android:layout_height="42dp"
-            android:layout_marginTop="15dp"
-            android:paddingHorizontal="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:background="@drawable/bg_theme_radius_22">
+            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_customer" />
 
             <TextView
+                android:id="@+id/txv_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:textColor="@color/home_card_text_color"
-                android:textSize="@dimen/textSize14sp"
-                android:text="@string/kyc_contact_service_hilight" />
+                android:layout_marginStart="@dimen/margin_20"
+                android:layout_marginEnd="@dimen/margin_15"
+                android:gravity="center"
+                android:text="@string/kyc_verify_successful"
+                android:textColor="@color/color_414655"
+                android:textSize="@dimen/textSize18sp"
+                android:visibility="invisible"
+                tools:text="@string/kyc_you_wait"
+                tools:visibility="visible" />
+
+
+            <ImageView
+                android:id="@+id/img_status"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_done"
+                android:visibility="invisible"
+                tools:src="@drawable/ic_icon_timev_01"
+                tools:visibility="visible" />
+
+
+            <LinearLayout
+                android:id="@+id/btn_kyc_verify"
+                android:layout_width="200dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/bg_theme_radius_22"
+                android:gravity="center"
+                android:paddingHorizontal="20dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_customer" />
+
+                <TextView
+                    android:id="@+id/tvContactUs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/kyc_contact_service_hilight"
+                    android:textColor="@color/home_card_text_color"
+                    android:textSize="@dimen/textSize14sp" />
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_marginTop="20dp"
+                android:id="@+id/tvCustomer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:gravity="center"
+                android:text="@string/kyc_contact_service"
+                android:textColor="@color/color_A5A9B3"
+                android:textSize="@dimen/textSize14sp" />
+
+
         </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
-        <include
-            android:id="@+id/btn_service"
-            layout="@layout/content_verify_identity_kyc_service_gray" />
-
-    </LinearLayout>
 
 </FrameLayout>

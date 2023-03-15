@@ -710,7 +710,7 @@
     <string name="commission_desc_2">Kapag naabot na ang wastong halaga, hindi na namin sisingilin ang handing fee.</string>
     <string name="notice">Mga tip</string>
     <string name="commission_check_time">Oras:</string>
-    <string name="commission_deducted_amount">bawas</string>
+    <string name="commission_deducted_amount">Ibabawas</string>
     <string name="commission_required_size">Hiniling na halaga</string>
     <string name="commission_amount_of_coding_completed">Wastong halaga</string>
     <string name="commission_check_type">Suriin</string>
@@ -979,7 +979,7 @@
     <string name="kyc_num2">ID number 2</string>
     <string name="kyc_pick_upload_id">Mangyaring piliin ang pag-upload ng dokumento ng pagkakakilanlan</string>
     <string name="kyc_size_2_mb">Ang laki ng file ay hindi dapat lumampas sa 2MB</string>
-    <string name="kyc_contact_service">Nakasalubong problema? Mangyaring makipag-ugnayan sa online na serbisyo sa customer</string>
+    <string name="kyc_contact_service">Nagkaroon ng problema? Mangyaring makipag-ugnayan sa Customer Service</string>
     <string name="kyc_contact_service_hilight">Online na serbisyo</string>
     <string name="kyc_verify_first">Mangyaring gawin muna ang tunay na pangalan na pag-verify.</string>
     <string name="kyc_go_verify">Pumunta sa certification ngayon</string>
@@ -1046,7 +1046,7 @@
     <string name="half_second_short">Ikalawang kalahati</string>
     <string name="unbound_bank_card">Hindi mo natali ang %1$s</string>
     <string name="change_other_ID_photos">Palitan ng larawan</string>
-    <string name="customer_service">Kung may katanungan, </string>
+    <string name="customer_service">Kung may katanungan, &#160;</string>
     <string name="error_full_name">Pangalan na iyong inilagay ay mali</string>
     <string name="hint_verification_code">Pakilagay ang verification code</string>
     <string name="hint_game_maintenance">Ang laro ay maintenance, mangyaring subukan sa ibang pagkakataon</string>
