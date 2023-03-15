@@ -724,7 +724,7 @@
     <string name="commission_detail_desc_4">Ang natapos na wastong halaga ay muling kakalkulahin kapag nag-withdraw ka.</string>
     <string name="commission_detail_desc_5">[Sitwasyon 1]</string>
     <string name="commission_detail_desc_6">Ang unang trade ay top up 1,000 at kumpletong valid na halaga 2,000. → Ang gumagamit ay nag-withdraw ng pera ngayon</string>
-    <string name="commission_detail_desc_7">Ang pangalawang recharge na 2,000 ay na-code na 1,000 → sa ngayon, 1,000 na mga code ang kinakailangan upang maiwasan ang pagbawas ng halaga ng withdrawal</string>
+    <string name="commission_detail_desc_7">Ang pangalawang trade ay top up 2,000 at kumpletong valid na halaga 1,000. → Dapat kumpletuhin ng user ang wastong halaga na 1,000 hanggang walang bawas.</string>
     <string name="commission_detail_desc_8">Dahil ang unang trade ay nag-withdraw, hindi ito magkalkula, ang sistema ay nagkalkula lamang ng pangalawang kalakalan.</string>
     <string name="commission_detail_desc_11">[Sitwasyon 2]</string>
     <string name="commission_detail_desc_12">Ang unang trade ay top up 1,000 at kumpletong valid na halaga 1,000. → Ang user ay hindi nag-withdraw at nagre-recharge sa pangalawang trade.</string>
