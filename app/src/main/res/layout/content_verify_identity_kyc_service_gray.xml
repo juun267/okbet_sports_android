@@ -8,7 +8,7 @@
     <org.cxct.sportlottery.widget.highLightTextView.HighlightTextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
+        android:layout_marginHorizontal="25dp"
         android:gravity="center"
         android:text="@string/kyc_contact_service"
         android:textColor="@color/color_A5A9B3"
