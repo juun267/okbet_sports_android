@@ -126,7 +126,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                         && it.startType == (if (MMKV.defaultMMKV()
                         .getBoolean("isFirstOpen", true)
                 ) 0 else 1)
-            }?.map {
+            }?.sortedByDescending { it.createdAt ?: 0 }?.map {
                 it.imageName1!!
             }
             MMKV.defaultMMKV().putBoolean("isFirstOpen", false)

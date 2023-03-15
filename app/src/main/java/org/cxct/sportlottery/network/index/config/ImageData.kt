@@ -16,4 +16,5 @@ data class ImageData(
     val viewType: Int?, //0 文字正常显示 1 文字上方显示
     val lang: String?, //语言标记
     val startType: Int?, //0:首次启动 1:日常启动
+    val createdAt: Long?,
 )

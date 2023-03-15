@@ -100,6 +100,7 @@ class LaunchActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
                 }
             })
+            .setLoopTime((sConfigData?.carouselInterval ?: 3) * 1000L)
             .isAutoLoop(!isFirstOpen)
             .start()
         updateStartBtn()
