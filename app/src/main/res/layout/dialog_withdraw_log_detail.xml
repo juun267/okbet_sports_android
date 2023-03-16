@@ -31,7 +31,7 @@
             android:layout_height="1dp"
             android:background="@color/color_191919_EEEFF0"
             app:layout_constraintTop_toBottomOf="@id/wd_log_detail_title"
-            app:layout_constraintBottom_toTopOf="@id/wd_log_detail_trans_num_subtitle"/>
+            app:layout_constraintBottom_toTopOf="@id/wd_log_detail_trans_num_subtitle" />
 
         <TextView
             android:id="@+id/wd_log_detail_trans_num_subtitle"

@@ -3,7 +3,6 @@ package org.cxct.sportlottery.network.manager
 import android.app.Application
 import android.content.Context
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -13,11 +12,10 @@ import org.cxct.sportlottery.network.Constants.CONNECT_TIMEOUT
 import org.cxct.sportlottery.network.Constants.READ_TIMEOUT
 import org.cxct.sportlottery.network.Constants.WRITE_TIMEOUT
 import org.cxct.sportlottery.network.interceptor.HttpLogInterceptor
-import org.cxct.sportlottery.network.interceptor.MockApiInterceptor
 import org.cxct.sportlottery.network.interceptor.MoreBaseUrlInterceptor
 import org.cxct.sportlottery.network.interceptor.RequestInterceptor
-import org.cxct.sportlottery.network.odds.detail.CateDetailData
 import org.cxct.sportlottery.util.NullValueAdapter
+import org.cxct.sportlottery.util.fastjson.FastJsonConverterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.security.SecureRandom
@@ -69,9 +67,6 @@ class RequestManager private constructor(context: Context) {
 //                addInterceptor(logging)
                 addInterceptor(HttpLogInterceptor())
             }
-            // mock data, 必須擺在最後
-            if (BuildConfig.MOCK)
-                addInterceptor(MockApiInterceptor(context))
         }
 
     private val mMoshi: Moshi = Moshi.Builder()

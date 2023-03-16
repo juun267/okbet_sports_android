@@ -25,6 +25,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
+import com.archit.calendardaterangepicker.manager.SPUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
@@ -1044,6 +1045,8 @@ fun isMultipleSitePlat(): Boolean =
     LocalUtils.getString(R.string.app_name) == "ONbet" || LocalUtils.getString(R.string.app_name) == "BET88" || LocalUtils.getString(
         R.string.app_name
     ) == "OKbet9"
+
+fun isForQA(): Boolean = BuildConfig.FLAVOR == "forqa"
 
 /**
  * 判斷當前是否為OKBET平台

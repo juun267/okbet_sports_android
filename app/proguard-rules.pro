@@ -50,7 +50,7 @@
 #}
 #====== 网易滑块验证 ============ end
 
--keep public class org.cxct.sportlottery.databinding.* implements androidx.viewbinding.ViewBinding {
+-keepclassmembers public class * implements androidx.viewbinding.ViewBinding {
     public static * inflate(android.view.LayoutInflater, android.view.ViewGroup, boolean);
     public static * inflate(android.view.LayoutInflater);
 }
@@ -76,11 +76,32 @@
 -keepclassmembers class * {
     @org.greenrobot.eventbus.Subscribe <methods>;
 }
--keep enum org.greenrobot.eventbus.ThreadMode { *; }
-
-# If using AsyncExecutord, keep required constructor of default event used.
-# Adjust the class name if a custom failure event type is used.
--keepclassmembers class org.greenrobot.eventbus.util.ThrowableFailureEvent {
-    <init>(java.lang.Throwable);
-}
 #====== EventBus ============ end
+
+-keepclasseswithmembers class com.google.android.material.bottomnavigation.BottomNavigationItemView {*;}
+-keepclasseswithmembers class com.google.android.material.bottomnavigation.BottomNavigationView {*;}
+-keepclasseswithmembers class com.google.android.material.bottomnavigation.BottomNavigationMenuView {*;}
+
+# 所有的类都不混淆（不得已，不要使用）
+#-keep class * { *; }
+
+-keepclasseswithmembers @org.cxct.sportlottery.proguard.KeepClasses class * { *; }
+-keepclassmembers @org.cxct.sportlottery.proguard.KeepMembers class * { *; }
+-keepclassmembers class * { @org.cxct.sportlottery.proguard.KeepMembers <fields>; }
+-keepclassmembers class * { @org.cxct.sportlottery.proguard.KeepMembers <methods>; }
+
+-keepclassmembers class * extends org.cxct.sportlottery.network.common.BaseResult { *;}
+-keepclassmembers class * extends org.cxct.sportlottery.net.ApiResult { *;}
+
+#kotlin  与Moshi反序列化有关（@kotlin.Metadata涉及太广，应尽量降低keep范围）
+-keepclasseswithmembers @kotlin.Metadata class org.cxct.sportlottery.network.** { *; }
+-keepclasseswithmembers @kotlin.Metadata class org.cxct.sportlottery.ui.** { *; }
+-keepclasseswithmembers @kotlin.Metadata class org.cxct.sportlottery.util.** { *; }
+
+#====== fastjson ============ start
+-keepclassmembers class com.alibaba.fastjson.** { *; }
+-keepclassmembers public class * {
+    public void set*(***);
+    public *** get*();
+}
+#====== fastjson ============ end

@@ -2,10 +2,10 @@ package org.cxct.sportlottery.network.third_game.third_games.other_bet_history
 
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 import org.cxct.sportlottery.network.common.BaseResult
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class OtherBetHistoryResult(
     @Json(name = "code")
     override val code: Int,

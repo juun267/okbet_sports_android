@@ -4,7 +4,7 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-android-extensions") //kotlin-parcelize
-    id("multi-languages")
+//    id("multi-languages")
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
     id('com.google.gms.google-services')
@@ -20,8 +20,8 @@ android {
         applicationId "com.okbet.ph"
         minSdk 23
         targetSdk 31
-        versionName "1.1.41"
-        versionCode 63
+        versionName "1.1.42"
+        versionCode 64
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -205,7 +205,7 @@ dependencies {
 
 
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.5'
-
+    implementation("androidx.multidex:multidex:2.0.1")
     debugImplementation 'io.github.didi.dokit:dokitx:3.5.0.1'
     releaseImplementation 'io.github.didi.dokit:dokitx-no-op:3.5.0.1'
 
@@ -233,7 +233,7 @@ dependencies {
 
     //Moshi
     implementation "com.squareup.moshi:moshi-kotlin:1.14.0"
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")  // 如果不使用Moshi的注解模式会对minifyEnabled true有影响
+//    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
 
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
@@ -254,7 +254,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.2'
 
     //multiLanguages //https://github.com/MichaelJokAr/MultiLanguages
-    implementation "com.github.jokar:multi-languages:0.1.5"
+//    implementation "com.github.jokar:multi-languages:0.1.5"
 
     //live data
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
@@ -275,6 +275,8 @@ dependencies {
 
     //glide 處理圖片加載(支援.gif檔)
     implementation 'com.github.bumptech.glide:glide:4.11.0'
+//    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+//    implementation 'jp.wasabeef:glide-transformations:4.3.0'
 
     //WebSocket
     implementation project(':stomp_protocol_android')
@@ -336,6 +338,9 @@ dependencies {
     //https://developers.google.com/identity/sign-in/android/sign-in?hl=zh-cn
     implementation 'com.google.android.gms:play-services-auth:20.4.1'
 
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    implementation "com.alibaba:fastjson:1.2.73"
+
     //compose
 //    implementation 'androidx.activity:activity-compose:1.6.1'
 //    implementation "androidx.compose.ui:ui:$compose_version"
@@ -349,8 +354,4 @@ dependencies {
 }
 repositories {
     mavenCentral()
-}
-
-multiLanguages {
-    enable = true
 }

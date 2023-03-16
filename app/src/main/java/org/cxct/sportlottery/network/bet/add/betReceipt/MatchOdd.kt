@@ -2,10 +2,10 @@ package org.cxct.sportlottery.network.bet.add.betReceipt
 
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 import org.cxct.sportlottery.network.bet.add.StatusNameI18n
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class MatchOdd(
     @Json(name = "awayId")
     val awayId: String,

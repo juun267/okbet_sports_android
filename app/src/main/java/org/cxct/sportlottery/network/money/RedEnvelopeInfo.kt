@@ -1,10 +1,6 @@
 package org.cxct.sportlottery.network.money
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
-import org.cxct.sportlottery.network.common.BaseResult
-import org.cxct.sportlottery.network.message.Row
-
 
 
 data class RedEnvelopeInfo(

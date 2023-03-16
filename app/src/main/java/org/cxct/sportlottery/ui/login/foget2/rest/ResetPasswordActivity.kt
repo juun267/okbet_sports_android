@@ -150,7 +150,7 @@ class ResetPasswordActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::clas
 
     private fun onResetSuccess(userName: String) = binding.run {
         tvUserName.text =  getString(R.string.member_name) + ": " + userName
-        tvResetSucceed.text = getString(R.string.change_password) + "\n" + getString(R.string.recharge_state_success) + "!"
+        tvResetSucceed.text = getString(R.string.change_password)+"!"
         clSuccess.visible()
         clPassword.gone()
         clLiveChat.gone()

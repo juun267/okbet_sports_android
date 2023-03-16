@@ -1,14 +1,14 @@
 package org.cxct.sportlottery.network.service.odds_change
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.ServiceChannel
 import org.cxct.sportlottery.network.service.ServiceEventType
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class OddsChangeEvent(
     @Json(name = "eventType")
     override val eventType: String? = EventType.ODDS_CHANGE.value,
@@ -35,6 +35,7 @@ data class OddsChangeEvent(
     var odds: MutableMap<String, MutableList<Odd>?> = mutableMapOf() //key=>玩法类型code, value=>赔率列表
 }
 
+@KeepMembers
 data class OddsList (
     @Json(name = "playCateCode")
     val playCateCode:String?,

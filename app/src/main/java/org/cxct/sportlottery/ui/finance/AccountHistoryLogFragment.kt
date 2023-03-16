@@ -109,25 +109,25 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewMode
         selector_order_status.setItemData(accountHistoryStateList as MutableList<StatusSheetData>)
 
 
-        viewModel.isFinalPage.observe(this.viewLifecycleOwner, {
+        viewModel.isFinalPage.observe(this.viewLifecycleOwner) {
             accountHistoryAdapter.isFinalPage = it
-        })
+        }
 
-        viewModel.userSportBillListResult.observe(this.viewLifecycleOwner, {
+        viewModel.userSportBillListResult.observe(this.viewLifecycleOwner) {
             it?.apply {
                 tv_total_number.text = it.total.toString()
-                setupNoRecordView(accountHistoryAdapter.data.isEmpty())
             }
-        })
+        }
 
-        viewModel.accountHistoryList.observe(this.viewLifecycleOwner, {
+        viewModel.accountHistoryList.observe(this.viewLifecycleOwner) {
             accountHistoryAdapter.data = it
-            if (!view.rvlist.canScrollVertically(1)&&!it.isNullOrEmpty()){
+            if (!view.rvlist.canScrollVertically(1) && !it.isNullOrEmpty()) {
                 tv_no_data_history.visibility = View.VISIBLE
-            }else{
+            } else {
                 tv_no_data_history.visibility = View.GONE
             }
-        })
+            setupNoRecordView(accountHistoryAdapter.data.isEmpty())
+        }
 
         viewModel.getUserAccountHistory(isFirstFetch = true)
     }

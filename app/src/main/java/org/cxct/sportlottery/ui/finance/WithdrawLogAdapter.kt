@@ -84,14 +84,17 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private fun setupStateTextColor(item: Row) {
             when (item.checkStatus) {
                 CheckStatus.PROCESSING.code -> {
-                    itemView.rech_log_state.setTextColor(ContextCompat.getColor(itemView.context, R.color.color_909090_666666))
+                    itemView.rech_log_state.setTextColor(ContextCompat.getColor(itemView.context,
+                        R.color.color_909090_666666))
                 }
                 CheckStatus.PASS.code -> {
-                    itemView.rech_log_state.setTextColor(ContextCompat.getColor(itemView.context, R.color.color_08dc6e_08dc6e))
+                    itemView.rech_log_state.setTextColor(ContextCompat.getColor(itemView.context,
+                        R.color.color_08dc6e_08dc6e))
                 }
 
                 CheckStatus.UN_PASS.code -> {
-                    itemView.rech_log_state.setTextColor(ContextCompat.getColor(itemView.context, R.color.color_E44438_e44438))
+                    itemView.rech_log_state.setTextColor(ContextCompat.getColor(itemView.context,
+                        R.color.color_E44438_e44438))
                 }
             }
         }
@@ -122,7 +125,10 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 }
 
-class WithdrawLogListener(val clickListener: (row: Event<Row>) -> Unit, val bettingStationClick: (row: Row) -> Unit) {
+class WithdrawLogListener(
+    val clickListener: (row: Event<Row>) -> Unit,
+    val bettingStationClick: (row: Row) -> Unit,
+) {
     fun onClick(row: Event<Row>) = clickListener(row)
     fun onBettingStationClick(row: Row) = bettingStationClick(row)
 }

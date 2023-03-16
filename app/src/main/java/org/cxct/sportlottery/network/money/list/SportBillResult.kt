@@ -2,10 +2,10 @@ package org.cxct.sportlottery.network.money.list
 
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 import org.cxct.sportlottery.network.common.BaseResult
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class SportBillResult(
     @Json(name = "code")
     override val code: Int = 0,
@@ -18,7 +18,7 @@ data class SportBillResult(
     @Json(name = "total")
     val total: Int = 0
 ): BaseResult() {
-    @JsonClass(generateAdapter = true)
+    @JsonClass(generateAdapter = true) @KeepMembers
     data class Row(
         @Json(name = "addTime")
         var addTime: String = "",

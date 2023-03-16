@@ -2,12 +2,12 @@ package org.cxct.sportlottery.network.bet.add.betReceipt
 
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.ui.menu.OddsType
 
 //不可與org.cxct.sportlottery.network.bet.add.Row共用，因matchOdds底下hkOdds有可能為null
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class BetResult(
     @Json(name = "eventType")
     val eventType: Int?,

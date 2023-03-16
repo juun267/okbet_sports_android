@@ -28,7 +28,7 @@ import org.cxct.sportlottery.util.JumpUtil
  */
 class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
     private var reserveTime: String = ""
-    private var isSlidingToLast:Boolean = false
+    private var isSlidingToLast: Boolean = false
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener =
         object : RecyclerView.OnScrollListener() {
             //TODO 位置改动 这个后续要删除掉 暂时隐藏
@@ -36,7 +36,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                 iv_scroll_to_top.apply {
                     when {
                         firstVisibleItemPosition > 0 && alpha == 0f -> {
-                           // visibility = View.VISIBLE
+                            // visibility = View.VISIBLE
                             animate().alpha(1f).setDuration(300).setListener(null)
                         }
                         firstVisibleItemPosition <= 0 && alpha == 1f -> {
@@ -92,7 +92,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                     viewModel.setWithdrawLogDetail(it)
                 },
                 bettingStationClick = {
-                    reserveTime= it.withdrawDateAndTime.toString()
+                    reserveTime = it.withdrawDateAndTime.toString()
                     viewModel.getQueryByBettingStationId(it.channel)
                 }
             )
@@ -172,17 +172,18 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
 
         viewModel.queryByBettingStationIdResult.observe(this.viewLifecycleOwner) {
-            if (it.success) {
-                it.data.appointmentTime = reserveTime
-                JumpUtil.toInternalWeb(
-                    requireContext(),
-                    "https://maps.google.com/?q=@" + it.data.lon + "," + it.data.lat,
-                    getString(R.string.outlets_address),
-                    true,
-                    true,
-                    it.data
-                )
-
+            it.getContentIfNotHandled()?.let { it ->
+                if (it.success) {
+                    it.data.appointmentTime = reserveTime
+                    JumpUtil.toInternalWeb(
+                        requireContext(),
+                        "https://maps.google.com/?q=@" + it.data.lon + "," + it.data.lat,
+                        getString(R.string.outlets_address),
+                        true,
+                        true,
+                        it.data
+                    )
+                }
             }
 
         }
@@ -227,10 +228,10 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                 getString(R.string.log_state_processing) -> {
                     StatusSheetData(CheckStatus.PROCESSING.code.toString(), it)
                 }
-                getString(R.string.withdraw_log_state_pass) -> {
+                getString(R.string.recharge_state_success) -> {
                     StatusSheetData(CheckStatus.PASS.code.toString(), it)
                 }
-                getString(R.string.withdraw_log_state_un_pass) -> {
+                getString(R.string.recharge_state_failed) -> {
                     StatusSheetData(CheckStatus.UN_PASS.code.toString(), it)
                 }
                 else -> {

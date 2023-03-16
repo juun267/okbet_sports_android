@@ -3,8 +3,10 @@ package org.cxct.sportlottery.network.user.info
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.proguard.KeepMembers
 
 @JsonClass(generateAdapter = true)
+@KeepMembers
 data class LiveSyncUserInfoVO(
     @Json(name = "platUserId")
     val platUserId: Long?,

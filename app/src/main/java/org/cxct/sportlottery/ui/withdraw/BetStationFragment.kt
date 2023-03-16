@@ -237,18 +237,23 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
 
 
     private fun setupClickEvent() {
-       /* tv_time.setOnClickListener {
-            showDatePicker()
-        }*/
+        /* tv_time.setOnClickListener {
+             showDatePicker()
+         }*/
         //年月日的时间选择器
         ll_withdrawal_time.setOnClickListener {
+            dateTimePicker.show()
+        }
+        txv_withdrawal_time.setOnClickListener {
             dateTimePicker.show()
         }
         //时分秒的选择器
         ll_withdrawal_time2.setOnClickListener {
             dateTimePickerHMS.show()
         }
-
+        txv_withdrawal_time2.setOnClickListener {
+            dateTimePickerHMS.show()
+        }
         lin_station_detail.setOnClickListener {
             selectBettingStation?.let {
                 JumpUtil.toInternalWeb(
@@ -537,7 +542,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
             .setDate(Calendar.getInstance())
             .setTimeSelectChangeListener { }
             .setType(booleanArrayOf(true, true, true, false, false, false))
-            .setTitleText(resources.getString(R.string.title_recharge_time))
+            .setTitleText(resources.getString(R.string.select_date))
             .setCancelText(" ")
             .setSubmitText(getString(R.string.picker_submit))
             .setSubmitColor(
@@ -570,7 +575,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
             .setDate(Calendar.getInstance())
             .setTimeSelectChangeListener { }
             .setType(booleanArrayOf(false, false, false, true, true, true))
-            .setTitleText(resources.getString(R.string.title_recharge_time))
+            .setTitleText(resources.getString(R.string.select_time))
             .setCancelText(" ")
             .setSubmitText(getString(R.string.picker_submit))
             .setSubmitColor(

@@ -42,18 +42,19 @@
         android:layout_height="wrap_content"
         android:paddingBottom="30dp"
         android:layout_marginTop="35dp"
-        android:elevation="2dp"
-        android:layout_marginHorizontal="5dp"
-        android:background="@drawable/bg_login_card_backgroud"
+        android:elevation="1dp"
+        android:layout_marginHorizontal="15dp"
+        android:background="@drawable/bg_white_radius_8"
         android:overScrollMode="never"
         android:scrollbars="none"
+        android:fadingEdge="none"
         app:layout_constraintTop_toBottomOf="@id/ivLogo">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingVertical="15dp"
-            android:paddingHorizontal="34dp">
+            android:paddingTop="15dp"
+            android:paddingHorizontal="20dp">
 
             <FrameLayout
                 android:id="@+id/fl_input"
@@ -363,13 +364,17 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tvPrivacy"
+
+            <CheckBox
+                android:id="@+id/cbPrivacy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:checked="true"
+                android:button="@drawable/login_check_style"
+                android:paddingStart="10dp"
                 app:layout_constraintTop_toBottomOf="@id/lin_third"
                 android:layout_marginTop="13dp"
-                android:gravity="center"
+                android:gravity="start"
                 android:textColor="@color/color_535D76"
                 android:textColorLink="@color/color_025BE8"
                 android:textSize="@dimen/textSize13sp"
@@ -380,7 +385,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                app:layout_constraintTop_toBottomOf="@id/tvPrivacy"
+                app:layout_constraintTop_toBottomOf="@id/cbPrivacy"
                 android:layout_marginTop="30dp">
 
                 <TextView

@@ -15,7 +15,7 @@ import java.io.IOException
 import java.io.InputStreamReader
 
 object MoneyManager {
-    private val mContext = MultiLanguagesApplication.appContext
+//    private val theContext = MultiLanguagesApplication.appContext
 
     /**
      * 獲取 充值配置 RechargeConfig.json 資料
@@ -48,7 +48,7 @@ object MoneyManager {
     private var mMoneyPayWayList: List<MoneyPayWayData>? = null
     fun getMoneyPayWayList(): List<MoneyPayWayData>? {
         if (mMoneyPayWayList == null) {
-            mMoneyPayWayList = getRechargeConfig(mContext).fromJson<List<MoneyPayWayData>>()
+            mMoneyPayWayList = getRechargeConfig(MultiLanguagesApplication.appContext).fromJson<List<MoneyPayWayData>>()
         }
         return mMoneyPayWayList
     }
@@ -154,43 +154,45 @@ object MoneyManager {
     }
 
     fun getMoneyBankTypeTitle(rechType:String):String{
+        val theContext = MultiLanguagesApplication.appContext
        return when (rechType) {
-            RechType.ONLINE_PAYMENT.type -> mContext.getString(R.string.recharge_channel_online)
-            RechType.ADMIN_ADD_MONEY.type -> mContext.getString(R.string.recharge_channel_admin)
-            RechType.CFT.type -> mContext.getString(R.string.recharge_channel_cft)
-            RechType.WEIXIN.type -> mContext.getString(R.string.recharge_channel_weixin)
-            RechType.ALIPAY.type -> mContext.getString(R.string.recharge_channel_alipay)
-            RechType.BANK_TRANSFER.type -> mContext.getString(R.string.recharge_channel_bank)
-            RechType.CRYPTO.type -> mContext.getString(R.string.recharge_channel_crypto)
-            RechType.GCASH.type -> mContext.getString(R.string.recharge_channel_gcash)
-            RechType.GRABPAY.type -> mContext.getString(R.string.recharge_channel_grabpay)
-            RechType.PAYMAYA.type -> mContext.getString(R.string.recharge_channel_paymaya)
-            RechType.BETTING_STATION.type -> mContext.getString(R.string.betting_station_deposit)
+            RechType.ONLINE_PAYMENT.type -> theContext.getString(R.string.recharge_channel_online)
+            RechType.ADMIN_ADD_MONEY.type -> theContext.getString(R.string.recharge_channel_admin)
+            RechType.CFT.type -> theContext.getString(R.string.recharge_channel_cft)
+            RechType.WEIXIN.type -> theContext.getString(R.string.recharge_channel_weixin)
+            RechType.ALIPAY.type -> theContext.getString(R.string.recharge_channel_alipay)
+            RechType.BANK_TRANSFER.type -> theContext.getString(R.string.recharge_channel_bank)
+            RechType.CRYPTO.type -> theContext.getString(R.string.recharge_channel_crypto)
+            RechType.GCASH.type -> theContext.getString(R.string.recharge_channel_gcash)
+            RechType.GRABPAY.type -> theContext.getString(R.string.recharge_channel_grabpay)
+            RechType.PAYMAYA.type -> theContext.getString(R.string.recharge_channel_paymaya)
+            RechType.BETTING_STATION.type -> theContext.getString(R.string.betting_station_deposit)
             else -> ""
         }
     }
 
     //在線充值帳戶選單名稱
     fun getOnlinePayTypeName(onlineType: Int?): String {
+        val theContext = MultiLanguagesApplication.appContext
         return when (onlineType) {//在线充值类型：1-网银在线充值、2-支付宝在线充值、3-微信在线充值、4-qq在线充值、5-出款、6、信用卡在线充值、7-百度钱包、8-京东钱包
-            OnlineType.WY.type -> mContext.resources.getString(R.string.online_bank)
-            OnlineType.ZFB.type -> mContext.resources.getString(R.string.online_alipay)
-            OnlineType.WX.type -> mContext.resources.getString(R.string.online_weixin)
-            OnlineType.QQ.type -> mContext.resources.getString(R.string.online_qq)
-            OnlineType.XYK.type -> mContext.resources.getString(R.string.online_credit_card)
-            OnlineType.JUAN.type -> mContext.resources.getString(R.string.online_juan)
-            OnlineType.DISPENSHIN.type -> mContext.resources.getString(R.string.online_dispenshing)
-            OnlineType.ONLINEBANK.type -> mContext.resources.getString(R.string.online_online_bank)
-            OnlineType.GCASH.type -> mContext.resources.getString(R.string.online_gcash)
-            OnlineType.GRABPAY.type -> mContext.resources.getString(R.string.online_grab)
-            OnlineType.PAYMAYA.type -> mContext.resources.getString(R.string.online_maya)
-            OnlineType.PAYPAL.type -> mContext.resources.getString(R.string.online_paypal)
-            OnlineType.DRAGON_PAY.type -> mContext.resources.getString(R.string.online_gragon_pay)
-            OnlineType.MOMOPAY.type -> mContext.resources.getString(R.string.online_momopay)
-            OnlineType.ZALOPAY.type -> mContext.resources.getString(R.string.online_zalopay)
-            OnlineType.VIETTELPAY.type -> mContext.resources.getString(R.string.online_viettelpay)
-            OnlineType.RECHARGE_CARD.type -> mContext.resources.getString(R.string.online_recharge_card_pay)
-            OnlineType.FORTUNE_PAY.type -> mContext.resources.getString(R.string.online_fortune_pay)
+            OnlineType.WY.type -> theContext.resources.getString(R.string.online_bank)
+            OnlineType.ZFB.type -> theContext.resources.getString(R.string.online_alipay)
+            OnlineType.WX.type -> theContext.resources.getString(R.string.online_weixin)
+            OnlineType.QQ.type -> theContext.resources.getString(R.string.online_qq)
+            OnlineType.XYK.type -> theContext.resources.getString(R.string.online_credit_card)
+            OnlineType.JUAN.type -> theContext.resources.getString(R.string.online_juan)
+            OnlineType.DISPENSHIN.type -> theContext.resources.getString(R.string.online_dispenshing)
+            OnlineType.ONLINEBANK.type -> theContext.resources.getString(R.string.online_online_bank)
+            OnlineType.GCASH.type -> theContext.resources.getString(R.string.online_gcash)
+            OnlineType.GRABPAY.type -> theContext.resources.getString(R.string.online_grab)
+            OnlineType.PAYMAYA.type -> theContext.resources.getString(R.string.online_maya)
+            OnlineType.PAYPAL.type -> theContext.resources.getString(R.string.online_paypal)
+            OnlineType.DRAGON_PAY.type -> theContext.resources.getString(R.string.online_gragon_pay)
+            OnlineType.MOMOPAY.type -> theContext.resources.getString(R.string.online_momopay)
+            OnlineType.ZALOPAY.type -> theContext.resources.getString(R.string.online_zalopay)
+            OnlineType.VIETTELPAY.type -> theContext.resources.getString(R.string.online_viettelpay)
+            OnlineType.RECHARGE_CARD.type -> theContext.resources.getString(R.string.online_recharge_card_pay)
+            OnlineType.FORTUNE_PAY.type -> theContext.resources.getString(R.string.online_fortune_pay)
             else -> ""
         }
     }

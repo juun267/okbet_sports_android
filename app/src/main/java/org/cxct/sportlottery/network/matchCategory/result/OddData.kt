@@ -2,6 +2,7 @@ package org.cxct.sportlottery.network.matchCategory.result
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.proguard.KeepMembers
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsOdd
@@ -11,6 +12,7 @@ import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.util.sortOddsMap
 
 @JsonClass(generateAdapter = true)
+@KeepMembers
 data class OddData(
     @Json(name = "dynamicMarkets")
     val dynamicMarkets: Map<String, DynamicMarket>?,

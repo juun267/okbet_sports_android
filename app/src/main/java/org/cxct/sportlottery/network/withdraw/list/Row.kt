@@ -2,9 +2,9 @@ package org.cxct.sportlottery.network.withdraw.list
 
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class Row(
     @Json(name = "accountMoney")
     val accountMoney: Double?,
@@ -45,7 +45,9 @@ data class Row(
     @Json(name = "appointmentDate")
     val appointmentDate: String?,
     @Json(name = "appointmentHour")
-    val appointmentHour: String?
+    val appointmentHour: String?,
+    @Json(name = "actualMoney")
+    val actualMoney: Double?,
 ) {
     var withdrawDateAndTime: String? = null
     var operatorDateAndTime: String? = null
@@ -55,4 +57,6 @@ data class Row(
     var withdrawType: String? = null
     var displayMoney: String? = null
     var withdrawDeductMoney: String? = null
+    var orderState: Int? = null
+    var children: List<Row>? = null
 }

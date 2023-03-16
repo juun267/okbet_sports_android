@@ -1103,7 +1103,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             val gameTitleContentBuilder = SpannableStringBuilder()
             val title =
                 oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)
-            val playNameSpan = SpannableString(title)
+            val playNameSpan = SpannableString("$title")
             title?.length?.let {
                 playNameSpan.setSpan(
                     StyleSpan(Typeface.NORMAL),

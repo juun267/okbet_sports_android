@@ -4,12 +4,14 @@ package org.cxct.sportlottery.network.odds
 import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.proguard.KeepMembers
 import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.network.common.MatchInfo
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatus
 
 @Parcelize
 @JsonClass(generateAdapter = true)
+@KeepMembers
 data class MatchInfo(
     @Json(name = "gameType")
     override var gameType: String?,

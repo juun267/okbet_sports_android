@@ -2,7 +2,7 @@ package org.cxct.sportlottery.network.odds.list
 
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
@@ -12,7 +12,7 @@ import org.cxct.sportlottery.network.outright.odds.DynamicMarket
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.util.sortOddsMap
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class MatchOdd(
     @Json(name = "betPlayCateNameMap")
     override var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null,

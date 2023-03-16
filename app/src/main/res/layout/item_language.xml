@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:enabled="false"
         android:gravity="center_vertical"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="8dp"
         android:includeFontPadding="true"
         android:button="@null"
         android:checked="true"

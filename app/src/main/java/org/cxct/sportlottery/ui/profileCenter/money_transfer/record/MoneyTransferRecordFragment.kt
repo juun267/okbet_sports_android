@@ -99,11 +99,12 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
         }*/
 
         date_range_selector.btn_search.setOnClickListener  {
+            avoidFastDoubleClick()
             viewModel.queryTransfers(startTime = date_range_selector.startTime.toString(),
-                                     endTime = date_range_selector.endTime.toString(),
-                                     firmTypeIn = selector_in_plat.selectedTag,
-                                     firmTypeOut = selector_out_plat.selectedTag,
-                                     status = selector_transfer_status.selectedTag)
+                endTime = date_range_selector.endTime.toString(),
+                firmTypeIn = selector_in_plat.selectedTag,
+                firmTypeOut = selector_out_plat.selectedTag,
+                status = selector_transfer_status.selectedTag)
         }
 
         selector_out_plat.setOnItemSelectedListener {

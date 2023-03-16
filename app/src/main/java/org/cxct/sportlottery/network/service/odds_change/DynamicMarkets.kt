@@ -1,14 +1,11 @@
 package org.cxct.sportlottery.network.service.odds_change
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
-import org.cxct.sportlottery.network.outright.odds.DynamicMarket
-import org.cxct.sportlottery.network.service.EventType
-import org.cxct.sportlottery.network.service.ServiceEventType
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LocalUtils
 
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true) @KeepMembers
 data class DynamicMarkets (
     @Json(name = "zh")
     val zh: String?,

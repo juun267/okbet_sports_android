@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!--    <string name="cdrp_mon">Lunes</string>-->
+<!--    <string name="cdrp_tue">Martes</string>-->
+<!--    <string name="cdrp_wed">Miyerkules</string>-->
+<!--    <string name="cdrp_thu">Huwebes</string>-->
+<!--    <string name="cdrp_fri">Biyernes</string>-->
+<!--    <string name="cdrp_sat">Sabado</string>-->
+<!--    <string name="cdrp_sun">Linggo</string>-->
+
+    <string name="cdrp_mon">Mon</string>
+    <string name="cdrp_tue">Tue</string>
+    <string name="cdrp_wed">Wed</string>
+    <string name="cdrp_thu">Thu</string>
+    <string name="cdrp_fri">Fri</string>
+    <string name="cdrp_sat">Sat</string>
+    <string name="cdrp_sun">Sun</string>
+
+    <string-array name="week_sun_sat">
+        <item>@string/cdrp_sun</item>
+        <item>@string/cdrp_mon</item>
+        <item>@string/cdrp_tue</item>
+        <item>@string/cdrp_wed</item>
+        <item>@string/cdrp_thu</item>
+        <item>@string/cdrp_fri</item>
+        <item>@string/cdrp_sat</item>
+    </string-array>
+
+    <string name="picker_submit">Kumpirmahin</string>
+
+    <string name="year">Taon</string>
+    <string name="month">Buwan</string>
+
+    <string name="month_1">Enero</string>
+    <string name="month_2">Pebrero</string>
+    <string name="month_3">Marso</string>
+    <string name="month_4">Abril</string>
+    <string name="month_5">Mayo</string>
+    <string name="month_6">Hunyo</string>
+    <string name="month_7">Hulyo</string>
+    <string name="month_8">Agosto</string>
+    <string name="month_9">Setyembre</string>
+    <string name="month_10">Oktubre</string>
+    <string name="month_11">Nobyembre</string>
+    <string name="month_12">Disyembre</string>
+</resources>

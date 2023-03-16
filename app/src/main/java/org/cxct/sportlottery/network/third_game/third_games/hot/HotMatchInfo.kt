@@ -3,6 +3,7 @@ package org.cxct.sportlottery.network.third_game.third_games.hot
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.proguard.KeepMembers
 import org.cxct.sportlottery.network.common.FoldState
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
@@ -14,6 +15,7 @@ import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
 
 @JsonClass(generateAdapter = true)
+@KeepMembers
 data class HotMatchInfo(
     @Json(name = "awayName")
     val awayName: String,
