@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.dialog_withdraw_log_detail.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
+import org.cxct.sportlottery.ui.finance.df.CheckStatus
 import org.cxct.sportlottery.util.TextUtil
 import kotlin.math.abs
 
@@ -50,9 +51,10 @@ class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
                 wd_log_detail_trans_num.text = it.orderNo ?: ""
                 wd_log_detail_time.text = it.withdrawDateAndTime ?: ""
                 wd_log_detail_status.text = it.withdrawState ?: ""
-                when (it.withdrawState) {
-                    "通过" -> wd_log_detail_status.setTextColor(resources.getColor(R.color.color_1EB65B))
-                    "未通过" -> wd_log_detail_status.setTextColor(resources.getColor(R.color.color_E23434))
+                when (it.checkStatus) {
+                    CheckStatus.PASS.code -> wd_log_detail_status.setTextColor(resources.getColor(R.color.color_1EB65B))
+                    CheckStatus.UN_PASS.code -> wd_log_detail_status.setTextColor(resources.getColor(
+                        R.color.color_E23434))
                     else -> wd_log_detail_status.setTextColor(resources.getColor(R.color.color_BBBBBB_333333))
                 }
                 wd_log_detail_review_time.text = it.operatorDateAndTime ?: ""
