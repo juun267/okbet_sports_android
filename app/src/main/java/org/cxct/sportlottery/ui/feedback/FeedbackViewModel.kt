@@ -7,7 +7,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.NetResult
-import org.cxct.sportlottery.network.feedback.*
+import org.cxct.sportlottery.network.feedback.FeedBackRows
+import org.cxct.sportlottery.network.feedback.FeedbackListRequest
+import org.cxct.sportlottery.network.feedback.FeedbackReplyRequest
+import org.cxct.sportlottery.network.feedback.FeedbackSaveRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.Event
@@ -93,9 +96,9 @@ class FeedbackViewModel(
         isReload: Boolean,
         currentTotalCount: Int
     ) {
-        _isLoading.value = true
+//        _isLoading.value = true
         if (mIsGettingData) {
-            _isLoading.value = false
+//            _isLoading.value = false
             return
         }
         mIsGettingData = true
@@ -105,7 +108,7 @@ class FeedbackViewModel(
 
             if (isReload) {//重新載入
                 mNextRequestPage = 1
-                _feedbackList.value = mutableListOf()
+//                _feedbackList.value = mutableListOf()
                 mCurrentTotalCount = 0
                 mNeedMoreLoading = true
                 mNextRequestPage = 1
@@ -114,9 +117,13 @@ class FeedbackViewModel(
             val filter = { firm: String? -> if (firm == allStatusTag) null else firm?.toIntOrNull() }
 
             if (mNeedMoreLoading) {
-                _isLoading.value = true
+//                _isLoading.value = true
                 val result = doNetwork(androidContext) {
-                    val feedbackListRequest = FeedbackListRequest(pageSize = PAGE_SIZE, page = mNextRequestPage, startTime = startTime, endTime = endTime, status = filter(status))
+                    val feedbackListRequest = FeedbackListRequest(pageSize = PAGE_SIZE,
+                        page = mNextRequestPage,
+                        startTime = startTime,
+                        endTime = endTime,
+                        status = filter(status))
                     feedbackRepository.getFbQueryList(feedbackListRequest)
                 }
                 //判斷是不是可以再加載
@@ -124,11 +131,15 @@ class FeedbackViewModel(
                     ?: 0)) < result?.total ?: 0
                 mNextRequestPage++
 
-                if (result?.rows?.size ?: 0 > 0) _feedbackList.value = result?.rows
+                if (result?.rows?.size ?: 0 > 0) {
+                    _feedbackList.value = result?.rows
+                } else if (isReload) {
+                    _feedbackList.value = mutableListOf()
+                }
 
                 if (!mNeedMoreLoading) _isFinalPage.postValue(true)
             }
-            _isLoading.value = false
+//            _isLoading.value = false
         }
         mIsGettingData = false
     }
