@@ -317,7 +317,7 @@
     <string name="match_names">Host) %s vs %s (Guest)</string>
     <string name="match_names_3">Host %s V.S %s Guest</string>
     <string name="bet_item">Bagay sa pagtaya -</string>
-    <string name="at_start_remain_minute">%sMinuto</string>
+    <string name="at_start_remain_minute">%s Minuto</string>
     <string name="date_row_all">Lahat ng Petsa</string>
     <string name="date_row_live">Inplay competision</string>
     <string name="date_row_today">Laro ngayon</string>
