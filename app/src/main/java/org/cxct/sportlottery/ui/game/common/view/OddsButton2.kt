@@ -63,7 +63,7 @@ class OddsButton2 @JvmOverloads constructor(
     private var oddsLocked: ImageView? = null
     private var oddsUnknown: TextView? = null
 
-    private val language: String by lazy { LanguageManager.getSelectLanguage(context).key }
+    private val language: String by lazy { LanguageManager.getLanguageConvert(context).key }
     private var mOdd: Odd? = null
     private var mOddsType: OddsType = OddsType.EU
 

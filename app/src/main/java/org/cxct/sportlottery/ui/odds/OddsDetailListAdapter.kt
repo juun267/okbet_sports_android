@@ -151,6 +151,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         PlayCate.UNCHECK -> {
                             ComparePlayCate.comparePlayCateCode(sportCode, playCateCode).ordinal
                         }
+
                         else -> playCate.ordinal
                     }
                 }
@@ -312,6 +313,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     else -> LayoutType.ONE_LIST.layout
                 }
             }
+
             GameType.BB -> {
                 when (viewType) {
                     PlayCate.SINGLE.ordinal, PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.OU.ordinal, PlayCate.OU_1ST.ordinal,
@@ -351,6 +353,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     else -> LayoutType.ONE_LIST.layout
                 }
             }
+
             GameType.IH -> {
                 when (viewType) {
                     PlayCate.HDP.ordinal, PlayCate.OU.ordinal, PlayCate.OE.ordinal, PlayCate.SINGLE_ND.ordinal
@@ -365,6 +368,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     else -> LayoutType.ONE_LIST.layout
                 }
             }
+
             GameType.RB -> {
                 when (viewType) {
                     PlayCate.SINGLE_ND.ordinal,
@@ -632,9 +636,11 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         ) || oddsDetail.gameType.contains(
                             "-2ST"
                         ) -> tvGameName?.context?.let { getTitle(it, oddsDetail) }
+
                         else -> tvGameName?.context?.let { getTitleNormal(oddsDetail) }
                     }
                 }
+
                 GameType.FT -> {
                     tvGameName?.text = when {
                         /*PlayCate.needShowCurrentCorner(oddsDetail.gameType) -> {
@@ -652,6 +658,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                                 }
                             }
                         }
+
                         else -> tvGameName?.context?.let {
                             getTitleNormal(oddsDetail).let { titleSpannableStringBuilder ->
                                 if (PlayCate.needShowCurrentCorner(oddsDetail.gameType)) {
@@ -663,6 +670,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         }
                     }
                 }
+
                 GameType.TN -> {
                     tvGameName?.text = when {
                         (oddsDetail.gameType.contains("-SEG") && !oddsDetail.gameType.contains(
@@ -674,9 +682,11 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         ) || oddsDetail.gameType.contains(
                             "-2ST"
                         ) -> tvGameName?.context?.let { getTitle(it, oddsDetail) }
+
                         else -> tvGameName?.context?.let { getTitleNormal(oddsDetail) }
                     }
                 }
+
                 GameType.VB -> {
                     tvGameName?.text = when {
                         oddsDetail.gameType.contains("-SEG") -> tvGameName?.context?.let {
@@ -685,9 +695,11 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                                 oddsDetail
                             )
                         }
+
                         else -> tvGameName?.context?.let { getTitleNormal(oddsDetail) }
                     }
                 }
+
                 GameType.CK -> {
                     val odd = oddsDetail.oddArrayList.first()
                     val extInfoStr =
@@ -700,12 +712,14 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                                 oddsDetail
                             )
                         }
+
                         else -> tvGameName?.context?.let { getTitleNormal(oddsDetail) }
                     }
                     if (!extInfoStr.isNullOrEmpty()) {
                         tvGameName?.text = tvGameName?.text.toString().replace("{E}", extInfoStr)
                     }
                 }
+
                 else -> {
                     tvGameName?.text = getTitleNormal(oddsDetail)
                 }
@@ -899,6 +913,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         else -> oneList(oddsDetail)
                     }
                 }
+
                 GameType.BB -> {
                     when (viewType) {
                         PlayCate.SINGLE.ordinal, PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.OU.ordinal, PlayCate.OU_1ST.ordinal,
@@ -924,6 +939,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                             oddsDetail,
                             2
                         )
+
                         else -> forSingle(oddsDetail, 2)
                     }
                 }
@@ -941,6 +957,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         else -> oneList(oddsDetail)
                     }
                 }
+
                 GameType.IH -> {
                     when (viewType) {
                         PlayCate.HDP.ordinal, PlayCate.OU.ordinal, PlayCate.OE.ordinal
@@ -955,6 +972,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         else -> oneList(oddsDetail)
                     }
                 }
+
                 GameType.RB -> {
                     when (viewType) {
                         PlayCate.SINGLE_ND.ordinal,
@@ -1060,10 +1078,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             val textColor = ContextCompat.getColor(context, R.color.color_909090_666666)
             val gameTitleContentBuilder = SpannableStringBuilder()
             val statusWord =
-                oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)
+                oddsDetail.nameMap?.get( LanguageManager.getLanguageConvert(itemView.context).key)
                     ?.split("-", "–")
             val playName =
-                oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)
+                oddsDetail.nameMap?.get(  LanguageManager.getLanguageConvert(itemView.context).key)
                     ?.replace("-${statusWord?.last() ?: ""}", "")
                     ?.replace("–${statusWord?.last() ?: ""}", "")
             val stWordSpan = SpannableString(statusWord?.last() ?: "")
@@ -1102,7 +1120,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         private fun getTitleNormal(oddsDetail: OddsDetailListData): SpannableStringBuilder {
             val gameTitleContentBuilder = SpannableStringBuilder()
             val title =
-                oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)
+                oddsDetail.nameMap?.get(
+                    LanguageManager.getLanguageConvert(itemView.context).key
+                )
             val playNameSpan = SpannableString("$title")
             title?.length?.let {
                 playNameSpan.setSpan(
@@ -1464,13 +1484,17 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
                 if (spanCount == 3) {
                     //如果第三个标题不等于客队名，那么判断第三个为和局，迁移到第二个位置
-                    if (!TextUtils.equals(oddsDetail.matchInfo?.awayName,
-                            oddsDetail.oddArrayList[2]?.name)
+                    if (!TextUtils.equals(
+                            oddsDetail.matchInfo?.awayName,
+                            oddsDetail.oddArrayList[2]?.name
+                        )
                     ) {
                         oddsDetail.oddArrayList.add(1, oddsDetail.oddArrayList.removeAt(2))
                     }
-                    TextUtils.equals(oddsDetail.matchInfo?.homeName,
-                        oddsDetail.oddArrayList[0]?.name).let {
+                    TextUtils.equals(
+                        oddsDetail.matchInfo?.homeName,
+                        oddsDetail.oddArrayList[0]?.name
+                    ).let {
                         itemView.tv_draw?.isVisible = true
                         itemView.tv_draw?.text = oddsDetail.oddArrayList[1]?.name
                     }
@@ -1577,6 +1601,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         add(oddsDetail.oddArrayList[2])
                     }
                 }
+
                 else -> {
                     tvFg?.isSelected = false
                     tvLg?.isSelected = true
