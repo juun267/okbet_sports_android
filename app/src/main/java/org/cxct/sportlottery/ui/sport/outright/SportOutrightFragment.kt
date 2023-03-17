@@ -1,12 +1,9 @@
 package org.cxct.sportlottery.ui.sport.outright
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.distinctUntilChanged
 import androidx.recyclerview.widget.GridLayoutManager
@@ -28,17 +25,16 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.league.League
-import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsLeagueOddsItem
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
+import org.cxct.sportlottery.network.outright.odds.CategoryOdds
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
-import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
 import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.common.SocketGridManager
@@ -46,7 +42,6 @@ import org.cxct.sportlottery.ui.game.hall.adapter.*
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.*
-import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.util.*
 import org.greenrobot.eventbus.Subscribe
@@ -56,24 +51,10 @@ import java.util.*
  * @app_destination 滾球、即將、今日、早盤、冠軍、串關
  */
 class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(SportListViewModel::class) {
-    companion object {
-        fun newInstance(
-            gameType: String? = GameType.FT.key,
-            outrightLeagueId: String? = null): SportOutrightFragment {
-
-            val args = Bundle()
-            args.putString("gameType", gameType)
-            outrightLeagueId?.let { args.putString("outrightLeagueId", outrightLeagueId) }
-            val fragment = SportOutrightFragment()
-            fragment.arguments = args
-            return fragment
-        }
-    }
 
     //    private val args: GameV3FragmentArgs by navArgs()
     private val matchType = MatchType.OUTRIGHT
     private var gameType: String = GameType.FT.key
-    private var mView: View? = null
     private var mLeagueIsFiltered = false // 是否套用聯賽過濾
     private var mCalendarSelected = false //紀錄日期圖示選中狀態
     var leagueIdList = mutableListOf<String>() // 赛选的联赛id
@@ -103,7 +84,7 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
                     dataSport.indexOfFirst { it.isSelected })
                 loading()
                 unSubscribeAll()
-                viewModel.switchGameType(it)
+                viewModel.switchGameType(matchType, it)
                 iv_arrow.isSelected = true
             }
 
@@ -118,7 +99,7 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
                 return@OddsChangeListener
             }
 
-            sportOutrightAdapter2.onMatchOdds(subscribedMatchOdd.toMutableList(), oddsChangeEvent)
+            sportOutrightAdapter2.onMatchOdds(subscribedMatchOdd, oddsChangeEvent)
         }
     }
 
@@ -135,15 +116,6 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
         }
     }
 
-
-    private fun navMatchDetailPage(matchInfo: MatchInfo?) {
-        matchInfo?.let { it ->
-            SportDetailActivity.startActivity(requireContext(),
-                matchInfo = it,
-                matchType = matchType)
-        }
-    }
-
     private var mLeagueOddList = ArrayList<LeagueOdd>()
 
     override fun loading() {
@@ -154,13 +126,7 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
         if (timer == null) startTimer()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        mView = inflater.inflate(R.layout.fragment_sport_list, container, false)
-        return mView
-    }
+    override fun layoutId() = R.layout.fragment_sport_list
 
     private val sportOutrightAdapter2: SportOutrightAdapter2 by lazy {
 
@@ -176,7 +142,7 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
 
         SportOutrightAdapter2(this@SportOutrightFragment) { _, _, item ->
             if (item is Odd) {  // 赔率
-                addOutRightOddsDialog(item.parentNode.matchOdd, item, item.outrightCateKey ?: "")
+                addOutRightOddsDialog((item.parentNode as CategoryOdds).matchOdd, item, item.outrightCateKey ?: "")
             } else { // 展开或收起
                 setOutrightLeagueAdapter(200)
             }
@@ -186,8 +152,6 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         EventBusUtil.targetLifecycle(this)
-        //打开指定球类
-        viewModel.matchType = matchType
         arguments?.getString("gameType")?.let { gameType = it }
         gameType?.let { viewModel.gameType = it  }
         setupSportTypeList()
@@ -197,7 +161,6 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
         initObserve()
         initSocketObserver()
         viewModel.cleanGameHallResult()
-
     }
 
     private fun setupSportTypeList() {
@@ -318,7 +281,7 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
             for (i in first..last) {
                 val item = sportOutrightAdapter2.getItem(i)
                 if(item is Odd) {
-                    matchOdds.add(item.parentNode.matchOdd)
+                    matchOdds.add((item.parentNode as CategoryOdds).matchOdd)
                 }
             }
 
@@ -335,19 +298,7 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
                 return@observe
             }
 
-            val dialog = CustomAlertDialog(requireContext())
-            dialog.setTitle(resources.getString(R.string.prompt))
-            dialog.setMessage(it)
-            dialog.setTextColor(R.color.color_E44438_e44438)
-            dialog.setNegativeButtonText(null)
-            dialog.setPositiveClickListener {
-                viewModel.resetErrorDialogMsg()
-                dialog.dismiss()
-                back()
-            }
-            dialog.setCanceledOnTouchOutside(false)
-            dialog.isCancelable = false
-            dialog.show(childFragmentManager, null)
+            showErrorMsgDialog(it)
         }
 
         viewModel.sportMenuResult.distinctUntilChanged().observe(this.viewLifecycleOwner) {
@@ -408,6 +359,11 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
             val data = it?.getContentIfNotHandled()?.outrightOddsListData?.leagueOdds ?: return@observe
             val list = mutableListOf<MatchOdd>()
             data.forEach { it.matchOdds?.let { list.addAll(it) } }
+
+            if (list.isEmpty()) {
+                sportOutrightAdapter2.setEmptyView(R.layout.itemview_game_no_record)
+                return@observe
+            }
             sportOutrightAdapter2.setNewInstance(list as MutableList<BaseNode>)
             setOutrightLeagueAdapter(120)
         }
@@ -439,9 +395,9 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
             }
         }
 
-//        viewModel.oddsType.observe(this.viewLifecycleOwner) {
-//
-//        }
+        viewModel.oddsType.observe(this.viewLifecycleOwner) {
+            sportOutrightAdapter2.oddsType = it
+        }
 
 
 //        viewModel.favorLeagueList.observe(this.viewLifecycleOwner) {
@@ -586,14 +542,14 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
             }?.let {
                 it.isSelected = true
                 gameType = it.code
-                viewModel.switchGameType(it)
+                viewModel.switchGameType(matchType, it)
             }
         } else {
             (gameTypeList.find { it.code == gameType } ?: gameTypeList.first()).let {
                 gameType = it.code
                 if (!it.isSelected) {
                     it.isSelected = true
-                    viewModel.switchGameType(it)
+                    viewModel.switchGameType(matchType, it)
                 }
             }
         }
@@ -641,7 +597,7 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
                 matchType = MatchType.OUTRIGHT,
                 gameType = it,
                 playCateCode = playCateCode,
-                playCateName = odd.parentNode.name,
+                playCateName = (odd.parentNode as CategoryOdds).name,
                 matchInfo = matchOdd.matchInfo!!,
                 matchOdd = matchOdd,
                 odd = odd,
@@ -651,12 +607,12 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
 
     }
 
-    private val subscribedMatchOdd = mutableSetOf<org.cxct.sportlottery.network.outright.odds.MatchOdd>()
+    private val subscribedMatchOdd = mutableMapOf<String, org.cxct.sportlottery.network.outright.odds.MatchOdd>()
 
     private fun subscribeChannelHall(matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd) {
         val gameType = GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
         gameType?.let {
-            subscribedMatchOdd.add(matchOdd)
+            subscribedMatchOdd["${matchOdd.matchInfo?.id}"] = matchOdd
             subscribeChannelHall(it.key, matchOdd?.matchInfo?.id)
             matchOdd?.matchInfo?.let { Log.e("[subscribe]","訂閱 ${it.name} ${it.id} -> " + "${it.homeName} vs " + "${it.awayName}") }
         }
@@ -788,6 +744,7 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
             leagueIdList.add(it.id)
         }
         viewModel.getGameHallList(
+            matchType,
             isReloadDate = true,
             isReloadPlayCate = false,
             isLastSportType = true,

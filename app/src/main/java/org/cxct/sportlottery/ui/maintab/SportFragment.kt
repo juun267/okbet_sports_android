@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.ui.maintab
 
 import android.graphics.Color
+import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.distinctUntilChanged
@@ -8,21 +10,19 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_sport.*
 import kotlinx.android.synthetic.main.fragment_sport.homeToolbar
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
-import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.extentions.fitsSystemStatus
-import org.cxct.sportlottery.extentions.gone
 import org.cxct.sportlottery.extentions.startActivity
-import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
-import org.cxct.sportlottery.ui.game.betList.BetListFragment
+import org.cxct.sportlottery.ui.component.tablayout.TabSelectedAdapter
 import org.cxct.sportlottery.ui.sport.SportListFragment
 import org.cxct.sportlottery.ui.sport.SportTabViewModel
+import org.cxct.sportlottery.ui.sport.endscore.EndScoreFragment
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -37,7 +37,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
 
     companion object {
 
-        val matchTypeTabPositionMap = mapOf<MatchType, Int>(
+        val matchTypeTabPositionMap = mapOf(
             MatchType.IN_PLAY to 0,
             MatchType.AT_START to 1,
             MatchType.TODAY to 2,
@@ -45,11 +45,11 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
             MatchType.PARLAY to 4,
             MatchType.CS to 5,
             MatchType.OUTRIGHT to 6,
+            MatchType.END_SCORE to 7,
             MatchType.MAIN to 99
         )
     }
 
-    private var betListFragment = BetListFragment()
     private var showFragment: Fragment? = null
 
     var jumpMatchType: MatchType? = null
@@ -69,7 +69,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
     fun initToolBar() = homeToolbar.run {
         attach(this@SportFragment, getMainTabActivity(), viewModel, false)
         fitsSystemStatus()
-        setBackgroundColor(Color.parseColor("#ffffff"))
+        setBackgroundColor(Color.WHITE)
         searchView.setOnClickListener { startActivity(SportSearchtActivity::class.java) }
         ivMenuLeft.setOnClickListener {
             getMainTabActivity().showLeftFrament(1, tabLayout.selectedTabPosition)
@@ -86,7 +86,6 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
-        super.onHiddenChanged(hidden)
         showFragment?.let {
             if (it.isAdded)
                 it.onHiddenChanged(hidden)
@@ -94,76 +93,46 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
     }
 
     private fun initTabLayout() {
-        tabLayout.setBackgroundColor(requireContext().getColor(R.color.color_FFFFFF))
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                selectTab(tab?.position)
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-
-            }
-        })
+        tabLayout.setBackgroundColor(Color.WHITE)
+        tabLayout.addOnTabSelectedListener(TabSelectedAdapter{ selectTab(it.position) })
         OverScrollDecoratorHelper.setUpOverScroll(tabLayout)
-
     }
 
     private fun refreshTabLayout(sportMenuResult: SportMenuResult?) {
-        try {
-            val countInPlay =
-                sportMenuResult?.sportMenuData?.menu?.inPlay?.items?.sumBy { it.num } ?: 0
-            val countAtStart =
-                sportMenuResult?.sportMenuData?.atStart?.items?.sumBy { it.num } ?: 0
-            val countToday =
-                sportMenuResult?.sportMenuData?.menu?.today?.items?.sumBy { it.num } ?: 0
-            val countEarly =
-                sportMenuResult?.sportMenuData?.menu?.early?.items?.sumBy { it.num } ?: 0
-            val countCS =
-                sportMenuResult?.sportMenuData?.menu?.cs?.items?.sumBy { it.num } ?: 0
-            val countOutright =
-                sportMenuResult?.sportMenuData?.menu?.outright?.items?.sumBy { it.num } ?: 0
-            val countParlay =
-                sportMenuResult?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
 
+        val sportMenuData = sportMenuResult?.sportMenuData
+        val countInPlay = sportMenuData?.menu?.inPlay?.items?.sumOf { it.num } ?: 0
+        val countAtStart = sportMenuData?.atStart?.items?.sumOf { it.num } ?: 0
+        val countToday = sportMenuData?.menu?.today?.items?.sumOf { it.num } ?: 0
+        val countEarly = sportMenuData?.menu?.early?.items?.sumOf { it.num } ?: 0
+        val countCS = sportMenuData?.menu?.cs?.items?.sumOf { it.num } ?: 0
+        val countOutright = sportMenuData?.menu?.outright?.items?.sumOf { it.num } ?: 0
+        val countParlay = sportMenuData?.menu?.parlay?.items?.sumOf { it.num } ?: 0
+        val countBkEnd = sportMenuData?.menu?.bkEnd?.items?.sumOf { it.num } ?: 0
 
-            tabLayout.getTabAt(0)?.customView?.apply {
-                tv_title?.text = getString(R.string.home_tab_in_play)
-                tv_number?.text = countInPlay.toString()
-            }
+        addTab(getString(R.string.home_tab_in_play), countInPlay, 0)
+        addTab(getString(R.string.home_tab_at_start), countAtStart, 1)
+        addTab(getString(R.string.home_tab_today), countToday, 2)
+        addTab(getString(R.string.home_tab_early), countEarly, 3)
+        addTab(getString(R.string.home_tab_parlay), countParlay, 4)
+        addTab(getString(R.string.home_tab_cs), countCS, 5)
+        addTab(getString(R.string.home_tab_outright), countOutright, 6)
+        addTab(getString(R.string.home_tab_end_score), countBkEnd, 7)
+    }
 
-            tabLayout.getTabAt(1)?.customView?.apply {
-                tv_title?.text = getString(R.string.home_tab_at_start)
-                tv_number?.text = countAtStart.toString()
-            }
+    private fun addTab(name: String, num: Int, position: Int) {
 
-            tabLayout.getTabAt(2)?.customView?.apply {
-                tv_title?.text = getString(R.string.home_tab_today)
-                tv_number?.text = countToday.toString()
+        val tab = if (tabLayout.tabCount > position) {
+            tabLayout.getTabAt(position)!!
+        } else {
+            tabLayout.newTab().setCustomView(R.layout.home_cate_tab).apply {
+                tabLayout.addTab(this, position)
             }
+        }
 
-            tabLayout.getTabAt(3)?.customView?.apply {
-                tv_title?.text = getString(R.string.home_tab_early)
-                tv_number?.text = countEarly.toString()
-            }
-            tabLayout.getTabAt(4)?.customView?.apply {
-                tv_title?.text = getString(R.string.home_tab_parlay)
-                tv_number?.text = countParlay.toString()
-            }
-            tabLayout.getTabAt(5)?.customView?.apply {
-                tv_title?.text = getString(R.string.home_tab_cs)
-                tv_number?.text = countCS.toString()
-            }
-            tabLayout.getTabAt(6)?.customView?.apply {
-                tv_title?.text = getString(R.string.home_tab_outright)
-                tv_number?.text = countOutright.toString()
-            }
-
-
-        } catch (e: Exception) {
-            e.printStackTrace()
+        tab.customView?.run {
+            tv_title.text = name
+            tv_number.text = num.toString()
         }
     }
 
@@ -176,23 +145,23 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         navGameFragment(matchType)
     }
 
-    private fun initObserve() {
+    private fun initObserve() = viewModel.run {
 
         //使用者沒有電話號碼
-        viewModel.showPhoneNumberMessageDialog.observe(viewLifecycleOwner) {
+        showPhoneNumberMessageDialog.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (!b) phoneNumCheckDialog(requireContext(), childFragmentManager)
             }
         }
 
         //distinctUntilChanged() -> 相同的matchType僅會執行一次，有變化才會observe
-        viewModel.curMatchType.distinctUntilChanged().observe(viewLifecycleOwner) {
+        curMatchType.distinctUntilChanged().observe(viewLifecycleOwner) {
             it?.let {
                 matchTypeTabPositionMap[it]?.let { it1 -> tabLayout.getTabAt(it1)?.select() }
             }
         }
 
-        viewModel.sportMenuResult.distinctUntilChanged().observe(viewLifecycleOwner) {
+        sportMenuResult.distinctUntilChanged().observe(viewLifecycleOwner) {
             hideLoading()
             updateUiWithResult(it)
         }
@@ -205,37 +174,6 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         }
     }
 
-    private fun updateSelectTabState(matchType: MatchType?) {
-        matchTypeTabPositionMap[matchType]?.let {
-            updateSelectTabState(it)
-        }
-    }
-
-    private fun updateSelectTabState(position: Int) {
-        val tab = tabLayout.getTabAt(position)?.customView
-
-        tab?.let {
-            clearSelectTabState()
-            tabLayout.getTabAt(position)?.select()
-            it.tv_title?.isSelected = true
-            it.tv_number?.isSelected = true
-        }
-    }
-
-    private fun clearSelectTabState() {
-        for (i in 0 until tabLayout.tabCount) {
-            val tab = tabLayout.getTabAt(i)?.customView
-
-            tab?.tv_title?.isSelected = false
-            tab?.tv_number?.isSelected = false
-        }
-    }
-
-    private fun removeBetListFragment() {
-        childFragmentManager.beginTransaction().remove(betListFragment).commit()
-    }
-
-
     override fun onDestroy() {
         expandCheckList.clear()
         HomePageStatusManager.clear()
@@ -246,18 +184,31 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         var gameType = jumpGameType?.key
         showFragment = when (matchType) {
             MatchType.OUTRIGHT ->
-                SportOutrightFragment.newInstance(gameType = gameType).apply {
+                SportOutrightFragment().apply {
+                    offsetScrollListener = ::setTabElevation
+                }
+
+            MatchType.END_SCORE ->
+                EndScoreFragment().apply {
                     offsetScrollListener = ::setTabElevation
                 }
 
             else ->
-                SportListFragment.newInstance(matchType = matchType, gameType = gameType).apply {
+                SportListFragment().apply {
                     offsetScrollListener = ::setTabElevation
                 }
+
+        }.apply {
+            val args = Bundle()
+            args.putSerializable("matchType", matchType)
+            args.putString("gameType", gameType)
+            arguments = args
         }
+
         childFragmentManager.beginTransaction()
             .replace(R.id.fl_content, showFragment!!)
             .commit()
+
         jumpMatchType = null
         jumpGameType = null
     }
@@ -297,6 +248,10 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
 
             is SportOutrightFragment -> {
                 (showFragment as SportOutrightFragment).getCurGameType()
+            }
+
+            is EndScoreFragment -> {
+                (showFragment as EndScoreFragment).getCurGameType()
             }
 
             else -> {
