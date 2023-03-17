@@ -122,8 +122,7 @@ class SettingPasswordViewModel(
             _currentPwdError.value = ""
         } else {
             _currentPwdError.value = when {
-                currentPwd.isEmpty() -> LocalUtils.getString(R.string.error_input_empty)
-                currentPwd.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
+                currentPwd.isNullOrBlank() -> LocalUtils.getString(R.string.error_input_empty)
                 else -> ""
             }
         }
@@ -134,9 +133,8 @@ class SettingPasswordViewModel(
         _newPwdError.value = when {
             newPwd.isNullOrBlank() -> LocalUtils.getString(R.string.error_input_empty)
             pwdPage == SettingPasswordActivity.PwdPage.LOGIN_PWD -> when {
-                !VerifyConstUtil.verifyPwdFormat(newPwd) -> LocalUtils.getString(R.string.error_password_format)
-                newPwd.length !in 6..20 -> LocalUtils.getString(R.string.error_password_format)
-                !VerifyConstUtil.verifyPwd(newPwd) -> LocalUtils.getString(R.string.error_password_format)
+                !VerifyConstUtil.verifyPwd(newPwd) ->
+                    LocalUtils.getString(R.string.error_password_format)
                 else -> ""
             }
             pwdPage == SettingPasswordActivity.PwdPage.BANK_PWD && !VerifyConstUtil.verifyPayPwd(newPwd) -> LocalUtils.getString(R.string.error_withdraw_password_for_new)

@@ -59,7 +59,8 @@ object VerifyConstUtil {
     }
 
     fun verifyPwd(pwd: CharSequence): Boolean {
-        return Pattern.matches("(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+){6,20}", pwd)
+//        return Pattern.matches("(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+){6,20}", pwd)
+        return verifyLengthRange(pwd, 6, 20)
     }
 
     //真實姓名 只允许英文和空格，不允许前后空格和连续空格
