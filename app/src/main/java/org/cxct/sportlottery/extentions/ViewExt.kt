@@ -132,6 +132,9 @@ fun View.translationXAnimation(x: Float, endCall: (() -> Unit)? = null, duration
     anim.start()
 }
 fun <T> BaseQuickAdapter<T, *>.showLoading(@LayoutRes layoutId: Int) {
+    if (data.isNotEmpty()) {
+        setNewInstance(null)
+    }
     this.setEmptyView(layoutId)
 }
 

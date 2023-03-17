@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.distinctUntilChanged
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.chad.library.adapter.base.entity.node.BaseNode
@@ -101,6 +100,16 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
         viewModel.getGameHallList(matchType, true)
     }
 
+    override fun onHiddenChanged(hidden: Boolean) {
+        if (hidden) {
+            unSubscribeAll()
+        } else {
+            //receiver.oddsChangeListener為activity底下共用, 顯示當前畫面時需重新配置listener
+            setupOddsChangeListener()
+            subscribeMatchOdds()
+        }
+    }
+
     var offsetScrollListener: ((Double) -> Unit)? = null
 
     private fun setupToolbar() {
@@ -111,20 +120,8 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
 
         //冠军不需要筛选
         lin_filter.gone()
-        iv_arrow.setOnClickListener {
-            subscribeMatchOdds(100)
-            val selected = !iv_arrow.isSelected
-            iv_arrow.isSelected = selected
-            if (selected) {
-                endScoreAdapter.collapseAll()
-                iv_arrow.rotationAnimation(180f)
-            } else {
-                endScoreAdapter.expandAll()
-                iv_arrow.rotationAnimation(0f)
-            }
-        }
+        iv_arrow.bindExpanedAdapter(endScoreAdapter) { subscribeMatchOdds(100) }
     }
-
 
     private fun setupGameRow() {
         setViewGone(iv_calendar, game_filter_type_list)
@@ -136,7 +133,6 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
     }
 
     private fun subscribeMatchOdds(delay: Long = 0) {
-        game_list?.removeCallbacks(subscribeVisibleRange)
         unSubscribeAll()
         game_list?.postDelayed(subscribeVisibleRange, delay)
     }
@@ -150,7 +146,7 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
             }
 
             val matchOdds = mutableSetOf<MatchOdd>()
-            doOnVisiableRange { _, item->
+            endScoreAdapter.doOnVisiableRange { _, item->
                 if (item is MatchOdd) {
                     matchOdds.add(item)
                 } else if (item is Odd) {
@@ -159,23 +155,6 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
             }
 
             matchOdds.forEach { subscribeChannelHall(it) }
-        }
-    }
-
-    private fun doOnVisiableRange(block: (Int, BaseNode) -> Unit) {
-        val layoutManager = game_list.layoutManager as GridLayoutManager
-        val first = layoutManager.findFirstVisibleItemPosition()
-        if (first < 0 || first >= endScoreAdapter.getCount()) {
-            return
-        }
-
-        val last = layoutManager.findLastVisibleItemPosition()
-        if (last < 0 || last >= endScoreAdapter.getCount()) {
-            return
-        }
-
-        for (i in first..last) {
-            block.invoke(i, endScoreAdapter.getItem(i))
         }
     }
 
@@ -234,7 +213,7 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
             }
 
             if (game_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !game_list.isComputingLayout) {
-                doOnVisiableRange { position, item ->
+                endScoreAdapter.doOnVisiableRange { position, item ->
                     if (item is MatchOdd) {
                         endScoreAdapter.notifyItemChanged(position, item)
                     }
@@ -277,6 +256,7 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
     }
 
     private fun unSubscribeAll() {
+        game_list?.removeCallbacks(subscribeVisibleRange)
         subscribedMatchOdd.clear()
         unSubscribeChannelHallAll()
     }
@@ -285,7 +265,6 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
         super.onDestroyView()
         offsetScrollListener = null
         game_list.adapter = null
-        game_list?.removeCallbacks(subscribeVisibleRange)
         unSubscribeAll()
         unSubscribeChannelHallSport()
     }

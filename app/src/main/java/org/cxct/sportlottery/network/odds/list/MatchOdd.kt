@@ -36,8 +36,6 @@ data class MatchOdd(
     override var oddsSort: String? = null
 ) : MatchOdd, BaseNode() {
 
-    val endScoreOdds = mutableListOf<Odd>()
-
     override val childNode: MutableList<BaseNode> = mutableListOf()
 
     override val oddsEps: EpsOdd? = null
