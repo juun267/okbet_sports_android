@@ -114,7 +114,7 @@ class OddsButtonDetail @JvmOverloads constructor(
 //                odd?.extInfoMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.extInfo
             text =
 //                if (extInfoStr.isNullOrEmpty())
-                "${(odd?.nameMap?.get(LanguageManager.getLanguageConvert(context).key) ?: odd?.name)}"
+                "${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
 //                else
 //                    "$extInfoStr ${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
 
@@ -210,13 +210,13 @@ class OddsButtonDetail @JvmOverloads constructor(
                 text = when {
                     playCateCode.isCSType() -> {
                         odds?.nameMap?.get(
-                            LanguageManager.getLanguageConvert(context).key
+                            LanguageManager.getSelectLanguage(context).key
                         ) ?: odds?.name
                     }
                     playCateCode.isOUType() -> {
                         //越南語大小顯示又要特殊處理(用O/U)
                         val language =
-                            if (LanguageManager.getSelectLanguage(context).key == LanguageManager.Language.VI.key) LanguageManager.Language.EN.key else LanguageManager.getLanguageConvert(
+                            if (LanguageManager.getSelectLanguage(context).key == LanguageManager.Language.VI.key) LanguageManager.Language.EN.key else LanguageManager.getSelectLanguage(
                                 context
                             ).key
                         (odds?.nameMap?.get(
@@ -225,13 +225,13 @@ class OddsButtonDetail @JvmOverloads constructor(
                     }
                     playCateCode.isOEType() || playCateCode.isBTSType() -> {
                         (odds?.nameMap?.get(
-                            LanguageManager.getLanguageConvert(
+                            LanguageManager.getSelectLanguage(
                                 context
                             ).key
                         ) ?: odds?.name)?.abridgeOddsName()
                     }
                     playCateCode.isNOGALType() -> {
-                        when (LanguageManager.getLanguageConvert(this.context)) {
+                        when (LanguageManager.getSelectLanguage(this.context)) {
                             LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
                                 "第" + odds?.nextScore.toString()
                             }
@@ -243,7 +243,7 @@ class OddsButtonDetail @JvmOverloads constructor(
                     //篮球末尾比分，只显示最后空格后面的比分
                     playCateCode.isFS_LD_CS_Type() -> {
                         (odds?.nameMap?.get(
-                            LanguageManager.getLanguageConvert(
+                            LanguageManager.getSelectLanguage(
                                 context
                             ).key
                         ) ?: odds?.name)?.split(" ")?.last()

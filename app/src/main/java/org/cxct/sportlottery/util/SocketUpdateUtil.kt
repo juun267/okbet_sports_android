@@ -205,7 +205,7 @@ object SocketUpdateUtil {
             isNeedRefresh = true
         }
         val statusValue = matchStatusCO.statusNameI18n?.get(
-            LanguageManager.getLanguageConvert(context).key
+            LanguageManager.getSelectLanguage(context).key
         ) ?: matchStatusCO.statusName
         if (statusValue != null && statusValue != matchOdd.matchInfo?.statusName18n) {
             matchOdd.matchInfo?.statusName18n = statusValue
@@ -350,7 +350,7 @@ object SocketUpdateUtil {
 
                 //菲语要特殊处理
                 val statusValue = matchStatusCO.statusNameI18n?.get(
-                    LanguageManager.getLanguageConvert(context).key
+                    LanguageManager.getSelectLanguage(context).key
                 ) ?: matchStatusCO.statusName
 
                 if (statusValue != null && statusValue != matchOdd.matchInfo?.statusName18n) {

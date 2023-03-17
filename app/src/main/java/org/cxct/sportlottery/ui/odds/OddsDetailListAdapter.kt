@@ -1078,10 +1078,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             val textColor = ContextCompat.getColor(context, R.color.color_909090_666666)
             val gameTitleContentBuilder = SpannableStringBuilder()
             val statusWord =
-                oddsDetail.nameMap?.get( LanguageManager.getLanguageConvert(itemView.context).key)
+                oddsDetail.nameMap?.get( LanguageManager.getSelectLanguage(itemView.context).key)
                     ?.split("-", "–")
             val playName =
-                oddsDetail.nameMap?.get(  LanguageManager.getLanguageConvert(itemView.context).key)
+                oddsDetail.nameMap?.get(  LanguageManager.getSelectLanguage(itemView.context).key)
                     ?.replace("-${statusWord?.last() ?: ""}", "")
                     ?.replace("–${statusWord?.last() ?: ""}", "")
             val stWordSpan = SpannableString(statusWord?.last() ?: "")
@@ -1121,7 +1121,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             val gameTitleContentBuilder = SpannableStringBuilder()
             val title =
                 oddsDetail.nameMap?.get(
-                    LanguageManager.getLanguageConvert(itemView.context).key
+                    LanguageManager.getSelectLanguage(itemView.context).key
                 )
             val playNameSpan = SpannableString("$title")
             title?.length?.let {

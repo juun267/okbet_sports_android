@@ -18,9 +18,7 @@ import java.util.*
 object LanguageManager {
 
     enum class Language(val key: String) {
-        ZH("zh"), ZHT("zht"), EN("en"), VI("vi"), TH("th"), PHI("phi"), PH(
-            "ph"
-        )
+        ZH("zh"), ZHT("zht"), EN("en"), VI("vi"), TH("th"), PHI("ph")
     }
 
     /**
@@ -112,19 +110,6 @@ object LanguageManager {
             Language.TH -> R.drawable.ic_flag_th
             Language.PHI -> R.drawable.ic_flag_phi
             else -> R.drawable.ic_flag_en
-        }
-    }
-
-    /**
-     * 转换方法
-     * 后台返回字段为ph
-     * Locale中菲语字段为phi,需要在前端做转换
-     */
-    fun getLanguageConvert(context: Context?): Language {
-        return if (getSelectLanguage(context).key == Language.PHI.key) {
-            Language.PH
-        } else {
-            getSelectLanguage(context)
         }
     }
 
