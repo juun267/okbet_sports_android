@@ -1,8 +1,6 @@
 package org.cxct.sportlottery.repository
 
 
-import androidx.annotation.IntDef
-import androidx.annotation.StringDef
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.MultiLanguagesApplication
@@ -468,7 +466,6 @@ object BetInfoRepository {
             val maxCpBetMoney = betInfo?.maxCpBetMoney ?: maxDefaultBigDecimal
             val maxParlayPayout = maxPayoutTakeMin ?: maxDefaultBigDecimal
             var maxParlayBetMoney = maxBetMoneyTakeMin ?: maxDefaultBigDecimal
-
             val minBet: BigDecimal
             val minBetMoney = betInfo?.minBetMoney ?: minDefaultBigDecimal
             val minCpBetMoney = betInfo?.minCpBetMoney ?: minDefaultBigDecimal
@@ -515,7 +512,6 @@ object BetInfoRepository {
                         maxBetMoney
                     }
                 }
-
                 //賠付額上限計算投注限額
                 val odds = if (it.value.isOnlyEUType) {
                     //賠付額計算需扣除本金, 此處為串關有幾注就要扣幾個本金
@@ -529,7 +525,7 @@ object BetInfoRepository {
                     oddsPayout
                 } else {
                     //用戶投注限額與賠付額計算投注限額取小
-                    oddsPayout.min(maxParlayBetMoney)
+                    oddsPayout.min(matchTypeMaxBetMoney)
                 }
                 minBet = when {
                     matchType == MatchType.PARLAY && isParlayBet -> minParlayBetMoney

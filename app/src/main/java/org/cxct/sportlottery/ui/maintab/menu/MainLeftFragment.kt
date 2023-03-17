@@ -236,12 +236,19 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun initLanguageView() {
         languageAdapter = LanguageAdapter(
-            listOf(
-                LanguageManager.Language.EN,
-                LanguageManager.Language.PHI,
-                LanguageManager.Language.ZH,
-                LanguageManager.Language.VI,
-            )
+            if (isForQA())
+                listOf(
+                    LanguageManager.Language.EN,
+                    LanguageManager.Language.PHI,
+                    LanguageManager.Language.ZH,
+                    LanguageManager.Language.VI,
+                )
+            else
+                listOf(
+                    LanguageManager.Language.EN,
+                    LanguageManager.Language.ZH,
+                    LanguageManager.Language.VI,
+                )
         )
         languageAdapter.setOnItemClickListener { adapter, view, position ->
             viewModel.betInfoRepository.clear()

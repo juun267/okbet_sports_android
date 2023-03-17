@@ -1046,6 +1046,8 @@ fun isMultipleSitePlat(): Boolean =
         R.string.app_name
     ) == "OKbet9"
 
+fun isForQA(): Boolean = BuildConfig.FLAVOR == "forqa"
+
 /**
  * 判斷當前是否為OKBET平台
  */
