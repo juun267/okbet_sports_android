@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.multidex.MultiDex
 import com.appsflyer.AppsFlyerLib
 import com.didichuxing.doraemonkit.DoKit
 import com.google.gson.Gson
@@ -175,6 +176,7 @@ class MultiLanguagesApplication : Application() {
         //第一次进入app时保存系统选择语言(为了选择随系统语言时使用，如果不保存，切换语言后就拿不到了）
         LanguageManager.saveSystemCurrentLanguage(base)
         super.attachBaseContext(base)
+        MultiDex.install(this)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

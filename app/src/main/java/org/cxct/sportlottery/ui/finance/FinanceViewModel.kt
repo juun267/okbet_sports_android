@@ -301,8 +301,8 @@ class FinanceViewModel(
                     CheckStatus.BetStation.code,
                     CheckStatus.PROCESSING.code,
                     -> LocalUtils.getString(R.string.log_state_processing)
-                    CheckStatus.UN_PASS.code -> LocalUtils.getString(R.string.withdraw_log_state_un_pass)
-                    CheckStatus.PASS.code -> LocalUtils.getString(R.string.withdraw_log_state_pass)
+                    CheckStatus.UN_PASS.code -> LocalUtils.getString(R.string.recharge_state_failed)
+                    CheckStatus.PASS.code -> LocalUtils.getString(R.string.recharge_state_success)
                     else -> ""
                 }
 
