@@ -5,7 +5,7 @@
     <string name="connect_first">Select the internet to connect</string>
     <string name="error_url_fail">Jumping to address error</string>
     <string name="unknown_error">unknown error</string>
-    <string name="error_reading_file">Error reading from file</string>
+    <string name="error_reading_file" translatable="false">Error reading from file</string>
     <string name="message_guest_no_permission">Guest account not be able to access, please register first</string>
     <string name="message_socket_connect">The connection has timed out, please try again.</string>
     <string name="message_network_no_connect">The connection has timed out, please try again.</string>
