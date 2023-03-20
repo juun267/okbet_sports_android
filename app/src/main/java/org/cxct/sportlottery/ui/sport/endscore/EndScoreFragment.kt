@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.sport.endscore
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.distinctUntilChanged
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +18,7 @@ import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
@@ -26,7 +28,10 @@ import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketGridManager
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.*
+import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
+import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.util.*
+import org.greenrobot.eventbus.Subscribe
 
 /**
  * @app_destination 末位比分
@@ -37,6 +42,7 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
     private val playCate = PlayCate.FS_LD_CS.value
     private val matchType = MatchType.END_SCORE
     private var gameType: String = GameType.BK.key
+    private var leagueIdList = mutableListOf<String>()
 
     override fun layoutId() = R.layout.fragment_sport_list
     fun getCurGameType() = GameType.BK
@@ -67,14 +73,18 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
             }
         })
 
-        EndScoreAdapter(playCate) { _, _, item ->
+        EndScoreAdapter(playCate) { _, view, item ->
             if (item is Odd) {  // 赔率
                 addOutRightOddsDialog(item.parentNode as MatchOdd, item, playCate)
                 return@EndScoreAdapter
             }
 
-            if (item is MatchOdd) {
-                viewModel.pinFavorite(FavoriteType.MATCH, item.matchInfo?.id)
+            if (item is MatchOdd) { // 赛事栏相关点击
+                if (view is ViewGroup) { // 赛事详情
+                    item.matchInfo?.let { SportDetailActivity.startActivity(view.context, it, matchType) }
+                } else { // 收藏赛事
+                    viewModel.pinFavorite(FavoriteType.MATCH, item.matchInfo?.id)
+                }
                 return@EndScoreAdapter
             }
 
@@ -117,14 +127,21 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
         appbar_layout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
             offsetScrollListener?.invoke((-verticalOffset) / Math.max(1.0, appbar_layout.measuredHeight.toDouble()))
         })
-
-        //冠军不需要筛选
-        lin_filter.gone()
         iv_arrow.bindExpanedAdapter(endScoreAdapter) { subscribeMatchOdds(100) }
     }
 
     private fun setupGameRow() {
         setViewGone(iv_calendar, game_filter_type_list)
+        lin_filter.setOnClickListener {
+            LeagueSelectActivity.start(
+                it.context,
+                gameType!!,
+                matchType,
+                null,
+                null,
+                leagueIdList
+            )
+        }
     }
 
     private fun setupGameListView() = game_list.run {
@@ -267,6 +284,20 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
         game_list.adapter = null
         unSubscribeAll()
         unSubscribeChannelHallSport()
+    }
+
+    @Subscribe
+    fun onSelectLeague(leagueList: List<League>) {
+        viewModel.filterLeague(leagueList)
+        leagueIdList.clear()
+        leagueList.forEach { leagueIdList.add(it.id) }
+        viewModel.getGameHallList(
+            matchType,
+            isReloadDate = true,
+            isReloadPlayCate = false,
+            isLastSportType = true,
+            leagueIdList = leagueIdList
+        )
     }
 
 }

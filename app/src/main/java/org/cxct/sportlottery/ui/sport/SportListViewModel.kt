@@ -401,6 +401,7 @@ class SportListViewModel(
                 MatchType.AT_START.postValue,
                 MatchType.EARLY.postValue,
                 MatchType.PARLAY.postValue,
+                MatchType.END_SCORE.postValue,
                 -> {
                     if (_leagueFilterList.value?.isNotEmpty() == true) {
                         result?.oddsListData?.leagueOddsFilter =
