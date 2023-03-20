@@ -678,6 +678,7 @@ class ProfileCenterFragment :
 
     private fun updateCreditAccountUI() {
         lin_wallet_operation.setVisibilityByCreditSystem()
+        lin_wallet_operation.setVisibilityByMarketSwitch()
     }
 
     //有 child activity 給定 notice button 顯示
