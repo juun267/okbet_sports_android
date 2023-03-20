@@ -961,6 +961,7 @@
     <string name="bet_stake">Taya</string>
     <string name="total_capital">Stake：%s</string>
     <string name="total_win_amount">Mapapanalo：</string>
+    <string name="total_all_win_amount">Kabuuang mapanalo：</string>
     <string name="delete_bet">Tanggalin</string>
     <string name="delete_bet_all">Delete lahat</string>
     <string name="btn_login_bet">Login muna</string>
