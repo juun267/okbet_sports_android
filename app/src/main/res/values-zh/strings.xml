@@ -1273,4 +1273,6 @@
     <string name="third_party">第三方</string>
     <string name="J801">独赢&amp;大</string>
     <string name="J802">独赢&amp;小</string>
+    <string name="J803">独赢&amp;双方球队进球-是</string>
+    <string name="J804">独赢&amp;双方球队进球-否</string>
 </resources>
