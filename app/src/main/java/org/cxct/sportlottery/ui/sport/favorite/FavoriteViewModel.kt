@@ -14,7 +14,6 @@ import org.cxct.sportlottery.network.common.MenuCode
 import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.quick.QuickListData
-import org.cxct.sportlottery.network.odds.quick.QuickListRequest
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.network.sport.query.SportQueryData
@@ -23,8 +22,6 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LocalUtils
-import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
-import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.setupQuickPlayCate
 import org.cxct.sportlottery.util.sortQuickPlayCate
 
@@ -44,8 +41,6 @@ class FavoriteViewModel(
     infoCenterRepository,
     myFavoriteRepository,
 ) {
-    val showBetUpperLimit = betInfoRepository.showBetUpperLimit
-
     val sportQueryData: LiveData<Event<SportQueryData?>>
         get() = _sportQueryData
     private val _sportQueryData = MutableLiveData<Event<SportQueryData?>>()
@@ -54,7 +49,6 @@ class FavoriteViewModel(
 //        get() = _sportCodeSpinnerList
 
     val favoriteRepository = myFavoriteRepository
-    val lastSportType = myFavoriteRepository.lastSportType
 
 
     /**
@@ -80,40 +74,6 @@ class FavoriteViewModel(
             }
         }
     }
-
-    fun getQuickList(matchId: String?) {
-        if (matchId == null) return
-
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.oddsService.getQuickList(
-                    QuickListRequest(matchId)
-                )
-            }
-
-            result?.quickListData?.let { quickListData ->
-                val discount = userInfo.value?.discount ?: 1.0F
-                quickListData.quickOdds?.forEach { (_, quickOddsValue) ->
-                    quickOddsValue.forEach { (key, value) ->
-                        value?.forEach { odd ->
-                            odd?.odds = odd?.odds?.applyDiscount(discount)
-                            odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
-
-                            if (key == QuickPlayCate.QUICK_EPS.value) {
-                                odd?.extInfo =
-                                    odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
-                            }
-                        }
-                    }
-                }
-
-                val list = mFavorMatchOddList.value?.peekContent()
-                    ?.updatePlayCate(matchId, quickListData, quickListData.playCateNameMap)
-                mFavorMatchOddList.postValue(Event(list ?: listOf()))
-            }
-        }
-    }
-
 
     fun switchGameType(item: Item) {
         _sportQueryData.postValue(
