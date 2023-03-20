@@ -105,7 +105,7 @@
         <!--玩法名稱:讓球,獨贏..-->
         <TextView
             android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:drawablePadding="8dp"
@@ -113,10 +113,14 @@
             android:paddingEnd="10dp"
             android:textColor="@color/color_9BB3D9_535D76"
             android:textSize="@dimen/textSize12sp"
+            app:layout_constraintHorizontal_weight="1"
             android:visibility="visible"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:layout_constraintWidth_max="338dp"
             app:layout_constraintStart_toStartOf="@+id/odds_content_container"
             app:layout_constraintTop_toBottomOf="@+id/odds_content_container"
-            tools:text="让球(1-1)" />
+            tools:text="让球(1-1) container " />
 
         <TextView
             android:id="@+id/tv_name_type"
@@ -127,46 +131,69 @@
             android:gravity="center_vertical"
             android:paddingHorizontal="4dp"
             android:textColor="@color/color_9BB3D9_535D76"
+            android:layout_marginEnd="10dp"
             android:textSize="@dimen/textSize12sp"
             app:layout_constraintStart_toEndOf="@+id/tv_name"
             app:layout_constraintTop_toBottomOf="@+id/odds_content_container"
             tools:text="欧洲盘" />
 
         <TextView
-            android:id="@+id/tv_match"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="@color/color_A7B2C4"
-            android:textSize="@dimen/textSize12sp"
-            app:layout_constraintEnd_toStartOf="@+id/tv_close"
-            app:layout_constraintHorizontal_bias="0.493"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@+id/tv_league_name"
-            app:layout_constraintTop_toBottomOf="@+id/tv_name_type"
-            app:layout_goneMarginEnd="15dp"
-            tools:text="Manchester United FC (Mad) vs. SS Lazio(Dasko)" />
-
-        <TextView
-            android:id="@+id/tv_league_name"
+            android:id="@+id/tvMatchHome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/color_A7B2C4"
             android:textSize="@dimen/textSize12sp"
-            android:visibility="visible"
-            app:layout_constraintEnd_toStartOf="@+id/tv_match"
             app:layout_constraintStart_toStartOf="@+id/tv_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_league_name"
+            android:maxWidth="160dp"
+            app:layout_goneMarginEnd="15dp"
+            tools:text="Manchester United) United United United United United" />
+
+        <TextView
+            android:id="@+id/tvVs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VS"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/color_A7B2C4"
+            android:textSize="@dimen/textSize12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvMatchHome"
+            app:layout_constraintStart_toEndOf="@+id/tvMatchHome"
+            app:layout_constraintTop_toTopOf="@+id/tvMatchHome" />
+
+        <TextView
+            android:id="@+id/tvMatchAway"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/color_A7B2C4"
+            android:textSize="@dimen/textSize12sp"
+            app:layout_constraintStart_toEndOf="@+id/tvVs"
+            app:layout_constraintTop_toTopOf="@+id/tvVs"
+            app:layout_constraintWidth_max="160dp"
+            tools:text="Manchester United United UnitedFC (Mad) vs. SS cdLazio(Dasko)" />
+
+        <TextView
+            android:id="@+id/tv_league_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/color_9BB3D9_535D76"
+            android:textSize="@dimen/textSize12sp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/odds_content_container"
             app:layout_constraintTop_toBottomOf="@+id/tv_name"
-            app:layout_constraintWidth_max="120dp"
             app:layout_goneMarginTop="27dp"
-            tools:text="GT 联赛 - 12分钟赛事" />
+            android:layout_marginEnd="10dp"
+            tools:text="Manchester United FC (Mad) vs. SS cdLazio(Dasko)" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/llViewContent"
@@ -177,7 +204,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:visibility="visible"
-            app:layout_constraintTop_toBottomOf="@+id/tv_match"
+            app:layout_constraintTop_toBottomOf="@+id/tvMatchHome"
             app:layout_goneMarginTop="11dp">
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -191,7 +218,7 @@
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_match"
+            app:layout_constraintTop_toBottomOf="@+id/tvMatchHome"
             app:layout_goneMarginTop="10dp"/>
 
         <TextView
@@ -203,24 +230,25 @@
             android:paddingVertical="1dp"
             android:textColor="@color/color_9BB3D9_535D76"
             android:textSize="@dimen/textSize12sp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_match"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/tvMatchHome"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_match" />
+            app:layout_constraintTop_toTopOf="@+id/tvMatchHome" />
 
         <org.cxct.sportlottery.widget.SwipeMenuLayout
             android:id="@+id/slideLayout"
             android:layout_width="0dp"
-            android:layout_height="83dp"
+            android:layout_height="0dp"
             android:clickable="true"
             android:visibility="visible"
             app:ios="true"
+            app:layout_constraintBottom_toTopOf="@+id/llViewContent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:leftSwipe="true"
             app:swipeEnable="true"
-            tools:visibility="visible">
+            tools:visibility="gone">
 
             <!--左部分-->
             <RelativeLayout
@@ -295,7 +323,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.45" />
+                        app:layout_constraintGuide_begin="186dp" />
 
                     <TextView
                         android:id="@+id/tv_bet"
@@ -332,15 +360,15 @@
                         app:layout_constraintStart_toEndOf="@+id/tv_bet"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:id="@+id/textView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/bet_single"
-                        android:textColor="@color/color_00181E"
-                        android:textSize="12sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+<!--                    <TextView-->
+<!--                        android:id="@+id/textView"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="@string/bet_single"-->
+<!--                        android:textColor="@color/color_00181E"-->
+<!--                        android:textSize="12sp"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent" />-->
 
                     <TextView
                         android:id="@+id/tvCanWin"
@@ -350,9 +378,8 @@
                         android:textColor="@color/color_414655"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/textView"
-                        app:layout_constraintTop_toBottomOf="@+id/textView"
-                        app:layout_constraintVertical_bias="1.0" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/et_bet" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -373,6 +400,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -20,27 +20,27 @@ import java.util.regex.Pattern
  * 关于View的一些扩展函数
  */
 
-inline fun View.visible(){
+fun View.visible(){
     this.visibility = View.VISIBLE
 }
 
-inline fun View.gone(){
+fun View.gone(){
     this.visibility = View.GONE
 }
 
-inline fun View.inVisible(){
+fun View.inVisible(){
     this.visibility = View.INVISIBLE
 }
 
-inline fun setViewVisible(vararg views: View) {
+fun setViewVisible(vararg views: View) {
     views.forEach { it.visibility = View.VISIBLE }
 }
 
-inline fun setViewGone(vararg views: View) {
+fun setViewGone(vararg views: View) {
     views.forEach { it.visibility = View.GONE }
 }
 
-inline fun setViewInvisible(vararg views: View) {
+fun setViewInvisible(vararg views: View) {
     views.forEach { it.visibility = View.INVISIBLE }
 }
 
