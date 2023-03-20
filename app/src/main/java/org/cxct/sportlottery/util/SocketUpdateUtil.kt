@@ -28,7 +28,7 @@ object SocketUpdateUtil {
         context: Context?,
     ): Boolean {
 
-        if(matchOddList == null || matchStatusChangeEvent.matchStatusCO == null) {
+        if (matchOddList == null || matchStatusChangeEvent.matchStatusCO == null) {
             return false
         }
 
@@ -46,14 +46,17 @@ object SocketUpdateUtil {
                 isNeedRefresh = true
             }
 
-            val statusValue = matchStatusCO.statusNameI18n?.get(LanguageManager.getSelectLanguage(context).key)?: matchStatusCO.statusName
+            val statusValue =
+                matchStatusCO.statusNameI18n?.get(LanguageManager.getSelectLanguage(context).key)
+                    ?: matchStatusCO.statusName
             if (statusValue != null && statusValue != matchOdd.matchInfo?.statusName18n) {
                 matchOdd.matchInfo?.statusName18n = statusValue
                 isNeedRefresh = true
             }
 
             //matchStatusList为空就用 periods
-            matchOdd.matchInfo?.matchStatusList = matchStatusChangeEvent.matchStatusList ?: matchStatusCO.periods
+            matchOdd.matchInfo?.matchStatusList =
+                matchStatusChangeEvent.matchStatusList ?: matchStatusCO.periods
             if (matchStatusCO.gameType == GameType.CK.key) {
 
                 val homeTotal = matchStatusCO.homeTotalScore ?: 0
@@ -201,10 +204,9 @@ object SocketUpdateUtil {
             matchOdd.matchInfo?.socketMatchStatus = matchStatusCO.status
             isNeedRefresh = true
         }
-
-        val statusValue =
-            matchStatusCO.statusNameI18n?.get(LanguageManager.getSelectLanguage(context).key)
-                ?: matchStatusCO.statusName
+        val statusValue = matchStatusCO.statusNameI18n?.get(
+            LanguageManager.getSelectLanguage(context).key
+        ) ?: matchStatusCO.statusName
         if (statusValue != null && statusValue != matchOdd.matchInfo?.statusName18n) {
             matchOdd.matchInfo?.statusName18n = statusValue
             isNeedRefresh = true
@@ -345,11 +347,13 @@ object SocketUpdateUtil {
                     matchOdd.matchInfo?.socketMatchStatus = matchStatusCO.status
                     isNeedRefresh = true
                 }
-                val statusValue =
-                    matchStatusCO.statusNameI18n?.get(LanguageManager.getSelectLanguage(context).key)
-                        ?: matchStatusCO.statusName
-                if (statusValue != null && statusValue != matchOdd.matchInfo?.statusName18n) {
 
+                //菲语要特殊处理
+                val statusValue = matchStatusCO.statusNameI18n?.get(
+                    LanguageManager.getSelectLanguage(context).key
+                ) ?: matchStatusCO.statusName
+
+                if (statusValue != null && statusValue != matchOdd.matchInfo?.statusName18n) {
                     matchOdd.matchInfo?.statusName18n = statusValue
                     isNeedRefresh = true
                 }
@@ -502,9 +506,11 @@ object SocketUpdateUtil {
                     GameType.FT.key -> {
                         matchClockCO.matchTime
                     }
-                    GameType.BK.key,GameType.RB.key,GameType.AFT.key  -> {
+
+                    GameType.BK.key, GameType.RB.key, GameType.AFT.key -> {
                         matchClockCO.remainingTimeInPeriod
                     }
+
                     else -> null
                 }
 
@@ -548,6 +554,7 @@ object SocketUpdateUtil {
             true -> {
                 insertMatchOdds(oddBean, oddsChangeEvent)
             }
+
             false -> {
                 refreshMatchOdds(
                     mutableMapOf(Pair(oddBean.playTypeCode, oddBean.oddList.toMutableList())),
@@ -577,14 +584,21 @@ object SocketUpdateUtil {
         var isNeedRefresh = false
         var isNeedRefreshPlayCate = false
 
-        val cateMenuCode = oddsChangeEvent.channel?.split(context.getString(R.string.splash_no_trans))?.getOrNull(6)
+        val cateMenuCode =
+            oddsChangeEvent.channel?.split(context.getString(R.string.splash_no_trans))
+                ?.getOrNull(6)
 
         isNeedRefresh = when {
 
             (cateMenuCode == PlayCate.EPS.value) -> {
-                updateMatchOdds(mutableMapOf(Pair(PlayCate.EPS.value,
-                    matchOdd.oddsEps?.eps?.toMutableList() ?: mutableListOf())),
-                    oddsChangeEvent.odds)
+                updateMatchOdds(
+                    mutableMapOf(
+                        Pair(
+                            PlayCate.EPS.value,
+                            matchOdd.oddsEps?.eps?.toMutableList() ?: mutableListOf()
+                        )
+                    ), oddsChangeEvent.odds
+                )
             }
 
             (cateMenuCode == PlayCate.OUTRIGHT.value) -> {
@@ -592,7 +606,10 @@ object SocketUpdateUtil {
                 oddsChangeEvent.odds?.forEach { (key, value) ->
                     matchOdd.oddsMap?.let { oddsMap ->
                         if (oddsMap.containsKey(key)) {
-                            updated = updateMatchOdds(mutableMapOf(Pair(key, oddsMap[key])), mutableMapOf(Pair(key, value)))
+                            updated = updateMatchOdds(
+                                mutableMapOf(Pair(key, oddsMap[key])),
+                                mutableMapOf(Pair(key, value))
+                            )
                         } else {
                             oddsMap[key] = value?.toMutableList()
                             updated = true
@@ -604,27 +621,27 @@ object SocketUpdateUtil {
 
             (QuickPlayCate.values().map { it.value }.contains(cateMenuCode)) -> {
                 updateMatchOdds_1(
-                    matchOdd.quickPlayCateList?.find { it.isSelected }?.quickOdds?.toMutableFormat_1()?: mutableMapOf(),
-                    oddsChangeEvent.odds
+                    matchOdd.quickPlayCateList?.find { it.isSelected }?.quickOdds?.toMutableFormat_1()
+                        ?: mutableMapOf(), oddsChangeEvent.odds
                 )
             }
 
             else -> {
-                if(matchOdd.oddsMap == null){
+                if (matchOdd.oddsMap == null) {
                     matchOdd.oddsMap = mutableMapOf()
                 }
-                updateMatchOdds(matchOdd.oddsMap ?: mutableMapOf(), oddsChangeEvent.odds,)
+                updateMatchOdds(matchOdd.oddsMap ?: mutableMapOf(), oddsChangeEvent.odds)
             }
         }
 
         //更新翻譯
-        if(matchOdd.betPlayCateNameMap == null){
+        if (matchOdd.betPlayCateNameMap == null) {
             matchOdd.betPlayCateNameMap = mutableMapOf()
         }
 
         updateBetPlayCateNameMap(matchOdd.betPlayCateNameMap, oddsChangeEvent.betPlayCateNameMap)
 
-        if(matchOdd.playCateNameMap == null){
+        if (matchOdd.playCateNameMap == null) {
             matchOdd.playCateNameMap = mutableMapOf()
         }
 
@@ -634,12 +651,14 @@ object SocketUpdateUtil {
             true -> {
                 insertPlayCate(matchOdd, oddsChangeEvent, matchType)
             }
+
             false -> {
                 refreshPlayCate(matchOdd, oddsChangeEvent, matchType)
             }
         }
 
-        isNeedRefreshPlayCate = isNeedRefreshPlayCate || (matchOdd.matchInfo?.playCateNum != oddsChangeEvent.playCateNum)
+        isNeedRefreshPlayCate =
+            isNeedRefreshPlayCate || (matchOdd.matchInfo?.playCateNum != oddsChangeEvent.playCateNum)
 
         if (isNeedRefresh) {
             sortOdds(matchOdd)
@@ -705,13 +724,12 @@ object SocketUpdateUtil {
                     (QuickPlayCate.values().map { it.value }.contains(cateMenuCode)) -> {
                         updateMatchOdds_1(
                             hotMatchInfo.quickPlayCateList?.find { it.isSelected }?.quickOdds?.toMutableFormat_1()
-                                ?: mutableMapOf(),
-                            oddsChangeEvent.odds
+                                ?: mutableMapOf(), oddsChangeEvent.odds
                         )
                     }
 
                     else -> {
-                        if(hotMatchInfo.oddsMap == null){
+                        if (hotMatchInfo.oddsMap == null) {
                             hotMatchInfo.oddsMap = mutableMapOf()
                         }
                         updateMatchOdds(
@@ -722,25 +740,24 @@ object SocketUpdateUtil {
                 }
 
                 //更新翻譯
-                if(hotMatchInfo.betPlayCateNameMap == null){
+                if (hotMatchInfo.betPlayCateNameMap == null) {
                     hotMatchInfo.betPlayCateNameMap = mutableMapOf()
                 }
                 updateBetPlayCateNameMap(
-                    hotMatchInfo.betPlayCateNameMap,
-                    oddsChangeEvent.betPlayCateNameMap
+                    hotMatchInfo.betPlayCateNameMap, oddsChangeEvent.betPlayCateNameMap
                 )
-                if(hotMatchInfo.playCateNameMap == null){
+                if (hotMatchInfo.playCateNameMap == null) {
                     hotMatchInfo.playCateNameMap = mutableMapOf()
                 }
                 updatePlayCateNameMap(
-                    hotMatchInfo.playCateNameMap,
-                    oddsChangeEvent.playCateNameMap
+                    hotMatchInfo.playCateNameMap, oddsChangeEvent.playCateNameMap
                 )
 
                 isNeedRefreshPlayCate = when (hotMatchInfo.quickPlayCateList.isNullOrEmpty()) {
                     true -> {
                         insertPlayCate(hotMatchInfo, oddsChangeEvent, matchType)
                     }
+
                     false -> {
                         refreshPlayCate(hotMatchInfo, oddsChangeEvent, matchType)
                     }
@@ -760,8 +777,12 @@ object SocketUpdateUtil {
 
         return isNeedRefresh || isNeedRefreshPlayCate
     }
-    fun updateMatchOdds(oddsChangeEvent:OddsChangeEvent){
-        oddsChangeEvent.odds = oddsChangeEvent.oddsList.associateBy (keySelector= {it.playCateCode.toString()}, valueTransform={it.oddsList?.filter { it != null }?.toMutableList() }).toMutableMap()
+
+    fun updateMatchOdds(oddsChangeEvent: OddsChangeEvent) {
+        oddsChangeEvent.odds =
+            oddsChangeEvent.oddsList.associateBy(keySelector = { it.playCateCode.toString() },
+                valueTransform = { it.oddsList?.filter { it != null }?.toMutableList() })
+                .toMutableMap()
     }
 
     private fun updateMatchOdds(
@@ -772,6 +793,7 @@ object SocketUpdateUtil {
             true -> {
                 insertMatchOdds(oddsMap, oddsMapSocket)
             }
+
             false -> {
                 refreshMatchOdds(oddsMap, oddsMapSocket)
             }
@@ -786,6 +808,7 @@ object SocketUpdateUtil {
             true -> {
                 insertMatchOdds_1(oddsMap, oddsMapSocket)
             }
+
             false -> {
                 refreshMatchOdds_1(oddsMap, oddsMapSocket)
             }
@@ -831,11 +854,13 @@ object SocketUpdateUtil {
 
                                                     isNeedRefresh = true
                                                 }
+
                                                 oddValue < oddSocketValue -> {
                                                     odd.oddState = OddState.LARGER.state
 
                                                     isNeedRefresh = true
                                                 }
+
                                                 oddValue == oddSocketValue -> {
                                                     odd.oddState = OddState.SAME.state
                                                 }
@@ -849,7 +874,8 @@ object SocketUpdateUtil {
                                     odd?.indoOdds = oddSocket?.indoOdds
 
                                     //更新是不是只有歐洲盤 (因為棒球socket有機會一開始全部賠率推0.0)，跟後端(How)確認過目前只有棒球會這樣。
-                                    odd?.isOnlyEUType = oddSocket?.odds == oddSocket?.hkOdds && oddSocket?.odds == oddSocket?.malayOdds && oddSocket?.odds == oddSocket?.indoOdds
+                                    odd?.isOnlyEUType =
+                                        oddSocket?.odds == oddSocket?.hkOdds && oddSocket?.odds == oddSocket?.malayOdds && oddSocket?.odds == oddSocket?.indoOdds
 
                                     if (odd?.status != oddSocket?.status) {
                                         odd?.status = oddSocket?.status
@@ -871,8 +897,9 @@ object SocketUpdateUtil {
                                 }
 
                                 false -> {
-                                    if (oddTypeMap.key == oddsMapEntrySocket.key && oddSocket != null)
-                                        odds.add(oddSocket)
+                                    if (oddTypeMap.key == oddsMapEntrySocket.key && oddSocket != null) odds.add(
+                                        oddSocket
+                                    )
 
                                     isNeedRefresh = true
                                 }
@@ -893,13 +920,13 @@ object SocketUpdateUtil {
     }
 
     fun updateMatchOdds(
-        oddsDetailListData: OddsDetailListData,
-        matchOddsChangeEvent: MatchOddsChangeEvent
+        oddsDetailListData: OddsDetailListData, matchOddsChangeEvent: MatchOddsChangeEvent
     ): Boolean {
         return when (oddsDetailListData.oddArrayList.isNullOrEmpty()) {
             true -> {
                 insertMatchOdds(oddsDetailListData, matchOddsChangeEvent)
             }
+
             false -> {
                 refreshMatchOdds(oddsDetailListData, matchOddsChangeEvent)
             }
@@ -975,7 +1002,8 @@ object SocketUpdateUtil {
         matchOddsChangeEvent.odds?.filter { socketOddsMap ->
             socketOddsMap.value.odds?.all { it?.status == 2 } ?: false
         }?.forEach { lostOddsMap ->
-            val needRemoveOddsList = newOddsDetailDataList.find { oddsMap -> oddsMap.gameType == lostOddsMap.key }
+            val needRemoveOddsList =
+                newOddsDetailDataList.find { oddsMap -> oddsMap.gameType == lostOddsMap.key }
             if (needRemoveOddsList != null) {
                 newOddsDetailDataList.remove(needRemoveOddsList)
                 removedOldOdds = true
@@ -999,24 +1027,21 @@ object SocketUpdateUtil {
 
         //加入新玩法
         newPlay?.forEach { (key, value) ->
-            val filteredOddList =
-                mutableListOf<Odd?>()
+            val filteredOddList = mutableListOf<Odd?>()
             value.odds?.forEach { detailOdd ->
                 //因排版問題 null也需要添加
                 filteredOddList.add(detailOdd)
             }
-            newOddsDetailDataList.add(
-                OddsDetailListData(
-                    key,
-                    TextUtil.split(value.typeCodes),
-                    value.name,
-                    filteredOddList,
-                    value.nameMap,
-                    value.rowSort
-                ).apply {
-                    originPosition = newOddsDetailDataList.size
-                }
-            )
+            newOddsDetailDataList.add(OddsDetailListData(
+                key,
+                TextUtil.split(value.typeCodes),
+                value.name,
+                filteredOddList,
+                value.nameMap,
+                value.rowSort
+            ).apply {
+                originPosition = newOddsDetailDataList.size
+            })
             addedNewOdds = true
         }
 
@@ -1113,8 +1138,7 @@ object SocketUpdateUtil {
     }
 
     fun updateOddStatus(
-        oddsDetailListData: OddsDetailListData,
-        globalStopEvent: GlobalStopEvent
+        oddsDetailListData: OddsDetailListData, globalStopEvent: GlobalStopEvent
     ): Boolean {
         var isNeedRefresh = false
 
@@ -1148,7 +1172,9 @@ object SocketUpdateUtil {
         return isNeedRefresh
     }
 
-    fun updateOddStatus(betInfoListData: BetInfoListData, matchStatusEvent: MatchStatusChangeEvent): Boolean {
+    fun updateOddStatus(
+        betInfoListData: BetInfoListData, matchStatusEvent: MatchStatusChangeEvent
+    ): Boolean {
         var isNeedRefresh = false
 
         if (betInfoListData.matchOdd.matchId == matchStatusEvent.matchStatusCO?.matchId) {
@@ -1197,8 +1223,7 @@ object SocketUpdateUtil {
     }
 
     private fun insertMatchOdds(
-        oddsDetailListData: OddsDetailListData,
-        matchOddsChangeEvent: MatchOddsChangeEvent
+        oddsDetailListData: OddsDetailListData, matchOddsChangeEvent: MatchOddsChangeEvent
     ): Boolean {
         val odds = matchOddsChangeEvent.odds?.get(matchOddsChangeEvent.odds.keys.find {
             it == oddsDetailListData.gameType
@@ -1209,7 +1234,9 @@ object SocketUpdateUtil {
         return odds?.odds?.isNotEmpty() ?: false
     }
 
-    fun insertPlayCate(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent, matchType: MatchType?): Boolean {
+    fun insertPlayCate(
+        matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent, matchType: MatchType?
+    ): Boolean {
         /**
          * MatchType為波膽時, 快捷玩法只需出現反波膽, 其餘MatchType的快捷玩法不得出現反波膽
          */
@@ -1217,6 +1244,7 @@ object SocketUpdateUtil {
             MatchType.CS -> {
                 oddsChangeEvent.quickPlayCateList?.filter { it.code == QuickPlayCate.QUICK_LCS.value }
             }
+
             else -> {
                 oddsChangeEvent.quickPlayCateList?.filter { it.code != QuickPlayCate.QUICK_LCS.value }
             }
@@ -1258,11 +1286,13 @@ object SocketUpdateUtil {
 
                                                     isNeedRefresh = true
                                                 }
+
                                                 oddValue < oddSocketValue -> {
                                                     odd.oddState = OddState.LARGER.state
 
                                                     isNeedRefresh = true
                                                 }
+
                                                 oddValue == oddSocketValue -> {
                                                     odd.oddState = OddState.SAME.state
                                                 }
@@ -1276,7 +1306,8 @@ object SocketUpdateUtil {
                                     odd?.indoOdds = oddSocket?.indoOdds
 
                                     //更新是不是只有歐洲盤 (因為棒球socket有機會一開始全部賠率推0.0)，跟後端(How)確認過目前只有棒球會這樣。
-                                    odd?.isOnlyEUType = oddSocket?.odds == oddSocket?.hkOdds && oddSocket?.odds == oddSocket?.malayOdds && oddSocket?.odds == oddSocket?.indoOdds
+                                    odd?.isOnlyEUType =
+                                        oddSocket?.odds == oddSocket?.hkOdds && oddSocket?.odds == oddSocket?.malayOdds && oddSocket?.odds == oddSocket?.indoOdds
 
                                     if (odd?.status != oddSocket?.status) {
                                         odd?.status = oddSocket?.status
@@ -1298,8 +1329,9 @@ object SocketUpdateUtil {
                                 }
 
                                 false -> {
-                                    if (oddTypeMap.key == oddsMapEntrySocket.key && oddSocket != null)
-                                        odds.add(oddSocket)
+                                    if (oddTypeMap.key == oddsMapEntrySocket.key && oddSocket != null) odds.add(
+                                        oddSocket
+                                    )
 
                                     isNeedRefresh = true
                                 }
@@ -1320,8 +1352,7 @@ object SocketUpdateUtil {
     }
 
     private fun refreshMatchOdds(
-        oddsDetailListData: OddsDetailListData,
-        matchOddsChangeEvent: MatchOddsChangeEvent
+        oddsDetailListData: OddsDetailListData, matchOddsChangeEvent: MatchOddsChangeEvent
     ): Boolean {
         var isNeedRefresh = false
 
@@ -1339,18 +1370,17 @@ object SocketUpdateUtil {
                     oddSocket.odds?.let { oddSocketValue ->
                         when {
                             oddValue > oddSocketValue -> {
-                                odd.oddState =
-                                    OddState.SMALLER.state
+                                odd.oddState = OddState.SMALLER.state
                                 isNeedRefresh = true
                             }
+
                             oddValue < oddSocketValue -> {
-                                odd.oddState =
-                                    OddState.LARGER.state
+                                odd.oddState = OddState.LARGER.state
                                 isNeedRefresh = true
                             }
+
                             oddValue == oddSocketValue -> {
-                                odd.oddState =
-                                    OddState.SAME.state
+                                odd.oddState = OddState.SAME.state
                             }
                         }
                     }
@@ -1386,7 +1416,9 @@ object SocketUpdateUtil {
         return isNeedRefresh
     }
 
-    fun refreshPlayCate(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent, matchType: MatchType?): Boolean {
+    fun refreshPlayCate(
+        matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent, matchType: MatchType?
+    ): Boolean {
         var isNeedRefresh = false
 
         /**
@@ -1396,6 +1428,7 @@ object SocketUpdateUtil {
             MatchType.CS -> {
                 oddsChangeEvent.quickPlayCateList?.filter { it.code == QuickPlayCate.QUICK_LCS.value }
             }
+
             else -> {
                 oddsChangeEvent.quickPlayCateList?.filter { it.code != QuickPlayCate.QUICK_LCS.value }
             }

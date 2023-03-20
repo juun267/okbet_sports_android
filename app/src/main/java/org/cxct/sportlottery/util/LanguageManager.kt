@@ -16,7 +16,9 @@ import java.util.*
 
 object LanguageManager {
 
-    enum class Language(val key: String) { ZH("zh"), ZHT("zht"), EN("en"), VI("vi"), TH("th"), PHI("phi") }
+    enum class Language(val key: String) {
+        ZH("zh"), ZHT("zht"), EN("en"), VI("vi"), TH("th"), PHI("ph")
+    }
 
     /**
      * 获取系统的locale
@@ -49,6 +51,7 @@ object LanguageManager {
                     local.language == Locale("phi").language -> Language.PHI
                     (local.language == Locale.SIMPLIFIED_CHINESE.language && local.country == Locale.SIMPLIFIED_CHINESE.country)
                             || local.language == Locale.TRADITIONAL_CHINESE.language -> Language.ZH
+
                     else -> Language.values().find { it.key == BuildConfig.DEFAULT_LANGUAGE }
                         ?: Language.EN
                 }
@@ -58,9 +61,10 @@ object LanguageManager {
     }
 
     fun init(application: Application) {
-        application.registerActivityLifecycleCallbacks(object : Application.ActivityLifecycleCallbacks {
+        application.registerActivityLifecycleCallbacks(object :
+            Application.ActivityLifecycleCallbacks {
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-                if (activity is PictureSelectorActivity){
+                if (activity is PictureSelectorActivity) {
                     val resources: Resources = activity.resources
                     val config = resources.configuration
                     val locale = config.locale
@@ -161,6 +165,9 @@ object LanguageManager {
             Language.VI -> Locale("vi")
             Language.TH -> Locale("th")
             Language.PHI -> Locale("phi")
+            else -> {
+                Locale("en")
+            }
         }
     }
 
