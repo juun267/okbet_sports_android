@@ -72,9 +72,9 @@ android {
 
     buildTypes {
         debug {
-            minifyEnabled true
-            zipAlignEnabled true
-            debuggable false
+            minifyEnabled false
+            zipAlignEnabled false
+            debuggable true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
             versionNameSuffix ".debug"
