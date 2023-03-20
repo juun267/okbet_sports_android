@@ -13,6 +13,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
+import kotlinx.android.synthetic.main.fragment_about_us.*
 import kotlinx.android.synthetic.main.fragment_profile_center.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
@@ -355,6 +356,7 @@ class ProfileCenterFragment :
         btn_help_center.setOnClickListener {
             startActivity(Intent(requireActivity(), HelpCenterActivity::class.java))
         }
+        tv_terms_condition.setVisibilityByMarketSwitch()
         //关于我们
         btn_about_us.setOnClickListener {
             startActivity(Intent(requireActivity(), AboutMeActivity::class.java))

@@ -154,10 +154,14 @@ class HomeElecFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
             if (adapter == null) {
                 adapter = homeElecAdapter
                 homeElecAdapter.setOnItemClickListener { adapter, view, position ->
+                    //谷歌市场屏蔽点击
+                    if (SPUtil.getMarketSwitch())
+                        return@setOnItemClickListener
                     if (viewModel.isLogin.value != true) {
                         (activity as MainTabActivity).showLoginNotify()
                     } else {
-                        viewModel.requestEnterThirdGame(homeElecAdapter.data[position], this@HomeElecFragment)
+                        viewModel.requestEnterThirdGame(homeElecAdapter.data[position],
+                            this@HomeElecFragment)
                     }
                 }
             }

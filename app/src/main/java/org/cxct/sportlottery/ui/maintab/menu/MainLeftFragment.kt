@@ -130,6 +130,7 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 Constants.getAboutUsUrl(requireContext()),
                 getString(R.string.about_us))
         }
+        lin_term.setVisibilityByMarketSwitch()
         lin_term.setOnClickListener {
             JumpUtil.toInternalWeb(requireContext(),
                 Constants.getAgreementRuleUrl(requireContext()),
