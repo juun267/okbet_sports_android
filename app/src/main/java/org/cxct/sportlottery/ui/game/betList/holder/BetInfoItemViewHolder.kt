@@ -484,12 +484,14 @@ class BetInfoItemViewHolder(
             textView.text = it2
             val xOff: Int
             val yOff = (-50).dp
-            if (it == tvMatchAway){
+            if (it == tvMatchAway) {
                 xOff = (-20).dp
-                imageView.background = AppCompatResources.getDrawable(it.context,R.drawable.bg_popup_tips_right)
-            }else{
+                imageView.background =
+                    AppCompatResources.getDrawable(it.context, R.drawable.bg_popup_tips_right)
+            } else {
                 xOff = (-5).dp
-                imageView.background =AppCompatResources.getDrawable(it.context,R.drawable.bg_popup_tips_left)
+                imageView.background =
+                    AppCompatResources.getDrawable(it.context, R.drawable.bg_popup_tips_left)
             }
             pop.showAsDropDown(it, xOff, yOff)
         }
