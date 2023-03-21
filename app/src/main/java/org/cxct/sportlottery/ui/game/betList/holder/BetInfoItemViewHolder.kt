@@ -448,7 +448,77 @@ class BetInfoItemViewHolder(
         tvOddsContent.setOUStyle(false)
         tvContent.setOUStyle(false)
 //            }
+        //玩法名稱 目前詳細玩法裡面是沒有給betPlayCateNameMap，所以顯示邏輯沿用舊版
+        val nameOneLine = { inputStr: String ->
+            inputStr.replace("\n", "-")
+        }
 
+        val inPlay = System.currentTimeMillis() > (itemData.matchOdd.startTime ?: 0)
+
+        if (inPlay) {
+            tvMatchType.visible()
+            tvMatchType.text = LocalUtils.getString(R.string.home_tab_in_play) //滚球
+            tvMatchType.background =
+                AppCompatResources.getDrawable(root.context, R.drawable.bg_match_type_red_circle)
+        } else {
+            tvMatchType.visible()
+            tvMatchType.text = LocalUtils.getString(R.string.home_tab_early) //早盘
+            tvMatchType.background =
+                AppCompatResources.getDrawable(root.context, R.drawable.bg_match_type_green_circle)
+        }
+
+        if (itemData.matchType == MatchType.OUTRIGHT) {
+            tvMatchType.gone()
+        }
+//        tv_match_type.tranByPlayCode(playCode, playCateCode, playCateName, rtScore)
+        Timber.d("itemData:${itemData.matchOdd}")
+        Timber.d("itemData:${false}")
+        val tvNameText: String
+        when {
+            itemData.betPlayCateNameMap.isNullOrEmpty() -> {
+                tvNameText = when (inPlay && itemData.matchType != MatchType.OUTRIGHT) {
+                    true -> {
+                        root.context.getString(
+                            R.string.bet_info_in_play_score,
+                            itemData.matchOdd.playCateName,
+                            itemData.matchOdd.homeScore.toString(),
+                            itemData.matchOdd.awayScore.toString()
+                        )
+                    }
+
+                    else -> {
+                        if (itemData.matchOdd.playCateName.isEmpty()) {
+                            tvName.gone()
+                        } else {
+                            tvName.visible()
+                        }
+                        itemData.matchOdd.playCateName
+                    }
+                }
+                tvName.text = tvNameText
+            }
+
+            else -> {
+                val playCateName = itemData.betPlayCateNameMap?.getNameMap(
+                    itemData.matchOdd.gameType, itemData.matchOdd.playCode
+                )?.get(LanguageManager.getSelectLanguage(root.context).key) ?: ""
+                tvNameText = when (inPlay && itemData.matchType != MatchType.OUTRIGHT) {
+                    true -> {
+                        root.context.getString(
+                            R.string.bet_info_in_play_score,
+                            playCateName,
+                            itemData.matchOdd.homeScore.toString(),
+                            itemData.matchOdd.awayScore.toString()
+                        )
+                    }
+
+                    else -> {
+                        nameOneLine(playCateName)
+                    }
+                }
+                tvName.text = tvNameText
+            }
+        }
         //設定隊伍名稱, 聯賽名稱, 開賽時間
         when (itemData.matchType) {
             MatchType.OUTRIGHT -> {
@@ -496,8 +566,11 @@ class BetInfoItemViewHolder(
             pop.showAsDropDown(it, xOff, yOff)
         }
 
-        setOnClickListener(tvLeagueName, tvMatchHome, tvMatchAway) {
+        setOnClickListener(tvName, tvLeagueName, tvMatchHome, tvMatchAway) {
             when (it) {
+                tvName -> {
+                    showPopAsTop(tvName, tvNameText)
+                }
                 tvLeagueName -> {
                     showPopAsTop(tvLeagueName, itemData.matchOdd.leagueName)
                 }
@@ -511,79 +584,13 @@ class BetInfoItemViewHolder(
         }
 
         pop.setOnDismissListener {
+            tvName.setTextColor(tvName.context.getColor(R.color.color_9BB3D9_535D76))
             tvLeagueName.setTextColor(tvLeagueName.context.getColor(R.color.color_9BB3D9_535D76))
             tvMatchHome.setTextColor(tvLeagueName.context.getColor(R.color.color_A7B2C4))
             tvMatchAway.setTextColor(tvLeagueName.context.getColor(R.color.color_A7B2C4))
         }
 
-        //玩法名稱 目前詳細玩法裡面是沒有給betPlayCateNameMap，所以顯示邏輯沿用舊版
-        val nameOneLine = { inputStr: String ->
-            inputStr.replace("\n", "-")
-        }
 
-        val inPlay = System.currentTimeMillis() > (itemData.matchOdd.startTime ?: 0)
-
-        if (inPlay) {
-            tvMatchType.visible()
-            tvMatchType.text = LocalUtils.getString(R.string.home_tab_in_play) //滚球
-            tvMatchType.background =
-                AppCompatResources.getDrawable(root.context, R.drawable.bg_match_type_red_circle)
-        } else {
-            tvMatchType.visible()
-            tvMatchType.text = LocalUtils.getString(R.string.home_tab_early) //早盘
-            tvMatchType.background =
-                AppCompatResources.getDrawable(root.context, R.drawable.bg_match_type_green_circle)
-        }
-
-        if (itemData.matchType == MatchType.OUTRIGHT) {
-            tvMatchType.gone()
-        }
-//        tv_match_type.tranByPlayCode(playCode, playCateCode, playCateName, rtScore)
-        Timber.d("itemData:${itemData.matchOdd}")
-        Timber.d("itemData:${false}")
-        when {
-            itemData.betPlayCateNameMap.isNullOrEmpty() -> {
-                tvName.text = when (inPlay && itemData.matchType != MatchType.OUTRIGHT) {
-                    true -> {
-                        root.context.getString(
-                            R.string.bet_info_in_play_score,
-                            itemData.matchOdd.playCateName,
-                            itemData.matchOdd.homeScore.toString(),
-                            itemData.matchOdd.awayScore.toString()
-                        )
-                    }
-
-                    else -> {
-                        if (itemData.matchOdd.playCateName.isEmpty()) {
-                            tvName.gone()
-                        } else {
-                            tvName.visible()
-                        }
-                        itemData.matchOdd.playCateName
-                    }
-                }
-            }
-
-            else -> {
-                val playCateName = itemData.betPlayCateNameMap?.getNameMap(
-                    itemData.matchOdd.gameType, itemData.matchOdd.playCode
-                )?.get(LanguageManager.getSelectLanguage(root.context).key) ?: ""
-                tvName.text = when (inPlay && itemData.matchType != MatchType.OUTRIGHT) {
-                    true -> {
-                        root.context.getString(
-                            R.string.bet_info_in_play_score,
-                            playCateName,
-                            itemData.matchOdd.homeScore.toString(),
-                            itemData.matchOdd.awayScore.toString()
-                        )
-                    }
-
-                    else -> {
-                        nameOneLine(playCateName)
-                    }
-                }
-            }
-        }
         //加上OddsType名稱,如果是串关显示欧盘
 //        val tvNamePlusOddsTypeName =
 //            "${tvName.text} [${root.context.getString(if (adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE) currentOddsType.res else OddsType.EU.res)}]"
