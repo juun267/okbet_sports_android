@@ -437,5 +437,6 @@ object LoginRepository {
             userRebateList = loginData.userRebateList,
             discount = loginData.discount,
             verified = loginData.verified,
+            vipType = loginData.vipType,
         )
 }

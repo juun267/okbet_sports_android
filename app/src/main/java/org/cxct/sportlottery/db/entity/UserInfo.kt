@@ -94,4 +94,8 @@ data class UserInfo(
     var googleBind: Boolean = false,
 
     var passwordSet: Boolean = true,//true 密码为空
-)
+
+    //0是普通用户，1是Glife用户
+    var vipType: Int?,
+
+    )

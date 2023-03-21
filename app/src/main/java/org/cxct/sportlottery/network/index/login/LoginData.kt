@@ -57,4 +57,6 @@ data class LoginData(
     var liveSyncUserInfoVO: LiveSyncUserInfoVO?,
     @Json(name = "ifnew")
     var ifnew: Boolean?,
+    @Json(name = "vipType")
+    var vipType: Int?, //0是普通用户，1是Glife用户
 ) : java.io.Serializable

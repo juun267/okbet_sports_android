@@ -1255,4 +1255,6 @@
     <string name="N653">Chờ chuyển tiền</string>
     <string name="J630">Số đơn hàng</string>
     <string name="N618">Mã giao dịch phụ</string>
+    <string name="N643">Mời vào app Glife nạp tiền</string>
+    <string name="N644">Mời vào app Glife rút tiền</string>
 </resources>
