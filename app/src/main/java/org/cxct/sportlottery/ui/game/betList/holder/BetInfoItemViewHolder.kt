@@ -12,11 +12,13 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.text.style.TypefaceSpan
 import android.util.TypedValue
+import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
@@ -27,6 +29,8 @@ import org.cxct.sportlottery.databinding.ContentBetInfoItemV32Binding
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.extentions.gone
+import org.cxct.sportlottery.extentions.setViewGone
+import org.cxct.sportlottery.extentions.setViewVisible
 import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
@@ -39,6 +43,7 @@ import org.cxct.sportlottery.ui.game.betList.listener.OnSelectedPositionListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BetPlayCateFunction.getNameMap
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import timber.log.Timber
 
 class BetInfoItemViewHolder(
@@ -450,22 +455,49 @@ class BetInfoItemViewHolder(
         //設定隊伍名稱, 聯賽名稱, 開賽時間
         when (itemData.matchType) {
             MatchType.OUTRIGHT -> {
-                tvMatch.text = itemData.outrightMatchInfo?.name
-                tvLeagueName.isVisible = false
+//                tvMatch.text = itemData.outrightMatchInfo?.name
+                tvMatchHome.text = itemData.outrightMatchInfo?.name
+                tvMatchHome.maxWidth = 330.dp
+                setViewGone(tvVs, tvMatchAway, tvLeagueName)
 //                tvStartTime.isVisible = false
             }
 
             else -> {
-                val matchName =
-                    "${itemData.matchOdd.homeName}${root.context.getString(R.string.verse_3)}${itemData.matchOdd.awayName}"
-                tvMatch.text = matchName
+                tvMatchHome.text = itemData.matchOdd.homeName
+                tvMatchHome.maxWidth = 160.dp
+                tvMatchAway.text = itemData.matchOdd.awayName
+                setViewVisible(tvVs, tvMatchAway, tvLeagueName)
                 tvLeagueName.text = itemData.matchOdd.leagueName
-                tvLeagueName.isVisible = true
-                itemData.matchOdd.startTime?.let {
-//                    tvStartTime.text = TimeUtil.stampToDateHMS(it)
-//                    tvStartTime.isVisible = false
-                }
             }
+        }
+        val view = View.inflate(tvMatchHome.context, R.layout.popupwindow_tips, null)
+        val pop = PopupWindow(tvMatchHome.context).apply {
+            contentView = view
+            setBackgroundDrawable(null)
+            isOutsideTouchable = true
+        }
+        val textView = view.findViewById<TextView>(R.id.tvContent)
+        val showPopAsTop: (TextView, String?) -> Unit = { it, it2 ->
+            if (pop.isShowing) {
+                pop.dismiss()
+            }
+            it.setTextColor(it.context.getColor(R.color.color_025BE8))
+            textView.text = it2
+            pop.showAsDropDown(it, (-5).dp, (-50).dp)
+        }
+        tvLeagueName.setOnClickListener {
+            showPopAsTop(tvLeagueName, itemData.matchOdd.leagueName)
+        }
+        tvMatchHome.setOnClickListener {
+            showPopAsTop(tvMatchHome, itemData.matchOdd.homeName)
+        }
+        tvMatchAway.setOnClickListener {
+            showPopAsTop(tvMatchAway, itemData.matchOdd.awayName)
+        }
+        pop.setOnDismissListener {
+            tvLeagueName.setTextColor(tvLeagueName.context.getColor(R.color.color_9BB3D9_535D76))
+            tvMatchHome.setTextColor(tvLeagueName.context.getColor(R.color.color_A7B2C4))
+            tvMatchAway.setTextColor(tvLeagueName.context.getColor(R.color.color_A7B2C4))
         }
 
         //玩法名稱 目前詳細玩法裡面是沒有給betPlayCateNameMap，所以顯示邏輯沿用舊版

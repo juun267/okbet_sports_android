@@ -17,10 +17,24 @@
         android:layout_height="0.5dp"
         android:background="@color/color_E3E8EE" />
 
-    <include
-        layout="@layout/view_game_tab_match_type_v4"
+    <com.google.android.material.tabs.TabLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/tabLayout"
         android:layout_width="match_parent"
-        android:layout_height="40dp" />
+        android:layout_height="40dp"
+        android:clipToPadding="false"
+        android:paddingHorizontal="9dp"
+        android:background="@color/color_FFFFFF"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabGravity="fill"
+        app:tabIndicator="@drawable/bg_matchtype_indicator"
+        app:tabIndicatorFullWidth="false"
+        app:tabMinWidth="52dp"
+        app:tabMode="scrollable"
+        app:tabPaddingEnd="9dp"
+        app:tabPaddingStart="9dp"
+        app:tabRippleColor="@null"
+        tools:layout="@layout/home_cate_tab"/>
 
     <View
         android:id="@+id/vDivider2"

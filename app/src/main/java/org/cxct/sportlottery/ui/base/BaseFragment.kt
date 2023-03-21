@@ -25,6 +25,7 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
     val viewModel: T by sharedViewModel(clazz = clazz)
     var mIsEnabled = true //避免快速連點，所有的 item 一次只能點擊一個
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -244,5 +245,4 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
         mIsEnabled = false
         Handler().postDelayed({ mIsEnabled = true }, 300)
     }
-
 }

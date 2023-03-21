@@ -1,15 +1,17 @@
 package org.cxct.sportlottery.network.odds.list
 
 
+import com.chad.library.adapter.base.entity.node.BaseNode
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
+import com.squareup.moshi.JsonClass
+import kotlinx.android.parcel.IgnoredOnParcel
+import org.cxct.sportlottery.proguard.KeepMembers
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsOdd
 import org.cxct.sportlottery.network.outright.odds.DynamicMarket
-import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.util.sortOddsMap
 
 @JsonClass(generateAdapter = true) @KeepMembers
@@ -32,20 +34,16 @@ data class MatchOdd(
     override var quickPlayCateList: MutableList<QuickPlayCate>? = null,
     @Json(name = "oddsSort")
     override var oddsSort: String? = null
-) : MatchOdd {
+) : MatchOdd, BaseNode() {
+
+    override val childNode: MutableList<BaseNode> = mutableListOf()
 
     override val oddsEps: EpsOdd? = null
-    var rvScrollPos: Int? = null
-
-    @Deprecated("之後翻譯都要改用playCateNameMap，下注顯示用betPlayCateNameMap")
-    override var playCateMappingList: List<PlayCateMapItem>? = null
 
     var isExpand = false
     var leagueTime: Int? = null
     var leagueName: String = ""
     var stopped: Int? = 0
-
-    var positionButtonPage = 0
 
     var quickPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null //足球快捷玩法的翻譯
 
@@ -53,9 +51,11 @@ data class MatchOdd(
         this.oddsMap?.sortOddsMap()
     }
 
-    var runningTime: String = ""
-
     var csTabSelected: PlayCate = PlayCate.CS
+
+    @Transient
+    @IgnoredOnParcel
+    var oddIdsMap: MutableMap<String, MutableMap<String, Odd>> = mutableMapOf()  //用于本地计算
 }
 
 enum class TimeCounting(val value: Int) {

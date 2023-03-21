@@ -11,7 +11,6 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsOdd
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
-import org.cxct.sportlottery.ui.common.PlayCateMapItem
 
 @JsonClass(generateAdapter = true) @KeepMembers
 data class Recommend(
@@ -68,7 +67,6 @@ data class Recommend(
     override var oddsSort: String? = null
     override var quickPlayCateList: MutableList<QuickPlayCate>? = null
     override val oddsEps: EpsOdd? = null
-    override var playCateMappingList: List<PlayCateMapItem>? = null
 
     var unfold: Int = FoldState.UNFOLD.code
 

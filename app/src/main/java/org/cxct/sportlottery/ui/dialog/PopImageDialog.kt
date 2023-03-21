@@ -5,7 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.dialog_pop_thirdgame.*
+import androidx.annotation.DrawableRes
+import kotlinx.android.synthetic.main.dialog_pop_image.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
@@ -13,7 +14,8 @@ import org.cxct.sportlottery.ui.base.BaseViewModel
 /**
  * 顯示棋牌彈窗
  */
-class ThirdGameDialog : BaseDialog<BaseViewModel>(BaseViewModel::class) {
+class PopImageDialog(@DrawableRes val drawableResId: Int) :
+    BaseDialog<BaseViewModel>(BaseViewModel::class) {
 
     init {
         setStyle(R.style.FullScreen)
@@ -31,7 +33,7 @@ class ThirdGameDialog : BaseDialog<BaseViewModel>(BaseViewModel::class) {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        return inflater.inflate(R.layout.dialog_pop_thirdgame, container, false)
+        return inflater.inflate(R.layout.dialog_pop_image, container, false)
 
     }
 
@@ -54,6 +56,7 @@ class ThirdGameDialog : BaseDialog<BaseViewModel>(BaseViewModel::class) {
     }
 
     private fun initImage() {
+        image.setImageResource(drawableResId)
         image.setOnClickListener {
             dismiss()
             onClick?.invoke()

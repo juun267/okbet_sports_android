@@ -2,14 +2,12 @@ package org.cxct.sportlottery.ui.splash
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.gyf.immersionbar.ImmersionBar
 import com.tencent.mmkv.MMKV
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.ActivitySplashBinding
 import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
@@ -43,7 +41,6 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         //checkPermissionGranted()
         initObserve()
 
-        Log.e("For Test", "========>>> ActivitySplashBinding ${ActivitySplashBinding.inflate(layoutInflater).javaClass.name}")
         //流程: 檢查/獲取 host -> 獲取 config -> 檢查維護狀態 -> 檢查版本更新 -> 跳轉畫面
         checkLocalHost()
     }

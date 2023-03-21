@@ -9,6 +9,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.extentions.rotationAnimation
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
+import org.cxct.sportlottery.util.setLeagueLogo
 
 // 冠军列表-联赛名称
 class OutrightFirstProvider(val adapter: SportOutrightAdapter2,
@@ -20,6 +21,7 @@ class OutrightFirstProvider(val adapter: SportOutrightAdapter2,
     override fun convert(helper: BaseViewHolder, item: BaseNode)  {
         val matchOdd = item as MatchOdd
         helper.setText(R.id.tv_league_name, matchOdd.matchInfo?.name)
+        helper.getView<ImageView>(R.id.iv_league_logo).setLeagueLogo(matchOdd.matchInfo?.categoryIcon)
         val ivArrow = helper.getView<ImageView>(R.id.iv_league_arrow)
         setArrowSpin(ivArrow, matchOdd, false)
         ivArrow.setOnClickListener {
