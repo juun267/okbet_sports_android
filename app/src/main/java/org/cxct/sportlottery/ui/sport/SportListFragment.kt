@@ -74,7 +74,8 @@ class SportListFragment :
     private val gameTypeAdapter by lazy {
         GameTypeAdapter().apply {
             gameTypeListener = GameTypeListener {
-
+//                val time1 = System.currentTimeMillis()
+//                Timber.d("当前时间")
                 if (!it.isSelected) {
                     //切換球種，清除日期記憶
                     viewModel.tempDatePosition = 0
@@ -98,6 +99,8 @@ class SportListFragment :
                 viewModel.switchGameType(matchType, it)
                 iv_arrow.isSelected = true
                 lin_filter.isVisible = gameType != GameType.ALL.key
+//                val time2 = System.currentTimeMillis()
+//                Timber.d("时间差:${time2 - time1}")
             }
 
             thirdGameListener = ThirdGameListener {

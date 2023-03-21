@@ -752,7 +752,7 @@
     <string name="commission_amount_of_coding_completed">已完成打码量</string>
     <string name="commission_check_type">检查</string>
     <string name="commission_not_completed">未完成</string>
-    <string name="commission_total_deducted_amount">加总扣除金额 :</string>
+    <string name="commission_total_deducted_amount">总扣除金额 :</string>
     <string name="log_detail_commission">扣除金额：</string>
     <string name="commission_deducted_amount_detail">扣除金额明细</string>
     <string name="commission_detail_title">详细说明</string>
@@ -1004,8 +1004,9 @@
     <!--region 20220714 新版投注單-->
     <string name="bet_win">可赢</string>
     <string name="bet_stake">投注</string>
-    <string name="total_capital">本金：%s</string>
+    <string name="total_capital">总投注：%s</string>
     <string name="total_win_amount">可赢：</string>
+    <string name="total_all_win_amount">总可赢：</string>
     <string name="delete_bet">删除</string>
     <string name="delete_bet_all">全部删除</string>
     <string name="btn_login_bet">登录后可投注</string>
@@ -1041,7 +1042,7 @@
     <string name="kyc_contact_service_hilight">在线客服</string>
     <string name="kyc_verify_first">请先进行实名验证。</string>
     <string name="kyc_go_verify">立即前往认证</string>
-    <string name="kyc_you_wait">请点击"在线客服"按钮, 进行视频通话完成实名认证。</string>
+    <string name="kyc_you_wait">请点击\"在线客服\"按钮, 进行视频通话完成实名认证。</string>
     <string name="kyc_verify_successful">您已完成实名验证！</string>
     <string name="kyc_unverified">未验证</string>
     <string name="kyc_unverifing">验证中</string>
