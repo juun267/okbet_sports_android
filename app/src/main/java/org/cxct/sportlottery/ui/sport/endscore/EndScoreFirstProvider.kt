@@ -18,15 +18,8 @@ class EndScoreFirstProvider(val adapter: EndScoreAdapter,
     override fun convert(helper: BaseViewHolder, item: BaseNode)  {
         val league = item as LeagueOdd
         helper.setText(R.id.tv_league_name, league.league?.name)
-        val ivArrow = helper.getView<ImageView>(R.id.iv_league_arrow)
         helper.getView<ImageView>(R.id.iv_league_logo).setLeagueLogo(league.league?.categoryIcon)
-        setArrowSpin(ivArrow, league, false)
-        ivArrow.setOnClickListener {
-            val position = adapter.getItemPosition(item)
-            adapter.expandOrCollapse(item)
-            setArrowSpin(ivArrow, league, true)
-            onItemClick.invoke(position, it, league)
-        }
+        setArrowSpin(helper.getView(R.id.iv_league_arrow), league, false)
     }
 
     private fun setArrowSpin(ivArrow: ImageView, data: LeagueOdd, isAnimate: Boolean) {
@@ -41,6 +34,14 @@ class EndScoreFirstProvider(val adapter: EndScoreAdapter,
         } else {
             ivArrow.rotation = rotation
         }
+    }
+
+    override fun onClick(helper: BaseViewHolder, view: View, item: BaseNode, position: Int) {
+        val position = adapter.getItemPosition(item)
+        adapter.expandOrCollapse(item)
+        val league = item as LeagueOdd
+        setArrowSpin(helper.getView(R.id.iv_league_arrow), league, true)
+        onItemClick.invoke(position, view, league)
     }
 
 }
