@@ -312,4 +312,19 @@
         <attr name="civ_border_overlay" format="boolean" />
         <attr name="civ_fill_color" format="color" />
     </declare-styleable>
+
+    <attr name="progressColor" format="color" />
+    <attr name="progressBackColor" format="color" />
+    <attr name="progress" format="integer" />
+    <attr name="minProgress" format="integer" />
+    <attr name="maxProgress" format="integer" />
+    <declare-styleable name="CircleProgressBar">
+        <attr name="progress" />
+        <attr name="minProgress" />
+        <attr name="maxProgress" />
+        <attr name="progressColor" />
+        <attr name="progressBackColor" />
+        <attr name="progressWidth" format="dimension" />
+    </declare-styleable>
+
 </resources>
