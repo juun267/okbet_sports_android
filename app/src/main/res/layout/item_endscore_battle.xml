@@ -111,6 +111,7 @@
         android:background="@color/color_261B3A98"/>
 
     <LinearLayout
+        android:id="@+id/llMatchInfo"
         android:layout_width="match_parent"
         android:layout_height="36dp"
         android:orientation="horizontal">

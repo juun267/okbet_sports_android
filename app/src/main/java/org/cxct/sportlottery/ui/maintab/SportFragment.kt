@@ -103,9 +103,9 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         OverScrollDecoratorHelper.setUpOverScroll(tabLayout)
     }
 
-    private fun refreshTabLayout(sportMenuResult: SportMenuResult?) {
+    private fun refreshTabLayout(sportMenuResult: SportMenuResult) {
 
-        val sportMenuData = sportMenuResult?.sportMenuData
+        val sportMenuData = sportMenuResult.sportMenuData
         val countInPlay = sportMenuData?.menu?.inPlay?.items?.sumOf { it.num } ?: 0
         val countAtStart = sportMenuData?.atStart?.items?.sumOf { it.num } ?: 0
         val countToday = sportMenuData?.menu?.today?.items?.sumOf { it.num } ?: 0
