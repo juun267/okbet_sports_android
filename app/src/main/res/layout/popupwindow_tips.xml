@@ -11,9 +11,10 @@
         android:layout_height="match_parent">
 
         <ImageView
+            android:id="@+id/ivPopupWindowTipsBg"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@drawable/bg_popup_tips"
+            android:background="@drawable/bg_popup_tips_left"
             app:layout_constraintBottom_toBottomOf="@+id/tvContent"
             app:layout_constraintEnd_toEndOf="@+id/tvContent"
             app:layout_constraintHorizontal_bias="0.0"

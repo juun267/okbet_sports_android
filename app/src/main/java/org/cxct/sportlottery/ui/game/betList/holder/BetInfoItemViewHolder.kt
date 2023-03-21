@@ -28,10 +28,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ContentBetInfoItemV32Binding
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
-import org.cxct.sportlottery.extentions.gone
-import org.cxct.sportlottery.extentions.setViewGone
-import org.cxct.sportlottery.extentions.setViewVisible
-import org.cxct.sportlottery.extentions.visible
+import org.cxct.sportlottery.extentions.*
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.LoginRepository
@@ -477,23 +474,40 @@ class BetInfoItemViewHolder(
             isOutsideTouchable = true
         }
         val textView = view.findViewById<TextView>(R.id.tvContent)
+        val imageView = view.findViewById<ImageView>(R.id.ivPopupWindowTipsBg)
         val showPopAsTop: (TextView, String?) -> Unit = { it, it2 ->
             if (pop.isShowing) {
                 pop.dismiss()
             }
+
             it.setTextColor(it.context.getColor(R.color.color_025BE8))
             textView.text = it2
-            pop.showAsDropDown(it, (-5).dp, (-50).dp)
+            val xOff: Int
+            val yOff = (-50).dp
+            if (it == tvMatchAway){
+                xOff = (-20).dp
+                imageView.background = AppCompatResources.getDrawable(it.context,R.drawable.bg_popup_tips_right)
+            }else{
+                xOff = (-5).dp
+                imageView.background =AppCompatResources.getDrawable(it.context,R.drawable.bg_popup_tips_left)
+            }
+            pop.showAsDropDown(it, xOff, yOff)
         }
-        tvLeagueName.setOnClickListener {
-            showPopAsTop(tvLeagueName, itemData.matchOdd.leagueName)
+
+        setOnClickListener(tvLeagueName, tvMatchHome, tvMatchAway) {
+            when (it) {
+                tvLeagueName -> {
+                    showPopAsTop(tvLeagueName, itemData.matchOdd.leagueName)
+                }
+                tvMatchHome -> {
+                    showPopAsTop(tvMatchHome, itemData.matchOdd.homeName)
+                }
+                tvMatchAway -> {
+                    showPopAsTop(tvMatchAway, itemData.matchOdd.awayName)
+                }
+            }
         }
-        tvMatchHome.setOnClickListener {
-            showPopAsTop(tvMatchHome, itemData.matchOdd.homeName)
-        }
-        tvMatchAway.setOnClickListener {
-            showPopAsTop(tvMatchAway, itemData.matchOdd.awayName)
-        }
+
         pop.setOnDismissListener {
             tvLeagueName.setTextColor(tvLeagueName.context.getColor(R.color.color_9BB3D9_535D76))
             tvMatchHome.setTextColor(tvLeagueName.context.getColor(R.color.color_A7B2C4))
