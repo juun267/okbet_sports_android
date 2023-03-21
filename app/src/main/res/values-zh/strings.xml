@@ -1283,4 +1283,8 @@
     <string name="N643">请前往Glife小程序进行充值</string>
     <string name="N644">请前往Glife小程序进行提款</string>
 
+    <string name="J801">独赢&amp;大</string>
+    <string name="J802">独赢&amp;小</string>
+    <string name="J803">独赢&amp;双方球队进球-是</string>
+    <string name="J804">独赢&amp;双方球队进球-否</string>
 </resources>

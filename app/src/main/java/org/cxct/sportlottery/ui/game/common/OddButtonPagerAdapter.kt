@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
@@ -22,6 +23,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.sport.SportLeagueAdapter
 import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.TextUtil
 
 
@@ -414,29 +416,27 @@ class OddButtonPagerAdapter(
 
         this?.let { translationMap.putAll(it) }
 
-        val ou_o_Map: Map<String?, String?> =
-            mapOf("zh" to "独赢&大", "en" to "1 X 2 & Goals Over", "vi" to "1 X 2 & Trên")
+        val ou_o_Map: MutableMap<String?, String?> =
+            mutableMapOf()
 
-        val ou_u_Map: Map<String?, String?> =
-            mapOf("zh" to "独赢&小", "en" to "1 X 2 & Goals Under", "vi" to "1 X 2 & Dưới")
+        val ou_u_Map: MutableMap<String?, String?> =
+            mutableMapOf()
 
-        val bts_y_Map: Map<String?, String?> = mapOf(
-            "zh" to "独赢&双方球队进球-是",
-            "en" to "1 X 2 & Both to Score Y",
-            "vi" to "1 X 2 & Hai Đội Ghi Bàn - Có"
-        )
+        val bts_y_Map: MutableMap<String?, String?> = mutableMapOf()
 
-        val bts_n_Map: Map<String?, String?> = mapOf(
-            "zh" to "独赢&双方球队进球-否",
-            "en" to "1 X 2 & Both to Score N",
-            "vi" to "1 X 2 & Hai Đội Ghi Bàn - Không"
-        )
-
+        val bts_n_Map: MutableMap<String?, String?> = mutableMapOf()
+        translationMap.apply {
+            for (language in LanguageManager.Language.values()) {
+                ou_o_Map[language.key] = LocalUtils.getString(R.string.J801)
+                ou_u_Map[language.key] = LocalUtils.getString(R.string.J802)
+                bts_y_Map[language.key] = LocalUtils.getString(R.string.J803)
+                bts_n_Map[language.key] = LocalUtils.getString(R.string.J804)
+            }
+        }
         translationMap[PlayCate.SINGLE_OU_O.value] = ou_o_Map
         translationMap[PlayCate.SINGLE_OU_U.value] = ou_u_Map
         translationMap[PlayCate.SINGLE_BTS_Y.value] = bts_y_Map
         translationMap[PlayCate.SINGLE_BTS_N.value] = bts_n_Map
-
         return translationMap
     }
 
