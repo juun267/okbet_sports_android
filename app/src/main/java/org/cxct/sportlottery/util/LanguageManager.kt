@@ -3,7 +3,6 @@ package org.cxct.sportlottery.util
 import android.app.Activity
 import android.app.Application
 import android.content.Context
-import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Build
@@ -17,7 +16,9 @@ import java.util.*
 
 object LanguageManager {
 
-    enum class Language(val key: String) { ZH("zh"), ZHT("zht"), EN("en"), VI("vi"), TH("th"), PHI("phi") }
+    enum class Language(val key: String) {
+        ZH("zh"), ZHT("zht"), EN("en"), VI("vi"), TH("th"), PHI("ph")
+    }
 
     /**
      * 获取系统的locale
@@ -50,6 +51,7 @@ object LanguageManager {
                     local.language == Locale("phi").language -> Language.PHI
                     (local.language == Locale.SIMPLIFIED_CHINESE.language && local.country == Locale.SIMPLIFIED_CHINESE.country)
                             || local.language == Locale.TRADITIONAL_CHINESE.language -> Language.ZH
+
                     else -> Language.values().find { it.key == BuildConfig.DEFAULT_LANGUAGE }
                         ?: Language.EN
                 }
@@ -59,9 +61,10 @@ object LanguageManager {
     }
 
     fun init(application: Application) {
-        application.registerActivityLifecycleCallbacks(object : Application.ActivityLifecycleCallbacks {
+        application.registerActivityLifecycleCallbacks(object :
+            Application.ActivityLifecycleCallbacks {
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-                if (activity is PictureSelectorActivity){
+                if (activity is PictureSelectorActivity) {
                     val resources: Resources = activity.resources
                     val config = resources.configuration
                     val locale = config.locale
@@ -162,6 +165,9 @@ object LanguageManager {
             Language.VI -> Locale("vi")
             Language.TH -> Locale("th")
             Language.PHI -> Locale("phi")
+            else -> {
+                Locale("en")
+            }
         }
     }
 
@@ -218,51 +224,5 @@ object LanguageManager {
         }
         resources.updateConfiguration(config, dm)
     }
-
 }
 
-private object SPUtil {
-    private const val SP_NAME = "language_setting"
-    private const val TAG_LANGUAGE = "language_select"
-
-    //上架市场，隐藏功能的开关
-    const val MARKET_SWITCH = "market_switch"
-    private var mSharedPreferences: SharedPreferences? = null
-    var systemCurrentLocal: Locale = Locale.ENGLISH
-
-    fun getInstance(context: Context?): SPUtil {
-        if (mSharedPreferences == null)
-            mSharedPreferences = context?.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
-        return this
-    }
-
-    fun saveLanguage(select: String?) {
-        mSharedPreferences?.edit()
-            ?.putString(TAG_LANGUAGE, select)
-            ?.apply()
-    }
-
-    fun getSelectLanguage(): String? {
-        return mSharedPreferences?.getString(TAG_LANGUAGE, null)
-    }
-
-    fun saveString(key: String, value: String?) {
-        mSharedPreferences?.edit()
-            ?.putString(key, value)
-            ?.apply()
-    }
-
-    fun getString(key: String, defaultValue: String? = null): String? {
-        return mSharedPreferences?.getString(key, defaultValue)
-    }
-
-    fun saveMarketSwitch(value: Boolean) {
-        mSharedPreferences?.edit()
-            ?.putBoolean(MARKET_SWITCH, value)
-            ?.apply()
-    }
-
-    fun getMarketSwitch(): Boolean {
-        return mSharedPreferences?.getBoolean(MARKET_SWITCH, false) == true
-    }
-}

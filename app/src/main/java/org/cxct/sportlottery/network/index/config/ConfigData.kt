@@ -127,6 +127,7 @@ data class ConfigData(
     val uwEnableTime: String?,//锁定额度限制解锁时间
     var minFrozeDay: Int = 0,//最小限制天数
     val enableEmailReg: String?, //是否开启邮箱注册
+    val frontEntranceStatus: String?,// 代码加盟入口状态(1：开启，0：关闭)
 ) {
     var enterCertified: Int? = -1 //ProfileCenterViewModel.SecurityEnter
     var hasGetTwoFactorResult: Boolean? = false //判斷是不是已經成功發送過簡訊認證碼 (關掉彈窗要重新設置為false)

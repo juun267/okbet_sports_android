@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.children
+import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.gyf.immersionbar.ImmersionBar
@@ -91,11 +92,13 @@ class ProfileCenterFragment :
         // btn_withdrawal_setting.setVisibilityByCreditSystem()
         //優惠活動
         btn_promotion.setVisibilityByCreditSystem()
+        //默认显示代理入口
+        btn_affiliate.isVisible = (sConfigData?.frontEntranceStatus != "0")
         //   btn_affiliate.setVisibilityByCreditSystem()
         mVersionUpdateViewModel.appVersionState.observe(viewLifecycleOwner) {
             if (it.isNewVersion) {
                 //下载更新要做判断 当前有没有新版本
-                update_version.setOnClickListener{
+                update_version.setOnClickListener {
                     //外部下載
                     JumpUtil.toExternalWeb(requireActivity(), sConfigData?.mobileAppDownUrl)
                     // startActivity(Intent(requireActivity(), VersionUpdateActivity::class.java))
