@@ -28,10 +28,20 @@ import java.lang.ref.WeakReference
 import java.util.*
 
 class RedEnvelopeReceiveDialog(
-    context: Context?,
-    var redenpId: Int?,
 ) : BaseDialog<RedEnveLopeModel>(RedEnveLopeModel::class) {
     private val mHandler = MyHandler(WeakReference(this))
+
+
+    private val redenpId by lazy {
+        arguments?.getInt("redenpID")
+    }
+
+    constructor(redenpId: Int?): this(){
+        Bundle().apply {
+            putInt("redenpId",redenpId?:0)
+        }
+    }
+
     var bitmap = listOf(
         BitmapFactory.decodeResource(context?.resources, R.drawable.ic_redpacket_coin),
         BitmapFactory.decodeResource(context?.resources, R.drawable.ic_redpacket_coin),
