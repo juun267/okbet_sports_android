@@ -1,19 +1,18 @@
 package org.cxct.sportlottery.network.odds.list
 
-
 import com.chad.library.adapter.base.entity.node.BaseExpandNode
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.IgnoredOnParcel
+import org.cxct.sportlottery.extentions.isEmptyStr
 import org.cxct.sportlottery.proguard.KeepMembers
 import org.cxct.sportlottery.network.common.FoldState
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.odds.League
-import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.outright.odds.CategoryOdds
 
-@JsonClass(generateAdapter = true) @KeepMembers
+@JsonClass(generateAdapter = true)
+@KeepMembers
 data class LeagueOdd(
     @Json(name = "league")
     val league: League,
@@ -30,14 +29,20 @@ data class LeagueOdd(
     var searchMatchOdds = listOf<MatchOdd>()
     var gameType: GameType? = null
 
-    override val childNode: MutableList<BaseNode>? = matchOdds as MutableList<BaseNode>?
+    @IgnoredOnParcel
+    private val _childNode by lazy {
+        matchOdds?.forEach {
+            it.matchInfo?.let { matchInfo ->
+                if (matchInfo.leagueName.isEmptyStr()) {
+                    matchInfo.leagueName = league.name
+                }
+            }
+        }
+        matchOdds as MutableList<BaseNode>?
+    }
 
     @Transient
     @IgnoredOnParcel
-    var oddIdsMap: MutableMap<String, MutableMap<String, Odd>> = mutableMapOf()  //用于本地计算
-
-    @Transient
-    @IgnoredOnParcel
-    var categoryOddsMap = mutableMapOf<String, CategoryOdds>()    //用于本地计算
+    override val childNode: MutableList<BaseNode>? = _childNode
 
 }
