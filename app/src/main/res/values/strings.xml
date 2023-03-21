@@ -1337,4 +1337,6 @@
     <string name="N647">Order amount</string>
     <string name="N653">Pending payment</string>
     <string name="J630">Order no.</string>
+    <string name="N643">Please go to Glife app to deposit</string>
+    <string name="N644">Please go to Glife app to withdraw</string>
 </resources>

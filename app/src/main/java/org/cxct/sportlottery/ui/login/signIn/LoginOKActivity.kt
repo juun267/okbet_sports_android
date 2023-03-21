@@ -290,6 +290,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             }
         }
         viewModel.checkUserExist.observe(this) {
+            LogUtil.d("checkUserExist=" + it)
             setupRecommendCodeVisible()
         }
         viewModel.accountMsg.observe(this) {

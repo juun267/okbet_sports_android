@@ -1280,4 +1280,6 @@
     <string name="N647">订单金额</string>
     <string name="N653">待出款</string>
     <string name="J630">订单号</string>
+    <string name="N643">请前往Glife小程序进行充值</string>
+    <string name="N644">请前往Glife小程序进行提款</string>
 </resources>
