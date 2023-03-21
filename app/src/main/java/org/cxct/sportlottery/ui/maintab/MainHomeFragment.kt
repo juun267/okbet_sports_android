@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -257,8 +258,9 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
                 MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
                 return@observe
             }
-
-            PopImageDialog(R.drawable.img_thirdgame).apply {
+            requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
+                putInt(PopImageDialog.DrawableResID, R.drawable.img_thirdgame)
+            }).apply {
                 onClick = {
                     getHomeFragment().onTabClickByPosition(
                         HomeTabAdapter.getItems().indexOfFirst { it.name == R.string.home_on_game }
@@ -268,6 +270,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
                     MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
                 }
             }.show(childFragmentManager, PopImageDialog::class.simpleName)
+
         }
 //
         //新版宣傳頁
