@@ -261,7 +261,7 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
             matchOdd = null,
             odd = odd,
             subscribeChannelType = ChannelType.HALL,
-            betPlayCateNameMap = null))
+            betPlayCateNameMap = matchOdd.betPlayCateNameMap))
     }
 
     private val subscribedMatchOdd = mutableMapOf<String, MatchOdd>()

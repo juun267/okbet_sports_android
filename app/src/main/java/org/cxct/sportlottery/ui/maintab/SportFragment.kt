@@ -41,9 +41,9 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
             MatchType.TODAY to 2,
             MatchType.EARLY to 3,
             MatchType.PARLAY to 4,
-            MatchType.CS to 5,
-            MatchType.OUTRIGHT to 6,
-            MatchType.END_SCORE to 7,
+            MatchType.END_SCORE to 5,
+            MatchType.CS to 6,
+            MatchType.OUTRIGHT to 7,
             MatchType.MAIN to 99
         )
 
@@ -120,9 +120,9 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         addTab(getString(R.string.home_tab_today), countToday, 2)
         addTab(getString(R.string.home_tab_early), countEarly, 3)
         addTab(getString(R.string.home_tab_parlay), countParlay, 4)
-        addTab(getString(R.string.home_tab_cs), countCS, 5)
-        addTab(getString(R.string.home_tab_outright), countOutright, 6)
-        addTab(getString(R.string.home_tab_end_score), countBkEnd, 7)
+        addTab(getString(R.string.home_tab_end_score), countBkEnd, 5)
+        addTab(getString(R.string.home_tab_cs), countCS, 6)
+        addTab(getString(R.string.home_tab_outright), countOutright, 7)
     }
 
     private fun addTab(name: String, num: Int, position: Int) {
