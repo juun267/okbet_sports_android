@@ -41,9 +41,6 @@ data class MatchOdd(
     override val oddsEps: EpsOdd? = null
 
     var isExpand = false
-    var leagueTime: Int? = null
-    var leagueName: String = ""
-    var stopped: Int? = 0
 
     var quickPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null //足球快捷玩法的翻譯
 
