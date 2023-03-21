@@ -41,7 +41,7 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.common.transform.TransformInDialog
-import org.cxct.sportlottery.ui.dialog.ThirdGameDialog
+import org.cxct.sportlottery.ui.dialog.PopImageDialog
 import org.cxct.sportlottery.ui.game.publicity.PublicityAnnouncementMarqueeAdapter
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.news.NewsActivity
@@ -253,12 +253,13 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
             }
 
             viewModel.getSportMenuFilter()
-            if (!ThirdGameDialog.firstShow) {
+            if (!PopImageDialog.firstShow) {
                 MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
                 return@observe
             }
-
-            ThirdGameDialog().apply {
+            requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
+                putInt(PopImageDialog.DrawableResID, R.drawable.img_thirdgame)
+            }).apply {
                 onClick = {
                     getHomeFragment().onTabClickByPosition(
                         HomeTabAdapter.getItems().indexOfFirst { it.name == R.string.home_on_game }
@@ -267,7 +268,8 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
                 onDismiss = {
                     MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
                 }
-            }.show(childFragmentManager, ThirdGameDialog::class.simpleName)
+            }.show(childFragmentManager, PopImageDialog::class.simpleName)
+
         }
 //
         //新版宣傳頁

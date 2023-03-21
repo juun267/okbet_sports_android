@@ -6,15 +6,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.distinctUntilChanged
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_sport.*
-import kotlinx.android.synthetic.main.fragment_sport.homeToolbar
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.extentions.fitsSystemStatus
-import org.cxct.sportlottery.extentions.gone
+import org.cxct.sportlottery.extentions.newInstanceFragment
 import org.cxct.sportlottery.extentions.startActivity
-import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.sport.SportMenuResult
@@ -303,5 +301,18 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
                 null
             }
         }
+    }
+
+    fun showBKEndDialog() {
+        requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
+            putInt(PopImageDialog.DrawableResID, R.drawable.img_bk_end)
+        }).apply {
+            onClick = {
+                this@SportFragment.viewModel.setCurMatchType(MatchType.END_SCORE)
+                navGameFragment(MatchType.END_SCORE)
+            }
+            onDismiss = {
+            }
+        }.show(childFragmentManager, PopImageDialog::class.simpleName)
     }
 }

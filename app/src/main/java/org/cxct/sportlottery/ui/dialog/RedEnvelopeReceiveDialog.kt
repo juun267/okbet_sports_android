@@ -100,8 +100,8 @@ class RedEnvelopeReceiveDialog(
     }
 
     fun closeDialog() {
-        successDialog?.dismiss()
-        failDialog?.dismiss()
+        successDialog?.dismissAllowingStateLoss()
+        failDialog?.dismissAllowingStateLoss()
     }
 
     private fun initObserve() {
@@ -129,8 +129,8 @@ class RedEnvelopeReceiveDialog(
 
         setContentView()
 
-        if (successDialog?.isVisible == true) successDialog?.dismiss()
-        if (failDialog?.isVisible == true) failDialog?.dismiss()
+        if (successDialog?.isVisible == true) successDialog?.dismissAllowingStateLoss()
+        if (failDialog?.isVisible == true) failDialog?.dismissAllowingStateLoss()
     }
 
     fun setCanceledOnTouchOutside(boolean: Boolean) {
