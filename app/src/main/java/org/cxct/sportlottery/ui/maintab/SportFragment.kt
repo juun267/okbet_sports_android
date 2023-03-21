@@ -2,13 +2,10 @@ package org.cxct.sportlottery.ui.maintab
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.distinctUntilChanged
-import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_sport.*
-import kotlinx.android.synthetic.main.fragment_sport.homeToolbar
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
@@ -20,6 +17,7 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.component.tablayout.TabSelectedAdapter
+import org.cxct.sportlottery.ui.dialog.PopImageDialog
 import org.cxct.sportlottery.ui.sport.SportListFragment
 import org.cxct.sportlottery.ui.sport.SportTabViewModel
 import org.cxct.sportlottery.ui.sport.endscore.EndScoreFragment
@@ -48,6 +46,9 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
             MatchType.END_SCORE to 7,
             MatchType.MAIN to 99
         )
+
+        //判断是否显示篮球末位比分弹窗
+        var showBKEndDialog = true
     }
 
     private var showFragment: Fragment? = null
@@ -62,6 +63,10 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         viewModel.getMatchData()
         viewModel.firstSwitchMatch(jumpMatchType ?: MatchType.IN_PLAY)
         navGameFragment(jumpMatchType ?: MatchType.IN_PLAY)
+        if (showBKEndDialog) {
+            showBKEndDialog = false
+            showBKEndDialog()
+        }
     }
 
     private inline fun getMainTabActivity() = activity as MainTabActivity
@@ -258,5 +263,16 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
                 null
             }
         }
+    }
+
+    fun showBKEndDialog() {
+        PopImageDialog(R.drawable.img_bk_end).apply {
+            onClick = {
+                this@SportFragment.viewModel.setCurMatchType(MatchType.END_SCORE)
+                navGameFragment(MatchType.END_SCORE)
+            }
+            onDismiss = {
+            }
+        }.show(childFragmentManager, PopImageDialog::class.simpleName)
     }
 }
