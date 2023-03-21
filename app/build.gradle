@@ -194,7 +194,7 @@ android {
     //rename release .apk file
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
-            def date = new SimpleDateFormat("yyyyMMdd").format(new Date())
+            def date = new SimpleDateFormat("yyyyMMddHHmm").format(new Date())
             outputFileName = variant.flavorName + '_' + getVersionName() + '_' + date + '.apk'
         }
     }
