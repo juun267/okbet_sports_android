@@ -11,6 +11,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_bet_receipt.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.FragmentBetReceiptBinding
 import org.cxct.sportlottery.extentions.gone
 import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
@@ -46,12 +47,15 @@ class BetReceiptFragment :
             }
     }
 
+    val binding: FragmentBetReceiptBinding by lazy {
+        FragmentBetReceiptBinding.inflate(layoutInflater)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_bet_receipt, container, false).apply {
-            initData()
-        }
+    ): View {
+        initData()
+        return binding.root
     }
 
     private fun initData() {
@@ -230,7 +234,7 @@ class BetReceiptFragment :
 
     private fun initRecyclerView() {
         rv_bet_receipt.apply {
-            val layoutMana  = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            val layoutMana = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             layoutManager = layoutMana
             layoutMana.stackFromEnd = true
             LogUtil.toJson(betResultData?.singleBets)
@@ -317,8 +321,9 @@ class BetReceiptFragment :
 //        Timber.d("投注成功或失败: ${betFailed.first}")
 
         Timber.d("滑动位置:${betReceiptDiffAdapter?.items?.size?.minus(1) ?: 0}")
-        rv_bet_receipt.postDelayed({
-            rv_bet_receipt.scrollToPosition(betReceiptDiffAdapter?.items?.size?.minus(1) ?: 0)
+
+        binding.rvBetReceipt.postDelayed({
+            binding.rvBetReceipt.scrollToPosition(betReceiptDiffAdapter?.items?.size?.minus(1) ?: 0)
         }, 100)
 
         if (betFailed.first) {
