@@ -346,6 +346,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
 
         clExpandOrStacked.setOnClickListener {
             if (isOpen) {
+                cl_total_info.gone()
                 tvExpandOrStacked.text = getString(R.string.expand_more_combinations)
                 tvExpandOrStacked.setCompoundDrawablesWithIntrinsicBounds(
                     null,
@@ -354,6 +355,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                     null
                 )
             } else {
+                cl_total_info.visible()
 //                betParlayListRefactorAdapter?.closeAllKeyboard()
                 tvExpandOrStacked.text = getString(R.string.stacked_combination)
                 tvExpandOrStacked.setCompoundDrawablesWithIntrinsicBounds(
