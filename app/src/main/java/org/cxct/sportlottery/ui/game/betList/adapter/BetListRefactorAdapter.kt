@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.game.betList.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.content_bet_info_item_v3_2.view.layoutKeyBoard
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ContentBetInfoItemV32Binding
 import org.cxct.sportlottery.enum.BetStatus
@@ -21,7 +20,6 @@ import org.cxct.sportlottery.ui.game.betList.listener.OnItemClickListener
 import org.cxct.sportlottery.ui.game.betList.listener.OnSelectedPositionListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.KeyboardView
-import timber.log.Timber
 
 class BetListRefactorAdapter(
     private val keyboardView: KeyboardView,
@@ -188,7 +186,7 @@ class BetListRefactorAdapter(
                     position,
                     userMoney,
                     userLogin,
-                    betList,
+                    betList
                 )
             }
 

@@ -12,6 +12,7 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.EditText
 import androidx.core.view.ViewCompat
 import androidx.core.view.ViewPropertyAnimatorListenerAdapter
+import org.cxct.sportlottery.generated.callback.OnClickListener
 import org.cxct.sportlottery.util.BraetheInterpolator
 import org.cxct.sportlottery.util.ScreenUtil
 import java.util.regex.Pattern
@@ -20,27 +21,35 @@ import java.util.regex.Pattern
  * 关于View的一些扩展函数
  */
 
-inline fun View.visible(){
+fun View.visible() {
     this.visibility = View.VISIBLE
 }
 
-inline fun View.gone(){
+fun View.gone() {
     this.visibility = View.GONE
 }
 
-inline fun View.inVisible(){
+fun View.inVisible() {
     this.visibility = View.INVISIBLE
 }
 
-inline fun setViewVisible(vararg views: View) {
+fun setViewVisible(vararg views: View) {
     views.forEach { it.visibility = View.VISIBLE }
 }
 
-inline fun setViewGone(vararg views: View) {
+fun setOnClickListener(vararg view: View, onClick: (View) -> Unit) {
+    view.forEach { it ->
+        it.setOnClickListener {
+            onClick(it)
+        }
+    }
+}
+
+fun setViewGone(vararg views: View) {
     views.forEach { it.visibility = View.GONE }
 }
 
-inline fun setViewInvisible(vararg views: View) {
+fun setViewInvisible(vararg views: View) {
     views.forEach { it.visibility = View.INVISIBLE }
 }
 
@@ -96,7 +105,12 @@ inline fun View.fitsSystemStatus() {
  * @startAlpha 开始的透明度 默认为全透明
  * @endAlpha 结束的透明度 默人为完全显示
  */
-fun View.flashAnimation(duration:Long = 1000,repeatCount:Int = ValueAnimator.INFINITE ,startAlpha:Float = 0f,endAlpha:Float = 1f): ObjectAnimator {
+fun View.flashAnimation(
+    duration: Long = 1000,
+    repeatCount: Int = ValueAnimator.INFINITE,
+    startAlpha: Float = 0f,
+    endAlpha: Float = 1f
+): ObjectAnimator {
     this.clearAnimation()
 
     val alphaAnimator: ObjectAnimator = ObjectAnimator.ofFloat(this, "alpha", startAlpha, endAlpha)
@@ -131,6 +145,7 @@ fun View.translationXAnimation(x: Float, endCall: (() -> Unit)? = null, duration
 
     anim.start()
 }
+
 fun <T> BaseQuickAdapter<T, *>.showLoading(@LayoutRes layoutId: Int) {
     if (data.isNotEmpty()) {
         setNewInstance(null)
@@ -153,15 +168,19 @@ fun View.rotationAnimation(rotation: Float, duration: Long = 200) {
 
 fun EditText.filterSpecialCharacters() {
     val spaceFilter = InputFilter { source, _, _, _, _, _ ->
-            if (source == " ") { "" } else {  null }
+        if (source == " ") {
+            ""
+        } else {
+            null
         }
+    }
 
-    val specialFilter = InputFilter {  source, _, _, _, _, _ ->
-            val speChat = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“'。，、？]"
-            val pattern = Pattern.compile(speChat)
-            val matcher = pattern.matcher(source.toString())
-            if (matcher.find()) "" else null
-        }
+    val specialFilter = InputFilter { source, _, _, _, _, _ ->
+        val speChat = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“'。，、？]"
+        val pattern = Pattern.compile(speChat)
+        val matcher = pattern.matcher(source.toString())
+        if (matcher.find()) "" else null
+    }
 
     filters = arrayOf(spaceFilter, specialFilter)
 }

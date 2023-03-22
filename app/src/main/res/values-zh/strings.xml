@@ -130,7 +130,6 @@
     <string name="home_tab_cs">波胆</string>
     <string name="home_tab_parlay">串关</string>
     <string name="home_tab_outright">冠军</string>
-    <string name="home_tab_end_score">末位比分组合</string>
     <string name="home_tab_at_start">即将</string>
     <string name="home_tab_eps">特优</string>
     <string name="label_all">全部</string>
@@ -1006,6 +1005,7 @@
     <string name="bet_stake">投注</string>
     <string name="total_capital">本金：%s</string>
     <string name="total_win_amount">可赢：</string>
+    <string name="total_all_win_amount">总可赢：</string>
     <string name="delete_bet">删除</string>
     <string name="delete_bet_all">全部删除</string>
     <string name="btn_login_bet">登录后可投注</string>
@@ -1281,6 +1281,8 @@
     <string name="N647">订单金额</string>
     <string name="N653">待出款</string>
     <string name="J630">订单号</string>
+    <string name="N643">请前往Glife小程序进行充值</string>
+    <string name="N644">请前往Glife小程序进行提款</string>
 
     <string name="J801">独赢&amp;大</string>
     <string name="J802">独赢&amp;小</string>

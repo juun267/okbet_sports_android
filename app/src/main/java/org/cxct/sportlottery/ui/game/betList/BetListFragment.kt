@@ -203,8 +203,8 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
 
         //設定本金, 可贏的systemCurrencySign
         binding.apply {
-//            titleAllBet.text = getString(R.string.total_capital, sConfigData?.systemCurrencySign)
-//            titleWinnableAmount.text = getString(R.string.total_win_amount)
+            titleAllBet.text = getString(R.string.total_capital, sConfigData?.systemCurrencySign)
+            titleWinnableAmount.text = getString(R.string.total_all_win_amount)
         }
     }
 
@@ -346,6 +346,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
 
         clExpandOrStacked.setOnClickListener {
             if (isOpen) {
+                cl_total_info.gone()
                 tvExpandOrStacked.text = getString(R.string.expand_more_combinations)
                 tvExpandOrStacked.setCompoundDrawablesWithIntrinsicBounds(
                     null,
@@ -354,6 +355,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                     null
                 )
             } else {
+                cl_total_info.visible()
 //                betParlayListRefactorAdapter?.closeAllKeyboard()
                 tvExpandOrStacked.text = getString(R.string.stacked_combination)
                 tvExpandOrStacked.setCompoundDrawablesWithIntrinsicBounds(
@@ -366,6 +368,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             }
             betParlayListRefactorAdapter?.apply {
                 BetListRcvUtil.setFitHeight(isOpen, rv_parlay_list, this)
+                notifyDataSetChanged()
             }
             isOpen = !isOpen
         }
@@ -569,9 +572,9 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             }
         }
 
-//        binding.tvTotalBetAmount.text = TextUtil.formatForOdd(totalBetAmount)
-//        binding.tvTotalWinnableAmount.text =
-//                "${sConfigData?.systemCurrencySign} ${TextUtil.formatForOdd(winnableAmount)}"
+        binding.tvTotalBetAmount.text = TextUtil.formatForOdd(totalBetAmount)
+        binding.tvTotalWinnableAmount.text =
+                "${sConfigData?.systemCurrencySign} ${TextUtil.formatForOdd(winnableAmount)}"
 
 
         val betCount = if (currentBetType == 0) {

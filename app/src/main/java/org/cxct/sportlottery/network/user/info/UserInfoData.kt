@@ -57,4 +57,5 @@ data class UserInfoData(
     @Json(name = "facebookBind") var facebookBind: Boolean,
     @Json(name = "googleBind") var googleBind: Boolean,
     @Json(name = "passwordSet") var passwordSet: Boolean,
+    @Json(name = "vipType") var vipType: Int?,
 )
