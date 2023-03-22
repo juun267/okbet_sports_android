@@ -1339,4 +1339,9 @@
     <string name="N653">Pending payment</string>
     <string name="J630">Order no.</string>
 
+    <string name="J801">1X2 &amp; Goals Over</string>
+    <string name="J802">1X2 &amp; Goals Under</string>
+    <string name="J803">1X2 &amp; Both to Score Y</string>
+    <string name="J804">1X2 &amp; Both to Score N</string>
+
 </resources>
