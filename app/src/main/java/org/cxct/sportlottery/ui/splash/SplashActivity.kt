@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatDelegate
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.cxct.sportlottery.BuildConfig
@@ -20,12 +21,14 @@ import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewMod
 import org.cxct.sportlottery.util.JumpUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+
 /**
  * @app_destination 啟動頁
  */
 class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
     private val mVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +44,6 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         //checkPermissionGranted()
         initObserve()
 
-        Log.e("For Test", "========>>> ActivitySplashBinding ${ActivitySplashBinding.inflate(layoutInflater).javaClass.name}")
         //流程: 檢查/獲取 host -> 獲取 config -> 檢查維護狀態 -> 檢查版本更新 -> 跳轉畫面
         checkLocalHost()
     }

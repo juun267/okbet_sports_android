@@ -8,29 +8,29 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
-import org.cxct.sportlottery.network.index.config.VerifySwitchType
+import org.cxct.sportlottery.extentions.isEmptyStr
+import org.cxct.sportlottery.extentions.load
+import org.cxct.sportlottery.extentions.startActivity
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
-import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
-import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.profileCenter.authbind.AuthActivity
 import org.cxct.sportlottery.ui.profileCenter.cancelaccount.CancelAccountActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
+import org.cxct.sportlottery.ui.profileCenter.modify.ModifyBindInfoActivity
+import org.cxct.sportlottery.ui.profileCenter.modify.VerificationWaysActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity.Companion.MODIFY_INFO
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
@@ -110,49 +110,36 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     private fun setupLogout() {
         btn_sign_out.setOnClickListener {
             viewModel.doLogoutAPI()
-            viewModel.doLogoutCleanUser {
-                run {
-//                    if (sConfigData?.thirdOpen == FLAG_OPEN)
-//                        MainActivity.reStart(this)
-//                    else
-                    MainTabActivity.reStart(this)
-                }
-            }
+            viewModel.doLogoutCleanUser { MainTabActivity.reStart(this) }
         }
     }
 
     override fun onResume() {
         super.onResume()
-
         getUserInfo()
     }
 
     private fun initView() {
         custom_tool_bar.titleText = LocalUtils.getString(R.string.profile_info)
         sConfigData?.apply {
-            ll_qq_number.visibility = if (enableWithdrawQQ == FLAG_OPEN) View.VISIBLE else View.GONE
-            ll_e_mail.visibility = if (enableWithdrawEmail == FLAG_OPEN) View.VISIBLE else View.GONE
-            ll_phone_number.visibility =
-                if (enableWithdrawPhone == FLAG_OPEN) View.VISIBLE else View.GONE
-            ll_wechat.visibility =
-                if (enableWithdrawWechat == FLAG_OPEN) View.VISIBLE else View.GONE
-            ll_real_name.visibility =
-                if (enableWithdrawFullName == FLAG_OPEN) View.VISIBLE else View.GONE
+            ll_qq_number.isVisible = enableWithdrawQQ.isStatusOpen()
+            ll_e_mail.isVisible = enableWithdrawEmail.isStatusOpen()
+            ll_phone_number.isVisible = enableWithdrawPhone.isStatusOpen()
+            ll_wechat.isVisible = enableWithdrawWechat.isStatusOpen()
+            ll_real_name.isVisible = enableWithdrawFullName.isStatusOpen()
         }
-        LogUtil.toJson(viewModel.userInfo.value)
-        tv_pass_word.text =
-            if (viewModel.userInfo.value?.passwordSet == true) LocalUtils.getString(R.string.set) else LocalUtils.getString(
-                R.string.edit)
+
+        ll_e_mail.isVisible = true
+        ll_phone_number.isVisible = true
+
+        tv_pass_word.text = if (viewModel.userInfo.value?.passwordSet == true) LocalUtils.getString(R.string.set) else LocalUtils.getString(R.string.edit)
     }
 
     private fun initButton() {
-        custom_tool_bar.setOnBackPressListener {
-            finish()
-        }
+        custom_tool_bar.setOnBackPressListener { finish() }
 
         //設定個人資訊頁面
         setupToInfoSettingPage()
-
         btn_head.setOnClickListener {
             AvatarSelectorDialog(this, mSelectMediaListener).show(supportFragmentManager, null)
         }
@@ -172,47 +159,48 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             viewModel.checkNeedToShowSecurityDialog()//檢查有需不需要簡訊認證
         }
         //登录授权
-        lin_auth.setOnClickListener {
-            startActivity(Intent(this@ProfileActivity, AuthActivity::class.java))
-        }
+        lin_auth.setOnClickListener { startActivity(AuthActivity::class.java) }
         //QQ號碼
         ll_qq_number.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.QQNumber) }
         //郵箱
-        ll_e_mail.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.Email) }
+        ll_e_mail.setOnClickListener { editBindInfo(ModifyType.Email) }
         //手機號碼
-        ll_phone_number.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.PhoneNumber) }
+        ll_phone_number.setOnClickListener { editBindInfo(ModifyType.PhoneNumber) }
         //微信
         ll_wechat.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.WeChat) }
         //實名制
         ll_verified.setOnClickListener {
             if (ll_verified.isEnabled)
-                startActivity(Intent(this@ProfileActivity, VerifyIdentityActivity::class.java))
+                startActivity(VerifyIdentityActivity::class.java)
         }
         //注销账号
-        ll_cancel_account.setOnClickListener{
-            startActivity(Intent(this@ProfileActivity, CancelAccountActivity::class.java))
+        ll_cancel_account.setOnClickListener { startActivity(CancelAccountActivity::class.java) }
+    }
+
+    private fun editBindInfo(modifyType: @ModifyType Int) {
+        val userInfo = viewModel.userInfo.value
+        val phone = userInfo?.phone
+        val email = userInfo?.email
+        if (phone.isEmptyStr() && email.isEmptyStr()) {
+            ModifyBindInfoActivity.start(this, modifyType, "${userInfo?.userName}")
+        } else {
+            VerificationWaysActivity.start(this, modifyType, phone, email)
         }
     }
 
-    private fun putExtraForProfileInfoActivity(modifyType: ModifyType) {
-        startActivity(
-            Intent(
-                this@ProfileActivity,
-                ModifyProfileInfoActivity::class.java
-            ).apply { putExtra(MODIFY_INFO, modifyType) })
+    private fun putExtraForProfileInfoActivity(modifyType: @ModifyType Int) {
+        val intent = Intent(this, ModifyProfileInfoActivity::class.java)
+        intent.putExtra(MODIFY_INFO, modifyType)
+        startActivity(intent)
     }
 
     private fun updateAvatar(iconUrl: String?) {
-        Glide.with(iv_head.context)
-            .load(iconUrl)
-            .apply(RequestOptions().placeholder(R.drawable.ic_person_avatar))
-            .into(iv_head) //載入頭像
+        iv_head.load("$iconUrl", R.drawable.ic_person_avatar)
     }
 
     private fun uploadImg(file: File) {
         val userId = viewModel.userInfo.value?.userId.toString()
-        val uploadImgRequest =
-            UploadImgRequest(userId, file, UploadImgRequest.PlatformCodeType.AVATAR)
+        val uploadImgRequest = UploadImgRequest(userId, file, UploadImgRequest.PlatformCodeType.AVATAR)
         viewModel.uploadImage(uploadImgRequest)
     }
 
@@ -220,13 +208,12 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
         viewModel.editIconUrlResult.observe(this) {
             val iconUrlResult = it?.getContentIfNotHandled()
-            if (iconUrlResult?.success == true) {
-                showPromptDialog(
-                    LocalUtils.getString(R.string.prompt),
-                    LocalUtils.getString(R.string.save_avatar_success)
-                ) {}
-            } else
+            if (iconUrlResult?.success != true) {
                 iconUrlResult?.msg?.let { msg -> showErrorPromptDialog(msg) {} }
+                return@observe
+            }
+
+            showPromptDialog(LocalUtils.getString(R.string.prompt), LocalUtils.getString(R.string.save_avatar_success)) {}
         }
 
         viewModel.userInfo.observe(this) {
@@ -235,10 +222,8 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             tv_member_account.text = it?.userName
             tv_id.text = it?.userId?.toString()
             tv_real_name.text = it?.fullName
-            ll_verified.isVisible =
-                sConfigData?.realNameWithdrawVerified == VerifySwitchType.OPEN.value || sConfigData?.realNameRechargeVerified == VerifySwitchType.OPEN.value
-            tv_pass_word.text =
-                if (it?.passwordSet == true) LocalUtils.getString(R.string.set) else LocalUtils.getString(R.string.edit)
+            ll_verified.isVisible = sConfigData?.realNameWithdrawVerified.isStatusOpen() || sConfigData?.realNameRechargeVerified.isStatusOpen()
+            tv_pass_word.text = if (it?.passwordSet == true) LocalUtils.getString(R.string.set) else LocalUtils.getString(R.string.edit)
             when (it?.verified) {
                 VerifiedType.PASSED.value -> {
                     ll_verified.isEnabled = false
@@ -283,35 +268,25 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
         //是否顯示簡訊驗證彈窗
         viewModel.needToSendTwoFactor.observe(this) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    customSecurityDialog = CustomSecurityDialog(this).apply {
-                        getSecurityCodeClickListener {
-                            this.showSmeTimer300()
-                            viewModel.sendTwoFactor()
-                        }
-                        positiveClickListener =
-                            CustomSecurityDialog.PositiveClickListener { number ->
-                                viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
-                            }
+            val b = it.getContentIfNotHandled() ?: return@observe
+            if (b) {
+                customSecurityDialog = CustomSecurityDialog(this).apply {
+                    getSecurityCodeClickListener {
+                        this.showSmeTimer300()
+                        viewModel.sendTwoFactor()
                     }
-                    customSecurityDialog?.show(supportFragmentManager, null)
-                } else if (!b) { //有手機號碼又不用驗證的狀態下
-                    when (securityCodeEnter) {
-                        SecurityCodeEnterType.REALNAME -> {
-                            putExtraForProfileInfoActivity(ModifyType.RealName)
-                        }
-                        SecurityCodeEnterType.PW -> {
-                            startActivity(
-                                Intent(
-                                    this@ProfileActivity,
-                                    SettingPasswordActivity::class.java
-                                )
-                            )
-                        }
+
+                    positiveClickListener = CustomSecurityDialog.PositiveClickListener { number ->
+                        viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
                     }
                 }
+
+                customSecurityDialog?.show(supportFragmentManager, null)
+                return@observe
             }
+
+             //有手機號碼又不用驗證的狀態下
+            securityEnter()
         }
 
         //簡訊驗證失敗
@@ -321,29 +296,18 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 setMessage(errorMsg)
                 setNegativeButtonText(null)
                 setCanceledOnTouchOutside(false)
-                setCancelable(false)
+                isCancelable = false
             }.show(supportFragmentManager, null)
         }
 
         //簡訊驗證成功
         viewModel.twoFactorSuccess.observe(this) {
-            if (it == true) {
-                customSecurityDialog?.dismiss()
-
-                when (securityCodeEnter) {
-                    SecurityCodeEnterType.REALNAME -> {
-                        putExtraForProfileInfoActivity(ModifyType.RealName)
-                    }
-                    SecurityCodeEnterType.PW -> {
-                        startActivity(
-                            Intent(
-                                this@ProfileActivity,
-                                SettingPasswordActivity::class.java
-                            )
-                        )
-                    }
-                }
+            if (it != true) {
+                return@observe
             }
+
+            customSecurityDialog?.dismiss()
+            securityEnter()
         }
 
         //確認收到簡訊驗證碼
@@ -379,36 +343,44 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         }
     }
 
-    private fun setWithdrawInfo(userInfo: UserInfo) {
-        userInfo.apply {
-            judgeImproveInfo(ll_real_name, tv_real_name, icon_real_name, fullName)
-            judgeImproveInfo(ll_qq_number, tv_qq_number, icon_qq_number, qq)
-            judgeImproveInfo(ll_e_mail, tv_e_mail, icon_e_mail, email)
-            judgeImproveInfo(ll_phone_number, tv_phone_number, icon_phone_number, phone)
-            judgeImproveInfo(ll_wechat, tv_we_chat, icon_wechat, wechat)
+    private fun securityEnter() {
+        if (securityCodeEnter == SecurityCodeEnterType.REALNAME) {
+            putExtraForProfileInfoActivity(ModifyType.RealName)
+            return
         }
+
+        if (securityCodeEnter == SecurityCodeEnterType.PW) {
+            startActivity(SettingPasswordActivity::class.java)
+        }
+    }
+
+    private fun setWithdrawInfo(userInfo: UserInfo) = userInfo.run {
+        judgeImproveInfo(ll_real_name, tv_real_name, icon_real_name, fullName)
+        judgeImproveInfo(ll_qq_number, tv_qq_number, icon_qq_number, qq)
+        judgeImproveInfo(ll_e_mail, tv_e_mail, icon_e_mail, email, true)
+        judgeImproveInfo(ll_phone_number, tv_phone_number, icon_phone_number, phone, true)
+        judgeImproveInfo(ll_wechat, tv_we_chat, icon_wechat, wechat)
     }
 
     private fun judgeImproveInfo(
         itemLayout: LinearLayout,
         tvInfo: TextView,
         iconModify: ImageView,
-        infoData: String?
-    ) {
-        tvInfo.apply {
-            if (infoData.isNullOrEmpty()) {
-                text = LocalUtils.getString(R.string.need_improve)
+        infoData: String?,
+        editable: Boolean = false
+    ) = tvInfo.run {
 
-                iconModify.visibility = View.VISIBLE
-                itemLayout.isEnabled = true
-            } else {
-                text = infoData
-
-                iconModify.visibility = View.GONE
-                itemLayout.isEnabled = false
-            }
-            setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.color_939393_999999))
+        if (infoData.isNullOrEmpty()) {
+            text = LocalUtils.getString(R.string.need_improve)
+            iconModify.isVisible = true
+            itemLayout.isEnabled = true
+        } else {
+            text = infoData
+            iconModify.isVisible = editable
+            itemLayout.isEnabled = editable
         }
+
+        setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.color_939393_999999))
     }
 
     private fun getUserInfo() {

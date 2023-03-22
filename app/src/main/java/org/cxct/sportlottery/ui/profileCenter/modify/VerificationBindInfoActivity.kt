@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.login.foget2
+package org.cxct.sportlottery.ui.profileCenter.modify
 
 import android.app.Activity
 import android.content.Intent
@@ -11,41 +11,54 @@ import org.cxct.sportlottery.extentions.bindFinish
 import org.cxct.sportlottery.extentions.finishWithOK
 import org.cxct.sportlottery.extentions.gone
 import org.cxct.sportlottery.extentions.isEmptyStr
+import org.cxct.sportlottery.net.ApiResult
+import org.cxct.sportlottery.net.user.data.SendCodeRespnose
 import org.cxct.sportlottery.network.index.forgetPassword.SendSmsResult
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.login.*
-import org.cxct.sportlottery.ui.login.foget.ForgetViewModel
+import org.cxct.sportlottery.ui.login.VerifyCodeDialog
+import org.cxct.sportlottery.ui.login.checkEmail
+import org.cxct.sportlottery.ui.login.checkPhoneNum
+import org.cxct.sportlottery.ui.login.checkSMSCode
 import org.cxct.sportlottery.ui.login.foget2.rest.ResetPasswordActivity
+import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
 import org.cxct.sportlottery.util.CountDownUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.setBtnEnable
 import org.cxct.sportlottery.util.setServiceClick
 
-/**
- * @app_destination 通过手机号或者邮箱重置登录密码
- */
-open class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewModel::class) {
+// 验证绑定的手机号或者邮箱
+class VerificationBindInfoActivity: BaseActivity<BindInfoViewModel>(BindInfoViewModel::class) {
 
     companion object {
 
-        fun startByPhoneWays(context: Activity) = start(context, 1) // 1: 通过手机号方式修改密码
-        fun startByEmailWays(context: Activity)  = start(context, 2) // 2:通过邮箱方式修改密码
+        // 1: 验证手机号
+        fun startByPhoneWays(context: Activity, requestCode: Int, phone: String) {
+            start(context, ModifyType.PhoneNumber, requestCode, phone, null)
+        }
+        // 2:验证邮箱
+        fun startByEmailWays(context: Activity, requestCode: Int, email: String) {
+            start(context, ModifyType.Email, requestCode, null, email)
+        }
 
-        private fun start(context: Activity, ways: Int) {
-            val intent = Intent(context, ForgetPasswordActivity2::class.java)
-            intent.putExtra("retrieveWays", ways)
-            context.startActivityForResult(intent, 100)
+        fun start(context: Activity, modifyType: @ModifyType Int, requestCode: Int, phone: String?, email: String?) {
+            val intent = Intent(context, VerificationBindInfoActivity::class.java)
+            intent.putExtra("MODIFY_INFO", modifyType)
+            intent.putExtra("phone", phone)
+            intent.putExtra("email", email)
+            context.startActivityForResult(intent, requestCode)
         }
     }
 
     private val binding by lazy { ActivityForgetPassword2Binding.inflate(layoutInflater) }
-    private val ways by lazy { intent.getIntExtra("retrieveWays", 1) }
+    private val phone by lazy { intent.getStringExtra("phone") }
+    private val email by lazy { intent.getStringExtra("email") }
+    private val modifyType by lazy { intent.getIntExtra("MODIFY_INFO", ModifyType.PhoneNumber) }
     private var inputPhoneNo: String? = null // 输入的手机号，不为空即为输入的号码格式正确
     private var inputEmail: String? = null // 输入的邮箱，不为空即为输入的号码格式正确
     private var smsCode: String? = null // 短信或者邮箱验证码
     private var userName: String? = null
 
-    private inline fun isPhoneWays() = 1 == ways
+    private inline fun isPhoneWays() = !phone.isEmptyStr()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,16 +66,29 @@ open class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewMode
         setContentView(binding.root)
         initView()
         initObserve()
+        bindValue()
+    }
+
+    private fun bindValue() = binding.run {
+        phone?.let {
+            eetPhoneNum.setText(it)
+            eetPhoneNum.isEnabled = false
+        }
+
+        email?.let {
+            eetEMail.setText(it)
+            eetEMail.isEnabled = false
+        }
     }
 
     private fun initView() = binding.run {
         bindFinish(btnBack)
         clLiveChat.setServiceClick(supportFragmentManager)
         btnPut.setOnClickListener { next() }
-//        btnSendSms.setOnClickListener { YidunCaptcha.validateAction(this@ForgetPasswordActivity2,this@ForgetPasswordActivity2, { sendCode() }) }
+//        btnSendSms.setOnClickListener { YidunCaptcha.validateAction(this@VerificationBindInfoActivity,this@VerificationBindInfoActivity, { sendCode() }) }
 
         btnSendSms.setOnClickListener {
-            hideSoftKeyboard(this@ForgetPasswordActivity2)
+            hideSoftKeyboard(this@VerificationBindInfoActivity)
             VerifyCodeDialog(callBack = { identity, validCode ->
                 sendCode(identity, validCode)
                 eetSmsCode.requestFocus()
@@ -112,11 +138,8 @@ open class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewMode
     private fun sendCode(identity: String?, validCode: String) = binding.btnSendSms.run {
         loading()
         setBtnEnable(false)
-        if (isPhoneWays()) {
-            viewModel.getSendSms("$inputPhoneNo", "$identity", validCode)
-        } else {
-            viewModel.sendEmail("$inputEmail", "$identity", validCode)
-        }
+        val phoneOrEmail = if (inputPhoneNo.isEmptyStr()) inputEmail else inputPhoneNo
+        viewModel.sendSMSOrEmailCode("$phoneOrEmail", "$identity", validCode)
     }
 
     private fun codeCountDown() = binding.btnSendSms.run  {
@@ -125,7 +148,7 @@ open class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewMode
         }
 
         tag = this
-        CountDownUtil.smsCountDown(this@ForgetPasswordActivity2,
+        CountDownUtil.smsCountDown(this@VerificationBindInfoActivity,
             { setBtnEnable(false) },
             { text = "${it}s" },
             {
@@ -139,37 +162,30 @@ open class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewMode
 
     private fun next() {
         loading()
-        hideSoftKeyboard(this@ForgetPasswordActivity2)
-        if (isPhoneWays()) {
-            viewModel.getCheckPhone("$inputPhoneNo", "$smsCode")
-        } else {
-            viewModel.checkEmailCode("$inputEmail", "$smsCode")
-        }
-    }
-
-    protected open fun sendSMSCode() {
-
-    }
-
-    protected open fun sendEmailCode() {
-
+        hideSoftKeyboard(this@VerificationBindInfoActivity)
+        val phoneOrEmail = if (inputPhoneNo.isEmptyStr()) inputEmail else inputPhoneNo
+        viewModel.verifyEmailOrPhoneCode("$phoneOrEmail", "$smsCode")
     }
 
     private fun initObserve() = viewModel.run {
-        smsResult.observe(this@ForgetPasswordActivity2) { updateUiWithResult(it) }
-        smsCodeResult.observe(this@ForgetPasswordActivity2) { result-> // 验证短信验证码
+        sendCodeResult.observe(this@VerificationBindInfoActivity) { updateUiWithResult(it) }
+        verifyResult.observe(this@VerificationBindInfoActivity) { result-> // 验证短信验证码
             hideLoading()
             if (result == null) {
                 return@observe
             }
 
-            if (result.success){
-                ResetPasswordActivity.start(this@ForgetPasswordActivity2, "$userName", isPhoneWays())
+            if (result.succeeded()){
+                ModifyBindInfoActivity.start(this@VerificationBindInfoActivity, modifyType, "$userName")
                 return@observe
             }
 
             if (result.code == 2765|| result.code == 2766) {
-                binding.etPhone.setError(result.msg,false)
+                if(inputPhoneNo.isEmptyStr()) {
+                    binding.etPhone.setError(result.msg,false)
+                } else {
+                    binding.etEMail.setError(result.msg,false)
+                }
             } else {
                 binding.etSmsValidCode.setError(result.msg,false)
             }
@@ -177,21 +193,21 @@ open class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewMode
     }
 
     //发送验证码的回调
-    private fun updateUiWithResult(smsResult: SendSmsResult?) {
+    private fun updateUiWithResult(smsResult: ApiResult<SendCodeRespnose>) {
         hideLoading()
-        if (smsResult?.success == true) {
-            userName = smsResult.ResetPasswordData?.userName
+        if (smsResult.succeeded()) {
+            userName = smsResult.getData()?.userName
             codeCountDown()
 //            CountDownUtil.targSMSTimeStamp()
-            val msg = smsResult.ResetPasswordData?.msg
+            val msg = smsResult.getData()?.msg
             if(!msg.isEmptyStr()) {
-                ToastUtil.showToast(this@ForgetPasswordActivity2, msg, Toast.LENGTH_SHORT)
+                ToastUtil.showToast(this@VerificationBindInfoActivity, msg, Toast.LENGTH_SHORT)
             }
             return
         }
 
         binding.btnSendSms.setBtnEnable(true)
-        ToastUtil.showToast(this@ForgetPasswordActivity2, smsResult?.msg, Toast.LENGTH_SHORT)
+        ToastUtil.showToast(this@VerificationBindInfoActivity, smsResult?.msg, Toast.LENGTH_SHORT)
         //做异常处理
         if (smsResult?.code == 2765 || smsResult?.code == 2766) {
             binding.etPhone.setError(smsResult.msg,false)

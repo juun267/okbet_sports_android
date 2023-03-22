@@ -133,6 +133,3 @@ data class ConfigData(
 
 }
 
-enum class VerifySwitchType(val value: String) {
-    OPEN("1"), CLOSE("0")
-}

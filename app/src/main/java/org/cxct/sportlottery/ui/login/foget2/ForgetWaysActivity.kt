@@ -11,7 +11,7 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.login.foget.ForgetViewModel
 import org.cxct.sportlottery.util.setServiceClick
 
-class ForgetWaysActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::class) {
+open class ForgetWaysActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::class) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,9 +22,13 @@ class ForgetWaysActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::class) 
 
     private fun initView() {
         bindFinish(btn_back)
+        cl_live_chat.setServiceClick(supportFragmentManager)
+        initWaysClick()
+    }
+
+    protected open fun initWaysClick() {
         btnPhoneWays.setOnClickListener { ForgetPasswordActivity2.startByPhoneWays(this) }
         btnEmailWays.setOnClickListener { ForgetPasswordActivity2.startByEmailWays(this) }
-        cl_live_chat.setServiceClick(supportFragmentManager)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

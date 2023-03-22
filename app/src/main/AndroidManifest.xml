@@ -156,6 +156,15 @@
             android:name=".ui.profileCenter.nickname.ModifyProfileInfoActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.profileCenter.modify.ModifyBindInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.profileCenter.modify.VerificationWaysActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.profileCenter.modify.VerificationBindInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.profileCenter.changePassword.SettingPasswordActivity"
             android:screenOrientation="portrait" />
         <activity

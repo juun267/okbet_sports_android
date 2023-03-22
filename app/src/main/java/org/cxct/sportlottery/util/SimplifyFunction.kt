@@ -40,7 +40,6 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.extentions.screenHeight
 import org.cxct.sportlottery.extentions.translationXAnimation
 import org.cxct.sportlottery.network.common.QuickPlayCate
-import org.cxct.sportlottery.network.index.config.VerifySwitchType
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.CateDetailData
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
@@ -557,7 +556,7 @@ fun View.setVisibilityByMarketSwitch() {
  * enableKYCVerify的判斷已經棄用
  */
 fun isKYCVerifyWithdrawOpen(): Boolean {
-    return sConfigData?.realNameWithdrawVerified == VerifySwitchType.OPEN.value
+    return sConfigData?.realNameWithdrawVerified.isStatusOpen()
 }
 
 /**
@@ -565,7 +564,7 @@ fun isKYCVerifyWithdrawOpen(): Boolean {
  * enableKYCVerify的判斷已經棄用
  */
 fun isKYCVerifyRechargeOpen(): Boolean {
-    return sConfigData?.realNameRechargeVerified == VerifySwitchType.OPEN.value
+    return sConfigData?.realNameRechargeVerified.isStatusOpen()
 }
 
 /**

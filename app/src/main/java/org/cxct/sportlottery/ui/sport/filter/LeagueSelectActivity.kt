@@ -71,9 +71,7 @@ class LeagueSelectActivity :
     }
 
     private fun setupToolbar() {
-        custom_tool_bar.backPressListener = {
-            onBackPressed()
-        }
+        custom_tool_bar.setOnBackPressListener { onBackPressed() }
         tv_all_select.setOnClickListener {
             leagueList.forEach {
                 it.isSelected = true
