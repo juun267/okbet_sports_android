@@ -1257,4 +1257,8 @@
     <string name="N618">Mã giao dịch phụ</string>
     <string name="N643">Mời vào app Glife nạp tiền</string>
     <string name="N644">Mời vào app Glife rút tiền</string>
+    <string name="J801">1 X 2 &amp; Trên</string>
+    <string name="J802">1 X 2 &amp; Dưới</string>
+    <string name="J803">1 X 2 &amp; Hai Đội Ghi Bàn-Có</string>
+    <string name="J804">1 X 2 &amp; Hai Đội Ghi Bàn-Không</string>
 </resources>

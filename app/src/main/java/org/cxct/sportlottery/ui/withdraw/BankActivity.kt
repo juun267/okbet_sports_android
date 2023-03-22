@@ -92,12 +92,14 @@ class BankActivity : BaseSocketActivity<WithdrawViewModel>(WithdrawViewModel::cl
         }
     }
     private fun goTOTabFragment(type: TransferType){
-        val action =
-            BankListFragmentDirections.actionBankListFragmentToBankCardFragment(
-                null,
-                type,
-            )
-        mNavController.navigate(action)
+        if (mNavController.currentDestination?.id != R.id.bankCardFragment) {
+            val action =
+                BankListFragmentDirections.actionBankListFragmentToBankCardFragment(
+                    null,
+                    type,
+                )
+            mNavController.navigate(action)
+        }
     }
     private fun setupBankSetting() {
         viewModel.getMoneyConfigs()

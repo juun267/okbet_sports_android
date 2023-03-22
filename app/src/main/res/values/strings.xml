@@ -1002,7 +1002,7 @@
     <string name="bet_stake">Stake</string>
     <string name="total_capital">Stake：%s</string>
     <string name="total_win_amount">Winning：</string>
-    <string name="total_all_win_amount">Total winning：</string>
+    <string name="total_all_win_amount">Total Win：</string>
     <string name="delete_bet">Delete</string>
     <string name="delete_bet_all">Delete All</string>
     <string name="btn_login_bet">Login first</string>
@@ -1341,5 +1341,10 @@
     <string name="J630">Order no.</string>
     <string name="N643">Please go to Glife app to deposit</string>
     <string name="N644">Please go to Glife app to withdraw</string>
+
+    <string name="J801">1X2 &amp; Goals Over</string>
+    <string name="J802">1X2 &amp; Goals Under</string>
+    <string name="J803">1X2 &amp; Both to Score Y</string>
+    <string name="J804">1X2 &amp; Both to Score N</string>
 
 </resources>

@@ -38,7 +38,7 @@ class ResultsSettlementActivity :
         const val EXTRA_MATCH_ID = "EXTRA_MATCH_ID"
     }
 
-    lateinit var settlementLeagueBottomSheet: BottomSheetDialog
+    private val settlementLeagueBottomSheet by lazy { BottomSheetDialog(this@ResultsSettlementActivity) }
     private lateinit var settlementLeagueAdapter: SettlementLeagueAdapter
     private var bottomSheetLeagueItemDataList = mutableListOf<LeagueItemData>()
 
@@ -255,7 +255,6 @@ class ResultsSettlementActivity :
     private fun settleLeagueBottomSheet() {
         tv_league.text = getString(R.string.league)
         val bottomSheetView = layoutInflater.inflate(R.layout.dialog_bottom_sheet_settlement_league_type, null)
-        settlementLeagueBottomSheet = BottomSheetDialog(this@ResultsSettlementActivity)
         settlementLeagueBottomSheet.apply {
             setContentView(bottomSheetView)
             settlementLeagueAdapter = SettlementLeagueAdapter(lv_league.context, mutableListOf()) //先預設為空, 等待api獲取資料
