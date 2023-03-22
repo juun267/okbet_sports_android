@@ -290,7 +290,7 @@
     <string name="order_number_colon">Note number：</string>
     <string name="bet_type">投注玩法</string>
     <string name="total_bet_money">Kabuuang taya</string>
-    <string name="total_bet_money_colon">Kabuuang taya：</string>
+    <string name="total_bet_money_colon">Kabuuang taya：%s</string>
     <string name="status">State</string>
     <string name="status_colon">State：</string>
     <string name="rebates">Rebate：</string>
