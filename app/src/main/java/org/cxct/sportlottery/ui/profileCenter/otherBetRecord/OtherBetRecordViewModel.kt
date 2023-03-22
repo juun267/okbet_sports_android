@@ -125,8 +125,10 @@ class OtherBetRecordViewModel(
             }?.let { result ->
                 hideLoading()
                 isLoading = false
-                recordDataList.addAll(result.t?.orderList as List<Order>)
-                isLastPage = (recordDataList.size >= (result.t.totalCount ?: 0))
+                result.t?.orderList?.let {
+                    recordDataList.addAll(it)
+                }
+                isLastPage = (recordDataList.size >= (result.t?.totalCount ?: 0))
                 _lastPage.value = isLastPage
                 _recordResult.value = result
             }
