@@ -65,6 +65,9 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
 
     private val rvAdapter by lazy {
         MoneyTransferRecordAdapter(ItemClickListener {
+            if (detailDialog.isAdded) {
+                detailDialog.dismissAllowingStateLoss()
+            }
             detailDialog.data = it
             detailDialog.show(parentFragmentManager, MoneyTransferRecordFragment::class.simpleName)
         })

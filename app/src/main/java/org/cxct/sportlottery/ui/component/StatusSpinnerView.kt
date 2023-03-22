@@ -53,7 +53,7 @@ class StatusSpinnerView @JvmOverloads constructor(
             0x11
         )
     }
-    private lateinit var selectItem: StatusSheetData
+    private var selectItem: StatusSheetData? = null
     private lateinit var mListPop: ListPopupWindow
 
     var selectedListener: OnClickListener ? = null
@@ -62,7 +62,7 @@ class StatusSpinnerView @JvmOverloads constructor(
         get() = tv_name.tag?.toString()
 
     var selectedCode: String? = ""
-        get() = selectItem.code
+        get() = selectItem?.code
 
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.view_status_spinner, null)
@@ -142,10 +142,12 @@ class StatusSpinnerView @JvmOverloads constructor(
                 id: Long,
             ) {
                 mListPop.dismiss()
-                selectItem = dataList.get(position)
-                setSelectCode(selectItem.code)
-                itemSelectedListener?.invoke(selectItem)
-                setSelectInfo(selectItem)
+                dataList[position]?.let {
+                    selectItem = it
+                    setSelectCode(it.code)
+                    itemSelectedListener?.invoke(it)
+                    setSelectInfo(it)
+                }
             }
         })
     }
@@ -195,9 +197,9 @@ class StatusSpinnerView @JvmOverloads constructor(
         }
     }
 
-    fun setSelectInfo(data: StatusSheetData) {
-        tv_name.tag = data.code
-        tv_name.text = data.showName
+    fun setSelectInfo(data: StatusSheetData?) {
+        tv_name.tag = data?.code
+        tv_name.text = data?.showName
         selectedListener?.onClick(null)
         tv_name.setTextColor(ContextCompat.getColor(context, R.color.color_414655))
     }
