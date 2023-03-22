@@ -366,6 +366,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             }
             betParlayListRefactorAdapter?.apply {
                 BetListRcvUtil.setFitHeight(isOpen, rv_parlay_list, this)
+                notifyDataSetChanged()
             }
             isOpen = !isOpen
         }
