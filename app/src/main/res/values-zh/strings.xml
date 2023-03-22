@@ -281,8 +281,8 @@
     <string name="order_number">注单编号</string>
     <string name="order_number_colon">注单号：</string>
     <string name="bet_type">投注玩法</string>
-    <string name="total_bet_money">总投注额</string>
-    <string name="total_bet_money_colon">总投注额：</string>
+    <string name="total_bet_money">总投注</string>
+    <string name="total_bet_money_colon">总投注：%s</string>
     <string name="status">状态</string>
     <string name="status_colon">状 态：</string>
     <string name="rebates">返 水：</string>

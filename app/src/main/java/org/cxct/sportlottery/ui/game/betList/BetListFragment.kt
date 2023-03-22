@@ -203,7 +203,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
 
         //設定本金, 可贏的systemCurrencySign
         binding.apply {
-            titleAllBet.text = getString(R.string.total_capital, sConfigData?.systemCurrencySign)
+            titleAllBet.text = getString(R.string.total_bet_money_colon, sConfigData?.systemCurrencySign)
             titleWinnableAmount.text = getString(R.string.total_all_win_amount)
         }
     }
