@@ -24,8 +24,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_sport_list.*
 import kotlinx.android.synthetic.main.item_favorite.view.*
 import kotlinx.android.synthetic.main.view_account_balance_2.*
 import kotlinx.coroutines.flow.*
@@ -33,6 +35,7 @@ import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.extentions.rotationAnimation
 import org.cxct.sportlottery.extentions.screenHeight
 import org.cxct.sportlottery.extentions.translationXAnimation
 import org.cxct.sportlottery.network.common.QuickPlayCate
@@ -43,7 +46,10 @@ import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchLiveData
 import org.cxct.sportlottery.network.service.close_play_cate.ClosePlayCateEvent
 import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.common.ExpanableOddsAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.component.StatusSpinnerAdapter
 import org.cxct.sportlottery.ui.game.ServiceDialog
@@ -52,6 +58,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.live.HomeLiveAdapter
 import org.cxct.sportlottery.ui.maintab.live.ItemHomeLiveHolder
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.ui.sport.SportListViewModel
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteAdapter
 import org.cxct.sportlottery.util.DisplayUtil.dpToPx
 import org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
@@ -1192,3 +1199,53 @@ fun View.setBtnEnable(enable: Boolean) {
     this.isEnabled = enable
     this.alpha = if(enable) { 1.0f } else { 0.5f }
 }
+
+fun BaseFragment<SportListViewModel>.showErrorMsgDialog(msg: String) {
+    val dialog = CustomAlertDialog(requireContext())
+    dialog.setTitle(resources.getString(R.string.prompt))
+    dialog.setMessage(msg)
+    dialog.setTextColor(R.color.color_E44438_e44438)
+    dialog.setNegativeButtonText(null)
+    dialog.setPositiveClickListener {
+        viewModel.resetErrorDialogMsg()
+        dialog.dismiss()
+        back()
+    }
+    dialog.setCanceledOnTouchOutside(false)
+    dialog.isCancelable = false
+    dialog.show(childFragmentManager, null)
+}
+
+fun <T> BaseQuickAdapter<T, *>.doOnVisiableRange(block: (Int, T) -> Unit) {
+    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+    val first = layoutManager.findFirstVisibleItemPosition()
+    val count = data.size
+    if (first < 0 || first >= count) {
+        return
+    }
+
+    val last = layoutManager.findLastVisibleItemPosition()
+    if (last < 0 || last >= count) {
+        return
+    }
+
+    for (i in first..last) {
+        block.invoke(i, getItem(i))
+    }
+}
+
+fun View.bindExpanedAdapter(adapter: ExpanableOddsAdapter, block: ((Boolean) -> Unit)? = null) {
+    setOnClickListener {
+        block?.invoke(isSelected)
+        val selected = !isSelected
+        isSelected = selected
+        if (selected) {
+            adapter.collapseAll()
+            rotationAnimation(180f)
+        } else {
+            adapter.expandAll()
+            rotationAnimation(0f)
+        }
+    }
+}
+

@@ -16,7 +16,6 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.ui.game.common.view.OddBtnList
 import org.cxct.sportlottery.ui.game.common.view.OddsButton2
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -844,22 +843,6 @@ class OddButtonPagerViewHolder(
         }
     }
 
-    private fun PlayCateMapItem.getPlayCateName(l: LanguageManager.Language): String {
-        return when (l) {
-            LanguageManager.Language.EN -> {
-                this.playCateNameEn
-            }
-            LanguageManager.Language.VI -> {
-                this.playCateNameVi
-            }
-            LanguageManager.Language.TH -> {
-                this.playCateName
-            }
-            else -> {
-                this.playCateName
-            }
-        }
-    }
 
     private val textSpanned by lazy {
         ForegroundColorSpan(Color.parseColor(if (MultiLanguagesApplication.isNightMode) "#a3a3a3" else "#00181E"))

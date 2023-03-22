@@ -131,6 +131,7 @@
     <string name="home_tab_cs">CORRECT SCORE</string>
     <string name="home_tab_parlay">PARLAY</string>
     <string name="home_tab_outright">OUTRIGHTS</string>
+    <string name="home_tab_end_score">Basketball Ending Card</string>
     <string name="home_tab_at_start">SOON</string>
     <string name="home_tab_eps">PRICE BOOSTS</string>
     <string name="label_all">All</string>
@@ -1337,4 +1338,5 @@
     <string name="N647">Order amount</string>
     <string name="N653">Pending payment</string>
     <string name="J630">Order no.</string>
+
 </resources>

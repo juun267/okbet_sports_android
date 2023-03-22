@@ -269,7 +269,6 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
                     MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
                 }
             }.show(childFragmentManager, PopImageDialog::class.simpleName)
-
         }
 //
         //新版宣傳頁

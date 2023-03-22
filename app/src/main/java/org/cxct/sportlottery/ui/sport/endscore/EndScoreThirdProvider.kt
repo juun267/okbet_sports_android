@@ -1,27 +1,22 @@
-package org.cxct.sportlottery.ui.sport.outright
+package org.cxct.sportlottery.ui.sport.endscore
 
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.LifecycleOwner
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.chad.library.adapter.base.provider.BaseNodeProvider
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import kotlinx.android.synthetic.main.button_odd_outright.view.*
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.outright.odds.CategoryOdds
 import org.cxct.sportlottery.ui.game.widget.OddsOutrightButton
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
-// 冠军列表-赔率
-class OutrightThirdProvider(val adapter: SportOutrightAdapter2,
-                            val lifecycle: LifecycleOwner,
+class EndScoreThirdProvider(val adapter: EndScoreAdapter,
                             val onItemClick:(Int, View, BaseNode) -> Unit,
                             override val itemViewType: Int = 3,
                             override val layoutId: Int = 0): BaseNodeProvider() {
 
-    val padding5 = 5.dp
-    val padding10 = 10.dp
+    private val padding5 = 5.dp
+    private val padding10 = 10.dp
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return BaseViewHolder(OddsOutrightButton(parent.context).apply {
@@ -30,18 +25,19 @@ class OutrightThirdProvider(val adapter: SportOutrightAdapter2,
     }
 
     override fun convert(helper: BaseViewHolder, item: BaseNode) = (helper.itemView as OddsOutrightButton).run  {
-        setupOdd(item as Odd, adapter.oddsType)
-        oddStatus = item.oddState
-        tv_spread.text = ""
-        val parentNode = item.parentNode as CategoryOdds
 
-        val position = parentNode.indexOf(item)  //indexOfCurrentGroup(helper.bindingAdapterPosition)
+        val odd = item as Odd
+        setupOdd(odd, adapter.oddsType)
+        oddStatus = odd.oddState
+        tv_spread.text = ""
+
+        val position = item.parentNode.childNode?.indexOf(item) ?: return@run
 
         if (position < 2) { // 第一列
             if(position % 2 == 0) {
-                setMargins(this, padding10, padding10, padding5, padding5)
+                setMargins(this, padding10, 0, padding5, padding5)
             } else {
-                setMargins(this, padding5, padding10, padding10, padding5)
+                setMargins(this, padding5, 0, padding10, padding5)
             }
 
         } else {
@@ -63,22 +59,8 @@ class OutrightThirdProvider(val adapter: SportOutrightAdapter2,
         lParams.bottomMargin = bottom
     }
 
-    // 所处当前分组的index
-    private fun indexOfCurrentGroup(position: Int): Int {
-
-        repeat(position) {
-            val index = 1 + it
-            if (adapter.getItem(position - index) !is Odd ){
-                return it
-            }
-        }
-        return 0
-    }
-
-
     override fun onClick(helper: BaseViewHolder, view: View, data: BaseNode, position: Int) {
         onItemClick.invoke(position, view, data)
     }
-
 
 }

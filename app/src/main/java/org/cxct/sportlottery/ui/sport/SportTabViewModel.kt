@@ -43,9 +43,6 @@ class SportTabViewModel(
         }
     }
 
-    fun fetchDataFromDataSourceChange() {
-        getMatchData()
-    }
 
     fun getMatchData() {
         viewModelScope.launch {
