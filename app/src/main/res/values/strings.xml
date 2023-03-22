@@ -5,7 +5,7 @@
     <string name="connect_first">Select the internet to connect</string>
     <string name="error_url_fail">Jumping to address error</string>
     <string name="unknown_error">unknown error</string>
-    <string name="error_reading_file">Error reading from file</string>
+    <string name="error_reading_file" translatable="false">Error reading from file</string>
     <string name="message_guest_no_permission">Guest account not be able to access, please register first</string>
     <string name="message_socket_connect">The connection has timed out, please try again.</string>
     <string name="message_network_no_connect">The connection has timed out, please try again.</string>
@@ -131,6 +131,7 @@
     <string name="home_tab_cs">CORRECT SCORE</string>
     <string name="home_tab_parlay">PARLAY</string>
     <string name="home_tab_outright">OUTRIGHTS</string>
+    <string name="home_tab_end_score">Basketball Ending Card</string>
     <string name="home_tab_at_start">SOON</string>
     <string name="home_tab_eps">PRICE BOOSTS</string>
     <string name="label_all">All</string>
@@ -1001,6 +1002,7 @@
     <string name="bet_stake">Stake</string>
     <string name="total_capital">Stake：%s</string>
     <string name="total_win_amount">Winning：</string>
+    <string name="total_all_win_amount">Total winning：</string>
     <string name="delete_bet">Delete</string>
     <string name="delete_bet_all">Delete All</string>
     <string name="btn_login_bet">Login first</string>
@@ -1037,7 +1039,7 @@
     <string name="kyc_contact_service_hilight">Contact Us </string>
     <string name="kyc_verify_first">Please get verified.</string>
     <string name="kyc_go_verify">Verify Now</string>
-    <string name="kyc_you_wait">Please click the " Live Chat " button to process a video call for verification.</string>
+    <string name="kyc_you_wait">Please click the  \"Contact Us\" button to make a video call to complete the real-name authentication</string>
     <string name="kyc_verify_successful">Verify successful </string>
     <string name="kyc_unverified">Unverified</string>
     <string name="kyc_passed">Verified</string>
@@ -1337,4 +1339,12 @@
     <string name="N647">Order amount</string>
     <string name="N653">Pending payment</string>
     <string name="J630">Order no.</string>
+    <string name="N643">Please go to Glife app to deposit</string>
+    <string name="N644">Please go to Glife app to withdraw</string>
+
+    <string name="J801">1X2 &amp; Goals Over</string>
+    <string name="J802">1X2 &amp; Goals Under</string>
+    <string name="J803">1X2 &amp; Both to Score Y</string>
+    <string name="J804">1X2 &amp; Both to Score N</string>
+
 </resources>

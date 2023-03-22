@@ -301,11 +301,8 @@ class LoginViewModel(
     fun checkPassword(password: String): String? {
         val msg = when {
             password.isEmpty() -> LocalUtils.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyLengthRange(password,
-                6,
-                20) -> LocalUtils.getString(R.string.error_register_password)
-//             -> LocalUtils.getString(R.string.error_register_password)
-//             -> LocalUtils.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyPwd(password) ->
+                LocalUtils.getString(R.string.error_register_password)
             else -> null
         }
         _passwordMsg.value = Pair(msg, msg == null)

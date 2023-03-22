@@ -129,6 +129,7 @@
     <string name="home_tab_cs">Cược tỷ số</string>
     <string name="home_tab_parlay">CƯỢC XÂU</string>
     <string name="home_tab_outright">CƯỢC CHUNG CUỘC</string>
+    <string name="home_tab_end_score">Thẻ tỷ số bóng rổ</string>
     <string name="home_tab_at_start">SẮP DIỄN RA</string>
     <string name="home_tab_eps">CƯỢC ĐẶC BIỆT</string>
     <string name="label_all">Tất cả</string>
@@ -985,6 +986,7 @@
     <string name="bet_stake">Cược</string>
     <string name="total_capital">Tiền cược：%s</string> <!--F008-->
     <string name="total_win_amount">Thắng：</string> <!--F005-->
+    <string name="total_all_win_amount">Tổng tiền có thể thắng：</string> <!--F005-->
     <string name="delete_bet">Xóa bỏ</string>
     <string name="delete_bet_all">Xóa tất cả</string>
     <string name="btn_login_bet">Đăng nhập trước</string>
@@ -1253,4 +1255,10 @@
     <string name="N653">Chờ chuyển tiền</string>
     <string name="J630">Số đơn hàng</string>
     <string name="N618">Mã giao dịch phụ</string>
+    <string name="J801">1 X 2 &amp; Trên</string>
+    <string name="J802">1 X 2 &amp; Dưới</string>
+    <string name="J803">1 X 2 &amp; Hai Đội Ghi Bàn-Có</string>
+    <string name="J804">1 X 2 &amp; Hai Đội Ghi Bàn-Không</string>
+    <string name="N643">Mời vào app Glife nạp tiền</string>
+    <string name="N644">Mời vào app Glife rút tiền</string>
 </resources>

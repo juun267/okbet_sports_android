@@ -83,6 +83,7 @@ import org.cxct.sportlottery.ui.game.common.OddButtonPagerAdapter
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
+import timber.log.Timber
 import java.util.*
 
 class SportOddAdapter(private val matchType: MatchType, private val oddBtnCachePool: RecyclerView.RecycledViewPool) :
@@ -1018,6 +1019,8 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
         }
 
         private fun setStatusText(matchInfo: MatchInfo) {
+            Timber.d("statusName18n:${matchInfo.statusName18n}")
+            Timber.d("statusName18n:${matchInfo.statusName18n}")
             itemView.league_odd_match_status.text = when {
                 (TimeUtil.isTimeInPlay(matchInfo.startTime)
                         && matchInfo.status == GameStatus.POSTPONED.code
@@ -1035,6 +1038,7 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
                             ""
                         } else {
                             matchInfo.statusName18n
+
                         }
 
                     } else {

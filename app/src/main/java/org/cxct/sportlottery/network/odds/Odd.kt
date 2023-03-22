@@ -9,7 +9,6 @@ import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.odds.list.OddStateParams
 import org.cxct.sportlottery.network.outright.odds.CategoryOdds
-import org.cxct.sportlottery.network.outright.odds.MatchOdd
 
 /**
  * @author Kevin
@@ -79,26 +78,36 @@ data class Odd(
     @Transient
     override var runnable: Runnable? = null
 
-    var itemViewVisible = true
-
     var outrightCateKey: String? = null
 
     var isExpand = false //投注項是否展開
 
-    var playCateExpand = false //玩法是否展開
-
     //odds有機會一開始推null回來
     var isOnlyEUType = odds == hkOdds && odds == malayOdds && odds == indoOdds && odds != null && hkOdds != null && malayOdds != null && indoOdds!= null
-
-    var belongMatchOdd: MatchOdd? = null //紀錄所屬的MatchOdd
-
-    var leagueExpanded: Boolean = true //所屬MatchOdd是否為展開
 
     @Transient
     override val childNode: MutableList<BaseNode>? = null
 
     // 列表的父节点
     @Transient
-    lateinit var parentNode: CategoryOdds
+    lateinit var parentNode: BaseNode
+
+    fun updateOdd(newOdd: Double) {
+
+        val odd = odds
+        odds = newOdd
+
+        if (odd == null || odd == newOdd) {
+            oddState = OddState.SAME.state
+            return
+        }
+
+        if (odd > newOdd) {
+            oddState = OddState.SMALLER.state
+            return
+        }
+
+        oddState = OddState.LARGER.state
+    }
 
 }

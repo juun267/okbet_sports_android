@@ -13,6 +13,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.LocalUtils
 
 class VerifyStatusFragment :
     BaseSocketFragment<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
@@ -33,7 +34,7 @@ class VerifyStatusFragment :
     }
 
     private fun initObserve() {
-        viewModel.userVerifiedType.observe(viewLifecycleOwner, {
+        viewModel.userVerifiedType.observe(viewLifecycleOwner) {
             hideLoading()
             it.getContentIfNotHandled()?.let { verified ->
                 img_status.isVisible = true
@@ -42,21 +43,23 @@ class VerifyStatusFragment :
                 when (verified) {
                     ProfileActivity.VerifiedType.PASSED.value -> {
                         img_status.setImageResource(R.drawable.ic_done)
-                        txv_status.text = resources.getText(R.string.kyc_verify_successful)
+                        txv_status.text = LocalUtils.getString(R.string.kyc_verify_successful)
                         btn_kyc_verify.setOnClickListener {
                             openService()
                         }
                     }
                     else -> {
                         img_status.setImageResource(R.drawable.ic_waiting_time)
-                        txv_status.text = resources.getText(R.string.kyc_you_wait)
+                        txv_status.text = LocalUtils.getString(R.string.kyc_you_wait)
                         btn_kyc_verify.setOnClickListener {
                             openService()
                         }
                     }
                 }
+                tvContactUs.text = LocalUtils.getString(R.string.kyc_contact_service_hilight)
+                tvCustomer.text = LocalUtils.getString(R.string.kyc_contact_service)
             }
-        })
+        }
     }
 
     private fun initData() {
@@ -68,11 +71,11 @@ class VerifyStatusFragment :
             JumpUtil.toInternalWeb(
                 btn_kyc_verify.context,
                 Constants.getKYVUrl(btn_kyc_verify.context),
-                resources.getString(R.string.identity)
+                LocalUtils.getString(R.string.identity)
             )
         }
 
-        btn_service.setOnClickListener {
+        tvCustomer.setOnClickListener {
             openService()
         }
     }

@@ -4,7 +4,6 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsOdd
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.proguard.KeepMembers
-import org.cxct.sportlottery.ui.common.PlayCateMapItem
 
 @KeepMembers
 interface MatchOdd {
@@ -15,6 +14,5 @@ interface MatchOdd {
     val oddsSort: String?
     var quickPlayCateList: MutableList<QuickPlayCate>?
     val oddsEps: EpsOdd?
-    var playCateMappingList: List<PlayCateMapItem>?
 
 }

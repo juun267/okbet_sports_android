@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.item_listview_settlement_league.view.*
 import kotlinx.android.synthetic.main.item_listview_settlement_league_all.*
 import kotlinx.android.synthetic.main.item_listview_settlement_league_all.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.StatusSheetData
@@ -37,7 +38,7 @@ class ResultsSettlementActivity :
         const val EXTRA_MATCH_ID = "EXTRA_MATCH_ID"
     }
 
-    lateinit var settlementLeagueBottomSheet: BottomSheetDialog
+    private val settlementLeagueBottomSheet by lazy { BottomSheetDialog(this@ResultsSettlementActivity) }
     private lateinit var settlementLeagueAdapter: SettlementLeagueAdapter
     private var bottomSheetLeagueItemDataList = mutableListOf<LeagueItemData>()
 
@@ -226,8 +227,8 @@ class ResultsSettlementActivity :
             //如intent有傳gameType，改為選中此gameTypeCode
             gameTypeSpinnerList.find { it.code == gameType }
         } else {
-            //初始化當前選中第一項
-            gameTypeSpinnerList.firstOrNull()
+            //初始化當前選中篮球
+            gameTypeSpinnerList.find { it.code == GameType.BK.key }
         }
         status_game_type.setItemData(gameTypeSpinnerList)
         spinnerItem?.let {
@@ -254,7 +255,6 @@ class ResultsSettlementActivity :
     private fun settleLeagueBottomSheet() {
         tv_league.text = getString(R.string.league)
         val bottomSheetView = layoutInflater.inflate(R.layout.dialog_bottom_sheet_settlement_league_type, null)
-        settlementLeagueBottomSheet = BottomSheetDialog(this@ResultsSettlementActivity)
         settlementLeagueBottomSheet.apply {
             setContentView(bottomSheetView)
             settlementLeagueAdapter = SettlementLeagueAdapter(lv_league.context, mutableListOf()) //先預設為空, 等待api獲取資料

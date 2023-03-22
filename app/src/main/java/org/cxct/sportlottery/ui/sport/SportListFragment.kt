@@ -1,14 +1,11 @@
 package org.cxct.sportlottery.ui.sport
 
 import android.annotation.SuppressLint
-import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.distinctUntilChanged
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,7 +31,6 @@ import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
-import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
 import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.common.SocketLinearManager
@@ -56,23 +52,9 @@ import java.util.*
  */
 class SportListFragment :
     BaseBottomNavigationFragment<SportListViewModel>(SportListViewModel::class) {
-    companion object {
-        fun newInstance(
-            matchType: MatchType? = MatchType.IN_PLAY,
-            gameType: String?,
-            outrightLeagueId: String? = null,
-        ): SportListFragment {
-            val args = Bundle()
-            args.putSerializable("matchType", matchType)
-            args.putString("gameType", gameType)
-            outrightLeagueId?.let {
-                args.putString("outrightLeagueId", outrightLeagueId)
-            }
-            val fragment = SportListFragment()
-            fragment.arguments = args
-            return fragment
-        }
-    }
+
+
+    override fun layoutId() = R.layout.fragment_sport_list
 
     //    private val args: GameV3FragmentArgs by navArgs()
     private val matchType by lazy {
@@ -86,14 +68,14 @@ class SportListFragment :
             }
             field = value
         }
-    private var mView: View? = null
     private var mCalendarSelected = false //紀錄日期圖示選中狀態
     var leagueIdList = mutableListOf<String>()
 
     private val gameTypeAdapter by lazy {
         GameTypeAdapter().apply {
             gameTypeListener = GameTypeListener {
-
+//                val time1 = System.currentTimeMillis()
+//                Timber.d("当前时间")
                 if (!it.isSelected) {
                     //切換球種，清除日期記憶
                     viewModel.tempDatePosition = 0
@@ -114,9 +96,11 @@ class SportListFragment :
                 //切換球種後要重置位置
                 loading()
                 clearSubscribeChannels()
-                viewModel.switchGameType(it)
+                viewModel.switchGameType(matchType, it)
                 iv_arrow.isSelected = true
                 lin_filter.isVisible = gameType != GameType.ALL.key
+//                val time2 = System.currentTimeMillis()
+//                Timber.d("时间差:${time2 - time1}")
             }
 
             thirdGameListener = ThirdGameListener {
@@ -231,20 +215,8 @@ class SportListFragment :
         if (timer == null) startTimer()
     }
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        mView = inflater.inflate(R.layout.fragment_sport_list, container, false)
-        return mView
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onBindView(view: View) {
         EventBusUtil.targetLifecycle(this)
-        //打开指定球类
-        viewModel.matchType = matchType
         arguments?.getString("gameType")?.let {
             gameType = it
             viewModel.gameType = it
@@ -425,24 +397,10 @@ class SportListFragment :
                 return@observe
             }
 
-            val dialog = CustomAlertDialog(requireContext())
-            dialog.setTitle(resources.getString(R.string.prompt))
-            dialog.setMessage(it)
-            dialog.setTextColor(R.color.color_E44438_e44438)
-            dialog.setNegativeButtonText(null)
-            dialog.setPositiveClickListener {
-                viewModel.resetErrorDialogMsg()
-                dialog.dismiss()
-                back()
-            }
-            dialog.setCanceledOnTouchOutside(false)
-            dialog.isCancelable = false
-            dialog.show(childFragmentManager, null)
+            showErrorMsgDialog(it)
         }
 
         viewModel.sportMenuResult.distinctUntilChanged().observe(this.viewLifecycleOwner) {
-
-
 
             when (matchType) {
                 MatchType.IN_PLAY -> {
@@ -824,7 +782,7 @@ class SportListFragment :
                 it.isSelected = true
                 gameType = it.code
                 sportLeagueAdapter.setPreloadItem()
-                viewModel.switchGameType(it)
+                viewModel.switchGameType(matchType, it)
             }
         } else {
             (gameTypeList.find { it.code == gameType } ?: gameTypeList.first()).let {
@@ -832,7 +790,7 @@ class SportListFragment :
                 if (!it.isSelected) {
                     it.isSelected = true
                     sportLeagueAdapter.setPreloadItem()
-                    viewModel.switchGameType(it)
+                    viewModel.switchGameType(matchType, it)
                 }
             }
         }
@@ -941,6 +899,7 @@ class SportListFragment :
         leagueIdList.clear()
         leagueList.forEach { leagueIdList.add(it.id) }
         viewModel.getGameHallList(
+            matchType,
             isReloadDate = true,
             isReloadPlayCate = false,
             isLastSportType = true,

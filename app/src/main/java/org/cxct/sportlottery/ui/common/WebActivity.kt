@@ -215,16 +215,18 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             ) {
                 //此方法是为了处理在5.0以上Https的问题，必须加上
                 //handler.proceed()
-                val builder: AlertDialog.Builder = AlertDialog.Builder(applicationContext)
-                builder.setMessage(android.R.string.httpErrorUnsupportedScheme)
-                builder.setPositiveButton(
-                    "continue"
-                ) { dialog, which -> handler.proceed() }
-                builder.setNegativeButton(
-                    "cancel"
-                ) { dialog, which -> handler.cancel() }
-                val dialog: AlertDialog = builder.create()
-                dialog.show()
+                if (isFinishing)
+                    return
+                AlertDialog.Builder(this@WebActivity)
+                    .setMessage(android.R.string.httpErrorUnsupportedScheme)
+                    .setPositiveButton(
+                        "continue"
+                    ) { dialog, which -> handler.proceed() }
+                    .setNegativeButton(
+                        "cancel"
+                    ) { dialog, which -> handler.cancel() }
+                    .create()
+                    .show()
 
             }
         }

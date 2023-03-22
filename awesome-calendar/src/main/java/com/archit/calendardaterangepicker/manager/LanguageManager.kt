@@ -2,9 +2,6 @@ package com.archit.calendardaterangepicker.manager
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Build
-import android.os.LocaleList
-import android.util.Log
 import java.util.*
 
 object LanguageManager {
@@ -13,7 +10,7 @@ object LanguageManager {
 
     fun getSelectLanguage(context: Context): Language {
         val savedLanguage = Language.values()
-            .firstOrNull { it.key.equals(SPUtil.getInstance(context).getSelectLanguage()) }
+            .firstOrNull { it.key.equals(SPUtilLang.getInstance(context).getSelectLanguage()) }
 
         if (savedLanguage != null) {
             return savedLanguage
@@ -42,16 +39,13 @@ object LanguageManager {
     }
 }
 
-object SPUtil {
+object SPUtilLang {
     private const val SP_NAME = "language_setting"
     private const val TAG_LANGUAGE = "language_select"
-
-    //上架市场，隐藏功能的开关
-    const val MARKET_SWITCH = "market_switch"
     private var mSharedPreferences: SharedPreferences? = null
     var systemCurrentLocal: Locale = Locale.ENGLISH
 
-    fun getInstance(context: Context?): SPUtil {
+    fun getInstance(context: Context?): SPUtilLang {
         if (mSharedPreferences == null)
             mSharedPreferences = context?.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
         return this
@@ -75,15 +69,5 @@ object SPUtil {
 
     fun getString(key: String, defaultValue: String? = null): String? {
         return mSharedPreferences?.getString(key, defaultValue)
-    }
-
-    fun saveMarketSwitch(value: Boolean) {
-        mSharedPreferences?.edit()
-            ?.putBoolean(MARKET_SWITCH, value)
-            ?.apply()
-    }
-
-    fun getMarketSwitch(): Boolean {
-        return mSharedPreferences?.getBoolean(MARKET_SWITCH, false) == true
     }
 }

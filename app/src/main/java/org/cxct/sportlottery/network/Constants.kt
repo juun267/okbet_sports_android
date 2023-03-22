@@ -210,7 +210,7 @@ object Constants {
 
     //代理加盟
     fun getAffiliateUrl(context: Context): String {
-        return "${getH5BaseUrl()}sports-rule/#/${getLanguageTag(context)}v2/affiliate?platform=${
+        return "${getH5BaseUrl()}sports-rule/#/${getLanguageTag(context)}v2/agent-h5?platform=${
             context.getString(
                 R.string.app_name
             )

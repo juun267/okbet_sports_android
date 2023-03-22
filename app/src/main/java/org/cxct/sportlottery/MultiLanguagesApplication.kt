@@ -14,6 +14,7 @@ import com.appsflyer.AppsFlyerLib
 import com.didichuxing.doraemonkit.DoKit
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import me.jessyan.autosize.AutoSize
 import org.cxct.sportlottery.common.ResourceWrapper
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.Constants
@@ -23,7 +24,6 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.dialog.AgeVerifyDialog
 import org.cxct.sportlottery.ui.dialog.promotion.PromotionPopupDialog
-import org.cxct.sportlottery.ui.favorite.MyFavoriteViewModel
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.ui.finance.FinanceViewModel
 import org.cxct.sportlottery.ui.game.betList.BetListViewModel
@@ -133,7 +133,6 @@ class MultiLanguagesApplication : Application() {
         viewModel { VipViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { AccountHistoryViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { TransactionStatusViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { MyFavoriteViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { NewsViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { RedEnveLopeModel(get(), get(), get(), get(), get(), get()) }
         viewModel { MainTabViewModel(get(), get(), get(), get(), get(), get()) }
@@ -147,7 +146,6 @@ class MultiLanguagesApplication : Application() {
         viewModel { ForgetViewModel(get(), get(), get(), get()) }
         viewModel { BetListViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { AuthViewModel(get(), get(), get(), get(), get(), get(), get()) }
-
     }
 
     private val repoModule = module {
@@ -197,7 +195,7 @@ class MultiLanguagesApplication : Application() {
         mInstance = this
         AppManager.init(this)
         myPref = getDefaultSharedPreferences()
-
+        AutoSize.initCompatMultiProcess(this)
         TimeZone.setDefault(timeZone)
         startKoin {
             androidContext(this@MultiLanguagesApplication)
