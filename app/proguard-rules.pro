@@ -96,7 +96,6 @@
 #kotlin  与Moshi反序列化有关（@kotlin.Metadata涉及太广，应尽量降低keep范围）
 -keepclasseswithmembers @kotlin.Metadata class org.cxct.sportlottery.network.** { *; }
 -keepclasseswithmembers @kotlin.Metadata class org.cxct.sportlottery.ui.** { *; }
--keepclasseswithmembers @kotlin.Metadata class org.cxct.sportlottery.util.** { *; }
 
 #====== fastjson ============ start
 -keepclassmembers class com.alibaba.fastjson.** { *; }
