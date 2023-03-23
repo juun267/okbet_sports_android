@@ -4,10 +4,10 @@ import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchInfo
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-import org.cxct.sportlottery.ui.menu.OddsType
 
 class ItemHandicapAdapter(val lifecycleOwner: LifecycleOwner, private val homeRecommendListener: HomeRecommendListener) :
     RecyclerView.Adapter<ItemHandicapHolder>() {

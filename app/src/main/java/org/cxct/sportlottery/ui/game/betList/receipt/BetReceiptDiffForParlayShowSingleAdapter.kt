@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.extentions.gone
 import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.bet.add.betReceipt.MatchOdd
@@ -24,7 +25,6 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.PlayCate.Companion.needShowSpread
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 
 class BetReceiptDiffForParlayShowSingleAdapter : ListAdapter<MatchOdd, RecyclerView.ViewHolder>(BetReceiptForParlayShowSingleCallback()) {

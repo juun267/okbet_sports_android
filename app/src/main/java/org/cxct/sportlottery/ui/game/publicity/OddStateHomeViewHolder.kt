@@ -6,7 +6,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
-import org.cxct.sportlottery.enum.OddState
+import org.cxct.sportlottery.common.OddState
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.game.widget.OddsButtonHome
 

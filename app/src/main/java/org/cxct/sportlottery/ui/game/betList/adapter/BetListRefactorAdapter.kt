@@ -4,22 +4,20 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.BetStatus
+import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.databinding.ContentBetInfoItemV32Binding
-import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-import org.cxct.sportlottery.ui.game.betList.adapter.BetListRefactorAdapter.BetRvType.PARLAY
-import org.cxct.sportlottery.ui.game.betList.adapter.BetListRefactorAdapter.BetRvType.PARLAY_SINGLE
-import org.cxct.sportlottery.ui.game.betList.adapter.BetListRefactorAdapter.BetRvType.SINGLE
+import org.cxct.sportlottery.ui.game.betList.adapter.BetListRefactorAdapter.BetRvType.*
+import org.cxct.sportlottery.ui.game.betList.listener.OnItemClickListener
+import org.cxct.sportlottery.ui.game.betList.listener.OnSelectedPositionListener
+import org.cxct.sportlottery.util.KeyboardView
 import org.cxct.sportlottery.ui.game.betList.holder.BatchParlayConnectViewHolder as BpcVh
 import org.cxct.sportlottery.ui.game.betList.holder.BatchSingleInMoreOptionViewHolder as bsiMoVh
 import org.cxct.sportlottery.ui.game.betList.holder.BetInfoItemViewHolder as BiVh
 import org.cxct.sportlottery.ui.game.betList.holder.OddsChangedWarnViewHolder as OcWvH
-import org.cxct.sportlottery.ui.game.betList.listener.OnItemClickListener
-import org.cxct.sportlottery.ui.game.betList.listener.OnSelectedPositionListener
-import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.KeyboardView
 
 class BetListRefactorAdapter(
     private val keyboardView: KeyboardView,

@@ -6,8 +6,6 @@ import kotlinx.android.synthetic.main.activity_bank.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.util.LogUtil
-import timber.log.Timber
 
 /**
  * @app_destination 提款設置

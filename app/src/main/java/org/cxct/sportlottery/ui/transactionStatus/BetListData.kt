@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.ui.transactionStatus
 
 import org.cxct.sportlottery.network.bet.list.Row
-import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.common.OddsType
 
 data class BetListData(
     val row: List<Row>,

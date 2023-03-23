@@ -14,14 +14,14 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.enum.BetStatus
-import org.cxct.sportlottery.enum.OddState
-import org.cxct.sportlottery.enum.SpreadState
+import org.cxct.sportlottery.common.BetStatus
+import org.cxct.sportlottery.common.OddState
+import org.cxct.sportlottery.common.OddsType
+import org.cxct.sportlottery.common.SpreadState
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate.Companion.needShowSpread
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 

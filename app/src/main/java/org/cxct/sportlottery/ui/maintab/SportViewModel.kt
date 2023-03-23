@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.MultiLanguagesApplication
-import org.cxct.sportlottery.enum.OddSpreadForSCO
+import org.cxct.sportlottery.common.OddSpreadForSCO
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.common.*

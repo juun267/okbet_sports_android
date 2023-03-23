@@ -1,9 +1,6 @@
 package org.cxct.sportlottery.ui.base
 
 import android.app.Application
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
-import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.service.user_notice.UserNotice
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository

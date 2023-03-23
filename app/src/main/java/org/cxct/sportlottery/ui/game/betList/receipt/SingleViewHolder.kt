@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_match_receipt.view.*
 import kotlinx.android.synthetic.main.view_match_receipt_bet.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.extentions.gone
 import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
@@ -15,7 +16,6 @@ import org.cxct.sportlottery.network.bet.add.betReceipt.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 
 class SingleViewHolder private constructor(itemView: View) :

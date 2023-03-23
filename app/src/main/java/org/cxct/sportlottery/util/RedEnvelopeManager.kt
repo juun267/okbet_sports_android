@@ -97,7 +97,7 @@ class RedEnvelopeManager {
                         }
                     } else if (startTimeDiff <= 0 && endTimeDiff >= 0) {
                         showedRedenpId = redenpId
-                        redEnvelopeReceiveDialog = RedEnvelopeReceiveDialog(activity, redenpId)
+                        redEnvelopeReceiveDialog = RedEnvelopeReceiveDialog( redenpId)
                         GlobalScope.launch(Dispatchers.Main) {
                             redEnvelopeReceiveDialog?.show(
                                 activity!!.supportFragmentManager,

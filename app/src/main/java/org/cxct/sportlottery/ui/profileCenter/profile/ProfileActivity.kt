@@ -14,7 +14,7 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.db.entity.UserInfo
+import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.index.config.VerifySwitchType
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest

@@ -19,6 +19,7 @@ import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.setVisibilityByMarketSwitch
 
 class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     companion object {
@@ -105,6 +106,7 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         iv_setting.setOnClickListener {
             startActivity(Intent(requireActivity(), SettingCenterActivity::class.java))
         }
+        lin_game_rule.setVisibilityByMarketSwitch()
         lin_game_rule.setOnClickListener {
             JumpUtil.toInternalWeb(
                 requireContext(),

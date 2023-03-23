@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.hot_handicap_include.*
 import kotlinx.android.synthetic.main.hot_live_match_include.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.common.BetStatus
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.extentions.*
 import org.cxct.sportlottery.network.Constants
@@ -821,12 +821,16 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
         //热门电子游戏
         rv_egame.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         rv_egame.adapter = hotElectronicAdapter
-        hotElectronicAdapter.setOnItemClickListener{_, _, position ->
+        hotElectronicAdapter.setOnItemClickListener{ _, _, position ->
+            //谷歌市场屏蔽点击
+            if (SPUtil.getMarketSwitch())
+                return@setOnItemClickListener
             //点击跳转到哪里
             if (viewModel.isLogin.value != true) {
                 getMainTabActivity().showLoginNotify()
             } else {
-                viewModel.requestEnterThirdGame(hotElectronicAdapter.data[position], this@MainHomeFragment)
+                viewModel.requestEnterThirdGame(hotElectronicAdapter.data[position],
+                    this@MainHomeFragment)
             }
         }
 
@@ -835,11 +839,15 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
         rv_chess.addItemDecoration(SpaceItemDecoration(rv_chess.context, R.dimen.recyclerview_news_item_dec_spec))
         rv_chess.adapter = homeChessAdapter
         homeChessAdapter.setOnItemClickListener { _, _, position ->
+            //谷歌市场屏蔽点击
+            if (SPUtil.getMarketSwitch())
+                return@setOnItemClickListener
             //点击跳转到哪里
             if (viewModel.isLogin.value != true) {
                 getMainTabActivity().showLoginNotify()
             } else {
-                viewModel.requestEnterThirdGame(homeChessAdapter.data[position], this@MainHomeFragment)
+                viewModel.requestEnterThirdGame(homeChessAdapter.data[position],
+                    this@MainHomeFragment)
             }
         }
 

@@ -7,7 +7,7 @@
 //import org.cxct.sportlottery.network.odds.list.LeagueOdd
 //import org.cxct.sportlottery.network.odds.list.MatchOdd
 //import org.cxct.sportlottery.ui.game.common.LeagueOddListener
-//import org.cxct.sportlottery.ui.menu.OddsType
+//import org.cxct.sportlottery.enum.OddsType
 //import org.cxct.sportlottery.ui.sport.vh.SportLeagueVH
 //import org.cxct.sportlottery.ui.sport.vh.SportMatchVH
 //import org.cxct.sportlottery.widget.expandablerecyclerview.ExpandableAdapter

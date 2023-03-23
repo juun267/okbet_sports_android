@@ -29,6 +29,7 @@ import androidx.viewpager2.widget.ViewPager2
 import kotlinx.android.synthetic.main.content_odds_detail_list_team.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.network.common.ComparePlayCate
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.PlayCate
@@ -38,7 +39,6 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.common.IndicatorView
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount

@@ -10,6 +10,7 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterViewModel
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.setVisibilityByMarketSwitch
 
 /**
  * @app_destination 关于我们
@@ -30,10 +31,15 @@ class AboutUsFragment : BaseFragment<HelpCenterViewModel>(HelpCenterViewModel::c
             JumpUtil.toInternalWeb(requireContext(),Constants.getAboutUsUrl(requireContext()),getString(R.string.about_us))
         }
         linear_responsible.setOnClickListener {
-            JumpUtil.toInternalWeb(requireContext(), Constants.getDutyRuleUrl(requireContext()), getString(R.string.responsible))
+            JumpUtil.toInternalWeb(requireContext(),
+                Constants.getDutyRuleUrl(requireContext()),
+                getString(R.string.responsible))
         }
-        linear_terms.setOnClickListener{
-            JumpUtil.toInternalWeb(requireContext(),Constants.getAgreementRuleUrl(requireContext()),getString(R.string.terms_conditions))
+        linear_terms.setVisibilityByMarketSwitch()
+        linear_terms.setOnClickListener {
+            JumpUtil.toInternalWeb(requireContext(),
+                Constants.getAgreementRuleUrl(requireContext()),
+                getString(R.string.terms_conditions))
         }
         linear_privacy.setOnClickListener {
             JumpUtil.toInternalWeb(requireContext(),Constants.getPrivacyRuleUrl(requireContext()),getString(R.string.privacy_policy))
