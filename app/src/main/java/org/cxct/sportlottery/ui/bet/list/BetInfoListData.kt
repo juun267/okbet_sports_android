@@ -1,12 +1,12 @@
 package org.cxct.sportlottery.ui.bet.list
 
+import org.cxct.sportlottery.enum.OddsType
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.bet.settledDetailList.BetInfo
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.ui.base.ChannelType
-import org.cxct.sportlottery.ui.menu.OddsType
 
 class BetInfoListData(
     var matchOdd: MatchOdd,

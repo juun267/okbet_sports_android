@@ -34,7 +34,7 @@
 //import org.cxct.sportlottery.ui.game.common.OddButtonListener
 //import org.cxct.sportlottery.ui.game.common.OddButtonPagerAdapter
 //import org.cxct.sportlottery.ui.game.common.view.OddsButton2
-//import org.cxct.sportlottery.ui.menu.OddsType
+//import org.cxct.sportlottery.enum.OddsType
 //import org.cxct.sportlottery.util.*
 //import org.cxct.sportlottery.widget.expandablerecyclerview.ExpandableAdapter
 //import java.util.*

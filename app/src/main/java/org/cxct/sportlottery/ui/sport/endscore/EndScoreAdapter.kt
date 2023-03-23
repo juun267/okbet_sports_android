@@ -8,7 +8,7 @@ import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.ui.common.ExpanableOddsAdapter
-import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.enum.OddsType
 import org.cxct.sportlottery.util.SocketUpdateUtil.updateOddStatus
 
 // 篮球末位比分

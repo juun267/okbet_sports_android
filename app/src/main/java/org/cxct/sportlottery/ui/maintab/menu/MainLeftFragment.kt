@@ -20,7 +20,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.maintab.LanguageAdapter
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.enum.OddsType
 import org.cxct.sportlottery.util.*
 
 class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {

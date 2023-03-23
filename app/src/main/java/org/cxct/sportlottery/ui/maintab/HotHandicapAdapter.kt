@@ -13,7 +13,7 @@ import org.cxct.sportlottery.adapter.recyclerview.BindingVH
 import org.cxct.sportlottery.databinding.ItemHotHandicapBinding
 import org.cxct.sportlottery.network.third_game.third_games.hot.HandicapData
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.enum.OddsType
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.setLeagueLogo
 

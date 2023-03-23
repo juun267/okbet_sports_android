@@ -1,12 +1,12 @@
 package org.cxct.sportlottery.ui.game.betList.holder
 
 import android.view.View
+import org.cxct.sportlottery.enum.OddsType
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.game.betList.listener.OnItemClickListener
 import org.cxct.sportlottery.ui.game.betList.listener.OnSelectedPositionListener
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.KeyboardView
 
 //串關

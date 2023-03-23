@@ -18,7 +18,7 @@ import org.cxct.sportlottery.network.odds.list.MatchLiveData
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.ui.game.widget.OddsButtonHome
-import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.enum.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.widget.OKVideoPlayer
 
