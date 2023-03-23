@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.enum.OddsType
+import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.extentions.gone
 import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.bet.add.betReceipt.MatchOdd

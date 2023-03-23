@@ -274,12 +274,9 @@
             <LinearLayout
                 android:id="@+id/lin_wallet_operation"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginHorizontal="@dimen/margin_5"
-                android:layout_marginTop="-6dp"
-                android:paddingHorizontal="12dp"
-                android:background="@drawable/bg_person_center_deposit"
-                android:elevation="2dp"
+                android:layout_height="80dp"
+                android:layout_marginHorizontal="@dimen/margin_15"
+                android:background="@drawable/bg_white_radius_10"
                 android:gravity="center"
                 android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@id/block_amount">
@@ -288,7 +285,6 @@
                     android:id="@+id/btn_recharge"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="-5dp"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="horizontal">
@@ -331,14 +327,12 @@
                 <View
                     android:layout_width="1dp"
                     android:layout_height="40dp"
-                    android:layout_marginTop="-5dp"
                     android:background="@color/color_2B2B2B_e2e2e2" />
 
                 <LinearLayout
                     android:id="@+id/btn_withdraw"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="-5dp"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="horizontal">
@@ -382,18 +376,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginHorizontal="@dimen/margin_5"
-                android:layout_marginTop="-5dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/margin_12">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_person_center_list"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="10dp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="20dp">
+                    android:background="@drawable/bg_white_radius_10"
+                    android:layout_marginHorizontal="@dimen/margin_15"
+                    android:orientation="vertical">
 
 
                     <LinearLayout
@@ -402,7 +393,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:gravity="center"
-                        android:minHeight="48dp"
+                        android:minHeight="@dimen/margin_50"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -467,7 +458,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:gravity="center"
-                        android:minHeight="48dp"
+                        android:minHeight="@dimen/margin_50"
                         android:orientation="horizontal"
                         android:visibility="visible">
 
@@ -516,7 +507,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:gravity="center"
-                        android:minHeight="48dp"
+                        android:minHeight="@dimen/margin_50"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -574,7 +565,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:gravity="center"
-                        android:minHeight="48dp"
+                        android:minHeight="@dimen/margin_50"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -624,7 +615,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:gravity="center"
-                        android:minHeight="48dp"
+                        android:minHeight="@dimen/margin_50"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -673,7 +664,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:gravity="center"
-                        android:minHeight="48dp"
+                        android:minHeight="@dimen/margin_50"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -785,7 +776,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:gravity="center"
-                        android:minHeight="48dp"
+                        android:minHeight="@dimen/margin_50"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -834,7 +825,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:gravity="center"
-                        android:minHeight="48dp"
+                        android:minHeight="@dimen/margin_50"
                         android:orientation="horizontal"
                         android:visibility="visible">
 
@@ -883,7 +874,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:gravity="center"
-                        android:minHeight="48dp"
+                        android:minHeight="@dimen/margin_50"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -976,7 +967,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:gravity="center"
-                        android:minHeight="48dp"
+                        android:minHeight="@dimen/margin_50"
                         android:orientation="horizontal"
                         android:visibility="visible">
 
@@ -1025,7 +1016,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:gravity="center"
-                        android:minHeight="48dp"
+                        android:minHeight="@dimen/margin_50"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -1126,7 +1117,7 @@
                             android:layout_height="match_parent"
                             android:background="@null"
                             android:gravity="center"
-                            android:minHeight="48dp"
+                            android:minHeight="@dimen/margin_50"
                             android:orientation="horizontal"
                             android:visibility="gone">
 
@@ -1167,209 +1158,15 @@
                                 android:background="@color/color_E3E8EE" />
                         </RelativeLayout>
 
-
-                    </LinearLayout>
-
-
-                        <LinearLayout
-                            android:id="@+id/btn_withdrawal_setting"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@null"
-                            android:gravity="center"
-                            android:minHeight="48dp"
-                            android:orientation="horizontal"
-                            android:visibility="gone">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:contentDescription="@null"
-                            android:src="@drawable/ic_profile_center_withdrawal_setting" />
-
-                        <RelativeLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="14dp"
-                            android:layout_weight="1">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_weight="1"
-                                android:text="@string/withdraw_setting"
-                                android:textColor="@color/color_6C7BA8"
-                                android:textSize="@dimen/textSize14sp" />
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:contentDescription="@null"
-                                android:src="@drawable/icon_arrow07" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/margin_0.5"
-                                android:layout_alignParentBottom="true"
-                                android:background="@color/color_E3E8EE" />
-                        </RelativeLayout>
-                    </LinearLayout>
-
-
-                        <LinearLayout
-                            android:id="@+id/btn_news_center"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@null"
-                            android:gravity="center"
-                            android:minHeight="48dp"
-                            android:orientation="horizontal"
-                            android:visibility="gone">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:contentDescription="@null"
-                            android:src="@drawable/ic_news_center" />
-
-                        <RelativeLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="14dp"
-                            android:layout_weight="1">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_weight="1"
-                                android:text="@string/news_center"
-                                android:textColor="@color/color_6C7BA8"
-                                android:textSize="@dimen/textSize14sp" />
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:contentDescription="@null"
-                                android:src="@drawable/icon_arrow07" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/margin_0.5"
-                                android:layout_alignParentBottom="true"
-                                android:background="@color/color_E3E8EE" />
-                        </RelativeLayout>
-                    </LinearLayout>
-
-
-                        <LinearLayout
-                            android:id="@+id/btn_member_level"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@null"
-                            android:gravity="center"
-                            android:minHeight="48dp"
-                            android:orientation="horizontal"
-                            tools:visibility="gone">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:contentDescription="@null"
-                            android:src="@drawable/ic_member_level" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/member_level"
-                            android:textColor="@color/color_BBBBBB_333333"
-                            android:textSize="@dimen/textSize14sp" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="14dp"
-                            android:contentDescription="@null"
-                            android:src="@drawable/icon_arrow07" />
-
-                    </LinearLayout>
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_10"
-                    android:background="@drawable/bg_person_center_deposit"
-                    android:orientation="vertical"
-                    android:padding="@dimen/margin_10"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginBottom="8dp"
-                        android:text="@string/sport_relative"
-                        android:textColor="@color/color_AEAEAE_404040"
-                        android:textSize="@dimen/textSize14sp"
-                        android:textStyle="bold" />
-
-
-                    <LinearLayout
-                        android:id="@+id/btn_game_rule"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:gravity="center"
-                        android:minHeight="48dp"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:contentDescription="@null"
-                            android:src="@drawable/ic_menu_game_rule" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/game_rule"
-                            android:textColor="@color/color_BBBBBB_333333"
-                            android:textSize="@dimen/textSize14sp" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="14dp"
-                            android:contentDescription="@null"
-                            android:src="@drawable/icon_arrow07" />
-
                     </LinearLayout>
 
                 </LinearLayout>
 
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_20"
+                    android:layout_marginVertical="@dimen/margin_10"
                     android:gravity="center">
 
                     <View

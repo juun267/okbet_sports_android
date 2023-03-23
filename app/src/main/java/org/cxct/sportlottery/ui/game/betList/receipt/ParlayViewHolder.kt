@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_parlay_receipt.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.enum.OddsType
+import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.extentions.gone
 import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult

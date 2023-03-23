@@ -6,7 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.enum.OddsType
+import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.FavoriteType

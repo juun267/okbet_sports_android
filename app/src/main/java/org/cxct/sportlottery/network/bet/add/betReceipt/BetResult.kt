@@ -3,7 +3,7 @@ package org.cxct.sportlottery.network.bet.add.betReceipt
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import org.cxct.sportlottery.enum.OddsType
+import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.proguard.KeepMembers
 

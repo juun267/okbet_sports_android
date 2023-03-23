@@ -4,7 +4,7 @@ package org.cxct.sportlottery.util
 import android.content.Context
 import android.widget.TextView
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.enum.OddSpreadForSCOCompare
+import org.cxct.sportlottery.common.OddSpreadForSCOCompare
 import org.cxct.sportlottery.network.common.PlayCate
 
 

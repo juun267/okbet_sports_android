@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.list.BetListRequest
 import org.cxct.sportlottery.network.bet.settledDetailList.BetSettledDetailListRequest
@@ -22,7 +23,6 @@ import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.common.StatusSheetData
-import org.cxct.sportlottery.enum.OddsType
 import org.cxct.sportlottery.ui.transactionStatus.BetListData
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LocalUtils

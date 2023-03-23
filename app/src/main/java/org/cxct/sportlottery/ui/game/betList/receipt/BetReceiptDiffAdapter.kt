@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.item_match_receipt.view.*
 import kotlinx.android.synthetic.main.item_parlay_receipt.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import org.cxct.sportlottery.enum.OddsType
+import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.service.order_settlement.SportBet

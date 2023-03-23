@@ -11,8 +11,8 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_v3.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.enum.BetStatus
-import org.cxct.sportlottery.enum.OddsType
+import org.cxct.sportlottery.common.BetStatus
+import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.LoginRepository

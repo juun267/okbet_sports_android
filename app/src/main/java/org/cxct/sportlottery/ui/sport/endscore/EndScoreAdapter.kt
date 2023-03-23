@@ -2,13 +2,13 @@ package org.cxct.sportlottery.ui.sport.endscore
 
 import android.view.View
 import com.chad.library.adapter.base.entity.node.BaseNode
+import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.extentions.isEmptyStr
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.ui.common.ExpanableOddsAdapter
-import org.cxct.sportlottery.enum.OddsType
 import org.cxct.sportlottery.util.SocketUpdateUtil.updateOddStatus
 
 // 篮球末位比分

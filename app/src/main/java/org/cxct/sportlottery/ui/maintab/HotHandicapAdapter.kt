@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.maintab
 
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
@@ -10,10 +9,10 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.adapter.recyclerview.BindingAdapter
 import org.cxct.sportlottery.adapter.recyclerview.BindingVH
+import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.databinding.ItemHotHandicapBinding
 import org.cxct.sportlottery.network.third_game.third_games.hot.HandicapData
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-import org.cxct.sportlottery.enum.OddsType
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.setLeagueLogo
 

@@ -11,10 +11,10 @@ import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID
 import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID_DEVICE_CODE
-import org.cxct.sportlottery.enum.BetStatus
-import org.cxct.sportlottery.enum.OddState
-import org.cxct.sportlottery.enum.OddsType
-import org.cxct.sportlottery.enum.SpreadState
+import org.cxct.sportlottery.common.BetStatus
+import org.cxct.sportlottery.common.OddState
+import org.cxct.sportlottery.common.OddsType
+import org.cxct.sportlottery.common.SpreadState
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.Odd

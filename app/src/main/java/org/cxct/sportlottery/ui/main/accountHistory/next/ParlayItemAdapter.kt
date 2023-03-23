@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
@@ -12,9 +11,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.*
+import org.cxct.sportlottery.common.OddsType
+import org.cxct.sportlottery.databinding.ItemAccountHistoryNextContentParlayItemBinding
 import org.cxct.sportlottery.network.bet.settledDetailList.MatchOdd
-import org.cxct.sportlottery.enum.OddsType
 import org.cxct.sportlottery.util.*
 
 class ParlayItemAdapter : ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(DiffCallback()) {

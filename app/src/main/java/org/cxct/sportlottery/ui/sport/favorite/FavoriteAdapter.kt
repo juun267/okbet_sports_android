@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.item_favorite.view.*
 import kotlinx.android.synthetic.main.item_favorite.view.iv_arrow
 import kotlinx.android.synthetic.main.item_league.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.enum.PayLoadEnum
+import org.cxct.sportlottery.common.PayLoadEnum
 import org.cxct.sportlottery.network.common.FoldState
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
@@ -21,7 +21,7 @@ import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.base.BaseGameAdapter
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
-import org.cxct.sportlottery.enum.OddsType
+import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 import java.util.*

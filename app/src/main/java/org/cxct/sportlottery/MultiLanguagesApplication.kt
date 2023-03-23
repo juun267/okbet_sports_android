@@ -38,7 +38,7 @@ import org.cxct.sportlottery.ui.maintab.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabViewModel
 import org.cxct.sportlottery.ui.maintab.SportViewModel
 import org.cxct.sportlottery.ui.maintenance.MaintenanceViewModel
-import org.cxct.sportlottery.enum.OddsType
+import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechViewModel
 import org.cxct.sportlottery.ui.news.NewsViewModel
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel

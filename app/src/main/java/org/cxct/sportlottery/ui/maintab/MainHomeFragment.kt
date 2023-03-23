@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.hot_handicap_include.*
 import kotlinx.android.synthetic.main.hot_live_match_include.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.common.BetStatus
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.extentions.*
 import org.cxct.sportlottery.network.Constants
