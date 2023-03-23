@@ -20,10 +20,9 @@ android {
         applicationId "com.okbet.ph"
         minSdk 23
         targetSdk 31
-        versionName "1.1.44"
-        versionCode 66
+        versionName "1.1.45"
+        versionCode 67
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         ndk {
             abiFilters 'arm64-v8a', 'armeabi-v7a'/*, 'armeabi'*/ /*, 'x86','x86_64'*/
@@ -72,7 +71,7 @@ android {
 
     buildTypes {
         debug {
-            minifyEnabled false
+            minifyEnabled true
             zipAlignEnabled false
             debuggable true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -80,7 +79,7 @@ android {
             versionNameSuffix ".debug"
         }
         release {
-            minifyEnabled true
+            minifyEnabled false
             zipAlignEnabled true
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
