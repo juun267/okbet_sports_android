@@ -253,6 +253,7 @@ class ProfileCenterFragment :
         block_amount.setVisibilityByMarketSwitch()
         tv_terms_condition.setVisibilityByMarketSwitch()
         btn_fund_detail.setVisibilityByMarketSwitch()
+        btn_promotion.setVisibilityByMarketSwitch()
         btn_other_bet_record.setVisibilityByMarketSwitch()
         iv_profile.setOnClickListener {
             startActivity(Intent(requireActivity(), ProfileActivity::class.java))

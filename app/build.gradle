@@ -71,7 +71,7 @@ android {
 
     buildTypes {
         debug {
-            minifyEnabled false
+            minifyEnabled true
             zipAlignEnabled false
             debuggable true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -79,7 +79,7 @@ android {
             versionNameSuffix ".debug"
         }
         release {
-            minifyEnabled true
+            minifyEnabled false
             zipAlignEnabled true
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
