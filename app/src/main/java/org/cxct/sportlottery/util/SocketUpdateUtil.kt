@@ -2,8 +2,8 @@ package org.cxct.sportlottery.util
 
 import android.content.Context
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.enum.BetStatus
-import org.cxct.sportlottery.enum.OddState
+import org.cxct.sportlottery.common.BetStatus
+import org.cxct.sportlottery.common.OddState
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent

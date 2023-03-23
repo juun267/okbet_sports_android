@@ -34,7 +34,7 @@
 //import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 //import org.cxct.sportlottery.ui.game.common.*
 //import org.cxct.sportlottery.ui.game.common.view.OddBtnList
-//import org.cxct.sportlottery.ui.menu.OddsType
+//import org.cxct.sportlottery.enum.OddsType
 //import org.cxct.sportlottery.util.*
 //import java.util.*
 //

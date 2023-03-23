@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.game.widget.OddsButtonDetail
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.sport.detail.recycle.OddStateViewHolderDetail
 
 

@@ -10,6 +10,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.listener.GSYVideoProgressListener
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.databinding.ItemHomeLiveBinding
 import org.cxct.sportlottery.extentions.isEmptyStr
 import org.cxct.sportlottery.network.common.*
@@ -18,7 +19,6 @@ import org.cxct.sportlottery.network.odds.list.MatchLiveData
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.ui.game.widget.OddsButtonHome
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.widget.OKVideoPlayer
 
@@ -217,7 +217,8 @@ class ItemHomeLiveHolder(
                         oddPlayCateCode: String,
                         playCateName: String,
                         oddList: List<Odd?>,
-                        oddsType: OddsType) {
+                        oddsType: OddsType
+    ) {
 
         currentOddBtn.visibility = View.VISIBLE
         if (otherBtn1?.isLocked() == true || otherBtn2?.isLocked()  == true) {

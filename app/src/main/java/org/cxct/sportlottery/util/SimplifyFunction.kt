@@ -34,7 +34,7 @@ import kotlinx.coroutines.flow.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.common.BetStatus
 import org.cxct.sportlottery.extentions.rotationAnimation
 import org.cxct.sportlottery.extentions.screenHeight
 import org.cxct.sportlottery.extentions.translationXAnimation
@@ -57,7 +57,7 @@ import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.live.HomeLiveAdapter
 import org.cxct.sportlottery.ui.maintab.live.ItemHomeLiveHolder
-import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.ui.sport.SportListViewModel
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteAdapter
 import org.cxct.sportlottery.util.DisplayUtil.dpToPx

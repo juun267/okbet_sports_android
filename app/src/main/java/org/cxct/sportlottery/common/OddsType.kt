@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.menu
+package org.cxct.sportlottery.common
 
 import org.cxct.sportlottery.R
 

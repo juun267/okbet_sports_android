@@ -1,10 +1,11 @@
 package org.cxct.sportlottery.network.bet.info
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
-import org.cxct.sportlottery.enum.OddState
-import org.cxct.sportlottery.enum.SpreadState
+import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.common.OddState
+import org.cxct.sportlottery.common.SpreadState
 import org.cxct.sportlottery.network.error.BetAddError
+import org.cxct.sportlottery.proguard.KeepMembers
 
 @JsonClass(generateAdapter = true) @KeepMembers
 data class MatchOdd(
