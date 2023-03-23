@@ -148,17 +148,17 @@ android {
             ]
         }
         //okbet9测试环境
-        credit {
-            buildConfigField "String", "CHANNEL_NAME", "\"cdplat1\""
-            resValue "string", "app_name", "OKbet9"
-            applicationId "com.okbet.cdplat1"
-        }
+//        credit {
+//            buildConfigField "String", "CHANNEL_NAME", "\"cdplat1\""
+//            resValue "string", "app_name", "OKbet9"
+//            applicationId "com.okbet.cdplat1"
+//        }
         //okbet9正式环境
-        spk9 {
-            buildConfigField "String", "CHANNEL_NAME", "\"spk9\""
-            resValue "string", "app_name", "OKbet9"
-            applicationId "com.okbet.spcd"
-        }
+//        spk9 {
+//            buildConfigField "String", "CHANNEL_NAME", "\"spk9\""
+//            resValue "string", "app_name", "OKbet9"
+//            applicationId "com.okbet.spcd"
+//        }
     }
 
     compileOptions {

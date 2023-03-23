@@ -28,10 +28,20 @@ import java.lang.ref.WeakReference
 import java.util.*
 
 class RedEnvelopeReceiveDialog(
-    context: Context?,
-    var redenpId: Int?,
 ) : BaseDialog<RedEnveLopeModel>(RedEnveLopeModel::class) {
     private val mHandler = MyHandler(WeakReference(this))
+
+
+    private val redenpId by lazy {
+        arguments?.getInt("redenpID")
+    }
+
+    constructor(redenpId: Int?): this(){
+        Bundle().apply {
+            putInt("redenpId",redenpId?:0)
+        }
+    }
+
     var bitmap = listOf(
         BitmapFactory.decodeResource(context?.resources, R.drawable.ic_redpacket_coin),
         BitmapFactory.decodeResource(context?.resources, R.drawable.ic_redpacket_coin),
@@ -100,8 +110,8 @@ class RedEnvelopeReceiveDialog(
     }
 
     fun closeDialog() {
-        successDialog?.dismiss()
-        failDialog?.dismiss()
+        successDialog?.dismissAllowingStateLoss()
+        failDialog?.dismissAllowingStateLoss()
     }
 
     private fun initObserve() {
@@ -129,8 +139,8 @@ class RedEnvelopeReceiveDialog(
 
         setContentView()
 
-        if (successDialog?.isVisible == true) successDialog?.dismiss()
-        if (failDialog?.isVisible == true) failDialog?.dismiss()
+        if (successDialog?.isVisible == true) successDialog?.dismissAllowingStateLoss()
+        if (failDialog?.isVisible == true) failDialog?.dismissAllowingStateLoss()
     }
 
     fun setCanceledOnTouchOutside(boolean: Boolean) {

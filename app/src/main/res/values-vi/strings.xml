@@ -284,7 +284,7 @@
     <string name="order_number_colon">Mã đơn cược</string>
     <string name="bet_type">Cách đặt cược</string>
     <string name="total_bet_money">Tổng tiền cược</string>
-    <string name="total_bet_money_colon">Tổng tiền cược</string>
+    <string name="total_bet_money_colon">Tổng tiền cược:%s</string>
     <string name="status">Trạng thái</string>
     <string name="status_colon">trạng thái</string>
     <string name="rebates">Hoàn lãi</string>
@@ -986,7 +986,7 @@
     <string name="bet_stake">Cược</string>
     <string name="total_capital">Tiền cược：%s</string> <!--F008-->
     <string name="total_win_amount">Thắng：</string> <!--F005-->
-    <string name="total_all_win_amount">Tổng tiền có thể thắng：</string> <!--F005-->
+    <string name="total_all_win_amount">Tổng tiền ước thắng：</string> <!--F005-->
     <string name="delete_bet">Xóa bỏ</string>
     <string name="delete_bet_all">Xóa tất cả</string>
     <string name="btn_login_bet">Đăng nhập trước</string>
@@ -1255,10 +1255,10 @@
     <string name="N653">Chờ chuyển tiền</string>
     <string name="J630">Số đơn hàng</string>
     <string name="N618">Mã giao dịch phụ</string>
-    <string name="N643">Mời vào app Glife nạp tiền</string>
-    <string name="N644">Mời vào app Glife rút tiền</string>
     <string name="J801">1 X 2 &amp; Trên</string>
     <string name="J802">1 X 2 &amp; Dưới</string>
     <string name="J803">1 X 2 &amp; Hai Đội Ghi Bàn-Có</string>
     <string name="J804">1 X 2 &amp; Hai Đội Ghi Bàn-Không</string>
+    <string name="N643">Mời vào app Glife nạp tiền</string>
+    <string name="N644">Mời vào app Glife rút tiền</string>
 </resources>

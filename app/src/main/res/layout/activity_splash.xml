@@ -44,7 +44,7 @@
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
-    
+
     <TextView
         android:id="@+id/tv_version_info"
         android:layout_width="wrap_content"

@@ -6,8 +6,6 @@ import kotlinx.android.synthetic.main.activity_bank.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.util.LogUtil
-import timber.log.Timber
 
 /**
  * @app_destination 提款設置
@@ -92,12 +90,14 @@ class BankActivity : BaseSocketActivity<WithdrawViewModel>(WithdrawViewModel::cl
         }
     }
     private fun goTOTabFragment(type: TransferType){
-        val action =
-            BankListFragmentDirections.actionBankListFragmentToBankCardFragment(
-                null,
-                type,
-            )
-        mNavController.navigate(action)
+        if (mNavController.currentDestination?.id != R.id.bankCardFragment) {
+            val action =
+                BankListFragmentDirections.actionBankListFragmentToBankCardFragment(
+                    null,
+                    type,
+                )
+            mNavController.navigate(action)
+        }
     }
     private fun setupBankSetting() {
         viewModel.getMoneyConfigs()

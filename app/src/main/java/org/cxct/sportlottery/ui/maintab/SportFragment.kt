@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.extentions.fitsSystemStatus
+import org.cxct.sportlottery.extentions.newInstanceFragment
 import org.cxct.sportlottery.extentions.startActivity
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
@@ -266,7 +267,9 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
     }
 
     fun showBKEndDialog() {
-        PopImageDialog(R.drawable.img_bk_end).apply {
+        requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
+            putInt(PopImageDialog.DrawableResID, R.drawable.img_bk_end)
+        }).apply {
             onClick = {
                 this@SportFragment.viewModel.setCurMatchType(MatchType.END_SCORE)
                 navGameFragment(MatchType.END_SCORE)
@@ -275,4 +278,5 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
             }
         }.show(childFragmentManager, PopImageDialog::class.simpleName)
     }
+
 }

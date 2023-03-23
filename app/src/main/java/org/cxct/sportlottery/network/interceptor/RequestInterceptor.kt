@@ -7,7 +7,6 @@ import okhttp3.Response
 import org.cxct.sportlottery.repository.KEY_TOKEN
 import org.cxct.sportlottery.repository.NAME_LOGIN
 import org.cxct.sportlottery.util.LanguageManager
-import timber.log.Timber
 import java.io.IOException
 
 class RequestInterceptor(private val context: Context?) : Interceptor {
@@ -43,11 +42,6 @@ class RequestInterceptor(private val context: Context?) : Interceptor {
         val httpUrl = urlBuilder.build()
         val newRequest = builder.url(httpUrl).build()
 
-        return try {
-            chain.proceed(newRequest)
-        } catch (e: Exception) {
-            Timber.e("intercept Exception:$e")
-            chain.proceed(request)
-        }
+        return chain.proceed(newRequest)
     }
 }

@@ -1,25 +1,40 @@
 package org.cxct.sportlottery.ui.money.recharge
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialog_money_submit.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.TextUtil
+import timber.log.Timber
 
-class MoneySubmitDialog(
-    private val payWay: String,
-    private val payMoney: String,
-    private val dialogListener: MoneySubmitDialogListener
-) : DialogFragment() {
+class MoneySubmitDialog() : DialogFragment() {
+
+    private val payWay by lazy {
+        arguments?.getString("payWay")
+    }
+    private val payMoney by lazy {
+        arguments?.getString("payMoney")
+    }
+
+    constructor(
+        payWay: String? = "",
+        payMoney: String? = "",
+    ) : this() {
+        val bundle = Bundle()
+        bundle.putString("payWay", payWay)
+        bundle.putString("payMoney", payMoney)
+        arguments = bundle
+    }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
         dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
@@ -37,28 +52,28 @@ class MoneySubmitDialog(
     @SuppressLint("SetTextI18n")
     private fun initView() {
         txv_pay_way.text = payWay
-        txv_pay_money.text =
-            "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(ArithUtil.toMoneyFormat(payMoney.toDouble()).toDouble())}"
+        txv_pay_money.text = "${sConfigData?.systemCurrencySign} ${
+            TextUtil.formatMoney(
+                ArithUtil.toMoneyFormat(
+                    payMoney?.toDouble()
+                ).toDouble()
+            )
+        }"
     }
 
     fun initButton() {
-        tv_view_log.setOnClickListener { dialogListener.viewLog() }
+        tv_view_log.setOnClickListener {
+            activity?.finish()
+            startActivity(Intent(activity, FinanceActivity::class.java).apply {
+                putExtra(
+                    "rechargeViewLog", getString(R.string.record_recharge)
+                )
+            })
+        }
         tv_service.setOnClickListener {
-            dialogListener.contactService()
+            startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(sConfigData?.customerServiceUrl)))
             dismiss()
         }
     }
 
-    class MoneySubmitDialogListener(
-        private val viewLogEvent: () -> Unit,
-        private val contactServiceEvent: () -> Unit
-    ) {
-        fun viewLog() {
-            viewLogEvent.invoke()
-        }
-
-        fun contactService() {
-            contactServiceEvent.invoke()
-        }
-    }
 }
