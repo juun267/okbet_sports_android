@@ -2,14 +2,12 @@ package org.cxct.sportlottery.ui.splash
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.ActivitySplashBinding
 import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
@@ -123,6 +121,21 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                 goMaintenancePage()
                 return@observe
             }
+            //有banenr图片并且开关打开
+//            val imageUrls = sConfigData?.imageList?.filter {
+//                it.imageType == 9
+//                        && it.lang == LanguageManager.getLanguageString(this)
+//                        && !it.imageName1.isNullOrEmpty()
+//                        && it.startType == (if (MMKV.defaultMMKV()
+//                        .getBoolean("isFirstOpen", true)
+//                ) 0 else 1)
+//            }?.sortedByDescending { it.createdAt ?: 0 }?.map {
+//                it.imageName1!!
+//            }
+//            MMKV.defaultMMKV().putBoolean("isFirstOpen", false)
+//            if (imageUrls?.isNullOrEmpty() == false && sConfigData?.androidCarouselStatus == 1) {
+//                LaunchActivity.start(this, it, imageUrls = ArrayList(imageUrls))
+//            } else {
             when (it) {
                 true -> {
                     goGamePublicityPage()
@@ -131,6 +144,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                     goHomePage()
                 }
             }
+//            }
         }
 
         viewModel.isLogin.observe(this) {

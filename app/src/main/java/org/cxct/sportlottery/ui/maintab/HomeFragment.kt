@@ -75,14 +75,11 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
         when (position) {
             0 -> switchTabByPosition(0)
             1 -> switchTabByPosition(1)
-            2 ->
-                if (StaticData.worldCupOpened()) {
-                    switchTabByPosition(2)
-                } else {
-                    (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)
-                    (activity as MainTabActivity).findViewById<LinearLayout>(R.id.ll_home_back)
-                        .visibility = View.GONE
-                }
+            2 -> {
+                (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)
+                (activity as MainTabActivity).findViewById<LinearLayout>(R.id.ll_home_back)
+                    .visibility = View.GONE
+            }
             3 -> {
                 (activity as MainTabActivity).jumpToTheSport(MatchType.EARLY, GameType.FT)
                 (activity as MainTabActivity).findViewById<LinearLayout>(R.id.ll_home_back)

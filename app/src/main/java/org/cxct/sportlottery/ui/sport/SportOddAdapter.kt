@@ -64,8 +64,8 @@ import kotlinx.android.synthetic.main.item_sport_odd.view.tv_peroid
 import kotlinx.android.synthetic.main.item_sport_odd.view.tv_peroids_score
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.enum.MatchSource
-import org.cxct.sportlottery.enum.PayLoadEnum
+import org.cxct.sportlottery.common.MatchSource
+import org.cxct.sportlottery.common.PayLoadEnum
 import org.cxct.sportlottery.network.common.GameStatus
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
@@ -81,7 +81,7 @@ import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.common.OddButtonListener
 import org.cxct.sportlottery.ui.game.common.OddButtonPagerAdapter
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
-import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.util.*
 import timber.log.Timber
 import java.util.*

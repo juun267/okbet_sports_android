@@ -6,9 +6,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.fragment_home_slot.*
-import kotlinx.android.synthetic.main.fragment_home_slot.homeToolbar
-import kotlinx.android.synthetic.main.fragment_home_slot.lin_empty_game
-import kotlinx.android.synthetic.main.fragment_home_slot.rv_tab_home
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.extentions.fitsSystemStatus
@@ -144,10 +141,14 @@ class HomeSlotFragment :
             if (adapter == null) {
                 adapter = homeSlotAdapter
                 homeSlotAdapter.setOnItemClickListener { adapter, view, position ->
+                    //谷歌市场屏蔽点击
+                    if (SPUtil.getMarketSwitch())
+                        return@setOnItemClickListener
                     if (viewModel.isLogin.value != true) {
                         (activity as MainTabActivity).showLoginNotify()
                     } else {
-                        viewModel.requestEnterThirdGame(homeSlotAdapter.data[position], this@HomeSlotFragment)
+                        viewModel.requestEnterThirdGame(homeSlotAdapter.data[position],
+                            this@HomeSlotFragment)
                     }
                 }
             }

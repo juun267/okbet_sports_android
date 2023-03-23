@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.dialog_pop_thirdgame.*
+import androidx.annotation.DrawableRes
+import kotlinx.android.synthetic.main.dialog_pop_image.*
+import kotlinx.android.synthetic.main.dialog_pop_image.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
@@ -13,7 +15,8 @@ import org.cxct.sportlottery.ui.base.BaseViewModel
 /**
  * 顯示棋牌彈窗
  */
-class ThirdGameDialog : BaseDialog<BaseViewModel>(BaseViewModel::class) {
+class PopImageDialog :
+    BaseDialog<BaseViewModel>(BaseViewModel::class) {
 
     init {
         setStyle(R.style.FullScreen)
@@ -21,17 +24,19 @@ class ThirdGameDialog : BaseDialog<BaseViewModel>(BaseViewModel::class) {
 
     companion object {
         var firstShow = true
+        const val DrawableResID = "drawableResId"
     }
 
     var onClick: (() -> Unit)? = null
     var onDismiss: (() -> Unit)? = null
+    val drawableResId by lazy { arguments?.getInt(DrawableResID) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        return inflater.inflate(R.layout.dialog_pop_thirdgame, container, false)
+        return inflater.inflate(R.layout.dialog_pop_image, container, false)
 
     }
 
@@ -54,6 +59,9 @@ class ThirdGameDialog : BaseDialog<BaseViewModel>(BaseViewModel::class) {
     }
 
     private fun initImage() {
+        drawableResId?.let {
+            image.setImageResource(it)
+        }
         image.setOnClickListener {
             dismiss()
             onClick?.invoke()

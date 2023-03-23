@@ -16,6 +16,8 @@ import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.extentions.isEmptyStr
 import org.cxct.sportlottery.extentions.load
 import org.cxct.sportlottery.extentions.startActivity
+import org.cxct.sportlottery.network.user.UserInfo
+import org.cxct.sportlottery.network.index.config.VerifySwitchType
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET

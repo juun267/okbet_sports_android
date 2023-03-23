@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.enum
+package org.cxct.sportlottery.common
 
 /**
  * MatchInfo中source的類型

@@ -8,7 +8,6 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsOdd
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.network.outright.odds.DynamicMarket
-import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.util.sortOddsMap
 
 @JsonClass(generateAdapter = true)
@@ -32,7 +31,6 @@ data class OddData(
     override var playCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
 ) : MatchOdd {
     override val oddsEps: EpsOdd? = null
-    override var playCateMappingList: List<PlayCateMapItem>? = null
 
     fun sortOddsMap() {
         this.oddsMap?.sortOddsMap(2)

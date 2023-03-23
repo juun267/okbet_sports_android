@@ -3,7 +3,6 @@ package org.cxct.sportlottery.util
 import android.app.Activity
 import android.app.Application
 import android.content.Context
-import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Build
@@ -18,9 +17,7 @@ import java.util.*
 object LanguageManager {
 
     enum class Language(val key: String) {
-        ZH("zh"), ZHT("zht"), EN("en"), VI("vi"), TH("th"), PHI("phi"), PH(
-            "ph"
-        )
+        ZH("zh"), ZHT("zht"), EN("en"), VI("vi"), TH("th"), PHI("ph")
     }
 
     /**
@@ -112,19 +109,6 @@ object LanguageManager {
             Language.TH -> R.drawable.ic_flag_th
             Language.PHI -> R.drawable.ic_flag_phi
             else -> R.drawable.ic_flag_en
-        }
-    }
-
-    /**
-     * 转换方法
-     * 后台返回字段为ph
-     * Locale中菲语字段为phi,需要在前端做转换
-     */
-    fun getLanguageConvert(context: Context?): Language {
-        return if (getSelectLanguage(context).key == Language.PHI.key) {
-            Language.PH
-        } else {
-            getSelectLanguage(context)
         }
     }
 
@@ -240,51 +224,5 @@ object LanguageManager {
         }
         resources.updateConfiguration(config, dm)
     }
-
 }
 
-private object SPUtil {
-    private const val SP_NAME = "language_setting"
-    private const val TAG_LANGUAGE = "language_select"
-
-    //上架市场，隐藏功能的开关
-    const val MARKET_SWITCH = "market_switch"
-    private var mSharedPreferences: SharedPreferences? = null
-    var systemCurrentLocal: Locale = Locale.ENGLISH
-
-    fun getInstance(context: Context?): SPUtil {
-        if (mSharedPreferences == null)
-            mSharedPreferences = context?.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
-        return this
-    }
-
-    fun saveLanguage(select: String?) {
-        mSharedPreferences?.edit()
-            ?.putString(TAG_LANGUAGE, select)
-            ?.apply()
-    }
-
-    fun getSelectLanguage(): String? {
-        return mSharedPreferences?.getString(TAG_LANGUAGE, null)
-    }
-
-    fun saveString(key: String, value: String?) {
-        mSharedPreferences?.edit()
-            ?.putString(key, value)
-            ?.apply()
-    }
-
-    fun getString(key: String, defaultValue: String? = null): String? {
-        return mSharedPreferences?.getString(key, defaultValue)
-    }
-
-    fun saveMarketSwitch(value: Boolean) {
-        mSharedPreferences?.edit()
-            ?.putBoolean(MARKET_SWITCH, value)
-            ?.apply()
-    }
-
-    fun getMarketSwitch(): Boolean {
-        return mSharedPreferences?.getBoolean(MARKET_SWITCH, false) == true
-    }
-}

@@ -4,9 +4,10 @@ package org.cxct.sportlottery.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.MultiLanguagesApplication
-import org.cxct.sportlottery.enum.BetStatus
-import org.cxct.sportlottery.enum.OddState
-import org.cxct.sportlottery.enum.SpreadState
+import org.cxct.sportlottery.common.BetStatus
+import org.cxct.sportlottery.common.OddState
+import org.cxct.sportlottery.common.OddsType
+import org.cxct.sportlottery.common.SpreadState
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
@@ -24,7 +25,6 @@ import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.parlaylimit.ParlayLimitUtil
 import retrofit2.Response

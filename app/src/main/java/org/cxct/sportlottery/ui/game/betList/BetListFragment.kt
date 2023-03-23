@@ -21,8 +21,9 @@ import kotlinx.android.synthetic.main.button_bet.view.*
 import kotlinx.android.synthetic.main.fragment_bet_list.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.BetStatus
+import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.databinding.FragmentBetListBinding
-import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.event.BetModeChangeEvent
 import org.cxct.sportlottery.extentions.gone
 import org.cxct.sportlottery.extentions.visible
@@ -39,7 +40,6 @@ import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.game.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.game.betList.adapter.BetSingleListAdapter
 import org.cxct.sportlottery.ui.game.betList.listener.OnItemClickListener
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.results.StatusType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
@@ -203,8 +203,8 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
 
         //設定本金, 可贏的systemCurrencySign
         binding.apply {
-//            titleAllBet.text = getString(R.string.total_capital, sConfigData?.systemCurrencySign)
-//            titleWinnableAmount.text = getString(R.string.total_win_amount)
+            titleAllBet.text = getString(R.string.total_bet_money_colon, sConfigData?.systemCurrencySign)
+            titleWinnableAmount.text = getString(R.string.total_all_win_amount)
         }
     }
 
@@ -346,6 +346,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
 
         clExpandOrStacked.setOnClickListener {
             if (isOpen) {
+                cl_total_info.gone()
                 tvExpandOrStacked.text = getString(R.string.expand_more_combinations)
                 tvExpandOrStacked.setCompoundDrawablesWithIntrinsicBounds(
                     null,
@@ -354,6 +355,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                     null
                 )
             } else {
+                cl_total_info.visible()
 //                betParlayListRefactorAdapter?.closeAllKeyboard()
                 tvExpandOrStacked.text = getString(R.string.stacked_combination)
                 tvExpandOrStacked.setCompoundDrawablesWithIntrinsicBounds(
@@ -366,6 +368,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             }
             betParlayListRefactorAdapter?.apply {
                 BetListRcvUtil.setFitHeight(isOpen, rv_parlay_list, this)
+                notifyDataSetChanged()
             }
             isOpen = !isOpen
         }
@@ -569,9 +572,9 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             }
         }
 
-//        binding.tvTotalBetAmount.text = TextUtil.formatForOdd(totalBetAmount)
-//        binding.tvTotalWinnableAmount.text =
-//                "${sConfigData?.systemCurrencySign} ${TextUtil.formatForOdd(winnableAmount)}"
+        binding.tvTotalBetAmount.text = TextUtil.formatForOdd(totalBetAmount)
+        binding.tvTotalWinnableAmount.text =
+                "${sConfigData?.systemCurrencySign} ${TextUtil.formatForOdd(winnableAmount)}"
 
 
         val betCount = if (currentBetType == 0) {

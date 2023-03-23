@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.fragment_main_left.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.common.GameType
@@ -20,7 +21,6 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.maintab.LanguageAdapter
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 
 class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
@@ -130,6 +130,7 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 Constants.getAboutUsUrl(requireContext()),
                 getString(R.string.about_us))
         }
+        lin_term.setVisibilityByMarketSwitch()
         lin_term.setOnClickListener {
             JumpUtil.toInternalWeb(requireContext(),
                 Constants.getAgreementRuleUrl(requireContext()),

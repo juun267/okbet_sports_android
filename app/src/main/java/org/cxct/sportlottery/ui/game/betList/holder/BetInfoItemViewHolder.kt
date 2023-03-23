@@ -10,24 +10,24 @@ import android.text.Spanned
 import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
-import android.text.style.TypefaceSpan
 import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.item_match_receipt.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.BetStatus
+import org.cxct.sportlottery.common.OddState
+import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.databinding.ContentBetInfoItemV32Binding
-import org.cxct.sportlottery.enum.BetStatus
-import org.cxct.sportlottery.enum.OddState
-import org.cxct.sportlottery.extentions.gone
-import org.cxct.sportlottery.extentions.visible
+import org.cxct.sportlottery.extentions.*
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.LoginRepository
@@ -36,9 +36,9 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.game.betList.listener.OnItemClickListener
 import org.cxct.sportlottery.ui.game.betList.listener.OnSelectedPositionListener
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BetPlayCateFunction.getNameMap
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import timber.log.Timber
 
 class BetInfoItemViewHolder(
@@ -446,28 +446,6 @@ class BetInfoItemViewHolder(
         tvOddsContent.setOUStyle(false)
         tvContent.setOUStyle(false)
 //            }
-
-        //設定隊伍名稱, 聯賽名稱, 開賽時間
-        when (itemData.matchType) {
-            MatchType.OUTRIGHT -> {
-                tvMatch.text = itemData.outrightMatchInfo?.name
-                tvLeagueName.isVisible = false
-//                tvStartTime.isVisible = false
-            }
-
-            else -> {
-                val matchName =
-                    "${itemData.matchOdd.homeName}${root.context.getString(R.string.verse_3)}${itemData.matchOdd.awayName}"
-                tvMatch.text = matchName
-                tvLeagueName.text = itemData.matchOdd.leagueName
-                tvLeagueName.isVisible = true
-                itemData.matchOdd.startTime?.let {
-//                    tvStartTime.text = TimeUtil.stampToDateHMS(it)
-//                    tvStartTime.isVisible = false
-                }
-            }
-        }
-
         //玩法名稱 目前詳細玩法裡面是沒有給betPlayCateNameMap，所以顯示邏輯沿用舊版
         val nameOneLine = { inputStr: String ->
             inputStr.replace("\n", "-")
@@ -493,9 +471,10 @@ class BetInfoItemViewHolder(
 //        tv_match_type.tranByPlayCode(playCode, playCateCode, playCateName, rtScore)
         Timber.d("itemData:${itemData.matchOdd}")
         Timber.d("itemData:${false}")
+        val tvNameText: String
         when {
             itemData.betPlayCateNameMap.isNullOrEmpty() -> {
-                tvName.text = when (inPlay && itemData.matchType != MatchType.OUTRIGHT) {
+                tvNameText = when (inPlay && itemData.matchType != MatchType.OUTRIGHT) {
                     true -> {
                         root.context.getString(
                             R.string.bet_info_in_play_score,
@@ -514,13 +493,14 @@ class BetInfoItemViewHolder(
                         itemData.matchOdd.playCateName
                     }
                 }
+                tvName.text = tvNameText
             }
 
             else -> {
                 val playCateName = itemData.betPlayCateNameMap?.getNameMap(
                     itemData.matchOdd.gameType, itemData.matchOdd.playCode
                 )?.get(LanguageManager.getSelectLanguage(root.context).key) ?: ""
-                tvName.text = when (inPlay && itemData.matchType != MatchType.OUTRIGHT) {
+                tvNameText = when (inPlay && itemData.matchType != MatchType.OUTRIGHT) {
                     true -> {
                         root.context.getString(
                             R.string.bet_info_in_play_score,
@@ -534,8 +514,81 @@ class BetInfoItemViewHolder(
                         nameOneLine(playCateName)
                     }
                 }
+                tvName.text = tvNameText
             }
         }
+        //設定隊伍名稱, 聯賽名稱, 開賽時間
+        when (itemData.matchType) {
+            MatchType.OUTRIGHT -> {
+//                tvMatch.text = itemData.outrightMatchInfo?.name
+                tvMatchHome.text = itemData.outrightMatchInfo?.name
+                tvMatchHome.maxWidth = 330.dp
+                setViewGone(tvVs, tvMatchAway, tvLeagueName)
+//                tvStartTime.isVisible = false
+            }
+
+            else -> {
+                tvMatchHome.text = itemData.matchOdd.homeName
+                tvMatchHome.maxWidth = 160.dp
+                tvMatchAway.text = itemData.matchOdd.awayName
+                setViewVisible(tvVs, tvMatchAway, tvLeagueName)
+                tvLeagueName.text = itemData.matchOdd.leagueName
+            }
+        }
+        val view = View.inflate(tvMatchHome.context, R.layout.popupwindow_tips, null)
+        val pop = PopupWindow(tvMatchHome.context).apply {
+            contentView = view
+            setBackgroundDrawable(null)
+            isOutsideTouchable = true
+        }
+        val textView = view.findViewById<TextView>(R.id.tvContent)
+        val imageView = view.findViewById<ImageView>(R.id.ivPopupWindowTipsBg)
+        val showPopAsTop: (TextView, String?) -> Unit = { it, it2 ->
+            if (pop.isShowing) {
+                pop.dismiss()
+            }
+
+            it.setTextColor(it.context.getColor(R.color.color_025BE8))
+            textView.text = it2
+            val xOff: Int
+            val yOff = (-50).dp
+            if (it == tvMatchAway) {
+                xOff = (-20).dp
+                imageView.background =
+                    AppCompatResources.getDrawable(it.context, R.drawable.bg_popup_tips_right)
+            } else {
+                xOff = (-5).dp
+                imageView.background =
+                    AppCompatResources.getDrawable(it.context, R.drawable.bg_popup_tips_left)
+            }
+            pop.showAsDropDown(it, xOff, yOff)
+        }
+
+        setOnClickListener(tvName, tvLeagueName, tvMatchHome, tvMatchAway) {
+            when (it) {
+                tvName -> {
+                    showPopAsTop(tvName, tvNameText)
+                }
+                tvLeagueName -> {
+                    showPopAsTop(tvLeagueName, itemData.matchOdd.leagueName)
+                }
+                tvMatchHome -> {
+                    showPopAsTop(tvMatchHome, itemData.matchOdd.homeName)
+                }
+                tvMatchAway -> {
+                    showPopAsTop(tvMatchAway, itemData.matchOdd.awayName)
+                }
+            }
+        }
+
+        pop.setOnDismissListener {
+            tvName.setTextColor(tvName.context.getColor(R.color.color_9BB3D9_535D76))
+            tvLeagueName.setTextColor(tvLeagueName.context.getColor(R.color.color_9BB3D9_535D76))
+            tvMatchHome.setTextColor(tvLeagueName.context.getColor(R.color.color_A7B2C4))
+            tvMatchAway.setTextColor(tvLeagueName.context.getColor(R.color.color_A7B2C4))
+        }
+
+
         //加上OddsType名稱,如果是串关显示欧盘
 //        val tvNamePlusOddsTypeName =
 //            "${tvName.text} [${root.context.getString(if (adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE) currentOddsType.res else OddsType.EU.res)}]"

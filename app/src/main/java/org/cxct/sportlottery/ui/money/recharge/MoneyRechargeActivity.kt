@@ -1,7 +1,5 @@
 package org.cxct.sportlottery.ui.money.recharge
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -13,10 +11,8 @@ import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyAddResult
 import org.cxct.sportlottery.network.money.MoneyPayWayData
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
-import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.setTitleLetterSpacing
@@ -130,17 +126,6 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
                 val moneySubmitDialog = MoneySubmitDialog(
                     payWay,
                     (apiResult.result ?: 0).toString(),
-                    MoneySubmitDialog.MoneySubmitDialogListener({
-                        finish()
-                        startActivity(Intent(this, FinanceActivity::class.java).apply {
-                            putExtra(
-                                RechargeViewLog,
-                                getString(R.string.record_recharge)
-                            )
-                        })
-                    }, {
-                        startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(sConfigData?.customerServiceUrl)))
-                    })
                 )
                 moneySubmitDialog.show(supportFragmentManager, "")
             }
@@ -166,18 +151,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
                 //顯示成功彈窗
                 val moneySubmitDialog = MoneySubmitDialog(
                     payWay,
-                    (cryptoResult.result ?: 0).toString(),
-                    MoneySubmitDialog.MoneySubmitDialogListener({
-                        finish()
-                        startActivity(Intent(this, FinanceActivity::class.java).apply {
-                            putExtra(
-                                RechargeViewLog,
-                                getString(R.string.record_recharge)
-                            )
-                        })
-                    }, {
-                        startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(sConfigData?.customerServiceUrl)))
-                    })
+                    (cryptoResult.result ?: 0).toString()
                 )
                 moneySubmitDialog.show(supportFragmentManager, "")
             }
@@ -190,18 +164,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
             //顯示成功彈窗
             val moneySubmitDialog = MoneySubmitDialog(
                 payWay,
-                it.toString(),
-                MoneySubmitDialog.MoneySubmitDialogListener({
-                    finish()
-                    startActivity(Intent(this, FinanceActivity::class.java).apply {
-                        putExtra(
-                            RechargeViewLog,
-                            getString(R.string.record_recharge)
-                        )
-                    })
-                }, {
-                    startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(sConfigData?.customerServiceUrl)))
-                })
+                it.toString()
             )
 
             moneySubmitDialog.show(supportFragmentManager, "")
@@ -215,18 +178,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
             //顯示成功彈窗
             val moneySubmitDialog = MoneySubmitDialog(
                 payWay,
-                it.toString(),
-                MoneySubmitDialog.MoneySubmitDialogListener({
-                    finish()
-                    startActivity(Intent(this, FinanceActivity::class.java).apply {
-                        putExtra(
-                            RechargeViewLog,
-                            getString(R.string.record_recharge)
-                        )
-                    })
-                }, {
-                    startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(sConfigData?.customerServiceUrl)))
-                })
+                it.toString()
             )
 
             moneySubmitDialog.show(supportFragmentManager, "")

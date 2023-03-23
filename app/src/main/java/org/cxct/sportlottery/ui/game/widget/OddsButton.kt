@@ -11,26 +11,21 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.button_odd.view.*
-import kotlinx.android.synthetic.main.button_odd.view.button_odd_detail
-import kotlinx.android.synthetic.main.button_odd.view.img_odd_lock
-import kotlinx.android.synthetic.main.button_odd.view.img_odd_unknown
-import kotlinx.android.synthetic.main.button_odd.view.iv_arrow
-import kotlinx.android.synthetic.main.button_odd.view.tv_name
-import kotlinx.android.synthetic.main.button_odd.view.tv_odds
-import kotlinx.android.synthetic.main.button_odd.view.tv_spread
-import kotlinx.android.synthetic.main.button_odd_home.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.enum.BetStatus
-import org.cxct.sportlottery.enum.OddState
+import org.cxct.sportlottery.common.BetStatus
+import org.cxct.sportlottery.common.OddState
+import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.extentions.flashAnimation
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
 import org.cxct.sportlottery.util.BetPlayCateFunction.isNOGALType
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LocalUtils.getString
+import org.cxct.sportlottery.util.QuickListManager
+import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.getOdds
 
 
 /**
@@ -100,12 +95,12 @@ open class OddsButton @JvmOverloads constructor(
         mOddsType = oddsType
         tv_name.apply {
             val extInfoStr =
-                odd?.extInfoMap?.get(LanguageManager.getLanguageConvert(context).key) ?: odd?.extInfo
+                odd?.extInfoMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.extInfo
             text =
                 if (extInfoStr.isNullOrEmpty())
-                    "${(odd?.nameMap?.get(LanguageManager.getLanguageConvert(context).key) ?: odd?.name)}"
+                    "${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
                 else
-                    "$extInfoStr ${(odd?.nameMap?.get(LanguageManager.getLanguageConvert(context).key) ?: odd?.name)}"
+                    "$extInfoStr ${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
             requestLayout()
 
             visibility =
@@ -171,12 +166,12 @@ open class OddsButton @JvmOverloads constructor(
                     playCateCode.isNOGALType() -> getString(R.string.none)
                     playCateCode.isCombination() -> {
                         (odds?.nameMap?.get(
-                            LanguageManager.getLanguageConvert(context).key
+                            LanguageManager.getSelectLanguage(context).key
                         ) ?: odds?.name)?.split("-")?.firstOrNull() ?: ""
                     }
                     !playCateCode.isCombination() -> {
                         odds?.nameMap?.get(
-                            LanguageManager.getLanguageConvert(context).key
+                            LanguageManager.getSelectLanguage(context).key
                         ) ?: odds?.name
                     }
                     else -> ""
@@ -190,13 +185,13 @@ open class OddsButton @JvmOverloads constructor(
                 text = when {
                     playCateCode.isCSType() -> {
                         odds?.nameMap?.get(
-                            LanguageManager.getLanguageConvert(context).key
+                            LanguageManager.getSelectLanguage(context).key
                         ) ?: odds?.name
                     }
                     playCateCode.isOUType() -> {
                         //越南語大小顯示又要特殊處理(用O/U)
                         val language =
-                            if (LanguageManager.getSelectLanguage(context).key == LanguageManager.Language.VI.key) LanguageManager.Language.EN.key else LanguageManager.getLanguageConvert(
+                            if (LanguageManager.getSelectLanguage(context).key == LanguageManager.Language.VI.key) LanguageManager.Language.EN.key else LanguageManager.getSelectLanguage(
                                 context
                             ).key
                         (odds?.nameMap?.get(
@@ -211,7 +206,7 @@ open class OddsButton @JvmOverloads constructor(
                         ) ?: odds?.name)?.abridgeOddsName()
                     }
                     playCateCode.isNOGALType() -> {
-                        when (LanguageManager.getLanguageConvert(this.context)) {
+                        when (LanguageManager.getSelectLanguage(this.context)) {
                             LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
                                 "第" + odds?.nextScore.toString()
                             }

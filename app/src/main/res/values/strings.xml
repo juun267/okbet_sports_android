@@ -131,6 +131,7 @@
     <string name="home_tab_cs">CORRECT SCORE</string>
     <string name="home_tab_parlay">PARLAY</string>
     <string name="home_tab_outright">OUTRIGHTS</string>
+    <string name="home_tab_end_score">Basketball Ending Card</string>
     <string name="home_tab_at_start">SOON</string>
     <string name="home_tab_eps">PRICE BOOSTS</string>
     <string name="label_all">All</string>
@@ -295,7 +296,7 @@
     <string name="order_number_colon">Betting Slip No.</string>
     <string name="bet_type">Betting method</string>
     <string name="total_bet_money">Total bet amount</string>
-    <string name="total_bet_money_colon">Total bet amount</string>
+    <string name="total_bet_money_colon">Total stake:%s</string>
     <string name="status">Status</string>
     <string name="status_colon">Status</string>
     <string name="rebates">Return</string>
@@ -1001,6 +1002,7 @@
     <string name="bet_stake">Stake</string>
     <string name="total_capital">Stake：%s</string>
     <string name="total_win_amount">Winning：</string>
+    <string name="total_all_win_amount">Total Win：</string>
     <string name="delete_bet">Delete</string>
     <string name="delete_bet_all">Delete All</string>
     <string name="btn_login_bet">Login first</string>
@@ -1189,7 +1191,7 @@
     <string name="str_check_bets">Bets Details</string>
     <string name="str_odds_changed">odds changed</string>
     <string name="str_bet_slip_not_confirm_for_a_long_time">Bet slip not confirm for a long time</string>
-    <string name="str_exceeding_limit_for_the_event_or_market">Exceeding limit for the event or market</string>
+    <string name="str_exceeding_limit_for_the_event_or_market">Your stake exceed the max limit</string>
     <string name="str_market_closed_please_try_later">Market closed, please try later</string>
     <string name="str_match_closed">Match closed</string>
     <string name="str_match_be_suspended">Match be suspended</string>
@@ -1337,4 +1339,12 @@
     <string name="N647">Order amount</string>
     <string name="N653">Pending payment</string>
     <string name="J630">Order no.</string>
+    <string name="N643">Please go to Glife app to deposit</string>
+    <string name="N644">Please go to Glife app to withdraw</string>
+
+    <string name="J801">1X2 &amp; Goals Over</string>
+    <string name="J802">1X2 &amp; Goals Under</string>
+    <string name="J803">1X2 &amp; Both to Score Y</string>
+    <string name="J804">1X2 &amp; Both to Score N</string>
+
 </resources>

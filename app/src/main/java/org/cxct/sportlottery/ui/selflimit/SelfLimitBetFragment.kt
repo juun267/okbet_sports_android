@@ -7,10 +7,11 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.text.isDigitsOnly
 import kotlinx.android.synthetic.main.fragment_self_limit_bet.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.PassVerifyEnum
 import org.cxct.sportlottery.databinding.FragmentSelfLimitBetBinding
-import org.cxct.sportlottery.enum.PassVerifyEnum
 import org.cxct.sportlottery.extentions.toIntS
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -45,8 +46,7 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
 
                     when {
                         it.isEmpty() -> viewModel.setBetEditTextError(true)
-//                        it.toDouble()<=0 -> return@let
-                        it.toInt() in (perBetMinAmount)..(perBetMaxAmount) -> viewModel.setBetEditTextError(
+                        !it.isDigitsOnly() || it.toInt() in (perBetMinAmount)..(perBetMaxAmount) -> viewModel.setBetEditTextError(
                             false)
                         it.toInt() > perBetMaxAmount -> etMount.setText(perBetMaxAmount.toString()
                             .toCharArray(), 0, perBetMaxAmount.toString().length)

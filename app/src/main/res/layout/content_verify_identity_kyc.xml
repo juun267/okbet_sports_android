@@ -87,7 +87,7 @@
             android:hint="@string/kyc_enter_id_num"
             android:inputType="number"
             android:letterSpacing="0.05"
-            android:textColor="@color/color_cccccc"
+            android:textColor="@color/color_414655"
             android:textColorHint="@color/color_cccccc"
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintBottom_toBottomOf="parent"

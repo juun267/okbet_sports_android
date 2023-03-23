@@ -13,6 +13,7 @@ enum class MatchType private constructor(val postValue: String, @StringRes val r
     CS("CS", R.string.home_tab_cs),
     PARLAY("PARLAY", R.string.home_tab_parlay),
     OUTRIGHT("OUTRIGHT", R.string.home_tab_outright),
+    END_SCORE("LGPC", R.string.home_tab_end_score),
     AT_START("ATSTART", R.string.home_tab_at_start),
     EPS("EPS", R.string.home_tab_eps),
     MY_EVENT("MYEVENT", R.string.my_favorite),

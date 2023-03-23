@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.dialog
 import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Point
@@ -28,16 +27,29 @@ import java.lang.ref.WeakReference
 import java.util.*
 
 class RedEnvelopeReceiveDialog(
-    context: Context?,
-    var redenpId: Int?,
 ) : BaseDialog<RedEnveLopeModel>(RedEnveLopeModel::class) {
     private val mHandler = MyHandler(WeakReference(this))
-    var bitmap = listOf(
-        BitmapFactory.decodeResource(context?.resources, R.drawable.ic_redpacket_coin),
-        BitmapFactory.decodeResource(context?.resources, R.drawable.ic_redpacket_coin),
-        BitmapFactory.decodeResource(context?.resources, R.drawable.ic_redpacket_coin),
-        BitmapFactory.decodeResource(context?.resources, R.drawable.ic_redpacket_coin_small),
-    )
+
+
+    private val redenpId by lazy {
+        arguments?.getInt("redenpId")
+    }
+
+    constructor(redenpId: Int?) : this() {
+        arguments = Bundle().apply {
+            putInt("redenpId", redenpId ?: 0)
+        }
+    }
+
+    private val bitmap by lazy {
+        listOf(
+            BitmapFactory.decodeResource(context?.resources, R.drawable.ic_redpacket_coin),
+            BitmapFactory.decodeResource(context?.resources, R.drawable.ic_redpacket_coin),
+            BitmapFactory.decodeResource(context?.resources, R.drawable.ic_redpacket_coin),
+            BitmapFactory.decodeResource(context?.resources, R.drawable.ic_redpacket_coin_small),
+        )
+    }
+
     val map by lazy {
         mapOf<Bitmap, Long>(
             bitmap[0] to 7060,
@@ -100,8 +112,8 @@ class RedEnvelopeReceiveDialog(
     }
 
     fun closeDialog() {
-        successDialog?.dismiss()
-        failDialog?.dismiss()
+        successDialog?.dismissAllowingStateLoss()
+        failDialog?.dismissAllowingStateLoss()
     }
 
     private fun initObserve() {
@@ -129,8 +141,8 @@ class RedEnvelopeReceiveDialog(
 
         setContentView()
 
-        if (successDialog?.isVisible == true) successDialog?.dismiss()
-        if (failDialog?.isVisible == true) failDialog?.dismiss()
+        if (successDialog?.isVisible == true) successDialog?.dismissAllowingStateLoss()
+        if (failDialog?.isVisible == true) failDialog?.dismissAllowingStateLoss()
     }
 
     fun setCanceledOnTouchOutside(boolean: Boolean) {

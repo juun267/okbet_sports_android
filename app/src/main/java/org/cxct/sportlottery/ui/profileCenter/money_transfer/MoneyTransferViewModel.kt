@@ -326,7 +326,9 @@ class MoneyTransferViewModel(
                     nowPage = 1
                     recordDataList.clear()
                 }
-                recordDataList.addAll(result.rows as List<Row>)
+                result.rows?.let {
+                    recordDataList.addAll(it)
+                }
                 isLastPage = (recordDataList.size >= (result.total ?: 0))
                 _queryTransfersResult.value = result
             }

@@ -7,18 +7,20 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.children
+import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
+import kotlinx.android.synthetic.main.fragment_about_us.*
 import kotlinx.android.synthetic.main.fragment_profile_center.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
+import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.aboutMe.AboutMeActivity
@@ -40,7 +42,6 @@ import org.cxct.sportlottery.ui.profileCenter.timezone.TimeZoneActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.selflimit.SelfLimitActivity
-import org.cxct.sportlottery.ui.vip.VipActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.*
@@ -91,11 +92,13 @@ class ProfileCenterFragment :
         // btn_withdrawal_setting.setVisibilityByCreditSystem()
         //優惠活動
         btn_promotion.setVisibilityByCreditSystem()
+        //默认显示代理入口
+        btn_affiliate.isVisible = (sConfigData?.frontEntranceStatus != "0")
         //   btn_affiliate.setVisibilityByCreditSystem()
         mVersionUpdateViewModel.appVersionState.observe(viewLifecycleOwner) {
             if (it.isNewVersion) {
                 //下载更新要做判断 当前有没有新版本
-                update_version.setOnClickListener{
+                update_version.setOnClickListener {
                     //外部下載
                     JumpUtil.toExternalWeb(requireActivity(), sConfigData?.mobileAppDownUrl)
                     // startActivity(Intent(requireActivity(), VersionUpdateActivity::class.java))
@@ -195,14 +198,29 @@ class ProfileCenterFragment :
     private fun setupRechargeButton() {
         btn_recharge.setOnClickListener {
             avoidFastDoubleClick()
-            viewModel.checkRechargeKYCVerify()
+            //Glife用户
+            if (viewModel.userInfo.value?.vipType == 1) {
+                showPromptDialog(title = getString(R.string.prompt),
+                    message = getString(R.string.N643),
+                    {})
+            } else {
+                viewModel.checkRechargeKYCVerify()
+            }
         }
     }
 
     private fun setupWithdrawButton() {
         btn_withdraw.setOnClickListener {
             avoidFastDoubleClick()
-            viewModel.checkWithdrawKYCVerify()
+            //Glife用户
+            if (viewModel.userInfo.value?.vipType == 1) {
+                showPromptDialog(title = getString(R.string.prompt),
+                    message = getString(R.string.N644),
+                    {})
+            } else {
+                viewModel.checkWithdrawKYCVerify()
+            }
+
         }
     }
 
@@ -232,6 +250,11 @@ class ProfileCenterFragment :
 //        btn_profile.setOnClickListener {
 //            startActivity(Intent(requireActivity(), ProfileActivity::class.java))
 //        }
+        block_amount.setVisibilityByMarketSwitch()
+        tv_terms_condition.setVisibilityByMarketSwitch()
+        btn_fund_detail.setVisibilityByMarketSwitch()
+        btn_promotion.setVisibilityByMarketSwitch()
+        btn_other_bet_record.setVisibilityByMarketSwitch()
         iv_profile.setOnClickListener {
             startActivity(Intent(requireActivity(), ProfileActivity::class.java))
         }
@@ -239,12 +262,6 @@ class ProfileCenterFragment :
         btn_account_transfer.setOnClickListener {
             startActivity(Intent(requireActivity(), MoneyTransferActivity::class.java))
         }
-
-        //提款設置
-        btn_withdrawal_setting.setOnClickListener {
-            viewModel.settingCheckPermissions()
-        }
-
         //其他投注記錄
         btn_other_bet_record.setOnClickListener {
             startActivity(Intent(requireActivity(), OtherBetRecordActivity::class.java))
@@ -254,12 +271,6 @@ class ProfileCenterFragment :
         btn_fund_detail.setOnClickListener {
             startActivity(Intent(requireActivity(), FinanceActivity::class.java))
         }
-
-        //消息中心
-        btn_news_center.setOnClickListener {
-            startActivity(Intent(requireActivity(), InfoCenterActivity::class.java))
-        }
-
         //優惠活動
         btn_promotion.setOnClickListener {
             when (viewModel.userInfo.value?.testFlag) {
@@ -285,10 +296,6 @@ class ProfileCenterFragment :
                 resources.getString(R.string.btm_navigation_affiliate)
             )
         }
-        //会员等级
-        btn_member_level.setOnClickListener {
-            startActivity(Intent(requireActivity(), VipActivity::class.java))
-        }
         //自我約束
         if (sConfigData?.selfRestraintVerified == "0" || sConfigData?.selfRestraintVerified == null) {
             btn_self_limit.visibility = View.GONE
@@ -301,14 +308,6 @@ class ProfileCenterFragment :
         //赛果结算
         btn_game_settlement.setOnClickListener {
             startActivity(Intent(requireActivity(), ResultsSettlementActivity::class.java))
-        }
-        //游戏规则
-        btn_game_rule.setOnClickListener {
-            JumpUtil.toInternalWeb(
-                requireContext(),
-                Constants.getGameRuleUrl(requireContext()),
-                getString(R.string.game_rule)
-            )
         }
         //时区切换
         btn_time_zone.setOnClickListener {
@@ -651,13 +650,11 @@ class ProfileCenterFragment :
         val thirdTransferOpen = sConfigData?.thirdTransferOpen == FLAG_OPEN
         btn_account_transfer.visibility =
             if (thirdOpen && !thirdTransferOpen) View.VISIBLE else View.GONE
-
-        //   btn_other_bet_record.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
-        btn_member_level.visibility = View.GONE //if (!thirdOpen) View.GONE else View.VISIBLE
     }
 
     private fun updateCreditAccountUI() {
         lin_wallet_operation.setVisibilityByCreditSystem()
+        lin_wallet_operation.setVisibilityByMarketSwitch()
     }
 
     //有 child activity 給定 notice button 顯示

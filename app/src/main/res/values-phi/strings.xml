@@ -128,6 +128,7 @@
     <string name="home_tab_cs">Correct score</string>
     <string name="home_tab_parlay">Parlay</string>
     <string name="home_tab_outright">OUTRIGHTS</string>
+    <string name="home_tab_end_score">Ending card ng basketball</string>
     <string name="home_tab_at_start">MALAPIT NA</string>
     <string name="home_tab_eps">Premium</string>
     <string name="label_all">Lahat</string>
@@ -234,6 +235,8 @@
     <string name="account_transfer">Ilipat ang balanse</string>
     <string name="platform_user_money">Balanse sa platform</string>
     <string name="third_party">3rd party</string>
+    <string name="N643">Maaring pumunta sa Glife applet para mag-recharge</string>
+    <string name="N644">Maaring pumunta sa Glife applet para mag-withdraw ng pera</string>
     <string name="L019">Matagumpay ang pag-withdraw</string>
     <string name="N618">Mã giao dịch phụ</string>
     <string name="N646">Resibo ng halaga</string>
@@ -287,7 +290,7 @@
     <string name="order_number_colon">Note number：</string>
     <string name="bet_type">投注玩法</string>
     <string name="total_bet_money">Kabuuang taya</string>
-    <string name="total_bet_money_colon">Kabuuang taya：</string>
+    <string name="total_bet_money_colon">Kabuuang taya：%s</string>
     <string name="status">State</string>
     <string name="status_colon">State：</string>
     <string name="rebates">Rebate：</string>
@@ -961,6 +964,7 @@
     <string name="bet_stake">Taya</string>
     <string name="total_capital">Stake：%s</string>
     <string name="total_win_amount">Mapapanalo：</string>
+    <string name="total_all_win_amount">Kabuuang mapanalo：</string>
     <string name="delete_bet">Tanggalin</string>
     <string name="delete_bet_all">Delete lahat</string>
     <string name="btn_login_bet">Login muna</string>
@@ -1194,5 +1198,9 @@
     <string name="hint_phone_format">Ang mobile number format ay 11 numero at nagsisimula sa 09</string>
     <string name="username">Account ng miyembro</string>
     <string name="kyc_unverifing">Nag veverify</string>
+    <string name="J801">Manalo at malaki</string>
+    <string name="J802">Manalo at maliit</string>
+    <string name="J803">Manalo at Parehong koponan upang makapuntos - Oo</string>
+    <string name="J804">Panalo at Parehong koponan upang makapuntos - Hindi</string>
 
 </resources>

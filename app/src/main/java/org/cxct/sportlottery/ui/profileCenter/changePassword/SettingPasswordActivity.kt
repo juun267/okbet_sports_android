@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.activity_setting_password.*
 import kotlinx.android.synthetic.main.text_form_field_boxes_layout.view.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.db.entity.UserInfo
+import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.repository.FLAG_IS_NEED_UPDATE_PAY_PW
 import org.cxct.sportlottery.ui.base.BaseSocketActivity

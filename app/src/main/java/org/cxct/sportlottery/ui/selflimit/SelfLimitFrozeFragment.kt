@@ -5,10 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.text.isDigitsOnly
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.PassVerifyEnum
 import org.cxct.sportlottery.databinding.FragmentSelfLimitFrozeBinding
-import org.cxct.sportlottery.enum.PassVerifyEnum
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
@@ -72,7 +73,7 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
                     it.isNullOrEmpty() -> {
                         viewModel.setFrozeEditTextError(false)
                     }
-                    it.toLong() > 999 -> {
+                    !it.isDigitsOnly() || it.toLong() > 999 -> {
                         binding.tvError.text =
                             getString(R.string.self_limit_error_format, minFrozeDay, 999)
                         viewModel.setFrozeEditTextError(true)

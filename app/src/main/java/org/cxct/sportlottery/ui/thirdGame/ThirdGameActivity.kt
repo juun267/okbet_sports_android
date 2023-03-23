@@ -6,7 +6,7 @@ import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_third_game.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.db.entity.UserInfo
+import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.TestFlag

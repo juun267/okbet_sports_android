@@ -3,10 +3,12 @@ package org.cxct.sportlottery.ui.common
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import kotlinx.android.synthetic.main.dialog_password_verify.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.enum.PassVerifyEnum
+import org.cxct.sportlottery.common.PassVerifyEnum
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.selflimit.SelfLimitViewModel
 import org.cxct.sportlottery.util.MD5Util

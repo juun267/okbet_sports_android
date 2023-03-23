@@ -23,6 +23,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.setVisibilityByMarketSwitch
 import org.cxct.sportlottery.util.startLogin
 
 class HomeToolbarView: LinearLayout {
@@ -118,7 +119,6 @@ class HomeToolbarView: LinearLayout {
             ivParams.rightMargin = 4.dp
             userMoneyView.addView(this, ivParams)
         }
-
         addView(userMoneyView, LayoutParams(0, -2, 1f))
     }
 
@@ -157,6 +157,8 @@ class HomeToolbarView: LinearLayout {
 
     private fun bindMoneyText(money: Double) {
         tvUserMoney.text = "${sConfigData?.systemCurrencySign} ${TextUtil.format(money)}"
+        tvUserMoney.setVisibilityByMarketSwitch()
+        ivRefreshMoney.setVisibilityByMarketSwitch()
     }
 
     private fun setupLogin() {

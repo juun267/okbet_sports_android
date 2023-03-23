@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.activity_setting_center.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.repository.HandicapType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
@@ -16,7 +17,6 @@ import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.maintab.LanguageAdapter
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 
 

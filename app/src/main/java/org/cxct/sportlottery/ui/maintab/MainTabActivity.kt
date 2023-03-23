@@ -5,14 +5,12 @@ import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.PathMeasure
 import android.os.Bundle
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
-import android.view.ViewGroup.MarginLayoutParams
 import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import android.widget.RelativeLayout
@@ -28,6 +26,7 @@ import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import kotlinx.android.synthetic.main.bet_bar_layout2.*
 import kotlinx.android.synthetic.main.fragment_sport_list.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding
 import org.cxct.sportlottery.event.BetModeChangeEvent
 import org.cxct.sportlottery.event.MenuEvent
@@ -47,12 +46,10 @@ import org.cxct.sportlottery.ui.main.accountHistory.next.AccountHistoryNextFragm
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment
 import org.cxct.sportlottery.ui.maintab.menu.SportLeftFragment
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.ui.sport.SportLeagueAdapter
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import kotlin.system.exitProcess
@@ -160,7 +157,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             setTextVisibility(true)
             setTextSize(10f)
             setIconSize(30f)
-
+            menu.getItem(2).isVisible = !SPUtil.getMarketSwitch()
             onNavigationItemSelectedListener =
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
                     when (menuItem.itemId) {
@@ -179,7 +176,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                     } else {
                         ll_home_back.visibility = View.GONE
                     }
-
                     setupBetBarVisiblity(position)
                     return@OnNavigationItemSelectedListener true
                 }
@@ -358,9 +354,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             else -> false
         }
 
-        if (betListCount == 0 ||
-            !needShowBetBar ||
-            BetInfoRepository.currentBetType == BetListFragment.SINGLE) {
+        if (betListCount == 0 || !needShowBetBar || BetInfoRepository.currentBetType == BetListFragment.SINGLE) {
 //            Timber.d("ParlayFloatWindow隐藏：betListCount:${betListCount} !needShowBetBar:${!needShowBetBar} currentBetMode:${BetInfoRepository.currentBetType}")
             parlayFloatWindow.gone()
         } else {
@@ -590,6 +584,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     fun jumpToBetInfo(tabPosition: Int) {
+        if(SPUtil.getMarketSwitch()){
+            return
+        }
         if (bottom_navigation_view.currentItem != 2) {
             bottom_navigation_view.currentItem = 2
         }

@@ -9,8 +9,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.setTeamLogo
 
 
@@ -50,7 +50,11 @@ class Type4GroupAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (groupList.isNotEmpty() && keys.isNotEmpty()) {
-            keys[position]?.let { holder.bindModel(groupList[position], it) }
+            try {
+                keys[position]?.let { holder.bindModel(groupList[position], it) }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 

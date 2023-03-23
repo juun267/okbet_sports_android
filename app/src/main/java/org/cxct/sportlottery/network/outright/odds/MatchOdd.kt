@@ -13,7 +13,6 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsOdd
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
-import org.cxct.sportlottery.ui.common.PlayCateMapItem
 
 @Parcelize
 @JsonClass(generateAdapter = true)
@@ -40,10 +39,6 @@ data class MatchOdd(
     @Transient
     @IgnoredOnParcel
     override val oddsEps: EpsOdd? = null
-
-    @Transient
-    @IgnoredOnParcel
-    override var playCateMappingList: List<PlayCateMapItem>? = null
 
     @Transient
     @IgnoredOnParcel

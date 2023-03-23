@@ -11,13 +11,13 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.MultiLanguagesApplication
-import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.login.*
 import org.cxct.sportlottery.network.index.login_for_guest.LoginForGuestRequest
 import org.cxct.sportlottery.network.index.logout.LogoutRequest
 import org.cxct.sportlottery.network.index.register.RegisterRequest
+import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.user.authbind.AuthBindResult
 import org.cxct.sportlottery.util.*
 import retrofit2.Response
@@ -437,5 +437,6 @@ object LoginRepository {
             userRebateList = loginData.userRebateList,
             discount = loginData.discount,
             verified = loginData.verified,
+            vipType = loginData.vipType,
         )
 }

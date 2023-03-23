@@ -14,8 +14,9 @@ import com.appsflyer.AppsFlyerLib
 import com.didichuxing.doraemonkit.DoKit
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import me.jessyan.autosize.AutoSize
 import org.cxct.sportlottery.common.ResourceWrapper
-import org.cxct.sportlottery.db.entity.UserInfo
+import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.money.RedEnveLopeModel
@@ -23,7 +24,6 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.dialog.AgeVerifyDialog
 import org.cxct.sportlottery.ui.dialog.promotion.PromotionPopupDialog
-import org.cxct.sportlottery.ui.favorite.MyFavoriteViewModel
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.ui.finance.FinanceViewModel
 import org.cxct.sportlottery.ui.game.betList.BetListViewModel
@@ -38,7 +38,7 @@ import org.cxct.sportlottery.ui.maintab.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabViewModel
 import org.cxct.sportlottery.ui.maintab.SportViewModel
 import org.cxct.sportlottery.ui.maintenance.MaintenanceViewModel
-import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechViewModel
 import org.cxct.sportlottery.ui.news.NewsViewModel
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
@@ -46,7 +46,6 @@ import org.cxct.sportlottery.ui.profileCenter.authbind.AuthViewModel
 import org.cxct.sportlottery.ui.profileCenter.cancelaccount.CancelAccountViewModel
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordViewModel
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
-import org.cxct.sportlottery.ui.profileCenter.modify.BindInfoViewModel
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoViewModel
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordViewModel
@@ -134,7 +133,6 @@ class MultiLanguagesApplication : Application() {
         viewModel { VipViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { AccountHistoryViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { TransactionStatusViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { MyFavoriteViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { NewsViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { RedEnveLopeModel(get(), get(), get(), get(), get(), get()) }
         viewModel { MainTabViewModel(get(), get(), get(), get(), get(), get()) }
@@ -193,13 +191,12 @@ class MultiLanguagesApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         appContext = applicationContext
         instance = this
         mInstance = this
         AppManager.init(this)
         myPref = getDefaultSharedPreferences()
-
+        AutoSize.initCompatMultiProcess(this)
         TimeZone.setDefault(timeZone)
         startKoin {
             androidContext(this@MultiLanguagesApplication)

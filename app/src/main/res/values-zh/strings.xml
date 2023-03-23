@@ -118,7 +118,6 @@
     <string name="have_account">已有账号?</string>
     <string name="btn_login">登录</string>
     <string name="btn_register">注册</string>
-    <string name="no_announcement">暂无公告</string>
     <string name="lottery">彩票</string>
     <string name="poker">棋牌</string>
     <string name="slot">电子</string>
@@ -130,6 +129,7 @@
     <string name="home_tab_cs">波胆</string>
     <string name="home_tab_parlay">串关</string>
     <string name="home_tab_outright">冠军</string>
+    <string name="home_tab_end_score">末位比分组合</string>
     <string name="home_tab_at_start">即将</string>
     <string name="home_tab_eps">特优</string>
     <string name="label_all">全部</string>
@@ -280,8 +280,8 @@
     <string name="order_number">注单编号</string>
     <string name="order_number_colon">注单号：</string>
     <string name="bet_type">投注玩法</string>
-    <string name="total_bet_money">总投注额</string>
-    <string name="total_bet_money_colon">总投注额：</string>
+    <string name="total_bet_money">总投注</string>
+    <string name="total_bet_money_colon">总投注：%s</string>
     <string name="status">状态</string>
     <string name="status_colon">状 态：</string>
     <string name="rebates">返 水：</string>
@@ -508,10 +508,6 @@
     <string name="bet_info_odd_content_changed2">球线或赔率已变更</string>
     <string name="bet_list_single_warn">可用相同的投注额填充所有单项选择</string>
     <string name="bet_list_single">单场</string>
-    <string name="bet_list_single_type">单项投注</string>
-    <string name="bet_list_parlay_type">串关投注</string>
-    <string name="bet_list_view_more_options">更多投注选项</string>
-    <string name="bet_list_receipt">注单收据</string>
     <string name="bet_list_cant_parlay_warn">提醒若同一赛事,不同球种,冠军等投注项目不可进行串关</string>
     <string name="complete">完成</string>
     <string name="record_recharge">存款记录</string>
@@ -969,7 +965,6 @@
     <!--region 注單模塊調整-->
     <string name="bet_info_bet_lock_hint">注单盘口已关闭</string>
     <string name="bet_info_no_parlay_hint">赛事暂无支持串关</string>
-    <string name="function">常用功能</string>
     <string name="sport_relative">体育相关</string>
     <string name="red_envelope_congratulations">恭喜您抢到</string>
     <string name="pls_check_amount">请至您的帐户内查询入帐金额</string>
@@ -998,28 +993,21 @@
     <string name="appointment_time">预约时间</string>
     <string name="select_date">请选择日期</string>
     <string name="select_time">请选择时间</string>
-    <string name="current_time">当前时间</string>
 
     <!--region 20220714 新版投注單-->
     <string name="bet_win">可赢</string>
     <string name="bet_stake">投注</string>
     <string name="total_capital">本金：%s</string>
     <string name="total_win_amount">可赢：</string>
+    <string name="total_all_win_amount">总可赢：</string>
     <string name="delete_bet">删除</string>
     <string name="delete_bet_all">全部删除</string>
     <string name="btn_login_bet">登录后可投注</string>
-    <string name="confirm_single_bets">确认%d单注投注</string>
-    <string name="confirm_multiple_bets">确认%d串关投注</string>
     <string name="btn_remove_closed_selections">移除已关闭的选项</string>
-    <string name="please_enter_correct_amount">请输入正确投注额</string>
     <string name="bet_info_list_bet">投注</string>
     <string name="bet_info_bet">投注</string>
     <!--endregion-->
 
-    <string name="publicity_contact">联络</string>
-    <string name="publicity_faqs">常见问题</string>
-    <string name="more_info">更多信息</string>
-    <string name="e_game">棋牌</string>
     <string name="new_games_beta">新游戏，测试版</string>
     <string name="new_games">新游戏</string>
 
@@ -1280,4 +1268,11 @@
     <string name="N647">订单金额</string>
     <string name="N653">待出款</string>
     <string name="J630">订单号</string>
+    <string name="N643">请前往Glife小程序进行充值</string>
+    <string name="N644">请前往Glife小程序进行提款</string>
+
+    <string name="J801">独赢&amp;大</string>
+    <string name="J802">独赢&amp;小</string>
+    <string name="J803">独赢&amp;双方球队进球-是</string>
+    <string name="J804">独赢&amp;双方球队进球-否</string>
 </resources>
