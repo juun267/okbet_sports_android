@@ -296,7 +296,7 @@
     <string name="order_number_colon">Betting Slip No.</string>
     <string name="bet_type">Betting method</string>
     <string name="total_bet_money">Total bet amount</string>
-    <string name="total_bet_money_colon">Total bet amount:%s</string>
+    <string name="total_bet_money_colon">Total stake:%s</string>
     <string name="status">Status</string>
     <string name="status_colon">Status</string>
     <string name="rebates">Return</string>
@@ -1002,7 +1002,7 @@
     <string name="bet_stake">Stake</string>
     <string name="total_capital">Stake：%s</string>
     <string name="total_win_amount">Winning：</string>
-    <string name="total_all_win_amount">Total winning：</string>
+    <string name="total_all_win_amount">Total Win：</string>
     <string name="delete_bet">Delete</string>
     <string name="delete_bet_all">Delete All</string>
     <string name="btn_login_bet">Login first</string>
