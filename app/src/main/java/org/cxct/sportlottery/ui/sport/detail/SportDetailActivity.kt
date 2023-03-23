@@ -540,30 +540,27 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
         viewModel.oddsDetailResult.observe(this) {
             it?.getContentIfNotHandled()?.let { result ->
-                when (result.success) {
-                    true -> {
-                        result.setupPlayCateTab()
-                        oddsDetailListAdapter?.notifyDataSetChangedByCode(tabCateAdapter.dataList[tabCateAdapter.selectedPosition].code)
-                        matchOdd = result.oddsDetailData?.matchOdd
+                if (result.success) {
+                    result.setupPlayCateTab()
+                    oddsDetailListAdapter?.notifyDataSetChangedByCode(tabCateAdapter.dataList[tabCateAdapter.selectedPosition].code)
+                    matchOdd = result.oddsDetailData?.matchOdd
 
-                        result.oddsDetailData?.matchOdd?.matchInfo?.let { matchInfo ->
-                            this.matchInfo = matchInfo
-                            //region 配置主客隊名稱給內部Item使用
-                            matchInfo.homeName?.let { home ->
-                                oddsDetailListAdapter?.homeName = home
-                            }
-                            matchInfo.awayName.let { away ->
-                                oddsDetailListAdapter?.awayName = away
-                            }
-                            //endregion
-
-                            setupMatchInfo(matchInfo)
+                    result.oddsDetailData?.matchOdd?.matchInfo?.let { matchInfo ->
+                        this.matchInfo = matchInfo
+                        //region 配置主客隊名稱給內部Item使用
+                        matchInfo.homeName?.let { home ->
+                            oddsDetailListAdapter?.homeName = home
                         }
-                        setupLiveView(result.oddsDetailData?.matchOdd?.matchInfo?.liveVideo)
+                        matchInfo.awayName.let { away ->
+                            oddsDetailListAdapter?.awayName = away
+                        }
+                        //endregion
+
+                        setupMatchInfo(matchInfo)
                     }
-                    false -> {
-                        showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
-                    }
+                    setupLiveView(result.oddsDetailData?.matchOdd?.matchInfo?.liveVideo)
+                } else {
+                    showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
                 }
             }
         }

@@ -92,26 +92,30 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
                 field = value
                 lastOddIds = newOddsIds
                 lifecycle.lifecycleScope.launch(Dispatchers.IO) {
-                    data.forEachIndexed { index, leagueOdd ->
-                        leagueOdd.matchOdds.forEach { matchOdd ->
-                            var needUpdateMatch = false
-                            matchOdd.oddsMap?.values?.forEach { odds ->
-                                odds?.forEach { odd ->
-                                    val betInfoSelected = betInfoList.any { betInfoListData ->
-                                        betInfoListData.matchOdd.oddsId == odd?.id
-                                    }
-                                    if (odd?.isSelected != betInfoSelected) {
-                                        odd?.isSelected = betInfoSelected
-                                        needUpdateMatch = true
+                    try {
+                        data.asIterable().forEachIndexed { index, leagueOdd ->
+                            leagueOdd.matchOdds.asIterable().forEach { matchOdd ->
+                                var needUpdateMatch = false
+                                matchOdd.oddsMap?.values?.asIterable()?.forEach { odds ->
+                                    odds?.asIterable()?.forEach { odd ->
+                                        val betInfoSelected = betInfoList.any { betInfoListData ->
+                                            betInfoListData.matchOdd.oddsId == odd?.id
+                                        }
+                                        if (odd?.isSelected != betInfoSelected) {
+                                            odd?.isSelected = betInfoSelected
+                                            needUpdateMatch = true
+                                        }
                                     }
                                 }
-                            }
-                            if (needUpdateMatch) {
-                                withContext(Dispatchers.Main) {
-                                    updateMatch(index, matchOdd)
+                                if (needUpdateMatch) {
+                                    withContext(Dispatchers.Main) {
+                                        updateMatch(index, matchOdd)
+                                    }
                                 }
                             }
                         }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
                     }
                 }
             }

@@ -14,6 +14,7 @@ import com.appsflyer.AppsFlyerLib
 import com.didichuxing.doraemonkit.DoKit
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import me.jessyan.autosize.AutoSize
 import org.cxct.sportlottery.common.ResourceWrapper
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.Constants
@@ -194,7 +195,7 @@ class MultiLanguagesApplication : Application() {
         mInstance = this
         AppManager.init(this)
         myPref = getDefaultSharedPreferences()
-
+        AutoSize.initCompatMultiProcess(this)
         TimeZone.setDefault(timeZone)
         startKoin {
             androidContext(this@MultiLanguagesApplication)

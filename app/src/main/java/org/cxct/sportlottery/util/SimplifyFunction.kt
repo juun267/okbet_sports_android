@@ -6,10 +6,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Matrix
-import android.graphics.Rect
+import android.graphics.*
 import android.os.Environment
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -612,13 +609,7 @@ fun getLevelName(context: Context, level: Int): String {
  */
 fun WebView.setWebViewCommonBackgroundColor() {
     setBackgroundColor(
-        ContextCompat.getColor(
-            context, if (MultiLanguagesApplication.isNightMode) {
-                R.color.color_000000
-            } else {
-                R.color.color_FFFFFF
-            }
-        )
+        if (MultiLanguagesApplication.isNightMode) Color.BLACK else Color.WHITE
     )
 }
 

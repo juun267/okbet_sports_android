@@ -143,26 +143,43 @@ class VerifyKYCFragment :
         setupDocFile()
         setupPhotoFile()
         checkSubmitStatus()
-        getIdentityType()
     }
 
     private fun setSpinnerStyle() {
+        identity_1st.selector_type.setOnItemSelectedListener {
+            checkSubmitStatus()
+        }
         val constraintLayout = identity_1st.selector_type.cl_root
         val constraintSet = ConstraintSet()
         constraintSet.clone(constraintLayout)
         constraintSet.clear(R.id.tv_name, ConstraintSet.END)
-        constraintSet.connect(R.id.tv_name, ConstraintSet.START, R.id.cl_root, ConstraintSet.START,14)
+        constraintSet.connect(R.id.tv_name,
+            ConstraintSet.START,
+            R.id.cl_root,
+            ConstraintSet.START,
+            14)
         constraintSet.clear(R.id.iv_arrow, ConstraintSet.START)
-        constraintSet.connect(R.id.iv_arrow, ConstraintSet.END, R.id.cl_root, ConstraintSet.END,14)
+        constraintSet.connect(R.id.iv_arrow, ConstraintSet.END, R.id.cl_root, ConstraintSet.END, 14)
         constraintSet.applyTo(constraintLayout)
 
+        identity_2nd.selector_type.setOnItemSelectedListener {
+            checkSubmitStatus()
+        }
         val constraintLayout2 = identity_2nd.selector_type.cl_root
         val constraintSet2 = ConstraintSet()
         constraintSet2.clone(constraintLayout2)
         constraintSet2.clear(R.id.tv_name, ConstraintSet.END)
-        constraintSet2.connect(R.id.tv_name, ConstraintSet.START, R.id.cl_root, ConstraintSet.START,14)
+        constraintSet2.connect(R.id.tv_name,
+            ConstraintSet.START,
+            R.id.cl_root,
+            ConstraintSet.START,
+            14)
         constraintSet2.clear(R.id.iv_arrow, ConstraintSet.START)
-        constraintSet2.connect(R.id.iv_arrow, ConstraintSet.END, R.id.cl_root, ConstraintSet.END,14)
+        constraintSet2.connect(R.id.iv_arrow,
+            ConstraintSet.END,
+            R.id.cl_root,
+            ConstraintSet.END,
+            14)
         constraintSet2.applyTo(constraintLayout2)
     }
 
@@ -316,7 +333,8 @@ class VerifyKYCFragment :
 
     private fun checkSubmitStatus() {
         btn_submit.isEnabled =
-            (firstFile != null && identity_1st.ed_num.text.isNotEmpty()) && ((secondFile != null && identity_2nd.isVisible && identity_2nd.ed_num.text.isNotEmpty()) || !identity_2nd.isVisible)
+            (firstFile != null && !identity_1st.selector_type.selectedCode.isNullOrBlank() && identity_1st.ed_num.text.isNotEmpty())
+                    && ((secondFile != null && identity_2nd.isVisible && !identity_2nd.selector_type.selectedCode.isNullOrBlank() && identity_2nd.ed_num.text.isNotEmpty()) || !identity_2nd.isVisible)
     }
 
     private fun setEdittext() {

@@ -277,9 +277,9 @@ abstract class BaseFavoriteViewModel(
         this.oddsMap?.forEach { (key, value) ->
             value?.forEach { odd ->
                 if (key == PlayCate.EPS.value)
-                    odd?.setupEPSDiscount(discount)
+                    odd.setupEPSDiscount(discount)
                 else
-                    odd?.setupDiscount(discount)
+                    odd.setupDiscount(discount)
             }
         }
     }

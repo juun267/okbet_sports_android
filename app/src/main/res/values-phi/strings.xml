@@ -1198,5 +1198,9 @@
     <string name="hint_phone_format">Ang mobile number format ay 11 numero at nagsisimula sa 09</string>
     <string name="username">Account ng miyembro</string>
     <string name="kyc_unverifing">Nag veverify</string>
+    <string name="J801">Manalo at malaki</string>
+    <string name="J802">Manalo at maliit</string>
+    <string name="J803">Manalo at Parehong koponan upang makapuntos - Oo</string>
+    <string name="J804">Panalo at Parehong koponan upang makapuntos - Hindi</string>
 
 </resources>
