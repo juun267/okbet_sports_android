@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.dialog
 import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Point
@@ -33,21 +32,24 @@ class RedEnvelopeReceiveDialog(
 
 
     private val redenpId by lazy {
-        arguments?.getInt("redenpID")
+        arguments?.getInt("redenpId")
     }
 
-    constructor(redenpId: Int?): this(){
-        Bundle().apply {
-            putInt("redenpId",redenpId?:0)
+    constructor(redenpId: Int?) : this() {
+        arguments = Bundle().apply {
+            putInt("redenpId", redenpId ?: 0)
         }
     }
 
-    var bitmap = listOf(
-        BitmapFactory.decodeResource(context?.resources, R.drawable.ic_redpacket_coin),
-        BitmapFactory.decodeResource(context?.resources, R.drawable.ic_redpacket_coin),
-        BitmapFactory.decodeResource(context?.resources, R.drawable.ic_redpacket_coin),
-        BitmapFactory.decodeResource(context?.resources, R.drawable.ic_redpacket_coin_small),
-    )
+    private val bitmap by lazy {
+        listOf(
+            BitmapFactory.decodeResource(context?.resources, R.drawable.ic_redpacket_coin),
+            BitmapFactory.decodeResource(context?.resources, R.drawable.ic_redpacket_coin),
+            BitmapFactory.decodeResource(context?.resources, R.drawable.ic_redpacket_coin),
+            BitmapFactory.decodeResource(context?.resources, R.drawable.ic_redpacket_coin_small),
+        )
+    }
+
     val map by lazy {
         mapOf<Bitmap, Long>(
             bitmap[0] to 7060,
