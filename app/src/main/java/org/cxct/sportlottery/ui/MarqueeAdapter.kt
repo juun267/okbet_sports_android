@@ -6,12 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 
 
 open class MarqueeAdapter : RecyclerView.Adapter<MarqueeAdapter.DetailViewHolder>() {
-    protected enum class Type { ITEM, BLANK }
+
+    companion object {
+        const val TYPE_ITEM = 100
+        const val TYPE_BLANK = 200
+    }
 
     private var mDataList: MutableList<String> = mutableListOf()
 
@@ -20,7 +23,7 @@ open class MarqueeAdapter : RecyclerView.Adapter<MarqueeAdapter.DetailViewHolder
             .inflate(R.layout.content_marquee, viewGroup, false)
 
         //開頭結尾的空白過場，寬度設置跟 父層 Layout 一樣
-        if (viewType == Type.BLANK.ordinal) layoutView.minimumWidth = viewGroup.measuredWidth
+        if (viewType == TYPE_BLANK) layoutView.minimumWidth = viewGroup.measuredWidth
 
         return DetailViewHolder(layoutView)
     }
@@ -31,15 +34,15 @@ open class MarqueeAdapter : RecyclerView.Adapter<MarqueeAdapter.DetailViewHolder
 
     override fun getItemViewType(position: Int): Int {
         return when (position) {
-            0 -> Type.BLANK.ordinal
-            else -> Type.ITEM.ordinal
+            0 -> TYPE_BLANK
+            else -> TYPE_ITEM
         }
     }
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(viewHolder: DetailViewHolder, position: Int) {
         try {
-            if (getItemViewType(position) == Type.ITEM.ordinal && mDataList.size != 0) {
+            if (getItemViewType(position) == TYPE_ITEM && mDataList.size != 0) {
                 val dataPosition = (position - 1) % mDataList.size
                 viewHolder.detail.text = mDataList[dataPosition] + "　"
             }
