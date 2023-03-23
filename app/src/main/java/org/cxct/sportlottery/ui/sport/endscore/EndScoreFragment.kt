@@ -252,12 +252,13 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
 
     private fun addOutRightOddsDialog(matchOdd: MatchOdd, odd: Odd, playCateCode: String) {
 
+        val matchInfo = matchOdd.matchInfo ?: return
         (activity as MainTabActivity).setupBetData(FastBetDataBean(
             matchType = MatchType.END_SCORE,
             gameType = GameType.BK,
             playCateCode = playCateCode,
             playCateName = getString(R.string.home_tab_end_score),
-            matchInfo = matchOdd.matchInfo!!,
+            matchInfo = matchInfo,
             matchOdd = null,
             odd = odd,
             subscribeChannelType = ChannelType.HALL,
