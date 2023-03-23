@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Configuration
 import org.cxct.sportlottery.MultiLanguagesApplication
 
+@Deprecated("多语言问题已处理，直接用Context的Resources获取相应的资源就行")
 object LocalUtils {
     fun getString(resId:Int): String {
         val localizedContext = getLocalizedContext()

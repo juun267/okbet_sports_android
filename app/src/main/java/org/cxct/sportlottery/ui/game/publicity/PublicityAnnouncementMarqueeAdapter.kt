@@ -11,7 +11,7 @@ class PublicityAnnouncementMarqueeAdapter : MarqueeAdapter() {
         val layoutView =
             ContentPublicityAnnouncementMarqueeBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
         //開頭結尾的空白過場，寬度設置跟 父層 Layout 一樣
-        if (viewType == Type.BLANK.ordinal) layoutView.root.minimumWidth = viewGroup.measuredWidth
+        if (viewType == TYPE_BLANK) layoutView.root.minimumWidth = viewGroup.measuredWidth
         return AnnouncementDetailViewHolder(layoutView)
     }
 

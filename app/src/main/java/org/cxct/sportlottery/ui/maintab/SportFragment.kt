@@ -26,8 +26,6 @@ import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
-import org.cxct.sportlottery.util.HomePageStatusManager
 import org.cxct.sportlottery.util.phoneNumCheckDialog
 
 class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabViewModel::class) {
@@ -178,12 +176,6 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
             refreshTabLayout(sportMenuResult)
             EventBusUtil.post(sportMenuResult)
         }
-    }
-
-    override fun onDestroy() {
-        expandCheckList.clear()
-        HomePageStatusManager.clear()
-        super.onDestroy()
     }
 
     private fun navGameFragment(matchType: MatchType) {
