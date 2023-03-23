@@ -1191,7 +1191,7 @@
     <string name="str_check_bets">Bets Details</string>
     <string name="str_odds_changed">odds changed</string>
     <string name="str_bet_slip_not_confirm_for_a_long_time">Bet slip not confirm for a long time</string>
-    <string name="str_exceeding_limit_for_the_event_or_market">Exceeding limit for the event or market</string>
+    <string name="str_exceeding_limit_for_the_event_or_market">Your stake exceed the max limit</string>
     <string name="str_market_closed_please_try_later">Market closed, please try later</string>
     <string name="str_match_closed">Match closed</string>
     <string name="str_match_be_suspended">Match be suspended</string>
