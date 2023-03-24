@@ -54,6 +54,7 @@
     public static * inflate(android.view.LayoutInflater, android.view.ViewGroup, boolean);
     public static * inflate(android.view.LayoutInflater);
 }
+-keepclassmembers enum * { *; }
 
 #====== GSYVideoPlayer ============ start
 -keep class com.shuyu.gsyvideoplayer.video.** { *; }
