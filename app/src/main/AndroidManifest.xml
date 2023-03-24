@@ -69,10 +69,6 @@
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity
-            android:name=".ui.vip.VipActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
             android:name=".ui.feedback.FeedbackMainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" /> <!-- 後臺服務-長連線 -->

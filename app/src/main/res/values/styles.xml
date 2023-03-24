@@ -39,9 +39,6 @@
     </style>
 
     <!--＊＊設定layout_gravity會導致NestedScrollView內的RecyclerView item移位-->
-    <style name="Common">
-        <item name="android:windowBackground">@color/transparent_black_50</item>
-    </style>
 
     <style name="CustomDialogStyle" parent="Theme.AppCompat.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>

@@ -102,10 +102,6 @@ android {
         }
         OkbetPH {
         }
-        //okbet预发环境 app-phuat.abaoooiap.com
-        phuat {
-            buildConfigField "String", "CHANNEL_NAME", "\"yfp2\""
-        }
         google {
             manifestPlaceholders = [
                     CHANNEL: "google",
@@ -147,6 +143,10 @@ android {
                     INVITE_CODE: "inmobi"
             ]
         }
+        //okbet预发环境 app-phuat.abaoooiap.com
+//        phuat {
+//            buildConfigField "String", "CHANNEL_NAME", "\"yfp2\""
+//        }
         //okbet9测试环境
 //        credit {
 //            buildConfigField "String", "CHANNEL_NAME", "\"cdplat1\""
