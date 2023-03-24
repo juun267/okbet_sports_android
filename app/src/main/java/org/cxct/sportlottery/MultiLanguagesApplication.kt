@@ -15,11 +15,12 @@ import com.didichuxing.doraemonkit.DoKit
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import me.jessyan.autosize.AutoSize
+import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.common.ResourceWrapper
-import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.money.RedEnveLopeModel
+import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.dialog.AgeVerifyDialog
@@ -38,7 +39,6 @@ import org.cxct.sportlottery.ui.maintab.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabViewModel
 import org.cxct.sportlottery.ui.maintab.SportViewModel
 import org.cxct.sportlottery.ui.maintenance.MaintenanceViewModel
-import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechViewModel
 import org.cxct.sportlottery.ui.news.NewsViewModel
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
@@ -59,7 +59,6 @@ import org.cxct.sportlottery.ui.sport.SportTabViewModel
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteViewModel
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectViewModel
 import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusViewModel
-import org.cxct.sportlottery.ui.vip.VipViewModel
 import org.cxct.sportlottery.ui.withdraw.WithdrawViewModel
 import org.cxct.sportlottery.util.*
 import org.koin.android.ext.koin.androidContext
@@ -130,7 +129,6 @@ class MultiLanguagesApplication : Application() {
         viewModel { MoneyTransferViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { MaintenanceViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { OtherBetRecordViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { VipViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { AccountHistoryViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { TransactionStatusViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { NewsViewModel(get(), get(), get(), get(), get(), get()) }
