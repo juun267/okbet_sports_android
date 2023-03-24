@@ -31,7 +31,7 @@ class ScrollCenterLayoutManager(context: Context?, @RecyclerView.Orientation ori
     override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State?) {
         try {
             super.onLayoutChildren(recycler, state)
-        } catch (e: IndexOutOfBoundsException) {
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }

@@ -542,7 +542,12 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             it?.getContentIfNotHandled()?.let { result ->
                 if (result.success) {
                     result.setupPlayCateTab()
-                    oddsDetailListAdapter?.notifyDataSetChangedByCode(tabCateAdapter.dataList[tabCateAdapter.selectedPosition].code)
+                    try {
+                        oddsDetailListAdapter?.notifyDataSetChangedByCode(tabCateAdapter.dataList[tabCateAdapter.selectedPosition].code)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        return@observe
+                    }
                     matchOdd = result.oddsDetailData?.matchOdd
 
                     result.oddsDetailData?.matchOdd?.matchInfo?.let { matchInfo ->
