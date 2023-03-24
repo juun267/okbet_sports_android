@@ -10,11 +10,8 @@
     <color name="color_317FFF_1053af">@color/color_317FFF</color>
     <color name="color_317FFF_0760D4">@color/color_317FFF</color>
     <color name="color_317FFF_1F4780">@color/color_317FFF</color>
-    <color name="color_1D4C99_0760D4">@color/color_1D4C99</color>
     <color name="color_0760D4_0760D4">@color/color_0760D4</color>
-    <color name="color_999999_999999">@color/color_999999</color>
 
-    <color name="color_FF9E3C_FF9E3C">@color/color_FF9E3C</color>
     <color name="color_FF9143_ff9200">@color/color_FF9143</color>
     <color name="color_FF9143_cb7c2e">@color/color_FF9143</color>
     <color name="color_08dc6e_08dc6e">@color/color_08dc6e</color>
@@ -30,7 +27,6 @@
     <color name="color_242424_f2f2f2">@color/color_242424</color>
     <color name="color_212121_eeeeee">@color/color_212121</color>
     <color name="color_212121_ededed">@color/color_212121</color>
-    <color name="color_1F1F1F_e6e6e6">@color/color_1F1F1F</color>
     <color name="color_1F1F1F_E2E2E2">@color/color_1F1F1F</color>
     <color name="color_2B2B2B_e2e2e2">@color/color_2B2B2B</color>
     <color name="color_303030_dddddd">@color/color_303030</color>
@@ -45,7 +41,6 @@
     <color name="color_CCCCCC_000000">@color/color_cccccc</color>
     <color name="color_000000_FFFFFF">@color/color_000000</color>
     <color name="color_191919_EEEFF0">@color/color_191919</color>
-    <color name="color_191919_DFEAF8">@color/color_191919</color>
     <color name="color_212121_EAF4FE">@color/color_212121</color>
     <color name="color_1A1A1A_FAFAFA">@color/color_1A1A1A</color>
     <color name="color_404348_D2D2D7">@color/color_404348</color>
@@ -56,20 +51,12 @@
     <color name="color_1A1A1A_FFFFFF">@color/color_1A1A1A</color>
     <color name="color_939393_999999">@color/color_939393</color>
     <color name="color_191919_EAF4FE">@color/color_191919</color>
-    <color name="color_e5e5e5_202020">@color/color_e5e5e5</color>
     <color name="color_939393_cccccc">@color/color_939393</color>
     <color name="color_303030_E2E2E2">@color/color_303030</color>
     <color name="color_313131_e2e2e2">@color/color_313131</color>
     <color name="color_5d5d5d_888888">@color/color_5d5d5d</color>
     <color name="color_bbbbbb_ffffff">@color/color_BBBBBB</color>
     <color name="color_2b2b2b_ffffff">@color/color_2B2B2B</color>
-    <color name="color_317FFF_333333">@color/color_317FFF</color>
-    <color name="color_8F8F8F_999999">@color/color_8F8F8F</color>
-    <color name="color_3b3b3b_e6e6e6">@color/color_3b3b3b</color>
-    <color name="color_666666_999999">@color/color_666666</color>
-    <color name="color_212223_F1F7FE">@color/color_212223</color>
-    <color name="color_242527_F1F7FE">@color/color_242527</color>
-    <color name="color_a3a3a3_666666">@color/color_a3a3a3</color>
 
 
     <color name="color_FFFFFF_DE000000">@color/color_FFFFFF</color>
@@ -82,18 +69,11 @@
     <color name="color_cccccc_e2e2e2">@color/color_cccccc</color>
     <color name="color_1F1F1F_EEEFF0">@color/color_1F1F1F</color>
     <color name="color_BCBCBC_666666">@color/color_bcbcbc</color>
-    <color name="color_E2E2E2_D8D8D8">@color/color_E2E2E2</color>
-    <color name="color_141414_FCFCFC">@color/color_141414</color>
-    <color name="color_CAD3DE_8B9199">@color/color_CAD3DE</color>
-    <color name="color_202020_FCFCFC">@color/color_202020</color>
     <color name="color_A8AFB8_A8AFB8">@color/color_A8AFB8</color>
 
     <!--region 特殊處理顏色-->
     <color name="home_card_text_color">#CAE0FF</color>
-    <color name="home_card_coming_soon_text_color">#4dffffff</color>
     <color name="play_category_text_color">#FFFFFF</color>
-    <color name="play_category_stroke_color">#317FFF</color>
-    <color name="play_category_solid_color">#317FFF</color>
     <!--endregion 特殊處理顏色-->
     <color name="color_E8EFFD">#E8EFFD</color>
 
@@ -116,8 +96,6 @@
     <color name="color_202541_FFFFFF">@color/color_202541</color>
     <color name="color_131932_F3F9FF">@color/color_131932</color>
     <color name="color_336C7BA8_F4F4F4">@color/color_336C7BA8</color>
-    <color name="color_334266_D8E7FF">@color/color_334266</color>
-    <color name="color_202541_FAFCFF">@color/color_202541</color>
     <color name="color_2B3859_F3F9FF">@color/color_2B3859</color>
     <!--endregion 新UI 日夜間色系-->
     <!--沉浸式状态栏颜色处理-->
