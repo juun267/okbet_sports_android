@@ -31,13 +31,13 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
  * this.setCanceledOnTouchOutside(false) //disable 點擊外部關閉 dialog
  * this.setCancelable(false) //disable 按實體鍵 BACK 關閉 dialog
  */
-class CustomAlertDialog(private val mContext: Context) : DialogFragment() {
+class CustomAlertDialog(private val mContext: Context? = null) : DialogFragment() {
 
     private var mTitle: String? = null
     private var mMessage: String? = null
     private var mSpannedMessage: Spanned? = null
-    private var mPositiveText: String? = mContext.getString(R.string.btn_confirm)
-    private var mNegativeText: String? = mContext.getString(R.string.btn_cancel)
+    private var mPositiveText: String? = mContext?.getString(R.string.btn_confirm)
+    private var mNegativeText: String? = mContext?.getString(R.string.btn_cancel)
     private var mPositiveClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
     private var mNegativeClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
     private var mGravity = Gravity.CENTER
@@ -45,10 +45,10 @@ class CustomAlertDialog(private val mContext: Context) : DialogFragment() {
     private var mNegateTextColor = R.color.color_FFFFFF_414655
     private var isShowDivider: Boolean = false
     private var isShowDividerBottom: Boolean = true
-    var dissmisCallback: ((CustomAlertDialog)-> Unit)? = null
+    var dissmisCallback: ((CustomAlertDialog) -> Unit)? = null
 
     var isShowing = dialog?.isShowing
-    var mScrollViewMarginHorizon:Int = 0
+    var mScrollViewMarginHorizon: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -88,30 +88,32 @@ class CustomAlertDialog(private val mContext: Context) : DialogFragment() {
 
         if (mPositiveText == null) {
             btn_positive.visibility = View.GONE
-        } else
-            btn_positive.text = mPositiveText
+        } else btn_positive.text = mPositiveText
 
         if (mNegativeText == null) {
             btn_negative.visibility = View.GONE
-        } else
-            btn_negative.text = mNegativeText
+        } else btn_negative.text = mNegativeText
 
-        if(mPositiveText == null || mNegativeText == null){
+        if (mPositiveText == null || mNegativeText == null) {
             view_line.visibility = View.GONE
         }
 
-        if(mPositiveText == null && mNegativeText == null){
+        if (mPositiveText == null && mNegativeText == null) {
             block_bottom_bar.visibility = View.GONE
         }
 
         val contentParams = sv_block_content.layoutParams as ConstraintLayout.LayoutParams
-        if (mScrollViewMarginHorizon!=0){
-            contentParams.leftMargin= mScrollViewMarginHorizon.dp
+        if (mScrollViewMarginHorizon != 0) {
+            contentParams.leftMargin = mScrollViewMarginHorizon.dp
             contentParams.rightMargin = mScrollViewMarginHorizon.dp
         }
 
-        tv_message.setTextColor(ContextCompat.getColor(context?:requireContext(), mTextColor))
-        btn_negative.setTextColor(ContextCompat.getColor(context?:requireContext(), mNegateTextColor))
+        tv_message.setTextColor(ContextCompat.getColor(context ?: requireContext(), mTextColor))
+        btn_negative.setTextColor(
+            ContextCompat.getColor(
+                context ?: requireContext(), mNegateTextColor
+            )
+        )
         divider2.visibility = if (isShowDivider) View.VISIBLE else View.GONE
         divider.visibility = if (isShowDividerBottom) View.VISIBLE else View.GONE
 
@@ -127,11 +129,11 @@ class CustomAlertDialog(private val mContext: Context) : DialogFragment() {
     }
 
     fun setShowDivider(show: Boolean?) {
-        isShowDivider = show?:false
+        isShowDivider = show ?: false
     }
 
     fun setShowDividerBottom(show: Boolean?) {
-        isShowDividerBottom = show?:true
+        isShowDividerBottom = show ?: true
     }
 
     fun setMessage(message: String?) {
@@ -141,6 +143,7 @@ class CustomAlertDialog(private val mContext: Context) : DialogFragment() {
     fun setTextColor(@ColorRes colorResource: Int) {
         mTextColor = colorResource
     }
+
     fun setNegativeTextColor(@ColorRes colorResource: Int) {
         mNegateTextColor = colorResource
     }
@@ -176,7 +179,7 @@ class CustomAlertDialog(private val mContext: Context) : DialogFragment() {
         mNegativeClickListener = negativeClickListener
     }
 
-    fun setCanceledOnTouchOutside(boolean: Boolean){
+    fun setCanceledOnTouchOutside(boolean: Boolean) {
         dialog?.setCanceledOnTouchOutside(boolean)
     }
 
@@ -215,7 +218,7 @@ class CustomAlertDialog(private val mContext: Context) : DialogFragment() {
             return dialogs[context.toString()]?.contains(tag) ?: false
         }
 
-        private fun removeDialogTag(mContext: Context, messageTag: String?) {
+        private fun removeDialogTag(mContext: Context?, messageTag: String?) {
             if (mContext !is LifecycleOwner || TextUtils.isEmpty(messageTag)) {
                 return
             }
@@ -235,7 +238,7 @@ class CustomAlertDialog(private val mContext: Context) : DialogFragment() {
             }
         }
 
-        private fun addDialogTag(mContext: Context, messageTag: String?) {
+        private fun addDialogTag(mContext: Context?, messageTag: String?) {
             if (mContext !is LifecycleOwner || TextUtils.isEmpty(messageTag)) {
                 return
             }
