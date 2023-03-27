@@ -113,7 +113,7 @@
             android:gravity="center"
             android:text="+1000"
             android:textColor="@color/color_FFFFFF"
-            android:textSize="@dimen/textSize18sp" />
+            android:textSize="22sp" />
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>
