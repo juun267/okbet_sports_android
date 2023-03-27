@@ -243,7 +243,9 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
     }
 
     fun getCurMatchType(): MatchType {
-        return matchTypeTabPositionMap.filterValues { it == tabLayout.selectedTabPosition }.entries.first().key
+        return kotlin.runCatching {
+            matchTypeTabPositionMap.filterValues { it == tabLayout.selectedTabPosition }.entries.first().key
+        }.getOrNull() ?: MatchType.IN_PLAY
     }
 
     fun getCurGameType(): GameType? {

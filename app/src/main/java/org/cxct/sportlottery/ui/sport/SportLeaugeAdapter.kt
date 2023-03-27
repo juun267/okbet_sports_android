@@ -213,45 +213,46 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+        if (holder !is ItemViewHolder) {
+            return
+        }
+
         if (payloads.isNullOrEmpty()) {
             onBindViewHolder(holder, position)
-            //if(holder is ItemViewHolder) holder.update(data[position], matchType, oddsType)
-        } else {
-            // Update with payload
-            payloads.forEach {
-                when (it) {
-                    is LeagueOdd -> {
-                        (holder as ItemViewHolder).update(it, matchType, oddsType)
-                    }
-                    is MatchOdd -> {
-                        (holder as ItemViewHolder).update(it, matchType, oddsType)
-                    }
-                    is PayLoadEnum -> {
-                        when (it) {
-                            PayLoadEnum.PAYLOAD_BET_INFO -> {
-                                (holder as ItemViewHolder).updateByBetInfo()
-                            }
-                            PayLoadEnum.PAYLOAD_PLAYCATE -> {
-                                (holder as ItemViewHolder).updateByPlayCate()
-                            }
-                            PayLoadEnum.EXPAND -> {
-                                (holder as ItemViewHolder).updateLeagueExpand(data[position],
-                                    matchType)
-                            }
-                            PayLoadEnum.PAYLOAD_MATCH_CLOCK -> {
-                                (holder as ItemViewHolder).updateLeagueExpand(data[position],
-                                    matchType)
-                            }
-                            PayLoadEnum.PAYLOAD_ODDS -> {
-                                (holder as ItemViewHolder).updateLeagueExpand(data[position],
-                                    matchType)
-                            }
+            return
+        }
+
+        // Update with payload
+        payloads.forEach {
+            when (it) {
+                is LeagueOdd -> {
+                    holder.update(it, matchType, oddsType)
+                }
+                is MatchOdd -> {
+                    holder.update(it, matchType, oddsType)
+                }
+                is PayLoadEnum -> {
+                    when (it) {
+                        PayLoadEnum.PAYLOAD_BET_INFO -> {
+                            holder.updateByBetInfo()
+                        }
+                        PayLoadEnum.PAYLOAD_PLAYCATE -> {
+                            holder.updateByPlayCate()
+                        }
+                        PayLoadEnum.EXPAND -> {
+                            holder.updateLeagueExpand(data[position], matchType)
+                        }
+                        PayLoadEnum.PAYLOAD_MATCH_CLOCK -> {
+                            holder.updateLeagueExpand(data[position], matchType)
+                        }
+                        PayLoadEnum.PAYLOAD_ODDS -> {
+                            holder.updateLeagueExpand(data[position], matchType)
                         }
                     }
-                    // 作用於賠率刷新、波坦tab切換
-                    is MatchOdd -> {
-                        (holder as SportLeagueAdapter.ItemViewHolder).updateByMatchIdForOdds(it)
-                    }
+                }
+                // 作用於賠率刷新、波坦tab切換
+                is MatchOdd -> {
+                    holder.updateByMatchIdForOdds(it)
                 }
             }
         }
@@ -259,17 +260,8 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
     // endregion
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (holder) {
-            is ItemViewHolder -> {
-                val item = data[position]
-                holder.bind(
-                    item,
-                    matchType,
-                    leagueListener,
-                    leagueOddListener,
-                    oddsType
-                )
-            }
+        if (holder is ItemViewHolder) {
+            holder.bind(data[position], matchType, leagueListener, leagueOddListener, oddsType)
         }
     }
 
