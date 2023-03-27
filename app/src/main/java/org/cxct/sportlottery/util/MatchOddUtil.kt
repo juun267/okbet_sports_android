@@ -117,17 +117,17 @@ object MatchOddUtil {
         }
     }
 
-    fun Double.applyDiscount(discount: Float): Double {
+    fun Double.applyDiscount(discount: Float?): Double {
         return ArithUtil.round(
-            ArithUtil.add(ArithUtil.mul(ArithUtil.sub(this, 1.0), discount.toDouble()), 1.0),
+            ArithUtil.add(ArithUtil.mul(ArithUtil.sub(this, 1.0), discount?.toDouble()?:1.0), 1.0),
             2,
             RoundingMode.HALF_UP
         )
             .toDouble()
     }
 
-    fun Double.applyHKDiscount(discount: Float): Double {
-        return ArithUtil.round(ArithUtil.mul(this, discount.toDouble()), 2, RoundingMode.HALF_UP).toDouble()
+    fun Double.applyHKDiscount(discount: Float?): Double {
+        return ArithUtil.round(ArithUtil.mul(this, discount?.toDouble()?:1.0), 2, RoundingMode.HALF_UP).toDouble()
     }
 
     private fun Double.applyReverselyDiscount(discount: Float): Double {

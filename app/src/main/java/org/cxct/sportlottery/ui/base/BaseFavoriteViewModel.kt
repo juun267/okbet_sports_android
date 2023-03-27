@@ -273,7 +273,10 @@ abstract class BaseFavoriteViewModel(
         }
     }
     private fun MatchOdd.setupOddDiscount() {
+
         val discount = userInfo.value?.discount ?: 1.0F
+
+
         this.oddsMap?.forEach { (key, value) ->
             value?.forEach { odd ->
                 if (key == PlayCate.EPS.value)
