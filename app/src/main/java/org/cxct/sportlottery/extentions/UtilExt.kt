@@ -7,5 +7,5 @@ inline fun Closeable.safeClose() {
 }
 
 inline fun runWithCatch(block: () -> Unit) {
-    try { block() } catch (e: Exception) {}
+    try { block() } catch (e: Exception) {e.printStackTrace()}
 }
