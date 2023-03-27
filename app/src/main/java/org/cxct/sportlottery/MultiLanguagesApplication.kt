@@ -1,5 +1,6 @@
 package org.cxct.sportlottery
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
@@ -61,6 +62,7 @@ import org.cxct.sportlottery.ui.sport.filter.LeagueSelectViewModel
 import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusViewModel
 import org.cxct.sportlottery.ui.withdraw.WithdrawViewModel
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.AppManager.OnAppStatusChangedListener
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
@@ -192,6 +194,15 @@ class MultiLanguagesApplication : Application() {
         instance = this
         mInstance = this
         AppManager.init(this)
+        AppManager.getInstance().addOnAppStatusChangedListener(object : OnAppStatusChangedListener {
+            override fun onForeground(var1: Activity?) {
+                LotteryManager.instance.getLotteryInfo()
+            }
+
+            override fun onBackground(var1: Activity?) {
+
+            }
+        })
         myPref = getDefaultSharedPreferences()
         AutoSize.initCompatMultiProcess(this)
         TimeZone.setDefault(timeZone)

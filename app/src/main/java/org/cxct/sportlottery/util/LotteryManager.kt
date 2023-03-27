@@ -133,8 +133,11 @@ class LotteryManager {
     }
 
     fun setUpFloatButton() {
-        if (floatRootView == null || lotteryInfo == null) {
+        if (lotteryInfo == null) {
             return
+        }
+        if (floatRootView == null) {
+            showFloatBtn()
         }
 
         val it = lotteryInfo!!
