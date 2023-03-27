@@ -541,13 +541,5 @@ fun TextView.makeLinks(vararg links: Pair<String, View.OnClickListener>) {
 
 @BindingAdapter("svgDrawable")
 fun ImageView.setSvgDrawable(svgData: String?) {
-    val svgIcon = SvgUtil.getSvgDrawable(
-        context,
-        if (svgData.isNullOrEmpty()) {
-            SvgUtil.defaultIconPath
-        } else {
-            svgData
-        }
-    )
-    this.setImageDrawable(svgIcon)
+    this.setImageDrawable(SvgUtil.getSvgDrawable(context, svgData ?: SvgUtil.defaultIconPath))
 }

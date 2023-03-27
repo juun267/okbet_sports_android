@@ -42,6 +42,11 @@ class RequestInterceptor(private val context: Context?) : Interceptor {
         val httpUrl = urlBuilder.build()
         val newRequest = builder.url(httpUrl).build()
 
-        return chain.proceed(newRequest)
+        // 对具体的哪个接口调用没try catch的数据接口地址
+        return try {
+            chain.proceed(newRequest)
+        } catch (e: IOException) {
+            throw IOException("${e.localizedMessage} ${request.url.toString()}")
+        }
     }
 }

@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.content_bet_info_item_v3_2.view.*
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v3.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.OddsType
+import org.cxct.sportlottery.extentions.toDoubleS
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
@@ -144,7 +145,7 @@ abstract class BatchParlayViewHolder(
                             data.input = null
                             refreshSingleWinAmount(null)
                         } else {
-                            val quota = it.toString().toDouble()
+                            val quota = it.toString().toDoubleS()
                             data.betAmount = quota
                             data.inputBetAmountStr = it.toString()
                             data.input = it.toString()

@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.activity_bank.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.extentions.runWithCatch
 import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 
@@ -24,9 +25,8 @@ class BankActivity : BaseSocketActivity<WithdrawViewModel>(WithdrawViewModel::cl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStatusbar(R.color.color_232C4F_FFFFFF,true)
+        setStatusbar(R.color.color_232C4F_FFFFFF, true)
         setContentView(R.layout.activity_bank)
-
         setupBankSetting()
         setupBackButton()
     }
@@ -37,68 +37,38 @@ class BankActivity : BaseSocketActivity<WithdrawViewModel>(WithdrawViewModel::cl
         checkMode()
     }
 
-    private fun checkMode() {
-        val addBank = intent.getIntExtra("add_bank",0)
-        addBank?.let { when(addBank){ //从提款页面携带数据跳转相应的新增Tab
-            1 ->{
+    private fun checkMode() = runWithCatch {
+        when (intent.getIntExtra("add_bank", 0)) { //从提款页面携带数据跳转相应的新增Tab
+            1 -> {
                 goTOTabFragment(TransferType.BANK)
             }
-            2 ->{
+            2 -> {
                 goTOTabFragment(TransferType.CRYPTO)
             }
-            3 ->{
+            3 -> {
                 goTOTabFragment(TransferType.E_WALLET)
             }
+        }
 
-        } }
-
-
-        val modifyType = intent.getSerializableExtra(ModifyBankTypeKey)?.let { it as TransferType? }
+        val modifyType = (intent.getSerializableExtra(ModifyBankTypeKey) as TransferType?) ?: return
         val transferTypeAddSwitch =
             intent.getParcelableExtra<TransferTypeAddSwitch>(TransferTypeAddSwitch)
-//        Timber.e("BankActivity transferTypeAddSwitch: $transferTypeAddSwitch")
-        modifyType?.let { type ->
-            when (type) {
-                TransferType.BANK -> {
-                    val action =
-                        BankListFragmentDirections.actionBankListFragmentToBankCardFragment(
-                            null,
-                            type,
-                            transferTypeAddSwitch
-                        )
-                    mNavController.navigate(action)
-                }
-                TransferType.CRYPTO -> {
-                    val action =
-                        BankListFragmentDirections.actionBankListFragmentToBankCardFragment(
-                            null,
-                            type,
-                            transferTypeAddSwitch
-                        )
-                    mNavController.navigate(action)
-                }
-                TransferType.E_WALLET -> {
-                    val action =
-                        BankListFragmentDirections.actionBankListFragmentToBankCardFragment(
-                            null,
-                            type,
-                            transferTypeAddSwitch
-                        )
-                    mNavController.navigate(action)
-                }
-            }
-        }
+        val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(
+            null, modifyType, transferTypeAddSwitch
+        )
+        mNavController.navigate(action)
     }
-    private fun goTOTabFragment(type: TransferType){
+
+    private fun goTOTabFragment(type: TransferType) {
         if (mNavController.currentDestination?.id != R.id.bankCardFragment) {
-            val action =
-                BankListFragmentDirections.actionBankListFragmentToBankCardFragment(
-                    null,
-                    type,
-                )
+            val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(
+                null,
+                type,
+            )
             mNavController.navigate(action)
         }
     }
+
     private fun setupBankSetting() {
         viewModel.getMoneyConfigs()
     }

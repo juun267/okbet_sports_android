@@ -174,8 +174,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun setupBankSelector(rechCfgData: MoneyRechCfgData) {
-        mBankSelectorBottomSheetDialog = BottomSheetDialog(requireContext())
-        mBankSelectorBottomSheetDialog?.apply {
+        mBankSelectorBottomSheetDialog = BottomSheetDialog(requireContext()).apply {
             val bankSelectorBottomSheetView =
                 layoutInflater.inflate(R.layout.dialog_bottom_sheet_bank_card, null)
             setContentView(bankSelectorBottomSheetView)
@@ -621,11 +620,14 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun updateBankSelectorList() {
-        getBankType()?.let { bankType ->
-            mBankSelectorAdapter.bankType = bankType
-            mBankSelectorAdapter.bankList.firstOrNull()?.let { initBank ->
-                updateSelectedBank(initBank)
-            }
+        if (!::mBankSelectorAdapter.isInitialized) {
+            return
+        }
+
+        val bankType = getBankType() ?: return
+        mBankSelectorAdapter.bankType = bankType
+        mBankSelectorAdapter.bankList.firstOrNull()?.let { initBank ->
+            updateSelectedBank(initBank)
         }
     }
 

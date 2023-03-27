@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.fragment_self_limit_bet.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.PassVerifyEnum
 import org.cxct.sportlottery.databinding.FragmentSelfLimitBetBinding
+import org.cxct.sportlottery.extentions.isEmptyStr
 import org.cxct.sportlottery.extentions.toIntS
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -157,34 +158,44 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
             binding.btnConfirm.isEnabled = !showError
         }
 
-        viewModel.perBetLimitResult.observe(this.viewLifecycleOwner, {
-            if (it.success) {
-                val dialog = CustomAlertDialog(requireActivity()).apply {
-                    isCancelable = false
-                    setTitle(this@SelfLimitBetFragment.getString(R.string.self_limit_fix_confirm))
-                    setMessage(this@SelfLimitBetFragment.getString(R.string.self_limit_fix_confirm_done))
-                    setNegativeButtonText(null)
-                    setPositiveButtonText(this@SelfLimitBetFragment.getString(R.string.btn_confirm))
-                    setPositiveClickListener {
-                        updateBetLimit(binding.etMount.text.toString())
-                        resetView()
-                        viewModel.getUserInfo()
-                        dismiss()
-                    }
-                }
-                dialog.show(childFragmentManager, null)
+        viewModel.perBetLimitResult.observe(this.viewLifecycleOwner) {
+            if (!it.success) {
+                return@observe
             }
-        })
 
-        viewModel.userInfoResult.observe(viewLifecycleOwner, {
+            val dialog = CustomAlertDialog(requireActivity()).apply {
+                isCancelable = false
+                setTitle(this@SelfLimitBetFragment.getString(R.string.self_limit_fix_confirm))
+                setMessage(this@SelfLimitBetFragment.getString(R.string.self_limit_fix_confirm_done))
+                setNegativeButtonText(null)
+                setPositiveButtonText(this@SelfLimitBetFragment.getString(R.string.btn_confirm))
+                setPositiveClickListener {
+                    updateBetLimit(binding.etMount.text.toString())
+                    resetView()
+                    viewModel.getUserInfo()
+                    dismiss()
+                }
+            }
+            dialog.show(childFragmentManager, null)
+        }
+
+        viewModel.userInfoResult.observe(viewLifecycleOwner) {
             binding.tvPerBetLimit.text =
-                String.format(getString(R.string.self_limit_per_bet_limit_user), sConfigData?.systemCurrencySign, TextUtil.formatMoney(viewModel.userInfo.value?.perBetLimit ?: 0))
-        })
+                String.format(
+                    getString(R.string.self_limit_per_bet_limit_user),
+                    sConfigData?.systemCurrencySign,
+                    TextUtil.formatMoney(viewModel.userInfo.value?.perBetLimit ?: 0)
+                )
+        }
     }
 
     private fun submit() {
         hideKeyboard()
-        CustomPasswordVerifyDialog.newInstance(PassVerifyEnum.BET, inputValue = binding.etMount.text.toString())
+        val days = binding.etMount.text.toString()
+        if (days.isEmptyStr()) {
+            return
+        }
+        CustomPasswordVerifyDialog.newInstance(PassVerifyEnum.BET, inputValue = days)
             .show(childFragmentManager, CustomPasswordVerifyDialog::class.java.simpleName)
     }
 

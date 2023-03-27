@@ -61,6 +61,7 @@ import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.ui.sport.SportListViewModel
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteAdapter
 import org.cxct.sportlottery.util.DisplayUtil.dpToPx
+import org.cxct.sportlottery.util.SvgUtil.setSvgIcon
 import org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
 import org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
 import org.json.JSONArray
@@ -1077,12 +1078,7 @@ fun ImageView.setTeamLogo(icon: String?) {
                 )
                 .into(this)
         } else {
-            try {
-                setImageDrawable(SvgUtil.getSvgDrawable(context, icon))
-            } catch (e: Exception) {
-                e.printStackTrace()
-                setImageResource(R.drawable.ic_team_default)
-            }
+            setSvgIcon(icon, R.drawable.ic_team_default)
         }
     }
 }
@@ -1102,12 +1098,7 @@ fun ImageView.setLeagueLogo(icon: String?) {
                 )
                 .into(this)
         } else {
-            try {
-                setImageDrawable(SvgUtil.getSvgDrawable(context, icon))
-            } catch (e: Exception) {
-                e.printStackTrace()
-                setImageResource(R.drawable.ic_league_default)
-            }
+            setSvgIcon(icon, R.drawable.ic_league_default)
         }
     }
 }

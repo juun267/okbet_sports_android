@@ -15,7 +15,11 @@ class ResourceWrapper(private val context: Context, origin: Resources): Resource
 
     override fun getString(id: Int): String {
         checkLocal()
-        return localeContext.getString(id)
+        return try {
+            localeContext.getString(id)
+        } catch (e: Exception) {
+            ""
+        }
     }
 
     private fun checkLocal() {
