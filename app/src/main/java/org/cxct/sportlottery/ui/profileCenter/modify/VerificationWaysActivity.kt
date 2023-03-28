@@ -31,12 +31,12 @@ class VerificationWaysActivity: ForgetWaysActivity() {
         tv_title_forget_password.text = "选择验证方式"
         btnPhoneWays.setBtnEnable(!phone.isEmptyStr())
         btnEmailWays.setBtnEnable(!email.isEmptyStr())
-        btnPhoneWays.setOnClickListener(onNext)
-        btnEmailWays.setOnClickListener(onNext)
-    }
-
-    private val onNext = View.OnClickListener {
-        VerificationBindInfoActivity.start(this@VerificationWaysActivity, modifyType, requestVerification, phone, email)
+        btnPhoneWays.setOnClickListener {
+            VerificationBindInfoActivity.start(this@VerificationWaysActivity, modifyType, requestVerification, phone, null)
+        }
+        btnEmailWays.setOnClickListener {
+            VerificationBindInfoActivity.start(this@VerificationWaysActivity, modifyType, requestVerification, null, email)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

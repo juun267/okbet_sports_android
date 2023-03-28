@@ -91,7 +91,8 @@
 -keepclassmembers class * { @org.cxct.sportlottery.proguard.KeepMembers <methods>; }
 
 -keepclassmembers class * extends org.cxct.sportlottery.network.common.BaseResult { *;}
--keepclassmembers class * extends org.cxct.sportlottery.net.ApiResult { *;}
+-keepclassmembers class org.cxct.sportlottery.net.ApiResult { <fields>;}
+-keepclassmembers class * extends org.cxct.sportlottery.net.ApiResult { <fields>;}
 
 #kotlin  与Moshi反序列化有关（@kotlin.Metadata涉及太广，应尽量降低keep范围）
 -keepclasseswithmembers @kotlin.Metadata class org.cxct.sportlottery.network.** { *; }

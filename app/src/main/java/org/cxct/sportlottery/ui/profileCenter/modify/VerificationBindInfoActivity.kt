@@ -31,15 +31,6 @@ class VerificationBindInfoActivity: BaseActivity<BindInfoViewModel>(BindInfoView
 
     companion object {
 
-        // 1: 验证手机号
-        fun startByPhoneWays(context: Activity, requestCode: Int, phone: String) {
-            start(context, ModifyType.PhoneNumber, requestCode, phone, null)
-        }
-        // 2:验证邮箱
-        fun startByEmailWays(context: Activity, requestCode: Int, email: String) {
-            start(context, ModifyType.Email, requestCode, null, email)
-        }
-
         fun start(context: Activity, modifyType: @ModifyType Int, requestCode: Int, phone: String?, email: String?) {
             val intent = Intent(context, VerificationBindInfoActivity::class.java)
             intent.putExtra("MODIFY_INFO", modifyType)
@@ -171,11 +162,9 @@ class VerificationBindInfoActivity: BaseActivity<BindInfoViewModel>(BindInfoView
         sendCodeResult.observe(this@VerificationBindInfoActivity) { updateUiWithResult(it) }
         verifyResult.observe(this@VerificationBindInfoActivity) { result-> // 验证短信验证码
             hideLoading()
-            if (result == null) {
-                return@observe
-            }
 
             if (result.succeeded()){
+                userName = result.getData()?.userName
                 ModifyBindInfoActivity.start(this@VerificationBindInfoActivity, modifyType, "$userName")
                 return@observe
             }
