@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:elevation="3dp"
-    tools:context="org.cxct.sportlottery.ui.main.accountHistory.next.AccountHistoryNextAdapter"
+    tools:context="org.cxct.sportlottery.ui.maintab.accountHistory.next.AccountHistoryNextAdapter"
     tools:ignore="SpUsage">
 
     <ImageView

@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.dialog_password_verify.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.PassVerifyEnum
 import org.cxct.sportlottery.extentions.toIntS
+import org.cxct.sportlottery.common.enums.PassVerifyEnum
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.selflimit.SelfLimitViewModel
 import org.cxct.sportlottery.util.MD5Util

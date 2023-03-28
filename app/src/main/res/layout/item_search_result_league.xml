@@ -17,7 +17,7 @@
             android:layout_height="14dp"
             android:background="@drawable/bg_blue_divide_ver" />
 
-        <org.cxct.sportlottery.widget.highLightTextView.HighlightTextView
+        <org.cxct.sportlottery.view.highLightTextView.HighlightTextView
             android:id="@+id/tvLeagueTittle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

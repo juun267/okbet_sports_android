@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.util
 
-import java.lang.StringBuilder
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

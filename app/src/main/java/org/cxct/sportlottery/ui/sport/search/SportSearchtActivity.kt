@@ -11,7 +11,7 @@ import com.zhy.adapter.recyclerview.CommonAdapter
 import com.zhy.adapter.recyclerview.base.ViewHolder
 import kotlinx.android.synthetic.main.activity_sport_search.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
-import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.sport.SearchResponse
@@ -21,8 +21,8 @@ import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelp
 import org.cxct.sportlottery.ui.maintab.SportViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.widget.VerticalDecoration
-import org.cxct.sportlottery.widget.highLightTextView.HighlightTextView
+import org.cxct.sportlottery.view.VerticalDecoration
+import org.cxct.sportlottery.view.highLightTextView.HighlightTextView
 
 
 class SportSearchtActivity :

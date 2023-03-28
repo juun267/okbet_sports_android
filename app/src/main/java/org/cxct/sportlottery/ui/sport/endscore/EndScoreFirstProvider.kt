@@ -6,7 +6,7 @@ import com.chad.library.adapter.base.entity.node.BaseNode
 import com.chad.library.adapter.base.provider.BaseNodeProvider
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.extentions.rotationAnimation
+import org.cxct.sportlottery.common.extentions.rotationAnimation
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.util.setLeagueLogo
 

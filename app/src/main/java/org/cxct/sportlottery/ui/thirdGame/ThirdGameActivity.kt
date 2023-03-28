@@ -13,7 +13,7 @@ import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.common.WebActivity
-import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog

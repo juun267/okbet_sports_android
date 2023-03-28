@@ -9,8 +9,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.OddSpreadForSCOCompare
-import org.cxct.sportlottery.common.OddsType
+import org.cxct.sportlottery.common.enums.OddSpreadForSCOCompare
+import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.game.widget.OddsButtonDetail
 import org.cxct.sportlottery.ui.sport.detail.recycle.OddStateViewHolderDetail

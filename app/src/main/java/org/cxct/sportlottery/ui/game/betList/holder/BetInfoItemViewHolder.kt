@@ -23,11 +23,11 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.item_match_receipt.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.BetStatus
-import org.cxct.sportlottery.common.OddState
-import org.cxct.sportlottery.common.OddsType
+import org.cxct.sportlottery.common.enums.BetStatus
+import org.cxct.sportlottery.common.enums.OddState
+import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ContentBetInfoItemV32Binding
-import org.cxct.sportlottery.extentions.*
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.LoginRepository

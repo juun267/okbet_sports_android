@@ -235,7 +235,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tvMatchHome" />
 
-        <org.cxct.sportlottery.widget.SwipeMenuLayout
+        <org.cxct.sportlottery.view.SwipeMenuLayout
             android:id="@+id/slideLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -285,7 +285,7 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-        </org.cxct.sportlottery.widget.SwipeMenuLayout>
+        </org.cxct.sportlottery.view.SwipeMenuLayout>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/llKeyboardContainer"

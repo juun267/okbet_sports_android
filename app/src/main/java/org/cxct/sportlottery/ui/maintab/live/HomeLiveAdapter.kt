@@ -4,12 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
-import org.cxct.sportlottery.MultiLanguagesApplication
-import org.cxct.sportlottery.common.OddsType
+import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.databinding.ItemHomeLiveBinding
 import org.cxct.sportlottery.network.odds.list.MatchLiveData
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-import org.cxct.sportlottery.widget.OKVideoPlayer
+import org.cxct.sportlottery.view.OKVideoPlayer
 
 class HomeLiveAdapter(
     val lifecycleOwner: LifecycleOwner,

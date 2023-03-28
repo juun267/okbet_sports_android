@@ -2,7 +2,7 @@ package org.cxct.sportlottery.network.outright.odds
 
 import android.os.Parcelable
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguard.KeepMembers
 import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LocalUtils

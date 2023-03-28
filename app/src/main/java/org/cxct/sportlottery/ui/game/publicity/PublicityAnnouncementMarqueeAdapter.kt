@@ -4,14 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import org.cxct.sportlottery.databinding.ContentPublicityAnnouncementMarqueeBinding
-import org.cxct.sportlottery.ui.MarqueeAdapter
 
 class PublicityAnnouncementMarqueeAdapter : MarqueeAdapter() {
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): DetailViewHolder {
         val layoutView =
             ContentPublicityAnnouncementMarqueeBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
         //開頭結尾的空白過場，寬度設置跟 父層 Layout 一樣
-        if (viewType == Type.BLANK.ordinal) layoutView.root.minimumWidth = viewGroup.measuredWidth
+        if (viewType == TYPE_BLANK) layoutView.root.minimumWidth = viewGroup.measuredWidth
         return AnnouncementDetailViewHolder(layoutView)
     }
 

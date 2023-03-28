@@ -2,8 +2,8 @@ package org.cxct.sportlottery.ui.sport.endscore
 
 import android.view.View
 import com.chad.library.adapter.base.entity.node.BaseNode
-import org.cxct.sportlottery.common.OddsType
-import org.cxct.sportlottery.extentions.isEmptyStr
+import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd

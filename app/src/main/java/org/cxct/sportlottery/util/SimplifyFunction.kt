@@ -64,6 +64,8 @@ import org.cxct.sportlottery.util.DisplayUtil.dpToPx
 import org.cxct.sportlottery.util.SvgUtil.setSvgIcon
 import org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
 import org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
+import org.cxct.sportlottery.view.boundsEditText.TextFieldBoxes
+import org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
 import org.json.JSONArray
 import timber.log.Timber
 import java.io.ByteArrayOutputStream

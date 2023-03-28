@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.ui.bet.list
 
-import org.cxct.sportlottery.common.OddsType
+import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.bet.settledDetailList.BetInfo

@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.view_toolbar_detail_live.view.*
 import kotlinx.android.synthetic.main.view_video_ok.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.widget.OKVideoPlayer
+import org.cxct.sportlottery.view.OKVideoPlayer
 
 
 @SuppressLint("SetJavaScriptEnabled")

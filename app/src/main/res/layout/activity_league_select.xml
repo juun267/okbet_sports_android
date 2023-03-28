@@ -43,7 +43,7 @@
             app:cardCornerRadius="@dimen/margin_10"
             app:cardBackgroundColor="@color/color_bbbbbb_ffffff">
 
-            <org.cxct.sportlottery.widget.IndexBar
+            <org.cxct.sportlottery.view.IndexBar
                 android:id="@+id/indexBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

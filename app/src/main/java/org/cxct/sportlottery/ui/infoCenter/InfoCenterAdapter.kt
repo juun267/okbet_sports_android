@@ -3,7 +3,7 @@ package org.cxct.sportlottery.ui.infoCenter
 import android.content.Context
 import android.view.LayoutInflater
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.adapter.recyclerview.BindingAdapter
+import org.cxct.sportlottery.ui.recyclerview.adapter.BindingAdapter
 import org.cxct.sportlottery.databinding.ContentInfocenterListBinding
 import org.cxct.sportlottery.network.infoCenter.InfoCenterData
 import org.cxct.sportlottery.util.setDateTime

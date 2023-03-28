@@ -11,8 +11,8 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeString
 import org.cxct.sportlottery.network.sport.Item
-import org.cxct.sportlottery.ui.main.entity.GameCateData
-import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.maintab.entity.GameCateData
+import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 
 class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.network.index.config
 
-import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguard.KeepMembers
 
 @JsonClass(generateAdapter = true) @KeepMembers
 data class ImageData(

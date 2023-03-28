@@ -6,8 +6,8 @@ import android.text.TextWatcher
 import android.view.MotionEvent
 import androidx.core.view.isVisible
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.BetStatus
-import org.cxct.sportlottery.common.OddsType
+import org.cxct.sportlottery.common.enums.BetStatus
+import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.databinding.ItemBetListBatchControlV3Binding
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
