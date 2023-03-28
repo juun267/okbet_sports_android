@@ -18,6 +18,8 @@ data class DynamicMarket(
     val vi: String?,
     @Json(name = "th")
     val th: String?,
+    @Json(name = "ph")
+    val ph:String?
 ) : Parcelable
 
 fun DynamicMarket.get(): String {
@@ -25,6 +27,7 @@ fun DynamicMarket.get(): String {
         LanguageManager.Language.ZH -> zh
         LanguageManager.Language.VI -> vi
         LanguageManager.Language.TH -> th
+        LanguageManager.Language.PHI -> ph
         else -> en
     } ?: ""
 }
