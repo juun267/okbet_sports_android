@@ -8,14 +8,14 @@ import android.widget.EditText
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.activity_rest_password.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityRestPasswordBinding
-import org.cxct.sportlottery.extentions.*
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.login.foget.ForgetViewModel
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.widget.boundsEditText.AsteriskPasswordTransformationMethod
-import org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
+import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationMethod
+import org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
 
 /**
  * @app_destination 忘记密码

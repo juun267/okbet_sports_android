@@ -25,7 +25,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
-        <org.cxct.sportlottery.widget.ParlayFloatingWindow
+        <org.cxct.sportlottery.view.ParlayFloatingWindow
             android:id="@+id/parlayFloatWindow"
             android:visibility="gone"
             android:layout_marginBottom="20dp"
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="-8dp">
 
-            <org.cxct.sportlottery.widget.bottomnavigationview.BottomNavigationViewEx
+            <org.cxct.sportlottery.view.bottomnavigationview.BottomNavigationViewEx
                 android:id="@+id/bottom_navigation_view"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"

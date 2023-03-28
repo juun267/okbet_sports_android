@@ -86,7 +86,7 @@ class AppDownloadDialog(
                 if (aBoolean) {
                     block_bottom_bar.visibility = View.GONE
                     block_progress_bar.visibility = View.VISIBLE
-                    AppUpdateManager.downloadApk(context, Constants.getAppDownloadUrl(), object : AppUpdateManager.OnDownloadListener {
+                    AppUpdateManager.downloadApk(block_progress_bar.context, Constants.getAppDownloadUrl(), object : AppUpdateManager.OnDownloadListener {
                         override fun onProgress(downloadBytes: Int, totalBytes: Int) {
                             pb_download.progress = (downloadBytes * 1.0f / totalBytes * 100).toInt()
                         }

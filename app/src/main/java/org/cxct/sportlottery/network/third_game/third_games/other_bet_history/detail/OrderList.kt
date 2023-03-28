@@ -2,7 +2,7 @@ package org.cxct.sportlottery.network.third_game.third_games.other_bet_history.d
 
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguards.KeepMembers
 
 @JsonClass(generateAdapter = true) @KeepMembers
 data class OrderList(

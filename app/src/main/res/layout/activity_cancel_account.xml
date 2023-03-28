@@ -46,7 +46,7 @@
       >
 
 
-        <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
+        <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
             android:id="@+id/et_qq_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:primaryColor="@color/color_AFAFB1">
 
-            <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
+            <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
                 android:id="@+id/et_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
                 android:textColor="@color/color_FFFFFF_DE000000"
                 android:textSize="@dimen/textSize14sp" />
 
-        </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>
+        </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
     </LinearLayout>
     </ScrollView>
 

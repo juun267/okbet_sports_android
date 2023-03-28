@@ -31,7 +31,7 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_register_ok.*
 import kotlinx.android.synthetic.main.view_status_bar.*
-import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityRegisterOkBinding
 import org.cxct.sportlottery.network.Constants
@@ -48,7 +48,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.widget.boundsEditText.AsteriskPasswordTransformationMethod
+import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationMethod
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
@@ -1007,7 +1007,8 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 val deviceId = Settings.Secure.getString(
                     applicationContext.contentResolver, Settings.Secure.ANDROID_ID
                 )
-                val deviceSn = getSharedPreferences(MultiLanguagesApplication.UUID_DEVICE_CODE,
+                val deviceSn = getSharedPreferences(
+                    MultiLanguagesApplication.UUID_DEVICE_CODE,
                     Context.MODE_PRIVATE).getString(
                     MultiLanguagesApplication.UUID, "") ?: ""
                 binding.apply {

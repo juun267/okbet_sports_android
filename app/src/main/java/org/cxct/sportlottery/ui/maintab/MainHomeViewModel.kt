@@ -27,8 +27,8 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.publicity.PublicityPromotionItemData
-import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
-import org.cxct.sportlottery.ui.main.entity.GameCateData
+import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
+import org.cxct.sportlottery.ui.maintab.entity.GameCateData
 import org.cxct.sportlottery.util.*
 import timber.log.Timber
 import java.text.SimpleDateFormat

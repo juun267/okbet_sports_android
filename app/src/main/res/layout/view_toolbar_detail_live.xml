@@ -42,7 +42,7 @@
                 android:textColor="@color/color_317FFF_0760D4"
                 android:textSize="@dimen/margin_14" />
 
-            <org.cxct.sportlottery.widget.OKVideoPlayer
+            <org.cxct.sportlottery.view.OKVideoPlayer
                 android:id="@+id/player_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

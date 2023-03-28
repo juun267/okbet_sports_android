@@ -25,7 +25,7 @@ import kotlinx.android.synthetic.main.fragment_favorite.lin_search
 import kotlinx.android.synthetic.main.fragment_favorite.view.*
 import kotlinx.android.synthetic.main.view_status_bar.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.event.MenuEvent
+import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo

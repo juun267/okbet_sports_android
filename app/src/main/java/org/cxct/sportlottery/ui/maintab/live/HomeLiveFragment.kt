@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.fragment_home_live.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.BetStatus
-import org.cxct.sportlottery.event.MenuEvent
-import org.cxct.sportlottery.extentions.fitsSystemStatus
+import org.cxct.sportlottery.common.enums.BetStatus
+import org.cxct.sportlottery.common.event.MenuEvent
+import org.cxct.sportlottery.common.extentions.fitsSystemStatus
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
@@ -22,8 +22,8 @@ import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
-import org.cxct.sportlottery.ui.maintab.HomeFragment
-import org.cxct.sportlottery.ui.maintab.HomeTabAdapter
+import org.cxct.sportlottery.ui.maintab.home.HomeFragment
+import org.cxct.sportlottery.ui.maintab.home.HomeTabAdapter
 import org.cxct.sportlottery.ui.maintab.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity

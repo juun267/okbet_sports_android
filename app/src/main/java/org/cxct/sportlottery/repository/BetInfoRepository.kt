@@ -3,11 +3,11 @@ package org.cxct.sportlottery.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import org.cxct.sportlottery.MultiLanguagesApplication
-import org.cxct.sportlottery.common.BetStatus
-import org.cxct.sportlottery.common.OddState
-import org.cxct.sportlottery.common.OddsType
-import org.cxct.sportlottery.common.SpreadState
+import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.common.enums.BetStatus
+import org.cxct.sportlottery.common.enums.OddState
+import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.enums.SpreadState
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd

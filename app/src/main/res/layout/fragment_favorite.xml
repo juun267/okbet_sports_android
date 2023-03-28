@@ -97,7 +97,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <org.cxct.sportlottery.widget.RadiusCardView
+        <org.cxct.sportlottery.view.RadiusCardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:rcv_topLeftRadiu="20dp"
@@ -130,7 +130,7 @@
                     android:visibility="gone" />
             </LinearLayout>
 
-        </org.cxct.sportlottery.widget.RadiusCardView>
+        </org.cxct.sportlottery.view.RadiusCardView>
 
     </LinearLayout>
 </FrameLayout>

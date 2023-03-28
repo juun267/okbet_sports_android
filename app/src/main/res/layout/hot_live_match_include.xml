@@ -124,7 +124,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view">
 
-            <org.cxct.sportlottery.widget.OKVideoPlayer
+            <org.cxct.sportlottery.view.OKVideoPlayer
                 android:id="@+id/iv_publicity"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

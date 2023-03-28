@@ -24,7 +24,7 @@
             android:visibility="gone"
             tools:visibility="visible">
 
-            <org.cxct.sportlottery.widget.OKVideoPlayer
+            <org.cxct.sportlottery.view.OKVideoPlayer
                 android:id="@+id/video_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -104,7 +104,7 @@
             android:paddingHorizontal="10dp"
             android:paddingVertical="5dp">
 
-            <org.cxct.sportlottery.widget.RippleDiffuse
+            <org.cxct.sportlottery.view.RippleDiffuse
                 android:id="@+id/rippleView"
                 android:layout_width="40dp"
                 android:layout_height="40dp"

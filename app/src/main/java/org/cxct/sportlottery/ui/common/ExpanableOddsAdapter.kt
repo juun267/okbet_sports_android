@@ -2,7 +2,7 @@ package org.cxct.sportlottery.ui.common
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.entity.node.BaseNode
-import org.cxct.sportlottery.adapter.recyclerview.BaseNodeAdapter
+import org.cxct.sportlottery.ui.recyclerview.adapter.BaseNodeAdapter
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 

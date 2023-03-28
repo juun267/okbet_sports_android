@@ -20,7 +20,7 @@ import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_register_ok.*
-import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityRegisterBinding
 import org.cxct.sportlottery.network.Constants
@@ -881,7 +881,8 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             val deviceId = Settings.Secure.getString(
                 applicationContext.contentResolver, Settings.Secure.ANDROID_ID
             )
-            val deviceSn = getSharedPreferences(MultiLanguagesApplication.UUID_DEVICE_CODE,
+            val deviceSn = getSharedPreferences(
+                MultiLanguagesApplication.UUID_DEVICE_CODE,
                 Context.MODE_PRIVATE).getString(
                 MultiLanguagesApplication.UUID, "") ?: ""
 

@@ -99,7 +99,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvVerifySubTitle">
 
-                <org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
+                <org.cxct.sportlottery.view.boundsEditText.TextFieldBoxes
                     android:id="@+id/et_verification_code"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
                     app:primaryColor="@color/color_AFAFB1"
                     app:singleText="@string/verification_code">
 
-                    <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
+                    <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
                         android:id="@+id/eet_verification_code"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -122,7 +122,7 @@
                         android:textSize="@dimen/textSize14sp"
                         android:textColor="@color/color_FFFFFF_DE000000"/>
 
-                </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
+                </org.cxct.sportlottery.view.boundsEditText.TextFieldBoxes>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
