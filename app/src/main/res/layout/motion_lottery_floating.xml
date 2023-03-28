@@ -47,6 +47,8 @@
                         android:maxWidth="88dp"
                         android:gravity="center"
                         android:lines="2"
+                        app:strokeColor="#4B2400"
+                        app:strokeWidth="2dp"
                         android:shadowColor="#834600"
                         android:shadowDx="0"
                         android:shadowDy="1.0"
