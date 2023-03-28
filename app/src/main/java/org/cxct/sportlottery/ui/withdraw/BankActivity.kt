@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.activity_bank.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.extentions.runWithCatch
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 
