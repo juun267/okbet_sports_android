@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.util
 
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
@@ -54,10 +55,6 @@ class LotteryManager {
         if (this.activity == activity) {
             this.activity = null
             this.viewModel = null
-        } else {
-
-        }
-        if (floatRootView?.context == activity) {
             floatRootView = null
         }
     }
@@ -136,6 +133,7 @@ class LotteryManager {
 
     fun setUpFloatButton() {
         lotteryInfo?.let { it ->
+            Log.d("hjq", "setUpFloatButton=" + (floatRootView == null))
             floatRootView?.let { button ->
                 val nowMoment = System.currentTimeMillis()
                 val nextDrawTime = it.nextDrawTime ?: 0
