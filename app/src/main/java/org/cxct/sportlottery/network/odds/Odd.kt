@@ -7,7 +7,7 @@ import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.common.enums.OddState
 import org.cxct.sportlottery.network.odds.list.OddStateParams
-import org.cxct.sportlottery.common.proguard.KeepMembers
+import org.cxct.sportlottery.common.proguards.KeepMembers
 
 /**
  * @author Kevin

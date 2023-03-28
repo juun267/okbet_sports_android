@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.network.matchTracker
 
-import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguard.KeepMembers
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguards.KeepMembers
 
 @JsonClass(generateAdapter = true) @KeepMembers
 data class MatchTrackerUrl(

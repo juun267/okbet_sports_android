@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.network.index.login_for_guest
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguard.KeepMembers
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguards.KeepMembers
 
 @JsonClass(generateAdapter = true) @KeepMembers
 data class LoginForGuestRequest(

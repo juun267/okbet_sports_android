@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.common.enums
 
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.proguard.KeepClasses
+import org.cxct.sportlottery.common.proguards.KeepClasses
 
 @KeepClasses
 enum class OddsType(val code: String, val res: Int) {

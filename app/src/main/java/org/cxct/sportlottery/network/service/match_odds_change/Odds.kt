@@ -2,7 +2,7 @@ package org.cxct.sportlottery.network.service.match_odds_change
 
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguard.KeepMembers
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.network.odds.Odd
 
 @JsonClass(generateAdapter = true) @KeepMembers

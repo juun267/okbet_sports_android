@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.network.third_game.third_games
 
-import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguard.KeepMembers
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguards.KeepMembers
 
 @JsonClass(generateAdapter = true) @KeepMembers
 data class GameFirmValues(

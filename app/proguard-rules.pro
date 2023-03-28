@@ -85,10 +85,10 @@
 # 所有的类都不混淆（不得已，不要使用）
 #-keep class * { *; }
 
--keepclasseswithmembers @org.cxct.sportlottery.common.proguard.KeepClasses class * { *; }
--keepclassmembers @org.cxct.sportlottery.common.proguard.KeepMembers class * { *; }
--keepclassmembers class * { @org.cxct.sportlottery.common.proguard.KeepMembers <fields>; }
--keepclassmembers class * { @org.cxct.sportlottery.common.proguard.KeepMembers <methods>; }
+-keepclasseswithmembers @org.cxct.sportlottery.common.proguards.KeepClasses class * { *; }
+-keepclassmembers @org.cxct.sportlottery.common.proguards.KeepMembers class * { *; }
+-keepclassmembers class * { @org.cxct.sportlottery.common.proguards.KeepMembers <fields>; }
+-keepclassmembers class * { @org.cxct.sportlottery.common.proguards.KeepMembers <methods>; }
 
 -keepclassmembers class * extends org.cxct.sportlottery.network.common.BaseResult { *;}
 -keepclassmembers class * extends org.cxct.sportlottery.net.ApiResult { *;}

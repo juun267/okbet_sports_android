@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.network.bet.settledDetailList
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguard.KeepMembers
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.network.common.BaseResult
 
 @JsonClass(generateAdapter = true) @KeepMembers

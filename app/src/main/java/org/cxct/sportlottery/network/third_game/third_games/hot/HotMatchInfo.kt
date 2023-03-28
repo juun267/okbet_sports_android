@@ -3,7 +3,7 @@ package org.cxct.sportlottery.network.third_game.third_games.hot
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import org.cxct.sportlottery.common.proguard.KeepMembers
+import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.network.common.FoldState
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
