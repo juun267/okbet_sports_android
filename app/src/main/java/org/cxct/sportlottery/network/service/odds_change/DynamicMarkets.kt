@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.network.service.odds_change
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguard.KeepMembers
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LocalUtils
 

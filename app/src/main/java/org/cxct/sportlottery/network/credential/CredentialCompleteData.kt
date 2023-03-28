@@ -2,7 +2,7 @@ package org.cxct.sportlottery.network.credential
 
 import android.os.Parcelable
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguard.KeepMembers
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize

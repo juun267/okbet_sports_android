@@ -17,7 +17,7 @@
 //import androidx.recyclerview.widget.SimpleItemAnimator
 //import kotlinx.android.synthetic.main.content_baseball_status.view.*
 //import kotlinx.android.synthetic.main.item_sport_odd.view.*
-//import org.cxct.sportlottery.MultiLanguagesApplication
+//import org.cxct.sportlottery.application.MultiLanguagesApplication
 //import org.cxct.sportlottery.R
 //import org.cxct.sportlottery.enum.MatchSource
 //import org.cxct.sportlottery.enum.PayLoadEnum

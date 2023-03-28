@@ -5,14 +5,15 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
-import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.adapter.recyclerview.BindingAdapter
-import org.cxct.sportlottery.adapter.recyclerview.BindingVH
-import org.cxct.sportlottery.common.OddsType
+import org.cxct.sportlottery.ui.recyclerview.adapter.BindingAdapter
+import org.cxct.sportlottery.ui.recyclerview.adapter.BindingVH
+import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.databinding.ItemHotHandicapBinding
 import org.cxct.sportlottery.network.third_game.third_games.hot.HandicapData
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.ui.maintab.home.HomeRecommendListener
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.setLeagueLogo
 

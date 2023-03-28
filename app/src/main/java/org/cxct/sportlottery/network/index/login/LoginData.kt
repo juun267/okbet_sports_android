@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.network.index.login
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguard.KeepMembers
 import org.cxct.sportlottery.network.common.UserRebate
 import org.cxct.sportlottery.network.user.info.LiveSyncUserInfoVO
 

@@ -5,9 +5,9 @@ import com.chad.library.adapter.base.entity.node.BaseNode
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
-import org.cxct.sportlottery.common.OddState
+import org.cxct.sportlottery.common.enums.OddState
 import org.cxct.sportlottery.network.odds.list.OddStateParams
-import org.cxct.sportlottery.proguard.KeepMembers
+import org.cxct.sportlottery.common.proguard.KeepMembers
 
 /**
  * @author Kevin

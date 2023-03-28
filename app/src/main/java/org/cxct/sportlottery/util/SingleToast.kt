@@ -12,7 +12,7 @@ import android.widget.Toast
 import androidx.core.view.marginTop
 import androidx.core.view.setMargins
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.extentions.gone
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 object SingleToast {

@@ -32,12 +32,12 @@ import kotlinx.android.synthetic.main.item_favorite.view.*
 import kotlinx.android.synthetic.main.view_account_balance_2.*
 import kotlinx.coroutines.flow.*
 import org.cxct.sportlottery.BuildConfig
-import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.BetStatus
-import org.cxct.sportlottery.extentions.rotationAnimation
-import org.cxct.sportlottery.extentions.screenHeight
-import org.cxct.sportlottery.extentions.translationXAnimation
+import org.cxct.sportlottery.common.enums.BetStatus
+import org.cxct.sportlottery.common.extentions.rotationAnimation
+import org.cxct.sportlottery.common.extentions.screenHeight
+import org.cxct.sportlottery.common.extentions.translationXAnimation
 import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.index.config.VerifySwitchType
 import org.cxct.sportlottery.network.odds.Odd
@@ -57,12 +57,12 @@ import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.live.HomeLiveAdapter
 import org.cxct.sportlottery.ui.maintab.live.ItemHomeLiveHolder
-import org.cxct.sportlottery.common.OddsType
+import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.ui.sport.SportListViewModel
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteAdapter
 import org.cxct.sportlottery.util.DisplayUtil.dpToPx
-import org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
-import org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
+import org.cxct.sportlottery.view.boundsEditText.TextFieldBoxes
+import org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
 import org.json.JSONArray
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
@@ -618,8 +618,8 @@ fun WebView.setWebViewCommonBackgroundColor() {
  * ##點擊覆蓋一個View在註冊頁的TextFieldBoxes上避免觸發TextFieldBoxes的行為
  * @param editText: 註冊頁中的ExtendedEditText
  * @param textFieldBoxes: 註冊頁中的TextFieldBoxes
- * @see org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
- * @see org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
+ * @see org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
+ * @see org.cxct.sportlottery.view.boundsEditText.TextFieldBoxes
  *
  * 取自
  * @see org.cxct.sportlottery.ui.component.StatusSpinnerView

@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.net.user.data
 
-import org.cxct.sportlottery.proguard.KeepMembers
+import org.cxct.sportlottery.common.proguard.KeepMembers
 
 @KeepMembers
 class SendCodeRespnose(

@@ -4,7 +4,7 @@ import android.os.Parcelable
 import android.text.TextUtils
 import com.tencent.mmkv.MMKV
 import org.cxct.sportlottery.BuildConfig
-import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 
 object KvUtils {
 

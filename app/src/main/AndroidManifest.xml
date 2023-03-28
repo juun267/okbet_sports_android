@@ -38,7 +38,7 @@
         android:required="true" />
 
     <application
-        android:name=".MultiLanguagesApplication"
+        android:name=".application.MultiLanguagesApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"

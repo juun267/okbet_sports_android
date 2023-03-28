@@ -13,9 +13,9 @@ import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_sport_list.*
 import kotlinx.android.synthetic.main.fragment_sport_list.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.extentions.setViewGone
-import org.cxct.sportlottery.extentions.setViewVisible
-import org.cxct.sportlottery.extentions.showLoading
+import org.cxct.sportlottery.common.extentions.setViewGone
+import org.cxct.sportlottery.common.extentions.setViewVisible
+import org.cxct.sportlottery.common.extentions.showLoading
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchOdd

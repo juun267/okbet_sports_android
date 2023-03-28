@@ -12,7 +12,10 @@ import com.chad.library.adapter.base.entity.node.BaseNode
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_sport_list.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.extentions.*
+import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.setViewGone
+import org.cxct.sportlottery.common.extentions.showEmpty
+import org.cxct.sportlottery.common.extentions.showLoading
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType

@@ -15,8 +15,8 @@ import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 import org.cxct.sportlottery.util.setVisibilityByCreditSystem
-import org.cxct.sportlottery.widget.boundsEditText.AsteriskPasswordTransformationMethod
-import org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
+import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationMethod
+import org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
 
 /**
  * @app_destination 密码设置

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="14dp">
 
-    <org.cxct.sportlottery.widget.highLightTextView.HighlightTextView
+    <org.cxct.sportlottery.view.highLightTextView.HighlightTextView
         android:layout_width="0dp"
         android:id="@+id/hltv"
         android:layout_height="wrap_content"

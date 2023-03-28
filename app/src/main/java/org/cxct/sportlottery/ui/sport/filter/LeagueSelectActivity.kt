@@ -14,8 +14,8 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.widget.IndexBar
-import org.cxct.sportlottery.widget.VerticalDecoration
+import org.cxct.sportlottery.view.IndexBar
+import org.cxct.sportlottery.view.VerticalDecoration
 import org.greenrobot.eventbus.EventBus
 
 

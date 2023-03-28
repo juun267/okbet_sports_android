@@ -168,7 +168,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:orientation="vertical"
-                    tools:context="org.cxct.sportlottery.ui.main.accountHistory.next.AccountHistoryNextFragment"
+                    tools:context="org.cxct.sportlottery.ui.maintab.accountHistory.next.AccountHistoryNextFragment"
                     tools:ignore="SpUsage">
 
                     <LinearLayout

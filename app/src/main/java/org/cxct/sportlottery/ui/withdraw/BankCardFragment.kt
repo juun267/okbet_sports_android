@@ -23,8 +23,8 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.widget.boundsEditText.AsteriskPasswordTransformationMethod
-import org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
+import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationMethod
+import org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
 
 /**
  * @app_destination 新增银行卡

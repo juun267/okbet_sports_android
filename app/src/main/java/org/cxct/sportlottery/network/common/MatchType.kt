@@ -2,7 +2,7 @@ package org.cxct.sportlottery.network.common
 
 import androidx.annotation.StringRes
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.proguard.KeepMembers
+import org.cxct.sportlottery.common.proguard.KeepMembers
 
 @KeepMembers
 enum class MatchType private constructor(val postValue: String, @StringRes val resId: Int) {

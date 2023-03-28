@@ -585,7 +585,7 @@
                 tools:text="1-1 2-2 3-3"
                 tools:visibility="visible" />
 
-            <org.cxct.sportlottery.widget.HIndicator
+            <org.cxct.sportlottery.view.HIndicator
                 android:id="@+id/hIndicator"
                 android:layout_width="36dp"
                 android:layout_height="3dp"

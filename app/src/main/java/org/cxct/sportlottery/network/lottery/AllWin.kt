@@ -2,7 +2,7 @@ package org.cxct.sportlottery.network.lottery
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import org.cxct.sportlottery.proguard.KeepMembers
+import org.cxct.sportlottery.common.proguard.KeepMembers
 
 @JsonClass(generateAdapter = true)
 @KeepMembers

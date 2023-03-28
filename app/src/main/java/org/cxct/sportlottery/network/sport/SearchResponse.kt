@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.network.sport
 
-import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguard.KeepMembers
 import com.squareup.moshi.Json
 import org.cxct.sportlottery.network.common.BaseResult
 
