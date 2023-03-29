@@ -17,43 +17,32 @@ class BetDetailsActivity : BaseActivity<BetListViewModel>(BetListViewModel::clas
 
     private lateinit var binding: ActivityBetDetailsBinding
 
-//    private val mNavController by lazy {
-//        findNavController(R.id.bet_details_container)
-//    }
-
-
+    private val betDetailsFragment by lazy { BetDetailsFragment() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
         binding = ActivityBetDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        initView()
+        initData()
+        replaceFragment(R.id.fl_container,betDetailsFragment)
+
+    }
+
+    private fun initData(){
         val data: Row? =intent.getParcelableExtra("data")
-        replaceFragment(R.id.fl_container,BetDetailsFragment())
-//        setupEvent()
-//        val data: Row =intent.getSerializableExtra("data") as Row
-//        val directions=BetDetailsFragmentDirections.toBetDetailsFragment(data)
-//        mNavController.navigate(directions)
+        val bundle=Bundle()
+        bundle.putParcelable("data",data)
+        betDetailsFragment.arguments=bundle
     }
 
 
+    private fun initView(){
+        custom_tool_bar.setOnBackPressListener {
+            finish()
+        }
+    }
 
-//    override fun onBackPressed() {
-//        backEvent()
-//    }
-//
-//    private fun setupEvent() {
-//        custom_tool_bar.setOnBackPressListener {
-//            finish()
-//        }
-//    }
-//
-//    private fun backEvent() {
-//        if (mNavController.previousBackStackEntry == null) {
-//            finish()
-//        } else {
-//            mNavController.popBackStack()
-//        }
-//    }
 
 }
