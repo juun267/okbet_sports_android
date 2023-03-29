@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/margin_1"
+    android:background="@color/color_1D1F2D_FFFFFF"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingVertical="4dp"
+    tools:context="org.cxct.sportlottery.ui.finance.RechargeLogAdapter">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/rech_log_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/color_414655"
+            android:textSize="@dimen/textSize12sp"
+            android:fontFamily="@font/din_regular"
+            tools:text="2020-12-12" />
+
+        <TextView
+            android:id="@+id/rech_log_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/color_414655"
+            android:textSize="@dimen/textSize12sp"
+            android:fontFamily="@font/din_regular"
+            tools:text="11:43:39" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_order_number"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textColor="@color/color_414655"
+        android:textSize="@dimen/textSize12sp"
+        tools:text="W01073313956887707648" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/rech_log_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/color_535D76"
+            android:textSize="@dimen/textSize14sp"
+            android:textFontWeight="700"
+            android:fontFamily="@font/din_regular"
+            tools:text="1,000,000.00" />
+
+        <TextView
+            android:id="@+id/tv_receive_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/color_535D76"
+            android:textSize="@dimen/textSize14sp"
+            android:textFontWeight="700"
+            android:fontFamily="@font/din_regular"
+            tools:text="1,000,000.00" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/rech_log_state"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:drawableRight="@drawable/ic_withdraw_log_arrow"
+        android:textColor="@color/color_414655"
+        android:textSize="@dimen/textSize12sp"
+        tools:text="@string/log_state_processing" />
+
+</LinearLayout>
