@@ -19,14 +19,12 @@
         android:layout_marginTop="24dp"
         android:background="@null"
         android:contentDescription="@null"
-        android:scaleX="0.9"
-        android:scaleY="0.9"
         android:src="@drawable/ic_arrow_login"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/v_top" />
 
     <com.flyjingfish.gradienttextviewlib.GradientTextView
-        android:id="@+id/tv_title_forget_password"
+        android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -63,19 +61,127 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_20"
-            android:layout_marginHorizontal="15dp"
+            android:layout_marginHorizontal="14dp"
             android:layout_marginBottom="15dp"
-            android:paddingTop="15dp"
             android:elevation="1dp"
             android:background="@drawable/bg_white_radius_8"
             android:orientation="vertical">
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clProgressLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="20dp">
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginHorizontal="20dp"
+                    app:layout_constraintLeft_toLeftOf="@+id/tvOne"
+                    app:layout_constraintRight_toRightOf="@+id/tvThree"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:id="@+id/vPart1"
+                        android:layout_width="0dp"
+                        android:layout_height="2dp"
+                        android:layout_weight="1"
+                        android:background="#025BE8"/>
+
+                    <View
+                        android:id="@+id/vPart2"
+                        android:layout_width="0dp"
+                        android:layout_height="2dp"
+                        android:layout_weight="1"
+                        android:background="#C9CFD7"/>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvOne"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    app:layout_constraintLeft_toLeftOf="@+id/tvOneText"
+                    app:layout_constraintRight_toRightOf="@+id/tvOneText"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:text="1"/>
+
+                <TextView
+                    android:id="@+id/tvTwo"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:text="2"/>
+
+                <TextView
+                    android:id="@+id/tvThree"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    app:layout_constraintLeft_toLeftOf="@+id/tvThreeText"
+                    app:layout_constraintRight_toRightOf="@+id/tvThreeText"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:gravity="center"
+                    android:layout_gravity="right"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:text="3"/>
+
+                <TextView
+                    android:id="@+id/tvOneText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="30dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvOne"
+                    android:gravity="center_horizontal"
+                    android:textSize="12sp"
+                    android:text="@string/verify"/>
+
+                <TextView
+                    android:id="@+id/tvTwoText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="30dp"
+                    app:layout_constraintLeft_toLeftOf="@+id/tvTwo"
+                    app:layout_constraintRight_toRightOf="@+id/tvTwo"
+                    app:layout_constraintTop_toBottomOf="@+id/tvTwo"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:id="@+id/tvThreeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="30dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvThree"
+                    android:gravity="center_horizontal"
+                    android:textSize="12sp"
+                    android:text="@string/recharge_state_success"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
-                android:id="@+id/et_phone"
+                android:id="@+id/inputForm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                app:hintText="@string/phone_number"
+                android:layout_marginTop="10dp"
                 app:isResponsiveIconColor="false"
                 app:iconSignifier="@drawable/ic_mobile_gray"
                 app:labelText="@string/mobile"
@@ -83,44 +189,16 @@
                 app:primaryColor="@color/color_AFAFB1">
 
                 <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
-                    android:id="@+id/eet_phone_num"
+                    android:id="@+id/eetInputForm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
                     android:inputType="phone"
-                    android:maxLength="11"
                     android:maxLines="1"
                     android:digits="@string/edittext_digits_int"
                     android:textColor="@color/color_FFFFFF_DE000000"
                     android:textSize="@dimen/textSize14sp"
                     android:textColorHint="@color/color_C9CFD7" />
-
-            </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>
-
-            <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
-                android:id="@+id/et_e_mail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                app:hintText="@string/email_address"
-                app:isResponsiveIconColor="false"
-                app:iconSignifier="@drawable/ic_email_gray"
-                app:labelText="@string/e_mail"
-                app:labelTextStyle="normal"
-                app:primaryColor="@color/color_AFAFB1">
-
-                <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
-                    android:id="@+id/eet_e_mail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionNext"
-                    android:inputType="textEmailAddress"
-                    android:digits="@string/edittext_digits_email"
-                    android:maxLength="50"
-                    android:maxLines="1"
-                    android:textColor="@color/color_FFFFFF_DE000000"
-                    android:textSize="@dimen/textSize14sp"
-                    android:textColorHint="@color/color_C9CFD7"/>
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>
 
@@ -182,21 +260,11 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/tv_sms_send"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_10"
-                android:layout_marginHorizontal="24dp"
-                android:layout_marginVertical="10dp"
-                android:maxLines="2"
-                android:visibility="gone" />
-
             <LinearLayout
                 android:id="@+id/cl_live_chat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="13dp"
                 android:orientation="horizontal"
                 android:gravity="right">
 
@@ -225,8 +293,31 @@
                     android:textSize="@dimen/textSize12sp"/>
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/tvStatusText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal"
+                android:textColor="@color/color_414655"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                tools:text="Change Phone Number\nSuccessful!"/>
+
+            <TextView
+                android:id="@+id/tvBackText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:gravity="center_horizontal"
+                android:textColor="@color/color_535D76"
+                android:textSize="16sp"
+                android:visibility="gone"
+                android:text="@string/back_to_my_details"/>
+
             <Button
-                android:id="@+id/btn_put"
+                android:id="@+id/btnNext"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"

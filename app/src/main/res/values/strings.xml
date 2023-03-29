@@ -1347,4 +1347,16 @@
     <string name="J803">1X2 &amp; Both to Score Y</string>
     <string name="J804">1X2 &amp; Both to Score N</string>
 
+    <string name="set_phone_no">Set Phone Number</string>
+    <string name="set_email">Set Email</string>
+    <string name="edit_phone_no">Change Phone Number</string>
+    <string name="edit_email">Change Email</string>
+    <string name="new_phone_no">New Phone Number</string>
+    <string name="new_email">New Email</string>
+    <string name="verify">Verify</string>
+    <string name="verify_phone_no">Phone verification</string>
+    <string name="verify_email">Email verification</string>
+    <string name="back_to_my_details">Go back to My Details</string>
+
+
 </resources>

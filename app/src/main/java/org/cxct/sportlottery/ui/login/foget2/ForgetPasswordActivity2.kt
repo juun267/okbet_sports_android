@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityForgetPassword2Binding
 import org.cxct.sportlottery.extentions.bindFinish
@@ -125,7 +126,7 @@ open class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewMode
         }
 
         tag = this
-        CountDownUtil.smsCountDown(this@ForgetPasswordActivity2,
+        CountDownUtil.smsCountDown(this@ForgetPasswordActivity2.lifecycleScope,
             { setBtnEnable(false) },
             { text = "${it}s" },
             {

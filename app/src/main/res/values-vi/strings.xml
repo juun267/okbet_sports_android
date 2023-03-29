@@ -1261,4 +1261,12 @@
     <string name="J804">1 X 2 &amp; Hai Đội Ghi Bàn-Không</string>
     <string name="N643">Mời vào app Glife nạp tiền</string>
     <string name="N644">Mời vào app Glife rút tiền</string>
+    <string name="edit_phone_no">Thay đổi SĐT</string>
+    <string name="edit_email">Thay đổi email</string>
+    <string name="new_phone_no">SĐT mới</string>
+    <string name="new_email">Email mới</string>
+    <string name="verify">Xác minh</string>
+    <string name="verify_phone_no">Xác minh SĐT</string>
+    <string name="verify_email">Xác minh email</string>
+    <string name="back_to_my_details">Về trang cá nhân</string>
 </resources>

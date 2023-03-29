@@ -10,6 +10,7 @@ import android.text.method.PasswordTransformationMethod
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_login_ok.*
 import kotlinx.android.synthetic.main.view_status_bar.*
@@ -340,7 +341,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
         viewModel.msgCodeResult.observe(this, Observer {
             if (it?.success == true) {
-                CountDownUtil.smsCountDown(this, {
+                CountDownUtil.smsCountDown(this@LoginOKActivity.lifecycleScope, {
                     binding.btnSendSms.setBtnEnable(false)
                     countDownGoing = true
                 }, {

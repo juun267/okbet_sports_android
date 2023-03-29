@@ -179,12 +179,12 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
     private fun editBindInfo(modifyType: @ModifyType Int) {
         val userInfo = viewModel.userInfo.value
-        val phone = userInfo?.phone
+        val phoneNo = userInfo?.phone
         val email = userInfo?.email
-        if (phone.isEmptyStr() && email.isEmptyStr()) {
-            ModifyBindInfoActivity.start(this, modifyType, "${userInfo?.userName}")
+        if (phoneNo.isEmptyStr() && email.isEmptyStr()) {
+            ModifyBindInfoActivity.start(this, modifyType, 100, null, null, null)
         } else {
-            VerificationWaysActivity.start(this, modifyType, phone, email)
+            VerificationWaysActivity.start(this, modifyType, phoneNo, email)
         }
     }
 

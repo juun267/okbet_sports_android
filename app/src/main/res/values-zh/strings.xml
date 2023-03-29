@@ -1275,4 +1275,12 @@
     <string name="J802">独赢&amp;小</string>
     <string name="J803">独赢&amp;双方球队进球-是</string>
     <string name="J804">独赢&amp;双方球队进球-否</string>
+    <string name="edit_email">更换邮箱</string>
+    <string name="edit_phone_no">更换手机号码</string>
+    <string name="new_phone_no">新手机号码</string>
+    <string name="new_email">新邮箱</string>
+    <string name="verify">验证</string>
+    <string name="verify_phone_no">手机验证</string>
+    <string name="verify_email">邮箱验证</string>
+    <string name="back_to_my_details">返回我的详细信息</string>
 </resources>
