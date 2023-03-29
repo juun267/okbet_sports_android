@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.viewModelScope
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder
 import com.bigkoo.pickerview.view.OptionsPickerView
@@ -473,5 +474,12 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
             .statusBarView(view)
             .fitsSystemWindows(false)
             .init()
+    }
+
+
+    fun replaceFragment(container:Int,fragment:Fragment){
+        val transaction= supportFragmentManager.beginTransaction();
+        transaction.replace(container,fragment)
+        transaction.commit()
     }
 }

@@ -1,10 +1,11 @@
-package org.cxct.sportlottery.ui.transactionStatus
+package org.cxct.sportlottery.ui.maintab.betdetails
 
 import android.os.CountDownTimer
+import android.os.Parcel
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
@@ -18,17 +19,18 @@ import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
-import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
+import org.cxct.sportlottery.ui.transactionStatus.BetListData
+import org.cxct.sportlottery.ui.transactionStatus.ContentParlayMatchAdapter
+import org.cxct.sportlottery.ui.transactionStatus.ParlayType
 import org.cxct.sportlottery.util.*
 
-//TODO 20210719當前api缺少總金額,待後端修正後進行確認
-class TransactionRecordDiffAdapter :
+class TransactionRecordDetailAdapter :
     ListAdapter<DataItem, RecyclerView.ViewHolder>(TransactionRecordDiffCallBack()) {
     var isLastPage: Boolean = false
     var totalAmount: Double = 0.0
     var itemList = listOf<DataItem>()
 
-//    private enum class ViewType { Match, Parlay, Outright, LastTotal, NoData }
+    //    private enum class ViewType { Match, Parlay, Outright, LastTotal, NoData }
     private enum class ViewType { Match, Parlay, Outright, NoData }
 
     fun setupBetList(betListData: BetListData) {
@@ -261,10 +263,10 @@ class TransactionRecordDiffAdapter :
         }
 
         fun bind(data: Row) {
-            val contentParlayMatchAdapter by lazy { ContentParlayMatchAdapter(data) }
+            val contentParlayMatchAdapter by lazy { ContentParlayDetailAdapter(data.status) }
 
             itemView.apply {
-                getParlayStringRes(data.parlayType)?.let { parlayTypeStringResId ->
+                ParlayType.getParlayStringRes(data.parlayType)?.let { parlayTypeStringResId ->
                     //盡量避免直接使用 MultiLanguagesApplication.appContext.getString 容易出現語系顯示錯誤
 //                    title_parlay_type.text = itemView.context.getString(parlayTypeStringResId)
                     val parlayTitle = context.getString(R.string.bet_record_parlay) +

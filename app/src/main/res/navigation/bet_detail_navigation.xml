@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:startDestination="@id/bet_details_fragment">
+
+    <fragment
+        android:id="@+id/bet_details_fragment"
+        android:name="org.cxct.sportlottery.ui.maintab.betdetails.BetDetailsFragment"
+        android:label="BetDetailsFragment">
+
+        <action
+            android:id="@+id/to_bet_details_fragment"
+            app:destination="@id/bet_details_fragment">
+            <argument
+                android:name="data"
+                app:argType="org.cxct.sportlottery.network.bet.list.Row"
+                app:nullable="false" />
+        </action>
+
+    </fragment>
+
+</navigation>

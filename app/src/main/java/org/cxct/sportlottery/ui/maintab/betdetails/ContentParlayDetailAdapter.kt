@@ -1,10 +1,9 @@
-package org.cxct.sportlottery.ui.transactionStatus
+package org.cxct.sportlottery.ui.maintab.betdetails
 
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -12,18 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_parlay_match.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.MatchOdd
-import org.cxct.sportlottery.network.bet.list.Row
-import org.cxct.sportlottery.ui.maintab.betdetails.BetDetailsActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.widget.onClick
 
-
-class ContentParlayMatchAdapter(val data: Row) :
+class ContentParlayDetailAdapter(val status: Int) :
     ListAdapter<MatchOdd, RecyclerView.ViewHolder>(ContentDiffCallBack()) {
     var gameType: String = ""
     var betConfirmTime: Long? = 0
     var matchType: String? = null
-    var mData=data
     fun setupMatchData(gameType: String, dataList: List<MatchOdd>, betConfirmTime: Long?, matchType: String?) {
         this.gameType = gameType
         this.betConfirmTime = betConfirmTime
@@ -49,7 +44,7 @@ class ContentParlayMatchAdapter(val data: Row) :
         val data = getItem(holder.adapterPosition)
         when (holder) {
             is ParlayMatchViewHolder -> {
-                holder.bind(gameType, data, position, betConfirmTime, data.status, matchType,mData)
+                holder.bind(gameType, data, position, betConfirmTime, status, matchType)
             }
         }
     }
@@ -59,18 +54,19 @@ class ContentParlayMatchAdapter(val data: Row) :
             fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
                 val layoutInflater = LayoutInflater.from(viewGroup.context)
                 val view = layoutInflater.inflate(R.layout.content_parlay_match, viewGroup, false)
-//                view.findViewById<TextView>(R.id.content_play).setCompoundDrawablesRelative(null, null, null, null)
+//                view.findViewById<TextView>(R.id.content_play).setCompoundDrawablesRelative(
+//                    null, null, ContextCompat.getDrawable(view.context,R.drawable.ic_right_arrow_gray), null)
+//                view.findViewById<TextView>(R.id.content_play).setCompoundDrawablesRelative(
+//                    null, null, ContextCompat.getDrawable(view.context,R.drawable.ic_right_arrow_gray), null)
                 return ParlayMatchViewHolder(view)
             }
         }
 
-        fun bind(gameType: String, data: MatchOdd, position: Int, betConfirmTime: Long?, status: Int, matchType: String?,rowData:Row) {
+        fun bind(gameType: String, data: MatchOdd, position: Int, betConfirmTime: Long?, status: Int, matchType: String?) {
             itemView.apply {
                 ///串关详情跳转
                 itemView.onClick {
-                    val intent=Intent(context, BetDetailsActivity::class.java)
-                    intent.putExtra("data",rowData)
-                    context?.startActivity(intent)
+                    context?.startActivity(Intent(context, BetDetailsActivity::class.java))
                 }
                 topLine.isVisible = position != 0
 //                content_play.text = "$gameTypeName ${data.playCateName}"

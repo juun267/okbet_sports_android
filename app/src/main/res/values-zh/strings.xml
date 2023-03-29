@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="loading">加载中</string>
     <string name="connect_first">请先连上网路</string>
     <string name="error_url_fail">跳转地址错误</string>
@@ -1275,4 +1275,9 @@
     <string name="J802">独赢&amp;小</string>
     <string name="J803">独赢&amp;双方球队进球-是</string>
     <string name="J804">独赢&amp;双方球队进球-否</string>
+
+
+    <string name="bet_details_title" >窜关组合详情</string>
+
+
 </resources>
