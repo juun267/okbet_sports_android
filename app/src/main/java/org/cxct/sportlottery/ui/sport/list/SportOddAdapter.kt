@@ -1,9 +1,10 @@
-package org.cxct.sportlottery.ui.sport.favorite
+package org.cxct.sportlottery.ui.sport.list
 
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.item_sport_odd.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.enums.PayLoadEnum
@@ -13,10 +14,13 @@ import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
-import org.cxct.sportlottery.ui.sport.vh.SportFavoriteViewHolder
+import org.cxct.sportlottery.ui.sport.vh.SportListViewHolder
 import org.cxct.sportlottery.ui.sport.vh.ViewHolderTimer
 
-class SportFavoriteAdapter(private val matchType: MatchType) :
+class SportOddAdapter(
+    private val matchType: MatchType,
+    private val oddBtnCachePool: RecyclerView.RecycledViewPool,
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var data = listOf<MatchOdd>()
@@ -37,9 +41,6 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
 
     var leagueOddListener: LeagueOddListener? = null
     var leagueOdd: LeagueOdd? = null
-    var playSelectedCodeSelectionType: Int? = null
-    var playSelectedCode: String? = null
-    var isNeedRecreateViews = true
     private val oddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
             override fun refreshOddButton(odd: Odd) {
@@ -51,12 +52,18 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
         }
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return SportLeagueAdapter.ItemType.ITEM.ordinal
+    }
+
     // region Update functions
     fun update() {
-        // Update MatchOdd list
         data.forEachIndexed { index, matchOdd -> notifyItemChanged(index, matchOdd) }
     }
-    // endregion
+
+    fun updateIndex(index: Int, matchOdd: MatchOdd) {
+        notifyItemChanged(index, matchOdd)
+    }
 
     fun updateByBetInfo(clickOdd: Odd?) {
         data.forEachIndexed { index, matchOdd ->
@@ -75,41 +82,29 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
         }
     }
 
-    fun updateBySelectCsTab(matchOdd: MatchOdd) {
+    fun updateByMatchIdForOdds(matchOdd: MatchOdd) {
         val index = data.indexOf(data.find { it == matchOdd })
         notifyItemChanged(index, matchOdd)
     }
 
-    fun updateByMatchIdForOdds(matchOdd: MatchOdd) {
+    fun updateBySelectCsTab(matchOdd: MatchOdd) {
         val index = data.indexOf(data.find { it == matchOdd })
         notifyItemChanged(index, matchOdd)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.item_sport_favorite, parent, false)
-        return SportFavoriteViewHolder(view, oddStateRefreshListener)
+        val view = layoutInflater.inflate(R.layout.item_sport_odd, parent, false)
+        val vh = SportListViewHolder(view, oddStateRefreshListener)
+        vh.itemView.rv_league_odd_btn_pager_main.setRecycledViewPool(oddBtnCachePool)
+        return vh
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = data[position]
-        Log.d("Hewie", "綁定：賽事($position)")
-        val matchInfoList = data.mapNotNull {
-            it.matchInfo
-        }
-
-        when (holder) {
-            is SportFavoriteViewHolder -> {
-                holder.stopTimer()
-                holder.bind(
-                    matchType,
-                    item,
-                    leagueOddListener,
-                    isTimerEnable,
-                    oddsType,
-                    matchInfoList
-                )
-            }
+        if (holder is SportListViewHolder) {
+            val item = data[position]
+            val matchInfoList = data.mapNotNull { it.matchInfo }
+            holder.bind(matchType, item, leagueOddListener, isTimerEnable, oddsType, matchInfoList)
         }
     }
 
@@ -121,40 +116,37 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
     ) {
         if (payloads.isNullOrEmpty()) {
             onBindViewHolder(holder, position)
-            //(holder as ViewHolderHdpOu).update(matchType, data[position], leagueOddListener, isTimerEnable, oddsType, playSelectedCodeSelectionType)
         } else {
             Log.d("Hewie", "更新：賽事($position)")
 
-            payloads.forEach { payload ->
-                when (payload) {
-                    is MatchOdd -> {
-                        val matchOdd = payload as MatchOdd
-                        (holder as SportFavoriteViewHolder).update(
-                            matchType,
-                            matchOdd,
-                            leagueOddListener,
-                            isTimerEnable,
-                            oddsType,
-                        )
-                    }
+            when (payloads.first()) {
+                is MatchOdd -> {
+                    val matchOdd = payloads.first() as MatchOdd
+                    (holder as SportListViewHolder).update(
+                        matchType,
+                        matchOdd,
+                        leagueOddListener,
+                        isTimerEnable,
+                        oddsType
+                    )
+                }
 
-                    is Pair<*, *> -> {
-                        (payload as Pair<*, *>).apply {
-                            when (first) {
-                                PayLoadEnum.PAYLOAD_BET_INFO -> {
-                                    (holder as SportFavoriteViewHolder).updateByBetInfo(
-                                        item = second as MatchOdd,
-                                        leagueOddListener = leagueOddListener,
-                                        oddsType = oddsType,
-                                    )
-                                }
+                is Pair<*, *> -> {
+                    (payloads.first() as Pair<*, *>).apply {
+                        when (first) {
+                            PayLoadEnum.PAYLOAD_BET_INFO -> {
+                                (holder as SportListViewHolder).updateByBetInfo(
+                                    item = second as MatchOdd,
+                                    leagueOddListener = leagueOddListener,
+                                    oddsType = oddsType,
+                                )
+                            }
 
-                                PayLoadEnum.PAYLOAD_PLAYCATE -> {
-                                    (holder as SportFavoriteViewHolder).updateByPlayCate(
-                                        item = second as MatchOdd,
-                                        oddsType = oddsType,
-                                    )
-                                }
+                            PayLoadEnum.PAYLOAD_PLAYCATE -> {
+                                (holder as SportListViewHolder).updateByPlayCate(
+                                    item = second as MatchOdd,
+                                    oddsType = oddsType,
+                                )
                             }
                         }
                     }
@@ -163,11 +155,7 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
         }
     }
 
-    override fun getItemCount(): Int = if (data.isEmpty()) {
-        1
-    } else {
-        data.size
-    }
+    override fun getItemCount(): Int = data.size
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
         super.onViewRecycled(holder)
@@ -176,5 +164,4 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
             is ViewHolderTimer -> holder.stopTimer()
         }
     }
-
 }

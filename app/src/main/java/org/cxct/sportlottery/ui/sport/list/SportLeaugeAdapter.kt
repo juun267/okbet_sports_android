@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.sport
+package org.cxct.sportlottery.ui.sport.list
 
 import android.annotation.SuppressLint
 import android.util.Log
@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_league.view.*
 import kotlinx.coroutines.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.enums.PayLoadEnum
 import org.cxct.sportlottery.network.common.FoldState
 import org.cxct.sportlottery.network.common.GameType
@@ -24,7 +25,6 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.common.view.OddsButton2
-import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.ui.sport.favorite.LeagueListener
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 import org.cxct.sportlottery.util.setLeagueLogo

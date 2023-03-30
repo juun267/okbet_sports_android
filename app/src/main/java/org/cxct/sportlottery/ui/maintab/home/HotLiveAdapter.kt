@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.maintab
+package org.cxct.sportlottery.ui.maintab.home
 
 import android.view.LayoutInflater
 import android.view.View
@@ -13,9 +13,9 @@ import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchLiveData
 
 import org.cxct.sportlottery.util.setTeamLogo
 
-class HotLiveAdapter(private var clickListener:ItemClickListener):
+class HotLiveAdapter(private var clickListener: ItemClickListener) :
     RecyclerView.Adapter<HotLiveAdapter.ItemViewHolder>() {
-    open var mSelectedId :String?= null
+    open var mSelectedId: String? = null
     var data: List<HotMatchLiveData> = mutableListOf()
         set(value) {
             field = value
@@ -64,9 +64,9 @@ class HotLiveAdapter(private var clickListener:ItemClickListener):
             awayTeamNum.text = item.matchInfo.awayScore?:"0"
         }
         companion object {
-            fun from(parent: ViewGroup):ItemViewHolder{
-                val view =  LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_hot_live, parent, false)
+            fun from(parent: ViewGroup): ItemViewHolder {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_hot_live, parent, false)
                 return ItemViewHolder(view)
             }
         }
