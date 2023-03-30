@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputFilter.LengthFilter
 import android.text.InputType
-import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
@@ -312,24 +311,20 @@ class ModifyBindInfoActivity: BaseActivity<BindInfoViewModel>(BindInfoViewModel:
 
         sendCodeResult.observe(this@ModifyBindInfoActivity) { smsResult-> // 发送验证码
             hideLoading()
+            ToastUtil.showToast(this@ModifyBindInfoActivity, smsResult.msg)
             if (smsResult.succeeded()) {
                 userName = smsResult.getData()?.userName
                 codeCountDown()
-                val msg = smsResult.getData()?.msg
-                if(!msg.isEmptyStr()) {
-                    ToastUtil.showToast(this@ModifyBindInfoActivity, msg, Toast.LENGTH_SHORT)
-                }
                 return@observe
             }
 
             binding.btnSendSms.setBtnEnable(true)
-            ToastUtil.showToast(this@ModifyBindInfoActivity, smsResult?.msg, Toast.LENGTH_SHORT)
             //做异常处理
-            if (smsResult?.code == 2765 || smsResult?.code == 2766) {
-                binding.inputForm.setError(smsResult.msg,false)
-            } else {
-                binding.etSmsValidCode.setError(smsResult?.msg,false)
-            }
+//            if (smsResult?.code == 2765 || smsResult?.code == 2766) {
+//                binding.inputForm.setError(smsResult.msg,false)
+//            } else {
+//                binding.etSmsValidCode.setError(smsResult?.msg,false)
+//            }
         }
 
         verifyResult.observe(this@ModifyBindInfoActivity) { result-> // 验证短信验证码
@@ -339,11 +334,12 @@ class ModifyBindInfoActivity: BaseActivity<BindInfoViewModel>(BindInfoViewModel:
                 return@observe
             }
 
-            if (result.code == 2765|| result.code == 2766) {
-                binding.inputForm.setError(result.msg,false)
-            } else {
-                binding.etSmsValidCode.setError(result.msg,false)
-            }
+            ToastUtil.showToast(this@ModifyBindInfoActivity, result.msg)
+//            if (result.code == 2765|| result.code == 2766) {
+//                binding.inputForm.setError(result.msg,false)
+//            } else {
+//                binding.etSmsValidCode.setError(result.msg,false)
+//            }
         }
 
         resetResult.observe(this@ModifyBindInfoActivity) {
@@ -356,6 +352,7 @@ class ModifyBindInfoActivity: BaseActivity<BindInfoViewModel>(BindInfoViewModel:
             setResult(Activity.RESULT_OK)
             setProgressSuccess()
         }
+
     }
 
 }
