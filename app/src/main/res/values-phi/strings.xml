@@ -240,6 +240,7 @@
     <string name="unread_letters">Unread mail (%1$d)</string>
     <string name="title">Pamagat</string>
     <string name="inquire">Hanapin</string>
+    <string name="order_number">Numero ng taya</string>
     <string name="total_bet_money_colon">Kabuuang taya：%s</string>
     <string name="status">State</string>
     <string name="select_all">Piliin lahat</string>
