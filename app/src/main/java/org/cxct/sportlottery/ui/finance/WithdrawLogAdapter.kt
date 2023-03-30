@@ -95,7 +95,10 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
 
             itemView.setOnClickListener {
-                withdrawLogListener?.onClick(Event(item))
+                withdrawLogListener?.onClick(Event(item), false)
+            }
+            itemView.lin_amount.setOnClickListener {
+                withdrawLogListener?.onClick(Event(item), true)
             }
         }
 
@@ -125,6 +128,6 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 }
 
-class WithdrawLogListener(val clickListener: (row: Event<Row>) -> Unit) {
-    fun onClick(row: Event<Row>) = clickListener(row)
+class WithdrawLogListener(val clickListener: (row: Event<Row>, clickMoney: Boolean) -> Unit) {
+    fun onClick(row: Event<Row>, clickMoney: Boolean = false) = clickListener(row, clickMoney)
 }
