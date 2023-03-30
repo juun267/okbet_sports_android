@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.maintab.betdetails
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,10 +9,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_bet_detail_match.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.bet.MatchOdd
 import org.cxct.sportlottery.network.bet.settledDetailList.MatchOddsVO
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.widget.onClick
 
 class ContentParlayDetailAdapter(val status: Int) :
     ListAdapter<MatchOddsVO, RecyclerView.ViewHolder>(ContentDiffCallBack()) {

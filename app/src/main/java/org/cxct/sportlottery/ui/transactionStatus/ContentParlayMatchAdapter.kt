@@ -4,7 +4,6 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -15,7 +14,7 @@ import org.cxct.sportlottery.network.bet.MatchOdd
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.ui.maintab.betdetails.BetDetailsActivity
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.widget.onClick
+import org.cxct.sportlottery.view.onClick
 
 
 class ContentParlayMatchAdapter(val data: Row) :

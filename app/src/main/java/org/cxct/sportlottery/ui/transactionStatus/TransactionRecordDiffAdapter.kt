@@ -264,6 +264,7 @@ class TransactionRecordDiffAdapter :
             val contentParlayMatchAdapter by lazy { ContentParlayMatchAdapter(data) }
 
             itemView.apply {
+
                 getParlayStringRes(data.parlayType)?.let { parlayTypeStringResId ->
                     //盡量避免直接使用 MultiLanguagesApplication.appContext.getString 容易出現語系顯示錯誤
 //                    title_parlay_type.text = itemView.context.getString(parlayTypeStringResId)
