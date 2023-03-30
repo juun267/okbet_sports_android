@@ -49,6 +49,7 @@
         tools:text="W01073313956887707648" />
 
     <LinearLayout
+        android:id="@+id/lin_amount"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"

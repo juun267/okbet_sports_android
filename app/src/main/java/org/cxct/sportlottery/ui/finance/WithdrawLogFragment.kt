@@ -87,9 +87,9 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     private val withdrawLogAdapter by lazy {
         WithdrawLogAdapter().apply {
             withdrawLogListener = WithdrawLogListener(
-                clickListener = { event ->
+                clickListener = { event, clickMoney ->
                     event.peekContent()?.let {
-                        if (it.uwType == UWType.BETTING_STATION.type) {
+                        if (it.uwType == UWType.BETTING_STATION.type && clickMoney) {
                             reserveTime = it.withdrawDateAndTime.toString()
                             viewModel.getQueryByBettingStationId(it.channel)
                         } else {
