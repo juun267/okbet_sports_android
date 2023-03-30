@@ -247,6 +247,7 @@
     <string name="title">Headline</string>
     <string name="record_time">Time</string>
     <string name="inquire">Search</string>
+    <string name="order_number">Betting order no.</string>
     <string name="total_bet_money_colon">Total stake:%s</string>
     <string name="status">Status</string>
     <string name="select_all">Select all</string>
@@ -1217,17 +1218,24 @@
     <string name="confirm_transform_in_money">Please confirm amount transferred to game account</string>
     <string name="game_account_money">Game balance</string>
     <string name="transform_in_amount">Transfer-in amount</string>
+    <string name="hint_transform_in_amount">Only supported the amount transferred from 0 to the platform account balance</string>
     <string name="account_balance_unenough">Platform account balance not enough</string>
     <string name="platform_user_money">Platform balance</string>
 
 
     <string name="N589">Login with google</string>
     <string name="third_party">3rd party</string>
+    <string name="L019">Succeed</string>
+    <string name="N627">Please go to the betting station to withdraw money</string>
     <string name="N618">Sub-order transaction no.</string>
+    <string name="N626">Withdrawal failed</string>
+    <string name="N628">Total bill transaction number</string>
+    <string name="N646">Received amount</string>
+    <string name="N647">Order amount</string>
     <string name="N653">Pending payment</string>
     <string name="N643">Please go to Glife app to deposit</string>
     <string name="N644">Please go to Glife app to withdraw</string>
-
+    <string name="J630">Order no.</string>
     <string name="J801">1X2 &amp; Goals Over</string>
     <string name="J802">1X2 &amp; Goals Under</string>
     <string name="J803">1X2 &amp; Both to Score Y</string>
