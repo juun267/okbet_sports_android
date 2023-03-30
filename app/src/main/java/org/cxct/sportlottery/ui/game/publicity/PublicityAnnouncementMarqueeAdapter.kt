@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import org.cxct.sportlottery.databinding.ContentPublicityAnnouncementMarqueeBinding
-import org.cxct.sportlottery.ui.MarqueeAdapter
 
 class PublicityAnnouncementMarqueeAdapter : MarqueeAdapter() {
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): DetailViewHolder {

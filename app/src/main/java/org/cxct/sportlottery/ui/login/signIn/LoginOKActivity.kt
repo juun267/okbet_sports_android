@@ -17,10 +17,10 @@ import kotlinx.android.synthetic.main.view_status_bar.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityLoginOkBinding
-import org.cxct.sportlottery.extentions.startActivity
+import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.login.LoginCodeRequest
 import org.cxct.sportlottery.network.index.login.LoginRequest
@@ -35,7 +35,7 @@ import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.login.foget2.ForgetWaysActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.widget.boundsEditText.SimpleTextChangedWatcher
+import org.cxct.sportlottery.view.boundsEditText.SimpleTextChangedWatcher
 
 
 /**
@@ -181,7 +181,8 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun login() {
-        val deviceSn = getSharedPreferences(MultiLanguagesApplication.UUID_DEVICE_CODE,
+        val deviceSn = getSharedPreferences(
+            MultiLanguagesApplication.UUID_DEVICE_CODE,
             Context.MODE_PRIVATE).getString(
             MultiLanguagesApplication.UUID, "") ?: ""
         val deviceId = Settings.Secure.getString(applicationContext.contentResolver,

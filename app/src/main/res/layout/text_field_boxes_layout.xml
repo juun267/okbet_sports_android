@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/text_field_boxes_imageView">
 
-            <org.cxct.sportlottery.widget.boundsEditText.ClipToBoundsView
+            <org.cxct.sportlottery.view.boundsEditText.ClipToBoundsView
                 android:id="@+id/text_field_boxes_panel"
                 android:layout_width="wrap_content"
                 android:layout_height="52dp"
@@ -165,7 +165,7 @@
 
                 </RelativeLayout>
 
-            </org.cxct.sportlottery.widget.boundsEditText.ClipToBoundsView>
+            </org.cxct.sportlottery.view.boundsEditText.ClipToBoundsView>
 
 
         </RelativeLayout>

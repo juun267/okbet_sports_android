@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.money.RedEnvelopeResult
@@ -14,7 +14,7 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.RedEnvelopeFloatingButton
-import org.cxct.sportlottery.ui.dialog.RedEnvelopeReceiveDialog
+import org.cxct.sportlottery.view.dialog.RedEnvelopeReceiveDialog
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.splash.SplashActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
@@ -77,7 +77,7 @@ class RedEnvelopeManager {
         countdownTimer?.schedule(object : TimerTask() {
             override fun run() {
                 if (!isLogin() || !allowdShowRedEnvelope()) {
-                    GlobalScope.launch(Dispatchers.Main) {
+                    viewModel?.viewModelScope?.launch(Dispatchers.Main) {
                         removeRedEnvelopeBtn()
                     }
                     return
@@ -92,13 +92,13 @@ class RedEnvelopeManager {
                     val startTimeDiff = ((redenpStartTime ?: 0) - System.currentTimeMillis()) / 1000
                     val endTimeDiff = ((redenpEndTime ?: 0) - System.currentTimeMillis()) / 1000
                     if (startTimeDiff in 1..180) {
-                        GlobalScope.launch(Dispatchers.Main) {
+                        viewModel?.viewModelScope?.launch(Dispatchers.Main) {
                             showRedEnvelopeBtn(startTimeDiff)
                         }
                     } else if (startTimeDiff <= 0 && endTimeDiff >= 0) {
                         showedRedenpId = redenpId
                         redEnvelopeReceiveDialog = RedEnvelopeReceiveDialog( redenpId)
-                        GlobalScope.launch(Dispatchers.Main) {
+                        viewModel?.viewModelScope?.launch(Dispatchers.Main) {
                             redEnvelopeReceiveDialog?.show(
                                 activity!!.supportFragmentManager,
                                 activity!!::class.java.simpleName
@@ -111,7 +111,7 @@ class RedEnvelopeManager {
                 } else  {
                     val endTimeDiff = ((redenpEndTime ?: 0) - System.currentTimeMillis()) / 1000
                     if (endTimeDiff < 0) {
-                        GlobalScope.launch(Dispatchers.Main) {
+                        viewModel?.viewModelScope?.launch(Dispatchers.Main) {
                             redEnvelopeReceiveDialog?.dismiss()
                             redEnvelopeReceiveDialog?.closeDialog()
                             redEnvelopeReceiveDialog = null

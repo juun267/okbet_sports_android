@@ -8,10 +8,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.exception.DoNoConnectException
-import org.cxct.sportlottery.extentions.clean
+import org.cxct.sportlottery.common.exception.DoNoConnectException
+import org.cxct.sportlottery.common.extentions.clean
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.httpFormat
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -26,7 +26,6 @@ import org.cxct.sportlottery.util.*
 import retrofit2.Response
 import timber.log.Timber
 import java.net.SocketTimeoutException
-import java.util.concurrent.ConcurrentHashMap
 
 
 abstract class BaseViewModel(
@@ -48,7 +47,7 @@ abstract class BaseViewModel(
             return liveData
         }
 
-         liveData = liveSet.get(clazz) as MutableLiveData<T>?
+        liveData = liveSet.get(clazz) as MutableLiveData<T>?
         if (liveData == null) {
             liveData = MutableLiveData<T>()
             liveSet.put(clazz, liveData)
@@ -109,9 +108,9 @@ abstract class BaseViewModel(
         REQUEST_TOO_FAST(400)
     }
 
-    fun <T: BaseResult> doRequest(context: Context,
-                                  apiFun: suspend () -> Response<T>,
-                                  callback: (T?) -> Unit) {
+    fun <T : BaseResult> doRequest(
+        context: Context, apiFun: suspend () -> Response<T>, callback: (T?) -> Unit
+    ) {
         viewModelScope.launch/*(Dispatchers.IO)*/ {
             val result = doNetwork(context, true, apiFun)
             withContext(Dispatchers.Main) {
@@ -123,19 +122,15 @@ abstract class BaseViewModel(
     //20210526 新增 exceptionHandle 參數，還判斷要不要在 BaseActivity 顯示，exception 錯誤訊息
     @Nullable
     suspend fun <T : BaseResult> doNetwork(
-        context: Context,
-        exceptionHandle: Boolean = true,
-        apiFun: suspend () -> Response<T>
+        context: Context, exceptionHandle: Boolean = true, apiFun: suspend () -> Response<T>
     ): T? {
         return try {
-            if (!NetworkUtil.isAvailable(context))
-                throw DoNoConnectException()
+            if (!NetworkUtil.isAvailable(context)) throw DoNoConnectException()
             doApiFun(apiFun)
         } catch (e: Exception) {
             Timber.e("doNetwork: $e")
             e.printStackTrace()
-            if (exceptionHandle)
-                doOnException(context, e)
+            if (exceptionHandle) doOnException(context, e)
             null
         }
     }
@@ -160,11 +155,7 @@ abstract class BaseViewModel(
         }
 
         val errorResult = ErrorUtils.parseError(response)
-        if (
-            errorResult?.code == HttpError.UNAUTHORIZED.code ||
-            errorResult?.code == HttpError.KICK_OUT_USER.code ||
-            errorResult?.code == HttpError.MAINTENANCE.code
-        ) {
+        if (errorResult?.code == HttpError.UNAUTHORIZED.code || errorResult?.code == HttpError.KICK_OUT_USER.code || errorResult?.code == HttpError.MAINTENANCE.code) {
             errorResult.let {
                 _errorResultToken.postValue(it)
             }
@@ -173,24 +164,12 @@ abstract class BaseViewModel(
     }
 
     private fun doOnException(context: Context, exception: Exception) {
-        val locale = LanguageManager.getSetLanguageLocale(context)
-        var conf = context.resources.configuration
-        conf = Configuration(conf)
-        conf.setLocale(locale)
-        val localizedContext = context.createConfigurationContext(conf)
-
         when (exception) {
             is kotlinx.coroutines.CancellationException -> {
-                // 取消線程不執行業務
-            }
-            is DoNoConnectException -> {
-                _networkExceptionUnavailable.postValue(localizedContext.resources.getString(R.string.message_network_no_connect))
-            }
-            is SocketTimeoutException -> {
-                _networkExceptionTimeout.postValue(localizedContext.resources.getString(R.string.message_network_timeout))
+                // 取消线程不执行业务
             }
             else -> {
-                _networkExceptionUnknown.postValue(localizedContext.resources.getString(R.string.message_network_no_connect))
+                _networkExceptionUnavailable.postValue(context.getString(R.string.message_network_no_connect))
             }
         }
     }

@@ -8,10 +8,10 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityForgetPassword2Binding
-import org.cxct.sportlottery.extentions.bindFinish
-import org.cxct.sportlottery.extentions.finishWithOK
-import org.cxct.sportlottery.extentions.gone
-import org.cxct.sportlottery.extentions.isEmptyStr
+import org.cxct.sportlottery.common.extentions.bindFinish
+import org.cxct.sportlottery.common.extentions.finishWithOK
+import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.network.index.forgetPassword.SendSmsResult
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.login.*

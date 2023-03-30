@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.BetStatus
-import org.cxct.sportlottery.common.OddsType
+import org.cxct.sportlottery.common.enums.BetStatus
+import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.databinding.ContentBetInfoItemV32Binding
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType

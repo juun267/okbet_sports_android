@@ -17,7 +17,7 @@
 //import kotlinx.android.synthetic.main.item_sport_odd.view.*
 //import kotlinx.coroutines.Dispatchers
 //import kotlinx.coroutines.launch
-//import org.cxct.sportlottery.MultiLanguagesApplication
+//import org.cxct.sportlottery.application.MultiLanguagesApplication
 //import org.cxct.sportlottery.R
 //import org.cxct.sportlottery.databinding.ItemSportOddBinding
 //import org.cxct.sportlottery.enum.MatchSource

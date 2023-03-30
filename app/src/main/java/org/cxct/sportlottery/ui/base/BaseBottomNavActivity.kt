@@ -6,14 +6,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.OddsType
+import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
-import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import kotlin.reflect.KClass
 
 

@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.OddsType
+import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.PlayCode
 import org.cxct.sportlottery.network.odds.Odd

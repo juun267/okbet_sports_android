@@ -23,11 +23,11 @@ import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.extentions.isEmptyStr
+import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.VerifyConstUtil
-import org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
+import org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
 
 class LoginEditText @JvmOverloads constructor(
     context: Context,

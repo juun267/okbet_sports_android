@@ -19,7 +19,7 @@ import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.main.MainViewModel
+import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.setWebViewCommonBackgroundColor
 import timber.log.Timber

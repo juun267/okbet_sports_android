@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.ui.game.betList.holder
 
 import android.view.View
-import org.cxct.sportlottery.common.OddsType
+import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.betList.adapter.BetListRefactorAdapter

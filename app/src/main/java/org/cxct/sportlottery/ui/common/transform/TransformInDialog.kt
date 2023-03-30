@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import kotlinx.android.synthetic.main.dialog_transfer_money.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.extentions.*
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
-import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
+import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil

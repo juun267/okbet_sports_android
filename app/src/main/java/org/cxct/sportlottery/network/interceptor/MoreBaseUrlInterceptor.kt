@@ -32,7 +32,7 @@ class MoreBaseUrlInterceptor : Interceptor {
 
             //如果配置的header信息在HashMap里有声明
             if (list.find { it == HEADER_UPLOAD_IMG } != null) {
-                val newBaseUrl = (sConfigData?.resServerHost?: "").toHttpUrl()
+                val newBaseUrl = kotlin.runCatching { (sConfigData?.resServerHost?: "").toHttpUrl() }.getOrNull() ?: return chain.proceed(request)
                 //将旧的请求地址里的协议、域名、端口号替换成配置的请求地址
                 val newFullUrl = oldBaseUrl.newBuilder().scheme(newBaseUrl.scheme).host(newBaseUrl.host).port(newBaseUrl.port).build()
 

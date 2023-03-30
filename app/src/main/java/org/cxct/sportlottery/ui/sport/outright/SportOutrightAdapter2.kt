@@ -5,14 +5,14 @@ import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import com.chad.library.adapter.base.entity.node.BaseNode
 import org.cxct.sportlottery.BuildConfig
-import org.cxct.sportlottery.extentions.isEmptyStr
+import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.outright.odds.CategoryOdds
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.ui.common.ExpanableOddsAdapter
-import org.cxct.sportlottery.common.OddsType
+import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.util.SocketUpdateUtil.updateOddStatus
 
 class SportOutrightAdapter2(val lifecycle: LifecycleOwner, val onItemClick:(Int, View, BaseNode) -> Unit): ExpanableOddsAdapter() {

@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_modify_profile_info.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.extentions.filterSpecialCharacters
+import org.cxct.sportlottery.common.extentions.filterSpecialCharacters
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
@@ -17,7 +17,7 @@ import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.VerifyConstUtil
 import org.cxct.sportlottery.util.setTitleLetterSpacing
-import org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
+import org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
 
 /**
  * @app_destination 修改暱稱

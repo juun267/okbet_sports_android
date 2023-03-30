@@ -8,13 +8,13 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.cxct.sportlottery.MultiLanguagesApplication
-import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID
-import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID_DEVICE_CODE
-import org.cxct.sportlottery.common.BetStatus
-import org.cxct.sportlottery.common.OddState
-import org.cxct.sportlottery.common.OddsType
-import org.cxct.sportlottery.common.SpreadState
+import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.application.MultiLanguagesApplication.Companion.UUID
+import org.cxct.sportlottery.application.MultiLanguagesApplication.Companion.UUID_DEVICE_CODE
+import org.cxct.sportlottery.common.enums.BetStatus
+import org.cxct.sportlottery.common.enums.OddState
+import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.enums.SpreadState
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.Odd
@@ -550,7 +550,7 @@ abstract class BaseOddButtonViewModel(
         }
     }
 
-    fun org.cxct.sportlottery.network.odds.Odd.setupDiscount(discount: Float) {
+    fun org.cxct.sportlottery.network.odds.Odd.setupDiscount(discount: Float?) {
         this.odds = this.odds?.applyDiscount(discount)
         this.hkOdds = this.hkOdds?.applyHKDiscount(discount)
     }

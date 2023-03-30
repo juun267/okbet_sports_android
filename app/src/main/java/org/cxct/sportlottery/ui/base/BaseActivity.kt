@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 import me.jessyan.autosize.AutoSizeCompat
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.ResourceWrapper
+import org.cxct.sportlottery.util.ResourceWrapper
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
@@ -128,9 +128,9 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     private fun onNetworkException() {
         viewModel.networkExceptionUnavailable.observe(this) { netError(it) }
 
-        viewModel.networkExceptionTimeout.observe(this) { netError(it) }
-
-        viewModel.networkExceptionUnknown.observe(this)  { netError(it) }
+//        viewModel.networkExceptionTimeout.observe(this) { netError(it) }
+//
+//        viewModel.networkExceptionUnknown.observe(this)  { netError(it) }
 
         viewModel.isKickedOut.observe(this) {
             hideLoading()

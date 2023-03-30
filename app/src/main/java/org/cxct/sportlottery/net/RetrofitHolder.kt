@@ -4,7 +4,7 @@ import com.hjq.gson.factory.GsonFactory
 import me.jessyan.retrofiturlmanager.RetrofitUrlManager
 import okhttp3.OkHttpClient
 import org.cxct.sportlottery.BuildConfig
-import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.interceptor.Http400or500Interceptor
 import org.cxct.sportlottery.network.interceptor.HttpLogInterceptor

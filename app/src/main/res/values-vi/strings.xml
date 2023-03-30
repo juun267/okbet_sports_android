@@ -26,9 +26,6 @@
     <string name="login_account">Đăng nhập tài khoản</string>
     <string name="please_input_account">Vui lòng nhập tài khoản hội viên của bạn</string>
     <string name="login_password">Mật khẩu</string>
-    <string name="remember_password">Nhớ mật khẩu</string>
-    <string name="forget_password_question">Quên mật khẩu?</string>
-    <string name="sign_up_know">Đăng ký ngay</string>
     <string name="recommend_code">Mã giới thiệu</string>
     <string name="hint_recommend_code">Mời nhập mã giới thiệu</string>
     <string name="error_recommend_code">Mã giới thiệu không tồn tại</string>
@@ -61,7 +58,6 @@
     <string name="hint_withdrawal_pwd">Mật khẩu gồm 4 chữ số</string>
     <string name="phone_number">Số điện thoại</string>
     <string name="hint_phone_number">Vui lòng nhập số điện thoại chính xác</string>
-    <string name="hint_phone_num">Vui lòng nhập số điện thoại</string>
 
     <string name="error_phone_number">Định dạng số điện thoại không đúng</string>
     <string name="qq_number">Số tài khoản QQ</string>
@@ -147,28 +143,11 @@
     <string name="other">Sắp tới</string>
     <string name="unknown_name"></string>
     <string name="left_menu_odds_type_setting">Cài đặt thị trường</string>
-    <string name="member_level">Cấp bậc hội viên</string>
     <string name="game_settlement">Kết quả trận đấu</string>
     <string name="app_download">Tải xuống ứng dụng</string>
-    <string name="version_update">Tải xuống ứng dụng</string>
     <string name="sign_out">Đăng xuất</string>
     <string name="label_version">Phiên bản</string>
-    <string name="now_level">cấp độ hiện tại:</string>
-    <string name="growth_requirement">Giá trị tăng trưởng yêu cầu：</string>
-    <string name="no_value">không</string>
-    <string name="day_mode">Chế độ ban ngày</string>
-    <string name="night_mode">Chế độ ban đêm</string>
-    <string name="title_rebates_selector_form">Danh mục quyền lợi cấp độ trò chơi</string>
-    <string name="member_name_level_one">hội viên phổ thông</string>
-    <string name="next_level_tips">Cần tăng thêm khoảng %1$s điểm</string>
-    <string name="level_max">Đã ở cấp cao nhất</string>
-    <string name="unlimited">không giới hạn</string>
     <string name="select_plat">Vui lòng chọn kênh</string>
-    <string name="daily_bet_range">giá trị cược hiệu lực mỗi ngày</string>
-    <string name="title_rebates_rate">Số % hoàn lãi</string>
-    <string name="daily_rebates">hoàn lợi nhuận tối đa trong một ngày</string>
-    <string name="hint_recharge_growth">Gửi tiền vào %s %d nhận được %d tăng điểm</string>
-    <string name="hint_bet_growth">Cá cược %s %d dân tệ để nhận %d điểm</string>
     <string name="game_rule">Quy tắc trò chơi</string>
     <string name="news">Tin tức</string>
     <string name="select_all_league">Chọn tất cả giải đấu</string>
@@ -215,26 +194,12 @@
     <string name="plat">Kèo</string>
     <string name="round">Trận</string>
     <string name="score">điểm</string>
-    <string name="first_plat">Kèo thứ nhất</string>
-    <string name="second_plat">Kèo thứ 2</string>
-    <string name="third_plat">Kèo thứ 3</string>
-    <string name="fourth_plat">Kèo thứ 4</string>
-    <string name="fifth_plat">Kèo thứ 5</string>
     <string name="first">một</string>
     <string name="second">hai</string>
     <string name="third">ba</string>
     <string name="fourth">bốn</string>
     <string name="fifth">năm</string>
-    <string name="add_time_first_plat">Hiệp phụ đầu tiên</string>
-    <string name="add_time_second_plat">Hiệp phụ thứ hai</string>
-    <string name="first_session">hiệp một</string>
-    <string name="second_session">hiệp hai</string>
-    <string name="third_session">hiệp ba</string>
-    <string name="fourth_session">hiệp bốn</string>
-    <string name="add_time_first_half_game">Tăng ca hiệp 1</string>
-    <string name="add_time_second_half_game">Tăng ca hiệp 2</string>
     <string name="account_balance">Tổng tài chính</string>
-    <string name="user_id_colon">ID người dùng：</string>
     <string name="recharge">Gửi tiền</string>
     <string name="account_transfer">Chuyển đổi hạn mức</string>
     <string name="money_recycle_succeed">Thu hồi hạn mức thành công</string>
@@ -260,39 +225,22 @@
     <string name="new_password">Mật khẩu mới</string>
     <string name="hint_withdrawal_new_password">Mật khẩu gồm 4 chữ số</string>
     <string name="error_password_cannot_be_same">Mật khẩu mới không đặt trùng với mật khẩu cũ</string>
-    <string name="update_login_pwd">Mật khẩu đăng nhập thay đổi thành công, vui lòng sử dụng mật khẩu mới để đăng nhập lần sau!</string>
     <string name="update_withdrawal_pwd">Mật khẩu rút tiền thay đổi thành công</string>
     <string name="download_fail">tải thất bại</string>
     <string name="error_file">Lỗi tập tin</string>
-    <string name="new_version">có phiên bản mới</string>
     <string name="updatable">Có thể cập nhật</string>
-    <string name="internal_download">Tải xuống nội bộ</string>
     <string name="denied_read_memory_card">Quyền đọc thẻ nhớ bị từ chối</string>
-    <string name="current_versionIs_the_latest_version">Ứng dụng của bạn là phiên bản mới nhất</string>
-    <string name="external_download">Tải xuống ngoại bộ</string>
     <string name="update">Cập nhật</string>
-    <string name="update_now">cập nhật ngay lập tức</string>
     <string name="install">cài đặt</string>
     <string name="inbox">Hộp thư đến (%1$d)</string>
     <string name="unread_letters">Thư chưa đọc (%1$d)</string>
     <string name="title">Tiêu đề</string>
     <string name="record_time">Thời gian chuyển đổi</string>
-    <string name="choose_bet_state">Chọn trạng thái đơn cược</string>
-    <string name="champion_play">Trò chơi vô địch</string>
     <string name="inquire">Tìm kiếm</string>
     <string name="order_number">Mã số đặt cược</string>
-    <string name="order_number_colon">Mã đơn cược</string>
-    <string name="bet_type">Cách đặt cược</string>
-    <string name="total_bet_money">Tổng tiền cược</string>
     <string name="total_bet_money_colon">Tổng tiền cược:%s</string>
     <string name="status">Trạng thái</string>
-    <string name="status_colon">trạng thái</string>
-    <string name="rebates">Hoàn lãi</string>
-    <string name="remark_by_mts">Không được thiết lập do hệ thống kiểm duyệt</string>
-    <string name="remark_by_own_source">Không thiết lập được do cơ chế kiểm duyệt</string>
     <string name="select_all">" Chọn tất cả"</string>
-    <string name="all_order">Tất cả đơn cược</string>
-    <string name="not_settled_order">Đơn cược chưa được thanh toán</string>
     <string name="settled_order">Đã kết toán</string> <!--I046-->
     <string name="start_date">Ngày bắt đầu</string>
     <string name="end_date">Ngày kết thúc</string>
@@ -311,18 +259,9 @@
     <string name="pending">Đang đợi %1$s giây</string>
     <string name="confirmed">Dã xác nhận</string>
     <string name="bet_detail">Chi tiết đơn cược</string>
-    <string name="bet_time">Thời gian đặt cược</string>
     <string name="bet_time2">Thời gian cá cược</string>
-    <string name="league_name">Tên giải đấu</string>
-    <string name="game_match">Trận đấu</string>
-    <string name="play_type">Cách đặt cược</string>
-    <string name="game_odds">tỷ lệ kèo</string>
-    <string name="match_names">(Đội chủ nhà) %s vs %s (Đội khách)</string>
-    <string name="match_names_3">Đội chủ nhà %s V.S %s Đội khách</string>
-    <string name="bet_item">Mục đặt cược</string>
     <string name="at_start_remain_minute">%s phút</string>
     <string name="date_row_all">TẤT CẢ</string>
-    <string name="date_row_live">trận đấu đang diễn ra</string>
     <string name="date_row_today">Sự kiện hôm nay</string>
     <string name="ou_hdp_1x2_title">Đội Vô Địch</string>
     <string name="odd_button_ou_o">Trên</string>
@@ -508,7 +447,6 @@
     <string name="bet_info_bet_quota">Tiền cược</string>
     <string name="bet_info_win_quota">Số tiền có thể thắng</string>
     <string name="bet_info_odd_content_changed">Tỷ lệ cược của một hoặc nhiều lựa chọn, điểm chấp hoặc điểm số đã được thay đổi</string>
-    <string name="bet_info_odd_content_changed2">Tỷ lệ cược đã thay đổi</string>
     <string name="bet_list_single_warn">Có thể sử dụng cùng số tiền đặt cược để thực hiện tất cả các lựa chọn riêng lẻ</string>
     <string name="bet_list_single">Cược đơn</string> <!--M299-->
     <string name="complete">Hoàn thành</string>
@@ -537,8 +475,6 @@
     <string name="betting_station_withdraw">Trang web rút tiền</string>
     <string name="betting_station_deposit" >Trang web gửi tiền</string>
     <string name="log_state_processing">Đang xử lý</string>
-    <string name="withdraw_log_state_pass">Thông qua</string>
-    <string name="withdraw_log_state_un_pass">Chưa được duyệt</string>
     <string name="log_type_all">Tất cả các loại kênh</string>
     <string name="withdraw_log_type_bank_trans">Rút tiền ngân hàng</string>
     <string name="withdraw_log_type_admin">Khấu trừ hậu đài</string>
@@ -592,7 +528,6 @@
     <string name="bottom_nav_home">Trang chủ</string>
     <string name="sport">Thể thao</string>
     <string name="live">Live</string>
-    <string name="lottery_description">Có hơn trăm cách chơi xổ số để bạn trúng thưởng! Chúng tôi cung cấp cho người chơi nhiều nội dung trò chơi phong phú khác nhau, \ n cam kết tạo ra một môi trường trò chơi giải trí chất lượng cao, mang lại kết quả công bằng và mở thưởng công khai minh bạch nhất</string>
     <string name="sport_bet_record">lịch sử đặt cược thể thao</string>
     <string name="my_favorite">Ưu thích</string>
     <string name="other_bet_record">Các lịch sử cá cược khác</string>
@@ -629,13 +564,11 @@
     <string name="win_lose">Thắng/ thua</string>
     <string name="all_sport">Tất cả các môn thể thao</string>
     <string name="total">Tổng</string>
-    <string name="keyboard_max">Tối đa</string>
     <string name="odds_button_name_first">Thứ nhất</string>
     <string name="odds_button_name_ant">Bất kỳ</string>
     <string name="odds_button_name_last">Cuối cùng</string>
     <string name="bet_succeeded">Bạn đã đặt cược thành công</string>
     <string name="credit_bet_remark">Ghi chú</string>
-    <string name="game_play_type">Thể loại trò chơi</string>
     <string name="spt_number_3_2">3 kèo 2 thắng</string>
     <string name="spt_number_3_2_bm">3hiệp thắng 2 hiệp</string>
     <string name="spt_number_5_3">5 kèo 3 thắng</string>
@@ -678,7 +611,6 @@
     <string name="saturday2">Thứ 7</string>
     <string name="sunday2">Chủ nhật</string>
     <string name="sunday2_cn">CN</string>
-    <string name="no_setting">Không có cài đặt</string>
     <string name="service_1">CSKH1</string>
     <string name="service_2">CSKH2</string>
     <string name="service_connect">Liên hệ</string>
@@ -762,7 +694,6 @@
     <string name="parlay_10_fold_rule">1 xiên 10 là một cược đơn bao gồm 10 lựa chọn, cần phải thắng tất cả các mục chọn để được hoàn tiền, không cùng loại bóng và cách chơi của giải vô địch không thể tiến hành cá cược xiên</string>
     <string name="parlay_10_block_rule">10 xâu 1013 là kết hợp 10 đơn cược từ các sự kiện khác nhau, 45 xâu 2x1, 120 xâu 3x1, 210 xâu 4x1, 252 xâu 5x1, 210 xâu 6x1, 120 xâu 7x1, 45 xâu 8x1, 10 xâu 9x1 và 1 xâu 10x1. Cần có ít nhất 2 lựa chọn thắng cược để đảm bảo tiền thưởng, không cùng loại bóng và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
     <string name="message_source_change">Hệ thống nhận dữ liệu mới, bấm nút xác nhận để làm mới</string>
-    <string name="appearance">Chế độ</string>
     <string name="commission_detail">Chi tiết</string>
     <string name="commission_desc_1">Khi chưa đến số tiền hợp lệ, chúng ta cần trích một tỷ lệ nhất định trên số tiền nạp để làm phí rút tiền, tránh trường hợp gửi tiền bất thường.</string>
     <string name="commission_desc_2">Khi đạt đến số tiền hợp lệ, chúng tôi sẽ không tính phí chuyển nhượng.</string>
@@ -828,7 +759,6 @@
     <string name="scan_tool_bar">Quét kết quả</string>
     <string name="text_us_east_time">• Thời gian được báo cáo theo múi giờ UTC-4</string>
     <string name="text_us_east_time_bet_record">Thời gian được báo cáo theo múi giờ UTC-4.</string>
-    <string name="verify_failed_please_retry">Lỗi xảy ra trong quá trình xác thực. Xin thử lại lần nữa</string>
     <string name="text_cant_play">Đã xảy ra lỗi. Vui lòng thử lại sau.</string>
     <string name="text_security_money">Tiền đặt cọc: %s</string>
     <string name="text_security_money2">Còn %s ngày</string>
@@ -879,8 +809,6 @@
     <string name="self_limit_froze_impotent_5">Trong thời gian tự loại trừ, bạn có thể liên hệ với bộ phận dịch vụ khách hàng để hủy chức năng tự loại trừ.</string>
     <string name="self_limit_froze_impotent_6">Sau khi quá trình tự loại trừ hết hạn, tài khoản của bạn sẽ tự động được kích hoạt lại.</string>
     <!-- 複式串關詳情 -->
-    <string name="password_hint">Vui lòng nhập mật khẩu đăng nhập của bạn</string>
-    <string name="account_hint">Vui lòng nhập tài khoản hội viên của bạn</string>
     <string name="submit_success">gửi thành công</string>
     <!-- 搜尋 -->
     <string name="text_search">Tìm trận đấu</string>
@@ -888,14 +816,11 @@
     <string name="text_search_history">Lịch sử tìm kiếm</string>
     <string name="text_search_no_result">Không có kết quả nào</string>
     <!-- 搜尋 -->
-    <string name="text_combo_title">Cược xâu</string>
-    <string name="text_combo_item">Mục</string>
 
     <!-- 注單內球員玩法 -->
     <string name="sco_name_first">Cầu Thủ Ghi Bàn Đầu Tiên</string>
     <string name="sco_name_any">Cầu Thủ Ghi Bàn</string>
     <string name="sco_name_last">Cầu Thủ Ghi Bàn Cuối Cùng</string>
-    <string name="plus">+</string>
 
     <!--google位置存取-->
     <string name="allow_location_permission">Cho phép truy cập vị trí</string>
@@ -951,8 +876,6 @@
     <string name="timezone">Múi giờ</string>
     <!--region 注單模塊調整-->
     <string name="bet_info_bet_lock_hint">Thị trường đã đóng</string>
-    <string name="bet_info_no_parlay_hint">Trận đấu không hỗ trợ đá xiên.</string>
-    <string name="sport_relative">Liên quan thể thao</string>
     <string name="red_envelope_congratulations">Chúc mừng</string>
     <string name="pls_check_amount">Mời tra cứu số dư trong tài khoản</string>
     <string name="redenvelope_fail">Thật không may</string>
@@ -973,7 +896,6 @@
     <string name="redenvelope_record">lịch Sử  Tiền lì xì</string>
     <string name="btn_sure">Xác nhận</string>
     <string name="Outlets_Reserve">Trang web đặt hẹn</string>
-    <string name="current_balance">Số dư hiện tại</string>
     <string name="select_area">Chọn vùng</string>
     <string name="select_city">Chọn thành phố</string>
     <string name="outlets_address">Địa chỉ</string>
@@ -984,11 +906,10 @@
     <!--region 20220714 新版投注單-->
     <string name="bet_win">Thắng</string>
     <string name="bet_stake">Cược</string>
-    <string name="total_capital">Tiền cược：%s</string> <!--F008-->
+    <!--F008-->
     <string name="total_win_amount">Thắng：</string> <!--F005-->
     <string name="total_all_win_amount">Tổng tiền ước thắng：</string> <!--F005-->
     <string name="delete_bet">Xóa bỏ</string>
-    <string name="delete_bet_all">Xóa tất cả</string>
     <string name="btn_login_bet">Đăng nhập trước</string>
     <string name="btn_remove_closed_selections">Xóa cược đã đóng</string>
     <string name="bet_info_list_bet">Đặt cược</string>
@@ -1076,36 +997,28 @@
     <string name="unbound_bank_card">Bạn chưa mặc định %1$s</string>
     <string name="change_other_ID_photos">Thay ảnh ID khác</string>
     <string name="customer_service">Nếu cần trợ giúp, vui lòng&#160;</string>
-    <string name="not_sign_up">Chưa có tài khoản</string>
     <string name="no_search_match">Không tìm thấy trận đấu</string>
     <string name="error_full_name">Họ tên bạn nhập không chính xác</string>
     <string name="hint_verification_code">Vui lòng nhập mã xác nhận.</string>
     <string name="please_enter_question">Miêu tả vấn đề bạn gặp phải</string>
     <string name="hint_game_maintenance">Trò chơi này đang được bảo trì, vui lòng thử lại sau</string>
-    <string name="please_get_forget_password">Vui lòng lấy lại mật khẩu OKBet của bạn!</string>
-    <string name="new_login_password">Mật khẩu đăng nhập mới</string>
-    <string name="new_login_password_confirm">Xác nhận mật khẩu đăng nhập mới</string>
     <string name="to_back_login">Trở về trang đăng nhập</string>
-    <string name="reget_phone_code_for">Nhận lại</string>
     <string name="error_wechat">Lỗi định dạng ID WeChat</string>
     <string name="comingsoon">Sắp ra mắt</string>
     <string name="forget_password">Quên mật khẩu</string>
     <string name="member_name">Người chơi</string>
-    <string name="login_welcome">Hi, Chào mừng OKBET~</string>
     <string name="match_live">Trận đấu live</string>
     <string name="tiger_machine">Slot</string>
     <string name="hot_handicap">"Thị trường hot "</string>
     <string name="hot_live_match">Live Hot</string>
     <string name="hot_gaming_electronics">Lô tô</string>
     <string name="hot_poker_game">Cờ vua</string>
-    <string name="worldcup">WC 2022</string>
     <string name="sport_classify">Phân loại thể thao</string>
     <string name="check_all_inplay">Tất cả</string>
     <string name="expand_live">Live</string>
     <string name="home_recommend">Đề xuất</string>
     <string name="home_live">Live</string>
     <string name="home_sports">Thể thao</string>
-    <string name="home_word_cup">WC 2022</string>
     <string name="home_slot">Slot</string>
     <string name="home_on_game">Cờ vua</string>
     <string name="langugae_setting">Cài đặt ngôn ngữ</string>
@@ -1137,10 +1050,8 @@
     <string name="your_bet_order_fail">Cược thất bại, tỷ lệ cược thay đổi</string>
     <string name="dont_have_slot_game">Hiện không có game</string>
     <string name="deadline">Hạn đến</string>
-    <string name="place_enter_your_account">Mời nhập tên người dùng</string>
     <string name="tips_login_password_success">Sửa mật khẩu thành công, mời đăng nhập lại</string>
     <string name="error_tips_confirm_password">Mật khẩu bạn nhập khác nhau, mời nhập lại</string>
-    <string name="hide_confirm_password">Xác nhận mật khẩu mới</string>
     <string name="error_new_password">Mật khẩu từ 6-20 ký tự bao gồm cả chữ và số</string>
     <string name="error_verification_code_forget">Mã xác nhận sai</string>
     <!--投注改版-->
@@ -1160,7 +1071,6 @@
     <string name="str_ok_i_got_it">Tôi biết rồi.</string>
     <string name="str_return_last_step">Trở về</string>
     <string name="str_bet_other_game">Đặt cược khác</string>
-    <string name="str_check_bets">Chi tiết</string>
     <string name="str_press_again_to_exit_the_program">Vui lòng xác nhận lại lối thoát</string>
     <string name="str_odds_changed">Tỷ lệ cược thay đổi</string>
     <string name="str_bet_slip_not_confirm_for_a_long_time">Đơn cược chưa xác nhận trong thời gian dài</string>

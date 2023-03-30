@@ -8,10 +8,10 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.BetStatus
-import org.cxct.sportlottery.common.OddsType
+import org.cxct.sportlottery.common.enums.BetStatus
+import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate

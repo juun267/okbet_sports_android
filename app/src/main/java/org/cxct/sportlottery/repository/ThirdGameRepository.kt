@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.third_game.third_games.*
-import org.cxct.sportlottery.ui.main.entity.GameCateData
-import org.cxct.sportlottery.ui.main.entity.GameItemData
-import org.cxct.sportlottery.ui.main.entity.GameTabData
-import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.maintab.entity.GameCateData
+import org.cxct.sportlottery.ui.maintab.entity.GameItemData
+import org.cxct.sportlottery.ui.maintab.entity.GameTabData
+import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.util.Event
 import retrofit2.Response
 import timber.log.Timber

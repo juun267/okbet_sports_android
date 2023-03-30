@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.util
 
-import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 
 object DisplayUtil {
     /*

@@ -5,8 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_forget_ways.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.extentions.bindFinish
-import org.cxct.sportlottery.extentions.finishWithOK
+import org.cxct.sportlottery.common.extentions.bindFinish
+import org.cxct.sportlottery.common.extentions.finishWithOK
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.login.foget.ForgetViewModel
 import org.cxct.sportlottery.util.setServiceClick

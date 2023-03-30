@@ -3,7 +3,7 @@ package org.cxct.sportlottery.util
 import android.content.Context
 import android.content.res.AssetManager
 import androidx.annotation.DrawableRes
-import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.money.MoneyPayWayData
