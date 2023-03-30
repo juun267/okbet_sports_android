@@ -1174,22 +1174,18 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
      */
     @SuppressLint("SetTextI18n")
     private fun setCurrentPeroid(matchInfo: MatchInfo) {
-        if (matchInfo.socketMatchStatus == GameMatchStatus.HIDE_SCORE.value) {
+        if (matchInfo.socketMatchStatus == GameMatchStatus.HIDE_SCORE.value || matchInfo.matchStatusList.isNullOrEmpty()) {
             with(tv_match_status) {
                 visibility = android.view.View.VISIBLE
                 text = matchInfo.statusName18n
             }
         } else {
             matchInfo.matchStatusList?.let {
-                if (it.isEmpty()) return
                 tv_match_status.visibility = View.VISIBLE
-                matchInfo.matchStatusList?.let { it ->
-                    tv_match_status.visibility = View.VISIBLE
-                    it.last()?.let {
-                        tv_match_status.text = (it.statusNameI18n?.get(
-                            LanguageManager.getSelectLanguage(context = this).key
-                        ) ?: it.statusName) + setSptText(matchInfo)
-                    }
+                it.last()?.let {
+                    tv_match_status.text = (it.statusNameI18n?.get(
+                        LanguageManager.getSelectLanguage(context = this).key
+                    ) ?: it.statusName) + setSptText(matchInfo)
                 }
             }
         }

@@ -77,18 +77,14 @@ fun TextView.setMatchSptText(matchInfo: MatchInfo) {
 @SuppressLint("SetTextI18n")
 fun TextView.setMatchCurrentPeroid(matchInfo: MatchInfo) {
     visibility = View.VISIBLE
-    if (matchInfo.socketMatchStatus == GameMatchStatus.HIDE_SCORE.value) {
+    if (matchInfo.socketMatchStatus == GameMatchStatus.HIDE_SCORE.value || matchInfo.matchStatusList.isNullOrEmpty()) {
         text = matchInfo.statusName18n
     } else {
         matchInfo.matchStatusList?.let { it ->
-            if (it.isEmpty()) {
-                visibility = View.GONE
-            } else {
-                it.last()?.let {
-                    text = it.statusNameI18n?.get(
-                        LanguageManager.getSelectLanguage(context = context).key
-                    ) ?: it.statusName
-                }
+            it.last()?.let {
+                text = it.statusNameI18n?.get(
+                    LanguageManager.getSelectLanguage(context = context).key
+                ) ?: it.statusName
             }
         }
     }
