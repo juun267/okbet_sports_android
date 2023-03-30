@@ -1,4 +1,4 @@
-//package org.cxct.sportlottery.ui.sport
+package org.cxct.sportlottery.ui.sport.list//package org.cxct.sportlottery.ui.sport
 //
 //import android.view.View
 //import android.view.ViewGroup

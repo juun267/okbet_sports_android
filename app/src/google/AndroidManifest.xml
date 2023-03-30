@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="LockedOrientationActivity,UnusedAttribute,ScopedStorage,AllowBackup,IntentFilterExportedReceiver">
+
+    <!-- 谷歌市场的包要移除install 权限 -->
+    <uses-permission
+        tools:node="remove"
+        android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+</manifest>

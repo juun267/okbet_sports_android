@@ -7,7 +7,6 @@ import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Handler
-import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -35,10 +34,14 @@ import kotlinx.android.synthetic.main.view_toolbar_detail_collaps.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_collaps.view.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_live.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_live.view.*
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.setFbKicks
+import org.cxct.sportlottery.common.extentions.setMatchAttack
+import org.cxct.sportlottery.common.extentions.setMatchRoundScore
+import org.cxct.sportlottery.common.extentions.setMatchScore
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
@@ -60,8 +63,8 @@ import org.cxct.sportlottery.ui.common.TimerManager
 import org.cxct.sportlottery.ui.component.DetailLiveViewToolbar
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
-import org.cxct.sportlottery.ui.maintab.SportViewModel
 import org.cxct.sportlottery.ui.odds.*
+import org.cxct.sportlottery.ui.sport.SportViewModel
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import timber.log.Timber
@@ -1176,10 +1179,13 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
      */
     @SuppressLint("SetTextI18n")
     private fun setCurrentPeroid(matchInfo: MatchInfo) {
-        matchInfo.matchStatusList?.let {
-            if (it.isEmpty()) return
-            tv_match_status.visibility = View.VISIBLE
-            matchInfo.matchStatusList?.let { it ->
+        if (matchInfo.socketMatchStatus == GameMatchStatus.HIDE_SCORE.value || matchInfo.matchStatusList.isNullOrEmpty()) {
+            with(tv_match_status) {
+                visibility = android.view.View.VISIBLE
+                text = matchInfo.statusName18n
+            }
+        } else {
+            matchInfo.matchStatusList?.let {
                 tv_match_status.visibility = View.VISIBLE
                 it.last()?.let {
                     tv_match_status.text = (it.statusNameI18n?.get(
@@ -1187,9 +1193,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     ) ?: it.statusName) + setSptText(matchInfo)
                 }
             }
-            tv_toolbar_match_status.isVisible = tv_match_status.isVisible
-            tv_toolbar_match_status.text = tv_match_status.text.trim()
         }
+        tv_toolbar_match_status.isVisible = tv_match_status.isVisible
+        tv_toolbar_match_status.text = tv_match_status.text.trim()
     }
 
     /**
@@ -1237,6 +1243,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
      *  其中网球标识是另外一个位置
      */
     private fun setAttack(matchInfo: MatchInfo) {
+        setMatchAttack(matchInfo, ic_attack_h, ic_attack_c, ic_attack_h, ic_attack_c)
         if (TimeUtil.isTimeInPlay(matchInfo.startTime)) {
             when (matchInfo.gameType) {
                 GameType.BB.key,
@@ -1266,14 +1273,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
     private fun setFbKicks(matchInfo: MatchInfo) {
-        league_corner_kicks.apply {
-            visibility = when {
-                TimeUtil.isTimeInPlay(matchInfo.startTime) && (matchInfo.homeCornerKicks ?: 0 > 0 || matchInfo.awayCornerKicks ?: 0 > 0) -> View.VISIBLE
-                else -> View.GONE
-            }
-            text =
-                (matchInfo.homeCornerKicks ?: 0).toString() + "-" + (matchInfo.awayCornerKicks ?: 0)
-        }
+        league_corner_kicks.setFbKicks(matchInfo)
     }
 
     private fun setScoreTextAtFront(matchInfo: MatchInfo) {
@@ -1289,28 +1289,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     ?: 0).toString()
             }
         }
-        tv_toolbar_home_score.apply {
-            visibility = when (TimeUtil.isTimeInPlay(matchInfo.startTime)) {
-                true -> View.VISIBLE
-                else -> View.GONE
-            }
-            text = when (matchInfo.gameType) {
-                GameType.VB.key, GameType.TT.key, GameType.BM.key -> (matchInfo.homeTotalScore
-                    ?: 0).toString()
-                else -> (matchInfo.homeScore ?: 0).toString()
-            }
-        }
-        tv_toolbar_away_score.apply {
-            visibility = when (TimeUtil.isTimeInPlay(matchInfo.startTime)) {
-                true -> View.VISIBLE
-                else -> View.GONE
-            }
-            text = when (matchInfo.gameType) {
-                GameType.VB.key, GameType.TT.key, GameType.BM.key -> (matchInfo.awayTotalScore
-                    ?: 0).toString()
-                else -> (matchInfo.awayScore ?: 0).toString()
-            }
-        }
+        setMatchScore(matchInfo, tv_toolbar_home_score, tv_toolbar_away_score)
     }
 
 
@@ -1318,49 +1297,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
      * 网球和羽毛球  排球，乒乓球 显示局比分
      */
     private fun setAllScoreTextAtBottom(matchInfo: MatchInfo) {
-        matchInfo.matchStatusList?.let { matchStatusList ->
-            var spanny = Spanny()
-            if (matchInfo.gameType == GameType.BK.key) {
-                //篮球类 1:第一节 2:第二节 6:上半场 7:下半场 13:第一节 14:第二节 15:第三节 16:第四节 31:半场 32:等待加时赛 40:加时 80:中断 90:弃赛 100:完场 110:加时赛后 301:第1次休息 302:第2次休息 303:第3次休息 999:滚球
-                var peroid = when (matchInfo.socketMatchStatus) {
-                    1, 13 -> 0
-                    2, 14 -> 1
-                    15 -> 2
-                    16 -> 3
-                    else -> 4//其他情况全部显示
-                }
-                matchStatusList.forEachIndexed { index, it ->
-                    val spanScore = "${it.homeScore ?: 0}-${it.awayScore ?: 0}"
-                    //9表示已结束，其他代表进行中的
-                    if (index == peroid) {
-                        spanny.append(
-                            spanScore, ForegroundColorSpan(getColor(R.color.color_F0A536))
-                        )
-                    } else if (index < peroid) {
-                        spanny.append(spanScore)
-                        spanny.append("  ")
-                    }
-                }
-                tv_peroids_score.isVisible = true
-                tv_peroids_score.text = spanny
-            } else {
-                matchStatusList.forEachIndexed { index, it ->
-                    val spanScore = "${it.homeScore ?: 0}-${it.awayScore ?: 0}"
-                    //9表示已结束，其他代表进行中的
-                    if (index < matchStatusList.lastIndex) {
-                        spanny.append(spanScore)
-                        spanny.append("  ")
-                    } else {
-                        spanny.append(
-                            spanScore, ForegroundColorSpan(getColor(R.color.color_F0A536))
-                        )
-                    }
-                }
-                tv_peroids_score.isVisible = true
-                tv_peroids_score.text = spanny
-            }
-
-        }
+        tv_peroids_score.setMatchRoundScore(matchInfo)
     }
 
 

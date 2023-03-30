@@ -33,8 +33,8 @@ import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.common.SocketGridManager
 import org.cxct.sportlottery.ui.game.hall.adapter.*
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.sport.*
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
+import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.util.*
 import org.greenrobot.eventbus.Subscribe
 import java.util.*
