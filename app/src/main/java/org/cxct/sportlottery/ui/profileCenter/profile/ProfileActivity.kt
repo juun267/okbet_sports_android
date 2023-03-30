@@ -371,7 +371,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     ) = tvInfo.run {
 
         if (infoData.isNullOrEmpty()) {
-            text = LocalUtils.getString(R.string.need_improve)
+            text = getString(if (editable) R.string.set else R.string.need_improve)
             iconModify.isVisible = true
             itemLayout.isEnabled = true
         } else {

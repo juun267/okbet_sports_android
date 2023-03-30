@@ -1211,5 +1211,7 @@
     <string name="verify_phone_no">Pag-verify ng phone</string>
     <string name="verify_email">Pag-verify sa email</string>
     <string name="back_to_my_details">Bumalik sa Aking Mga Detalye</string>
+    <string name="sms_code_length_error">Verification code kailangan 4 na digit</string>
+    <string name="phone_no_error">Ang numero ng mobile phone ay dapat na 11 digit simula sa 09</string>
 
 </resources>

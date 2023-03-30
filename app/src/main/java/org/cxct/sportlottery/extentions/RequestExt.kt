@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.extentions
 
-import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
@@ -21,8 +20,6 @@ suspend fun <T> safeApi(block: suspend() -> ApiResult<T>): ApiResult<T> {
         block()
     } catch (e: Exception) {
         e.printStackTrace()
-
-        Log.e("For Test", "========>>> userInfoRepository sendSMSOrEmailCode ${e.localizedMessage}")
         if (e is IOException) {
             return ApiResult.netError()
         }

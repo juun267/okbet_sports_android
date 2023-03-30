@@ -1283,4 +1283,6 @@
     <string name="verify_phone_no">手机验证</string>
     <string name="verify_email">邮箱验证</string>
     <string name="back_to_my_details">返回我的详细信息</string>
+    <string name="sms_code_length_error">验证码至少4位</string>
+    <string name="phone_no_error">手机号码需为09开头的11位数字</string>
 </resources>

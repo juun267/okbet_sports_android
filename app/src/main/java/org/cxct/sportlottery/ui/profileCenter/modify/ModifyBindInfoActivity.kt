@@ -348,11 +348,13 @@ class ModifyBindInfoActivity: BaseActivity<BindInfoViewModel>(BindInfoViewModel:
 
         resetResult.observe(this@ModifyBindInfoActivity) {
             hideLoading()
-            ToastUtil.showToast(this@ModifyBindInfoActivity, it.msg)
-            if (it.succeeded()) {
-                setResult(Activity.RESULT_OK)
-                setProgressSuccess()
+            if (!it.succeeded()) {
+                ToastUtil.showToast(this@ModifyBindInfoActivity, it.msg)
+                return@observe
             }
+
+            setResult(Activity.RESULT_OK)
+            setProgressSuccess()
         }
     }
 
