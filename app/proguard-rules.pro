@@ -85,7 +85,6 @@
 # 所有的类都不混淆（不得已，不要使用）
 #-keep class * { *; }
 
--keepclasseswithmembers @org.cxct.sportlottery.proguard.KeepClasses class * { *; }
 -keepclassmembers @org.cxct.sportlottery.proguard.KeepMembers class * { *; }
 -keepclassmembers class * { @org.cxct.sportlottery.proguard.KeepMembers <fields>; }
 -keepclassmembers class * { @org.cxct.sportlottery.proguard.KeepMembers <methods>; }
