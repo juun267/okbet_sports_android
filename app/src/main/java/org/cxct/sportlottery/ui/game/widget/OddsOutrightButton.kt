@@ -20,6 +20,7 @@ import org.cxct.sportlottery.common.extentions.flashAnimation
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
+import org.cxct.sportlottery.util.BetPlayCateFunction.isFS_LD_CS_Type
 import org.cxct.sportlottery.util.BetPlayCateFunction.isNOGALType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LocalUtils.getString
@@ -99,19 +100,19 @@ open class OddsOutrightButton @JvmOverloads constructor(
     ) {
         mOdd = odd
         mOddsType = oddsType
-        tv_name.apply {
 
-            val languae = LanguageManager.getSelectLanguage(context).key
-            val extInfoStr = odd?.extInfoMap?.get(languae) ?: odd?.extInfo
-            text = if (extInfoStr.isNullOrEmpty()) {
+        val languae = LanguageManager.getSelectLanguage(context).key
+        val extInfoStr = odd?.extInfoMap?.get(languae) ?: odd?.extInfo
+
+        if (mOdd?.playCode?.isFS_LD_CS_Type() == true) {
+            tv_name.text = mOdd?.name
+        } else {
+            tv_name.text = if (extInfoStr.isNullOrEmpty()) {
                 "${(odd?.nameMap?.get(languae) ?: odd?.name)}"
             } else {
                 "$extInfoStr ${(odd?.nameMap?.get(languae) ?: odd?.name)}"
             }
-
-            visibility = if ("disable".equals(gameType)) View.GONE else View.VISIBLE
         }
-
 
         tv_spread.apply {
             text = odd?.spread
