@@ -443,7 +443,7 @@
     <string name="bet_receipt_win_quota">Halagang Mapanalo</string>
 
     <string name="bet_info_add_bet_failed">Lost bet</string>
-    <string name="bet_info_add_bet_success">Tagumpay na pagtaya</string>
+    <string name="bet_info_add_bet_success">Bet Successful</string>
     <string name="bet_info_in_play_score">%1$s (%2$s-%3$s)</string>
     <string name="bet_info_bet_balance_insufficient">Hindi sapat na balanse</string>
     <string name="bet_info_check_maximum_limit">I-check ang pinakamalaking taya</string>
@@ -451,7 +451,7 @@
     <string name="bet_info_win_quota">Halagang Mapanalo</string>
     <string name="bet_info_odd_content_changed">Isa o higit pa na pagpipilian odds. ang score ng bola ay may pinagbago</string>
     <string name="bet_list_single_warn">Lahat ng mga indibidwal na pagpipilian ay maaaring punan ng parehong stake</string>
-    <string name="bet_list_single">Solong laro</string>
+    <string name="bet_list_single">Singles</string>
     <string name="bet_list_cant_parlay_warn">Paalalahanan na kung ang parehong kaganapan, ang iba\'t ibang uri ng mga bola, kampeon at iba pang mga bagay sa pagtaya ay hindi maaaring iugnay nang magkasama</string>
     <string name="complete">Tapus</string>
     <string name="record_recharge">Rekord ng Deposito</string>
@@ -577,23 +577,23 @@
     <string name="service_1">Customer Service1</string>
     <string name="service_2">Customer Service2</string>
     <string name="service_connect">Ikonekta</string>
-    <string name="parlay_10_fold">10 string 1</string>
-    <string name="parlay_10_block">10 string 1013</string>
-    <string name="parlay_2_fold">2 string 1</string>
-    <string name="parlay_3_fold">3 string 1</string>
-    <string name="parlay_3_block">3 string 4</string>
-    <string name="parlay_4_fold">4 string 1</string>
-    <string name="parlay_4_block">4 string 11</string>
-    <string name="parlay_5_fold">5 string 1</string>
-    <string name="parlay_5_block">5 string 26</string>
-    <string name="parlay_6_fold">6 string 1</string>
-    <string name="parlay_6_block">6 string 57</string>
-    <string name="parlay_7_fold">7 string 1</string>
-    <string name="parlay_7_block">7 string 120</string>
-    <string name="parlay_8_fold">8 string 1</string>
-    <string name="parlay_8_block">8 string 247</string>
-    <string name="parlay_9_fold">9 string 1</string>
-    <string name="parlay_9_block">9 string 502</string>
+    <string name="parlay_10_fold">10-Folds</string>
+    <string name="parlay_10_block">Block (10)</string>
+    <string name="parlay_2_fold">Doubles</string>
+    <string name="parlay_3_fold">Trebles</string>
+    <string name="parlay_3_block">Trixie</string>
+    <string name="parlay_4_fold">4-Folds</string>
+    <string name="parlay_4_block">Yankee</string>
+    <string name="parlay_5_fold">5-Folds</string>
+    <string name="parlay_5_block">Super Yankee</string>
+    <string name="parlay_6_fold">6-Folds</string>
+    <string name="parlay_6_block">Heinz</string>
+    <string name="parlay_7_fold">7-Folds</string>
+    <string name="parlay_7_block">Super Heinz</string>
+    <string name="parlay_8_fold">8-Folds</string>
+    <string name="parlay_8_block">Goliath</string>
+    <string name="parlay_9_fold">9-Folds</string>
+    <string name="parlay_9_block">Block (9)</string>
     <string name="parlay_2_fold_rule">Ang 2 serye 1 ay isang solong taya na binubuo ng 2 opsyon, at dapat na mapanalunan ang lahat ng opsyon upang makakuha ng refund. Kapag may higit pang mga opsyon sa kaganapan, ang 2 serye 1 ay maaaring pagsamahin sa maraming serye, halimbawa, 3 kaganapan ang maaaring ayusin Pagsasama-sama ng 3 2-string 1, hindi magagamit ang iba\'t ibang uri ng bola at mga paraan ng championship para sa cross-link na pagtaya</string>
     <string name="parlay_3_fold_rule">3 serye ng 1 ay isang solong taya na binubuo ng 3 opsyon, at lahat ng opsyon ay dapat na mapanalunan upang makakuha ng refund. Kapag may higit pang mga opsyon sa kaganapan, 3 serye ng 1 ay maaaring pagsamahin sa maraming serye, halimbawa, 4 maaaring ayusin ang mga kaganapan Pagsasama-sama ng 4 3-in-1, iba\'t ibang uri ng bola at mga paraan ng kampeonato ay hindi maaaring gamitin para sa cross-link na pagtaya</string>
     <string name="parlay_3_block_rule">Ang 3 sa 4 ay binubuo ng 4 na magkakaibang taya sa 3 magkakaibang kaganapan, 3 2 sa 1 at 1 sa 3 sa 1, hindi bababa sa 2 pagpipilian ang manalo upang matiyak ang payout, iba\'t ibang uri ng bola at mga laro ng kampeonato ay hindi maaaring laruin String betting</string>
@@ -941,7 +941,7 @@
     <string name="bet_receipt_win_quota_with_sign_max">Mapapanalunan：</string>
 
     <string name="bet_record_single">Iisang string</string>
-    <string name="bet_record_parlay">Multiple bets</string>
+    <string name="bet_record_parlay">Parlay</string>
     <string name="bet_slip_id_is_copied">Bet Slip ID is copied to clipboard</string>
 
     <string name="main_tab_favorite">Paborito</string>
@@ -1110,5 +1110,5 @@
     <string name="J803">Manalo at Parehong koponan upang makapuntos - Oo</string>
     <string name="J804">Panalo at Parehong koponan upang makapuntos - Hindi</string>
 
-    <string name="bet_details_title" >窜关组合详情</string>
+    <string name="bet_details_title" >Mga detalye ng kumbinasyon ng link</string>
 </resources>
