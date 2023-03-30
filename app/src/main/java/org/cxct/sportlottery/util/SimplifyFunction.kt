@@ -32,12 +32,13 @@ import kotlinx.android.synthetic.main.item_favorite.view.*
 import kotlinx.android.synthetic.main.view_account_balance_2.*
 import kotlinx.coroutines.flow.*
 import org.cxct.sportlottery.BuildConfig
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.BetStatus
-import org.cxct.sportlottery.extentions.rotationAnimation
-import org.cxct.sportlottery.extentions.screenHeight
-import org.cxct.sportlottery.extentions.translationXAnimation
+import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.common.enums.BetStatus
+import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.rotationAnimation
+import org.cxct.sportlottery.common.extentions.screenHeight
+import org.cxct.sportlottery.common.extentions.translationXAnimation
 import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.index.config.VerifySwitchType
 import org.cxct.sportlottery.network.odds.Odd
@@ -57,12 +58,12 @@ import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.live.HomeLiveAdapter
 import org.cxct.sportlottery.ui.maintab.live.ItemHomeLiveHolder
-import org.cxct.sportlottery.common.OddsType
 import org.cxct.sportlottery.ui.sport.SportListViewModel
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteAdapter
 import org.cxct.sportlottery.util.DisplayUtil.dpToPx
-import org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
-import org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
+import org.cxct.sportlottery.util.SvgUtil.setSvgIcon
+import org.cxct.sportlottery.view.boundsEditText.TextFieldBoxes
+import org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
 import org.json.JSONArray
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
@@ -1033,7 +1034,10 @@ fun clickCustomService(context: Context, fragmentManager: FragmentManager) {
 }
 
 fun getCurrencySignByCurrency(nationCode: String?, currency: String?): String? =
-    sConfigData?.nationCurrencyList?.firstOrNull { it.nationCode == nationCode }?.currencyList?.firstOrNull { it.currency == currency }?.sign
+    sConfigData?.nationCurrencyList?.firstOrNull {
+        it.nationCode == nationCode }?.currencyList?.firstOrNull {
+        it.currency == currency
+        }?.sign
 
 /**
  * 判斷當前是否為多站點平台
@@ -1077,12 +1081,7 @@ fun ImageView.setTeamLogo(icon: String?) {
                 )
                 .into(this)
         } else {
-            try {
-                setImageDrawable(SvgUtil.getSvgDrawable(context, icon))
-            } catch (e: Exception) {
-                e.printStackTrace()
-                setImageResource(R.drawable.ic_team_default)
-            }
+            setSvgIcon(icon, R.drawable.ic_team_default)
         }
     }
 }
@@ -1102,12 +1101,7 @@ fun ImageView.setLeagueLogo(icon: String?) {
                 )
                 .into(this)
         } else {
-            try {
-                setImageDrawable(SvgUtil.getSvgDrawable(context, icon))
-            } catch (e: Exception) {
-                e.printStackTrace()
-                setImageResource(R.drawable.ic_league_default)
-            }
+            setSvgIcon(icon, R.drawable.ic_league_default)
         }
     }
 }

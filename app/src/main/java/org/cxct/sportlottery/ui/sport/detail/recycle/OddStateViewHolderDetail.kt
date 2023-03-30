@@ -3,7 +3,7 @@ package org.cxct.sportlottery.ui.sport.detail.recycle
 import android.os.Handler
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import org.cxct.sportlottery.common.OddState
+import org.cxct.sportlottery.common.enums.OddState
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.game.widget.OddsButtonDetail
 

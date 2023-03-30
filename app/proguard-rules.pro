@@ -86,10 +86,10 @@
 # 所有的类都不混淆（不得已，不要使用）
 #-keep class * { *; }
 
--keepclasseswithmembers @org.cxct.sportlottery.proguard.KeepClasses class * { *; }
--keepclassmembers @org.cxct.sportlottery.proguard.KeepMembers class * { *; }
--keepclassmembers class * { @org.cxct.sportlottery.proguard.KeepMembers <fields>; }
--keepclassmembers class * { @org.cxct.sportlottery.proguard.KeepMembers <methods>; }
+-keepclasseswithmembers @org.cxct.sportlottery.common.proguards.KeepClasses class * { *; }
+-keepclassmembers @org.cxct.sportlottery.common.proguards.KeepMembers class * { *; }
+-keepclassmembers class * { @org.cxct.sportlottery.common.proguards.KeepMembers <fields>; }
+-keepclassmembers class * { @org.cxct.sportlottery.common.proguards.KeepMembers <methods>; }
 
 -keepclassmembers class * extends org.cxct.sportlottery.network.common.BaseResult { *;}
 -keepclassmembers class * extends org.cxct.sportlottery.net.ApiResult { *;}
@@ -97,7 +97,6 @@
 #kotlin  与Moshi反序列化有关（@kotlin.Metadata涉及太广，应尽量降低keep范围）
 -keepclasseswithmembers @kotlin.Metadata class org.cxct.sportlottery.network.** { *; }
 -keepclasseswithmembers @kotlin.Metadata class org.cxct.sportlottery.ui.** { *; }
--keepclasseswithmembers @kotlin.Metadata class org.cxct.sportlottery.util.** { *; }
 
 #====== fastjson ============ start
 -keepclassmembers class com.alibaba.fastjson.** { *; }

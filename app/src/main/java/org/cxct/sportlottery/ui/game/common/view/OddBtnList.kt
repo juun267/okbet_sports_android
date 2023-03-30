@@ -10,8 +10,8 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.BetStatus
-import org.cxct.sportlottery.extentions.*
+import org.cxct.sportlottery.common.enums.BetStatus
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 class OddBtnList @JvmOverloads constructor(

@@ -8,18 +8,17 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.fragment_main_left.*
 import org.cxct.sportlottery.BuildConfig
-import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.OddsType
-import org.cxct.sportlottery.event.MenuEvent
+import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.HandicapType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.main.MainViewModel
-import org.cxct.sportlottery.ui.maintab.LanguageAdapter
+import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.*
 

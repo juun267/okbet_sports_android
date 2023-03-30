@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.toDoubleS
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bank.add.BankAddRequest
@@ -265,7 +266,7 @@ class WithdrawViewModel(
     ): WithdrawAddRequest {
         return WithdrawAddRequest(
             id = bankCardId,
-            applyMoney = applyMoney.toDouble(),
+            applyMoney = applyMoney.toDoubleS(0.0),
             withdrawPwd = MD5Util.MD5Encode(withdrawPwd),
             bettingStationId = bettingStationId,
             appointmentDate = appointmentDate,
@@ -640,10 +641,10 @@ class WithdrawViewModel(
                 withdrawAmount = "0"
                 LocalUtils.getString(R.string.error_input_empty)
             }
-            amountLimit.isBalanceMax && withdrawAmount.toDouble() > getWithdrawAmountLimit().max -> {
+            amountLimit.isBalanceMax && withdrawAmount.toDoubleS(0.0) > getWithdrawAmountLimit().max -> {
                 LocalUtils.getString(R.string.error_withdraw_amount_bigger_than_balance)
             }
-            withdrawAmount.toDoubleOrNull() == null || withdrawAmount.toDouble().equals(0) -> {
+            withdrawAmount.toDoubleOrNull() == null || withdrawAmount.toDoubleS(0.0).equals(0) -> {
                 LocalUtils.getString(R.string.error_recharge_amount_format)
             }
             VerifyConstUtil.verifyWithdrawAmount(
@@ -656,7 +657,7 @@ class WithdrawViewModel(
             else -> ""
         }
         if (dealType != TransferType.STATION) {
-            getWithdrawRate(withdrawCard, withdrawAmount.toDouble())
+            getWithdrawRate(withdrawCard, withdrawAmount.toDoubleS())
         }
         checkInputCompleteByWithdraw()
     }

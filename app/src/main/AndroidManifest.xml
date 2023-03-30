@@ -38,7 +38,7 @@
         android:required="true" />
 
     <application
-        android:name=".MultiLanguagesApplication"
+        android:name=".application.MultiLanguagesApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -67,10 +67,6 @@
             android:name=".ui.profileCenter.identity.VerifyIdentityActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-
-        <activity
-            android:name=".ui.vip.VipActivity"
-            android:screenOrientation="portrait" />
 
         <activity
             android:name=".ui.feedback.FeedbackMainActivity"

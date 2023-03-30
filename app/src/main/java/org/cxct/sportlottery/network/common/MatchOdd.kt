@@ -3,7 +3,7 @@ package org.cxct.sportlottery.network.common
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsOdd
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
-import org.cxct.sportlottery.proguard.KeepMembers
+import org.cxct.sportlottery.common.proguards.KeepMembers
 
 @KeepMembers
 interface MatchOdd {

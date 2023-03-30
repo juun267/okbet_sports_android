@@ -24,7 +24,7 @@
         android:layout_marginVertical="10dp"
         android:orientation="vertical">
 
-        <org.cxct.sportlottery.widget.highLightTextView.HighlightTextView
+        <org.cxct.sportlottery.view.highLightTextView.HighlightTextView
             android:id="@+id/tv_home_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
             app:highlightText="UFC"
             app:highlightTextColor="@color/color_025BE8" />
 
-        <org.cxct.sportlottery.widget.highLightTextView.HighlightTextView
+        <org.cxct.sportlottery.view.highLightTextView.HighlightTextView
             android:id="@+id/tv_away_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

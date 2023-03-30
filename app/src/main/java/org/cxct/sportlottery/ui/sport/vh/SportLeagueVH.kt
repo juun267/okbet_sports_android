@@ -12,13 +12,12 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.LifecycleOwner
-import kotlinx.android.synthetic.main.item_league.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.FoldState
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.setLeagueLogo
-import org.cxct.sportlottery.widget.expandablerecyclerview.ExpandableAdapter
+import org.cxct.sportlottery.view.expandablerecyclerview.ExpandableAdapter
 
 class SportLeagueVH(val ivCountry: ImageView,
                     val tvLeagueName: TextView,

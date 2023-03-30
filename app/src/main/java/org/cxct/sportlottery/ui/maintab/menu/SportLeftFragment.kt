@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_sport_left.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.event.MenuEvent
+import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.main.MainViewModel
+import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity

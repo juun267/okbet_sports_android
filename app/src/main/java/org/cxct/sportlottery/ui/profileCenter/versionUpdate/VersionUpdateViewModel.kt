@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.BuildConfig
-import org.cxct.sportlottery.exception.DoNoConnectException
+import org.cxct.sportlottery.common.exception.DoNoConnectException
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult

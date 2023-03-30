@@ -2,7 +2,7 @@ package org.cxct.sportlottery.network.matchCategory.result
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import org.cxct.sportlottery.proguard.KeepMembers
+import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsOdd

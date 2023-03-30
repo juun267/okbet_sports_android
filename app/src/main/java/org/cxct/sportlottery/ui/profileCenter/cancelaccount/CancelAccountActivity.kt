@@ -6,13 +6,11 @@ import android.text.method.HideReturnsTransformationMethod
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_cancel_account.*
 import kotlinx.android.synthetic.main.activity_cancel_account.custom_tool_bar
-import kotlinx.android.synthetic.main.activity_profile.*
-import kotlinx.android.synthetic.main.activity_setting_password.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.feedback.FeedbackMainActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.widget.boundsEditText.AsteriskPasswordTransformationMethod
+import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationMethod
 
 /**
  * 注销账号页面  ios需要安卓暂时不需要 此页面隐藏

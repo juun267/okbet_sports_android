@@ -1,8 +1,8 @@
 package org.cxct.sportlottery.net
 
 import androidx.lifecycle.ViewModel
-import org.cxct.sportlottery.extentions.callApi
-import org.cxct.sportlottery.extentions.callApiWithNoCancel
+import org.cxct.sportlottery.common.extentions.callApi
+import org.cxct.sportlottery.common.extentions.callApiWithNoCancel
 import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.util.JsonUtil
 import timber.log.Timber

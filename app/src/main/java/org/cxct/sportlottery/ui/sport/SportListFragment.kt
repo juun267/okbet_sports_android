@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_sport_list.view.*
 import kotlinx.android.synthetic.main.item_league.view.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.extentions.rotationAnimation
+import org.cxct.sportlottery.common.extentions.rotationAnimation
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.league.League
@@ -36,7 +36,7 @@ import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.hall.adapter.*
-import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.SportFragment
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity

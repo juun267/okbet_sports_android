@@ -38,6 +38,10 @@ class VerifyKYCFragment :
 
     private val mfirstSelectDocMediaListener = object : OnResultCallbackListener<LocalMedia> {
         override fun onResult(result: MutableList<LocalMedia>?) {
+            if (activity == null) {
+                return
+            }
+
             try {
                 // 图片选择结果回调
                 // LocalMedia 里面返回三种path
@@ -71,6 +75,10 @@ class VerifyKYCFragment :
 
     private val mSecondSelectPhotoMediaListener = object : OnResultCallbackListener<LocalMedia> {
         override fun onResult(result: MutableList<LocalMedia>?) {
+            if (activity == null) {
+                return
+            }
+
             try {
                 // 图片选择结果回调
                 // LocalMedia 里面返回三种path

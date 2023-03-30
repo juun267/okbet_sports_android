@@ -11,12 +11,12 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.button_odd.view.*
-import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.BetStatus
-import org.cxct.sportlottery.common.OddState
-import org.cxct.sportlottery.common.OddsType
-import org.cxct.sportlottery.extentions.flashAnimation
+import org.cxct.sportlottery.common.enums.BetStatus
+import org.cxct.sportlottery.common.enums.OddState
+import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.flashAnimation
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination

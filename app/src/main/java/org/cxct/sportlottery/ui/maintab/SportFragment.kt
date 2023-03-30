@@ -8,17 +8,17 @@ import androidx.lifecycle.distinctUntilChanged
 import kotlinx.android.synthetic.main.fragment_sport.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.event.MenuEvent
-import org.cxct.sportlottery.extentions.fitsSystemStatus
-import org.cxct.sportlottery.extentions.newInstanceFragment
-import org.cxct.sportlottery.extentions.startActivity
+import org.cxct.sportlottery.common.event.MenuEvent
+import org.cxct.sportlottery.common.extentions.fitsSystemStatus
+import org.cxct.sportlottery.common.extentions.newInstanceFragment
+import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.component.tablayout.TabSelectedAdapter
-import org.cxct.sportlottery.ui.dialog.PopImageDialog
+import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.ui.sport.SportListFragment
 import org.cxct.sportlottery.ui.sport.SportTabViewModel
 import org.cxct.sportlottery.ui.sport.endscore.EndScoreFragment
@@ -26,8 +26,6 @@ import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
-import org.cxct.sportlottery.util.HomePageStatusManager
 import org.cxct.sportlottery.util.phoneNumCheckDialog
 
 class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabViewModel::class) {
@@ -180,12 +178,6 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         }
     }
 
-    override fun onDestroy() {
-        expandCheckList.clear()
-        HomePageStatusManager.clear()
-        super.onDestroy()
-    }
-
     private fun navGameFragment(matchType: MatchType) {
         var gameType = jumpGameType?.key
         showFragment = when (matchType) {
@@ -243,7 +235,9 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
     }
 
     fun getCurMatchType(): MatchType {
-        return matchTypeTabPositionMap.filterValues { it == tabLayout.selectedTabPosition }.entries.first().key
+        return kotlin.runCatching {
+            matchTypeTabPositionMap.filterValues { it == tabLayout.selectedTabPosition }.entries.first().key
+        }.getOrNull() ?: MatchType.IN_PLAY
     }
 
     fun getCurGameType(): GameType? {

@@ -8,7 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -44,7 +44,7 @@ class LotteryManager {
      * 注意：若viewmodel被回收，则无法请求网络
      *
      */
-    open fun bind(activity: BaseActivity<BaseViewModel>) {
+     fun bind(activity: BaseActivity<BaseViewModel>) {
         this.viewModel = activity.viewModel
         this.activity = activity
         startShow()
@@ -76,7 +76,7 @@ class LotteryManager {
         countdownTimer = Timer()
         countdownTimer?.schedule(object : TimerTask() {
             override fun run() {
-                GlobalScope.launch(Dispatchers.Main) {
+                viewModel?.viewModelScope?.launch(Dispatchers.Main) {
                     val currentTimeStamp = System.currentTimeMillis()
                     if (currentTimeStamp in showStartTime..showEndTime) {
                         setUpFloatButton()

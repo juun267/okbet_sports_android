@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_about_us.*
 import kotlinx.android.synthetic.main.fragment_profile_center.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.event.MenuEvent
+import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.UserInfo
@@ -199,13 +199,13 @@ class ProfileCenterFragment :
         btn_recharge.setOnClickListener {
             avoidFastDoubleClick()
             //Glife用户
-            if (viewModel.userInfo.value?.vipType == 1) {
-                showPromptDialog(title = getString(R.string.prompt),
-                    message = getString(R.string.N643),
-                    {})
-            } else {
-                viewModel.checkRechargeKYCVerify()
-            }
+//            if (viewModel.userInfo.value?.vipType == 1) {
+//                showPromptDialog(title = getString(R.string.prompt),
+//                    message = getString(R.string.N643),
+//                    {})
+//            } else {
+            viewModel.checkRechargeKYCVerify()
+//            }
         }
     }
 
@@ -213,13 +213,13 @@ class ProfileCenterFragment :
         btn_withdraw.setOnClickListener {
             avoidFastDoubleClick()
             //Glife用户
-            if (viewModel.userInfo.value?.vipType == 1) {
-                showPromptDialog(title = getString(R.string.prompt),
-                    message = getString(R.string.N644),
-                    {})
-            } else {
-                viewModel.checkWithdrawKYCVerify()
-            }
+//            if (viewModel.userInfo.value?.vipType == 1) {
+//                showPromptDialog(title = getString(R.string.prompt),
+//                    message = getString(R.string.N644),
+//                    {})
+//            } else {
+            viewModel.checkWithdrawKYCVerify()
+//            }
 
         }
     }

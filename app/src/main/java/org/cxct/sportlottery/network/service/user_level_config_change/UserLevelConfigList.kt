@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.network.service.user_level_config_change
 
 import com.squareup.moshi.Json
-import org.cxct.sportlottery.proguard.KeepMembers
+import org.cxct.sportlottery.common.proguards.KeepMembers
 
 @KeepMembers
 data class UserLevelConfigList(

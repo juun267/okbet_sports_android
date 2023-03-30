@@ -19,7 +19,7 @@
             android:src="@drawable/ic_piece_blue"
             android:adjustViewBounds="true" />
 
-        <org.cxct.sportlottery.widget.highLightTextView.HighlightTextView
+        <org.cxct.sportlottery.view.highLightTextView.HighlightTextView
             android:id="@+id/tvResultTittle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

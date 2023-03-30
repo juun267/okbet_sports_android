@@ -2,7 +2,7 @@ package org.cxct.sportlottery.network.bet.add.betReceipt
 
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass import org.cxct.sportlottery.proguard.KeepMembers
+import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.network.bet.add.StatusNameI18n
 
 @JsonClass(generateAdapter = true) @KeepMembers

@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.repository
 
 import androidx.lifecycle.LiveData
-import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.money.MoneyAddRequest
 import org.cxct.sportlottery.network.money.MoneyAddResult

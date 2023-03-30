@@ -7,8 +7,8 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_listview_bank_card_tick.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.extentions.gone
-import org.cxct.sportlottery.extentions.visible
+import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.visible
 
 class BtsRvAdapter(private val dataList: MutableList<SelectBank>, private val clickListener: BankAdapterListener): RecyclerView.Adapter<BtsRvAdapter.ViewHolder>(){
 

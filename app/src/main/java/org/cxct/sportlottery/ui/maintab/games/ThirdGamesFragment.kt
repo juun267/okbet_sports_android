@@ -12,19 +12,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.event.MenuEvent
-import org.cxct.sportlottery.extentions.fitsSystemStatus
-import org.cxct.sportlottery.extentions.gone
-import org.cxct.sportlottery.extentions.isEmptyStr
-import org.cxct.sportlottery.extentions.visible
+import org.cxct.sportlottery.common.event.MenuEvent
+import org.cxct.sportlottery.common.extentions.fitsSystemStatus
+import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.network.third_game.third_games.GameCategory
 import org.cxct.sportlottery.network.third_game.third_games.GameFirmValues
 import org.cxct.sportlottery.repository.ThirdGameRepository
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
-import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
-import org.cxct.sportlottery.ui.maintab.HomeFragment
-import org.cxct.sportlottery.ui.maintab.HomeTabAdapter
+import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
+import org.cxct.sportlottery.ui.maintab.home.HomeFragment
+import org.cxct.sportlottery.ui.maintab.home.HomeTabAdapter
 import org.cxct.sportlottery.ui.maintab.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.*
@@ -50,7 +50,8 @@ class ThirdGamesFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHo
 //    } }
 
     private val homeTabAdapter by lazy {
-        HomeTabAdapter(HomeTabAdapter.getItems(),
+        HomeTabAdapter(
+            HomeTabAdapter.getItems(),
             requireArguments().getInt("position"),
             (parentFragment as HomeFragment))
     }
