@@ -11,27 +11,26 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_bet_detail_match.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.MatchOdd
+import org.cxct.sportlottery.network.bet.settledDetailList.MatchOddsVO
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.widget.onClick
 
 class ContentParlayDetailAdapter(val status: Int) :
-    ListAdapter<MatchOdd, RecyclerView.ViewHolder>(ContentDiffCallBack()) {
+    ListAdapter<MatchOddsVO, RecyclerView.ViewHolder>(ContentDiffCallBack()) {
     var gameType: String = ""
-    var betConfirmTime: Long? = 0
     var matchType: String? = null
-    fun setupMatchData(gameType: String, dataList: List<MatchOdd>, betConfirmTime: Long?, matchType: String?) {
+    fun setupMatchData(gameType: String, dataList: List<MatchOddsVO>,  matchType: String?) {
         this.gameType = gameType
-        this.betConfirmTime = betConfirmTime
         this.matchType = matchType
         submitList(dataList)
     }
 
-    class ContentDiffCallBack : DiffUtil.ItemCallback<MatchOdd>() {
-        override fun areItemsTheSame(oldItem: MatchOdd, newItem: MatchOdd): Boolean {
+    class ContentDiffCallBack : DiffUtil.ItemCallback<MatchOddsVO>() {
+        override fun areItemsTheSame(oldItem: MatchOddsVO, newItem: MatchOddsVO): Boolean {
             return oldItem.oddsId == newItem.oddsId
         }
 
-        override fun areContentsTheSame(oldItem: MatchOdd, newItem: MatchOdd): Boolean {
+        override fun areContentsTheSame(oldItem: MatchOddsVO, newItem: MatchOddsVO): Boolean {
             return oldItem == newItem
         }
     }
@@ -41,10 +40,10 @@ class ContentParlayDetailAdapter(val status: Int) :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val data = getItem(holder.adapterPosition)
+        val data = getItem(holder.bindingAdapterPosition)
         when (holder) {
             is ParlayMatchViewHolder -> {
-                holder.bind(gameType, data, position, betConfirmTime, status, matchType)
+                holder.bind(gameType, data, position,  status, matchType)
             }
         }
     }
@@ -58,11 +57,9 @@ class ContentParlayDetailAdapter(val status: Int) :
             }
         }
 
-        fun bind(gameType: String, data: MatchOdd, position: Int, betConfirmTime: Long?, status: Int, matchType: String?) {
+        fun bind(gameType: String, data: MatchOddsVO, position: Int, status: Int, matchType: String?) {
             itemView.apply {
-
                 topLine.isVisible = position != 0
-//                content_play.text = "$gameTypeName ${data.playCateName}"
                 //篮球 滚球 全场让分【欧洲盘】
                 content_play.setGameType_MatchType_PlayCateName_OddsType(
                     gameType,
@@ -71,7 +68,6 @@ class ContentParlayDetailAdapter(val status: Int) :
                     data.oddsType
                 )
 
-//                tv_team_names.setTeamNames(15, data.homeName, data.awayName)
                 title_team_name_parlay.setTeamsNameWithVS(data.homeName, data.awayName)
 
                 parlay_play_content.setPlayContent(
@@ -83,31 +79,6 @@ class ContentParlayDetailAdapter(val status: Int) :
                 parlay_play_time.text = TimeUtil.timeFormat(data.startTime, TimeUtil.DM_HM_FORMAT)
                 itemView.iv_country.setSvgDrawable(data.categoryIcon)
                 content_league.text = data.leagueName
-//                if (position == 0) {
-//                    if(betConfirmTime?.toInt() != 0){
-//                        val leftTime = betConfirmTime?.minus(TimeUtil.getNowTimeStamp())
-//                        object : CountDownTimer(leftTime ?: 0, 1000) {
-//
-//                            override fun onTick(millisUntilFinished: Long) {
-//                                tv_count_down_parley.text =
-//                                    "${TimeUtil.longToSecond(millisUntilFinished)} ${context.getString(R.string.sec)}"
-//                            }
-//
-//                            override fun onFinish() {
-//                                tv_count_down_parley.text =
-//                                    "0 ${context.getString(R.string.sec)}"
-//                                if (status == BetRecordType.UNSETTLEMENT.code.firstOrNull()) {
-//                                    tv_count_down_parley.visibility = View.GONE
-//                                }
-//                            }
-//                        }.start()
-//                    }else{
-//                        tv_count_down_parley.visibility = View.GONE
-//                    }
-//                } else {
-//                    tv_count_down_parley.visibility = View.GONE
-//                }
-//                if (data.rtScore?.isNotEmpty() == true) tv_score_parlay.text = "(${data.rtScore})"
             }
         }
     }

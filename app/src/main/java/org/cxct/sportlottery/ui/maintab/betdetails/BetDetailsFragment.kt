@@ -10,34 +10,18 @@ import org.cxct.sportlottery.ui.game.betList.BetListViewModel
 import org.cxct.sportlottery.ui.transactionStatus.BetListData
 
 class BetDetailsFragment : BaseFragment<BetListViewModel>(BetListViewModel::class) {
-
+    //复制的注单列表的适配器
     private val recordDiffAdapter by lazy { TransactionRecordDetailAdapter() }
-    private val rowList= arrayListOf<Row>()
     override fun layoutId()= R.layout.fragment_bet_details
 
     override fun onBindView(view: View) {
         super.onBindView(view)
-
         val row= arguments?.get("data") as Row?
-        row?.let {
-            rowList.add(row)
-            //初始化数据，只用到了rowList
-            val betListData= BetListData(
-                rowList,
-                OddsType.EU,
-                1.0,
-                1,
-                true
-            )
 
-            recordDiffAdapter.setupBetList(betListData)
+        row?.let {
+            recordDiffAdapter.setupBetList(row)
             rv_bet_record.adapter=recordDiffAdapter
         }
-
-
-
-
-//        recordDiffAdapter.setupBetList()  BetListData
 
     }
 }
