@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.view.View
 import kotlinx.android.synthetic.main.activity_forget_ways.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.extentions.bindFinish
-import org.cxct.sportlottery.extentions.isEmptyStr
+import org.cxct.sportlottery.common.extentions.bindFinish
+import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.login.foget.ForgetViewModel
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType

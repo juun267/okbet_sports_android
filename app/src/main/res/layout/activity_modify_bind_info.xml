@@ -176,7 +176,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
+            <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
                 android:id="@+id/inputForm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -188,7 +188,7 @@
                 app:labelTextStyle="normal"
                 app:primaryColor="@color/color_AFAFB1">
 
-                <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
+                <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
                     android:id="@+id/eetInputForm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -200,7 +200,7 @@
                     android:textSize="@dimen/textSize14sp"
                     android:textColorHint="@color/color_C9CFD7" />
 
-            </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>
+            </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/block_sms_valid_code"
@@ -213,7 +213,7 @@
                 android:visibility="visible"
                 android:elevation="10dp">
 
-                <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
+                <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
                     android:id="@+id/et_sms_valid_code"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -229,7 +229,7 @@
                     app:layout_constraintRight_toLeftOf="@+id/btn_send_sms"
                     app:primaryColor="@color/color_AFAFB1">
 
-                    <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
+                    <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
                         android:id="@+id/eet_sms_code"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -240,7 +240,7 @@
                         android:textColor="@color/color_FFFFFF_DE000000"
                         android:textSize="@dimen/textSize14sp"
                         android:textColorHint="@color/color_C9CFD7" />
-                </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>
+                </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
 
                 <Button
                     android:id="@+id/btn_send_sms"

@@ -1,15 +1,11 @@
 package org.cxct.sportlottery.ui.login.foget
 
 import android.content.Context
-import android.provider.ContactsContract.CommonDataKinds.Email
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.extentions.callApi
-import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
@@ -20,7 +16,6 @@ import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
-import org.cxct.sportlottery.util.JsonUtil
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.VerifyConstUtil
 

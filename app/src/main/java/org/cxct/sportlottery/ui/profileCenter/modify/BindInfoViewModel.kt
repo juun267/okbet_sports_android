@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.ui.profileCenter.modify
 
 import androidx.lifecycle.MutableLiveData
-import org.cxct.sportlottery.extentions.callApi
+import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.net.user.data.SendCodeRespnose
