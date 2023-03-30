@@ -108,7 +108,6 @@
         android:textAlignment="viewStart"
         android:textColor="@color/color_6C7BA8_6C7BA8"
         android:textSize="@dimen/textSize12sp"
-        app:drawableEndCompat="@drawable/ic_right_arrow_gray"
         app:drawableTint="@color/color_6C7BA8_A7B2C4"
         tools:text="篮球 滚球 全场让分【欧洲盘】" />
 

@@ -261,7 +261,7 @@ class TransactionRecordDiffAdapter :
         }
 
         fun bind(data: Row) {
-            val contentParlayMatchAdapter by lazy { ContentParlayMatchAdapter(data.status) }
+            val contentParlayMatchAdapter by lazy { ContentParlayMatchAdapter(data) }
 
             itemView.apply {
                 getParlayStringRes(data.parlayType)?.let { parlayTypeStringResId ->
