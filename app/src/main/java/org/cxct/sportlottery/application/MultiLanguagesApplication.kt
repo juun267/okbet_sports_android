@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.application
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
@@ -17,11 +18,11 @@ import com.google.gson.reflect.TypeToken
 import me.jessyan.autosize.AutoSize
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.util.ResourceWrapper
-import org.cxct.sportlottery.network.user.UserInfo
+import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.money.RedEnveLopeModel
+import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
@@ -34,11 +35,10 @@ import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
 import org.cxct.sportlottery.ui.login.signUp.RegisterViewModel
 import org.cxct.sportlottery.ui.maintab.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabViewModel
-import org.cxct.sportlottery.ui.maintab.SportViewModel
-import org.cxct.sportlottery.ui.maintenance.MaintenanceViewModel
-import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.ui.maintab.MainViewModel
+import org.cxct.sportlottery.ui.maintab.SportViewModel
 import org.cxct.sportlottery.ui.maintab.accountHistory.AccountHistoryViewModel
+import org.cxct.sportlottery.ui.maintenance.MaintenanceViewModel
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechViewModel
 import org.cxct.sportlottery.ui.news.NewsViewModel
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
@@ -61,6 +61,7 @@ import org.cxct.sportlottery.ui.sport.filter.LeagueSelectViewModel
 import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusViewModel
 import org.cxct.sportlottery.ui.withdraw.WithdrawViewModel
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.AppManager.OnAppStatusChangedListener
 import org.cxct.sportlottery.view.dialog.AgeVerifyDialog
 import org.cxct.sportlottery.view.dialog.promotion.PromotionPopupDialog
 import org.koin.android.ext.koin.androidContext
@@ -194,6 +195,15 @@ class MultiLanguagesApplication : Application() {
         instance = this
         mInstance = this
         AppManager.init(this)
+        AppManager.getInstance().addOnAppStatusChangedListener(object : OnAppStatusChangedListener {
+            override fun onForeground(var1: Activity?) {
+                LotteryManager.instance.getLotteryInfo()
+            }
+
+            override fun onBackground(var1: Activity?) {
+
+            }
+        })
         myPref = getDefaultSharedPreferences()
         AutoSize.initCompatMultiProcess(this)
         TimeZone.setDefault(timeZone)

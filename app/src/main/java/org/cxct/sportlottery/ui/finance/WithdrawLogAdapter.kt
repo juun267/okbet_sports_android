@@ -6,12 +6,13 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.view_item_recharge_log.view.*
+import kotlinx.android.synthetic.main.item_withdraw_log.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.withdraw.list.Row
-import org.cxct.sportlottery.ui.finance.df.CheckStatus
-import org.cxct.sportlottery.ui.finance.df.UWType
+import org.cxct.sportlottery.ui.finance.df.OrderState
 import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.LocalUtils
+import org.cxct.sportlottery.util.TextUtil
 
 class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -63,46 +64,48 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView.apply {
                 rech_log_date.text = item.withdrawDate
                 rech_log_time.text = item.withdrawTime
+                tv_order_number.text = item.orderNo
                 rech_log_amount.text = item.displayMoney
-                rech_log_type.text = item.withdrawType
-                rech_log_state.text = item.withdrawState
+                tv_receive_amount.text = TextUtil.formatMoney(item.actualMoney ?: 0.0)
+                //用于前端显示单单订单状态 1: 處理中 2:提款成功 3:提款失败 4：待投注站出款
+                rech_log_state.apply {
+                    when (item.orderState) {
+                        OrderState.PROCESSING.code -> {
+                            text = LocalUtils.getString(R.string.log_state_processing)
+                            setTextColor(ContextCompat.getColor(itemView.context,
+                                R.color.color_414655))
+                        }
+                        OrderState.SUCCESS.code -> {
+                            text = LocalUtils.getString(R.string.recharge_state_success)
+                            setTextColor(ContextCompat.getColor(itemView.context,
+                                R.color.color_1EB65B))
+                        }
+                        OrderState.FAILED.code -> {
+                            text = LocalUtils.getString(R.string.recharge_state_failed)
+                            setTextColor(ContextCompat.getColor(itemView.context,
+                                R.color.color_E23434))
+                        }
+                        OrderState.PENGING.code -> {
+                            text = LocalUtils.getString(R.string.N653)
+                            setTextColor(ContextCompat.getColor(itemView.context,
+                                R.color.color_414655))
+                        }
+                    }
+                }
             }
 
             itemView.setOnClickListener {
-                withdrawLogListener?.onClick(Event(item))
+                withdrawLogListener?.onClick(Event(item), false)
             }
-
-            if (item.uwType == UWType.BETTING_STATION.type) {
-                itemView.rech_log_type.setOnClickListener {
-                    withdrawLogListener?.onBettingStationClick(item)
-                }
-            }
-
-            setupStateTextColor(item)
-        }
-
-        private fun setupStateTextColor(item: Row) {
-            when (item.checkStatus) {
-                CheckStatus.PROCESSING.code -> {
-                    itemView.rech_log_state.setTextColor(ContextCompat.getColor(itemView.context,
-                        R.color.color_909090_666666))
-                }
-                CheckStatus.PASS.code -> {
-                    itemView.rech_log_state.setTextColor(ContextCompat.getColor(itemView.context,
-                        R.color.color_08dc6e_08dc6e))
-                }
-
-                CheckStatus.UN_PASS.code -> {
-                    itemView.rech_log_state.setTextColor(ContextCompat.getColor(itemView.context,
-                        R.color.color_E44438_e44438))
-                }
+            itemView.lin_amount.setOnClickListener {
+                withdrawLogListener?.onClick(Event(item), true)
             }
         }
 
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater.inflate(R.layout.view_item_recharge_log, parent, false)
+                val view = layoutInflater.inflate(R.layout.item_withdraw_log, parent, false)
 
                 return ViewHolder(view)
             }
@@ -125,10 +128,6 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 }
 
-class WithdrawLogListener(
-    val clickListener: (row: Event<Row>) -> Unit,
-    val bettingStationClick: (row: Row) -> Unit,
-) {
-    fun onClick(row: Event<Row>) = clickListener(row)
-    fun onBettingStationClick(row: Row) = bettingStationClick(row)
+class WithdrawLogListener(val clickListener: (row: Event<Row>, clickMoney: Boolean) -> Unit) {
+    fun onClick(row: Event<Row>, clickMoney: Boolean = false) = clickListener(row, clickMoney)
 }

@@ -20,8 +20,8 @@ android {
         applicationId "com.okbet.ph"
         minSdk 23
         targetSdk 31
-        versionName "1.1.45"
-        versionCode 67
+        versionName "1.1.46"
+        versionCode 68
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         ndk {
@@ -72,7 +72,7 @@ android {
     buildTypes {
         debug {
             minifyEnabled true
-            zipAlignEnabled false
+            zipAlignEnabled true
             debuggable true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release

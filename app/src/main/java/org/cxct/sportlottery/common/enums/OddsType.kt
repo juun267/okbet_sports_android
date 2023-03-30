@@ -3,6 +3,7 @@ package org.cxct.sportlottery.common.enums
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.proguards.KeepMembers
 
+
 @KeepMembers
 enum class OddsType(val code: String, val res: Int) {
     HK("HK", R.string.odd_type_hk),

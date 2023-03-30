@@ -5,5 +5,6 @@ enum class CheckStatus(val code: Int) {
     PROCESSING_TWO(2),
     PASS(3),
     UN_PASS(4),
-    BetStation(7) // 比照pc當作1處理
+    BetStation(7), // 比照pc當作1處理
+    PENDING(9) // 待出款
 }
