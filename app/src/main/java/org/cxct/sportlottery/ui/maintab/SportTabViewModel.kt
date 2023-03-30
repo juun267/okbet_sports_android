@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.sport
+package org.cxct.sportlottery.ui.maintab
 
 import android.app.Application
 import androidx.lifecycle.LiveData

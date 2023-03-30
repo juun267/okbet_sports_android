@@ -6,8 +6,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.fragment_home_slot.*
-import kotlinx.android.synthetic.main.fragment_home_slot.homeToolbar
-import kotlinx.android.synthetic.main.fragment_home_slot.rv_tab_home
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -22,12 +20,14 @@ import org.cxct.sportlottery.network.third_game.third_games.GameFirmValues
 import org.cxct.sportlottery.repository.ThirdGameRepository
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.home.HomeTabAdapter
-import org.cxct.sportlottery.ui.maintab.MainHomeViewModel
-import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
+import org.cxct.sportlottery.util.EventBusUtil
+import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.startRegister
 
 class ThirdGamesFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
 

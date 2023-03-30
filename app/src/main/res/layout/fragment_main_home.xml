@@ -12,10 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <org.cxct.sportlottery.ui.maintab.HomeToolbarView
+    <org.cxct.sportlottery.ui.maintab.home.HomeToolbarView
         android:id="@+id/homeToolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <View
         android:background="@color/color_FFFFFF"

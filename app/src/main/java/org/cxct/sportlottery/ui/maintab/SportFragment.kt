@@ -18,15 +18,14 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.component.tablayout.TabSelectedAdapter
-import org.cxct.sportlottery.view.dialog.PopImageDialog
-import org.cxct.sportlottery.ui.sport.SportListFragment
-import org.cxct.sportlottery.ui.sport.SportTabViewModel
 import org.cxct.sportlottery.ui.sport.endscore.EndScoreFragment
+import org.cxct.sportlottery.ui.sport.list.SportListFragment
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.phoneNumCheckDialog
+import org.cxct.sportlottery.view.dialog.PopImageDialog
 
 class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabViewModel::class) {
 

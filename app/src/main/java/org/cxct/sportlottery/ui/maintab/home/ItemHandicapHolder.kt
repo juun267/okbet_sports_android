@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.maintab
+package org.cxct.sportlottery.ui.maintab.home
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,9 +8,9 @@ import androidx.lifecycle.LifecycleOwner
 import kotlinx.android.synthetic.main.button_odd_home.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
-import org.cxct.sportlottery.databinding.ItemHomeHandicapBinding
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.databinding.ItemHomeHandicapBinding
 import org.cxct.sportlottery.network.common.GameStatus
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
@@ -19,7 +19,6 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchInfo
 import org.cxct.sportlottery.ui.game.widget.OddsButtonHome
-import org.cxct.sportlottery.ui.maintab.home.HomeRecommendListener
 import org.cxct.sportlottery.util.*
 
 //TODO 棒球比分狀態顯示
