@@ -77,7 +77,7 @@ class RedEnvelopeManager {
         countdownTimer?.schedule(object : TimerTask() {
             override fun run() {
                 if (!isLogin() || !allowdShowRedEnvelope()) {
-                    GlobalScope.launch(Dispatchers.Main) {
+                    viewModel?.viewModelScope?.launch(Dispatchers.Main) {
                         removeRedEnvelopeBtn()
                     }
                     return
@@ -92,13 +92,13 @@ class RedEnvelopeManager {
                     val startTimeDiff = ((redenpStartTime ?: 0) - System.currentTimeMillis()) / 1000
                     val endTimeDiff = ((redenpEndTime ?: 0) - System.currentTimeMillis()) / 1000
                     if (startTimeDiff in 1..180) {
-                        GlobalScope.launch(Dispatchers.Main) {
+                        viewModel?.viewModelScope?.launch(Dispatchers.Main) {
                             showRedEnvelopeBtn(startTimeDiff)
                         }
                     } else if (startTimeDiff <= 0 && endTimeDiff >= 0) {
                         showedRedenpId = redenpId
                         redEnvelopeReceiveDialog = RedEnvelopeReceiveDialog( redenpId)
-                        GlobalScope.launch(Dispatchers.Main) {
+                        viewModel?.viewModelScope?.launch(Dispatchers.Main) {
                             redEnvelopeReceiveDialog?.show(
                                 activity!!.supportFragmentManager,
                                 activity!!::class.java.simpleName
@@ -111,7 +111,7 @@ class RedEnvelopeManager {
                 } else  {
                     val endTimeDiff = ((redenpEndTime ?: 0) - System.currentTimeMillis()) / 1000
                     if (endTimeDiff < 0) {
-                        GlobalScope.launch(Dispatchers.Main) {
+                        viewModel?.viewModelScope?.launch(Dispatchers.Main) {
                             redEnvelopeReceiveDialog?.dismiss()
                             redEnvelopeReceiveDialog?.closeDialog()
                             redEnvelopeReceiveDialog = null

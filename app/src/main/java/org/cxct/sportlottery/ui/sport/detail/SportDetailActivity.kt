@@ -147,8 +147,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 return@Handler false
             }
             tv_match_time?.apply {
-                if (needCountStatus(matchOdd?.matchInfo?.socketMatchStatus,
-                        matchOdd?.matchInfo?.leagueTime)
+                if (needCountStatus(
+                        matchOdd?.matchInfo?.socketMatchStatus, matchOdd?.matchInfo?.leagueTime
+                    )
                 ) {
                     if (timeMillis >= 1000) {
                         text = TimeUtil.longToMmSs(timeMillis)
@@ -543,7 +544,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 if (result.success) {
                     result.setupPlayCateTab()
                     try {
-                        oddsDetailListAdapter?.notifyDataSetChangedByCode(tabCateAdapter.dataList[tabCateAdapter.selectedPosition].code)
+                        val selectedPosition = tabCateAdapter.selectedPosition
+                        val dataList = tabCateAdapter.dataList
+                        if (selectedPosition < dataList.size) {
+                            oddsDetailListAdapter?.notifyDataSetChangedByCode(dataList[selectedPosition].code)
+                        }
                     } catch (e: Exception) {
                         e.printStackTrace()
                         return@observe
