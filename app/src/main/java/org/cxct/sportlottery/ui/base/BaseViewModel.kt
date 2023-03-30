@@ -109,9 +109,7 @@ abstract class BaseViewModel(
     }
 
     fun <T : BaseResult> doRequest(
-        context: Context,
-        apiFun: suspend () -> Response<T>,
-        callback: (T?) -> Unit
+        context: Context, apiFun: suspend () -> Response<T>, callback: (T?) -> Unit
     ) {
         viewModelScope.launch/*(Dispatchers.IO)*/ {
             val result = doNetwork(context, true, apiFun)
@@ -124,19 +122,15 @@ abstract class BaseViewModel(
     //20210526 新增 exceptionHandle 參數，還判斷要不要在 BaseActivity 顯示，exception 錯誤訊息
     @Nullable
     suspend fun <T : BaseResult> doNetwork(
-        context: Context,
-        exceptionHandle: Boolean = true,
-        apiFun: suspend () -> Response<T>
+        context: Context, exceptionHandle: Boolean = true, apiFun: suspend () -> Response<T>
     ): T? {
         return try {
-            if (!NetworkUtil.isAvailable(context))
-                throw DoNoConnectException()
+            if (!NetworkUtil.isAvailable(context)) throw DoNoConnectException()
             doApiFun(apiFun)
         } catch (e: Exception) {
             Timber.e("doNetwork: $e")
             e.printStackTrace()
-            if (exceptionHandle)
-                doOnException(context, e)
+            if (exceptionHandle) doOnException(context, e)
             null
         }
     }
@@ -161,11 +155,7 @@ abstract class BaseViewModel(
         }
 
         val errorResult = ErrorUtils.parseError(response)
-        if (
-            errorResult?.code == HttpError.UNAUTHORIZED.code ||
-            errorResult?.code == HttpError.KICK_OUT_USER.code ||
-            errorResult?.code == HttpError.MAINTENANCE.code
-        ) {
+        if (errorResult?.code == HttpError.UNAUTHORIZED.code || errorResult?.code == HttpError.KICK_OUT_USER.code || errorResult?.code == HttpError.MAINTENANCE.code) {
             errorResult.let {
                 _errorResultToken.postValue(it)
             }
@@ -174,26 +164,14 @@ abstract class BaseViewModel(
     }
 
     private fun doOnException(context: Context, exception: Exception) {
-        val locale = LanguageManager.getSetLanguageLocale(context)
-        var conf = context.resources.configuration
-        conf = Configuration(conf)
-        conf.setLocale(locale)
-        val localizedContext = context.createConfigurationContext(conf)
-        _networkExceptionUnavailable.postValue(localizedContext.resources.getString(R.string.message_network_no_connect))
-//        when (exception) {
-//            is kotlinx.coroutines.CancellationException -> {
-//                // 取消線程不執行業務
-//            }
-//            is DoNoConnectException -> {
-//                _networkExceptionUnavailable.postValue(localizedContext.resources.getString(R.string.message_network_no_connect))
-//            }
-//            is SocketTimeoutException -> {
-//                _networkExceptionTimeout.postValue(localizedContext.resources.getString(R.string.message_network_timeout))
-//            }
-//            else -> {
-//                _networkExceptionUnknown.postValue(localizedContext.resources.getString(R.string.message_network_no_connect))
-//            }
-//        }
+        when (exception) {
+            is kotlinx.coroutines.CancellationException -> {
+                // 取消线程不执行业务
+            }
+            else -> {
+                _networkExceptionUnavailable.postValue(context.getString(R.string.message_network_no_connect))
+            }
+        }
     }
 
     fun doLogoutAPI() {

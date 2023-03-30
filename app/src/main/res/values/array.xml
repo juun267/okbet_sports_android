@@ -74,6 +74,7 @@
         <item>@string/log_state_processing</item>
         <item>@string/recharge_state_success</item>
         <item>@string/recharge_state_failed</item>
+        <item>@string/N653</item>
     </string-array>
 
     <string-array name="withdraw_type_array">

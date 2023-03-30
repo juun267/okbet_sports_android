@@ -60,6 +60,7 @@ import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusViewModel
 import org.cxct.sportlottery.ui.withdraw.WithdrawViewModel
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.AppManager.OnAppStatusChangedListener
 import org.cxct.sportlottery.view.dialog.AgeVerifyDialog
 import org.cxct.sportlottery.view.dialog.promotion.PromotionPopupDialog
 import org.koin.android.ext.koin.androidContext
