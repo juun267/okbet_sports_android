@@ -2,11 +2,13 @@ package org.cxct.sportlottery.ui.splash
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
@@ -17,6 +19,8 @@ import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.util.JumpUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
+import kotlin.system.exitProcess
 
 /**
  * @app_destination 啟動頁
@@ -29,16 +33,12 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        ImmersionBar.with(this)
-            .statusBarDarkFont(true)
-            .transparentStatusBar()
-            .fitsSystemWindows(false)
-            .init()
+        ImmersionBar.with(this).statusBarDarkFont(true).transparentStatusBar()
+            .fitsSystemWindows(false).init()
         setContentView(R.layout.activity_splash)
         setupVersion()
         //checkPermissionGranted()
         initObserve()
-
         //流程: 檢查/獲取 host -> 獲取 config -> 檢查維護狀態 -> 檢查版本更新 -> 跳轉畫面
         checkLocalHost()
     }
@@ -92,6 +92,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
     private fun initObserve() {
         viewModel.errorResultIndex.observe(this) {
+            Timber.d("href:Jump to internal web: =====>")
             JumpUtil.toInternalWeb(this, it, "", toolbarVisibility = false, backEvent = false)
         }
 
@@ -102,15 +103,18 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                 }
                 it?.success == true -> checkAppMinVersion()
 
-                else -> showErrorRetryDialog(getString(R.string.error_config_title), getString(R.string.message_network_no_connect))
+                else -> showErrorRetryDialog(
+                    getString(R.string.error_config_title),
+                    getString(R.string.message_network_no_connect)
+                )
             }
         }
 
         mVersionUpdateViewModel.appMinVersionState.observe(this) {
-            if (it.isForceUpdate || it.isShowUpdateDialog)
-                showAppDownloadDialog(it.isForceUpdate, it.version, it.checkAppVersionResult)
-            else
-                viewModel.goNextPage()
+            if (it.isForceUpdate || it.isShowUpdateDialog) showAppDownloadDialog(
+                it.isForceUpdate, it.version, it.checkAppVersionResult
+            )
+            else viewModel.goNextPage()
         }
 
         viewModel.skipHomePage.observe(this) {
@@ -157,8 +161,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         lastVersion: String,
         checkAppVersionResult: CheckAppVersionResult?,
     ) {
-        AppDownloadDialog(
-            this,
+        AppDownloadDialog(this,
             isForceUpdate,
             lastVersion,
             checkAppVersionResult,
@@ -175,5 +178,12 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                 }
 
             }).show()
+    }
+
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+        exitProcess(0)
     }
 }
