@@ -4,10 +4,9 @@ import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
-import org.cxct.sportlottery.proguard.KeepMembers
 
 @Parcelize
-@JsonClass(generateAdapter = true) @KeepMembers
+@JsonClass(generateAdapter = true)
 data class ParlayComsDetailVO(
     @Json(name = "matchOddsVOList")
     val matchOddsVOList: List<MatchOddsVO>,
