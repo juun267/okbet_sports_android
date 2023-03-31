@@ -104,7 +104,7 @@ class RedEnvelopeManager {
                                 activity!!::class.java.simpleName
                             )
                             removeRedEnvelopeBtn()
-                            closeDialog?.dismiss()
+                            closeDialog?.dismissAllowingStateLoss()
                             closeDialog = null
                         }
                     }
@@ -112,7 +112,7 @@ class RedEnvelopeManager {
                     val endTimeDiff = ((redenpEndTime ?: 0) - System.currentTimeMillis()) / 1000
                     if (endTimeDiff < 0) {
                         viewModel?.viewModelScope?.launch(Dispatchers.Main) {
-                            redEnvelopeReceiveDialog?.dismiss()
+                            redEnvelopeReceiveDialog?.dismissAllowingStateLoss()
                             redEnvelopeReceiveDialog?.closeDialog()
                             redEnvelopeReceiveDialog = null
                         }
