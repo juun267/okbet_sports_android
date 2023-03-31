@@ -496,11 +496,19 @@ object SocketUpdateUtil {
     }
 
     fun updateMatchClock(matchOdd: MatchOdd, matchClockEvent: MatchClockEvent): Boolean {
+        return if (matchOdd.matchInfo == null) {
+            false
+        } else {
+            updateMatchInfoClock(matchOdd.matchInfo!!, matchClockEvent)
+        }
+    }
+
+    fun updateMatchInfoClock(matchInfo: MatchInfo, matchClockEvent: MatchClockEvent): Boolean {
         var isNeedRefresh = false
 
         matchClockEvent.matchClockCO?.let { matchClockCO ->
 
-            if (matchClockCO.matchId != null && matchClockCO.matchId == matchOdd.matchInfo?.id) {
+            if (matchClockCO.matchId != null && matchClockCO.matchId == matchInfo.id) {
 
                 val leagueTime = when (matchClockCO.gameType) {
                     GameType.FT.key -> {
@@ -515,21 +523,56 @@ object SocketUpdateUtil {
                 }
 
 
-                if (leagueTime != null && leagueTime.toInt() != matchOdd.matchInfo?.leagueTime) {
-                    matchOdd.matchInfo?.leagueTime = leagueTime.toInt()
+                if (leagueTime != null && leagueTime.toInt() != matchInfo.leagueTime) {
+                    matchInfo.leagueTime = leagueTime.toInt()
                     isNeedRefresh = true
                 }
 
 
-                if (matchClockCO.stopped != matchOdd.matchInfo?.stopped) {
-                    matchOdd.matchInfo?.stopped = matchClockCO.stopped
+                if (matchClockCO.stopped != matchInfo.stopped) {
+                    matchInfo?.stopped = matchClockCO.stopped
                     isNeedRefresh = true
-
                 }
-
             }
         }
+        return isNeedRefresh
+    }
 
+    fun updateMatchInfoClockByDetail(
+        matchInfo: org.cxct.sportlottery.network.odds.MatchInfo,
+        matchClockEvent: MatchClockEvent,
+    ): Boolean {
+        var isNeedRefresh = false
+
+        matchClockEvent.matchClockCO?.let { matchClockCO ->
+
+            if (matchClockCO.matchId != null && matchClockCO.matchId == matchInfo.id) {
+
+                val leagueTime = when (matchClockCO.gameType) {
+                    GameType.FT.key -> {
+                        matchClockCO.matchTime
+                    }
+
+                    GameType.BK.key, GameType.RB.key, GameType.AFT.key -> {
+                        matchClockCO.remainingTimeInPeriod
+                    }
+
+                    else -> null
+                }
+
+
+                if (leagueTime != null && leagueTime.toInt() != matchInfo.leagueTime) {
+                    matchInfo.leagueTime = leagueTime.toInt()
+                    isNeedRefresh = true
+                }
+
+
+                if (matchClockCO.stopped != matchInfo.stopped) {
+                    matchInfo?.stopped = matchClockCO.stopped
+                    isNeedRefresh = true
+                }
+            }
+        }
         return isNeedRefresh
     }
 

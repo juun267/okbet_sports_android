@@ -147,9 +147,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 return@Handler false
             }
             tv_match_time?.apply {
-                if (needCountStatus(
-                        matchOdd?.matchInfo?.socketMatchStatus, matchOdd?.matchInfo?.leagueTime
-                    )
+                if (needCountStatus(matchOdd?.matchInfo?.socketMatchStatus,
+                        matchOdd?.matchInfo?.leagueTime)
                 ) {
                     if (timeMillis >= 1000) {
                         text = TimeUtil.longToMmSs(timeMillis)
@@ -826,6 +825,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     startTime = time
                     matchType =
                         if (TimeUtil.isTimeInPlay(startTime)) MatchType.IN_PLAY else MatchType.DETAIL
+                }
+                matchInfo?.let {
+                    SocketUpdateUtil.updateMatchInfoClockByDetail(it, matchClockEvent)
                 }
             }
         }
