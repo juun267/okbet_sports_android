@@ -17,6 +17,7 @@ import android.widget.RelativeLayout
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.viewModelScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.tools.ToastUtils
@@ -25,6 +26,10 @@ import kotlinx.android.synthetic.main.bet_bar_layout.*
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import kotlinx.android.synthetic.main.bet_bar_layout2.*
 import kotlinx.android.synthetic.main.fragment_sport_list.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.BetModeChangeEvent
@@ -53,6 +58,7 @@ import org.cxct.sportlottery.ui.sport.SportFragment
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment
 import org.cxct.sportlottery.ui.sport.list.SportLeagueAdapter
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.view.dialog.RedEnvelopeReceiveDialog
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import kotlin.system.exitProcess
@@ -116,6 +122,14 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         activityInstance = this
         EventBusUtil.targetLifecycle(this)
         LotteryManager.instance.getLotteryInfo()
+
+//        GlobalScope.launch {
+//            delay(5000)
+//            val redEnvelopeReceiveDialog = RedEnvelopeReceiveDialog(123)
+//            redEnvelopeReceiveDialog.show(
+//                supportFragmentManager, this::class.java.simpleName
+//            )
+//        }
     }
 
     override fun onNightModeChanged(mode: Int) {
@@ -587,7 +601,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     fun jumpToBetInfo(tabPosition: Int) {
-        if(SPUtil.getMarketSwitch()){
+        if (SPUtil.getMarketSwitch()) {
             return
         }
         if (bottom_navigation_view.currentItem != 2) {

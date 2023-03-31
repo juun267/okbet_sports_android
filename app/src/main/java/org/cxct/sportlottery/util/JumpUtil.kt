@@ -23,7 +23,7 @@ object JumpUtil {
         backEvent: Boolean = true,
         bettingStation: BettingStation? = null
     ) {
-        LogUtil.d(href)
+        LogUtil.d("href:===>${href}")
         context.startActivity(
             Intent(context, WebActivity::class.java).apply {
                 putExtra(WebActivity.KEY_URL, Constants.appendParams(href))
