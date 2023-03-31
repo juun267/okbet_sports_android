@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.maintab
 
 import android.animation.Animator
 import android.animation.ValueAnimator
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -21,10 +20,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.android.synthetic.main.activity_main_tab.*
-import kotlinx.android.synthetic.main.bet_bar_layout.*
-import kotlinx.android.synthetic.main.bet_bar_layout.view.*
-import kotlinx.android.synthetic.main.bet_bar_layout2.*
-import kotlinx.android.synthetic.main.fragment_sport_list.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding
@@ -84,31 +79,19 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
         }
-
-        fun start2Tab(context: Context, position: Int) {
-            if (activityInstance != null) {
-                activityInstance!!.switchTabByPosition(position)
-            } else {
-                val intent = Intent(context, MainTabActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                intent.putExtra("startTabPosition", position)
-                context.startActivity(intent)
-            }
-        }
     }
 
-    private lateinit var binding: ActivityMainTabBinding
+    private val binding by lazy { ActivityMainTabBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         SportLeagueAdapter.clearCachePool()
         super.onCreate(savedInstanceState)
-        binding = ActivityMainTabBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ImmersionBar.with(this).statusBarDarkFont(true).transparentStatusBar()
             .fitsSystemWindows(false).init()
         initDrawerLayout()
         initMenu()
-        initBottomFragment()
+        initBottomFragment(savedInstanceState?.getInt("startTabPosition") ?: 0)
         initBottomNavigation()
         initObserve()
         activityInstance = this
@@ -119,14 +102,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     override fun onNightModeChanged(mode: Int) {
         super.onNightModeChanged(mode)
         reStart(this)
-    }
-
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        activityInstance = this
-        intent?.getIntExtra("startTabPosition", 0)?.let {
-            bottom_navigation_view.currentItem = it
-        }
     }
 
     private fun initObserve() {
@@ -148,11 +123,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
     }
 
-    private fun initBottomFragment() {
-        ll_home_back.setOnClickListener {
+    private fun initBottomFragment(position: Int) {
+        binding.llHomeBack.setOnClickListener {
             (fragmentHelper.getFragment(0) as HomeFragment).switchTabByPosition(0)
         }
-        bottom_navigation_view.apply {
+        binding.bottomNavigationView.apply {
             enableAnimation(false)
             enableShiftingMode(false)
             setTextVisibility(true)
@@ -171,19 +146,30 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                     }
 
                     val position = getMenuItemPosition(menuItem)
-                    val fragment = fragmentHelper.showFragment(position)
+                    fragmentHelper.showFragment(position)
                     if (position == 0) {
                         (fragmentHelper.getFragment(0) as HomeFragment).switchTabByPosition(0)
                     } else {
-                        ll_home_back.visibility = View.GONE
+                        binding.llHomeBack.gone()
                     }
                     setupBetBarVisiblity(position)
                     return@OnNavigationItemSelectedListener true
                 }
+
+
         }
-        intent?.getIntExtra("startTabPosition", 0)?.let {
-            bottom_navigation_view.currentItem = it
-        }
+
+        // 如果回复之前的position会有很多其它崩溃异常
+        binding.bottomNavigationView.currentItem = 0 /*position*/
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putInt("startTabPosition", bottom_navigation_view.currentItem)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(Bundle()) // 如果回复之前的position会有很多其它崩溃异常
     }
 
     open fun openDrawerLayout() {
@@ -349,7 +335,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
 
-    fun setupBetBarVisiblity(position: Int) {
+    private fun setupBetBarVisiblity(position: Int) {
         val needShowBetBar = when (position) {
             0, 1, 3 -> true
             else -> false
@@ -415,13 +401,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
 
-    @SuppressLint("ClickableViewAccessibility")
     override fun initBottomNavigation() {
 //        parlayFloatWindow.tv_balance_currency.text = sConfigData?.systemCurrencySign
 //        parlayFloatWindow.tv_balance.text = TextUtil.formatMoney(0.0)
-        binding.parlayFloatWindow.onViewClick = {
-            showBetListPage()
-        }
+        binding.parlayFloatWindow.onViewClick = { showBetListPage() }
 
     }
 

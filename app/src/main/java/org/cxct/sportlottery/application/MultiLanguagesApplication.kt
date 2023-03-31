@@ -85,7 +85,6 @@ class MultiLanguagesApplication : Application() {
     private val _userInfo = MutableLiveData<UserInfo?>()
     val userInfo: LiveData<UserInfo?>
         get() = _userInfo
-    private var isNewsShowed = false
     private var isAgeVerifyNeedShow = true
 
     val mOddsType = MutableLiveData<OddsType>()
@@ -276,14 +275,6 @@ class MultiLanguagesApplication : Application() {
 
     fun userInfo(): UserInfo? {
         return _userInfo.value
-    }
-
-    fun isNewsShow(): Boolean {
-        return isNewsShowed
-    }
-
-    fun setIsNewsShow(show: Boolean) {
-        this.isNewsShowed = show
     }
 
     fun getGameDetailAnimationNeedShow(): Boolean {

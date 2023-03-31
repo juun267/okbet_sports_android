@@ -386,9 +386,9 @@ class ProfileCenterFragment :
             updateUI(it)
         }
 
-        viewModel.navPublicityPage.observe(viewLifecycleOwner) {
+//        viewModel.navPublicityPage.observe(viewLifecycleOwner) {
 //            GamePublicityActivity.reStart(requireContext())
-        }
+//        }
 
         viewModel.withdrawSystemOperation.observe(viewLifecycleOwner) {
             val operation = it.getContentIfNotHandled()
