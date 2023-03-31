@@ -2,12 +2,12 @@ package org.cxct.sportlottery.util
 
 
 import org.cxct.sportlottery.common.enums.BetStatus
+import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.ui.betList.BetInfoListData
 import java.math.BigDecimal
 
 

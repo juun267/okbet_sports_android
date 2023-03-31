@@ -5,7 +5,7 @@
     android:id="@+id/cl_root"
     android:layout_width="match_parent"
     android:layout_height="44dp"
-    tools:context=".ui.component.StatusSelectorView"
+    tools:context=".view.statusSelector.StatusSelectorView"
     tools:background="@drawable/frame_color_silver_light_stroke">
 
     <TextView

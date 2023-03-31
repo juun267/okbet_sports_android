@@ -5,7 +5,7 @@
     app:startDestination="@+id/bankListFragment">
     <fragment
         android:id="@+id/bankListFragment"
-        android:name="org.cxct.sportlottery.ui.withdraw.BankListFragment"
+        android:name="org.cxct.sportlottery.ui.money.withdraw.BankListFragment"
         android:label="fragment_bank_list"
         tools:layout="@layout/fragment_bank_list">
         <action
@@ -22,13 +22,13 @@
             <argument
                 android:name="transferTypeAddSwitch"
                 android:defaultValue="@null"
-                app:argType="org.cxct.sportlottery.ui.withdraw.TransferTypeAddSwitch"
+                app:argType="org.cxct.sportlottery.ui.money.withdraw.TransferTypeAddSwitch"
                 app:nullable="true"/>
         </action>
     </fragment>
     <fragment
         android:id="@+id/bankCardFragment"
-        android:name="org.cxct.sportlottery.ui.withdraw.BankCardFragment"
+        android:name="org.cxct.sportlottery.ui.money.withdraw.BankCardFragment"
         android:label="BankCardFragment"
         tools:layout="@layout/fragment_bank_card">
         <argument
@@ -42,7 +42,7 @@
         <argument
             android:name="transferTypeAddSwitch"
             android:defaultValue="@null"
-            app:argType="org.cxct.sportlottery.ui.withdraw.TransferTypeAddSwitch"
+            app:argType="org.cxct.sportlottery.ui.money.withdraw.TransferTypeAddSwitch"
             app:nullable="true"/>
     </fragment>
 

@@ -61,24 +61,25 @@ class SplashViewModel(
             if (hostUrl.isNotEmpty()) {
                 Timber.i("==> checkLocalHost: $hostUrl")
 
-                val checkTokenRetrofit = RequestManager.instance.createRetrofit(hostUrl.httpFormat())
+                val retrofit =
+                    RequestManager.instance.createRetrofit(hostUrl.httpFormat())
 
-                doNetwork(androidContext) {
-                    checkTokenRetrofit.create(IndexService::class.java).checkToken()
-                }?.let {
-                    if (!it.success) {
-                        Timber.i("==> check token fail : do getHost")
-                        loginRepository.clear()
-                        getHost()
-                        return@launch
-                    }
+                val checkHostResult = doNetwork(androidContext, exceptionHandle = false) {
+                    retrofit.create(IndexService::class.java).checkToken()
                 }
 
-                val retrofit = RequestManager.instance.createRetrofit(hostUrl.httpFormat())
+                if (checkHostResult?.success == false) {
+                    Timber.i("==> check token fail : do getHost")
+                    loginRepository.clear()
+                    getHost()
+                    return@launch
+                }
+
                 val result = doNetwork(androidContext, exceptionHandle = false) {
                     retrofit.create(IndexService::class.java).getConfig()
-                }
-                if (result?.success == true) {
+                } ?: return@launch
+
+                if (result.success) {
                     setConfig(result)
                     gotConfigData = true
                     setBaseUrl(hostUrl, retrofit)
@@ -160,14 +161,14 @@ class SplashViewModel(
     private fun checkHostByGettingConfig(baseUrl: String) {
         viewModelScope.launch {
             Timber.i("==> checkHostByGettingConfig: $baseUrl")
-            val retrofit = RequestManager.instance.createRetrofit(baseUrl.httpFormat())
-            val result = doNetwork(androidContext, exceptionHandle = false) {
-                val indexService = retrofit.create(IndexService::class.java)
-                indexService.getConfig()
-            }
 
             if (mIsGetFastHostDown) //其中一個 check host 成功，其他的 result 都不用執行
                 return@launch
+
+            val retrofit = RequestManager.instance.createRetrofit(baseUrl.httpFormat())
+            val result = doNetwork(androidContext, exceptionHandle = false) {
+                retrofit.create(IndexService::class.java).getConfig()
+            }
 
             if (result?.success == true) {
                 Timber.i("==> Check host success!!! baseUrl = $baseUrl")

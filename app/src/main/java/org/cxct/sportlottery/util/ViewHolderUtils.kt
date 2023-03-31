@@ -4,7 +4,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
-import org.cxct.sportlottery.ui.game.publicity.OddStateHomeViewHolder
+import org.cxct.sportlottery.ui.maintab.publicity.OddStateHomeViewHolder
 import java.util.*
 
 object ViewHolderUtils {

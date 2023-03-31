@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:text="意大利落后反超获胜" />
 
-    <org.cxct.sportlottery.ui.game.widget.OddsButtonDetail
+    <org.cxct.sportlottery.ui.sport.oddsbtn.OddsButtonDetail
         android:id="@+id/button_odds"
         android:layout_width="92dp"
         android:layout_height="wrap_content"

@@ -13,9 +13,9 @@ import org.cxct.sportlottery.network.service.match_odds_lock.MatchOddsLockEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchInfo
-import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-import org.cxct.sportlottery.ui.game.home.recommend.OddBean
-import org.cxct.sportlottery.ui.odds.OddsDetailListData
+import org.cxct.sportlottery.ui.betList.BetInfoListData
+import org.cxct.sportlottery.ui.sport.common.OddBean
+import org.cxct.sportlottery.ui.sport.detail.adapter.OddsDetailListData
 
 object SocketUpdateUtil {
     /**
@@ -547,27 +547,6 @@ object SocketUpdateUtil {
             oddMap.clear()
             oddMap.putAll(oddsMap)
         }
-    }
-
-    fun updateMatchOdds(oddBean: OddBean, oddsChangeEvent: OddsChangeEvent): Boolean {
-        val isNeedRefresh = when (oddBean.oddList.isNullOrEmpty()) {
-            true -> {
-                insertMatchOdds(oddBean, oddsChangeEvent)
-            }
-
-            false -> {
-                refreshMatchOdds(
-                    mutableMapOf(Pair(oddBean.playTypeCode, oddBean.oddList.toMutableList())),
-                    oddsChangeEvent.odds,
-                )
-            }
-        }
-
-        if (isNeedRefresh) {
-            oddBean.updateOddStatus()
-        }
-
-        return isNeedRefresh
     }
 
     fun updateMatchOdds(
@@ -1203,13 +1182,6 @@ object SocketUpdateUtil {
         }
 
         return isNeedRefresh
-    }
-
-    private fun insertMatchOdds(oddBean: OddBean, oddsChangeEvent: OddsChangeEvent): Boolean {
-        oddBean.oddList.toMutableList()
-            .addAll(oddsChangeEvent.odds?.get(oddBean.playTypeCode) ?: listOf())
-
-        return oddsChangeEvent.odds?.isNotEmpty() ?: false
     }
 
     private fun insertMatchOdds(

@@ -18,6 +18,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolBar"
         app:navGraph="@navigation/news_navigation"
-        tools:layout="@layout/fragment_bank_list" />
+        tools:layout="@layout/fragment_news" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

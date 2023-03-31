@@ -25,7 +25,7 @@
             app:layout_constraintWidth_percent="0.392"
             tools:text="Mario Gavranovic" />
 
-        <org.cxct.sportlottery.ui.game.widget.OddsButtonDetail
+        <org.cxct.sportlottery.ui.sport.oddsbtn.OddsButtonDetail
             android:id="@+id/button_odds"
             android:layout_width="0dp"
             android:layout_height="match_parent"

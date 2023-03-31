@@ -7,7 +7,7 @@ import com.chad.library.adapter.base.provider.BaseNodeProvider
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import kotlinx.android.synthetic.main.button_odd_outright.view.*
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.ui.game.widget.OddsOutrightButton
+import org.cxct.sportlottery.ui.sport.oddsbtn.OddsOutrightButton
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 class EndScoreThirdProvider(val adapter: EndScoreAdapter,

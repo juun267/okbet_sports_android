@@ -7,7 +7,7 @@
     android:background="@color/transparent_black_50"
     android:clickable="true"
     android:focusable="true"
-    tools:context=".ui.game.betList.receipt.BetReceiptFragment">
+    tools:context=".ui.betList.receipt.BetReceiptFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

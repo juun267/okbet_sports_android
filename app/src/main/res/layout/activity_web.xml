@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.common.WebActivity">
 
-    <org.cxct.sportlottery.ui.common.CustomTopToolbar
+    <org.cxct.sportlottery.view.CustomTopToolbar
         android:id="@+id/custom_tool_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

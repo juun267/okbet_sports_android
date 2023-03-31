@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
     android:orientation="vertical"
-    tools:context="org.cxct.sportlottery.ui.withdraw.WithdrawFragment">
+    tools:context="org.cxct.sportlottery.ui.money.withdraw.WithdrawFragment">
 
     <LinearLayout
         android:id="@+id/ll_tab_layout"
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:background="@color/color_FFFFFF"
         android:orientation="vertical"
-        tools:context="org.cxct.sportlottery.ui.common.CustomTabLayout">
+        tools:context="org.cxct.sportlottery.view.CustomTabLayout">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"

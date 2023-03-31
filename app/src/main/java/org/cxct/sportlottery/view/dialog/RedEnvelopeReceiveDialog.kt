@@ -19,6 +19,7 @@ import android.widget.RelativeLayout
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.fragment_red_envelope_receive.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.FragmentRedEnvelopeReceiveBinding
 import org.cxct.sportlottery.network.money.RedEnveLopeModel
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -68,12 +69,17 @@ class RedEnvelopeReceiveDialog(
 //    紅包38x48(小)速率:05s20
 //    福袋 40x54 速率:07s14
 
+    private val viewBinding by lazy {
+        FragmentRedEnvelopeReceiveBinding.inflate(layoutInflater)
+    }
+
     init {
         setStyle(R.style.FullScreen)
     }
-  //  private val BARRAGE_GAP_MIN_DURATION: Int = 1200
-    private val BARRAGE_GAP_DURATION:Long = 1200
-    private val BARRAGE_GAP_START_DURATION:Long = 100
+
+    //  private val BARRAGE_GAP_MIN_DURATION: Int = 1200
+    private val BARRAGE_GAP_DURATION: Long = 1200
+    private val BARRAGE_GAP_START_DURATION: Long = 100
 
     var bitmap1: Bitmap? = null
     var image: ImageView? = null
@@ -90,7 +96,7 @@ class RedEnvelopeReceiveDialog(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? = inflater.inflate(R.layout.fragment_red_envelope_receive, container, false)
+    ): View = viewBinding.root
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -129,7 +135,7 @@ class RedEnvelopeReceiveDialog(
                 } else {
                     showSuccessOrFailDialog(false, result.msg)
                 }
-                dismiss()
+                dismissAllowingStateLoss()
             }
         }
     }
@@ -153,27 +159,26 @@ class RedEnvelopeReceiveDialog(
     private fun setContentView() {
         mHandler.sendEmptyMessageDelayed(0, BARRAGE_GAP_START_DURATION)
         context?.let { it ->
-            TranslateAnimation(-60.dp.toFloat(),
-                (ScreenUtil.getScreenWidth(it) - 60.dp).toFloat(),
-                0f,
-                0f).apply {
+            TranslateAnimation(
+                -60.dp.toFloat(), (ScreenUtil.getScreenWidth(it) - 60.dp).toFloat(), 0f, 0f
+            ).apply {
                 duration = 2000
                 interpolator = LinearInterpolator()
                 repeatMode = Animation.REVERSE
                 repeatCount = Animation.INFINITE
             }.let {
-                iv_light_ball.startAnimation(it)
+                viewBinding.ivLightBall.startAnimation(it)
             }
             AlphaAnimation(0.3f, 1f).apply {
                 duration = 1500
                 repeatMode = Animation.REVERSE
                 repeatCount = Animation.INFINITE
             }.let {
-                iv_bg_top.startAnimation(it)
+                viewBinding.ivBgTop.startAnimation(it)
             }
         }
 
-        iv_red_close.setOnClickListener {
+        viewBinding.ivRedClose.setOnClickListener {
             iv_radiance.clearAnimation()
             dismiss()
         }
@@ -204,7 +209,7 @@ class RedEnvelopeReceiveDialog(
                     randomY =
                         (Random().nextInt((p!!.y * (0.2 + 0.05 * i)).toInt()) + image!!.height * 1.3).toInt()
                     layoutParams1!!.setMargins(randomX, -randomY, 0, 0)
-                    relative_layout.addView(image, layoutParams1)
+                    viewBinding.relativeLayout.addView(image, layoutParams1)
                     var duration = map[bitmap1]
                     startAnimation(image, 0f, duration)
                     image!!.setOnClickListener {
@@ -213,7 +218,7 @@ class RedEnvelopeReceiveDialog(
                     image = null
                 }
 
-               // val duration: Int =  mRandom.nextInt(BARRAGE_GAP_MAX_DURATION)+BARRAGE_GAP_MIN_DURATION
+                // val duration: Int =  mRandom.nextInt(BARRAGE_GAP_MAX_DURATION)+BARRAGE_GAP_MIN_DURATION
                 sendEmptyMessageDelayed(0, BARRAGE_GAP_DURATION)
             }
         }
@@ -243,7 +248,7 @@ class RedEnvelopeReceiveDialog(
     override fun onDestroy() {
         super.onDestroy()
         image = null
-        mHandler.removeMessages(0)
+        mHandler.removeCallbacksAndMessages(null)
 
     }
 }

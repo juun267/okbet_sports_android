@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context="org.cxct.sportlottery.ui.component.DateRangeSearchView">
+    tools:context="org.cxct.sportlottery.view.DateRangeSearchView">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

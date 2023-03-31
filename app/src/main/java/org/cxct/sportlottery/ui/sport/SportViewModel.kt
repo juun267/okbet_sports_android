@@ -28,7 +28,7 @@ import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.network.user.info.LiveSyncUserInfoVO
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
-import org.cxct.sportlottery.ui.odds.OddsDetailListData
+import org.cxct.sportlottery.ui.sport.detail.adapter.OddsDetailListData
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.px
 import org.cxct.sportlottery.util.DisplayUtil.pxToDp

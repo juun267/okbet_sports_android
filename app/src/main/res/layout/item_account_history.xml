@@ -11,7 +11,7 @@
 
         <variable
             name="clickListener"
-            type="org.cxct.sportlottery.ui.maintab.accountHistory.first.ItemClickListener" />
+            type="org.cxct.sportlottery.ui.betRecord.accountHistory.first.ItemClickListener" />
 
         <variable
             name="TextUtil"

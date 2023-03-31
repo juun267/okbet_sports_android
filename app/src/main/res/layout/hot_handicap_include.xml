@@ -39,7 +39,7 @@
         app:layout_constraintStart_toEndOf="@+id/tv_hot_handicap"
         app:layout_constraintTop_toTopOf="parent">
 
-        <org.cxct.sportlottery.ui.component.StatusSpinnerNewView
+        <org.cxct.sportlottery.view.statusSelector.StatusSpinnerNewView
             android:id="@+id/selector_order_status"
             android:layout_width="match_parent"
             android:layout_height="24dp"

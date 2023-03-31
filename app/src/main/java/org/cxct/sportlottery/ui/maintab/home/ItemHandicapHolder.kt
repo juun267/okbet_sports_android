@@ -18,7 +18,7 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchInfo
-import org.cxct.sportlottery.ui.game.widget.OddsButtonHome
+import org.cxct.sportlottery.ui.sport.oddsbtn.OddsButtonHome
 import org.cxct.sportlottery.util.*
 
 //TODO 棒球比分狀態顯示

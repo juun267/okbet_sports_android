@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <org.cxct.sportlottery.ui.game.widget.OddsButtonDetail
+    <org.cxct.sportlottery.ui.sport.oddsbtn.OddsButtonDetail
         android:id="@+id/button_odds"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

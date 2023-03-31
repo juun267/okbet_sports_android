@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/bg_radius_6_button_white"
     android:padding="10dp"
-    tools:context="org.cxct.sportlottery.ui.withdraw.CommissionDetailAdapter"
+    tools:context="org.cxct.sportlottery.ui.money.withdraw.CommissionDetailAdapter"
     tools:ignore="SpUsage">
 
     <TextView

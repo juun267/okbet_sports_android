@@ -26,9 +26,9 @@ import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchLiveData
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.game.publicity.PublicityPromotionItemData
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.maintab.entity.GameCateData
+import org.cxct.sportlottery.ui.maintab.publicity.PromotionItemData
 import org.cxct.sportlottery.util.*
 import timber.log.Timber
 import java.text.SimpleDateFormat
@@ -64,8 +64,8 @@ class MainHomeViewModel(
         get() = _messageListResult
 
     //優惠活動圖文公告
-    private val _publicityPromotionList = MutableLiveData<List<PublicityPromotionItemData>>()
-    val publicityPromotionList: LiveData<List<PublicityPromotionItemData>>
+    private val _publicityPromotionList = MutableLiveData<List<PromotionItemData>>()
+    val publicityPromotionList: LiveData<List<PromotionItemData>>
         get() = _publicityPromotionList
     private val _enterThirdGameResult = MutableLiveData<EnterThirdGameResult>()
     val enterThirdGameResult: LiveData<EnterThirdGameResult>
@@ -390,7 +390,7 @@ class MainHomeViewModel(
                     .let {
                         //優惠活動圖片公告清單
                         _publicityPromotionList.postValue(promotionList.map {
-                            PublicityPromotionItemData.createData(it)
+                            PromotionItemData.createData(it)
                         })
                     }
             }
