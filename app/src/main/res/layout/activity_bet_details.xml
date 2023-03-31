@@ -8,11 +8,11 @@
     android:orientation="vertical"
     tools:context=".ui.maintab.betdetails.BetDetailsActivity">
 
-    <org.cxct.sportlottery.ui.common.CustomTopToolbar
+    <org.cxct.sportlottery.view.CustomTopToolbar
         android:id="@+id/custom_tool_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:topTitleText="@string/bet_details_title"/>
+        app:topTitleText="@string/bet_details_title" />
 
     <FrameLayout
         android:id="@+id/fl_container"
