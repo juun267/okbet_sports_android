@@ -121,17 +121,13 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         EventBusUtil.targetLifecycle(this)
         LotteryManager.instance.getLotteryInfo()
 
-
-
-
-        GlobalScope.launch {
-            delay(5000)
-            val redEnvelopeReceiveDialog = RedEnvelopeReceiveDialog(123)
-            redEnvelopeReceiveDialog.show(
-                supportFragmentManager, this::class.java.simpleName
-            )
-        }
-
+//        GlobalScope.launch {
+//            delay(5000)
+//            val redEnvelopeReceiveDialog = RedEnvelopeReceiveDialog(123)
+//            redEnvelopeReceiveDialog.show(
+//                supportFragmentManager, this::class.java.simpleName
+//            )
+//        }
     }
 
     override fun onNightModeChanged(mode: Int) {
