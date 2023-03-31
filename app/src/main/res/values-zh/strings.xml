@@ -1184,6 +1184,9 @@
     <string name="J802">独赢&amp;小</string>
     <string name="J803">独赢&amp;双方球队进球-是</string>
     <string name="J804">独赢&amp;双方球队进球-否</string>
+
+    <string name="set_phone_no">设置手机号码</string>
+    <string name="set_email">设置邮箱</string>
     <string name="edit_email">更换邮箱</string>
     <string name="edit_phone_no">更换手机号码</string>
     <string name="new_phone_no">新手机号码</string>

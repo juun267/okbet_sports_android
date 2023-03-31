@@ -1109,10 +1109,13 @@
     <string name="J802">Manalo at maliit</string>
     <string name="J803">Manalo at Parehong koponan upang makapuntos - Oo</string>
     <string name="J804">Panalo at Parehong koponan upang makapuntos - Hindi</string>
+    <string name="recharge_state_success">Tagumpay</string>
+
+    <string name="set_phone_no">Set Phone Number</string>
+    <string name="set_email">Set Email</string>
     <string name="edit_phone_no">Baguhin Ang Phone Number</string>
     <string name="edit_email">Baguhin Ang Email</string>
     <string name="new_phone_no">Bagong Phone Number</string>
-    <string name="recharge_state_success">Tagumpay</string>
     <string name="new_email">Bagong Email</string>
     <string name="verify">Pag-verify</string>
     <string name="verify_phone_no">Pag-verify ng phone</string>
