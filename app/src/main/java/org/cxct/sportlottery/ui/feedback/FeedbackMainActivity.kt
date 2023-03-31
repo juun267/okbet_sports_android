@@ -6,7 +6,7 @@ import kotlinx.android.synthetic.main.activity_feedback_main.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 
 /**
  * @app_destination 建议反馈

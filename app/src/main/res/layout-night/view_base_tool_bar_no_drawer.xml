@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@color/color_191919"
     android:orientation="horizontal"
-    tools:context="org.cxct.sportlottery.ui.common.CustomTopToolbar">
+    tools:context="org.cxct.sportlottery.view.CustomTopToolbar">
 
     <TextView
         android:id="@+id/tv_toolbar_title"

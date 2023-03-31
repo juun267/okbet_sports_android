@@ -4,7 +4,7 @@ import android.view.View
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
+import org.cxct.sportlottery.ui.sport.common.OddStateViewHolder
 import java.util.*
 
 abstract class ViewHolderTimer(itemView: View) : OddStateViewHolder(itemView) {

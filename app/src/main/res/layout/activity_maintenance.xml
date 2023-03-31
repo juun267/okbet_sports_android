@@ -62,7 +62,7 @@
         tools:text="@string/if_there_is_any_question_please_consult" />
 
     <!--20220406 只有宣傳頁、主頁需顯示-->
-    <org.cxct.sportlottery.ui.common.ServiceFloatingButton
+    <org.cxct.sportlottery.view.floatingbtn.ServiceFloatingButton
         android:id="@+id/btn_floating_service"
         android:layout_width="match_parent"
         android:layout_height="44dp"

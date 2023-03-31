@@ -12,12 +12,12 @@ import kotlinx.android.synthetic.main.fragment_self_limit_bet.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.PassVerifyEnum
 import org.cxct.sportlottery.common.extentions.isEmptyStr
-import org.cxct.sportlottery.databinding.FragmentSelfLimitBetBinding
 import org.cxct.sportlottery.common.extentions.toIntS
+import org.cxct.sportlottery.databinding.FragmentSelfLimitBetBinding
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.common.CustomAlertDialog
-import org.cxct.sportlottery.ui.common.CustomPasswordVerifyDialog
+import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
+import org.cxct.sportlottery.ui.common.dialog.CustomPasswordVerifyDialog
 import org.cxct.sportlottery.util.TextUtil
 
 /**

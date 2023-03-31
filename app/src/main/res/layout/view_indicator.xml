@@ -13,7 +13,7 @@
     app:tabPaddingEnd="0dp"
     app:tabPaddingStart="0dp"
     app:tabRippleColor="@color/transparent_black_0"
-    tools:context="org.cxct.sportlottery.ui.common.IndicatorView">
+    tools:context="org.cxct.sportlottery.view.IndicatorView">
 
     <!-- 此處僅為預覽示意，實際上 tab 要動態添加 -->
     <com.google.android.material.tabs.TabItem

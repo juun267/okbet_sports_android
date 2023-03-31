@@ -94,13 +94,13 @@
             android:name=".ui.money.recharge.MoneyRechargeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.withdraw.WithdrawActivity"
+            android:name=".ui.money.withdraw.WithdrawActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.withdraw.WithdrawCommissionDetailActivity"
+            android:name=".ui.money.withdraw.WithdrawCommissionDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.withdraw.BankActivity"
+            android:name=".ui.money.withdraw.BankActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.results.ResultsSettlementActivity"

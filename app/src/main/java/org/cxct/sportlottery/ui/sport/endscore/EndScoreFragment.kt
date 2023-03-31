@@ -28,7 +28,6 @@ import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
-import org.cxct.sportlottery.ui.common.SocketGridManager
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
@@ -37,6 +36,7 @@ import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.bindExpanedAdapter
 import org.cxct.sportlottery.util.doOnVisiableRange
 import org.cxct.sportlottery.util.showErrorMsgDialog
+import org.cxct.sportlottery.view.layoutmanager.SocketGridManager
 import org.greenrobot.eventbus.Subscribe
 
 /**

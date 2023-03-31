@@ -6,10 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    tools:context="org.cxct.sportlottery.ui.withdraw.WithdrawCommissionDetailActivity"
+    tools:context="org.cxct.sportlottery.ui.money.withdraw.WithdrawCommissionDetailActivity"
     android:orientation="vertical">
 
-    <org.cxct.sportlottery.ui.common.CustomTopToolbar
+    <org.cxct.sportlottery.view.CustomTopToolbar
         android:id="@+id/custom_tool_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
 
     <!--根據需求先隱藏，確定不用可刪-->
     <!--20220406 只有宣傳頁、主頁需顯示-->
-    <!--<org.cxct.sportlottery.ui.common.ServiceFloatingButton
+    <!--<org.cxct.sportlottery.ui.common.floatingbtn.ServiceFloatingButton
         android:id="@+id/btn_floating_service"
         android:layout_width="match_parent"
         android:layout_height="44dp"

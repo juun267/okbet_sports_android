@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_131932_F0F5FA"
-    tools:context=".ui.withdraw.BankListFragment">
+    tools:context=".ui.money.withdraw.BankListFragment">
     <LinearLayout
 
         android:layout_marginTop="@dimen/margin_10"

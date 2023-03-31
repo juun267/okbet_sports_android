@@ -9,7 +9,7 @@
 
     <include layout="@layout/view_base_tool_bar_no_drawer" />
 
-    <org.cxct.sportlottery.ui.common.CustomTabLayout
+    <org.cxct.sportlottery.view.CustomTabLayout
         android:id="@+id/custom_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

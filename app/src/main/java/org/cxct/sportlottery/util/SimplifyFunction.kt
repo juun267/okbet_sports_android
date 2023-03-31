@@ -49,11 +49,11 @@ import org.cxct.sportlottery.network.service.close_play_cate.ClosePlayCateEvent
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.ui.common.CustomAlertDialog
-import org.cxct.sportlottery.ui.common.ExpanableOddsAdapter
-import org.cxct.sportlottery.ui.common.StatusSheetData
-import org.cxct.sportlottery.ui.component.StatusSpinnerAdapter
-import org.cxct.sportlottery.ui.game.ServiceDialog
+import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
+import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
+import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
+import org.cxct.sportlottery.view.statusSelector.StatusSpinnerAdapter
+import org.cxct.sportlottery.ui.common.dialog.ServiceDialog
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.live.HomeLiveAdapter

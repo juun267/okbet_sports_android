@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.ui.game.ServiceDialog
+import org.cxct.sportlottery.ui.common.dialog.ServiceDialog
 import org.cxct.sportlottery.util.AuthManager
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.setStartDrawable

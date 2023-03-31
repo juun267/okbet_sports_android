@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.sport.outright
 
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
@@ -10,7 +9,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import kotlinx.android.synthetic.main.button_odd_outright.view.*
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.outright.odds.CategoryOdds
-import org.cxct.sportlottery.ui.game.widget.OddsOutrightButton
+import org.cxct.sportlottery.ui.sport.oddsbtn.OddsOutrightButton
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 // 冠军列表-赔率

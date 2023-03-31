@@ -4,19 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_other_bet_record_detail.*
-import kotlinx.android.synthetic.main.fragment_other_bet_record_detail.iv_scroll_to_top
-import kotlinx.android.synthetic.main.fragment_other_bet_record_detail.layout_total
 import kotlinx.android.synthetic.main.view_total_record.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
-import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordViewModel
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.setMoneyColor
+import org.cxct.sportlottery.util.setProfitFormat
+
 /**
  * @app_destination 其他投注详情
  */

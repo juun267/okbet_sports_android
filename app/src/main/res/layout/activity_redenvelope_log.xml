@@ -7,7 +7,7 @@
     android:background="@color/color_141414_F3F4F5"
     tools:content="org.cxct.sportlottery.ui.finance.RechargeLogFragment">
 
-    <org.cxct.sportlottery.ui.component.DateRangeSearchView
+    <org.cxct.sportlottery.view.DateRangeSearchView
         android:id="@+id/date_range_selector"
         android:layout_width="match_parent"
         android:layout_height="42dp"

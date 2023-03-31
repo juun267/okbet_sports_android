@@ -40,12 +40,11 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
-import org.cxct.sportlottery.ui.common.StatusSheetData
-import org.cxct.sportlottery.ui.common.transform.TransformInDialog
-import org.cxct.sportlottery.ui.game.publicity.PublicityAnnouncementMarqueeAdapter
+import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.maintab.home.*
+import org.cxct.sportlottery.ui.maintab.publicity.AnnouncementMarqueeAdapter
 import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
@@ -53,6 +52,7 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.OKVideoPlayer
 import org.cxct.sportlottery.view.dialog.PopImageDialog
+import org.cxct.sportlottery.view.transform.TransformInDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -243,7 +243,6 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
                 hotHandicapAdapter.oddsType = oddsType
             }
         }
-
         viewModel.betInfoList.observe(viewLifecycleOwner) { event ->
             hotHandicapAdapter.betInfoList = event.peekContent()
         }
@@ -667,7 +666,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
     }
 
     private fun setupAnnouncement(titleList: List<String>) {
-        var marqueeAdapter = PublicityAnnouncementMarqueeAdapter()
+        var marqueeAdapter = AnnouncementMarqueeAdapter()
         lin_announcement.setOnClickListener {
             startActivity(Intent(requireActivity(), NewsActivity::class.java))
         }

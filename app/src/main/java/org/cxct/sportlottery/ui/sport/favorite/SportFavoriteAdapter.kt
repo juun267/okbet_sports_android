@@ -11,8 +11,8 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.ui.game.common.LeagueOddListener
-import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
+import org.cxct.sportlottery.ui.sport.common.LeagueOddListener
+import org.cxct.sportlottery.ui.sport.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.sport.vh.SportFavoriteViewHolder
 import org.cxct.sportlottery.ui.sport.vh.ViewHolderTimer
 

@@ -17,12 +17,12 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.sport.SearchResponse
 import org.cxct.sportlottery.network.sport.SearchResult
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.sport.SportViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.view.VerticalDecoration
 import org.cxct.sportlottery.view.highLightTextView.HighlightTextView
+import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 
 
 class SportSearchtActivity :

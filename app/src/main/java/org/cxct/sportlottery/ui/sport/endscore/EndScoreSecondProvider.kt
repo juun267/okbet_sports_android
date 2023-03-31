@@ -7,7 +7,6 @@ import com.chad.library.adapter.base.provider.BaseNodeProvider
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.ui.game.widget.OddsOutrightButton
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setTeamLogo
 

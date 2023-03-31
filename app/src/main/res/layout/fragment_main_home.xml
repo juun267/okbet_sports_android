@@ -107,7 +107,7 @@
                     android:contentDescription="@null"
                     android:src="@drawable/icon_notice" />
 
-                <org.cxct.sportlottery.ui.common.AutoScrollRecyclerView
+                <org.cxct.sportlottery.view.AutoScrollRecyclerView
                     android:id="@+id/rv_marquee"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"

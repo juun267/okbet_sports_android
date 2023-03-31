@@ -16,8 +16,8 @@ import kotlinx.android.synthetic.main.component_date_range_selector.view.*
 import kotlinx.android.synthetic.main.view_no_record.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.view.DividerItemDecorator
 
 class RedEnvelopeHistoryFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
 

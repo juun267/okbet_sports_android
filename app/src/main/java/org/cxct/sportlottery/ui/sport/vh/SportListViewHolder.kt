@@ -17,13 +17,13 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.TimeCounting
-import org.cxct.sportlottery.ui.common.CustomLinearLayoutManager
-import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
-import org.cxct.sportlottery.ui.game.common.LeagueOddListener
-import org.cxct.sportlottery.ui.game.common.OddButtonListener
-import org.cxct.sportlottery.ui.game.common.OddButtonPagerAdapter
+import org.cxct.sportlottery.ui.sport.common.LeagueOddListener
+import org.cxct.sportlottery.ui.sport.common.OddButtonListener
+import org.cxct.sportlottery.ui.sport.common.OddButtonPagerAdapter
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setTeamLogo
+import org.cxct.sportlottery.view.layoutmanager.CustomLinearLayoutManager
+import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 
 class SportListViewHolder constructor(
     itemView: View,

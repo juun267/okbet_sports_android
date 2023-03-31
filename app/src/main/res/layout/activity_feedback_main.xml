@@ -7,14 +7,14 @@
     android:background="@color/color_141414_F3F4F5"
     tools:context=".ui.feedback.FeedbackMainActivity">
 
-    <org.cxct.sportlottery.ui.common.CustomTopToolbar
+    <org.cxct.sportlottery.view.CustomTopToolbar
         android:id="@+id/custom_tool_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:topTitleText="@string/sport_bet_record" />
 
-    <org.cxct.sportlottery.ui.common.CustomTabLayout
+    <org.cxct.sportlottery.view.CustomTabLayout
         android:id="@+id/custom_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
