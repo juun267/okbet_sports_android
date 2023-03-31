@@ -188,10 +188,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
         initToolBar()
         initPlayView()
 
-        iv_customer_service.setOnClickListener {
-            clickCustomService(requireContext(), childFragmentManager)
-        }
-
+        iv_customer_service.setServiceClick(childFragmentManager)
         MainHomeItemHelper.fillingItems(tabLinearLayout, ::onTabClick)
 
         initHotHandicap()

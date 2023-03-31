@@ -311,7 +311,7 @@ class ModifyBindInfoActivity: BaseActivity<BindInfoViewModel>(BindInfoViewModel:
 
         sendCodeResult.observe(this@ModifyBindInfoActivity) { smsResult-> // 发送验证码
             hideLoading()
-            ToastUtil.showToast(this@ModifyBindInfoActivity, smsResult.msg)
+            ToastUtil.showToast(this@ModifyBindInfoActivity, smsResult.getData()?.msg)
             if (smsResult.succeeded()) {
                 userName = smsResult.getData()?.userName
                 codeCountDown()
