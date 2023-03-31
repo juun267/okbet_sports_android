@@ -325,7 +325,7 @@
                 android:layout_marginBottom="@dimen/margin_30"
                 android:layout_marginTop="@dimen/margin_20"
                 android:background="@drawable/ic_submit"
-                android:text="@string/next_step"
+                android:text="@string/next"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/textSize17sp"
                 android:alpha="0.5"
