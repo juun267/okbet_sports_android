@@ -13,7 +13,7 @@ import org.cxct.sportlottery.network.bet.MatchOdd
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.bet.settledDetailList.ParlayComsDetailVO
 import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.ui.transactionStatus.ParlayType
+import org.cxct.sportlottery.ui.betRecord.ParlayType
 import org.cxct.sportlottery.util.*
 
 class TransactionRecordDetailAdapter :

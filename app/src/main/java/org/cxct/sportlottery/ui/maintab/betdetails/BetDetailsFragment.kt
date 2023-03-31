@@ -5,7 +5,7 @@ import kotlinx.android.synthetic.main.fragment_bet_details.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.game.betList.BetListViewModel
+import org.cxct.sportlottery.ui.betList.BetListViewModel
 
 class BetDetailsFragment : BaseFragment<BetListViewModel>(BetListViewModel::class) {
     //复制的注单列表的适配器
