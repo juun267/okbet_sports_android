@@ -29,7 +29,6 @@ const val KEY_PWD = "pwd"
 const val KEY_PLATFORM_ID = "platformId"
 const val KEY_REMEMBER_PWD = "remember_pwd"
 const val KEY_ODDS_TYPE = "oddsType"
-const val KEY_IS_CREDIT_ACCOUNT = "is_credit_account"
 const val KEY_DISCOUNT = "discount"
 const val KEY_USER_ID = "user_id"
 const val KEY_USER_LEVEL_ID = "user_Level_Id"
@@ -47,10 +46,7 @@ object LoginRepository {
     val kickedOut: LiveData<Event<String?>>
         get() = _kickedOut
 
-    val transNum: LiveData<Int?> //交易狀況數量
-        get() = _transNum
-
-    val _isLogin = MutableLiveData<Boolean>()
+    val _isLogin by lazy { MutableLiveData(MultiLanguagesApplication.mInstance.userInfo != null) }
     val _kickedOut = MutableLiveData<Event<String?>>()
     private val _transNum = MutableLiveData<Int?>()
 
