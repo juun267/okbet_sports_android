@@ -119,8 +119,17 @@ fun setMatchScore(matchInfo: MatchInfo, tvHomeScore: TextView, tvAwayScore: Text
  * 网球和羽毛球  排球，乒乓球 显示局比分
  */
 fun TextView.setMatchRoundScore(matchInfo: MatchInfo) {
+    isVisible = true
     if (matchInfo.socketMatchStatus == GameMatchStatus.HIDE_SCORE.value) {
-        isVisible = false
+        val spanny = Spanny()
+        matchInfo.matchStatusList?.forEachIndexed { index, it ->
+            val spanScore = "${it.homeScore ?: 0}-${it.awayScore ?: 0}"
+            if (index > 0) {
+                spanny.append(spanScore)
+                spanny.append("  ")
+            }
+        }
+        text = spanny
     } else {
         matchInfo.matchStatusList?.let { matchStatusList ->
             val spanny = Spanny()
@@ -151,7 +160,6 @@ fun TextView.setMatchRoundScore(matchInfo: MatchInfo) {
                 }
             }
             text = spanny
-            isVisible = true
         }
     }
 }
