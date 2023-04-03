@@ -19,7 +19,6 @@ import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -213,6 +212,6 @@ class HomeToolbarView: LinearLayout {
             0.5f).apply {
             duration = 1000
         })
-        viewModel.getMoney()
+        viewModel.getMoneyAndTransferOut()
     }
 }

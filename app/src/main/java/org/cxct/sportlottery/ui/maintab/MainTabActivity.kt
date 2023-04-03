@@ -331,7 +331,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         betListCount = num
         setupBetBarVisiblity(bottom_navigation_view.currentItem)
         parlayFloatWindow.tv_bet_list_count.text = betListCount.toString()
-        if (num > 0) viewModel.getMoney()
+        if (num > 0) viewModel.getMoneyAndTransferOut()
     }
 
 

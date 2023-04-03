@@ -504,7 +504,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                     showPromptDialog(
                         getString(R.string.prompt),
                         getString(R.string.text_money_get_success)
-                    ) { viewModel.getMoney() }
+                    ) { viewModel.getMoneyAndTransferOut() }
                 } else {
                    showErrorPromptDialog(getString(R.string.prompt), it.msg) {}
                 }

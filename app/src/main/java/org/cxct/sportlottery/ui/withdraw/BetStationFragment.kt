@@ -356,7 +356,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                 showPromptDialog(
                     getString(R.string.prompt),
                     getString(R.string.submit_success)
-                ) { viewModel.getMoney() }
+                ) { viewModel.getMoneyAndTransferOut() }
             } else {
                 showErrorPromptDialog(getString(R.string.prompt), it.msg) {}
             }

@@ -226,8 +226,7 @@ class ProfileCenterFragment :
 
     private fun getMoney() {
         btn_refresh_money.refreshMoneyLoading()
-        viewModel.allTransferOut()
-        viewModel.getMoney()
+        viewModel.getMoneyAndTransferOut()
     }
 
     private fun setupLogout() {

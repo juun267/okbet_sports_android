@@ -714,7 +714,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         viewModel.isLogin.observe(this.viewLifecycleOwner) {
             setupBetButtonType(it)
             if (needUpdateBetLimit) {
-                viewModel.getMoney()
+                viewModel.getMoneyAndTransferOut()
                 viewModel.updateBetLimit()
                 needUpdateBetLimit = false
             }
@@ -1027,7 +1027,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
 
     private fun queryData() {
         //獲取餘額
-        viewModel.getMoney()
+        viewModel.getMoneyAndTransferOut()
     }
 
     /**

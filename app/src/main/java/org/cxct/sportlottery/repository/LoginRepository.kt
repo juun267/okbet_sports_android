@@ -132,7 +132,12 @@ object LoginRepository {
     }
 
     var lastMoneyTime = 0L
-    suspend fun getMoney() {
+
+    /**
+     *  获取平台余额，并转出三方游戏余额
+     *  allTransferOut：是否要转出检查
+     */
+    suspend fun getMoneyAndTransferOut(allTransferOut: Boolean = true) {
         if (!isLogined()) {
             mUserMoney.postValue(0.0)
             return
@@ -146,7 +151,7 @@ object LoginRepository {
         lastMoneyTime = time
         withContext(Dispatchers.IO) {
 
-            if (isThirdTransferOpen()) { //如果三方游戏额度自动转换开启
+            if (allTransferOut && isThirdTransferOpen()) { //如果三方游戏额度自动转换开启
                 kotlin.runCatching { OneBoSportApi.thirdGameService.allTransferOut() }
             }
 

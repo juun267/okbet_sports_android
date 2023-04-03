@@ -269,7 +269,7 @@ class MoneyTransferViewModel(
                 _recycleAllMoneyResult.value = Event(result)
 
                 getAllBalance()
-                getMoney()
+                getMoneyAndTransferOut()
             }
         }
     }
@@ -289,7 +289,7 @@ class MoneyTransferViewModel(
                 _transferResult.value = Event(result)
 
                 getAllBalance()
-                getMoney()
+                getMoneyAndTransferOut()
             }
         }
     }
