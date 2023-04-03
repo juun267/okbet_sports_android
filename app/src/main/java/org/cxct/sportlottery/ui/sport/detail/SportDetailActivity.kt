@@ -1125,6 +1125,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private fun setTnScoreText(matchInfo: MatchInfo) {
         setScoreTextAtFront(matchInfo)
         setAllScoreTextAtBottom(matchInfo)
+        setPointScore(matchInfo)
         setSptText(matchInfo)
         setCurrentPeroid(matchInfo)
         setAttack(matchInfo)
@@ -1282,7 +1283,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 else -> View.GONE
             }
             text = when (matchInfo.gameType) {
-                GameType.VB.key, GameType.TT.key, GameType.BM.key -> (matchInfo.homeTotalScore
+                GameType.VB.key, GameType.TT.key, GameType.BM.key, GameType.TN.key -> (matchInfo.homeTotalScore
                     ?: 0).toString() + " - " + (matchInfo.awayTotalScore ?: 0).toString()
                 else -> (matchInfo.homeScore ?: 0).toString() + " - " + (matchInfo.awayScore
                     ?: 0).toString()
@@ -1299,6 +1300,13 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         tv_peroids_score.setMatchRoundScore(matchInfo)
     }
 
+    /**
+     * 网球设置局比分显示
+     */
+    private fun setPointScore(matchInfo: MatchInfo) {
+        tv_point_score.isVisible = TimeUtil.isTimeInPlay(matchInfo.startTime)
+        tv_point_score.text = "(${matchInfo.homePoints ?: "0"}-${matchInfo.awayPoints ?: "0"})"
+    }
 
     private fun setStatusText(matchInfo: MatchInfo) {
         tv_match_status.text = when {
