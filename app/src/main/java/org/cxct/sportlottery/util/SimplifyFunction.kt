@@ -56,6 +56,8 @@ import org.cxct.sportlottery.view.statusSelector.StatusSpinnerAdapter
 import org.cxct.sportlottery.ui.common.dialog.ServiceDialog
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
+import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.live.HomeLiveAdapter
 import org.cxct.sportlottery.ui.maintab.live.ItemHomeLiveHolder
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteAdapter
@@ -1241,5 +1243,28 @@ fun View.bindExpanedAdapter(adapter: ExpanableOddsAdapter, block: ((Boolean) -> 
             rotationAnimation(0f)
         }
     }
+}
+
+fun BaseFragment<MainHomeViewModel>.enterThirdGame(result: EnterThirdGameResult, firmType: String) {
+    hideLoading()
+    when (result.resultType) {
+        EnterThirdGameResult.ResultType.SUCCESS -> context?.run {
+            JumpUtil.toThirdGameWeb(this, result.url ?: "", firmType)
+        }
+        EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(
+            getString(R.string.prompt),
+            result.errorMsg ?: ""
+        ) {}
+        EnterThirdGameResult.ResultType.NEED_REGISTER -> requireActivity().startRegister()
+
+        EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(
+            getString(R.string.error),
+            result.errorMsg ?: ""
+        ) {}
+        EnterThirdGameResult.ResultType.NONE -> {
+        }
+    }
+    if (result.resultType != EnterThirdGameResult.ResultType.NONE)
+        viewModel.clearThirdGame()
 }
 
