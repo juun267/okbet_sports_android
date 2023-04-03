@@ -97,7 +97,7 @@ abstract class BaseOddButtonViewModel(
     }
 
     fun getMoneyAndTransferOut(allTransferOut: Boolean = true) {
-        viewModelScope.launch { LoginRepository.getMoney(allTransferOut) }
+        viewModelScope.launch { LoginRepository.getMoneyAndTransferOut(allTransferOut) }
     }
 
     fun getLockMoney() {

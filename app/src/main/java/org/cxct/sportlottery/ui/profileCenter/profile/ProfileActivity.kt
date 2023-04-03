@@ -12,7 +12,9 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.index.config.VerifySwitchType
+import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.common.extentions.load
+import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
@@ -32,9 +34,8 @@ import org.cxct.sportlottery.ui.profileCenter.modify.VerificationWaysActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity.Companion.MODIFY_INFO
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
-import org.cxct.sportlottery.util.LocalUtils
-import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.isStatusOpen
 import org.cxct.sportlottery.util.phoneNumCheckDialog
 import timber.log.Timber
 import java.io.File
@@ -86,7 +87,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 e.printStackTrace()
                 ToastUtil.showToastInCenter(
                     this@ProfileActivity,
-                    LocalUtils.getString(R.string.error_reading_file)
+                    getString(R.string.error_reading_file)
                 )
             }
         }
@@ -121,7 +122,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     }
 
     private fun initView() {
-        custom_tool_bar.titleText = LocalUtils.getString(R.string.profile_info)
+        custom_tool_bar.titleText = getString(R.string.profile_info)
         sConfigData?.apply {
             ll_qq_number.isVisible = enableWithdrawQQ.isStatusOpen()
             ll_e_mail.isVisible = enableWithdrawEmail.isStatusOpen()
@@ -133,7 +134,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         ll_e_mail.isVisible = true
         ll_phone_number.isVisible = true
 
-        tv_pass_word.text = if (viewModel.userInfo.value?.passwordSet == true) LocalUtils.getString(R.string.set) else LocalUtils.getString(R.string.edit)
+        tv_pass_word.text = if (viewModel.userInfo.value?.passwordSet == true) getString(R.string.set) else getString(R.string.edit)
     }
 
     private fun initButton() {
@@ -214,7 +215,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 return@observe
             }
 
-            showPromptDialog(LocalUtils.getString(R.string.prompt), LocalUtils.getString(R.string.save_avatar_success)) {}
+            showPromptDialog(getString(R.string.prompt), getString(R.string.save_avatar_success)) {}
         }
 
         viewModel.userInfo.observe(this) {
@@ -224,33 +225,33 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             tv_id.text = it?.userId?.toString()
             tv_real_name.text = it?.fullName
             ll_verified.isVisible = sConfigData?.realNameWithdrawVerified.isStatusOpen() || sConfigData?.realNameRechargeVerified.isStatusOpen()
-            tv_pass_word.text = if (it?.passwordSet == true) LocalUtils.getString(R.string.set) else LocalUtils.getString(R.string.edit)
+            tv_pass_word.text = if (it?.passwordSet == true) getString(R.string.set) else getString(R.string.edit)
             when (it?.verified) {
                 VerifiedType.PASSED.value -> {
                     ll_verified.isEnabled = false
                     ll_verified.isClickable = false
-                    tv_verified.text = LocalUtils.getString(R.string.kyc_passed)
+                    tv_verified.text = getString(R.string.kyc_passed)
 
                     icon_identity.visibility = View.GONE
                 }
                 VerifiedType.NOT_YET.value -> {
                     ll_verified.isEnabled = true
                     ll_verified.isClickable = true
-                    tv_verified.text = LocalUtils.getString(R.string.kyc_unverified)
+                    tv_verified.text = getString(R.string.kyc_unverified)
 
                     icon_identity.visibility = View.VISIBLE
                 }
                 VerifiedType.VERIFYING.value -> {
                     ll_verified.isEnabled = false
                     ll_verified.isClickable = false
-                    tv_verified.text = LocalUtils.getString(R.string.kyc_unverifing)
+                    tv_verified.text = getString(R.string.kyc_unverifing)
 
                     icon_identity.visibility = View.GONE
                 }
                 else -> {
                     ll_verified.isEnabled = true
                     ll_verified.isClickable = true
-                    tv_verified.text = LocalUtils.getString(R.string.kyc_unverified)
+                    tv_verified.text = getString(R.string.kyc_unverified)
 
                     icon_identity.visibility = View.VISIBLE
                 }
@@ -292,7 +293,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
         //簡訊驗證失敗
         viewModel.errorMessageDialog.observe(this) {
-            val errorMsg = it ?: LocalUtils.getString(R.string.unknown_error)
+            val errorMsg = it ?: getString(R.string.unknown_error)
             CustomAlertDialog(this).apply {
                 setMessage(errorMsg)
                 setNegativeButtonText(null)
