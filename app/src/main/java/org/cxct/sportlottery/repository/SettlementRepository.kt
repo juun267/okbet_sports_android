@@ -13,11 +13,19 @@ import retrofit2.Response
 
 class SettlementRepository() {
 
-    suspend fun resultList(pagingParams: PagingParams?, timeRangeParams: TimeRangeParams, gameType: String): Response<MatchResultListResult> {
+    suspend fun resultList(
+        pagingParams: PagingParams?,
+        timeRangeParams: TimeRangeParams,
+        gameType: String,
+        matchId:String? = null ,
+        leagueId:String? = null ,
+    ): Response<MatchResultListResult> {
 
         return OneBoSportApi.matchResultService.getMatchResultList(
             MatchResultListRequest(
                 gameType = gameType,
+                matchId = matchId,
+                leagueId = leagueId,
                 page = pagingParams?.page,
                 pageSize = pagingParams?.pageSize,
                 startTime = timeRangeParams.startTime,

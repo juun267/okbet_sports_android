@@ -48,9 +48,14 @@ data class Row (
     val win: Double?,
     @Json(name = "winnable")
     val winnable: Double?,
+    @Json(name = "leagueId")
+    val leagueId: String?,
+    @Json(name = "matchId")
+    val matchId: String?,
     @Json(name = "rtScore")
     val rtScore: String?,
     @Json(name = "parlayComsDetailVOs")
     val parlayComsDetailVOs: List<ParlayComsDetailVO>?
+
 
     )
