@@ -1174,4 +1174,18 @@
 
 
     <string name="bet_details_title" >Chi tiết tổ hợp xâu</string>
+
+    <string name="set_phone_no">Đặt SĐT</string>
+    <string name="set_email">Cài đặt email</string>
+    <string name="edit_phone_no">Thay đổi SĐT</string>
+    <string name="edit_email">Thay đổi email</string>
+    <string name="new_phone_no">SĐT mới</string>
+    <string name="new_email">Email mới</string>
+    <string name="verify">Xác minh</string>
+    <string name="verify_phone_no">Xác minh SĐT</string>
+    <string name="verify_email">Xác minh email</string>
+    <string name="back_to_my_details">Về trang cá nhân</string>
+    <string name="sms_code_length_error">Mã xác nhận ít nhất 4 ký tự</string>
+    <string name="phone_no_error">SĐT gồm 11 số, và 09 bắt đầu</string>
+
 </resources>

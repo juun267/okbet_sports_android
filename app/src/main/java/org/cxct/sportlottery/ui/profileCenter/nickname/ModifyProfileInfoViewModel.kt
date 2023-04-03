@@ -64,7 +64,7 @@ class ModifyProfileInfoViewModel(
         get() = _withdrawInfoResult
 
 
-    fun confirmProfileInfo(modifyType: ModifyType, inputContent: String) {
+    fun confirmProfileInfo(modifyType: @ModifyType Int, inputContent: String) {
         if (checkInput(modifyType, inputContent)) {
             //暱稱設定是獨立一隻api
             if (modifyType == ModifyType.NickName) {
@@ -75,7 +75,7 @@ class ModifyProfileInfoViewModel(
         }
     }
 
-    fun checkInput(modifyType: ModifyType, inputContent: String): Boolean {
+    fun checkInput(modifyType: @ModifyType Int, inputContent: String): Boolean {
         return when (modifyType) {
             ModifyType.RealName -> {
                 checkFullName(androidContext, inputContent)
@@ -101,11 +101,14 @@ class ModifyProfileInfoViewModel(
                 checkNickname(androidContext, inputContent)
                 nickNameErrorMsg.value == ""
             }
+            else -> {
+                false
+            }
         }
 
     }
 
-    private fun setWithdrawInfo(modifyType: ModifyType, inputContent: String) {
+    private fun setWithdrawInfo(modifyType: @ModifyType Int, inputContent: String) {
         loading()
         viewModelScope.launch {
             doNetwork(androidContext) {
@@ -120,7 +123,7 @@ class ModifyProfileInfoViewModel(
         }
     }
 
-    private fun createWithdrawInfoRequest(modifyType: ModifyType, inputContent: String): WithdrawInfoRequest {
+    private fun createWithdrawInfoRequest(modifyType: @ModifyType Int, inputContent: String): WithdrawInfoRequest {
         val userId = loginRepository.userId
         return when (modifyType) {
             ModifyType.RealName -> {
@@ -134,7 +137,7 @@ class ModifyProfileInfoViewModel(
         }
     }
 
-    private suspend fun updateUserInfoDao(modifyType: ModifyType, inputContent: String) {
+    private suspend fun updateUserInfoDao(modifyType: @ModifyType Int, inputContent: String) {
         userInfoRepository.apply {
             val userId = userInfo?.value?.userId ?: -1
             when (modifyType) {

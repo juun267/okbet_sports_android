@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.splash
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatDelegate
 import com.gyf.immersionbar.ImmersionBar
 import com.tencent.mmkv.MMKV
 import kotlinx.android.synthetic.main.activity_splash.*
@@ -22,12 +23,14 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.system.exitProcess
 
+
 /**
  * @app_destination 啟動頁
  */
 class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
     private val mVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

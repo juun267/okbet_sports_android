@@ -642,7 +642,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
     //取得餘額
     private fun getMoney() {
-        viewModel.getMoney()
+        viewModel.getMoneyAndTransferOut()
     }
 
     //修改hint

@@ -340,7 +340,7 @@ fun EditText.checkPhoneNum(textFieldBoxes: TextFormFieldBoxes, onResult: ((Strin
         val msg = when {
             phoneNum.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyPhone(phoneNum) -> {
-                LocalUtils.getString(R.string.pls_enter_correct_mobile)
+                LocalUtils.getString(R.string.phone_no_error)
             }
             else -> null
         }
@@ -354,6 +354,7 @@ fun EditText.checkSMSCode(textFieldBoxes: TextFormFieldBoxes, onResult: ((String
     checkRegisterListener { smsCode->
         val msg = when {
             smsCode.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            smsCode.length < 4 -> textFieldBoxes.context.getString(R.string.sms_code_length_error)
             !VerifyConstUtil.verifySMSCode(smsCode, 4) -> LocalUtils.getString(R.string.error_verification_code_by_sms)
             else -> null
         }
