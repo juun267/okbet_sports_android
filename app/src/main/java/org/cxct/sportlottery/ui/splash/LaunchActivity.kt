@@ -16,6 +16,7 @@ import com.youth.banner.indicator.RectangleIndicator
 import com.youth.banner.listener.OnPageChangeListener
 import kotlinx.android.synthetic.main.activity_launch.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
@@ -100,7 +101,7 @@ class LaunchActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
                 }
             })
-            .setLoopTime((sConfigData?.carouselInterval ?: 3) * 1000L)
+            .setLoopTime((sConfigData?.carouselInterval?.toIntS(3) ?: 3) * 1000L)
             .isAutoLoop(!isFirstOpen)
             .start()
         updateStartBtn()

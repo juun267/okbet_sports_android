@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.sport.vh
 
 import android.annotation.SuppressLint
 import android.view.View
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -308,8 +309,8 @@ class SportListViewHolder constructor(
             content_baseball_status.isVisible = false
             ic_attack_h.isVisible = false
             ic_attack_c.isVisible = false
-            ic_attack_tn_h.isVisible = false
-            ic_attack_tn_c.isVisible = false
+            ic_attack_tn_h.isInvisible = true
+            ic_attack_tn_c.isInvisible = true
             lin_home_round_score.isVisible = false
             lin_away_round_score.isVisible = false
             league_odd_yellow_cards_home.isVisible = false
@@ -449,7 +450,7 @@ class SportListViewHolder constructor(
             //设置盘比，局比，分数
             setTNRoundScore(matchInfo = matchInfo,
                 tvHomeTotalScore = league_odd_match_total_score_home_bottom,
-                tvAwayTotalScore = league_odd_match_total_score_home_bottom,
+                tvAwayTotalScore = league_odd_match_total_score_away_bottom,
                 tvHomeScore = league_odd_match_score_home_bottom,
                 tvAwayScore = league_odd_match_score_away_bottom,
                 tvHomePoints = league_odd_match_point_home_bottom,
