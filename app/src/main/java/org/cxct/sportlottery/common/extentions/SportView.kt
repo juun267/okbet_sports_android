@@ -124,9 +124,11 @@ fun TextView.setMatchRoundScore(matchInfo: MatchInfo) {
         val spanny = Spanny()
         matchInfo.matchStatusList?.forEachIndexed { index, it ->
             val spanScore = "${it.homeScore ?: 0}-${it.awayScore ?: 0}"
-            if (index > 0) {
+            if (index == 0) {
                 spanny.append(spanScore)
-                spanny.append("  ")
+            } else {
+                spanny.append(" ")
+                spanny.append(spanScore)
             }
         }
         text = spanny
