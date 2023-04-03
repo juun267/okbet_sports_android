@@ -129,9 +129,6 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             ll_real_name.isVisible = enableWithdrawFullName.isStatusOpen()
         }
 
-        ll_e_mail.isVisible = true
-        ll_phone_number.isVisible = true
-
         tv_pass_word.text = if (viewModel.userInfo.value?.passwordSet == true) LocalUtils.getString(R.string.set) else LocalUtils.getString(R.string.edit)
     }
 
