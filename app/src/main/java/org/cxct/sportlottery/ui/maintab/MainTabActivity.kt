@@ -120,7 +120,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         activityInstance = this
         EventBusUtil.targetLifecycle(this)
         LotteryManager.instance.getLotteryInfo()
-
 //        GlobalScope.launch {
 //            delay(5000)
 //            val redEnvelopeReceiveDialog = RedEnvelopeReceiveDialog(123)

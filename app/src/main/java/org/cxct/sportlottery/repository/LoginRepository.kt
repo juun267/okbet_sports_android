@@ -206,10 +206,17 @@ object LoginRepository {
         return loginResponse
     }
 
-    suspend fun loginOrReg(loginRequest: LoginRequest): Response<LoginResult> {
+    /**
+     * isNeedComplete 是否需要完善信息
+     */
+    suspend fun loginOrReg(loginRequest: LoginRequest,isNeedComplete:Boolean=false): Response<LoginResult> {
         val loginResponse = OneBoSportApi.indexService.loginOrReg(loginRequest)
 
         if (loginResponse.isSuccessful) {
+            //需要完善信息，暂时不setUpLoginData
+            if(isNeedComplete){
+                return loginResponse
+            }
             loginResponse.body()?.let {
                 setUpLoginData(it.loginData)
             }

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/okbet_bg_login">
+
+
+    <include
+        android:id="@+id/v_top"
+        layout="@layout/view_status_bar" />
+
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="58dp"
+        android:text="Basic Information"
+        android:textSize="@dimen/textSize24sp" />
+
+
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="151dp"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="153dp"
+        android:src="@drawable/logo_okbet_color" />
+
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="14dp"
+        android:layout_marginTop="251dp"
+        android:background="@drawable/bg_white_radius_8"
+        android:elevation="1dp"
+        android:fadingEdge="none"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+            android:id="@+id/et_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintText="@string/login_hint_account_all"
+            app:isResponsiveIconColor="false"
+            app:labelText="@string/title_payer"
+            app:labelTextStyle="normal"
+            app:endIcon="@drawable/ic_arrow_gray"
+            app:primaryColor="@color/color_AFAFB1">
+
+            <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
+                android:id="@+id/eet_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textColor="@color/color_FFFFFF_DE000000"
+                android:textSize="@dimen/textSize14sp" />
+
+        </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
+    </ScrollView>
+
+
+    <include
+        android:id="@+id/bottom_liences"
+        layout="@layout/bottom_register_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/margin_48"
+        android:layout_marginBottom="@dimen/margin_20" />
+</RelativeLayout>

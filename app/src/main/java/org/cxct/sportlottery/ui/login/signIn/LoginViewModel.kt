@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.event.SingleEvent
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -29,6 +30,7 @@ class LoginViewModel(
     infoCenterRepository: InfoCenterRepository,
     protected val userInfoRepository: UserInfoRepository
 ) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+
     val loginFormState: LiveData<LoginFormState>
         get() = _loginFormState
     val loginResult: LiveData<LoginResult>
@@ -47,6 +49,9 @@ class LoginViewModel(
         get() = _inviteCodeMsg
     val checkUserExist: LiveData<Boolean>
         get() = _checkUserExist
+    //是否需要登录后完善信息开关
+    private val checkLoginComplete: LiveData<Boolean>
+        get() = _checkLoginComplete
 
     private val _isLoading = MutableLiveData<Boolean>()
     private val _loginFormState = MutableLiveData<LoginFormState>()
@@ -57,6 +62,8 @@ class LoginViewModel(
     private val _msgCodeResult = MutableLiveData<NetResult?>()
     private val _inviteCodeMsg = MutableLiveData<String?>()
     private val _checkUserExist = MutableLiveData<Boolean>()
+    //是否需要登录后完善信息开关
+    private val _checkLoginComplete = MutableLiveData<Boolean>()
 
     val accountMsg: LiveData<Pair<String?, Boolean>>
         get() = _accountMsg
@@ -81,6 +88,8 @@ class LoginViewModel(
     val loginEnable: LiveData<Boolean>
         get() = _loginEnable
     private val _loginEnable = MutableLiveData<Boolean>()
+    //跳转至完善信息监听
+    val registerInfoEvent by lazy { SingleEvent<LoginData>() }
 
     val account by lazy { loginRepository.account }
     val password by lazy { loginRepository.password }
@@ -106,7 +115,6 @@ class LoginViewModel(
         viewModelScope.launch {
             //預設存帳號
             loginRepository.account = loginRequest.account
-
             //勾選時記住密碼
 //            loginRepository.password = if (loginRepository.isRememberPWD) originalPassword else null
 
@@ -125,20 +133,35 @@ class LoginViewModel(
     }
 
     fun loginOrReg(loginRequest: LoginRequest) {
+        _checkLoginComplete.postValue(true)
         viewModelScope.launch {
             //預設存帳號
             loginRepository.account = loginRequest.account
 
             doNetwork(androidContext) {
-                loginRepository.loginOrReg(loginRequest)
+                loginRepository.loginOrReg(loginRequest,true)
             }?.let { result ->
-                userInfoRepository.getUserInfo()
-                _loginResult.postValue(result)
-                if (result.loginData?.ifnew == true) {
-                    AFInAppEventUtil.register("username")
-                } else {
-                    AFInAppEventUtil.login(result.loginData?.uid.toString())
+
+                checkLoginComplete.value?.let {needComplete->
+                    result.loginData?.let {loginData->
+                        //是否需要完善信息开关
+                        if(checkNeedCompleteInfo(needComplete,loginData)){
+                            registerInfoEvent.post(loginData)
+                        }else{
+                            userInfoRepository.getUserInfo()
+                            _loginResult.postValue(result)
+                            if (loginData?.ifnew == true) {
+                                AFInAppEventUtil.register("username")
+                            } else {
+                                AFInAppEventUtil.login(result.loginData?.uid.toString())
+                            }
+                        }
+                    }
+
+
+
                 }
+
             }
         }
     }
@@ -389,5 +412,16 @@ class LoginViewModel(
                 _checkUserExist.value = it.success
             }
         }
+    }
+
+
+    /**
+     * 是否需要完善基础信息
+     */
+    private fun checkNeedCompleteInfo(isComplete:Boolean,loginData: LoginData):Boolean{
+        if(loginData.ifnew==null){
+            return false
+        }
+        return isComplete&&loginData.ifnew!!
     }
 }
