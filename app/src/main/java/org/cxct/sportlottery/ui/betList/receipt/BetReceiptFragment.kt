@@ -153,7 +153,7 @@ class BetReceiptFragment :
                     }
                 }
                 //不管成功与否刷新当前金额
-                viewModel.getMoney()
+                viewModel.getMoneyAndTransferOut()
             }
         }
 

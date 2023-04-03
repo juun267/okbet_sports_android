@@ -226,8 +226,7 @@ class ProfileCenterFragment :
 
     private fun getMoney() {
         btn_refresh_money.refreshMoneyLoading()
-        viewModel.allTransferOut()
-        viewModel.getMoney()
+        viewModel.getMoneyAndTransferOut()
     }
 
     private fun setupLogout() {
@@ -386,9 +385,9 @@ class ProfileCenterFragment :
             updateUI(it)
         }
 
-        viewModel.navPublicityPage.observe(viewLifecycleOwner) {
+//        viewModel.navPublicityPage.observe(viewLifecycleOwner) {
 //            GamePublicityActivity.reStart(requireContext())
-        }
+//        }
 
         viewModel.withdrawSystemOperation.observe(viewLifecycleOwner) {
             val operation = it.getContentIfNotHandled()

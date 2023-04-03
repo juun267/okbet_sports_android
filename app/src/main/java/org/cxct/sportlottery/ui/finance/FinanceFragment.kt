@@ -49,7 +49,7 @@ class FinanceFragment : BaseSocketFragment<FinanceViewModel>(FinanceViewModel::c
     private fun setupRefreshBalance(view: View) {
         view.btn_refresh.setOnClickListener {
             it.refreshMoneyLoading()
-            viewModel.getMoney()
+            viewModel.getMoneyAndTransferOut()
             viewModel.getLockMoney()
         }
     }
@@ -174,7 +174,7 @@ class FinanceFragment : BaseSocketFragment<FinanceViewModel>(FinanceViewModel::c
     override fun onStart() {
         super.onStart()
 
-        viewModel.getMoney()
+        viewModel.getMoneyAndTransferOut()
         viewModel.getLockMoney()
     }
 }

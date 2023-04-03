@@ -360,7 +360,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         setUpBetBarVisible()
         cl_bet_list_bar.tv_bet_list_count.text = num.toString()
         Timber.e("num: $num")
-        if (num > 0) viewModel.getMoney()
+        if (num > 0) viewModel.getMoneyAndTransferOut()
     }
 
     override fun updateBetListOdds(list: MutableList<BetInfoListData>) {

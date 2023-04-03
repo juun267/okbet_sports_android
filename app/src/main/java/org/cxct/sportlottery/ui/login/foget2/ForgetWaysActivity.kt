@@ -22,11 +22,10 @@ class ForgetWaysActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::class) 
 
     private fun initView() {
         bindFinish(btn_back)
+        cl_live_chat.setServiceClick(supportFragmentManager)
         btnPhoneWays.setOnClickListener { ForgetPasswordActivity2.startByPhoneWays(this) }
         btnEmailWays.setOnClickListener { ForgetPasswordActivity2.startByEmailWays(this) }
-        cl_live_chat.setServiceClick(supportFragmentManager)
     }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {

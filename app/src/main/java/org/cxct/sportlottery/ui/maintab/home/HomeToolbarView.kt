@@ -19,7 +19,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
-import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -157,30 +157,29 @@ class HomeToolbarView: LinearLayout {
     }
 
     private fun bindMoneyText(money: Double) {
-        tvUserMoney.text = "${sConfigData?.systemCurrencySign} ${TextUtil.format(money)}"
+        tvUserMoney.text = "$showCurrencySign ${TextUtil.format(money)}"
         tvUserMoney.setVisibilityByMarketSwitch()
         ivRefreshMoney.setVisibilityByMarketSwitch()
     }
 
     private fun setupLogin() {
-        if (viewModel.isLogin.value == true) {
-            loginLayout.gone()
-            if (userModelEnable) {
-                searchView.gone()
-                userMoneyView.visible()
-                bindMoneyText(viewModel.userMoney?.value ?: 0.0)
-            } else {
-                searchView.visible()
-                userMoneyView.gone()
-            }
-
-
+        if (viewModel.isLogin.value != true) {
+            loginLayout.visible()
+            searchView.gone()
+            userMoneyView.gone()
             return
         }
 
-        loginLayout.visible()
-        searchView.gone()
-        userMoneyView.gone()
+        loginLayout.gone()
+        if (userModelEnable) {
+            searchView.gone()
+            userMoneyView.visible()
+            bindMoneyText(viewModel.userMoney?.value ?: 0.0)
+        } else {
+            searchView.visible()
+            userMoneyView.gone()
+        }
+
     }
 
     fun attach(fragment: Fragment, activity: MainTabActivity, viewModel: BaseOddButtonViewModel, moneyViewEnable: Boolean = true) {
@@ -214,6 +213,6 @@ class HomeToolbarView: LinearLayout {
             0.5f).apply {
             duration = 1000
         })
-        viewModel.getMoney()
+        viewModel.getMoneyAndTransferOut()
     }
 }
