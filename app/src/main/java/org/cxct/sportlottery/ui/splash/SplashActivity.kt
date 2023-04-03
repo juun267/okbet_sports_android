@@ -8,6 +8,7 @@ import com.tencent.mmkv.MMKV
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
@@ -134,7 +135,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                 it.imageName1!!
             }
             MMKV.defaultMMKV().putBoolean("isFirstOpen", false)
-            if (imageUrls?.isNullOrEmpty() == false && sConfigData?.androidCarouselStatus == 1) {
+            if (imageUrls?.isNullOrEmpty() == false && sConfigData?.androidCarouselStatus?.toIntS(0) == 1) {
                 LaunchActivity.start(this, it, imageUrls = ArrayList(imageUrls))
             } else {
                 when (it) {
