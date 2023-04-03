@@ -135,8 +135,9 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                 it.imageName1!!
             }
             MMKV.defaultMMKV().putBoolean("isFirstOpen", false)
-            if (imageUrls?.isNullOrEmpty() == false && sConfigData?.androidCarouselStatus?.toIntS(0) == 1) {
+            if (imageUrls?.isEmpty() == false && sConfigData?.androidCarouselStatus?.toIntS(0) == 1) {
                 LaunchActivity.start(this, it, imageUrls = ArrayList(imageUrls))
+                finish()
             } else {
                 when (it) {
                     true -> {
