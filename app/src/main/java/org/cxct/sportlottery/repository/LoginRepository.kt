@@ -50,7 +50,7 @@ object LoginRepository {
     val transNum: LiveData<Int?> //交易狀況數量
         get() = _transNum
 
-    val _isLogin = MutableLiveData<Boolean>()
+    val _isLogin by lazy { MutableLiveData(MultiLanguagesApplication.mInstance.userInfo.value != null) }
     val _kickedOut = MutableLiveData<Event<String?>>()
     private val _transNum = MutableLiveData<Int?>()
 
