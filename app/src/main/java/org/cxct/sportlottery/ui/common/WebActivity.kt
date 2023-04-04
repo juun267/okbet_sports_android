@@ -116,7 +116,7 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
         settings.javaScriptCanOpenWindowsAutomatically = true
         settings.defaultTextEncodingName = "utf-8"
-        settings.cacheMode = WebSettings.LOAD_NO_CACHE
+        settings.cacheMode = WebSettings.LOAD_DEFAULT
         settings.databaseEnabled = false
 //        settings.setAppCacheEnabled(false)
 
