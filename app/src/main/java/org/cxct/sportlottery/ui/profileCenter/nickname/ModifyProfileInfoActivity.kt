@@ -24,7 +24,7 @@ import org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
  */
 class ModifyProfileInfoActivity :
     BaseSocketActivity<ModifyProfileInfoViewModel>(ModifyProfileInfoViewModel::class) {
-    private val modifyType by lazy { intent.getSerializableExtra(MODIFY_INFO) }
+    private val modifyType by lazy { intent.getIntExtra(MODIFY_INFO, ModifyType.NickName) }
 
     companion object {
         const val MODIFY_INFO = "MODIFY_INFO"
@@ -125,7 +125,7 @@ class ModifyProfileInfoActivity :
 
         editText.setOnFocusChangeListener { v, hasFocus ->
             if (!hasFocus)
-                viewModel.checkInput(modifyType as ModifyType, editText.text.toString())
+                viewModel.checkInput(modifyType, editText.text.toString())
         }
 
 
@@ -146,15 +146,16 @@ class ModifyProfileInfoActivity :
     }
 
     private fun checkInputData() {
-        val inputText = when (modifyType as ModifyType) {
+        val inputText = when (modifyType) {
             ModifyType.RealName -> eet_real_name.text
             ModifyType.QQNumber -> eet_qq_number.text
             ModifyType.Email -> eet_e_mail.text
             ModifyType.WeChat -> eet_we_chat.text
             ModifyType.PhoneNumber -> eet_phone_number.text
             ModifyType.NickName -> eet_nickname.text
+            else -> { }
         }
-        viewModel.confirmProfileInfo(modifyType as ModifyType, inputText.toString())
+        viewModel.confirmProfileInfo(modifyType, inputText.toString())
     }
 
     private fun initObserve() {

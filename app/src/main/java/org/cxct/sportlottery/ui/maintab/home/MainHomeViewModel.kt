@@ -67,8 +67,8 @@ class MainHomeViewModel(
     private val _publicityPromotionList = MutableLiveData<List<PromotionItemData>>()
     val publicityPromotionList: LiveData<List<PromotionItemData>>
         get() = _publicityPromotionList
-    private val _enterThirdGameResult = MutableLiveData<EnterThirdGameResult>()
-    val enterThirdGameResult: LiveData<EnterThirdGameResult>
+    private val _enterThirdGameResult = MutableLiveData<Pair<String, EnterThirdGameResult>>()
+    val enterThirdGameResult: LiveData<Pair<String, EnterThirdGameResult>>
         get() = _enterThirdGameResult
     private val _errorPromptMessage = MutableLiveData<Event<String>>()
     val token = loginRepository.token
@@ -282,11 +282,12 @@ class MainHomeViewModel(
     fun requestEnterThirdGame(gameData: QueryGameEntryData, baseFragment: BaseFragment<*>) {
         if (gameData == null) {
             _enterThirdGameResult.postValue(
-                EnterThirdGameResult(
+                Pair("${gameData.firmCode}", EnterThirdGameResult(
                     resultType = EnterThirdGameResult.ResultType.FAIL,
                     url = null,
                     errorMsg = androidContext.getString(R.string.hint_game_maintenance)
-                )
+                ))
+
             )
 
             return
@@ -297,10 +298,10 @@ class MainHomeViewModel(
 
     //避免多次请求游戏
     var jumpingGame = false
-    fun requestEnterThirdGame(firmType: String, gameCode: String, gameCategory: String, baseFragment: BaseFragment<*>) {
+    private fun requestEnterThirdGame(firmType: String, gameCode: String, gameCategory: String, baseFragment: BaseFragment<*>) {
 //        Timber.e("gameData: $gameData")
         if(loginRepository.isLogin.value != true) {
-            _enterThirdGameResult.postValue(EnterThirdGameResult(EnterThirdGameResult.ResultType.NEED_REGISTER,null))
+            _enterThirdGameResult.postValue(Pair(firmType, EnterThirdGameResult(EnterThirdGameResult.ResultType.NEED_REGISTER,null)))
             return
         }
 
@@ -321,14 +322,14 @@ class MainHomeViewModel(
 
             //先调用三方游戏的登入接口, 确认返回成功200之后再接著调用自动转换额度的接口, 如果没有登入成功, 后面就不做额度自动转换的调用了
             if (!thirdLoginResult.success) {
-                _enterThirdGameResult.postValue(EnterThirdGameResult(EnterThirdGameResult.ResultType.FAIL,  null, thirdLoginResult?.msg))
+                _enterThirdGameResult.postValue(Pair(firmType, EnterThirdGameResult(EnterThirdGameResult.ResultType.FAIL,  null, thirdLoginResult?.msg)))
                 baseFragment.hideLoading()
                 return@launch
             }
 
             val thirdGameResult = EnterThirdGameResult(EnterThirdGameResult.ResultType.SUCCESS, thirdLoginResult.msg, gameCategory)
             if (autoTransfer(firmType)) { //第三方自動轉換
-                _enterThirdGameResult.postValue(thirdGameResult)
+                _enterThirdGameResult.postValue(Pair(firmType, thirdGameResult))
                 baseFragment.hideLoading()
                 return@launch
             }
@@ -339,13 +340,11 @@ class MainHomeViewModel(
 
     //20200302 記錄問題：新增一個 NONE type，來清除狀態，避免 fragment 畫面重啟馬上就會觸發 observe，重複開啟第三方遊戲
     fun clearThirdGame() {
-        _enterThirdGameResult.postValue(
-            EnterThirdGameResult(
-                resultType = EnterThirdGameResult.ResultType.NONE,
-                url = null,
-                errorMsg = null
-            )
-        )
+        _enterThirdGameResult.postValue(Pair("", EnterThirdGameResult(
+            resultType = EnterThirdGameResult.ResultType.NONE,
+            url = null,
+            errorMsg = null
+        )))
     }
 
     private suspend fun thirdGameLogin(firmType: String, gameCode: String): NetResult? {
@@ -360,7 +359,7 @@ class MainHomeViewModel(
             val result = doNetwork(androidContext) {
                 OneBoSportApi.thirdGameService.autoTransfer(firmType)
             }
-            if (result?.success == true) getMoney() //金額有變動，通知刷新
+            if (result?.success == true) getMoneyAndTransferOut(false) //金額有變動，通知刷新
             return true
         }
 

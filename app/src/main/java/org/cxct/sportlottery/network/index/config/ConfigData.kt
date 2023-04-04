@@ -130,14 +130,11 @@ data class ConfigData(
     var minFrozeDay: Int = 0,//最小限制天数
     val enableEmailReg: String?, //是否开启邮箱注册
     val frontEntranceStatus: String?,// 代码加盟入口状态(1：开启，0：关闭)
-    var androidCarouselStatus: Int = 0,//是否开启安卓轮播状态(1：开启，0：关闭)
-    var carouselInterval: String? = "0",//自动轮播的间隔秒数
+    var androidCarouselStatus: String?,//是否开启安卓轮播状态(1：开启，0：关闭)
+    var carouselInterval: String?,//自动轮播的间隔秒数
 ) {
     var enterCertified: Int? = -1 //ProfileCenterViewModel.SecurityEnter
     var hasGetTwoFactorResult: Boolean? = false //判斷是不是已經成功發送過簡訊認證碼 (關掉彈窗要重新設置為false)
 
 }
 
-enum class VerifySwitchType(val value: String) {
-    OPEN("1"), CLOSE("0")
-}

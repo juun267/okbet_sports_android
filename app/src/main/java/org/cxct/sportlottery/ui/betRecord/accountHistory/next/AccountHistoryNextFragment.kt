@@ -36,7 +36,9 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
             val intent = Intent(requireContext(), ResultsSettlementActivity::class.java)
             intent.putExtra(ResultsSettlementActivity.EXTRA_GAME_TYPE, data.gameType)
             intent.putExtra(ResultsSettlementActivity.EXTRA_START_TIME, matchData.startTime)
+//            intent.putExtra(ResultsSettlementActivity.EXTRA_END_TIME,data.addTime)
             intent.putExtra(ResultsSettlementActivity.EXTRA_MATCH_ID, matchData.matchId)
+            intent.putExtra(ResultsSettlementActivity.EXTRA_LEAGUE_ID,matchData.leagueId)
             startActivity(intent)
     })
 

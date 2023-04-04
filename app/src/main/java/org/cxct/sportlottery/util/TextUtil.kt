@@ -25,7 +25,7 @@ object TextUtil : DecimalFormatUtil() {
             if (any !is Number)
                 target = target.toString().toDouble()
 
-            return doNumberFormat(target, "###,###,###,##0.000")
+            return doNumberFormat(target, "###,###,###,##0.00")
         } catch (e: Exception) {
             Timber.e("$e")
         }
@@ -62,23 +62,24 @@ object TextUtil : DecimalFormatUtil() {
     }
 
     fun formatMoney(double: Double): String {
-        return doNumberFormat(ArithUtil.toMoneyFormat(double).toDouble(), "###,###,###,##0.000")
+        return doNumberFormat(ArithUtil.toMoneyFormat(double).toDouble(), "###,###,###,##0.00")
     }
 
     fun formatMoneyFourthDecimal(double: Double): String {
-        return doNumberFormat(ArithUtil.toMoneyFormat(double).toDouble(), "###,###,###,##0.0000")
+        return doNumberFormat(ArithUtil.toMoneyFormat(double).toDouble(), "###,###,###,##0.00")
     }
 
     fun formatMoney(int: Int): String {
-        return doNumberFormat(ArithUtil.toMoneyFormat(int.toDouble()).toDouble(), "###,###,###,##0.000")
+        return doNumberFormat(ArithUtil.toMoneyFormat(int.toDouble()).toDouble(),
+            "###,###,###,##0.00")
     }
 
     fun formatMoneyNoDecimal(int: Int): String {
-        return doNumberFormat(int, "###,###,###,##0")
+        return doNumberFormat(int, "###,###,###,##")
     }
 
     fun formatMoneyNoDecimal(double: Double): String {
-        return doNumberFormat(ArithUtil.toMoneyFormat(double).toDouble(), "###,###,###,##0")
+        return doNumberFormat(ArithUtil.toMoneyFormat(double).toDouble(), "###,###,###,##")
     }
 
     fun formatForOdd(any: Any): String {
@@ -90,7 +91,7 @@ object TextUtil : DecimalFormatUtil() {
     }
 
     fun formatBetQuotaMoney(any: Any): String {
-        return doNumberFormat(any, "###,###,###,###0.000")
+        return doNumberFormat(any, "###,###,###,###0.00")
     }
 
     fun formatForVipRebates(any: Any): String {

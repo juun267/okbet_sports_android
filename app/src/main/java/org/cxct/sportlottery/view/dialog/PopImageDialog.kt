@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.DrawableRes
 import kotlinx.android.synthetic.main.dialog_pop_image.*
 import kotlinx.android.synthetic.main.dialog_pop_image.*
 import org.cxct.sportlottery.R

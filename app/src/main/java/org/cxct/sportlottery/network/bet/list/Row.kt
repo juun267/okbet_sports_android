@@ -6,6 +6,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguards.KeepMembers
 import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.network.bet.MatchOdd
+import org.cxct.sportlottery.network.bet.settledDetailList.ParlayComsDetailVO
 
 @Parcelize
 @JsonClass(generateAdapter = true) @KeepMembers
@@ -20,6 +21,8 @@ data class Row (
     val grossWin: Double?,
     @Json(name = "matchOdds")
     val matchOdds: List<MatchOdd>,
+    @Json(name = "parlayComsDetailVOs")
+    val parlayComsDetailVOs: List<ParlayComsDetailVO>?,
     @Json(name = "matchType")
     val matchType: String?,
     @Json(name = "netWin")

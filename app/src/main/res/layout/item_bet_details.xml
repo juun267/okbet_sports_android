@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="10dp"
+    tools:ignore="SpUsage">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/color_80334266_E3E8EE"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_item_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_square_shape_8dp_blue_stroke_white_solid"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <View
+                android:id="@+id/topContainer"
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                android:background="@drawable/bg_shape_top_8dp_blue_stroke_no_bottom_stroke"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/title_parlay_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:textColor="@color/color_FFFFFF_414655"
+                android:textSize="@dimen/textSize14sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/topContainer"
+                app:layout_constraintStart_toStartOf="@+id/topContainer"
+                app:layout_constraintTop_toTopOf="@+id/topContainer"
+                tools:text="复式(2串1)-足球" />
+
+
+            <LinearLayout
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/topContainer"
+                app:layout_constraintBottom_toBottomOf="@+id/topContainer"
+                android:layout_width="0dp"
+                android:paddingRight="10dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="13dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bet_receipt_bet_quota"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/color_9BB3D9_535D76"
+                    android:textSize="@dimen/textSize12sp" />
+
+                <TextView
+                    android:id="@+id/content_parlay_bet_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/color_FFFFFF_414655"
+                    android:textSize="@dimen/textSize14sp"
+                    android:textStyle="bold"
+                    tools:text="50.000" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_parlay_match"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"
+                app:layout_constraintTop_toBottomOf="@+id/topContainer"
+                tools:itemCount="2"
+                tools:listitem="@layout/content_parlay_match" />
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

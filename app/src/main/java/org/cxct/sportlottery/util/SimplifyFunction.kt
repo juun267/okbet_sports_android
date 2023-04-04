@@ -25,7 +25,6 @@ import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_sport_list.*
 import kotlinx.android.synthetic.main.item_favorite.view.*
@@ -40,7 +39,6 @@ import org.cxct.sportlottery.common.extentions.rotationAnimation
 import org.cxct.sportlottery.common.extentions.screenHeight
 import org.cxct.sportlottery.common.extentions.translationXAnimation
 import org.cxct.sportlottery.network.common.QuickPlayCate
-import org.cxct.sportlottery.network.index.config.VerifySwitchType
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.CateDetailData
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
@@ -56,6 +54,8 @@ import org.cxct.sportlottery.view.statusSelector.StatusSpinnerAdapter
 import org.cxct.sportlottery.ui.common.dialog.ServiceDialog
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
+import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.live.HomeLiveAdapter
 import org.cxct.sportlottery.ui.maintab.live.ItemHomeLiveHolder
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteAdapter
@@ -64,7 +64,6 @@ import org.cxct.sportlottery.util.DisplayUtil.dpToPx
 import org.cxct.sportlottery.util.SvgUtil.setSvgIcon
 import org.cxct.sportlottery.view.boundsEditText.TextFieldBoxes
 import org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
-import org.json.JSONArray
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -234,77 +233,6 @@ fun NestedScrollView.setupBackTop(targetView: View, offset: Int) {
     }
 
 }
-
-fun RecyclerView.addScrollListenerForBottomNavBar(
-    onScrollDown: (isScrollDown: Boolean) -> Unit
-) {
-    addOnScrollListener(object : RecyclerView.OnScrollListener() {
-        var needChangeBottomBar = true
-        var directionIsDown = true
-
-        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-            if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-
-            }
-        }
-
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            if (needChangeBottomBar) {
-                needChangeBottomBar = false
-                //更新記錄的方向
-                if (dy > 0) {
-                    directionIsDown = true
-                    onScrollDown(true)
-                } else if (dy < 0) {
-                    directionIsDown = false
-                    onScrollDown(false)
-                }
-            }
-            //Y軸移動的值和記錄的方向不同時, 重設狀態
-            if (dy > 0 != directionIsDown) {
-                needChangeBottomBar = true
-            }
-
-            //滑到最底部時顯示
-            if (!recyclerView.canScrollVertically(1)) {
-                onScrollDown(false)
-            }
-        }
-    })
-}
-
-/**
- * 僅處理CoordinatorLayout內包含 [AppBarLayout, RecyclerView] 的上半部UI收合行為
- */
-fun AppBarLayout.addOffsetListenerForBottomNavBar(
-    onScrollDown: (isScrollDown: Boolean) -> Unit
-) {
-    addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener {
-        var oldOffset = 0
-        var needChangeBottomBar = true
-        var directionIsDown = true
-        override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
-            if (needChangeBottomBar) {
-                needChangeBottomBar = false
-                //更新記錄的方向
-                if (oldOffset > verticalOffset) {
-                    directionIsDown = true
-                    onScrollDown(true)
-                } else if (oldOffset < verticalOffset) {
-                    directionIsDown = false
-                    onScrollDown(false)
-                }
-            }
-            //移動的值和記錄的方向不同時, 重設狀態
-            if (oldOffset > verticalOffset != directionIsDown) {
-                needChangeBottomBar = true
-            }
-            oldOffset = verticalOffset
-        }
-    })
-}
-
 
 fun RecyclerView.getVisibleRangePosition(): List<Int> {
     return mutableListOf<Int>().apply {
@@ -561,7 +489,7 @@ fun View.setVisibilityByMarketSwitch() {
  * enableKYCVerify的判斷已經棄用
  */
 fun isKYCVerifyWithdrawOpen(): Boolean {
-    return sConfigData?.realNameWithdrawVerified == VerifySwitchType.OPEN.value
+    return sConfigData?.realNameWithdrawVerified.isStatusOpen()
 }
 
 /**
@@ -569,7 +497,7 @@ fun isKYCVerifyWithdrawOpen(): Boolean {
  * enableKYCVerify的判斷已經棄用
  */
 fun isKYCVerifyRechargeOpen(): Boolean {
-    return sConfigData?.realNameRechargeVerified == VerifySwitchType.OPEN.value
+    return sConfigData?.realNameRechargeVerified.isStatusOpen()
 }
 
 /**
@@ -594,15 +522,6 @@ inline fun String?.isStatusOpen(): Boolean {
     return this == FLAG_OPEN
 }
 
-fun getLevelName(context: Context, level: Int): String {
-    val jsonString = LocalJsonUtil.getLocalJson(
-        MultiLanguagesApplication.appContext,
-        "localJson/LevelName.json"
-    )
-    val jsonArray = JSONArray(jsonString)
-    val jsonObject = jsonArray.getJSONObject(level)
-    return jsonObject.getString(LanguageManager.getSelectLanguage(context).key)
-}
 
 /**
  * 設置WebView的日、夜間模式背景色, 避免還在讀取時出現與日夜模式不符的顏色區塊
@@ -1012,34 +931,6 @@ fun MutableList<LeagueOdd>.closePlayCate(closePlayCateEvent: ClosePlayCateEvent)
 }
 
 /**
- * 點擊客服按鈕, 根據當前可用客服連結數量顯示客服選擇彈窗或直接跳轉
- */
-fun clickCustomService(context: Context, fragmentManager: FragmentManager) {
-    val serviceUrl = sConfigData?.customerServiceUrl
-    val serviceUrl2 = sConfigData?.customerServiceUrl2
-    when {
-        !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-            ServiceDialog().show(fragmentManager, null)
-        }
-
-        serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-            JumpUtil.toExternalWeb(context, serviceUrl2)
-        }
-
-        !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-            JumpUtil.toExternalWeb(context, serviceUrl)
-        }
-    }
-
-}
-
-fun getCurrencySignByCurrency(nationCode: String?, currency: String?): String? =
-    sConfigData?.nationCurrencyList?.firstOrNull {
-        it.nationCode == nationCode }?.currencyList?.firstOrNull {
-        it.currency == currency
-        }?.sign
-
-/**
  * 判斷當前是否為多站點平台
  */
 fun isMultipleSitePlat(): Boolean =
@@ -1241,5 +1132,28 @@ fun View.bindExpanedAdapter(adapter: ExpanableOddsAdapter, block: ((Boolean) -> 
             rotationAnimation(0f)
         }
     }
+}
+
+fun BaseFragment<MainHomeViewModel>.enterThirdGame(result: EnterThirdGameResult, firmType: String) {
+    hideLoading()
+    when (result.resultType) {
+        EnterThirdGameResult.ResultType.SUCCESS -> context?.run {
+            JumpUtil.toThirdGameWeb(this, result.url ?: "", firmType)
+        }
+        EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(
+            getString(R.string.prompt),
+            result.errorMsg ?: ""
+        ) {}
+        EnterThirdGameResult.ResultType.NEED_REGISTER -> requireActivity().startRegister()
+
+        EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(
+            getString(R.string.error),
+            result.errorMsg ?: ""
+        ) {}
+        EnterThirdGameResult.ResultType.NONE -> {
+        }
+    }
+    if (result.resultType != EnterThirdGameResult.ResultType.NONE)
+        viewModel.clearThirdGame()
 }
 

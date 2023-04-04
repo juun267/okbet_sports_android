@@ -3,11 +3,13 @@ package org.cxct.sportlottery.ui.splash
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatDelegate
 import com.gyf.immersionbar.ImmersionBar
 import com.tencent.mmkv.MMKV
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
@@ -22,12 +24,14 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.system.exitProcess
 
+
 /**
  * @app_destination 啟動頁
  */
 class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
     private val mVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -134,8 +138,9 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                 it.imageName1!!
             }
             MMKV.defaultMMKV().putBoolean("isFirstOpen", false)
-            if (imageUrls?.isNullOrEmpty() == false && sConfigData?.androidCarouselStatus == 1) {
+            if (imageUrls?.isEmpty() == false && sConfigData?.androidCarouselStatus?.toIntS(0) == 1) {
                 LaunchActivity.start(this, it, imageUrls = ArrayList(imageUrls))
+                finish()
             } else {
                 when (it) {
                     true -> {

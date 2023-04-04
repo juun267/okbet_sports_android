@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.maintab.home
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -174,6 +175,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
             return
         }
 
+        Log.e("For Test", "=======>>> onHiddenChanged 111")
         viewModel.getLiveRoundCount()
         viewModel.getHotLiveList()
         homeToolbar.onRefreshMoney()
@@ -189,10 +191,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
         initToolBar()
         initPlayView()
 
-        iv_customer_service.setOnClickListener {
-            clickCustomService(requireContext(), childFragmentManager)
-        }
-
+        iv_customer_service.setServiceClick(childFragmentManager)
         MainHomeItemHelper.fillingItems(tabLinearLayout, ::onTabClick)
 
         initHotHandicap()
@@ -271,6 +270,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
                     MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
                 }
             }.show(childFragmentManager, PopImageDialog::class.simpleName)
+
         }
 //
         //新版宣傳頁
@@ -289,7 +289,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
 
         viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {
             if (isVisible) {
-                enterThirdGame(it)
+                enterThirdGame(it.second, it.first)
             }
         }
 
@@ -390,13 +390,9 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
         }
 
         viewModel.gameBalanceResult.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { it ->
-                //            if (it.second < 0) {
-//                return@observe
-//            }
-
-                TransformInDialog(it.first, it.second, it.third) {
-                    enterThirdGame(it)
+            it.getContentIfNotHandled()?.let { event ->
+                TransformInDialog(event.first, event.second, event.third) {
+                    enterThirdGame(it, event.first)
                 }.show(childFragmentManager, null)
             }
         }
@@ -611,7 +607,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
         mPublicityVersionUpdateViewModel.checkAppVersion()
         viewModel.getAnnouncement()
         viewModel.getConfigData()
-        viewModel.getMoney()
+        viewModel.getMoneyAndTransferOut()
     }
 
     private fun setupBanner() {
@@ -750,37 +746,6 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
         liveDataList.forEach { subscribeChannelHall(it.matchInfo.gameType, it.matchInfo.id) }
 
 
-    }
-
-    private fun enterThirdGame(result: EnterThirdGameResult) {
-        hideLoading()
-        when (result.resultType) {
-            EnterThirdGameResult.ResultType.SUCCESS -> context?.run {
-
-                if (isThirdTransferOpen()) {
-
-                }
-                JumpUtil.toThirdGameWeb(
-                    this,
-                    result.url ?: "",
-                    thirdGameCategoryCode = result.thirdGameCategoryCode
-                )
-            }
-            EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(
-                getString(R.string.prompt),
-                result.errorMsg ?: ""
-            ) {}
-            EnterThirdGameResult.ResultType.NEED_REGISTER -> requireActivity().startRegister()
-
-            EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(
-                getString(R.string.error),
-                result.errorMsg ?: ""
-            ) {}
-            EnterThirdGameResult.ResultType.NONE -> {
-            }
-        }
-        if (result.resultType != EnterThirdGameResult.ResultType.NONE)
-            viewModel.clearThirdGame()
     }
 
     /**
