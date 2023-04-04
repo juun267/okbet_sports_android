@@ -46,7 +46,7 @@ object LoginRepository {
     val kickedOut: LiveData<Event<String?>>
         get() = _kickedOut
 
-    val _isLogin by lazy { MutableLiveData(MultiLanguagesApplication.mInstance.userInfo != null) }
+    val _isLogin by lazy { MutableLiveData(MultiLanguagesApplication.mInstance.userInfo.value != null) }
     val _kickedOut = MutableLiveData<Event<String?>>()
     private val _transNum = MutableLiveData<Int?>()
 
