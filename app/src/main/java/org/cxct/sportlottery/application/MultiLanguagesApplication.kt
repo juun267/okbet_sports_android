@@ -6,11 +6,13 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.multidex.MultiDex
+import cn.jpush.android.api.JPushInterface
 import com.appsflyer.AppsFlyerLib
 import com.didichuxing.doraemonkit.DoKit
 import com.google.gson.Gson
@@ -223,6 +225,7 @@ class MultiLanguagesApplication : Application() {
         //生成UUID作為設備識別碼
         setupDeviceCode()
         initAppsFlyerSDK()
+        initJpush()
 
         if (BuildConfig.DEBUG) {
             CrashHandler.setup(this) //错误日志收集
@@ -246,6 +249,12 @@ class MultiLanguagesApplication : Application() {
         AppsFlyerLib.getInstance().init("G7q8UBYftYQfKAxnortTSN", null, this)
         AppsFlyerLib.getInstance().setDebugLog(BuildConfig.DEBUG);
         AppsFlyerLib.getInstance().start(this);
+    }
+
+    private fun initJpush() {
+        JPushInterface.setDebugMode(BuildConfig.DEBUG)
+        JPushInterface.init(this)
+        Log.d("hjq", "getRegistrationID=" + JPushInterface.getRegistrationID(this))
     }
 
     private fun setupTimber() {
