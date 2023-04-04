@@ -40,7 +40,7 @@ object ArithUtil : DecimalFormatUtil() {
      * 20210112體育數值金額統一改成小數點後第三位
      */
     fun toMoneyFormat(value: Double?): String {
-        return round(value ?: 0.0, 3, RoundingMode.HALF_UP)
+        return round(value ?: 0.0, 2, RoundingMode.HALF_UP)
     }
 
     /**
