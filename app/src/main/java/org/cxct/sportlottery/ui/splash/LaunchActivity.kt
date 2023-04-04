@@ -15,6 +15,9 @@ import com.youth.banner.holder.BannerImageHolder
 import com.youth.banner.indicator.RectangleIndicator
 import com.youth.banner.listener.OnPageChangeListener
 import kotlinx.android.synthetic.main.activity_launch.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.repository.FLAG_OPEN
@@ -57,9 +60,6 @@ class LaunchActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         tv_skip.setOnClickListener {
             startNow()
         }
-        btn_start.setOnClickListener {
-            startNow()
-        }
         MMKV.defaultMMKV().putBoolean("isFirstOpen", false)
     }
 
@@ -91,7 +91,9 @@ class LaunchActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                     positionOffset: Float,
                     positionOffsetPixels: Int,
                 ) {
-                    updateStartBtn()
+                    if (position == imageUrls.size - 1) {
+                        autoSkip()
+                    }
                 }
 
                 override fun onPageSelected(position: Int) {
@@ -101,14 +103,21 @@ class LaunchActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
                 }
             })
+            .setOnBannerListener { data, position ->
+                if (position == imageUrls.size - 1) {
+                    startNow()
+                }
+            }
             .setLoopTime((sConfigData?.carouselInterval?.toIntS(3) ?: 3) * 1000L)
-            .isAutoLoop(!isFirstOpen)
+            .isAutoLoop(false)
             .start()
-        updateStartBtn()
     }
 
-    fun updateStartBtn() {
-        btn_start.isVisible = (imageUrls.isEmpty() || banner.currentItem == imageUrls.size - 1)
+    private fun autoSkip() {
+        GlobalScope.launch {
+            delay((sConfigData?.carouselInterval?.toIntS(3) ?: 3) * 1000L)
+            startNow()
+        }
     }
 
     private fun goHomePage() {

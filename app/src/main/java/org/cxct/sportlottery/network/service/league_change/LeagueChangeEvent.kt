@@ -8,7 +8,7 @@ import org.cxct.sportlottery.network.service.ServiceEventType
 @JsonClass(generateAdapter = true) @KeepMembers
 data class LeagueChangeEvent(
     @Json(name = "eventType")
-    override val eventType: String? = EventType.LEAGUE_CHANGE.value,
+    override val eventType: String? = EventType.LEAGUE_CHANGE,
     @Json(name = "leagueIdList")
     val leagueIdList: List<String>?,
     @Json(name = "matchIdList")
