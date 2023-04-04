@@ -21,6 +21,7 @@ import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.SPUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
+import kotlin.reflect.jvm.internal.impl.descriptors.Visibilities.Local
 import kotlin.system.exitProcess
 
 /**
@@ -99,23 +100,21 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
         viewModel.configResult.observe(this) {
             //判断用户是否手动设置了语言
-            var useSetting: Boolean? =
-                SPUtil.getInstance(applicationContext).getBoolean(SPUtil.USE_CHANGE_LANGUAGE, false)
-            if (useSetting != null && !useSetting) {
-                var languageArr = it?.configData?.supportLanguage?.split(",")
-                LogUtil.d("当前语言 $languageArr")
-                var systemLanStr: String =
-                    LanguageManager.getSelectLanguage(applicationContext).toString()
-                //1判断当前系统语言我们是否支持 如果支持使用系统语言
-                if (languageArr != null && !(languageArr.contains(systemLanStr))) {
-                    //2如果不支持默认使用后台设置的第一种语言
-                    val target = LanguageManager.Language.values().find { it.key == languageArr[0] }
-                    if (target != null) {
-                        SPUtil.getInstance(applicationContext).saveBoolean(SPUtil.USE_CHANGE_LANGUAGE, true)
-                        LanguageManager.saveSelectLanguage(applicationContext, target)
-                        viewModel.getConfig()
-                    }
+
+            var languageArr = it?.configData?.supportLanguage?.split(",")
+            LogUtil.d("当前语言 $languageArr")
+            var systemLanStr: String =
+                LanguageManager.getSelectLanguage(applicationContext).toString()
+            //1判断当前系统语言我们是否支持 如果支持使用系统语言
+            if (languageArr != null && !(languageArr.contains(systemLanStr.toLowerCase()))) {
+                //2如果不支持默认使用后台设置的第一种语言
+                val target = LanguageManager.Language.values().find { it.key == languageArr[0] }
+                if (target != null) {
+                    LanguageManager.saveSelectLanguage(applicationContext, target)
+                }else{
+                    LanguageManager.saveSelectLanguage(applicationContext, LanguageManager.Language.EN)
                 }
+                viewModel.getConfig()
             }
 
             when {
