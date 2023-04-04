@@ -15,8 +15,8 @@ object CountDownUtil {
     // 短信发送成功后记一个时间戳
     fun targSMSTimeStamp() = runOnDelay { SMS_CODE_TIMESTAMP == System.currentTimeMillis() }
 
-    fun smsCountDown(lifecycleOwner: LifecycleOwner, start: () -> Unit, next: (Int) -> Unit, end: () -> Unit) {
-        countDown(lifecycleOwner, REQUEST_CODE_INTERVAL, start, next, end, SMS_CODE_TIMESTAMP)
+    fun smsCountDown(coroutineScope: CoroutineScope, start: () -> Unit, next: (Int) -> Unit, end: () -> Unit) {
+        countDown(coroutineScope, REQUEST_CODE_INTERVAL, start, next, end, SMS_CODE_TIMESTAMP)
     }
 
     private fun runOnDelay(time: Long = 200, block: ()-> Unit)  = GlobalScope.launch(Dispatchers.Main) {
@@ -24,7 +24,7 @@ object CountDownUtil {
         block.invoke()
     }
 
-    fun countDown(lifecycleOwner: LifecycleOwner,
+    fun countDown(coroutineScope: CoroutineScope,
                   time: Int,
                   start: () -> Unit,
                   next: (Int) -> Unit,
@@ -43,7 +43,7 @@ object CountDownUtil {
             time.coerceAtMost(abs(time - (timeLeft / 1000).toInt()))
         }
 
-        lifecycleOwner.lifecycleScope.launch {
+        coroutineScope.launch {
             flow {
                 (endTime downTo 0).forEach {
                     delay(1000)

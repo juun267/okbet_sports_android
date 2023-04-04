@@ -141,7 +141,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
 
         layout_balance.btn_refresh.setOnClickListener {
             it.refreshMoneyLoading()
-            viewModel.getMoney()
+            viewModel.getMoneyAndTransferOut()
         }
         btn_transfer.setOnClickListener {
             et_transfer_money.clearFocus()

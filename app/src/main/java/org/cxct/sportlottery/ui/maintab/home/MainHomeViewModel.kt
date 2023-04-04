@@ -359,7 +359,7 @@ class MainHomeViewModel(
             val result = doNetwork(androidContext) {
                 OneBoSportApi.thirdGameService.autoTransfer(firmType)
             }
-            if (result?.success == true) getMoney() //金額有變動，通知刷新
+            if (result?.success == true) getMoneyAndTransferOut(false) //金額有變動，通知刷新
             return true
         }
 

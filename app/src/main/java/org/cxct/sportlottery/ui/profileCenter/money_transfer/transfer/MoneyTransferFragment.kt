@@ -53,7 +53,7 @@ class MoneyTransferFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTr
 
         layout_balance.btn_refresh.setOnClickListener {
             it.refreshMoneyLoading()
-            viewModel.getMoney()
+            viewModel.getMoneyAndTransferOut()
         }
     }
 

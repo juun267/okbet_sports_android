@@ -90,6 +90,11 @@
         <activity
             android:name=".ui.finance.FinanceActivity"
             android:screenOrientation="portrait" />
+
+
+        <activity
+            android:name=".ui.maintab.betdetails.BetDetailsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.money.recharge.MoneyRechargeActivity"
             android:screenOrientation="portrait" />
@@ -108,6 +113,7 @@
         <activity
             android:name=".ui.helpCenter.HelpCenterActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".ui.splash.SplashActivity"
             android:exported="true"
@@ -152,6 +158,12 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.profileCenter.nickname.ModifyProfileInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.profileCenter.modify.VerificationWaysActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.profileCenter.modify.ModifyBindInfoActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.profileCenter.changePassword.SettingPasswordActivity"
