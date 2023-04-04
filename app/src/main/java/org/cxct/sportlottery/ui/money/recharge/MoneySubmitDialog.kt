@@ -71,7 +71,9 @@ class MoneySubmitDialog() : DialogFragment() {
             })
         }
         tv_service.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(sConfigData?.customerServiceUrl)))
+            kotlin.runCatching { Uri.parse(sConfigData?.customerServiceUrl) }.getOrNull()?.let {
+                startActivity(Intent(Intent.ACTION_VIEW).setData(it))
+            }
             dismiss()
         }
     }

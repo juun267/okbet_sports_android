@@ -157,9 +157,12 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private fun setupValidCode() {
         binding.btnSendSms.setOnClickListener {
-            VerifyCodeDialog(callBack = { identity, validCode ->
-                updateValidCode(identity, validCode)
-            }).show(supportFragmentManager, null)
+            VerifyCodeDialog().run {
+                callBack = { identity, validCode ->
+                    updateValidCode(identity, validCode)
+                }
+                show(supportFragmentManager, null)
+            }
         }
     }
 
@@ -203,28 +206,32 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 securityCode = smsCode,
                 inviteCode = inviteCode
             )
+
             viewModel.loginOrReg(loginRequest)
-        } else {
-            VerifyCodeDialog(callBack = { identity, validCode ->
-                loading()
-                val account = binding.eetUsername.text.toString()
-                val password = binding.eetPassword.text.toString()
-                val loginRequest = LoginRequest(
-                    account = account,
-                    password = MD5Util.MD5Encode(password),
-                    loginSrc = LOGIN_SRC,
-                    deviceSn = deviceSn,
-                    appVersion = appVersion,
-                    loginEnvInfo = deviceId,
-                    securityCode = null,
-                    validCodeIdentity = identity,
-                    validCode = validCode
-                )
-                viewModel.login(loginRequest, password)
-
-            }).show(supportFragmentManager, null)
-
+            return
         }
+
+
+        val verifyCodeDialog = VerifyCodeDialog()
+        verifyCodeDialog.callBack = { identity, validCode ->
+            loading()
+            val account = binding.eetUsername.text.toString()
+            val password = binding.eetPassword.text.toString()
+            val loginRequest = LoginRequest(
+                account = account,
+                password = MD5Util.MD5Encode(password),
+                loginSrc = LOGIN_SRC,
+                deviceSn = deviceSn,
+                appVersion = appVersion,
+                loginEnvInfo = deviceId,
+                securityCode = null,
+                validCodeIdentity = identity,
+                validCode = validCode
+            )
+            viewModel.login(loginRequest, password)
+        }
+
+        verifyCodeDialog.show(supportFragmentManager, null)
     }
 
     private fun setupAuthLogin() {

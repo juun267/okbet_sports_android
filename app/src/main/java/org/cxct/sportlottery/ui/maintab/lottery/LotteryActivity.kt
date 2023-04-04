@@ -167,9 +167,10 @@ open class LotteryActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
         //H5调用系统下载
         webView.setDownloadListener { url, _, _, _, _ ->
-            val uri = Uri.parse(url)
-            val intent = Intent(Intent.ACTION_VIEW, uri)
-            startActivity(intent)
+            kotlin.runCatching { Uri.parse(url) }.getOrNull()?.let {
+                val intent = Intent(Intent.ACTION_VIEW, it)
+                startActivity(intent)
+            }
         }
     }
 
