@@ -98,6 +98,26 @@ class SplashViewModel(
         }
     }
 
+    fun getConfig() {
+        val hostUrl = hostRepository.hostUrl
+        viewModelScope.launch {
+            val retrofit =
+                RequestManager.instance.createRetrofit(hostUrl.httpFormat())
+            val result = doNetwork(androidContext, exceptionHandle = false) {
+                retrofit.create(IndexService::class.java).getConfig()
+            } ?: return@launch
+
+            if (result.success) {
+                setConfig(result)
+                gotConfigData = true
+                setBaseUrl(hostUrl, retrofit)
+                result.configData?.let { setRandomSocketUrl(it.wsHost) }
+                return@launch
+            } else {
+            }
+        }
+    }
+
     private fun getHostListUrl(index: Int): String {
         return if (index in Constants.SERVER_URL_LIST.indices) {
             val serverUrl = Constants.SERVER_URL_LIST[index]
@@ -115,16 +135,16 @@ class SplashViewModel(
 
     fun goNextPage() {
 //        if (sConfigData?.thirdOpen != FLAG_OPEN) {
-            viewModelScope.launch {
-                loginRepository.checkToken()
+        viewModelScope.launch {
+            loginRepository.checkToken()
 
-                if (!userInfoRepository.checkedUserInfo && isLogin.value == true) {
-                    userInfoRepository.getUserInfo()
-                    _skipHomePage.postValue(true)
-                } else {
-                    _skipHomePage.postValue(true)
-                }
+            if (!userInfoRepository.checkedUserInfo && isLogin.value == true) {
+                userInfoRepository.getUserInfo()
+                _skipHomePage.postValue(true)
+            } else {
+                _skipHomePage.postValue(true)
             }
+        }
 //        } else {
 //            _skipHomePage.postValue(false)
 //        }
