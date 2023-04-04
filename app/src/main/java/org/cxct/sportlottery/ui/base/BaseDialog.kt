@@ -114,7 +114,9 @@ open class BaseDialog<T : BaseViewModel>(clazz: KClass<T>) : DialogFragment() {
 
     override fun show(manager: FragmentManager, tag: String?) = runWithCatch {
             val ft = manager.beginTransaction()
-            ft.add(this, tag).addToBackStack(null)
+            if (!this.isAdded){
+                ft.add(this, tag).addToBackStack(null)
+            }
             ft.commitAllowingStateLoss()
         }
 
