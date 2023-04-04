@@ -261,7 +261,6 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private fun selectLanguage(select: LanguageManager.Language) {
         if (LanguageManager.getSelectLanguageName() != select.key) {
             context?.let {
-                SPUtil.getInstance(context).saveBoolean(SPUtil.USE_CHANGE_LANGUAGE, true)
                 LanguageManager.saveSelectLanguage(it, select)
                 MainTabActivity.reStart(it)
             }
