@@ -171,7 +171,9 @@
         <activity
             android:name=".ui.common.WebActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.thirdGame.ThirdGameActivity" />
+        <activity
+            android:configChanges="orientation|screenSize"
+            android:name=".ui.thirdGame.ThirdGameActivity" />
         <activity
             android:name=".ui.selflimit.SelfLimitActivity"
             android:screenOrientation="portrait"
