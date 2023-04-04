@@ -12,6 +12,7 @@ import android.os.Looper
 import android.provider.Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES
 import androidx.core.content.FileProvider
 import org.cxct.sportlottery.BuildConfig
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.network.Constants
 import timber.log.Timber
 import java.io.File
@@ -32,8 +33,9 @@ object AppUpdateManager {
         fun onError()
     }
 
-    private fun createDownloadRequest(context: Context, downloadUrl: String): DownloadManager.Request {
-        val request = DownloadManager.Request(Uri.parse(downloadUrl)) //下載請求
+    private fun createDownloadRequest(context: Context, downloadUrl: String): DownloadManager.Request? {
+        val uri = kotlin.runCatching { Uri.parse(downloadUrl) }.getOrNull() ?: return null
+        val request = DownloadManager.Request(uri) //下載請求
         request.setMimeType("application/vnd.android.package-archive")
 
         context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) //创建下載目录
@@ -46,8 +48,9 @@ object AppUpdateManager {
     fun downloadApk(context: Context, downloadUrl: String, onDownloadListener: OnDownloadListener?) {
         Timber.i("==> 下載 apk: $downloadUrl")
         cancel() //確保清除之前監聽的下載任務
-        val downloadManager = context?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        val downloadId = downloadManager.enqueue(createDownloadRequest(context, downloadUrl)) //下載請求
+        val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        val request = createDownloadRequest(context, downloadUrl) ?: return
+        val downloadId = downloadManager.enqueue(request) //下載請求
         if (onDownloadListener == null) {
             return
         }
@@ -136,11 +139,13 @@ object AppUpdateManager {
     fun jumpMarketApp(context: Context, url: String) {
         when (BuildConfig.FLAVOR) {
             "google" -> {
-                val intent = Intent(Intent.ACTION_VIEW).apply {
-                    data = Uri.parse(url)
-                    setPackage("com.android.vending")
+                runWithCatch {
+                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                        data = Uri.parse(url)
+                        setPackage("com.android.vending")
+                    }
+                    context.startActivity(intent)
                 }
-                context.startActivity(intent)
             }
             "huawei" -> {
                 val intent = Intent("com.huawei.appmarket.intent.action.AppDetail")
@@ -149,10 +154,12 @@ object AppUpdateManager {
                 context.startActivity(intent)
             }
             else -> {
-                val intent = Intent(Intent.ACTION_VIEW).apply {
-                    data = Uri.parse(url)
+                runWithCatch {
+                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                        data = Uri.parse(url)
+                    }
+                    context.startActivity(intent)
                 }
-                context.startActivity(intent)
             }
         }
 

@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.activity_web.*
 import kotlinx.android.synthetic.main.view_bettingstation_info.view.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
@@ -233,9 +234,10 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
         //H5调用系统下载
         webView.setDownloadListener { url, _, _, _, _ ->
-            val uri = Uri.parse(url)
-            val intent = Intent(Intent.ACTION_VIEW, uri)
-            startActivity(intent)
+            kotlin.runCatching { Uri.parse(url) }.getOrNull()?.let {
+                val intent = Intent(Intent.ACTION_VIEW, it)
+                startActivity(intent)
+            }
         }
     }
 
@@ -278,13 +280,11 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                 tv_mobile.setOnClickListener {
                     tv_mobile.text.toString().let {
                         if (it.isNotBlank()) {
-                            val intent = Intent();
-                            intent.action = Intent.ACTION_DIAL
-                            intent.data = Uri.parse("tel:" + it)
-                            try {
+                            runWithCatch {
+                                val intent = Intent();
+                                intent.action = Intent.ACTION_DIAL
+                                intent.data = Uri.parse("tel:" + it)
                                 startActivity(intent)
-                            } catch (e: java.lang.Exception) {
-                                e.printStackTrace()
                             }
                         }
                     }
