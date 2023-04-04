@@ -720,7 +720,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     //取得餘額
     private fun getMoney() {
-        viewModel.getMoney()
+        viewModel.getMoneyAndTransferOut()
     }
 
     //修改hint

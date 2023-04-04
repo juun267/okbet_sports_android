@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.maintab.home
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -174,6 +175,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
             return
         }
 
+        Log.e("For Test", "=======>>> onHiddenChanged 111")
         viewModel.getLiveRoundCount()
         viewModel.getHotLiveList()
         homeToolbar.onRefreshMoney()
@@ -189,10 +191,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
         initToolBar()
         initPlayView()
 
-        iv_customer_service.setOnClickListener {
-            clickCustomService(requireContext(), childFragmentManager)
-        }
-
+        iv_customer_service.setServiceClick(childFragmentManager)
         MainHomeItemHelper.fillingItems(tabLinearLayout, ::onTabClick)
 
         initHotHandicap()
@@ -271,6 +270,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
                     MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
                 }
             }.show(childFragmentManager, PopImageDialog::class.simpleName)
+
         }
 //
         //新版宣傳頁
@@ -607,7 +607,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
         mPublicityVersionUpdateViewModel.checkAppVersion()
         viewModel.getAnnouncement()
         viewModel.getConfigData()
-        viewModel.getMoney()
+        viewModel.getMoneyAndTransferOut()
     }
 
     private fun setupBanner() {

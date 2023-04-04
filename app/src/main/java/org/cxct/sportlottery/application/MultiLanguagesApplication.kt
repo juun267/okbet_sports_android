@@ -46,6 +46,7 @@ import org.cxct.sportlottery.ui.profileCenter.authbind.AuthViewModel
 import org.cxct.sportlottery.ui.profileCenter.cancelaccount.CancelAccountViewModel
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordViewModel
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
+import org.cxct.sportlottery.ui.profileCenter.modify.BindInfoViewModel
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoViewModel
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordViewModel
@@ -82,7 +83,6 @@ class MultiLanguagesApplication : Application() {
     private val _userInfo = MutableLiveData<UserInfo?>()
     val userInfo: LiveData<UserInfo?>
         get() = _userInfo
-    private var isNewsShowed = false
     private var isAgeVerifyNeedShow = true
 
     val mOddsType = MutableLiveData<OddsType>()
@@ -145,6 +145,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { ForgetViewModel(get(), get(), get(), get()) }
         viewModel { BetListViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { AuthViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { BindInfoViewModel(get(), get(), get()) }
     }
 
     private val repoModule = module {
@@ -263,14 +264,6 @@ class MultiLanguagesApplication : Application() {
 
     fun userInfo(): UserInfo? {
         return _userInfo.value
-    }
-
-    fun isNewsShow(): Boolean {
-        return isNewsShowed
-    }
-
-    fun setIsNewsShow(show: Boolean) {
-        this.isNewsShowed = show
     }
 
     fun getGameDetailAnimationNeedShow(): Boolean {
