@@ -234,10 +234,13 @@ class ModifyBindInfoActivity: BaseActivity<BindInfoViewModel>(BindInfoViewModel:
         }
         btnSendSms.setOnClickListener {
             hideSoftKeyboard(this@ModifyBindInfoActivity)
-            VerifyCodeDialog(callBack = { identity, validCode ->
-                sendCode(identity, validCode)
-                eetSmsCode.requestFocus()
-            }).show(supportFragmentManager, null)
+            VerifyCodeDialog().run {
+                callBack = { identity, validCode ->
+                    sendCode(identity, validCode)
+                    eetSmsCode.requestFocus()
+                }
+                show(supportFragmentManager, null)
+            }
         }
         if (dontNeedVerify()) { // 不需要验证直接设置
             setBindInfoLayout()
