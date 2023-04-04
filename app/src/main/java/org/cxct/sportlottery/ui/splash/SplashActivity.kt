@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.splash
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatDelegate
 import com.gyf.immersionbar.ImmersionBar
 import com.tencent.mmkv.MMKV
 import kotlinx.android.synthetic.main.activity_splash.*
@@ -129,7 +128,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
             //有banenr图片并且开关打开
             val imageUrls = sConfigData?.imageList?.filter {
                 it.imageType == 9
-                        && it.lang == LanguageManager.getLanguageString(this)
+                        && it.lang == LanguageManager.getSelectLanguage(this).key
                         && !it.imageName1.isNullOrEmpty()
                         && it.startType == (if (MMKV.defaultMMKV()
                         .getBoolean("isFirstOpen", true)

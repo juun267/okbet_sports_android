@@ -35,6 +35,7 @@ class LaunchActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
     private val skipHomePage by lazy { intent.getBooleanExtra("skipHomePage", true) }
     private val imageUrls by lazy { intent.getSerializableExtra("imageUrls") as ArrayList<String> }
     private val isFirstOpen by lazy { MMKV.defaultMMKV().getBoolean("isFirstOpen", true) }
+    private val delayTime by lazy { (sConfigData?.carouselInterval?.toIntS(3) ?: 3) * 1000L }
 
     companion object {
         fun start(context: Context, skipHomePage: Boolean, imageUrls: ArrayList<String>) {
@@ -91,12 +92,15 @@ class LaunchActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                     positionOffset: Float,
                     positionOffsetPixels: Int,
                 ) {
-                    if (position == imageUrls.size - 1) {
+
+                }
+                override fun onPageSelected(position: Int) {
+                    if (position == (imageUrls.size - 1)) {
+                        //banner组件无法设置只循环一次，当滑动到最好一页的时候，手动去掉自动循环
+                        banner.stop()
+                        banner.isAutoLoop(false)
                         autoSkip()
                     }
-                }
-
-                override fun onPageSelected(position: Int) {
                 }
 
                 override fun onPageScrollStateChanged(state: Int) {
@@ -108,15 +112,17 @@ class LaunchActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                     startNow()
                 }
             }
-            .setLoopTime((sConfigData?.carouselInterval?.toIntS(3) ?: 3) * 1000L)
-            .isAutoLoop(false)
+            .setLoopTime(delayTime)
+            .isAutoLoop(true)
             .start()
     }
 
     private fun autoSkip() {
         GlobalScope.launch {
-            delay((sConfigData?.carouselInterval?.toIntS(3) ?: 3) * 1000L)
-            startNow()
+            delay(delayTime)
+            if (banner.currentItem == imageUrls.size - 1) {
+                startNow()
+            }
         }
     }
 
