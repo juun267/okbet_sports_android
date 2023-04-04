@@ -8,7 +8,7 @@ import org.cxct.sportlottery.network.service.ServiceEventType
 @JsonClass(generateAdapter = true) @KeepMembers
 data class OrderSettlementEvent(
     @Json(name = "eventType")
-    override val eventType: String? = EventType.ORDER_SETTLEMENT.value,
+    override val eventType: String? = EventType.ORDER_SETTLEMENT,
     @Json(name = "sportBet")
     val sportBet: SportBet? //返回消息，正常消息： pong, 已过期： timeout
 ) : ServiceEventType

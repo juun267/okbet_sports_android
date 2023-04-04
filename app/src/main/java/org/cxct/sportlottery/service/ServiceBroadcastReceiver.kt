@@ -47,10 +47,8 @@ import org.json.JSONTokener
 import timber.log.Timber
 
 open class ServiceBroadcastReceiver(
-    val userInfoRepository: UserInfoRepository? = null,
-    val betInfoRepository: BetInfoRepository
-) :
-    BroadcastReceiver() {
+    val userInfoRepository: UserInfoRepository? = null, val betInfoRepository: BetInfoRepository
+) : BroadcastReceiver() {
 
     val globalStop: LiveData<GlobalStopEvent?>
         get() = _globalStop
@@ -176,7 +174,7 @@ open class ServiceBroadcastReceiver(
     }
 
     private suspend fun handleEvent(jObj: JSONObject, jObjStr: String, channelStr: String) {
-        when (val eventType = EventType.getEventType(jObj.optString("eventType"))) {
+        when (val eventType = jObj.optString("eventType")) {
             EventType.NOTICE -> {
                 val data = ServiceMessage.getNotice(jObjStr)
                 _notice.postValue(data)
@@ -303,8 +301,9 @@ open class ServiceBroadcastReceiver(
                 _userInfoChange.postValue(true)
             }
             EventType.UNKNOWN -> {
-                Timber.i("Receive UnKnown EventType : ${eventType.value}")
+                Timber.i("Receive UnKnown EventType : $eventType")
             }
+            else -> {}
         }
 
     }

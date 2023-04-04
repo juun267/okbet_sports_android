@@ -8,7 +8,7 @@ import org.cxct.sportlottery.network.service.ServiceEventType
 @JsonClass(generateAdapter = true) @KeepMembers
 data class UserNoticeEvent(
     @Json(name = "eventType")
-    override val eventType: String? = EventType.USER_NOTICE.value,
+    override val eventType: String? = EventType.USER_NOTICE,
     @Json(name = "userNoticeList")
     val userNoticeList: List<UserNotice>? = listOf()
 ) : ServiceEventType

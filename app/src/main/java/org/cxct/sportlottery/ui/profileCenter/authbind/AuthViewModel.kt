@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.network.user.authbind.AuthBindResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
@@ -36,7 +37,7 @@ class AuthViewModel(
 
     fun getUserInfo() {
         viewModelScope.launch {
-            userInfoRepository.getUserInfo()
+            runWithCatch { userInfoRepository.getUserInfo() }
         }
     }
 
