@@ -1259,7 +1259,7 @@ class RegisterViewModel(
                                             loginRepository.register(registerRequest)
                                         }?.let { result ->
                                             // TODO 20220108 更新UserInfo by Hewie
-                                            userInfoRepository.getUserInfo()
+                                            kotlin.runCatching { userInfoRepository.getUserInfo() }
                                             _registerResult.postValue(result)
                                             _identityPhoto.postValue(null)
                                             _identityPhotoBackup.postValue(null)
@@ -1284,7 +1284,7 @@ class RegisterViewModel(
                                     loginRepository.register(registerRequest)
                                 }?.let { result ->
                                     // TODO 20220108 更新UserInfo by Hewie
-                                    userInfoRepository.getUserInfo()
+                                    kotlin.runCatching { userInfoRepository.getUserInfo() }
                                     _registerResult.postValue(result)
                                     _identityPhoto.postValue(null)
                                     _identityPhotoBackup.postValue(null)
@@ -1305,7 +1305,7 @@ class RegisterViewModel(
                     loginRepository.register(registerRequest)
                 }?.let { result ->
                     // TODO 20220108 更新UserInfo by Hewie
-                    userInfoRepository.getUserInfo()
+                    kotlin.runCatching { userInfoRepository.getUserInfo() }
                     _registerResult.postValue(result)
                     AFInAppEventUtil.register("username")
                 }
