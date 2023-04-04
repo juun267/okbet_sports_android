@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.webkit.URLUtil
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.ui.common.WebActivity
@@ -55,7 +56,19 @@ object JumpUtil {
     }
 
     //跳轉第三方遊戲網頁
-    fun toThirdGameWeb(context: Context, href: String, thirdGameCategoryCode: String? = null) {
+    fun toThirdGameWeb(context: Context, href: String, thirdGameCategoryCode: String) {
+
+        if ("CQ9"== thirdGameCategoryCode) {  // CQ9 有兼容问题特殊处理，用外部浏览器打开
+            runWithCatch {
+                val i = Intent(Intent.ACTION_VIEW, Uri.parse(href))
+                i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                context.startActivity(i)
+            }
+            return
+        }
+
+
+
         try {
             Timber.i("跳转到链接:$href")
             if (URLUtil.isValidUrl(href)) {

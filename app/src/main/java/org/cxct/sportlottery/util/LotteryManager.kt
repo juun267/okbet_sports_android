@@ -16,6 +16,7 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.maintab.lottery.LotteryActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
+import org.cxct.sportlottery.ui.splash.LaunchActivity
 import org.cxct.sportlottery.ui.splash.SplashActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
 import org.cxct.sportlottery.view.floatingbtn.LotteryFloatingButton
@@ -62,6 +63,7 @@ class LotteryManager {
      */
     fun allowdShow(): Boolean = when (activity!!::class) {
         SplashActivity::class -> false
+        LaunchActivity::class -> false
         MaintenanceActivity::class -> false
         ThirdGameActivity::class -> false
         LotteryActivity::class -> false

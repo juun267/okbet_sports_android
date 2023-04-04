@@ -251,9 +251,6 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.2'
 
-//    implementation ('com.github.li-xiaojun:XPopup:2.9.19') {
-//        exclude group: 'com.google.android.material'
-//    }
 
     //live data
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'

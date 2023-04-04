@@ -256,8 +256,9 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
                 override fun onPrepared() {
                     player_view.layoutParams.apply {
                         LogUtil.d(player_view.currentVideoWidth.toString() + "," + player_view.currentVideoHeight)
-                        height =
-                            player_view.width * player_view.currentVideoHeight / player_view.currentVideoWidth
+                        if (player_view.currentVideoWidth > 0) {
+                            height = player_view.width * player_view.currentVideoHeight / player_view.currentVideoWidth
+                        }
                         player_view.layoutParams = this
                     }
                 }

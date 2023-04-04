@@ -26,6 +26,7 @@ import org.cxct.sportlottery.ui.maintab.home.HomeTabAdapter
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.enterThirdGame
 import org.cxct.sportlottery.util.startRegister
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 
@@ -110,7 +111,7 @@ class ThirdGamesFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHo
 
         viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {
             if (isVisible)
-                enterThirdGame(it)
+                enterThirdGame(it.second, it.first)
         }
 
     }
@@ -152,31 +153,5 @@ class ThirdGamesFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHo
         }
     }
 
-    private fun enterThirdGame(result: EnterThirdGameResult) {
-        hideLoading()
-        when (result.resultType) {
-            EnterThirdGameResult.ResultType.SUCCESS -> context?.run {
-                JumpUtil.toThirdGameWeb(
-                    this,
-                    result.url ?: "",
-                    thirdGameCategoryCode = result.thirdGameCategoryCode
-                )
-            }
-            EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(
-                getString(R.string.prompt),
-                result.errorMsg ?: ""
-            ) {}
-            EnterThirdGameResult.ResultType.NEED_REGISTER -> requireActivity().startRegister()
-
-            EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(
-                getString(R.string.error),
-                result.errorMsg ?: ""
-            ) {}
-            EnterThirdGameResult.ResultType.NONE -> {
-            }
-        }
-        if (result.resultType != EnterThirdGameResult.ResultType.NONE)
-            viewModel.clearThirdGame()
-    }
 
 }

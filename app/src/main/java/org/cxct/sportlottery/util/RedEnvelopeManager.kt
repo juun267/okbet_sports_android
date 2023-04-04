@@ -5,18 +5,19 @@ import android.view.ViewGroup
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.money.RedEnvelopeResult
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
-import org.cxct.sportlottery.view.floatingbtn.RedEnvelopeFloatingButton
-import org.cxct.sportlottery.view.dialog.RedEnvelopeReceiveDialog
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
+import org.cxct.sportlottery.ui.splash.LaunchActivity
 import org.cxct.sportlottery.ui.splash.SplashActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
+import org.cxct.sportlottery.view.dialog.RedEnvelopeReceiveDialog
+import org.cxct.sportlottery.view.floatingbtn.RedEnvelopeFloatingButton
 import java.util.*
 
 class RedEnvelopeManager {
@@ -63,6 +64,7 @@ class RedEnvelopeManager {
      */
     fun allowdShowRedEnvelope(): Boolean = when (activity!!::class) {
         SplashActivity::class -> false
+        LaunchActivity::class -> false
         MaintenanceActivity::class -> false
         ThirdGameActivity::class -> false
         else -> true
