@@ -131,7 +131,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             ll_real_name.isVisible = enableWithdrawFullName.isStatusOpen()
         }
 
-        tv_pass_word.text = if (viewModel.userInfo.value?.passwordSet == true) LocalUtils.getString(R.string.set) else LocalUtils.getString(R.string.edit)
+        tv_pass_word.text = if (viewModel.userInfo.value?.passwordSet == true) getString(R.string.set) else getString(R.string.edit)
     }
 
     private fun initButton() {
