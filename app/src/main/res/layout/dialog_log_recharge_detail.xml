@@ -140,7 +140,7 @@
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintBaseline_toBaselineOf="@id/log_detail_rebate_subtitle"
             app:layout_constraintStart_toEndOf="@id/log_detail_rebate_subtitle"
-            tools:text="0.000" />
+            tools:text="0.00" />
 
         <TextView
             android:id="@+id/log_detail_status_subtitle"
