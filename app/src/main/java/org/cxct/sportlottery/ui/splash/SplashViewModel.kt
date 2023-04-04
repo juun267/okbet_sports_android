@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.httpFormat
@@ -125,7 +126,7 @@ class SplashViewModel(
             loginRepository.checkToken()
 
             if (!userInfoRepository.checkedUserInfo && isLogin.value == true) {
-                userInfoRepository.getUserInfo()
+                runWithCatch { userInfoRepository.getUserInfo() }
                 _skipHomePage.postValue(true)
             } else {
                 _skipHomePage.postValue(true)
