@@ -172,10 +172,10 @@ object LoginRepository {
         }
 
         GlobalScope.launch(Dispatchers.IO) {
-            val respnose = OneBoSportApi.thirdGameService.allTransferOut()
+            val respnose = kotlin.runCatching { OneBoSportApi.thirdGameService.allTransferOut() }.getOrNull() ?: return@launch
             callback?.let {
                 withContext(Dispatchers.Main) {
-                    it.invoke(respnose?.body()?.success == true)
+                    it.invoke(respnose.body()?.success == true)
                 }
             }
         }
@@ -335,8 +335,8 @@ object LoginRepository {
         }
     }
 
-    suspend fun checkToken(): Response<NetResult> {
-        val checkTokenResponse = OneBoSportApi.indexService.checkToken()
+    suspend fun checkToken() {
+        val checkTokenResponse = kotlin.runCatching { OneBoSportApi.indexService.checkToken() }.getOrNull() ?: return
 
         if (checkTokenResponse.isSuccessful) {
             checkTokenResponse.body()?.let {
@@ -349,8 +349,6 @@ object LoginRepository {
             _isLogin.value = false
             clear()
         }
-
-        return checkTokenResponse
     }
 
     suspend fun checkIsUserAlive(): Response<NetResult> {
