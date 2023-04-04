@@ -311,13 +311,15 @@ class ModifyBindInfoActivity: BaseActivity<BindInfoViewModel>(BindInfoViewModel:
 
         sendCodeResult.observe(this@ModifyBindInfoActivity) { smsResult-> // 发送验证码
             hideLoading()
-            ToastUtil.showToast(this@ModifyBindInfoActivity, smsResult.getData()?.msg)
+
             if (smsResult.succeeded()) {
                 userName = smsResult.getData()?.userName
+                ToastUtil.showToast(this@ModifyBindInfoActivity, smsResult.getData()?.msg)
                 codeCountDown()
                 return@observe
             }
 
+            ToastUtil.showToast(this@ModifyBindInfoActivity, smsResult.msg)
             binding.btnSendSms.setBtnEnable(true)
             //做异常处理
 //            if (smsResult?.code == 2765 || smsResult?.code == 2766) {
