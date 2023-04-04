@@ -9,7 +9,7 @@ import org.cxct.sportlottery.network.service.ServiceEventType
 @JsonClass(generateAdapter = true) @KeepMembers
 data class UserLevelConfigListEvent(
     @Json(name = "eventType")
-    override val eventType: String? = EventType.USER_LEVEL_CONFIG_CHANGE.value,
+    override val eventType: String? = EventType.USER_LEVEL_CONFIG_CHANGE,
     @Json(name = "userLevelConfigList")
     val userLevelConfigList: List<UserLevelConfigList>?,
 ) : ServiceEventType

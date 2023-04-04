@@ -8,7 +8,7 @@ import org.cxct.sportlottery.network.service.ServiceEventType
 @JsonClass(generateAdapter = true) @KeepMembers
 data class PingPongEvent(
     @Json(name = "eventType")
-    override val eventType: String? = EventType.PING_PONG.value,
+    override val eventType: String? = EventType.PING_PONG,
     @Json(name = "message")
     val message: String? //返回消息，正常消息： pong, 已过期： timeout
 ) : ServiceEventType
