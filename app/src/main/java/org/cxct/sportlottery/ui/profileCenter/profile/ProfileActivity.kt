@@ -178,7 +178,9 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         val userInfo = viewModel.userInfo.value
         val phoneNo = userInfo?.phone
         val email = userInfo?.email
-        if (phoneNo.isEmptyStr() && email.isEmptyStr()) {
+        val oldInfo = if (modifyType == ModifyType.Email) email else phoneNo
+        // 如果未设置过对应的信息，就直接去设置不需要校验
+        if (oldInfo.isEmptyStr()) {
             ModifyBindInfoActivity.start(this, modifyType, 100, null, null, null)
         } else {
             VerificationWaysActivity.start(this, modifyType, phoneNo, email)
