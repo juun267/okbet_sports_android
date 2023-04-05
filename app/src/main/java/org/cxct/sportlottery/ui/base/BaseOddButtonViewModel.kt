@@ -1,16 +1,14 @@
 package org.cxct.sportlottery.ui.base
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import cn.jpush.android.api.JPushInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.application.MultiLanguagesApplication
-import org.cxct.sportlottery.application.MultiLanguagesApplication.Companion.UUID
-import org.cxct.sportlottery.application.MultiLanguagesApplication.Companion.UUID_DEVICE_CODE
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddState
 import org.cxct.sportlottery.common.enums.OddsType
@@ -92,8 +90,7 @@ abstract class BaseOddButtonViewModel(
         get() = betInfoRepository.betParlaySuccess
 
     private val deviceId by lazy {
-        androidContext.getSharedPreferences(UUID_DEVICE_CODE, Context.MODE_PRIVATE)
-            .getString(UUID, null) ?: ""
+        JPushInterface.getRegistrationID(androidContext)
     }
 
     fun getMoney() {
