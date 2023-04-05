@@ -1,10 +1,15 @@
 package org.cxct.sportlottery.network.third_game.query_transfers
 
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguards.KeepMembers
+import com.squareup.moshi.JsonClass
+import kotlinx.android.parcel.Parcelize
+import org.cxct.sportlottery.common.proguards.KeepMembers
 
-@JsonClass(generateAdapter = true) @KeepMembers
+@JsonClass(generateAdapter = true)
+@KeepMembers
+@Parcelize
 data class Row(
     @Json(name = "addTime")
     val addTime: Long?,
@@ -38,4 +43,4 @@ data class Row(
     val userId: Int?,
     @Json(name = "userName")
     val userName: String?
-)
+): Parcelable

@@ -10,6 +10,7 @@ import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
+import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
@@ -154,9 +155,11 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                         && it.startType == (if (MMKV.defaultMMKV()
                         .getBoolean("isFirstOpen", true)
                 ) 0 else 1)
-            }?.sortedByDescending { it.createdAt ?: 0 }?.map {
-                it.imageName1!!
             }
+                ?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
+                ?.map {
+                    it.imageName1!!
+                }
             MMKV.defaultMMKV().putBoolean("isFirstOpen", false)
             if (imageUrls?.isEmpty() == false && sConfigData?.androidCarouselStatus?.toIntS(0) == 1) {
                 LaunchActivity.start(this, it, imageUrls = ArrayList(imageUrls))
