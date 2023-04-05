@@ -19,7 +19,7 @@
         app:banner_indicator_normal_color="@color/color_CDD8EA"
         app:banner_indicator_selected_color="@color/color_025BE8"
         app:banner_indicator_gravity="center"
-        app:banner_indicator_marginBottom="120dp" />
+        app:banner_indicator_marginBottom="100dp" />
 
 
 

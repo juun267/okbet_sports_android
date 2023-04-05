@@ -70,12 +70,6 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         finish()
     }
 
-    private fun goGamePublicityPage() {
-//        startActivity(Intent(this@SplashActivity, GamePublicityActivity::class.java))
-        startActivity(Intent(this@SplashActivity, MainTabActivity::class.java))
-        finish()
-    }
-
     //過程中任一流程請求失敗，點擊確定按鈕重試
     private fun showErrorRetryDialog(title: String, message: String) {
         val dialog = CustomAlertDialog(this)
@@ -160,19 +154,13 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                 ?.map {
                     it.imageName1!!
                 }
-            MMKV.defaultMMKV().putBoolean("isFirstOpen", false)
+
             if (imageUrls?.isEmpty() == false && sConfigData?.androidCarouselStatus?.toIntS(0) == 1) {
                 LaunchActivity.start(this, it, imageUrls = ArrayList(imageUrls))
                 finish()
             } else {
-                when (it) {
-                    true -> {
-                        goGamePublicityPage()
-                    }
-                    false -> {
-                        goHomePage()
-                    }
-                }
+                MMKV.defaultMMKV().putBoolean("isFirstOpen", false)
+                goHomePage()
             }
         }
 
