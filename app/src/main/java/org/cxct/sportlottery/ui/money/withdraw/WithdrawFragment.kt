@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.money.withdraw
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +19,8 @@ import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_withdraw.*
 import kotlinx.android.synthetic.main.fragment_withdraw.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.ItemListviewBankCardBinding
 import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.money.config.TransferType
@@ -43,14 +44,9 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     lateinit var transferTypeAddSwitch : TransferTypeAddSwitch
     private val zero = 0.0
     private var dealType: TransferType = TransferType.BANK
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_withdraw, container, false)
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun layoutId() = R.layout.fragment_withdraw
+    override fun onBindView(view: View) {
         initView()
         initEvent()
         initObserve(view)
@@ -58,21 +54,18 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         setupServiceButton()
     }
 
-    private fun setupData() {
-        viewModel.apply {
-            getMoneyConfigs()
-            getUwCheck()
-        }
+    private fun setupData() = viewModel.run {
+        getMoneyConfigs()
+        getUwCheck()
     }
 
     private fun setupServiceButton() {
         tv_service.setServiceClick(childFragmentManager)
     }
     private fun initView() {
-        et_withdrawal_amount.apply {
-            clearIsShow = false
-            getAllIsShow = true
-        }
+        et_withdrawal_amount.clearIsShow = false
+        et_withdrawal_amount.getAllIsShow = true
+
         tv_add_bank.setOnClickListener {
             var intent = Intent(context, BankActivity::class.java)
             var numType:Int = 1
@@ -85,17 +78,9 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             startActivity(intent)
         }
 
-
-        ll_tab_layout.visibility = View.GONE // 預設先隱藏 等待卡片資料讀取完畢後再顯示
-
-        btn_info.setOnClickListener {
-            CommissionInfoDialog().show(childFragmentManager, null)
-        }
-
-        tv_detail.setOnClickListener {
-            startActivity(Intent(activity, WithdrawCommissionDetailActivity::class.java))
-        }
-
+        ll_tab_layout.gone() // 預設先隱藏 等待卡片資料讀取完畢後再顯示
+        btn_info.setOnClickListener {CommissionInfoDialog().show(childFragmentManager, null) }
+        tv_detail.setOnClickListener {startActivity(WithdrawCommissionDetailActivity::class.java) }
         tv_currency_type.text = sConfigData?.systemCurrencySign
 
         checkNotificationVisiable(
@@ -284,7 +269,9 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     private fun clearEvent() {
         et_withdrawal_amount.setText("")
         et_withdrawal_password.setText("")
-        bankCardAdapter.initSelectStatus()
+        if (::bankCardAdapter.isInitialized) {
+            bankCardAdapter.initSelectStatus()
+        }
         viewModel.resetWithdrawPage()
         modifyFinish()
     }

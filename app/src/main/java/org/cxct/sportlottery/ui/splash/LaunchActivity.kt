@@ -131,23 +131,12 @@ class LaunchActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         finish()
     }
 
-    private fun goGamePublicityPage() {
-        startActivity(Intent(this@LaunchActivity, MainTabActivity::class.java))
-        finish()
-    }
 
     private fun startNow() {
         if (sConfigData?.maintainStatus == FLAG_OPEN) {
             goMaintenancePage()
         } else {
-            when (skipHomePage) {
-                true -> {
-                    goGamePublicityPage()
-                }
-                false -> {
-                    goHomePage()
-                }
-            }
+            goHomePage()
         }
     }
 
