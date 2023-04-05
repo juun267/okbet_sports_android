@@ -148,7 +148,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { ForgetViewModel(get(), get(), get(), get()) }
         viewModel { BetListViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { AuthViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { RegisterInfoViewModel(get(), get(), get()) }
+        viewModel { RegisterInfoViewModel(get(),get(), get(), get()) }
     }
 
     private val repoModule = module {

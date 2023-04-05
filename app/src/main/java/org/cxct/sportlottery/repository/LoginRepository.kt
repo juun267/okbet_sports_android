@@ -214,9 +214,9 @@ object LoginRepository {
 
         if (loginResponse.isSuccessful) {
             //需要完善信息，暂时不setUpLoginData
-            if(isNeedComplete){
-                return loginResponse
-            }
+//            if(isNeedComplete){
+//                return loginResponse
+//            }
             loginResponse.body()?.let {
                 setUpLoginData(it.loginData)
             }
@@ -225,11 +225,15 @@ object LoginRepository {
         return loginResponse
     }
 
-    suspend fun googleLogin(token: String, inviteCode: String?): Response<LoginResult> {
+    suspend fun googleLogin(token: String, inviteCode: String?,isNeedComplete:Boolean=false): Response<LoginResult> {
         val loginResponse = OneBoSportApi.indexService.googleLogin(LoginTokenRequest(token,
             inviteCode = inviteCode))
 
         if (loginResponse.isSuccessful) {
+            //需要完善信息，暂时不setUpLoginData
+//            if(isNeedComplete){
+//                return loginResponse
+//            }
             loginResponse.body()?.let {
                 setUpLoginData(it.loginData)
             }

@@ -167,16 +167,26 @@ class LoginViewModel(
     }
 
     fun loginGoogle(token: String) {
+        _checkLoginComplete.postValue(true)
         loading()
         viewModelScope.launch {
             //預設存帳號
             doNetwork(androidContext) {
-                loginRepository.googleLogin(token, inviteCode = Constants.getInviteCode())
+                loginRepository.googleLogin(token, inviteCode = Constants.getInviteCode(),true)
             }?.let { result ->
-                userInfoRepository.getUserInfo()
-                _loginResult.postValue(result)
-                AFInAppEventUtil.login(result.loginData?.uid.toString())
                 hideLoading()
+                checkLoginComplete.value?.let { needComplete ->
+                    result.loginData?.let {loginData->
+                        if(checkNeedCompleteInfo(needComplete,loginData)){
+                            registerInfoEvent.post(loginData)
+                        }else{
+                            userInfoRepository.getUserInfo()
+                            _loginResult.postValue(result)
+                            AFInAppEventUtil.login(result.loginData?.uid.toString())
+                        }
+                    }
+                }
+
             }
         }
     }
@@ -420,8 +430,8 @@ class LoginViewModel(
      */
     private fun checkNeedCompleteInfo(isComplete:Boolean,loginData: LoginData):Boolean{
         if(loginData.ifnew==null){
-            return false
+            return true
         }
-        return isComplete&&loginData.ifnew!!
+        return isComplete&&!loginData.ifnew!!
     }
 }
