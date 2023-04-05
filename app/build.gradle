@@ -36,7 +36,10 @@ android {
         manifestPlaceholders = [
                 CHANNEL                : "default",
                 NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
-                INVITE_CODE            : ""
+                INVITE_CODE            : "",
+                JPUSH_PKGNAME          : applicationId,
+                JPUSH_APPKEY           : "6ce6dade62a7563b526bf021",
+                JPUSH_CHANNEL          : "developer-default",
         ]
         resValue "string", "facebook_app_id", "2339087372931297"
         resValue "string", "facebook_client_token", "45b5e13714025f8083e5d9ae9300fd0f"
@@ -44,7 +47,11 @@ android {
         resValue "string", "server_client_id", "1037678190731-qqog3vk9ndm5ovjsk7rpm4nqf5cbm071.apps.googleusercontent.com"
 
         resConfigs "zh", "en", "vi", "phi", "xxhdpi"   //三方库只保留指定语言类型的资源 与 xxhdpi的图片资源
-
+        ndk {
+            //选择要添加的对应 cpu 类型的 .so 库。
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
+        }
         //防止谷歌商店 删除包内的多语言等资源
         bundle {
             language {
@@ -99,6 +106,11 @@ android {
         forqa {
             buildConfigField "String", "CHANNEL_NAME", "\"spplat1\""
             applicationId "com.happysport.sl.test"
+            manifestPlaceholders = [
+                    JPUSH_PKGNAME: applicationId,
+                    JPUSH_APPKEY : "2efc0f50829574b4db4b1dc8",
+                    JPUSH_CHANNEL: "developer-default",
+            ]
         }
         OkbetPH {
         }
@@ -340,7 +352,10 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     implementation "com.alibaba:fastjson:1.2.73"
-
+// 此处以JCore 4.0.0 版本为例
+    implementation 'cn.jiguang.sdk:jcore:4.0.0'
+    // 此处以JPush 4.8.5 版本为例
+    implementation 'cn.jiguang.sdk:jpush:4.8.5'
     //compose
 //    implementation 'androidx.activity:activity-compose:1.6.1'
 //    implementation "androidx.compose.ui:ui:$compose_version"
