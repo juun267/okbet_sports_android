@@ -17,6 +17,7 @@ import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.LanguageManager.makeUseLanguage
 
 
 class SettingCenterActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
@@ -145,19 +146,7 @@ class SettingCenterActivity : BaseActivity<MainViewModel>(MainViewModel::class) 
 
     private fun initLanguageView() {
         languageAdapter = LanguageAdapter(
-            if (isForQA())
-                listOf(
-                    LanguageManager.Language.EN,
-                    LanguageManager.Language.PHI,
-                    LanguageManager.Language.ZH,
-                    LanguageManager.Language.VI,
-                )
-            else
-                listOf(
-                    LanguageManager.Language.EN,
-                    LanguageManager.Language.ZH,
-                    LanguageManager.Language.VI,
-                )
+            makeUseLanguage()
         )
         languageAdapter.setOnItemClickListener { adapter, view, position ->
             viewModel.betInfoRepository.clear()
