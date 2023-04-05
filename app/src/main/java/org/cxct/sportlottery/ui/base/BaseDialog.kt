@@ -128,4 +128,11 @@ open class BaseDialog<T : BaseViewModel>(clazz: KClass<T>) : DialogFragment() {
         fieldDismissed.set(this, newValue)
     }
 
+    override fun dismiss() = runWithCatch {
+        if (isAdded) { super.dismiss() }
+    }
+
+    override fun dismissAllowingStateLoss() = runWithCatch {
+        if (isAdded) { super.dismissAllowingStateLoss() }
+    }
 }
