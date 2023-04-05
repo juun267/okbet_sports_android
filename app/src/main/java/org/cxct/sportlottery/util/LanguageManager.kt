@@ -48,7 +48,7 @@ object LanguageManager {
                     local.language == Locale.ENGLISH.language -> Language.EN
                     local.language == Locale("vi").language -> Language.VI
                     local.language == Locale("th").language -> Language.TH
-                    local.language == Locale("phi").language -> Language.PHI
+                    local.language == Locale("phi").language || local.language == Locale("fil").language -> Language.PHI
                     (local.language == Locale.SIMPLIFIED_CHINESE.language && local.country == Locale.SIMPLIFIED_CHINESE.country)
                             || local.language == Locale.TRADITIONAL_CHINESE.language -> Language.ZH
 
