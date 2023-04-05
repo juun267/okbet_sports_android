@@ -352,10 +352,12 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     implementation "com.alibaba:fastjson:1.2.73"
-// 此处以JCore 4.0.0 版本为例
+
     implementation 'cn.jiguang.sdk:jcore:4.0.0'
-    // 此处以JPush 4.8.5 版本为例
     implementation 'cn.jiguang.sdk:jpush:4.8.5'
+    // 接入 FCM 厂商
+    implementation 'com.google.firebase:firebase-messaging:23.0.5'
+    implementation 'cn.jiguang.sdk.plugin:fcm:4.8.5'
     //compose
 //    implementation 'androidx.activity:activity-compose:1.6.1'
 //    implementation "androidx.compose.ui:ui:$compose_version"
