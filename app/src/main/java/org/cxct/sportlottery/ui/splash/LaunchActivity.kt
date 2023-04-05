@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.core.view.isVisible
-import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -17,12 +16,10 @@ import com.youth.banner.holder.BannerImageHolder
 import com.youth.banner.indicator.RectangleIndicator
 import com.youth.banner.listener.OnPageChangeListener
 import kotlinx.android.synthetic.main.activity_launch.*
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.doOnStop
 import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
@@ -108,6 +105,9 @@ class LaunchActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                     startNow()
                 }
             }.setLoopTime(delayTime).isAutoLoop(true).start()
+        if (imageUrls.size == 1) {
+            autoSkip()
+        }
     }
 
     private fun autoSkip() {
