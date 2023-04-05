@@ -745,10 +745,10 @@
     <string name="btm_navigation_affiliate">Ahente para sumali</string>
     <string name="expire_date">Oras ng pag-expire ng sertipiko</string>
     <string name="self_limit_froze_impotent_1">Ang self-exclusion ay magiging mabisa kaagad pagkatapos itakda</string>
-    <string name="self_limit_froze_impotent_2">Hahawakan namin ang iyong balanse sa panahon ng self-exclusion.</string>
+    <string name="self_limit_froze_impotent_2">Hahawakan namin ang iyong buong balanse hanggang sa panahon ng self-exclusion na itinakda mo. Gayunpaman, kung ito ay hihigit sa 6 na buwan mula noong huling oras ng pag log-in, inilalaan ng OKBET ang karapatang singilin ka ng buwanang bayarin sa pamamahala hanggang sa maubos ang balanse ng account.</string>
     <string name="self_limit_froze_impotent_3">Kung mag-apply ka para sa self-exclusion sa iba pang mga laro sa pagsusugal, hindi ito awtomatikong mag aapply sa larong ito.</string>
     <string name="self_limit_froze_impotent_4">Sa panahon ng self-exclusion, kung susubukan mong magbukas ng bagong account, maaaring ma-freeze ang account pagkatapos itong matukoy ng system.</string>
-    <string name="self_limit_froze_impotent_5">Sa panahon ng self-exclusion period, maaari kang makipag-ugnayan sa serbisyo sa customer para i-release ang function ng self-exclusion period</string>
+    <string name="self_limit_froze_impotent_5">Sa panahon ng self-exclusion period, hindi mo magagawang i-disable ang feature na ito hanggang sa mag-expire ang minimum exclusion period.</string>
     <string name="self_limit_froze_impotent_6">Pagkatapos mag-expire ang self-exclusion, awtomatikong muling maa-activate ang iyong account.</string>
     <!-- 複式串關詳情 -->
     <string name="submit_success">Matagumpay na naisumite ang feedback</string>
