@@ -363,7 +363,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         //跳转至完善注册信息
         viewModel.registerInfoEvent.observe(this) {
             val intent = Intent(this, RegisterInfoActivity::class.java)
-            intent.putExtra("data", it as java.io.Serializable)
+            intent.putExtra("data", it)
             startActivity(intent)
         }
         viewModel.msgCodeResult.observe(this, Observer {

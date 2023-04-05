@@ -49,9 +49,6 @@ class LoginViewModel(
         get() = _inviteCodeMsg
     val checkUserExist: LiveData<Boolean>
         get() = _checkUserExist
-    //是否需要登录后完善信息开关
-    private val checkLoginComplete: LiveData<Boolean>
-        get() = _checkLoginComplete
 
     private val _isLoading = MutableLiveData<Boolean>()
     private val _loginFormState = MutableLiveData<LoginFormState>()
@@ -62,8 +59,6 @@ class LoginViewModel(
     private val _msgCodeResult = MutableLiveData<NetResult?>()
     private val _inviteCodeMsg = MutableLiveData<String?>()
     private val _checkUserExist = MutableLiveData<Boolean>()
-    //是否需要登录后完善信息开关
-    private val _checkLoginComplete = MutableLiveData<Boolean>()
 
     val accountMsg: LiveData<Pair<String?, Boolean>>
         get() = _accountMsg
@@ -132,22 +127,31 @@ class LoginViewModel(
         }
     }
 
+
     fun loginOrReg(loginRequest: LoginRequest) {
-        _checkLoginComplete.postValue(true)
         viewModelScope.launch {
             //預設存帳號
             loginRepository.account = loginRequest.account
 
-            doNetwork(androidContext) {
-                loginRepository.loginOrReg(loginRequest,true)
-            }?.let { result ->
+            //登录
+            val loginResult=doNetwork(androidContext) {loginRepository.loginOrReg(loginRequest) }
+            loginResult?.let {result ->
+                //用户完善信息开关
+                val infoSwitchResult=doNetwork(androidContext){ loginRepository.getUserInfoSwitch()}
+                //是否已完善信息
+                val userInfoCheck=doNetwork(androidContext){ loginRepository.getUserInfoCheck()}
 
-                checkLoginComplete.value?.let {needComplete->
+                if(infoSwitchResult!=null&&userInfoCheck!=null){
+                    val isSwitch=infoSwitchResult.success
+                    val isFinished=userInfoCheck.success
+
                     result.loginData?.let {loginData->
-                        //是否需要完善信息开关
-                        if(checkNeedCompleteInfo(needComplete,loginData)){
+                        //是否需要完善信息
+                        if(checkNeedCompleteInfo(isSwitch,isFinished)){
+                            //跳转到完善页面
                             registerInfoEvent.post(loginData)
                         }else{
+                            //继续登录
                             userInfoRepository.getUserInfo()
                             _loginResult.postValue(result)
                             if (loginData?.ifnew == true) {
@@ -157,37 +161,48 @@ class LoginViewModel(
                             }
                         }
                     }
-
-
-
                 }
 
             }
+
         }
     }
 
     fun loginGoogle(token: String) {
-        _checkLoginComplete.postValue(true)
         loading()
         viewModelScope.launch {
             //預設存帳號
-            doNetwork(androidContext) {
-                loginRepository.googleLogin(token, inviteCode = Constants.getInviteCode(),true)
-            }?.let { result ->
-                hideLoading()
-                checkLoginComplete.value?.let { needComplete ->
-                    result.loginData?.let {loginData->
-                        if(checkNeedCompleteInfo(needComplete,loginData)){
+            val loginResult=doNetwork(androidContext) {  loginRepository.googleLogin(token, inviteCode = Constants.getInviteCode()) }
+            //用户完善信息开关
+            val infoSwitchResult=doNetwork(androidContext){ loginRepository.getUserInfoSwitch()}
+            //是否已完善信息
+            val userInfoCheck=doNetwork(androidContext){ loginRepository.getUserInfoCheck()}
+
+            loginResult?.let { result ->
+                if(infoSwitchResult!=null&&userInfoCheck!=null){
+                    val isSwitch=infoSwitchResult.success
+                    val isFinished=userInfoCheck.success
+                    hideLoading()
+
+                    result.loginData?.let { loginData ->
+                        //是否需要完善信息开关
+                        if(checkNeedCompleteInfo(isSwitch,isFinished)){
+                            //跳转到完善页面
                             registerInfoEvent.post(loginData)
                         }else{
+                            //继续登录
                             userInfoRepository.getUserInfo()
                             _loginResult.postValue(result)
-                            AFInAppEventUtil.login(result.loginData?.uid.toString())
+                            AFInAppEventUtil.login(loginData.uid.toString())
                         }
                     }
-                }
 
+                }else{
+                    loginRepository.clear()
+                    hideLoading()
+                }
             }
+
         }
     }
 
@@ -428,10 +443,9 @@ class LoginViewModel(
     /**
      * 是否需要完善基础信息
      */
-    private fun checkNeedCompleteInfo(isComplete:Boolean,loginData: LoginData):Boolean{
-        if(loginData.ifnew==null){
-            return true
-        }
-        return isComplete&&!loginData.ifnew!!
+    private fun checkNeedCompleteInfo(isComplete:Boolean,isFinished:Boolean):Boolean{
+
+        //开关=true  并且未完善信息
+        return isComplete&&isFinished
     }
 }
