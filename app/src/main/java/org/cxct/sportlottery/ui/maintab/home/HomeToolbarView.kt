@@ -27,15 +27,24 @@ import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.setVisibilityByMarketSwitch
 import org.cxct.sportlottery.util.startLogin
 
-class HomeToolbarView: LinearLayout {
+class HomeToolbarView : LinearLayout {
 
     companion object {
-        private val textStyle by lazy { ResourcesCompat.getFont(MultiLanguagesApplication.appContext, R.font.din_bold) }
+        private val textStyle by lazy {
+            ResourcesCompat.getFont(
+                MultiLanguagesApplication.appContext,
+                R.font.din_bold
+            )
+        }
     }
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    )
 
     init {
         setBackgroundResource(R.color.color_B3F0F5FA)
@@ -66,7 +75,10 @@ class HomeToolbarView: LinearLayout {
 
         ivLogo = AppCompatImageView(context)
         ivLogo.setImageResource(R.drawable.logo_okbet_color)
-        addView(ivLogo, LayoutParams(-2, 32.dp).apply { leftMargin = 10.dp })
+        addView(ivLogo, LayoutParams(-2, 32.dp).apply {
+            leftMargin = 8.dp
+            bottomMargin = 5.dp
+        })
 
         addSearchView()
         addUserView()
@@ -182,7 +194,12 @@ class HomeToolbarView: LinearLayout {
 
     }
 
-    fun attach(fragment: Fragment, activity: MainTabActivity, viewModel: BaseOddButtonViewModel, moneyViewEnable: Boolean = true) {
+    fun attach(
+        fragment: Fragment,
+        activity: MainTabActivity,
+        viewModel: BaseOddButtonViewModel,
+        moneyViewEnable: Boolean = true
+    ) {
         this.fragment = fragment
         this.activity = activity
         this.viewModel = viewModel
@@ -205,12 +222,14 @@ class HomeToolbarView: LinearLayout {
     }
 
     fun onRefreshMoney() {
-        ivRefreshMoney.startAnimation(RotateAnimation(0f,
+        ivRefreshMoney.startAnimation(RotateAnimation(
+            0f,
             720f,
             Animation.RELATIVE_TO_SELF,
             0.5f,
             Animation.RELATIVE_TO_SELF,
-            0.5f).apply {
+            0.5f
+        ).apply {
             duration = 1000
         })
         viewModel.getMoneyAndTransferOut()
