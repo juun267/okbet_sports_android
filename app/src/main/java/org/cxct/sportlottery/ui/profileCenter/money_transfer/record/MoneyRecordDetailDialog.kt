@@ -26,7 +26,10 @@ class MoneyRecordDetailDialog : BaseDialog<MoneyTransferViewModel>(MoneyTransfer
         return inflater.inflate(R.layout.dialog_money_transfer_record_detail, container, false)
     }
 
-    var data :Row? = null
+    private var data :Row? = null
+    get() {
+        return arguments?.getParcelable("data")
+    }
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

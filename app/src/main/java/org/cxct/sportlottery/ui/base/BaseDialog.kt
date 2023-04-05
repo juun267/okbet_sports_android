@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.base
 
 import android.content.Context
-import android.os.Bundle
 import android.os.Handler
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -113,11 +112,20 @@ open class BaseDialog<T : BaseViewModel>(clazz: KClass<T>) : DialogFragment() {
 
 
     override fun show(manager: FragmentManager, tag: String?) = runWithCatch {
-            val ft = manager.beginTransaction()
-            if (!this.isAdded){
-                ft.add(this, tag).addToBackStack(null)
-            }
-            ft.commitAllowingStateLoss()
-        }
+
+        runWithCatch { if (isAdded) { dismissAllowingStateLoss() } }
+
+        modifyPrivateField("mDismissed", false)
+        modifyPrivateField("mShownByMe", true)
+        val ft = manager.beginTransaction()
+        ft.add(this, tag)
+        ft.commitAllowingStateLoss()
+    }
+
+    private fun modifyPrivateField(fieldName: String, newValue: Any) {
+        val fieldDismissed = DialogFragment::class.java.getDeclaredField(fieldName)
+        fieldDismissed.isAccessible = true
+        fieldDismissed.set(this, newValue)
+    }
 
 }
