@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context=".ui.profileCenter.profile.ProfileActivity">
 
-    <org.cxct.sportlottery.ui.common.CustomTopToolbar
+    <org.cxct.sportlottery.view.CustomTopToolbar
         android:id="@+id/custom_tool_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -316,10 +316,10 @@
                     android:id="@+id/ll_real_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="14dp"
                     android:gravity="center"
                     android:minHeight="46dp"
                     android:orientation="horizontal">
-
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -356,10 +356,8 @@
                         android:layout_height="wrap_content" />
                 </LinearLayout>
 
-
                 <!--  QQ號碼  -->
                 <LinearLayout
-                    android:layout_marginTop="@dimen/margin_10"
                     android:background="@color/color_1D1F2D_FFFFFF"
                     android:id="@+id/ll_qq_number"
                     android:layout_width="match_parent"
@@ -407,7 +405,6 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/margin_0.5"
-                    android:layout_marginStart="14dp"
                     android:background="@color/color_F0F5FA" />
 
                 <!--  郵箱  -->

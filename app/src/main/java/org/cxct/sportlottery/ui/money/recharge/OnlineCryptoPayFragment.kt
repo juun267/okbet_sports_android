@@ -377,7 +377,7 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
 
     //取得餘額
     private fun getMoney() {
-        viewModel.getMoney()
+        viewModel.getMoneyAndTransferOut()
     }
 
     private fun resetEvent() {

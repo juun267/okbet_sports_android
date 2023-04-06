@@ -8,7 +8,7 @@ import org.cxct.sportlottery.network.service.ServiceEventType
 @JsonClass(generateAdapter = true) @KeepMembers
 data class LockMoneyEvent(
     @Json(name = "eventType")
-    override val eventType: String = EventType.LOCK_MONEY.value,
+    override val eventType: String = EventType.LOCK_MONEY,
     @Json(name = "lockMoney")
     val lockMoney: Double? = 1000.0,
 ): ServiceEventType

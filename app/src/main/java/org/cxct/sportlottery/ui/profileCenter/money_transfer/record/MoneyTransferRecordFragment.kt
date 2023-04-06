@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.component_date_range_selector.view.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_record.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
-import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 
 /**
@@ -65,10 +65,7 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
 
     private val rvAdapter by lazy {
         MoneyTransferRecordAdapter(ItemClickListener {
-            if (detailDialog.isAdded) {
-                detailDialog.dismissAllowingStateLoss()
-            }
-            detailDialog.data = it
+            detailDialog.arguments = Bundle().apply { putParcelable("data", it) }
             detailDialog.show(parentFragmentManager, MoneyTransferRecordFragment::class.simpleName)
         })
     }

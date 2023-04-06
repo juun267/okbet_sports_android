@@ -39,7 +39,7 @@ import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
-import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
@@ -96,8 +96,8 @@ abstract class BaseOddButtonViewModel(
             .getString(UUID, null) ?: ""
     }
 
-    fun getMoney() {
-        viewModelScope.launch { LoginRepository.getMoney() }
+    fun getMoneyAndTransferOut(allTransferOut: Boolean = true) {
+        viewModelScope.launch { LoginRepository.getMoneyAndTransferOut(allTransferOut) }
     }
 
     fun getLockMoney() {

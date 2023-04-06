@@ -25,12 +25,14 @@ import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.aboutMe.AboutMeActivity
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
-import org.cxct.sportlottery.ui.common.CustomAlertDialog
-import org.cxct.sportlottery.ui.common.CustomSecurityDialog
+import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
+import org.cxct.sportlottery.ui.common.dialog.CustomSecurityDialog
 import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
+import org.cxct.sportlottery.ui.money.withdraw.BankActivity
+import org.cxct.sportlottery.ui.money.withdraw.WithdrawActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity.Companion.PWD_PAGE
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
@@ -42,8 +44,6 @@ import org.cxct.sportlottery.ui.profileCenter.timezone.TimeZoneActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.selflimit.SelfLimitActivity
-import org.cxct.sportlottery.ui.withdraw.BankActivity
-import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -226,8 +226,7 @@ class ProfileCenterFragment :
 
     private fun getMoney() {
         btn_refresh_money.refreshMoneyLoading()
-        viewModel.allTransferOut()
-        viewModel.getMoney()
+        viewModel.getMoneyAndTransferOut()
     }
 
     private fun setupLogout() {
@@ -386,9 +385,9 @@ class ProfileCenterFragment :
             updateUI(it)
         }
 
-        viewModel.navPublicityPage.observe(viewLifecycleOwner) {
+//        viewModel.navPublicityPage.observe(viewLifecycleOwner) {
 //            GamePublicityActivity.reStart(requireContext())
-        }
+//        }
 
         viewModel.withdrawSystemOperation.observe(viewLifecycleOwner) {
             val operation = it.getContentIfNotHandled()

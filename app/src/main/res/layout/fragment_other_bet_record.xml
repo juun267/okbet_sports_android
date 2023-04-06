@@ -9,13 +9,13 @@
     tools:context=".ui.profileCenter.otherBetRecord.OtherBetRecordFragment"
     tools:ignore="SpUsage">
 
-    <org.cxct.sportlottery.ui.component.DateRangeSearchNewView
+    <org.cxct.sportlottery.view.DateRangeSearchView
         android:id="@+id/date_search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <org.cxct.sportlottery.ui.component.StatusSpinnerView
+    <org.cxct.sportlottery.view.statusSelector.StatusSpinnerView
         android:id="@+id/status_selector"
         android:layout_width="match_parent"
         android:layout_height="50dp"

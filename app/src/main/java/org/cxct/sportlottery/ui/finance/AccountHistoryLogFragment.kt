@@ -15,10 +15,10 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.FLAG_CREDIT_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.common.DividerItemDecorator
-import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.AccountHistory
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.view.DividerItemDecorator
 
 /**
  * @app_destination 历史记录

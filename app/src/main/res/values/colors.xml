@@ -263,6 +263,7 @@
     <color name="color_f1f3f6">#F1F3F6</color>
     <color name="color_111216">#111216</color>
     <color name="color_025BE8">#025BE8</color>
+    <color name="color_4c025BE8">#4c025BE8</color>
     <color name="color_A5A9B3">#A5A9B3</color>
     <color name="color_EFF4FF">#EFF4FF</color>
     <color name="background">@color/color_F0F5FA</color>
@@ -330,6 +331,7 @@
     <color name="color_EAEFF8">#EAEFF8</color>
     <color name="color_261B3A98">#261B3A98</color>
     <color name="color_CDD8EA">#CDD8EA</color>
+    <color name="color_CCCDD8EA">#ccCDD8EA</color>
 
 
     <!--region keyboard-->
@@ -389,7 +391,6 @@
     <color name="color_181922_F0F5FA">@color/color_F0F5FA</color>
     <color name="color_79839F_6C7BA8">@color/color_6C7BA8</color>
     <color name="okb1_app_text_color_gray01">#6C7BA8</color>
-    <color name="color_1A025BE8">#1A025BE8
-    </color>
+    <color name="color_1A025BE8">#1A025BE8</color>
 
 </resources>

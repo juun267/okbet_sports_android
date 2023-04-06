@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:elevation="3dp"
-    tools:context="org.cxct.sportlottery.ui.maintab.accountHistory.next.AccountHistoryNextAdapter"
+    tools:context="org.cxct.sportlottery.ui.betRecord.accountHistory.next.AccountHistoryNextAdapter"
     tools:ignore="SpUsage">
 
     <ImageView
@@ -41,7 +41,7 @@
         app:layout_constraintVertical_bias="0.0"
         tools:layout_editor_absoluteX="0dp" />
 
-    <org.cxct.sportlottery.ui.component.StatusSpinnerView
+    <org.cxct.sportlottery.view.statusSelector.StatusSpinnerView
         android:id="@+id/date_selector"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
         app:layout_constraintTop_toBottomOf="@id/iv_bg" />
 
 
-    <org.cxct.sportlottery.ui.component.StatusSpinnerView
+    <org.cxct.sportlottery.view.statusSelector.StatusSpinnerView
         android:id="@+id/sport_selector"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

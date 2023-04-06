@@ -10,16 +10,17 @@ import android.text.method.PasswordTransformationMethod
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_login_ok.*
 import kotlinx.android.synthetic.main.view_status_bar.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.ActivityLoginOkBinding
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.startActivity
+import org.cxct.sportlottery.databinding.ActivityLoginOkBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.login.LoginCodeRequest
 import org.cxct.sportlottery.network.index.login.LoginRequest
@@ -27,8 +28,8 @@ import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.repository.LOGIN_SRC
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.common.CustomAlertDialog
-import org.cxct.sportlottery.ui.common.SelfLimitFrozeErrorDialog
+import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
+import org.cxct.sportlottery.ui.common.dialog.SelfLimitFrozeErrorDialog
 import org.cxct.sportlottery.ui.login.VerifyCodeDialog
 import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.login.foget2.ForgetWaysActivity
@@ -156,9 +157,12 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private fun setupValidCode() {
         binding.btnSendSms.setOnClickListener {
-            VerifyCodeDialog(callBack = { identity, validCode ->
-                updateValidCode(identity, validCode)
-            }).show(supportFragmentManager, null)
+            VerifyCodeDialog().run {
+                callBack = { identity, validCode ->
+                    updateValidCode(identity, validCode)
+                }
+                show(supportFragmentManager, null)
+            }
         }
     }
 
@@ -202,28 +206,32 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 securityCode = smsCode,
                 inviteCode = inviteCode
             )
+
             viewModel.loginOrReg(loginRequest)
-        } else {
-            VerifyCodeDialog(callBack = { identity, validCode ->
-                loading()
-                val account = binding.eetUsername.text.toString()
-                val password = binding.eetPassword.text.toString()
-                val loginRequest = LoginRequest(
-                    account = account,
-                    password = MD5Util.MD5Encode(password),
-                    loginSrc = LOGIN_SRC,
-                    deviceSn = deviceSn,
-                    appVersion = appVersion,
-                    loginEnvInfo = deviceId,
-                    securityCode = null,
-                    validCodeIdentity = identity,
-                    validCode = validCode
-                )
-                viewModel.login(loginRequest, password)
-
-            }).show(supportFragmentManager, null)
-
+            return
         }
+
+
+        val verifyCodeDialog = VerifyCodeDialog()
+        verifyCodeDialog.callBack = { identity, validCode ->
+            loading()
+            val account = binding.eetUsername.text.toString()
+            val password = binding.eetPassword.text.toString()
+            val loginRequest = LoginRequest(
+                account = account,
+                password = MD5Util.MD5Encode(password),
+                loginSrc = LOGIN_SRC,
+                deviceSn = deviceSn,
+                appVersion = appVersion,
+                loginEnvInfo = deviceId,
+                securityCode = null,
+                validCodeIdentity = identity,
+                validCode = validCode
+            )
+            viewModel.login(loginRequest, password)
+        }
+
+        verifyCodeDialog.show(supportFragmentManager, null)
     }
 
     private fun setupAuthLogin() {
@@ -341,7 +349,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
         viewModel.msgCodeResult.observe(this, Observer {
             if (it?.success == true) {
-                CountDownUtil.smsCountDown(this, {
+                CountDownUtil.smsCountDown(this@LoginOKActivity.lifecycleScope, {
                     binding.btnSendSms.setBtnEnable(false)
                     countDownGoing = true
                 }, {

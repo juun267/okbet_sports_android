@@ -20,13 +20,13 @@ import org.cxct.sportlottery.util.setBtnEnable
 /**
  * 顯示棋牌彈窗
  */
-class VerifyCodeDialog(val callBack: (identity: String?, validCode: String) -> Unit) :
-    BaseDialog<LoginViewModel>(LoginViewModel::class) {
+class VerifyCodeDialog: BaseDialog<LoginViewModel>(LoginViewModel::class) {
 
     init {
         setStyle(R.style.CustomDialogStyle)
     }
 
+    var callBack: ((identity: String?, validCode: String) -> Unit)? = null
     var onClick: (() -> Unit)? = null
     var onDismiss: (() -> Unit)? = null
 
@@ -61,7 +61,7 @@ class VerifyCodeDialog(val callBack: (identity: String?, validCode: String) -> U
 
     private fun initClick() {
         btn_sure.setOnClickListener {
-            callBack.invoke(viewModel.validCodeResult.value?.validCodeData?.identity,
+            callBack?.invoke(viewModel.validCodeResult.value?.validCodeData?.identity,
                 eet_verification_code.text.toString())
             dismiss()
         }

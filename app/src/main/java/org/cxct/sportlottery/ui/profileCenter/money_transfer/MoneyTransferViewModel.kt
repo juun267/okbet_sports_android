@@ -14,7 +14,7 @@ import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersRe
 import org.cxct.sportlottery.network.third_game.query_transfers.Row
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
-import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.Status
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LocalUtils
@@ -269,7 +269,7 @@ class MoneyTransferViewModel(
                 _recycleAllMoneyResult.value = Event(result)
 
                 getAllBalance()
-                getMoney()
+                getMoneyAndTransferOut()
             }
         }
     }
@@ -289,7 +289,7 @@ class MoneyTransferViewModel(
                 _transferResult.value = Event(result)
 
                 getAllBalance()
-                getMoney()
+                getMoneyAndTransferOut()
             }
         }
     }

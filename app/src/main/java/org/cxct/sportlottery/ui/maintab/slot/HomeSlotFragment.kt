@@ -11,14 +11,14 @@ import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.fitsSystemStatus
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
-import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
-import org.cxct.sportlottery.ui.common.transform.TransformInDialog
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.home.HomeTabAdapter
-import org.cxct.sportlottery.ui.maintab.MainHomeViewModel
-import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
+import org.cxct.sportlottery.view.transform.TransformInDialog
 
 /**
  * 首页棋牌
@@ -100,17 +100,13 @@ class HomeSlotFragment :
 
         viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {
             if (isVisible)
-                enterThirdGame(it)
+                enterThirdGame(it.second, it.first)
         }
 
         viewModel.gameBalanceResult.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let {
-                //            if (it.second < 0) {
-//                return@observe
-//            }
-
-                TransformInDialog(it.first, it.second, it.third) {
-                    enterThirdGame(it)
+            it.getContentIfNotHandled()?.let { event ->
+                TransformInDialog(event.first, event.second, event.third) {
+                    enterThirdGame(it, event.first)
                 }.show(childFragmentManager, null)
             }
         }
@@ -156,29 +152,4 @@ class HomeSlotFragment :
         }
     }
 
-    private fun enterThirdGame(result: EnterThirdGameResult) {
-        hideLoading()
-        when (result.resultType) {
-            EnterThirdGameResult.ResultType.SUCCESS -> context?.run {
-                JumpUtil.toThirdGameWeb(
-                    this,
-                    result.url ?: "",
-                    thirdGameCategoryCode = result.thirdGameCategoryCode
-                )
-            }
-            EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(
-                getString(R.string.prompt),
-                result.errorMsg ?: ""
-            ) {}
-            EnterThirdGameResult.ResultType.NEED_REGISTER -> requireActivity().startRegister()
-            EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(
-                getString(R.string.error),
-                result.errorMsg ?: ""
-            ) {}
-            EnterThirdGameResult.ResultType.NONE -> {
-            }
-        }
-        if (result.resultType != EnterThirdGameResult.ResultType.NONE)
-            viewModel.clearThirdGame()
-    }
 }

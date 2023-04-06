@@ -18,8 +18,8 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentNewsBinding
 import org.cxct.sportlottery.network.common.NewsType
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.util.SpaceItemDecoration
+import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 
 class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
     private var _binding: FragmentNewsBinding? = null

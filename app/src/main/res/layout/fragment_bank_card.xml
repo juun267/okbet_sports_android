@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_F0F5FA"
     android:orientation="vertical"
-    tools:context="org.cxct.sportlottery.ui.withdraw.BankCardFragment"
+    tools:context="org.cxct.sportlottery.ui.money.withdraw.BankCardFragment"
     tools:ignore="ContentDescription, SpUsage">
 
     <LinearLayout
@@ -17,7 +17,7 @@
         android:background="@color/color_FFFFFF"
         android:orientation="vertical"
         android:visibility="gone"
-        tools:context="org.cxct.sportlottery.ui.common.CustomTabLayout">
+        tools:context="org.cxct.sportlottery.view.CustomTabLayout">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
@@ -342,7 +342,7 @@
                                 android:layout_marginBottom="12dp"
                                 android:background="@color/color_666666_bcbcbc" />
 
-                            <org.cxct.sportlottery.ui.component.StatusSelectorView
+                            <org.cxct.sportlottery.view.statusSelector.StatusSelectorView
                                 android:id="@+id/sv_protocol"
                                 android:layout_width="match_parent"
                                 android:layout_height="35dp"

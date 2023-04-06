@@ -90,17 +90,22 @@
         <activity
             android:name=".ui.finance.FinanceActivity"
             android:screenOrientation="portrait" />
+
+
+        <activity
+            android:name=".ui.maintab.betdetails.BetDetailsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.money.recharge.MoneyRechargeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.withdraw.WithdrawActivity"
+            android:name=".ui.money.withdraw.WithdrawActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.withdraw.WithdrawCommissionDetailActivity"
+            android:name=".ui.money.withdraw.WithdrawCommissionDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.withdraw.BankActivity"
+            android:name=".ui.money.withdraw.BankActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.results.ResultsSettlementActivity"
@@ -108,6 +113,7 @@
         <activity
             android:name=".ui.helpCenter.HelpCenterActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".ui.splash.SplashActivity"
             android:exported="true"
@@ -154,12 +160,20 @@
             android:name=".ui.profileCenter.nickname.ModifyProfileInfoActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.profileCenter.modify.VerificationWaysActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.profileCenter.modify.ModifyBindInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.profileCenter.changePassword.SettingPasswordActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.common.WebActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.thirdGame.ThirdGameActivity" />
+        <activity
+            android:configChanges="orientation|screenSize"
+            android:name=".ui.thirdGame.ThirdGameActivity" />
         <activity
             android:name=".ui.selflimit.SelfLimitActivity"
             android:screenOrientation="portrait"

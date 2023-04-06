@@ -803,10 +803,10 @@
     <string name="btm_navigation_affiliate">Đại lý</string>
     <string name="expire_date">Thời gian hết hạn chứng chỉ</string>
     <string name="self_limit_froze_impotent_1">Tự loại trừ có hiệu lực ngay sau khi thiết lập</string>
-    <string name="self_limit_froze_impotent_2">Chúng tôi sẽ giữ số dư của bạn trong khoảng thời gian tự loại trừ đã định.</string>
+    <string name="self_limit_froze_impotent_2">Chúng tôi sẽ giữ toàn bộ số dư của bạn trong khoảng thời gian tự loại trừ mà bạn đã đặt. Tuy nhiên, nếu đã hơn 6 tháng kể từ lần đăng nhập cuối cùng, OKBET sẽ có quyền tính phí quản lý hàng tháng cho bạn cho đến khi số dư tài khoản bằng không.</string>
     <string name="self_limit_froze_impotent_3">Nếu bạn đăng ký tự loại trừ trong các trò chơi trò chơi khác, nó sẽ không tự động áp dụng cho trò chơi này.</string>
     <string name="self_limit_froze_impotent_4">Trong thời gian tự loại trừ, nếu bạn cố gắng mở một tài khoản mới, tài khoản có thể bị đóng băng sau khi hệ thống phát hiện ra.</string>
-    <string name="self_limit_froze_impotent_5">Trong thời gian tự loại trừ, bạn có thể liên hệ với bộ phận dịch vụ khách hàng để hủy chức năng tự loại trừ.</string>
+    <string name="self_limit_froze_impotent_5">Trong thời gian tự loại trừ, bạn sẽ không thể tắt tính năng này cho đến khi hết thời gian loại trừ tối thiểu.</string>
     <string name="self_limit_froze_impotent_6">Sau khi quá trình tự loại trừ hết hạn, tài khoản của bạn sẽ tự động được kích hoạt lại.</string>
     <!-- 複式串關詳情 -->
     <string name="submit_success">gửi thành công</string>
@@ -1171,4 +1171,21 @@
     <string name="J804">1 X 2 &amp; Hai Đội Ghi Bàn-Không</string>
     <string name="N643">Mời vào app Glife nạp tiền</string>
     <string name="N644">Mời vào app Glife rút tiền</string>
+
+
+    <string name="bet_details_title" >Chi tiết tổ hợp xâu</string>
+
+    <string name="set_phone_no">Đặt SĐT</string>
+    <string name="set_email">Cài đặt email</string>
+    <string name="edit_phone_no">Thay đổi SĐT</string>
+    <string name="edit_email">Thay đổi email</string>
+    <string name="new_phone_no">SĐT mới</string>
+    <string name="new_email">Email mới</string>
+    <string name="verify">Xác minh</string>
+    <string name="verify_phone_no">Xác minh SĐT</string>
+    <string name="verify_email">Xác minh email</string>
+    <string name="back_to_my_details">Về trang cá nhân</string>
+    <string name="sms_code_length_error">Mã xác nhận ít nhất 4 ký tự</string>
+    <string name="phone_no_error">SĐT gồm 11 số, và 09 bắt đầu</string>
+
 </resources>

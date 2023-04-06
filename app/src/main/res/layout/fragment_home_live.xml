@@ -6,10 +6,10 @@
     android:background="@color/background"
     android:orientation="vertical">
 
-    <org.cxct.sportlottery.ui.maintab.HomeToolbarView
+    <org.cxct.sportlottery.ui.maintab.home.HomeToolbarView
         android:id="@+id/homeToolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_tab_home"

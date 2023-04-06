@@ -19,7 +19,7 @@ import org.cxct.sportlottery.network.matchresult.playlist.MatchResultPlayListRes
 import org.cxct.sportlottery.network.outright.OutrightResultListResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
-import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.util.LocalUtils
 
 
@@ -75,6 +75,8 @@ class SettlementViewModel(
         gameType: String,
         pagingParams: PagingParams?,
         timeRangeParams: TimeRangeParams,
+        matchId:String? = null,
+        leagueId:String? = null,
     ) {
         dataType = SettleType.MATCH
         requestListener.requestIng(true)
@@ -83,7 +85,9 @@ class SettlementViewModel(
                 settlementRepository.resultList(
                     pagingParams = pagingParams,
                     timeRangeParams = timeRangeParams,
-                    gameType = gameType
+                    gameType = gameType,
+                    matchId = matchId,
+                    leagueId  = leagueId
                 )
             }?.let { result ->
                 reformatMatchResultData(result.matchResultList).let {

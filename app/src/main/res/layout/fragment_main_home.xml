@@ -12,10 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <org.cxct.sportlottery.ui.maintab.HomeToolbarView
+    <org.cxct.sportlottery.ui.maintab.home.HomeToolbarView
         android:id="@+id/homeToolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <View
         android:background="@color/color_FFFFFF"
@@ -107,7 +107,7 @@
                     android:contentDescription="@null"
                     android:src="@drawable/icon_notice" />
 
-                <org.cxct.sportlottery.ui.common.AutoScrollRecyclerView
+                <org.cxct.sportlottery.view.AutoScrollRecyclerView
                     android:id="@+id/rv_marquee"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"

@@ -47,7 +47,7 @@ var sConfigData: ConfigData? = null
  * 若沒有登入者幣種符號則顯示系統預設幣種符號
  */
 val showCurrencySign: String?
-    get() = getLoginCurrency() ?: sConfigData?.systemCurrencySign
+    get() = getLoginCurrency() ?: sConfigData?.systemCurrencySign ?: ""
 
 private fun getLoginCurrency(): String? =
     MultiLanguagesApplication.mInstance.userInfo.value?.currencySign

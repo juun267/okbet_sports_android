@@ -19,22 +19,9 @@
         app:banner_indicator_normal_color="@color/color_CDD8EA"
         app:banner_indicator_selected_color="@color/color_025BE8"
         app:banner_indicator_gravity="center"
-        app:banner_indicator_marginBottom="120dp" />
+        app:banner_indicator_marginBottom="100dp" />
 
-    <Button
-        android:id="@+id/btn_start"
-        android:layout_width="148dp"
-        android:layout_height="44dp"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_marginBottom="120dp"
-        android:background="@drawable/bg_blue_radius_8"
-        android:textSize="@dimen/textSize16sp"
-        android:textColor="@color/color_FFFFFF"
-        android:text="Start Now"
-        android:visibility="gone"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+
 
     <TextView
         android:id="@+id/tv_skip"
@@ -48,7 +35,7 @@
         android:background="@drawable/bg_gray_radius_13"
         android:textColor="@color/color_FFFFFF"
         android:textSize="@dimen/textSize14sp"
-        android:text="Skip"
+        android:text="@string/btn_pass"
         android:visibility="gone"
         tools:visibility="visible"
         app:layout_constraintRight_toRightOf="parent"

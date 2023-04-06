@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/llayout_item"
+    android:orientation="vertical"
+    android:paddingBottom="7dp"
+    android:showDividers="end|middle|beginning"
+    tools:ignore="SpUsage,UselessParent">
+
+    <View
+        android:id="@+id/topLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_80334266_E3E8EE" />
+
+    <LinearLayout
+        android:id="@+id/leagueContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="9dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/iv_country"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginEnd="4dp" />
+
+        <TextView
+            android:id="@+id/content_league"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_weight="1"
+            android:textColor="@color/color_6C7BA8_A7B2C4"
+            android:textSize="@dimen/textSize12sp"
+            tools:text="德国甲组联赛" />
+
+        <TextView
+            android:id="@+id/parlay_play_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_6C7BA8_A7B2C4"
+            android:textSize="@dimen/textSize12sp"
+            tools:text="08/12 10:30" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="9dp"
+        android:background="@color/color_E8EFFD" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="5dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tv_fake"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textSize14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/viewLeftLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_detail_odd_title_line"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_fake"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_fake" />
+
+        <TextView
+            android:id="@+id/title_team_name_parlay"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="23dp"
+            android:textColor="@color/color_9BB3D9_535D76"
+            android:textSize="@dimen/textSize14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/viewLeftLine"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="密尔沃基雄鹿 VS 亚特兰大老鹰" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/content_play"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="15dp"
+        android:drawablePadding="5dp"
+        android:textAlignment="viewStart"
+        android:textColor="@color/color_6C7BA8_6C7BA8"
+        android:textSize="@dimen/textSize12sp"
+        app:drawableTint="@color/color_6C7BA8_A7B2C4"
+        tools:text="篮球 滚球 全场让分【欧洲盘】" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_count_down_parley"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAlignment="viewEnd"
+                android:textColor="@color/color_317FFF_0760D4"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="30s" />
+
+            <TextView
+                android:id="@+id/tv_score_parlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAlignment="viewEnd"
+                android:textColor="@color/color_7F7F7F_999999"
+                android:textSize="@dimen/textSize12sp"
+                tools:text="(5-26)" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!--playName spread @ odd-->
+    <TextView
+        android:id="@+id/parlay_play_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="2dp"
+        android:textAlignment="viewStart"
+        android:textColor="@color/color_9BB3D9_535D76"
+        android:textSize="@dimen/textSize12sp"
+        tools:text="密尔沃基雄鹿 6.5 \@ 1.860" />
+
+</LinearLayout>

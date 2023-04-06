@@ -67,7 +67,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-        <org.cxct.sportlottery.ui.common.MovableLinearLayout
+        <org.cxct.sportlottery.view.floatingbtn.MovableLinearLayout
             android:id="@+id/menu_button"
             android:layout_width="50dp"
             android:layout_height="50dp"

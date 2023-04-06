@@ -6,7 +6,7 @@
     android:layout_marginRight="10dp"
     app:layoutDescription="@xml/line_detail_scene">
 
-    <org.cxct.sportlottery.ui.common.MovableAdsorptionLinearLayout
+    <org.cxct.sportlottery.view.floatingbtn.MovableAdsorptionLinearLayout
         android:id="@+id/movable_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -56,6 +56,6 @@
                 android:layout_marginRight="2dp"
                 android:src="@drawable/float_btn_close" />
         </FrameLayout>
-    </org.cxct.sportlottery.ui.common.MovableAdsorptionLinearLayout>
+    </org.cxct.sportlottery.view.floatingbtn.MovableAdsorptionLinearLayout>
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

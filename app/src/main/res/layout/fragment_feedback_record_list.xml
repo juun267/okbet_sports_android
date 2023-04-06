@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_10"/>
-    <org.cxct.sportlottery.ui.component.DateRangeSearchNewView
+    <org.cxct.sportlottery.view.DateRangeSearchView
         android:id="@+id/date_range_selector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
         android:layout_height="44dp"
         android:background="@color/color_191919_FCFCFC"
         app:layout_constraintTop_toBottomOf="@id/date_range_selector">
-        <org.cxct.sportlottery.ui.component.StatusSpinnerView
+        <org.cxct.sportlottery.view.statusSelector.StatusSpinnerView
             android:id="@+id/status_selector"
             android:layout_width="match_parent"
             android:layout_height="44dp"
