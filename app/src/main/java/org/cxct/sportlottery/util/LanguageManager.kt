@@ -12,6 +12,7 @@ import android.util.DisplayMetrics
 import com.luck.picture.lib.PictureSelectorActivity
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.repository.sConfigData
 import java.util.*
 
 object LanguageManager {
@@ -223,6 +224,38 @@ object LanguageManager {
             Locale.setDefault(locale)
         }
         resources.updateConfiguration(config, dm)
+    }
+
+    fun makeUseLanguage() : MutableList<Language>{
+        var list = if (isForQA())
+            mutableListOf(
+                Language.EN,
+                Language.PHI,
+                Language.ZH,
+                Language.VI,
+            )
+        else
+            mutableListOf(
+                Language.EN,
+                Language.ZH,
+                Language.VI,
+            )
+        if (sConfigData?.supportLanguage?.isNotEmpty() == true) {
+            var sup = sConfigData?.supportLanguage?.split(",")
+            if (sup?.isNotEmpty() == true) {
+                list.listIterator().let {
+                    while (it.hasNext()) {
+                        if (!sup.contains(it.next().key)) {
+                            it.remove()
+                        }
+                    }
+                }
+                list.sortWith { t1, t2 ->
+                    sup.indexOf(t1.key).compareTo(sup.indexOf(t2.key))
+                }
+            }
+        }
+        return list
     }
 }
 

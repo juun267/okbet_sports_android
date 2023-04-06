@@ -801,7 +801,7 @@ class WithdrawViewModel(
                     ArithUtil.toMoneyFormat((cardConfig?.feeRate)?.times(withdrawAmount ?: 0.0))
                 )
 
-                _withdrawAmountTotal.value = "0.000"
+                _withdrawAmountTotal.value = "0.00"
 
 
 
@@ -835,7 +835,7 @@ class WithdrawViewModel(
                         ArithUtil.toMoneyFormat(withdrawNeedAmount)
 
                     )
-                    _withdrawAmountTotal.value =  "0.000"
+                    _withdrawAmountTotal.value = "0.00"
 
 
                     _withdrawCryptoFeeHint.value = String.format(

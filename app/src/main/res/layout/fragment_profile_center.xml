@@ -249,7 +249,7 @@
                         app:autoSizeMinTextSize="2dp"
                         app:layout_constraintEnd_toStartOf="@+id/btn_refresh_money"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="87,547,000.000" />
+                        tools:text="87,547,000.00" />
 
 
                     <ImageButton

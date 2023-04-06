@@ -254,8 +254,8 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         if (rebateFee == null || rebateFee == 0.0) {
             title_fee_rate.text = getString(R.string.title_fee_rate)
             title_fee_amount.text = getString(R.string.title_fee_amount)
-            tv_fee_rate.text = "0.000"
-            tv_fee_amount.text = "0.000"
+            tv_fee_rate.text = "0.00"
+            tv_fee_amount.text = "0.00"
         } else {
             if (rebateFee < 0.0) {
                 title_fee_rate.text = getString(R.string.title_fee_rate)
