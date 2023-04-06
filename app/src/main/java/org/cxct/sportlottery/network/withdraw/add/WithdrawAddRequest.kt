@@ -9,4 +9,5 @@ data class WithdrawAddRequest(
     val appointmentHour: String?,
     var appsFlyerId: String? = null,
     val clientType: Int = 2,
+    val channelMode: Int? = null,
 )

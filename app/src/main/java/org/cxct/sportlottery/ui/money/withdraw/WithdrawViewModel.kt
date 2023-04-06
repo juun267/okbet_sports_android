@@ -208,6 +208,7 @@ class WithdrawViewModel(
     val numberOfBankCard: LiveData<String>
         get() = _numberOfBankCard
     private var _numberOfBankCard = MutableLiveData<String>()
+
     /**
      * @param isBalanceMax: 是否為當前餘額作為提款上限, true: 提示字為超過餘額相關, false: 提示字為金額設定相關
      */
@@ -218,13 +219,18 @@ class WithdrawViewModel(
         transferTypeMoneyCardList()
     }
 
+    fun getChannelMode(): Int? {
+        return _rechargeConfigs.value?.uwTypes?.first { it.type == dealType.type }?.channelMode
+    }
+
     fun addWithdraw(
         withdrawCard: BankCardList?,
+        channelMode: Int?,
         applyMoney: String,
         withdrawPwd: String,
         bettingStationId: Int?,
         appointmentDate: String?,
-        appointmentHour: String?
+        appointmentHour: String?,
     ) {
         checkWithdrawAmount(withdrawCard, applyMoney)
         checkWithdrawPassword(withdrawPwd)
@@ -240,6 +246,7 @@ class WithdrawViewModel(
                             withdrawCard?.id?.toLong() ?: 0,
                             applyMoney,
                             withdrawPwd,
+                            channelMode,
                             bettingStationId,
                             appointmentDate,
                             appointmentHour
@@ -260,14 +267,16 @@ class WithdrawViewModel(
         bankCardId: Long,
         applyMoney: String,
         withdrawPwd: String,
+        channelMode: Int?,
         bettingStationId: Int?,
         appointmentDate: String?,
-        appointmentHour: String?
+        appointmentHour: String?,
     ): WithdrawAddRequest {
         return WithdrawAddRequest(
             id = bankCardId,
             applyMoney = applyMoney.toDoubleS(0.0),
             withdrawPwd = MD5Util.MD5Encode(withdrawPwd),
+            channelMode = channelMode,
             bettingStationId = bettingStationId,
             appointmentDate = appointmentDate,
             appointmentHour = appointmentHour,
@@ -782,12 +791,13 @@ class WithdrawViewModel(
 
     fun getWithdrawRate(withdrawCard: BankCardList?, withdrawAmount: Double? = 0.0) {
         when (dealType) {
-            TransferType.BANK, TransferType.E_WALLET -> {
+            TransferType.BANK, TransferType.E_WALLET, TransferType.PAYMAYA -> {
                 _withdrawCryptoAmountHint.value = ""
                 _withdrawCryptoFeeHint.value = ""
                 _withdrawRateHint.value = String.format(
                     LocalUtils.getString(R.string.withdraw_handling_fee_hint),
-                    ArithUtil.toMoneyFormat(cardConfig?.feeRate?.times(100)), sConfigData?.systemCurrencySign,
+                    ArithUtil.toMoneyFormat(cardConfig?.feeRate?.times(100)),
+                    sConfigData?.systemCurrencySign,
                     ArithUtil.toMoneyFormat((cardConfig?.feeRate)?.times(withdrawAmount ?: 0.0))
                 )
 
@@ -901,14 +911,22 @@ class WithdrawViewModel(
         val eWalletWithdrawSwitch =
             rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.E_WALLET.type }?.open == MoneyRechCfg.Switch.ON.code
 
+        val paymayaExistence =
+            result.bankCardList?.any { card -> card.uwType == TransferType.PAYMAYA.type } == true
+        val paymayaWithdrawSwitch =
+            rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.PAYMAYA.type }?.open == MoneyRechCfg.Switch.ON.code
+
+
         val bankCardExist = bankCardExistence && bankWithdrawSwitch
         val cryptoCardExist = cryptoCardExistence && cryptoWithdrawSwitch
         val eWalletCardExist = eWalletCardExistence && eWalletWithdrawSwitch
+        val paymayaExist = paymayaExistence && paymayaWithdrawSwitch
 
         val moneyCardExistSet = mutableSetOf<MoneyCardExist>().apply {
             add(MoneyCardExist(TransferType.BANK, bankCardExist))
             add(MoneyCardExist(TransferType.CRYPTO, cryptoCardExist))
             add(MoneyCardExist(TransferType.E_WALLET, eWalletCardExist))
+            add(MoneyCardExist(TransferType.PAYMAYA, paymayaExist))
         }
 
         _moneyCardExist.value = moneyCardExistSet
