@@ -82,12 +82,12 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     private fun setup() = lifecycleScope.launch(Dispatchers.IO) {
-        val inputSystem = assets.open("timezone.json")
-        val data = inputSystem.readBytes()
-        inputSystem.safeClose()
 
         var zoneList = timeZones?.get()
         if (zoneList == null) {
+            val inputSystem = assets.open("timezone.json")
+            val data = inputSystem.readBytes()
+            inputSystem.safeClose()
             zoneList = JsonUtil.listFrom(String(data), TimeZone::class.java) ?: listOf()
             timeZones = WeakReference(zoneList)
         }

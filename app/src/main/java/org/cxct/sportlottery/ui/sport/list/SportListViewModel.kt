@@ -334,7 +334,7 @@ class SportListViewModel(
                     }
                     result = OddsListResult(
                         it.code, it.msg, it.success,
-                        OddsListData(leagueOdds, Sport(GameType.ALL.key, GameType.ALL.name))
+                        OddsListData(leagueOdds)
                     )
                 }
             } else {
