@@ -94,9 +94,7 @@
         android:id="@+id/rvHistory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="10dp"
-        tools:itemCount="2"
-        tools:listitem="@layout/item_search_history" />
+        android:paddingVertical="10dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSearchResult"
