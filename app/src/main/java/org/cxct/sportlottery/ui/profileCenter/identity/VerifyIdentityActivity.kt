@@ -24,13 +24,26 @@ class VerifyIdentityActivity :
 
     override fun onStart() {
         super.onStart()
-        setStatusbar(R.color.color_232C4F_FFFFFF,true)
+        setStatusbar(R.color.color_232C4F_FFFFFF, true)
         checkKYCStatus()
     }
 
     private fun checkKYCStatus() {
-        if (viewModel.userInfo.value?.verified != ProfileActivity.VerifiedType.NOT_YET.value && mNavController.currentDestination?.id == R.id.verifyKYCFragment)
+        val opt1 = when (viewModel.userInfo.value?.verified) {
+            ProfileActivity.VerifiedType.VERIFYING.value,
+            ProfileActivity.VerifiedType.VERIFIED_FAILED.value,
+            ProfileActivity.VerifiedType.PASSED.value,
+            -> true
+            else -> {
+                false
+            }
+        }
+
+        val opt2 = mNavController.currentDestination?.id == R.id.verifyKYCFragment
+
+        if (opt1 and opt2) {
             mNavController.navigate(R.id.action_verifyKYCFragment_to_verifyStatusFragment)
+        }
     }
 
     private fun initToolbar() {
@@ -42,15 +55,15 @@ class VerifyIdentityActivity :
     }
 
 
-    fun setToolBar(title:String){
+    fun setToolBar(title: String) {
         tv_toolbar_title.text = title
     }
-    
-    fun setToolBarTitleForDetail(){
+
+    fun setToolBarTitleForDetail() {
         tv_toolbar_title.text = getString(R.string.scan_tool_bar)
     }
 
-    fun setToolBarTitle(){
+    fun setToolBarTitle() {
         tv_toolbar_title.text = getString(R.string.select_id_type)
     }
 
