@@ -24,7 +24,6 @@ import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.SPUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
-import kotlin.reflect.jvm.internal.impl.descriptors.Visibilities.Local
 import kotlin.system.exitProcess
 
 
