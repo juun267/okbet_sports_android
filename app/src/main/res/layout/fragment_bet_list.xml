@@ -162,7 +162,7 @@
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toEndOf="@+id/title_all_bet"
                                     app:layout_constraintTop_toTopOf="@+id/title_all_bet"
-                                    tools:text="0.000" />
+                                    tools:text="0.00" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -196,7 +196,7 @@
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toEndOf="@+id/title_winnable_amount"
                                     app:layout_constraintTop_toTopOf="@+id/title_winnable_amount"
-                                    tools:text="0.000" />
+                                    tools:text="0.00" />
                             </LinearLayout>
 
                         </androidx.constraintlayout.widget.ConstraintLayout>

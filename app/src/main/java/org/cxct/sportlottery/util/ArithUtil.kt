@@ -40,7 +40,7 @@ object ArithUtil : DecimalFormatUtil() {
      * 20210112體育數值金額統一改成小數點後第三位
      */
     fun toMoneyFormat(value: Double?): String {
-        return round(value ?: 0.0, 3, RoundingMode.HALF_UP)
+        return round(value ?: 0.0, 2, RoundingMode.HALF_UP)
     }
 
     /**
@@ -53,7 +53,7 @@ object ArithUtil : DecimalFormatUtil() {
     /**
      * 20201015賠率、手續費率等，保留小數點後三位
      */
-    fun toOddFormat(value: Double?, scale: Int= 3): String {
+    fun toOddFormat(value: Double?, scale: Int = 2): String {
         val rounded = round(value ?: 0.0, 4, RoundingMode.HALF_UP)
         return round(rounded.toDouble(), scale, RoundingMode.HALF_UP)
     }
