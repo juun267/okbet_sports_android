@@ -180,14 +180,16 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     }
 
     private fun editBindInfo(modifyType: @ModifyType Int) {
-        val userInfo = viewModel.userInfo.value
-        val phoneNo = userInfo?.phone
-        val email = userInfo?.email
-        if (phoneNo.isEmptyStr() && email.isEmptyStr()) {
-            ModifyBindInfoActivity.start(this, modifyType, 100, null, null, null)
-        } else {
-            VerificationWaysActivity.start(this, modifyType, phoneNo, email)
-        }
+        // 回退之前逻辑
+        putExtraForProfileInfoActivity(modifyType)
+//        val userInfo = viewModel.userInfo.value
+//        val phoneNo = userInfo?.phone
+//        val email = userInfo?.email
+//        if (phoneNo.isEmptyStr() && email.isEmptyStr()) {
+//            ModifyBindInfoActivity.start(this, modifyType, 100, null, null, null)
+//        } else {
+//            VerificationWaysActivity.start(this, modifyType, phoneNo, email)
+//        }
     }
 
     private fun putExtraForProfileInfoActivity(modifyType: @ModifyType Int) {
