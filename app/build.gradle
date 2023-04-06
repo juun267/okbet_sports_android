@@ -46,11 +46,6 @@ android {
         resValue "string", "server_client_id", "1037678190731-qqog3vk9ndm5ovjsk7rpm4nqf5cbm071.apps.googleusercontent.com"
 
         resConfigs "zh", "en", "vi", "phi", "xxhdpi"   //三方库只保留指定语言类型的资源 与 xxhdpi的图片资源
-        ndk {
-            //选择要添加的对应 cpu 类型的 .so 库。
-            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
-            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
-        }
         //防止谷歌商店 删除包内的多语言等资源
         bundle {
             language {
