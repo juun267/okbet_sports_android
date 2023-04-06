@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.login.signIn
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
@@ -10,6 +9,7 @@ import android.text.method.PasswordTransformationMethod
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import cn.jpush.android.api.JPushInterface
 import androidx.lifecycle.lifecycleScope
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_login_ok.*
@@ -17,6 +17,9 @@ import kotlinx.android.synthetic.main.view_status_bar.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.startActivity
+import org.cxct.sportlottery.databinding.ActivityLoginOkBinding
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.startActivity
@@ -184,10 +187,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun login() {
-        val deviceSn = getSharedPreferences(
-            MultiLanguagesApplication.UUID_DEVICE_CODE,
-            Context.MODE_PRIVATE).getString(
-            MultiLanguagesApplication.UUID, "") ?: ""
+        val deviceSn = JPushInterface.getRegistrationID(this)
         val deviceId = Settings.Secure.getString(applicationContext.contentResolver,
             Settings.Secure.ANDROID_ID)
         var appVersion = org.cxct.sportlottery.BuildConfig.VERSION_NAME
