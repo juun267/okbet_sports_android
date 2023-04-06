@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.OddSpreadForSCO
@@ -66,7 +67,7 @@ class SportViewModel(
     val playCate: LiveData<Event<String?>>
         get() = _playCate
 
-    val searchResult: LiveData<Event<List<SearchResult>?>>
+    val searchResult: LiveData<Event<Pair<String, List<SearchResult>?>>>
         get() = _searchResult
 
     val showBetUpperLimit = betInfoRepository.showBetUpperLimit
@@ -75,7 +76,7 @@ class SportViewModel(
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
 
     private val _playCate = MutableLiveData<Event<String?>>()
-    private val _searchResult = MutableLiveData<Event<List<SearchResult>?>>()
+    private val _searchResult = MutableLiveData<Event<Pair<String, List<SearchResult>?>>>()
 
     private val _betInfoResult = MutableLiveData<Event<BetInfoResult?>>()
     val betInfoResult: LiveData<Event<BetInfoResult?>>
@@ -134,83 +135,85 @@ class SportViewModel(
                         TimeUtil.getTodayStartTimeStamp().toString()
                     )
                 )
-            }
-            result?.let { it ->
-                it.rows.updateMatchType()
+            } ?: return@launch
 
-                allSearchData = it.rows
+            launch(Dispatchers.IO) {
+                result.rows.updateMatchType()
+                allSearchData = result.rows
             }
         }
     }
 
-    fun getSportSearch(key: String) {
-        if (key.isNotEmpty()) {
-            //[Martin] 小弟愚鈍 搜尋無法一次Filter所有資料(待強人捕)
-            // 所以下面的做法總共分三次去Filter資料 然後再合併
-            // 1.篩選球種 2.篩選聯賽 3.篩選比賽
-            var finalResult: MutableList<SearchResult> = arrayListOf()
-            //1.篩選球種
-            var searchResult = allSearchData?.filter { row ->
-                row.leagueMatchList.any { leagueMatch ->
-                    leagueMatch.matchInfoList.any { matchInfo ->
-                        leagueMatch.leagueName.contains(key, true) || matchInfo.homeName.contains(
-                            key,
-                            true) ||
-                                matchInfo.awayName.contains(key, true)
-                    }
+    fun getSportSearch(key: String) = viewModelScope.launch(Dispatchers.IO) {
+        //[Martin] 小弟愚鈍 搜尋無法一次Filter所有資料(待強人捕)
+        // 所以下面的做法總共分三次去Filter資料 然後再合併
+        // 1.篩選球種 2.篩選聯賽 3.篩選比賽
+        var finalResult: MutableList<SearchResult> = arrayListOf()
+        //1.篩選球種
+        var searchResult = allSearchData?.filter { row ->
+            row.leagueMatchList.any { leagueMatch ->
+                leagueMatch.matchInfoList.any { matchInfo ->
+                    leagueMatch.leagueName.contains(key, true)
+                            || matchInfo.homeName.contains(key,true)
+                            || matchInfo.awayName.contains(key, true)
                 }
             }
-            searchResult?.forEach {
-                var searchResult: SearchResult = SearchResult(it.gameName)
-                searchResult.sportTitle = it.gameName
-                searchResult.gameType = it.gameType
-                finalResult?.add(searchResult)
-            }
-            //2.篩選聯賽
-            var leagueMatchSearchResult = searchResult?.map { row ->
-                row.leagueMatchList.filter { leagueMatch ->
-                    leagueMatch.matchInfoList.any { matchInfo ->
-                        leagueMatch.leagueName.contains(key, true) || matchInfo.homeName.contains(
-                            key,
-                            true) ||
-                                matchInfo.awayName.contains(key, true)
-                    }
-                }
-            }
-            leagueMatchSearchResult?.forEachIndexed { index, league ->
-                var searchResultLeagueList: MutableList<SearchResult.SearchResultLeague> =
-                    arrayListOf()
-                league.forEach { leagueMatch ->
-                    var searchResultLeague = SearchResult.SearchResultLeague(leagueMatch.leagueName)
-                    searchResultLeagueList.add(searchResultLeague)
-                }
-                finalResult?.get(index).searchResultLeague = searchResultLeagueList
-            }
-            //3.篩選比賽
-            var matchSearchResult = leagueMatchSearchResult?.map { row ->
-                row.map { leagueMatch ->
-                    leagueMatch.matchInfoList.filter { matchInfo ->
-                        leagueMatch.leagueName.contains(key, true) || matchInfo.homeName.contains(
-                            key,
-                            true) ||
-                                matchInfo.awayName.contains(key, true)
-                    }
-                }
-            }
-            matchSearchResult?.forEachIndexed { index0, row ->
-                row.forEachIndexed { index1, league ->
-                    var matchList: MutableList<SearchResponse.Row.LeagueMatch.MatchInfo> =
-                        arrayListOf()
+        }
 
-                    league.forEachIndexed { index, matchInfo ->
+        searchResult?.forEach {
+            var searchResult = SearchResult(it.gameName)
+            searchResult.sportTitle = it.gameName
+            searchResult.gameType = it.gameType
+            finalResult?.add(searchResult)
+        }
+
+        //2.篩選聯賽
+        var leagueMatchSearchResult = searchResult?.map { row ->
+            row.leagueMatchList.filter { leagueMatch ->
+                leagueMatch.matchInfoList.any { matchInfo ->
+                    leagueMatch.leagueName.contains(key, true)
+                            || matchInfo.homeName.contains(key,true)
+                            ||matchInfo.awayName.contains(key, true)
+                }
+            }
+        }
+
+        leagueMatchSearchResult?.forEachIndexed { index, league ->
+            var searchResultLeagueList: MutableList<SearchResult.SearchResultLeague> = arrayListOf()
+            league.forEach { leagueMatch ->
+                var searchResultLeague = SearchResult.SearchResultLeague(leagueMatch.leagueName)
+                searchResultLeagueList.add(searchResultLeague)
+            }
+            finalResult?.get(index).searchResultLeague = searchResultLeagueList
+        }
+
+        //3.篩選比賽
+        var matchSearchResult = leagueMatchSearchResult?.map { row ->
+            row.map { leagueMatch ->
+                leagueMatch.matchInfoList.filter { matchInfo ->
+                    leagueMatch.leagueName.contains(key, true)
+                            || matchInfo.homeName.contains(key,true)
+                            || matchInfo.awayName.contains(key, true)
+                }
+            }
+        }
+
+        matchSearchResult?.forEachIndexed { index0, row ->
+            row.forEachIndexed { index1, league ->
+
+                val searchResult = finalResult.getOrNull(index0)
+                if (searchResult != null) {
+                    val matchList: MutableList<SearchResponse.Row.LeagueMatch.MatchInfo> = arrayListOf()
+                    league.forEachIndexed { _, matchInfo ->
+                        matchInfo.gameType = searchResult.gameType
                         matchList.add(matchInfo)
                     }
-                    finalResult?.get(index0).searchResultLeague.get(index1).leagueMatchList =
-                        matchList
+                    searchResult.searchResultLeague.get(index1).leagueMatchList = matchList
                 }
             }
-            _searchResult.postValue(Event(finalResult))
         }
+
+        _searchResult.postValue(Event(Pair(key, finalResult)))
     }
 
     private fun List<SearchResponse.Row>.updateMatchType() {
