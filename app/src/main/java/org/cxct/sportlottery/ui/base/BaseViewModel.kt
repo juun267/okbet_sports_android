@@ -217,16 +217,8 @@ abstract class BaseViewModel(
 
 
 
-    val netCoroutine:CoroutineScope=viewModelScope
-    fun onNet(block:suspend (coroutine:CoroutineScope)->Unit){
-        viewModelScope.async (Dispatchers.IO) {
-            block(this)
-        }
-    }
-
-
-    fun onMain(block:suspend (coroutine:CoroutineScope)->Unit){
-        viewModelScope.launch(Dispatchers.Main) {
+    fun launch(block:suspend (coroutine:CoroutineScope)->Unit){
+        viewModelScope.launch{
             block(this)
         }
     }

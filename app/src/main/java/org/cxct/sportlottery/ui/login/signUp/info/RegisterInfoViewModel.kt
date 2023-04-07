@@ -5,10 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.common.event.SingleEvent
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bettingStation.AreaAll
 import org.cxct.sportlottery.network.index.config.SalarySource
-import org.cxct.sportlottery.network.index.login.LoginData
+import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.user.info.UserBasicInfoRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
@@ -21,7 +22,7 @@ class RegisterInfoViewModel(
 ) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     //登录数据
-    var loginData:LoginData?=null
+    var loginResult:LoginResult?=null
 
     //生日
     var birthdayTimeInput = ""
@@ -39,7 +40,7 @@ class RegisterInfoViewModel(
     var cityInput=""
 
     //是否完成信息提交
-    var isFinishComplete=false
+    private var isFinishComplete=false
 
     //地区信息
     val areaAllList: LiveData<AreaAll>
@@ -50,24 +51,23 @@ class RegisterInfoViewModel(
     val salaryList: LiveData<List<SalarySource>>
         get() = _salaryList
     private var _salaryList = MutableLiveData<List<SalarySource>>()
+    //薪资来源string 列表
     val salaryStringList:ArrayList<String> = ArrayList()
+
+    //提交监听
+    val commitEvent=SingleEvent<Boolean>()
 
 
     /**
      * 获取省市数据
      */
     fun getAddressData() {
-        onNet {
-            val result = doNetwork(androidContext) {
+        launch {
+            doNetwork(androidContext) {
                 OneBoSportApi.bettingStationService.areaAll()
+            }?.let {
+                _areaAllList.postValue(it.areaAll)
             }
-
-            onMain {
-                result?.let {
-                    _areaAllList.postValue(result.areaAll)
-                }
-            }
-
         }
     }
 
@@ -75,10 +75,11 @@ class RegisterInfoViewModel(
      * 获取收入来源选项
      */
     fun getUserSalaryList(){
-        viewModelScope.launch {
-            doNetwork(androidContext){
+        launch {
+            val result=doNetwork(androidContext){
                 OneBoSportApi.indexService.getUserSalaryList()
-            }?.let {result->
+            }
+            result?.let {
                 result.rows?.forEach {salary->
                     salaryStringList.add(salary.name)
                 }
@@ -108,9 +109,9 @@ class RegisterInfoViewModel(
     /**
      * 未完善退出，注销登录信息
      */
-    fun logOut(){
+    fun logout(){
         if(!isFinishComplete){
-            onMain {
+            launch {
                 loginRepository.logout()
             }
         }
@@ -119,9 +120,8 @@ class RegisterInfoViewModel(
 
 
     /**
-     * 获取省份 list
+     * 格式化省份 string list
      */
-
     fun getProvinceStringList():ArrayList<String> {
         val provinceStringList = ArrayList<String>()
         _areaAllList.value?.let {
@@ -133,9 +133,8 @@ class RegisterInfoViewModel(
     }
 
     /**
-     * 获取城市 list
+     * 格式化城市 string  list
      */
-
     fun getCityStringList(provinceList:ArrayList<String>):List<List<String>> {
         val cityList = ArrayList<ArrayList<String>>()
         _areaAllList.value?.let {all->
@@ -153,8 +152,6 @@ class RegisterInfoViewModel(
                 }
                 cityList.add(tempArray)
             }
-
-
         }
         return cityList
     }
@@ -163,14 +160,46 @@ class RegisterInfoViewModel(
     /**
      * 提交完善信息
      */
+    var commitMsg=""
     fun commitUserBasicInfo(){
-        val request=UserBasicInfoRequest(realNameInput,birthdayTimeInput,sourceInput,provinceInput,cityInput)
-        viewModelScope.launch {
-            val commitResult=doNetwork(androidContext){ loginRepository.commitUserBasicInfo(request)}
-            commitResult?.let {
+        val request=UserBasicInfoRequest(
+            realNameInput,
+            birthdayTimeInput,
+            sourceInput,
+            provinceInput,
+            cityInput)
 
+        launch {
+            val commitResult=doNetwork(androidContext){ loginRepository.commitUserBasicInfo(request)}
+            if(commitResult!=null&&commitResult.success){
+                commitEvent.post(true)
+            }else{
+                commitEvent.post(false)
+                commitMsg="${commitResult?.msg}"
             }
         }
     }
 
+
+    /**
+     * 检查表单必选项
+     */
+    fun checkInput():Boolean{
+        return realNameInput.isNotEmpty()
+                && birthdayTimeInput .isNotEmpty()
+                && sourceInput>0
+                && provinceInput.isNotEmpty()
+                && cityInput.isNotEmpty()
+    }
+
+    fun setCityData(provincePosition:Int,cityPosition:Int){
+        val provinceList = getProvinceStringList()
+        val cityList = getCityStringList(provinceList)
+        cityInput=cityList[provincePosition][cityPosition]
+    }
+
+    fun setProvinceData(provincePosition:Int){
+        val provinceList = getProvinceStringList()
+        provinceInput =provinceList[provincePosition]
+    }
 }

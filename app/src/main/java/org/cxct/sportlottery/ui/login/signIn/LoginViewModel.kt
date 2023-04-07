@@ -84,7 +84,7 @@ class LoginViewModel(
         get() = _loginEnable
     private val _loginEnable = MutableLiveData<Boolean>()
     //跳转至完善信息监听
-    val registerInfoEvent by lazy { SingleEvent<LoginData>() }
+    val registerInfoEvent by lazy { SingleEvent<LoginResult>() }
 
     val account by lazy { loginRepository.account }
     val password by lazy { loginRepository.password }
@@ -149,7 +149,7 @@ class LoginViewModel(
                         //是否需要完善信息
                         if(checkNeedCompleteInfo(isSwitch,isFinished)){
                             //跳转到完善页面
-                            registerInfoEvent.post(loginData)
+                            registerInfoEvent.post(result)
                         }else{
                             //继续登录
                             userInfoRepository.getUserInfo()
@@ -188,7 +188,7 @@ class LoginViewModel(
                         //是否需要完善信息开关
                         if(checkNeedCompleteInfo(isSwitch,isFinished)){
                             //跳转到完善页面
-                            registerInfoEvent.post(loginData)
+                            registerInfoEvent.post(loginResult)
                         }else{
                             //继续登录
                             userInfoRepository.getUserInfo()

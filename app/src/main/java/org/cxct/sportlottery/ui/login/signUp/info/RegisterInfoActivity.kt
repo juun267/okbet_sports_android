@@ -11,10 +11,13 @@ import com.bigkoo.pickerview.view.TimePickerView
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.view_status_bar.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.event.RegisterInfoEvent
 import org.cxct.sportlottery.databinding.ActivityRegisterInfoBinding
-import org.cxct.sportlottery.network.index.login.LoginData
+import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.ToastUtil
 import java.util.*
 
 /**
@@ -46,11 +49,16 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
 
 
     private fun initData() {
-        viewModel.loginData = intent.getSerializableExtra("data") as LoginData?
+        loading()
+        viewModel.loginResult = intent.getSerializableExtra("data") as LoginResult?
+        //请求地址列表
         viewModel.getAddressData()
+        //请求薪资来源列表
         viewModel.getUserSalaryList()
+
         //地址数据
         viewModel.areaAllList.observe(this) {
+            hideLoading()
             val provinceList = viewModel.getProvinceStringList()
             val cityList = viewModel.getCityStringList(provinceList)
             addressPicker?.setPicker(provinceList, cityList)
@@ -58,6 +66,20 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
         //薪资来源
         viewModel.salaryList.observe(this) {
             salaryPicker?.setPicker(viewModel.salaryStringList)
+        }
+
+        //提交表单
+        viewModel.commitEvent.observe(this) {
+            hideLoading()
+            if(it){
+                viewModel.loginResult?.let { result ->
+                    //返回继续完成登录
+                    EventBusUtil.post(RegisterInfoEvent(result))
+                    finish()
+                }
+            }else{
+                ToastUtil.showToast(this,viewModel.commitMsg)
+            }
         }
     }
 
@@ -68,24 +90,34 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
         initAddressPickerView()
         initSalaryPickerView()
 
+        //选择生日点击
         binding.tvBirthday.setOnClickListener {
             hideSoftKeyboard(this)
             dateTimePicker?.show()
         }
 
+        //选择地址点击
         binding.tvAddress.setOnClickListener {
             hideSoftKeyboard(this)
             addressPicker?.show()
         }
 
+        //选择薪资来源点击
         binding.tvSalary.setOnClickListener {
             hideSoftKeyboard(this)
             salaryPicker?.show()
         }
 
+        //真实姓名输入
         binding.etRealName.addTextChangedListener {
             viewModel.realNameInput = binding.etRealName.text.toString()
             checkStatus()
+        }
+
+        //提交点击
+        binding.btnCommit.setOnClickListener {
+            loading()
+            viewModel.commitUserBasicInfo()
         }
     }
 
@@ -101,10 +133,12 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
 
     override fun onPause() {
         super.onPause()
-        viewModel.logOut()
+        viewModel.logout()
     }
 
+
     override fun onBackPressed() {
+        //需求不让回退
     }
 
 
@@ -112,11 +146,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
      * 提交按钮高亮判断
      */
     private fun checkStatus() {
-        val status = viewModel.realNameInput.isNotEmpty()
-                && viewModel.birthdayTimeInput .isNotEmpty()
-                && viewModel.sourceInput>0
-                && viewModel.provinceInput.isNotEmpty()
-                && viewModel.cityInput.isNotEmpty()
+        val status = viewModel.checkInput()
         binding.btnCommit.isEnabled = status
         if (status) {
             binding.btnCommit.alpha = 1f
@@ -125,14 +155,15 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
         }
     }
 
+    /**
+     * 初始化地址选择控件
+     */
     @SuppressLint("SetTextI18n")
     private fun initAddressPickerView() {
         addressPicker = StringPickerOptions(this)
             .getBuilder { provincePosition, cityPosition, _, _ ->
-                val provinceList = viewModel.getProvinceStringList()
-                val cityList = viewModel.getCityStringList(provinceList)
-                viewModel.provinceInput =provinceList[provincePosition]
-                viewModel.cityInput=cityList[provincePosition][cityPosition]
+                viewModel.setProvinceData(provincePosition)
+                viewModel.setCityData(provincePosition, cityPosition)
                 binding.etAddress.setText("${viewModel.provinceInput} ${viewModel.cityInput}")
                 checkStatus()
             }
@@ -142,12 +173,15 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
     }
 
 
+    /**
+     * 初始化薪资来源控件
+     */
     private fun initSalaryPickerView() {
         salaryPicker = StringPickerOptions(this)
             .getBuilder { options1, _, _, _ ->
                 viewModel.salaryList.value?.let {
-                    it[options1].let { salary->
-                        viewModel.sourceInput=salary.id
+                    it[options1].let { salary ->
+                        viewModel.sourceInput = salary.id
                         binding.etSource.setText(viewModel.salaryList.value?.get(options1)?.name)
                         checkStatus()
                     }
@@ -159,6 +193,9 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
             .build()
     }
 
+    /**
+     * 初始化时间选择控件
+     */
     private fun initDateTimeView() {
         val yesterday = Calendar.getInstance()
         yesterday.add(Calendar.YEAR, -100)
@@ -166,7 +203,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
         tomorrow.add(Calendar.DAY_OF_MONTH, -1)
         dateTimePicker = DateTimePickerOptions(this).getBuilder { date, _ ->
             TimeUtil.dateToStringFormatYMD(date)?.let {
-                viewModel.birthdayTimeInput=it
+                viewModel.birthdayTimeInput = it
                 binding.etBirthday.setText(it)
                 checkStatus()
             }
@@ -177,6 +214,9 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
     }
 
 
+    /**
+     * 标题颜色渐变
+     */
     private fun setTextColorGradient() {
         val width = binding.tvTitle.paint.measureText(binding.tvTitle.text.toString())
         val mLinearGradient = LinearGradient(

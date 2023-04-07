@@ -16,4 +16,4 @@ data class LoginResult(
     override val success: Boolean,
     @Json(name = "t")
     val loginData: LoginData? = null
-) : BaseResult()
+) : BaseResult(),java.io.Serializable
