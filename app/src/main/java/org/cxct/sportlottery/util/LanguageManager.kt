@@ -12,6 +12,7 @@ import android.util.DisplayMetrics
 import com.luck.picture.lib.PictureSelectorActivity
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.crash.FirebaseLog
 import org.cxct.sportlottery.repository.sConfigData
 import java.util.*
 
@@ -189,6 +190,7 @@ object LanguageManager {
     }
 
     fun saveSelectLanguage(context: Context, select: Language) {
+        FirebaseLog.addLogInfo("currentLanguage", select.name) // 在崩溃日志中记录当前的语言类型
         selectedLocale = convert(select)
         SPUtil.getInstance(context).saveLanguage(select.key)
         setApplicationLanguage(context)
