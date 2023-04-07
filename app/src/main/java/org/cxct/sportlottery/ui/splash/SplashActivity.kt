@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.ui.splash
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import com.gyf.immersionbar.ImmersionBar
@@ -12,6 +14,7 @@ import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.repository.FLAG_OPEN
+import org.cxct.sportlottery.repository.NAME_LOGIN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
@@ -32,7 +35,9 @@ import kotlin.system.exitProcess
 class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
     private val mVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
-
+    private val sharedPref: SharedPreferences? by lazy {
+        getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -97,9 +102,9 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         viewModel.configResult.observe(this) {
             //判断用户是否手动设置了语言
 
-            var languageArr = it?.configData?.supportLanguage?.split(",")
+            val languageArr = it?.configData?.supportLanguage?.split(",")
             LogUtil.d("当前语言 $languageArr")
-            var systemLanStr: String =
+            val systemLanStr: String =
                 LanguageManager.getSelectLanguage(applicationContext).key
             //1判断当前系统语言我们是否支持 如果支持使用系统语言
             if (languageArr != null && !(languageArr.contains(systemLanStr))) {
@@ -111,6 +116,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                     LanguageManager.saveSelectLanguage(applicationContext, LanguageManager.Language.EN)
                 }
                 viewModel.getConfig()
+                return@observe
             }
 
             when {
