@@ -13,6 +13,7 @@ import org.cxct.sportlottery.common.extentions.toDoubleS
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bank.add.BankAddRequest
+import org.cxct.sportlottery.network.bank.add.BankAddResult
 import org.cxct.sportlottery.network.bank.delete.BankDeleteRequest
 import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.bank.my.BankMyResult
@@ -66,9 +67,9 @@ class WithdrawViewModel(
         get() = _moneyCardList
     private var _moneyCardList = MutableLiveData<MyMoneyCard>()
 
-    val bankAddResult: LiveData<NetResult>
+    val bankAddResult: LiveData<BankAddResult>
         get() = _bankAddResult
-    private var _bankAddResult = MutableLiveData<NetResult>()
+    private var _bankAddResult = MutableLiveData<BankAddResult>()
 
     val bankDeleteResult: LiveData<NetResult>
         get() = _bankDeleteResult
@@ -413,6 +414,12 @@ class WithdrawViewModel(
                 checkWithdrawPassword(withdrawPassword)
                 checkEWalletCardData()
             }
+            TransferType.PAYMAYA.type -> {
+                checkCreateName(fullName ?: "")
+                checkPhoneNumber(cardNo)
+                checkWithdrawPassword(withdrawPassword)
+                checkPaymayaCardData()
+            }
             else -> false
         }
     }
@@ -562,6 +569,16 @@ class WithdrawViewModel(
         return true
     }
 
+    private fun checkPaymayaCardData(): Boolean {
+        if (createNameErrorMsg.value != "")
+            return false
+        if (phoneNumberMsg.value != "")
+            return false
+        if (withdrawPasswordMsg.value != "")
+            return false
+        return true
+    }
+
     private fun checkBankCardDeleteData(): Boolean {
         if (withdrawPasswordMsg.value != "")
             return false
@@ -689,7 +706,13 @@ class WithdrawViewModel(
             TransferType.E_WALLET -> { //eWallet暫時寫死 與綁定銀行卡相同
                 buttonEnableStatus =
                     createNameErrorMsg.value.isNullOrEmpty() == true &&
-                            phoneNumberMsg.value?.isEmpty() == true  &&
+                            phoneNumberMsg.value?.isEmpty() == true &&
+                            withdrawPasswordMsg.value?.isEmpty() == true
+            }
+            TransferType.PAYMAYA -> {
+                buttonEnableStatus =
+                    createNameErrorMsg.value.isNullOrEmpty() == true &&
+                            phoneNumberMsg.value?.isEmpty() == true &&
                             withdrawPasswordMsg.value?.isEmpty() == true
             }
         }
@@ -939,7 +962,7 @@ class WithdrawViewModel(
         var showAddCryptoCard = false //是否顯示虛擬幣
         val showAddBankCard: Boolean // 是否顯示銀行卡
         val showAddEWalletCard: Boolean // 是否顯示eWallet
-        val showAddPayMayaCard: Boolean // 是否顯示eWallet
+        val showAddPayMayaCard: Boolean // 是否顯示paymaya
 
         //虛擬幣是否可以被提款或新增卡片
         val cryptoOpen =
@@ -986,8 +1009,25 @@ class WithdrawViewModel(
             else -> eWalletCardCount < eWalletCardCountLimit
         }
 
+        //paymaya是否可以被提款或新增卡片
+        val paymayaOpen =
+            rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.PAYMAYA.type }?.open == MoneyRechCfg.Switch.ON.code
+        val paymayaCardCountLimit =
+            rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.PAYMAYA.type }?.detailList?.first()?.countLimit
+        val paymayaCardCount =
+            bankCardList.value?.count { it.transferType == TransferType.PAYMAYA }
+        showAddPayMayaCard = when {
+            !paymayaOpen -> false
+            paymayaCardCountLimit == null -> true
+            paymayaCardCount == null -> true
+            else -> paymayaCardCount < paymayaCardCountLimit
+        }
+
         _addMoneyCardSwitch.value =
-            TransferTypeAddSwitch(showAddBankCard, showAddCryptoCard, showAddEWalletCard)
+            TransferTypeAddSwitch(showAddBankCard,
+                showAddCryptoCard,
+                showAddEWalletCard,
+                showAddPayMayaCard)
     }
 
     data class CryptoCardCountLimit(

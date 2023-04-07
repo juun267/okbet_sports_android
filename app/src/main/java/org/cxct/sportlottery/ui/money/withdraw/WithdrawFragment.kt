@@ -55,6 +55,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     }
 
     private fun setupData() = viewModel.run {
+        getBankCardList()
         getMoneyConfigs()
         getUwCheck()
     }
@@ -187,7 +188,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                         dealType = TransferType.PAYMAYA
                         transferTypeAddSwitch.apply {
                             add_bank_group.visibility =
-                                if (walletTransfer) View.VISIBLE else View.GONE
+                                if (paymataTransfer) View.VISIBLE else View.GONE
                         }
                         tv_add_bank.text = context?.getString(R.string.bank_list_add,
                             context?.getString(R.string.pay_maya))
@@ -298,6 +299,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         }
         viewModel.addMoneyCardSwitch.observe(this.viewLifecycleOwner) {
             transferTypeAddSwitch = it
+            LogUtil.d("transferTypeAddSwitch=" + transferTypeAddSwitch)
         }
         viewModel.commissionCheckList.observe(this.viewLifecycleOwner) {
             tv_detail.apply {
@@ -405,7 +407,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         })
         //Tab 顯示判斷
         viewModel.withdrawTabIsShow.observe(this.viewLifecycleOwner) { list ->
-            LogUtil.toJson(list)
             if (list.isNullOrEmpty() || list.size == 1) {
                 tab_layout.visibility = View.GONE
                 ll_tab_layout.visibility = View.GONE
@@ -534,6 +535,9 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             }
             TransferType.E_WALLET -> {
                 getString(R.string.please_setting_ewallet)
+            }
+            TransferType.PAYMAYA -> {
+                getString(R.string.please_setting_paymaya)
             }
             else -> {
                 getString(R.string.please_setting_bank_card)
