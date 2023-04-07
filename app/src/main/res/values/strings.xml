@@ -426,6 +426,7 @@
     <string name="please_enter_wallet_phone_number">Please enter the phone number</string>
     <string name="delete_bank_card">Delete</string>
     <string name="delete_crypto">Delete</string>
+    <string name="delete_paymaya">Delete</string>
     <string name="delete_e_wallet">Delete</string>
     <string name="select_currency_protocol">Select agreement/currency</string>
     <string name="error_withdraw_password">The Password you entered is incorrect</string>
@@ -434,13 +435,16 @@
     <string name="text_bank_card_delete_success">Bank card deleted successfully</string>
     <string name="text_crypto_delete_success">The virtual coin was successfully deleted</string>
     <string name="text_e_wallet_delete_success">eWallet deleted successfully</string>
+    <string name="text_pay_maya_delete_success">Paymaya deleted successfully</string>
     <string name="text_bank_card_add_success">Bank card binding successfully</string>
     <string name="text_crypto_add_success">Crypto binding successfully</string>
     <string name="text_e_wallet_add_success">eWallet binding successfully</string>
+    <string name="text_pay_maya_add_success">Paymaya binding successfully</string>
+    <string name="text_paymaya_add_success">Paymaya binding successfully</string>
     <string name="text_bank_card_modify_success">Edit bank card successfully</string>
     <string name="text_crypto_modify_success">Edit virtual coin successfully</string>
     <string name="text_e_wallet_modify_success">Edit eWallet successfully</string>
-    <string name="text_pay_maya_modify_success">Edit PayMaya successfully</string>
+    <string name="text_pay_maya_modify_success">Edit Paymaya successfully</string>
     <string name="bet_receipt_bet_quota">Stake：</string>
     <string name="bet_info_list_win_quota">To win：</string>
     <string name="bet_receipt_win_quota">EST winning：</string>
@@ -1111,6 +1115,7 @@
     <string name="str_parlay_type_wrong">Parlay type wrong</string>
     <!--投注改版-->
     <string name="online_fortune_pay">FortunePay</string>
+    <string name="pay_maya">Paymaya</string>
     <string name="format_error">format doesn\'t match</string>
     <string name="over_size">oversized files</string>
     <string name="optional_tips">Optional:Only support PNG or JPG format files, and less than 2MB</string>
@@ -1255,6 +1260,9 @@
     <string name="back_to_my_details">Go back to My Details</string>
     <string name="sms_code_length_error">Verification code at least 4 digits</string>
     <string name="phone_no_error">Phone number must be 11 digits &amp; starting with 09</string>
+    <string name="edit_paymaya">Edit PayMaya</string>
+    <string name="add_paymaya">Add Paymaya</string>
+    <string name="please_setting_paymaya">Please set up your PayMaYa first</string>
 
 
 </resources>

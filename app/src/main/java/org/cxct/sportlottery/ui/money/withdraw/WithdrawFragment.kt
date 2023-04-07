@@ -55,6 +55,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     }
 
     private fun setupData() = viewModel.run {
+        getBankCardList()
         getMoneyConfigs()
         getUwCheck()
     }
@@ -73,6 +74,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 TransferType.BANK-> numType = 1
                 TransferType.CRYPTO -> numType =2
                 TransferType.E_WALLET -> numType = 3
+                TransferType.PAYMAYA -> numType = 4
             }
             intent.putExtra("add_bank", numType)
             startActivity(intent)
@@ -173,21 +175,25 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                         selectDealType(TransferType.E_WALLET)
                         dealType = TransferType.E_WALLET
                         transferTypeAddSwitch.apply {
-                            add_bank_group.visibility = if (walletTransfer)View.VISIBLE else View.GONE
+                            add_bank_group.visibility =
+                                if (walletTransfer) View.VISIBLE else View.GONE
                         }
-                        tv_add_bank.text = context?.getString(R.string.bank_list_add, context?.getString(R.string.bank_list_e_wallet))
+                        tv_add_bank.text = context?.getString(R.string.bank_list_add,
+                            context?.getString(R.string.bank_list_e_wallet))
                         clearEvent()
                     }
-//                    getString(R.string.pay_maya) -> {
-//                        selectBetStationTab(false)
-//                        selectDealType(TransferType.PAYMAYA)
-//                        dealType = TransferType.PAYMAYA
-//                        transferTypeAddSwitch.apply {
-//                            add_bank_group.visibility = if (walletTransfer)View.VISIBLE else View.GONE
-//                        }
-//                        tv_add_bank.text = context?.getString(R.string.bank_list_add, context?.getString(R.string.pay_maya))
-//                        clearEvent()
-//                    }
+                    getString(R.string.online_maya) -> {
+                        selectBetStationTab(false)
+                        selectDealType(TransferType.PAYMAYA)
+                        dealType = TransferType.PAYMAYA
+                        transferTypeAddSwitch.apply {
+                            add_bank_group.visibility =
+                                if (paymataTransfer) View.VISIBLE else View.GONE
+                        }
+                        tv_add_bank.text = context?.getString(R.string.bank_list_add,
+                            context?.getString(R.string.pay_maya))
+                        clearEvent()
+                    }
                     getString(R.string.Outlets_Reserve) -> {
                         selectBetStationTab(true)
                         viewModel.setDealType(TransferType.STATION)
@@ -239,6 +245,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             withdrawBankCardData?.let {
                 viewModel.addWithdraw(
                     withdrawBankCardData,
+                    viewModel.getChannelMode(),
                     et_withdrawal_amount.getText(),
                     et_withdrawal_password.getText(),
                     null,
@@ -292,6 +299,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         }
         viewModel.addMoneyCardSwitch.observe(this.viewLifecycleOwner) {
             transferTypeAddSwitch = it
+            LogUtil.d("transferTypeAddSwitch=" + transferTypeAddSwitch)
         }
         viewModel.commissionCheckList.observe(this.viewLifecycleOwner) {
             tv_detail.apply {
@@ -357,12 +365,15 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 moneyCardSet.find { it.transferType == TransferType.E_WALLET }?.exist
             val stationExit =
                 moneyCardSet.find { it.transferType == TransferType.STATION }?.exist
+            val paymayaExit =
+                moneyCardSet.find { it.transferType == TransferType.PAYMAYA }?.exist
 
             val tabIndexList = viewModel.withdrawTabIsShow.value
             when {
                 bankCardExist == true -> {
 //                    tab_bank_card.isChecked = true
-                    tab_layout.getTabAt(tabIndexList?.indexOf(TransferType.BANK.type)?:0)?.select()
+                    tab_layout.getTabAt(tabIndexList?.indexOf(TransferType.BANK.type) ?: 0)
+                        ?.select()
                     viewModel.setDealType(TransferType.BANK)
                 }
                 cryptoCardExist == true -> {
@@ -372,14 +383,22 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 }
                 eWalletCardExist == true -> {
 //                    tab_e_wallet.isChecked = true
-                    var aaaa = tabIndexList?.indexOf(TransferType.E_WALLET.type)?:0
-                    tab_layout.getTabAt(tabIndexList?.indexOf(TransferType.E_WALLET.type)?:0)?.select()
+                    var aaaa = tabIndexList?.indexOf(TransferType.E_WALLET.type) ?: 0
+                    tab_layout.getTabAt(tabIndexList?.indexOf(TransferType.E_WALLET.type) ?: 0)
+                        ?.select()
                     viewModel.setDealType(TransferType.E_WALLET)
                 }
                 stationExit == true -> {
 //                    tab_e_wallet.isChecked = true
-                    tab_layout.getTabAt(tabIndexList?.indexOf(TransferType.STATION.type)?:0)?.select()
+                    tab_layout.getTabAt(tabIndexList?.indexOf(TransferType.STATION.type) ?: 0)
+                        ?.select()
                     viewModel.setDealType(TransferType.STATION)
+                }
+                paymayaExit == true -> {
+//                    tab_e_wallet.isChecked = true
+                    tab_layout.getTabAt(tabIndexList?.indexOf(TransferType.PAYMAYA.type) ?: 0)
+                        ?.select()
+                    viewModel.setDealType(TransferType.PAYMAYA)
                 }
                 else -> {
                     jumpToMoneyCardSetting()
@@ -388,7 +407,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         })
         //Tab 顯示判斷
         viewModel.withdrawTabIsShow.observe(this.viewLifecycleOwner) { list ->
-
             if (list.isNullOrEmpty() || list.size == 1) {
                 tab_layout.visibility = View.GONE
                 ll_tab_layout.visibility = View.GONE
@@ -409,6 +427,8 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 } else {
                     tab_layout.getTabAt(3)?.view?.visibility = View.GONE
                 }
+                tab_layout.getTabAt(4)?.view?.visibility =
+                    if (list.contains(TransferType.PAYMAYA.type)) View.VISIBLE else View.GONE
             }
 
             tab_layout.removeAllTabs()
@@ -422,7 +442,10 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                     }
                     TransferType.CRYPTO.type -> tab_layout.addTab(tab_layout.newTab().setText(R.string.crypto))
                     TransferType.E_WALLET.type -> tab_layout.addTab(tab_layout.newTab().setText(R.string.ewallet))
-                    TransferType.STATION.type -> tab_layout.addTab(tab_layout.newTab().setText(R.string.Outlets_Reserve))
+                    TransferType.STATION.type -> tab_layout.addTab(tab_layout.newTab()
+                        .setText(R.string.Outlets_Reserve))
+                    TransferType.PAYMAYA.type -> tab_layout.addTab(tab_layout.newTab()
+                        .setText(R.string.online_maya))
                 }
             }
 
@@ -513,6 +536,9 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             TransferType.E_WALLET -> {
                 getString(R.string.please_setting_ewallet)
             }
+            TransferType.PAYMAYA -> {
+                getString(R.string.please_setting_paymaya)
+            }
             else -> {
                 getString(R.string.please_setting_bank_card)
             }
@@ -541,13 +567,13 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 requireContext(),
                 bankCardList,
                 BankCardAdapterListener {
-//                    val cardIcon = when (it.transferType) {
-//                        TransferType.BANK -> getBankIconByBankName(it.bankName)
-//                        TransferType.CRYPTO -> getCryptoIconByCryptoName(it.transferType.type)
-//                        TransferType.E_WALLET -> getBankIconByBankName(it.bankName)
-//                        TransferType.STATION -> getBankIconByBankName(it.bankName)
-//                      //  TransferType.PAYMAYA -> getBankIconByBankName(it.bankName)
-//                    }
+                    val cardIcon = when (it.transferType) {
+                        TransferType.BANK -> getBankIconByBankName(it.bankName)
+                        TransferType.CRYPTO -> getCryptoIconByCryptoName(it.transferType.type)
+                        TransferType.E_WALLET -> getBankIconByBankName(it.bankName)
+                        TransferType.STATION -> getBankIconByBankName(it.bankName)
+                        TransferType.PAYMAYA -> getBankIconByBankName(it.bankName)
+                    }
 
 
                     withdrawBankCardData = it
@@ -666,7 +692,7 @@ class WithdrawBankCardAdapter(
                         TransferType.CRYPTO -> getCryptoIconByCryptoName(bankCard.transferType.type)
                         TransferType.E_WALLET -> getBankIconByBankName(bankCard.bankName)
                         TransferType.STATION -> getBankIconByBankName(bankCard.bankName)
-                     //   TransferType.PAYMAYA -> getBankIconByBankName(bankCard.bankName)
+                        TransferType.PAYMAYA -> getBankIconByBankName(bankCard.bankName)
                     }
                 )
                 checkBank.isChecked = selectedPosition == position

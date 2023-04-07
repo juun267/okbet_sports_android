@@ -31,10 +31,6 @@ class RedEnvelopeReceiveDialog(
 ) : BaseDialog<RedEnveLopeModel>(RedEnveLopeModel::class) {
     private val mHandler = MyHandler(WeakReference(this))
 
-    init {
-        setStyle(R.style.FullScreen)
-    }
-
     private val redenpId by lazy {
         arguments?.getInt("redenpId")
     }

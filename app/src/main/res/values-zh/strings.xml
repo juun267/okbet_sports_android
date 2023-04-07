@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="loading">加载中</string>
     <string name="connect_first">请先连上网路</string>
     <string name="error_url_fail">跳转地址错误</string>
@@ -419,6 +419,7 @@
     <string name="please_enter_wallet_phone_number">请输入电话号码</string>
     <string name="delete_bank_card">刪除銀行卡</string>
     <string name="delete_crypto">刪除虚拟币</string>
+    <string name="delete_paymaya">刪除Paymaya</string>
     <string name="delete_e_wallet">刪除eWallet</string>
     <string name="select_currency_protocol">选择 协议/币种</string>
     <string name="error_withdraw_password">您输入的密码错误</string>
@@ -427,8 +428,10 @@
     <string name="text_bank_card_delete_success">银行卡删除成功</string>
     <string name="text_crypto_delete_success">虚拟币删除成功</string>
     <string name="text_e_wallet_delete_success">eWallet删除成功</string>
+    <string name="text_pay_maya_delete_success">Paymaya删除成功</string>
     <string name="text_bank_card_add_success">银行卡绑定成功</string>
     <string name="text_e_wallet_add_success">eWallet绑定成功</string>
+    <string name="text_paymaya_add_success">Paymaya绑定成功</string>
     <string name="text_crypto_add_success">虚拟币绑定成功</string>
     <string name="text_bank_card_modify_success">编辑银行卡成功</string>
     <string name="text_e_wallet_modify_success">编辑eWallet成功</string>

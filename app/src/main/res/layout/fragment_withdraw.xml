@@ -50,6 +50,11 @@
                 android:layout_height="wrap_content"
                 android:text="@string/Outlets_Reserve" />
 
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/online_maya" />
+
         </com.google.android.material.tabs.TabLayout>
 
         <View

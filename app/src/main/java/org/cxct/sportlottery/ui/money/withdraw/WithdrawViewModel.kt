@@ -13,6 +13,7 @@ import org.cxct.sportlottery.common.extentions.toDoubleS
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bank.add.BankAddRequest
+import org.cxct.sportlottery.network.bank.add.BankAddResult
 import org.cxct.sportlottery.network.bank.delete.BankDeleteRequest
 import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.bank.my.BankMyResult
@@ -66,9 +67,9 @@ class WithdrawViewModel(
         get() = _moneyCardList
     private var _moneyCardList = MutableLiveData<MyMoneyCard>()
 
-    val bankAddResult: LiveData<NetResult>
+    val bankAddResult: LiveData<BankAddResult>
         get() = _bankAddResult
-    private var _bankAddResult = MutableLiveData<NetResult>()
+    private var _bankAddResult = MutableLiveData<BankAddResult>()
 
     val bankDeleteResult: LiveData<NetResult>
         get() = _bankDeleteResult
@@ -208,6 +209,7 @@ class WithdrawViewModel(
     val numberOfBankCard: LiveData<String>
         get() = _numberOfBankCard
     private var _numberOfBankCard = MutableLiveData<String>()
+
     /**
      * @param isBalanceMax: 是否為當前餘額作為提款上限, true: 提示字為超過餘額相關, false: 提示字為金額設定相關
      */
@@ -218,13 +220,18 @@ class WithdrawViewModel(
         transferTypeMoneyCardList()
     }
 
+    fun getChannelMode(): Int? {
+        return _rechargeConfigs.value?.uwTypes?.first { it.type == dealType.type }?.channelMode
+    }
+
     fun addWithdraw(
         withdrawCard: BankCardList?,
+        channelMode: Int?,
         applyMoney: String,
         withdrawPwd: String,
         bettingStationId: Int?,
         appointmentDate: String?,
-        appointmentHour: String?
+        appointmentHour: String?,
     ) {
         checkWithdrawAmount(withdrawCard, applyMoney)
         checkWithdrawPassword(withdrawPwd)
@@ -240,6 +247,7 @@ class WithdrawViewModel(
                             withdrawCard?.id?.toLong() ?: 0,
                             applyMoney,
                             withdrawPwd,
+                            channelMode,
                             bettingStationId,
                             appointmentDate,
                             appointmentHour
@@ -260,14 +268,16 @@ class WithdrawViewModel(
         bankCardId: Long,
         applyMoney: String,
         withdrawPwd: String,
+        channelMode: Int?,
         bettingStationId: Int?,
         appointmentDate: String?,
-        appointmentHour: String?
+        appointmentHour: String?,
     ): WithdrawAddRequest {
         return WithdrawAddRequest(
             id = bankCardId,
             applyMoney = applyMoney.toDoubleS(0.0),
             withdrawPwd = MD5Util.MD5Encode(withdrawPwd),
+            channelMode = channelMode,
             bettingStationId = bettingStationId,
             appointmentDate = appointmentDate,
             appointmentHour = appointmentHour,
@@ -404,6 +414,12 @@ class WithdrawViewModel(
                 checkWithdrawPassword(withdrawPassword)
                 checkEWalletCardData()
             }
+            TransferType.PAYMAYA.type -> {
+                checkCreateName(fullName ?: "")
+                checkPhoneNumber(cardNo)
+                checkWithdrawPassword(withdrawPassword)
+                checkPaymayaCardData()
+            }
             else -> false
         }
     }
@@ -488,7 +504,7 @@ class WithdrawViewModel(
                                 )
                             }
                             UWType.E_WALLET.type -> {
-                                if (withdrawConfig.find { type -> type.type== TransferType.E_WALLET.type }?.open.toString() == FLAG_OPEN) tabList.add(
+                                if (withdrawConfig.find { type -> type.type == TransferType.E_WALLET.type }?.open.toString() == FLAG_OPEN) tabList.add(
                                     TransferType.E_WALLET.type
                                 )
                             }
@@ -497,11 +513,11 @@ class WithdrawViewModel(
                                     TransferType.STATION.type
                                 )
                             }
-//                            UWType.PAY_MAYA.type -> {
-//                                if (withdrawConfig.find { it.type == TransferType.PAYMAYA.type }?.open.toString() == FLAG_OPEN) tabList.add(
-//                                    TransferType.PAYMAYA.type
-//                                )
-//                            }
+                            UWType.PAY_MAYA.type -> {
+                                if (withdrawConfig.find { it.type == TransferType.PAYMAYA.type }?.open.toString() == FLAG_OPEN) tabList.add(
+                                    TransferType.PAYMAYA.type
+                                )
+                            }
                         }
                     }
                     _withdrawTabIsShow.postValue(tabList)
@@ -544,6 +560,16 @@ class WithdrawViewModel(
     }
 
     private fun checkEWalletCardData(): Boolean {
+        if (createNameErrorMsg.value != "")
+            return false
+        if (phoneNumberMsg.value != "")
+            return false
+        if (withdrawPasswordMsg.value != "")
+            return false
+        return true
+    }
+
+    private fun checkPaymayaCardData(): Boolean {
         if (createNameErrorMsg.value != "")
             return false
         if (phoneNumberMsg.value != "")
@@ -680,7 +706,13 @@ class WithdrawViewModel(
             TransferType.E_WALLET -> { //eWallet暫時寫死 與綁定銀行卡相同
                 buttonEnableStatus =
                     createNameErrorMsg.value.isNullOrEmpty() == true &&
-                            phoneNumberMsg.value?.isEmpty() == true  &&
+                            phoneNumberMsg.value?.isEmpty() == true &&
+                            withdrawPasswordMsg.value?.isEmpty() == true
+            }
+            TransferType.PAYMAYA -> {
+                buttonEnableStatus =
+                    createNameErrorMsg.value.isNullOrEmpty() == true &&
+                            phoneNumberMsg.value?.isEmpty() == true &&
                             withdrawPasswordMsg.value?.isEmpty() == true
             }
         }
@@ -771,23 +803,24 @@ class WithdrawViewModel(
                 0,
                 RoundingMode.FLOOR
             )
-//            TransferType.PAYMAYA -> ArithUtil.div(
-//                (userMoney.value ?: 0.0),
-//                ((cardConfig?.feeRate?.plus(1) ?: 1.0)),
-//                0,
-//                RoundingMode.FLOOR
-//            )
+            TransferType.PAYMAYA -> ArithUtil.div(
+                (userMoney.value ?: 0.0),
+                ((cardConfig?.feeRate?.plus(1) ?: 1.0)),
+                0,
+                RoundingMode.FLOOR
+            )
         }
     }
 
     fun getWithdrawRate(withdrawCard: BankCardList?, withdrawAmount: Double? = 0.0) {
         when (dealType) {
-            TransferType.BANK, TransferType.E_WALLET -> {
+            TransferType.BANK, TransferType.E_WALLET, TransferType.PAYMAYA -> {
                 _withdrawCryptoAmountHint.value = ""
                 _withdrawCryptoFeeHint.value = ""
                 _withdrawRateHint.value = String.format(
                     LocalUtils.getString(R.string.withdraw_handling_fee_hint),
-                    ArithUtil.toMoneyFormat(cardConfig?.feeRate?.times(100)), sConfigData?.systemCurrencySign,
+                    ArithUtil.toMoneyFormat(cardConfig?.feeRate?.times(100)),
+                    sConfigData?.systemCurrencySign,
                     ArithUtil.toMoneyFormat((cardConfig?.feeRate)?.times(withdrawAmount ?: 0.0))
                 )
 
@@ -879,9 +912,9 @@ class WithdrawViewModel(
             TransferType.STATION -> {
                 rechargeConfigs.value?.uwTypes?.find { config -> config.type == TransferType.STATION.type }?.detailList?.first()
             }
-//            TransferType.PAYMAYA -> {
-//                rechargeConfigs.value?.uwTypes?.find { config -> config.type == TransferType.PAYMAYA.type }?.detailList?.first()
-//            }
+            TransferType.PAYMAYA -> {
+                rechargeConfigs.value?.uwTypes?.find { config -> config.type == TransferType.PAYMAYA.type }?.detailList?.first()
+            }
         }
     }
 
@@ -901,14 +934,22 @@ class WithdrawViewModel(
         val eWalletWithdrawSwitch =
             rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.E_WALLET.type }?.open == MoneyRechCfg.Switch.ON.code
 
+        val paymayaExistence =
+            result.bankCardList?.any { card -> card.uwType == TransferType.PAYMAYA.type } == true
+        val paymayaWithdrawSwitch =
+            rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.PAYMAYA.type }?.open == MoneyRechCfg.Switch.ON.code
+
+
         val bankCardExist = bankCardExistence && bankWithdrawSwitch
         val cryptoCardExist = cryptoCardExistence && cryptoWithdrawSwitch
         val eWalletCardExist = eWalletCardExistence && eWalletWithdrawSwitch
+        val paymayaExist = paymayaExistence && paymayaWithdrawSwitch
 
         val moneyCardExistSet = mutableSetOf<MoneyCardExist>().apply {
             add(MoneyCardExist(TransferType.BANK, bankCardExist))
             add(MoneyCardExist(TransferType.CRYPTO, cryptoCardExist))
             add(MoneyCardExist(TransferType.E_WALLET, eWalletCardExist))
+            add(MoneyCardExist(TransferType.PAYMAYA, paymayaExist))
         }
 
         _moneyCardExist.value = moneyCardExistSet
@@ -921,7 +962,7 @@ class WithdrawViewModel(
         var showAddCryptoCard = false //是否顯示虛擬幣
         val showAddBankCard: Boolean // 是否顯示銀行卡
         val showAddEWalletCard: Boolean // 是否顯示eWallet
-        val showAddPayMayaCard: Boolean // 是否顯示eWallet
+        val showAddPayMayaCard: Boolean // 是否顯示paymaya
 
         //虛擬幣是否可以被提款或新增卡片
         val cryptoOpen =
@@ -968,8 +1009,25 @@ class WithdrawViewModel(
             else -> eWalletCardCount < eWalletCardCountLimit
         }
 
+        //paymaya是否可以被提款或新增卡片
+        val paymayaOpen =
+            rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.PAYMAYA.type }?.open == MoneyRechCfg.Switch.ON.code
+        val paymayaCardCountLimit =
+            rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.PAYMAYA.type }?.detailList?.first()?.countLimit
+        val paymayaCardCount =
+            bankCardList.value?.count { it.transferType == TransferType.PAYMAYA }
+        showAddPayMayaCard = when {
+            !paymayaOpen -> false
+            paymayaCardCountLimit == null -> true
+            paymayaCardCount == null -> true
+            else -> paymayaCardCount < paymayaCardCountLimit
+        }
+
         _addMoneyCardSwitch.value =
-            TransferTypeAddSwitch(showAddBankCard, showAddCryptoCard, showAddEWalletCard)
+            TransferTypeAddSwitch(showAddBankCard,
+                showAddCryptoCard,
+                showAddEWalletCard,
+                showAddPayMayaCard)
     }
 
     data class CryptoCardCountLimit(
