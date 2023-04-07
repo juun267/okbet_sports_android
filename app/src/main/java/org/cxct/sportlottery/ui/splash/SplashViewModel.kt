@@ -193,6 +193,19 @@ class SplashViewModel(
                 return@launch
 
             val retrofit = RequestManager.instance.createRetrofit(baseUrl.httpFormat())
+
+            if (LoginRepository.hasToken()) {
+                val checkHostResult = doNetwork(androidContext, exceptionHandle = false) {
+                    retrofit.create(IndexService::class.java).checkToken()
+                }
+                if (checkHostResult?.success == false) {
+                    Timber.i("==> check token fail : do getHost")
+                    loginRepository.clear()
+                    getHost()
+                    return@launch
+                }
+            }
+
             val result = doNetwork(androidContext, exceptionHandle = false) {
                 retrofit.create(IndexService::class.java).getConfig()
             }
