@@ -66,11 +66,11 @@ class SplashViewModel(
                 val retrofit =
                     RequestManager.instance.createRetrofit(hostUrl.httpFormat())
 
-                Timber.d("userInfo:${MultiLanguagesApplication.mInstance.userInfo.value}")
-                Timber.d("userInfo isLogin:${LoginRepository.isLogined()}")
-                Timber.d("userInfo isLoginValue:${LoginRepository.isLogin.value == true}")
+//                Timber.d("userInfo:${MultiLanguagesApplication.mInstance.userInfo.value}")
+//                Timber.d("userInfo isLogin:${LoginRepository.isLogined()}")
+//                Timber.d("userInfo isLoginValue:${LoginRepository.isLogin.value == true}")
 
-                if (LoginRepository.isLogined()) {
+                if (LoginRepository.hasToken()) {
                     val checkHostResult = doNetwork(androidContext, exceptionHandle = false) {
                         retrofit.create(IndexService::class.java).checkToken()
                     }
