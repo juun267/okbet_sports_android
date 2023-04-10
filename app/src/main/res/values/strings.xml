@@ -1266,6 +1266,8 @@
     <string name="tail_number">Tail Number</string>
     <string name="J486">The withdraw amount is higher than the account balance.</string>
     <string name="J485">The format or value of Withdraw number is incorrect</string>
+    <string name="N171">Please enter a correct 11-digit mobile number</string>
+    <string name="N865">Amount exceeds the limit</string>
 
 
 </resources>

@@ -617,7 +617,7 @@ class WithdrawViewModel(
     fun checkPhoneNumber(phoneNumber: String) {
         _phoneNumberMsg.value = when {
             phoneNumber.isEmpty() -> LocalUtils.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyPhone(phoneNumber) -> LocalUtils.getString(R.string.pls_enter_correct_mobile)
+            !VerifyConstUtil.verifyPhone(phoneNumber) -> LocalUtils.getString(R.string.N171)
             else -> ""
         }
         checkInputCompleteByAddBankCard()
@@ -679,14 +679,14 @@ class WithdrawViewModel(
                 LocalUtils.getString(R.string.J486)
             }
             amountLimit.isBalanceMax && withdrawAmount.toDoubleS(0.0) > getWithdrawAmountLimit().max -> {
-                LocalUtils.getString(R.string.error_withdraw_amount_bigger_than_balance)
+                LocalUtils.getString(R.string.N865)
             }
             VerifyConstUtil.verifyWithdrawAmount(
                 withdrawAmount,
                 amountLimit.min,
                 amountLimit.max
             ) != 0 -> {
-                LocalUtils.getString(R.string.error_amount_limit_exceeded)
+                LocalUtils.getString(R.string.N865)
             }
             else -> ""
         }
