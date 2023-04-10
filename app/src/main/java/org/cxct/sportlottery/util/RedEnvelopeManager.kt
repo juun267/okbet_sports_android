@@ -98,7 +98,7 @@ class RedEnvelopeManager {
                         }
                     } else if (startTimeDiff <= 0 && endTimeDiff >= 0) {
                         showedRedenpId = redenpId
-                        redEnvelopeReceiveDialog = RedEnvelopeReceiveDialog( redenpId)
+                        redEnvelopeReceiveDialog = RedEnvelopeReceiveDialog.newInstance(redenpId)
                         viewModel?.viewModelScope?.launch(Dispatchers.Main) {
                             redEnvelopeReceiveDialog?.show(
                                 activity!!.supportFragmentManager,

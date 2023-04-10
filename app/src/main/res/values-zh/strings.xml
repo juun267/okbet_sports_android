@@ -395,7 +395,7 @@
     <string name="withdraw_password">提款密码</string>
     <string name="total_withdrawal">提款总计</string>
     <string name="withdraw_all">全部提取</string>
-    <string name="withdraw_handling_fee_hint">手续费率：%1$s%% 须支付手续费(%2$s)：%3$s</string>
+    <string name="withdraw_handling_fee_hint">手续费率：%1$s%% 须支付手续费：%2$s %3$s</string>
     <string name="withdraw_crypto_amount_hint">提款金额(%1$s)：%2$s</string>
     <string name="withdraw_crypto_fee_hint">提款手续费(%1$s)：%2$s</string>
     <string name="hint_four_number_password">请输入提款密码</string>
@@ -1205,4 +1205,10 @@
     <string name="back_to_my_details">返回我的详细信息</string>
     <string name="sms_code_length_error">验证码至少4位</string>
     <string name="phone_no_error">手机号码需为09开头的11位数字</string>
+    <string name="tail_number">尾号</string>
+    <string name="edit_paymaya">修改 PayMaya</string>
+    <string name="add_paymaya">增加PayMaya</string>
+    <string name="please_setting_paymaya">请先设置你的PayMaya</string>
+    <string name="J486">提款金额大于账号余额</string>
+    <string name="J485">提款个数格式或数值错误</string>
 </resources>

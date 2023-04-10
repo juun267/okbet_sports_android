@@ -397,7 +397,7 @@
     <string name="withdraw_amount">Số tiền rút</string>
     <string name="withdraw_password">Mật khẩu rút tiền</string>
     <string name="withdraw_all">TẤT CẢ CÁC</string>
-    <string name="withdraw_handling_fee_hint">Tỷ lệ phí xử lý ：%1$s%% Phí xử lý phải trả：%2$s%3$s</string>
+    <string name="withdraw_handling_fee_hint">Tỷ lệ phí xử lý: %1$s%% Phí xử lý phải trả: %2$s%3$s nhân dân tệ</string>
     <string name="withdraw_crypto_amount_hint">Số tiền rút(%1$s)：%2$s</string>
     <string name="withdraw_crypto_fee_hint">Phí rút tiền(%1$s)：%2$s</string>
     <string name="hint_four_number_password">Vui lòng nhập mật khẩu rút tiền</string>
@@ -1157,5 +1157,10 @@
     <string name="back_to_my_details">Về trang cá nhân</string>
     <string name="sms_code_length_error">Mã xác nhận ít nhất 4 ký tự</string>
     <string name="phone_no_error">SĐT gồm 11 số, và 09 bắt đầu</string>
+    <string name="tail_number">Số đuôi</string>
+    <string name="edit_paymaya">Sửa PayMaya</string>
+    <string name="add_paymaya">Thêm Paymaya</string>
+    <string name="please_setting_paymaya">Vui lòng cài đặt PayMaya trước</string>
+    <string name="J486">Số tiền rút lớn hơn số dư tài khoản</string>
 
 </resources>

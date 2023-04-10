@@ -41,7 +41,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     private lateinit var bankCardAdapter: WithdrawBankCardAdapter
     private var withdrawBankCardData: BankCardList? = null
     private lateinit var betStationFragment: BetStationFragment
-    lateinit var transferTypeAddSwitch : TransferTypeAddSwitch
+    lateinit var transferTypeAddSwitch: TransferTypeAddSwitch
     private val zero = 0.0
     private var dealType: TransferType = TransferType.BANK
 
@@ -50,8 +50,12 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         initView()
         initEvent()
         initObserve(view)
-        setupData()
         setupServiceButton()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setupData()
     }
 
     private fun setupData() = viewModel.run {
@@ -132,12 +136,17 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 
     private fun selectDealType(type: TransferType) {
         viewModel.setDealType(type)
+        setupDealView(type)
     }
 
     private fun setupDealView(type: TransferType) {
         when (type) {
             TransferType.BANK -> {
                 tv_channel_select.text = getString(R.string.select_bank)
+                et_withdrawal_amount.setTitle(getString(R.string.withdraw_amount))
+            }
+            TransferType.E_WALLET, TransferType.PAYMAYA -> {
+                tv_channel_select.text = getString(R.string.ewallet)
                 et_withdrawal_amount.setTitle(getString(R.string.withdraw_amount))
             }
             TransferType.CRYPTO -> {
@@ -299,7 +308,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         }
         viewModel.addMoneyCardSwitch.observe(this.viewLifecycleOwner) {
             transferTypeAddSwitch = it
-            LogUtil.d("transferTypeAddSwitch=" + transferTypeAddSwitch)
         }
         viewModel.commissionCheckList.observe(this.viewLifecycleOwner) {
             tv_detail.apply {
@@ -351,6 +359,8 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 return@Observer
             val cardList = it.cardList
             if (cardList.isEmpty()) {
+                LogUtil.toJson(it)
+
                 jumpToMoneyCardSetting(true, it.transferType)
                 return@Observer
             }
@@ -684,7 +694,7 @@ class WithdrawBankCardAdapter(
                     notifyDataSetChanged()
                 }
 
-                tvNumber.text = "(尾号${bankCard.cardNo})"
+                tvNumber.text = "(${context.getString(R.string.tail_number)}${bankCard.cardNo})"
                 tvBankCard.text = bankCard.bankName
                 ivBankIcon.setImageResource(
                     when (bankCard.transferType) {

@@ -402,7 +402,7 @@
     <string name="withdraw_password">Withdraw Password</string>
     <string name="total_withdrawal">Total Withdrawal</string>
     <string name="withdraw_all">EXTRACT ALL</string>
-    <string name="withdraw_handling_fee_hint">Service fee: %1$S %% Service fee to be paid:%2$s%3$s</string>
+    <string name="withdraw_handling_fee_hint">Service Charge: %1$S %% Service Fee:%2$s%3$s</string>
     <string name="withdraw_crypto_amount_hint">Withdraw(%1$s)：%2$s</string>
     <string name="withdraw_crypto_fee_hint">Withdraw service fee：%1$s%2$s</string>
     <string name="hint_four_number_password">Withdrawal password</string>
@@ -1262,7 +1262,9 @@
     <string name="phone_no_error">Phone number must be 11 digits &amp; starting with 09</string>
     <string name="edit_paymaya">Edit PayMaya</string>
     <string name="add_paymaya">Add Paymaya</string>
-    <string name="please_setting_paymaya">Please set up your PayMaYa first</string>
+    <string name="please_setting_paymaya">Please set up your PayMaya first</string>
+    <string name="tail_number">Tail Number</string>
+    <string name="J486">The withdraw amount is higher than the account balance.</string>
 
 
 </resources>
