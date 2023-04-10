@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="loading">加载中</string>
     <string name="connect_first">请先连上网路</string>
     <string name="error_url_fail">跳转地址错误</string>
@@ -1191,4 +1191,21 @@
     <string name="J902">生日</string>
     <string name="N848">选择收入来源</string>
     <string name="N850">请选择地址</string>
+
+    <string name="bet_details_title" >串关组合详情</string>
+
+
+
+    <string name="set_phone_no">设置手机号码</string>
+    <string name="set_email">设置邮箱</string>
+    <string name="edit_email">更换邮箱</string>
+    <string name="edit_phone_no">更换手机号码</string>
+    <string name="new_phone_no">新手机号码</string>
+    <string name="new_email">新邮箱</string>
+    <string name="verify">验证</string>
+    <string name="verify_phone_no">手机验证</string>
+    <string name="verify_email">邮箱验证</string>
+    <string name="back_to_my_details">返回我的详细信息</string>
+    <string name="sms_code_length_error">验证码至少4位</string>
+    <string name="phone_no_error">手机号码需为09开头的11位数字</string>
 </resources>

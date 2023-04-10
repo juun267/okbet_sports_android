@@ -322,6 +322,10 @@ object Constants {
         "/api/front/index/promotenotice" //公告API 未登入不帶token 在投注区查询的时候带[1] 在首页的时候带[2,3]
     const val INDEX_CHECK_EXIST_NEW = "/api/front/index/checkExistNew" //检查账号名称是否已存在
 
+    const val INDEX_SENDCODE = "/api/front/index/sendCode" // 将验证码发送到电子邮件或电话
+
+    const val INDEX_VERIFYORRESET = "/api/front/index/verifyOrResetInfo" // 验证或重置手机号或者邮箱
+
     //登录或注册(新版优化登录注册->使用)
     const val LOGIN_OR_REG = "/api/front/index/loginOrReg"
 

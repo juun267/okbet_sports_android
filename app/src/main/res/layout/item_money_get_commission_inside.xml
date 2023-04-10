@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/bg_radius_6_button_white"
     android:padding="10dp"
-    tools:context="org.cxct.sportlottery.ui.withdraw.CommissionDetailAdapter"
+    tools:context="org.cxct.sportlottery.ui.money.withdraw.CommissionDetailAdapter"
     tools:ignore="SpUsage">
 
     <TextView
@@ -101,7 +101,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_required_valid_bets"
         app:layout_constraintVertical_bias="0.0"
-        tools:text="1000.000" />
+        tools:text="1000.00" />
 
     <TextView
         android:id="@+id/tv_required_valid_bets_vnd"

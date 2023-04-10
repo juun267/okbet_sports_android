@@ -17,26 +17,17 @@ import android.widget.RelativeLayout
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.viewModelScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.android.synthetic.main.activity_main_tab.*
-import kotlinx.android.synthetic.main.bet_bar_layout.*
-import kotlinx.android.synthetic.main.bet_bar_layout.view.*
-import kotlinx.android.synthetic.main.bet_bar_layout2.*
-import kotlinx.android.synthetic.main.fragment_sport_list.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
-import org.cxct.sportlottery.databinding.ActivityMainTabBinding
 import org.cxct.sportlottery.common.event.BetModeChangeEvent
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.databinding.ActivityMainTabBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
@@ -45,16 +36,18 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
-import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-import org.cxct.sportlottery.ui.game.betList.BetListFragment
-import org.cxct.sportlottery.ui.maintab.accountHistory.next.AccountHistoryNextFragment
+import org.cxct.sportlottery.ui.betList.BetInfoListData
+import org.cxct.sportlottery.ui.betList.BetListFragment
+import org.cxct.sportlottery.ui.betRecord.BetRecordFragment
+import org.cxct.sportlottery.ui.betRecord.accountHistory.next.AccountHistoryNextFragment
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment
 import org.cxct.sportlottery.ui.maintab.menu.SportLeftFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
-import org.cxct.sportlottery.ui.sport.SportLeagueAdapter
+import org.cxct.sportlottery.ui.sport.SportFragment
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment
+import org.cxct.sportlottery.ui.sport.list.SportLeagueAdapter
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.RedEnvelopeReceiveDialog
 import org.greenrobot.eventbus.Subscribe
@@ -90,31 +83,19 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
         }
-
-        fun start2Tab(context: Context, position: Int) {
-            if (activityInstance != null) {
-                activityInstance!!.switchTabByPosition(position)
-            } else {
-                val intent = Intent(context, MainTabActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                intent.putExtra("startTabPosition", position)
-                context.startActivity(intent)
-            }
-        }
     }
 
-    private lateinit var binding: ActivityMainTabBinding
+    private val binding by lazy { ActivityMainTabBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         SportLeagueAdapter.clearCachePool()
         super.onCreate(savedInstanceState)
-        binding = ActivityMainTabBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ImmersionBar.with(this).statusBarDarkFont(true).transparentStatusBar()
             .fitsSystemWindows(false).init()
         initDrawerLayout()
         initMenu()
-        initBottomFragment()
+        initBottomFragment(savedInstanceState?.getInt("startTabPosition") ?: 0)
         initBottomNavigation()
         initObserve()
         activityInstance = this
@@ -132,14 +113,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     override fun onNightModeChanged(mode: Int) {
         super.onNightModeChanged(mode)
         reStart(this)
-    }
-
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        activityInstance = this
-        intent?.getIntExtra("startTabPosition", 0)?.let {
-            bottom_navigation_view.currentItem = it
-        }
     }
 
     private fun initObserve() {
@@ -161,11 +134,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
     }
 
-    private fun initBottomFragment() {
-        ll_home_back.setOnClickListener {
+    private fun initBottomFragment(position: Int) {
+        binding.llHomeBack.setOnClickListener {
             (fragmentHelper.getFragment(0) as HomeFragment).switchTabByPosition(0)
         }
-        bottom_navigation_view.apply {
+        binding.bottomNavigationView.apply {
             enableAnimation(false)
             enableShiftingMode(false)
             setTextVisibility(true)
@@ -184,19 +157,30 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                     }
 
                     val position = getMenuItemPosition(menuItem)
-                    val fragment = fragmentHelper.showFragment(position)
+                    fragmentHelper.showFragment(position)
                     if (position == 0) {
                         (fragmentHelper.getFragment(0) as HomeFragment).switchTabByPosition(0)
                     } else {
-                        ll_home_back.visibility = View.GONE
+                        binding.llHomeBack.gone()
                     }
                     setupBetBarVisiblity(position)
                     return@OnNavigationItemSelectedListener true
                 }
+
+
         }
-        intent?.getIntExtra("startTabPosition", 0)?.let {
-            bottom_navigation_view.currentItem = it
-        }
+
+        // 如果回复之前的position会有很多其它崩溃异常
+        binding.bottomNavigationView.currentItem = 0 /*position*/
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putInt("startTabPosition", bottom_navigation_view.currentItem)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(Bundle()) // 如果回复之前的position会有很多其它崩溃异常
     }
 
     open fun openDrawerLayout() {
@@ -358,7 +342,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         betListCount = num
         setupBetBarVisiblity(bottom_navigation_view.currentItem)
         parlayFloatWindow.tv_bet_list_count.text = betListCount.toString()
-        if (num > 0) viewModel.getMoney()
+        if (num > 0) viewModel.getMoneyAndTransferOut()
     }
 
 

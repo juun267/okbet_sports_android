@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.login.signIn
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
@@ -11,6 +10,8 @@ import android.view.Gravity
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import cn.jpush.android.api.JPushInterface
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_login_ok.*
 import kotlinx.android.synthetic.main.activity_main_tab.*
@@ -18,7 +19,6 @@ import kotlinx.android.synthetic.main.view_status_bar.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.event.RegisterInfoEvent
@@ -31,8 +31,8 @@ import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.repository.LOGIN_SRC
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.common.CustomAlertDialog
-import org.cxct.sportlottery.ui.common.SelfLimitFrozeErrorDialog
+import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
+import org.cxct.sportlottery.ui.common.dialog.SelfLimitFrozeErrorDialog
 import org.cxct.sportlottery.ui.login.VerifyCodeDialog
 import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.login.foget2.ForgetWaysActivity
@@ -165,9 +165,12 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private fun setupValidCode() {
         binding.btnSendSms.setOnClickListener {
-            VerifyCodeDialog(callBack = { identity, validCode ->
-                updateValidCode(identity, validCode)
-            }).show(supportFragmentManager, null)
+            VerifyCodeDialog().run {
+                callBack = { identity, validCode ->
+                    updateValidCode(identity, validCode)
+                }
+                show(supportFragmentManager, null)
+            }
         }
     }
 
@@ -189,16 +192,9 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun login() {
-        val deviceSn = getSharedPreferences(
-            MultiLanguagesApplication.UUID_DEVICE_CODE,
-            Context.MODE_PRIVATE
-        ).getString(
-            MultiLanguagesApplication.UUID, ""
-        ) ?: ""
-        val deviceId = Settings.Secure.getString(
-            applicationContext.contentResolver,
-            Settings.Secure.ANDROID_ID
-        )
+        val deviceSn = JPushInterface.getRegistrationID(this)
+        val deviceId = Settings.Secure.getString(applicationContext.contentResolver,
+            Settings.Secure.ANDROID_ID)
         var appVersion = org.cxct.sportlottery.BuildConfig.VERSION_NAME
         if (viewModel.loginType == LOGIN_TYPE_CODE) {
             loading()
@@ -215,28 +211,32 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 securityCode = smsCode,
                 inviteCode = inviteCode
             )
+
             viewModel.loginOrReg(loginRequest)
-        } else {
-            VerifyCodeDialog(callBack = { identity, validCode ->
-                loading()
-                val account = binding.eetUsername.text.toString()
-                val password = binding.eetPassword.text.toString()
-                val loginRequest = LoginRequest(
-                    account = account,
-                    password = MD5Util.MD5Encode(password),
-                    loginSrc = LOGIN_SRC,
-                    deviceSn = deviceSn,
-                    appVersion = appVersion,
-                    loginEnvInfo = deviceId,
-                    securityCode = null,
-                    validCodeIdentity = identity,
-                    validCode = validCode
-                )
-                viewModel.login(loginRequest, password)
-
-            }).show(supportFragmentManager, null)
-
+            return
         }
+
+
+        val verifyCodeDialog = VerifyCodeDialog()
+        verifyCodeDialog.callBack = { identity, validCode ->
+            loading()
+            val account = binding.eetUsername.text.toString()
+            val password = binding.eetPassword.text.toString()
+            val loginRequest = LoginRequest(
+                account = account,
+                password = MD5Util.MD5Encode(password),
+                loginSrc = LOGIN_SRC,
+                deviceSn = deviceSn,
+                appVersion = appVersion,
+                loginEnvInfo = deviceId,
+                securityCode = null,
+                validCodeIdentity = identity,
+                validCode = validCode
+            )
+            viewModel.login(loginRequest, password)
+        }
+
+        verifyCodeDialog.show(supportFragmentManager, null)
     }
 
     /**
@@ -368,7 +368,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         }
         viewModel.msgCodeResult.observe(this, Observer {
             if (it?.success == true) {
-                CountDownUtil.smsCountDown(this, {
+                CountDownUtil.smsCountDown(this@LoginOKActivity.lifecycleScope, {
                     binding.btnSendSms.setBtnEnable(false)
                     countDownGoing = true
                 }, {

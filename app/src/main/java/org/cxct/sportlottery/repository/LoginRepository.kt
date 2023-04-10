@@ -30,7 +30,6 @@ const val KEY_PWD = "pwd"
 const val KEY_PLATFORM_ID = "platformId"
 const val KEY_REMEMBER_PWD = "remember_pwd"
 const val KEY_ODDS_TYPE = "oddsType"
-const val KEY_IS_CREDIT_ACCOUNT = "is_credit_account"
 const val KEY_DISCOUNT = "discount"
 const val KEY_USER_ID = "user_id"
 const val KEY_USER_LEVEL_ID = "user_Level_Id"
@@ -51,7 +50,7 @@ object LoginRepository {
     val transNum: LiveData<Int?> //交易狀況數量
         get() = _transNum
 
-    val _isLogin = MutableLiveData<Boolean>()
+    val _isLogin by lazy { MutableLiveData(MultiLanguagesApplication.mInstance.userInfo.value != null) }
     val _kickedOut = MutableLiveData<Event<String?>>()
     private val _transNum = MutableLiveData<Int?>()
 
@@ -137,7 +136,12 @@ object LoginRepository {
     }
 
     var lastMoneyTime = 0L
-    suspend fun getMoney() {
+
+    /**
+     *  获取平台余额，并转出三方游戏余额
+     *  allTransferOut：是否要转出检查
+     */
+    suspend fun getMoneyAndTransferOut(allTransferOut: Boolean = true) {
         if (!isLogined()) {
             mUserMoney.postValue(0.0)
             return
@@ -151,7 +155,7 @@ object LoginRepository {
         lastMoneyTime = time
         withContext(Dispatchers.IO) {
 
-            if (isThirdTransferOpen()) { //如果三方游戏额度自动转换开启
+            if (allTransferOut && isThirdTransferOpen()) { //如果三方游戏额度自动转换开启
                 kotlin.runCatching { OneBoSportApi.thirdGameService.allTransferOut() }
             }
 
@@ -169,10 +173,10 @@ object LoginRepository {
         }
 
         GlobalScope.launch(Dispatchers.IO) {
-            val respnose = OneBoSportApi.thirdGameService.allTransferOut()
+            val respnose = kotlin.runCatching { OneBoSportApi.thirdGameService.allTransferOut() }.getOrNull() ?: return@launch
             callback?.let {
                 withContext(Dispatchers.Main) {
-                    it.invoke(respnose?.body()?.success == true)
+                    it.invoke(respnose.body()?.success == true)
                 }
             }
         }
@@ -354,8 +358,8 @@ object LoginRepository {
         }
     }
 
-    suspend fun checkToken(): Response<NetResult> {
-        val checkTokenResponse = OneBoSportApi.indexService.checkToken()
+    suspend fun checkToken() {
+        val checkTokenResponse = kotlin.runCatching { OneBoSportApi.indexService.checkToken() }.getOrNull() ?: return
 
         if (checkTokenResponse.isSuccessful) {
             checkTokenResponse.body()?.let {
@@ -368,8 +372,6 @@ object LoginRepository {
             _isLogin.value = false
             clear()
         }
-
-        return checkTokenResponse
     }
 
     suspend fun checkIsUserAlive(): Response<NetResult> {

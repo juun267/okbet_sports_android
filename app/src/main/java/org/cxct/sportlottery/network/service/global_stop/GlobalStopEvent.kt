@@ -9,7 +9,7 @@ import org.cxct.sportlottery.network.service.ServiceEventType
 @JsonClass(generateAdapter = true) @KeepMembers
 data class GlobalStopEvent(
     @Json(name = "eventType")
-    override val eventType: String? = EventType.GLOBAL_STOP.value,
+    override val eventType: String? = EventType.GLOBAL_STOP,
     @Json(name = "producerId")
     val producerId: Int?,
 ) : ServiceEventType

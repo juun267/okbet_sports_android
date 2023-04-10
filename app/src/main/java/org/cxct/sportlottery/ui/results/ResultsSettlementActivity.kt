@@ -18,10 +18,11 @@ import kotlinx.android.synthetic.main.item_listview_settlement_league.view.*
 import kotlinx.android.synthetic.main.item_listview_settlement_league_all.*
 import kotlinx.android.synthetic.main.item_listview_settlement_league_all.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.setViewGone
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import java.text.SimpleDateFormat
 import java.util.*
@@ -35,7 +36,9 @@ class ResultsSettlementActivity :
     companion object {
         const val EXTRA_GAME_TYPE = "EXTRA_GAME_TYPE"
         const val EXTRA_START_TIME = "EXTRA_START_TIME"
+        const val EXTRA_END_TIME = "EXTRA_END_TIME"
         const val EXTRA_MATCH_ID = "EXTRA_MATCH_ID"
+        const val EXTRA_LEAGUE_ID = "EXTRA_LEAGUE_ID"
     }
 
     private val settlementLeagueBottomSheet by lazy { BottomSheetDialog(this@ResultsSettlementActivity) }
@@ -48,8 +51,8 @@ class ResultsSettlementActivity :
 
     //refactor
     private val matchResultDiffAdapter by lazy {
-        MatchResultDiffAdapter(MatchItemClickListener(
-            titleClick = {
+        MatchResultDiffAdapter(
+            MatchItemClickListener(titleClick = {
                 viewModel.clickResultItem(expandPosition = it)
             }, matchClick = {
                 viewModel.clickResultItem(gameType, it)
@@ -75,7 +78,7 @@ class ResultsSettlementActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStatusbar(R.color.color_232C4F_FFFFFF,true)
+        setStatusbar(R.color.color_232C4F_FFFFFF, true)
         setContentView(R.layout.activity_results_settlement_new)
 
         initData()
@@ -180,28 +183,28 @@ class ResultsSettlementActivity :
     private fun initTimeSelector() {
         //日期選擇初始化
         settlementDateRvAdapter.mDateList = setupWeekList(System.currentTimeMillis())
-        settlementDateRvAdapter.refreshDateListener = object :
-            SettlementDateRvAdapter.RefreshDateListener {
-            override fun refreshDate(date: Int) {
-                //0:今日, 1:明天, 2:後天 ... 7:冠軍
-                when (date) {
-                    7 -> {
-                        refactor_rv.adapter = outrightResultDiffAdapter
-                        refactor_rv.scrollToPosition(0)
-                        settleType = SettleType.OUTRIGHT
-                        viewModel.getOutrightResultList(gameType)
+        settlementDateRvAdapter.refreshDateListener =
+            object : SettlementDateRvAdapter.RefreshDateListener {
+                override fun refreshDate(date: Int) {
+                    //0:今日, 1:明天, 2:後天 ... 7:冠軍
+                    when (date) {
+                        7 -> {
+                            refactor_rv.adapter = outrightResultDiffAdapter
+                            refactor_rv.scrollToPosition(0)
+                            settleType = SettleType.OUTRIGHT
+                            viewModel.getOutrightResultList(gameType)
+                        }
+                        else -> {
+                            refactor_rv.adapter = matchResultDiffAdapter
+                            refactor_rv.scrollToPosition(0)
+                            settleType = SettleType.MATCH
+                            timeRangeParams = setupTimeApiFormat(date)
+                            viewModel.getMatchResultList(gameType, null, timeRangeParams)
+                        }
                     }
-                    else -> {
-                        refactor_rv.adapter = matchResultDiffAdapter
-                        refactor_rv.scrollToPosition(0)
-                        settleType = SettleType.MATCH
-                        timeRangeParams = setupTimeApiFormat(date)
-                        viewModel.getMatchResultList(gameType, null, timeRangeParams)
-                    }
+                    dateSelected(date)
                 }
-                dateSelected(date)
             }
-        }
     }
 
     /*private fun initServiceButton() {
@@ -221,8 +224,10 @@ class ResultsSettlementActivity :
         gameType = intent.getStringExtra(EXTRA_GAME_TYPE).orEmpty()
         //region 開賽時間和賽事Id (目前暫用不到，但如要比對注單詳情，需用以下資訊過濾)
         val startTime = intent.getLongExtra(EXTRA_START_TIME, System.currentTimeMillis())
+        val endTime = intent.getLongExtra(EXTRA_END_TIME,Long.MAX_VALUE)
         val matchId = intent.getStringExtra(EXTRA_MATCH_ID).orEmpty()
-        //endregion
+        val leagueId = intent.getStringExtra(EXTRA_LEAGUE_ID).orEmpty()
+        //end region
         val spinnerItem: StatusSheetData? = if (gameType.isNotEmpty()) {
             //如intent有傳gameType，改為選中此gameTypeCode
             gameTypeSpinnerList.find { it.code == gameType }
@@ -235,7 +240,16 @@ class ResultsSettlementActivity :
             status_game_type.setSelectInfo(it)
             gameType = it.code.orEmpty()
         }
-        viewModel.getMatchResultList(gameType, null, timeRangeParams)
+
+        if (matchId.isNotEmpty() && leagueId.isNotEmpty()) {
+            setViewGone(linear_filter,cl_game_search,rv_date)
+            val date = setUpTimeApiFormatTime(startTime)
+            viewModel.getMatchResultList(gameType, null, date, matchId, leagueId)
+        } else {
+            viewModel.getMatchResultList(gameType, null, timeRangeParams)
+        }
+
+
     }
 
     private fun setupSettleGameTypeBottomSheet() {
@@ -254,16 +268,19 @@ class ResultsSettlementActivity :
 
     private fun settleLeagueBottomSheet() {
         tv_league.text = getString(R.string.league)
-        val bottomSheetView = layoutInflater.inflate(R.layout.dialog_bottom_sheet_settlement_league_type, null)
+        val bottomSheetView =
+            layoutInflater.inflate(R.layout.dialog_bottom_sheet_settlement_league_type, null)
         settlementLeagueBottomSheet.apply {
             setContentView(bottomSheetView)
-            settlementLeagueAdapter = SettlementLeagueAdapter(lv_league.context, mutableListOf()) //先預設為空, 等待api獲取資料
+            settlementLeagueAdapter =
+                SettlementLeagueAdapter(lv_league.context, mutableListOf()) //先預設為空, 等待api獲取資料
             lv_league.adapter = settlementLeagueAdapter
 
         }
 
         //避免bottomSheet的滑動與listView發生衝突
-        settlementLeagueBottomSheet.behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        settlementLeagueBottomSheet.behavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(@NonNull bottomSheet: View, newState: Int) {
                 if (newState == BottomSheetBehavior.STATE_DRAGGING) {
                     settlementLeagueBottomSheet.behavior.state = BottomSheetBehavior.STATE_EXPANDED
@@ -388,16 +405,42 @@ class ResultsSettlementActivity :
 
         }
     }
+
+
+    private fun setUpTimeApiFormatTime(date:Long):TimeRangeParams{
+        //startTime:yyyy-MM-dd 00:00:00 endTime:yyyy-MM-dd 23:59:59
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = date
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH) + 1
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val timeFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        val startTimeStamp = timeFormat.parse("$year-$month-$day 00:00:00").time
+        val endTimeStamp = timeFormat.parse("$year-$month-$day 23:59:59").time
+        return object : TimeRangeParams {
+            override val startTime: String
+                get() = startTimeStamp.toString()
+            override val endTime: String
+                get() = endTimeStamp.toString()
+
+        }
+    }
+
 }
 
-data class LeagueItemData(val code: Int? = null, val name: String = "", var isSelected: Boolean = true)
+data class LeagueItemData(
+    val code: Int? = null, val name: String = "", var isSelected: Boolean = true
+)
+
 data class GameTypeItemData(val code: Int? = null, val name: String = "")
 
 interface OnSelectItemWithPositionListener<LeagueItemData> {
     fun onClick(select: LeagueItemData, position: Int)
 }
 
-class SettlementLeagueAdapter(private val context: Context, private val dataList: MutableList<LeagueItemData>) : BaseAdapter() {
+class SettlementLeagueAdapter(
+    private val context: Context, private val dataList: MutableList<LeagueItemData>
+) : BaseAdapter() {
 
     private var mOnSelectItemListener: OnSelectItemWithPositionListener<LeagueItemData>? = null
 
@@ -406,16 +449,23 @@ class SettlementLeagueAdapter(private val context: Context, private val dataList
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val view = LayoutInflater.from(context).inflate(R.layout.item_listview_settlement_league, parent, false)
+        val view = LayoutInflater.from(context)
+            .inflate(R.layout.item_listview_settlement_league, parent, false)
         val data = dataList[position]
 
         view.apply {
             checkbox.text = data.name
             checkbox.isChecked = data.isSelected
-            if (data.isSelected)
-                ll_game_league_item.setBackgroundColor(ContextCompat.getColor(context, R.color.color_505050_E2E2E2))
-            else
-                ll_game_league_item.setBackgroundColor(ContextCompat.getColor(context, R.color.color_191919_FCFCFC))
+            if (data.isSelected) ll_game_league_item.setBackgroundColor(
+                ContextCompat.getColor(
+                    context, R.color.color_505050_E2E2E2
+                )
+            )
+            else ll_game_league_item.setBackgroundColor(
+                ContextCompat.getColor(
+                    context, R.color.color_191919_FCFCFC
+                )
+            )
             checkbox.setOnCheckedChangeListener { _, isChecked ->
                 data.isSelected = isChecked
                 ll_game_league_item.isSelected = isChecked

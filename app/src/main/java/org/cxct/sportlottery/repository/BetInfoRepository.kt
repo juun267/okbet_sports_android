@@ -23,8 +23,8 @@ import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEv
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.ui.base.ChannelType
-import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-import org.cxct.sportlottery.ui.game.betList.BetListFragment
+import org.cxct.sportlottery.ui.betList.BetInfoListData
+import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.parlaylimit.ParlayLimitUtil
 import retrofit2.Response

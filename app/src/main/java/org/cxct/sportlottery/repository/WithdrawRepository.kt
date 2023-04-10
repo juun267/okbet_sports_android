@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.bank.my.BankMyResult
@@ -142,7 +143,7 @@ object WithdrawRepository {
 
     private suspend fun checkNeedUpdatePassWord(): Boolean {
         if (userInfoFlow == null)
-            userInfoRepository.getUserInfo()
+            runWithCatch { userInfoRepository.getUserInfo() }
         return userInfoFlow?.value?.updatePayPw == 1
     }
 
@@ -177,7 +178,8 @@ object WithdrawRepository {
      * success: true 验证成功, false 需重新验证手机
      */
     private suspend fun getTwoFactorStatus(): Boolean {
-        val response = OneBoSportApi.withdrawService.getTwoFactorStatus() //(success: true 验证成功, false 需重新验证手机), 在进行新增银行卡、更新银行卡密码、更新用户密码、设定真实姓名之前先判断此状态, 如果为false, 就显示验证手机简讯的画面
+        //(success: true 验证成功, false 需重新验证手机), 在进行新增银行卡、更新银行卡密码、更新用户密码、设定真实姓名之前先判断此状态, 如果为false, 就显示验证手机简讯的画面
+        val response = kotlin.runCatching { OneBoSportApi.withdrawService.getTwoFactorStatus() }.getOrNull() ?: return true
         return response.body()?.success ?: true
     }
 
@@ -186,8 +188,8 @@ object WithdrawRepository {
      * @return true 验证成功, false 需重新验证手机, null 需簡訊驗證卻沒有手機號碼
      */
     private suspend fun checkTwoFactorStatus(): Boolean? {
-        val response =
-            OneBoSportApi.withdrawService.getTwoFactorStatus() //(success: true 验证成功, false 需重新验证手机), 在进行新增银行卡、更新银行卡密码、更新用户密码、设定真实姓名之前先判断此状态, 如果为false, 就显示验证手机简讯的画面
+        //(success: true 验证成功, false 需重新验证手机), 在进行新增银行卡、更新银行卡密码、更新用户密码、设定真实姓名之前先判断此状态, 如果为false, 就显示验证手机简讯的画面
+        val response = kotlin.runCatching { OneBoSportApi.withdrawService.getTwoFactorStatus() }.getOrNull() ?: return true
         if (response.body()?.success == false) {
             checkUserHavePhoneNumber().let { hasPhone ->
                 if (!hasPhone) {

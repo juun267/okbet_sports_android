@@ -19,9 +19,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.fragment_favorite.*
-import kotlinx.android.synthetic.main.fragment_favorite.iv_logo
-import kotlinx.android.synthetic.main.fragment_favorite.iv_menu_left
-import kotlinx.android.synthetic.main.fragment_favorite.lin_search
 import kotlinx.android.synthetic.main.fragment_favorite.view.*
 import kotlinx.android.synthetic.main.view_status_bar.*
 import org.cxct.sportlottery.R
@@ -39,13 +36,13 @@ import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
-import org.cxct.sportlottery.ui.common.SocketLinearManager
-import org.cxct.sportlottery.ui.common.StatusSheetData
-import org.cxct.sportlottery.ui.game.common.LeagueOddListener
+import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.sport.common.LeagueOddListener
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 import org.greenrobot.eventbus.EventBus
 
 /**

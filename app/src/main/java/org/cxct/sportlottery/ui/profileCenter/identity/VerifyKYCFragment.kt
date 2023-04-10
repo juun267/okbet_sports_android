@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.view_status_spinner.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
-import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
 import org.cxct.sportlottery.util.*
@@ -142,7 +142,9 @@ class VerifyKYCFragment :
 
     private fun initView() {
         //PM - Tom Wang 跟QA 要求只跟設計稿一樣只開一個認證上傳，OK-860
-        //identity_2nd.isVisible = sConfigData?.idUploadNumber.equals("2")
+        //2023年04月06日11:57:52 【OKBET-历史遗留问题-安卓】后台配置KYC认证数量最大是2个，安卓与其他端支持认证数量不一致（ftt103/Aa123456）
+        val isShow2nd = sConfigData?.idUploadNumber.equals("2")
+        identity_2nd.isVisible = isShow2nd
     }
 
     override fun onStart() {

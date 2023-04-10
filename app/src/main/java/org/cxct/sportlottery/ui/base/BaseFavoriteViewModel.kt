@@ -17,7 +17,7 @@ import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchRequest
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
@@ -280,9 +280,9 @@ abstract class BaseFavoriteViewModel(
         this.oddsMap?.forEach { (key, value) ->
             value?.forEach { odd ->
                 if (key == PlayCate.EPS.value)
-                    odd.setupEPSDiscount(discount)
+                    odd?.setupEPSDiscount(discount)
                 else
-                    odd.setupDiscount(discount)
+                    odd?.setupDiscount(discount)
             }
         }
     }

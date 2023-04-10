@@ -12,13 +12,13 @@ import kotlinx.android.synthetic.main.fragment_credentials.*
 import kotlinx.android.synthetic.main.view_upload.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
-import org.cxct.sportlottery.ui.component.UploadImageView
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.getCompressFile
 import org.cxct.sportlottery.util.setTitleLetterSpacing
+import org.cxct.sportlottery.view.UploadImageView
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException

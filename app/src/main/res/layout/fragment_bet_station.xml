@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_141414_F3F4F5"
     android:orientation="vertical"
-    tools:context="org.cxct.sportlottery.ui.withdraw.BankCardFragment"
+    tools:context="org.cxct.sportlottery.ui.money.withdraw.BankCardFragment"
     tools:ignore="ContentDescription, SpUsage">
 
     <androidx.core.widget.NestedScrollView
@@ -80,7 +80,7 @@
                             android:text="0"
                             android:textColor="@color/color_FFFFFF"
                             android:textSize="@dimen/textSize20sp"
-                            tools:text="19940.000" />
+                            tools:text="19940.00" />
                     </LinearLayout>
 
 
@@ -208,7 +208,7 @@
                         app:autoSizeMinTextSize="6dp"
                         app:autoSizeTextType="uniform" />
 
-                    <org.cxct.sportlottery.ui.component.StatusSpinnerView
+                    <org.cxct.sportlottery.view.statusSelector.StatusSpinnerView
                         android:id="@+id/spinner_area"
                         android:layout_width="0dp"
                         android:layout_height="44dp"
@@ -244,7 +244,7 @@
                         app:autoSizeTextType="uniform" />
 
 
-                    <org.cxct.sportlottery.ui.component.StatusSpinnerView
+                    <org.cxct.sportlottery.view.statusSelector.StatusSpinnerView
                         android:id="@+id/spinner_city"
                         android:layout_width="0dp"
                         android:layout_height="44dp"

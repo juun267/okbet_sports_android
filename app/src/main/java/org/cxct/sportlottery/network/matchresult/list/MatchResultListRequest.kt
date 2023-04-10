@@ -5,6 +5,8 @@ import org.cxct.sportlottery.network.common.TimeRangeParams
 
 data class MatchResultListRequest(
     val gameType: String,
+    val matchId: String? = null,
+    val leagueId: String? = null,
     override val startTime: String?,
     override val endTime: String?,
     override val page: Int? = null,

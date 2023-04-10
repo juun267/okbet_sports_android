@@ -40,7 +40,7 @@
                     android:visibility="visible"
                     tools:visibility="visible" />
 
-                <org.cxct.sportlottery.ui.component.DetailLiveViewToolbar
+                <org.cxct.sportlottery.ui.sport.detail.DetailLiveViewToolbar
                     android:id="@+id/live_view_tool_bar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

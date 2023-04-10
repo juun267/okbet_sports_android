@@ -41,7 +41,7 @@
                 android:textColor="@color/color_535D76"
                 android:textSize="@dimen/textSize15sp" />
 
-            <org.cxct.sportlottery.ui.component.StatusSelectorView
+            <org.cxct.sportlottery.view.statusSelector.StatusSelectorView
                 android:id="@+id/out_account"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
                 android:textColor="@color/color_535D76"
                 android:textSize="@dimen/textSize15sp" />
 
-            <org.cxct.sportlottery.ui.component.StatusSelectorView
+            <org.cxct.sportlottery.view.statusSelector.StatusSelectorView
                 android:id="@+id/in_account"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityForgetPassword2Binding
 import org.cxct.sportlottery.common.extentions.bindFinish
@@ -24,7 +25,7 @@ import org.cxct.sportlottery.util.setServiceClick
 /**
  * @app_destination 通过手机号或者邮箱重置登录密码
  */
-class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewModel::class) {
+open class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewModel::class) {
 
     companion object {
 
@@ -63,10 +64,13 @@ class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewModel::cl
 
         btnSendSms.setOnClickListener {
             hideSoftKeyboard(this@ForgetPasswordActivity2)
-            VerifyCodeDialog(callBack = { identity, validCode ->
-                sendCode(identity, validCode)
-                eetSmsCode.requestFocus()
-            }).show(supportFragmentManager, null)
+            VerifyCodeDialog().run {
+                callBack = { identity, validCode ->
+                    sendCode(identity, validCode)
+                    eetSmsCode.requestFocus()
+                }
+                show(supportFragmentManager, null)
+            }
         }
 
         eetSmsCode.checkSMSCode(etSmsValidCode) {
@@ -125,7 +129,7 @@ class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewModel::cl
         }
 
         tag = this
-        CountDownUtil.smsCountDown(this@ForgetPasswordActivity2,
+        CountDownUtil.smsCountDown(this@ForgetPasswordActivity2.lifecycleScope,
             { setBtnEnable(false) },
             { text = "${it}s" },
             {
@@ -145,6 +149,14 @@ class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewModel::cl
         } else {
             viewModel.checkEmailCode("$inputEmail", "$smsCode")
         }
+    }
+
+    protected open fun sendSMSCode() {
+
+    }
+
+    protected open fun sendEmailCode() {
+
     }
 
     private fun initObserve() = viewModel.run {

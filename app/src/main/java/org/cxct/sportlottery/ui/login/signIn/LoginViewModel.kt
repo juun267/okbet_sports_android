@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.SingleEvent
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -136,8 +137,7 @@ class LoginViewModel(
                             // TODO 20220108 更新UserInfo by Hewie
                             //若已經驗證過則直接獲取最新的用戶資料, 未驗證需等待驗證後
                             if (result.loginData?.deviceValidateStatus == 1)
-                                userInfoRepository.getUserInfo()
-//                result.loginData?.discount = 0.4f //後台修復中 測試用
+                                runWithCatch { userInfoRepository.getUserInfo() }
                             _loginResult.postValue(result)
                             AFInAppEventUtil.login(result.loginData?.uid.toString())
                         }
@@ -177,7 +177,7 @@ class LoginViewModel(
                             registerInfoEvent.post(result)
                         }else{
                             //继续登录
-                            userInfoRepository.getUserInfo()
+                            runWithCatch { userInfoRepository.getUserInfo() }
                             _loginResult.postValue(result)
                             if (loginData?.ifnew == true) {
                                 AFInAppEventUtil.register("username")
@@ -220,7 +220,7 @@ class LoginViewModel(
                             registerInfoEvent.post(loginResult)
                         }else{
                             //继续登录
-                            userInfoRepository.getUserInfo()
+                            runWithCatch { userInfoRepository.getUserInfo() }
                             _loginResult.postValue(result)
                             AFInAppEventUtil.login(loginData.uid.toString())
                         }
@@ -244,7 +244,7 @@ class LoginViewModel(
             doNetwork(androidContext) {
                 loginRepository.facebookLogin(token, inviteCode = Constants.getInviteCode())
             }?.let { result ->
-                userInfoRepository.getUserInfo()
+                runWithCatch { userInfoRepository.getUserInfo() }
                 _loginResult.postValue(result)
                 AFInAppEventUtil.login(result.loginData?.uid.toString())
                 hideLoading()
@@ -276,7 +276,7 @@ class LoginViewModel(
             }?.let { result ->
                 //手機驗證成功後, 獲取最新的用戶資料
                 if (result.success) {
-                    userInfoRepository.getUserInfo()
+                    runWithCatch { userInfoRepository.getUserInfo() }
                 }
                 _validResult.postValue(result)
             }

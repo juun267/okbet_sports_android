@@ -24,7 +24,7 @@ import org.cxct.sportlottery.network.uploadImg.UploadImgResult
 import org.cxct.sportlottery.network.uploadImg.UploadVerifyDocRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
-import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.util.*
 import java.io.File
 
@@ -1259,7 +1259,7 @@ class RegisterViewModel(
                                             loginRepository.register(registerRequest)
                                         }?.let { result ->
                                             // TODO 20220108 更新UserInfo by Hewie
-                                            userInfoRepository.getUserInfo()
+                                            kotlin.runCatching { userInfoRepository.getUserInfo() }
                                             _registerResult.postValue(result)
                                             _identityPhoto.postValue(null)
                                             _identityPhotoBackup.postValue(null)
@@ -1284,7 +1284,7 @@ class RegisterViewModel(
                                     loginRepository.register(registerRequest)
                                 }?.let { result ->
                                     // TODO 20220108 更新UserInfo by Hewie
-                                    userInfoRepository.getUserInfo()
+                                    kotlin.runCatching { userInfoRepository.getUserInfo() }
                                     _registerResult.postValue(result)
                                     _identityPhoto.postValue(null)
                                     _identityPhotoBackup.postValue(null)
@@ -1305,7 +1305,7 @@ class RegisterViewModel(
                     loginRepository.register(registerRequest)
                 }?.let { result ->
                     // TODO 20220108 更新UserInfo by Hewie
-                    userInfoRepository.getUserInfo()
+                    kotlin.runCatching { userInfoRepository.getUserInfo() }
                     _registerResult.postValue(result)
                     AFInAppEventUtil.register("username")
                 }

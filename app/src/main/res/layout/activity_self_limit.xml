@@ -13,7 +13,7 @@
         android:background="@color/color_80334266_E3E8EE"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"/>
-    <org.cxct.sportlottery.ui.common.CustomTabLayout
+    <org.cxct.sportlottery.view.CustomTabLayout
         android:id="@+id/custom_tab_layout"
         android:paddingHorizontal="65dp"
         android:layout_width="match_parent"

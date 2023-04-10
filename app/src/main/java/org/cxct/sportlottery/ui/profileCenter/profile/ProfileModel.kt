@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.repository.*
@@ -45,7 +46,7 @@ class ProfileModel(
 
     fun getUserInfo() {
         viewModelScope.launch {
-            userInfoRepository.getUserInfo()
+            runWithCatch { userInfoRepository.getUserInfo() }
         }
     }
 }

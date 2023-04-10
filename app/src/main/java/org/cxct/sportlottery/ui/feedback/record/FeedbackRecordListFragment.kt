@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_feedback_record_list.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.common.DividerItemDecorator
-import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
+import org.cxct.sportlottery.view.DividerItemDecorator
 
 /**
  * @app_destination 意见反馈-反馈记录

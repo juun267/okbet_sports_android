@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/okbet_bg_login"
+    tools:ignore="SpUsage">
+
+    <include
+        android:id="@+id/v_top"
+        layout="@layout/view_status_bar" />
+
+    <ImageButton
+        android:id="@+id/btn_back"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginTop="24dp"
+        android:background="@null"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_arrow_login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/v_top" />
+
+    <com.flyjingfish.gradienttextviewlib.GradientTextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/margin_20"
+        android:text="@string/recover_password"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        app:gradient_angle="270"
+        app:gradient_endColor="@color/color_1971FD"
+        app:gradient_startColor="@color/color_71ADFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/v_top" />
+
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="151dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="143dp"
+        android:src="@drawable/logo_okbet_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/sv_content_view"
+        app:layout_constraintTop_toBottomOf="@+id/ivLogo"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_20"
+            android:layout_marginHorizontal="14dp"
+            android:layout_marginBottom="15dp"
+            android:elevation="1dp"
+            android:background="@drawable/bg_white_radius_8"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clProgressLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="20dp">
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginHorizontal="20dp"
+                    app:layout_constraintLeft_toLeftOf="@+id/tvOne"
+                    app:layout_constraintRight_toRightOf="@+id/tvThree"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:id="@+id/vPart1"
+                        android:layout_width="0dp"
+                        android:layout_height="2dp"
+                        android:layout_weight="1"
+                        android:background="#025BE8"/>
+
+                    <View
+                        android:id="@+id/vPart2"
+                        android:layout_width="0dp"
+                        android:layout_height="2dp"
+                        android:layout_weight="1"
+                        android:background="#C9CFD7"/>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvOne"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    app:layout_constraintLeft_toLeftOf="@+id/tvOneText"
+                    app:layout_constraintRight_toRightOf="@+id/tvOneText"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:text="1"/>
+
+                <TextView
+                    android:id="@+id/tvTwo"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:text="2"/>
+
+                <TextView
+                    android:id="@+id/tvThree"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    app:layout_constraintLeft_toLeftOf="@+id/tvThreeText"
+                    app:layout_constraintRight_toRightOf="@+id/tvThreeText"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:gravity="center"
+                    android:layout_gravity="right"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:text="3"/>
+
+                <TextView
+                    android:id="@+id/tvOneText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="30dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvOne"
+                    android:gravity="center_horizontal"
+                    android:textSize="12sp"
+                    android:text="@string/verify"/>
+
+                <TextView
+                    android:id="@+id/tvTwoText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="30dp"
+                    app:layout_constraintLeft_toLeftOf="@+id/tvTwo"
+                    app:layout_constraintRight_toRightOf="@+id/tvTwo"
+                    app:layout_constraintTop_toBottomOf="@+id/tvTwo"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:id="@+id/tvThreeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="30dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvThree"
+                    android:gravity="center_horizontal"
+                    android:textSize="12sp"
+                    android:text="@string/recharge_state_success"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+                android:id="@+id/inputForm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="10dp"
+                app:isResponsiveIconColor="false"
+                app:iconSignifier="@drawable/ic_mobile_gray"
+                app:labelText="@string/mobile"
+                app:labelTextStyle="normal"
+                app:primaryColor="@color/color_AFAFB1">
+
+                <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
+                    android:id="@+id/eetInputForm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="phone"
+                    android:maxLines="1"
+                    android:digits="@string/edittext_digits_int"
+                    android:textColor="@color/color_FFFFFF_DE000000"
+                    android:textSize="@dimen/textSize14sp"
+                    android:textColorHint="@color/color_C9CFD7" />
+
+            </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/block_sms_valid_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginHorizontal="20dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                android:elevation="10dp">
+
+                <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+                    android:id="@+id/et_sms_valid_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="@dimen/margin_2"
+                    app:hintText="@string/verification_code"
+                    app:iconSignifier="@drawable/ic_valid_code"
+                    app:isResponsiveIconColor="false"
+                    app:labelText="@string/verification_code"
+                    app:labelTextStyle="normal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/btn_send_sms"
+                    app:primaryColor="@color/color_AFAFB1">
+
+                    <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
+                        android:id="@+id/eet_sms_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:maxLength="4"
+                        android:textColor="@color/color_FFFFFF_DE000000"
+                        android:textSize="@dimen/textSize14sp"
+                        android:textColorHint="@color/color_C9CFD7" />
+                </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
+
+                <Button
+                    android:id="@+id/btn_send_sms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:background="@drawable/btn_send_sms"
+                    android:minHeight="32dp"
+                    android:text="@string/send"
+                    android:textAllCaps="false"
+                    android:textColor="@color/color_2b2b2b_ffffff"
+                    android:textSize="@dimen/textSize14sp"
+                    android:visibility="visible"
+                    android:enabled="false"
+                    android:alpha="0.5"
+                    app:layout_constraintEnd_toEndOf="@+id/et_sms_valid_code"
+                    app:layout_constraintTop_toTopOf="@+id/et_sms_valid_code" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/cl_live_chat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:orientation="horizontal"
+                android:gravity="right">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="3dp"
+                    android:textColor="@color/color_535D76"
+                    android:text="@string/need_help"
+                    android:textSize="@dimen/textSize12sp"/>
+
+                <ImageView
+                    android:layout_marginEnd="@dimen/dp_4"
+                    android:layout_width="@dimen/margin_16"
+                    android:adjustViewBounds="true"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_customer_service"/>
+
+                <TextView
+                    android:id="@+id/tv_live_chat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:textColor="@color/color_025BE8"
+                    android:text="@string/live_service"
+                    android:textSize="@dimen/textSize12sp"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvStatusText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal"
+                android:textColor="@color/color_414655"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                tools:text="Change Phone Number\nSuccessful!"/>
+
+            <TextView
+                android:id="@+id/tvBackText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:gravity="center_horizontal"
+                android:textColor="@color/color_535D76"
+                android:textSize="16sp"
+                android:visibility="gone"
+                android:text="@string/back_to_my_details"/>
+
+            <Button
+                android:id="@+id/btnNext"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginHorizontal="@dimen/margin_20"
+                android:layout_marginBottom="@dimen/margin_30"
+                android:layout_marginTop="@dimen/margin_20"
+                android:background="@drawable/ic_submit"
+                android:text="@string/next"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/textSize17sp"
+                android:alpha="0.5"
+                android:enabled="false"
+                android:textAllCaps="false" />
+        </LinearLayout>
+    </ScrollView>
+
+    <include
+        android:id="@+id/bottom_liences"
+        layout="@layout/bottom_register_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_48"
+        android:layout_marginBottom="@dimen/margin_20"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

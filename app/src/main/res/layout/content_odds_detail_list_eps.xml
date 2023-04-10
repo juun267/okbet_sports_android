@@ -18,7 +18,7 @@
             android:layout_height="80dp"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <org.cxct.sportlottery.ui.common.IndicatorView
+        <org.cxct.sportlottery.view.IndicatorView
             android:id="@+id/idv_eps"
             android:layout_width="match_parent"
             android:layout_height="30dp"

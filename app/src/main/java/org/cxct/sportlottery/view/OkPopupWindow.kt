@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.util.OddsModeUtil
 
 class OkPopupWindow(context: Context, var currentSelectText: String,val onItemClickListener:(String,Int)->Unit ) : PopupWindow(context) {

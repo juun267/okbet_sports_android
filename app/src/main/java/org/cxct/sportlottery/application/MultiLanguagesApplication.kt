@@ -1,16 +1,17 @@
 package org.cxct.sportlottery.application
 
-import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.multidex.MultiDex
+import cn.jpush.android.api.JPushInterface
 import com.appsflyer.AppsFlyerLib
 import com.didichuxing.doraemonkit.DoKit
 import com.google.gson.Gson
@@ -25,28 +26,30 @@ import org.cxct.sportlottery.network.money.RedEnveLopeModel
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
+import org.cxct.sportlottery.ui.betList.BetListViewModel
+import org.cxct.sportlottery.ui.betRecord.TransactionStatusViewModel
+import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.ui.finance.FinanceViewModel
-import org.cxct.sportlottery.ui.game.betList.BetListViewModel
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterViewModel
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterViewModel
 import org.cxct.sportlottery.ui.login.foget.ForgetViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
 import org.cxct.sportlottery.ui.login.signUp.RegisterViewModel
 import org.cxct.sportlottery.ui.login.signUp.info.RegisterInfoViewModel
-import org.cxct.sportlottery.ui.maintab.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabViewModel
 import org.cxct.sportlottery.ui.maintab.MainViewModel
-import org.cxct.sportlottery.ui.maintab.SportViewModel
-import org.cxct.sportlottery.ui.maintab.accountHistory.AccountHistoryViewModel
+import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintenance.MaintenanceViewModel
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechViewModel
+import org.cxct.sportlottery.ui.money.withdraw.WithdrawViewModel
 import org.cxct.sportlottery.ui.news.NewsViewModel
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.authbind.AuthViewModel
 import org.cxct.sportlottery.ui.profileCenter.cancelaccount.CancelAccountViewModel
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordViewModel
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
+import org.cxct.sportlottery.ui.profileCenter.modify.BindInfoViewModel
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoViewModel
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordViewModel
@@ -55,14 +58,12 @@ import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewMod
 import org.cxct.sportlottery.ui.results.SettlementViewModel
 import org.cxct.sportlottery.ui.selflimit.SelfLimitViewModel
 import org.cxct.sportlottery.ui.splash.SplashViewModel
-import org.cxct.sportlottery.ui.sport.SportListViewModel
 import org.cxct.sportlottery.ui.sport.SportTabViewModel
+import org.cxct.sportlottery.ui.sport.SportViewModel
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteViewModel
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectViewModel
-import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusViewModel
-import org.cxct.sportlottery.ui.withdraw.WithdrawViewModel
+import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.AppManager.OnAppStatusChangedListener
 import org.cxct.sportlottery.view.dialog.AgeVerifyDialog
 import org.cxct.sportlottery.view.dialog.promotion.PromotionPopupDialog
 import org.koin.android.ext.koin.androidContext
@@ -85,7 +86,6 @@ class MultiLanguagesApplication : Application() {
     private val _userInfo = MutableLiveData<UserInfo?>()
     val userInfo: LiveData<UserInfo?>
         get() = _userInfo
-    private var isNewsShowed = false
     private var isAgeVerifyNeedShow = true
 
     val mOddsType = MutableLiveData<OddsType>()
@@ -149,6 +149,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { BetListViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { AuthViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { RegisterInfoViewModel(get(),get(), get(), get()) }
+        viewModel { BindInfoViewModel(get(), get(), get()) }
     }
 
     private val repoModule = module {
@@ -197,15 +198,6 @@ class MultiLanguagesApplication : Application() {
         instance = this
         mInstance = this
         AppManager.init(this)
-        AppManager.getInstance().addOnAppStatusChangedListener(object : OnAppStatusChangedListener {
-            override fun onForeground(var1: Activity?) {
-                LotteryManager.instance.getLotteryInfo()
-            }
-
-            override fun onBackground(var1: Activity?) {
-
-            }
-        })
         myPref = getDefaultSharedPreferences()
         AutoSize.initCompatMultiProcess(this)
         TimeZone.setDefault(timeZone)
@@ -225,6 +217,7 @@ class MultiLanguagesApplication : Application() {
         //生成UUID作為設備識別碼
         setupDeviceCode()
         initAppsFlyerSDK()
+        initJpush()
 
         if (BuildConfig.DEBUG) {
             CrashHandler.setup(this) //错误日志收集
@@ -248,6 +241,12 @@ class MultiLanguagesApplication : Application() {
         AppsFlyerLib.getInstance().init("G7q8UBYftYQfKAxnortTSN", null, this)
         AppsFlyerLib.getInstance().setDebugLog(BuildConfig.DEBUG);
         AppsFlyerLib.getInstance().start(this);
+    }
+
+    private fun initJpush() {
+        JPushInterface.setDebugMode(BuildConfig.DEBUG)
+        JPushInterface.init(this)
+        Log.d("hjq", "getRegistrationID=" + JPushInterface.getRegistrationID(this))
     }
 
     private fun setupTimber() {
@@ -276,14 +275,6 @@ class MultiLanguagesApplication : Application() {
 
     fun userInfo(): UserInfo? {
         return _userInfo.value
-    }
-
-    fun isNewsShow(): Boolean {
-        return isNewsShowed
-    }
-
-    fun setIsNewsShow(show: Boolean) {
-        this.isNewsShowed = show
     }
 
     fun getGameDetailAnimationNeedShow(): Boolean {

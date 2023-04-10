@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.httpFormat
@@ -64,15 +66,20 @@ class SplashViewModel(
                 val retrofit =
                     RequestManager.instance.createRetrofit(hostUrl.httpFormat())
 
-                val checkHostResult = doNetwork(androidContext, exceptionHandle = false) {
-                    retrofit.create(IndexService::class.java).checkToken()
-                }
+                Timber.d("userInfo:${MultiLanguagesApplication.mInstance.userInfo.value}")
+                Timber.d("userInfo isLogin:${LoginRepository.isLogined()}")
+                Timber.d("userInfo isLoginValue:${LoginRepository.isLogin.value == true}")
 
-                if (checkHostResult?.success == false) {
-                    Timber.i("==> check token fail : do getHost")
-                    loginRepository.clear()
-                    getHost()
-                    return@launch
+                if (LoginRepository.isLogined()) {
+                    val checkHostResult = doNetwork(androidContext, exceptionHandle = false) {
+                        retrofit.create(IndexService::class.java).checkToken()
+                    }
+                    if (checkHostResult?.success == false) {
+                        Timber.i("==> check token fail : do getHost")
+                        loginRepository.clear()
+                        getHost()
+                        return@launch
+                    }
                 }
 
                 val result = doNetwork(androidContext, exceptionHandle = false) {
@@ -98,6 +105,26 @@ class SplashViewModel(
         }
     }
 
+    fun getConfig() {
+        val hostUrl = hostRepository.hostUrl
+        viewModelScope.launch {
+            val retrofit =
+                RequestManager.instance.createRetrofit(hostUrl.httpFormat())
+            val result = doNetwork(androidContext, exceptionHandle = false) {
+                retrofit.create(IndexService::class.java).getConfig()
+            } ?: return@launch
+
+            if (result.success) {
+                setConfig(result)
+                gotConfigData = true
+                setBaseUrl(hostUrl, retrofit)
+                result.configData?.let { setRandomSocketUrl(it.wsHost) }
+                return@launch
+            } else {
+            }
+        }
+    }
+
     private fun getHostListUrl(index: Int): String {
         return if (index in Constants.SERVER_URL_LIST.indices) {
             val serverUrl = Constants.SERVER_URL_LIST[index]
@@ -115,16 +142,16 @@ class SplashViewModel(
 
     fun goNextPage() {
 //        if (sConfigData?.thirdOpen != FLAG_OPEN) {
-            viewModelScope.launch {
-                loginRepository.checkToken()
+        viewModelScope.launch {
+            loginRepository.checkToken()
 
-                if (!userInfoRepository.checkedUserInfo && isLogin.value == true) {
-                    userInfoRepository.getUserInfo()
-                    _skipHomePage.postValue(true)
-                } else {
-                    _skipHomePage.postValue(true)
-                }
+            if (!userInfoRepository.checkedUserInfo && isLogin.value == true) {
+                runWithCatch { userInfoRepository.getUserInfo() }
+                _skipHomePage.postValue(true)
+            } else {
+                _skipHomePage.postValue(true)
             }
+        }
 //        } else {
 //            _skipHomePage.postValue(false)
 //        }

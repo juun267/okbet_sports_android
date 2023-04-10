@@ -7,7 +7,7 @@
     android:background="@color/color_131932_F0F5FA"
     tools:context="org.cxct.sportlottery.ui.results.ResultsSettlementActivity">
 
-    <org.cxct.sportlottery.ui.common.CustomTopToolbar
+    <org.cxct.sportlottery.view.CustomTopToolbar
         android:id="@+id/custom_tool_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/custom_tool_bar">
 
-        <org.cxct.sportlottery.ui.component.StatusSpinnerView
+        <org.cxct.sportlottery.view.statusSelector.StatusSpinnerView
             android:id="@+id/status_game_type"
             android:layout_width="0dp"
             android:layout_height="40dp"
@@ -197,7 +197,7 @@
 
     <!--根據需求先隱藏，確定不用可刪-->
     <!--20220406 只有宣傳頁、主頁需顯示-->
-    <!--<org.cxct.sportlottery.ui.common.ServiceFloatingButton
+    <!--<org.cxct.sportlottery.ui.common.floatingbtn.ServiceFloatingButton
         android:visibility="gone"
         android:id="@+id/btn_floating_service"
         android:layout_width="match_parent"

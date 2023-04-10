@@ -23,6 +23,10 @@
     <uses-permission android:name="android.permission.MICROPHONE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+    <!-- Required -->
+    <permission
+        android:name="${applicationId}.permission.JPUSH_MESSAGE"
+        android:protectionLevel="signature" />
     <uses-permission
         android:name="android.permission.INTERACT_ACROSS_USERS"
         tools:ignore="ProtectedPermissions" />
@@ -96,17 +100,22 @@
         <activity
             android:name=".ui.finance.FinanceActivity"
             android:screenOrientation="portrait" />
+
+
+        <activity
+            android:name=".ui.maintab.betdetails.BetDetailsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.money.recharge.MoneyRechargeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.withdraw.WithdrawActivity"
+            android:name=".ui.money.withdraw.WithdrawActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.withdraw.WithdrawCommissionDetailActivity"
+            android:name=".ui.money.withdraw.WithdrawCommissionDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.withdraw.BankActivity"
+            android:name=".ui.money.withdraw.BankActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.results.ResultsSettlementActivity"
@@ -114,6 +123,7 @@
         <activity
             android:name=".ui.helpCenter.HelpCenterActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".ui.splash.SplashActivity"
             android:exported="true"
@@ -160,12 +170,20 @@
             android:name=".ui.profileCenter.nickname.ModifyProfileInfoActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.profileCenter.modify.VerificationWaysActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.profileCenter.modify.ModifyBindInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.profileCenter.changePassword.SettingPasswordActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.common.WebActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.thirdGame.ThirdGameActivity" />
+        <activity
+            android:configChanges="orientation|screenSize"
+            android:name=".ui.thirdGame.ThirdGameActivity" />
         <activity
             android:name=".ui.selflimit.SelfLimitActivity"
             android:screenOrientation="portrait"
@@ -244,7 +262,35 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+        <!-- Since JCore2.0.0 Required SDK核心功能-->
+        <!-- 可配置android:process参数将Service放在其他进程中；android:enabled属性不能是false -->
+        <!-- 这个是自定义Service，要继承极光JCommonService，可以在更多手机平台上使得推送通道保持的更稳定 -->
+        <service
+            android:name=".push.PushService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":pushcore">
+            <intent-filter>
+                <action android:name="cn.jiguang.user.service.action" />
+            </intent-filter>
+        </service>
 
+        <receiver
+            android:name=".push.PushMessageReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
+                <category android:name="${JPUSH_PKGNAME}" />
+            </intent-filter>
+        </receiver>
+
+        <meta-data
+            android:name="JPUSH_CHANNEL"
+            android:value="${JPUSH_CHANNEL}" />
+        <meta-data
+            android:name="JPUSH_APPKEY"
+            android:value="${JPUSH_APPKEY}" />
     </application>
 
 </manifest>

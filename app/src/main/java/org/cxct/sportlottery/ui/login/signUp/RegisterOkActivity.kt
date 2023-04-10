@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.login.signUp
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Paint
@@ -23,6 +22,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
+import cn.jpush.android.api.JPushInterface
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
@@ -31,8 +31,8 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_register_ok.*
 import kotlinx.android.synthetic.main.view_status_bar.*
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.databinding.ActivityRegisterOkBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.NetResult
@@ -41,8 +41,8 @@ import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.common.CustomAlertDialog
-import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
+import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
@@ -1007,10 +1007,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 val deviceId = Settings.Secure.getString(
                     applicationContext.contentResolver, Settings.Secure.ANDROID_ID
                 )
-                val deviceSn = getSharedPreferences(
-                    MultiLanguagesApplication.UUID_DEVICE_CODE,
-                    Context.MODE_PRIVATE).getString(
-                    MultiLanguagesApplication.UUID, "") ?: ""
+                val deviceSn = JPushInterface.getRegistrationID(this)
                 binding.apply {
                     var phone = eetPhone.text.toString()
                     if (phone.isNotEmpty() && phone.substring(0, 1) == "0") {

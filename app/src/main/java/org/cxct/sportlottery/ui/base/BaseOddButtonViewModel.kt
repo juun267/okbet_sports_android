@@ -1,16 +1,14 @@
 package org.cxct.sportlottery.ui.base
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import cn.jpush.android.api.JPushInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.application.MultiLanguagesApplication
-import org.cxct.sportlottery.application.MultiLanguagesApplication.Companion.UUID
-import org.cxct.sportlottery.application.MultiLanguagesApplication.Companion.UUID_DEVICE_CODE
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddState
 import org.cxct.sportlottery.common.enums.OddsType
@@ -39,7 +37,7 @@ import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
-import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
@@ -92,12 +90,11 @@ abstract class BaseOddButtonViewModel(
         get() = betInfoRepository.betParlaySuccess
 
     private val deviceId by lazy {
-        androidContext.getSharedPreferences(UUID_DEVICE_CODE, Context.MODE_PRIVATE)
-            .getString(UUID, null) ?: ""
+        JPushInterface.getRegistrationID(androidContext)
     }
 
-    fun getMoney() {
-        viewModelScope.launch { LoginRepository.getMoney() }
+    fun getMoneyAndTransferOut(allTransferOut: Boolean = true) {
+        viewModelScope.launch { LoginRepository.getMoneyAndTransferOut(allTransferOut) }
     }
 
     fun getLockMoney() {

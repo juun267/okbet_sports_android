@@ -72,9 +72,8 @@ abstract class BaseViewModel(
     val rainResult: LiveData<Event<RedEnvelopeResult>>
         get() = _rainResult
 
-    val isLogin: LiveData<Boolean> by lazy {
-        loginRepository.isLogin
-    }
+    val isLogin: LiveData<Boolean>
+        get() = loginRepository.isLogin
 
     val isKickedOut: LiveData<Event<String?>> by lazy {
         loginRepository.kickedOut

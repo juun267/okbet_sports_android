@@ -1,11 +1,11 @@
 package org.cxct.sportlottery.ui.maintab.slot
 
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.recyclerview.adapter.BindingAdapter
-import org.cxct.sportlottery.databinding.ItemHomeSlotBinding
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.load
+import org.cxct.sportlottery.databinding.ItemHomeSlotBinding
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
+import org.cxct.sportlottery.ui.common.adapter.BindingAdapter
 
 class HomeSlotAdapter: BindingAdapter<QueryGameEntryData, ItemHomeSlotBinding>() {
 

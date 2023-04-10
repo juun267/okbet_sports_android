@@ -7,7 +7,7 @@
     android:background="@color/transparent_black_50"
     android:clickable="true"
     android:focusable="true"
-    tools:context=".ui.game.betList.receipt.BetReceiptFragment">
+    tools:context=".ui.betList.receipt.BetReceiptFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -206,7 +206,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/title_winnable_amount"
                 app:layout_constraintTop_toTopOf="@+id/title_winnable_amount"
-                tools:text="0.000 RMB" />
+                tools:text="0.00 RMB" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <FrameLayout

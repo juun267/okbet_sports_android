@@ -48,4 +48,14 @@ object SPUtil {
     fun getMarketSwitch(): Boolean {
         return mSharedPreferences?.getBoolean(MARKET_SWITCH, false) == true
     }
+
+    fun saveBoolean(key: String, value: Boolean) {
+        mSharedPreferences?.edit()
+            ?.putBoolean(key, value)
+            ?.apply()
+    }
+
+    fun getBoolean(key: String, defaultValue: Boolean = false): Boolean? {
+        return mSharedPreferences?.getBoolean(key, defaultValue)
+    }
 }

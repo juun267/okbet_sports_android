@@ -6,14 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.text.isDigitsOnly
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.PassVerifyEnum
 import org.cxct.sportlottery.databinding.FragmentSelfLimitFrozeBinding
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.common.CustomAlertDialog
-import org.cxct.sportlottery.ui.common.CustomPasswordVerifyDialog
+import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
+import org.cxct.sportlottery.ui.common.dialog.CustomPasswordVerifyDialog
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 

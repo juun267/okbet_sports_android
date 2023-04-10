@@ -11,14 +11,14 @@ import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.listener.GSYVideoProgressListener
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
-import org.cxct.sportlottery.databinding.ItemHomeLiveBinding
 import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.databinding.ItemHomeLiveBinding
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchLiveData
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.TimeCounting
-import org.cxct.sportlottery.ui.game.widget.OddsButtonHome
+import org.cxct.sportlottery.ui.sport.oddsbtn.OddsButtonHome
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.OKVideoPlayer
 

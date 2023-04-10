@@ -3,10 +3,9 @@ package org.cxct.sportlottery.util
 
 import android.content.Context
 import android.text.Spanned
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 
 
 /**

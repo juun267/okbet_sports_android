@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:clickable="true"
     android:focusable="true"
-    tools:context="org.cxct.sportlottery.ui.maintab.accountHistory.next.AccountHistoryNextFragment"
+    tools:context="org.cxct.sportlottery.ui.betRecord.accountHistory.next.AccountHistoryNextFragment"
     tools:ignore="SpUsage">
 
     <View

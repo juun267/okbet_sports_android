@@ -1218,6 +1218,7 @@
     <string name="confirm_transform_in_money">Please confirm amount transferred to game account</string>
     <string name="game_account_money">Game balance</string>
     <string name="transform_in_amount">Transfer-in amount</string>
+    <string name="hint_transform_in_amount">Only supported the amount transferred from 0 to the platform account balance</string>
     <string name="account_balance_unenough">Platform account balance not enough</string>
     <string name="platform_user_money">Platform balance</string>
 
@@ -1239,6 +1240,22 @@
     <string name="J802">1X2 &amp; Goals Under</string>
     <string name="J803">1X2 &amp; Both to Score Y</string>
     <string name="J804">1X2 &amp; Both to Score N</string>
+    <string name="start_now">Start Now</string>
+
+    <string name="bet_details_title" >Parley combination details</string>
+    <string name="set_phone_no">Set Phone Number</string>
+    <string name="set_email">Set Email</string>
+    <string name="edit_phone_no">Change Phone Number</string>
+    <string name="edit_email">Change Email</string>
+    <string name="new_phone_no">New Phone Number</string>
+    <string name="new_email">New Email</string>
+    <string name="verify">Verify</string>
+    <string name="verify_phone_no">Phone verification</string>
+    <string name="verify_email">Email verification</string>
+    <string name="back_to_my_details">Go back to My Details</string>
+    <string name="sms_code_length_error">Verification code at least 4 digits</string>
+    <string name="phone_no_error">Phone number must be 11 digits &amp; starting with 09</string>
+
 
 
     <string name="N846">Basic Information</string>

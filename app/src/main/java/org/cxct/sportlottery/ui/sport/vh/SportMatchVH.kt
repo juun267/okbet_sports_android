@@ -28,7 +28,7 @@
 //import org.cxct.sportlottery.network.odds.list.LeagueOdd
 //import org.cxct.sportlottery.network.odds.list.MatchOdd
 //import org.cxct.sportlottery.network.odds.list.TimeCounting
-//import org.cxct.sportlottery.ui.common.CustomLinearLayoutManager
+//import org.cxct.sportlottery.ui.common.layoutmanager.CustomLinearLayoutManager
 //import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 //import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 //import org.cxct.sportlottery.ui.game.common.OddButtonListener
