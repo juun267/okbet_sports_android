@@ -344,8 +344,12 @@ class WithdrawViewModel(
 
     private fun transferTypeMoneyCardList() {
         val cardList = mutableListOf<BankCardList>()
+        LogUtil.toJson(myWithdrawCardList)
         myWithdrawCardList?.forEach { bankCard ->
-            if (dealType.type == bankCard.uwType)
+            if (dealType.type == bankCard.uwType
+                //paymaya是包含在ewallet里面的，所以需要多下面的判断
+                || (dealType.type == TransferType.E_WALLET.type && bankCard.uwType == TransferType.PAYMAYA.type)
+            )
                 cardList.add(bankCard.apply { transferType = dealType })
         }
         _moneyCardList.value = MyMoneyCard(cardList, dealType)
@@ -613,6 +617,7 @@ class WithdrawViewModel(
     fun checkPhoneNumber(phoneNumber: String) {
         _phoneNumberMsg.value = when {
             phoneNumber.isEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyPhone(phoneNumber) -> LocalUtils.getString(R.string.pls_enter_correct_mobile)
             else -> ""
         }
         checkInputCompleteByAddBankCard()
@@ -667,11 +672,14 @@ class WithdrawViewModel(
                 withdrawAmount = "0"
                 LocalUtils.getString(R.string.error_input_empty)
             }
+            withdrawAmount.toDoubleOrNull() == null || withdrawAmount.toDoubleS(0.0).equals(0) -> {
+                LocalUtils.getString(R.string.J485)
+            }
+            withdrawAmount.toDoubleS(0.0) > userMoney.value ?: 0.0 -> {
+                LocalUtils.getString(R.string.J486)
+            }
             amountLimit.isBalanceMax && withdrawAmount.toDoubleS(0.0) > getWithdrawAmountLimit().max -> {
                 LocalUtils.getString(R.string.error_withdraw_amount_bigger_than_balance)
-            }
-            withdrawAmount.toDoubleOrNull() == null || withdrawAmount.toDoubleS(0.0).equals(0) -> {
-                LocalUtils.getString(R.string.error_recharge_amount_format)
             }
             VerifyConstUtil.verifyWithdrawAmount(
                 withdrawAmount,

@@ -29,15 +29,25 @@ import java.util.*
 
 class RedEnvelopeReceiveDialog(
 ) : BaseDialog<RedEnveLopeModel>(RedEnveLopeModel::class) {
+
+    init {
+        setStyle(R.style.FullScreen)
+    }
+
     private val mHandler = MyHandler(WeakReference(this))
 
     private val redenpId by lazy {
-        arguments?.getInt("redenpId")
+        arguments?.getInt(REDENP_ID)
     }
 
-    constructor(redenpId: Int?) : this() {
-        arguments = Bundle().apply {
-            putInt("redenpId", redenpId ?: 0)
+    companion object {
+        const val REDENP_ID = "redenpId"
+
+        @JvmStatic
+        fun newInstance(redenpId: Int?) = RedEnvelopeReceiveDialog().apply {
+            arguments = Bundle().apply {
+                putInt(REDENP_ID, redenpId ?: 0)
+            }
         }
     }
 
@@ -70,10 +80,6 @@ class RedEnvelopeReceiveDialog(
 
     private val viewBinding by lazy {
         FragmentRedEnvelopeReceiveBinding.inflate(layoutInflater)
-    }
-
-    init {
-        setStyle(R.style.FullScreen)
     }
 
     //  private val BARRAGE_GAP_MIN_DURATION: Int = 1200

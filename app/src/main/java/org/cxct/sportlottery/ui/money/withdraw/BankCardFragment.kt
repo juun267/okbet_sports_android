@@ -306,12 +306,12 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                     }
                     TransferType.PAYMAYA -> { //eWallet暫時寫死 與綁定銀行卡相同
                         addBankCard(
-                            bankName = org.cxct.sportlottery.ui.finance.df.RechType.PAYMAYA.type,
+                            bankName = "PayMaya",
                             cardNo = eet_phone_number.getText().toString(),
                             fundPwd = eet_withdrawal_password.getText().toString(),
                             id = args.editBankCard?.id?.toString(),
                             uwType = transferType.type,
-                            bankCode = bankCode
+                            bankCode = "PayMaya",
                         )
                     }
                 }
