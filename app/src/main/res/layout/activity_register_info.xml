@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="58dp"
-        android:text="Basic Information"
+        android:text="@string/N846"
         android:textSize="@dimen/textSize24sp" />
 
 
@@ -56,9 +56,9 @@
                 android:id="@+id/tb_real_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:hintText="The name must match the bank account"
+                app:hintText="@string/N847"
                 app:isResponsiveIconColor="false"
-                app:labelText="@string/real_name"
+                app:labelText="@string/J055"
                 app:labelTextStyle="normal"
                 app:primaryColor="@color/color_AFAFB1">
 
@@ -86,7 +86,7 @@
                     android:layout_height="wrap_content"
                     app:hintText="@string/hint_birth_date"
                     app:isResponsiveIconColor="false"
-                    app:labelText="@string/birth_date"
+                    app:labelText="@string/J902"
                     app:labelTextStyle="normal"
                     app:primaryColor="@color/color_AFAFB1">
 
@@ -119,7 +119,7 @@
                     android:id="@+id/tb_source"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hintText="Select a source of  income"
+                    app:hintText="@string/N848"
                     app:isResponsiveIconColor="false"
                     app:labelText="@string/income_source"
                     app:labelTextStyle="normal"
@@ -155,7 +155,7 @@
                     android:id="@+id/tb_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hintText="Please select an address"
+                    app:hintText="@string/N850"
                     app:isResponsiveIconColor="false"
                     app:labelText="@string/select_crypto_address"
                     app:labelTextStyle="normal"

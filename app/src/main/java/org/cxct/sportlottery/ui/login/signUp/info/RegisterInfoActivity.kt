@@ -131,11 +131,16 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
     }
 
 
-    override fun onPause() {
-        super.onPause()
+    override fun onStart() {
+        super.onStart()
+        //回到页面，恢复登录信息
+        viewModel.restored()
+    }
+    override fun onStop() {
+        super.onStop()
+        //未完善退出  注销登录信息
         viewModel.logout()
     }
-
 
     override fun onBackPressed() {
         //需求不让回退
@@ -168,7 +173,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
                 checkStatus()
             }
             .setTitleText(resources.getString(R.string.select_area))
-            .setSubmitText(getString(R.string.picker_submit))
+            .setSubmitText(getString(R.string.btn_sure))
             .build()
     }
 
@@ -189,7 +194,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
 
             }
             .setTitleText(resources.getString(R.string.select_area))
-            .setSubmitText(getString(R.string.picker_submit))
+            .setSubmitText(getString(R.string.btn_sure))
             .build()
     }
 

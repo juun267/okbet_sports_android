@@ -1240,4 +1240,11 @@
     <string name="J803">1X2 &amp; Both to Score Y</string>
     <string name="J804">1X2 &amp; Both to Score N</string>
 
+
+    <string name="N846">Basic Information</string>
+    <string name="J055">Real Name</string>
+    <string name="N847">The name must match the bank account</string>
+    <string name="J902">Birthdate</string>
+    <string name="N848">Select a source of income</string>
+    <string name="N850">Please select an address</string>
 </resources>

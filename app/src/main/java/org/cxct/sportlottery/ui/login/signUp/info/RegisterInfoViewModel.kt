@@ -3,8 +3,7 @@ package org.cxct.sportlottery.ui.login.signUp.info
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.SingleEvent
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bettingStation.AreaAll
@@ -22,7 +21,7 @@ class RegisterInfoViewModel(
 ) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     //登录数据
-    var loginResult:LoginResult?=null
+    var loginResult: LoginResult? = null
 
     //生日
     var birthdayTimeInput = ""
@@ -31,16 +30,16 @@ class RegisterInfoViewModel(
     var realNameInput = ""
 
     //薪资来源
-    var sourceInput = 0
+    var sourceInput = -1
 
     //省份
     var provinceInput = ""
 
     //城市
-    var cityInput=""
+    var cityInput = ""
 
     //是否完成信息提交
-    private var isFinishComplete=false
+    private var isFinishComplete = false
 
     //地区信息
     val areaAllList: LiveData<AreaAll>
@@ -51,11 +50,12 @@ class RegisterInfoViewModel(
     val salaryList: LiveData<List<SalarySource>>
         get() = _salaryList
     private var _salaryList = MutableLiveData<List<SalarySource>>()
+
     //薪资来源string 列表
-    val salaryStringList:ArrayList<String> = ArrayList()
+    val salaryStringList: ArrayList<String> = ArrayList()
 
     //提交监听
-    val commitEvent=SingleEvent<Boolean>()
+    val commitEvent = SingleEvent<Boolean>()
 
 
     /**
@@ -74,13 +74,13 @@ class RegisterInfoViewModel(
     /**
      * 获取收入来源选项
      */
-    fun getUserSalaryList(){
+    fun getUserSalaryList() {
         launch {
-            val result=doNetwork(androidContext){
+            val result = doNetwork(androidContext) {
                 OneBoSportApi.indexService.getUserSalaryList()
             }
             result?.let {
-                result.rows?.forEach {salary->
+                result.rows?.forEach { salary ->
                     salaryStringList.add(salary.name)
                 }
                 _salaryList.postValue(result.rows)
@@ -88,41 +88,34 @@ class RegisterInfoViewModel(
         }
     }
 
-    /**
-     * 获取配置，提取薪资来源配置
-     */
-//    fun getConfig(){
-//        onNet {
-//            doNetwork(androidContext){
-//                OneBoSportApi.indexService.getConfig()
-//            }?.let {result->
-//                result.configData?.salarySource?.forEach {salary->
-//                    salaryStringList.add(salary.name)
-//                }
-//                onMain {
-//                    _salaryList.postValue(result.configData?.salarySource)
-//                }
-//            }
-//        }
-//    }
 
     /**
      * 未完善退出，注销登录信息
      */
-    fun logout(){
-        if(!isFinishComplete){
+    fun logout() {
+        if (!isFinishComplete) {
             launch {
                 loginRepository.logout()
             }
         }
     }
 
+    /**
+     * 恢复登录数据
+     */
+    fun restored() {
+        loginResult?.let { result ->
+            launch {
+                loginRepository.setUpLoginData(result.loginData)
+            }
+        }
+    }
 
 
     /**
      * 格式化省份 string list
      */
-    fun getProvinceStringList():ArrayList<String> {
+    fun getProvinceStringList(): ArrayList<String> {
         val provinceStringList = ArrayList<String>()
         _areaAllList.value?.let {
             it.provinces.forEach { province ->
@@ -135,16 +128,16 @@ class RegisterInfoViewModel(
     /**
      * 格式化城市 string  list
      */
-    fun getCityStringList(provinceList:ArrayList<String>):List<List<String>> {
+    fun getCityStringList(provinceList: ArrayList<String>): List<List<String>> {
         val cityList = ArrayList<ArrayList<String>>()
-        _areaAllList.value?.let {all->
+        _areaAllList.value?.let { all ->
 
             provinceList.forEach {
-                val tempArray= arrayListOf<String>()
+                val tempArray = arrayListOf<String>()
                 all.provinces.forEach { province ->
-                    if(province.name==it){
-                        all.cities.forEach {city->
-                            if(city.provinceId==province.id){
+                    if (province.name == it) {
+                        all.cities.forEach { city ->
+                            if (city.provinceId == province.id) {
                                 tempArray.add(city.name)
                             }
                         }
@@ -160,22 +153,30 @@ class RegisterInfoViewModel(
     /**
      * 提交完善信息
      */
-    var commitMsg=""
-    fun commitUserBasicInfo(){
-        val request=UserBasicInfoRequest(
+    var commitMsg = ""
+    fun commitUserBasicInfo() {
+        val request = UserBasicInfoRequest(
             realNameInput,
             birthdayTimeInput,
             sourceInput,
             provinceInput,
-            cityInput)
+            cityInput
+        )
 
         launch {
-            val commitResult=doNetwork(androidContext){ loginRepository.commitUserBasicInfo(request)}
-            if(commitResult!=null&&commitResult.success){
+            val commitResult =
+                doNetwork(androidContext) { loginRepository.commitUserBasicInfo(request) }
+
+            if (commitResult != null && commitResult.success) {
+                isFinishComplete=true
                 commitEvent.post(true)
-            }else{
+            } else {
+                isFinishComplete=false
+//                commitMsg = "${commitResult?.msg}"
+                commitMsg = androidContext.getString(R.string.unknown_error)
                 commitEvent.post(false)
-                commitMsg="${commitResult?.msg}"
+
+
             }
         }
     }
@@ -184,22 +185,22 @@ class RegisterInfoViewModel(
     /**
      * 检查表单必选项
      */
-    fun checkInput():Boolean{
+    fun checkInput(): Boolean {
         return realNameInput.isNotEmpty()
-                && birthdayTimeInput .isNotEmpty()
-                && sourceInput>0
+                && birthdayTimeInput.isNotEmpty()
+                && sourceInput > -1
                 && provinceInput.isNotEmpty()
                 && cityInput.isNotEmpty()
     }
 
-    fun setCityData(provincePosition:Int,cityPosition:Int){
+    fun setCityData(provincePosition: Int, cityPosition: Int) {
         val provinceList = getProvinceStringList()
         val cityList = getCityStringList(provinceList)
-        cityInput=cityList[provincePosition][cityPosition]
+        cityInput = cityList[provincePosition][cityPosition]
     }
 
-    fun setProvinceData(provincePosition:Int){
+    fun setProvinceData(provincePosition: Int) {
         val provinceList = getProvinceStringList()
-        provinceInput =provinceList[provincePosition]
+        provinceInput = provinceList[provincePosition]
     }
 }

@@ -17,7 +17,7 @@ class DateTimePickerOptions(val context: Context) {
             .setType(booleanArrayOf(true, true, true, false, false, false))
             .setTitleText(context.resources.getString(R.string.select_date))
             .setCancelText(" ")
-            .setSubmitText(context.getString(R.string.picker_submit))
+            .setSubmitText(context.getString(R.string.btn_sure))
             .setTitleColor(
                 ContextCompat.getColor(
                     context,

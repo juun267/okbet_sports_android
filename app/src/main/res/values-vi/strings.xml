@@ -1171,4 +1171,11 @@
     <string name="J804">1 X 2 &amp; Hai Đội Ghi Bàn-Không</string>
     <string name="N643">Mời vào app Glife nạp tiền</string>
     <string name="N644">Mời vào app Glife rút tiền</string>
+
+    <string name="N846">Thông tin chính</string>
+    <string name="J055">Họ tên thật</string>
+    <string name="N847">Họ tên khớp với tài khoản ngân hàng</string>
+    <string name="J902">Ngày sinh nhật</string>
+    <string name="N848">Chọn nguồn tiền</string>
+    <string name="N850">Chọn địa chỉ</string>
 </resources>
