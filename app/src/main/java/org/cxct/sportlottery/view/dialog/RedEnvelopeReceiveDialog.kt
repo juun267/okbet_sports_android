@@ -17,6 +17,7 @@ import android.view.animation.*
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.fragment.app.DialogFragment
+import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.fragment_red_envelope_receive.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentRedEnvelopeReceiveBinding
@@ -106,6 +107,7 @@ class RedEnvelopeReceiveDialog(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        ImmersionBar.with(this).init();
         initView()
         initObserve()
     }

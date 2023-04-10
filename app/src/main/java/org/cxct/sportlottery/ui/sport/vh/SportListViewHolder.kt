@@ -32,7 +32,7 @@ class SportListViewHolder constructor(
 ) : ViewHolderTimer(itemView) {
 
     private val oddButtonPagerAdapter by lazy {
-        OddButtonPagerAdapter()
+        OddButtonPagerAdapter(itemView.context)
     }
 
     init {

@@ -29,6 +29,7 @@ import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.HttpError
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
@@ -52,11 +53,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     private var mPickerView: OptionsPickerView<String>? = null
     public var mIsEnabled = true //避免快速連點，所有的 item 一次只能點擊一
     private var mRunnable: Runnable? = null
-    var hasHandler = false
-    private val mHandler by lazy {
-        hasHandler = true
-        Handler(Looper.getMainLooper())
-    }
+    private val mHandler by lazy { Handler(Looper.getMainLooper()) }
 
     val viewModel: T by viewModel(clazz = clazz)
 
@@ -410,32 +407,24 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     }
 
     private fun startCheckToken() {
-        try {
-            if (viewModel.loginRepository.isLogin.value == true) {
-                if (mRunnable == null) {
-                    mRunnable = getRunnable()
-                    mRunnable?.let {
-                        mHandler.post(it)
-                    }
-                }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
+        if (!LoginRepository.isLogined()) {
+            return
+        }
+        if (mRunnable == null) {
+            mRunnable = getRunnable()
+            mHandler.post(mRunnable!!)
         }
     }
 
     private fun getRunnable(): Runnable {
         return Runnable {
-            viewModel.viewModelScope.launch {
-                viewModel.checkIsUserAlive()
-            }
-            mRunnable?.let {
-                mHandler.postDelayed(it, 30000)
-            }
+            viewModel.viewModelScope.launch { viewModel.checkIsUserAlive() }
+            mRunnable?.let { mHandler.postDelayed(it, 30_000) }
         }
     }
 
     private fun stopRunnable() {
+        mRunnable?.let { mHandler.removeCallbacks(it) }
         mRunnable = null
     }
 
@@ -462,9 +451,8 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     override fun onDestroy() {
         super.onDestroy()
         LotteryManager.instance.onDestroy(this)
-        if (hasHandler) {
-            mHandler.removeCallbacksAndMessages(null)
-        }
+        stopRunnable()
+        mHandler.removeCallbacksAndMessages(null)
     }
 
     fun setStatusBarDarkFont(view: View? = null) {
