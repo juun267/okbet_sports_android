@@ -3,64 +3,78 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:orientation="horizontal">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/din_bold"
-        android:textStyle="bold"
-        android:textSize="@dimen/textSize16sp"
-        android:textColor="@color/color_A7B2C4"
-        android:text="VS" />
+    android:orientation="vertical"
+    android:paddingLeft="24dp"
+    android:paddingRight="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginVertical="10dp"
-        android:orientation="vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-        <org.cxct.sportlottery.view.highLightTextView.HighlightTextView
-            android:id="@+id/tv_home_name"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/din_bold"
+            android:text="VS"
+            android:textColor="@color/color_A7B2C4"
+            android:textSize="@dimen/textSize16sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="start"
-            android:text="Lorem ipsum UFC dolor sit amet,"
-            android:textColor="@color/color_535D76"
-            android:textSize="@dimen/margin_14"
-            android:lineSpacingExtra="4dp"
-            app:highlightColor="@color/transparent"
-            app:highlightRadius="0dp"
-            app:highlightText="UFC"
-            app:highlightTextColor="@color/color_025BE8" />
+            android:layout_marginVertical="10dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-        <org.cxct.sportlottery.view.highLightTextView.HighlightTextView
-            android:id="@+id/tv_away_name"
-            android:layout_width="match_parent"
+            <org.cxct.sportlottery.view.highLightTextView.HighlightTextView
+                android:id="@+id/tv_home_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:lineSpacingExtra="4dp"
+                android:text="Lorem ipsum UFC dolor sit amet,"
+                android:textColor="@color/color_535D76"
+                android:textSize="@dimen/margin_14"
+                app:highlightColor="@color/transparent"
+                app:highlightRadius="0dp"
+                app:highlightText="UFC"
+                app:highlightTextColor="@color/color_025BE8" />
+
+            <org.cxct.sportlottery.view.highLightTextView.HighlightTextView
+                android:id="@+id/tv_away_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:gravity="start"
+                android:lineSpacingExtra="4dp"
+                android:text="Lorem ipsum UFC dolor sit amet,"
+                android:textColor="@color/color_535D76"
+                android:textSize="@dimen/margin_14"
+                app:highlightColor="@color/transparent"
+                app:highlightRadius="0dp"
+                app:highlightText="UFC"
+                app:highlightTextColor="@color/color_025BE8" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:gravity="start"
-            android:text="Lorem ipsum UFC dolor sit amet,"
-            android:textColor="@color/color_535D76"
-            android:textSize="@dimen/margin_14"
-            android:lineSpacingExtra="4dp"
-            app:highlightColor="@color/transparent"
-            app:highlightRadius="0dp"
-            app:highlightText="UFC"
-            app:highlightTextColor="@color/color_025BE8" />
+            android:gravity="center"
+            android:text="2022/08/13\n08:03:25"
+            android:textColor="@color/color_A7B2C4"
+            android:textSize="@dimen/textSize12sp" />
+
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="@dimen/textSize12sp"
-        android:textColor="@color/color_A7B2C4"
-        android:text="2022/08/13\n08:03:25" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_191919_EEEFF0" />
 
 </LinearLayout>

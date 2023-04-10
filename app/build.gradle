@@ -311,8 +311,6 @@ dependencies {
 
     //SVG rendering library
     implementation 'com.caverock:androidsvg-aar:1.4'
-    //簡易封裝的Adapter
-    implementation 'com.zhy:base-rvadapter:3.0.3'
 
     implementation 'com.github.JessYanCoding:AndroidAutoSize:v1.2.1'
 

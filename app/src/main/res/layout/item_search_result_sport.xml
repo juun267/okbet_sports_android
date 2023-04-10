@@ -2,43 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@color/color_bbbbbb_ffffff">
+    android:layout_height="48dp"
+    android:background="@color/color_F2F5FA"
+    android:gravity="center_vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:gravity="center_vertical"
-        android:background="@color/color_F2F5FA">
+    <ImageView
+        android:layout_width="3dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@drawable/ic_piece_blue" />
 
-        <ImageView
-            android:id="@+id/view1"
-            android:layout_width="3dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_piece_blue"
-            android:adjustViewBounds="true" />
-
-        <org.cxct.sportlottery.view.highLightTextView.HighlightTextView
-            android:id="@+id/tvResultTittle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_16"
-            android:gravity="start"
-            android:text="Lorem ipsum UFC dolor sit amet,"
-            android:textColor="@color/color_535D76"
-            android:textSize="@dimen/margin_14"
-            app:highlightColor="@color/transparent"
-            app:highlightRadius="0dp"
-            app:highlightText="UFC"
-            app:highlightTextColor="@color/color_025BE8" />
-    </LinearLayout>
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvResultLeague"
+    <org.cxct.sportlottery.view.highLightTextView.HighlightTextView
+        android:id="@+id/tvResultTittle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_15"
-        android:layout_marginRight="@dimen/margin_20" />
+        android:layout_marginStart="@dimen/margin_16"
+        android:gravity="start"
+        android:text="Lorem ipsum UFC dolor sit amet,"
+        android:textColor="@color/color_535D76"
+        android:textSize="@dimen/margin_14"
+        app:highlightColor="@color/transparent"
+        app:highlightRadius="0dp"
+        app:highlightText="UFC"
+        app:highlightTextColor="@color/color_025BE8" />
 </LinearLayout>

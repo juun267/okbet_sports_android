@@ -364,6 +364,10 @@ object LoginRepository {
         }
     }
 
+     fun hasToken():Boolean{
+        return !sharedPref.getString(KEY_TOKEN, null).isNullOrEmpty()
+    }
+
     suspend fun logout() {
         _isLogin.value = false
         val emptyList = mutableListOf<String>()

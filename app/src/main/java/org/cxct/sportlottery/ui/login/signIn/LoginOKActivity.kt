@@ -20,6 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.common.crash.FirebaseLog
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.ActivityLoginOkBinding
 import org.cxct.sportlottery.network.Constants
@@ -366,6 +367,8 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private fun updateUiWithResult(loginResult: LoginResult) {
         hideLoading()
+        //将userName信息添加到firebase崩溃日志中
+        loginResult.loginData?.let { FirebaseLog.addLogInfo("userName", "${loginResult.loginData}") }
         if (loginResult.success) {
             if (loginResult.loginData?.deviceValidateStatus == 0) {
                 PhoneVerifyActivity.loginData = loginResult.loginData
