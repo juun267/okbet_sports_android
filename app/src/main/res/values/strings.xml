@@ -1268,4 +1268,11 @@
     <string name="J485">The format or value of Withdraw number is incorrect</string>
 
 
+
+    <string name="N846">Basic Information</string>
+    <string name="J055">Real Name</string>
+    <string name="N847">The name must match the bank account</string>
+    <string name="J902">Birthdate</string>
+    <string name="N848">Select a source of income</string>
+    <string name="N850">Please select an address</string>
 </resources>

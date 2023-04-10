@@ -7,6 +7,7 @@ import android.provider.Settings
 import android.text.InputType
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.view.Gravity
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -19,10 +20,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.crash.FirebaseLog
-import org.cxct.sportlottery.common.extentions.startActivity
+import org.cxct.sportlottery.common.event.RegisterInfoEvent
 import org.cxct.sportlottery.databinding.ActivityLoginOkBinding
+import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.login.LoginCodeRequest
 import org.cxct.sportlottery.network.index.login.LoginRequest
@@ -35,9 +36,12 @@ import org.cxct.sportlottery.ui.common.dialog.SelfLimitFrozeErrorDialog
 import org.cxct.sportlottery.ui.login.VerifyCodeDialog
 import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.login.foget2.ForgetWaysActivity
+import org.cxct.sportlottery.ui.login.signUp.info.RegisterInfoActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.boundsEditText.SimpleTextChangedWatcher
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 /**
@@ -54,6 +58,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         const val LOGIN_TYPE_CODE = 0
         const val LOGIN_TYPE_PWD = 1
     }
+
     private var countDownGoing = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,6 +82,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         setupServiceButton()
         initObserve()
         viewModel.focusChangeCheckAllInputComplete()
+        EventBusUtil.targetLifecycle(this)
     }
 
     private fun initOnClick() {
@@ -233,6 +239,14 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         verifyCodeDialog.show(supportFragmentManager, null)
     }
 
+    /**
+     * 登录完善用户信息event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onRegisterInfoCompleted(event: RegisterInfoEvent) {
+        updateUiWithResult(event.loginResult)
+    }
+
     private fun setupAuthLogin() {
         btn_google.setOnClickListener {
             if (binding.cbPrivacy.isChecked)
@@ -346,6 +360,12 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             }
         })
 
+        //跳转至完善注册信息
+        viewModel.registerInfoEvent.observe(this) {
+            val intent = Intent(this, RegisterInfoActivity::class.java)
+            intent.putExtra("data", it)
+            startActivity(intent)
+        }
         viewModel.msgCodeResult.observe(this, Observer {
             if (it?.success == true) {
                 CountDownUtil.smsCountDown(this@LoginOKActivity.lifecycleScope, {

@@ -1,15 +1,11 @@
 package org.cxct.sportlottery.ui.base
 
 import android.content.Context
-import android.content.res.Configuration
 import androidx.annotation.Nullable
 import androidx.lifecycle.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.cxct.sportlottery.application.MultiLanguagesApplication
+import kotlinx.coroutines.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.exception.DoNoConnectException
 import org.cxct.sportlottery.common.extentions.clean
 import org.cxct.sportlottery.network.Constants
@@ -22,10 +18,11 @@ import org.cxct.sportlottery.network.money.RedEnvelopeResult
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.NetworkUtil
+import org.cxct.sportlottery.util.updateDefaultHandicapType
 import retrofit2.Response
 import timber.log.Timber
-import java.net.SocketTimeoutException
 
 
 abstract class BaseViewModel(
@@ -214,5 +211,14 @@ abstract class BaseViewModel(
 
     fun getLoginBoolean(): Boolean {
         return loginRepository.isLogin.value ?: false
+    }
+
+
+
+
+    fun launch(block:suspend (coroutine:CoroutineScope)->Unit){
+        viewModelScope.launch{
+            block(this)
+        }
     }
 }
