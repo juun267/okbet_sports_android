@@ -143,6 +143,7 @@ class LoginViewModel(
                         }
                     }
                 }else{
+                    _loginResult.postValue(result)
                     loginRepository.clear()
                     hideLoading()
                 }
@@ -186,6 +187,7 @@ class LoginViewModel(
                         }
                     }
                 }else{
+                    _loginResult.postValue(result)
                     loginRepository.clear()
                     hideLoading()
                 }
@@ -226,6 +228,7 @@ class LoginViewModel(
 
                 }else{
                     //跳转到完善页面
+                    _loginResult.postValue(result)
                     loginRepository.clear()
                     hideLoading()
                 }
