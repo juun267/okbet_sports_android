@@ -431,7 +431,7 @@
     <string name="text_pay_maya_delete_success">Paymaya删除成功</string>
     <string name="text_bank_card_add_success">银行卡绑定成功</string>
     <string name="text_e_wallet_add_success">eWallet绑定成功</string>
-    <string name="text_paymaya_add_success">Paymaya绑定成功</string>
+    <string name="text_paymaya_add_success">PayMaya绑定成功</string>
     <string name="text_crypto_add_success">虚拟币绑定成功</string>
     <string name="text_bank_card_modify_success">编辑银行卡成功</string>
     <string name="text_e_wallet_modify_success">编辑eWallet成功</string>
