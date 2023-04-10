@@ -22,7 +22,6 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
 import org.cxct.sportlottery.util.BetPlayCateFunction.isNOGALType
 import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.LocalUtils.getString
 import org.cxct.sportlottery.util.QuickListManager
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
@@ -163,7 +162,7 @@ open class OddsButton @JvmOverloads constructor(
                 visibility = View.VISIBLE
 
                 text = when {
-                    playCateCode.isNOGALType() -> getString(R.string.none)
+                    playCateCode.isNOGALType() -> resources.getString(R.string.none)
                     playCateCode.isCombination() -> {
                         (odds?.nameMap?.get(
                             LanguageManager.getSelectLanguage(context).key
