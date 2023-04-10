@@ -1265,6 +1265,7 @@
     <string name="please_setting_paymaya">Please set up your PayMaya first</string>
     <string name="tail_number">Tail Number</string>
     <string name="J486">The withdraw amount is higher than the account balance.</string>
+    <string name="J485">The format or value of Withdraw number is incorrect</string>
 
 
 </resources>

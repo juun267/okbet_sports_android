@@ -1162,5 +1162,6 @@
     <string name="add_paymaya">Thêm Paymaya</string>
     <string name="please_setting_paymaya">Vui lòng cài đặt PayMaya trước</string>
     <string name="J486">Số tiền rút lớn hơn số dư tài khoản</string>
+    <string name="J485">Định dạng hoặc giá trị của số rút tiền không đúng</string>
 
 </resources>
