@@ -82,7 +82,7 @@ class MultiLanguagesApplication : Application() {
     private val sharedPref: SharedPreferences by lazy {
         getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
-    private val _userInfo = MutableLiveData<UserInfo?>()
+    private val _userInfo = MutableLiveData<UserInfo?>(KvUtils.getObject(UserInfo::class.java))
     val userInfo: LiveData<UserInfo?>
         get() = _userInfo
     private var isAgeVerifyNeedShow = true
@@ -268,6 +268,7 @@ class MultiLanguagesApplication : Application() {
     }
 
     fun saveUserInfo(userInfoData: UserInfo?) {
+        KvUtils.putObject(UserInfo::class.java.name, userInfoData)
         _userInfo.postValue(userInfoData)
     }
 
