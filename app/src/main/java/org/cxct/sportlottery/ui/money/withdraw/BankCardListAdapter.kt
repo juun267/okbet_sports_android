@@ -83,7 +83,7 @@ class BankCardListAdapter(private val mBankCardListClickListener: BankCardListCl
                     TransferType.BANK.type -> LocalUtils.getString(R.string.bank_card)
                     TransferType.CRYPTO.type -> LocalUtils.getString(R.string.crypto)
                     TransferType.E_WALLET.type -> LocalUtils.getString(R.string.ewallet)
-                //    TransferType.E_WALLET.type -> LocalUtils.getString(R.string.ewallet)
+                    TransferType.PAYMAYA.type -> context.getString(R.string.ewallet)
                     else -> LocalUtils.getString(R.string.bank_card)
                 }
                 when(data.transferType){

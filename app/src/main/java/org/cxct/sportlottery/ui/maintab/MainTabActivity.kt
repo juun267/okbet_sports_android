@@ -100,9 +100,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         activityInstance = this
         EventBusUtil.targetLifecycle(this)
         LotteryManager.instance.getLotteryInfo()
-//        RedEnvelopeReceiveDialog.newInstance(123).show(
-//            supportFragmentManager, this::class.java.simpleName
-//        )
     }
 
     override fun onNightModeChanged(mode: Int) {

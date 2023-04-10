@@ -244,6 +244,7 @@
                             android:imeOptions="actionNext"
                             android:inputType="number"
                             android:maxLines="1"
+                            android:maxLength="11"
                             android:textColor="@color/color_FFFFFF_DE000000"
                             android:textSize="@dimen/textSize14sp" />
 

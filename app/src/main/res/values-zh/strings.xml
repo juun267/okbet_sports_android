@@ -1211,4 +1211,12 @@
     <string name="please_setting_paymaya">请先设置你的PayMaya</string>
     <string name="J486">提款金额大于账号余额</string>
     <string name="J485">提款个数格式或数值错误</string>
+    <string name="N846">基本信息</string>
+    <string name="J055">真实姓名</string>
+    <string name="N847">姓名必须与银行账户相符</string>
+    <string name="J902">生日</string>
+    <string name="N848">选择收入来源</string>
+    <string name="N850">请选择地址</string>
+    <string name="N171">请输入正确的 11 位数手机号码</string>
+    <string name="N865">金额超过限额</string>
 </resources>
