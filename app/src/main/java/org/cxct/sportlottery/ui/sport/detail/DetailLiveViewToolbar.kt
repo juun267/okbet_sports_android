@@ -4,12 +4,14 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -302,6 +304,18 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         }
         web_view.setInitialScale(25)
         web_view.setWebViewCommonBackgroundColor()
+
+        web_view.webChromeClient = object : WebChromeClient() {
+            override fun getDefaultVideoPoster(): Bitmap? {
+                return if (super.getDefaultVideoPoster() == null) {
+                    BitmapFactory.decodeResource(
+                        resources,
+                        R.drawable.ic_video)
+                } else {
+                    super.getDefaultVideoPoster()
+                }
+            }
+        }
         web_view.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(
                 view: WebView?,
