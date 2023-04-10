@@ -16,7 +16,7 @@
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/tv_money_card_type"
-            android:textSize="@dimen/textSize20sp"
+            android:textSize="@dimen/textSize16sp"
             tools:text="@string/my_bank_card"
             android:textColor="@color/color_414655"
             android:layout_width="wrap_content"
