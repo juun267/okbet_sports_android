@@ -76,5 +76,6 @@ inline fun Activity.startActivity(activity: Class<out Activity>) {
 }
 
 fun Activity.bindFinish(vararg views: View) {
-    views.forEach { it.setOnClickListener { finish() } }
+    val finishClick = View.OnClickListener { finish() }
+    views.forEach { it.setOnClickListener(finishClick) }
 }

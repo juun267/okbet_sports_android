@@ -407,7 +407,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     }
 
     private fun startCheckToken() {
-        if (!LoginRepository.isLogined()) {
+        if (!LoginRepository.hasToken()) {
             return
         }
         if (mRunnable == null) {

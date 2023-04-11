@@ -67,8 +67,15 @@ class OddButtonPagerAdapter(val context: Context
         set(value) {
             this.playCateNameMap = playCateNameMap.addSplitPlayCateTranslation()
             val oddsSortCount = oddsSort?.split(",")?.size ?: 999 // 最大顯示數量
-            field = value.sortScores().refactorPlayCode().sortOdds().mappingCSList(matchOdd).filterOddsStatus().splitPlayCate()
-                .filterPlayCateSpanned().sortPlayCate()
+
+            field = value.sortScores()
+                .refactorPlayCode()
+                .sortOdds()
+                .mappingCSList(matchOdd)
+                .filterOddsStatus()
+                .splitPlayCate()
+                .filterPlayCateSpanned()
+                .sortPlayCate()
             val gameList =
                 field.filterValues { !it.isNullOrEmpty() }
                     .plus(field.filterValues { !it.isNullOrEmpty() }
