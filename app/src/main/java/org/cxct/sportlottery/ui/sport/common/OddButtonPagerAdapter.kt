@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.sport.common
 
+import android.content.Context
 import android.graphics.Color
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -23,11 +24,10 @@ import org.cxct.sportlottery.ui.sport.oddsbtn.OddBtnList
 import org.cxct.sportlottery.ui.sport.oddsbtn.OddsButton2
 import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
 import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.TextUtil
 
 
-class OddButtonPagerAdapter(
+class OddButtonPagerAdapter(val context: Context
 ) :RecyclerView.Adapter<OddButtonPagerViewHolder>(
 
 ) {
@@ -427,10 +427,10 @@ class OddButtonPagerAdapter(
         val bts_n_Map: MutableMap<String?, String?> = mutableMapOf()
         translationMap.apply {
             for (language in LanguageManager.Language.values()) {
-                ou_o_Map[language.key] = LocalUtils.getString(R.string.J801)
-                ou_u_Map[language.key] = LocalUtils.getString(R.string.J802)
-                bts_y_Map[language.key] = LocalUtils.getString(R.string.J803)
-                bts_n_Map[language.key] = LocalUtils.getString(R.string.J804)
+                ou_o_Map[language.key] = context.getString(R.string.J801)
+                ou_u_Map[language.key] = context.getString(R.string.J802)
+                bts_y_Map[language.key] = context.getString(R.string.J803)
+                bts_n_Map[language.key] = context.getString(R.string.J804)
             }
         }
         translationMap[PlayCate.SINGLE_OU_O.value] = ou_o_Map

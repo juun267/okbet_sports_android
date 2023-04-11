@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.util.Log
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
@@ -248,6 +250,7 @@ class MultiLanguagesApplication : Application() {
     private fun initJpush() {
         JPushInterface.setDebugMode(BuildConfig.DEBUG)
         JPushInterface.init(this)
+        Log.d("hjq", "getRegistrationID=" + JPushInterface.getRegistrationID(this))
     }
 
     private fun setupTimber() {
@@ -315,6 +318,10 @@ class MultiLanguagesApplication : Application() {
         private var instance: MultiLanguagesApplication? = null
         lateinit var mInstance: MultiLanguagesApplication
         const val isGooglePlayVersion = BuildConfig.FLAVOR.equals("google")
+
+        fun stringOf(@StringRes strId: Int): String {
+            return mInstance.getString(strId)
+        }
 
         private val loginSharedPref: SharedPreferences by lazy {
             mInstance.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)

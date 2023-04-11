@@ -933,17 +933,17 @@ fun MutableList<LeagueOdd>.closePlayCate(closePlayCateEvent: ClosePlayCateEvent)
 /**
  * 判斷當前是否為多站點平台
  */
-fun isMultipleSitePlat(): Boolean =
-    LocalUtils.getString(R.string.app_name) == "ONbet" || LocalUtils.getString(R.string.app_name) == "BET88" || LocalUtils.getString(
-        R.string.app_name
-    ) == "OKbet9"
+fun isMultipleSitePlat(): Boolean {
+    val appName = MultiLanguagesApplication.stringOf(R.string.app_name)
+    return appName == "ONbet" || appName == "BET88" || appName == "OKbet9"
+}
 
 fun isForQA(): Boolean = BuildConfig.FLAVOR == "forqa"
 
 /**
  * 判斷當前是否為OKBET平台
  */
-fun isOKPlat(): Boolean = LocalUtils.getString(R.string.app_name).equals("OKBET", true)
+fun isOKPlat(): Boolean = MultiLanguagesApplication.stringOf(R.string.app_name).equals("OKBET", true)
 
 fun isUAT(): Boolean = BuildConfig.FLAVOR == "phuat"
 

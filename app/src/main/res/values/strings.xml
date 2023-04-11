@@ -440,7 +440,7 @@
     <string name="text_crypto_add_success">Crypto binding successfully</string>
     <string name="text_e_wallet_add_success">eWallet binding successfully</string>
     <string name="text_pay_maya_add_success">Paymaya binding successfully</string>
-    <string name="text_paymaya_add_success">Paymaya binding successfully</string>
+    <string name="text_paymaya_add_success">PayMaya binding success</string>
     <string name="text_bank_card_modify_success">Edit bank card successfully</string>
     <string name="text_crypto_modify_success">Edit virtual coin successfully</string>
     <string name="text_e_wallet_modify_success">Edit eWallet successfully</string>
@@ -1266,6 +1266,8 @@
     <string name="tail_number">Tail Number</string>
     <string name="J486">The withdraw amount is higher than the account balance.</string>
     <string name="J485">The format or value of Withdraw number is incorrect</string>
+    <string name="N171">Please enter a correct 11-digit mobile number</string>
+    <string name="N865">Amount exceeds the limit</string>
 
 
 
