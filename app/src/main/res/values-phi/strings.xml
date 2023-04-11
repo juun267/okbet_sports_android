@@ -1111,6 +1111,13 @@
     <string name="J804">Panalo at Parehong koponan upang makapuntos - Hindi</string>
     <string name="recharge_state_success">Tagumpay</string>
 
+
+    <string name="N846">Basic Information</string>
+    <string name="J055">Tunay na pangalan</string>
+    <string name="N847">The name must match the bank account</string>
+    <string name="J902">Birthday</string>
+    <string name="N848">Select a source of income</string>
+    <string name="N850">Please select an address</string>
     <string name="set_phone_no">Set Phone Number</string>
     <string name="set_email">Set Email</string>
     <string name="edit_phone_no">Baguhin Ang Phone Number</string>
@@ -1130,12 +1137,6 @@
     <string name="J486">Ang halaga ng pag-withdraw ay mas malaki kaysa sa balanse ng account</string>
     <string name="J485">Mali ang format o halaga ng withdrawal</string>
 
-    <string name="N846">Basic Information</string>
-    <string name="J055">Tunay na pangalan</string>
-    <string name="N847">The name must match the bank account</string>
-    <string name="J902">Birthday</string>
-    <string name="N848">Select a source of income</string>
-    <string name="N850">Please select an address</string>
     <string name="N171">Pakilagay ang tamang 11-digit na numero ng mobile phone</string>
     <string name="edit_paymaya">Baguhin ang PayMaya</string>
     <string name="add_paymaya">Idagdag ang PayMaya</string>
