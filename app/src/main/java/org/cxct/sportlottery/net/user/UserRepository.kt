@@ -5,6 +5,7 @@ import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.net.user.api.UserApiService
 import org.cxct.sportlottery.net.user.data.SendCodeRespnose
+import org.cxct.sportlottery.net.user.data.UserBasicInfoResponse
 
 object UserRepository {
 
@@ -44,4 +45,5 @@ object UserRepository {
         params.addProperty("verificationMethod", if (emailOrPhone.contains("@")) "EMAIL" else "PHONE")
         return userApi.verifyOrResetInfo(params)
     }
+
 }
