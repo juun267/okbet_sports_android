@@ -407,7 +407,7 @@
     <string name="hint_please_enter_withdraw_password">Withdrawal password</string>
     <string name="add_credit_card">Mag-add ng bank card</string>
     <string name="add_crypto_card">Mag-add ng virtual currency add.</string>
-    <string name="add_e_wallet">Mag-add ng eWallet bank</string>
+    <string name="add_e_wallet">Magdagdag ng eWallet</string>
     <string name="add_credit_or_virtual">Mag-add ng %1$s</string>
     <string name="create_bank">Bank of deposit</string>
     <string name="create_name">Pangalan ng cardholder</string>
@@ -1137,4 +1137,9 @@
     <string name="N848">Select a source of income</string>
     <string name="N850">Please select an address</string>
     <string name="N171">Pakilagay ang tamang 11-digit na numero ng mobile phone</string>
+    <string name="edit_paymaya">Baguhin ang PayMaya</string>
+    <string name="add_paymaya">Idagdag ang PayMaya</string>
+    <string name="please_setting_paymaya">Mangyaring i-set up muna ang iyong PayMaya</string>
+    <string name="N865">Ang halaga ay lumampas sa limitasyon</string>
+    <string name="text_paymaya_add_success">Matagumpay ang pag-bind ng PayMaya</string>
 </resources>
