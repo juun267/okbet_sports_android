@@ -120,33 +120,37 @@ class LoginViewModel(
 
             loginResult?.let { result ->
 
+                if (result.loginData?.deviceValidateStatus == 1)
+                    runWithCatch { userInfoRepository.getUserInfo() }
+                _loginResult.postValue(result)
+                AFInAppEventUtil.login(result.loginData?.uid.toString())
                 //用户完善信息开关
-                val infoSwitchResult=doNetwork(androidContext){ loginRepository.getUserInfoSwitch()}
-                //是否已完善信息
-                val userInfoCheck=doNetwork(androidContext){ loginRepository.getUserInfoCheck()}
+//                val infoSwitchResult=doNetwork(androidContext){ loginRepository.getUserInfoSwitch()}
+//                //是否已完善信息
+//                val userInfoCheck=doNetwork(androidContext){ loginRepository.getUserInfoCheck()}
 
-                if(infoSwitchResult!=null&&userInfoCheck!=null) {
-                    val isSwitch = infoSwitchResult.success
-                    val isFinished = userInfoCheck.success
-                    result.loginData?.let {
-                        //是否需要完善信息
-                        if(checkNeedCompleteInfo(isSwitch,isFinished)){
-                            //跳转到完善页面
-                            registerInfoEvent.post(result)
-                        }else{
-                            // TODO 20220108 更新UserInfo by Hewie
-                            //若已經驗證過則直接獲取最新的用戶資料, 未驗證需等待驗證後
-                            if (result.loginData?.deviceValidateStatus == 1)
-                                runWithCatch { userInfoRepository.getUserInfo() }
-                            _loginResult.postValue(result)
-                            AFInAppEventUtil.login(result.loginData?.uid.toString())
-                        }
-                    }
-                }else{
-//                    _loginResult.postValue(result)
-                    loginRepository.clear()
-                    hideLoading()
-                }
+//                if(infoSwitchResult!=null&&userInfoCheck!=null) {
+//                    val isSwitch = infoSwitchResult.success
+//                    val isFinished = userInfoCheck.success
+//                    result.loginData?.let {
+//                        //是否需要完善信息
+//                        if(checkNeedCompleteInfo(isSwitch,isFinished)){
+//                            //跳转到完善页面
+//                            registerInfoEvent.post(result)
+//                        }else{
+//                            // TODO 20220108 更新UserInfo by Hewie
+//                            //若已經驗證過則直接獲取最新的用戶資料, 未驗證需等待驗證後
+//                            if (result.loginData?.deviceValidateStatus == 1)
+//                                runWithCatch { userInfoRepository.getUserInfo() }
+//                            _loginResult.postValue(result)
+//                            AFInAppEventUtil.login(result.loginData?.uid.toString())
+//                        }
+//                    }
+//                }else{
+////                    _loginResult.postValue(result)
+//                    loginRepository.clear()
+//                    hideLoading()
+//                }
 
             }
         }
