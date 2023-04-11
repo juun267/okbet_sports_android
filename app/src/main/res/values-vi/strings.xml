@@ -1165,6 +1165,7 @@
     <string name="J485">Định dạng hoặc giá trị của số rút tiền không đúng</string>
     <string name="N171">Vui lòng nhập SĐT gồm 11 chữ số</string>
     <string name="N865">Số tiền vượt hạn mức</string>
+    <string name="text_paymaya_add_success">Liên kết PayMaya thành công</string>
 
     <string name="N846">Thông tin chính</string>
     <string name="J055">Họ tên thật</string>
