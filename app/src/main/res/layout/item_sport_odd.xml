@@ -507,7 +507,6 @@
                 android:id="@+id/ll_cs_text_layout"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:background="@color/color_FFFFFF"
                 android:orientation="horizontal"
                 android:visibility="gone"
                 tools:visibility="visible">
