@@ -5,6 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.SingleEvent
+import org.cxct.sportlottery.common.extentions.callApi
+import org.cxct.sportlottery.net.user.UserRepository
+import org.cxct.sportlottery.net.user.data.UserBasicInfoResponse
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bettingStation.AreaAll
 import org.cxct.sportlottery.network.index.config.SalarySource
@@ -57,6 +60,9 @@ class RegisterInfoViewModel(
     //提交监听
     val commitEvent = SingleEvent<Boolean>()
 
+    //用户基础信息
+    val userBasicInfoEvent = SingleEvent<UserBasicInfoResponse.UserBasicData>()
+
 
     /**
      * 获取省市数据
@@ -89,6 +95,47 @@ class RegisterInfoViewModel(
     }
 
 
+    /**
+     * 获取用户基本信息
+     */
+    fun getUserBasicInfo(){
+        launch {
+            val result=doNetwork(androidContext){ OneBoSportApi.indexService.getUserBasicInfo()}
+            result?.let { data->
+
+                data.t.birthday?.let {
+                    birthdayTimeInput=it
+                }
+                data.t.city?.let {
+                    cityInput=it
+                }
+                data.t.fullName?.let {
+                    realNameInput=it
+                }
+
+                data.t.province?.let {
+                    provinceInput=it
+                }
+
+                data.t.salarySource?.let {
+                    sourceInput=it
+                }
+                userBasicInfoEvent.post(data.t)
+            }
+        }
+    }
+
+
+    fun getSalaryNameById():String{
+        salaryList.value?.let {
+            it.forEach {salary->
+                if(sourceInput==salary.id){
+                    return salary.name
+                }
+            }
+        }
+        return ""
+    }
     /**
      * 未完善退出，注销登录信息
      */

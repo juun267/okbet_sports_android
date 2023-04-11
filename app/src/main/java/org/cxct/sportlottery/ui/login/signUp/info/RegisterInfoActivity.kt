@@ -48,6 +48,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
     }
 
 
+    @SuppressLint("SetTextI18n")
     private fun initData() {
         loading()
         viewModel.loginResult = intent.getSerializableExtra("data") as LoginResult?
@@ -66,6 +67,19 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
         //薪资来源
         viewModel.salaryList.observe(this) {
             salaryPicker?.setPicker(viewModel.salaryStringList)
+
+            //获取用户基础信息
+            viewModel.getUserBasicInfo()
+        }
+
+        //基本信息
+        viewModel.userBasicInfoEvent.observe(this){
+            if(viewModel.provinceInput.isNotEmpty()){
+                binding.etAddress.setText("${viewModel.provinceInput} ${viewModel.cityInput}")
+            }
+            binding.etRealName.setText(viewModel.realNameInput)
+            binding.etBirthday.setText(viewModel.birthdayTimeInput)
+            binding.etSource.setText(viewModel.getSalaryNameById())
         }
 
         //提交表单
@@ -94,6 +108,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
         binding.tvBirthday.setOnClickListener {
             hideSoftKeyboard(this)
             dateTimePicker?.show()
+
         }
 
         //选择地址点击
