@@ -1112,12 +1112,12 @@
     <string name="recharge_state_success">Tagumpay</string>
 
 
-    <string name="N846">Basic Information</string>
+    <string name="N846">Pangunahing impormasyon</string>
     <string name="J055">Tunay na pangalan</string>
-    <string name="N847">The name must match the bank account</string>
+    <string name="N847">Dapat tumugma ang pangalan sa bank account</string>
     <string name="J902">Birthday</string>
-    <string name="N848">Select a source of income</string>
-    <string name="N850">Please select an address</string>
+    <string name="N848">Pumili ng pagkakakitaan</string>
+    <string name="N850">Pakipili ang address</string>
     <string name="set_phone_no">Set Phone Number</string>
     <string name="set_email">Set Email</string>
     <string name="edit_phone_no">Baguhin Ang Phone Number</string>
