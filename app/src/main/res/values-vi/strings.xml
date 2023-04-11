@@ -992,7 +992,7 @@
     <string name="km">Km</string>
     <string name="league_filter">Lọc trận đấu</string>
     <string name="outlet">Trạm cược</string>
-    <string name="my_bank_card">" Của tôi %1$s</string>
+    <string name="my_bank_card">" Của tôi %1$s%2$s</string>
     <string name="local_time">Giờ địa phương:</string>
     <string name="half_first_short">Hiệp 1</string>
     <string name="half_second_short">Hiệp 2</string>

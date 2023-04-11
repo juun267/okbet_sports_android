@@ -1007,7 +1007,7 @@
     <string name="remove_account_warning">您确定要注销当前账号吗？</string>
     <string name="km">千米</string>
     <string name="outlet">投注站</string>
-    <string name="my_bank_card">我的%1$s</string>
+    <string name="my_bank_card">我的%1$s%2$s</string>
     <string name="local_time">当地时间:</string>
     <string name="half_first_short">上</string>
     <string name="half_second_short">下</string>

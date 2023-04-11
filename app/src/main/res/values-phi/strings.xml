@@ -966,7 +966,7 @@
     <string name="remove_account_warning">Sigurado ka bang nais mong kanselahin ang kasalukuyang account？</string>
     <string name="km">Km</string>
     <string name="outlet">Pagtaya</string>
-    <string name="my_bank_card">Aking %1$s</string>
+    <string name="my_bank_card">Aking %1$s%2$s</string>
     <string name="local_time">Lokal na Oras:</string>
     <string name="half_first_short">1st half</string>
     <string name="half_second_short">Ikalawang kalahati</string>

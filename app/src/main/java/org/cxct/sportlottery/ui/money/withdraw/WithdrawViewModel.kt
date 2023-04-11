@@ -210,6 +210,7 @@ class WithdrawViewModel(
         get() = _numberOfBankCard
     private var _numberOfBankCard = MutableLiveData<String>()
 
+
     /**
      * @param isBalanceMax: 是否為當前餘額作為提款上限, true: 提示字為超過餘額相關, false: 提示字為金額設定相關
      */
@@ -344,7 +345,6 @@ class WithdrawViewModel(
 
     private fun transferTypeMoneyCardList() {
         val cardList = mutableListOf<BankCardList>()
-        LogUtil.toJson(myWithdrawCardList)
         myWithdrawCardList?.forEach { bankCard ->
             if (dealType.type == bankCard.uwType
                 //paymaya是包含在ewallet里面的，所以需要多下面的判断

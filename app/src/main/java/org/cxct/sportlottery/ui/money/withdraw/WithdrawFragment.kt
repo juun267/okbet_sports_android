@@ -359,8 +359,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 return@Observer
             val cardList = it.cardList
             if (cardList.isEmpty()) {
-                LogUtil.toJson(it)
-
                 jumpToMoneyCardSetting(true, it.transferType)
                 return@Observer
             }
