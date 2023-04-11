@@ -74,7 +74,9 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
 
         //基本信息
         viewModel.userBasicInfoEvent.observe(this){
-            binding.etAddress.setText("${viewModel.provinceInput} ${viewModel.cityInput}")
+            if(viewModel.provinceInput.isNotEmpty()){
+                binding.etAddress.setText("${viewModel.provinceInput} ${viewModel.cityInput}")
+            }
             binding.etRealName.setText(viewModel.realNameInput)
             binding.etBirthday.setText(viewModel.birthdayTimeInput)
             binding.etSource.setText(viewModel.getSalaryNameById())
