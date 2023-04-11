@@ -130,7 +130,7 @@ class LoginViewModel(
                     val isFinished = userInfoCheck.success
                     result.loginData?.let {
                         //是否需要完善信息
-                        if(!checkNeedCompleteInfo(isSwitch,isFinished)){
+                        if(checkNeedCompleteInfo(isSwitch,isFinished)){
                             //跳转到完善页面
                             registerInfoEvent.post(result)
                         }else{
@@ -172,7 +172,7 @@ class LoginViewModel(
 
                     result.loginData?.let {loginData->
                         //是否需要完善信息
-                        if(!checkNeedCompleteInfo(isSwitch,isFinished)){
+                        if(checkNeedCompleteInfo(isSwitch,isFinished)){
                             //跳转到完善页面
                             registerInfoEvent.post(result)
                         }else{
@@ -215,7 +215,7 @@ class LoginViewModel(
 
                     result.loginData?.let { loginData ->
                         //是否需要完善信息开关
-                        if(!checkNeedCompleteInfo(isSwitch,isFinished)){
+                        if(checkNeedCompleteInfo(isSwitch,isFinished)){
                             //跳转到完善页面
                             registerInfoEvent.post(loginResult)
                         }else{
@@ -475,8 +475,6 @@ class LoginViewModel(
      * 是否需要完善基础信息
      */
     private fun checkNeedCompleteInfo(isComplete:Boolean,isFinished:Boolean):Boolean{
-
-        //开关=true  并且未完善信息
-        return isComplete&&isFinished
+        return isComplete && !isFinished
     }
 }
