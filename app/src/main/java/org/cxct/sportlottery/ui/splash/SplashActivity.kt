@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import com.gyf.immersionbar.ImmersionBar
-import com.tencent.mmkv.MMKV
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
@@ -22,6 +21,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LogUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -149,8 +149,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                 it.imageType == 9
                         && it.lang == LanguageManager.getSelectLanguage(this).key
                         && !it.imageName1.isNullOrEmpty()
-                        && it.startType == (if (MMKV.defaultMMKV()
-                        .getBoolean("isFirstOpen", true)
+                        && it.startType == (if (KvUtils.decodeBooleanTure("isFirstOpen", true)
                 ) 0 else 1)
             }
                 ?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
@@ -162,7 +161,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                 LaunchActivity.start(this, it, imageUrls = ArrayList(imageUrls))
                 finish()
             } else {
-                MMKV.defaultMMKV().putBoolean("isFirstOpen", false)
+                KvUtils.put("isFirstOpen", false)
                 goHomePage()
             }
         }
