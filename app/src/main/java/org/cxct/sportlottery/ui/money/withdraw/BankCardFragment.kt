@@ -587,7 +587,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                         TransferType.BANK -> getString(R.string.text_bank_card_add_success)
                         TransferType.CRYPTO -> getString(R.string.text_crypto_add_success)
                         TransferType.E_WALLET -> getString(R.string.text_e_wallet_add_success)
-                        TransferType.PAYMAYA -> getString(R.string.text_pay_maya_add_success)
+                        TransferType.PAYMAYA -> getString(R.string.text_paymaya_add_success)
                         TransferType.STATION -> getString(R.string.text_e_wallet_add_success)
                     }
                     showPromptDialog(getString(R.string.prompt), promptMessage) {

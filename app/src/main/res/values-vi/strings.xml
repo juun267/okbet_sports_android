@@ -433,7 +433,6 @@
     <string name="text_crypto_delete_success">Đã xóa tiền ảo thành công</string>
     <string name="text_bank_card_add_success">Mặc định thẻ ngân hàng thành công</string>
     <string name="text_e_wallet_add_success">Mặc định eWallet thành công</string>
-    <string name="text_pay_maya_add_success">Mặc định Paymaya thành công</string>
     <string name="text_crypto_add_success">Mặc định tiền ảo thành công</string>
     <string name="text_bank_card_modify_success">Chỉnh sửa thẻ ngân hàng thành công</string>
     <string name="text_crypto_modify_success">Chỉnh sửa tiền ảo thành công</string>
