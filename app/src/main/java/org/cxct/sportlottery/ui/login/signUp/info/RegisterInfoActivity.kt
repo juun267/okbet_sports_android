@@ -208,7 +208,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
                 }
 
             }
-            .setTitleText(resources.getString(R.string.select_area))
+            .setTitleText(resources.getString(R.string.N848))
             .setSubmitText(getString(R.string.btn_sure))
             .build()
     }

@@ -100,7 +100,7 @@ class RegisterInfoViewModel(
      */
     fun getUserBasicInfo(){
         launch {
-            val result=doNetwork(androidContext){ OneBoSportApi.indexService.getUserBasicInfo()}
+            val result=doNetwork(androidContext,false){ OneBoSportApi.indexService.getUserBasicInfo()}
             result?.let { data->
 
                 data.t.birthday?.let {
