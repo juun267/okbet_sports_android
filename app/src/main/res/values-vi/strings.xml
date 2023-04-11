@@ -404,7 +404,7 @@
     <string name="hint_please_enter_withdraw_password">Mật khẩu rút tiền</string>
     <string name="add_credit_card">Thêm mới thẻ ngân hàng</string>
     <string name="add_crypto_card">Thêm mới tiền ảo</string>
-    <string name="add_e_wallet">Thêm mới eWallet</string>
+    <string name="add_e_wallet">Thêm eWallet</string>
     <string name="add_credit_or_virtual">Thêm %1$s</string>
 
     <string name="create_bank">Tài khoản ngân hàng</string>
@@ -1142,6 +1142,12 @@
     <string name="N643">Mời vào app Glife nạp tiền</string>
     <string name="N644">Mời vào app Glife rút tiền</string>
 
+    <string name="N846">Thông tin chính</string>
+    <string name="J055">Họ tên thật</string>
+    <string name="N847">Họ tên khớp với tài khoản ngân hàng</string>
+    <string name="J902">Ngày sinh nhật</string>
+    <string name="N848">Chọn nguồn tiền</string>
+    <string name="N850">Chọn địa chỉ</string>
 
     <string name="bet_details_title" >Chi tiết tổ hợp xâu</string>
 
@@ -1165,11 +1171,6 @@
     <string name="J485">Định dạng hoặc giá trị của số rút tiền không đúng</string>
     <string name="N171">Vui lòng nhập SĐT gồm 11 chữ số</string>
     <string name="N865">Số tiền vượt hạn mức</string>
+    <string name="text_paymaya_add_success">Liên kết PayMaya thành công</string>
 
-    <string name="N846">Thông tin chính</string>
-    <string name="J055">Họ tên thật</string>
-    <string name="N847">Họ tên khớp với tài khoản ngân hàng</string>
-    <string name="J902">Ngày sinh nhật</string>
-    <string name="N848">Chọn nguồn tiền</string>
-    <string name="N850">Chọn địa chỉ</string>
 </resources>
