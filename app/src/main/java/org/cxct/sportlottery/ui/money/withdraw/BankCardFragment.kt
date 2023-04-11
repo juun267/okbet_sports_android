@@ -333,7 +333,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private fun setupTabLayout(transferTypeAddSwitch: TransferTypeAddSwitch?) {
 
         transferTypeAddSwitch?.apply {
-            LogUtil.toJson(this)
             tab_layout.getTabAt(0)?.view?.visibility = if (bankTransfer) View.VISIBLE else View.GONE
             tab_layout.getTabAt(1)?.view?.visibility =
                 if (cryptoTransfer) View.VISIBLE else View.GONE
@@ -468,6 +467,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         when (type) {
             TransferType.BANK -> {
                 block_bank_card_input.visibility = View.VISIBLE
+                item_bank_selector.visibility = View.VISIBLE
                 block_crypto_input.visibility = View.GONE
 
                 //region 顯示Bank欄位
@@ -484,6 +484,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             }
             TransferType.E_WALLET -> {
                 block_bank_card_input.visibility = View.VISIBLE
+                item_bank_selector.visibility = View.VISIBLE
                 block_crypto_input.visibility = View.GONE
 
                 //region 隱藏Bank欄位
@@ -496,8 +497,8 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             }
             TransferType.PAYMAYA -> {
                 block_bank_card_input.visibility = View.VISIBLE
-                block_crypto_input.visibility = View.GONE
                 item_bank_selector.visibility = View.GONE
+                block_crypto_input.visibility = View.GONE
                 //region 隱藏Bank欄位
                 et_bank_card_number.visibility = View.GONE
                 et_network_point.visibility = View.GONE
