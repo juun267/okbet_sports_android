@@ -48,28 +48,28 @@ open class LotteryActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     @SuppressLint("WebViewApiAvailability")
     fun setupWebView(webView: WebView) {
-        if (BuildConfig.DEBUG) WebView.setWebContentsDebuggingEnabled(true)
-
-        webView.setWebViewCommonBackgroundColor()
-
-        val settings: WebSettings = webView.settings
-        settings.javaScriptEnabled = true
-        settings.blockNetworkImage = false
-        settings.domStorageEnabled = true //对H5支持
-        settings.useWideViewPort = true //将图片调整到适合webview的大小
-        settings.loadWithOverviewMode = true // 缩放至屏幕的大小
-        settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
-        settings.javaScriptCanOpenWindowsAutomatically = true
-        settings.defaultTextEncodingName = "utf-8"
-        settings.cacheMode = WebSettings.LOAD_NO_CACHE
-        settings.databaseEnabled = true
-//        settings.setAppCacheEnabled(false)
-
-        settings.setSupportMultipleWindows(true) //20191120 記錄問題： target=_black 允許跳轉新窗口處理
-        settings.allowFileAccess = true
-        settings.allowContentAccess = true
-        settings.allowFileAccessFromFileURLs = true
-        settings.allowUniversalAccessFromFileURLs = true
+//        if (BuildConfig.DEBUG) WebView.setWebContentsDebuggingEnabled(true)
+//
+//        webView.setWebViewCommonBackgroundColor()
+//
+//        val settings: WebSettings = webView.settings
+//        settings.javaScriptEnabled = true
+//        settings.blockNetworkImage = false
+//        settings.domStorageEnabled = true //对H5支持
+//        settings.useWideViewPort = true //将图片调整到适合webview的大小
+//        settings.loadWithOverviewMode = true // 缩放至屏幕的大小
+//        settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+//        settings.javaScriptCanOpenWindowsAutomatically = true
+//        settings.defaultTextEncodingName = "utf-8"
+//        settings.cacheMode = WebSettings.LOAD_NO_CACHE
+//        settings.databaseEnabled = true
+////        settings.setAppCacheEnabled(false)
+//
+//        settings.setSupportMultipleWindows(true) //20191120 記錄問題： target=_black 允許跳轉新窗口處理
+//        settings.allowFileAccess = true
+//        settings.allowContentAccess = true
+//        settings.allowFileAccessFromFileURLs = true
+//        settings.allowUniversalAccessFromFileURLs = true
         webView.webChromeClient = object : WebChromeClient() {
             override fun onCreateWindow(
                 view: WebView, isDialog: Boolean, isUserGesture: Boolean, resultMsg: Message,
