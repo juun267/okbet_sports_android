@@ -436,6 +436,7 @@ object Constants {
     const val USER_BASIC_INFO_CHECK = "/api/front/user/checkUserBasicInfo" //是否已完善信息
     const val USER_SALARY_SOURCE_LIST = "/api/front/user/querySalarySource" //收入来源列表
     const val USER_BASIC_INFO_UPDATE = "/api/front/user/improveBasicInformation" //提交用户基础信息
+    const val USER_GET_BASIC_INFO = "/api/front/user/queryUserBasicInfo" //获取用户基本信息
 
 
     //upload image

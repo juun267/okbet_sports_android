@@ -8,8 +8,8 @@ import org.cxct.sportlottery.network.common.BaseResult
 data class UserSwitchResult(
     @Json(name = "code")
     override val code: Int,
-    @Json(name = "msg")
-    override val msg: String,
+//    @Json(name = "msg")
+    override val msg: String="",
     @Json(name = "success")
     override val success: Boolean,
     @Json(name = "t")

@@ -133,7 +133,7 @@ abstract class BatchParlayViewHolder(
             }
 
             onFocusChangeListener = null
-
+            refreshSingleWinAmount(data)
             checkBetLimitParlay(data)
             et_bet_parlay.apply {
                 val tw: TextWatcher?
