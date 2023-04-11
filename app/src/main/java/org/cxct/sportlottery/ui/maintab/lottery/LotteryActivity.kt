@@ -40,9 +40,9 @@ open class LotteryActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
         setContentView(R.layout.activity_web)
         custom_tool_bar.visibility = View.GONE
-        web_view.addJavascriptInterface(LotteryJsInterface(this), LotteryJsInterface.name)
-        setupWebView(web_view)
-        loadUrl(web_view)
+        okWebView.addJavascriptInterface(LotteryJsInterface(this), LotteryJsInterface.name)
+        setupWebView(okWebView)
+        loadUrl(okWebView)
     }
 
 
@@ -179,8 +179,8 @@ open class LotteryActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     override fun onBackPressed() {
-        if (web_view.canGoBack()) {
-            web_view.goBack()
+        if (okWebView.canGoBack()) {
+            okWebView.goBack()
         } else {
             super.onBackPressed()
         }
