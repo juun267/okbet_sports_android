@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.network.index
 
+import org.cxct.sportlottery.net.user.data.UserBasicInfoResponse
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.BIND_FACEBOOK
 import org.cxct.sportlottery.network.Constants.BIND_GOOGLE
@@ -88,6 +89,9 @@ interface IndexService {
 
     @GET(Constants.USER_SALARY_SOURCE_LIST)
     suspend fun getUserSalaryList(): Response<UserSalaryListResult>
+
+    @GET(Constants.USER_GET_BASIC_INFO)
+    suspend fun getUserBasicInfo(): Response<UserBasicInfoResponse>
 
     @GET(Constants.USER_BASIC_INFO_CHECK)
     suspend fun getUserInfoCheck(): Response<UserSwitchResult>
