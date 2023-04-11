@@ -435,6 +435,7 @@
     <string name="text_crypto_add_success">虚拟币绑定成功</string>
     <string name="text_bank_card_modify_success">编辑银行卡成功</string>
     <string name="text_e_wallet_modify_success">编辑eWallet成功</string>
+    <string name="text_pay_maya_modify_success">编辑PayMaya成功</string>
     <string name="text_crypto_modify_success">编辑虚拟币成功</string>
     <string name="bet_receipt_bet_quota">投注金额:</string>
     <string name="bet_info_list_win_quota">可赢金额:</string>

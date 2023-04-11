@@ -437,6 +437,7 @@
     <string name="text_crypto_add_success">Matagumpay ang virtual currency binding</string>
     <string name="text_bank_card_modify_success">Matagumpay na na-edit ang bank card</string>
     <string name="text_e_wallet_modify_success">Matagumpay na na-edit ang eWallet</string>
+    <string name="text_pay_maya_modify_success">Matagumpay na na-edit ang PayMaya</string>
     <string name="text_crypto_modify_success">Matagumpay na na-edit ang virtual currency</string>
     <string name="bet_receipt_bet_quota">Taya:</string>
     <string name="bet_info_list_win_quota">Mapapanalunan:</string>
