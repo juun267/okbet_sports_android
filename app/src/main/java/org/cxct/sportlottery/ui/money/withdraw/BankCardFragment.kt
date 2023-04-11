@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.fragment_bank_card.*
 import kotlinx.android.synthetic.main.fragment_bank_card.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemListviewBankCardBinding
+import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.money.config.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
@@ -300,11 +301,12 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                             cardNo = eet_phone_number.getText().toString(),
                             fundPwd = eet_withdrawal_password.getText().toString(),
                             id = args.editBankCard?.id?.toString(),
-                            uwType = transferType.type,
+                            uwType = if (bankCode == "PayMaya") TransferType.PAYMAYA.type else transferType.type,
                             bankCode = bankCode
                         )
                     }
                     TransferType.PAYMAYA -> { //eWallet暫時寫死 與綁定銀行卡相同
+                        MoneyType.PAYMAYA_TYPE
                         addBankCard(
                             bankName = "PayMaya",
                             cardNo = eet_phone_number.getText().toString(),
