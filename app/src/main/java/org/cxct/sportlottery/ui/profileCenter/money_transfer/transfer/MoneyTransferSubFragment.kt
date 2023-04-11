@@ -22,8 +22,11 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.refreshMoneyLoading
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 import timber.log.Timber
 import java.math.BigDecimal
 
@@ -194,7 +197,6 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
 
         viewModel.transferResult.observe(viewLifecycleOwner) { result ->
             result?.getContentIfNotHandled()?.let { it ->
-                LogUtil.toJson(it)
                 context?.let { context ->
                     val dialog = CustomAlertDialog(context).apply {
                         setTitle(context.getString(R.string.prompt))
