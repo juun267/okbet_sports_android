@@ -900,7 +900,7 @@
     <string name="select_city">Chọn thành phố</string>
     <string name="outlets_address">Địa chỉ</string>
     <string name="appointment_time">Hẹn thời gian</string>
-    <string name="select_date">ngày tháng</string>
+    <string name="select_date">Ngày tháng</string>
     <string name="select_time">Thời gian</string>
 
     <!--region 20220714 新版投注單-->
