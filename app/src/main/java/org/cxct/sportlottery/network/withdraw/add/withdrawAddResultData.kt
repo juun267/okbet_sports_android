@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.network.bank.add
+package org.cxct.sportlottery.network.withdraw.add
 
 
 import com.squareup.moshi.Json
@@ -8,7 +8,7 @@ import org.cxct.sportlottery.network.common.BaseResult
 
 @JsonClass(generateAdapter = true)
 @KeepMembers
-data class BankAddResult(
+data class withdrawAddResultData(
     @Json(name = "code")
     override val code: Int,
     @Json(name = "msg")
@@ -16,5 +16,5 @@ data class BankAddResult(
     @Json(name = "success")
     override val success: Boolean,
     @Json(name = "t")
-    val content: BankAddContent?,
+    val content: WithdrawAuthorizeResult?,
 ) : BaseResult()
