@@ -16,6 +16,7 @@ import org.cxct.sportlottery.databinding.ActivityRegisterInfoBinding
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.util.EventBusUtil
+import org.cxct.sportlottery.util.SPUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
 import java.util.*
@@ -67,7 +68,6 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
         //薪资来源
         viewModel.salaryList.observe(this) {
             salaryPicker?.setPicker(viewModel.salaryStringList)
-
             //获取用户基础信息
             viewModel.getUserBasicInfo()
         }
@@ -87,13 +87,26 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
             hideLoading()
             if(it){
                 viewModel.loginResult?.let { result ->
-                    //返回继续完成登录
-                    EventBusUtil.post(RegisterInfoEvent(result))
-                    finish()
+                    finishPage()
                 }
             }else{
                 ToastUtil.showToast(this,viewModel.commitMsg)
             }
+        }
+    }
+
+
+    override fun onBackPressed() {
+        finishPage()
+    }
+
+    private fun finishPage(){
+        SPUtil.getInstance(this).saveLoginInfoSwitch()
+        //返回继续完成登录
+        viewModel.loginResult?.let { result ->
+            //返回继续完成登录
+            EventBusUtil.post(RegisterInfoEvent(result))
+            finish()
         }
     }
 
@@ -134,6 +147,10 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
             loading()
             viewModel.commitUserBasicInfo()
         }
+
+        binding.btnBack.setOnClickListener {
+            finishPage()
+        }
     }
 
     private fun initToolsBar() {
@@ -145,21 +162,6 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
             .init()
     }
 
-
-    override fun onStart() {
-        super.onStart()
-        //回到页面，恢复登录信息
-        viewModel.restored()
-    }
-    override fun onStop() {
-        super.onStop()
-        //未完善退出  注销登录信息
-        viewModel.logout()
-    }
-
-    override fun onBackPressed() {
-        //需求不让回退
-    }
 
 
     /**
@@ -220,6 +222,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
         val yesterday = Calendar.getInstance()
         yesterday.add(Calendar.YEAR, -100)
         val tomorrow = Calendar.getInstance()
+        tomorrow.add(Calendar.YEAR, -21)
         tomorrow.add(Calendar.DAY_OF_MONTH, -1)
         dateTimePicker = DateTimePickerOptions(this).getBuilder { date, _ ->
             TimeUtil.dateToStringFormatYMD(date)?.let {
