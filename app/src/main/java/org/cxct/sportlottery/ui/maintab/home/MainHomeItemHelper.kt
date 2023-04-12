@@ -22,6 +22,11 @@ object MainHomeItemHelper {
     )
 
     private val items = arrayOf(
+        HomeItem(R.string.home_recommend,
+            R.drawable.icon_recommend,
+            R.drawable.bg_tab_open_selector,
+            R.color.color_E9F4FA,
+            11), // 推荐
         HomeItem(R.string.home_sports, R.drawable.sport0), //体育
         HomeItem(R.string.home_in_play, R.drawable.icon_in_play0), //滚球
         HomeItem(R.string.home_on_game, R.drawable.icon_on_game0), //棋牌
@@ -30,12 +35,12 @@ object MainHomeItemHelper {
     )
 
 
-
     fun fillingItems(parent: LinearLayout, itemClick: (Int) -> Unit) {
 
-        val itemParams = LinearLayout.LayoutParams(60.dp, 60.dp)
+        val itemParams = LinearLayout.LayoutParams(0, 60.dp, 1F)
         val iconParams = LinearLayout.LayoutParams(30.dp, 30.dp).apply { gravity = Gravity.CENTER_HORIZONTAL }
         val nameParams = LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = 6.dp }
+
 
         items.forEach { addItem(parent, it, itemParams, iconParams, nameParams, itemClick) }
     }
