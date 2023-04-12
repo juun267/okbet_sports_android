@@ -524,8 +524,11 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                         getString(R.string.text_money_get_success)
                     ) { viewModel.getMoneyAndTransferOut() }
                 } else {
-                   showErrorPromptDialog(getString(R.string.prompt), it.msg) {}
+                    showErrorPromptDialog(getString(R.string.prompt), it.msg) {}
                 }
+            if (it.content?.authorizeUrl?.isNotEmpty() == true) {
+                JumpUtil.toExternalWeb(requireContext(), it.content?.authorizeUrl)
+            }
         }
     }
 
