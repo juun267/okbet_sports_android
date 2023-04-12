@@ -191,7 +191,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
         initPlayView()
 
         iv_customer_service.setServiceClick(childFragmentManager)
-        MainHomeItemHelper.fillingItems(tabLinearLayout, ::onTabClick)
+        MainHomeItemHelper.fillingItems(tabLinearLayout, ::changeFragment)
 
         initHotHandicap()
         initListView()
@@ -207,18 +207,18 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
                 true)
         }
 
-        ll_hot_live_more.setOnClickListener { getHomeFragment().onTabClickByPosition(1)}
+        ll_hot_live_more.setOnClickListener { getHomeFragment().jumpToLive()}
 
         ll_hot_handicap_more.setOnClickListener {
             getMainTabActivity().jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)
         }
-        ll_hot_elect.setOnClickListener { getHomeFragment().onTabClickByPosition(4) }
-        ll_poker_more.setOnClickListener { getHomeFragment().onTabClickByPosition(5)}
+        ll_hot_elect.setOnClickListener { getHomeFragment().jumpToOKGames() }
+        ll_poker_more.setOnClickListener { getHomeFragment().jumpToOKGames()}
     }
 
     fun initToolBar() {
-        view?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
         homeToolbar.attach(this, getMainTabActivity(), viewModel)
+        homeToolbar.fitsSystemStatus()
         homeToolbar.ivMenuLeft.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
             getMainTabActivity().showLeftFrament(0, 0)
@@ -260,11 +260,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
             requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
                 putInt(PopImageDialog.DrawableResID, R.drawable.img_thirdgame)
             }).apply {
-                onClick = {
-                    getHomeFragment().onTabClickByPosition(
-                        HomeTabAdapter.getItems().indexOfFirst { it.name == R.string.home_on_game }
-                    )
-                }
+                onClick = { getHomeFragment().jumpToOKGames() }
                 onDismiss = {
                     MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
                 }
@@ -824,21 +820,13 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
     private inline fun getMainTabActivity() = activity as MainTabActivity
     private inline fun getHomeFragment() = parentFragment as HomeFragment
 
-    private fun onTabClick(tabName: Int) {
-        if (isCreditSystem()) {
-            loginedRun(requireContext()) { changeFragment(tabName) }
-        } else {
-            changeFragment(tabName)
-        }
-    }
-
     private fun changeFragment(tabName: Int) = when (tabName) {
         //点击直播跳转
-        R.string.home_live -> getHomeFragment().onTabClickByPosition(1)
+        R.string.home_live -> getHomeFragment().jumpToLive()
         //点击滚球跳转
-        R.string.home_in_play -> getHomeFragment().onTabClickByPosition(2)
+        R.string.home_in_play -> getHomeFragment().jumpToInplaySport()
         //点击体育跳转
-        R.string.home_sports -> getHomeFragment().onTabClickByPosition(3)
+        R.string.home_sports -> getHomeFragment().jumpToEarlySport()
         //跳转优惠
         R.string.promo -> JumpUtil.toInternalWeb(
             requireContext(),
@@ -848,14 +836,9 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
             ),
             getString(R.string.promotion)
         )
-        // 点击真人跳转
-        R.string.live -> getHomeFragment().onTabClickByPosition(4)
-        // 点击老虎机跳转
-        R.string.tiger_machine -> getHomeFragment().onTabClickByPosition(4)
+
         //点击棋牌跳转
-        R.string.home_on_game -> getHomeFragment().onTabClickByPosition(5)
-        //点击彩票跳转
-//        R.string.lottery -> getHomeFragment().onTabClickByPosition(5)
+        R.string.home_on_game -> getHomeFragment().jumpToOKGames()
 
         else -> {}
     }

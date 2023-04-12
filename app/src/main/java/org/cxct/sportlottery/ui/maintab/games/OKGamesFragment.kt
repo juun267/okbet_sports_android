@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.gyf.immersionbar.ImmersionBar
-import kotlinx.android.synthetic.main.fragment_main_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
+import org.cxct.sportlottery.common.extentions.fitsSystemStatus
 import org.cxct.sportlottery.databinding.FragmentOkgamesBinding
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -18,6 +18,7 @@ import org.cxct.sportlottery.util.FragmentHelper
 class OKGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesViewModel::class) {
 
     private lateinit var binding: FragmentOkgamesBinding
+
     private val fragmentHelper by lazy {
         FragmentHelper(childFragmentManager, R.id.fragmentContainer, arrayOf(
             Pair(AllGamesFragment::class.java, null),
@@ -31,16 +32,16 @@ class OKGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVie
     }
 
     override fun onBindView(view: View) {
-        initToolBar(view)
+        initToolBar()
         fragmentHelper.showFragment(0)
     }
 
-    private fun initToolBar(view: View) {
-        view.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
-        homeToolbar.attach(this, mainTabActivity(), viewModel)
-        homeToolbar.ivMenuLeft.setOnClickListener {
+    private fun initToolBar() = binding.homeToolbar.run {
+        attach(this@OKGamesFragment, mainTabActivity(), viewModel)
+        fitsSystemStatus()
+        ivMenuLeft.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
-            mainTabActivity().showLeftFrament(0, 0)
+            mainTabActivity().showLeftFrament(0, 5)
         }
     }
 }

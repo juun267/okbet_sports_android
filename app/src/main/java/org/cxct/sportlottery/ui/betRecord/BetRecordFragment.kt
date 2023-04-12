@@ -127,7 +127,7 @@ class BetRecordFragment: BaseFragment<AccountHistoryViewModel>(AccountHistoryVie
             .init()
 
         iv_menu_left.setOnClickListener { EventBusUtil.post(MenuEvent(true)) }
-        iv_logo.setOnClickListener { (activity as MainTabActivity).jumpToHome(0) }
+        iv_logo.setOnClickListener { (activity as MainTabActivity).backMainHome() }
         cl_bet_all_sports.setOnClickListener {
             if (mListPop.isShowing) {
                 cl_bet_all_sports.isSelected = false

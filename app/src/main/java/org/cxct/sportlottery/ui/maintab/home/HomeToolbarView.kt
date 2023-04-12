@@ -217,7 +217,7 @@ class HomeToolbarView : LinearLayout {
         tvLogin.setOnClickListener { activity.startLogin() }
         ivRefreshMoney.setOnClickListener { onRefreshMoney() }
         if (fragment !is MainHomeFragment) {
-            ivLogo.setOnClickListener { activity.jumpToHome(0) }
+            ivLogo.setOnClickListener { activity.backMainHome() }
         }
     }
 
