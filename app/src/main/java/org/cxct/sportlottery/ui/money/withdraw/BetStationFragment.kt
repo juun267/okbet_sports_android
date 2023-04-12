@@ -270,6 +270,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
             modifyFinish()
             viewModel.addWithdraw(
                 null,
+                viewModel.getChannelMode(),
                 et_amount.getText(),
                 et_password.getText(),
                 if (selectBettingStation == null) null else selectBettingStation!!.id,

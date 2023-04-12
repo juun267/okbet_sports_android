@@ -432,6 +432,11 @@ object Constants {
     const val LOCK_MONEY = "/api/front/user/lockMoney"
     const val PASSWORD_VERIFY = "/api/front/user/passwordVerify"
     const val ODDS_CHANGE_OPTION = "/api/front/user/oddsChangeOption" //设置用户赔率变化
+    const val USER_BASIC_INFO_SWITCH = "/api/front/index/getUserBasicInfoSwitch" //是否完善用户信息开关
+    const val USER_BASIC_INFO_CHECK = "/api/front/user/checkUserBasicInfo" //是否已完善信息
+    const val USER_SALARY_SOURCE_LIST = "/api/front/user/querySalarySource" //收入来源列表
+    const val USER_BASIC_INFO_UPDATE = "/api/front/user/improveBasicInformation" //提交用户基础信息
+
 
     //upload image
     const val UPLOAD_IMG = "/api/upload/image" //上传图片

@@ -400,7 +400,7 @@
     <string name="withdraw_password">Withdrawal password</string>
     <string name="total_withdrawal">Kabuuang Pag-withdraw</string>
     <string name="withdraw_all">Kunin lahat</string>
-    <string name="withdraw_handling_fee_hint">Rate ng bayad: %1$s%% Mga bayarin na babayaran: (%2$s)：%3$s</string>
+    <string name="withdraw_handling_fee_hint">Rate ng bayad: %1$s%% Mga bayarin na babayaran: %2$s%3$s</string>
     <string name="withdraw_crypto_amount_hint">Withdrawal amount(%1$s)：%2$s</string>
     <string name="withdraw_crypto_fee_hint">Withdrawal fee:(%1$s)：%2$s</string>
     <string name="hint_four_number_password">Withdrawal password</string>
@@ -1124,5 +1124,17 @@
     <string name="sms_code_length_error">Verification code kailangan 4 na digit</string>
     <string name="phone_no_error">Ang numero ng mobile phone ay dapat na 11 digit simula sa 09</string>
 
-    <string name="bet_details_title" >Mga detalye ng kumbinasyon ng link</string>
+    <string name="bet_details_title">Mga detalye ng kumbinasyon ng link</string>
+    <string name="recharge_channel_paymaya">PayMaya</string>
+    <string name="tail_number">Last digit number</string>
+    <string name="J486">Ang halaga ng pag-withdraw ay mas malaki kaysa sa balanse ng account</string>
+    <string name="J485">Mali ang format o halaga ng withdrawal</string>
+
+    <string name="N846">Basic Information</string>
+    <string name="J055">Tunay na pangalan</string>
+    <string name="N847">The name must match the bank account</string>
+    <string name="J902">Birthday</string>
+    <string name="N848">Select a source of income</string>
+    <string name="N850">Please select an address</string>
+    <string name="N171">Pakilagay ang tamang 11-digit na numero ng mobile phone</string>
 </resources>

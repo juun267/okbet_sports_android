@@ -397,7 +397,7 @@
     <string name="withdraw_amount">Số tiền rút</string>
     <string name="withdraw_password">Mật khẩu rút tiền</string>
     <string name="withdraw_all">TẤT CẢ CÁC</string>
-    <string name="withdraw_handling_fee_hint">Tỷ lệ phí xử lý ：%1$s%% Phí xử lý phải trả：%2$s%3$s</string>
+    <string name="withdraw_handling_fee_hint">Tỷ lệ phí xử lý: %1$s%% Phí xử lý phải trả: %2$s%3$s nhân dân tệ</string>
     <string name="withdraw_crypto_amount_hint">Số tiền rút(%1$s)：%2$s</string>
     <string name="withdraw_crypto_fee_hint">Phí rút tiền(%1$s)：%2$s</string>
     <string name="hint_four_number_password">Vui lòng nhập mật khẩu rút tiền</string>
@@ -429,9 +429,11 @@
     <string name="error_wallet_address">Địa chỉ bạn đăng nhập không hợp lệ</string>
     <string name="text_bank_card_delete_success">Đã xóa thẻ ngân hàng thành công</string>
     <string name="text_e_wallet_delete_success">Đã xóa eWallet thành công</string>
+    <string name="text_pay_maya_delete_success">Đã xóa Paymaya thành công</string>
     <string name="text_crypto_delete_success">Đã xóa tiền ảo thành công</string>
     <string name="text_bank_card_add_success">Mặc định thẻ ngân hàng thành công</string>
     <string name="text_e_wallet_add_success">Mặc định eWallet thành công</string>
+    <string name="text_pay_maya_add_success">Mặc định Paymaya thành công</string>
     <string name="text_crypto_add_success">Mặc định tiền ảo thành công</string>
     <string name="text_bank_card_modify_success">Chỉnh sửa thẻ ngân hàng thành công</string>
     <string name="text_crypto_modify_success">Chỉnh sửa tiền ảo thành công</string>
@@ -1054,39 +1056,7 @@
     <string name="error_tips_confirm_password">Mật khẩu bạn nhập khác nhau, mời nhập lại</string>
     <string name="error_new_password">Mật khẩu từ 6-20 ký tự bao gồm cả chữ và số</string>
     <string name="error_verification_code_forget">Mã xác nhận sai</string>
-    <!--投注改版-->
-    <string name="accept_any_change_in_odds">Nhận mọi thay đổi</string>
-    <string name="accept_better_change_in_odds">Nhận thay đổi tốt hơn</string>
-    <string name="accept_never_change_in_odds">Không nhận thay đổi</string>
-    <string name="expand_more_combinations">Hiện</string>
-    <string name="stacked_combination">Ẩn</string>
-    <string name="bet_parlay">+Xâu</string>
-    <string name="bet_single">Đơn</string>
-    <string name="str_if_accept_odds_changes_title">Có nhận thay đổi tỷ lệ cược không?</string>
-    <string name="str_if_accept_odds_changes_des_subtitle">Vì tỷ lệ cược của sự kiện có thể thay đổi bất cứ lúc nào (đặc biệt trong giai đoạn đang diễn ra). Để có trải nghiệm cược tốt hơn. Bạn có thể chọn một trong ba loại cược sau.</string>
-    <string name="str_if_accept_odds_changes_des1">1. Nhận mọi tỷ lệ cược - khi bạn chọn tùy chọn này, chúng tôi sẽ tạo đơn cược cho bạn theo tỷ lệ cược mới nhất.</string>
-    <string name="str_if_accept_odds_changes_des2">2. Nhận tỷ lệ cược tốt nhất - khi bạn chọn tùy chọn này, nếu tỷ lệ cược mới nhất tốt hơn tỷ lệ cược bạn đã chọn, chúng tôi sẽ tạo đơn cược. Nếu tỷ lệ cược mới nhất thấp hơn tỷ lệ cược bạn đã chọn, chúng tôi sẽ không tạo đơn cược và nhắc bạn về sự thay đổi tỷ lệ cược.
-</string>
-    <string name="str_if_accept_odds_changes_des3">3. Không nhận thay đổi - khi bạn chọn tùy chọn này: Nếu tỷ lệ cược mới nhất khác với tỷ lệ cược bạn đã chọn, chúng tôi sẽ không tạo đơn cược và nhắc bạn về những thay đổi tỷ lệ cược.</string>
-    <string name="str_ok_i_got_it">Tôi biết rồi.</string>
-    <string name="str_return_last_step">Trở về</string>
-    <string name="str_bet_other_game">Đặt cược khác</string>
-    <string name="str_press_again_to_exit_the_program">Vui lòng xác nhận lại lối thoát</string>
-    <string name="str_odds_changed">Tỷ lệ cược thay đổi</string>
-    <string name="str_bet_slip_not_confirm_for_a_long_time">Đơn cược chưa xác nhận trong thời gian dài</string>
-    <string name="str_exceeding_limit_for_the_event_or_market">Vượt quá giới hạn cược trận đấu hoặc thị trường</string>
-    <string name="str_market_closed_please_try_later">Thị trường đã đóng, vui lòng thử lại sau</string>
-    <string name="str_match_closed">Trận đấu đã kết thúc</string>
-    <string name="str_match_be_suspended">Trận đấu tạm dừng</string>
-    <string name="str_amount_wrong">Số tiền không chính xác</string>
-    <string name="str_less_than_min_bet">Dưới mức đặt cược tối thiểu</string>
-    <string name="str_only_one_type_of_ball_can_be_used_parlay">Chỉ cùng một loại bóng mới được sử dụng nối tiếp</string>
-    <string name="str_parlay_exceed_the_ties_limit">Số lượng liên kết vượt quá giới hạn </string>
-    <string name="str_self_exclusion">Tự loại trừ</string>
-    <string name="str_match_be_suspended_or_closed_please_check">Trận đấu tạm dừng hoặc đóng, vui lòng kiểm tra</string>
-    <string name="str_parlay_is_not_allowed_in_championship_matches">Các trận đấu vô địch bị cấm cược xâu</string>
-    <string name="str_parlay_type_wrong">Kiểu cược xâu không chính xác</string>
-    <!--投注改版-->
+    <string name="pay_maya">Paymaya</string>
     <string name="format_error">Định dạng không phù hợp</string>
     <string name="over_size">Tệp quá lớn</string>
     <string name="optional_tips">Tùy chọn: Chỉ hỗ trợ tệp định dạng PNG hoặc JPG và dưới 2MB</string>
@@ -1187,5 +1157,19 @@
     <string name="back_to_my_details">Về trang cá nhân</string>
     <string name="sms_code_length_error">Mã xác nhận ít nhất 4 ký tự</string>
     <string name="phone_no_error">SĐT gồm 11 số, và 09 bắt đầu</string>
+    <string name="tail_number">Số đuôi</string>
+    <string name="edit_paymaya">Sửa PayMaya</string>
+    <string name="add_paymaya">Thêm Paymaya</string>
+    <string name="please_setting_paymaya">Vui lòng cài đặt PayMaya trước</string>
+    <string name="J486">Số tiền rút lớn hơn số dư tài khoản</string>
+    <string name="J485">Định dạng hoặc giá trị của số rút tiền không đúng</string>
+    <string name="N171">Vui lòng nhập SĐT gồm 11 chữ số</string>
+    <string name="N865">Số tiền vượt hạn mức</string>
 
+    <string name="N846">Thông tin chính</string>
+    <string name="J055">Họ tên thật</string>
+    <string name="N847">Họ tên khớp với tài khoản ngân hàng</string>
+    <string name="J902">Ngày sinh nhật</string>
+    <string name="N848">Chọn nguồn tiền</string>
+    <string name="N850">Chọn địa chỉ</string>
 </resources>

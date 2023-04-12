@@ -13,16 +13,21 @@ import android.os.Message
 import android.view.View
 import android.webkit.*
 import androidx.activity.result.contract.ActivityResultContracts
+import kotlinx.android.synthetic.main.activity_register.view
 import kotlinx.android.synthetic.main.activity_web.*
 import kotlinx.android.synthetic.main.view_bettingstation_info.view.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.runWithCatch
+import org.cxct.sportlottery.databinding.ActivityWebBinding
 import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.setWebViewCommonBackgroundColor
+import org.cxct.sportlottery.view.webView.OkWebChromeClient
+import org.cxct.sportlottery.view.webView.OkWebViewClient
+import org.cxct.sportlottery.view.webView.WebViewCallBack
 import timber.log.Timber
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
@@ -54,22 +59,26 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     private var mUploadCallbackAboveL: ValueCallback<Array<Uri>>? = null
     private var mUploadMessage: ValueCallback<Uri?>? = null
 
+    private val viewBinding: ActivityWebBinding by lazy {
+        ActivityWebBinding.inflate(layoutInflater)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         init()
     }
 
     fun getWebView(): WebView {
-        return web_view
+        return viewBinding.okWebView
     }
 
     open fun init() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
-        setContentView(R.layout.activity_web)
+        setContentView(viewBinding.root)
         if (!mToolbarVisibility) custom_tool_bar.visibility = View.GONE else initToolBar()
         setCookie()
-        setupWebView(web_view)
-        loadUrl(web_view)
+        setupWebView(viewBinding.okWebView)
+        loadUrl(viewBinding.okWebView)
     }
 
     private fun initToolBar() {
@@ -104,29 +113,8 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     @SuppressLint("WebViewApiAvailability")
     fun setupWebView(webView: WebView) {
-        if (BuildConfig.DEBUG) WebView.setWebContentsDebuggingEnabled(true)
-
-        webView.setWebViewCommonBackgroundColor()
-
-        val settings: WebSettings = webView.settings
-        settings.javaScriptEnabled = true
-        settings.blockNetworkImage = false
-        settings.domStorageEnabled = true //对H5支持
-        settings.useWideViewPort = true //将图片调整到适合webview的大小
-        settings.loadWithOverviewMode = true // 缩放至屏幕的大小
-        settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
-        settings.javaScriptCanOpenWindowsAutomatically = true
-        settings.defaultTextEncodingName = "utf-8"
-        settings.cacheMode = WebSettings.LOAD_NO_CACHE
-        settings.databaseEnabled = false
-//        settings.setAppCacheEnabled(false)
-
-        settings.setSupportMultipleWindows(true) //20191120 記錄問題： target=_black 允許跳轉新窗口處理
-        settings.allowFileAccess = true
-        settings.allowContentAccess = true
-        settings.allowFileAccessFromFileURLs = true
-        settings.allowUniversalAccessFromFileURLs = true
-        webView.webChromeClient = object : WebChromeClient() {
+        webView.webChromeClient = object : OkWebChromeClient(
+        ) {
             override fun onCreateWindow(
                 view: WebView, isDialog: Boolean, isUserGesture: Boolean, resultMsg: Message
             ): Boolean {
@@ -177,22 +165,23 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             }
         }
 
-        webView.webViewClient = object : WebViewClient() {
 
-            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                super.onPageStarted(view, url, favicon)
+        webView.webViewClient = object : OkWebViewClient(object : WebViewCallBack {
+            override fun pageStarted(view: View?, url: String?) {
                 loading()
             }
 
-            override fun onPageFinished(view: WebView?, url: String?) {
-                super.onPageFinished(view, url)
+            override fun pageFinished(view: View?, url: String?) {
                 hideLoading()
             }
 
+            override fun onError() {
+            }
+        }) {
             override fun shouldInterceptRequest(
-                view: WebView?, url: String?
+                view: WebView?, request: WebResourceRequest?
             ): WebResourceResponse? {
-                return super.shouldInterceptRequest(view, url)
+                return super.shouldInterceptRequest(view, request)
             }
 
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
@@ -216,21 +205,17 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             ) {
                 //此方法是为了处理在5.0以上Https的问题，必须加上
                 //handler.proceed()
-                if (isFinishing)
-                    return
+                if (isFinishing) return
                 AlertDialog.Builder(this@WebActivity)
-                    .setMessage(android.R.string.httpErrorUnsupportedScheme)
-                    .setPositiveButton(
+                    .setMessage(android.R.string.httpErrorUnsupportedScheme).setPositiveButton(
                         "continue"
-                    ) { dialog, which -> handler.proceed() }
-                    .setNegativeButton(
+                    ) { dialog, which -> handler.proceed() }.setNegativeButton(
                         "cancel"
-                    ) { dialog, which -> handler.cancel() }
-                    .create()
-                    .show()
-
+                    ) { dialog, which -> handler.cancel() }.create().show()
             }
+
         }
+
 
         //H5调用系统下载
         webView.setDownloadListener { url, _, _, _, _ ->
@@ -258,8 +243,8 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     override fun onBackPressed() {
-        if (web_view.canGoBack()) {
-            web_view.goBack()
+        if (viewBinding.okWebView.canGoBack()) {
+            viewBinding.okWebView.goBack()
         } else {
             super.onBackPressed()
         }

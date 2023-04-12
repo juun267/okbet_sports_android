@@ -131,9 +131,6 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             ll_real_name.isVisible = enableWithdrawFullName.isStatusOpen()
         }
 
-        ll_e_mail.isVisible = true
-        ll_phone_number.isVisible = true
-
         tv_pass_word.text = if (viewModel.userInfo.value?.passwordSet == true) getString(R.string.set) else getString(R.string.edit)
     }
 
@@ -180,16 +177,16 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     }
 
     private fun editBindInfo(modifyType: @ModifyType Int) {
-        // 回退之前逻辑
-        putExtraForProfileInfoActivity(modifyType)
-//        val userInfo = viewModel.userInfo.value
-//        val phoneNo = userInfo?.phone
-//        val email = userInfo?.email
-//        if (phoneNo.isEmptyStr() && email.isEmptyStr()) {
-//            ModifyBindInfoActivity.start(this, modifyType, 100, null, null, null)
-//        } else {
-//            VerificationWaysActivity.start(this, modifyType, phoneNo, email)
-//        }
+        val userInfo = viewModel.userInfo.value
+        val phoneNo = userInfo?.phone
+        val email = userInfo?.email
+        val oldInfo = if (modifyType == ModifyType.Email) email else phoneNo
+        // 如果未设置过对应的信息，就直接去设置不需要校验
+        if (oldInfo.isEmptyStr()) {
+            ModifyBindInfoActivity.start(this, modifyType, 100, null, null, null)
+        } else {
+            VerificationWaysActivity.start(this, modifyType, phoneNo, email)
+        }
     }
 
     private fun putExtraForProfileInfoActivity(modifyType: @ModifyType Int) {

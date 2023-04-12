@@ -19,6 +19,7 @@ import org.cxct.sportlottery.network.index.logout.LogoutRequest
 import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.user.authbind.AuthBindResult
+import org.cxct.sportlottery.network.user.info.UserBasicInfoRequest
 import org.cxct.sportlottery.util.*
 import retrofit2.Response
 
@@ -181,6 +182,21 @@ object LoginRepository {
         }
     }
 
+
+    /**
+     * 获取用户完善个人信息开关
+     */
+    suspend fun getUserInfoSwitch(): Response<NetResult> {
+        return OneBoSportApi.indexService.getUserInfoSwitch()
+    }
+
+    /**
+     * 是否已完善个人信息
+     */
+    suspend fun getUserInfoCheck(): Response<NetResult> {
+        return OneBoSportApi.indexService.getUserInfoCheck()
+    }
+
     suspend fun register(registerRequest: RegisterRequest): Response<LoginResult> {
         val loginResponse = OneBoSportApi.indexService.register(registerRequest)
 
@@ -208,6 +224,13 @@ object LoginRepository {
         }
 
         return loginResponse
+    }
+
+    /**
+     * 提交用户基本信息
+     */
+    suspend fun commitUserBasicInfo(infoRequest: UserBasicInfoRequest): Response<NetResult> {
+        return OneBoSportApi.indexService.commitUserBasicInfo(infoRequest)
     }
 
     suspend fun loginOrReg(loginRequest: LoginRequest): Response<LoginResult> {
