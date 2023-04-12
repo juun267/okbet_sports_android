@@ -437,7 +437,7 @@
     <string name="text_crypto_add_success">Matagumpay ang virtual currency binding</string>
     <string name="text_bank_card_modify_success">Matagumpay na na-edit ang bank card</string>
     <string name="text_e_wallet_modify_success">Matagumpay na na-edit ang eWallet</string>
-    <string name="text_pay_maya_modify_success">I-edit ang PayMaya Tagumpay</string>
+    <string name="text_pay_maya_modify_success">Matagumpay na na-edit ang PayMaya</string>
     <string name="text_crypto_modify_success">Matagumpay na na-edit ang virtual currency</string>
     <string name="bet_receipt_bet_quota">Taya:</string>
     <string name="bet_info_list_win_quota">Mapapanalunan:</string>
@@ -1131,7 +1131,7 @@
     <string name="J486">Ang halaga ng pag-withdraw ay mas malaki kaysa sa balanse ng account</string>
     <string name="J485">Mali ang format o halaga ng withdrawal</string>
     <string name="N171">Pakilagay ang tamang 11-digit na numero ng mobile phone</string>
-    <string name="edit_paymaya">Baguhin ang PayMaya</string>
+    <string name="edit_paymaya">I-edit ang PayMaya</string>
     <string name="add_paymaya">I-edit ang PayMaya</string>
     <string name="please_setting_paymaya">Mangyaring i-set up muna ang iyong PayMaya</string>
     <string name="N865">Ang halaga ay lumampas sa limitasyon</string>
