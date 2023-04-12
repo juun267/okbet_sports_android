@@ -1255,6 +1255,7 @@
     <string name="back_to_my_details">Go back to My Details</string>
     <string name="sms_code_length_error">Verification code at least 4 digits</string>
     <string name="phone_no_error">Phone number must be 11 digits &amp; starting with 09</string>
+    <string name="J369">Payment Method</string>
 
 
 </resources>

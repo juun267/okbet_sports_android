@@ -392,5 +392,8 @@
     <color name="color_79839F_6C7BA8">@color/color_6C7BA8</color>
     <color name="okb1_app_text_color_gray01">#6C7BA8</color>
     <color name="color_1A025BE8">#1A025BE8</color>
+    <color name="color_0D2245">#0D2245</color>
+    <color name="color_e0e3ee">#e0e3ee</color>
+    <color name="color_6D7693">#6D7693</color>
 
 </resources>
