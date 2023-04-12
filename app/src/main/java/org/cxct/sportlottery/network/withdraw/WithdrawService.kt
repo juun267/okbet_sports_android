@@ -8,7 +8,7 @@ import org.cxct.sportlottery.network.Constants.WITHDRAW_LIST
 import org.cxct.sportlottery.network.Constants.WITHDRAW_UW_CHECK
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
-import org.cxct.sportlottery.network.withdraw.add.withdrawAddResultData
+import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResultData
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListRequest
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListResult
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
@@ -22,7 +22,7 @@ interface WithdrawService {
     @POST(WITHDRAW_ADD)
     suspend fun addWithdraw(
         @Body withdrawAddRequest: WithdrawAddRequest,
-    ): Response<withdrawAddResultData>
+    ): Response<WithdrawAddResultData>
 
     @POST(WITHDRAW_LIST)
     suspend fun getWithdrawList(

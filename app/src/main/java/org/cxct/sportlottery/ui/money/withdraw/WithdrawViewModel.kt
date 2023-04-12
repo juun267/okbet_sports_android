@@ -20,7 +20,7 @@ import org.cxct.sportlottery.network.bettingStation.AreaAll
 import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.network.money.config.*
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
-import org.cxct.sportlottery.network.withdraw.add.withdrawAddResultData
+import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResultData
 import org.cxct.sportlottery.network.withdraw.uwcheck.CheckList
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
@@ -75,12 +75,12 @@ class WithdrawViewModel(
         get() = _bankDeleteResult
     private var _bankDeleteResult = MutableLiveData<NetResult>()
 
-    val withdrawAddResult: LiveData<withdrawAddResultData>
+    val withdrawAddResult: LiveData<WithdrawAddResultData>
         get() = _withdrawAddResult
-    private var _withdrawAddResult = MutableLiveData<withdrawAddResultData>()
-    val withdrawAddResultData: LiveData<withdrawAddResultData>
+    private var _withdrawAddResult = MutableLiveData<WithdrawAddResultData>()
+    val withdrawAddResultData: LiveData<WithdrawAddResultData>
         get() = _withdrawAddResultData
-    private var _withdrawAddResultData = MutableLiveData<withdrawAddResultData>()
+    private var _withdrawAddResultData = MutableLiveData<WithdrawAddResultData>()
 
     //獲取資金設定
     val rechargeConfigs: LiveData<MoneyRechCfgData>
@@ -1105,7 +1105,7 @@ class WithdrawViewModel(
         _withdrawAmountMsg.value = ""
         _withdrawPasswordMsg.value = ""
         _withdrawAppointmentMsg.value = ""
-        _withdrawAddResult = MutableLiveData<withdrawAddResultData>()
+        _withdrawAddResult = MutableLiveData<WithdrawAddResultData>()
     }
 
     private fun loading() {
