@@ -435,7 +435,7 @@
     <string name="text_bank_card_delete_success">Bank card deleted successfully</string>
     <string name="text_crypto_delete_success">The virtual coin was successfully deleted</string>
     <string name="text_e_wallet_delete_success">eWallet deleted successfully</string>
-    <string name="text_pay_maya_delete_success">PayMaya delete successfully</string>
+    <string name="text_pay_maya_delete_success">PayMaya deleted successfully</string>
     <string name="text_bank_card_add_success">Bank card binding successfully</string>
     <string name="text_crypto_add_success">Crypto binding successfully</string>
     <string name="text_e_wallet_add_success">eWallet binding successfully</string>
