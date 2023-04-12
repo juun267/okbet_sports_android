@@ -184,12 +184,12 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
     /*关闭加载界面*/
     open fun hideLoading() {
-//        if (loadingView == null) {
-//            Timber.d("loadingView不存在")
-//        } else {
-//            loadingView?.rl_loading?.visibility = View.GONE
-//            (loadingView?.ivLoading?.background as AnimationDrawable).stop()
-//        }
+        if (loadingView == null) {
+            Timber.d("loadingView不存在")
+        } else {
+            loadingView?.rl_loading?.visibility = View.GONE
+            (loadingView?.ivLoading?.background as AnimationDrawable).stop()
+        }
     }
 
     //隱藏鍵盤
