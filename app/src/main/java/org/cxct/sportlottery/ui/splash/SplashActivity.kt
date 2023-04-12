@@ -24,6 +24,7 @@ import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LogUtil
+import org.cxct.sportlottery.util.SPUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.system.exitProcess
@@ -38,6 +39,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
     private val sharedPref: SharedPreferences? by lazy {
         getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 

@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.item_listview_settlement_league_all.*
 import kotlinx.android.synthetic.main.item_listview_settlement_league_all.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.setViewGone
+import org.cxct.sportlottery.common.extentions.setViewVisible
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
@@ -242,10 +243,10 @@ class ResultsSettlementActivity :
         }
 
         if (matchId.isNotEmpty() && leagueId.isNotEmpty()) {
-            setViewGone(linear_filter,cl_game_search,rv_date)
             val date = setUpTimeApiFormatTime(startTime)
             viewModel.getMatchResultList(gameType, null, date, matchId, leagueId)
         } else {
+            setViewVisible(linear_filter,cl_game_search,rv_date)
             viewModel.getMatchResultList(gameType, null, timeRangeParams)
         }
 

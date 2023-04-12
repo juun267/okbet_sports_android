@@ -2,8 +2,8 @@ package org.cxct.sportlottery.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bank.my.BankCardList
@@ -109,7 +109,7 @@ object WithdrawRepository {
             val cryptoWithdrawSystemOperation =
                 withdrawConfig?.find { it.type == TransferType.CRYPTO.type }?.open.toString() == FLAG_OPEN
             val eWalletWithdrawSystemOperation =
-                withdrawConfig?.find { it.type == TransferType.E_WALLET.type }?.open.toString() == FLAG_OPEN
+                withdrawConfig?.find { it.type == TransferType.E_WALLET.type || it.type == TransferType.PAYMAYA.type }?.open.toString() == FLAG_OPEN
             val statiomWithdrawSystemOperation =
                 withdrawConfig?.find { it.type == TransferType.STATION.type }?.open.toString() == FLAG_OPEN
 
@@ -458,7 +458,7 @@ object WithdrawRepository {
         if (mWithdrawOperation?.eWalletSystem == true) {
             kotlin.run {
                 bankCardList.forEach {
-                    if (it.uwType == TransferType.E_WALLET.type) {
+                    if (it.uwType == TransferType.E_WALLET.type || it.uwType == TransferType.PAYMAYA.type) {
                         hasBinding = true
                         return@run
                     }
