@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.res.Resources
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -21,6 +22,7 @@ import com.bigkoo.pickerview.builder.OptionsPickerBuilder
 import com.bigkoo.pickerview.view.OptionsPickerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.gyf.immersionbar.ImmersionBar
+import kotlinx.android.synthetic.main.layout_loading.ivLoading
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import kotlinx.android.synthetic.main.view_status_bar.*
 import kotlinx.coroutines.launch
@@ -89,8 +91,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     private fun onTokenStateChanged() {
         viewModel.errorResultToken.observe(this) {
             if (this.javaClass.simpleName == MaintenanceActivity::class.java.simpleName) return@observe
-            if (it.code != HttpError.KICK_OUT_USER.code)
-                toMaintenanceOrShowDialog(it)
+            if (it.code != HttpError.KICK_OUT_USER.code) toMaintenanceOrShowDialog(it)
         }
     }
 
@@ -98,10 +99,12 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         when (result.code) {
             HttpError.DO_NOT_HANDLE.code -> {
             }
+
             HttpError.MAINTENANCE.code -> {
                 startActivity(Intent(this, MaintenanceActivity::class.java))
                 finish()
             }
+
             else -> {
                 if (this.javaClass.simpleName == MaintenanceActivity::class.java.simpleName) return
                 showTokenPromptDialog(result.msg) {
@@ -118,12 +121,14 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
     private fun netError(errorMessage: String) {
         hideLoading()
-        showPromptDialog(getString(R.string.prompt),
+        showPromptDialog(
+            getString(R.string.prompt),
             errorMessage,
             buttonText = null,
             { mOnNetworkExceptionListener?.onClick(null) },
             isError = true,
-            hasCancle = false )
+            hasCancle = false
+        )
     }
 
     private fun onNetworkException() {
@@ -136,9 +141,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         viewModel.isKickedOut.observe(this) {
             hideLoading()
             it.getContentIfNotHandled()?.let { msg ->
-                if (this.javaClass.simpleName == MaintenanceActivity::class.java.simpleName ||
-                    this.javaClass.simpleName == ThirdGameActivity::class.java.simpleName
-                ) return@observe
+                if (this.javaClass.simpleName == MaintenanceActivity::class.java.simpleName || this.javaClass.simpleName == ThirdGameActivity::class.java.simpleName) return@observe
                 showTokenPromptDialog(msg) {
                     viewModel.loginRepository._isLogin.postValue(false)
                     viewModel.doLogoutCleanUser {
@@ -166,25 +169,27 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         if (loadingView == null) {
             loadingView = layoutInflater.inflate(R.layout.layout_loading, null)
             val params = RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.MATCH_PARENT,
-                RelativeLayout.LayoutParams.MATCH_PARENT
+                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT
             )
             addContentView(loadingView, params)
         } else {
             loadingView?.rl_loading?.visibility = View.VISIBLE
             loadingView?.rl_loading?.isClickable = true
         }
-
+        loadingView?.ivLoading?.setBackgroundResource(R.drawable.anim_loading)
+        val animationDrawable = loadingView?.ivLoading?.background as AnimationDrawable
+        animationDrawable.start()
         loadingView?.pb_message?.text = message ?: getString(R.string.loading)
     }
 
     /*关闭加载界面*/
     open fun hideLoading() {
-        if (loadingView == null) {
-            Timber.d("loadingView不存在")
-        } else {
-            loadingView?.rl_loading?.visibility = View.GONE
-        }
+//        if (loadingView == null) {
+//            Timber.d("loadingView不存在")
+//        } else {
+//            loadingView?.rl_loading?.visibility = View.GONE
+//            (loadingView?.ivLoading?.background as AnimationDrawable).stop()
+//        }
     }
 
     //隱藏鍵盤
@@ -209,8 +214,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         safelyUpdateLayout(Runnable {
             try {
                 //防止跳出多個 error dialog
-                if (mTokenPromptDialog?.isShowing == true)
-                    return@Runnable
+                if (mTokenPromptDialog?.isShowing == true) return@Runnable
 
                 mTokenPromptDialog = CustomAlertDialog(this@BaseActivity).apply {
                     setTextColor(R.color.color_E44438_e44438)
@@ -227,7 +231,9 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
                     setCanceledOnTouchOutside(false)
                     isCancelable = false //不能用系統 BACK 按鈕關閉 dialog
                 }
-                if (!supportFragmentManager.isDestroyed) mTokenPromptDialog?.show(supportFragmentManager, null)
+                if (!supportFragmentManager.isDestroyed) mTokenPromptDialog?.show(
+                    supportFragmentManager, null
+                )
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -264,7 +270,14 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         isOutsideCancelable: Boolean,
         positiveClickListener: () -> Unit?
     ) {
-        showPromptDialog(title, message, null, positiveClickListener, false, isOutsideCancelable = isOutsideCancelable)
+        showPromptDialog(
+            title,
+            message,
+            null,
+            positiveClickListener,
+            false,
+            isOutsideCancelable = isOutsideCancelable
+        )
     }
 
     fun showPromptDialog(
@@ -285,8 +298,10 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         showPromptDialog(title, message, null, positiveClickListener, true)
     }
 
-    fun showErrorPromptDialog(title: String, message: Spanned,hasCancel: Boolean, positiveClickListener: () -> Unit?) {
-        showPromptDialog(title, message, null, positiveClickListener, true,hasCancel)
+    fun showErrorPromptDialog(
+        title: String, message: Spanned, hasCancel: Boolean, positiveClickListener: () -> Unit?
+    ) {
+        showPromptDialog(title, message, null, positiveClickListener, true, hasCancel)
     }
 
     fun showPromptDialog(
@@ -331,7 +346,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
             errorMessage = errorMessage,
             buttonText = buttonText,
             positiveClickListener = positiveClickListener,
-            negativeText = if(hasCancle) getString(R.string.btn_cancel) else null,
+            negativeText = if (hasCancle) getString(R.string.btn_cancel) else null,
         )
     }
 
@@ -369,23 +384,19 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
         mPickerView = OptionsPickerBuilder(this) { options1, _, _, _ ->
             itemClickListener.onChecked(true, dataList[options1])
-        }
-            .setItemVisibleCount(4)
-            .setTitleBgColor(resources.getColor(R.color.color_2B2B2B_e2e2e2))
+        }.setItemVisibleCount(4).setTitleBgColor(resources.getColor(R.color.color_2B2B2B_e2e2e2))
             .setBgColor(resources.getColor(R.color.color_191919_FCFCFC))
             .setCancelColor(resources.getColor(R.color.color_7F7F7F_999999))//取消按钮文字颜色
             .setSubmitColor(resources.getColor(R.color.color_0760D4))//取消按钮文字颜色
             .setSubmitText(resources.getString(R.string.complete))
-            .setCancelText(resources.getString(R.string.btn_cancel))
-            .build()
+            .setCancelText(resources.getString(R.string.btn_cancel)).build()
         mPickerView?.setPicker(strList)
         mPickerView?.setSelectOptions(defaultPosition)
         mPickerView?.show()
     }
 
     private fun checkDefaultPosition(
-        dataList: List<StatusSheetData>,
-        defaultData: StatusSheetData
+        dataList: List<StatusSheetData>, defaultData: StatusSheetData
     ): Int {
         var defaultPosition = 0
         dataList.forEachIndexed { position, statusSheetData ->
@@ -453,10 +464,8 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     }
 
     open fun setStatusbar(bgColor: Int, darkFont: Boolean) {
-        ImmersionBar.with(this).statusBarColor(bgColor)
-            .statusBarDarkFont(darkFont)
-            .fitsSystemWindows(true)
-            .init()
+        ImmersionBar.with(this).statusBarColor(bgColor).statusBarDarkFont(darkFont)
+            .fitsSystemWindows(true).init()
     }
 
     override fun onDestroy() {
@@ -468,18 +477,14 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     }
 
     fun setStatusBarDarkFont(view: View? = null) {
-        ImmersionBar.with(this)
-            .statusBarDarkFont(true)
-            .transparentStatusBar()
-            .statusBarView(view)
-            .fitsSystemWindows(false)
-            .init()
+        ImmersionBar.with(this).statusBarDarkFont(true).transparentStatusBar().statusBarView(view)
+            .fitsSystemWindows(false).init()
     }
 
 
-    fun replaceFragment(container:Int,fragment:Fragment){
-        val transaction= supportFragmentManager.beginTransaction();
-        transaction.replace(container,fragment)
+    fun replaceFragment(container: Int, fragment: Fragment) {
+        val transaction = supportFragmentManager.beginTransaction();
+        transaction.replace(container, fragment)
         transaction.commit()
     }
 }
