@@ -20,6 +20,9 @@ import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.setWebViewCommonBackgroundColor
 import org.cxct.sportlottery.util.startLogin
+import org.cxct.sportlottery.view.webView.OkWebChromeClient
+import org.cxct.sportlottery.view.webView.OkWebView
+import org.cxct.sportlottery.view.webView.OkWebViewClient
 
 /**
  * Create by Simon Chang
@@ -40,37 +43,37 @@ open class LotteryActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
         setContentView(R.layout.activity_web)
         custom_tool_bar.visibility = View.GONE
-        web_view.addJavascriptInterface(LotteryJsInterface(this), LotteryJsInterface.name)
-        setupWebView(web_view)
-        loadUrl(web_view)
+        okWebView.addJavascriptInterface(LotteryJsInterface(this), LotteryJsInterface.name)
+        setupWebView(okWebView)
+        loadUrl(okWebView)
     }
 
 
     @SuppressLint("WebViewApiAvailability")
-    fun setupWebView(webView: WebView) {
-        if (BuildConfig.DEBUG) WebView.setWebContentsDebuggingEnabled(true)
-
-        webView.setWebViewCommonBackgroundColor()
-
-        val settings: WebSettings = webView.settings
-        settings.javaScriptEnabled = true
-        settings.blockNetworkImage = false
-        settings.domStorageEnabled = true //对H5支持
-        settings.useWideViewPort = true //将图片调整到适合webview的大小
-        settings.loadWithOverviewMode = true // 缩放至屏幕的大小
-        settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
-        settings.javaScriptCanOpenWindowsAutomatically = true
-        settings.defaultTextEncodingName = "utf-8"
-        settings.cacheMode = WebSettings.LOAD_NO_CACHE
-        settings.databaseEnabled = true
-//        settings.setAppCacheEnabled(false)
-
-        settings.setSupportMultipleWindows(true) //20191120 記錄問題： target=_black 允許跳轉新窗口處理
-        settings.allowFileAccess = true
-        settings.allowContentAccess = true
-        settings.allowFileAccessFromFileURLs = true
-        settings.allowUniversalAccessFromFileURLs = true
-        webView.webChromeClient = object : WebChromeClient() {
+    fun setupWebView(webView: OkWebView) {
+//        if (BuildConfig.DEBUG) WebView.setWebContentsDebuggingEnabled(true)
+//
+//        webView.setWebViewCommonBackgroundColor()
+//
+//        val settings: WebSettings = webView.settings
+//        settings.javaScriptEnabled = true
+//        settings.blockNetworkImage = false
+//        settings.domStorageEnabled = true //对H5支持
+//        settings.useWideViewPort = true //将图片调整到适合webview的大小
+//        settings.loadWithOverviewMode = true // 缩放至屏幕的大小
+//        settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+//        settings.javaScriptCanOpenWindowsAutomatically = true
+//        settings.defaultTextEncodingName = "utf-8"
+//        settings.cacheMode = WebSettings.LOAD_NO_CACHE
+//        settings.databaseEnabled = true
+////        settings.setAppCacheEnabled(false)
+//
+//        settings.setSupportMultipleWindows(true) //20191120 記錄問題： target=_black 允許跳轉新窗口處理
+//        settings.allowFileAccess = true
+//        settings.allowContentAccess = true
+//        settings.allowFileAccessFromFileURLs = true
+//        settings.allowUniversalAccessFromFileURLs = true
+        webView.webChromeClient = object : OkWebChromeClient() {
             override fun onCreateWindow(
                 view: WebView, isDialog: Boolean, isUserGesture: Boolean, resultMsg: Message,
             ): Boolean {
@@ -110,7 +113,7 @@ open class LotteryActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             }
         }
 
-        webView.webViewClient = object : WebViewClient() {
+        webView.webViewClient = object : OkWebViewClient() {
 
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)
@@ -179,8 +182,8 @@ open class LotteryActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     override fun onBackPressed() {
-        if (web_view.canGoBack()) {
-            web_view.goBack()
+        if (okWebView.canGoBack()) {
+            okWebView.goBack()
         } else {
             super.onBackPressed()
         }
