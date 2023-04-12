@@ -18,12 +18,14 @@
             android:layout_height="wrap_content">
 
             <ImageView
+                android:id="@+id/iv_cover"
                 android:layout_width="115dp"
                 android:layout_height="115dp"
                 android:foreground="@drawable/bg_gadient_game"
                 android:src="@drawable/ic_game_fav" />
 
             <TextView
+                android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -36,6 +38,7 @@
                 tools:text="ARCADE" />
 
             <ImageView
+                android:id="@+id/iv_fav"
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
@@ -45,6 +48,7 @@
         </FrameLayout>
 
         <TextView
+            android:id="@+id/tv_firm_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="8dp"
