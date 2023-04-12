@@ -11,10 +11,8 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.maintab.elec.HomeElecFragment
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.live.HomeLiveFragment
-import org.cxct.sportlottery.ui.maintab.slot.HomeSlotFragment
 import org.cxct.sportlottery.util.FragmentHelper
 
 class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
@@ -24,9 +22,7 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
         FragmentHelper(childFragmentManager, R.id.fl_content, arrayOf(
             Pair(MainHomeFragment::class.java, null),
             Pair(HomeLiveFragment::class.java, null),
-            Pair(OKGamesFragment::class.java, null),
-            Pair(HomeElecFragment::class.java, null),
-            Pair(HomeSlotFragment::class.java, Bundle().apply { putInt("position", 5) }),
+            Pair(OKGamesFragment::class.java, null)
         ))
 
     }
@@ -58,7 +54,6 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
             }
             4 -> switchTabByPosition(2)
             5 -> switchTabByPosition(4)
-            6 -> switchTabByPosition(5)
         }
     }
 

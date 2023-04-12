@@ -11,24 +11,11 @@ class HomeTabAdapter(data: List<HomeTabItem>?, val selectPos: Int, homeFragment:
     companion object {
         fun getItems(): List<HomeTabItem> {
 
-            if (isCreditSystem()) {  //OK9
-                return mutableListOf<HomeTabItem>(
-                    HomeTabItem(R.drawable.selector_home_tab_recommend, R.string.home_recommend),
-                    HomeTabItem(R.drawable.selector_home_tab_live, R.string.home_live),
-                    HomeTabItem(R.drawable.selector_home_tab_inplay, R.string.home_in_play),
-                    HomeTabItem(R.drawable.selector_home_tab_sport, R.string.home_sports),
-                    HomeTabItem(R.drawable.selector_home_tab_reallive, R.string.live),
-                    HomeTabItem(R.drawable.selector_home_tab_okgame, R.string.home_on_game),
-                    HomeTabItem(R.drawable.selector_home_tab_lottery, R.string.lottery),
-                ).toList()
-            }
-
             return mutableListOf<HomeTabItem>(
                 HomeTabItem(R.drawable.selector_home_tab_recommend, R.string.home_recommend),
                 HomeTabItem(R.drawable.selector_home_tab_live, R.string.home_live),
                 HomeTabItem(R.drawable.selector_home_tab_inplay, R.string.home_in_play),
                 HomeTabItem(R.drawable.selector_home_tab_sport, R.string.home_sports),
-                HomeTabItem(R.drawable.selector_home_tab_slot, R.string.home_slot),
                 HomeTabItem(R.drawable.selector_home_tab_okgame, R.string.home_on_game),
             ).toList()
         }

@@ -217,8 +217,8 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
     }
 
     fun initToolBar() {
-        view?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
         homeToolbar.attach(this, getMainTabActivity(), viewModel)
+        homeToolbar.fitsSystemStatus()
         homeToolbar.ivMenuLeft.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
             getMainTabActivity().showLeftFrament(0, 0)

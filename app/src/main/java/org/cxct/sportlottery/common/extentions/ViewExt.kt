@@ -91,7 +91,7 @@ fun <T : View> T.clickWithDuration(time: Long = 300, block: (T) -> Unit) {
 inline fun View.fitsSystemStatus() {
 
     val statuHeight = ScreenUtil.getStatusBarHeight(context)
-    if (layoutParams.height > 0) {
+    if (layoutParams?.height ?: 0 > 0) {
         layoutParams.height = layoutParams.height + statuHeight
     }
     setPadding(paddingLeft, paddingTop + statuHeight, paddingRight, paddingBottom)

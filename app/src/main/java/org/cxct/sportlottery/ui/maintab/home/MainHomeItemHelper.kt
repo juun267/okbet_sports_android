@@ -10,7 +10,6 @@ import androidx.annotation.StringRes
 import androidx.appcompat.widget.AppCompatTextView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.isCreditSystem
 
 object MainHomeItemHelper {
 
@@ -26,38 +25,19 @@ object MainHomeItemHelper {
         HomeItem(R.string.home_sports, R.drawable.sport0), //体育
         HomeItem(R.string.home_in_play, R.drawable.icon_in_play0), //滚球
         HomeItem(R.string.home_on_game, R.drawable.icon_on_game0), //棋牌
-        HomeItem(R.string.tiger_machine, R.drawable.ic_home_okgame_nor), //老虎机
         HomeItem(R.string.promo, R.drawable.ic_home_promo_nor), // 优惠
         HomeItem(R.string.home_live, R.drawable.live0), //直播
     )
 
-    private val items1 = arrayOf(
-        HomeItem(R.string.home_recommend,
-            R.drawable.icon_recommend,
-            R.drawable.bg_tab_open_selector,
-            R.color.color_E9F4FA,
-            11), // 推荐
-        HomeItem(R.string.home_live, R.drawable.live0), //直播
-//        HomeItem(R.string.home_word_cup, R.drawable.word_cup0), //世界杯
-        HomeItem(R.string.home_in_play, R.drawable.icon_in_play0), //滚球
-        HomeItem(R.string.home_sports, R.drawable.sport0), //体育
-        HomeItem(R.string.live, R.drawable.icon_on_live0), //真人
-        HomeItem(R.string.home_on_game, R.drawable.icon_on_game0), //棋牌
-        HomeItem(R.string.lottery, R.drawable.icon_on_lottery0), //彩票
-    )
 
 
     fun fillingItems(parent: LinearLayout, itemClick: (Int) -> Unit) {
 
-        val itemParams = LinearLayout.LayoutParams(0, 60.dp, 1.0f)
+        val itemParams = LinearLayout.LayoutParams(60.dp, 60.dp)
         val iconParams = LinearLayout.LayoutParams(30.dp, 30.dp).apply { gravity = Gravity.CENTER_HORIZONTAL }
         val nameParams = LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = 6.dp }
 
-        if (isCreditSystem()) {
-            items1.forEach { addItem(parent, it, itemParams, iconParams, nameParams, itemClick) }
-        } else {
-            items.forEach { addItem(parent, it, itemParams, iconParams, nameParams, itemClick) }
-        }
+        items.forEach { addItem(parent, it, itemParams, iconParams, nameParams, itemClick) }
     }
 
     private fun addItem(parent: LinearLayout,
