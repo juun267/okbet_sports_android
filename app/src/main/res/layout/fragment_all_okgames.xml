@@ -14,6 +14,7 @@
 
     <!--part-5-->
     <include
+        android:id="@+id/include5"
         layout="@layout/include_view_payment_method"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
