@@ -100,7 +100,7 @@ class RegisterInfoViewModel(
      */
     fun getUserBasicInfo(){
         launch {
-            val result=doNetwork(androidContext,false){ OneBoSportApi.indexService.getUserBasicInfo()}
+            val result=doNetwork(androidContext){ OneBoSportApi.indexService.getUserBasicInfo()}
             result?.let { data->
 
                 data.t.birthday?.let {
@@ -136,27 +136,8 @@ class RegisterInfoViewModel(
         }
         return ""
     }
-    /**
-     * 未完善退出，注销登录信息
-     */
-    fun logout() {
-        if (!isFinishComplete) {
-            launch {
-                loginRepository.logout()
-            }
-        }
-    }
 
-    /**
-     * 恢复登录数据
-     */
-    fun restored() {
-        loginResult?.let { result ->
-            launch {
-                loginRepository.setUpLoginData(result.loginData)
-            }
-        }
-    }
+
 
 
     /**

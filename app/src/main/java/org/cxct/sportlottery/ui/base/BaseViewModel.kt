@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.base
 
 import android.content.Context
+import android.util.Log
 import androidx.annotation.Nullable
 import androidx.lifecycle.*
 import kotlinx.coroutines.*

@@ -23,6 +23,7 @@ import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity.Companion.LOGIN_TYPE_PWD
 import org.cxct.sportlottery.util.AFInAppEventUtil
 import org.cxct.sportlottery.util.LocalUtils
+import org.cxct.sportlottery.util.SPUtil
 import org.cxct.sportlottery.util.VerifyConstUtil
 
 
@@ -185,7 +186,13 @@ class LoginViewModel(
      * 检查用户完善基本信息
      */
     private suspend fun checkBasicInfo(loginResult: LoginResult, block: suspend () -> Unit) {
-        if(!loginResult.success){
+        if (!loginResult.success) {
+            block()
+            return
+        }
+        //本地缓存的是否完善过开关
+        val loginSwitch=SPUtil.getLoginInfoSwitch()
+        if(loginSwitch){
             block()
             return
         }
@@ -206,7 +213,8 @@ class LoginViewModel(
                 block()
             }
         } else {
-            loginRepository.clear()
+//            loginRepository.clear()
+            block()
             hideLoading()
         }
 

@@ -13,6 +13,7 @@ class UserBasicInfoResponse(
 ) : BaseResult(){
 
 
+    @KeepMembers
     class UserBasicData(
         val fullName:String?,
         val birthday:String?,
