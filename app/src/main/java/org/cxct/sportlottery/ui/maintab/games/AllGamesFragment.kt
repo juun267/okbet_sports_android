@@ -12,13 +12,15 @@ class AllGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
 
     private lateinit var binding: FragmentAllOkgamesBinding
 
-    private inline fun okgamesFragment() = parentFragment as OKGamesFragment
+    private inline fun okGamesFragment() = parentFragment as OKGamesFragment
     override fun createRootView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentAllOkgamesBinding.inflate(layoutInflater)
         return binding.root
     }
 
     override fun onBindView(view: View) {
+
+
 
     }
 

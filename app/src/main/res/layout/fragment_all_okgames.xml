@@ -4,5 +4,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <!--part-1-->
+
+    <!--part-2-->
+
+    <!--part-3-->
+
+    <!--part-4-->
+
+    <!--part-5-->
+    <include
+        layout="@layout/include_view_payment_method"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp" />
 
 </LinearLayout>

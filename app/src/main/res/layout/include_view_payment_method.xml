@@ -39,7 +39,7 @@
         android:background="@color/color_e0e3ee"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+        app:layout_constraintTop_toBottomOf="@+id/tvResposibleGaming" />
 
     <View
         android:layout_marginTop="20dp"
@@ -125,46 +125,46 @@
         app:layout_constraintTop_toTopOf="@+id/textView5" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/tvPrivacyPolicy"
         android:text="@string/login_privacy_policy"
         app:layout_constraintStart_toStartOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/textView5"
         style="@style/text_style_responsible" />
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/tvTermConditions"
         android:text="@string/terms_conditions"
         style="@style/text_style_responsible"
-        app:layout_constraintStart_toStartOf="@+id/textView9"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+        app:layout_constraintStart_toStartOf="@+id/tvPrivacyPolicy"
+        app:layout_constraintTop_toBottomOf="@+id/tvPrivacyPolicy" />
 
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/tvResposibleGaming"
         android:text="@string/register_responsibilities"
         style="@style/text_style_responsible"
-        app:layout_constraintStart_toStartOf="@+id/textView10"
-        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+        app:layout_constraintStart_toStartOf="@+id/tvTermConditions"
+        app:layout_constraintTop_toBottomOf="@+id/tvTermConditions" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/tvLiveChat"
         android:text="@string/live_chat"
         style="@style/text_style_responsible"
         app:layout_constraintStart_toStartOf="@+id/textView8"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <TextView
-        android:id="@+id/textView13"
+        android:id="@+id/tvContactUs"
         android:text="@string/contact"
         style="@style/text_style_responsible"
-        app:layout_constraintStart_toStartOf="@+id/textView12"
-        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+        app:layout_constraintStart_toStartOf="@+id/tvLiveChat"
+        app:layout_constraintTop_toBottomOf="@+id/tvLiveChat" />
 
     <TextView
-        android:id="@+id/textView14"
+        android:id="@+id/tvFaqs"
         style="@style/text_style_responsible"
         android:text="@string/faqs"
-        app:layout_constraintStart_toStartOf="@+id/textView13"
-        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+        app:layout_constraintStart_toStartOf="@+id/tvContactUs"
+        app:layout_constraintTop_toBottomOf="@+id/tvContactUs" />
 
     <TextView
         android:id="@+id/textView15"
