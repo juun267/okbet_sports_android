@@ -200,7 +200,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                                 if (paymataTransfer) View.VISIBLE else View.GONE
                         }
                         tv_add_bank.text = context?.getString(R.string.bank_list_add,
-                            context?.getString(R.string.pay_maya))
+                            context?.getString(R.string.online_maya))
                         clearEvent()
                     }
                     getString(R.string.Outlets_Reserve) -> {

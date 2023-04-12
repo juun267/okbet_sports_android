@@ -429,7 +429,7 @@
     <string name="error_wallet_address">Địa chỉ bạn đăng nhập không hợp lệ</string>
     <string name="text_bank_card_delete_success">Đã xóa thẻ ngân hàng thành công</string>
     <string name="text_e_wallet_delete_success">Đã xóa eWallet thành công</string>
-    <string name="text_pay_maya_delete_success">Đã xóa Paymaya thành công</string>
+    <string name="text_pay_maya_delete_success">Xoá PayMaya thành công</string>
     <string name="text_crypto_delete_success">Đã xóa tiền ảo thành công</string>
     <string name="text_bank_card_add_success">Mặc định thẻ ngân hàng thành công</string>
     <string name="text_e_wallet_add_success">Mặc định eWallet thành công</string>
