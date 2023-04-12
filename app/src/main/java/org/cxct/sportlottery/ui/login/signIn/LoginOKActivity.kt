@@ -196,6 +196,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         val deviceId = Settings.Secure.getString(applicationContext.contentResolver,
             Settings.Secure.ANDROID_ID)
         var appVersion = org.cxct.sportlottery.BuildConfig.VERSION_NAME
+        hideSoftKeyboard(this)
         if (viewModel.loginType == LOGIN_TYPE_CODE) {
             loading()
             val account = binding.eetAccount.text.toString()
