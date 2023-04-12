@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Responsible gaming"
+        android:text="@string/register_responsibilities"
         android:textColor="@color/color_0D2245"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -105,7 +105,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="16dp"
-        android:text="About us"
+        android:text="@string/about_us"
         android:textSize="16sp"
         android:textColor="@color/color_0D2245"
         android:textStyle="bold"
@@ -116,7 +116,7 @@
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="FAQ"
+        android:text="@string/faqs"
         android:textSize="16sp"
         android:textColor="@color/color_0D2245"
         android:textStyle="bold"
@@ -126,35 +126,35 @@
 
     <TextView
         android:id="@+id/textView9"
-        android:text="privacy policy"
+        android:text="@string/login_privacy_policy"
         app:layout_constraintStart_toStartOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/textView5"
         style="@style/text_style_responsible" />
 
     <TextView
         android:id="@+id/textView10"
-        android:text="term&amp;condition"
+        android:text="@string/terms_conditions"
         style="@style/text_style_responsible"
         app:layout_constraintStart_toStartOf="@+id/textView9"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
     <TextView
         android:id="@+id/textView11"
-        android:text="Responsible gaming"
+        android:text="@string/register_responsibilities"
         style="@style/text_style_responsible"
         app:layout_constraintStart_toStartOf="@+id/textView10"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
     <TextView
         android:id="@+id/textView12"
-        android:text="live chat"
+        android:text="@string/live_chat"
         style="@style/text_style_responsible"
         app:layout_constraintStart_toStartOf="@+id/textView8"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <TextView
         android:id="@+id/textView13"
-        android:text="contact us"
+        android:text="@string/contact"
         style="@style/text_style_responsible"
         app:layout_constraintStart_toStartOf="@+id/textView12"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
@@ -162,7 +162,7 @@
     <TextView
         android:id="@+id/textView14"
         style="@style/text_style_responsible"
-        android:text="FAQS"
+        android:text="@string/faqs"
         app:layout_constraintStart_toStartOf="@+id/textView13"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
