@@ -11,43 +11,21 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.elec.HomeElecFragment
-import org.cxct.sportlottery.ui.maintab.games.ThirdGamesFragment
 import org.cxct.sportlottery.ui.maintab.live.HomeLiveFragment
 import org.cxct.sportlottery.ui.maintab.slot.HomeSlotFragment
 import org.cxct.sportlottery.util.FragmentHelper
-import org.cxct.sportlottery.util.isCreditSystem
 
 class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
 
     private val fragmentHelper by lazy {
-        if (isCreditSystem()) {
-            FragmentHelper(childFragmentManager, R.id.fl_content, arrayOf(
-                Pair(MainHomeFragment::class.java, null),
-                Pair(HomeLiveFragment::class.java, null),
-                Pair(HomeLiveFragment::class.java, null), // 占个坑，删除了索引会变
-                Pair(ThirdGamesFragment::class.java, Bundle().apply {
-                    putInt("position", 4)
-                    putString("GAME_CODE", "LIVE")
-                }),
-//                Pair(HomeSlotFragment::class.java, Bundle().apply { putInt("position", 5) }),
-                Pair(ThirdGamesFragment::class.java, Bundle().apply {
-                    putInt("position", 5)
-                    putString("GAME_CODE", "QP")
-                }),
-                Pair(ThirdGamesFragment::class.java, Bundle().apply {
-                    putInt("position", 6)
-                    putString("GAME_CODE", "CGCP")
-                })
-            ))
-        } else {
-            FragmentHelper(childFragmentManager, R.id.fl_content, arrayOf(
-                Pair(MainHomeFragment::class.java, null),
-                Pair(HomeLiveFragment::class.java, null),
-                Pair(HomeLiveFragment::class.java, null),// 占个坑，删除了索引会变
-                Pair(HomeElecFragment::class.java, null),
-                Pair(HomeSlotFragment::class.java, Bundle().apply { putInt("position", 5) }),
-            ))
-        }
+
+        FragmentHelper(childFragmentManager, R.id.fl_content, arrayOf(
+            Pair(MainHomeFragment::class.java, null),
+            Pair(HomeLiveFragment::class.java, null),
+            Pair(HomeLiveFragment::class.java, null),// 占个坑，删除了索引会变
+            Pair(HomeElecFragment::class.java, null),
+            Pair(HomeSlotFragment::class.java, Bundle().apply { putInt("position", 5) }),
+        ))
 
     }
 
