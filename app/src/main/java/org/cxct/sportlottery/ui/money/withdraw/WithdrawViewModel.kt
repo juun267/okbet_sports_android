@@ -348,7 +348,7 @@ class WithdrawViewModel(
         myWithdrawCardList?.forEach { bankCard ->
             if (dealType.type == bankCard.uwType
                 //paymaya是包含在ewallet里面的，所以需要多下面的判断
-                || (dealType.type == TransferType.E_WALLET.type && bankCard.uwType == TransferType.PAYMAYA.type)
+                || (dealType.type == TransferType.PAYMAYA.type && bankCard.bankCode == PAYMAYA)
             )
                 cardList.add(bankCard.apply { transferType = dealType })
         }
