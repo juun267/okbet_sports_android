@@ -20,6 +20,9 @@ import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.setWebViewCommonBackgroundColor
 import org.cxct.sportlottery.util.startLogin
+import org.cxct.sportlottery.view.webView.OkWebChromeClient
+import org.cxct.sportlottery.view.webView.OkWebView
+import org.cxct.sportlottery.view.webView.OkWebViewClient
 
 /**
  * Create by Simon Chang
@@ -47,7 +50,7 @@ open class LotteryActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
 
     @SuppressLint("WebViewApiAvailability")
-    fun setupWebView(webView: WebView) {
+    fun setupWebView(webView: OkWebView) {
 //        if (BuildConfig.DEBUG) WebView.setWebContentsDebuggingEnabled(true)
 //
 //        webView.setWebViewCommonBackgroundColor()
@@ -70,7 +73,7 @@ open class LotteryActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 //        settings.allowContentAccess = true
 //        settings.allowFileAccessFromFileURLs = true
 //        settings.allowUniversalAccessFromFileURLs = true
-        webView.webChromeClient = object : WebChromeClient() {
+        webView.webChromeClient = object : OkWebChromeClient() {
             override fun onCreateWindow(
                 view: WebView, isDialog: Boolean, isUserGesture: Boolean, resultMsg: Message,
             ): Boolean {
@@ -110,7 +113,7 @@ open class LotteryActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             }
         }
 
-        webView.webViewClient = object : WebViewClient() {
+        webView.webViewClient = object : OkWebViewClient() {
 
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)

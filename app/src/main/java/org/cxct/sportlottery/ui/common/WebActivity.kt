@@ -58,7 +58,11 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     private val bettingStation: BettingStation? by lazy { intent?.getSerializableExtra(BET_STATION) as? BettingStation }
     private var mUploadCallbackAboveL: ValueCallback<Array<Uri>>? = null
     private var mUploadMessage: ValueCallback<Uri?>? = null
-    private lateinit var viewBinding: ActivityWebBinding
+
+    private val viewBinding: ActivityWebBinding by lazy {
+        ActivityWebBinding.inflate(layoutInflater)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         init()
@@ -70,7 +74,6 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     open fun init() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
-        viewBinding = ActivityWebBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
         if (!mToolbarVisibility) custom_tool_bar.visibility = View.GONE else initToolBar()
         setCookie()
@@ -163,23 +166,20 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         }
 
 
-        viewBinding.okWebView.webViewClient = object : OkWebViewClient(
-            object : WebViewCallBack {
-                override fun pageStarted(view: View?, url: String?) {
-                    loading()
-                }
-
-                override fun pageFinished(view: View?, url: String?) {
-                    hideLoading()
-                }
-
-                override fun onError() {
-                }
+        webView.webViewClient = object : OkWebViewClient(object : WebViewCallBack {
+            override fun pageStarted(view: View?, url: String?) {
+                loading()
             }
-        ) {
+
+            override fun pageFinished(view: View?, url: String?) {
+                hideLoading()
+            }
+
+            override fun onError() {
+            }
+        }) {
             override fun shouldInterceptRequest(
-                view: WebView?,
-                request: WebResourceRequest?
+                view: WebView?, request: WebResourceRequest?
             ): WebResourceResponse? {
                 return super.shouldInterceptRequest(view, request)
             }
@@ -205,25 +205,20 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             ) {
                 //此方法是为了处理在5.0以上Https的问题，必须加上
                 //handler.proceed()
-                if (isFinishing)
-                    return
+                if (isFinishing) return
                 AlertDialog.Builder(this@WebActivity)
-                    .setMessage(android.R.string.httpErrorUnsupportedScheme)
-                    .setPositiveButton(
+                    .setMessage(android.R.string.httpErrorUnsupportedScheme).setPositiveButton(
                         "continue"
-                    ) { dialog, which -> handler.proceed() }
-                    .setNegativeButton(
+                    ) { dialog, which -> handler.proceed() }.setNegativeButton(
                         "cancel"
-                    ) { dialog, which -> handler.cancel() }
-                    .create()
-                    .show()
+                    ) { dialog, which -> handler.cancel() }.create().show()
             }
 
         }
 
 
         //H5调用系统下载
-        viewBinding.okWebView.setDownloadListener { url, _, _, _, _ ->
+        webView.setDownloadListener { url, _, _, _, _ ->
             kotlin.runCatching { Uri.parse(url) }.getOrNull()?.let {
                 val intent = Intent(Intent.ACTION_VIEW, it)
                 startActivity(intent)
@@ -232,7 +227,7 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     fun loadUrl(webView: WebView) {
-        viewBinding.okWebView.loadUrl(mUrl)
+        webView.loadUrl(mUrl)
     }
 
     private fun openImageChooserActivity() {
