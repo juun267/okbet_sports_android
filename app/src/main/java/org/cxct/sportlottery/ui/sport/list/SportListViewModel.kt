@@ -381,9 +381,9 @@ class SportListViewModel(
 
                     matchOdd.setupOddDiscount()
                     matchOdd.updateOddStatus()
-                    matchOdd.oddsSort = PlayCateMenuFilterUtils.filterOddsSort(matchOdd.matchInfo?.gameType,
-                            if (playCateMenuCode == MenuCode.CS.code) { MenuCode.CS.code } else { MenuCode.MAIN.code } )
-
+                    if (playCateMenuCode != MenuCode.CS.code) {
+                        matchOdd.oddsSort = PlayCateMenuFilterUtils.filterOddsSort(matchOdd.matchInfo?.gameType, MenuCode.MAIN.code)
+                    }
 
                     matchOdd.filterQuickPlayCate(matchType)
                     //波胆的数据获取方式
