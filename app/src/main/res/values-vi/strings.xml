@@ -901,7 +901,7 @@
     <string name="select_city">Chọn thành phố</string>
     <string name="outlets_address">Địa chỉ</string>
     <string name="appointment_time">Hẹn thời gian</string>
-    <string name="select_date">ngày tháng</string>
+    <string name="select_date">Ngày tháng</string>
     <string name="select_time">Thời gian</string>
 
     <!--region 20220714 新版投注單-->
@@ -1147,7 +1147,7 @@
     <string name="J902">Ngày sinh nhật</string>
     <string name="N848">Chọn nguồn tiền</string>
     <string name="N850">Chọn địa chỉ</string>
-
+    <string name="N849">Địa chỉ</string>
     <string name="bet_details_title" >Chi tiết tổ hợp xâu</string>
 
     <string name="set_phone_no">Đặt SĐT</string>
