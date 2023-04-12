@@ -207,13 +207,13 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
                 true)
         }
 
-        ll_hot_live_more.setOnClickListener { getHomeFragment().onTabClickByPosition(1)}
+        ll_hot_live_more.setOnClickListener { getHomeFragment().jumpToLive()}
 
         ll_hot_handicap_more.setOnClickListener {
             getMainTabActivity().jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)
         }
-        ll_hot_elect.setOnClickListener { getHomeFragment().onTabClickByPosition(4) }
-        ll_poker_more.setOnClickListener { getHomeFragment().onTabClickByPosition(5)}
+        ll_hot_elect.setOnClickListener { getHomeFragment().jumpToOKGames() }
+        ll_poker_more.setOnClickListener { getHomeFragment().jumpToOKGames()}
     }
 
     fun initToolBar() {
@@ -260,11 +260,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
             requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
                 putInt(PopImageDialog.DrawableResID, R.drawable.img_thirdgame)
             }).apply {
-                onClick = {
-                    getHomeFragment().onTabClickByPosition(
-                        HomeTabAdapter.getItems().indexOfFirst { it.name == R.string.home_on_game }
-                    )
-                }
+                onClick = { getHomeFragment().jumpToOKGames() }
                 onDismiss = {
                     MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
                 }

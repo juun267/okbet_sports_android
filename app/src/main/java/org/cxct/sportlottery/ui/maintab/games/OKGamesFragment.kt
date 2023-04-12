@@ -41,7 +41,7 @@ class OKGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVie
         fitsSystemStatus()
         ivMenuLeft.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
-            mainTabActivity().showLeftFrament(0, 0)
+            mainTabActivity().showLeftFrament(0, 5)
         }
     }
 }
