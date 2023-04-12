@@ -38,6 +38,7 @@ import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
 import org.cxct.sportlottery.ui.login.signUp.RegisterViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabViewModel
 import org.cxct.sportlottery.ui.maintab.MainViewModel
+import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintenance.MaintenanceViewModel
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechViewModel
@@ -148,6 +149,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { BetListViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { AuthViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { BindInfoViewModel(get(), get(), get()) }
+        viewModel { OKGamesViewModel(get(), get(), get(), get(), get(), get(), get()) }
     }
 
     private val repoModule = module {

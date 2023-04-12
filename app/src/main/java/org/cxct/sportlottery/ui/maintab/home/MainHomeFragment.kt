@@ -175,7 +175,6 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
             return
         }
 
-        Log.e("For Test", "=======>>> onHiddenChanged 111")
         viewModel.getLiveRoundCount()
         viewModel.getHotLiveList()
         homeToolbar.onRefreshMoney()

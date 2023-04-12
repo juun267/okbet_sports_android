@@ -34,7 +34,7 @@ import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MainHomeViewModel(
+open class MainHomeViewModel(
     androidContext: Application,
     userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
