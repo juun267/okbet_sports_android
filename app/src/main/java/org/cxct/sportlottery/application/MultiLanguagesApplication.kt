@@ -152,13 +152,8 @@ class MultiLanguagesApplication : Application() {
         viewModel { ForgetViewModel(get(), get(), get(), get()) }
         viewModel { BetListViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { AuthViewModel(get(), get(), get(), get(), get(), get(), get()) }
-<<<<<<< HEAD
-        viewModel { RegisterInfoViewModel(get(),get(), get(), get()) }
-        viewModel { BindInfoViewModel(get(), get(), get()) }
-=======
         viewModel { BindInfoViewModel(get(), get(), get()) }
         viewModel { RegisterInfoViewModel(get(),get(), get(), get()) }
->>>>>>> dev_bug_fix
     }
 
     private val repoModule = module {
