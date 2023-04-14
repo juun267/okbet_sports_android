@@ -17,6 +17,7 @@ import android.view.animation.*
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.fragment.app.DialogFragment
+import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.fragment_red_envelope_receive.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentRedEnvelopeReceiveBinding
@@ -29,19 +30,25 @@ import java.util.*
 
 class RedEnvelopeReceiveDialog(
 ) : BaseDialog<RedEnveLopeModel>(RedEnveLopeModel::class) {
-    private val mHandler = MyHandler(WeakReference(this))
 
     init {
         setStyle(R.style.FullScreen)
     }
 
+    private val mHandler = MyHandler(WeakReference(this))
+
     private val redenpId by lazy {
-        arguments?.getInt("redenpId")
+        arguments?.getInt(REDENP_ID)
     }
 
-    constructor(redenpId: Int?) : this() {
-        arguments = Bundle().apply {
-            putInt("redenpId", redenpId ?: 0)
+    companion object {
+        const val REDENP_ID = "redenpId"
+
+        @JvmStatic
+        fun newInstance(redenpId: Int?) = RedEnvelopeReceiveDialog().apply {
+            arguments = Bundle().apply {
+                putInt(REDENP_ID, redenpId ?: 0)
+            }
         }
     }
 
@@ -76,10 +83,6 @@ class RedEnvelopeReceiveDialog(
         FragmentRedEnvelopeReceiveBinding.inflate(layoutInflater)
     }
 
-    init {
-        setStyle(R.style.FullScreen)
-    }
-
     //  private val BARRAGE_GAP_MIN_DURATION: Int = 1200
     private val BARRAGE_GAP_DURATION: Long = 1200
     private val BARRAGE_GAP_START_DURATION: Long = 100
@@ -104,6 +107,7 @@ class RedEnvelopeReceiveDialog(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        ImmersionBar.with(this).init();
         initView()
         initObserve()
     }

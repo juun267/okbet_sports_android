@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.util.Log
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
@@ -83,7 +84,10 @@ class MultiLanguagesApplication : Application() {
     private val sharedPref: SharedPreferences by lazy {
         getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
-    private val _userInfo = MutableLiveData<UserInfo?>()
+    private val _userInfo by lazy {
+        val value = KvUtils.getObject(UserInfo::class.java)
+        return@lazy if (value == null) MutableLiveData<UserInfo?>() else MutableLiveData<UserInfo?>(value)
+    }
     val userInfo: LiveData<UserInfo?>
         get() = _userInfo
     private var isAgeVerifyNeedShow = true
@@ -148,8 +152,13 @@ class MultiLanguagesApplication : Application() {
         viewModel { ForgetViewModel(get(), get(), get(), get()) }
         viewModel { BetListViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { AuthViewModel(get(), get(), get(), get(), get(), get(), get()) }
+<<<<<<< HEAD
         viewModel { RegisterInfoViewModel(get(),get(), get(), get()) }
         viewModel { BindInfoViewModel(get(), get(), get()) }
+=======
+        viewModel { BindInfoViewModel(get(), get(), get()) }
+        viewModel { RegisterInfoViewModel(get(),get(), get(), get()) }
+>>>>>>> dev_bug_fix
     }
 
     private val repoModule = module {
@@ -270,6 +279,7 @@ class MultiLanguagesApplication : Application() {
     }
 
     fun saveUserInfo(userInfoData: UserInfo?) {
+        KvUtils.putObject(UserInfo::class.java.name, userInfoData)
         _userInfo.postValue(userInfoData)
     }
 
@@ -313,6 +323,10 @@ class MultiLanguagesApplication : Application() {
         private var instance: MultiLanguagesApplication? = null
         lateinit var mInstance: MultiLanguagesApplication
         const val isGooglePlayVersion = BuildConfig.FLAVOR.equals("google")
+
+        fun stringOf(@StringRes strId: Int): String {
+            return mInstance.getString(strId)
+        }
 
         private val loginSharedPref: SharedPreferences by lazy {
             mInstance.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
