@@ -563,11 +563,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
         viewModel.bankAddResult.observe(this.viewLifecycleOwner) { result ->
             if (result.success) {
-                if (result.content?.authorizeUrl?.isNotEmpty() == true) {
-                    JumpUtil.toExternalWeb(requireContext(), result.content?.authorizeUrl)
-                    mNavController.popBackStack()
-                    return@observe
-                }
                 if (mBankCardStatus) {
                     val promptMessage = when (transferType) {
                         TransferType.BANK -> getString(R.string.text_bank_card_modify_success)
