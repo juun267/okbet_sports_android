@@ -402,7 +402,7 @@
     <string name="hint_please_enter_withdraw_password">请输入提款密码</string>
     <string name="add_credit_card">新增银行卡</string>
     <string name="add_crypto_card">新增虚拟币地址</string>
-    <string name="add_e_wallet">新增eWallet银行</string>
+    <string name="add_e_wallet">新增eWallet</string>
     <string name="add_credit_or_virtual">新增%1$s</string>
     <string name="create_bank">开户银行</string>
     <string name="create_name">持卡人姓名</string>
@@ -428,13 +428,14 @@
     <string name="text_bank_card_delete_success">银行卡删除成功</string>
     <string name="text_crypto_delete_success">虚拟币删除成功</string>
     <string name="text_e_wallet_delete_success">eWallet删除成功</string>
-    <string name="text_pay_maya_delete_success">Paymaya删除成功</string>
+    <string name="text_pay_maya_delete_success">PayMaya删除成功</string>
     <string name="text_bank_card_add_success">银行卡绑定成功</string>
     <string name="text_e_wallet_add_success">eWallet绑定成功</string>
-    <string name="text_paymaya_add_success">Paymaya绑定成功</string>
+    <string name="text_paymaya_add_success">PayMaya绑定成功</string>
     <string name="text_crypto_add_success">虚拟币绑定成功</string>
     <string name="text_bank_card_modify_success">编辑银行卡成功</string>
     <string name="text_e_wallet_modify_success">编辑eWallet成功</string>
+    <string name="text_pay_maya_modify_success">编辑PayMaya成功</string>
     <string name="text_crypto_modify_success">编辑虚拟币成功</string>
     <string name="bet_receipt_bet_quota">投注金额:</string>
     <string name="bet_info_list_win_quota">可赢金额:</string>
@@ -1007,7 +1008,7 @@
     <string name="remove_account_warning">您确定要注销当前账号吗？</string>
     <string name="km">千米</string>
     <string name="outlet">投注站</string>
-    <string name="my_bank_card">我的%1$s</string>
+    <string name="my_bank_card">我的%1$s%2$s</string>
     <string name="local_time">当地时间:</string>
     <string name="half_first_short">上</string>
     <string name="half_second_short">下</string>
@@ -1206,7 +1207,7 @@
     <string name="phone_no_error">手机号码需为09开头的11位数字</string>
     <string name="tail_number">尾号</string>
     <string name="edit_paymaya">修改 PayMaya</string>
-    <string name="add_paymaya">增加PayMaya</string>
+    <string name="add_paymaya">新增PayMaya</string>
     <string name="please_setting_paymaya">请先设置你的PayMaya</string>
     <string name="J486">提款金额大于账号余额</string>
     <string name="J485">提款个数格式或数值错误</string>
