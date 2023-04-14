@@ -8,19 +8,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
-<<<<<<< HEAD
 import org.cxct.sportlottery.common.event.SingleEvent
 import org.cxct.sportlottery.common.extentions.runWithCatch
-=======
-
-//<<<<<<< HEAD
-import org.cxct.sportlottery.common.extentions.runWithCatch
-
-//=======
-import org.cxct.sportlottery.common.event.SingleEvent
-
-//>>>>>>> OKN-4688-登录完善资料
->>>>>>> dev_bug_fix
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -130,39 +119,11 @@ class LoginViewModel(
             }
 
             loginResult?.let { result ->
-<<<<<<< HEAD
                 //检查是否要完善资料
                 checkBasicInfo(result) {
                     //继续登录
                     if (result.loginData?.deviceValidateStatus == 1)
                         runWithCatch { userInfoRepository.getUserInfo() }
-=======
-
-                //用户完善信息开关
-                val infoSwitchResult =
-                    doNetwork(androidContext) { loginRepository.getUserInfoSwitch() }
-                //是否已完善信息
-                val userInfoCheck = doNetwork(androidContext) { loginRepository.getUserInfoCheck() }
-
-                if (infoSwitchResult != null && userInfoCheck != null) {
-                    val isSwitch = infoSwitchResult.success
-                    val isFinished = userInfoCheck.success
-                    result.loginData?.let {
-                        //是否需要完善信息
-                        if (!checkNeedCompleteInfo(isSwitch, isFinished)) {
-                            //跳转到完善页面
-                            registerInfoEvent.post(result)
-                        } else {
-                            // TODO 20220108 更新UserInfo by Hewie
-                            //若已經驗證過則直接獲取最新的用戶資料, 未驗證需等待驗證後
-                            if (result.loginData?.deviceValidateStatus == 1)
-                                runWithCatch { userInfoRepository.getUserInfo() }
-                            _loginResult.postValue(result)
-                            AFInAppEventUtil.login(result.loginData?.uid.toString())
-                        }
-                    }
-                } else {
->>>>>>> dev_bug_fix
                     _loginResult.postValue(result)
                     AFInAppEventUtil.login(result.loginData?.uid.toString())
                 }
@@ -176,7 +137,6 @@ class LoginViewModel(
             //預設存帳號
             loginRepository.account = loginRequest.account
 
-<<<<<<< HEAD
             //登录
             val loginResult = doNetwork(androidContext) { loginRepository.loginOrReg(loginRequest) }
             loginResult?.let { result ->
@@ -192,62 +152,16 @@ class LoginViewModel(
                         AFInAppEventUtil.login(result.loginData?.uid.toString())
                     }
                 }
-=======
-                    //登录
-                    val loginResult =
-                        doNetwork(androidContext) { loginRepository.loginOrReg(loginRequest) }
-                    loginResult?.let { result ->
-                        //用户完善信息开关
-                        val infoSwitchResult =
-                            doNetwork(androidContext) { loginRepository.getUserInfoSwitch() }
-                        //是否已完善信息
-                        val userInfoCheck =
-                            doNetwork(androidContext) { loginRepository.getUserInfoCheck() }
 
-                        if (infoSwitchResult != null && userInfoCheck != null) {
-                            val isSwitch = infoSwitchResult.success
-                            val isFinished = userInfoCheck.success
-
-                            result.loginData?.let { loginData ->
-                                //是否需要完善信息
-                                if (!checkNeedCompleteInfo(isSwitch, isFinished)) {
-                                    //跳转到完善页面
-                                    registerInfoEvent.post(result)
-                                } else {
-                                    //继续登录
-                                    runWithCatch { userInfoRepository.getUserInfo() }
-                                    _loginResult.postValue(result)
-                                    if (loginData?.ifnew == true) {
-                                        AFInAppEventUtil.register("username")
-                                    } else {
-                                        AFInAppEventUtil.login(result.loginData?.uid.toString())
-                                    }
-                                }
-                            }
-                        } else {
-                            _loginResult.postValue(result)
-                            loginRepository.clear()
-                            hideLoading()
-//                            >>>>>>> OKN-4688-登录完善资料
-                        }
->>>>>>> dev_bug_fix
-
-                    }
-
-                }
             }
-<<<<<<< HEAD
+
         }
     }
-=======
-
->>>>>>> dev_bug_fix
 
     fun loginGoogle(token: String) {
         loading()
         viewModelScope.launch {
             //預設存帳號
-<<<<<<< HEAD
             val loginResult = doNetwork(androidContext) {
                 loginRepository.googleLogin(
                     token,
@@ -262,51 +176,9 @@ class LoginViewModel(
                     _loginResult.postValue(result)
                     AFInAppEventUtil.login(result.loginData?.uid.toString())
                 }
-=======
-                val loginResult = doNetwork(androidContext) {
-                    loginRepository.googleLogin(
-                        token,
-                        inviteCode = Constants.getInviteCode()
-                    )
-                }
-                //用户完善信息开关
-                val infoSwitchResult =
-                    doNetwork(androidContext) { loginRepository.getUserInfoSwitch() }
-                //是否已完善信息
-                val userInfoCheck =
-                    doNetwork(androidContext) { loginRepository.getUserInfoCheck() }
-
-                loginResult?.let { result ->
-                    if (infoSwitchResult != null && userInfoCheck != null) {
-                        val isSwitch = infoSwitchResult.success
-                        val isFinished = userInfoCheck.success
-                        hideLoading()
-
-                        result.loginData?.let { loginData ->
-                            //是否需要完善信息开关
-                            if (!checkNeedCompleteInfo(isSwitch, isFinished)) {
-                                //跳转到完善页面
-                                registerInfoEvent.post(loginResult)
-                            } else {
-                                //继续登录
-                                runWithCatch { userInfoRepository.getUserInfo() }
-                                _loginResult.postValue(result)
-                                AFInAppEventUtil.login(loginData.uid.toString())
-                            }
-                        }
-
-                    } else {
-                        //跳转到完善页面
-                        _loginResult.postValue(result)
-                        loginRepository.clear()
-                        hideLoading()
-                    }
-                }
-
->>>>>>> dev_bug_fix
             }
         }
-
+    }
 
     /**
      * 检查用户完善基本信息
@@ -317,8 +189,8 @@ class LoginViewModel(
             return
         }
         //本地缓存的是否完善过开关
-        val loginSwitch=SPUtil.getLoginInfoSwitch()
-        if(loginSwitch){
+        val loginSwitch = SPUtil.getLoginInfoSwitch()
+        if (loginSwitch) {
             block()
             return
         }
@@ -595,17 +467,7 @@ class LoginViewModel(
     /**
      * 是否需要完善基础信息
      */
-<<<<<<< HEAD
     private fun checkNeedCompleteInfo(isComplete: Boolean, isFinished: Boolean): Boolean {
         return isComplete && !isFinished
-=======
-    private fun checkNeedCompleteInfo(
-        isComplete: Boolean,
-        isFinished: Boolean
-    ): Boolean {
-
-        //开关=true  并且未完善信息
-        return isComplete && isFinished
->>>>>>> dev_bug_fix
     }
 }

@@ -20,11 +20,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
-<<<<<<< HEAD
 import org.cxct.sportlottery.common.event.MenuEvent
-=======
 import org.cxct.sportlottery.common.crash.FirebaseLog
->>>>>>> dev_bug_fix
 import org.cxct.sportlottery.common.event.RegisterInfoEvent
 import org.cxct.sportlottery.databinding.ActivityLoginOkBinding
 import org.cxct.sportlottery.common.extentions.startActivity
