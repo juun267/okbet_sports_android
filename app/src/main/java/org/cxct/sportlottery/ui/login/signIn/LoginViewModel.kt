@@ -8,10 +8,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
-
-import org.cxct.sportlottery.common.extentions.runWithCatch
-
 import org.cxct.sportlottery.common.event.SingleEvent
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -154,14 +152,16 @@ class LoginViewModel(
                         AFInAppEventUtil.login(result.loginData?.uid.toString())
                     }
                 }
+
             }
+
         }
     }
-
 
     fun loginGoogle(token: String) {
         loading()
         viewModelScope.launch {
+            //預設存帳號
             val loginResult = doNetwork(androidContext) {
                 loginRepository.googleLogin(
                     token,
@@ -178,9 +178,7 @@ class LoginViewModel(
                 }
             }
         }
-
     }
-
 
     /**
      * 检查用户完善基本信息
@@ -191,8 +189,8 @@ class LoginViewModel(
             return
         }
         //本地缓存的是否完善过开关
-        val loginSwitch=SPUtil.getLoginInfoSwitch()
-        if(loginSwitch){
+        val loginSwitch = SPUtil.getLoginInfoSwitch()
+        if (loginSwitch) {
             block()
             return
         }

@@ -10,7 +10,7 @@ import org.cxct.sportlottery.common.proguards.KeepMembers
 @Parcelize
 @JsonClass(generateAdapter = true)
 @KeepMembers
-data class WithdrawAuthorizeResult(
+data class WithdrawAddContent(
     @Json(name = "authorizeUrl")
     val authorizeUrl: String?,
 ) : Parcelable {

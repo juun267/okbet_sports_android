@@ -8,7 +8,7 @@ import org.cxct.sportlottery.network.common.BaseResult
 
 @JsonClass(generateAdapter = true)
 @KeepMembers
-data class WithdrawAddResultData(
+data class WithdrawAddResult(
     @Json(name = "code")
     override val code: Int,
     @Json(name = "msg")
@@ -16,5 +16,5 @@ data class WithdrawAddResultData(
     @Json(name = "success")
     override val success: Boolean,
     @Json(name = "t")
-    val content: WithdrawAuthorizeResult?,
+    val content: WithdrawAddContent?,
 ) : BaseResult()

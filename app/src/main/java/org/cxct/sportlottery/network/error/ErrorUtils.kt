@@ -148,7 +148,7 @@ import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.network.user.setWithdrawInfo.WithdrawInfoResult
 import org.cxct.sportlottery.network.vip.growth.LevelGrowthResult
 import org.cxct.sportlottery.network.vip.thirdRebates.ThirdRebatesResult
-import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResultData
+import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import retrofit2.Converter
 import retrofit2.Response
 import timber.log.Timber
@@ -405,7 +405,7 @@ object ErrorUtils {
                     }
                     (url.contains(WITHDRAW_ADD)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return WithdrawAddResultData(it.code, it.msg, it.success, null) as T
+                        return WithdrawAddResult(it.code, it.msg, it.success,null) as T
                     }
                     (url.contains(USER_RECHARGE_ADD)) -> {
                         @Suppress("UNCHECKED_CAST")
