@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.games
 
+import android.graphics.Paint
 import android.os.Bundle
 import android.text.Html
 import android.view.LayoutInflater
@@ -98,7 +99,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     private fun setUnderline(vararg view:TextView){
         view.forEach {
-            it.text = Html.fromHtml("<u>"+it.text+"</u>")
+            it.paint.flags = Paint. UNDERLINE_TEXT_FLAG; //下划线
+            it.paint.isAntiAlias = true;//抗锯齿
         }
     }
 }
