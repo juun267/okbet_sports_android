@@ -39,7 +39,7 @@
         android:background="@color/color_e0e3ee"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvResposibleGaming" />
+        app:layout_constraintTop_toBottomOf="@+id/tvResponsibleGaming" />
 
     <View
         android:layout_marginTop="20dp"
@@ -139,7 +139,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvPrivacyPolicy" />
 
     <TextView
-        android:id="@+id/tvResposibleGaming"
+        android:id="@+id/tvResponsibleGaming"
         android:text="@string/register_responsibilities"
         style="@style/text_style_responsible"
         app:layout_constraintStart_toStartOf="@+id/tvTermConditions"
@@ -172,6 +172,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:gravity="center"
+        android:paddingHorizontal="10dp"
         android:textColor="@color/color_6D7693"
         android:text="OKbet is a Registered Trade Mark, Brand and Business Name Owned by Ekxinum Inc.Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAGCOR)."
         app:layout_constraintEnd_toEndOf="@+id/view4"
