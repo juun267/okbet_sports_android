@@ -4,6 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <org.cxct.sportlottery.ui.maintab.games.view.OKGamesTopView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <!--part-1-->
 
     <!--part-2-->
