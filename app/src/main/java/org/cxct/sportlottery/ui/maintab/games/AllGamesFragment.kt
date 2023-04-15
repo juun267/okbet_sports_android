@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.include_part3.*
 import android.widget.TextView
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.listener.OnItemChildClickListener
@@ -22,6 +24,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     private lateinit var binding: FragmentAllOkgamesBinding
     private val gameAllAdapter by lazy { GameCategroyAdapter(listOf()) }
+    private val providersAdapter by lazy { OkGameProvidersAdapter() }
+    private val gameRecordAdapter by lazy { OkGameRecordAdapter() }
 
     private fun okGamesFragment() = parentFragment as OKGamesFragment
     override fun createRootView(
@@ -33,6 +37,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     override fun onBindView(view: View) {
         onBindGamesView()
+
+        onBindPart3View()
         onBindPart5View()
     }
 
@@ -47,7 +53,29 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         }
     }
 
+    private fun onBindPart3View() {
+        binding.include3.apply {
+            rvOkgameProviders.adapter = providersAdapter
+
+
+            rvOkgameRecord.adapter = gameRecordAdapter
+            rvOkgameRecord.itemAnimator = DefaultItemAnimator()
+            receiver.recordNew.observe(viewLifecycleOwner) {
+                if (it != null) {
+                    if (gameRecordAdapter.data.size >= 10) {
+                        gameRecordAdapter.removeAt(gameRecordAdapter.data.size - 1)
+                    }
+                    gameRecordAdapter.addData(0,it)
+                }
+            }
+
+        }
+
+
+    }
+
     private fun onBindPart5View() {
+        val include3 = binding.include3
         val include5 = binding.include5
         val tvPrivacyPolicy = include5.tvPrivacyPolicy
         val tvTermConditions = include5.tvTermConditions
@@ -79,9 +107,11 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 }
 
                 R.id.tvResponsibleGaming -> {
-                    JumpUtil.toInternalWeb(requireContext(),
+                    JumpUtil.toInternalWeb(
+                        requireContext(),
                         Constants.getDutyRuleUrl(requireContext()),
-                        getString(R.string.responsible))
+                        getString(R.string.responsible)
+                    )
                 }
 
                 R.id.tvLiveChat, R.id.tvContactUs -> {

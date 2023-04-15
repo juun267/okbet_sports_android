@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_marginLeft="12dp"
+    android:layout_marginRight="12dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_okgame_p" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="providers"
+            android:textColor="#0D2245"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/iv_providers_left"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_okgame_arrow_left" />
+
+        <View
+            android:layout_width="8dp"
+            android:layout_height="0dp" />
+
+        <ImageView
+            android:id="@+id/iv_providers_right"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_okgame_arrow_right" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_okgame_providers"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_okgame_p3_porviders" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_okgame_p" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="providers"
+            android:textColor="#0D2245"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rbtn_lb"
+            android:layout_width="102dp"
+            android:layout_height="30dp"
+            android:background="@drawable/selector_tab_okgame_p3"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:text="latest bets"
+            android:textColor="@color/color_white_gray" />
+
+        <View
+            android:layout_width="8dp"
+            android:layout_height="0dp" />
+
+        <RadioButton
+            android:id="@+id/rbtn_lbw"
+            android:layout_width="102dp"
+            android:layout_height="30dp"
+            android:background="@drawable/selector_tab_okgame_p3"
+            android:button="@null"
+            android:gravity="center"
+            android:text="latest big wins"
+            android:textColor="@color/color_white_gray" />
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_okgame_p3"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="18dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Games"
+            android:textColor="@color/color_14366B"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="18dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Player"
+            android:textColor="@color/color_14366B"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="18dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Bet Amount"
+            android:textColor="@color/color_14366B"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Profit Amount"
+            android:textColor="@color/color_14366B"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_okgame_record"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_okgame_p3_record" />
+
+</LinearLayout>

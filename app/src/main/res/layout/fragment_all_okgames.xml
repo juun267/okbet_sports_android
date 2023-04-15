@@ -9,6 +9,13 @@
     <!--part-2-->
 
     <!--part-3-->
+
+    <include
+        android:id="@+id/include3"
+        layout="@layout/include_part3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <include
         android:id="@+id/include_games_all"
         layout="@layout/include_view_okgames_all"
@@ -23,5 +30,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp" />
+
 
 </LinearLayout>

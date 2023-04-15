@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="44dp"
+    android:orientation="horizontal"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp">
+
+
+    <TextView
+        android:id="@+id/item_okgame_name"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginRight="18dp"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@color/color_14366B"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        tools:text="game name" />
+
+    <TextView
+        android:id="@+id/item_okgame_user_nick"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginRight="18dp"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@color/color_14366B"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        tools:text="bibia0299" />
+
+    <TextView
+
+        android:id="@+id/item_okgame_bet_amount"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginRight="18dp"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@color/color_14366B"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        tools:text="9,805.00" />
+
+    <TextView
+        android:id="@+id/item_okgame_profit"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@color/color_14366B"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        tools:text="-8,125,04" />
+
+</LinearLayout>

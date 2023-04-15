@@ -105,7 +105,6 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
             //判断用户是否手动设置了语言
 
             val languageArr = it?.configData?.supportLanguage?.split(",")
-            LogUtil.d("当前语言 $languageArr")
             val systemLanStr: String =
                 LanguageManager.getSelectLanguage(applicationContext).key
             //1判断当前系统语言我们是否支持 如果支持使用系统语言
