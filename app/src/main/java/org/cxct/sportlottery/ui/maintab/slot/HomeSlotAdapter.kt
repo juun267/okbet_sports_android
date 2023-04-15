@@ -15,7 +15,10 @@ class HomeSlotAdapter: BindingAdapter<QueryGameEntryData, ItemHomeSlotBinding>()
 
         ivPeople.load(item.entryImage)
         tvFirmName.text = item.firmName
-        tvStatus.setText(if (item.gameCode == "TPG") R.string.new_games else R.string.new_games_beta)
+        tvStatus.setText(if (
+            item.gameCode == "TPG"  ||
+                    item.gameCode == "FunkyGame"
+        ) R.string.new_games else R.string.new_games_beta)
         tvGameName.gone()
     }
 }
