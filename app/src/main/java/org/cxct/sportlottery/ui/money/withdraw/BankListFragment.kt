@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_bank_list.*
 import kotlinx.android.synthetic.main.fragment_bank_list.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.money.config.PAYMAYA
 import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.ui.base.BaseFragment
 
@@ -27,11 +28,21 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         BankCardListAdapter(
             BankCardListClickListener(
                 editBankListener = {
-                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(it, it.transferType, null)
+                    val transferType =
+                        if (it.transferType == TransferType.E_WALLET && it.bankCode == PAYMAYA) TransferType.PAYMAYA else it.transferType
+                    val action =
+                        BankListFragmentDirections.actionBankListFragmentToBankCardFragment(it,
+                            transferType,
+                            null)
                     mNavController.navigate(action)
                 },
                 editCryptoListener = {
-                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(it, it.transferType, null)
+                    val transferType =
+                        if (it.transferType == TransferType.E_WALLET && it.bankCode == PAYMAYA) TransferType.PAYMAYA else it.transferType
+                    val action =
+                        BankListFragmentDirections.actionBankListFragmentToBankCardFragment(it,
+                            transferType,
+                            null)
                     mNavController.navigate(action)
                 }
             ))
