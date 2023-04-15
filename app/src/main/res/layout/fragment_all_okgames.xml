@@ -9,7 +9,11 @@
     <!--part-2-->
 
     <!--part-3-->
-
+    <include
+        android:id="@+id/include_games_all"
+        layout="@layout/include_view_okgames_all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <!--part-4-->
 
     <!--part-5-->

@@ -19,7 +19,7 @@ class GameCategroyAdapter(data: List<List<QueryGameEntryData>>) :
                 layoutManager = SocketLinearManager(context, RecyclerView.HORIZONTAL, false)
                 if (itemDecorationCount == 0)
                     addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_10))
-                adapter = GameChildAdapter(item)
+                adapter = GameChildAdapter(listOf())
             }
         }
     }
