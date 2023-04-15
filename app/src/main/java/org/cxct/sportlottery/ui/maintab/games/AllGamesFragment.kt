@@ -1,9 +1,11 @@
 package org.cxct.sportlottery.ui.maintab.games
 
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import kotlinx.android.synthetic.main.fragment_about_us.linear_about_us
 import kotlinx.android.synthetic.main.fragment_about_us.linear_privacy
 import kotlinx.android.synthetic.main.fragment_about_us.linear_responsible
@@ -40,13 +42,27 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     private fun onBindPart5View() {
         val include5 = binding.include5
+        val tvPrivacyPolicy = include5.tvPrivacyPolicy
+        val tvTermConditions = include5.tvTermConditions
+        val tvResponsibleGaming = include5.tvResponsibleGaming
+        val tvLiveChat = include5.tvLiveChat
+        val tvContactUs = include5.tvContactUs
+        val tvFaqs = include5.tvFaqs
+        setUnderline(
+            tvPrivacyPolicy,
+            tvTermConditions,
+            tvResponsibleGaming,
+            tvLiveChat,
+            tvContactUs,
+            tvFaqs
+        )
         setOnClickListener(
-            include5.tvPrivacyPolicy,
-            include5.tvTermConditions,
-            include5.tvResponsibleGaming,
-            include5.tvLiveChat,
-            include5.tvContactUs,
-            include5.tvFaqs
+            tvPrivacyPolicy,
+            tvTermConditions,
+            tvResponsibleGaming,
+            tvLiveChat,
+            tvContactUs,
+            tvFaqs
         ) {
             when (it.id) {
                 R.id.tvPrivacyPolicy -> {
@@ -78,5 +94,11 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             }
         }
 
+    }
+
+    private fun setUnderline(vararg view:TextView){
+        view.forEach {
+            it.text = Html.fromHtml("<u>"+it.text+"</u>")
+        }
     }
 }
