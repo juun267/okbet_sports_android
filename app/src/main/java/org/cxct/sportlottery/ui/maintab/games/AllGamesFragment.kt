@@ -4,10 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.fragment_about_us.linear_about_us
+import kotlinx.android.synthetic.main.fragment_about_us.linear_privacy
+import kotlinx.android.synthetic.main.fragment_about_us.linear_responsible
+import kotlinx.android.synthetic.main.fragment_about_us.linear_terms
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.setOnClickListener
+import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.FragmentAllOkgamesBinding
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
+import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.setVisibilityByMarketSwitch
 
 // OkGames所有分类
 class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesViewModel::class) {
@@ -35,21 +43,24 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         setOnClickListener(
             include5.tvPrivacyPolicy,
             include5.tvTermConditions,
-            include5.tvResposibleGaming,
+            include5.tvResponsibleGaming,
             include5.tvLiveChat,
             include5.tvContactUs,
             include5.tvFaqs
         ) {
             when (it.id) {
                 R.id.tvPrivacyPolicy -> {
-
+                    JumpUtil.toInternalWeb(requireContext(),
+                        Constants.getPrivacyRuleUrl(requireContext()),getString(R.string.privacy_policy))
                 }
 
                 R.id.tvTermConditions -> {
-
+                    JumpUtil.toInternalWeb(requireContext(),
+                        Constants.getAgreementRuleUrl(requireContext()),
+                        getString(R.string.terms_conditions))
                 }
 
-                R.id.tvResposibleGaming -> {
+                R.id.tvResponsibleGaming -> {
 
                 }
 
@@ -62,7 +73,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 }
 
                 R.id.tvFaqs -> {
-
+                    JumpUtil.toInternalWeb(requireContext(),Constants.getFAQsUrl(requireContext()),getString(R.string.faqs))
                 }
             }
         }
