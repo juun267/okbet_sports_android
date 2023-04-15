@@ -37,7 +37,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
             rvGamesAll.adapter = gameAllAdapter
             gameAllAdapter.setOnItemChildClickListener(OnItemChildClickListener { adapter, view, position ->
-
+                okGamesFragment().showGameResult(mutableListOf())
             })
         }
     }

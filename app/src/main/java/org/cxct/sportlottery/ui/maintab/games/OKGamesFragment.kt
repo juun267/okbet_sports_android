@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.gyf.immersionbar.ImmersionBar
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.fitsSystemStatus
 import org.cxct.sportlottery.databinding.FragmentOkgamesBinding
+import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.EventBusUtil
@@ -33,7 +33,7 @@ class OKGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVie
 
     override fun onBindView(view: View) {
         initToolBar()
-        fragmentHelper.showFragment(0)
+        showGameAll()
     }
 
     private fun initToolBar() = binding.homeToolbar.run {
@@ -43,5 +43,14 @@ class OKGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVie
             EventBusUtil.post(MenuEvent(true))
             mainTabActivity().showLeftFrament(0, 5)
         }
+    }
+
+    open fun showGameResult(list: MutableList<QueryGameEntryData>) {
+        (fragmentHelper.getFragment(1) as PartGamesFragment).setItemList(list)
+        fragmentHelper.showFragment(1)
+    }
+
+    open fun showGameAll() {
+        fragmentHelper.showFragment(0)
     }
 }

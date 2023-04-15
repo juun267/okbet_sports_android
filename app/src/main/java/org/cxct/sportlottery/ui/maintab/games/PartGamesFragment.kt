@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.databinding.FragmentPartOkgamesBinding
+import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
@@ -15,15 +16,23 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesViewModel::class) {
 
     private lateinit var binding: FragmentPartOkgamesBinding
-    private inline fun okgamesFragment() = parentFragment as OKGamesFragment
-    private val gameChildAdapter by lazy { GameChildAdapter(listOf()) }
-    override fun createRootView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    private inline fun okGamesFragment() = parentFragment as OKGamesFragment
+    private val gameChildAdapter by lazy { GameChildAdapter(dataList) }
+    private var dataList = mutableListOf<QueryGameEntryData>()
+    override fun createRootView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
         binding = FragmentPartOkgamesBinding.inflate(layoutInflater)
         return binding.root
     }
 
     override fun onBindView(view: View) {
         binding.apply {
+            tvTag.setOnClickListener {
+                okGamesFragment().showGameAll()
+            }
             rvGamesSelect.apply {
                 layoutManager = GridLayoutManager(requireContext(), 3)
                 addItemDecoration(GridSpacingItemDecoration(3, 10.dp, false))
@@ -32,6 +41,14 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
                 })
             }
+        }
+    }
+
+    fun setItemList(list: MutableList<QueryGameEntryData>) {
+        dataList.clear()
+        dataList.addAll(list)
+        if (isAdded) {
+            gameChildAdapter.notifyDataSetChanged()
         }
     }
 
