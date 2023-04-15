@@ -32,6 +32,7 @@ import org.cxct.sportlottery.ui.money.withdraw.BankActivity.Companion.TransferTy
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
 import org.cxct.sportlottery.util.MoneyManager.getCryptoIconByCryptoName
+import kotlin.math.min
 
 /**
  * @app_destination 提款-tab
@@ -267,7 +268,8 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         btn_withdraw.setTitleLetterSpacing()
 
         et_withdrawal_amount.getAllButton {
-            it.setText(viewModel.getWithdrawAmountLimit().max.toLong().toString())
+            it.setText(min(viewModel.getWithdrawAmountLimit().max,
+                viewModel.userMoney.value?.toDouble() ?: 0.0).toString())
             et_withdrawal_amount.et_input.apply { setSelection(this.length()) }
         }
     }
