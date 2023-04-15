@@ -334,7 +334,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     //mmkv
     implementation 'com.tencent:mmkv:1.2.13'
-    implementation 'com.github.FlyJingFish:GradientTextView:1.0.7'
+    implementation 'com.github.FlyJingFish:GradientTextView:1.0.9'
 
     //https://developers.facebook.com/docs/facebook-login/android
     implementation 'com.facebook.android:facebook-login:latest.release'
