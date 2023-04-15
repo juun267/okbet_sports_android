@@ -1,13 +1,23 @@
 package org.cxct.sportlottery.network.sport
 
+import com.chad.library.adapter.base.entity.node.BaseNode
+
+
 data class SearchResult(
     var sportTitle: String = "",
     var gameType:String = "",
-    var searchResultLeague:List<SearchResultLeague> = mutableListOf()
+    var searchResultLeague:MutableList<SearchResultLeague> = mutableListOf(),
+): BaseNode() {
 
-) {
+    override val childNode: MutableList<BaseNode>?
+        get() = searchResultLeague as MutableList<BaseNode>?
+
     data class SearchResultLeague(
         var league:String = "",
-        var leagueMatchList: List<SearchResponse.Row.LeagueMatch.MatchInfo> = mutableListOf(),
-    )
+        var leagueMatchList: MutableList<SearchResponse.Row.LeagueMatch.MatchInfo> = mutableListOf(),
+    ): BaseNode() {
+
+        override val childNode: MutableList<BaseNode>?
+            get() = leagueMatchList as MutableList<BaseNode>?
+    }
 }

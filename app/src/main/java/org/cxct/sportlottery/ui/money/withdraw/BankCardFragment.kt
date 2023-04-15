@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.fragment_bank_card.*
 import kotlinx.android.synthetic.main.fragment_bank_card.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemListviewBankCardBinding
+import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.money.config.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
@@ -93,14 +94,20 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 when (transferType) {
                     TransferType.BANK -> (activity as BankActivity).changeTitle(LocalUtils.getString(R.string.edit_bank_card))
                     TransferType.CRYPTO -> (activity as BankActivity).changeTitle(LocalUtils.getString(R.string.edit_crypto_card))
-                    TransferType.E_WALLET -> (activity as BankActivity).changeTitle(LocalUtils.getString(R.string.edit_e_wallet))
+                    TransferType.E_WALLET -> (activity as BankActivity).changeTitle(LocalUtils.getString(
+                        R.string.edit_e_wallet))
+                    TransferType.PAYMAYA -> (activity as BankActivity).changeTitle(LocalUtils.getString(
+                        R.string.edit_paymaya))
                 }
             }
             false -> {
                 when (transferType) {
                     TransferType.BANK -> (activity as BankActivity).changeTitle(LocalUtils.getString(R.string.add_credit_card))
                     TransferType.CRYPTO -> (activity as BankActivity).changeTitle(LocalUtils.getString(R.string.add_crypto_card))
-                    TransferType.E_WALLET -> (activity as BankActivity).changeTitle(LocalUtils.getString(R.string.add_e_wallet))
+                    TransferType.E_WALLET -> (activity as BankActivity).changeTitle(LocalUtils.getString(
+                        R.string.add_e_wallet))
+                    TransferType.PAYMAYA -> (activity as BankActivity).changeTitle(LocalUtils.getString(
+                        R.string.add_paymaya))
                 }
             }
         }
@@ -130,14 +137,14 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 }
                 getString(R.string.delete_e_wallet)
             }
-//            TransferType.PAYMAYA -> {
-//                when (LanguageManager.getSelectLanguage(context)) {
-//                    LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> btn_delete_bank.isAllCaps =
-//                        false
-//                    else -> btn_delete_bank.isAllCaps = true
-//                }
-//                getString(R.string.delete_e_wallet)
-//            }
+            TransferType.PAYMAYA -> {
+                when (LanguageManager.getSelectLanguage(context)) {
+                    LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> btn_delete_bank.isAllCaps =
+                        false
+                    else -> btn_delete_bank.isAllCaps = true
+                }
+                getString(R.string.delete_e_wallet)
+            }
             TransferType.STATION -> {
                 when (LanguageManager.getSelectLanguage(context)) {
                     LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> btn_delete_bank.isAllCaps =
@@ -294,8 +301,19 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                             cardNo = eet_phone_number.getText().toString(),
                             fundPwd = eet_withdrawal_password.getText().toString(),
                             id = args.editBankCard?.id?.toString(),
-                            uwType = transferType.type,
+                            uwType = if (bankCode == "PayMaya") TransferType.PAYMAYA.type else transferType.type,
                             bankCode = bankCode
+                        )
+                    }
+                    TransferType.PAYMAYA -> { //eWallet暫時寫死 與綁定銀行卡相同
+                        MoneyType.PAYMAYA_TYPE
+                        addBankCard(
+                            bankName = "PayMaya",
+                            cardNo = eet_phone_number.getText().toString(),
+                            fundPwd = eet_withdrawal_password.getText().toString(),
+                            id = args.editBankCard?.id?.toString(),
+                            uwType = transferType.type,
+                            bankCode = "PayMaya",
                         )
                     }
                 }
@@ -313,14 +331,17 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun setupTabLayout(transferTypeAddSwitch: TransferTypeAddSwitch?) {
+
         transferTypeAddSwitch?.apply {
             tab_layout.getTabAt(0)?.view?.visibility = if (bankTransfer) View.VISIBLE else View.GONE
             tab_layout.getTabAt(1)?.view?.visibility =
                 if (cryptoTransfer) View.VISIBLE else View.GONE
             tab_layout.getTabAt(2)?.view?.visibility =
                 if (walletTransfer) View.VISIBLE else View.GONE
+            tab_layout.getTabAt(3)?.view?.visibility =
+                if (paymataTransfer) View.VISIBLE else View.GONE
             ll_tab_layout.visibility =
-                if ((!(bankTransfer && cryptoTransfer && walletTransfer) && (bankTransfer xor cryptoTransfer xor walletTransfer)) || mBankCardStatus) View.GONE else View.VISIBLE
+                if ((!(bankTransfer && cryptoTransfer && walletTransfer && paymataTransfer) && (bankTransfer xor cryptoTransfer xor walletTransfer && paymataTransfer)) || mBankCardStatus) View.GONE else View.VISIBLE
         }
     }
 
@@ -343,6 +364,11 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                         }
                         2 -> {//eWallet暫時寫死 與綁定銀行卡相同
                             transferType = TransferType.E_WALLET
+                            clearBankInputFiled()
+                            changeTransferType(transferType)
+                        }
+                        3 -> {//eWallet暫時寫死 與綁定銀行卡相同
+                            transferType = TransferType.PAYMAYA
                             clearBankInputFiled()
                             changeTransferType(transferType)
                         }
@@ -428,6 +454,12 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 //                tab_crypto.isSelected = false
 //                tab_e_wallet.isSelected = true
             }
+            TransferType.PAYMAYA -> {
+                tab_layout.getTabAt(3)?.select()
+//                tab_bank_card.isSelected = false
+//                tab_crypto.isSelected = false
+//                tab_e_wallet.isSelected = true
+            }
         }
     }
 
@@ -435,6 +467,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         when (type) {
             TransferType.BANK -> {
                 block_bank_card_input.visibility = View.VISIBLE
+                item_bank_selector.visibility = View.VISIBLE
                 block_crypto_input.visibility = View.GONE
 
                 //region 顯示Bank欄位
@@ -451,8 +484,21 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             }
             TransferType.E_WALLET -> {
                 block_bank_card_input.visibility = View.VISIBLE
+                item_bank_selector.visibility = View.VISIBLE
                 block_crypto_input.visibility = View.GONE
 
+                //region 隱藏Bank欄位
+                et_bank_card_number.visibility = View.GONE
+                et_network_point.visibility = View.GONE
+                //endregion
+                //region 顯示eWallet欄位
+                et_phone_number.visibility = View.VISIBLE
+                //endregion
+            }
+            TransferType.PAYMAYA -> {
+                block_bank_card_input.visibility = View.VISIBLE
+                item_bank_selector.visibility = View.GONE
+                block_crypto_input.visibility = View.GONE
                 //region 隱藏Bank欄位
                 et_bank_card_number.visibility = View.GONE
                 et_network_point.visibility = View.GONE
@@ -525,7 +571,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                         TransferType.BANK -> getString(R.string.text_bank_card_modify_success)
                         TransferType.CRYPTO -> getString(R.string.text_crypto_modify_success)
                         TransferType.E_WALLET -> getString(R.string.text_e_wallet_modify_success)
-                  //      TransferType.PAYMAYA -> getString(R.string.text_pay_maya_modify_success)
+                        TransferType.PAYMAYA -> getString(R.string.text_pay_maya_modify_success)
                         TransferType.STATION -> getString(R.string.text_pay_maya_modify_success)
                     }
                     ToastUtil.showToast(context, promptMessage)
@@ -536,7 +582,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                         TransferType.BANK -> getString(R.string.text_bank_card_add_success)
                         TransferType.CRYPTO -> getString(R.string.text_crypto_add_success)
                         TransferType.E_WALLET -> getString(R.string.text_e_wallet_add_success)
-                    //    TransferType.PAYMAYA -> getString(R.string.text_pay_maya_add_success)
+                        TransferType.PAYMAYA -> getString(R.string.text_paymaya_add_success)
                         TransferType.STATION -> getString(R.string.text_e_wallet_add_success)
                     }
                     showPromptDialog(getString(R.string.prompt), promptMessage) {
@@ -554,7 +600,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                     TransferType.BANK -> getString(R.string.text_bank_card_delete_success)
                     TransferType.CRYPTO -> getString(R.string.text_crypto_delete_success)
                     TransferType.E_WALLET -> getString(R.string.text_e_wallet_delete_success)
-                   // TransferType.PAYMAYA -> getString(R.string.text_pay_maya_delete_success)
+                    TransferType.PAYMAYA -> getString(R.string.text_pay_maya_delete_success)
                     TransferType.STATION -> getString(R.string.text_e_wallet_delete_success)
                 }
                 showPromptDialog(

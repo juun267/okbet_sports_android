@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.network.index
 
+import org.cxct.sportlottery.net.user.data.UserBasicInfoResponse
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.BIND_FACEBOOK
 import org.cxct.sportlottery.network.Constants.BIND_GOOGLE
@@ -24,8 +25,10 @@ import org.cxct.sportlottery.network.Constants.RESET_FORGET_PASSWORD
 import org.cxct.sportlottery.network.Constants.RESET_FORGET_PASSWORD_BY_EMAIL
 import org.cxct.sportlottery.network.Constants.SEND_EMAIL_FORGET
 import org.cxct.sportlottery.network.Constants.SEND_SMS_FORGET
+import org.cxct.sportlottery.network.Constants.USER_BASIC_INFO_UPDATE
 import org.cxct.sportlottery.network.Constants.VALIDATE_USER
 import org.cxct.sportlottery.network.NetResult
+import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.index.forgetPassword.*
@@ -36,7 +39,10 @@ import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.network.index.sendSms.SmsRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
+import org.cxct.sportlottery.network.user.UserSwitchResult
 import org.cxct.sportlottery.network.user.authbind.AuthBindResult
+import org.cxct.sportlottery.network.user.info.UserBasicInfoRequest
+import org.cxct.sportlottery.network.user.info.UserSalaryListResult
 import org.cxct.sportlottery.ui.profileCenter.cancelaccount.CancelAccountResult
 import retrofit2.Response
 import retrofit2.http.*
@@ -59,6 +65,10 @@ interface IndexService {
     @POST(INDEX_LOGOUT)
     suspend fun logout(@Body logoutRequest: LogoutRequest): Response<NetResult>
 
+    @POST(USER_BASIC_INFO_UPDATE)
+    suspend fun commitUserBasicInfo(@Body infoRequest: UserBasicInfoRequest): Response<NetResult>
+
+
     @GET(INDEX_CONFIG)
     suspend fun getConfig(): Response<ConfigResult>
 
@@ -73,6 +83,19 @@ interface IndexService {
 
     @GET(Constants.INDEX_CHECK_EXIST)
     suspend fun checkAccountExist(@Path("userName") userName: String): Response<CheckAccountResult>
+
+    @GET(Constants.USER_BASIC_INFO_SWITCH)
+    suspend fun getUserInfoSwitch(): Response<UserSwitchResult>
+
+    @GET(Constants.USER_SALARY_SOURCE_LIST)
+    suspend fun getUserSalaryList(): Response<UserSalaryListResult>
+
+    @GET(Constants.USER_GET_BASIC_INFO)
+    suspend fun getUserBasicInfo(): Response<UserBasicInfoResponse>
+
+    @GET(Constants.USER_BASIC_INFO_CHECK)
+    suspend fun getUserInfoCheck(): Response<UserSwitchResult>
+
 
     @POST(INDEX_CHECK_TOKEN)
     suspend fun checkToken(): Response<NetResult>

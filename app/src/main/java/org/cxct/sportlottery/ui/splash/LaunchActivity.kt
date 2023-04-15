@@ -9,7 +9,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.gyf.immersionbar.ImmersionBar
-import com.tencent.mmkv.MMKV
 import com.youth.banner.Banner
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
@@ -26,6 +25,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
+import org.cxct.sportlottery.util.KvUtils
 
 
 /**
@@ -35,7 +35,7 @@ class LaunchActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
     private val skipHomePage by lazy { intent.getBooleanExtra("skipHomePage", true) }
     private val imageUrls by lazy { intent.getSerializableExtra("imageUrls") as ArrayList<String> }
-    private val isFirstOpen by lazy { MMKV.defaultMMKV().getBoolean("isFirstOpen", true) }
+    private val isFirstOpen by lazy { KvUtils.decodeBooleanTure("isFirstOpen", true) }
     private val delayTime by lazy { (sConfigData?.carouselInterval?.toIntS(3) ?: 3) * 1000L }
     private var isClickSkip = false
 
@@ -60,7 +60,7 @@ class LaunchActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
             isClickSkip = true
             startNow()
         }
-        MMKV.defaultMMKV().putBoolean("isFirstOpen", false)
+        KvUtils.put("isFirstOpen", false)
     }
 
     private fun setupBanner() {

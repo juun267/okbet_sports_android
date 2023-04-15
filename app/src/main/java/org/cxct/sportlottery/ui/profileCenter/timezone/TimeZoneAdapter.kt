@@ -6,10 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemTimezoneBinding
 import org.cxct.sportlottery.util.LanguageManager
@@ -19,15 +15,11 @@ import java.util.*
 
 class TimeZoneAdapter(private val clickListener: ItemClickListener) :
     ListAdapter<TimeZone, RecyclerView.ViewHolder>(DiffCallback()) {
-    private val adapterScope = CoroutineScope(Dispatchers.Default)
 
-    fun setItems(list: List<TimeZone>?){
-        adapterScope.launch {
-            withContext(Dispatchers.Main) { //update in main ui thread
-                submitList(list)
-            }
-        }
+    fun setItems(list: List<TimeZone>?, commitCallback: Runnable){
+        submitList(list, commitCallback)
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ItemViewHolder.from(parent)
     }
@@ -95,6 +87,8 @@ class TimeZoneAdapter(private val clickListener: ItemClickListener) :
 }
 
 class DiffCallback : DiffUtil.ItemCallback<TimeZone>() {
+
+
     override fun areItemsTheSame(oldItem: TimeZone, newItem: TimeZone): Boolean {
         return oldItem.city_en == newItem.city_en&&oldItem.country_en == newItem.country_en
     }

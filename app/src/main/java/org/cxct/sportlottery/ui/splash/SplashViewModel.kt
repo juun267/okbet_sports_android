@@ -66,11 +66,11 @@ class SplashViewModel(
                 val retrofit =
                     RequestManager.instance.createRetrofit(hostUrl.httpFormat())
 
-                Timber.d("userInfo:${MultiLanguagesApplication.mInstance.userInfo.value}")
-                Timber.d("userInfo isLogin:${LoginRepository.isLogined()}")
-                Timber.d("userInfo isLoginValue:${LoginRepository.isLogin.value == true}")
+//                Timber.d("userInfo:${MultiLanguagesApplication.mInstance.userInfo.value}")
+//                Timber.d("userInfo isLogin:${LoginRepository.isLogined()}")
+//                Timber.d("userInfo isLoginValue:${LoginRepository.isLogin.value == true}")
 
-                if (LoginRepository.isLogined()) {
+                if (LoginRepository.hasToken()) {
                     val checkHostResult = doNetwork(androidContext, exceptionHandle = false) {
                         retrofit.create(IndexService::class.java).checkToken()
                     }
@@ -193,6 +193,19 @@ class SplashViewModel(
                 return@launch
 
             val retrofit = RequestManager.instance.createRetrofit(baseUrl.httpFormat())
+
+            if (LoginRepository.hasToken()) {
+                val checkHostResult = doNetwork(androidContext, exceptionHandle = false) {
+                    retrofit.create(IndexService::class.java).checkToken()
+                }
+                if (checkHostResult?.success == false) {
+                    Timber.i("==> check token fail : do getHost")
+                    loginRepository.clear()
+                    getHost()
+                    return@launch
+                }
+            }
+
             val result = doNetwork(androidContext, exceptionHandle = false) {
                 retrofit.create(IndexService::class.java).getConfig()
             }

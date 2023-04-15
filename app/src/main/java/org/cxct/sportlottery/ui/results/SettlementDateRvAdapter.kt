@@ -37,14 +37,18 @@ class SettlementDateRvAdapter : RecyclerView.Adapter<DateItemViewHolder>() {
 
     override fun onBindViewHolder(holder: DateItemViewHolder, position: Int) {
         holder.apply {
-            ctvItem.text = mDateList[adapterPosition]
-            ctvItem.isChecked = mDateSelectedList[adapterPosition]
+            ctvItem.text = mDateList[position]
+            val isSelected = mDateSelectedList[position]
+            ctvItem.isChecked = isSelected
             ctvItem.setOnClickListener {
                 ctvItem.isChecked = true
-                if (!mDateSelectedList[adapterPosition]) {
-                    mDateSelectedList[mDateSelectedList.indexOf(true)] = false
-                    mDateSelectedList[adapterPosition] = !(mDateSelectedList[adapterPosition])
-                    refreshDateListener?.refreshDate(adapterPosition)
+                if (!isSelected) {
+                    val lastPosition = mDateSelectedList.indexOf(true)
+                    if (lastPosition >= 0 && lastPosition < mDateSelectedList.size) {
+                        mDateSelectedList[lastPosition] = false
+                    }
+                    mDateSelectedList[position] = !isSelected
+                    refreshDateListener?.refreshDate(position)
                     notifyDataSetChanged()
                 }
             }
