@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentPartOkgamesBinding
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
@@ -36,6 +37,8 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             rvGamesSelect.apply {
                 layoutManager = GridLayoutManager(requireContext(), 3)
                 addItemDecoration(GridSpacingItemDecoration(3, 10.dp, false))
+                gameChildAdapter.setEmptyView(LayoutInflater.from(requireContext())
+                    .inflate(R.layout.view_no_games, null))
                 adapter = gameChildAdapter
                 gameChildAdapter.setOnItemChildClickListener(OnItemChildClickListener { adapter, view, position ->
 
