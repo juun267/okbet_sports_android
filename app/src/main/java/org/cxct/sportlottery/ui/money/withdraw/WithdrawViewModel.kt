@@ -1023,7 +1023,7 @@ class WithdrawViewModel(
         val paymayaCardCountLimit =
             rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.PAYMAYA.type }?.detailList?.first()?.countLimit
         val paymayaCardCount =
-            bankCardList.value?.count { it.transferType == TransferType.PAYMAYA }
+            bankCardList.value?.count { it.transferType == TransferType.PAYMAYA || it.bankCode == PAYMAYA }
         showAddPayMayaCard = when {
             !paymayaOpen -> false
             paymayaCardCountLimit == null -> true

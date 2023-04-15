@@ -199,13 +199,13 @@ class ProfileCenterFragment :
         btn_recharge.setOnClickListener {
             avoidFastDoubleClick()
             //Glife用户
-//            if (viewModel.userInfo.value?.vipType == 1) {
-//                showPromptDialog(title = getString(R.string.prompt),
-//                    message = getString(R.string.N643),
-//                    {})
-//            } else {
-            viewModel.checkRechargeKYCVerify()
-//            }
+            if (viewModel.userInfo.value?.vipType == 1) {
+                showPromptDialog(title = getString(R.string.prompt),
+                    message = getString(R.string.N643),
+                    {})
+            } else {
+                viewModel.checkRechargeKYCVerify()
+            }
         }
     }
 
@@ -213,13 +213,13 @@ class ProfileCenterFragment :
         btn_withdraw.setOnClickListener {
             avoidFastDoubleClick()
             //Glife用户
-//            if (viewModel.userInfo.value?.vipType == 1) {
-//                showPromptDialog(title = getString(R.string.prompt),
-//                    message = getString(R.string.N644),
-//                    {})
-//            } else {
-            viewModel.checkWithdrawKYCVerify()
-//            }
+            if (viewModel.userInfo.value?.vipType == 1) {
+                showPromptDialog(title = getString(R.string.prompt),
+                    message = getString(R.string.N644),
+                    {})
+            } else {
+                viewModel.checkWithdrawKYCVerify()
+            }
 
         }
     }

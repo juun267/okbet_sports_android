@@ -149,6 +149,7 @@ import org.cxct.sportlottery.network.user.setWithdrawInfo.WithdrawInfoResult
 import org.cxct.sportlottery.network.vip.growth.LevelGrowthResult
 import org.cxct.sportlottery.network.vip.thirdRebates.ThirdRebatesResult
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
+import org.cxct.sportlottery.network.withdraw.list.WithdrawListResult
 import retrofit2.Converter
 import retrofit2.Response
 import timber.log.Timber

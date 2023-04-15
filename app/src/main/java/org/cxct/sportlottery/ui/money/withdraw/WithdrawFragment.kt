@@ -523,8 +523,8 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                         getString(R.string.prompt),
                         getString(R.string.text_money_get_success)
                     ) { viewModel.getMoneyAndTransferOut() }
-                    if (it.content?.authorizeUrl?.isNotEmpty()==true){
-                        JumpUtil.toExternalWeb(requireContext(),it.content.authorizeUrl)
+                    if (it.content?.authorizeUrl?.isNotEmpty() == true) {
+                        JumpUtil.toExternalWeb(requireContext(), it.content.authorizeUrl)
                     }
                 } else {
                     showErrorPromptDialog(getString(R.string.prompt), it.msg) {}
