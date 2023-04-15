@@ -334,7 +334,7 @@ class SportListViewModel(
                     }
                     result = OddsListResult(
                         it.code, it.msg, it.success,
-                        OddsListData(leagueOdds, Sport(GameType.ALL.key, GameType.ALL.name))
+                        OddsListData(leagueOdds)
                     )
                 }
             } else {
@@ -381,11 +381,10 @@ class SportListViewModel(
 
                     matchOdd.setupOddDiscount()
                     matchOdd.updateOddStatus()
-                    matchOdd.oddsSort =
-                        PlayCateMenuFilterUtils.filterOddsSort(
-                            matchOdd.matchInfo?.gameType,
-                            MenuCode.MAIN.code
-                        )
+                    if (playCateMenuCode != MenuCode.CS.code) {
+                        matchOdd.oddsSort = PlayCateMenuFilterUtils.filterOddsSort(matchOdd.matchInfo?.gameType, MenuCode.MAIN.code)
+                    }
+
                     matchOdd.filterQuickPlayCate(matchType)
                     //波胆的数据获取方式
                     if (matchType == MatchType.CS.postValue) {

@@ -26,7 +26,7 @@ class BetListRefactorAdapter(
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private enum class ViewType { Bet, Parlay, Warn, Single, OddsWarn }
+    private enum class ViewType { Bet, Parlay, OddsWarn }
     enum class BetViewType { SINGLE, PARLAY, NULL }
 
     private val attachedViewSet = HashSet<RecyclerView.ViewHolder>()
@@ -40,10 +40,6 @@ class BetListRefactorAdapter(
     enum class BetRvType { SINGLE, PARLAY_SINGLE, PARLAY }
 
     var adapterBetType: BetRvType = SINGLE
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
 
 
     var betList: MutableList<BetInfoListData>? = mutableListOf()

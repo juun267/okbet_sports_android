@@ -4,13 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_bbbbbb_ffffff"
     android:clickable="true"
     android:focusable="true"
-    android:orientation="vertical"
-    android:background="@color/color_bbbbbb_ffffff"
-    tools:context=".ui.menu.ChangeLanguageDialog"
-    tools:ignore="SpUsage,RtlSymmetry">
-
+    android:orientation="vertical">
 
     <org.cxct.sportlottery.view.CustomTopToolbar
         android:id="@+id/custom_tool_bar"
@@ -25,180 +22,86 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/color_bbbbbb_ffffff">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="35dp"
-            android:layout_marginHorizontal="@dimen/margin_14"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:background="@drawable/bg_search_layout"
-            android:gravity="center_vertical">
-
-            <ImageView
-                android:layout_width="@dimen/margin_16"
-                android:layout_height="@dimen/margin_16"
-                android:layout_marginStart="@dimen/margin_10"
-                android:src="@drawable/ic_search_svgrepo_com_1" />
-
-            <EditText
-                android:id="@+id/etSearch"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginStart="@dimen/margin_12"
-                android:layout_marginEnd="@dimen/margin_8"
-                android:background="@android:color/transparent"
-                android:hint="@string/text_search"
-                android:singleLine="true"
-                android:textColorHint="@color/color_C9CFD7"
-                android:textColor="@color/color_000000"
-                android:imeOptions="actionDone"
-                android:textSize="@dimen/textSize12sp"
-                tools:text="fff" />
-
-            <ImageView
-                android:id="@+id/btn_close"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center_vertical"
-                android:background="@null"
-                android:layout_marginRight="@dimen/margin_5"
-                android:padding="5dp"
-                android:contentDescription="@null"
-                android:src="@drawable/ic_cancel" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layoutSearchHistory"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible"
-        android:orientation="vertical"
-        tools:visibility="gone">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/layoutHistory"
-            android:visibility="visible"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:gravity="center_vertical"
-                android:background="@color/color_E8EFFD"
-                android:paddingHorizontal="@dimen/margin_14">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/tvHistoryTittle"
-                    android:text="@string/text_search_history"
-                    android:textColor="@color/color_535D76"
-                    android:textSize="@dimen/margin_14"
-                    android:textStyle="bold" />
-
-                <androidx.legacy.widget.Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/tvClear"
-                    android:text="@string/text_clear"
-                    android:textColor="@color/color_025BE8"
-                    android:textSize="@dimen/margin_14" />
-            </LinearLayout>
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvHistory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/color_bbbbbb_ffffff"
-                android:paddingVertical="10dp"
-                android:overScrollMode="never"
-                tools:listitem="@layout/item_search_history"
-                tools:itemCount="2" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/layoutSearchResult"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:visibility="gone"
-        tools:visibility="gone">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/color_F2F5FA"
-            android:orientation="vertical">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                android:id="@+id/rvSearchResult"
-                android:overScrollMode="never"
-                tools:listitem="@layout/item_search_result_sport"
-                tools:itemCount="2" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:textColor="@color/color_6C7BA8_A7B2C4"
-                android:textSize="12sp"
-                android:text="@string/no_data" />
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layoutNoData"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/margin_20"
-        android:visibility="gone"
-        tools:visibility="visible">
+        android:layout_height="35dp"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="@dimen/margin_14"
+        android:layout_marginVertical="12.5dp"
+        android:background="@drawable/bg_search_layout"
+        android:gravity="center_vertical">
 
         <ImageView
-            android:id="@+id/list_no_record_img"
-            android:layout_width="256dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            android:adjustViewBounds="true"
-            android:src="@drawable/bg_search_nodata"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_width="@dimen/margin_16"
+            android:layout_height="@dimen/margin_16"
+            android:layout_marginStart="@dimen/margin_10"
+            android:src="@drawable/ic_search_svgrepo_com_1" />
+
+        <EditText
+            android:id="@+id/etSearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_12"
+            android:layout_marginEnd="@dimen/margin_8"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:hint="@string/text_search"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:textColor="@color/color_000000"
+            android:textColorHint="@color/color_C9CFD7"
+            android:textSize="@dimen/textSize12sp"
+            tools:text="fff" />
+
+        <ImageView
+            android:id="@+id/btn_close"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/margin_5"
+            android:background="@null"
+            android:contentDescription="@null"
+            android:padding="5dp"
+            android:src="@drawable/ic_cancel" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/historyTitle"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/color_E8EFFD"
+        android:paddingHorizontal="@dimen/margin_14">
 
         <TextView
-            android:id="@+id/list_no_record_text"
+            android:id="@+id/tvHistoryTittle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/no_search_match"
-            android:textColor="@color/color_6C7BA8_A7B2C4"
-            android:textSize="@dimen/textSize16sp"
-            app:layout_constraintEnd_toEndOf="@id/list_no_record_img"
-            app:layout_constraintStart_toStartOf="@id/list_no_record_img"
-            app:layout_constraintTop_toBottomOf="@id/list_no_record_img" />
+            android:layout_gravity="center_vertical"
+            android:text="@string/text_search_history"
+            android:textColor="@color/color_535D76"
+            android:textSize="@dimen/margin_14"
+            android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/tvClear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:text="@string/text_clear"
+            android:textColor="@color/color_025BE8"
+            android:textSize="@dimen/margin_14" />
+    </FrameLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvHistory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="10dp" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSearchResult"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:nestedScrollingEnabled="false"
+        tools:itemCount="2"
+        tools:listitem="@layout/item_search_result_sport" />
 
 </LinearLayout>

@@ -148,6 +148,7 @@ import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.network.user.setWithdrawInfo.WithdrawInfoResult
 import org.cxct.sportlottery.network.vip.growth.LevelGrowthResult
 import org.cxct.sportlottery.network.vip.thirdRebates.ThirdRebatesResult
+import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListResult
 import retrofit2.Converter
 import retrofit2.Response
@@ -405,7 +406,7 @@ object ErrorUtils {
                     }
                     (url.contains(WITHDRAW_ADD)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return NetResult(it.code, it.msg, it.success) as T
+                        return WithdrawAddResult(it.code, it.msg, it.success,null) as T
                     }
                     (url.contains(USER_RECHARGE_ADD)) -> {
                         @Suppress("UNCHECKED_CAST")
@@ -426,10 +427,6 @@ object ErrorUtils {
                     (url.contains(OUTRIGHT_BET_INFO)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return BetInfoResult(it.code, it.msg, it.success, null) as T
-                    }
-                    (url.contains(WITHDRAW_ADD)) -> {
-                        @Suppress("UNCHECKED_CAST")
-                        return WithdrawListResult(it.code, it.msg, null, it.success, null) as T
                     }
                     (url.contains(FEEDBACK_QUERYLIST)) -> {
                         @Suppress("UNCHECKED_CAST")

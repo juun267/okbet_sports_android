@@ -18,7 +18,9 @@ import org.cxct.sportlottery.network.index.login_for_guest.LoginForGuestRequest
 import org.cxct.sportlottery.network.index.logout.LogoutRequest
 import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.network.user.UserInfo
+import org.cxct.sportlottery.network.user.UserSwitchResult
 import org.cxct.sportlottery.network.user.authbind.AuthBindResult
+import org.cxct.sportlottery.network.user.info.UserBasicInfoRequest
 import org.cxct.sportlottery.util.*
 import retrofit2.Response
 
@@ -181,6 +183,21 @@ object LoginRepository {
         }
     }
 
+
+    /**
+     * 获取用户完善个人信息开关
+     */
+    suspend fun getUserInfoSwitch(): Response<UserSwitchResult> {
+        return OneBoSportApi.indexService.getUserInfoSwitch()
+    }
+
+    /**
+     * 是否已完善个人信息
+     */
+    suspend fun getUserInfoCheck(): Response<UserSwitchResult> {
+        return OneBoSportApi.indexService.getUserInfoCheck()
+    }
+
     suspend fun register(registerRequest: RegisterRequest): Response<LoginResult> {
         val loginResponse = OneBoSportApi.indexService.register(registerRequest)
 
@@ -208,6 +225,13 @@ object LoginRepository {
         }
 
         return loginResponse
+    }
+
+    /**
+     * 提交用户基本信息
+     */
+    suspend fun commitUserBasicInfo(infoRequest: UserBasicInfoRequest): Response<NetResult> {
+        return OneBoSportApi.indexService.commitUserBasicInfo(infoRequest)
     }
 
     suspend fun loginOrReg(loginRequest: LoginRequest): Response<LoginResult> {
@@ -362,6 +386,10 @@ object LoginRepository {
         return OneBoSportApi.indexService.logout(LogoutRequest()).apply {
             clear()
         }
+    }
+
+     fun hasToken():Boolean{
+        return !sharedPref.getString(KEY_TOKEN, null).isNullOrEmpty()
     }
 
     suspend fun logout() {

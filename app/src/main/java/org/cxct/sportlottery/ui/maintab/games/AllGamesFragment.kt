@@ -24,22 +24,31 @@ import org.cxct.sportlottery.util.setVisibilityByMarketSwitch
 class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesViewModel::class) {
 
     private lateinit var binding: FragmentAllOkgamesBinding
+    private val gameAllAdapter by lazy { GameCategroyAdapter(listOf()) }
 
     private fun okGamesFragment() = parentFragment as OKGamesFragment
     override fun createRootView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
         binding = FragmentAllOkgamesBinding.inflate(layoutInflater)
         return binding.root
     }
 
     override fun onBindView(view: View) {
-
-
+        onBindGamesView()
         onBindPart5View()
     }
 
+    private fun onBindGamesView() {
+        binding.includeGamesAll.apply {
+            rvGamesAll.layoutManager =
+                LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+            rvGamesAll.adapter = gameAllAdapter
+            gameAllAdapter.setOnItemChildClickListener(OnItemChildClickListener { adapter, view, position ->
 
+            })
+        }
+    }
 
     private fun onBindPart5View() {
         val include5 = binding.include5

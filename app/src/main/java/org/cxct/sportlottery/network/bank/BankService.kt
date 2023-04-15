@@ -5,6 +5,7 @@ import org.cxct.sportlottery.network.Constants.BANK_DELETE
 import org.cxct.sportlottery.network.Constants.BANK_MY
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.bank.add.BankAddRequest
+import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.network.bank.delete.BankDeleteRequest
 import org.cxct.sportlottery.network.bank.my.BankMyResult
 import retrofit2.Response
@@ -16,7 +17,7 @@ interface BankService {
 
     @POST(BANK_ADD)
     suspend fun bankAdd(
-        @Body bankAddRequest: BankAddRequest
+        @Body bankAddRequest: BankAddRequest,
     ): Response<NetResult>
 
     @POST(BANK_DELETE)

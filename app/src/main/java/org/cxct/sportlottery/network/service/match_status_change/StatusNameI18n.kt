@@ -13,5 +13,7 @@ data class StatusNameI18n(
     @Json(name = "zh")
     val zh: String? = "",
     @Json(name = "zh-TW")
-    val zhTW: String? = ""
+    val zhTW: String? = "",
+    @Json(name = "ph")
+    val ph: String? = "",
 )

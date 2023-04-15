@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.network.sport
 
+import com.chad.library.adapter.base.entity.node.BaseNode
 import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguards.KeepMembers
 import com.squareup.moshi.Json
 import org.cxct.sportlottery.network.common.BaseResult
@@ -46,9 +47,12 @@ data class SearchResponse(
                 @Json(name = "matchId")
                 val matchId: String = "",
                 @Json(name = "startTime")
-                val startTime: String = ""
-            ) {
+                val startTime: String = "",
+            ): BaseNode() {
+                override val childNode: MutableList<BaseNode>? = null
                 var isInPlay: Boolean = false
+                @Transient
+                var gameType: String = "" //本地赋值
             }
         }
     }
