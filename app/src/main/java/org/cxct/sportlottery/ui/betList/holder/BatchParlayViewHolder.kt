@@ -133,7 +133,7 @@ abstract class BatchParlayViewHolder(
             }
 
             onFocusChangeListener = null
-
+            refreshSingleWinAmount(data)
             checkBetLimitParlay(data)
             et_bet_parlay.apply {
                 val tw: TextWatcher?
@@ -283,7 +283,7 @@ abstract class BatchParlayViewHolder(
                 w.subtract(itemData.betAmount.toBigDecimal().multiply(itemData.num.toBigDecimal()))
                     .toDouble()
             itemView.tvCanWinAmount.text =
-                "${sConfigData?.systemCurrencySign} ${TextUtil.formatForOdd(winnable)}"
+                "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(winnable, 2)}"
         }
     }
 

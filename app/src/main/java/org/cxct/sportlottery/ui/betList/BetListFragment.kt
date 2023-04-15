@@ -573,7 +573,9 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
 
         binding.tvTotalBetAmount.text = TextUtil.formatForOdd(totalBetAmount)
         binding.tvTotalWinnableAmount.text =
-                "${sConfigData?.systemCurrencySign} ${TextUtil.formatForOdd(winnableAmount)}"
+                "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(winnableAmount,2)}"
+
+//        Timber.d("原始值:${winnableAmount} 四舍五入的值:${TextUtil.formatForOdd(winnableAmount)} 保留两位小数的值:${TextUtil.formatMoney(winnableAmount,2)}")
 
 
         val betCount = if (currentBetType == 0) {

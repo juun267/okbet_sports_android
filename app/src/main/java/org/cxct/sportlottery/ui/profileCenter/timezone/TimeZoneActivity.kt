@@ -34,7 +34,6 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     lateinit var adapter: TimeZoneAdapter
     private var originItems = listOf<TimeZone>()
-    private var currentItems = arrayListOf<TimeZone>()
     private var selectItem: TimeZone? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,19 +74,19 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             zone.id = it.country_en + "/" + it.city_en
             java.util.TimeZone.setDefault(zone)
             MultiLanguagesApplication.timeZone = zone
-            rv_list.smoothScrollToPosition(0)
         })
 
         setup()
     }
 
+
     private fun setup() = lifecycleScope.launch(Dispatchers.IO) {
-        val inputSystem = assets.open("timezone.json")
-        val data = inputSystem.readBytes()
-        inputSystem.safeClose()
 
         var zoneList = timeZones?.get()
         if (zoneList == null) {
+            val inputSystem = assets.open("timezone.json")
+            val data = inputSystem.readBytes()
+            inputSystem.safeClose()
             zoneList = JsonUtil.listFrom(String(data), TimeZone::class.java) ?: listOf()
             timeZones = WeakReference(zoneList)
         }
@@ -114,7 +113,7 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private fun sortList() {
         val key = et_search.text.toString().trim()
-        currentItems.clear()
+        var currentItems = arrayListOf<TimeZone>()
         currentItems.addAll(originItems)
         currentItems.forEach { item ->
             item.isSelected = false
@@ -147,8 +146,32 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             } as ArrayList<TimeZone>
         }
 
-        adapter.setItems(currentItems)
-        adapter.notifyDataSetChanged()
+        adapter.setItems(currentItems, commitCallback)
         lin_empty.visibility = if (currentItems.isNullOrEmpty()) View.VISIBLE else View.GONE
     }
+
+    private val commitCallback = Runnable {
+        adapter.notifyDataSetChanged()
+        scrollTop()
+    }
+
+    private fun scrollTop() {
+        rv_list.removeCallbacks(topRunnable)
+        rv_list.postDelayed(topRunnable, 100)
+    }
+
+    private val topRunnable = Runnable {
+        if (rv_list == null) {
+            return@Runnable
+        }
+        if ((rv_list.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition() != 0) {
+            rv_list.smoothScrollToPosition(0)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        rv_list.removeCallbacks(topRunnable)
+    }
+
 }

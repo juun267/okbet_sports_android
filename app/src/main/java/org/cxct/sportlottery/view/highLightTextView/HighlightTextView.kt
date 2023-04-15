@@ -40,7 +40,9 @@ class HighlightTextView @JvmOverloads constructor(
     private val highlightTextColorSpan: ForegroundColorSpan by lazy {
         ForegroundColorSpan(highlightTextColor)
     }
-
+    private val stringBuilder: SpannableStringBuilder by lazy {
+        SpannableStringBuilder("")
+    }
     private val isChangeSelectedTextColor: Boolean
         get() = highlightTextColor != currentTextColor
 
@@ -57,12 +59,6 @@ class HighlightTextView @JvmOverloads constructor(
 
     private var divider = ""
     private var textWithoutHighlight: SpannableString = SpannableString("")
-    private val spannableText: SpannableString by lazy {
-        SpannableString(text)
-    }
-    private val stringBuilder: SpannableStringBuilder by lazy {
-        SpannableStringBuilder("")
-    }
 
     fun highlight(text: String) {
         highlight(listOf(text))
@@ -70,17 +66,17 @@ class HighlightTextView @JvmOverloads constructor(
 
     fun highlight(texts: List<String>) {
         targetText = texts
-        requestLayout()
+        resetHighlight()
     }
 
     fun setStrokeWidth(width: Float) {
         highlightWidth = width
-        requestLayout()
+        resetHighlight()
     }
 
     fun setHighlightBold(bold: Boolean) {
         highlightBoldFlag = bold
-        requestLayout()
+        resetHighlight()
     }
 
     fun setColor(@ColorRes color: Int) {
@@ -116,14 +112,20 @@ class HighlightTextView @JvmOverloads constructor(
         targetText = inputTargets?.split(",") ?: emptyList()
 
         typedArray.recycle()
+        resetHighlight()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        resetHighlight()
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+    }
+
+    private fun resetHighlight() {
         stringBuilder.clear()
         stringBuilder.append(textWithoutHighlight)
         stringBuilder.append(divider)
-
-        getSortedTargetTexts(targetText).forEach {
+        val spannableText = SpannableString(text)
+        getSortedTargetTexts(spannableText, targetText).forEach {
             val start = it.first
             val end = it.first + it.second
 
@@ -142,8 +144,6 @@ class HighlightTextView @JvmOverloads constructor(
         }
         stringBuilder.append(spannableText)
         text = stringBuilder
-
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
     }
 
     private fun measureTargetTextRect(target: String): RectF? {
@@ -203,7 +203,7 @@ class HighlightTextView @JvmOverloads constructor(
         return 0
     }
 
-    private fun getSortedTargetTexts(targets: List<String>) = targets
+    private fun getSortedTargetTexts(spannableText: SpannableString, targets: List<String>) = targets
         .filter {
             spannableText.indexOf(it, 0, true) != -1
         }.map {

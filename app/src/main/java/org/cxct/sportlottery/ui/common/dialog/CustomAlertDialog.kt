@@ -20,6 +20,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import kotlinx.android.synthetic.main.dialog_custom_alert.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 /**
@@ -200,9 +201,30 @@ class CustomAlertDialog(private val mContext: Context? = null) : DialogFragment(
         removeDialogTag(mContext, getMessageTag())
     }
 
-    override fun show(manager: FragmentManager, tag: String?) {
-        super.show(manager, tag)
+    override fun show(manager: FragmentManager, tag: String?) = runWithCatch {
+
+        runWithCatch { if (isAdded) { dismissAllowingStateLoss() } }
+        modifyPrivateField("mDismissed", false)
+        modifyPrivateField("mShownByMe", true)
+        val ft = manager.beginTransaction()
+        ft.add(this, tag)
+        ft.commitAllowingStateLoss()
+
         addDialogTag(mContext, getMessageTag())
+    }
+
+    private fun modifyPrivateField(fieldName: String, newValue: Any) {
+        val fieldDismissed = DialogFragment::class.java.getDeclaredField(fieldName)
+        fieldDismissed.isAccessible = true
+        fieldDismissed.set(this, newValue)
+    }
+
+    override fun dismiss() = runWithCatch {
+        if (isAdded) { super.dismiss() }
+    }
+
+    override fun dismissAllowingStateLoss() = runWithCatch {
+        if (isAdded) { super.dismissAllowingStateLoss() }
     }
 
     companion object {

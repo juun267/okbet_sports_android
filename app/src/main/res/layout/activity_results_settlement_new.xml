@@ -16,6 +16,7 @@
 
     <RelativeLayout
         android:id="@+id/linear_filter"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/bg_title_with_stroke"
@@ -102,6 +103,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_game_search"
         android:layout_width="0dp"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         android:background="@color/color_202541_FFFFFF"
         android:gravity="center_vertical"
@@ -150,6 +152,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_date"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/color_202541_FFFFFF"

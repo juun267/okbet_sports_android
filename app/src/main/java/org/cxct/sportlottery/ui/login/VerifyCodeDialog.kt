@@ -9,6 +9,7 @@ import android.view.ViewGroup.MarginLayoutParams
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.dialog_verify_code.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
@@ -42,11 +43,7 @@ class VerifyCodeDialog: BaseDialog<LoginViewModel>(LoginViewModel::class) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         eet_verification_code.requestFocus()
-        eet_verification_code.checkRegisterListener {
-            viewModel.checkValidCode(it).let {
-                btn_sure.setBtnEnable(it.isNullOrBlank())
-            }
-        }
+        eet_verification_code.checkSMSCode(et_verification_code) { btn_sure.setBtnEnable(!it.isEmptyStr()) }
 
         //不分手机上弹窗宽度会撑满，需重新设置下左右间距
         (view.layoutParams as MarginLayoutParams?)?.run {

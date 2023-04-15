@@ -5,6 +5,7 @@ import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.network.index.config.ConfigData
 import org.cxct.sportlottery.repository.HandicapType.NULL
 import org.cxct.sportlottery.repository.ImageType.PROMOTION
+import org.cxct.sportlottery.util.KvUtils
 
 const val FLAG_OPEN = "1"
 const val FLAG_CLOSE = "0"
@@ -40,6 +41,16 @@ const val PLATFORM_CODE = BuildConfig.CHANNEL_NAME //平台代碼
 const val PROJECT_CODE = "cx_sports" //項目代碼
 
 var sConfigData: ConfigData? = null
+    set(value) {
+        KvUtils.putObject(ConfigData::class.java.name, value)
+        field = value
+    }
+    get() {
+        if (field == null) {
+            field = KvUtils.getObject(ConfigData::class.java)
+        }
+        return field
+    }
 
 
 /**
