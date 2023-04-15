@@ -1132,6 +1132,8 @@
     <string name="sms_code_length_error">Verification code kailangan 4 na digit</string>
     <string name="phone_no_error">Ang numero ng mobile phone ay dapat na 11 digit simula sa 09</string>
 
+
+    <string name="N849">Address</string>
     <string name="bet_details_title">Mga detalye ng kumbinasyon ng link</string>
     <string name="recharge_channel_paymaya">PayMaya</string>
     <string name="tail_number">Last digit number</string>

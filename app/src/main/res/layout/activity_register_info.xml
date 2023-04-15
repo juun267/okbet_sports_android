@@ -171,7 +171,7 @@
                     android:layout_height="wrap_content"
                     app:hintText="@string/N850"
                     app:isResponsiveIconColor="false"
-                    app:labelText="@string/select_crypto_address"
+                    app:labelText="@string/N849"
                     app:labelTextStyle="normal"
                     app:endIcon="@drawable/ic_arrow_gray"
                     app:primaryColor="@color/color_AFAFB1">
