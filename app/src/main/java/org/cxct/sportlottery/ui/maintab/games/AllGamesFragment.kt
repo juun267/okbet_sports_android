@@ -15,9 +15,10 @@ import org.cxct.sportlottery.databinding.FragmentAllOkgamesBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.setServiceClick
 
 // OkGames所有分类
-class AllGamesFragment() : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesViewModel::class) {
+class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesViewModel::class) {
 
     private lateinit var binding: FragmentAllOkgamesBinding
     private val gameAllAdapter by lazy { GameCategroyAdapter(listOf()) }
@@ -55,56 +56,53 @@ class AllGamesFragment() : BaseBottomNavigationFragment<OKGamesViewModel>(OKGame
         val tvContactUs = include5.tvContactUs
         val tvFaqs = include5.tvFaqs
         setUnderline(
-            tvPrivacyPolicy,
-            tvTermConditions,
-            tvResponsibleGaming,
-            tvLiveChat,
-            tvContactUs,
-            tvFaqs
+            tvPrivacyPolicy, tvTermConditions, tvResponsibleGaming, tvLiveChat, tvContactUs, tvFaqs
         )
         setOnClickListener(
-            tvPrivacyPolicy,
-            tvTermConditions,
-            tvResponsibleGaming,
-            tvLiveChat,
-            tvContactUs,
-            tvFaqs
+            tvPrivacyPolicy, tvTermConditions, tvResponsibleGaming, tvLiveChat, tvContactUs, tvFaqs
         ) {
             when (it.id) {
                 R.id.tvPrivacyPolicy -> {
-                    JumpUtil.toInternalWeb(requireContext(),
-                        Constants.getPrivacyRuleUrl(requireContext()),getString(R.string.privacy_policy))
+                    JumpUtil.toInternalWeb(
+                        requireContext(),
+                        Constants.getPrivacyRuleUrl(requireContext()),
+                        getString(R.string.privacy_policy)
+                    )
                 }
 
                 R.id.tvTermConditions -> {
-                    JumpUtil.toInternalWeb(requireContext(),
+                    JumpUtil.toInternalWeb(
+                        requireContext(),
                         Constants.getAgreementRuleUrl(requireContext()),
-                        getString(R.string.terms_conditions))
+                        getString(R.string.terms_conditions)
+                    )
                 }
 
                 R.id.tvResponsibleGaming -> {
-
+                    JumpUtil.toInternalWeb(requireContext(),
+                        Constants.getDutyRuleUrl(requireContext()),
+                        getString(R.string.responsible))
                 }
 
-                R.id.tvLiveChat -> {
-
-                }
-
-                R.id.tvContactUs -> {
-
+                R.id.tvLiveChat, R.id.tvContactUs -> {
+                    it.setServiceClick(childFragmentManager)
                 }
 
                 R.id.tvFaqs -> {
-                    JumpUtil.toInternalWeb(requireContext(),Constants.getFAQsUrl(requireContext()),getString(R.string.faqs))
+                    JumpUtil.toInternalWeb(
+                        requireContext(),
+                        Constants.getFAQsUrl(requireContext()),
+                        getString(R.string.faqs)
+                    )
                 }
             }
         }
 
     }
 
-    private fun setUnderline(vararg view:TextView){
+    private fun setUnderline(vararg view: TextView) {
         view.forEach {
-            it.paint.flags = Paint. UNDERLINE_TEXT_FLAG; //下划线
+            it.paint.flags = Paint.UNDERLINE_TEXT_FLAG; //下划线
             it.paint.isAntiAlias = true;//抗锯齿
         }
     }
