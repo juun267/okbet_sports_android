@@ -2,26 +2,22 @@ package org.cxct.sportlottery.ui.maintab.games
 
 import android.graphics.Paint
 import android.os.Bundle
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import kotlinx.android.synthetic.main.fragment_about_us.linear_about_us
-import kotlinx.android.synthetic.main.fragment_about_us.linear_privacy
-import kotlinx.android.synthetic.main.fragment_about_us.linear_responsible
-import kotlinx.android.synthetic.main.fragment_about_us.linear_terms
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.setOnClickListener
-import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.FragmentAllOkgamesBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.setVisibilityByMarketSwitch
 
 // OkGames所有分类
-class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesViewModel::class) {
+class AllGamesFragment() : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesViewModel::class) {
 
     private lateinit var binding: FragmentAllOkgamesBinding
     private val gameAllAdapter by lazy { GameCategroyAdapter(listOf()) }
