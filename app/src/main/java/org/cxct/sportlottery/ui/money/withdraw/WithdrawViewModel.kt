@@ -13,7 +13,6 @@ import org.cxct.sportlottery.common.extentions.toDoubleS
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bank.add.BankAddRequest
-import org.cxct.sportlottery.network.bank.add.BankAddResult
 import org.cxct.sportlottery.network.bank.delete.BankDeleteRequest
 import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.bank.my.BankMyResult
@@ -21,6 +20,7 @@ import org.cxct.sportlottery.network.bettingStation.AreaAll
 import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.network.money.config.*
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
+import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.network.withdraw.uwcheck.CheckList
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
@@ -67,20 +67,20 @@ class WithdrawViewModel(
         get() = _moneyCardList
     private var _moneyCardList = MutableLiveData<MyMoneyCard>()
 
-    val bankAddResult: LiveData<BankAddResult>
+    val bankAddResult: LiveData<NetResult>
         get() = _bankAddResult
-    private var _bankAddResult = MutableLiveData<BankAddResult>()
+    private var _bankAddResult = MutableLiveData<NetResult>()
 
     val bankDeleteResult: LiveData<NetResult>
         get() = _bankDeleteResult
     private var _bankDeleteResult = MutableLiveData<NetResult>()
 
-    val withdrawAddResult: LiveData<NetResult>
+    val withdrawAddResult: LiveData<WithdrawAddResult>
         get() = _withdrawAddResult
-    private var _withdrawAddResult = MutableLiveData<NetResult>()
-    val withdrawAddResultData: LiveData<NetResult>
+    private var _withdrawAddResult = MutableLiveData<WithdrawAddResult>()
+    val withdrawAddResultData: LiveData<WithdrawAddResult>
         get() = _withdrawAddResultData
-    private var _withdrawAddResultData = MutableLiveData<NetResult>()
+    private var _withdrawAddResultData = MutableLiveData<WithdrawAddResult>()
 
     //獲取資金設定
     val rechargeConfigs: LiveData<MoneyRechCfgData>
@@ -209,6 +209,7 @@ class WithdrawViewModel(
     val numberOfBankCard: LiveData<String>
         get() = _numberOfBankCard
     private var _numberOfBankCard = MutableLiveData<String>()
+
 
     /**
      * @param isBalanceMax: 是否為當前餘額作為提款上限, true: 提示字為超過餘額相關, false: 提示字為金額設定相關
@@ -344,11 +345,10 @@ class WithdrawViewModel(
 
     private fun transferTypeMoneyCardList() {
         val cardList = mutableListOf<BankCardList>()
-        LogUtil.toJson(myWithdrawCardList)
         myWithdrawCardList?.forEach { bankCard ->
             if (dealType.type == bankCard.uwType
                 //paymaya是包含在ewallet里面的，所以需要多下面的判断
-                || (dealType.type == TransferType.E_WALLET.type && bankCard.uwType == TransferType.PAYMAYA.type)
+                || (dealType.type == TransferType.PAYMAYA.type && bankCard.bankCode == PAYMAYA)
             )
                 cardList.add(bankCard.apply { transferType = dealType })
         }
@@ -1023,7 +1023,7 @@ class WithdrawViewModel(
         val paymayaCardCountLimit =
             rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.PAYMAYA.type }?.detailList?.first()?.countLimit
         val paymayaCardCount =
-            bankCardList.value?.count { it.transferType == TransferType.PAYMAYA }
+            bankCardList.value?.count { it.transferType == TransferType.PAYMAYA || it.bankCode == PAYMAYA }
         showAddPayMayaCard = when {
             !paymayaOpen -> false
             paymayaCardCountLimit == null -> true
@@ -1105,7 +1105,7 @@ class WithdrawViewModel(
         _withdrawAmountMsg.value = ""
         _withdrawPasswordMsg.value = ""
         _withdrawAppointmentMsg.value = ""
-        _withdrawAddResult = MutableLiveData<NetResult>()
+        _withdrawAddResult = MutableLiveData<WithdrawAddResult>()
     }
 
     private fun loading() {

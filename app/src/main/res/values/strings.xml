@@ -406,7 +406,7 @@
     <string name="withdraw_crypto_amount_hint">Withdraw(%1$s)：%2$s</string>
     <string name="withdraw_crypto_fee_hint">Withdraw service fee：%1$s%2$s</string>
     <string name="hint_four_number_password">Withdrawal password</string>
-    <string name="hint_please_enter_withdraw_password">withdrawal password</string>
+    <string name="hint_please_enter_withdraw_password">Withdrawal password</string>
     <string name="add_credit_card">Add Bank Card</string>
     <string name="add_crypto_card">Add USDT</string>
     <string name="add_e_wallet">Add eWallet</string>
@@ -435,16 +435,15 @@
     <string name="text_bank_card_delete_success">Bank card deleted successfully</string>
     <string name="text_crypto_delete_success">The virtual coin was successfully deleted</string>
     <string name="text_e_wallet_delete_success">eWallet deleted successfully</string>
-    <string name="text_pay_maya_delete_success">Paymaya deleted successfully</string>
+    <string name="text_pay_maya_delete_success">PayMaya deleted successfully</string>
     <string name="text_bank_card_add_success">Bank card binding successfully</string>
     <string name="text_crypto_add_success">Crypto binding successfully</string>
     <string name="text_e_wallet_add_success">eWallet binding successfully</string>
-    <string name="text_pay_maya_add_success">Paymaya binding successfully</string>
-    <string name="text_paymaya_add_success">Paymaya binding successfully</string>
+    <string name="text_paymaya_add_success">PayMaya binding success</string>
     <string name="text_bank_card_modify_success">Edit bank card successfully</string>
     <string name="text_crypto_modify_success">Edit virtual coin successfully</string>
     <string name="text_e_wallet_modify_success">Edit eWallet successfully</string>
-    <string name="text_pay_maya_modify_success">Edit Paymaya successfully</string>
+    <string name="text_pay_maya_modify_success">PayMaya edited successfully</string>
     <string name="bet_receipt_bet_quota">Stake：</string>
     <string name="bet_info_list_win_quota">To win：</string>
     <string name="bet_receipt_win_quota">EST winning：</string>
@@ -1006,7 +1005,7 @@
     <string name="live_streaming">Livestream</string>
     <string name="half_first_short">1st Half</string>
     <string name="half_second_short">2nd Half</string>
-    <string name="my_bank_card">My %1$s</string>
+    <string name="my_bank_card">My %1$s%2$s</string>
     <string name="my_favorite_empty">You don\'t have favorite events yet</string>
     <string name="remove_account_warning">Are you sure you want to cancel your current account?</string>
     <string name="cruel_write_off">Still delete</string>
@@ -1277,4 +1276,5 @@
     <string name="J902">Birthdate</string>
     <string name="N848">Select a source of income</string>
     <string name="N850">Please select an address</string>
+    <string name="N849">Address</string>
 </resources>

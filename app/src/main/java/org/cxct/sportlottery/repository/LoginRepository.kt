@@ -18,6 +18,7 @@ import org.cxct.sportlottery.network.index.login_for_guest.LoginForGuestRequest
 import org.cxct.sportlottery.network.index.logout.LogoutRequest
 import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.network.user.UserInfo
+import org.cxct.sportlottery.network.user.UserSwitchResult
 import org.cxct.sportlottery.network.user.authbind.AuthBindResult
 import org.cxct.sportlottery.network.user.info.UserBasicInfoRequest
 import org.cxct.sportlottery.util.*
@@ -186,14 +187,14 @@ object LoginRepository {
     /**
      * 获取用户完善个人信息开关
      */
-    suspend fun getUserInfoSwitch(): Response<NetResult> {
+    suspend fun getUserInfoSwitch(): Response<UserSwitchResult> {
         return OneBoSportApi.indexService.getUserInfoSwitch()
     }
 
     /**
      * 是否已完善个人信息
      */
-    suspend fun getUserInfoCheck(): Response<NetResult> {
+    suspend fun getUserInfoCheck(): Response<UserSwitchResult> {
         return OneBoSportApi.indexService.getUserInfoCheck()
     }
 

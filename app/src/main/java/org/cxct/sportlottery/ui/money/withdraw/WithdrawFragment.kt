@@ -32,6 +32,7 @@ import org.cxct.sportlottery.ui.money.withdraw.BankActivity.Companion.TransferTy
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
 import org.cxct.sportlottery.util.MoneyManager.getCryptoIconByCryptoName
+import kotlin.math.min
 
 /**
  * @app_destination 提款-tab
@@ -200,7 +201,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                                 if (paymataTransfer) View.VISIBLE else View.GONE
                         }
                         tv_add_bank.text = context?.getString(R.string.bank_list_add,
-                            context?.getString(R.string.pay_maya))
+                            context?.getString(R.string.online_maya))
                         clearEvent()
                     }
                     getString(R.string.Outlets_Reserve) -> {
@@ -267,7 +268,8 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         btn_withdraw.setTitleLetterSpacing()
 
         et_withdrawal_amount.getAllButton {
-            it.setText(viewModel.getWithdrawAmountLimit().max.toLong().toString())
+            it.setText(min(viewModel.getWithdrawAmountLimit().max,
+                viewModel.userMoney.value?.toDouble() ?: 0.0).toString())
             et_withdrawal_amount.et_input.apply { setSelection(this.length()) }
         }
     }
@@ -359,8 +361,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 return@Observer
             val cardList = it.cardList
             if (cardList.isEmpty()) {
-                LogUtil.toJson(it)
-
                 jumpToMoneyCardSetting(true, it.transferType)
                 return@Observer
             }
@@ -525,9 +525,15 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                         getString(R.string.prompt),
                         getString(R.string.text_money_get_success)
                     ) { viewModel.getMoneyAndTransferOut() }
+                    if (it.content?.authorizeUrl?.isNotEmpty() == true) {
+                        JumpUtil.toExternalWeb(requireContext(), it.content.authorizeUrl)
+                    }
                 } else {
-                   showErrorPromptDialog(getString(R.string.prompt), it.msg) {}
+                    showErrorPromptDialog(getString(R.string.prompt), it.msg) {}
                 }
+            if (it.content?.authorizeUrl?.isNotEmpty() == true) {
+                JumpUtil.toExternalWeb(requireContext(), it.content?.authorizeUrl)
+            }
         }
     }
 

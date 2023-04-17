@@ -13,6 +13,20 @@
         layout="@layout/view_status_bar" />
 
 
+    <ImageButton
+        android:id="@+id/btn_back"
+        android:layout_width="26dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/v_top"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:background="@null"
+        android:contentDescription="@null"
+        android:scaleX="0.9"
+        android:scaleY="0.9"
+        android:src="@drawable/ic_arrow_login" />
+
+
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
@@ -157,7 +171,7 @@
                     android:layout_height="wrap_content"
                     app:hintText="@string/N850"
                     app:isResponsiveIconColor="false"
-                    app:labelText="@string/select_crypto_address"
+                    app:labelText="@string/N849"
                     app:labelTextStyle="normal"
                     app:endIcon="@drawable/ic_arrow_gray"
                     app:primaryColor="@color/color_AFAFB1">

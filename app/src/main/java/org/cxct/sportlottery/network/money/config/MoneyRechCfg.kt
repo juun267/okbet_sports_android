@@ -22,3 +22,4 @@ enum class TransferType(val type: String) {
 enum class BankType{
     BANK, E_WALLET
 }
+const val PAYMAYA = "PayMaya"

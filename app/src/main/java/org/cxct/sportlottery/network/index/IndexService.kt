@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.network.index
 
+import org.cxct.sportlottery.net.user.data.UserBasicInfoResponse
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.BIND_FACEBOOK
 import org.cxct.sportlottery.network.Constants.BIND_GOOGLE
@@ -38,6 +39,7 @@ import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.network.index.sendSms.SmsRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
+import org.cxct.sportlottery.network.user.UserSwitchResult
 import org.cxct.sportlottery.network.user.authbind.AuthBindResult
 import org.cxct.sportlottery.network.user.info.UserBasicInfoRequest
 import org.cxct.sportlottery.network.user.info.UserSalaryListResult
@@ -83,13 +85,16 @@ interface IndexService {
     suspend fun checkAccountExist(@Path("userName") userName: String): Response<CheckAccountResult>
 
     @GET(Constants.USER_BASIC_INFO_SWITCH)
-    suspend fun getUserInfoSwitch(): Response<NetResult>
+    suspend fun getUserInfoSwitch(): Response<UserSwitchResult>
 
     @GET(Constants.USER_SALARY_SOURCE_LIST)
     suspend fun getUserSalaryList(): Response<UserSalaryListResult>
 
+    @GET(Constants.USER_GET_BASIC_INFO)
+    suspend fun getUserBasicInfo(): Response<UserBasicInfoResponse>
+
     @GET(Constants.USER_BASIC_INFO_CHECK)
-    suspend fun getUserInfoCheck(): Response<NetResult>
+    suspend fun getUserInfoCheck(): Response<UserSwitchResult>
 
 
     @POST(INDEX_CHECK_TOKEN)

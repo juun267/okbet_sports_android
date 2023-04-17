@@ -58,4 +58,17 @@ object SPUtil {
     fun getBoolean(key: String, defaultValue: Boolean = false): Boolean? {
         return mSharedPreferences?.getBoolean(key, defaultValue)
     }
+
+
+    fun saveLoginInfoSwitch(){
+        saveBoolean("login_switch",true)
+    }
+
+    fun getLoginInfoSwitch():Boolean{
+        val switch=getBoolean("login_switch")
+        if(switch!=null){
+            return switch
+        }
+        return false
+    }
 }

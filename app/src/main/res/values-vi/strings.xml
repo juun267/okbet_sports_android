@@ -404,7 +404,7 @@
     <string name="hint_please_enter_withdraw_password">Mật khẩu rút tiền</string>
     <string name="add_credit_card">Thêm mới thẻ ngân hàng</string>
     <string name="add_crypto_card">Thêm mới tiền ảo</string>
-    <string name="add_e_wallet">Thêm mới eWallet</string>
+    <string name="add_e_wallet">Thêm eWallet</string>
     <string name="add_credit_or_virtual">Thêm %1$s</string>
 
     <string name="create_bank">Tài khoản ngân hàng</string>
@@ -429,16 +429,15 @@
     <string name="error_wallet_address">Địa chỉ bạn đăng nhập không hợp lệ</string>
     <string name="text_bank_card_delete_success">Đã xóa thẻ ngân hàng thành công</string>
     <string name="text_e_wallet_delete_success">Đã xóa eWallet thành công</string>
-    <string name="text_pay_maya_delete_success">Đã xóa Paymaya thành công</string>
+    <string name="text_pay_maya_delete_success">Xoá PayMaya thành công</string>
     <string name="text_crypto_delete_success">Đã xóa tiền ảo thành công</string>
     <string name="text_bank_card_add_success">Mặc định thẻ ngân hàng thành công</string>
     <string name="text_e_wallet_add_success">Mặc định eWallet thành công</string>
-    <string name="text_pay_maya_add_success">Mặc định Paymaya thành công</string>
     <string name="text_crypto_add_success">Mặc định tiền ảo thành công</string>
     <string name="text_bank_card_modify_success">Chỉnh sửa thẻ ngân hàng thành công</string>
     <string name="text_crypto_modify_success">Chỉnh sửa tiền ảo thành công</string>
     <string name="text_e_wallet_modify_success">Chỉnh sửa eWallet thành công</string>
-
+    <string name="text_pay_maya_modify_success">Chỉnh sửa PayMaya thành công</string>
     <string name="bet_receipt_bet_quota">Tiền Cược：</string>
     <string name="bet_info_list_win_quota">Ước thắng：</string> <!--I010-->
     <string name="bet_receipt_win_quota">Số tiền có thể thắng：</string>
@@ -902,7 +901,7 @@
     <string name="select_city">Chọn thành phố</string>
     <string name="outlets_address">Địa chỉ</string>
     <string name="appointment_time">Hẹn thời gian</string>
-    <string name="select_date">ngày tháng</string>
+    <string name="select_date">Ngày tháng</string>
     <string name="select_time">Thời gian</string>
 
     <!--region 20220714 新版投注單-->
@@ -992,7 +991,7 @@
     <string name="km">Km</string>
     <string name="league_filter">Lọc trận đấu</string>
     <string name="outlet">Trạm cược</string>
-    <string name="my_bank_card">" Của tôi %1$s</string>
+    <string name="my_bank_card">" Của tôi %1$s%2$s</string>
     <string name="local_time">Giờ địa phương:</string>
     <string name="half_first_short">Hiệp 1</string>
     <string name="half_second_short">Hiệp 2</string>
@@ -1165,6 +1164,7 @@
     <string name="J485">Định dạng hoặc giá trị của số rút tiền không đúng</string>
     <string name="N171">Vui lòng nhập SĐT gồm 11 chữ số</string>
     <string name="N865">Số tiền vượt hạn mức</string>
+    <string name="text_paymaya_add_success">Liên kết PayMaya thành công</string>
 
     <string name="N846">Thông tin chính</string>
     <string name="J055">Họ tên thật</string>

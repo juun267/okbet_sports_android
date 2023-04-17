@@ -20,6 +20,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.crash.FirebaseLog
 import org.cxct.sportlottery.common.event.RegisterInfoEvent
 import org.cxct.sportlottery.databinding.ActivityLoginOkBinding
@@ -196,6 +197,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         val deviceId = Settings.Secure.getString(applicationContext.contentResolver,
             Settings.Secure.ANDROID_ID)
         var appVersion = org.cxct.sportlottery.BuildConfig.VERSION_NAME
+        hideSoftKeyboard(this)
         if (viewModel.loginType == LOGIN_TYPE_CODE) {
             loading()
             val account = binding.eetAccount.text.toString()
@@ -313,7 +315,6 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             }
         }
         viewModel.checkUserExist.observe(this) {
-            LogUtil.d("checkUserExist=" + it)
             setupRecommendCodeVisible()
         }
         viewModel.accountMsg.observe(this) {
