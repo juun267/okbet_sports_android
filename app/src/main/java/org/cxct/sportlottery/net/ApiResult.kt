@@ -3,27 +3,27 @@ package org.cxct.sportlottery.net
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 
-class ApiResult<T>(): java.io.Serializable {
+open class ApiResult<T>(): java.io.Serializable {
 
-    private constructor(code: Int, msg: String, success: Boolean): this() {
+    constructor(code: Int? = 0, msg: String? = null, success: Boolean? = false): this() {
         this.code = code
         this.msg = msg
         this.success = success
     }
 
-    var code: Int = -1
+    var code: Int? = -1
         private set
         get() {
             return field ?: -1
         }
 
-    var msg: String = ""
+    var msg: String? = ""
         private set
         get() {
             return field ?: ""
         }
 
-    private var success: Boolean = false
+    private var success: Boolean? = false
         get() {
             return field ?: false
         }
@@ -32,7 +32,7 @@ class ApiResult<T>(): java.io.Serializable {
 
     // 可以重新改方法，解析不同字段的data
     open fun getData(): T? = t
-    open fun succeeded(): Boolean = success
+    open fun succeeded(): Boolean? = success
 
     companion object {
         private const val ERROR_CODE_UNKNOWN = -1

@@ -9,7 +9,7 @@ object OKGamesRepository {
 
     val okGamesApi by lazy { RetrofitHolder.createApiService(OKGamesApi::class.java) }
 
-    private fun paramDevice(): JsonObject {
+    fun paramDevice(): JsonObject {
         val params = JsonObject()
         params.addProperty("device", 2)
         return params

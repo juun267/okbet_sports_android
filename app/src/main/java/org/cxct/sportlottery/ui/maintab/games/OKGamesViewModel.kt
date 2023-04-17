@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab.games
 
 import android.app.Application
 import org.cxct.sportlottery.common.extentions.callApi
+import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
@@ -23,7 +24,9 @@ class OKGamesViewModel(androidContext: Application,
     sportMenuRepository
 )  {
 
-
+    suspend fun okGamesHall(): ApiResult<Any?> {
+        return OKGamesRepository.okGamesApi.getOKGamesHall(OKGamesRepository.paramDevice())
+    }
 
     fun getOKGamesHall() = callApi({ OKGamesRepository.okGamesHall() }) {
 

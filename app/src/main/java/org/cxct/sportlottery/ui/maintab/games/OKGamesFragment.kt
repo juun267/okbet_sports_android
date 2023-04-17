@@ -8,6 +8,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.fitsSystemStatus
 import org.cxct.sportlottery.databinding.FragmentOkgamesBinding
+import org.cxct.sportlottery.net.flow.launchWithLoadingAndCollect
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -15,18 +16,25 @@ import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.FragmentHelper
 
 // okgames主Fragment
-class OKGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesViewModel::class) {
+class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesViewModel::class) {
 
     private lateinit var binding: FragmentOkgamesBinding
 
     private val fragmentHelper by lazy {
-        FragmentHelper(childFragmentManager, R.id.fragmentContainer, arrayOf(
-            Pair(AllGamesFragment::class.java, null),
-            Pair(PartGamesFragment::class.java, null)))
+        FragmentHelper(
+            childFragmentManager, R.id.fragmentContainer, arrayOf(
+                Pair(AllGamesFragment::class.java, null),
+                Pair(PartGamesFragment::class.java, null)
+            )
+        )
     }
 
     private inline fun mainTabActivity() = activity as MainTabActivity
-    override fun createRootView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun createRootView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentOkgamesBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -36,6 +44,18 @@ class OKGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVie
         showGameAll()
         viewModel.getOKGamesHall()
 
+        launchWithLoadingAndCollect({ viewModel.okGamesHall() }) {
+            onSuccess = { data->
+//                showSuccessView(data)
+            }
+            onFailed = { errorCode, errorMsg ->
+//                showFailedView(code, msg)
+            }
+            onError = {e ->
+                e.printStackTrace()
+            }
+
+        }
 
     }
 
