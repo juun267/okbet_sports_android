@@ -351,6 +351,7 @@ dependencies {
     // 接入 FCM 厂商
     implementation 'com.google.firebase:firebase-messaging:23.0.5'
     implementation 'cn.jiguang.sdk.plugin:fcm:4.8.5'
+    implementation "com.airbnb.android:lottie:5.0.3"
     //compose
 //    implementation 'androidx.activity:activity-compose:1.6.1'
 //    implementation "androidx.compose.ui:ui:$compose_version"

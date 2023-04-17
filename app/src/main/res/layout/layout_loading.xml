@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rl_loading"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,10 +11,19 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <ProgressBar
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:indeterminateTint="@color/color_317FFF_0760D4" />
+    <!--    <ProgressBar-->
+    <!--        android:layout_width="40dp"-->
+    <!--        android:layout_height="40dp"-->
+    <!--        android:indeterminateTint="@color/color_317FFF_0760D4" />-->
+    <!--    -->
+    <!--    -->
+
+    <ImageView
+        android:id="@+id/ivLoading"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        tools:src="@drawable/anim_loading"/>
 
     <TextView
         android:id="@+id/pb_message"
