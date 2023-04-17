@@ -9,7 +9,7 @@ import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentPartOkgamesBinding
-import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
+import org.cxct.sportlottery.net.games.data.OKGamesGroup
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
@@ -18,8 +18,13 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     private lateinit var binding: FragmentPartOkgamesBinding
     private inline fun okGamesFragment() = parentFragment as OKGamesFragment
-    private val gameChildAdapter by lazy { GameChildAdapter(dataList) }
-    private var dataList = mutableListOf<QueryGameEntryData>()
+    private val gameChildAdapter by lazy { GameChildAdapter() }
+    private var dataList = mutableListOf<OKGamesGroup>()
+    private var currentPage: Int = 0
+    private var gameName: String? = null
+    private var categoryId: String? = null
+    private var firmId: String? = null
+
     override fun createRootView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,6 +35,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     }
 
     override fun onBindView(view: View) {
+        initObserve()
         binding.apply {
             tvTag.setOnClickListener {
                 okGamesFragment().showGameAll()
@@ -41,13 +47,37 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                     .inflate(R.layout.view_no_games, null))
                 adapter = gameChildAdapter
                 gameChildAdapter.setOnItemChildClickListener(OnItemChildClickListener { adapter, view, position ->
-
+                    dataList[position]?.let {
+                        it.id?.let { gameId -> viewModel.collectGame(gameId, !it.markCollect) }
+                    }
                 })
             }
+            tvShowMore.setOnClickListener {
+                okGamesFragment().showGameAll()
+            }
+        }
+        getGameList()
+    }
+
+    private fun initObserve() {
+        viewModel.collectOkGamesResult.observe(this.viewLifecycleOwner) { result ->
+            var needUpdate = false
+            gameChildAdapter.data.forEach {
+                if (it.id == result.first) {
+                    it.markCollect = result.second
+                    needUpdate = true
+                }
+            }
+            if (needUpdate) {
+                gameChildAdapter.notifyDataSetChanged()
+            }
+        }
+        viewModel.gamesList.observe(this.viewLifecycleOwner) {
+            setItemList(it.toMutableList())
         }
     }
 
-    fun setItemList(list: MutableList<QueryGameEntryData>) {
+    fun setItemList(list: MutableList<OKGamesGroup>) {
         dataList.clear()
         dataList.addAll(list)
         if (isAdded) {
@@ -55,4 +85,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         }
     }
 
+    fun getGameList() {
+        viewModel.getOKGamesList(currentPage, gameName, categoryId, firmId)
+    }
 }
