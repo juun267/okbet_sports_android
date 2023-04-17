@@ -155,7 +155,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { AuthViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { BindInfoViewModel(get(), get(), get()) }
         viewModel { RegisterInfoViewModel(get(), get(), get(), get()) }
-        viewModel { OKGamesViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { OKGamesViewModel(get(), get(), get(), get(), get(), get(), get()) }
     }
 
     private val repoModule = module {

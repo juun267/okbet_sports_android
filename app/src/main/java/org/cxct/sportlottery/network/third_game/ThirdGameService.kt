@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.network.third_game
 
-import org.cxct.sportlottery.network.Constants.COLLECT_OKGAMES
 import org.cxct.sportlottery.network.Constants.HOT_HANDICAP_LIST
 import org.cxct.sportlottery.network.Constants.HOT_LIVE_LIST
 import org.cxct.sportlottery.network.Constants.QUERY_FIRST_ORDERS
@@ -93,10 +92,5 @@ interface ThirdGameService {
 
     @POST(QUERY_TOTAL_REWARD_AMOUNT)
     suspend fun queryTotalRewardAmount(): Response<QueryTotalRewardAmountResult>
-
-    @POST(COLLECT_OKGAMES)
-    suspend fun collectOkGames(
-        @Path("id") id: Int,
-    ): Response<NetResult>
 
 }

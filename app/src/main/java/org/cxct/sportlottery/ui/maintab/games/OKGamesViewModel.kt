@@ -1,13 +1,10 @@
 package org.cxct.sportlottery.ui.maintab.games
 
 import android.app.Application
-import org.cxct.sportlottery.common.extentions.callApi
-import org.cxct.sportlottery.net.games.OKGamesRepository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
-import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.common.extentions.callApi
+import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 
@@ -19,7 +16,6 @@ class OKGamesViewModel(
     infoCenterRepository: InfoCenterRepository,
     favoriteRepository: MyFavoriteRepository,
     sportMenuRepository: SportMenuRepository,
-    private val thirdGameRepository: ThirdGameRepository,
 ): MainHomeViewModel(
     androidContext,
     userInfoRepository,
@@ -33,24 +29,13 @@ class OKGamesViewModel(
         get() = _collectOkGamesResult
     private val _collectOkGamesResult = MutableLiveData<Pair<Int, Boolean>>()
 
-    fun collectOKGames(id: Int) {
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.thirdGameService.collectOkGames(id)
-            }
-            result?.let {
-                _collectOkGamesResult.postValue(Pair(id, it.success))
-            }
-        }
-    }
-
 
     fun getOKGamesHall() = callApi({ OKGamesRepository.okGamesHall() }) {
 
     }
 
     fun collectGame(gameId: Int, isCollected: Boolean) = callApi({ OKGamesRepository.collectOkGames(gameId, !isCollected) }) {
-
+        _collectOkGamesResult.postValue(Pair(gameId, it.succeeded()))
     }
 
 

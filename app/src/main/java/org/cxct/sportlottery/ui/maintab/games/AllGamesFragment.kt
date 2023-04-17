@@ -23,10 +23,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     private lateinit var binding: FragmentAllOkgamesBinding
     private val gameAllAdapter by lazy {
-        GameCategroyAdapter(listOf()) {
-            it.id?.let { id ->
-                viewModel.collectOKGames(id)
-            }
+        GameCategroyAdapter() {
+            it.id?.let { gameId -> viewModel.collectGame(gameId, !it.markCollect) }
         }
     }
     private val providersAdapter by lazy { OkGameProvidersAdapter() }

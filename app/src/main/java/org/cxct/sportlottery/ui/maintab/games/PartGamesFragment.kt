@@ -18,7 +18,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     private lateinit var binding: FragmentPartOkgamesBinding
     private inline fun okGamesFragment() = parentFragment as OKGamesFragment
-    private val gameChildAdapter by lazy { GameChildAdapter(dataList) }
+    private val gameChildAdapter by lazy { GameChildAdapter() }
     private var dataList = mutableListOf<QueryGameEntryData>()
     override fun createRootView(
         inflater: LayoutInflater,
@@ -42,8 +42,8 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                     .inflate(R.layout.view_no_games, null))
                 adapter = gameChildAdapter
                 gameChildAdapter.setOnItemChildClickListener(OnItemChildClickListener { adapter, view, position ->
-                    dataList[position].id?.let {
-                        viewModel.collectOKGames(it)
+                    dataList[position]?.let {
+                        it.id?.let { gameId -> viewModel.collectGame(gameId, !it.markCollect) }
                     }
                 })
             }
