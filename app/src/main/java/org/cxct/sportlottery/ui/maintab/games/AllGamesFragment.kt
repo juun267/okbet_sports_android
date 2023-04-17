@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.include_part3.*
 import android.widget.TextView
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,7 +22,11 @@ import org.cxct.sportlottery.util.setServiceClick
 class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesViewModel::class) {
 
     private lateinit var binding: FragmentAllOkgamesBinding
-    private val gameAllAdapter by lazy { GameCategroyAdapter(listOf()) }
+    private val gameAllAdapter by lazy {
+        GameCategroyAdapter() {
+            it.id?.let { gameId -> viewModel.collectGame(gameId, !it.markCollect) }
+        }
+    }
     private val providersAdapter by lazy { OkGameProvidersAdapter() }
     private val gameRecordAdapter by lazy { OkGameRecordAdapter() }
 
@@ -36,10 +39,27 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     }
 
     override fun onBindView(view: View) {
+        initObserve()
         onBindGamesView()
-
         onBindPart3View()
         onBindPart5View()
+    }
+
+    private fun initObserve() {
+        viewModel.collectOkGamesResult.observe(this.viewLifecycleOwner) { result ->
+            var needUpdate = false
+            gameAllAdapter.data.forEach {
+                it.forEach { gameEntry ->
+                    if (gameEntry.id == result.first) {
+                        gameEntry.markCollect = result.second
+                        needUpdate = true
+                    }
+                }
+            }
+            if (needUpdate) {
+                gameAllAdapter.notifyDataSetChanged()
+            }
+        }
     }
 
     private fun onBindGamesView() {
@@ -56,8 +76,6 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     private fun onBindPart3View() {
         binding.include3.apply {
             rvOkgameProviders.adapter = providersAdapter
-
-
             rvOkgameRecord.adapter = gameRecordAdapter
             rvOkgameRecord.itemAnimator = DefaultItemAnimator()
             receiver.recordNew.observe(viewLifecycleOwner) {

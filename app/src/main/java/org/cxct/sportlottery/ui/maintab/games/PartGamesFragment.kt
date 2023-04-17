@@ -18,7 +18,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     private lateinit var binding: FragmentPartOkgamesBinding
     private inline fun okGamesFragment() = parentFragment as OKGamesFragment
-    private val gameChildAdapter by lazy { GameChildAdapter(dataList) }
+    private val gameChildAdapter by lazy { GameChildAdapter() }
     private var dataList = mutableListOf<QueryGameEntryData>()
     override fun createRootView(
         inflater: LayoutInflater,
@@ -30,6 +30,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     }
 
     override fun onBindView(view: View) {
+        initObserve()
         binding.apply {
             tvTag.setOnClickListener {
                 okGamesFragment().showGameAll()
@@ -41,8 +42,25 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                     .inflate(R.layout.view_no_games, null))
                 adapter = gameChildAdapter
                 gameChildAdapter.setOnItemChildClickListener(OnItemChildClickListener { adapter, view, position ->
-
+                    dataList[position]?.let {
+                        it.id?.let { gameId -> viewModel.collectGame(gameId, !it.markCollect) }
+                    }
                 })
+            }
+        }
+    }
+
+    private fun initObserve() {
+        viewModel.collectOkGamesResult.observe(this.viewLifecycleOwner) { result ->
+            var needUpdate = false
+            gameChildAdapter.data.forEach {
+                if (it.id == result.first) {
+                    it.markCollect = result.second
+                    needUpdate = true
+                }
+            }
+            if (needUpdate) {
+                gameChildAdapter.notifyDataSetChanged()
             }
         }
     }
