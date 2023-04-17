@@ -1,9 +1,11 @@
 package org.cxct.sportlottery.net.games
 
 import com.google.gson.JsonObject
+import org.cxct.sportlottery.net.ApiListResult
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.net.games.api.OKGamesApi
+import org.cxct.sportlottery.net.games.data.OKGamesHall
 
 object OKGamesRepository {
 
@@ -22,7 +24,7 @@ object OKGamesRepository {
         return okGamesApi.okGamescollect(params)
     }
 
-    suspend fun okGamesHall(): ApiResult<Any?> {
+    suspend fun okGamesHall(): ApiResult<OKGamesHall?> {
         return okGamesApi.getOKGamesHall(paramDevice())
     }
 
@@ -30,7 +32,7 @@ object OKGamesRepository {
                               pageSize: Int,
                               gameName: String,
                               categoryId: String,
-                              firmId: String): ApiResult<Any?> {
+                              firmId: String): ApiListResult<Any?> {
 
         val params = paramDevice()
         params.addProperty("page", page)
