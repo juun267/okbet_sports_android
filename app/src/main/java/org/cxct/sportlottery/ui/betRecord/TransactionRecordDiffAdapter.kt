@@ -285,6 +285,7 @@ class TransactionRecordDiffAdapter :
 
                 }
 
+
                 content_parlay_bet_amount.text = TextUtil.format(data.totalAmount)
                 content_parlay_winnable_amount.text = TextUtil.format(data.winnable)
                 content_parlay_order_no.text = data.orderNo
