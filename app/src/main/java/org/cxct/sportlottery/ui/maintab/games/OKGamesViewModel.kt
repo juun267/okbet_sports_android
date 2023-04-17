@@ -45,13 +45,12 @@ class OKGamesViewModel(
         categoryId: String?,
         firmId: String?,
     ) = callApi({ OKGamesRepository.getOKGamesList(page, 12, gameName, categoryId, firmId) }) {
-        _gamesList.postValue(it.getData())
+        _gamesList.postValue(it.getData() ?: listOf())
     }
 
     fun collectGame(gameId: Int, isCollected: Boolean) =
         callApi({ OKGamesRepository.collectOkGames(gameId, !isCollected) }) {
             _collectOkGamesResult.postValue(Pair(gameId, it.succeeded()))
         }
-
 
 }
