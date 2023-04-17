@@ -67,6 +67,7 @@
     <color name="color_E9F4FA">#E9F4FA</color>
     <color name="color_EFFFF5">#EFFFF5</color>
     <color name="color_25BF63">#25BF63</color>
+    <color name="color_7599FF">#7599FF</color>
 
     <color name="color_7F7F7F">#7F7F7F</color>
     <color name="color_909090">#909090</color>
@@ -335,7 +336,6 @@
     <color name="color_14366B">#14366B</color>
     <color name="color_6D7693">#6D7693</color>
     <color name="color_BEC7DC">#BEC7DC</color>
-
 
     <!--region keyboard-->
     <!--endregion keyboard-->

@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.ui.maintab.games
 
 import android.app.Application
+import org.cxct.sportlottery.common.extentions.callApi
+import org.cxct.sportlottery.net.games.OKGamesRepository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -40,6 +42,15 @@ class OKGamesViewModel(
                 _collectOkGamesResult.postValue(Pair(id, it.success))
             }
         }
+    }
+
+
+    fun getOKGamesHall() = callApi({ OKGamesRepository.okGamesHall() }) {
+
+    }
+
+    fun collectGame(gameId: Int, isCollected: Boolean) = callApi({ OKGamesRepository.collectOkGames(gameId, !isCollected) }) {
+
     }
 
 
