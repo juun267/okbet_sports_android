@@ -56,4 +56,5 @@ class OKGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVie
     open fun showGameAll() {
         fragmentHelper.showFragment(0)
     }
+
 }

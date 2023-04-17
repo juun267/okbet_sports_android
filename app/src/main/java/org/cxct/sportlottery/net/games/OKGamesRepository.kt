@@ -6,6 +6,7 @@ import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.net.games.api.OKGamesApi
 import org.cxct.sportlottery.net.games.data.OKGamesHall
+import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 
 object OKGamesRepository {
 

@@ -5,6 +5,7 @@ import org.cxct.sportlottery.net.ApiListResult
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.games.data.OKGamesHall
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 import retrofit2.http.Body
 import retrofit2.http.POST
 

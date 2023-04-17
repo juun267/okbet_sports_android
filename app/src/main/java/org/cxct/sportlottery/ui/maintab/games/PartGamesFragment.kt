@@ -20,6 +20,11 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     private inline fun okGamesFragment() = parentFragment as OKGamesFragment
     private val gameChildAdapter by lazy { GameChildAdapter() }
     private var dataList = mutableListOf<QueryGameEntryData>()
+    private var currentPage: Int = 0
+    private var gameName: String? = null
+    private var categoryId: String? = null
+    private var firmId: String? = null
+
     override fun createRootView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,7 +52,11 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                     }
                 })
             }
+            tvShowMore.setOnClickListener {
+                okGamesFragment().showGameAll()
+            }
         }
+        getGameList()
     }
 
     private fun initObserve() {
@@ -63,6 +72,9 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 gameChildAdapter.notifyDataSetChanged()
             }
         }
+        viewModel.gamesList.observe(this.viewLifecycleOwner) {
+            setItemList(it.toMutableList())
+        }
     }
 
     fun setItemList(list: MutableList<QueryGameEntryData>) {
@@ -73,4 +85,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         }
     }
 
+    fun getGameList() {
+        viewModel.getOKGamesList(currentPage, gameName, categoryId, firmId)
+    }
 }
