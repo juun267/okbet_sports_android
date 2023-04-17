@@ -83,6 +83,7 @@
         <item>@string/withdraw_log_type_admin</item>
         <item>@string/withdraw_log_crypto_transfer</item>
         <item>@string/ewallet</item>
+        <item>@string/online_maya</item>
         <item>@string/betting_station_reserve</item>
         <item>@string/betting_station_withdraw</item>
     </string-array>
