@@ -5,8 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.SingleEvent
-import org.cxct.sportlottery.common.extentions.callApi
-import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.net.user.data.UserBasicInfoResponse
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bettingStation.AreaAll
@@ -15,6 +13,8 @@ import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.user.info.UserBasicInfoRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.util.LocalUtils
+import org.cxct.sportlottery.util.VerifyConstUtil
 
 class RegisterInfoViewModel(
     val androidContext: Application,
@@ -28,6 +28,14 @@ class RegisterInfoViewModel(
 
     //生日
     var birthdayTimeInput = ""
+
+    //手机号
+    var phoneNumberInput=""
+    var phoneEnable=false
+
+    //邮箱
+    var emailInput=""
+    var emailEnable=false
 
     //真实姓名
     var realNameInput = ""
@@ -98,6 +106,13 @@ class RegisterInfoViewModel(
     /**
      * 获取用户基本信息
      */
+    var filledName=false
+    var filledBirthday=false
+    var filledPhone=false
+    var filledEmail=false
+    var filledProvince=false
+    var filledCity=false
+    var filledSalary=false
     fun getUserBasicInfo(){
         launch {
             val result=doNetwork(androidContext){ OneBoSportApi.indexService.getUserBasicInfo()}
@@ -105,20 +120,35 @@ class RegisterInfoViewModel(
 
                 data.t.birthday?.let {
                     birthdayTimeInput=it
+                    if(it.isNotEmpty()){
+                        filledBirthday=true
+                    }
                 }
                 data.t.city?.let {
                     cityInput=it
+                    if(it.isNotEmpty()){
+                        filledCity=true
+                    }
                 }
                 data.t.fullName?.let {
                     realNameInput=it
+                    if(it.isNotEmpty()){
+                        filledName=true
+                    }
                 }
 
                 data.t.province?.let {
                     provinceInput=it
+                    if(it.isNotEmpty()){
+                        filledProvince=true
+                    }
                 }
 
                 data.t.salarySource?.let {
                     sourceInput=it
+                    if(it>-1){
+                        filledSalary=true
+                    }
                 }
                 userBasicInfoEvent.post(data.t)
             }
@@ -156,22 +186,39 @@ class RegisterInfoViewModel(
     /**
      * 格式化城市 string  list
      */
-    fun getCityStringList(provinceList: ArrayList<String>): List<List<String>> {
-        val cityList = ArrayList<ArrayList<String>>()
-        _areaAllList.value?.let { all ->
+//    fun getCityStringList(provinceList: ArrayList<String>): List<List<String>> {
+//        val cityList = ArrayList<ArrayList<String>>()
+//        _areaAllList.value?.let { all ->
+//
+//            provinceList.forEach {
+//                val tempArray = arrayListOf<String>()
+//                all.provinces.forEach { province ->
+//                    if (province.name == it) {
+//                        all.cities.forEach { city ->
+//                            if (city.provinceId == province.id) {
+//                                tempArray.add(city.name)
+//                            }
+//                        }
+//                    }
+//                }
+//                cityList.add(tempArray)
+//            }
+//        }
+//        return cityList
+//    }
 
-            provinceList.forEach {
-                val tempArray = arrayListOf<String>()
-                all.provinces.forEach { province ->
-                    if (province.name == it) {
-                        all.cities.forEach { city ->
-                            if (city.provinceId == province.id) {
-                                tempArray.add(city.name)
-                            }
+    fun getCityStringListByProvince():ArrayList<String>{
+        val cityList=ArrayList<String>()
+        _areaAllList.value?.let { all ->
+            all.provinces.forEach {province->
+                if(province.name==provinceInput){
+                    all.cities.forEach {city->
+                        if(city.provinceId==province.id){
+                            cityList.add(city.name)
                         }
                     }
+                    return cityList
                 }
-                cityList.add(tempArray)
             }
         }
         return cityList
@@ -203,8 +250,6 @@ class RegisterInfoViewModel(
 //                commitMsg = "${commitResult?.msg}"
                 commitMsg = androidContext.getString(R.string.unknown_error)
                 commitEvent.post(false)
-
-
             }
         }
     }
@@ -217,18 +262,46 @@ class RegisterInfoViewModel(
         return realNameInput.isNotEmpty()
                 && birthdayTimeInput.isNotEmpty()
                 && sourceInput > -1
+                && phoneEnable
+                && emailEnable
                 && provinceInput.isNotEmpty()
                 && cityInput.isNotEmpty()
+
     }
 
-    fun setCityData(provincePosition: Int, cityPosition: Int) {
-        val provinceList = getProvinceStringList()
-        val cityList = getCityStringList(provinceList)
-        cityInput = cityList[provincePosition][cityPosition]
+    fun setCityData( cityPosition: Int) {
+        val cityList =getCityStringListByProvince()
+        cityInput = cityList[cityPosition]
     }
 
     fun setProvinceData(provincePosition: Int) {
         val provinceList = getProvinceStringList()
         provinceInput = provinceList[provincePosition]
+    }
+
+
+
+    /**
+     * 手机号/邮箱/用户名
+     */
+    fun checkPhone(phoneNumber: String): String ?{
+        var msg:String?=null
+        if(VerifyConstUtil.verifyPhone(phoneNumber) ){
+            phoneEnable=true
+        }else{
+            msg=LocalUtils.getString(R.string.pls_enter_correct_mobile)
+        }
+        return msg
+    }
+
+    fun checkEmail(email: String): String? {
+        var msg:String?=null
+        if(VerifyConstUtil.verifyMail(email)){
+            emailEnable=true
+        }else{
+            emailEnable=false
+            msg=LocalUtils.getString(R.string.pls_enter_correct_email)
+        }
+        return msg
     }
 }

@@ -198,10 +198,9 @@ class LoginViewModel(
         val infoSwitchResult = doNetwork(androidContext) { loginRepository.getUserInfoSwitch() }
         //是否已完善信息
         val userInfoCheck = doNetwork(androidContext) { loginRepository.getUserInfoCheck() }
-
         if (infoSwitchResult != null && userInfoCheck != null) {
             val isSwitch = infoSwitchResult.t
-            val isFinished = userInfoCheck.t
+            val isFinished = false
             //是否需要完善
             if (checkNeedCompleteInfo(isSwitch, isFinished)) {
                 //跳转到完善页面

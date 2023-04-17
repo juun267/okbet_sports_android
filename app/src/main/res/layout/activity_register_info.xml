@@ -32,7 +32,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="58dp"
+        android:layout_below="@+id/v_top"
+        android:layout_marginTop="24dp"
         android:text="@string/N846"
         android:textSize="@dimen/textSize24sp" />
 
@@ -41,8 +42,10 @@
         android:id="@+id/ivLogo"
         android:layout_width="151dp"
         android:layout_height="60dp"
+        android:layout_below="@+id/tv_title"
+        android:layout_marginBottom="23dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="153dp"
+        android:layout_marginTop="30dp"
         android:src="@drawable/logo_okbet_color" />
 
 
@@ -51,13 +54,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="14dp"
-        android:layout_marginTop="251dp"
         android:background="@drawable/bg_white_radius_8"
         android:elevation="1dp"
         android:paddingTop="10dp"
+        android:layout_below="@+id/ivLogo"
         android:paddingBottom="10dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
+        android:layout_above="@+id/bottom_liences"
         android:fadingEdge="none"
         android:overScrollMode="never"
         android:scrollbars="none">
@@ -66,29 +70,40 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
-                android:id="@+id/tb_real_name"
+            <FrameLayout
+                android:id="@+id/fl_real_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:hintText="@string/N847"
-                app:isResponsiveIconColor="false"
-                app:labelText="@string/J055"
-                app:labelTextStyle="normal"
-                app:primaryColor="@color/color_AFAFB1">
-
-                <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
-                    android:id="@+id/et_real_name"
+                android:layout_height="wrap_content">
+                <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+                    android:id="@+id/tb_real_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:maxLength="99"
-                    android:maxLines="1"
-                    android:textColor="@color/color_FFFFFF_DE000000"
-                    android:textSize="@dimen/textSize14sp" />
+                    app:hintText="@string/N847"
+                    app:isResponsiveIconColor="false"
+                    app:labelText="@string/J055"
+                    app:labelTextStyle="normal"
+                    app:primaryColor="@color/color_AFAFB1">
 
-            </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
+                    <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
+                        android:id="@+id/et_real_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:maxLength="99"
+                        android:maxLines="1"
+                        android:textColor="@color/color_FFFFFF_DE000000"
+                        android:textSize="@dimen/textSize14sp" />
+
+                </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
+
+                <TextView
+                    android:id="@+id/tv_real_name"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </FrameLayout>
 
             <FrameLayout
                 android:id="@+id/fl_birthday"
@@ -123,6 +138,74 @@
                     android:layout_height="match_parent"/>
             </FrameLayout>
 
+
+            <FrameLayout
+                android:id="@+id/fl_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+                    android:id="@+id/et_phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintText="@string/phone_number"
+                    app:isResponsiveIconColor="false"
+                    app:labelText="@string/phone_number"
+                    app:labelTextStyle="normal"
+                    app:primaryColor="@color/color_AFAFB1">
+
+                    <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
+                        android:id="@+id/eet_phone_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:maxLength="11"
+                        android:textColor="@color/color_FFFFFF_DE000000"
+                        android:textSize="@dimen/textSize14sp" />
+
+                </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
+
+                <TextView
+                    android:id="@+id/tv_phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </FrameLayout>
+
+
+
+            <FrameLayout
+                android:id="@+id/fl_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+                    android:id="@+id/et_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintText="@string/e_mail"
+                    app:isResponsiveIconColor="false"
+                    app:labelText="@string/e_mail"
+                    app:labelTextStyle="normal"
+                    app:primaryColor="@color/color_AFAFB1">
+
+                    <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
+                        android:id="@+id/eet_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:maxLength="50"
+                        android:maxLines="1"
+                        android:textColor="@color/color_FFFFFF_DE000000"
+                        android:textSize="@dimen/textSize14sp" />
+
+                </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
+
+                <TextView
+                    android:id="@+id/tv_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </FrameLayout>
 
             <FrameLayout
                 android:id="@+id/fl_salary"
@@ -169,9 +252,9 @@
                     android:id="@+id/tb_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hintText="@string/N850"
+                    app:hintText="@string/province"
                     app:isResponsiveIconColor="false"
-                    app:labelText="@string/N849"
+                    app:labelText="@string/select_area"
                     app:labelTextStyle="normal"
                     app:endIcon="@drawable/ic_arrow_gray"
                     app:primaryColor="@color/color_AFAFB1">
@@ -189,6 +272,39 @@
                 </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
                 <TextView
                     android:id="@+id/tv_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </FrameLayout>
+
+
+            <FrameLayout
+                android:id="@+id/fl_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+                    android:id="@+id/tb_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintText="@string/city"
+                    app:isResponsiveIconColor="false"
+                    app:labelText="@string/select_city"
+                    app:labelTextStyle="normal"
+                    app:endIcon="@drawable/ic_arrow_gray"
+                    app:primaryColor="@color/color_AFAFB1">
+
+                    <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
+                        android:id="@+id/et_city"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:textColor="@color/color_FFFFFF_DE000000"
+                        android:textSize="@dimen/textSize14sp" />
+
+                </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
+                <TextView
+                    android:id="@+id/tv_city"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
             </FrameLayout>
@@ -219,6 +335,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="@dimen/margin_48"
+        android:layout_marginTop="30dp"
         android:layout_marginBottom="@dimen/margin_20" />
 </RelativeLayout>
