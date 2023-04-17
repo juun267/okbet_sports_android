@@ -2,45 +2,69 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.stx.xhb.androidx.XBanner
-        android:id="@+id/xbanner"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="160dp"
-        android:layout_marginTop="10dp"
         android:layout_marginHorizontal="12dp"
-        app:AutoPlayTime="3000"
-        app:placeholderDrawable="@drawable/img_banner01"
-        app:pointsVisibility="false"
-        app:pageChangeDuration="800"/>
+        android:layout_marginTop="10dp"
+        app:cardElevation="1px"
+        app:cardCornerRadius="12dp">
 
-    <View
+        <com.stx.xhb.androidx.XBanner
+            android:id="@+id/xbanner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:AutoPlayTime="3000"
+            app:pageChangeDuration="800"
+            app:placeholderDrawable="@drawable/img_banner01"
+            app:pointsVisibility="false" />
+    </androidx.cardview.widget.CardView>
+
+    <org.cxct.sportlottery.view.IndicatorWidget
+        android:id="@+id/indicatorView"
         android:layout_width="wrap_content"
-        android:layout_height="4dp"
-        android:layout_marginVertical="10dp"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginVertical="10dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvGamesTab"
         android:layout_width="match_parent"
         android:layout_height="36dp"
-        android:background="@color/color_cccccc"
         android:layout_marginVertical="6dp"
-        android:paddingHorizontal="12dp"
-        android:clipToPadding="false"/>
+        android:clipToPadding="false"
+        android:paddingHorizontal="12dp" />
 
-    <EditText
-        android:id="@+id/edtSearchGames"
+    <FrameLayout
+        android:id="@+id/searchLayout"
         android:layout_width="match_parent"
         android:layout_height="36dp"
-        android:layout_marginVertical="10dp"
         android:layout_marginHorizontal="12dp"
-        android:gravity="center_vertical|left"
-        android:paddingLeft="12dp"
-        android:paddingRight="18dp"
-        android:background="@drawable/bg_radius_8_white_only"
-        android:textColorHint="@color/color_BEC7DC"
-        android:hint="Search for the game you're looking for"
-        android:textSize="12sp"
-        android:drawableRight="@drawable/ic_search_home"/>
+        android:layout_marginVertical="10dp">
+
+        <EditText
+            android:id="@+id/edtSearchGames"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="44dp"
+            android:background="@null"
+            android:hint="Search for the game you're looking for"
+            android:singleLine="true"
+            android:maxLength="100"
+            android:paddingLeft="12dp"
+            android:textColorHint="@color/color_BEC7DC"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/ivSearch"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:padding="8dp"
+            android:layout_marginRight="8dp"
+            android:src="@drawable/ic_search_home"
+            android:layout_gravity="center_vertical|right"/>
+
+    </FrameLayout>
+
 
 </merge>
