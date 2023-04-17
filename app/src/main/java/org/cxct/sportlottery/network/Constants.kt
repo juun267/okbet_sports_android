@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import org.cxct.sportlottery.BuildConfig
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.KvUtils
@@ -539,6 +539,9 @@ object Constants {
 
     //全局抽奖活动
     const val LOTTERY_GET = "/api/front/lottery/get"
+
+    //OKGames
+    const val COLLECT_OKGAMES = "/api/front/gameEntryGames/collectOkGames"
 
 
 }

@@ -30,6 +30,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     }
 
     override fun onBindView(view: View) {
+        initObserve()
         binding.apply {
             tvTag.setOnClickListener {
                 okGamesFragment().showGameAll()
@@ -41,8 +42,25 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                     .inflate(R.layout.view_no_games, null))
                 adapter = gameChildAdapter
                 gameChildAdapter.setOnItemChildClickListener(OnItemChildClickListener { adapter, view, position ->
-
+                    dataList[position].id?.let {
+                        viewModel.collectOKGames(it)
+                    }
                 })
+            }
+        }
+    }
+
+    private fun initObserve() {
+        viewModel.collectOkGamesResult.observe(this.viewLifecycleOwner) { result ->
+            var needUpdate = false
+            gameChildAdapter.data.forEach {
+                if (it.id == result.first) {
+                    it.markCollect = result.second
+                    needUpdate = true
+                }
+            }
+            if (needUpdate) {
+                gameChildAdapter.notifyDataSetChanged()
             }
         }
     }

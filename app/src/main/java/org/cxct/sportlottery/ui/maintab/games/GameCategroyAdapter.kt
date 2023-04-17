@@ -8,7 +8,10 @@ import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 
-class GameCategroyAdapter(data: List<List<QueryGameEntryData>>) :
+class GameCategroyAdapter(
+    data: List<List<QueryGameEntryData>>,
+    private val clickCollect: (gameEntryData: QueryGameEntryData) -> Unit,
+) :
     BaseQuickAdapter<List<QueryGameEntryData>, BaseViewHolder>(R.layout.item_game_categroy,
         data?.toMutableList()) {
     override fun convert(helper: BaseViewHolder, item: List<QueryGameEntryData>) {
@@ -19,7 +22,11 @@ class GameCategroyAdapter(data: List<List<QueryGameEntryData>>) :
                 layoutManager = SocketLinearManager(context, RecyclerView.HORIZONTAL, false)
                 if (itemDecorationCount == 0)
                     addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_10))
-                adapter = GameChildAdapter(listOf())
+                adapter = GameChildAdapter(listOf()).apply {
+                    setOnItemChildClickListener { adapter, view, position ->
+                        clickCollect.invoke(data[position])
+                    }
+                }
             }
         }
     }

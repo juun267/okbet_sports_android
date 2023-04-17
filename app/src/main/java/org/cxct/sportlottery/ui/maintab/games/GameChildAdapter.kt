@@ -35,7 +35,7 @@ class GameChildAdapter(data: List<QueryGameEntryData>) :
         }
         addChildClickViewIds(R.id.iv_fav)
         helper.setText(R.id.tv_firm_name, item.firmCode)
-        helper.getView<ImageView>(R.id.iv_fav).isSelected = helper.layoutPosition / 2 == 1
+        helper.getView<ImageView>(R.id.iv_fav).isSelected = item.markCollect
     }
 }
 
