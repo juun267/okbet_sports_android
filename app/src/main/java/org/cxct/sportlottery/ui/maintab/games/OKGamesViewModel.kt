@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.net.games.OKGamesRepository
-import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
+import org.cxct.sportlottery.net.games.data.OKGamesGroup
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 
@@ -30,9 +30,9 @@ class OKGamesViewModel(
         get() = _collectOkGamesResult
     private val _collectOkGamesResult = MutableLiveData<Pair<Int, Boolean>>()
 
-    val gamesList: LiveData<List<QueryGameEntryData>>
+    val gamesList: LiveData<List<OKGamesGroup>>
         get() = _gamesList
-    private val _gamesList = MutableLiveData<List<QueryGameEntryData>>()
+    private val _gamesList = MutableLiveData<List<OKGamesGroup>>()
 
 
     fun getOKGamesHall() = callApi({ OKGamesRepository.okGamesHall() }) {

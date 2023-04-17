@@ -34,5 +34,5 @@ data class OKGamesGroup(
     val gameName: String?,
     val imgGame: String?,
     val gameEntryTagName: String?,
-    val markCollect: Boolean,
+    var markCollect: Boolean,
 )

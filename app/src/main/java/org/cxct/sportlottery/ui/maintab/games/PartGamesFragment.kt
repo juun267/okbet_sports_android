@@ -9,7 +9,7 @@ import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentPartOkgamesBinding
-import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
+import org.cxct.sportlottery.net.games.data.OKGamesGroup
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
@@ -19,7 +19,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     private lateinit var binding: FragmentPartOkgamesBinding
     private inline fun okGamesFragment() = parentFragment as OKGamesFragment
     private val gameChildAdapter by lazy { GameChildAdapter() }
-    private var dataList = mutableListOf<QueryGameEntryData>()
+    private var dataList = mutableListOf<OKGamesGroup>()
     private var currentPage: Int = 0
     private var gameName: String? = null
     private var categoryId: String? = null
@@ -77,7 +77,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         }
     }
 
-    fun setItemList(list: MutableList<QueryGameEntryData>) {
+    fun setItemList(list: MutableList<OKGamesGroup>) {
         dataList.clear()
         dataList.addAll(list)
         if (isAdded) {

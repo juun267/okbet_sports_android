@@ -8,7 +8,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.fitsSystemStatus
 import org.cxct.sportlottery.databinding.FragmentOkgamesBinding
-import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
+import org.cxct.sportlottery.net.games.data.OKGamesGroup
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.EventBusUtil
@@ -35,8 +35,6 @@ class OKGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVie
         initToolBar()
         showGameAll()
         viewModel.getOKGamesHall()
-
-
     }
 
     private fun initToolBar() = binding.homeToolbar.run {
@@ -48,7 +46,7 @@ class OKGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVie
         }
     }
 
-    open fun showGameResult(list: MutableList<QueryGameEntryData>) {
+    open fun showGameResult(list: MutableList<OKGamesGroup>) {
         (fragmentHelper.getFragment(1) as PartGamesFragment).setItemList(list)
         fragmentHelper.showFragment(1)
     }
