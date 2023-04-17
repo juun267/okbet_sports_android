@@ -3,7 +3,7 @@ package org.cxct.sportlottery.net
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 
-class ApiResult<T>(): java.io.Serializable {
+open class ApiResult<T>(): java.io.Serializable {
 
     private constructor(code: Int, msg: String, success: Boolean): this() {
         this.code = code
@@ -30,10 +30,8 @@ class ApiResult<T>(): java.io.Serializable {
 
     private val t: T? = null
 
-    private val rows: T? = null
-
     // 可以重新改方法，解析不同字段的data
-    open fun getData(): T? = t ?: rows
+    open fun getData(): T? = t
     open fun succeeded(): Boolean = success
 
     companion object {
