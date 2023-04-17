@@ -34,6 +34,9 @@ class OKGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVie
     override fun onBindView(view: View) {
         initToolBar()
         showGameAll()
+        viewModel.getOKGamesHall()
+
+
     }
 
     private fun initToolBar() = binding.homeToolbar.run {

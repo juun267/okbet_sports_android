@@ -540,5 +540,13 @@ object Constants {
     //全局抽奖活动
     const val LOTTERY_GET = "/api/front/lottery/get"
 
+    // 游戏大厅
+    const val OKGAMES_HALL = "/api/front/gameEntryGames/getHallOkGames"
+
+    // 游戏分页列表
+    const val OKGAMES_GAME_LIST = "/api/front/gameEntryGames/getPageOkGames"
+
+    // 收藏或取消OKGames
+    const val OKGAMES_COLLECT = "/api/front/gameEntryGames/collectOkGames"
 
 }
