@@ -83,7 +83,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         }
     }
 
-    private fun setItemList(list: MutableList<OKGameBean>) {
+    fun setItemList(list: MutableList<OKGameBean>) {
         dataList.clear()
         dataList.addAll(list)
         if (isAdded) {

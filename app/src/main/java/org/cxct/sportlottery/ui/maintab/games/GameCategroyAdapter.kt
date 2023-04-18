@@ -1,20 +1,21 @@
 package org.cxct.sportlottery.ui.maintab.games
 
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemGameCategroyBinding
-import org.cxct.sportlottery.net.games.data.OKGamesBean
+import org.cxct.sportlottery.net.games.data.OKGameBean
+import org.cxct.sportlottery.net.games.data.OKGamesCategory
 import org.cxct.sportlottery.ui.common.adapter.BindingAdapter
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 
-class GameCategroyAdapter(private val clickCollect: (gameGroup: OKGamesBean) -> Unit) :
-    BindingAdapter<MutableList<OKGamesBean>, ItemGameCategroyBinding>() {
+class GameCategroyAdapter(private val clickCollect: (gameGroup: OKGameBean) -> Unit) :
+    BindingAdapter<OKGamesCategory, ItemGameCategroyBinding>() {
 
     override fun onBinding(
         position: Int,
         binding: ItemGameCategroyBinding,
-        item: MutableList<OKGamesBean>,
         item: OKGamesCategory,
     ) {
         binding.apply {

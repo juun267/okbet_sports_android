@@ -9,7 +9,7 @@ import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.fitsSystemStatus
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.databinding.FragmentOkgamesBinding
-import org.cxct.sportlottery.net.games.data.OKGamesBean
+import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
@@ -96,8 +96,19 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         }
     }
 
-    open fun showGameResult(list: MutableList<OKGamesBean>) {
-        (fragmentHelper.getFragment(1) as PartGamesFragment).setItemList(list)
+    /**
+     * 显示赛事结果页面，三种场景下的结果显示页面
+     */
+    open fun showGameResult(
+        tagName: String?,
+        gameName: String? = null,
+        categoryId: String? = null,
+        firmId: String? = null,
+    ) {
+        (fragmentHelper.getFragment(1) as PartGamesFragment).setData(tagName,
+            gameName,
+            categoryId,
+            firmId)
         fragmentHelper.showFragment(1)
     }
 
@@ -110,7 +121,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         (fragmentHelper.showFragment(1) as PartGamesFragment).changeTab()
     }
 
-    private fun showSearchResult(gameList: List<OKGamesBean>?) {
+    private fun showSearchResult(gameList: List<OKGameBean>?) {
         (fragmentHelper.getFragment(1) as PartGamesFragment).showSearchResault(gameList)
     }
 
