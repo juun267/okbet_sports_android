@@ -275,7 +275,10 @@ object Constants {
     fun getPrintReceipt(context:Context):String {
         val language = getLanguageTag(context)
         val base = getH5BaseUrl()
-        return "$base/activity/mobile/#print?"
+        return "${base}activity/mobile/#/print?"
+
+        //https://okbet-v2.cxsport.net/activity/mobile/#/print?uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
+        //https://okbet-v2.cxsport.net/activity/mobile/#/print?uniqNo=B01097882307605463040&addTime=1681797139763
     }
 
 
