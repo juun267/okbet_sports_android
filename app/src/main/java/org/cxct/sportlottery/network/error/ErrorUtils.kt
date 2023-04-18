@@ -35,6 +35,7 @@ import org.cxct.sportlottery.network.Constants.LOGIN_OR_REG_SEND_VALIDCODE
 import org.cxct.sportlottery.network.Constants.MATCH_BET_ADD
 import org.cxct.sportlottery.network.Constants.MATCH_BET_INFO
 import org.cxct.sportlottery.network.Constants.MATCH_BET_LIST
+import org.cxct.sportlottery.network.Constants.MATCH_BET_REMARK_BET
 import org.cxct.sportlottery.network.Constants.MATCH_BET_SETTLED_DETAIL_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_BET_SETTLED_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_QUERY
@@ -96,6 +97,7 @@ import org.cxct.sportlottery.network.bet.list.BetListResult
 import org.cxct.sportlottery.network.bet.settledDetailList.BetInfoResult
 import org.cxct.sportlottery.network.bet.settledDetailList.BetSettledDetailListResult
 import org.cxct.sportlottery.network.bet.settledList.BetSettledListResult
+import org.cxct.sportlottery.network.bet.settledList.RemarkBetResult
 import org.cxct.sportlottery.network.feedback.FeedbackListResult
 import org.cxct.sportlottery.network.index.chechBetting.CheckBettingResult
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
@@ -604,6 +606,10 @@ object ErrorUtils {
                     (url.contains(BIND_FACEBOOK)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return AuthBindResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(MATCH_BET_REMARK_BET)) ->{
+                        @Suppress("UNCHECKED_CAST")
+                        return RemarkBetResult(it.code,it.msg,it.success,null) as T
                     }
 
                 }
