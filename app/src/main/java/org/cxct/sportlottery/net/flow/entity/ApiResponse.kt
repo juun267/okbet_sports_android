@@ -23,6 +23,6 @@ data class ApiSuccessResponse<T>(val response: T) : ApiResult<T>()
 
 class ApiEmptyResponse<T> : ApiResult<T>()
 
-data class ApiFailedResponse<T>(val codes: Int?,  val msgs: String?) : ApiResult<T>(code = codes, msg = msgs)
+data class ApiFailedResponse<T>(val codes: Int,  val msgs: String) : ApiResult<T>(code = codes, msg = msgs)
 
 data class ApiErrorResponse<T>(val throwable: Throwable) : ApiResult<T>()

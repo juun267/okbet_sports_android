@@ -36,10 +36,6 @@ class OKGamesViewModel(
         get() = _gamesList
     private val _gamesList = MutableLiveData<List<OKGamesGroup>>()
 
-    suspend fun okGamesHall(): ApiResult<OKGamesHall?> {
-        return OKGamesRepository.okGamesApi.getOKGamesHall(OKGamesRepository.paramDevice())
-    }
-
     fun getOKGamesHall() = callApi({ OKGamesRepository.okGamesHall() }) {
 
     }

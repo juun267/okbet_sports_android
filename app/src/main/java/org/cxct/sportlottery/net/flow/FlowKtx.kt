@@ -2,7 +2,6 @@ package org.cxct.sportlottery.net.flow
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
@@ -70,16 +69,16 @@ fun <T> IUiView.launchWithLoadingAndCollect(
     }
 }
 
-fun <T> Flow<ApiResult<T>>.collectIn(
-    lifecycleOwner: LifecycleOwner,
-    minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
-    listenerBuilder: ResultBuilder<T>.() -> Unit,
-): Job = lifecycleOwner.lifecycleScope.launch {
-    flowWithLifecycle(lifecycleOwner.lifecycle,
-        minActiveState).collect { ApiResult: ApiResult<T> ->
-        ApiResult.parseData(listenerBuilder)
-    }
-}
+//fun <T> Flow<ApiResult<T>>.collectIn(
+//    lifecycleOwner: LifecycleOwner,
+//    minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
+//    listenerBuilder: ResultBuilder<T>.() -> Unit,
+//): Job = lifecycleOwner.lifecycleScope.launch {
+//    flowWithLifecycle(lifecycleOwner.lifecycle,
+//        minActiveState).collect { ApiResult: ApiResult<T> ->
+//        ApiResult.parseData(listenerBuilder)
+//    }
+//}
 
 
 

@@ -18,7 +18,7 @@ class IndicatorWidget @JvmOverloads constructor(context: Context, attrs: Attribu
 
     fun setupIndicator(itemCount: Int, defaultPosition: Int = 0) {
         removeAllViews()
-        if (itemCount <= 0) return
+        if (itemCount < 1) return
 
         if(orientation == VERTICAL) {
             childParams.topMargin = itemPadding
