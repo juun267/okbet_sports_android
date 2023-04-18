@@ -18,12 +18,14 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.ui.maintab.games.adapter.GamesTabAdapter
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.drawable.DrawableCreator
 import org.cxct.sportlottery.view.IndicatorWidget
@@ -92,7 +94,11 @@ class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: Attribut
 
     private fun setUpBannerData() {
 
-        var imageList = sConfigData?.imageList?.filter { it.imageType == 12 }
+        val lang = LanguageManager.getSelectLanguage(context).key
+        var imageList = sConfigData?.imageList?.filter {
+            it.imageType == 12 && it.lang == lang && !it.imageName1.isNullOrEmpty()
+        }?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
+
         val loopEnable = imageList?.size ?: 0 > 1
         indicatorView.isVisible = loopEnable
 
@@ -108,15 +114,9 @@ class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: Attribut
         }
 
         val host = sConfigData?.resServerHost
-        val images = imageList.map{ XBannerImage(it.imageText1 + "", host + it.imgUrl, it.imageLink) }
-
-//        val images = mutableListOf(Image("image1", "https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"),
-//        Image("image2", "https://images.pexels.com/photos/709552/pexels-photo-709552.jpeg?auto=compress&cs=tinysrgb&w=1600"),
-//            Image("image3", "https://images.pexels.com/photos/2378278/pexels-photo-2378278.jpeg?auto=compress&cs=tinysrgb&w=1600"),
-//            Image("image4", "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?auto=compress&cs=tinysrgb&w=1600"),
-//            Image("image5", "https://images.pexels.com/photos/7459424/pexels-photo-7459424.jpeg?auto=compress&cs=tinysrgb&w=1600"),
-//            Image("image6", "https://images.pexels.com/photos/267151/pexels-photo-267151.jpeg?auto=compress&cs=tinysrgb&w=1600"),
-//        )
+        val images = imageList.map{
+            XBannerImage(it.imageText1 + "", host + it.imageName1, it.imageLink)
+        }
 
         okgamesBanner.setBannerData(images.toMutableList())
         indicatorView.setupIndicator(okgamesBanner.realCount)

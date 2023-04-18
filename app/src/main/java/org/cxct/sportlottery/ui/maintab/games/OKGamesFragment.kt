@@ -45,18 +45,6 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         showGameAll()
         viewModel.getOKGamesHall()
 
-        launchWithLoadingAndCollect({ viewModel.okGamesHall() }) {
-            onSuccess = { data->
-//                showSuccessView(data)
-            }
-            onFailed = { errorCode, errorMsg ->
-//                showFailedView(code, msg)
-            }
-            onError = {e ->
-                e.printStackTrace()
-            }
-
-        }
 
     }
 

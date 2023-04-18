@@ -12,11 +12,11 @@ import retrofit2.http.POST
 interface OKGamesApi {
 
     @POST(Constants.OKGAMES_COLLECT)
-    suspend fun okGamescollect(@Body params: JsonObject): ApiResult<Any?>
+    suspend fun okGamescollect(@Body params: JsonObject): ApiResult<Any>
 
     @POST(Constants.OKGAMES_GAME_LIST)
-    suspend fun getOKGamesList(@Body params: JsonObject): ApiListResult<List<OKGamesGroup>?>
+    suspend fun getOKGamesList(@Body params: JsonObject): ApiListResult<List<OKGamesGroup>>
 
     @POST(Constants.OKGAMES_HALL)
-    suspend fun getOKGamesHall(@Body params: JsonObject): ApiResult<OKGamesHall?>
+    suspend fun getOKGamesHall(@Body params: JsonObject): ApiResult<OKGamesHall>
 }
