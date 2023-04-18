@@ -118,6 +118,7 @@ class RegisterInfoViewModel(
             val result=doNetwork(androidContext){ OneBoSportApi.indexService.getUserBasicInfo()}
             result?.let { data->
 
+
                 data.t.birthday?.let {
                     birthdayTimeInput=it
                     if(it.isNotEmpty()){
@@ -148,6 +149,19 @@ class RegisterInfoViewModel(
                     sourceInput=it
                     if(it>-1){
                         filledSalary=true
+                    }
+                }
+                data.t.phone?.let {
+                    phoneNumberInput=it
+                    if(it.isNotEmpty()){
+                        filledPhone = VerifyConstUtil.verifyPhone(it)
+                    }
+                }
+
+                data.t.email?.let {
+                    emailInput=it
+                    if(it.isNotEmpty()){
+                        filledEmail=VerifyConstUtil.verifyMail(it)
                     }
                 }
                 userBasicInfoEvent.post(data.t)
@@ -235,7 +249,9 @@ class RegisterInfoViewModel(
             birthdayTimeInput,
             sourceInput,
             provinceInput,
-            cityInput
+            cityInput,
+            phoneNumberInput,
+            emailInput
         )
 
         launch {
@@ -247,8 +263,8 @@ class RegisterInfoViewModel(
                 commitEvent.post(true)
             } else {
                 isFinishComplete=false
-//                commitMsg = "${commitResult?.msg}"
-                commitMsg = androidContext.getString(R.string.unknown_error)
+                commitMsg = "${commitResult?.msg}"
+//                commitMsg = androidContext.getString(R.string.unknown_error)
                 commitEvent.post(false)
             }
         }

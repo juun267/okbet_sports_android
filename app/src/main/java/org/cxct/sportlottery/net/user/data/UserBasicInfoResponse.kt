@@ -19,6 +19,8 @@ class UserBasicInfoResponse(
         val birthday:String?,
         val salarySource:Int?,
         val province:String?,
-        val city:String?
+        val city:String?,
+        var phone:String?,
+        var email:String?
     )
 }

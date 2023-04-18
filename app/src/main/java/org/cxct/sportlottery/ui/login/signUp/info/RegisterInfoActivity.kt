@@ -85,13 +85,28 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
             if (viewModel.cityInput.isNotEmpty()) {
                 binding.etCity.setText(viewModel.cityInput)
             }
+            if(viewModel.phoneNumberInput.isNotEmpty()){
+                binding.eetPhoneNumber.setText(viewModel.phoneNumberInput)
+            }
+            if(viewModel.emailInput.isNotEmpty()){
+                binding.eetEmail.setText(viewModel.emailInput)
+            }
             binding.etRealName.setText(viewModel.realNameInput)
+
             binding.etBirthday.setText(viewModel.birthdayTimeInput)
             binding.etSource.setText(viewModel.getSalaryNameById())
 
             if (viewModel.filledName) {
                 binding.etRealName.isEnabled = false
                 binding.tvRealName.visible()
+            }
+            if (viewModel.filledEmail) {
+                binding.eetEmail.isEnabled = false
+                binding.tvEmail.visible()
+            }
+            if (viewModel.filledPhone) {
+                binding.eetPhoneNumber.isEnabled = false
+                binding.tvPhoneNumber.visible()
             }
         }
 
@@ -135,7 +150,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
         binding.tvBirthday.setOnClickListener {
             hideSoftKeyboard(this)
             if (viewModel.filledBirthday) {
-                ToastUtil.showToastInCenter(this, "已输入的内容不可修改")
+                ToastUtil.showToastInCenter(this, getString(R.string.N887))
                 return@setOnClickListener
             }
             dateTimePicker?.show()
@@ -145,7 +160,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
         binding.tvAddress.setOnClickListener {
             hideSoftKeyboard(this)
             if (viewModel.filledProvince) {
-                ToastUtil.showToastInCenter(this, "已输入的内容不可修改")
+                ToastUtil.showToastInCenter(this, getString(R.string.N887))
                 return@setOnClickListener
             }
             provincePicker?.show()
@@ -154,7 +169,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
         binding.tvCity.setOnClickListener {
             hideSoftKeyboard(this)
             if (viewModel.filledCity) {
-                ToastUtil.showToastInCenter(this, "已输入的内容不可修改")
+                ToastUtil.showToastInCenter(this, getString(R.string.N887))
                 return@setOnClickListener
             }
             if (viewModel.provinceInput.isEmpty()) {
@@ -168,7 +183,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
         binding.tvSalary.setOnClickListener {
             hideSoftKeyboard(this)
             if (viewModel.filledSalary) {
-                ToastUtil.showToastInCenter(this, "已输入的内容不可修改")
+                ToastUtil.showToastInCenter(this, getString(R.string.N887))
                 return@setOnClickListener
             }
             salaryPicker?.show()
@@ -181,7 +196,13 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
         }
 
         binding.tvRealName.setOnClickListener {
-            ToastUtil.showToastInCenter(this, "已输入的内容不可修改")
+            ToastUtil.showToastInCenter(this, getString(R.string.N887))
+        }
+        binding.tvPhoneNumber.setOnClickListener {
+            ToastUtil.showToastInCenter(this, getString(R.string.N887))
+        }
+        binding.tvEmail.setOnClickListener {
+            ToastUtil.showToastInCenter(this, getString(R.string.N887))
         }
 
         //提交点击

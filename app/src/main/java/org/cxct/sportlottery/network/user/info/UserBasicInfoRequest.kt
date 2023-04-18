@@ -5,5 +5,7 @@ data class UserBasicInfoRequest(
     val birthday:String?,
     val salarySource:Int?,
     val province:String?,
-    val city:String?
+    val city:String?,
+    val phone:String?,
+    val email:String
 )

@@ -1134,4 +1134,8 @@
     <string name="bet_details_title" >Mga detalye ng kumbinasyon ng link</string>
 
     <string name="N849">Address</string>
+    <string name="N887">Ang nilalaman Hindi na maaring baguhin</string>
+    <string name="J566">Paki lagay ang inyong mobile</string>
+    <string name="J558">Paki lagay ang email</string>
+
 </resources>

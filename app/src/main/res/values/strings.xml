@@ -1265,4 +1265,9 @@
     <string name="N848">Select a source of income</string>
     <string name="N850">Please select an address</string>
     <string name="N849">Address</string>
+    <string name="N887">Input cannot be modified</string>
+    <string name="J566">Please enter phone number</string>
+    <string name="J558">Please enter email</string>
+
+
 </resources>

@@ -147,7 +147,7 @@
                     android:id="@+id/et_phone_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hintText="@string/phone_number"
+                    app:hintText="@string/J566"
                     app:isResponsiveIconColor="false"
                     app:labelText="@string/phone_number"
                     app:labelTextStyle="normal"
@@ -168,6 +168,7 @@
 
                 <TextView
                     android:id="@+id/tv_phone_number"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
             </FrameLayout>
@@ -182,7 +183,7 @@
                     android:id="@+id/et_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hintText="@string/e_mail"
+                    app:hintText="@string/J558"
                     app:isResponsiveIconColor="false"
                     app:labelText="@string/e_mail"
                     app:labelTextStyle="normal"
@@ -203,6 +204,7 @@
 
                 <TextView
                     android:id="@+id/tv_email"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
             </FrameLayout>
@@ -252,9 +254,9 @@
                     android:id="@+id/tb_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hintText="@string/province"
+                    app:hintText="@string/select_area"
                     app:isResponsiveIconColor="false"
-                    app:labelText="@string/select_area"
+                    app:labelText="@string/province"
                     app:labelTextStyle="normal"
                     app:endIcon="@drawable/ic_arrow_gray"
                     app:primaryColor="@color/color_AFAFB1">
@@ -285,9 +287,9 @@
                     android:id="@+id/tb_city"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hintText="@string/city"
+                    app:hintText="@string/select_city"
                     app:isResponsiveIconColor="false"
-                    app:labelText="@string/select_city"
+                    app:labelText="@string/city"
                     app:labelTextStyle="normal"
                     app:endIcon="@drawable/ic_arrow_gray"
                     app:primaryColor="@color/color_AFAFB1">
