@@ -305,7 +305,7 @@ class RegisterInfoViewModel(
         if(VerifyConstUtil.verifyPhone(phoneNumber) ){
             phoneEnable=true
         }else{
-            msg=LocalUtils.getString(R.string.pls_enter_correct_mobile)
+            msg=LocalUtils.getString(R.string.N177)
         }
         return msg
     }

@@ -1224,5 +1224,7 @@
     <string name="N171">请输入正确的 11 位数手机号码</string>
     <string name="N865">金额超过限额</string>
 
+
+    <string name="N177">请输入正确的手机号码</string>
     <string name="N889">请输入正确的邮箱</string>
 </resources>
