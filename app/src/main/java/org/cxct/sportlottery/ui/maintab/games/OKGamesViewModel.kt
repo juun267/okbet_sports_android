@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.callApi
+import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesHall
@@ -12,6 +13,7 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
+import org.cxct.sportlottery.util.KvUtils
 
 class OKGamesViewModel(
     androidContext: Application,
@@ -30,6 +32,10 @@ class OKGamesViewModel(
     favoriteRepository,
     sportMenuRepository,
 ) {
+    companion object {
+        const val KEY_RECENT_PLAY = "recentPlay"
+    }
+
     val collectOkGamesResult: LiveData<Pair<Int, Boolean>>
         get() = _collectOkGamesResult
     private val _collectOkGamesResult = MutableLiveData<Pair<Int, Boolean>>()
@@ -42,9 +48,22 @@ class OKGamesViewModel(
         get() = _gameHall
     private val _gameHall = MutableLiveData<OKGamesHall>()
 
+    val recentPlay: LiveData<List<OKGameBean>>
+        get() = _recentPlay
+    private val _recentPlay = MutableLiveData<List<OKGameBean>>()
+
+    /**
+     * 全部的赛事，map 类型
+     */
+    private var allGamesMap = mutableMapOf<Int, OKGameBean>()
 
     fun getOKGamesHall() = callApi({ OKGamesRepository.okGamesHall() }) {
         _gameHall.postValue(it.getData())
+        it.getData()?.categoryList?.forEach {
+            it.gameList?.forEach {
+                allGamesMap[it.id] = it
+            }
+        }
     }
 
     fun getOKGamesList(
@@ -69,15 +88,44 @@ class OKGamesViewModel(
                     url = null,
                     errorMsg = androidContext.getString(R.string.hint_game_maintenance)
                 ))
-
             )
-
             return
         }
-
         requestEnterThirdGame("${gameData.firmType}",
             "${gameData.gameCode}",
             "${gameData.gameCode}",
             baseFragment)
+    }
+
+    fun getRecentPlay() {
+        val ids = KvUtils.decodeString(KEY_RECENT_PLAY)
+        if (ids.isNotEmpty()) {
+            var playList = ids.split(",").toMutableList()
+            val recentList = mutableListOf<OKGameBean>()
+            playList.forEach {
+                allGamesMap[it.toIntS(-1)]?.let {
+                    recentList.add(it)
+                }
+            }
+            _recentPlay.postValue(recentList)
+        }
+    }
+
+    fun addRecentPlay(gameId: String) {
+        val ids = KvUtils.decodeString(KEY_RECENT_PLAY)
+        var playList = if (ids.isNotEmpty()) ids.split(",").toMutableList() else mutableListOf()
+        playList.remove(gameId)
+        playList.add(gameId)
+        if (playList.size > 12) {
+            playList.subList(0, 12)
+        }
+        KvUtils.put(KEY_RECENT_PLAY, playList.joinToString(separator = ","))
+        val recentList = mutableListOf<OKGameBean>()
+        playList.forEach {
+            allGamesMap[it.toIntS(-1)]?.let {
+                recentList.add(it)
+            }
+        }
+        _recentPlay.postValue(recentList)
     }
 }
