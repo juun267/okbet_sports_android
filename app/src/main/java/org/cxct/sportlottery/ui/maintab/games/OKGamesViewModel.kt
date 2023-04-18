@@ -32,7 +32,13 @@ class OKGamesViewModel(
 ) {
     val collectOkGamesResult: LiveData<Pair<Int, Boolean>>
         get() = _collectOkGamesResult
+    val providerResult: LiveData<OKGamesHall>
+        get() = _providerresult
+
     private val _collectOkGamesResult = MutableLiveData<Pair<Int, Boolean>>()
+
+
+    private val _providerresult = MutableLiveData<OKGamesHall>()
 
     val gamesList: LiveData<List<OKGameBean>>
         get() = _gamesList
@@ -49,6 +55,9 @@ class OKGamesViewModel(
 
     fun getOKGamesHall() = callApi({ OKGamesRepository.okGamesHall() }) {
         _gameHall.postValue(it.getData())
+        if(it.getData()!=null&& it.getData()!!.firmList!=null){
+            _providerresult.postValue(it.getData())
+        }
     }
 
     fun getOKGamesList(
