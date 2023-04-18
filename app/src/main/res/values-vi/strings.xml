@@ -1158,7 +1158,7 @@
     <string name="phone_no_error">SĐT gồm 11 số, và 09 bắt đầu</string>
     <string name="N887">Nội dung đã nhập không được sửa</string>
     <string name="J566">Vui lòng nhập số điện thoại</string>
-    <string name="J558">Vui lòng nhập</string>
+    <string name="J558">Vui lòng nhập email</string>
     <string name="tail_number">Số đuôi</string>
     <string name="edit_paymaya">Sửa PayMaya</string>
     <string name="add_paymaya">Thêm Paymaya</string>
@@ -1175,4 +1175,7 @@
     <string name="J902">Ngày sinh nhật</string>
     <string name="N848">Chọn nguồn tiền</string>
     <string name="N850">Chọn địa chỉ</string>
+
+
+    <string name="N889">Vui lòng nhận chính xác email</string>
 </resources>

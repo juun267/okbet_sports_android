@@ -316,7 +316,7 @@ class RegisterInfoViewModel(
             emailEnable=true
         }else{
             emailEnable=false
-            msg=LocalUtils.getString(R.string.pls_enter_correct_email)
+            msg=LocalUtils.getString(R.string.N889)
         }
         return msg
     }
