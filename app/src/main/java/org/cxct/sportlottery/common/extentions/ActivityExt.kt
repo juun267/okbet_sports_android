@@ -1,14 +1,18 @@
 package org.cxct.sportlottery.common.extentions
 
 import android.app.Activity
+import android.app.Application
 import android.content.Intent
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.MainThread
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import kotlinx.coroutines.*
 import okhttp3.ResponseBody.Companion.toResponseBody
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.network.common.BaseResult
+import org.cxct.sportlottery.util.ToastUtil
 import retrofit2.Response
 
 
@@ -78,4 +82,8 @@ inline fun Activity.startActivity(activity: Class<out Activity>) {
 fun Activity.bindFinish(vararg views: View) {
     val finishClick = View.OnClickListener { finish() }
     views.forEach { it.setOnClickListener(finishClick) }
+}
+
+fun toast(str:String){
+    ToastUtil.showToast(MultiLanguagesApplication.appContext,str,Toast.LENGTH_LONG)
 }

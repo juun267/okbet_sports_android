@@ -22,7 +22,7 @@
                 android:layout_width="115dp"
                 android:layout_height="115dp"
                 android:foreground="@drawable/bg_gadient_game"
-                android:src="@drawable/ic_game_fav" />
+                android:src="@drawable/ic_okgames_a" />
 
             <TextView
                 android:id="@+id/tv_name"

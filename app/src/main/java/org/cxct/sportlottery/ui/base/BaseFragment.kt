@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.base
 
 import android.annotation.SuppressLint
+import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
@@ -14,13 +15,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.net.flow.IUiView
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import kotlin.reflect.KClass
 
 @SuppressLint("InflateParams")
-open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
+open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() ,IUiView{
 
     val viewModel: T by sharedViewModel(clazz = clazz)
     var mIsEnabled = true //避免快速連點，所有的 item 一次只能點擊一個
@@ -79,6 +81,18 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
             e.printStackTrace()
         }
 
+    }
+
+    private var progressDialog: ProgressDialog? = null
+
+    override fun showLoading() {
+        if (progressDialog == null)
+            progressDialog = ProgressDialog(requireActivity())
+        progressDialog?.show()
+    }
+
+    override fun dismissLoading() {
+        progressDialog?.takeIf { it.isShowing }?.dismiss()
     }
 
     protected fun clearFocus() {
