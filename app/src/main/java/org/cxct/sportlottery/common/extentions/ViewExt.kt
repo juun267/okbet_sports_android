@@ -9,6 +9,7 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import com.chad.library.adapter.base.BaseQuickAdapter
 import android.view.animation.DecelerateInterpolator
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import androidx.core.view.ViewCompat
 import androidx.core.view.ViewPropertyAnimatorListenerAdapter
@@ -182,4 +183,17 @@ fun EditText.filterSpecialCharacters() {
     }
 
     filters = arrayOf(spaceFilter, specialFilter)
+}
+
+
+fun EditText.onConfirm(block: (String) -> Unit) {
+    imeOptions = EditorInfo.IME_ACTION_DONE
+    setOnEditorActionListener { _, actionId, _ ->
+        if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_GO) {
+            block.invoke(text.toString())
+            return@setOnEditorActionListener true
+        }
+
+        return@setOnEditorActionListener false
+    }
 }

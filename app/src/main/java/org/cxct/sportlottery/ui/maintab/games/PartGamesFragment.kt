@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab.games
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentPartOkgamesBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
+import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 // 指定类别的三方游戏
@@ -26,6 +28,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     private var gameName: String? = null
     private var categoryId: String? = null
     private var firmId: String? = null
+    private var currentTab: GameTab? = null
 
     override fun createRootView(
         inflater: LayoutInflater,
@@ -38,9 +41,10 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     override fun onBindView(view: View) {
         initObserve()
+        bindLabels()
         binding.apply {
             tvTag.setOnClickListener {
-                okGamesFragment().showGameAll()
+                okGamesFragment().backGameAll()
             }
             rvGamesSelect.apply {
                 layoutManager = GridLayoutManager(requireContext(), 3)
@@ -63,14 +67,14 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 }
             }
             tvShowMore.setOnClickListener {
-                okGamesFragment().showGameAll()
+                okGamesFragment().backGameAll()
             }
         }
         updateView()
     }
 
     private fun updateView() {
-        binding.tvTag.text = tagName
+//        binding.tvTag.text = tagName
         getGameList()
     }
 
@@ -121,8 +125,23 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     }
 
 
-    fun changeTab() {
+    fun changeTab(tab: GameTab) {
+        if (currentTab?.id != tab.id) {
+            currentTab = tab
+            bindLabels()
+        }
+    }
 
+    private fun bindLabels() {
+        if (!::binding.isInitialized) {
+            return
+        }
+
+        currentTab?.let { tab ->
+            binding.ivIcon.setImageResource(tab.icon)
+            binding.tvName.setText(tab.name)
+            binding.tvTag.setText(tab.name)
+        }
     }
 
     fun showSearchResault(list: List<OKGameBean>?) {

@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab.games
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,10 +16,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
-import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.util.FragmentHelper
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.enterThirdGame
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.transform.TransformInDialog
 
 // okgames主Fragment
@@ -53,57 +51,21 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
     override fun onBindView(view: View) {
         initToolBar()
         initTopView()
-        initObservable()
         showGameAll()
         initObserver()
         viewModel.getOKGamesHall()
-
 
     }
 
     private fun initObserver() = viewModel.run {
         searchResult.observe(viewLifecycleOwner) {
-            if (!getCurrentTab().isSearch() || it.first != searchKey) {
+            if (!getCurrentTab().isAll() || it.first != searchKey) {
                 return@observe
             }
             showSearchResult(it.second)
         }
-    }
 
-    private fun initToolBar() = binding.homeToolbar.run {
-        attach(this@OKGamesFragment, mainTabActivity(), viewModel)
-        fitsSystemStatus()
-        ivMenuLeft.setOnClickListener {
-            EventBusUtil.post(MenuEvent(true))
-            mainTabActivity().showLeftFrament(0, 5)
-        }
-    }
-
-    private fun initTopView() = binding.topView.run {
-        onTableClick = ::onTabChange
-        onSearchTextChanged = {
-            searchKey = it
-            if (searchKey.isEmptyStr()) {
-                showSearchResult(null)
-            } else {
-                viewModel.searchGames(searchKey)
-            }
-        }
-    }
-
-    private fun onTabChange(tab: GameTab) {
-        if (isShowAll()) {
-            showPartGames(tab)
-            return
-        }
-
-        if (tab.isAll()) {
-            showGameAll()
-        }
-    }
-
-    private fun initObservable() {
-        viewModel.totalRewardAmount.observe(viewLifecycleOwner) {
+        totalRewardAmount.observe(viewLifecycleOwner) {
             it.getOrNull(0)?.let {
                 tv_first_game_name.text = it.name
                 tv_first_amount.text =
@@ -120,18 +82,52 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
                     "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(it.amount, 2)}"
             }
         }
-        viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {
+
+        enterThirdGameResult.observe(viewLifecycleOwner) {
             if (isVisible)
                 enterThirdGame(it.second, it.first)
         }
 
-        viewModel.gameBalanceResult.observe(viewLifecycleOwner) {
+        gameBalanceResult.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { event ->
                 TransformInDialog(event.first, event.second, event.third) {
                     enterThirdGame(it, event.first)
                 }.show(childFragmentManager, null)
             }
         }
+    }
+
+    private fun initToolBar() = binding.homeToolbar.run {
+        attach(this@OKGamesFragment, mainTabActivity(), viewModel)
+        fitsSystemStatus()
+        ivMenuLeft.setOnClickListener {
+            EventBusUtil.post(MenuEvent(true))
+            mainTabActivity().showLeftFrament(0, 5)
+        }
+    }
+
+    private fun initTopView() = binding.topView.run {
+        onTableClick = ::onTabChange
+        onSearchTextChanged = {
+            searchKey = it
+            hideKeyboard()
+            if (searchKey.isEmptyStr()) {
+                showSearchResult(null)
+            } else {
+                showPartGames(GameTab.TAB_SEARCH)
+                viewModel.searchGames(searchKey)
+            }
+        }
+    }
+
+    private fun onTabChange(tab: GameTab) {
+        Log.e("For Test", "======>>> onTabChange ${JsonUtil.toJson(tab)}")
+        if (tab.isAll()) {
+            showGameAll()
+            return
+        }
+
+        showPartGames(tab)
     }
 
     /**
@@ -143,24 +139,30 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         categoryId: String? = null,
         firmId: String? = null,
     ) {
-        (fragmentHelper.getFragment(1) as PartGamesFragment).setData(tagName,
+        showPartGameFragment().setData(tagName,
             gameName,
             categoryId,
             firmId)
-        fragmentHelper.showFragment(1)
     }
 
-    open fun showGameAll() {
-        hideKeyboard()
-        fragmentHelper.showFragment(0)
+    private fun showGameAll(): AllGamesFragment {
+        return fragmentHelper.showFragment(0) as AllGamesFragment
+    }
+
+    fun backGameAll() {
+        binding.topView.backAll()
+    }
+
+    private inline fun showPartGameFragment(): PartGamesFragment {
+        return fragmentHelper.showFragment(1) as PartGamesFragment
     }
 
     private fun showPartGames(tab: GameTab) {
-        (fragmentHelper.showFragment(1) as PartGamesFragment).changeTab()
+        showPartGameFragment().changeTab(tab)
     }
 
     private fun showSearchResult(gameList: List<OKGameBean>?) {
-        (fragmentHelper.getFragment(1) as PartGamesFragment).showSearchResault(gameList)
+        showPartGameFragment().showSearchResault(gameList)
     }
 
 }

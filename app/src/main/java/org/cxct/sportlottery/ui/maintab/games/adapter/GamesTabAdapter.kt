@@ -59,6 +59,14 @@ class GamesTabAdapter(tabs: MutableList<GameTab>, val onSelected: (GameTab) -> U
         notifyItemChanged(position)
     }
 
+    fun backToAll() {
+        val item = data[0]
+        if (selectedTab != item) {
+            onSelectChanged(0, item)
+        }
+        onSelected.invoke(item)
+    }
+
     class VH(context: Context, val root: LinearLayout = LinearLayout(context)): BaseViewHolder(root) {
 
         var icon: ImageView

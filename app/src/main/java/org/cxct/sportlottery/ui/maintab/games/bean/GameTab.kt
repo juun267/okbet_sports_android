@@ -16,12 +16,15 @@ class GameTab private constructor(@GameTabIds val id: Int, @DrawableRes val icon
 
     companion object {
 
+        val TAB_ALL = GameTab(ALL, R.drawable.selector_tab_home, R.string.bottom_nav_home)
+        val TAB_SEARCH = GameTab(SEARCH, R.drawable.selector_tab_user, R.string.main_tab_mine)
+
         fun getGameTabs(): Array<GameTab> {
-            return arrayOf(GameTab(ALL, R.drawable.selector_tab_home, R.string.bottom_nav_home),
+            return arrayOf(TAB_ALL,
                 GameTab(FAVORITES, R.drawable.selector_tab_sport, R.string.main_tab_sport),
                 GameTab(HOTGAMES, R.drawable.selector_tab_betlist, R.string.main_tab_betlist),
                 GameTab(SLOTSGAMES, R.drawable.selector_tab_fav, R.string.main_tab_favorite),
-                GameTab(SEARCH, R.drawable.selector_tab_user, R.string.main_tab_mine),
+                TAB_SEARCH,
             )
         }
     }

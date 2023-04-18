@@ -50,14 +50,15 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         onBindPart5View()
     }
 
-    private fun initObserve() {
-        okGamesFragment().viewModel.gameHall.observe(this.viewLifecycleOwner) {
+    private fun initObserve() = okGamesFragment().viewModel.run {
+        gameHall.observe(viewLifecycleOwner) {
             val categoryList =
                 it.categoryList?.filter { !it.gameList.isNullOrEmpty() }?.toMutableList()
                     ?: mutableListOf()
             gameAllAdapter.setList(categoryList)
         }
-        okGamesFragment().viewModel.collectOkGamesResult.observe(this.viewLifecycleOwner) { result ->
+
+        collectOkGamesResult.observe(viewLifecycleOwner) { result ->
             var needUpdate = false
             gameAllAdapter.data.forEach {
                 it.gameList?.forEach { gameBean ->
