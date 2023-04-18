@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.net
 
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.util.LocalUtils
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 
 class ApiResult<T>(): java.io.Serializable {
 
@@ -39,11 +39,11 @@ class ApiResult<T>(): java.io.Serializable {
         private const val ERROR_CODE_NET = -1000
 
         fun <T> unknownError(): ApiResult<T> {
-            return ApiResult(ERROR_CODE_UNKNOWN, LocalUtils.getString(R.string.unknown_error), false)
+            return ApiResult(ERROR_CODE_UNKNOWN, MultiLanguagesApplication.stringOf(R.string.unknown_error), false)
         }
 
         fun <T> netError(): ApiResult<T> {
-            return ApiResult(ERROR_CODE_NET, LocalUtils.getString(R.string.error), false)
+            return ApiResult(ERROR_CODE_NET, MultiLanguagesApplication.stringOf(R.string.error), false)
         }
     }
 

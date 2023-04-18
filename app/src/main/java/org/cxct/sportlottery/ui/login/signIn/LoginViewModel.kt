@@ -154,6 +154,7 @@ class LoginViewModel(
                 }
 
             }
+
         }
     }
 
@@ -179,7 +180,6 @@ class LoginViewModel(
         }
     }
 
-
     /**
      * 检查用户完善基本信息
      */
@@ -189,8 +189,8 @@ class LoginViewModel(
             return
         }
         //本地缓存的是否完善过开关
-        val loginSwitch=SPUtil.getLoginInfoSwitch()
-        if(loginSwitch){
+        val loginSwitch = SPUtil.getLoginInfoSwitch()
+        if (loginSwitch) {
             block()
             return
         }
@@ -222,7 +222,10 @@ class LoginViewModel(
         viewModelScope.launch {
             //預設存帳號
             doNetwork(androidContext) {
-                loginRepository.facebookLogin(token, inviteCode = Constants.getInviteCode())
+                loginRepository.facebookLogin(
+                    token,
+                    inviteCode = Constants.getInviteCode()
+                )
             }?.let { result ->
                 runWithCatch { userInfoRepository.getUserInfo() }
                 _loginResult.postValue(result)
@@ -327,7 +330,9 @@ class LoginViewModel(
         } else {
             when {
                 username.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
-                !(VerifyConstUtil.verifyPhone(username) || VerifyConstUtil.verifyMail(username)) -> {
+                !(VerifyConstUtil.verifyPhone(username) || VerifyConstUtil.verifyMail(
+                    username
+                )) -> {
                     LocalUtils.getString(R.string.pls_enter_correct_mobile_email)
                 }
                 else -> null
@@ -344,7 +349,9 @@ class LoginViewModel(
     fun checkUserName(username: String): String? {
         val msg = when {
             username.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
-            !(VerifyConstUtil.verifyPhone(username) || VerifyConstUtil.verifyMail(username) || VerifyConstUtil.verifyLengthRange(
+            !(VerifyConstUtil.verifyPhone(username) || VerifyConstUtil.verifyMail(
+                username
+            ) || VerifyConstUtil.verifyLengthRange(
                 username,
                 4,
                 20
@@ -444,7 +451,11 @@ class LoginViewModel(
     fun checkUserExist(phoneNumberOrEmail: String) {
         viewModelScope.launch {
             doNetwork(androidContext) {
-                OneBoSportApi.indexService.checkUserExist(CheckUserRequest(phoneNumberOrEmail))
+                OneBoSportApi.indexService.checkUserExist(
+                    CheckUserRequest(
+                        phoneNumberOrEmail
+                    )
+                )
             }?.let {
                 _checkUserExist.value = it.success
             }

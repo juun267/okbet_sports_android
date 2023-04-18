@@ -400,14 +400,14 @@
     <string name="withdraw_password">Withdrawal password</string>
     <string name="total_withdrawal">Kabuuang Pag-withdraw</string>
     <string name="withdraw_all">Kunin lahat</string>
-    <string name="withdraw_handling_fee_hint">Rate ng bayad: %1$s%% Mga bayarin na babayaran: (%2$s)：%3$s</string>
+    <string name="withdraw_handling_fee_hint">Rate ng bayad: %1$s%% Mga bayarin na babayaran: %2$s%3$s</string>
     <string name="withdraw_crypto_amount_hint">Withdrawal amount(%1$s)：%2$s</string>
     <string name="withdraw_crypto_fee_hint">Withdrawal fee:(%1$s)：%2$s</string>
     <string name="hint_four_number_password">Withdrawal password</string>
     <string name="hint_please_enter_withdraw_password">Withdrawal password</string>
     <string name="add_credit_card">Mag-add ng bank card</string>
     <string name="add_crypto_card">Mag-add ng virtual currency add.</string>
-    <string name="add_e_wallet">Mag-add ng eWallet bank</string>
+    <string name="add_e_wallet">Magdagdag ng eWallet</string>
     <string name="add_credit_or_virtual">Mag-add ng %1$s</string>
     <string name="create_bank">Bank of deposit</string>
     <string name="create_name">Pangalan ng cardholder</string>
@@ -437,6 +437,7 @@
     <string name="text_crypto_add_success">Matagumpay ang virtual currency binding</string>
     <string name="text_bank_card_modify_success">Matagumpay na na-edit ang bank card</string>
     <string name="text_e_wallet_modify_success">Matagumpay na na-edit ang eWallet</string>
+    <string name="text_pay_maya_modify_success">Matagumpay na na-edit ang PayMaya</string>
     <string name="text_crypto_modify_success">Matagumpay na na-edit ang virtual currency</string>
     <string name="bet_receipt_bet_quota">Taya:</string>
     <string name="bet_info_list_win_quota">Mapapanalunan:</string>
@@ -966,7 +967,7 @@
     <string name="remove_account_warning">Sigurado ka bang nais mong kanselahin ang kasalukuyang account？</string>
     <string name="km">Km</string>
     <string name="outlet">Pagtaya</string>
-    <string name="my_bank_card">Aking %1$s</string>
+    <string name="my_bank_card">Aking %1$s%2$s</string>
     <string name="local_time">Lokal na Oras:</string>
     <string name="half_first_short">1st half</string>
     <string name="half_second_short">Ikalawang kalahati</string>
@@ -1131,11 +1132,23 @@
     <string name="sms_code_length_error">Verification code kailangan 4 na digit</string>
     <string name="phone_no_error">Ang numero ng mobile phone ay dapat na 11 digit simula sa 09</string>
 
-    <string name="bet_details_title" >Mga detalye ng kumbinasyon ng link</string>
 
     <string name="N849">Address</string>
     <string name="N887">Ang nilalaman Hindi na maaring baguhin</string>
     <string name="J566">Paki lagay ang inyong mobile</string>
     <string name="J558">Paki lagay ang email</string>
 
+    <string name="bet_details_title">Mga detalye ng kumbinasyon ng link</string>
+    <string name="recharge_channel_paymaya">PayMaya</string>
+    <string name="tail_number">Last digit number</string>
+    <string name="J486">Ang halaga ng pag-withdraw ay mas malaki kaysa sa balanse ng account</string>
+    <string name="J485">Mali ang format o halaga ng withdrawal</string>
+
+    <string name="N171">Pakilagay ang tamang 11-digit na numero ng mobile phone</string>
+    <string name="edit_paymaya">I-edit ang PayMaya</string>
+    <string name="add_paymaya">I-edit ang PayMaya</string>
+    <string name="please_setting_paymaya">Mangyaring i-set up muna ang iyong PayMaya</string>
+    <string name="N865">Ang halaga ay lumampas sa limitasyon</string>
+    <string name="text_paymaya_add_success">Matagumpay ang pag-bind ng PayMaya</string>
+    <string name="text_pay_maya_delete_success">Matagumpay na na-delete ang PayMaya</string>
 </resources>

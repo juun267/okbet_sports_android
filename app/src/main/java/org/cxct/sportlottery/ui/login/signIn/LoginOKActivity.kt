@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.login.signIn
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
@@ -14,13 +15,13 @@ import androidx.lifecycle.lifecycleScope
 import cn.jpush.android.api.JPushInterface
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_login_ok.*
-import kotlinx.android.synthetic.main.activity_main_tab.*
 import kotlinx.android.synthetic.main.view_status_bar.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
+import org.cxct.sportlottery.common.crash.FirebaseLog
 import org.cxct.sportlottery.common.event.RegisterInfoEvent
 import org.cxct.sportlottery.databinding.ActivityLoginOkBinding
 import org.cxct.sportlottery.common.extentions.startActivity
@@ -314,7 +315,6 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             }
         }
         viewModel.checkUserExist.observe(this) {
-            LogUtil.d("checkUserExist=" + it)
             setupRecommendCodeVisible()
         }
         viewModel.accountMsg.observe(this) {
@@ -388,6 +388,8 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private fun updateUiWithResult(loginResult: LoginResult) {
         hideLoading()
+        //将userName信息添加到firebase崩溃日志中
+        loginResult.loginData?.let { FirebaseLog.addLogInfo("userName", "${loginResult.loginData}") }
         if (loginResult.success) {
             if (loginResult.loginData?.deviceValidateStatus == 0) {
                 PhoneVerifyActivity.loginData = loginResult.loginData

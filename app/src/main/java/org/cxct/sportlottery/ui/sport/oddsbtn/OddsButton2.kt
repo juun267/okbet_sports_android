@@ -413,7 +413,7 @@ class OddsButton2 @JvmOverloads constructor(
 
         if(isDrawBtn) {
             nameText = when {
-                playCateCode.isNOGALType() -> LocalUtils.getString(R.string.none)
+                playCateCode.isNOGALType() -> resources.getString(R.string.none)
                 playCateCode.isCombination() -> {
                     (odds?.nameMap?.get(language) ?: odds?.name)?.split("-")?.firstOrNull() ?: ""
                 }

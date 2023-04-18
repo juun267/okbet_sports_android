@@ -4,12 +4,14 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -20,31 +22,36 @@ import kotlinx.android.synthetic.main.activity_detail_sport.view.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_live.view.*
 import kotlinx.android.synthetic.main.view_video_ok.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.setViewGone
+import org.cxct.sportlottery.common.extentions.setViewVisible
+import org.cxct.sportlottery.databinding.ViewToolbarDetailLiveBinding
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.OKVideoPlayer
+import org.cxct.sportlottery.view.webView.OkWebChromeClient
+import org.cxct.sportlottery.view.webView.OkWebView
+import org.cxct.sportlottery.view.webView.OkWebViewClient
+import org.cxct.sportlottery.view.webView.WebViewCallBack
 
 
-@SuppressLint("SetJavaScriptEnabled")
 class DetailLiveViewToolbar @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0,
-) :
-    LinearLayout(context, attrs, defStyle) {
+) : LinearLayout(context, attrs, defStyle) {
 
     enum class LiveType {
         LIVE, VIDEO, ANIMATION
     }
 
-    open var curType: LiveType? = null
     private var isLogin: Boolean = false
+    var curType: LiveType? = null
     var liveUrl: String? = null
     var videoUrl: String? = null
     var animeUrl: String? = null
-
     var isFullScreen = false
 
     private var animationLoadFinish = false
+    private lateinit var viewBinding: ViewToolbarDetailLiveBinding
 
     interface LiveToolBarListener {
         fun onFullScreen(fullScreen: Boolean)
@@ -54,11 +61,8 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     private var liveToolBarListener: LiveToolBarListener? = null
 
     init {
-        val view =
-            LayoutInflater.from(context).inflate(R.layout.view_toolbar_detail_live, this, false)
-        addView(view).apply {
-        }
-
+        viewBinding = ViewToolbarDetailLiveBinding.inflate(LayoutInflater.from(context))
+        addView(viewBinding.root)
         try {
             initOnclick()
         } catch (e: Exception) {
@@ -101,6 +105,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         liveToolBarListener?.onTabClick(2)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun initOnclick() {
         iv_live.setOnClickListener {
             liveUrl?.let {
@@ -126,7 +131,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
                 liveToolBarListener?.onFullScreen(false)
             }
         }
-        web_view.setOnTouchListener { v, event ->
+        viewBinding.webView.setOnTouchListener { v, event ->
             onTouchScreenListener?.let {
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> it.onTouchScreen()
@@ -172,6 +177,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
             true -> {
                 startPlayer()
             }
+
             false -> {
                 stopPlayer()
             }
@@ -180,7 +186,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
 
     fun setupNotLogin() {
         player_view.visibility = View.GONE
-        web_view.visibility = View.GONE
+        viewBinding.webView.visibility = View.GONE
         iv_live_status.isVisible = true
         tvStatus.isVisible = true
         iv_live_status.setImageResource(R.drawable.bg_no_play)
@@ -197,38 +203,28 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     private fun showPlayView() {
         when (curType) {
             LiveType.LIVE -> {
-                player_view.isVisible = true
-                web_view.isVisible = false
-                iv_live_status.isVisible = false
-                iv_live_status.setImageResource(R.drawable.bg_no_play)
-                tvStatus.isVisible = false
-                iv_live.isVisible = false
-                iv_live_sound.isVisible = true
+                setViewVisible(player_view, iv_live_sound)
+                setViewGone(viewBinding.webView, iv_live_status, tvStatus, iv_live)
                 LogUtil.d(liveUrl)
+                iv_live_status.setImageResource(R.drawable.bg_no_play)
                 iv_video.isVisible = !TextUtils.isEmpty(videoUrl)
                 iv_animation.isVisible = !TextUtils.isEmpty(animeUrl)
             }
+
             LiveType.VIDEO -> {
-                player_view.isVisible = false
-                web_view.isVisible = true
-                iv_live_status.isVisible = false
-                iv_live_status.setImageResource(R.drawable.bg_no_play)
-                tvStatus.isVisible = false
+                setViewVisible(viewBinding.webView)
+                setViewGone(player_view, iv_live_status, tvStatus, iv_video, iv_live_sound)
                 iv_live.isVisible = !liveUrl.isNullOrEmpty()
-                iv_video.isVisible = false
-                iv_live_sound.isVisible = false
+                iv_live_status.setImageResource(R.drawable.bg_no_play)
                 iv_animation.isVisible = !animeUrl.isNullOrEmpty()
             }
+
             LiveType.ANIMATION -> {
-                player_view.isVisible = false
-                web_view.isVisible = true
-                iv_live_status.isVisible = false
-                iv_live_sound.isVisible = false
+                setViewVisible(viewBinding.webView)
+                setViewGone(player_view, iv_live_status, iv_live_sound, tvStatus, iv_animation)
                 iv_live_status.setImageResource(R.drawable.bg_no_play)
-                tvStatus.isVisible = false
                 iv_live.isVisible = !liveUrl.isNullOrEmpty()
                 iv_video.isVisible = !videoUrl.isNullOrEmpty()
-                iv_animation.isVisible = false
             }
         }
     }
@@ -257,7 +253,8 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
                     player_view.layoutParams.apply {
                         LogUtil.d(player_view.currentVideoWidth.toString() + "," + player_view.currentVideoHeight)
                         if (player_view.currentVideoWidth > 0) {
-                            height = player_view.width * player_view.currentVideoHeight / player_view.currentVideoWidth
+                            height =
+                                player_view.width * player_view.currentVideoHeight / player_view.currentVideoWidth
                         }
                         player_view.layoutParams = this
                     }
@@ -290,73 +287,56 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     //region 賽事動畫
     private fun openWebView() {
         iv_animation.isSelected = true
-        web_view.isVisible = true
+        viewBinding.webView.isVisible = true
         player_view.isVisible = false
 
-        web_view.settings.apply {
-            javaScriptEnabled = true
-            useWideViewPort = true
-            displayZoomControls = false
-            textZoom = 100
-            loadWithOverviewMode = true
-        }
-        web_view.setInitialScale(25)
-        web_view.setWebViewCommonBackgroundColor()
-        web_view.webViewClient = object : WebViewClient() {
-            override fun shouldOverrideUrlLoading(
-                view: WebView?,
-                request: WebResourceRequest?,
-            ): Boolean {
-                if (curType == LiveType.VIDEO) {
-                    web_view.loadUrl(videoUrl!!)
-                } else if (curType == LiveType.ANIMATION) {
-                    web_view.loadUrl(animeUrl!!)
-                }
-                return false
-            }
-
-            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                super.onPageStarted(view, url, favicon)
-//                setWebViewHeight()
-            }
-
-            override fun onPageFinished(view: WebView, url: String?) {
-                super.onPageFinished(view, url)
+        viewBinding.webView.okWebChromeClient = OkWebChromeClient()
+        viewBinding.webView.okWebViewClient = object : OkWebViewClient(object : WebViewCallBack {
+            override fun pageStarted(view: View?, url: String?) {}
+            override fun pageFinished(view: View?, url: String?) {
                 animationLoadFinish = true
-                view.post {
+                view?.post {
                     view.measure(0, 0)
                 }
             }
+            override fun onError() {}
+        }) {
+            override fun shouldOverrideUrlLoading(
+                view: WebView?, request: WebResourceRequest?
+            ): Boolean {
+                if (curType == LiveType.VIDEO) {
+                    viewBinding.webView.loadUrl(videoUrl!!)
+                } else if (curType == LiveType.ANIMATION) {
+                    viewBinding.webView.loadUrl(animeUrl!!)
+                }
+                return false
+            }
         }
-        if (curType == LiveType.VIDEO) {
-            web_view.loadUrl(videoUrl!!)
-        } else if (curType == LiveType.ANIMATION) {
-            web_view.loadUrl(animeUrl!!)
-        }
-    }
 
-    private fun hideWebView() {
-        iv_animation.isSelected = false
-        web_view.isVisible = false
-        web_view.onPause()
+
+        if (curType == LiveType.VIDEO) {
+            viewBinding.webView.loadUrl(videoUrl!!)
+        } else if (curType == LiveType.ANIMATION) {
+            viewBinding.webView.loadUrl(animeUrl!!)
+        }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration?) {
         super.onConfigurationChanged(newConfig)
-        if (isVisible)
-            setWebViewHeight()
+        if (isVisible) setWebViewHeight()
     }
 
     fun release() {
         releasePlayer()
-        web_view.stopLoading()
-        web_view.clearCache(false)
+        viewBinding.webView.stopLoading()
+        viewBinding.webView.clearCache(false)
     }
 
     fun showFullScreen(fullScreen: Boolean) {
         isFullScreen = fullScreen
         iv_fullscreen.isSelected = isFullScreen
     }
+
     /**
      * 設置WebView高度
      */
@@ -375,33 +355,38 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
                     }
                 }
             }
+
             LiveType.VIDEO -> {
                 if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
                     val screenWidth = MetricsUtil.getScreenWidth()
-                    web_view.layoutParams.apply {
+                    viewBinding.webView.layoutParams.apply {
                         //视频播放器比例，56.25%，来自H5
                         height = (screenWidth * 0.5625f).toInt()
                     }
                 } else {
-                    web_view.layoutParams.apply {
+                    viewBinding.webView.layoutParams.apply {
                         height = ViewGroup.LayoutParams.MATCH_PARENT
                     }
                 }
             }
+
             LiveType.ANIMATION -> {
                 if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
                     val screenWidth = MetricsUtil.getScreenWidth()
-                    web_view.layoutParams.apply {
+                    viewBinding.webView.layoutParams.apply {
                         height = LiveUtil.getAnimationHeightFromWidth(screenWidth).toInt()
                     }
                 } else {
-                    web_view.layoutParams.apply {
+                    viewBinding.webView.layoutParams.apply {
                         height = ViewGroup.LayoutParams.MATCH_PARENT
                     }
                 }
             }
+
+            else -> {}
         }
     }
+
     private var onTouchScreenListener: OnTouchScreenListener? = null
     fun setOnTouchScreenListener(onTouchScreenListener: OnTouchScreenListener) {
         this.onTouchScreenListener = onTouchScreenListener
