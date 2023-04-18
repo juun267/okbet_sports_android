@@ -13,9 +13,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <FrameLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/margin_12"
+            app:cardElevation="1dp">
 
             <ImageView
                 android:id="@+id/iv_cover"
@@ -45,7 +47,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_gravity="right"
                 android:src="@drawable/selector_game_fav" />
-        </FrameLayout>
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/tv_firm_name"

@@ -16,7 +16,6 @@ import org.cxct.sportlottery.databinding.FragmentAllOkgamesBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.setServiceClick
 
 // OkGames所有分类
@@ -24,9 +23,14 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     private lateinit var binding: FragmentAllOkgamesBinding
     private val gameAllAdapter by lazy {
-        GameCategroyAdapter() {
-            it.id?.let { gameId -> viewModel.collectGame(gameId, !it.markCollect) }
-        }
+        GameCategroyAdapter(
+            clickCollect = {
+                okGamesFragment().viewModel.collectGame(it.id, !it.markCollect)
+            },
+            clickGame = {
+                okGamesFragment().viewModel.requestEnterThirdGame(it, this@AllGamesFragment)
+            }
+        )
     }
     private val providersAdapter by lazy { OkGameProvidersAdapter() }
     private val gameRecordAdapter by lazy { OkGameRecordAdapter() }
@@ -51,10 +55,9 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             val categoryList =
                 it.categoryList?.filter { !it.gameList.isNullOrEmpty() }?.toMutableList()
                     ?: mutableListOf()
-            LogUtil.toJson(categoryList)
             gameAllAdapter.setList(categoryList)
         }
-        viewModel.collectOkGamesResult.observe(this.viewLifecycleOwner) { result ->
+        okGamesFragment().viewModel.collectOkGamesResult.observe(this.viewLifecycleOwner) { result ->
             var needUpdate = false
             gameAllAdapter.data.forEach {
                 it.gameList?.forEach { gameBean ->

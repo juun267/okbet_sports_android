@@ -2,6 +2,10 @@ package org.cxct.sportlottery.ui.maintab.games
 
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
+import com.chad.library.adapter.base.listener.OnItemClickListener
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemGameCategroyBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
@@ -10,7 +14,10 @@ import org.cxct.sportlottery.ui.common.adapter.BindingAdapter
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 
-class GameCategroyAdapter(private val clickCollect: (gameGroup: OKGameBean) -> Unit) :
+class GameCategroyAdapter(
+    private val clickCollect: (gameBean: OKGameBean) -> Unit,
+    private val clickGame: (gameGroup: OKGameBean) -> Unit,
+) :
     BindingAdapter<OKGamesCategory, ItemGameCategroyBinding>() {
 
     init {
@@ -27,7 +34,12 @@ class GameCategroyAdapter(private val clickCollect: (gameGroup: OKGameBean) -> U
                 root.isVisible = false
             } else {
                 root.isVisible = true
-                ivIcon.setImageResource(R.drawable.ic_game_fav)
+                Glide.with(context)
+                    .load(item.icon)
+                    .apply(RequestOptions()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .dontTransform())
+                    .into(ivIcon)
                 tvName.text = item.categoryName
                 item.gameList.toMutableList()?.let { gameList ->
                     rvGameItem.apply {
@@ -41,6 +53,9 @@ class GameCategroyAdapter(private val clickCollect: (gameGroup: OKGameBean) -> U
                                 setOnItemChildClickListener { adapter, view, position ->
                                     clickCollect.invoke(data[position])
                                 }
+                                setOnItemClickListener(OnItemClickListener { adapter, view, position ->
+                                    clickGame.invoke(data[position])
+                                })
                             }
                         } else {
                             (adapter as GameChildAdapter).setList(gameList)

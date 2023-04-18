@@ -34,5 +34,6 @@ data class OKGameBean(
     val gameName: String?,
     val imgGame: String?,
     val gameEntryTagName: String?,
+    val thirdGameCategory: String?,
     var markCollect: Boolean,
 )
