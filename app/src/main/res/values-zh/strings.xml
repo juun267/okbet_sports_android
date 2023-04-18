@@ -1221,6 +1221,10 @@
     <string name="N850">请选择地址</string>
     <string name="N171">请输入正确的 11 位数手机号码</string>
     <string name="N865">金额超过限额</string>
+    <string name="N866">设置手机号码成功</string>
+    <string name="N867">设置邮箱成功</string>
+    <string name="N866_1">更改手机号码成功！</string>
+    <string name="N867_1">更改邮箱成功！</string>
     <string name="N890">打印</string>
     <string name="N891">请输入姓名</string>
     <string name="J033">姓名</string>

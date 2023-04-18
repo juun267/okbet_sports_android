@@ -1175,5 +1175,9 @@
     <string name="N171">Vui lòng nhập SĐT gồm 11 chữ số</string>
     <string name="N865">Số tiền vượt hạn mức</string>
     <string name="text_paymaya_add_success">Liên kết PayMaya thành công</string>
+    <string name="N866">Cài đặt SĐT thành công</string>
+    <string name="N867">Cài đặt email thành công</string>
+    <string name="N866_1">SĐT đã thay đổi!</string>
+    <string name="N867_1">"Email đã thay đổi! "</string>
 
 </resources>

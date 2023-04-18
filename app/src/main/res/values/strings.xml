@@ -1280,4 +1280,8 @@
     <string name="N848">Select a source of income</string>
     <string name="N850">Please select an address</string>
     <string name="N849">Address</string>
+    <string name="N866">Set the mobile number successfully</string>
+    <string name="N867">The mailbox is successfully set up</string>
+    <string name="N866_1">Phone number changed!</string>
+    <string name="N867_1">Email changed!</string>
 </resources>

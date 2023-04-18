@@ -1147,6 +1147,10 @@
     <string name="N865">Ang halaga ay lumampas sa limitasyon</string>
     <string name="text_paymaya_add_success">Matagumpay ang pag-bind ng PayMaya</string>
     <string name="text_pay_maya_delete_success">Matagumpay na na-delete ang PayMaya</string>
+    <string name="N866">Matagumpay na nai-set up ang mobile number</string>
+    <string name="N867">Matagumpay na nai-set up ang mailbox</string>
+    <string name="N866_1">Nabago na ang mobile!</string>
+    <string name="N867_1">"Nabago na ang email! "</string>
     <string name="bet_details_title" >Mga detalye ng kumbinasyon ng link</string>
     <string name="N890">Print</string>
     <string name="N891">Paki-type ang pangalan</string>
