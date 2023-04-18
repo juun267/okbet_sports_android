@@ -16,52 +16,48 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreator
 
-class GamesTabAdapter(val onSelected: (Int) -> Unit)
-    : BaseQuickAdapter<Pair<Int, Int>, GamesTabAdapter.VH>(0), OnItemClickListener {
+class GamesTabAdapter(tabs: MutableList<GameTab>, val onSelected: (GameTab) -> Unit)
+    : BaseQuickAdapter<GameTab, GamesTabAdapter.VH>(0, tabs), OnItemClickListener {
 
-    private val dataList = mutableListOf(Pair(R.drawable.selector_tab_home, R.string.bottom_nav_home),
-        Pair(R.drawable.selector_tab_sport, R.string.main_tab_sport),
-        Pair(R.drawable.selector_tab_betlist, R.string.main_tab_betlist),
-        Pair(R.drawable.selector_tab_fav, R.string.main_tab_favorite),
-        Pair(R.drawable.selector_tab_user, R.string.main_tab_mine))
-    private var selectedPosition = 0
+
+    private var selectedTab: GameTab
     private val textColor by lazy { context.getColor(R.color.color_6D7693) }
 
     init {
-        setNewInstance(dataList)
         setOnItemClickListener(this)
-        onSelected(selectedPosition)
+        selectedTab = tabs[0]
     }
 
     override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): VH {
         return VH(parent.context)
     }
 
-    override fun convert(holder: VH, item: Pair<Int, Int>) = holder.run {
-        val isSelected = dataList.indexOf(item) == selectedPosition
-        icon.setImageResource(item.first)
-        name.setText(item.second)
+    override fun convert(holder: VH, item: GameTab) = holder.run {
+        val isSelected = selectedTab == item
+        icon.setImageResource(item.icon)
+        name.setText(item.name)
         name.setTextColor(if (isSelected) Color.WHITE else textColor)
         root.isSelected = isSelected
     }
 
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-        if (selectedPosition != position) {
-            onSelectChanged(position)
-            onSelected.invoke(position)
+        val item = getItem(position)
+        if (selectedTab != item) {
+            onSelectChanged(position, item)
+            onSelected.invoke(item)
         }
     }
 
-    private fun onSelectChanged(position: Int) {
-        val last = selectedPosition
-        selectedPosition = position
+    private fun onSelectChanged(position: Int, item: GameTab) {
+        val last = data.indexOf(selectedTab)
+        selectedTab = item
         notifyItemChanged(last)
-        notifyItemChanged(selectedPosition)
+        notifyItemChanged(position)
     }
-
 
     class VH(context: Context, val root: LinearLayout = LinearLayout(context)): BaseViewHolder(root) {
 

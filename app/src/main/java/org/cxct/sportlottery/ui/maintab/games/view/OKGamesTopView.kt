@@ -23,6 +23,7 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.ui.maintab.games.adapter.GamesTabAdapter
+import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
@@ -34,6 +35,7 @@ import org.cxct.sportlottery.view.IndicatorWidget
 class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : LinearLayoutCompat(context, attrs, defStyle), XBanner.OnItemClickListener {
 
+    lateinit var currentTab: GameTab
     private val edtSearch: EditText by lazy { findViewById(R.id.edtSearchGames) }
     private val indicatorView: IndicatorWidget by lazy { findViewById(R.id.indicatorView) }
     private val okgamesBanner: XBanner by lazy {
@@ -41,7 +43,7 @@ class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: Attribut
     }
 
     var onSearchTextChanged: ((String) -> Unit)? = null
-    var onTableClick: ((Int) -> Unit)? = null
+    var onTableClick: ((GameTab) -> Unit)? = null
 
     init {
         orientation = VERTICAL
@@ -89,7 +91,8 @@ class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: Attribut
         val rcvGamesTab = findViewById<RecyclerView>(R.id.rcvGamesTab)
         rcvGamesTab.addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_8))
         rcvGamesTab.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-        rcvGamesTab.adapter = GamesTabAdapter{ onTableClick?.invoke(it) }
+        val tables = GameTab.getGameTabs().toMutableList().apply { currentTab = this[0] }
+        rcvGamesTab.adapter = GamesTabAdapter(tables) { onTableClick?.invoke(it) }
     }
 
     private fun setUpBannerData() {

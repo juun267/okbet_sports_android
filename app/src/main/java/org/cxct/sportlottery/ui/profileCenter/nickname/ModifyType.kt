@@ -4,7 +4,7 @@ import androidx.annotation.IntDef
 import java.lang.annotation.Retention
 import java.lang.annotation.RetentionPolicy
 
-@Target(AnnotationTarget.TYPE)
+@Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(RetentionPolicy.SOURCE)
 @IntDef(*[ModifyType.RealName, ModifyType.QQNumber, ModifyType.Email, ModifyType.WeChat, ModifyType.PhoneNumber, ModifyType.NickName])
 annotation class ModifyType {

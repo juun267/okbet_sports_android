@@ -5,11 +5,11 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemGameChildBinding
-import org.cxct.sportlottery.net.games.data.OKGamesGroup
+import org.cxct.sportlottery.net.games.data.OKGamesBean
 import org.cxct.sportlottery.ui.common.adapter.BindingAdapter
 
-class GameChildAdapter : BindingAdapter<OKGamesGroup, ItemGameChildBinding>() {
-    override fun onBinding(position: Int, binding: ItemGameChildBinding, item: OKGamesGroup) {
+class GameChildAdapter : BindingAdapter<OKGamesBean, ItemGameChildBinding>() {
+    override fun onBinding(position: Int, binding: ItemGameChildBinding, item: OKGamesBean) {
         binding.apply {
             Glide.with(context)
                 .load(item.imgGame)
