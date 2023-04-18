@@ -1267,6 +1267,9 @@
     <string name="J485">The format or value of Withdraw number is incorrect</string>
     <string name="N171">Please enter a correct 11-digit mobile number</string>
     <string name="N865">Amount exceeds the limit</string>
+    <string name="N890">Print</string>
+    <string name="N891">Please enter full name</string>
+    <string name="J033">Full Name</string>
 
 
 

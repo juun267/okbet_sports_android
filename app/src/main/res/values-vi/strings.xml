@@ -1163,6 +1163,9 @@
     <string name="back_to_my_details">Về trang cá nhân</string>
     <string name="sms_code_length_error">Mã xác nhận ít nhất 4 ký tự</string>
     <string name="phone_no_error">SĐT gồm 11 số, và 09 bắt đầu</string>
+    <string name="N890">In</string>
+    <string name="N891">Vui lòng nhập Họ tên</string>
+    <string name="J033">Họ tên</string>
     <string name="tail_number">Số đuôi</string>
     <string name="edit_paymaya">Sửa PayMaya</string>
     <string name="add_paymaya">Thêm Paymaya</string>

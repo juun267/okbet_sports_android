@@ -13,21 +13,25 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_match_record.view.*
 import kotlinx.android.synthetic.main.content_parlay_record.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.list.Row
+import org.cxct.sportlottery.network.bet.settledDetailList.RemarkBetRequest
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.ui.betRecord.ParlayType.Companion.getParlayStringRes
+import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
+import org.cxct.sportlottery.ui.betRecord.dialog.PrintDialog
 import org.cxct.sportlottery.util.*
 
 //TODO 20210719當前api缺少總金額,待後端修正後進行確認
-class TransactionRecordDiffAdapter :
+class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
     ListAdapter<DataItem, RecyclerView.ViewHolder>(TransactionRecordDiffCallBack()) {
     var isLastPage: Boolean = false
     var totalAmount: Double = 0.0
     var itemList = listOf<DataItem>()
 
-//    private enum class ViewType { Match, Parlay, Outright, LastTotal, NoData }
+    //    private enum class ViewType { Match, Parlay, Outright, LastTotal, NoData }
     private enum class ViewType { Match, Parlay, Outright, NoData }
 
     fun setupBetList(betListData: BetListData) {
@@ -43,8 +47,8 @@ class TransactionRecordDiffAdapter :
 
     fun updateListStatus(sportBet: SportBet) {
         itemList.forEach { dataItem ->
-            if(dataItem.orderNo == sportBet.orderNo)
-                (dataItem as DataItem.Item).row.status = sportBet.status ?: 999
+            if (dataItem.orderNo == sportBet.orderNo) (dataItem as DataItem.Item).row.status =
+                sportBet.status ?: 999
         }
         submitList(itemList)
     }
@@ -63,11 +67,13 @@ class TransactionRecordDiffAdapter :
         val rvData = getItem(holder.adapterPosition)
         when (holder) {
             is MatchRecordViewHolder -> {
-                holder.bind((rvData as DataItem.Item).row)
+                holder.bind((rvData as DataItem.Item).row, viewModel)
             }
+
             is ParlayRecordViewHolder -> {
-                holder.bind((rvData as DataItem.Item).row)
+                holder.bind((rvData as DataItem.Item).row, viewModel)
             }
+
             is OutrightRecordViewHolder -> {
                 holder.bind((rvData as DataItem.Item).row)
             }
@@ -95,33 +101,50 @@ class TransactionRecordDiffAdapter :
             fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
                 val layoutInflater = LayoutInflater.from(viewGroup.context)
                 val view = layoutInflater.inflate(R.layout.content_match_record, viewGroup, false)
-                view.findViewById<TextView>(R.id.content_play).setCompoundDrawablesRelative(null, null, null, null)
+                view.findViewById<TextView>(R.id.content_play)
+                    .setCompoundDrawablesRelative(null, null, null, null)
                 return MatchRecordViewHolder(view)
             }
         }
 
-        fun bind(data: Row) {
+        fun bind(data: Row, viewModel: AccountHistoryViewModel) {
             val matchOdds = data.matchOdds[0]
             itemView.apply {
                 itemView.iv_country.setSvgDrawable(matchOdds.categoryIcon)
-                title_league_name.text = matchOdds.leagueName.replace("\n","")
+                title_league_name.text = matchOdds.leagueName.replace("\n", "")
                 title_team_name.setTeamsNameWithVS(matchOdds.homeName, matchOdds.awayName)
 
                 //篮球 滚球 全场让分【欧洲盘】
                 content_play.setGameType_MatchType_PlayCateName_OddsType(
-                    data.gameType,
-                    data.matchType,
-                    matchOdds.playCateName,
-                    matchOdds.oddsType
+                    data.gameType, data.matchType, matchOdds.playCateName, matchOdds.oddsType
                 )
+
+                tvPrint.setOnClickListener {
+                    val dialog = PrintDialog(context)
+                    dialog.tvPrintClickListener = { it ->
+                        if (it.isNotEmpty()) {
+                            val orderNo = data.orderNo
+                            val orderTime = data.betConfirmTime
+                            val requestBet = RemarkBetRequest(orderNo, it, orderTime.toString())
+                            viewModel.reMarkBet(requestBet)
+                            viewModel.remarkBetLiveData.observeForever {
+                                //uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
+                                dialog.dismiss()
+                                val newUrl =
+                                    Constants.getPrintReceipt(context) + "uniqNo=${orderNo}&addTime=$orderTime"
+                                JumpUtil.toExternalWeb(context, newUrl)
+                            }
+                        }
+                    }
+                    dialog.show()
+                }
 
                 val formatForOdd =
                     if (matchOdds.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage(
-                        matchOdds.odds - 1) else TextUtil.formatForOdd(matchOdds.odds)
+                        matchOdds.odds - 1
+                    ) else TextUtil.formatForOdd(matchOdds.odds)
                 play_content.setPlayContent(
-                    matchOdds.playName,
-                    matchOdds.spread,
-                    formatForOdd
+                    matchOdds.playName, matchOdds.spread, formatForOdd
                 )
 
                 match_play_time.text =
@@ -158,12 +181,16 @@ class TransactionRecordDiffAdapter :
                     }
                 }
 
-                val singleTitle =
-                    context.getString(R.string.bet_record_single) + "-${GameType.getGameTypeString(context, data.gameType)}"
+                val singleTitle = context.getString(R.string.bet_record_single) + "-${
+                    GameType.getGameTypeString(
+                        context, data.gameType
+                    )
+                }"
                 tv_match_title.text = singleTitle
 
-                if (data.status != 0) tv_bet_result.setBetReceiptStatus(data.status,
-                    data.cancelledBy)
+                if (data.status != 0) tv_bet_result.setBetReceiptStatus(
+                    data.status, data.cancelledBy
+                )
                 tv_bet_result.isVisible = data.status != 7
 
                 ll_copy_bet_order.setOnClickListener {
@@ -177,9 +204,9 @@ class TransactionRecordDiffAdapter :
         companion object {
             fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
                 val layoutInflater = LayoutInflater.from(viewGroup.context)
-                val view =
-                    layoutInflater.inflate(R.layout.content_match_record, viewGroup, false)
-                view.findViewById<TextView>(R.id.content_play).setCompoundDrawablesRelative(null, null, null, null)
+                val view = layoutInflater.inflate(R.layout.content_match_record, viewGroup, false)
+                view.findViewById<TextView>(R.id.content_play)
+                    .setCompoundDrawablesRelative(null, null, null, null)
                 return OutrightRecordViewHolder(view)
             }
         }
@@ -194,17 +221,15 @@ class TransactionRecordDiffAdapter :
 
                 //篮球 滚球 全场让分【欧洲盘】
                 content_play.setGameType_MatchType_PlayCateName_OddsType(
-                    data.gameType,
-                    data.matchType,
-                    matchOdds.playCateName,
-                    matchOdds.oddsType
+                    data.gameType, data.matchType, matchOdds.playCateName, matchOdds.oddsType
                 )
 
-                val formatForOdd = if(matchOdds.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage(matchOdds.odds - 1) else TextUtil.formatForOdd(matchOdds.odds)
+                val formatForOdd =
+                    if (matchOdds.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage(
+                        matchOdds.odds - 1
+                    ) else TextUtil.formatForOdd(matchOdds.odds)
                 play_content.setPlayContent(
-                    matchOdds.playName,
-                    matchOdds.spread,
-                    formatForOdd
+                    matchOdds.playName, matchOdds.spread, formatForOdd
                 )
                 matchOdds.startTime?.let {
                     match_play_time.text = TimeUtil.timeFormat(it, TimeUtil.DM_HM_FORMAT)
@@ -215,11 +240,11 @@ class TransactionRecordDiffAdapter :
                 content_order_no.text = data.orderNo
                 content_time_type.text = getTimeFormatFromDouble(data.addTime)
 
-                val singleTitle =
-                    context.getString(R.string.bet_record_single) + "-${
-                        GameType.getGameTypeString(context,
-                            data.gameType)
-                    }"
+                val singleTitle = context.getString(R.string.bet_record_single) + "-${
+                    GameType.getGameTypeString(
+                        context, data.gameType
+                    )
+                }"
                 tv_match_title.text = singleTitle
 
                 tv_bet_result.setBetReceiptStatus(data.status, data.cancelledBy)
@@ -259,17 +284,17 @@ class TransactionRecordDiffAdapter :
             }
         }
 
-        fun bind(data: Row) {
-            val contentParlayMatchAdapter by lazy { ContentParlayMatchAdapter(data) }
+        fun bind(data: Row, viewModel: AccountHistoryViewModel) {
+            val contentParlayMatchAdapter by lazy { ContentParlayMatchAdapter(data, viewModel) }
 
             itemView.apply {
 
                 getParlayStringRes(data.parlayType)?.let { parlayTypeStringResId ->
                     //盡量避免直接使用 MultiLanguagesApplication.appContext.getString 容易出現語系顯示錯誤
 //                    title_parlay_type.text = itemView.context.getString(parlayTypeStringResId)
-                    val parlayTitle = context.getString(R.string.bet_record_parlay) +
-                            "(${context.getString(parlayTypeStringResId)})" +
-                            "-${GameType.getGameTypeString(context, data.gameType)}"
+                    val parlayTitle = context.getString(R.string.bet_record_parlay) + "(${
+                        context.getString(parlayTypeStringResId)
+                    })" + "-${GameType.getGameTypeString(context, data.gameType)}"
                     title_parlay_type.text = parlayTitle
                 }
                 rv_parlay_match.apply {
@@ -277,13 +302,11 @@ class TransactionRecordDiffAdapter :
                     layoutManager =
                         LinearLayoutManager(itemView.context, RecyclerView.VERTICAL, false)
                     contentParlayMatchAdapter.setupMatchData(
-                        data.gameType,
-                        data.matchOdds,
-                        data.betConfirmTime,
-                        data.matchType
+                        data.gameType, data.matchOdds, data.betConfirmTime, data.matchType
                     )
 
                 }
+
 
                 content_parlay_bet_amount.text = TextUtil.format(data.totalAmount)
                 content_parlay_winnable_amount.text = TextUtil.format(data.winnable)
@@ -311,8 +334,9 @@ class TransactionRecordDiffAdapter :
                     tv_bet_result_parlay.visibility = View.GONE
                 }
 
-                if (data.status != 0) tv_bet_result_parlay.setBetReceiptStatus(data.status,
-                    data.cancelledBy)
+                if (data.status != 0) tv_bet_result_parlay.setBetReceiptStatus(
+                    data.status, data.cancelledBy
+                )
                 tv_bet_result_parlay.isVisible = data.status != 7
 
                 ll_copy_bet_order_parlay.setOnClickListener {
@@ -325,11 +349,10 @@ class TransactionRecordDiffAdapter :
     class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         companion object {
-            fun from(parent: ViewGroup) =
-                NoDataViewHolder(
-                    LayoutInflater.from(parent.context)
-                        .inflate(R.layout.itemview_game_no_record, parent, false)
-                )
+            fun from(parent: ViewGroup) = NoDataViewHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.itemview_game_no_record, parent, false)
+            )
         }
 
         fun bind() {
