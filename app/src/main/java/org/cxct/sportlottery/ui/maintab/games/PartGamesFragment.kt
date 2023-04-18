@@ -21,6 +21,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     private val gameChildAdapter by lazy { GameChildAdapter() }
     private var dataList = mutableListOf<OKGamesGroup>()
     private var currentPage: Int = 0
+    private var tagName: String? = null
     private var gameName: String? = null
     private var categoryId: String? = null
     private var firmId: String? = null
@@ -56,6 +57,10 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 okGamesFragment().showGameAll()
             }
         }
+    }
+
+    private fun updateView() {
+        binding.tvTag.text = tagName
         getGameList()
     }
 
@@ -77,7 +82,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         }
     }
 
-    fun setItemList(list: MutableList<OKGamesGroup>) {
+    private fun setItemList(list: MutableList<OKGamesGroup>) {
         dataList.clear()
         dataList.addAll(list)
         if (isAdded) {
@@ -85,7 +90,23 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         }
     }
 
-    fun getGameList() {
+    private fun getGameList() {
         viewModel.getOKGamesList(currentPage, gameName, categoryId, firmId)
     }
+
+    fun setData(
+        tagName: String,
+        gameName: String? = null,
+        categoryId: String? = null,
+        firmId: String? = null,
+    ) {
+        this.tagName = tagName
+        this.gameName = gameName
+        this.categoryId = categoryId
+        this.firmId = firmId
+        if (isAdded) {
+            updateView()
+        }
+    }
+
 }
