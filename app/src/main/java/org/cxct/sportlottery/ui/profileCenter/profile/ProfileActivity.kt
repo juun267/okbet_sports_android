@@ -176,7 +176,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         ll_cancel_account.setOnClickListener { startActivity(CancelAccountActivity::class.java) }
     }
 
-    private fun editBindInfo(modifyType: @ModifyType Int) {
+    private fun editBindInfo(@ModifyType modifyType: Int) {
         val userInfo = viewModel.userInfo.value
         val phoneNo = userInfo?.phone
         val email = userInfo?.email
@@ -190,7 +190,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         }
     }
 
-    private fun putExtraForProfileInfoActivity(modifyType: @ModifyType Int) {
+    private fun putExtraForProfileInfoActivity(@ModifyType modifyType: Int) {
         val intent = Intent(this, ModifyProfileInfoActivity::class.java)
         intent.putExtra(MODIFY_INFO, modifyType)
         startActivity(intent)
