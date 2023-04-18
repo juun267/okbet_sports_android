@@ -5,7 +5,7 @@ import org.cxct.sportlottery.net.ApiListResult
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.net.games.api.OKGamesApi
-import org.cxct.sportlottery.net.games.data.OKGamesGroup
+import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesHall
 
 object OKGamesRepository {
@@ -18,10 +18,10 @@ object OKGamesRepository {
         return params
     }
 
-    suspend fun collectOkGames(gameId: Int, collect: Boolean = true): ApiResult<Any> {
+    suspend fun collectOkGames(gameId: Int, markCollect: Boolean = true): ApiResult<Any> {
         val params = JsonObject()
         params.addProperty("id", gameId)
-//        params.addProperty("collect", collect)
+        params.addProperty("markCollect", markCollect)
         return okGamesApi.okGamescollect(params)
     }
 
@@ -35,7 +35,7 @@ object OKGamesRepository {
         gameName: String?,
         categoryId: String?,
         firmId: String?,
-    ): ApiListResult<List<OKGamesGroup>> {
+    ): ApiListResult<List<OKGameBean>> {
 
         val params = paramDevice()
         params.addProperty("page", page)

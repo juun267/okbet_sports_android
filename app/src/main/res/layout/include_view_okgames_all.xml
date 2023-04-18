@@ -8,5 +8,4 @@
     tools:itemCount="3"
     tools:listitem="@layout/item_game_categroy">
 
-
 </androidx.recyclerview.widget.RecyclerView>

@@ -8,7 +8,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.fitsSystemStatus
 import org.cxct.sportlottery.databinding.FragmentOkgamesBinding
-import org.cxct.sportlottery.net.flow.launchWithLoadingAndCollect
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.EventBusUtil
@@ -42,8 +41,6 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         initToolBar()
         showGameAll()
         viewModel.getOKGamesHall()
-
-
     }
 
     private fun initToolBar() = binding.homeToolbar.run {
@@ -55,8 +52,11 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         }
     }
 
+    /**
+     * 显示赛事结果页面，三种场景下的结果显示页面
+     */
     open fun showGameResult(
-        tagName: String,
+        tagName: String?,
         gameName: String? = null,
         categoryId: String? = null,
         firmId: String? = null,

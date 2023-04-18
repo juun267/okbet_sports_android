@@ -4,9 +4,8 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.common.extentions.callApi
-import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.games.OKGamesRepository
-import org.cxct.sportlottery.net.games.data.OKGamesGroup
+import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesHall
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
@@ -32,12 +31,16 @@ class OKGamesViewModel(
         get() = _collectOkGamesResult
     private val _collectOkGamesResult = MutableLiveData<Pair<Int, Boolean>>()
 
-    val gamesList: LiveData<List<OKGamesGroup>>
+    val gamesList: LiveData<List<OKGameBean>>
         get() = _gamesList
-    private val _gamesList = MutableLiveData<List<OKGamesGroup>>()
+    private val _gamesList = MutableLiveData<List<OKGameBean>>()
+
+    val gameHall: LiveData<OKGamesHall>
+        get() = _gameHall
+    private val _gameHall = MutableLiveData<OKGamesHall>()
 
     fun getOKGamesHall() = callApi({ OKGamesRepository.okGamesHall() }) {
-
+        _gameHall.postValue(it.getData())
     }
 
     fun getOKGamesList(
@@ -49,8 +52,8 @@ class OKGamesViewModel(
         _gamesList.postValue(it.getData() ?: listOf())
     }
 
-    fun collectGame(gameId: Int, isCollected: Boolean) =
-        callApi({ OKGamesRepository.collectOkGames(gameId, !isCollected) }) {
+    fun collectGame(gameId: Int, markCollect: Boolean) =
+        callApi({ OKGamesRepository.collectOkGames(gameId, !markCollect) }) {
             _collectOkGamesResult.postValue(Pair(gameId, it.succeeded()) as Pair<Int, Boolean>?)
         }
 

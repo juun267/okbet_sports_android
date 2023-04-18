@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentActivity
@@ -252,7 +251,6 @@ class MultiLanguagesApplication : Application() {
     private fun initJpush() {
         JPushInterface.setDebugMode(BuildConfig.DEBUG)
         JPushInterface.init(this)
-        Log.d("hjq", "getRegistrationID=" + JPushInterface.getRegistrationID(this))
     }
 
     private fun setupTimber() {

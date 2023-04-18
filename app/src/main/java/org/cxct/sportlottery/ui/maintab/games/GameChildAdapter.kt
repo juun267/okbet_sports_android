@@ -5,11 +5,15 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemGameChildBinding
-import org.cxct.sportlottery.net.games.data.OKGamesGroup
+import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.ui.common.adapter.BindingAdapter
 
-class GameChildAdapter : BindingAdapter<OKGamesGroup, ItemGameChildBinding>() {
-    override fun onBinding(position: Int, binding: ItemGameChildBinding, item: OKGamesGroup) {
+class GameChildAdapter : BindingAdapter<OKGameBean, ItemGameChildBinding>() {
+    init {
+        addChildClickViewIds(R.id.iv_fav)
+    }
+
+    override fun onBinding(position: Int, binding: ItemGameChildBinding, item: OKGameBean) {
         binding.apply {
             Glide.with(context)
                 .load(item.imgGame)
@@ -26,7 +30,6 @@ class GameChildAdapter : BindingAdapter<OKGamesGroup, ItemGameChildBinding>() {
 //                    LanguageManager.Language.PHI -> item.gameNamemap.ph
 //                    else -> item.gameNamemap.en
 //                }
-            addChildClickViewIds(R.id.iv_fav)
             tvFirmName.text = item.firmCode
             ivFav.isSelected = item.markCollect
         }
