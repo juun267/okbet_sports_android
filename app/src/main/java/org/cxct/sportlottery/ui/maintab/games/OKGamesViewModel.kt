@@ -3,11 +3,14 @@ package org.cxct.sportlottery.ui.maintab.games
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesHall
 import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 
 class OKGamesViewModel(
@@ -39,6 +42,7 @@ class OKGamesViewModel(
         get() = _gameHall
     private val _gameHall = MutableLiveData<OKGamesHall>()
 
+
     val searchResult: LiveData<Pair<String, List<OKGameBean>?>>
         get() = _searchResult
     private val _searchResult = MutableLiveData<Pair<String, List<OKGameBean>?>>()
@@ -57,10 +61,29 @@ class OKGamesViewModel(
     }
 
     fun collectGame(gameId: Int, markCollect: Boolean) =
-        callApi({ OKGamesRepository.collectOkGames(gameId, !markCollect) }) {
-            _collectOkGamesResult.postValue(Pair(gameId, it.succeeded()) as Pair<Int, Boolean>?)
+        callApi({ OKGamesRepository.collectOkGames(gameId, markCollect) }) {
+            _collectOkGamesResult.postValue(Pair(gameId, markCollect))
         }
 
+    fun requestEnterThirdGame(gameData: OKGameBean, baseFragment: BaseFragment<*>) {
+        if (gameData == null) {
+            _enterThirdGameResult.postValue(
+                Pair("${gameData.firmCode}", EnterThirdGameResult(
+                    resultType = EnterThirdGameResult.ResultType.FAIL,
+                    url = null,
+                    errorMsg = androidContext.getString(R.string.hint_game_maintenance)
+                ))
+
+            )
+
+            return
+        }
+
+        requestEnterThirdGame("${gameData.firmType}",
+            "${gameData.gameCode}",
+            "${gameData.gameCode}",
+            baseFragment)
+    }
     fun searchGames(gameName: String,
                     page: Int = 1,
                     pageSize: Int = 15,

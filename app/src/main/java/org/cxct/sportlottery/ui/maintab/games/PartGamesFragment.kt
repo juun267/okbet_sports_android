@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import com.chad.library.adapter.base.listener.OnItemChildClickListener
+import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentPartOkgamesBinding
@@ -20,7 +21,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     private inline fun okGamesFragment() = parentFragment as OKGamesFragment
     private val gameChildAdapter by lazy { GameChildAdapter() }
     private var dataList = mutableListOf<OKGameBean>()
-    private var currentPage: Int = 0
+    private var currentPage: Int = 1
     private var tagName: String? = null
     private var gameName: String? = null
     private var categoryId: String? = null
@@ -44,14 +45,22 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             rvGamesSelect.apply {
                 layoutManager = GridLayoutManager(requireContext(), 3)
                 addItemDecoration(GridSpacingItemDecoration(3, 10.dp, false))
-                gameChildAdapter.setEmptyView(LayoutInflater.from(requireContext())
-                    .inflate(R.layout.view_no_games, null))
-                adapter = gameChildAdapter
-                gameChildAdapter.setOnItemChildClickListener(OnItemChildClickListener { adapter, view, position ->
-                    dataList[position]?.let {
-                        it.id?.let { gameId -> viewModel.collectGame(gameId, !it.markCollect) }
-                    }
-                })
+                adapter = gameChildAdapter.apply {
+                    data = dataList
+                    setEmptyView(LayoutInflater.from(requireContext())
+                        .inflate(R.layout.view_no_games, null))
+                    setOnItemChildClickListener(OnItemChildClickListener { adapter, view, position ->
+                        dataList[position]?.let {
+                            okGamesFragment().viewModel.collectGame(it.id, !it.markCollect)
+                        }
+                    })
+                    setOnItemClickListener(OnItemClickListener { adapter, view, position ->
+                        dataList[position]?.let {
+                            okGamesFragment().viewModel.requestEnterThirdGame(it,
+                                this@PartGamesFragment)
+                        }
+                    })
+                }
             }
             tvShowMore.setOnClickListener {
                 okGamesFragment().showGameAll()
@@ -66,7 +75,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     }
 
     private fun initObserve() {
-        viewModel.collectOkGamesResult.observe(this.viewLifecycleOwner) { result ->
+        okGamesFragment().viewModel.collectOkGamesResult.observe(this.viewLifecycleOwner) { result ->
             var needUpdate = false
             gameChildAdapter.data.forEach {
                 if (it.id == result.first) {
@@ -105,6 +114,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         this.gameName = gameName
         this.categoryId = categoryId
         this.firmId = firmId
+        currentPage = 1
         if (isAdded) {
             updateView()
         }
