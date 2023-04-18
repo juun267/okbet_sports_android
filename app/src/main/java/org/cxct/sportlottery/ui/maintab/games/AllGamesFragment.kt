@@ -16,6 +16,7 @@ import org.cxct.sportlottery.databinding.FragmentAllOkgamesBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.setServiceClick
 
 // OkGames所有分类
@@ -46,12 +47,19 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     }
 
     private fun initObserve() {
+        okGamesFragment().viewModel.gameHall.observe(this.viewLifecycleOwner) {
+            val categoryList =
+                it.categoryList?.filter { !it.gameList.isNullOrEmpty() }?.toMutableList()
+                    ?: mutableListOf()
+            LogUtil.toJson(categoryList)
+            gameAllAdapter.setList(categoryList)
+        }
         viewModel.collectOkGamesResult.observe(this.viewLifecycleOwner) { result ->
             var needUpdate = false
             gameAllAdapter.data.forEach {
-                it.forEach { gameEntry ->
-                    if (gameEntry.id == result.first) {
-                        gameEntry.markCollect = result.second
+                it.gameList?.forEach { gameBean ->
+                    if (gameBean.id == result.first) {
+                        gameBean.markCollect = result.second
                         needUpdate = true
                     }
                 }
@@ -68,7 +76,9 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
             rvGamesAll.adapter = gameAllAdapter
             gameAllAdapter.setOnItemChildClickListener(OnItemChildClickListener { adapter, view, position ->
-                okGamesFragment().showGameResult(mutableListOf())
+                gameAllAdapter.data[position].let {
+                    okGamesFragment().showGameResult(it.categoryName, categoryId = it.id.toString())
+                }
             })
         }
     }

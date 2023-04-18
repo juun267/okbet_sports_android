@@ -5,6 +5,11 @@
     android:orientation="vertical">
 
 
+    <include
+        android:id="@+id/include_games_all"
+        layout="@layout/include_view_okgames_all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <!--part-1-->
 
     <!--part-2-->
@@ -17,11 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <include
-        android:id="@+id/include_games_all"
-        layout="@layout/include_view_okgames_all"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+
     <!--part-4-->
 
     <!--part-5-->

@@ -5,12 +5,12 @@ import org.cxct.sportlottery.net.ApiListResult
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.net.games.api.OKGamesApi
-import org.cxct.sportlottery.net.games.data.OKGamesBean
+import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesHall
 
 object OKGamesRepository {
 
-    private val okGamesApi by lazy { RetrofitHolder.createApiService(OKGamesApi::class.java) }
+    val okGamesApi by lazy { RetrofitHolder.createApiService(OKGamesApi::class.java) }
 
     fun paramDevice(): JsonObject {
         val params = JsonObject()
@@ -18,10 +18,10 @@ object OKGamesRepository {
         return params
     }
 
-    suspend fun collectOkGames(gameId: Int, collect: Boolean = true): ApiResult<Any> {
+    suspend fun collectOkGames(gameId: Int, markCollect: Boolean = true): ApiResult<Any> {
         val params = JsonObject()
         params.addProperty("id", gameId)
-//        params.addProperty("collect", collect)
+        params.addProperty("markCollect", markCollect)
         return okGamesApi.okGamescollect(params)
     }
 
@@ -35,7 +35,7 @@ object OKGamesRepository {
         gameName: String?,
         categoryId: String?,
         firmId: String?,
-    ): ApiListResult<List<OKGamesBean>> {
+    ): ApiListResult<List<OKGameBean>> {
 
         val params = paramDevice()
         params.addProperty("page", page)

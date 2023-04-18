@@ -9,7 +9,7 @@ import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentPartOkgamesBinding
-import org.cxct.sportlottery.net.games.data.OKGamesBean
+import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
@@ -19,8 +19,9 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     private lateinit var binding: FragmentPartOkgamesBinding
     private inline fun okGamesFragment() = parentFragment as OKGamesFragment
     private val gameChildAdapter by lazy { GameChildAdapter() }
-    private var dataList = mutableListOf<OKGamesBean>()
+    private var dataList = mutableListOf<OKGameBean>()
     private var currentPage: Int = 0
+    private var tagName: String? = null
     private var gameName: String? = null
     private var categoryId: String? = null
     private var firmId: String? = null
@@ -56,6 +57,11 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 okGamesFragment().showGameAll()
             }
         }
+        updateView()
+    }
+
+    private fun updateView() {
+        binding.tvTag.text = tagName
         getGameList()
     }
 
@@ -77,7 +83,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         }
     }
 
-    fun setItemList(list: MutableList<OKGamesBean>) {
+    private fun setItemList(list: MutableList<OKGameBean>) {
         dataList.clear()
         dataList.addAll(list)
         if (isAdded) {
@@ -85,15 +91,31 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         }
     }
 
-    fun getGameList() {
+    private fun getGameList() {
         viewModel.getOKGamesList(currentPage, gameName, categoryId, firmId)
     }
+
+    fun setData(
+        tagName: String?,
+        gameName: String? = null,
+        categoryId: String? = null,
+        firmId: String? = null,
+    ) {
+        this.tagName = tagName
+        this.gameName = gameName
+        this.categoryId = categoryId
+        this.firmId = firmId
+        if (isAdded) {
+            updateView()
+        }
+    }
+
 
     fun changeTab() {
 
     }
 
-    fun showSearchResault(list: List<OKGamesBean>?) {
+    fun showSearchResault(list: List<OKGameBean>?) {
         gameChildAdapter.setNewInstance(list?.toMutableList())
     }
 }

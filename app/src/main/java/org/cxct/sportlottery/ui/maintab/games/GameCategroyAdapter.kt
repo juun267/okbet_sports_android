@@ -15,23 +15,32 @@ class GameCategroyAdapter(private val clickCollect: (gameGroup: OKGamesBean) -> 
         position: Int,
         binding: ItemGameCategroyBinding,
         item: MutableList<OKGamesBean>,
+        item: OKGamesCategory,
     ) {
         binding.apply {
-            ivIcon.setImageResource(R.drawable.ic_game_fav)
-            tvName.text = item.first().gameEntryTagName
-            rvGameItem.apply {
-                if (adapter == null) {
-                    layoutManager = SocketLinearManager(context, RecyclerView.HORIZONTAL, false)
-                    if (itemDecorationCount == 0)
-                        addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_10))
-                    adapter = GameChildAdapter().apply {
-                        data = item
-                        setOnItemChildClickListener { adapter, view, position ->
-                            clickCollect.invoke(data[position])
+            if (item.gameList.isNullOrEmpty()) {
+                root.isVisible = false
+            } else {
+                root.isVisible = true
+                ivIcon.setImageResource(R.drawable.ic_game_fav)
+                tvName.text = item.categoryName
+                item.gameList.toMutableList()?.let { gameList ->
+                    rvGameItem.apply {
+                        if (adapter == null) {
+                            layoutManager =
+                                SocketLinearManager(context, RecyclerView.HORIZONTAL, false)
+                            if (itemDecorationCount == 0)
+                                addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_10))
+                            adapter = GameChildAdapter().apply {
+                                setList(gameList)
+                                setOnItemChildClickListener { adapter, view, position ->
+                                    clickCollect.invoke(data[position])
+                                }
+                            }
+                        } else {
+                            (adapter as GameChildAdapter).setList(gameList)
                         }
                     }
-                } else {
-                    (adapter as GameChildAdapter).setNewInstance(item)
                 }
             }
         }

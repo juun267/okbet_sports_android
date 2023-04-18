@@ -78,6 +78,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             matchInfo: MatchInfo,
             matchType: MatchType? = null,
             intoLive: Boolean = false,
+            fastBetDataBean: FastBetDataBean? = null,
         ) {
             matchInfo.let {
                 val intent = Intent(context, SportDetailActivity::class.java)
@@ -88,6 +89,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         ?: if (TimeUtil.isTimeInPlay(it.startTime)) MatchType.IN_PLAY else MatchType.DETAIL
                 )
                 intent.putExtra("intoLive", intoLive)
+                intent.putExtra("fastBetDataBean", fastBetDataBean)
                 context.startActivity(intent)
             }
         }
@@ -110,6 +112,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private var betListFragment = BetListFragment()
     private var matchOdd: MatchOdd? = null
     private var matchInfo: MatchInfo? = null
+    private var fastBetDataBean: FastBetDataBean? = null
     private var isFlowing = false
     private lateinit var enterAnim: Animation
     private lateinit var exitAnim: Animation
@@ -392,11 +395,15 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     private fun initData() {
         clickButton()
-        matchInfo = intent.getParcelableExtra<MatchInfo>("matchInfo")
+        matchInfo = intent.getParcelableExtra("matchInfo")
         matchType = intent.getSerializableExtra("matchType") as MatchType
         intoLive = intent.getBooleanExtra("intoLive", false)
+        fastBetDataBean = intent.getParcelableExtra("fastBetDataBean")
         matchInfo?.let {
             setupMatchInfo(it)
+        }
+        fastBetDataBean?.let {
+            viewModel.updateMatchBetListData(it)
         }
     }
 
