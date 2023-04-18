@@ -12,6 +12,8 @@ import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.list.BetListRequest
+import org.cxct.sportlottery.network.bet.settledDetailList.RemarkBetRequest
+import org.cxct.sportlottery.network.bet.settledList.RemarkBetResult
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.repository.*
@@ -43,7 +45,7 @@ class TransactionStatusViewModel(
             getBetList(true)
         }
 
-    var statusList: List<Int>? = listOf(0,1)
+    var statusList: List<Int>? = listOf(0, 1)
         set(value) {
             field = value
             getBetList(true)
@@ -70,6 +72,7 @@ class TransactionStatusViewModel(
 //        get() = _sportCodeSpinnerList
 //    private val _sportCodeSpinnerList = MutableLiveData<List<StatusSheetData>>() //當前啟用球種篩選清單
 
+
     //獲取系統公告
     fun getAnnouncement() {
         if (isLogin.value == true) {
@@ -95,8 +98,7 @@ class TransactionStatusViewModel(
 
     //獲取交易狀況資料(未結算)
     fun getBetList(firstPage: Boolean = false) {
-        if (betListRequesting || (betListData.value?.isLastPage == true && !firstPage))
-            return
+        if (betListRequesting || (betListData.value?.isLastPage == true && !firstPage)) return
         betListRequesting = true
 
         val page = if (firstPage) 1 else betListData.value?.page?.plus(1) ?: 1
@@ -110,19 +112,17 @@ class TransactionStatusViewModel(
                 betListRequesting = false
                 if (result.success) {
                     requestCount = 0
-                    val rowList =
-                        if (page == 1) mutableListOf()
-                        else betListData.value?.row?.toMutableList() ?: mutableListOf()
+                    val rowList = if (page == 1) mutableListOf()
+                    else betListData.value?.row?.toMutableList() ?: mutableListOf()
                     result.rows?.let { rowList.addAll(it.apply { }) }
 
-                    _betListData.value =
-                        BetListData(
-                            rowList,
-                            MultiLanguagesApplication.mInstance.mOddsType.value ?: OddsType.HK,
-                            result.other?.totalAmount ?: 0.0,
-                            page,
-                            (rowList.size >= (result.total ?: 0))
-                        )
+                    _betListData.value = BetListData(
+                        rowList,
+                        MultiLanguagesApplication.mInstance.mOddsType.value ?: OddsType.HK,
+                        result.other?.totalAmount ?: 0.0,
+                        page,
+                        (rowList.size >= (result.total ?: 0))
+                    )
                     loginRepository.updateTransNum(result.total ?: 0)
                 } else {
                     if (result.code == NetWorkResponseType.REQUEST_TOO_FAST.code && requestCount < requestMaxCount) {
@@ -136,6 +136,8 @@ class TransactionStatusViewModel(
         }
     }
 
+
+
     private fun createUnSettlementBetListRequest(page: Int): BetListRequest {
         return BetListRequest(
             championOnly = 0,
@@ -145,6 +147,7 @@ class TransactionStatusViewModel(
             pageSize = pageSize
         )
     }
+
 
     private fun loading() {
         _loading.postValue(true)
@@ -170,8 +173,9 @@ class TransactionStatusViewModel(
                     sportListResponse.rows.sortedBy { it.sortNum }.map {
                         sportCodeList.add(
                             StatusSheetData(
-                                it.code,
-                                GameType.getGameTypeString(LocalUtils.getLocalizedContext(), it.code)
+                                it.code, GameType.getGameTypeString(
+                                    LocalUtils.getLocalizedContext(), it.code
+                                )
                             )
                         )
                     }

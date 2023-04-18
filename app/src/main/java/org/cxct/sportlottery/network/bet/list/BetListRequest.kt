@@ -8,6 +8,8 @@ data class BetListRequest(
     val championOnly: Int,
     val statusList: List<Int>? = listOf(),
     val gameType: String? = null,
+    val uniqNo:String? = null,
+    val remark:String? = null,
     override val userId: Int? = null,
     override val platformId: Int? = null,
     override val startTime: String? = null,

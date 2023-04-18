@@ -14,14 +14,17 @@ import kotlinx.android.synthetic.main.content_match_record.view.*
 import kotlinx.android.synthetic.main.content_parlay_record.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.list.Row
+import org.cxct.sportlottery.network.bet.settledDetailList.RemarkBetRequest
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.ui.betRecord.ParlayType.Companion.getParlayStringRes
+import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
+import org.cxct.sportlottery.ui.betRecord.dialog.PrintDialog
 import org.cxct.sportlottery.util.*
 
 //TODO 20210719當前api缺少總金額,待後端修正後進行確認
-class TransactionRecordDiffAdapter :
+class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
     ListAdapter<DataItem, RecyclerView.ViewHolder>(TransactionRecordDiffCallBack()) {
     var isLastPage: Boolean = false
     var totalAmount: Double = 0.0
@@ -63,10 +66,10 @@ class TransactionRecordDiffAdapter :
         val rvData = getItem(holder.adapterPosition)
         when (holder) {
             is MatchRecordViewHolder -> {
-                holder.bind((rvData as DataItem.Item).row)
+                holder.bind((rvData as DataItem.Item).row,viewModel)
             }
             is ParlayRecordViewHolder -> {
-                holder.bind((rvData as DataItem.Item).row)
+                holder.bind((rvData as DataItem.Item).row,viewModel)
             }
             is OutrightRecordViewHolder -> {
                 holder.bind((rvData as DataItem.Item).row)
@@ -100,7 +103,7 @@ class TransactionRecordDiffAdapter :
             }
         }
 
-        fun bind(data: Row) {
+        fun bind(data: Row, viewModel: AccountHistoryViewModel) {
             val matchOdds = data.matchOdds[0]
             itemView.apply {
                 itemView.iv_country.setSvgDrawable(matchOdds.categoryIcon)
@@ -114,6 +117,19 @@ class TransactionRecordDiffAdapter :
                     matchOdds.playCateName,
                     matchOdds.oddsType
                 )
+
+                tvPrint.setOnClickListener {
+                    val dialog = PrintDialog(context)
+                    dialog.tvPrintClickListener = { it ->
+                        if (it.isNotEmpty()) {
+                            val orderNo = data.orderNo
+                            val orderTime = data.betConfirmTime
+                            val requestBet = RemarkBetRequest(orderNo, it, orderTime.toString())
+                            viewModel.reMarkBet(requestBet)
+                        }
+                    }
+                    dialog.show()
+                }
 
                 val formatForOdd =
                     if (matchOdds.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage(
@@ -259,8 +275,8 @@ class TransactionRecordDiffAdapter :
             }
         }
 
-        fun bind(data: Row) {
-            val contentParlayMatchAdapter by lazy { ContentParlayMatchAdapter(data) }
+        fun bind(data: Row, viewModel: AccountHistoryViewModel) {
+            val contentParlayMatchAdapter by lazy { ContentParlayMatchAdapter(data, viewModel) }
 
             itemView.apply {
 

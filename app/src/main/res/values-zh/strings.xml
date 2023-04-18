@@ -1202,4 +1202,8 @@
     <string name="back_to_my_details">返回我的详细信息</string>
     <string name="sms_code_length_error">验证码至少4位</string>
     <string name="phone_no_error">手机号码需为09开头的11位数字</string>
+    <string name="N890">打印</string>
+    <string name="N891">请输入姓名</string>
+    <string name="J033">姓名</string>
+
 </resources>

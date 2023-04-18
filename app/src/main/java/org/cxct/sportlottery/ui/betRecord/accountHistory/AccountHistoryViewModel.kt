@@ -14,8 +14,10 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.list.BetListRequest
 import org.cxct.sportlottery.network.bet.settledDetailList.BetSettledDetailListRequest
 import org.cxct.sportlottery.network.bet.settledDetailList.BetSettledDetailListResult
+import org.cxct.sportlottery.network.bet.settledDetailList.RemarkBetRequest
 import org.cxct.sportlottery.network.bet.settledList.BetSettledListRequest
 import org.cxct.sportlottery.network.bet.settledList.BetSettledListResult
+import org.cxct.sportlottery.network.bet.settledList.RemarkBetResult
 import org.cxct.sportlottery.network.bet.settledList.Row
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.message.MessageListResult
@@ -78,6 +80,7 @@ class AccountHistoryViewModel(
     private val _messageListResult = MutableLiveData<MessageListResult?>()
     private val _settlementNotificationMsg = MutableLiveData<Event<SportBet>>()
     private val _betDetailResult = MutableLiveData<BetSettledDetailListResult>()
+    val remarkBetLiveData: MutableLiveData<RemarkBetResult> = MutableLiveData()
 
     //    private val _sportCodeSpinnerList = MutableLiveData<List<StatusSheetData>>() //當前啟用球種篩選清單
     var tabPosition = 0 //當前tabPosition (for 新版UI)
@@ -133,6 +136,20 @@ class AccountHistoryViewModel(
             }
         }
 
+    }
+
+    fun reMarkBet(remarkBetRequest: RemarkBetRequest) {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.betService.reMarkBet(remarkBetRequest)
+            }?.let { remarkBetResult ->
+                if (remarkBetResult.success) {
+                    remarkBetLiveData.postValue(remarkBetResult)
+                } else {
+
+                }
+            }
+        }
     }
 
     private fun getBetSettledList(betSettledListRequest: BetSettledListRequest) {
