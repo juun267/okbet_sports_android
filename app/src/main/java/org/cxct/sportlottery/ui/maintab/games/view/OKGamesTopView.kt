@@ -9,16 +9,21 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.stx.xhb.androidx.XBanner
-import com.stx.xhb.androidx.entity.BaseBannerInfo
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.load
+import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.ui.maintab.games.adapter.GamesTabAdapter
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.drawable.DrawableCreator
 import org.cxct.sportlottery.view.IndicatorWidget
@@ -34,6 +39,7 @@ class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: Attribut
     }
 
     var onSearchTextChanged: ((String) -> Unit)? = null
+    var onTableClick: ((Int) -> Unit)? = null
 
     init {
         orientation = VERTICAL
@@ -51,14 +57,10 @@ class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: Attribut
             .build()
 
         initBanner()
-        setUpBannerData(mutableListOf())
+        setUpBannerData()
     }
 
     private fun initBanner() {
-        okgamesBanner.setOnItemClickListener(this)
-        okgamesBanner.loadImage { _, model, view, _->
-            (view as ImageView).load((model as Image).url, )
-        }
 
     }
 
@@ -85,26 +87,36 @@ class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: Attribut
         val rcvGamesTab = findViewById<RecyclerView>(R.id.rcvGamesTab)
         rcvGamesTab.addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_8))
         rcvGamesTab.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-        rcvGamesTab.adapter = GamesTabAdapter(::onTableClick)
+        rcvGamesTab.adapter = GamesTabAdapter{ onTableClick?.invoke(it) }
     }
 
-    fun setUpBannerData(list: List<String>) {
+    private fun setUpBannerData() {
 
-        var imageList = sConfigData?.imageList?.filter { it.imageType == 2 }
+        var imageList = sConfigData?.imageList?.filter { it.imageType == 12 }
+        val loopEnable = imageList?.size ?: 0 > 1
+        indicatorView.isVisible = loopEnable
 
         if (imageList.isNullOrEmpty()) {
             return
         }
 
+        okgamesBanner.setHandLoop(loopEnable)
+        okgamesBanner.setAutoPlayAble(loopEnable)
+        okgamesBanner.setOnItemClickListener(this)
+        okgamesBanner.loadImage { _, model, view, _ ->
+            (view as ImageView).load((model as XBannerImage).imgUrl, R.drawable.img_banner01)
+        }
+
         val host = sConfigData?.resServerHost
-//        val images = imageList.map{ Image(it.imageText1 + "", host + it.imgUrl) }
-        val images = mutableListOf(Image("image1", "https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"),
-        Image("image2", "https://images.pexels.com/photos/709552/pexels-photo-709552.jpeg?auto=compress&cs=tinysrgb&w=1600"),
-            Image("image3", "https://images.pexels.com/photos/2378278/pexels-photo-2378278.jpeg?auto=compress&cs=tinysrgb&w=1600"),
-            Image("image4", "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?auto=compress&cs=tinysrgb&w=1600"),
-            Image("image5", "https://images.pexels.com/photos/7459424/pexels-photo-7459424.jpeg?auto=compress&cs=tinysrgb&w=1600"),
-            Image("image6", "https://images.pexels.com/photos/267151/pexels-photo-267151.jpeg?auto=compress&cs=tinysrgb&w=1600"),
-        )
+        val images = imageList.map{ XBannerImage(it.imageText1 + "", host + it.imgUrl, it.imageLink) }
+
+//        val images = mutableListOf(Image("image1", "https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"),
+//        Image("image2", "https://images.pexels.com/photos/709552/pexels-photo-709552.jpeg?auto=compress&cs=tinysrgb&w=1600"),
+//            Image("image3", "https://images.pexels.com/photos/2378278/pexels-photo-2378278.jpeg?auto=compress&cs=tinysrgb&w=1600"),
+//            Image("image4", "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?auto=compress&cs=tinysrgb&w=1600"),
+//            Image("image5", "https://images.pexels.com/photos/7459424/pexels-photo-7459424.jpeg?auto=compress&cs=tinysrgb&w=1600"),
+//            Image("image6", "https://images.pexels.com/photos/267151/pexels-photo-267151.jpeg?auto=compress&cs=tinysrgb&w=1600"),
+//        )
 
         okgamesBanner.setBannerData(images.toMutableList())
         indicatorView.setupIndicator(okgamesBanner.realCount)
@@ -116,18 +128,17 @@ class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: Attribut
     }
 
     override fun onItemClick(banner: XBanner, model: Any, view: View, position: Int) {
-
+        val jumpUrl = (model as XBannerImage).jumpUrl
+        if (jumpUrl.isEmptyStr()) {
+            return
+        }
+        if (jumpUrl!!.contains("sweepstakes")) {
+            JumpUtil.toLottery(context, Constants.getLotteryH5Url(context, LoginRepository.token))
+        } else {
+            JumpUtil.toInternalWeb(context, jumpUrl, "")
+        }
     }
 
-    fun onTableClick(position: Int) {
 
-    }
-
-    data class Image(val name: String, val url: String): BaseBannerInfo {
-        override fun getXBannerUrl() = url
-
-        override fun getXBannerTitle() = name
-
-    }
 
 }
