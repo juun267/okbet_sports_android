@@ -12,7 +12,7 @@ data class RemarkBetResult(
     override val msg: String,
     override val success: Boolean,
     @Json(name="t")
-    val remarkBetResult: RemarkBetResultList
+    val remarkBetResult: RemarkBetResultList?
 ) : BaseResult()
 
 data class RemarkBetResultList(
