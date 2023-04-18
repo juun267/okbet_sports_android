@@ -122,13 +122,13 @@ class RegisterInfoViewModel(
                 data.t.birthday?.let {
                     birthdayTimeInput=it
                     if(it.isNotEmpty()){
-                        filledBirthday=true
+//                        filledBirthday=true
                     }
                 }
                 data.t.city?.let {
                     cityInput=it
                     if(it.isNotEmpty()){
-                        filledCity=true
+//                        filledCity=true
                     }
                 }
                 data.t.fullName?.let {
@@ -141,14 +141,14 @@ class RegisterInfoViewModel(
                 data.t.province?.let {
                     provinceInput=it
                     if(it.isNotEmpty()){
-                        filledProvince=true
+//                        filledProvince=true
                     }
                 }
 
                 data.t.salarySource?.let {
                     sourceInput=it
                     if(it>-1){
-                        filledSalary=true
+//                        filledSalary=true
                     }
                 }
                 data.t.phone?.let {
