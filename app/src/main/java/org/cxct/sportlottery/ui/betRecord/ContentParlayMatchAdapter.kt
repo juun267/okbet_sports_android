@@ -12,10 +12,12 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.luck.picture.lib.tools.JumpUtils
 import kotlinx.android.synthetic.main.content_parlay_match.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.MatchOdd
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.bet.settledDetailList.RemarkBetRequest
@@ -169,6 +171,13 @@ class ContentParlayMatchAdapter(val data: Row, val viewModel: AccountHistoryView
                     val orderNo = rowData.orderNo
                     val orderTime = rowData.betConfirmTime
                     val requestBet = RemarkBetRequest(orderNo, it, orderTime.toString())
+                    viewModel.remarkBetLiveData.observeForever {
+                        //uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
+                        dialog.dismiss()
+                        val newUrl =
+                            Constants.getPrintReceipt(context) + "uniqNo=${orderNo}&addTime=$orderTime"
+                        JumpUtil.toExternalWeb(context, newUrl)
+                    }
                     viewModel.reMarkBet(requestBet)
                 }
             }

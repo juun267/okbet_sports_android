@@ -270,6 +270,15 @@ object Constants {
         return base + "sports-rule/#/${language}worldcup?platform=${context.getString(R.string.app_name)}&d=android&noBg=1"
     }
 
+    //https://okbet-v2.cxsport.net/activity/mobile/#/print?uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
+    //打印小票H5地址
+    fun getPrintReceipt(context:Context):String {
+        val language = getLanguageTag(context)
+        val base = getH5BaseUrl()
+        return "$base/activity/mobile/#print?"
+    }
+
+
     //抽奖活动H5地址
     fun getLotteryH5Url(context: Context, token: String? = ""): String {
         val language = getLanguageTag(context)
