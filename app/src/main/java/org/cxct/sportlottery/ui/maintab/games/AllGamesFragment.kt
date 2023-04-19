@@ -224,7 +224,9 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             rvOkgameRecord.itemAnimator = DefaultItemAnimator()
             viewModel.providerResult.observe(viewLifecycleOwner) { resultData ->
                 resultData?.firmList?.let {
-                    providersAdapter.addData(it)
+                    if(!providersAdapter.data.containsAll(it)){
+                        providersAdapter.addData(it)
+                    }
                 }
             }
             viewModel.recordNewHttp.observe(viewLifecycleOwner) {
