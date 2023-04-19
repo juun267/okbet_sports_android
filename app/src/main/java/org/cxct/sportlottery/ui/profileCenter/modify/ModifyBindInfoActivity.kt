@@ -34,7 +34,7 @@ import org.cxct.sportlottery.util.setServiceClick
 class ModifyBindInfoActivity: BaseActivity<BindInfoViewModel>(BindInfoViewModel::class) {
 
     companion object {
-        fun start(context: Activity, modifyType: @ModifyType Int, requestCode: Int, phone: String?, email: String?, oldInfo: String? = null) {
+        fun start(context: Activity, @ModifyType modifyType:  Int, requestCode: Int, phone: String?, email: String?, oldInfo: String? = null) {
             val intent = Intent(context, ModifyBindInfoActivity::class.java)
             intent.putExtra("MODIFY_INFO", modifyType)
             intent.putExtra("phone", phone)

@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#f8f9fd">
 
     <org.cxct.sportlottery.ui.maintab.home.HomeToolbarView
         android:id="@+id/homeToolbar"
@@ -17,6 +18,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
+            <org.cxct.sportlottery.ui.maintab.games.view.OKGamesTopView
+                android:id="@+id/topView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
             <FrameLayout
                 android:id="@+id/fragmentContainer"

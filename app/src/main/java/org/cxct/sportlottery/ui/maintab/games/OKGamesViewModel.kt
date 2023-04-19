@@ -57,6 +57,10 @@ class OKGamesViewModel(
      */
     private var allGamesMap = mutableMapOf<Int, OKGameBean>()
 
+    val searchResult: LiveData<Pair<String, List<OKGameBean>?>>
+        get() = _searchResult
+    private val _searchResult = MutableLiveData<Pair<String, List<OKGameBean>?>>()
+
     fun getOKGamesHall() = callApi({ OKGamesRepository.okGamesHall() }) {
         _gameHall.postValue(it.getData())
         it.getData()?.categoryList?.forEach {
@@ -128,4 +132,13 @@ class OKGamesViewModel(
         }
         _recentPlay.postValue(recentList)
     }
+    fun searchGames(gameName: String,
+                    page: Int = 1,
+                    pageSize: Int = 15,
+                    categoryId: String? = null,
+                    firmId: String? = null,
+    ) = callApi({ OKGamesRepository.getOKGamesList(page, pageSize, gameName, categoryId, firmId) }) {
+        _searchResult.postValue(Pair(gameName, it.getData()))
+    }
+
 }

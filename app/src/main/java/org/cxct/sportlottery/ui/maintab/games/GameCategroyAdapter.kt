@@ -20,10 +20,6 @@ class GameCategroyAdapter(
 ) :
     BindingAdapter<OKGamesCategory, ItemGameCategroyBinding>() {
 
-    init {
-        addChildClickViewIds(R.id.lin_categroy_name)
-    }
-
     override fun onBinding(
         position: Int,
         binding: ItemGameCategroyBinding,

@@ -33,6 +33,11 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
     }
 
     private inline fun mainTabActivity() = activity as MainTabActivity
+    private inline fun getCurrentTab() = binding.topView.currentTab
+    private inline fun isShowAll() = fragmentHelper.getCurrentFragment() is AllGamesFragment
+
+    private var searchKey = ""
+
     override fun createRootView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,9 +49,11 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
 
     override fun onBindView(view: View) {
         initToolBar()
-        initObservable()
+        initTopView()
         showGameAll()
+        initObserver()
         viewModel.getOKGamesHall()
+
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -97,6 +104,39 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         }
     }
 
+    private fun initToolBar() = binding.homeToolbar.run {
+        attach(this@OKGamesFragment, mainTabActivity(), viewModel)
+        fitsSystemStatus()
+        ivMenuLeft.setOnClickListener {
+            EventBusUtil.post(MenuEvent(true))
+            mainTabActivity().showLeftFrament(0, 5)
+        }
+    }
+
+    private fun initTopView() = binding.topView.run {
+        onTableClick = ::onTabChange
+        onSearchTextChanged = {
+            searchKey = it
+            hideKeyboard()
+            if (searchKey.isEmptyStr()) {
+                showSearchResult(null)
+            } else {
+                showPartGames(GameTab.TAB_SEARCH)
+                viewModel.searchGames(searchKey)
+            }
+        }
+    }
+
+    private fun onTabChange(tab: GameTab) {
+        Log.e("For Test", "======>>> onTabChange ${JsonUtil.toJson(tab)}")
+        if (tab.isAll()) {
+            showGameAll()
+            return
+        }
+
+        showPartGames(tab)
+    }
+
     /**
      * 显示赛事结果页面，三种场景下的结果显示页面
      */
@@ -106,15 +146,30 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         categoryId: String? = null,
         firmId: String? = null,
     ) {
-        (fragmentHelper.getFragment(1) as PartGamesFragment).setData(tagName,
+        showPartGameFragment().setData(tagName,
             gameName,
             categoryId,
             firmId)
-        fragmentHelper.showFragment(1)
     }
 
-    open fun showGameAll() {
-        fragmentHelper.showFragment(0)
+    private fun showGameAll(): AllGamesFragment {
+        return fragmentHelper.showFragment(0) as AllGamesFragment
+    }
+
+    fun backGameAll() {
+        binding.topView.backAll()
+    }
+
+    private inline fun showPartGameFragment(): PartGamesFragment {
+        return fragmentHelper.showFragment(1) as PartGamesFragment
+    }
+
+    private fun showPartGames(tab: GameTab) {
+        showPartGameFragment().changeTab(tab)
+    }
+
+    private fun showSearchResult(gameList: List<OKGameBean>?) {
+        showPartGameFragment().showSearchResault(gameList)
     }
 
 }

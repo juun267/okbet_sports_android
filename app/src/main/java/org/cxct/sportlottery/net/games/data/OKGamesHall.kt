@@ -13,6 +13,8 @@ data class OKGamesCategory(
     val id: Int,
     val categoryName: String?,
     val icon: String?,
+    val iconSelected: String?,
+    val iconUnselected: String?,
     val gameList: List<OKGameBean>?,
 )
 
