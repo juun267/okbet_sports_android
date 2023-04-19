@@ -1,6 +1,10 @@
 package org.cxct.sportlottery.net.games.data
 
+import android.widget.ImageView
+import android.widget.TextView
+import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.proguards.KeepMembers
+import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
 
 @KeepMembers
 class OKGamesHall(
@@ -16,7 +20,22 @@ data class OKGamesCategory(
     val iconSelected: String?,
     val iconUnselected: String?,
     val gameList: List<OKGameBean>?,
-)
+): OKGameTab {
+    override fun tabId() = id
+
+    override fun bindNameText(textView: TextView) {
+        textView.text = categoryName
+    }
+
+    override fun bindTabIcon(imageView: ImageView, isSelected: Boolean) {
+        imageView.load(if (isSelected) iconSelected else iconUnselected)
+    }
+
+    override fun bindLabelIcon(imageView: ImageView) {
+        imageView.load(icon)
+    }
+
+}
 
 @KeepMembers
 data class OKGamesFirm(
