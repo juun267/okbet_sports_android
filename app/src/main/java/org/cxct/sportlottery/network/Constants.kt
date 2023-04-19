@@ -188,6 +188,7 @@ object Constants {
         }
     }
 
+
     //遊戲規則 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
     fun getGameRuleUrl(context: Context): String? {
 
@@ -273,12 +274,14 @@ object Constants {
     //https://okbet-v2.cxsport.net/activity/mobile/#/print?uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
     //打印小票H5地址
     fun getPrintReceipt(context:Context):String {
-        val language = getLanguageTag(context)
+        var language = getLanguageTag(context)
         val base = getH5BaseUrl()
-        return "${base}activity/mobile/#/print?"
-
-        //https://okbet-v2.cxsport.net/activity/mobile/#/print?uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
-        //https://okbet-v2.cxsport.net/activity/mobile/#/print?uniqNo=B01097882307605463040&addTime=1681797139763
+        if (language.contains("/")){
+            language = language.substring(0,language.indexOf("/"))
+        }else if (language.isEmpty()){
+            language = "zh"
+        }
+        return "${base}activity/mobile/#/print?lang=${language}&"
     }
 
 

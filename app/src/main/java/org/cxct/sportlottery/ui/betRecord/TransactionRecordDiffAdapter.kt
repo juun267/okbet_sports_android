@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_match_record.view.*
 import kotlinx.android.synthetic.main.content_parlay_record.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.bet.settledDetailList.RemarkBetRequest
@@ -119,6 +121,8 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                     data.gameType, data.matchType, matchOdds.playCateName, matchOdds.oddsType
                 )
 
+                tvPrint.visible()
+
                 tvPrint.setOnClickListener {
                     val dialog = PrintDialog(context)
                     dialog.tvPrintClickListener = { it ->
@@ -160,10 +164,12 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                                 context.getString(R.string.pending),
                                 TimeUtil.longToSecond(millisUntilFinished)
                             )
+                            tvPrint.gone()
                         }
 
                         override fun onFinish() {
                             tv_bet_result.setBetReceiptStatus(data.status)
+                            tvPrint.visible()
                         }
                     }.start()
                 } else {
