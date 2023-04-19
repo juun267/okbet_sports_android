@@ -17,29 +17,42 @@ import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
+import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreator
 
-class GamesTabAdapter(tabs: MutableList<GameTab>, val onSelected: (GameTab) -> Unit)
-    : BaseQuickAdapter<GameTab, GamesTabAdapter.VH>(0, tabs), OnItemClickListener {
+class GamesTabAdapter(val onSelected: (OKGameTab) -> Unit)
+    : BaseQuickAdapter<OKGameTab, GamesTabAdapter.VH>(0), OnItemClickListener {
 
-
-    private var selectedTab: GameTab
     private val textColor by lazy { context.getColor(R.color.color_6D7693) }
+    private var othersTab: Collection<OKGameTab>? = null
+    private val localTabs = mutableListOf<OKGameTab>(GameTab.TAB_ALL, GameTab.TAB_FAVORITES, GameTab.TAB_RECENTLY)
+
+    var selectedTab: OKGameTab
+        private set
 
     init {
+        setNewInstance(localTabs)
         setOnItemClickListener(this)
-        selectedTab = tabs[0]
+        selectedTab = localTabs[0]
+    }
+
+    override fun addData(newData: Collection<OKGameTab>) {
+        if (!othersTab.isNullOrEmpty()) {
+            notifyItemRangeRemoved(localTabs.size, othersTab!!.size)
+        }
+        othersTab = newData
+        super.addData(newData)
     }
 
     override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): VH {
         return VH(parent.context)
     }
 
-    override fun convert(holder: VH, item: GameTab) = holder.run {
+    override fun convert(holder: VH, item: OKGameTab) = holder.run {
         val isSelected = selectedTab == item
-        icon.setImageResource(item.icon)
-        name.setText(item.name)
+        item.bindNameText(name)
+        item.bindTabIcon(icon, isSelected)
         name.setTextColor(if (isSelected) Color.WHITE else textColor)
         root.isSelected = isSelected
     }
@@ -52,7 +65,7 @@ class GamesTabAdapter(tabs: MutableList<GameTab>, val onSelected: (GameTab) -> U
         }
     }
 
-    private fun onSelectChanged(position: Int, item: GameTab) {
+    private fun onSelectChanged(position: Int, item: OKGameTab) {
         val last = data.indexOf(selectedTab)
         selectedTab = item
         notifyItemChanged(last)
