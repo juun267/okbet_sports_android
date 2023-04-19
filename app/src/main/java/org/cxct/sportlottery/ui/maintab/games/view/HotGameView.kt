@@ -9,13 +9,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.view_hot_game.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.maintab.games.adapter.RecyclerHotGameAdapter
-import org.cxct.sportlottery.util.getVisibleRangePosition
 import org.cxct.sportlottery.view.DividerItemDecorator
 import org.cxct.sportlottery.view.onClick
 
 class HotGameView(context: Context, attrs: AttributeSet) : FrameLayout(context, attrs) {
-    private  var gameList:List<String>?=null
+    private  var gameList:List<Recommend>?=null
     private val adapter= RecyclerHotGameAdapter()
     init {
         initView()
@@ -37,24 +37,29 @@ class HotGameView(context: Context, attrs: AttributeSet) : FrameLayout(context, 
         iv_left.onClick {
             scrollRecycler(manager,false)
         }
-
-
-        setGameData()
     }
 
     //data:List<Recommend>
-    fun setGameData(){
-        val temp=ArrayList<String>()
-        temp.add("")
-        temp.add("")
-        temp.add("")
-        temp.add("")
-        temp.add("")
+    fun setGameData(receiver: ServiceBroadcastReceiver? ,data:List<Recommend>){
+        adapter.setList(data)
 
-        gameList=temp
-        adapter.setList(gameList)
+        receiver?.let {
+
+        }
     }
 
+
+    fun getAdapter():RecyclerHotGameAdapter{
+        return adapter
+    }
+
+    fun notifyAdapterData(index:Int){
+        adapter.notifyItemChanged(index)
+    }
+
+    /**
+     * 前后滚动recycler
+     */
     private fun scrollRecycler(manager: LinearLayoutManager,isNext:Boolean){
         //第一个完全显示的item
         val visiblePosition=manager.findFirstCompletelyVisibleItemPosition()

@@ -32,7 +32,7 @@
                 android:layout_marginRight="10dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="gamegamegamegamegammegammegammegamegamegamegame"
+                android:text=""
                 android:textColor="@color/color_FFFFFF"
                 android:textFontWeight="600"
                 android:textSize="@dimen/textSize12sp" />
@@ -54,6 +54,7 @@
                 android:src="@drawable/ic_bank_default" />
 
             <TextView
+                android:id="@+id/tv_home_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -66,6 +67,7 @@
                 android:textSize="@dimen/textSize14sp" />
 
             <TextView
+                android:id="@+id/tv_home_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -142,6 +144,7 @@
                 android:src="@drawable/ic_bank_default" />
 
             <TextView
+                android:id="@+id/tv_away_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -154,6 +157,7 @@
                 android:textSize="@dimen/textSize14sp" />
 
             <TextView
+                android:id="@+id/tv_away_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"

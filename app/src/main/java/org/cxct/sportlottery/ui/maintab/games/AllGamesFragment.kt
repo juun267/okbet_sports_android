@@ -16,9 +16,13 @@ import org.cxct.sportlottery.common.extentions.setOnClickListener
 import org.cxct.sportlottery.databinding.FragmentAllOkgamesBinding
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
+import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
+import org.cxct.sportlottery.network.third_game.third_games.hot.HandicapData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.setServiceClick
 
 // OkGames所有分类
@@ -57,13 +61,16 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         onBindGamesView()
         onBindPart3View()
         onBindPart5View()
+        initHotGameData()
     }
+
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!hidden) {
             okGamesFragment().viewModel.getOKGamesHall()
         }
     }
+
     private fun initObserve() {
         okGamesFragment().viewModel.gameHall.observe(this.viewLifecycleOwner) {
             categoryList = it.categoryList?.filter {
@@ -91,12 +98,14 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             }
         }
         viewModel.recentPlay.observe(viewLifecycleOwner) {
-            val recentCategory = OKGamesCategory(id = -1,
+            val recentCategory = OKGamesCategory(
+                id = -1,
                 "Recent",
                 "recentPlay",
                 iconSelected = null,
                 iconUnselected = null,
-                it)
+                it
+            )
             val insertPos = if (categoryList.firstOrNull { it.id == 1 } == null) 0 else 1
             val insertOrUpdate = categoryList.firstOrNull { it.id == recentCategory.id } == null
             if (insertOrUpdate) {
@@ -301,5 +310,64 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             it.paint.flags = Paint.UNDERLINE_TEXT_FLAG; //下划线
             it.paint.isAntiAlias = true;//抗锯齿
         }
+    }
+
+
+    private fun initHotGameData() {
+        //请求热门赛事列表
+        viewModel.getRecommend()
+
+        viewModel.publicityRecommend.observe(this) {
+            //api获取热门赛事列表
+            it.getContentIfNotHandled()?.let { data ->
+                //订阅监听
+                subscribeQueryData(data)
+                binding.hotGameView.setGameData(receiver, data)
+
+                receiver.serviceConnectStatus.observe(viewLifecycleOwner) {
+                    //取消订阅
+                    unSubscribeChannelHallSport()
+                    unSubscribeChannelHallAll()
+                    //重新请求列表
+                    viewModel.getRecommend()
+                }
+
+                //观察比赛状态改变
+                receiver.matchStatusChange.observe(viewLifecycleOwner) { matchStatusChangeEvent ->
+                    if (matchStatusChangeEvent == null||binding.hotGameView.getAdapter().data.isEmpty()) {
+                        return@observe
+                    }
+
+                    var needUpdate = false
+                    val adapterData= binding.hotGameView.getAdapter().data
+                    adapterData.forEachIndexed { index, recommend ->
+                        //取一个赛事，装成集合
+                        val testList= mutableListOf<Recommend>()
+                        testList.add(recommend)
+                        //丢进去判断是否要更新
+                        if (SocketUpdateUtil.updateMatchStatus(recommend.matchInfo?.gameType,
+                                testList as MutableList<MatchOdd>,
+                                matchStatusChangeEvent,
+                                context)) {
+                            needUpdate = true
+                        }
+
+                        if (needUpdate) {
+                            binding.hotGameView.notifyAdapterData(index)
+                        }
+                    }
+
+                }
+
+            }
+        }
+    }
+
+    private fun subscribeQueryData(recommendList: List<Recommend>) {
+        recommendList.forEach { subscribeChannelHall(it) }
+    }
+
+    private fun subscribeChannelHall(recommend: Recommend) {
+        subscribeChannelHall(recommend.matchInfo?.gameType, recommend.matchInfo?.id)
     }
 }
