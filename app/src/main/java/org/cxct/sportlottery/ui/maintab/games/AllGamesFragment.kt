@@ -65,12 +65,14 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         onBindPart3View()
         onBindPart5View()
     }
+
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!hidden) {
             okGamesFragment().viewModel.getOKGamesHall()
         }
     }
+
     private fun initObserve() {
         okGamesFragment().viewModel.gameHall.observe(this.viewLifecycleOwner) {
             categoryList = it.categoryList?.filter {
@@ -139,6 +141,9 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         }
     }
 
+    var recordNewhttpFlag = false //最新投注接口请求完成
+    var recordResulthttpFlag = false//最新大奖接口请求完成
+
     private fun onBindGamesView() {
         binding.includeGamesAll.apply {
             rvGamesAll.layoutManager =
@@ -160,7 +165,14 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     }
 
     private fun onBindPart3View() {
+        viewModel.getOKGamesRecordNew()
+        viewModel.getOKGamesRecordResult()
         binding.include3.apply {
+            binding.include3.ivProvidersLeft.alpha = 0.5F
+            providersAdapter.setOnItemClickListener { adapter, view, position ->
+                var item =providersAdapter.getItem(position)
+                okGamesFragment().showGameResult(item.firmName, categoryId = item.id.toString())
+            }
             rvOkgameProviders.apply {
                 var okGameProLLM =
                     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -197,8 +209,24 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                     providersAdapter.addData(it)
                 }
             }
+            viewModel.recordNewHttp.observe(viewLifecycleOwner) {
+                if(it!=null){
+                    if (binding.include3.rbtnLb.isChecked) {
+                        gameRecordAdapter.addData(0, it.subList(0, 10))
+                    }
+                    p3RecordNData.addAll(0, it.subList(0, 10))
+                    recordNewhttpFlag = true
+                }
+            }
+            viewModel.recordResultHttp.observe(viewLifecycleOwner) {
+                if (binding.include3.rbtnLbw.isChecked) {
+                    gameRecordAdapter.addData(0, it.subList(0, 10))
+                }
+                p3RecordRData.addAll(0, it.subList(0, 10))
+                recordResulthttpFlag = true
+            }
             receiver.recordNew.observe(viewLifecycleOwner) {
-                if (it != null) {
+                if (recordNewhttpFlag && it != null) {
                     if (binding.include3.rbtnLb.isChecked) {
                         gameRecordAdapterNotify(it)
                     }
@@ -209,7 +237,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 }
             }
             receiver.recordResult.observe(viewLifecycleOwner) {
-                if (it != null) {
+                if (recordResulthttpFlag && it != null) {
                     if (binding.include3.rbtnLbw.isChecked) {
                         gameRecordAdapterNotify(it)
                     }
