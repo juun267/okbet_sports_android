@@ -145,8 +145,6 @@ class AccountHistoryViewModel(
             }?.let { remarkBetResult ->
                 if (remarkBetResult.success) {
                     remarkBetLiveData.postValue(remarkBetResult)
-                } else {
-
                 }
             }
         }
