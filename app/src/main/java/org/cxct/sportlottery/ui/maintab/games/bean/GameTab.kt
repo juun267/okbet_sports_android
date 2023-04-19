@@ -41,19 +41,19 @@ class GameTab private constructor(@GameTabIds val id: Int,
             R.drawable.ic_okgame_tab_favorite_1,
             R.drawable.ic_okgame_tab_favorite_0,
             R.drawable.ic_okgame_label_favorite,
-            R.string.main_tab_mine)
+            R.string.N873)
 
         val TAB_RECENTLY = GameTab(RECENTLY,
             R.drawable.ic_okgame_tab_recently_1,
             R.drawable.ic_okgame_tab_recently_0,
             R.drawable.ic_okgame_label_recently,
-            R.string.main_tab_mine)
+            R.string.N874)
 
         val TAB_SEARCH = GameTab(SEARCH,
             R.drawable.ic_okgame_label_search,
             R.drawable.ic_okgame_label_search,
             R.drawable.ic_okgame_label_search,
-            R.string.main_tab_mine)
+            R.string.N882)
     }
 
 }

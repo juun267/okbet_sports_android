@@ -20,6 +20,7 @@ import org.cxct.sportlottery.net.games.data.OKGamesCategory
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
+import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.setServiceClick
@@ -81,12 +82,14 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             }?.toMutableList() ?: mutableListOf()
             //设置游戏分类
             gameAllAdapter.setList(categoryList)
-            if (it.collectList != null && it.collectList.size > 12) {
-                setCollectList(it.collectList.subList(0, 12))
-            } else {
-                setCollectList(it.collectList ?: listOf())
-            }
             viewModel.getRecentPlay()
+        }
+        okGamesFragment().viewModel.collectList.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty() && it.size > 12) {
+                setCollectList(it.subList(0, 12))
+            } else {
+                setCollectList(it)
+            }
         }
         okGamesFragment().viewModel.collectOkGamesResult.observe(viewLifecycleOwner) { result ->
             var needUpdate = false
@@ -336,8 +339,11 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         binding.includeGamesAll.inclueCollect.root.isGone = collectList.isNullOrEmpty()
         if (!collectList.isNullOrEmpty()) {
             binding.includeGamesAll.inclueCollect.apply {
-                ivIcon.setImageResource(R.drawable.ic_game_fav)
-                tvName.text = "favorites"
+                linCategroyName.setOnClickListener {
+                    okGamesFragment().showPartGames(GameTab.TAB_FAVORITES)
+                }
+                ivIcon.setImageResource(GameTab.TAB_FAVORITES.labelIcon)
+                tvName.setText(GameTab.TAB_FAVORITES.name)
                 rvGameItem.apply {
                     if (adapter == null) {
                         layoutManager =
@@ -376,10 +382,10 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         if (!recentList.isNullOrEmpty()) {
             binding.includeGamesAll.inclueRecent.apply {
                 linCategroyName.setOnClickListener {
-
+                    okGamesFragment().showPartGames(GameTab.TAB_RECENTLY)
                 }
-                ivIcon.setImageResource(R.drawable.ic_game_recent)
-                tvName.text = "recent"
+                ivIcon.setImageResource(GameTab.TAB_RECENTLY.labelIcon)
+                tvName.setText(GameTab.TAB_RECENTLY.name)
                 rvGameItem.apply {
                     if (adapter == null) {
                         layoutManager =

@@ -1220,4 +1220,7 @@
     <string name="N171">请输入正确的 11 位数手机号码</string>
     <string name="N865">金额超过限额</string>
     <string name="J369">支付方式</string>
+    <string name="N874">近期游戏</string>
+    <string name="N873">收藏夹</string>
+    <string name="N882">搜索结果</string>
 </resources>

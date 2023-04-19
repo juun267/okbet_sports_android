@@ -1173,4 +1173,7 @@
     <string name="J902">Ngày sinh nhật</string>
     <string name="N848">Chọn nguồn tiền</string>
     <string name="N850">Chọn địa chỉ</string>
+    <string name="N874">Gần đây</string>
+    <string name="N873">Yêu thích</string>
+    <string name="N882">Tìm kết quả</string>
 </resources>

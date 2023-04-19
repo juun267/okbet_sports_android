@@ -41,22 +41,27 @@ class OKGamesViewModel(
         get() = _providerresult
     private val _providerresult = MutableLiveData<OKGamesHall>()
 
+    //游戏收藏结果
     val collectOkGamesResult: LiveData<Pair<Int, OKGameBean>>
         get() = _collectOkGamesResult
     private val _collectOkGamesResult = MutableLiveData<Pair<Int, OKGameBean>>()
 
+    //游戏结果列表
     val gamesList: LiveData<List<OKGameBean>>
         get() = _gamesList
     private val _gamesList = MutableLiveData<List<OKGameBean>>()
 
+    //游戏大厅数据
     val gameHall: LiveData<OKGamesHall>
         get() = _gameHall
     private val _gameHall = MutableLiveData<OKGamesHall>()
 
+    //收藏游戏列表
     val collectList: LiveData<List<OKGameBean>>
         get() = _collectList
     private val _collectList = MutableLiveData<List<OKGameBean>>()
 
+    //最近游戏列表
     val recentPlay: LiveData<List<OKGameBean>>
         get() = _recentPlay
     private val _recentPlay = MutableLiveData<List<OKGameBean>>()
@@ -70,10 +75,13 @@ class OKGamesViewModel(
         get() = _searchResult
     private val _searchResult = MutableLiveData<Pair<String, List<OKGameBean>?>>()
 
+    /**
+     * 获取游戏大厅数据（包含，厂商列表，收藏列表）
+     */
     fun getOKGamesHall() = callApi({ OKGamesRepository.okGamesHall() }) {
         it.getData()?.let {
             _gameHall.postValue(it)
-            _collectList.postValue(it.collectList)
+            _collectList.postValue(it.collectList ?: listOf())
             it.categoryList?.forEach {
                 it.gameList?.forEach {
                     allGamesMap[it.id] = it
@@ -85,6 +93,9 @@ class OKGamesViewModel(
         }
     }
 
+    /**
+     * 获取游戏分页列表
+     */
     fun getOKGamesList(
         page: Int,
         gameName: String?,
@@ -94,12 +105,18 @@ class OKGamesViewModel(
         _gamesList.postValue(it.getData() ?: listOf())
     }
 
+    /**
+     * 收藏游戏
+     */
     fun collectGame(gameData: OKGameBean) =
         callApi({ OKGamesRepository.collectOkGames(gameData.id, !gameData.markCollect) }) {
             gameData.markCollect = !gameData.markCollect
             _collectOkGamesResult.postValue(Pair(gameData.id, gameData))
         }
 
+    /**
+     * 进入OKgame游戏
+     */
     fun requestEnterThirdGame(gameData: OKGameBean, baseFragment: BaseFragment<*>) {
         if (gameData == null) {
             _enterThirdGameResult.postValue(
@@ -117,6 +134,9 @@ class OKGamesViewModel(
             baseFragment)
     }
 
+    /**
+     * 获取最近游戏
+     */
     fun getRecentPlay() {
         val ids = KvUtils.decodeString(KEY_RECENT_PLAY)
         if (ids.isNotEmpty()) {
@@ -131,6 +151,9 @@ class OKGamesViewModel(
         }
     }
 
+    /**
+     * 记录最近游戏
+     */
     fun addRecentPlay(gameId: String) {
         val ids = KvUtils.decodeString(KEY_RECENT_PLAY)
         var playList = if (ids.isNotEmpty()) ids.split(",").toMutableList() else mutableListOf()

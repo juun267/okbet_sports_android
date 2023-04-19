@@ -11,11 +11,13 @@
 
         <include
             android:id="@+id/inclue_collect"
-            layout="@layout/item_game_categroy" />
+            layout="@layout/item_game_categroy"
+            android:visibility="gone" />
 
         <include
             android:id="@+id/inclue_recent"
-            layout="@layout/item_game_categroy" />
+            layout="@layout/item_game_categroy"
+            android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_games_all"
