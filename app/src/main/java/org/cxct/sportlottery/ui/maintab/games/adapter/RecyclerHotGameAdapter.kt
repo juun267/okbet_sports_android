@@ -7,7 +7,7 @@ import org.cxct.sportlottery.ui.common.adapter.BindingAdapter
 class RecyclerHotGameAdapter: BindingAdapter<String, ItemHotGameViewBinding>() {
 
     override fun onBinding(position: Int, binding: ItemHotGameViewBinding, item: String) {
-        binding.tvMatchTitle.text=""
+//        binding.tvMatchTitle.text=""
     }
 
 }
