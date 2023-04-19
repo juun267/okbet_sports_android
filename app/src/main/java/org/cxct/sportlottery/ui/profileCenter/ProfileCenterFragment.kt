@@ -57,6 +57,7 @@ class ProfileCenterFragment :
     BaseBottomNavigationFragment<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
 
     private val mVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
+
     //簡訊驗證彈窗
     private var customSecurityDialog: CustomSecurityDialog? = null
     private var noticeCount: Int? = null
@@ -199,13 +200,14 @@ class ProfileCenterFragment :
         btn_recharge.setOnClickListener {
             avoidFastDoubleClick()
             //Glife用户
-//            if (viewModel.userInfo.value?.vipType == 1) {
-//                showPromptDialog(title = getString(R.string.prompt),
-//                    message = getString(R.string.N643),
-//                    {})
-//            } else {
-            viewModel.checkRechargeKYCVerify()
-//            }
+            if (viewModel.userInfo.value?.vipType == 1) {
+                showPromptDialog(
+                    title = getString(R.string.prompt),
+                    message = getString(R.string.N643),
+                    {})
+            } else {
+                viewModel.checkRechargeKYCVerify()
+            }
         }
     }
 
@@ -213,13 +215,13 @@ class ProfileCenterFragment :
         btn_withdraw.setOnClickListener {
             avoidFastDoubleClick()
             //Glife用户
-//            if (viewModel.userInfo.value?.vipType == 1) {
-//                showPromptDialog(title = getString(R.string.prompt),
-//                    message = getString(R.string.N644),
-//                    {})
-//            } else {
-            viewModel.checkWithdrawKYCVerify()
-//            }
+            if (viewModel.userInfo.value?.vipType == 1) {
+                showPromptDialog(title = getString(R.string.prompt),
+                    message = getString(R.string.N644),
+                    {})
+            } else {
+                viewModel.checkWithdrawKYCVerify()
+            }
 
         }
     }

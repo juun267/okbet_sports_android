@@ -135,7 +135,7 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                                 //uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
                                 dialog.dismiss()
                                 val newUrl =
-                                    Constants.getPrintReceipt(context) + "uniqNo=${orderNo}&addTime=$orderTime"
+                                    Constants.getPrintReceipt(context) + "uniqNo=${it.remarkBetResult?.uniqNo}&addTime=$orderTime"
                                 JumpUtil.toExternalWeb(context, newUrl)
                             }
                         }
