@@ -437,6 +437,7 @@
     <string name="text_crypto_add_success">Matagumpay ang virtual currency binding</string>
     <string name="text_bank_card_modify_success">Matagumpay na na-edit ang bank card</string>
     <string name="text_e_wallet_modify_success">Matagumpay na na-edit ang eWallet</string>
+    <string name="text_pay_maya_modify_success">Matagumpay na na-edit ang PayMaya</string>
     <string name="text_crypto_modify_success">Matagumpay na na-edit ang virtual currency</string>
     <string name="bet_receipt_bet_quota">Taya:</string>
     <string name="bet_info_list_win_quota">Mapapanalunan:</string>
@@ -966,7 +967,7 @@
     <string name="remove_account_warning">Sigurado ka bang nais mong kanselahin ang kasalukuyang account？</string>
     <string name="km">Km</string>
     <string name="outlet">Pagtaya</string>
-    <string name="my_bank_card">Aking %1$s</string>
+    <string name="my_bank_card">Aking %1$s%2$s</string>
     <string name="local_time">Lokal na Oras:</string>
     <string name="half_first_short">1st half</string>
     <string name="half_second_short">Ikalawang kalahati</string>
@@ -1111,6 +1112,13 @@
     <string name="J804">Panalo at Parehong koponan upang makapuntos - Hindi</string>
     <string name="recharge_state_success">Tagumpay</string>
 
+
+    <string name="N846">Pangunahing impormasyon</string>
+    <string name="J055">Tunay na pangalan</string>
+    <string name="N847">Dapat tumugma ang pangalan sa bank account</string>
+    <string name="J902">Birthday</string>
+    <string name="N848">Pumili ng pagkakakitaan</string>
+    <string name="N850">Pakipili ang address</string>
     <string name="set_phone_no">Set Phone Number</string>
     <string name="set_email">Set Email</string>
     <string name="edit_phone_no">Baguhin Ang Phone Number</string>
@@ -1124,7 +1132,6 @@
     <string name="sms_code_length_error">Verification code kailangan 4 na digit</string>
     <string name="phone_no_error">Ang numero ng mobile phone ay dapat na 11 digit simula sa 09</string>
 
-    <string name="bet_details_title" >Mga detalye ng kumbinasyon ng link</string>
 
     <string name="N849">Address</string>
     <string name="bet_details_title">Mga detalye ng kumbinasyon ng link</string>
