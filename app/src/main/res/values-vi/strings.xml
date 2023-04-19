@@ -1173,6 +1173,14 @@
     <string name="J902">Ngày sinh nhật</string>
     <string name="N848">Chọn nguồn tiền</string>
     <string name="N850">Chọn địa chỉ</string>
+    <string name="N880">Nhà phát hành</string>
+    <string name="N707">Cược mới nhất và giải thưởng khủng</string>
+    <string name="N708">Cược mới nhất</string>
+    <string name="N709">Giải thưởng mới</string>
+    <string name="N711">Game</string>
+    <string name="N710">Biệt danh</string>
+    <string name="N713">Lợi nhuận</string>
+    <string name="N712">Tiền cược</string>
     <string name="N874">Gần đây</string>
     <string name="N873">Yêu thích</string>
     <string name="N882">Tìm kết quả</string>
