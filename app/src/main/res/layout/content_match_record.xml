@@ -216,7 +216,7 @@
                         android:layout_marginEnd="8dp"
                         android:background="@drawable/bg_radius_4_button_blue_stroke_half_line"
                         android:gravity="center"
-                        android:text="Print"
+                        android:text="@string/N890"
                         android:textColor="@color/color_025BE8"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="@+id/title_team_name_parlay"
