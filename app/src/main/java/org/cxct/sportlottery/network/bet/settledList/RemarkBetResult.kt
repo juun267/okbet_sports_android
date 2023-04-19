@@ -16,8 +16,8 @@ data class RemarkBetResult(
 ) : BaseResult()
 
 data class RemarkBetResultList(
-    val addTime: Long,
-    val betConfirmTime: Long,
+    val addTime: Long?,
+    val betConfirmTime: Long?,
     val bettingStationId: Int?,
     val cancelReason: Any?,
     val cancelledBy: Any?,
@@ -39,13 +39,13 @@ data class RemarkBetResultList(
     val stationCode: String?,
     val status: Int?,
     val totalAmount: Int?,
-    val uniqNo: String??,
+    val uniqNo: String?,
     val updateTime: Long?,
     val userId: Int?,
-    val userName: String??,
+    val userName: String?,
     val userPlayAmount: Int?,
     val validBetAmount: Int?,
-    val win: Any??,
+    val win: Any?,
     val winnable: Double?
 )
 
