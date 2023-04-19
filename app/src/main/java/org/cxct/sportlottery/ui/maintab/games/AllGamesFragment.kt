@@ -14,6 +14,7 @@ import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.setOnClickListener
 import org.cxct.sportlottery.databinding.FragmentAllOkgamesBinding
+import org.cxct.sportlottery.net.games.data.OKGamesCategory
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
@@ -31,11 +32,13 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             },
             clickGame = {
                 okGamesFragment().viewModel.requestEnterThirdGame(it, this@AllGamesFragment)
+                viewModel.addRecentPlay(it.id.toString())
             }
         )
     }
     private val providersAdapter by lazy { OkGameProvidersAdapter() }
     private val gameRecordAdapter by lazy { OkGameRecordAdapter() }
+    private var categoryList = mutableListOf<OKGamesCategory>()
     private val p3RecordNData: MutableList<RecordNewEvent> = mutableListOf()
     private val p3RecordRData: MutableList<RecordNewEvent> = mutableListOf()
     private var p3ogProviderFirstPosi: Int = 0
@@ -55,16 +58,25 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         onBindPart3View()
         onBindPart5View()
     }
-
-    private fun initObserve() = okGamesFragment().viewModel.run {
-        gameHall.observe(viewLifecycleOwner) {
-            val categoryList =
-                it.categoryList?.filter { !it.gameList.isNullOrEmpty() }?.toMutableList()
-                    ?: mutableListOf()
-            gameAllAdapter.setList(categoryList)
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden) {
+            okGamesFragment().viewModel.getOKGamesHall()
         }
-
-        collectOkGamesResult.observe(viewLifecycleOwner) { result ->
+    }
+    private fun initObserve() {
+        okGamesFragment().viewModel.gameHall.observe(this.viewLifecycleOwner) {
+            categoryList = it.categoryList?.filter {
+                it.gameList?.let {
+                    //最多显示12个
+                    if (it.size > 12) it.subList(0, 12)
+                }
+                !it.gameList.isNullOrEmpty()
+            }?.toMutableList() ?: mutableListOf()
+            gameAllAdapter.setList(categoryList)
+            viewModel.getRecentPlay()
+        }
+        okGamesFragment().viewModel.collectOkGamesResult.observe(this.viewLifecycleOwner) { result ->
             var needUpdate = false
             gameAllAdapter.data.forEach {
                 it.gameList?.forEach { gameBean ->
@@ -77,6 +89,22 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             if (needUpdate) {
                 gameAllAdapter.notifyDataSetChanged()
             }
+        }
+        viewModel.recentPlay.observe(viewLifecycleOwner) {
+            val recentCategory = OKGamesCategory(id = -1,
+                "Recent",
+                "recentPlay",
+                iconSelected = null,
+                iconUnselected = null,
+                it)
+            val insertPos = if (categoryList.firstOrNull { it.id == 1 } == null) 0 else 1
+            val insertOrUpdate = categoryList.firstOrNull { it.id == recentCategory.id } == null
+            if (insertOrUpdate) {
+                categoryList.add(insertPos, recentCategory)
+            } else {
+                categoryList[insertPos] = recentCategory
+            }
+            gameAllAdapter.setList(categoryList)
         }
     }
 

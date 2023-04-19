@@ -62,6 +62,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                         dataList[position]?.let {
                             okGamesFragment().viewModel.requestEnterThirdGame(it,
                                 this@PartGamesFragment)
+                            viewModel.addRecentPlay(it.id.toString())
                         }
                     })
                 }

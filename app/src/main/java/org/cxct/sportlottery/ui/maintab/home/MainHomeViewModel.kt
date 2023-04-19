@@ -287,9 +287,7 @@ open class MainHomeViewModel(
                     url = null,
                     errorMsg = androidContext.getString(R.string.hint_game_maintenance)
                 ))
-
             )
-
             return
         }
 
