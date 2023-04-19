@@ -86,7 +86,12 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             }
         }
         viewModel.recentPlay.observe(this.viewLifecycleOwner) {
-            val recentCategory = OKGamesCategory(id = -1, "Recent", "recentPlay", it)
+            val recentCategory = OKGamesCategory(id = -1,
+                "Recent",
+                "recentPlay",
+                iconSelected = null,
+                iconUnselected = null,
+                it)
             val insertPos = if (categoryList.firstOrNull { it.id == 1 } == null) 0 else 1
             val insertOrUpdate = categoryList.firstOrNull { it.id == recentCategory.id } == null
             if (insertOrUpdate) {

@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab.games
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,14 +9,14 @@ import kotlinx.android.synthetic.main.fragment_home_elec.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.fitsSystemStatus
+import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.databinding.FragmentOkgamesBinding
+import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.util.FragmentHelper
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.enterThirdGame
+import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.transform.TransformInDialog
 
 // okgames主Fragment
@@ -51,7 +52,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         initToolBar()
         initTopView()
         showGameAll()
-        initObserver()
+        initObservable()
         viewModel.getOKGamesHall()
 
     }
@@ -71,7 +72,6 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
             mainTabActivity().showLeftFrament(0, 5)
         }
     }
-
     private fun initObservable() {
         viewModel.totalRewardAmount.observe(viewLifecycleOwner) {
             it.getOrNull(0)?.let {
@@ -104,14 +104,6 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         }
     }
 
-    private fun initToolBar() = binding.homeToolbar.run {
-        attach(this@OKGamesFragment, mainTabActivity(), viewModel)
-        fitsSystemStatus()
-        ivMenuLeft.setOnClickListener {
-            EventBusUtil.post(MenuEvent(true))
-            mainTabActivity().showLeftFrament(0, 5)
-        }
-    }
 
     private fun initTopView() = binding.topView.run {
         onTableClick = ::onTabChange
