@@ -7,13 +7,15 @@ import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.net.games.data.OKGamesFirm
 
-class OkGameProvidersAdapter : BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_okgame_p3_porviders) {
+class OkGameProvidersAdapter :
+    BaseQuickAdapter<OKGamesFirm, BaseViewHolder>(R.layout.item_okgame_p3_porviders) {
 
     private val options = RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).dontTransform()
-    override fun convert(holder: BaseViewHolder, item: String) {
+    override fun convert(holder: BaseViewHolder, item: OKGamesFirm) {
         Glide.with(context)
-            .load(item)
+            .load(item.img)
             .apply(options)
             .into((holder.itemView as ImageView))
     }

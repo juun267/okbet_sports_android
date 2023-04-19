@@ -21,8 +21,8 @@ data class OKGamesCategory(
 @KeepMembers
 data class OKGamesFirm(
     val id: Int,
-    val firmName: String?,
-    val img: String?,
+    val firmName: String?,//厂商名称
+    val img: String?,//厂商图
 )
 
 @KeepMembers

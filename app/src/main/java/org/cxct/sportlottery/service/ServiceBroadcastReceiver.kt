@@ -46,7 +46,6 @@ import org.json.JSONException
 import org.json.JSONObject
 import org.json.JSONTokener
 import timber.log.Timber
-import kotlin.random.Random
 
 open class ServiceBroadcastReceiver(
     val userInfoRepository: UserInfoRepository? = null, val betInfoRepository: BetInfoRepository
@@ -182,8 +181,6 @@ open class ServiceBroadcastReceiver(
         }
     }
 
-    var count: Int = 0;
-
     private suspend fun handleEvent(jObj: JSONObject, jObjStr: String, channelStr: String) {
         when (val eventType = jObj.optString("eventType")) {
             EventType.NOTICE -> {
@@ -242,18 +239,6 @@ open class ServiceBroadcastReceiver(
                 _matchStatusChange.postValue(data)
             }
             EventType.MATCH_CLOCK -> {
-
-                count++
-                var money: String = if (count % 2 == 0) {
-                    "+"
-                } else {
-                    "-"
-                }+ Random(100).nextInt()
-                val datar =
-                    ServiceMessage.getRecondNew("{\"eventType\":\"RECORD_NEW\",\"player\":\"Ed***h5=$count\",\"games\":\"CLASIC FRUITS\",\"betAmount\":\"1.0\",\"profitAmount\":\"$money\"}")
-                _recordNew.postValue(datar)
-
-
                 val data = ServiceMessage.getMatchClock(jObjStr)
                 _matchClock.postValue(data)
             }
