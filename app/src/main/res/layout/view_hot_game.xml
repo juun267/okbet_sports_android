@@ -66,7 +66,7 @@
             android:background="@drawable/bg_hot_game_right"
             android:layout_width="40dp"
             android:layout_alignParentRight="true"
-            android:layout_height="220dp"/>
+            android:layout_height="200dp"/>
 
         <ImageView
             android:id="@+id/iv_left"
