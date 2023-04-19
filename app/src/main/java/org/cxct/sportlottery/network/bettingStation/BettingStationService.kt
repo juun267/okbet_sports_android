@@ -26,6 +26,10 @@ interface BettingStationService {
     @POST(Constants.AREA_ALL)
     suspend fun areaAll(): Response<AreaAllResult>
 
+    @POST(Constants.AREA_UNIVERSAL)
+    suspend fun getAreaUniversal(): Response<AreaAllResult>
+
+
     @GET(Constants.BETTING_STATION_QUERY_BY_BETTING_STATION_ID)
     suspend fun queryByBettingStationId(
         @Query("platformId") platformId: Int? = sConfigData?.platformId?.toInt(),

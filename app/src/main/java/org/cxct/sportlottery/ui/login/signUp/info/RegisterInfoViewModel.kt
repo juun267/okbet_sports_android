@@ -79,7 +79,7 @@ class RegisterInfoViewModel(
     fun getAddressData() {
         launch {
             doNetwork(androidContext) {
-                OneBoSportApi.bettingStationService.areaAll()
+                OneBoSportApi.bettingStationService.getAreaUniversal()
             }?.let {
                 _areaAllList.postValue(it.areaAll)
             }
