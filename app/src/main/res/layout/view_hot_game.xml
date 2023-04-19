@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+
+    android:layout_height="wrap_content">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_hot_game"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:layout_width="match_parent"
+        tools:listitem="@layout/item_hot_game_view"
+        android:layout_height="wrap_content" />
+
+
+    <FrameLayout
+        android:background="@drawable/bg_hot_game_right"
+        android:layout_width="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_height="200dp"/>
+
+    <ImageView
+        android:id="@+id/iv_left"
+        android:layout_marginStart="@dimen/margin_8"
+        android:src="@drawable/icon_arrow_b"
+        android:layout_centerVertical="true"
+        android:layout_width="24dp"
+        android:layout_height="24dp"/>
+
+    <ImageView
+        android:id="@+id/iv_right"
+        android:layout_marginEnd="@dimen/margin_8"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/icon_arrow_a"
+        android:layout_width="24dp"
+        android:layout_height="24dp"/>
+</RelativeLayout>
