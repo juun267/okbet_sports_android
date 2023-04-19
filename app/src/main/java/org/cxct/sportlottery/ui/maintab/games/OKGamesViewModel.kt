@@ -9,6 +9,7 @@ import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesHall
+import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
@@ -155,6 +156,20 @@ class OKGamesViewModel(
                     firmId: String? = null,
     ) = callApi({ OKGamesRepository.getOKGamesList(page, pageSize, gameName, categoryId, firmId) }) {
         _searchResult.postValue(Pair(gameName, it.getData()))
+    }
+
+    val recordNewHttp: LiveData<List<RecordNewEvent>>
+        get() = _recordNewHttp
+    val recordResultHttp: LiveData<List<RecordNewEvent>>
+        get() = _recordResultHttp
+
+    private val _recordNewHttp = MutableLiveData<List<RecordNewEvent>>()
+    private val _recordResultHttp = MutableLiveData<List<RecordNewEvent>>()
+    fun getOKGamesRecordNew() = callApi({ OKGamesRepository.getOKGamesRecordNew() }) {
+        _recordNewHttp.postValue(it.getData())
+    }
+    fun getOKGamesRecordResult() = callApi({ OKGamesRepository.getOKGamesRecordResult() }) {
+        _recordResultHttp.postValue(it.getData())
     }
 
 }

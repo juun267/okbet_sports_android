@@ -7,6 +7,7 @@ import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.net.games.api.OKGamesApi
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesHall
+import org.cxct.sportlottery.network.service.record.RecordNewEvent
 
 object OKGamesRepository {
 
@@ -27,6 +28,14 @@ object OKGamesRepository {
 
     suspend fun okGamesHall(): ApiResult<OKGamesHall> {
         return okGamesApi.getOKGamesHall(paramDevice())
+    }
+
+    suspend fun getOKGamesRecordNew(): ApiResult<List<RecordNewEvent>> {
+        return okGamesApi.getOKGamesRecordNew()
+    }
+
+    suspend fun getOKGamesRecordResult(): ApiResult<List<RecordNewEvent>> {
+        return okGamesApi.getOKGamesRecordResult()
     }
 
     suspend fun getOKGamesList(

@@ -18,5 +18,6 @@ class OkGameProvidersAdapter :
             .load(item.img)
             .apply(options)
             .into((holder.itemView as ImageView))
+        addChildClickViewIds(R.id.item_okgame_p3_img)
     }
 }
