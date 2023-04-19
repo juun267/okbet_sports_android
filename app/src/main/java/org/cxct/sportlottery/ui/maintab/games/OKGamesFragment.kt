@@ -16,6 +16,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
+import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.transform.TransformInDialog
 
@@ -34,7 +35,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
     }
 
     private inline fun mainTabActivity() = activity as MainTabActivity
-    private inline fun getCurrentTab() = binding.topView.currentTab
+    private inline fun getCurrentTab() = binding.topView.getCurrentTab()
     private inline fun isShowAll() = fragmentHelper.getCurrentFragment() is AllGamesFragment
 
     private var searchKey = ""
@@ -72,8 +73,12 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
             mainTabActivity().showLeftFrament(0, 5)
         }
     }
-    private fun initObservable() {
-        viewModel.totalRewardAmount.observe(viewLifecycleOwner) {
+    private fun initObservable() = viewModel.run {
+        gameHall.observe(viewLifecycleOwner) {
+            binding.topView.setTabsData(it?.categoryList?.toMutableList())
+        }
+
+        totalRewardAmount.observe(viewLifecycleOwner) {
             it.getOrNull(0)?.let {
                 tv_first_game_name.text = it.name
                 tv_first_amount.text =
@@ -90,12 +95,13 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
                     "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(it.amount, 2)}"
             }
         }
-        viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {
+
+        enterThirdGameResult.observe(viewLifecycleOwner) {
             if (isVisible)
                 enterThirdGame(it.second, it.first)
         }
 
-        viewModel.gameBalanceResult.observe(viewLifecycleOwner) {
+        gameBalanceResult.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { event ->
                 TransformInDialog(event.first, event.second, event.third) {
                     enterThirdGame(it, event.first)
@@ -119,8 +125,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         }
     }
 
-    private fun onTabChange(tab: GameTab) {
-        Log.e("For Test", "======>>> onTabChange ${JsonUtil.toJson(tab)}")
+    private fun onTabChange(tab: OKGameTab) {
         if (tab.isAll()) {
             showGameAll()
             return
@@ -156,11 +161,11 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         return fragmentHelper.showFragment(1) as PartGamesFragment
     }
 
-    private fun showPartGames(tab: GameTab) {
-        showPartGameFragment().changeTab(tab)
-    }
+     fun showPartGames(tab: OKGameTab) {
+         showPartGameFragment().changeTab(tab)
+     }
 
-    private fun showSearchResult(gameList: List<OKGameBean>?) {
+    fun showSearchResult(gameList: List<OKGameBean>?) {
         showPartGameFragment().showSearchResault(gameList)
     }
 

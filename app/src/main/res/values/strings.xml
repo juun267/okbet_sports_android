@@ -1270,7 +1270,6 @@
     <string name="J369">Payment Method</string>
 
 
-
     <string name="N846">Basic Information</string>
     <string name="J055">Real Name</string>
     <string name="N847">The name must match the bank account</string>
@@ -1278,4 +1277,7 @@
     <string name="N848">Select a source of income</string>
     <string name="N850">Please select an address</string>
     <string name="N849">Address</string>
+    <string name="N874">Recent</string>
+    <string name="N873">Favorites</string>
+    <string name="N882">Search Result</string>
 </resources>

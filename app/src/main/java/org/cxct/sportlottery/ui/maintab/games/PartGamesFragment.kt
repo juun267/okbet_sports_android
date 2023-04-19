@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.games
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +13,7 @@ import org.cxct.sportlottery.databinding.FragmentPartOkgamesBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
+import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 // 指定类别的三方游戏
@@ -28,7 +28,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     private var gameName: String? = null
     private var categoryId: String? = null
     private var firmId: String? = null
-    private var currentTab: GameTab? = null
+    private var currentTab: OKGameTab? = null
 
     override fun createRootView(
         inflater: LayoutInflater,
@@ -55,7 +55,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                         .inflate(R.layout.view_no_games, null))
                     setOnItemChildClickListener(OnItemChildClickListener { adapter, view, position ->
                         dataList[position]?.let {
-                            okGamesFragment().viewModel.collectGame(it.id, !it.markCollect)
+                            okGamesFragment().viewModel.collectGame(it)
                         }
                     })
                     setOnItemClickListener(OnItemClickListener { adapter, view, position ->
@@ -84,7 +84,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             var needUpdate = false
             gameChildAdapter.data.forEach {
                 if (it.id == result.first) {
-                    it.markCollect = result.second
+                    it.markCollect = result.second.markCollect
                     needUpdate = true
                 }
             }
@@ -126,8 +126,8 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     }
 
 
-    fun changeTab(tab: GameTab) {
-        if (currentTab?.id != tab.id) {
+    fun changeTab(tab: OKGameTab) {
+        if (currentTab?.tabId() != tab.tabId()) {
             currentTab = tab
             bindLabels()
         }
@@ -139,9 +139,9 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         }
 
         currentTab?.let { tab ->
-            binding.ivIcon.setImageResource(tab.icon)
-            binding.tvName.setText(tab.name)
-            binding.tvTag.setText(tab.name)
+            tab.bindLabelIcon(binding.ivIcon)
+            tab.bindNameText(binding.tvName)
+            tab.bindNameText(binding.tvTag)
         }
     }
 

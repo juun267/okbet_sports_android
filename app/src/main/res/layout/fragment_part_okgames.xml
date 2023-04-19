@@ -18,7 +18,7 @@
             android:id="@+id/iv_icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_game_fav" />
+            android:src="@drawable/ic_okgame_label_favorite" />
 
         <TextView
             android:id="@+id/tv_name"

@@ -25,6 +25,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.ui.maintab.games.adapter.GamesTabAdapter
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
+import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
@@ -36,18 +37,15 @@ import org.cxct.sportlottery.view.IndicatorWidget
 class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : LinearLayoutCompat(context, attrs, defStyle), XBanner.OnItemClickListener {
 
-    lateinit var currentTab: GameTab
     private val edtSearch: EditText by lazy { findViewById(R.id.edtSearchGames) }
     private val indicatorView: IndicatorWidget by lazy { findViewById(R.id.indicatorView) }
+    private val gameTabAdapter by lazy { GamesTabAdapter { onTableClick?.invoke(it) } }
     private val okgamesBanner: XBanner by lazy {
         findViewById<XBanner>(R.id.xbanner).apply { setOnItemClickListener(this@OKGamesTopView) }
     }
-    private val gameTabAdapter by lazy {
-        val tables = GameTab.getGameTabs().toMutableList().apply { currentTab = this[0] }
-        GamesTabAdapter(tables) { onTableClick?.invoke(it) }
-    }
+
     var onSearchTextChanged: ((String) -> Unit)? = null
-    var onTableClick: ((GameTab) -> Unit)? = null
+    var onTableClick: ((OKGameTab) -> Unit)? = null
 
     init {
         orientation = VERTICAL
@@ -60,13 +58,10 @@ class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: Attribut
         setupTables()
 
         initSearch()
-        initBanner()
         setUpBannerData()
     }
 
-    private fun initBanner() {
-
-    }
+    fun getCurrentTab() = gameTabAdapter.selectedTab
 
     private fun initSearch() {
         edtSearch.onConfirm { key -> onSearchTextChanged?.invoke(key) }
@@ -154,6 +149,13 @@ class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: Attribut
         }
     }
 
+
+    fun setTabsData(tabs: MutableList<OKGameTab>?) {
+        if (tabs.isNullOrEmpty()) {
+            return
+        }
+        gameTabAdapter.addData(tabs)
+    }
 
 
 }

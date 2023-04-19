@@ -1,51 +1,64 @@
 package org.cxct.sportlottery.ui.maintab.games.bean
 
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.DrawableRes
-import androidx.annotation.IntDef
 import androidx.annotation.StringRes
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTabIds.Companion.ALL
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTabIds.Companion.FAVORITES
-import org.cxct.sportlottery.ui.maintab.games.bean.GameTabIds.Companion.HOTGAMES
+import org.cxct.sportlottery.ui.maintab.games.bean.GameTabIds.Companion.RECENTLY
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTabIds.Companion.SEARCH
-import org.cxct.sportlottery.ui.maintab.games.bean.GameTabIds.Companion.SLOTSGAMES
-import java.lang.annotation.Retention
-import java.lang.annotation.RetentionPolicy
 
-class GameTab private constructor(@GameTabIds val id: Int, @DrawableRes val icon: Int, @StringRes val name: Int) {
 
-    companion object {
+class GameTab private constructor(@GameTabIds val id: Int,
+                                  @DrawableRes val selectedIcon: Int,
+                                  @DrawableRes val unSelectedIcon: Int,
+                                  @DrawableRes val labelIcon: Int,
+                                  @StringRes val name: Int): OKGameTab {
+    override fun tabId() = id
 
-        val TAB_ALL = GameTab(ALL, R.drawable.selector_tab_home, R.string.bottom_nav_home)
-        val TAB_SEARCH = GameTab(SEARCH, R.drawable.selector_tab_user, R.string.main_tab_mine)
-
-        fun getGameTabs(): Array<GameTab> {
-            return arrayOf(TAB_ALL,
-                GameTab(FAVORITES, R.drawable.selector_tab_sport, R.string.main_tab_sport),
-                GameTab(HOTGAMES, R.drawable.selector_tab_betlist, R.string.main_tab_betlist),
-                GameTab(SLOTSGAMES, R.drawable.selector_tab_fav, R.string.main_tab_favorite),
-                TAB_SEARCH,
-            )
-        }
+    override fun bindNameText(textView: TextView) {
+        textView.setText(name)
     }
 
-    fun isAll() = id == ALL
-    fun isSearch() = id == SEARCH
+    override fun bindTabIcon(imageView: ImageView, isSelected: Boolean) {
+        imageView.setImageResource(if (isSelected) selectedIcon else unSelectedIcon)
+    }
+
+    override fun bindLabelIcon(imageView: ImageView) {
+        imageView.setImageResource(labelIcon)
+    }
+
+    companion object {
+        val TAB_ALL = GameTab(ALL,
+            R.drawable.ic_okgame_tab_all_1,
+            R.drawable.ic_okgame_tab_all_0,
+            R.drawable.ic_okgame_tab_all_0,
+            R.string.bottom_nav_home)
+
+        val TAB_FAVORITES = GameTab(FAVORITES,
+            R.drawable.ic_okgame_tab_favorite_1,
+            R.drawable.ic_okgame_tab_favorite_0,
+            R.drawable.ic_okgame_label_favorite,
+            R.string.N873)
+
+        val TAB_RECENTLY = GameTab(RECENTLY,
+            R.drawable.ic_okgame_tab_recently_1,
+            R.drawable.ic_okgame_tab_recently_0,
+            R.drawable.ic_okgame_label_recently,
+            R.string.N874)
+
+        val TAB_SEARCH = GameTab(SEARCH,
+            R.drawable.ic_okgame_label_search,
+            R.drawable.ic_okgame_label_search,
+            R.drawable.ic_okgame_label_search,
+            R.string.N882)
+    }
+
 }
 
 
 
-@Target(AnnotationTarget.VALUE_PARAMETER)
-@Retention(RetentionPolicy.SOURCE)
-@IntDef(*[ALL, FAVORITES, HOTGAMES, SLOTSGAMES, SEARCH])
-annotation class GameTabIds {
 
-    companion object {
-        const val ALL = 10
-        const val FAVORITES = 20
-        const val HOTGAMES = 30
-        const val SLOTSGAMES = 40
-        const val SEARCH = 50
-    }
 
-}

@@ -9,6 +9,7 @@ import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesHall
+import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
@@ -36,24 +37,32 @@ class OKGamesViewModel(
         const val KEY_RECENT_PLAY = "recentPlay"
     }
 
-    val collectOkGamesResult: LiveData<Pair<Int, Boolean>>
-        get() = _collectOkGamesResult
+
     val providerResult: LiveData<OKGamesHall>
         get() = _providerresult
-
-    private val _collectOkGamesResult = MutableLiveData<Pair<Int, Boolean>>()
-
-
     private val _providerresult = MutableLiveData<OKGamesHall>()
 
+    //游戏收藏结果
+    val collectOkGamesResult: LiveData<Pair<Int, OKGameBean>>
+        get() = _collectOkGamesResult
+    private val _collectOkGamesResult = MutableLiveData<Pair<Int, OKGameBean>>()
+
+    //游戏结果列表
     val gamesList: LiveData<List<OKGameBean>>
         get() = _gamesList
     private val _gamesList = MutableLiveData<List<OKGameBean>>()
 
+    //游戏大厅数据
     val gameHall: LiveData<OKGamesHall>
         get() = _gameHall
     private val _gameHall = MutableLiveData<OKGamesHall>()
 
+    //收藏游戏列表
+    val collectList: LiveData<List<OKGameBean>>
+        get() = _collectList
+    private val _collectList = MutableLiveData<List<OKGameBean>>()
+
+    //最近游戏列表
     val recentPlay: LiveData<List<OKGameBean>>
         get() = _recentPlay
     private val _recentPlay = MutableLiveData<List<OKGameBean>>()
@@ -67,18 +76,27 @@ class OKGamesViewModel(
         get() = _searchResult
     private val _searchResult = MutableLiveData<Pair<String, List<OKGameBean>?>>()
 
+    /**
+     * 获取游戏大厅数据（包含，厂商列表，收藏列表）
+     */
     fun getOKGamesHall() = callApi({ OKGamesRepository.okGamesHall() }) {
-        _gameHall.postValue(it.getData())
-        it.getData()?.categoryList?.forEach {
-            it.gameList?.forEach {
-                allGamesMap[it.id] = it
+        it.getData()?.let {
+            _gameHall.postValue(it)
+            _collectList.postValue(it.collectList ?: listOf())
+            it.categoryList?.forEach {
+                it.gameList?.forEach {
+                    allGamesMap[it.id] = it
+                }
             }
-        }
-        if(it.getData()!=null&& it.getData()!!.firmList!=null){
-            _providerresult.postValue(it.getData())
+            if (it.firmList != null) {
+                _providerresult.postValue(it)
+            }
         }
     }
 
+    /**
+     * 获取游戏分页列表
+     */
     fun getOKGamesList(
         page: Int,
         gameName: String?,
@@ -88,11 +106,18 @@ class OKGamesViewModel(
         _gamesList.postValue(it.getData() ?: listOf())
     }
 
-    fun collectGame(gameId: Int, markCollect: Boolean) =
-        callApi({ OKGamesRepository.collectOkGames(gameId, markCollect) }) {
-            _collectOkGamesResult.postValue(Pair(gameId, markCollect))
+    /**
+     * 收藏游戏
+     */
+    fun collectGame(gameData: OKGameBean) =
+        callApi({ OKGamesRepository.collectOkGames(gameData.id, !gameData.markCollect) }) {
+            gameData.markCollect = !gameData.markCollect
+            _collectOkGamesResult.postValue(Pair(gameData.id, gameData))
         }
 
+    /**
+     * 进入OKgame游戏
+     */
     fun requestEnterThirdGame(gameData: OKGameBean, baseFragment: BaseFragment<*>) {
         if (gameData == null) {
             _enterThirdGameResult.postValue(
@@ -110,6 +135,9 @@ class OKGamesViewModel(
             baseFragment)
     }
 
+    /**
+     * 获取最近游戏
+     */
     fun getRecentPlay() {
         val ids = KvUtils.decodeString(KEY_RECENT_PLAY)
         if (ids.isNotEmpty()) {
@@ -124,6 +152,9 @@ class OKGamesViewModel(
         }
     }
 
+    /**
+     * 记录最近游戏
+     */
     fun addRecentPlay(gameId: String) {
         val ids = KvUtils.decodeString(KEY_RECENT_PLAY)
         var playList = if (ids.isNotEmpty()) ids.split(",").toMutableList() else mutableListOf()
@@ -148,6 +179,20 @@ class OKGamesViewModel(
                     firmId: String? = null,
     ) = callApi({ OKGamesRepository.getOKGamesList(page, pageSize, gameName, categoryId, firmId) }) {
         _searchResult.postValue(Pair(gameName, it.getData()))
+    }
+
+    val recordNewHttp: LiveData<List<RecordNewEvent>>
+        get() = _recordNewHttp
+    val recordResultHttp: LiveData<List<RecordNewEvent>>
+        get() = _recordResultHttp
+
+    private val _recordNewHttp = MutableLiveData<List<RecordNewEvent>>()
+    private val _recordResultHttp = MutableLiveData<List<RecordNewEvent>>()
+    fun getOKGamesRecordNew() = callApi({ OKGamesRepository.getOKGamesRecordNew() }) {
+        _recordNewHttp.postValue(it.getData())
+    }
+    fun getOKGamesRecordResult() = callApi({ OKGamesRepository.getOKGamesRecordResult() }) {
+        _recordResultHttp.postValue(it.getData())
     }
 
 }
