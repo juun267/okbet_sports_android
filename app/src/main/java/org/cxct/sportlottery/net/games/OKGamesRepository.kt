@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.net.games
 
 import com.google.gson.JsonObject
-import org.cxct.sportlottery.net.ApiListResult
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.net.games.api.OKGamesApi
@@ -44,7 +43,7 @@ object OKGamesRepository {
         gameName: String?,
         categoryId: String?,
         firmId: String?,
-    ): ApiListResult<List<OKGameBean>> {
+    ): ApiResult<List<OKGameBean>> {
 
         val params = paramDevice()
         params.addProperty("page", page)

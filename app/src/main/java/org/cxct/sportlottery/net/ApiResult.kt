@@ -23,8 +23,11 @@ open class ApiResult<T>(): java.io.Serializable {
 
     private val t: T? = null
 
+    val total: Int = 0
+    private val rows: T? = null
+
     // 可以重新改方法，解析不同字段的data
-    open fun getData(): T? = t
+    open fun getData(): T? = t ?: rows
     open fun succeeded(): Boolean = success
 
     companion object {

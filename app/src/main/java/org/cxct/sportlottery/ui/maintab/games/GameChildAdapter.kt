@@ -11,6 +11,8 @@ class GameChildAdapter : BindingAdapter<OKGameBean, ItemGameChildBinding>() {
         addChildClickViewIds(R.id.iv_fav)
     }
 
+    fun dataCount() = getDefItemCount()
+
     override fun onBinding(position: Int, binding: ItemGameChildBinding, item: OKGameBean) {
         binding.apply {
             ivCover.load(item.imgGame)

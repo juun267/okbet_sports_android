@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.games
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +11,12 @@ import org.cxct.sportlottery.common.extentions.fitsSystemStatus
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.databinding.FragmentOkgamesBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
+import org.cxct.sportlottery.net.games.data.OKGamesFirm
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
+import org.cxct.sportlottery.ui.maintab.games.bean.OKGameLabel
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.transform.TransformInDialog
@@ -23,8 +24,9 @@ import org.cxct.sportlottery.view.transform.TransformInDialog
 // okgames主Fragment
 class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesViewModel::class) {
 
+    private val partPageSize = 12
     private lateinit var binding: FragmentOkgamesBinding
-
+//    private lateinit var refreshHelper: RefreshHelper
     private val fragmentHelper by lazy {
         FragmentHelper(
             childFragmentManager, R.id.fragmentContainer, arrayOf(
@@ -37,6 +39,10 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
     private inline fun mainTabActivity() = activity as MainTabActivity
     private inline fun getCurrentTab() = binding.topView.getCurrentTab()
     private inline fun isShowAll() = fragmentHelper.getCurrentFragment() is AllGamesFragment
+    private inline fun isShowSearch(): Boolean {
+        val fragment = fragmentHelper.getCurrentFragment()
+        return fragment is PartGamesFragment && fragment.isShowSearch()
+    }
 
     private var searchKey = ""
 
@@ -52,10 +58,21 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
     override fun onBindView(view: View) {
         initToolBar()
         initTopView()
+        initRefreshLayout()
         showGameAll()
         initObservable()
         viewModel.getOKGamesHall()
+    }
 
+    private fun initRefreshLayout() {
+//        refreshHelper = RefreshHelper.of(binding.scrollView, viewLifecycleOwner, false, true)
+//        refreshHelper.setRefreshListener {  }
+//        refreshHelper.setLoadMoreListener(object : RefreshHelper.LoadMore {
+//            override fun onLoadMore(pageIndex: Int, pageSize: Int) {
+//
+//            }
+//
+//        })
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -76,6 +93,22 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
     private fun initObservable() = viewModel.run {
         gameHall.observe(viewLifecycleOwner) {
             binding.topView.setTabsData(it?.categoryList?.toMutableList())
+        }
+
+        gamesList.observe(viewLifecycleOwner) {
+            if (it.first) { //搜索结果
+                if (it.second == searchKey && isShowSearch()) {
+                    showPartGameList(it.third)
+                }
+                return@observe
+            }
+
+            val currentFragment = fragmentHelper.getCurrentFragment()
+            if (currentFragment is PartGamesFragment) {
+                if (currentFragment.crrentTabId() == it.second) {
+                    showPartGameList(it.third)
+                }
+            }
         }
 
         totalRewardAmount.observe(viewLifecycleOwner) {
@@ -117,10 +150,10 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
             searchKey = it
             hideKeyboard()
             if (searchKey.isEmptyStr()) {
-                showSearchResult(null)
+                showPartGameList(null)
             } else {
-                showPartGames(GameTab.TAB_SEARCH)
-                viewModel.searchGames(searchKey)
+                changePartGamesLabel(GameTab.TAB_SEARCH)
+                viewModel.searchGames(searchKey, 1, partPageSize)
             }
         }
     }
@@ -131,42 +164,46 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
             return
         }
 
-        showPartGames(tab)
-    }
-
-    /**
-     * 显示赛事结果页面，三种场景下的结果显示页面
-     */
-    open fun showGameResult(
-        tagName: String?,
-        gameName: String? = null,
-        categoryId: String? = null,
-        firmId: String? = null,
-    ) {
-        showPartGameFragment().setData(tagName,
-            gameName,
-            categoryId,
-            firmId)
+        reloadPartGames(tab)
     }
 
     private fun showGameAll(): AllGamesFragment {
+//        refreshHelper.reset()
         return fragmentHelper.showFragment(0) as AllGamesFragment
+    }
+
+    private inline fun showPartGameFragment(): PartGamesFragment {
+//        refreshHelper.reset()
+        return fragmentHelper.showFragment(1) as PartGamesFragment
     }
 
     fun backGameAll() {
         binding.topView.backAll()
     }
 
-    private inline fun showPartGameFragment(): PartGamesFragment {
-        return fragmentHelper.showFragment(1) as PartGamesFragment
+    fun changeGameTable(tab: OKGameTab) {
+        binding.topView.changeSelectedGameTab(tab)
     }
 
-     fun showPartGames(tab: OKGameTab) {
-         showPartGameFragment().changeTab(tab)
-     }
+    fun changePartGames(okgamesFirm: OKGamesFirm) {
+        changePartGamesLabel(okgamesFirm)
+        val firmId = okgamesFirm.getKey().toString()
+        viewModel.getOKGamesList(firmId, null, firmId, 1, partPageSize)
+    }
 
-    fun showSearchResult(gameList: List<OKGameBean>?) {
+    private fun reloadPartGames(tab: OKGameTab) {
+        changePartGamesLabel(tab)
+        val categoryId = tab.getKey().toString()
+        viewModel.getOKGamesList(categoryId, categoryId, null, 1, partPageSize)
+    }
+
+    private fun changePartGamesLabel(tab: OKGameLabel) {
+        showPartGameFragment().changeLabel(tab)
+    }
+
+    private fun showPartGameList(gameList: List<OKGameBean>?) {
         showPartGameFragment().showSearchResault(gameList)
+//        refreshHelper.setNoMoreData((gameList?.size ?: 0) < partPageSize)
     }
 
 }

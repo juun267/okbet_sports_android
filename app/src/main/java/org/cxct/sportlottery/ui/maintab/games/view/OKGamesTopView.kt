@@ -40,6 +40,7 @@ class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: Attribut
     private val edtSearch: EditText by lazy { findViewById(R.id.edtSearchGames) }
     private val indicatorView: IndicatorWidget by lazy { findViewById(R.id.indicatorView) }
     private val gameTabAdapter by lazy { GamesTabAdapter { onTableClick?.invoke(it) } }
+    private val rcvGamesTab by lazy { findViewById<RecyclerView>(R.id.rcvGamesTab) }
     private val okgamesBanner: XBanner by lazy {
         findViewById<XBanner>(R.id.xbanner).apply { setOnItemClickListener(this@OKGamesTopView) }
     }
@@ -92,7 +93,6 @@ class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: Attribut
     }
 
     private fun setupTables() {
-        val rcvGamesTab = findViewById<RecyclerView>(R.id.rcvGamesTab)
         rcvGamesTab.addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_8))
         rcvGamesTab.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
         rcvGamesTab.adapter = gameTabAdapter
@@ -100,6 +100,14 @@ class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: Attribut
 
     fun backAll() {
         gameTabAdapter.backToAll()
+        rcvGamesTab.smoothScrollToPosition(0)
+    }
+
+    fun changeSelectedGameTab(tab: OKGameTab) {
+        val position = gameTabAdapter.changeSelectedTab(tab)
+        if (position >= 0) {
+            rcvGamesTab.smoothScrollToPosition(position)
+        }
     }
 
     private fun setUpBannerData() {

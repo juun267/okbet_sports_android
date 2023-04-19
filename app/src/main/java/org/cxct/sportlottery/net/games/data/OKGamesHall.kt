@@ -2,8 +2,10 @@ package org.cxct.sportlottery.net.games.data
 
 import android.widget.ImageView
 import android.widget.TextView
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.proguards.KeepMembers
+import org.cxct.sportlottery.ui.maintab.games.bean.OKGameLabel
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
 
 @KeepMembers
@@ -22,7 +24,7 @@ data class OKGamesCategory(
     val iconUnselected: String?,
     val gameList: List<OKGameBean>?,
 ): OKGameTab {
-    override fun tabId() = id
+    override fun getKey() = id
 
     override fun bindNameText(textView: TextView) {
         textView.text = categoryName
@@ -36,6 +38,10 @@ data class OKGamesCategory(
         imageView.load(icon)
     }
 
+    override fun bindLabelName(textView: TextView) {
+        textView.text = categoryName
+    }
+
 }
 
 @KeepMembers
@@ -43,7 +49,18 @@ data class OKGamesFirm(
     val id: Int,
     val firmName: String?,//厂商名称
     val img: String?,//厂商图
-)
+): OKGameLabel {
+
+    override fun getKey() = id
+    override fun bindLabelIcon(imageView: ImageView) {
+        imageView.setImageResource(R.drawable.ic_okgame_p)
+    }
+
+    override fun bindLabelName(textView: TextView) {
+        textView.setText(firmName)
+    }
+
+}
 
 @KeepMembers
 data class OKGameBean(

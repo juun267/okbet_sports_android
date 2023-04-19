@@ -25,7 +25,6 @@ class GamesTabAdapter(val onSelected: (OKGameTab) -> Unit)
     : BaseQuickAdapter<OKGameTab, GamesTabAdapter.VH>(0), OnItemClickListener {
 
     private val textColor by lazy { context.getColor(R.color.color_6D7693) }
-    private var othersTab: Collection<OKGameTab>? = null
     private val localTabs = mutableListOf<OKGameTab>(GameTab.TAB_ALL, GameTab.TAB_FAVORITES, GameTab.TAB_RECENTLY)
 
     var selectedTab: OKGameTab
@@ -38,11 +37,10 @@ class GamesTabAdapter(val onSelected: (OKGameTab) -> Unit)
     }
 
     override fun addData(newData: Collection<OKGameTab>) {
-        if (!othersTab.isNullOrEmpty()) {
-            notifyItemRangeRemoved(localTabs.size, othersTab!!.size)
-        }
-        othersTab = newData
-        super.addData(newData)
+        val newTabs = mutableListOf<OKGameTab>()
+        newTabs.addAll(localTabs)
+        newTabs.addAll(newData)
+        super.setNewInstance(newTabs)
     }
 
     override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): VH {
@@ -78,6 +76,21 @@ class GamesTabAdapter(val onSelected: (OKGameTab) -> Unit)
             onSelectChanged(0, item)
         }
         onSelected.invoke(item)
+    }
+
+    fun changeSelectedTab(tab: OKGameTab): Int {
+
+        data.forEachIndexed { index, okGameTab ->
+            if (tab.getKey() == okGameTab.getKey()) {
+                if (selectedTab != okGameTab) {
+                    onSelectChanged(index, okGameTab)
+                }
+                onSelected.invoke(okGameTab)
+                return index
+            }
+        }
+
+        return -1
     }
 
     class VH(context: Context, val root: LinearLayout = LinearLayout(context)): BaseViewHolder(root) {
