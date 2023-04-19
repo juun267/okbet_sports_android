@@ -156,11 +156,11 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         return fragmentHelper.showFragment(1) as PartGamesFragment
     }
 
-    private fun showPartGames(tab: GameTab) {
-        showPartGameFragment().changeTab(tab)
-    }
+     fun showPartGames(tab: GameTab) {
+         showPartGameFragment().changeTab(tab)
+     }
 
-    private fun showSearchResult(gameList: List<OKGameBean>?) {
+    fun showSearchResult(gameList: List<OKGameBean>?) {
         showPartGameFragment().showSearchResault(gameList)
     }
 

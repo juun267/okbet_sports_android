@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.isGone
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,12 +15,15 @@ import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.setOnClickListener
 import org.cxct.sportlottery.databinding.FragmentAllOkgamesBinding
+import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.setServiceClick
+import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 
 // OkGames所有分类
 class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesViewModel::class) {
@@ -28,7 +32,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     private val gameAllAdapter by lazy {
         GameCategroyAdapter(
             clickCollect = {
-                okGamesFragment().viewModel.collectGame(it.id, !it.markCollect)
+                okGamesFragment().viewModel.collectGame(it)
             },
             clickGame = {
                 okGamesFragment().viewModel.requestEnterThirdGame(it, this@AllGamesFragment)
@@ -36,6 +40,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             }
         )
     }
+    private var collectGameAdapter: GameChildAdapter? = null
+    private var recentGameAdapter: GameChildAdapter? = null
     private val providersAdapter by lazy { OkGameProvidersAdapter() }
     private val gameRecordAdapter by lazy { OkGameRecordAdapter() }
     private var categoryList = mutableListOf<OKGamesCategory>()
@@ -73,38 +79,60 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 }
                 !it.gameList.isNullOrEmpty()
             }?.toMutableList() ?: mutableListOf()
+            //设置游戏分类
             gameAllAdapter.setList(categoryList)
+            if (it.collectList != null && it.collectList.size > 12) {
+                setCollectList(it.collectList.subList(0, 12))
+            } else {
+                setCollectList(it.collectList ?: listOf())
+            }
             viewModel.getRecentPlay()
         }
-        okGamesFragment().viewModel.collectOkGamesResult.observe(this.viewLifecycleOwner) { result ->
+        okGamesFragment().viewModel.collectOkGamesResult.observe(viewLifecycleOwner) { result ->
             var needUpdate = false
             gameAllAdapter.data.forEach {
                 it.gameList?.forEach { gameBean ->
                     if (gameBean.id == result.first) {
-                        gameBean.markCollect = result.second
+                        gameBean.markCollect = result.second.markCollect
                         needUpdate = true
                     }
                 }
             }
+
             if (needUpdate) {
                 gameAllAdapter.notifyDataSetChanged()
             }
+            //更新收藏列表
+            collectGameAdapter?.let { adapter ->
+                //添加收藏
+                if (result.second.markCollect) {
+                    adapter.data.firstOrNull() { it.id == result.first }?.let {
+                        adapter.data.remove(it)
+                    }
+                    adapter.data.add(0, result.second)
+                    adapter.notifyDataSetChanged()
+                } else {//取消收藏
+                    adapter.data.firstOrNull { it.id == result.first }?.let {
+                        adapter.data.remove(it)
+                        adapter.notifyDataSetChanged()
+                    }
+                }
+                binding.includeGamesAll.inclueCollect.root.isGone = adapter.data.isNullOrEmpty()
+            }
+            //更新最近列表
+            recentGameAdapter?.data?.forEachIndexed { index, okGameBean ->
+                if (okGameBean.id == result.first) {
+                    okGameBean.markCollect = result.second.markCollect
+                    recentGameAdapter?.notifyItemChanged(index)
+                }
+            }
         }
         viewModel.recentPlay.observe(viewLifecycleOwner) {
-            val recentCategory = OKGamesCategory(id = -1,
-                "Recent",
-                "recentPlay",
-                iconSelected = null,
-                iconUnselected = null,
-                it)
-            val insertPos = if (categoryList.firstOrNull { it.id == 1 } == null) 0 else 1
-            val insertOrUpdate = categoryList.firstOrNull { it.id == recentCategory.id } == null
-            if (insertOrUpdate) {
-                categoryList.add(insertPos, recentCategory)
+            if (it.size > 12) {
+                setRecent(it.subList(0, 12))
             } else {
-                categoryList[insertPos] = recentCategory
+                setRecent(it)
             }
-            gameAllAdapter.setList(categoryList)
         }
     }
 
@@ -190,9 +218,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
                 }
             }
-
         }
-
 
     }
 
@@ -300,6 +326,87 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         view.forEach {
             it.paint.flags = Paint.UNDERLINE_TEXT_FLAG; //下划线
             it.paint.isAntiAlias = true;//抗锯齿
+        }
+    }
+
+    /**
+     * 设置收藏游戏列表
+     */
+    private fun setCollectList(collectList: List<OKGameBean>) {
+        binding.includeGamesAll.inclueCollect.root.isGone = collectList.isNullOrEmpty()
+        if (!collectList.isNullOrEmpty()) {
+            binding.includeGamesAll.inclueCollect.apply {
+                ivIcon.setImageResource(R.drawable.ic_game_fav)
+                tvName.text = "favorites"
+                rvGameItem.apply {
+                    if (adapter == null) {
+                        layoutManager =
+                            SocketLinearManager(context, RecyclerView.HORIZONTAL, false)
+                        if (itemDecorationCount == 0)
+                            addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_10))
+                        collectGameAdapter = GameChildAdapter().apply {
+                            setList(collectList)
+                            setOnItemChildClickListener { adapter, view, position ->
+                                data[position].let {
+                                    okGamesFragment().viewModel.collectGame(it)
+                                }
+                            }
+                            setOnItemClickListener { adapter, view, position ->
+                                data[position].let {
+                                    okGamesFragment().viewModel.requestEnterThirdGame(it,
+                                        this@AllGamesFragment)
+                                    viewModel.addRecentPlay(it.id.toString())
+                                }
+                            }
+                        }
+                        adapter = collectGameAdapter
+                    } else {
+                        (adapter as GameChildAdapter).setList(collectList)
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 设置最近游戏列表
+     */
+    private fun setRecent(recentList: List<OKGameBean>) {
+        binding.includeGamesAll.inclueRecent.root.isGone = recentList.isNullOrEmpty()
+        if (!recentList.isNullOrEmpty()) {
+            binding.includeGamesAll.inclueRecent.apply {
+                linCategroyName.setOnClickListener {
+
+                }
+                ivIcon.setImageResource(R.drawable.ic_game_recent)
+                tvName.text = "recent"
+                rvGameItem.apply {
+                    if (adapter == null) {
+                        layoutManager =
+                            SocketLinearManager(context, RecyclerView.HORIZONTAL, false)
+                        if (itemDecorationCount == 0)
+                            addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_10))
+                        recentGameAdapter = GameChildAdapter().apply {
+                            setList(recentList)
+                            setOnItemChildClickListener { adapter, view, position ->
+                                data[position].let {
+                                    okGamesFragment().viewModel.collectGame(it)
+                                }
+                            }
+                            setOnItemClickListener { adapter, view, position ->
+                                data[position].let {
+                                    okGamesFragment().viewModel.requestEnterThirdGame(it,
+                                        this@AllGamesFragment)
+                                    viewModel.addRecentPlay(it.id.toString())
+                                }
+                            }
+                        }
+                        adapter = recentGameAdapter
+                    } else {
+                        (adapter as GameChildAdapter).setList(recentList)
+                    }
+                }
+            }
         }
     }
 }

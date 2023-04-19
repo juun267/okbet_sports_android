@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.games
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,7 +54,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                         .inflate(R.layout.view_no_games, null))
                     setOnItemChildClickListener(OnItemChildClickListener { adapter, view, position ->
                         dataList[position]?.let {
-                            okGamesFragment().viewModel.collectGame(it.id, !it.markCollect)
+                            okGamesFragment().viewModel.collectGame(it)
                         }
                     })
                     setOnItemClickListener(OnItemClickListener { adapter, view, position ->
@@ -84,7 +83,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             var needUpdate = false
             gameChildAdapter.data.forEach {
                 if (it.id == result.first) {
-                    it.markCollect = result.second
+                    it.markCollect = result.second.markCollect
                     needUpdate = true
                 }
             }

@@ -1,11 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rv_games_all"
-    android:nestedScrollingEnabled="false"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:itemCount="3"
-    tools:listitem="@layout/item_game_categroy">
+    android:layout_height="wrap_content">
 
-</androidx.recyclerview.widget.RecyclerView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/inclue_collect"
+            layout="@layout/item_game_categroy" />
+
+        <include
+            android:id="@+id/inclue_recent"
+            layout="@layout/item_game_categroy" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_games_all"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_game_categroy" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
+
+

@@ -36,15 +36,14 @@ class OKGamesViewModel(
         const val KEY_RECENT_PLAY = "recentPlay"
     }
 
-    val collectOkGamesResult: LiveData<Pair<Int, Boolean>>
-        get() = _collectOkGamesResult
+
     val providerResult: LiveData<OKGamesHall>
         get() = _providerresult
-
-    private val _collectOkGamesResult = MutableLiveData<Pair<Int, Boolean>>()
-
-
     private val _providerresult = MutableLiveData<OKGamesHall>()
+
+    val collectOkGamesResult: LiveData<Pair<Int, OKGameBean>>
+        get() = _collectOkGamesResult
+    private val _collectOkGamesResult = MutableLiveData<Pair<Int, OKGameBean>>()
 
     val gamesList: LiveData<List<OKGameBean>>
         get() = _gamesList
@@ -53,6 +52,10 @@ class OKGamesViewModel(
     val gameHall: LiveData<OKGamesHall>
         get() = _gameHall
     private val _gameHall = MutableLiveData<OKGamesHall>()
+
+    val collectList: LiveData<List<OKGameBean>>
+        get() = _collectList
+    private val _collectList = MutableLiveData<List<OKGameBean>>()
 
     val recentPlay: LiveData<List<OKGameBean>>
         get() = _recentPlay
@@ -68,14 +71,17 @@ class OKGamesViewModel(
     private val _searchResult = MutableLiveData<Pair<String, List<OKGameBean>?>>()
 
     fun getOKGamesHall() = callApi({ OKGamesRepository.okGamesHall() }) {
-        _gameHall.postValue(it.getData())
-        it.getData()?.categoryList?.forEach {
-            it.gameList?.forEach {
-                allGamesMap[it.id] = it
+        it.getData()?.let {
+            _gameHall.postValue(it)
+            _collectList.postValue(it.collectList)
+            it.categoryList?.forEach {
+                it.gameList?.forEach {
+                    allGamesMap[it.id] = it
+                }
             }
-        }
-        if(it.getData()!=null&& it.getData()!!.firmList!=null){
-            _providerresult.postValue(it.getData())
+            if (it.firmList != null) {
+                _providerresult.postValue(it)
+            }
         }
     }
 
@@ -88,9 +94,10 @@ class OKGamesViewModel(
         _gamesList.postValue(it.getData() ?: listOf())
     }
 
-    fun collectGame(gameId: Int, markCollect: Boolean) =
-        callApi({ OKGamesRepository.collectOkGames(gameId, markCollect) }) {
-            _collectOkGamesResult.postValue(Pair(gameId, markCollect))
+    fun collectGame(gameData: OKGameBean) =
+        callApi({ OKGamesRepository.collectOkGames(gameData.id, !gameData.markCollect) }) {
+            gameData.markCollect = !gameData.markCollect
+            _collectOkGamesResult.postValue(Pair(gameData.id, gameData))
         }
 
     fun requestEnterThirdGame(gameData: OKGameBean, baseFragment: BaseFragment<*>) {

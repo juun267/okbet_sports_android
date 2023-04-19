@@ -5,7 +5,8 @@ import org.cxct.sportlottery.common.proguards.KeepMembers
 @KeepMembers
 class OKGamesHall(
     val categoryList: List<OKGamesCategory>?,
-    val firmList:  List<OKGamesFirm>?,
+    val firmList: List<OKGamesFirm>?,
+    val collectList: List<OKGameBean>?,
 )
 
 @KeepMembers
