@@ -11,7 +11,7 @@ import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.ui.maintab.home.HomeRecommendListener
-import org.cxct.sportlottery.ui.sport.oddsbtn.OddsButtonHome
+import org.cxct.sportlottery.ui.sport.oddsbtn.OddsHotButtonHome
 import org.cxct.sportlottery.util.*
 
 class ItemHotMatchHolder(
@@ -130,9 +130,9 @@ class ItemHotMatchHolder(
     }
 
     private fun setOdds(
-        currentOddBtn: OddsButtonHome,
-        otherBtn1: OddsButtonHome?,
-        otherBtn2: OddsButtonHome?,
+        currentOddBtn: OddsHotButtonHome,
+        otherBtn1: OddsHotButtonHome?,
+        otherBtn2: OddsHotButtonHome?,
         odd: Odd?,
         oddPlayCateCode: String,
         playCateName: String,
@@ -204,7 +204,7 @@ class ItemHotMatchHolder(
     /**
      * 配置投注按鈕Callback
      */
-    private fun OddsButtonHome.setButtonBetClick(
+    private fun OddsHotButtonHome.setButtonBetClick(
         data: Recommend,
         odd: Odd?,
         playCateCode: String,
@@ -366,7 +366,7 @@ class ItemHotMatchHolder(
 
     //endregion
 
-    private fun setupOddsButton(oddsButton: OddsButtonHome, odd: Odd?) {
+    private fun setupOddsButton(oddsButton: OddsHotButtonHome, odd: Odd?) {
 
         oddsButton.apply {
             setupOddState(oddsButton, odd)
