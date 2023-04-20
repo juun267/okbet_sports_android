@@ -63,7 +63,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:paddingLeft="7dp"
-                android:text="asdfasdfasfasdfasdfasfasdfasdfasfasdfasdfasf"
+                android:text=""
                 android:textColor="@color/color_303030"
                 android:textSize="@dimen/textSize14sp" />
 
@@ -72,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="5"
+                android:text=""
                 android:textColor="@color/color_303030"
                 android:textSize="@dimen/textSize18sp" />
         </LinearLayout>
@@ -114,7 +114,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="5dp"
-                    android:text="123sdf"
+                    android:text=""
                     android:textColor="@color/color_666666"
                     android:textSize="@dimen/textSize12sp" />
 
@@ -124,7 +124,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="5dp"
-                    android:text="123sdf"
+                    android:text=""
                     android:textColor="@color/color_FF9143_ff9200"
                     android:textSize="@dimen/textSize12sp" />
             </LinearLayout>
@@ -157,7 +157,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:paddingLeft="7dp"
-                android:text="asdfasdfasfasdfasdfasfasdfasdfasfasdfasdfasf"
+                android:text=""
                 android:textColor="@color/color_303030"
                 android:textSize="@dimen/textSize14sp" />
 
@@ -166,7 +166,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="5"
+                android:text=""
                 android:textColor="@color/color_303030"
                 android:textSize="@dimen/textSize18sp" />
         </LinearLayout>
