@@ -1128,12 +1128,16 @@
     <string name="verify">Pag-verify</string>
     <string name="verify_phone_no">Pag-verify ng phone</string>
     <string name="verify_email">Pag-verify sa email</string>
-    <string name="back_to_my_details">Bumalik sa Aking Mga Detalye</string>
+    <string name="back_to_my_details">Bumalik sa Aking Mga Detalye</string>1
     <string name="sms_code_length_error">Verification code kailangan 4 na digit</string>
     <string name="phone_no_error">Ang numero ng mobile phone ay dapat na 11 digit simula sa 09</string>
 
 
     <string name="N849">Address</string>
+    <string name="N887">Hindi mababago ang input</string>
+    <string name="J566">Paki lagay ang inyong mobile</string>
+    <string name="J558">Paki lagay ang email</string>
+
     <string name="bet_details_title">Mga detalye ng kumbinasyon ng link</string>
     <string name="recharge_channel_paymaya">PayMaya</string>
     <string name="tail_number">Last digit number</string>
@@ -1147,6 +1151,9 @@
     <string name="N865">Ang halaga ay lumampas sa limitasyon</string>
     <string name="text_paymaya_add_success">Matagumpay ang pag-bind ng PayMaya</string>
     <string name="text_pay_maya_delete_success">Matagumpay na na-delete ang PayMaya</string>
+
+    <string name="N177">Pakilagay ang tamang numero ng telepono</string>
+    <string name="N889">Pakilagay ang valid email</string>
     <string name="N866">Matagumpay na nai-set up ang mobile number</string>
     <string name="N867">Matagumpay na nai-set up ang mailbox</string>
     <string name="N866_1">Nabago na ang mobile!</string>

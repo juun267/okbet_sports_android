@@ -1283,4 +1283,10 @@
     <string name="N867">The mailbox is successfully set up</string>
     <string name="N866_1">Phone number changed!</string>
     <string name="N867_1">Email changed!</string>
+    <string name="N887">Input cannot be modified</string>
+    <string name="J566">Please enter phone number</string>
+    <string name="J558">Please enter email</string>
+
+    <string name="N177">Please enter the correct phone number</string>
+    <string name="N889">Please enter correct email</string>
 </resources>

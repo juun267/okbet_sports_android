@@ -12,9 +12,11 @@ import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.view_status_bar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.RegisterInfoEvent
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityRegisterInfoBinding
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.SPUtil
 import org.cxct.sportlottery.util.TimeUtil
@@ -31,8 +33,11 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
     //生日选择
     private var dateTimePicker: TimePickerView? = null
 
-    //地址选择器
-    private var addressPicker: OptionsPickerView<String>? = null
+    //省选择器
+    private var provincePicker: OptionsPickerView<String>? = null
+
+    //市选择器
+    private var cityPicker: OptionsPickerView<String>? = null
 
     //薪资来源选择器
     private var salaryPicker: OptionsPickerView<String>? = null
@@ -62,8 +67,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
         viewModel.areaAllList.observe(this) {
             hideLoading()
             val provinceList = viewModel.getProvinceStringList()
-            val cityList = viewModel.getCityStringList(provinceList)
-            addressPicker?.setPicker(provinceList, cityList)
+            provincePicker?.setPicker(provinceList)
         }
         //薪资来源
         viewModel.salaryList.observe(this) {
@@ -73,24 +77,48 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
         }
 
         //基本信息
-        viewModel.userBasicInfoEvent.observe(this){
-            if(viewModel.provinceInput.isNotEmpty()){
-                binding.etAddress.setText("${viewModel.provinceInput} ${viewModel.cityInput}")
+        viewModel.userBasicInfoEvent.observe(this) {
+            if (viewModel.provinceInput.isNotEmpty()) {
+                binding.etAddress.setText(viewModel.provinceInput)
+                cityPicker?.setPicker(viewModel.getCityStringListByProvince())
+            }
+            if (viewModel.cityInput.isNotEmpty()) {
+                binding.etCity.setText(viewModel.cityInput)
+            }
+            if(viewModel.phoneNumberInput.isNotEmpty()){
+                binding.eetPhoneNumber.setText(viewModel.phoneNumberInput)
+            }
+            if(viewModel.emailInput.isNotEmpty()){
+                binding.eetEmail.setText(viewModel.emailInput)
             }
             binding.etRealName.setText(viewModel.realNameInput)
+
             binding.etBirthday.setText(viewModel.birthdayTimeInput)
             binding.etSource.setText(viewModel.getSalaryNameById())
+
+            if (viewModel.filledName) {
+                binding.etRealName.isEnabled = false
+                binding.tvRealName.visible()
+            }
+            if (viewModel.filledEmail) {
+                binding.eetEmail.isEnabled = false
+                binding.tvEmail.visible()
+            }
+            if (viewModel.filledPhone) {
+                binding.eetPhoneNumber.isEnabled = false
+                binding.tvPhoneNumber.visible()
+            }
         }
 
         //提交表单
         viewModel.commitEvent.observe(this) {
             hideLoading()
-            if(it){
-                viewModel.loginResult?.let { result ->
+            if (it) {
+                viewModel.loginResult?.let {
                     finishPage()
                 }
-            }else{
-                ToastUtil.showToast(this,viewModel.commitMsg)
+            } else {
+                ToastUtil.showToast(this, viewModel.commitMsg)
             }
         }
     }
@@ -100,7 +128,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
         finishPage()
     }
 
-    private fun finishPage(){
+    private fun finishPage() {
         SPUtil.getInstance(this).saveLoginInfoSwitch()
         //返回继续完成登录
         viewModel.loginResult?.let { result ->
@@ -115,24 +143,49 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
         setTextColorGradient()
         initDateTimeView()
         initAddressPickerView()
+        initCityPickerView()
         initSalaryPickerView()
 
         //选择生日点击
         binding.tvBirthday.setOnClickListener {
             hideSoftKeyboard(this)
+            if (viewModel.filledBirthday) {
+                ToastUtil.showToastInCenter(this, getString(R.string.N887))
+                return@setOnClickListener
+            }
             dateTimePicker?.show()
-
         }
 
-        //选择地址点击
+        //选择省地址点击
         binding.tvAddress.setOnClickListener {
             hideSoftKeyboard(this)
-            addressPicker?.show()
+            if (viewModel.filledProvince) {
+                ToastUtil.showToastInCenter(this, getString(R.string.N887))
+                return@setOnClickListener
+            }
+            provincePicker?.show()
+        }
+
+        binding.tvCity.setOnClickListener {
+            hideSoftKeyboard(this)
+            if (viewModel.filledCity) {
+                ToastUtil.showToastInCenter(this, getString(R.string.N887))
+                return@setOnClickListener
+            }
+            if (viewModel.provinceInput.isEmpty()) {
+                provincePicker?.show()
+                return@setOnClickListener
+            }
+            cityPicker?.show()
         }
 
         //选择薪资来源点击
         binding.tvSalary.setOnClickListener {
             hideSoftKeyboard(this)
+            if (viewModel.filledSalary) {
+                ToastUtil.showToastInCenter(this, getString(R.string.N887))
+                return@setOnClickListener
+            }
             salaryPicker?.show()
         }
 
@@ -140,6 +193,16 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
         binding.etRealName.addTextChangedListener {
             viewModel.realNameInput = binding.etRealName.text.toString()
             checkStatus()
+        }
+
+        binding.tvRealName.setOnClickListener {
+            ToastUtil.showToastInCenter(this, getString(R.string.N887))
+        }
+        binding.tvPhoneNumber.setOnClickListener {
+            ToastUtil.showToastInCenter(this, getString(R.string.N887))
+        }
+        binding.tvEmail.setOnClickListener {
+            ToastUtil.showToastInCenter(this, getString(R.string.N887))
         }
 
         //提交点击
@@ -151,6 +214,25 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
         binding.btnBack.setOnClickListener {
             finishPage()
         }
+
+
+        binding.eetPhoneNumber.checkRegisterListener {
+            val msg=viewModel.checkPhone(it)
+            binding.etPhoneNumber.setError(msg,false)
+        }
+        binding.eetEmail.checkRegisterListener {
+            val msg=viewModel.checkEmail(it)
+            binding.etEmail.setError(msg,false)
+        }
+        binding.eetPhoneNumber.addTextChangedListener {
+            viewModel.phoneNumberInput=binding.eetPhoneNumber.text.toString()
+            checkStatus()
+        }
+        binding.eetEmail.addTextChangedListener {
+            viewModel.emailInput=binding.eetEmail.text.toString()
+            checkStatus()
+        }
+
     }
 
     private fun initToolsBar() {
@@ -161,7 +243,6 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
             .fitsSystemWindows(false)
             .init()
     }
-
 
 
     /**
@@ -182,14 +263,30 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
      */
     @SuppressLint("SetTextI18n")
     private fun initAddressPickerView() {
-        addressPicker = StringPickerOptions(this)
-            .getBuilder { provincePosition, cityPosition, _, _ ->
+        provincePicker = StringPickerOptions(this)
+            .getBuilder { provincePosition, _, _, _ ->
                 viewModel.setProvinceData(provincePosition)
-                viewModel.setCityData(provincePosition, cityPosition)
-                binding.etAddress.setText("${viewModel.provinceInput} ${viewModel.cityInput}")
+                //赋值城市列表
+                val cityList = viewModel.getCityStringListByProvince()
+                cityPicker?.setPicker(cityList)
+
+                binding.etAddress.setText(viewModel.provinceInput)
                 checkStatus()
             }
             .setTitleText(resources.getString(R.string.select_area))
+            .setSubmitText(getString(R.string.btn_sure))
+            .build()
+    }
+
+
+    private fun initCityPickerView() {
+        cityPicker = StringPickerOptions(this)
+            .getBuilder { cityPosition, _, _, _ ->
+                viewModel.setCityData(cityPosition)
+                binding.etCity.setText(viewModel.cityInput)
+                checkStatus()
+            }
+            .setTitleText(resources.getString(R.string.select_city))
             .setSubmitText(getString(R.string.btn_sure))
             .build()
     }

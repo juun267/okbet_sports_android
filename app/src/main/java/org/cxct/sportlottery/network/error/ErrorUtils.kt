@@ -181,6 +181,10 @@ object ErrorUtils {
             if (it.success != null && it.code != null && it.msg != null) {
                 val url = response.raw().request.url.toString()
                 when {
+                    (url.contains(Constants.USER_BASIC_INFO_UPDATE))->{
+                        @Suppress("UNCHECKED_CAST")
+                        return NetResult(it.code,it.msg,it.success) as T
+                    }
                     (url.contains(VALIDATE_USER))->{
                         @Suppress("UNCHECKED_CAST")
                         return ValidateUserResult(it.code,it.msg,it.success,null) as T

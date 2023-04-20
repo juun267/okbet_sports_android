@@ -65,10 +65,23 @@ object SPUtil {
     }
 
     fun getLoginInfoSwitch():Boolean{
-        val switch=getBoolean("login_switch")
-        if(switch!=null){
-            return switch
+        val newSwitch=getBoolean("new_login_switch")
+        if(newSwitch!=null){
+            if(newSwitch){
+                val switch=getBoolean("login_switch")
+                if(switch!=null){
+                    return switch
+                }
+                return false
+            }else{
+                saveBoolean("login_switch",false)
+                saveBoolean("new_login_switch",true)
+                return false
+            }
+        }else{
+            return false
         }
-        return false
     }
+
+
 }
