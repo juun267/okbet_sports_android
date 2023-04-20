@@ -108,7 +108,7 @@ class ProfileCenterFragment :
                 return@observe
             }
 
-            update_version.setOnClickListener {  }
+            update_version.setOnClickListener { }
             iv_version_new.visibility = View.GONE
         }
 
@@ -120,10 +120,7 @@ class ProfileCenterFragment :
     }
 
     fun initToolBar() {
-        ImmersionBar.with(this)
-            .statusBarView(R.id.v_statusbar)
-            .statusBarDarkFont(true)
-            .init()
+        ImmersionBar.with(this).statusBarView(R.id.v_statusbar).statusBarDarkFont(true).init()
 //        v_statusbar?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
         iv_menu.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
@@ -142,6 +139,7 @@ class ProfileCenterFragment :
 //        }
 
     }
+
     private val mSelectMediaListener = object : OnResultCallbackListener<LocalMedia> {
         override fun onResult(result: MutableList<LocalMedia>?) {
             try {
@@ -160,15 +158,12 @@ class ProfileCenterFragment :
                 }
 
                 val file = File(path!!)
-                if (file.exists())
-                    uploadImg(file)
-                else
-                    throw FileNotFoundException()
+                if (file.exists()) uploadImg(file)
+                else throw FileNotFoundException()
             } catch (e: Exception) {
                 e.printStackTrace()
                 ToastUtil.showToastInCenter(
-                    activity,
-                    getString(R.string.error_reading_file)
+                    activity, getString(R.string.error_reading_file)
                 )
             }
         }
@@ -178,14 +173,14 @@ class ProfileCenterFragment :
         }
 
     }
+
     private fun setupEditNickname() {
-        rl_head.setOnClickListener{
-                fragmentManager?.let { it1 ->
-                    AvatarSelectorDialog(
-                        activity as Activity,
-                        mSelectMediaListener
-                    ).show(it1, null)
-                }
+        rl_head.setOnClickListener {
+            fragmentManager?.let { it1 ->
+                AvatarSelectorDialog(
+                    activity as Activity, mSelectMediaListener
+                ).show(it1, null)
+            }
 
         }
     }
@@ -201,7 +196,8 @@ class ProfileCenterFragment :
             avoidFastDoubleClick()
             //Glife用户
             if (viewModel.userInfo.value?.vipType == 1) {
-                showPromptDialog(title = getString(R.string.prompt),
+                showPromptDialog(
+                    title = getString(R.string.prompt),
                     message = getString(R.string.N643),
                     {})
             } else {
@@ -215,7 +211,8 @@ class ProfileCenterFragment :
             avoidFastDoubleClick()
             //Glife用户
             if (viewModel.userInfo.value?.vipType == 1) {
-                showPromptDialog(title = getString(R.string.prompt),
+                showPromptDialog(
+                    title = getString(R.string.prompt),
                     message = getString(R.string.N644),
                     {})
             } else {
@@ -277,13 +274,14 @@ class ProfileCenterFragment :
                 TestFlag.NORMAL.index -> {
                     toProfileCenter()
                 }
+
                 TestFlag.TEST.index -> { // TODO 20220108 新增內部測試人員選項 by Hewie
                     toProfileCenter()
                 }
+
                 else -> { // TODO 20220108 沒有遊客的話，要確認一下文案是否正確 by Hewie
                     ToastUtil.showToastInCenter(
-                        requireContext(),
-                        getString(R.string.message_guest_no_permission)
+                        requireContext(), getString(R.string.message_guest_no_permission)
                     )
                 }
             }
@@ -324,6 +322,7 @@ class ProfileCenterFragment :
                     }
                 }
             }
+
             else -> {
                 lin_help_sub.children.filter { it is TextView }.forEach {
                     (it.layoutParams as LinearLayout.LayoutParams).apply {
@@ -348,12 +347,9 @@ class ProfileCenterFragment :
     // TODO 跳轉Promotion 20220108新增 by Hewie
     private fun toProfileCenter() {
         JumpUtil.toInternalWeb(
-            requireContext(),
-            Constants.getPromotionUrl(
-                viewModel.token,
-                LanguageManager.getSelectLanguage(requireContext())
-            ),
-            getString(R.string.promotion)
+            requireContext(), Constants.getPromotionUrl(
+                viewModel.token, LanguageManager.getSelectLanguage(requireContext())
+            ), getString(R.string.promotion)
         )
     }
 
@@ -364,6 +360,7 @@ class ProfileCenterFragment :
         super.onHiddenChanged(hidden)
         getMoney()
     }
+
     private fun getUserInfo() {
         viewModel.getUserInfo()
     }
@@ -374,12 +371,10 @@ class ProfileCenterFragment :
                 tv_account_balance.text = TextUtil.format(it)
             }
         }
-          viewModel.isWithdrawShowVerifyDialog.observe(viewLifecycleOwner) {
+        viewModel.isWithdrawShowVerifyDialog.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
-                if (b)
-                    showKYCVerifyDialog()
-                else
-                    viewModel.checkWithdrawSystem()
+                if (b) showKYCVerifyDialog()
+                else viewModel.checkWithdrawSystem()
             }
         }
         viewModel.userInfo.observe(viewLifecycleOwner) {
@@ -394,8 +389,7 @@ class ProfileCenterFragment :
             val operation = it.getContentIfNotHandled()
             if (operation == false) {
                 showPromptDialog(
-                    getString(R.string.prompt),
-                    getString(R.string.message_withdraw_maintain)
+                    getString(R.string.prompt), getString(R.string.message_withdraw_maintain)
                 ) {}
             }
         }
@@ -406,8 +400,7 @@ class ProfileCenterFragment :
                     startActivity(Intent(requireActivity(), MoneyRechargeActivity::class.java))
                 } else {
                     showPromptDialog(
-                        getString(R.string.prompt),
-                        getString(R.string.message_recharge_maintain)
+                        getString(R.string.prompt), getString(R.string.message_recharge_maintain)
                     ) {}
                 }
             }
@@ -423,16 +416,13 @@ class ProfileCenterFragment :
                         getString(R.string.go_to_setting),
                         true
                     ) {
-                        startActivity(
-                            Intent(
-                                requireActivity(),
-                                SettingPasswordActivity::class.java
-                            ).apply {
-                                putExtra(
-                                    PWD_PAGE,
-                                    SettingPasswordActivity.PwdPage.BANK_PWD
-                                )
-                            })
+                        startActivity(Intent(
+                            requireActivity(), SettingPasswordActivity::class.java
+                        ).apply {
+                            putExtra(
+                                PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD
+                            )
+                        })
                     }
                 } else {
                     viewModel.checkProfileInfoComplete()
@@ -504,8 +494,7 @@ class ProfileCenterFragment :
         }
 
         viewModel.twoFactorSuccess.observe(viewLifecycleOwner) {
-            if (it == true)
-                customSecurityDialog?.dismiss()
+            if (it == true) customSecurityDialog?.dismiss()
         }
 
         viewModel.twoFactorResult.observe(viewLifecycleOwner) {
@@ -530,16 +519,13 @@ class ProfileCenterFragment :
                         getString(R.string.go_to_setting),
                         true
                     ) {
-                        startActivity(
-                            Intent(
-                                requireActivity(),
-                                SettingPasswordActivity::class.java
-                            ).apply {
-                                putExtra(
-                                    PWD_PAGE,
-                                    SettingPasswordActivity.PwdPage.BANK_PWD
-                                )
-                            })
+                        startActivity(Intent(
+                            requireActivity(), SettingPasswordActivity::class.java
+                        ).apply {
+                            putExtra(
+                                PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD
+                            )
+                        })
                     }
                 } else if (!b) {
                     startActivity(Intent(requireActivity(), BankActivity::class.java))
@@ -566,13 +552,10 @@ class ProfileCenterFragment :
 
         viewModel.editIconUrlResult.observe(viewLifecycleOwner) {
             val iconUrlResult = it?.getContentIfNotHandled()
-            if (iconUrlResult?.success == true)
-                showPromptDialog(
-                    getString(R.string.prompt),
-                    getString(R.string.save_avatar_success)
-                ) {}
-            else
-                iconUrlResult?.msg?.let { msg -> showErrorPromptDialog(title = "", msg) {} }
+            if (iconUrlResult?.success == true) showPromptDialog(
+                getString(R.string.prompt), getString(R.string.save_avatar_success)
+            ) {}
+            else iconUrlResult?.msg?.let { msg -> showErrorPromptDialog(title = "", msg) {} }
         }
 
         viewModel.intoWithdraw.observe(viewLifecycleOwner) { it ->
@@ -592,19 +575,15 @@ class ProfileCenterFragment :
 
         viewModel.isWithdrawShowVerifyDialog.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
-                if (b)
-                    showKYCVerifyDialog()
-                else
-                    viewModel.checkWithdrawSystem()
+                if (b) showKYCVerifyDialog()
+                else viewModel.checkWithdrawSystem()
             }
         }
 
         viewModel.isRechargeShowVerifyDialog.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
-                if (b)
-                    showKYCVerifyDialog()
-                else
-                    viewModel.checkRechargeSystem()
+                if (b) showKYCVerifyDialog()
+                else viewModel.checkRechargeSystem()
             }
         }
 
@@ -612,10 +591,8 @@ class ProfileCenterFragment :
 
     @SuppressLint("SetTextI18n")
     private fun updateUI(userInfo: UserInfo?) {
-        Glide.with(this)
-            .load(userInfo?.iconUrl)
-            .apply(RequestOptions().placeholder(R.drawable.ic_person_avatar))
-            .into(iv_head1) //載入頭像
+        Glide.with(this).load(userInfo?.iconUrl)
+            .apply(RequestOptions().placeholder(R.drawable.ic_person_avatar)).into(iv_head1) //載入頭像
 
         tv_user_nickname.text = if (userInfo?.nickName.isNullOrEmpty()) {
             userInfo?.userName
@@ -661,8 +638,10 @@ class ProfileCenterFragment :
     fun setupNoticeButton() {
         iv_user_notice.setOnClickListener {
             startActivity(
-                Intent(requireActivity(), InfoCenterActivity::class.java)
-                    .putExtra(InfoCenterActivity.KEY_READ_PAGE, InfoCenterActivity.YET_READ)
+                Intent(requireActivity(), InfoCenterActivity::class.java).putExtra(
+                        InfoCenterActivity.KEY_READ_PAGE,
+                        InfoCenterActivity.YET_READ
+                    )
             )
         }
     }
@@ -685,6 +664,7 @@ class ProfileCenterFragment :
         iv_circle?.visibility =
             (if (noticeCount ?: 0 > 0 && isGuest == false) View.VISIBLE else View.GONE)
     }
+
     //实名验证
     private fun showKYCVerifyDialog() {
         VerifyIdentityDialog().show(childFragmentManager, null)
