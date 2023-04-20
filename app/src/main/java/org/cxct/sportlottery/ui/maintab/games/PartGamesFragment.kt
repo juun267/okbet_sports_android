@@ -10,18 +10,23 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentPartOkgamesBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
-import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameLabel
-import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 // 指定类别的三方游戏
 class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesViewModel::class) {
 
+    companion object {
+        val pageSize = 12
+    }
+
     private lateinit var binding: FragmentPartOkgamesBinding
+
     private inline fun okGamesFragment() = parentFragment as OKGamesFragment
-    private val gameChildAdapter by lazy { GameChildAdapter() }
+    private val gameChildAdapter by lazy { GameChildAdapter(::onMoreClick) }
     private var currentTab: OKGameLabel? = null
+    private var pageIndx = 1
+
 
     override fun createRootView(
         inflater: LayoutInflater,
@@ -34,17 +39,18 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     override fun onBindView(view: View) {
         initObserve()
-        bindLabels()
         initGameList()
         bindClick()
+        bindLabels()
     }
     private fun bindClick() {
-        binding.tvTag.setOnClickListener {okGamesFragment().backGameAll() }
-        binding.tvShowMore.setOnClickListener {okGamesFragment().backGameAll() }
+        binding.tvTag.setOnClickListener { okGamesFragment().backGameAll() }
+        binding.tvShowMore.setOnClickListener { okGamesFragment().backGameAll() }
     }
 
-    private fun initGameList() = binding.rvGamesSelect.run {
 
+
+    private fun initGameList() = binding.rvGamesSelect.run {
 
         layoutManager = GridLayoutManager(requireContext(), 3)
         addItemDecoration(GridSpacingItemDecoration(3, 10.dp, false))
@@ -75,19 +81,11 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     }
 
-    fun isShowSearch(): Boolean {
-        return currentTab?.getKey() == GameTab.TAB_SEARCH.getKey()
-    }
-
-    fun crrentTabId(): String? {
-        return currentTab?.getKey().toString()
-    }
-
-    fun changeLabel(gameLabel: OKGameLabel) {
-        if (currentTab != gameLabel && currentTab?.getKey() != gameLabel.getKey()) {
-            currentTab = gameLabel
-            bindLabels()
-            gameChildAdapter.setNewInstance(null)
+    private fun onMoreClick() {
+        if (okGamesFragment().loadNextPage(pageIndx)) {
+            gameChildAdapter.onLoadingMore()
+        } else {
+            gameChildAdapter.disableMore()
         }
     }
 
@@ -96,6 +94,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             return
         }
 
+        gameChildAdapter.disableMore()
         currentTab?.let {
             it.bindLabelIcon(binding.ivIcon)
             it.bindLabelName(binding.tvName)
@@ -103,8 +102,20 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         }
     }
 
-    fun showSearchResault(list: List<OKGameBean>?): Int {
-        gameChildAdapter.setNewInstance(list?.toMutableList())
-        return gameChildAdapter.dataCount()
+    fun changeLabel(gameLabel: OKGameLabel) {
+        if (currentTab != gameLabel && currentTab?.getKey() != gameLabel.getKey()) {
+            pageIndx = 1
+            currentTab = gameLabel
+            bindLabels()
+            gameChildAdapter.setNewInstance(null)
+        }
+    }
+
+    fun showSearchResault(list: List<OKGameBean>?, total: Int): Int {
+        val count = gameChildAdapter.setGameList(list?.toMutableList(), 50)
+        if (list?.size ?: 0 >= pageSize) {
+            pageIndx++
+        }
+        return count
     }
 }

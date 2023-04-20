@@ -15,9 +15,9 @@ interface OKGameTab: OKGameLabel {
     fun bindNameText(textView: TextView)
     fun bindTabIcon(imageView: ImageView, isSelected: Boolean)
 
+    fun isAll() = getKey() == ALL
 
-    fun isAll() = getKey() == GameTabIds.ALL
-    fun isSearch() = getKey() == GameTabIds.SEARCH
+    fun isRecent() = getKey() == RECENTLY
 
 }
 

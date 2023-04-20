@@ -33,6 +33,8 @@ class RefreshHelper {
 
             if (refreshEnable) {
                 refreshLayout.setRefreshHeader(getDefaultRefreshHeader(context), -1, -2)
+            } else {
+                refreshLayout.setEnableRefresh(false)
             }
             if (loadMoreEnable) {
                 refreshLayout.setRefreshFooter(getDefaultRefreshFooter(context), -1, -2)
@@ -44,7 +46,6 @@ class RefreshHelper {
                 it.removeView(contentView)
                 it.addView(refreshLayout, index, contentView.layoutParams)
             }
-
             refreshLayout.setRefreshContent(contentView, -1, -1)
             return RefreshHelper(refreshLayout, lifecycleOwner)
         }
@@ -86,6 +87,10 @@ class RefreshHelper {
         refreshLayout.autoRefresh()
     }
 
+    fun startLoadMore() {
+        refreshLayout.autoLoadMore()
+    }
+
     fun setRefreshEnable(enable: Boolean = true) {
         if (enable && refreshLayout.refreshHeader == null) {
             refreshLayout.setRefreshHeader(getDefaultRefreshHeader(refreshLayout.context), -1, -2)
@@ -94,7 +99,7 @@ class RefreshHelper {
     }
 
     fun setNoMoreData(noMoreData: Boolean) {
-        refreshLayout.setNoMoreData(true)
+        refreshLayout.setNoMoreData(noMoreData)
     }
 
     fun setLoadMoreEnable(enable: Boolean = true) {
@@ -124,8 +129,7 @@ class RefreshHelper {
         pageIndex = 1
         isRefreshing = false
         isLoading = false
-        setNoMoreData(true)
-//        refreshLayout.closeHeaderOrFooter()
+        refreshLayout.closeHeaderOrFooter()
     }
 
     fun finishRefresh(success: Boolean = true) {

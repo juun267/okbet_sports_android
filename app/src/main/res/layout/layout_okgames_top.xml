@@ -48,7 +48,7 @@
             android:layout_height="match_parent"
             android:layout_marginRight="44dp"
             android:background="@null"
-            android:hint="Search for the game you're looking for"
+            android:hint="@string/N900"
             android:singleLine="true"
             android:maxLength="100"
             android:paddingLeft="12dp"

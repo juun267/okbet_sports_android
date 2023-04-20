@@ -24,12 +24,9 @@ import org.cxct.sportlottery.view.transform.TransformInDialog
 // okgames主Fragment
 class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesViewModel::class) {
 
-    private val partPageSize = 12
     private lateinit var binding: FragmentOkgamesBinding
-//    private lateinit var refreshHelper: RefreshHelper
     private val fragmentHelper by lazy {
-        FragmentHelper(
-            childFragmentManager, R.id.fragmentContainer, arrayOf(
+        FragmentHelper(childFragmentManager, R.id.fragmentContainer, arrayOf(
                 Pair(AllGamesFragment::class.java, null),
                 Pair(PartGamesFragment::class.java, null)
             )
@@ -37,42 +34,27 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
     }
 
     private inline fun mainTabActivity() = activity as MainTabActivity
-    private inline fun getCurrentTab() = binding.topView.getCurrentTab()
-    private inline fun isShowAll() = fragmentHelper.getCurrentFragment() is AllGamesFragment
-    private inline fun isShowSearch(): Boolean {
-        val fragment = fragmentHelper.getCurrentFragment()
-        return fragment is PartGamesFragment && fragment.isShowSearch()
-    }
-
-    private var searchKey = ""
 
     override fun createRootView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentOkgamesBinding.inflate(layoutInflater)
-        return binding.root
+        return FragmentOkgamesBinding.inflate(layoutInflater).apply { binding = this }.root
     }
 
     override fun onBindView(view: View) {
         initToolBar()
         initTopView()
-        initRefreshLayout()
         showGameAll()
         initObservable()
         viewModel.getOKGamesHall()
     }
 
-    private fun initRefreshLayout() {
-//        refreshHelper = RefreshHelper.of(binding.scrollView, viewLifecycleOwner, false, true)
-//        refreshHelper.setRefreshListener {  }
-//        refreshHelper.setLoadMoreListener(object : RefreshHelper.LoadMore {
-//            override fun onLoadMore(pageIndex: Int, pageSize: Int) {
-//
-//            }
-//
-//        })
+    private var requestTag: Any = Any()
+    private var requestBlock: ((Int) -> Unit)? = null
+    private fun retagRequest(): Any {
+        return Any().apply { requestTag = this }
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -96,18 +78,8 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         }
 
         gamesList.observe(viewLifecycleOwner) {
-            if (it.first) { //搜索结果
-                if (it.second == searchKey && isShowSearch()) {
-                    showPartGameList(it.third)
-                }
-                return@observe
-            }
-
-            val currentFragment = fragmentHelper.getCurrentFragment()
-            if (currentFragment is PartGamesFragment) {
-                if (currentFragment.crrentTabId() == it.second) {
-                    showPartGameList(it.third)
-                }
+            if (it.first == requestTag) {
+                showPartGameList(it.third, it.second)
             }
         }
 
@@ -146,21 +118,25 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
 
     private fun initTopView() = binding.topView.run {
         onTableClick = ::onTabChange
-        onSearchTextChanged = {
-            searchKey = it
+        onSearchTextChanged = { searchKey ->
             hideKeyboard()
             if (searchKey.isEmptyStr()) {
-                showPartGameList(null)
+                showPartGameList(null, 0)
             } else {
                 changePartGamesLabel(GameTab.TAB_SEARCH)
-                viewModel.searchGames(searchKey, 1, partPageSize)
+                startLoad{ viewModel.searchGames(retagRequest(), searchKey, it, PartGamesFragment.pageSize) }
             }
         }
     }
 
     private fun onTabChange(tab: OKGameTab) {
-        if (tab.isAll()) {
+        if (tab.isAll()) {  // 全部
             showGameAll()
+            return
+        }
+
+        if (tab.isRecent()) { // 最近
+            showRecentPart(tab)
             return
         }
 
@@ -168,13 +144,19 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
     }
 
     private fun showGameAll(): AllGamesFragment {
-//        refreshHelper.reset()
+        requestBlock = null
+        retagRequest()
         return fragmentHelper.showFragment(0) as AllGamesFragment
     }
 
     private inline fun showPartGameFragment(): PartGamesFragment {
-//        refreshHelper.reset()
         return fragmentHelper.showFragment(1) as PartGamesFragment
+    }
+
+    private fun showRecentPart(tab: OKGameTab) {
+        retagRequest()
+        changePartGamesLabel(tab)
+        showPartGameList(viewModel.recentPlay.value, 0)
     }
 
     fun backGameAll() {
@@ -188,22 +170,34 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
     fun changePartGames(okgamesFirm: OKGamesFirm) {
         changePartGamesLabel(okgamesFirm)
         val firmId = okgamesFirm.getKey().toString()
-        viewModel.getOKGamesList(firmId, null, firmId, 1, partPageSize)
+        startLoad{ viewModel.getOKGamesList(retagRequest(), null, firmId, it, PartGamesFragment.pageSize) }
     }
 
     private fun reloadPartGames(tab: OKGameTab) {
         changePartGamesLabel(tab)
         val categoryId = tab.getKey().toString()
-        viewModel.getOKGamesList(categoryId, categoryId, null, 1, partPageSize)
+        startLoad{ viewModel.getOKGamesList(retagRequest(), categoryId, null, it, PartGamesFragment.pageSize) }
+    }
+
+    private fun startLoad(request: (Int) -> Unit) {
+        requestBlock = request
+        request.invoke(1)
     }
 
     private fun changePartGamesLabel(tab: OKGameLabel) {
         showPartGameFragment().changeLabel(tab)
     }
 
-    private fun showPartGameList(gameList: List<OKGameBean>?) {
-        showPartGameFragment().showSearchResault(gameList)
-//        refreshHelper.setNoMoreData((gameList?.size ?: 0) < partPageSize)
+    private fun showPartGameList(gameList: List<OKGameBean>?, total: Int) {
+        showPartGameFragment().showSearchResault(gameList, total)
+    }
+
+    fun loadNextPage(pageIndex: Int): Boolean {
+        if (requestBlock == null) {
+            return false
+        }
+        requestBlock!!.invoke(pageIndex)
+        return true
     }
 
 }

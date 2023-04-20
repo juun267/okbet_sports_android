@@ -70,9 +70,9 @@ class OKGamesViewModel(
     private var allGamesMap = mutableMapOf<Int, OKGameBean>()
 
     //游戏结果列表
-    val gamesList: LiveData<Triple<Boolean, String, List<OKGameBean>?>> // 是否是搜索结果-请求id-响应结果
+    val gamesList: LiveData<Triple<Any, Int, List<OKGameBean>?>> // 请求id-总记录数-响应结果
         get() = _gamesList
-    private val _gamesList = MutableLiveData<Triple<Boolean, String, List<OKGameBean>?>>()
+    private val _gamesList = MutableLiveData<Triple<Any, Int, List<OKGameBean>?>>()
 
     /**
      * 获取游戏大厅数据（包含，厂商列表，收藏列表）
@@ -96,13 +96,13 @@ class OKGamesViewModel(
      * 获取游戏分页列表
      */
     fun getOKGamesList(
-        gameRequestId: String,
+        requestTag: Any,
         categoryId: String?,
         firmId: String? = null,
         page: Int = 1,
         pageSize: Int = 12) = callApi({ OKGamesRepository.getOKGamesList(page, pageSize, null, categoryId, firmId) }) {
 
-        _gamesList.value = Triple(false, gameRequestId, it.getData())
+        _gamesList.value = Triple(requestTag, it.total, it.getData())
     }
 
     /**
@@ -173,13 +173,14 @@ class OKGamesViewModel(
         }
         _recentPlay.postValue(recentList)
     }
-    fun searchGames(gameName: String,
+    fun searchGames(requestTag: Any,
+                    gameName: String,
                     page: Int = 1,
                     pageSize: Int = 15,
                     categoryId: String? = null,
                     firmId: String? = null,
     ) = callApi({ OKGamesRepository.getOKGamesList(page, pageSize, gameName, categoryId, firmId) }) {
-        _gamesList.postValue(Triple(true, gameName, it.getData()))
+        _gamesList.postValue(Triple(requestTag, it.total, it.getData()))
     }
 
     val recordNewHttp: LiveData<List<RecordNewEvent>>
