@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.StringRes
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
@@ -13,13 +14,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.extentions.animDuang
 import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.setOnClickListener
+import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
 import org.cxct.sportlottery.databinding.FragmentAllOkgamesBinding
 import org.cxct.sportlottery.databinding.ItemGameCategroyBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
@@ -161,14 +161,13 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     private fun onBindGamesView() = binding.includeGamesAll.run {
         rvGamesAll.setRecycledViewPool(okGamesFragment().gameItemViewPool)
-        rvGamesAll.layoutManager =
-            LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        rvGamesAll.setLinearLayoutManager()
         rvGamesAll.adapter = gameAllAdapter
-        gameAllAdapter.setOnItemChildClickListener(OnItemChildClickListener { _, _, position ->
+        gameAllAdapter.setOnItemChildClickListener { _, _, position ->
             gameAllAdapter.getItem(position).let {
                 okGamesFragment().changeGameTable(it)
             }
-        })
+        }
     }
 
     private fun gameRecordAdapterNotify(it: RecordNewEvent) {
@@ -187,8 +186,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 okGamesFragment().changePartGames(providersAdapter.getItem(position))
             }
             rvOkgameProviders.apply {
-                var okGameProLLM =
-                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                var okGameProLLM = setLinearLayoutManager(LinearLayoutManager.HORIZONTAL)
                 adapter = providersAdapter
                 layoutManager = okGameProLLM
                 addOnScrollListener(object : OnScrollListener() {
@@ -282,111 +280,73 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         val prLeft = binding.include3.ivProvidersLeft//供应商左滑按钮
         val prRight = binding.include3.ivProvidersRight//供应商右滑按钮
         val rcvPayment = include5.rcvPayment
-        setUnderline(
-            tvPrivacyPolicy, tvTermConditions, tvResponsibleGaming, tvLiveChat, tvContactUs, tvFaqs
-        )
-        setOnClickListener(
-            tvPrivacyPolicy,
-            tvTermConditions,
-            tvResponsibleGaming,
-            tvLiveChat,
-            tvContactUs,
-            tvFaqs,
-            rBtnLb,
-            rBtnLbw,
-            prLeft,
-            prRight
-        ) {
-            when (it.id) {
-                R.id.tvPrivacyPolicy -> {
-                    JumpUtil.toInternalWeb(
-                        requireContext(),
-                        Constants.getPrivacyRuleUrl(requireContext()),
-                        getString(R.string.privacy_policy)
-                    )
-                }
+        setUnderline(tvPrivacyPolicy, tvTermConditions, tvResponsibleGaming, tvLiveChat, tvContactUs, tvFaqs)
 
-                R.id.tvTermConditions -> {
-                    JumpUtil.toInternalWeb(
-                        requireContext(),
-                        Constants.getAgreementRuleUrl(requireContext()),
-                        getString(R.string.terms_conditions)
-                    )
-                }
+        jumpToWebView(tvPrivacyPolicy, Constants.getPrivacyRuleUrl(requireContext()), R.string.privacy_policy)
+        jumpToWebView(tvTermConditions, Constants.getAgreementRuleUrl(requireContext()), R.string.terms_conditions)
+        jumpToWebView(tvTermConditions, Constants.getDutyRuleUrl(requireContext()), R.string.responsible)
+        jumpToWebView(tvFaqs, Constants.getFAQsUrl(requireContext()), R.string.faqs)
 
-                R.id.tvResponsibleGaming -> {
-                    JumpUtil.toInternalWeb(
-                        requireContext(),
-                        Constants.getDutyRuleUrl(requireContext()),
-                        getString(R.string.responsible)
-                    )
-                }
+        tvLiveChat.setServiceClick(childFragmentManager)
+        tvContactUs.setServiceClick(childFragmentManager)
 
-                R.id.tvLiveChat, R.id.tvContactUs -> {
-                    it.setServiceClick(childFragmentManager)
-                }
-
-                R.id.tvFaqs -> {
-                    JumpUtil.toInternalWeb(
-                        requireContext(),
-                        Constants.getFAQsUrl(requireContext()),
-                        getString(R.string.faqs)
-                    )
-                }
-
-                R.id.rbtn_lb -> {
-                    if (!recordNewhttpFlag) {
-                        viewModel.getOKGamesRecordNew()
-                    } else {
-                        gameRecordAdapter.data.clear()
-                        gameRecordAdapter.addData(p3RecordNData)
-                    }
-                }
-
-                R.id.rbtn_lbw -> {
-                    if (!recordResulthttpFlag) {
-
-                        viewModel.getOKGamesRecordResult()
-                    } else {
-                        gameRecordAdapter.data.clear()
-                        gameRecordAdapter.addData(p3RecordRData)
-                    }
-                }
-
-                R.id.iv_providers_left -> {
-                    if (p3ogProviderFirstPosi >= 3) {
-                        binding.include3.rvOkgameProviders.layoutManager?.smoothScrollToPosition(
-                            binding.include3.rvOkgameProviders,
-                            RecyclerView.State(),
-                            p3ogProviderFirstPosi - 2
-                        )
-                    } else {
-                        binding.include3.rvOkgameProviders.layoutManager?.smoothScrollToPosition(
-                            binding.include3.rvOkgameProviders, RecyclerView.State(), 0
-                        )
-                    }
-
-                }
-
-                R.id.iv_providers_right -> {
-                    if (p3ogProviderLastPosi < providersAdapter.data.size - 4) {
-                        binding.include3.rvOkgameProviders.layoutManager?.smoothScrollToPosition(
-                            binding.include3.rvOkgameProviders,
-                            RecyclerView.State(),
-                            p3ogProviderLastPosi + 2
-                        )
-                    } else {
-                        binding.include3.rvOkgameProviders.layoutManager?.smoothScrollToPosition(
-                            binding.include3.rvOkgameProviders,
-                            RecyclerView.State(),
-                            providersAdapter.data.size - 1
-                        )
-                    }
-                }
+        rBtnLb.setOnClickListener {
+            if (!recordNewhttpFlag) {
+                viewModel.getOKGamesRecordNew()
+            } else {
+                gameRecordAdapter.data.clear()
+                gameRecordAdapter.addData(p3RecordNData)
             }
         }
-        initRcvPaymentMethod(rcvPayment)
 
+        rBtnLbw.setOnClickListener {
+            if (!recordResulthttpFlag) {
+
+                viewModel.getOKGamesRecordResult()
+            } else {
+                gameRecordAdapter.data.clear()
+                gameRecordAdapter.addData(p3RecordRData)
+            }
+        }
+
+        prLeft.setOnClickListener {
+            if (p3ogProviderFirstPosi >= 3) {
+                binding.include3.rvOkgameProviders.layoutManager?.smoothScrollToPosition(
+                    binding.include3.rvOkgameProviders,
+                    RecyclerView.State(),
+                    p3ogProviderFirstPosi - 2
+                )
+            } else {
+                binding.include3.rvOkgameProviders.layoutManager?.smoothScrollToPosition(
+                    binding.include3.rvOkgameProviders, RecyclerView.State(), 0
+                )
+            }
+        }
+
+        prRight.setOnClickListener {
+            if (p3ogProviderLastPosi < providersAdapter.data.size - 4) {
+                binding.include3.rvOkgameProviders.layoutManager?.smoothScrollToPosition(
+                    binding.include3.rvOkgameProviders,
+                    RecyclerView.State(),
+                    p3ogProviderLastPosi + 2
+                )
+            } else {
+                binding.include3.rvOkgameProviders.layoutManager?.smoothScrollToPosition(
+                    binding.include3.rvOkgameProviders,
+                    RecyclerView.State(),
+                    providersAdapter.data.size - 1
+                )
+            }
+        }
+
+        initRcvPaymentMethod(rcvPayment)
+    }
+
+    private fun jumpToWebView(view: View, url: String?, @StringRes title: Int) {
+        view.setOnClickListener {
+            val context = binding.root.context
+            JumpUtil.toInternalWeb(context, url, context.getString(title))
+        }
     }
 
     private fun initRcvPaymentMethod(rcvPayment: RecyclerView) {
@@ -654,6 +614,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             }
         }
 
+        rvGameItem.adapter = adapter
         return@run adapter
     }
 
