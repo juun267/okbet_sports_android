@@ -77,7 +77,7 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
             }
 
             is OutrightRecordViewHolder -> {
-                holder.bind((rvData as DataItem.Item).row,viewModel)
+                holder.bind((rvData as DataItem.Item).row, viewModel)
             }
 //            is LastTotalViewHolder -> {
 //                holder.bind((rvData as DataItem.Total).totalAmount)
