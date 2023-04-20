@@ -329,13 +329,22 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 }
 
                 R.id.rbtn_lb -> {
-                    gameRecordAdapter.data.clear()
-                    gameRecordAdapter.addData(p3RecordNData)
+                    if (!recordNewhttpFlag) {
+                        viewModel.getOKGamesRecordNew()
+                    } else {
+                        gameRecordAdapter.data.clear()
+                        gameRecordAdapter.addData(p3RecordNData)
+                    }
                 }
 
                 R.id.rbtn_lbw -> {
-                    gameRecordAdapter.data.clear()
-                    gameRecordAdapter.addData(p3RecordRData)
+                    if (!recordResulthttpFlag) {
+
+                        viewModel.getOKGamesRecordResult()
+                    } else {
+                        gameRecordAdapter.data.clear()
+                        gameRecordAdapter.addData(p3RecordRData)
+                    }
                 }
 
                 R.id.iv_providers_left -> {

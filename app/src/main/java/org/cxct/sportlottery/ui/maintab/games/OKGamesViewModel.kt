@@ -25,7 +25,7 @@ class OKGamesViewModel(
     infoCenterRepository: InfoCenterRepository,
     favoriteRepository: MyFavoriteRepository,
     sportMenuRepository: SportMenuRepository,
-): MainHomeViewModel(
+) : MainHomeViewModel(
     androidContext,
     userInfoRepository,
     loginRepository,
@@ -100,7 +100,8 @@ class OKGamesViewModel(
         categoryId: String?,
         firmId: String? = null,
         page: Int = 1,
-        pageSize: Int = 12) = callApi({ OKGamesRepository.getOKGamesList(page, pageSize, null, categoryId, firmId) }) {
+        pageSize: Int = 12
+    ) = callApi({ OKGamesRepository.getOKGamesList(page, pageSize, null, categoryId, firmId) }) {
 
         _gamesList.value = Triple(requestTag, it.total, it.getData())
     }
@@ -122,18 +123,22 @@ class OKGamesViewModel(
     fun requestEnterThirdGame(gameData: OKGameBean, baseFragment: BaseFragment<*>) {
         if (gameData == null) {
             _enterThirdGameResult.postValue(
-                Pair("${gameData.firmCode}", EnterThirdGameResult(
-                    resultType = EnterThirdGameResult.ResultType.FAIL,
-                    url = null,
-                    errorMsg = androidContext.getString(R.string.hint_game_maintenance)
-                ))
+                Pair(
+                    "${gameData.firmCode}", EnterThirdGameResult(
+                        resultType = EnterThirdGameResult.ResultType.FAIL,
+                        url = null,
+                        errorMsg = androidContext.getString(R.string.hint_game_maintenance)
+                    )
+                )
             )
             return
         }
-        requestEnterThirdGame("${gameData.firmType}",
+        requestEnterThirdGame(
+            "${gameData.firmType}",
             "${gameData.gameCode}",
             "${gameData.gameCode}",
-            baseFragment)
+            baseFragment
+        )
     }
 
     /**
@@ -191,10 +196,15 @@ class OKGamesViewModel(
     private val _recordNewHttp = MutableLiveData<List<RecordNewEvent>>()
     private val _recordResultHttp = MutableLiveData<List<RecordNewEvent>>()
     fun getOKGamesRecordNew() = callApi({ OKGamesRepository.getOKGamesRecordNew() }) {
-        _recordNewHttp.postValue(it.getData())
+        if (it.succeeded()) {
+            _recordNewHttp.postValue(it.getData())
+        }
     }
+
     fun getOKGamesRecordResult() = callApi({ OKGamesRepository.getOKGamesRecordResult() }) {
-        _recordResultHttp.postValue(it.getData())
+        if (it.succeeded()) {
+            _recordResultHttp.postValue(it.getData())
+        }
     }
 
 }
