@@ -177,6 +177,7 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
+                android:id="@+id/llayout_win"
                 android:orientation="horizontal"
                 android:layout_width="88dp"
                 android:minWidth="88dp"
@@ -216,6 +217,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/llayout_draw"
                 android:orientation="horizontal"
                 android:layout_width="88dp"
                 android:minWidth="88dp"
@@ -250,6 +252,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/llayout_lose"
                 android:orientation="horizontal"
                 android:layout_width="88dp"
                 android:minWidth="88dp"
