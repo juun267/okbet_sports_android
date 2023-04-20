@@ -114,18 +114,27 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         }
     }
 
-    private fun onTabChange(tab: OKGameTab) {
-        if (tab.isAll()) {  // 全部
-            showGameAll()
-            return
-        }
+    private fun onTabChange(tab: OKGameTab): Boolean {
+        when {
 
-        if (tab.isRecent()) { // 最近
-            showRecentPart(tab)
-            return
-        }
+            tab.isAll() -> {  // 全部
+                showGameAll()
+                return true
+            }
 
-        reloadPartGames(tab)
+            tab.isRecent() -> { // 最近
+                return loginedRun(binding.root.context) { showRecentPart(tab) }
+            }
+
+            tab.isFavorites() -> { // 收藏
+                return loginedRun(binding.root.context) { showFavorites(tab) }
+            }
+
+            else -> {
+                reloadPartGames(tab)
+                return true
+            }
+        }
     }
 
     private fun showGameAll(): AllGamesFragment {
@@ -142,6 +151,12 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         retagRequest()
         changePartGamesLabel(tab)
         showPartGameList(viewModel.recentPlay.value, 0)
+    }
+
+    private fun showFavorites(tab: OKGameTab) {
+        retagRequest()
+        changePartGamesLabel(tab)
+        showPartGameList(viewModel.collectList.value, 0)
     }
 
     fun backGameAll() {
@@ -183,6 +198,10 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         }
         requestBlock!!.invoke(pageIndex)
         return true
+    }
+
+    fun collectGame(gameData: OKGameBean) {
+        loginedRun(binding.root.context) { viewModel.collectGame(gameData) }
     }
 
 }

@@ -63,5 +63,6 @@ class GameCategroyAdapter(
             (rvGameItem.adapter as GameChildAdapter).setList(gameList)
         }
     }
+
 }
 

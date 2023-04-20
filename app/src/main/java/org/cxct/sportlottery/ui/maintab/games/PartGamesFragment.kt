@@ -56,10 +56,8 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         addItemDecoration(GridSpacingItemDecoration(3, 10.dp, false))
         adapter = gameChildAdapter
         gameChildAdapter.setEmptyView(LayoutInflater.from(requireContext()).inflate(R.layout.view_no_games, null))
-        gameChildAdapter.setOnItemChildClickListener { _, _, position ->
-            gameChildAdapter.getItem(position).let {
-                okGamesFragment().viewModel.collectGame(it)
-            }
+        gameChildAdapter.setOnItemChildClickListener { adapter, _, position ->
+                okGamesFragment().collectGame(adapter.getItem(position) as OKGameBean)
         }
         gameChildAdapter.setOnItemClickListener { _, _, position ->
             val item = gameChildAdapter.getItem(position)
@@ -73,7 +71,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             gameChildAdapter.data.forEachIndexed { index, okGameBean ->
                 if (okGameBean.id == result.first) {
                     okGameBean.markCollect = result.second.markCollect
-                    gameChildAdapter.notifyItemChanged(index)
+                    gameChildAdapter.notifyItemChanged(index, okGameBean)
                     return@observe
                 }
             }

@@ -39,14 +39,14 @@ class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: Attribut
 
     private val edtSearch: EditText by lazy { findViewById(R.id.edtSearchGames) }
     private val indicatorView: IndicatorWidget by lazy { findViewById(R.id.indicatorView) }
-    private val gameTabAdapter by lazy { GamesTabAdapter { onTableClick?.invoke(it) } }
+    private val gameTabAdapter by lazy { GamesTabAdapter { onTableClick?.invoke(it) ?: false } }
     private val rcvGamesTab by lazy { findViewById<RecyclerView>(R.id.rcvGamesTab) }
     private val okgamesBanner: XBanner by lazy {
         findViewById<XBanner>(R.id.xbanner).apply { setOnItemClickListener(this@OKGamesTopView) }
     }
 
     var onSearchTextChanged: ((String) -> Unit)? = null
-    var onTableClick: ((OKGameTab) -> Unit)? = null
+    var onTableClick: ((OKGameTab) -> Boolean)? = null
 
     init {
         orientation = VERTICAL

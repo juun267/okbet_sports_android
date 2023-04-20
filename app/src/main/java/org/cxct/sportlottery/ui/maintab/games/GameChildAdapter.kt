@@ -61,6 +61,10 @@ class GameChildAdapter(val moreClick: (() -> Unit)? = null) : BindingAdapter<OKG
         }
     }
 
+    override fun onBinding(position: Int, binding: ItemGameChildBinding, item: OKGameBean, payloads: List<Any>) {
+        binding.ivFav.isSelected = item.markCollect
+    }
+
     private fun updateMoreText(total: Int, count: Int) {
         gameTotal = total
         moreTextView?.let { textView ->
