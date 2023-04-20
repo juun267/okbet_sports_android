@@ -44,7 +44,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     private lateinit var binding: FragmentAllOkgamesBinding
     private val gameAllAdapter by lazy {
         GameCategroyAdapter(clickCollect = {
-            okGamesFragment().viewModel.collectGame(it)
+            okGamesFragment().collectGame(it)
         }, clickGame = {
             okGamesFragment().viewModel.requestEnterThirdGame(it, this@AllGamesFragment)
             viewModel.addRecentPlay(it.id.toString())
@@ -604,14 +604,14 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                         collectGameAdapter = GameChildAdapter().apply {
                             setList(collectList)
                             setOnItemChildClickListener { adapter, view, position ->
-                                data[position].let {
-                                    okGamesFragment().viewModel.collectGame(it)
+                                adapter.getItem(position).let {
+                                    okGamesFragment().collectGame(it as OKGameBean)
                                 }
                             }
                             setOnItemClickListener { adapter, view, position ->
-                                data[position].let {
+                                adapter.getItem(position).let {
                                     okGamesFragment().viewModel.requestEnterThirdGame(
-                                        it, this@AllGamesFragment
+                                        it as OKGameBean, this@AllGamesFragment
                                     )
                                     viewModel.addRecentPlay(it.id.toString())
                                 }
@@ -658,13 +658,13 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                         )
                         recentGameAdapter = GameChildAdapter().apply {
                             setList(recentList)
-                            setOnItemChildClickListener { adapter, view, position ->
-                                data[position].let {
-                                    okGamesFragment().viewModel.collectGame(it)
+                            setOnItemChildClickListener { _, _, position ->
+                                getItem(position).let {
+                                    okGamesFragment().collectGame(it)
                                 }
                             }
-                            setOnItemClickListener { adapter, view, position ->
-                                data[position].let {
+                            setOnItemClickListener { _, _, position ->
+                                getItem(position).let {
                                     okGamesFragment().viewModel.requestEnterThirdGame(
                                         it, this@AllGamesFragment
                                     )

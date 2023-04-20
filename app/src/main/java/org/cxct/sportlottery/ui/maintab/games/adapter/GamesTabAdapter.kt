@@ -21,7 +21,7 @@ import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreator
 
-class GamesTabAdapter(val onSelected: (OKGameTab) -> Unit)
+class GamesTabAdapter(private val onSelected: (OKGameTab) -> Boolean)
     : BaseQuickAdapter<OKGameTab, GamesTabAdapter.VH>(0), OnItemClickListener {
 
     private val textColor by lazy { context.getColor(R.color.color_6D7693) }
@@ -57,9 +57,8 @@ class GamesTabAdapter(val onSelected: (OKGameTab) -> Unit)
 
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
         val item = getItem(position)
-        if (selectedTab != item) {
+        if (selectedTab != item && onSelected.invoke(item)) {
             onSelectChanged(position, item)
-            onSelected.invoke(item)
         }
     }
 
@@ -82,10 +81,9 @@ class GamesTabAdapter(val onSelected: (OKGameTab) -> Unit)
 
         data.forEachIndexed { index, okGameTab ->
             if (tab.getKey() == okGameTab.getKey()) {
-                if (selectedTab != okGameTab) {
+                if (selectedTab != okGameTab && onSelected.invoke(okGameTab)) {
                     onSelectChanged(index, okGameTab)
                 }
-                onSelected.invoke(okGameTab)
                 return index
             }
         }

@@ -19,6 +19,8 @@ interface OKGameTab: OKGameLabel {
 
     fun isRecent() = getKey() == RECENTLY
 
+    fun isFavorites() = getKey() == FAVORITES
+
 }
 
 interface OKGameLabel {

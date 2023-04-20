@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.net.games.OKGamesRepository
@@ -16,6 +17,7 @@ import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.KvUtils
+import org.cxct.sportlottery.util.ToastUtil
 
 class OKGamesViewModel(
     androidContext: Application,
@@ -111,10 +113,18 @@ class OKGamesViewModel(
      */
     fun collectGame(gameData: OKGameBean) =
         callApi({ OKGamesRepository.collectOkGames(gameData.id, !gameData.markCollect) }) {
-            if (it.succeeded()) {
-                gameData.markCollect = !gameData.markCollect
-                _collectOkGamesResult.postValue(Pair(gameData.id, gameData))
+            if (!it.succeeded()) {
+                ToastUtil.showToast(MultiLanguagesApplication.appContext, it.msg)
+                return@callApi
             }
+            gameData.markCollect = !gameData.markCollect
+            _collectOkGamesResult.postValue(Pair(gameData.id, gameData))
+//            if (!gameData.markCollect) {
+//                val markedGames = _collectList.value?.toMutableList() ?: return@callApi
+//                if (markedGames.isNotEmpty()) {
+//                    _collectList.postValue(markedGames.filter { it.id != gameData.id }.toList())
+//                }
+//            }
         }
 
     /**
