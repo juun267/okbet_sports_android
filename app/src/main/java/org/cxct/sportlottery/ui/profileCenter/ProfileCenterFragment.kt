@@ -201,8 +201,7 @@ class ProfileCenterFragment :
             avoidFastDoubleClick()
             //Glife用户
             if (viewModel.userInfo.value?.vipType == 1) {
-                showPromptDialog(
-                    title = getString(R.string.prompt),
+                showPromptDialog(title = getString(R.string.prompt),
                     message = getString(R.string.N643),
                     {})
             } else {

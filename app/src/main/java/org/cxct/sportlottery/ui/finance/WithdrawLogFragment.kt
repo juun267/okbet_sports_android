@@ -260,6 +260,9 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                 getString(R.string.ewallet) -> {
                     StatusSheetData(UWType.E_WALLET.type, it)
                 }
+                getString(R.string.online_maya) -> {
+                    StatusSheetData(UWType.PAY_MAYA.type, it)
+                }
                 getString(R.string.betting_station_reserve) -> {
                     StatusSheetData(UWType.BETTING_STATION.type, it)
                 }

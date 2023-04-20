@@ -301,19 +301,19 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                             cardNo = eet_phone_number.getText().toString(),
                             fundPwd = eet_withdrawal_password.getText().toString(),
                             id = args.editBankCard?.id?.toString(),
-                            uwType = if (bankCode == "PayMaya") TransferType.PAYMAYA.type else transferType.type,
+                            uwType = transferType.type,
                             bankCode = bankCode
                         )
                     }
                     TransferType.PAYMAYA -> { //eWallet暫時寫死 與綁定銀行卡相同
                         MoneyType.PAYMAYA_TYPE
                         addBankCard(
-                            bankName = "PayMaya",
+                            bankName = PAYMAYA,
                             cardNo = eet_phone_number.getText().toString(),
                             fundPwd = eet_withdrawal_password.getText().toString(),
                             id = args.editBankCard?.id?.toString(),
-                            uwType = transferType.type,
-                            bankCode = "PayMaya",
+                            uwType = TransferType.E_WALLET.type,
+                            bankCode = PAYMAYA,
                         )
                     }
                 }
