@@ -57,6 +57,7 @@ class ProfileCenterFragment :
     BaseBottomNavigationFragment<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
 
     private val mVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
+
     //簡訊驗證彈窗
     private var customSecurityDialog: CustomSecurityDialog? = null
     private var noticeCount: Int? = null

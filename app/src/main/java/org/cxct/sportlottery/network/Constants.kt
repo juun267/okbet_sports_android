@@ -85,17 +85,21 @@ object Constants {
         val applicationInfo: ApplicationInfo
         try {
             applicationInfo = packageManager.getApplicationInfo(
-                context.packageName, PackageManager.GET_META_DATA)
+                context.packageName, PackageManager.GET_META_DATA
+            )
             if (applicationInfo.metaData != null) {
                 value = applicationInfo.metaData.get(name)
             }
         } catch (e: PackageManager.NameNotFoundException) {
             throw RuntimeException(
-                "Could not read the name in the manifest file.", e)
+                "Could not read the name in the manifest file.", e
+            )
         }
         if (value == null) {
-            throw RuntimeException("The name '" + name
-                    + "' is not defined in the manifest file's meta data.")
+            throw RuntimeException(
+                "The name '" + name
+                        + "' is not defined in the manifest file's meta data."
+            )
         }
         return value.toString()
     }
@@ -184,6 +188,7 @@ object Constants {
         }
     }
 
+
     //遊戲規則 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
     fun getGameRuleUrl(context: Context): String? {
 
@@ -229,13 +234,14 @@ object Constants {
     fun getAgreementRuleUrl(context: Context): String? {
 
         return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/terms-conditions?platform=" + context.getString(
-            R.string.app_name)
+            R.string.app_name
+        )
     }
 
     //KYC人工客服審核
     fun getKYVUrl(context: Context): String? {
         return try {
-              "https://okbetsports.ladesk.com/scripts/generateWidget.php?v=5.30.5.9&t=1658377154&cwid=6h5p37dx&cwrt=V&cwt=phone_popout&vid=qh2gmm3j339kbfmwswxdikkz8woqc&ud=%7B%7D&pt=Document&ref=file%3A%2F%2F%2FUsers%2Flingzhang%2FDesktop%2Ftest%2Findex.html#startScreen"
+            "https://okbetsports.ladesk.com/scripts/generateWidget.php?v=5.30.5.9&t=1658377154&cwid=6h5p37dx&cwrt=V&cwt=phone_popout&vid=qh2gmm3j339kbfmwswxdikkz8woqc&ud=%7B%7D&pt=Document&ref=file%3A%2F%2F%2FUsers%2Flingzhang%2FDesktop%2Ftest%2Findex.html#startScreen"
         } catch (e: UnsupportedEncodingException) {
             e.printStackTrace()
             null
@@ -264,6 +270,20 @@ object Constants {
         val base = getH5BaseUrl()
         return base + "sports-rule/#/${language}worldcup?platform=${context.getString(R.string.app_name)}&d=android&noBg=1"
     }
+
+    //https://okbet-v2.cxsport.net/activity/mobile/#/print?uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
+    //打印小票H5地址
+    fun getPrintReceipt(context:Context):String {
+        var language = getLanguageTag(context)
+        val base = getH5BaseUrl()
+        if (language.contains("/")){
+            language = language.substring(0,language.indexOf("/"))
+        }else if (language.isEmpty()){
+            language = "zh"
+        }
+        return "${base}activity/mobile/#/print?lang=${language}&"
+    }
+
 
     //抽奖活动H5地址
     fun getLotteryH5Url(context: Context, token: String? = ""): String {
@@ -301,6 +321,7 @@ object Constants {
 
     //bet
     const val MATCH_BET_INFO = "/api/front/match/bet/info"
+    const val MATCH_BET_REMARK_BET = "/api/front/match/bet/reMarkBet"
     const val MATCH_BET_ADD = "/api/front/match/bet/add"
     const val MATCH_BET_LIST = "/api/front/match/bet/list"
     const val MATCH_BET_SETTLED_LIST = "/api/front/match/bet/settled/list"
@@ -433,10 +454,10 @@ object Constants {
     const val PASSWORD_VERIFY = "/api/front/user/passwordVerify"
     const val ODDS_CHANGE_OPTION = "/api/front/user/oddsChangeOption" //设置用户赔率变化
     const val USER_BASIC_INFO_SWITCH = "/api/front/index/getUserBasicInfoSwitch" //是否完善用户信息开关
-    const val USER_BASIC_INFO_CHECK = "/api/front/user/checkUserBasicInfo" //是否已完善信息
+    const val USER_BASIC_INFO_CHECK = "/api/front/user/checkUserBasicInfoV2" //是否已完善信息
     const val USER_SALARY_SOURCE_LIST = "/api/front/user/querySalarySource" //收入来源列表
-    const val USER_BASIC_INFO_UPDATE = "/api/front/user/improveBasicInformation" //提交用户基础信息
-    const val USER_GET_BASIC_INFO = "/api/front/user/queryUserBasicInfo" //获取用户基本信息
+    const val USER_BASIC_INFO_UPDATE = "/api/front/user/improveBasicInformationV2" //提交用户基础信息
+    const val USER_GET_BASIC_INFO = "/api/front/user/queryUserBasicInfoV2" //获取用户基本信息
 
 
     //upload image
@@ -444,7 +465,8 @@ object Constants {
     const val UPLOAD_VERIFY_PHOTO = "/api/front/user/uploadVerifyPhoto" //上傳實名制文件
 
     //簡訊碼驗證
-    const val GET_TWO_FACTOR_STATUS = "/api/front/user/getTwoFactorValidateStatus" //取得双重验证状态(success: true 验证成功, false 需重新验证手机)
+    const val GET_TWO_FACTOR_STATUS =
+        "/api/front/user/getTwoFactorValidateStatus" //取得双重验证状态(success: true 验证成功, false 需重新验证手机)
     const val SEND_TWO_FACTOR = "/api/front/index/sendTwoFactor" //发送双重验证讯息
     const val VALIDATE_TWO_FACTOR = "/api/front/index/validateTwoFactor" //双重验证校验
 
@@ -479,8 +501,10 @@ object Constants {
     const val QUERY_SECOND_ORDERS = "/api/front/thirdapi/querySecondOrders"
 
     const val MATCH_CATEGORY_RECOMMEND = "/api/front/matchCategory/recommend/query" //查询推薦賽事
-    const val MATCH_CATEGORY_SPECIAL_MATCH = "/api/front/matchCategory/special/match/query" //查詢主頁精選賽事
-    const val MATCH_CATEGORY_SPECIAL_MENU = "/api/front/matchCategory/special/menu/query" //查詢主頁精選賽事菜单
+    const val MATCH_CATEGORY_SPECIAL_MATCH =
+        "/api/front/matchCategory/special/match/query" //查詢主頁精選賽事
+    const val MATCH_CATEGORY_SPECIAL_MENU =
+        "/api/front/matchCategory/special/menu/query" //查詢主頁精選賽事菜单
     const val MATCH_CATEGORY_QUERY = "/api/front/matchCategory/query" //(新)查询参赛表
 
     //credential
@@ -507,18 +531,21 @@ object Constants {
     //bettingStation
     const val BETTING_STATION_QUERY = "/api/front/bettingStation/query"
     const val BETTING_STATION_QUERY_INVITE = "/api/front/bettingStation/queryByInvite"
-    const val BETTING_STATION_QUERY_BY_BETTING_STATION_ID = "/api/front/bettingStation/queryByBettingStationId"
+    const val BETTING_STATION_QUERY_BY_BETTING_STATION_ID =
+        "/api/front/bettingStation/queryByBettingStationId"
     const val BETTING_STATION_QUERY_UWSTATION = "/api/front/bettingStation/queryUwStation"
     const val AREA_ALL = "/api/front/area/all"
+    const val AREA_UNIVERSAL = "/api/front/area/universal"
 
     //注销账户
     const val CANCEL_ACCOUNT = "/api/front/user/remove"
 
     //忘记密码 发送短信
-    const val VALIDATE_USER =  "/api/front/index/validateUser" //用户校验
+    const val VALIDATE_USER = "/api/front/index/validateUser" //用户校验
     const val FORGET_PASSWORD_SMS = "/api/front/index/validateForgotPasswordSMS"
     const val RESET_FORGET_PASSWORD = "/api/front/index/resetForgotPassword" //重设密码
-    const val RESET_FORGET_PASSWORD_BY_EMAIL = "/api/front/index/resetForgotPasswordByEmail" // 通过邮箱验证后重设密码
+    const val RESET_FORGET_PASSWORD_BY_EMAIL =
+        "/api/front/index/resetForgotPasswordByEmail" // 通过邮箱验证后重设密码
     const val SEND_SMS_FORGET = "/api/front/index/sendSmsForgotPassword" //找回密码-获取短信验证码
     const val SEND_EMAIL_FORGET = "/api/front/index/sendEmailCode" //找回密码-获取邮箱验证码
     const val FORGET_PASSWORD_VALIDATE_EMAIL = "/api/front/index/validateEmailCode"//找回密码-验证邮箱验证码

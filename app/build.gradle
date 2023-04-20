@@ -20,8 +20,8 @@ android {
         applicationId "com.okbet.ph"
         minSdk 23
         targetSdk 31
-        versionName "1.1.49"
-        versionCode 71
+        versionName "1.1.50"
+        versionCode 72
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         ndk {
@@ -33,14 +33,12 @@ android {
         buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
         buildConfigField "String", "SYSTEM_CURREMCY_SIGN", "\"₱\""
         buildConfigField 'Boolean', 'MOCK', 'false'
-        manifestPlaceholders = [
-                CHANNEL                : "default",
-                NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
-                INVITE_CODE            : "",
-                JPUSH_PKGNAME          : applicationId,
-                JPUSH_APPKEY           : "6ce6dade62a7563b526bf021",
-                JPUSH_CHANNEL          : "developer-default",
-        ]
+        manifestPlaceholders = [CHANNEL                : "default",
+                                NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
+                                INVITE_CODE            : "",
+                                JPUSH_PKGNAME          : applicationId,
+                                JPUSH_APPKEY           : "6ce6dade62a7563b526bf021",
+                                JPUSH_CHANNEL          : "developer-default",]
         resValue "string", "facebook_app_id", "2339087372931297"
         resValue "string", "facebook_client_token", "45b5e13714025f8083e5d9ae9300fd0f"
         resValue "string", "fb_login_protocol_scheme", "fb2339087372931297"
@@ -101,54 +99,37 @@ android {
         forqa {
             buildConfigField "String", "CHANNEL_NAME", "\"spplat1\""
             applicationId "com.happysport.sl.test"
-            manifestPlaceholders = [
-                    JPUSH_PKGNAME: applicationId,
-                    JPUSH_APPKEY : "2efc0f50829574b4db4b1dc8",
-                    JPUSH_CHANNEL: "developer-default",
-            ]
+            manifestPlaceholders = [JPUSH_PKGNAME: applicationId,
+                                    JPUSH_APPKEY : "2efc0f50829574b4db4b1dc8",
+                                    JPUSH_CHANNEL: "developer-default",]
         }
-        OkbetPH {
-        }
+        OkbetPH {}
         google {
-            manifestPlaceholders = [
-                    CHANNEL: "google",
-            ]
+            manifestPlaceholders = [CHANNEL: "google",]
         }
         huawei {
-            manifestPlaceholders = [
-                    CHANNEL    : "huawei",
-                    INVITE_CODE: "huawei8"
-            ]
+            manifestPlaceholders = [CHANNEL    : "huawei",
+                                    INVITE_CODE: "huawei8"]
         }
         xiaomi {
-            manifestPlaceholders = [
-                    CHANNEL    : "xiaomi",
-                    INVITE_CODE: "xiaomi8"
-            ]
+            manifestPlaceholders = [CHANNEL    : "xiaomi",
+                                    INVITE_CODE: "xiaomi8"]
         }
         oppo {
-            manifestPlaceholders = [
-                    CHANNEL    : "oppo",
-                    INVITE_CODE: "oppo8"
-            ]
+            manifestPlaceholders = [CHANNEL    : "oppo",
+                                    INVITE_CODE: "oppo8"]
         }
         vivo {
-            manifestPlaceholders = [
-                    CHANNEL    : "vivo",
-                    INVITE_CODE: "vivo8"
-            ]
+            manifestPlaceholders = [CHANNEL    : "vivo",
+                                    INVITE_CODE: "vivo8"]
         }
         samgsung {
-            manifestPlaceholders = [
-                    CHANNEL    : "samgsung",
-                    INVITE_CODE: "samsung8"
-            ]
+            manifestPlaceholders = [CHANNEL    : "samgsung",
+                                    INVITE_CODE: "samsung8"]
         }
         inmobi {
-            manifestPlaceholders = [
-                    CHANNEL    : "inmobi",
-                    INVITE_CODE: "inmobi"
-            ]
+            manifestPlaceholders = [CHANNEL    : "inmobi",
+                                    INVITE_CODE: "inmobi"]
         }
         //okbet预发环境 app-phuat.abaoooiap.com
 //        phuat {

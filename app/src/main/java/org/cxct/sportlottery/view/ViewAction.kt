@@ -7,16 +7,15 @@ object ViewAction {
 }
 
 
-
-private var lastClickTime=0
+private var lastClickTime = 0
 
 /**
  * 防连续点击click
  */
-fun View.onClick(block:()->Unit){
-    val systemTime=System.currentTimeMillis()
+fun View.onClick(block: () -> Unit) {
+    val systemTime = System.currentTimeMillis()
     this.setOnClickListener {
-        if(systemTime-lastClickTime<200){
+        if (systemTime - lastClickTime < 200) {
             return@setOnClickListener
         }
         block()

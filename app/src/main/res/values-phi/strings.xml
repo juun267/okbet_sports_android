@@ -400,14 +400,14 @@
     <string name="withdraw_password">Withdrawal password</string>
     <string name="total_withdrawal">Kabuuang Pag-withdraw</string>
     <string name="withdraw_all">Kunin lahat</string>
-    <string name="withdraw_handling_fee_hint">Rate ng bayad: %1$s%% Mga bayarin na babayaran: %2$s%3$s</string>
+    <string name="withdraw_handling_fee_hint">Rate ng bayad: %1$s%% Mga bayarin na babayaran: (%2$s)：%3$s</string>
     <string name="withdraw_crypto_amount_hint">Withdrawal amount(%1$s)：%2$s</string>
     <string name="withdraw_crypto_fee_hint">Withdrawal fee:(%1$s)：%2$s</string>
     <string name="hint_four_number_password">Withdrawal password</string>
     <string name="hint_please_enter_withdraw_password">Withdrawal password</string>
     <string name="add_credit_card">Mag-add ng bank card</string>
     <string name="add_crypto_card">Mag-add ng virtual currency add.</string>
-    <string name="add_e_wallet">Magdagdag ng eWallet</string>
+    <string name="add_e_wallet">Mag-add ng eWallet bank</string>
     <string name="add_credit_or_virtual">Mag-add ng %1$s</string>
     <string name="create_bank">Bank of deposit</string>
     <string name="create_name">Pangalan ng cardholder</string>
@@ -1128,7 +1128,7 @@
     <string name="verify">Pag-verify</string>
     <string name="verify_phone_no">Pag-verify ng phone</string>
     <string name="verify_email">Pag-verify sa email</string>
-    <string name="back_to_my_details">Bumalik sa Aking Mga Detalye</string>
+    <string name="back_to_my_details">Bumalik sa Aking Mga Detalye</string>1
     <string name="sms_code_length_error">Verification code kailangan 4 na digit</string>
     <string name="phone_no_error">Ang numero ng mobile phone ay dapat na 11 digit simula sa 09</string>
 
@@ -1151,4 +1151,14 @@
     <string name="N867">Matagumpay na nai-set up ang mailbox</string>
     <string name="N866_1">Nabago na ang mobile!</string>
     <string name="N867_1">"Nabago na ang email! "</string>
+
+    <string name="N177">Pakilagay ang tamang numero ng telepono</string>
+    <string name="N889">Pakilagay ang valid email</string>
+    <string name="N866">Matagumpay na nai-set up ang mobile number</string>
+    <string name="N867">Matagumpay na nai-set up ang mailbox</string>
+    <string name="N866_1">Nabago na ang mobile!</string>
+    <string name="N867_1">"Nabago na ang email! "</string>
+    <string name="N890">Print</string>
+    <string name="N891">Paki-type ang pangalan</string>
+    <string name="J033">Pangalan</string>
 </resources>

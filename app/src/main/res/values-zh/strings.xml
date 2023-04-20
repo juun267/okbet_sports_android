@@ -1207,6 +1207,10 @@
     <string name="back_to_my_details">返回我的详细信息</string>
     <string name="sms_code_length_error">验证码至少4位</string>
     <string name="phone_no_error">手机号码需为09开头的11位数字</string>
+
+    <string name="J566">请输入手机号码</string>
+    <string name="J558">请输入邮箱</string>
+    <string name="N887">已输入内容不可修改</string>
     <string name="tail_number">尾号</string>
     <string name="edit_paymaya">修改 PayMaya</string>
     <string name="add_paymaya">新增PayMaya</string>
@@ -1221,8 +1225,16 @@
     <string name="N850">请选择地址</string>
     <string name="N171">请输入正确的 11 位数手机号码</string>
     <string name="N865">金额超过限额</string>
+
+
+    <string name="N177">请输入正确的手机号码</string>
+    <string name="N889">请输入正确的邮箱</string>
     <string name="N866">设置手机号码成功</string>
     <string name="N867">设置邮箱成功</string>
     <string name="N866_1">更改手机号码成功！</string>
     <string name="N867_1">更改邮箱成功！</string>
+    <string name="N890">打印</string>
+    <string name="N891">请输入姓名</string>
+    <string name="J033">姓名</string>
+
 </resources>

@@ -25,7 +25,7 @@ data class MatchOdd(
     @Json(name = "matchId")
     val matchId: String?,
     @Json(name = "odds")
-    val odds: Int?,
+    val odds: Float?,
     @Json(name = "oddsId")
     val oddsId: String?,
     @Json(name = "playCateCode")

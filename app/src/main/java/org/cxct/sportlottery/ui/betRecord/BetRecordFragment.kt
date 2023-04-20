@@ -28,7 +28,7 @@ import timber.log.Timber
 
 class BetRecordFragment: BaseFragment<AccountHistoryViewModel>(AccountHistoryViewModel::class) {
 
-    private val recordDiffAdapter by lazy { TransactionRecordDiffAdapter() }
+    private val recordDiffAdapter by lazy { TransactionRecordDiffAdapter(viewModel) }
     private val colorSettled = R.color.color_FFFFFF_414655
     private val colorNotSettled = R.color.color_6C7BA8_6C7BA8
     private var startTabPosition: Int = 0

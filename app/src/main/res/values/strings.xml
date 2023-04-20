@@ -1005,7 +1005,7 @@
     <string name="live_streaming">Livestream</string>
     <string name="half_first_short">1st Half</string>
     <string name="half_second_short">2nd Half</string>
-    <string name="my_bank_card">My %1$s%2$s</string>
+    <string name="my_bank_card">My %1$s</string>
     <string name="my_favorite_empty">You don\'t have favorite events yet</string>
     <string name="remove_account_warning">Are you sure you want to cancel your current account?</string>
     <string name="cruel_write_off">Still delete</string>
@@ -1114,7 +1114,6 @@
     <string name="str_parlay_type_wrong">Parlay type wrong</string>
     <!--投注改版-->
     <string name="online_fortune_pay">FortunePay</string>
-    <string name="pay_maya">Paymaya</string>
     <string name="format_error">format doesn\'t match</string>
     <string name="over_size">oversized files</string>
     <string name="optional_tips">Optional:Only support PNG or JPG format files, and less than 2MB</string>
@@ -1267,6 +1266,9 @@
     <string name="J485">The format or value of Withdraw number is incorrect</string>
     <string name="N171">Please enter a correct 11-digit mobile number</string>
     <string name="N865">Amount exceeds the limit</string>
+    <string name="N890">Print</string>
+    <string name="N891">Please enter full name</string>
+    <string name="J033">Full Name</string>
 
 
 
@@ -1281,4 +1283,9 @@
     <string name="N867">The mailbox is successfully set up</string>
     <string name="N866_1">Phone number changed!</string>
     <string name="N867_1">Email changed!</string>
+    <string name="N887">Input cannot be modified</string>
+    <string name="J566">Please enter phone number</string>
+    <string name="J558">Please enter email</string>
+
+    <string name="N177">Please enter the correct phone number</string>
 </resources>

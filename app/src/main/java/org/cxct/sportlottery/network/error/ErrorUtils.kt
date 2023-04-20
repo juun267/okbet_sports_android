@@ -35,6 +35,7 @@ import org.cxct.sportlottery.network.Constants.LOGIN_OR_REG_SEND_VALIDCODE
 import org.cxct.sportlottery.network.Constants.MATCH_BET_ADD
 import org.cxct.sportlottery.network.Constants.MATCH_BET_INFO
 import org.cxct.sportlottery.network.Constants.MATCH_BET_LIST
+import org.cxct.sportlottery.network.Constants.MATCH_BET_REMARK_BET
 import org.cxct.sportlottery.network.Constants.MATCH_BET_SETTLED_DETAIL_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_BET_SETTLED_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_QUERY
@@ -96,6 +97,7 @@ import org.cxct.sportlottery.network.bet.list.BetListResult
 import org.cxct.sportlottery.network.bet.settledDetailList.BetInfoResult
 import org.cxct.sportlottery.network.bet.settledDetailList.BetSettledDetailListResult
 import org.cxct.sportlottery.network.bet.settledList.BetSettledListResult
+import org.cxct.sportlottery.network.bet.settledList.RemarkBetResult
 import org.cxct.sportlottery.network.feedback.FeedbackListResult
 import org.cxct.sportlottery.network.index.chechBetting.CheckBettingResult
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
@@ -179,6 +181,10 @@ object ErrorUtils {
             if (it.success != null && it.code != null && it.msg != null) {
                 val url = response.raw().request.url.toString()
                 when {
+                    (url.contains(Constants.USER_BASIC_INFO_UPDATE))->{
+                        @Suppress("UNCHECKED_CAST")
+                        return NetResult(it.code,it.msg,it.success) as T
+                    }
                     (url.contains(VALIDATE_USER))->{
                         @Suppress("UNCHECKED_CAST")
                         return ValidateUserResult(it.code,it.msg,it.success,null) as T
@@ -604,6 +610,10 @@ object ErrorUtils {
                     (url.contains(BIND_FACEBOOK)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return AuthBindResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(MATCH_BET_REMARK_BET)) ->{
+                        @Suppress("UNCHECKED_CAST")
+                        return RemarkBetResult(it.code,it.msg,it.success,null) as T
                     }
 
                 }
