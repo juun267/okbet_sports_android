@@ -1183,10 +1183,6 @@
     <string name="N866_1">SĐT đã thay đổi!</string>
     <string name="N867_1">"Email đã thay đổi! "</string>
 
-    <string name="N866">Cài đặt SĐT thành công</string>
-    <string name="N867">Cài đặt email thành công</string>
-    <string name="N866_1">SĐT đã thay đổi!</string>
-    <string name="N867_1">"Email đã thay đổi! "</string>
     <string name="N177">Vui lòng nhập số điện thoại chính xác</string>
     <string name="N889">Vui lòng nhận chính xác email</string>
 </resources>
