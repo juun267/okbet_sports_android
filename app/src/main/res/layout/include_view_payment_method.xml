@@ -174,7 +174,7 @@
         android:gravity="center"
         android:paddingHorizontal="10dp"
         android:textColor="@color/color_6D7693"
-        android:text="OKbet is a Registered Trade Mark, Brand and Business Name Owned by Ekxinum Inc.Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAGCOR)."
+        android:text="OKbet is a Registered Trade Mark, Brand and Business Name Owned by KINGWIN VENTURES INC.Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAGCOR)."
         app:layout_constraintEnd_toEndOf="@+id/view4"
         app:layout_constraintStart_toStartOf="@+id/view4"
         app:layout_constraintTop_toBottomOf="@+id/view4" />
