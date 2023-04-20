@@ -5,18 +5,18 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.view_hot_game.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
-import org.cxct.sportlottery.service.ServiceBroadcastReceiver
-import org.cxct.sportlottery.ui.maintab.games.adapter.RecyclerHotGameAdapter
+import org.cxct.sportlottery.ui.maintab.games.adapter.HotMatchAdapter
+import org.cxct.sportlottery.ui.maintab.home.HomeRecommendListener
 import org.cxct.sportlottery.view.DividerItemDecorator
 import org.cxct.sportlottery.view.onClick
 
 class HotGameView(context: Context, attrs: AttributeSet) : FrameLayout(context, attrs) {
-    private  var gameList:List<Recommend>?=null
-    private val adapter= RecyclerHotGameAdapter()
+    var adapter: HotMatchAdapter? = null
     init {
         initView()
     }
@@ -25,36 +25,31 @@ class HotGameView(context: Context, attrs: AttributeSet) : FrameLayout(context, 
         LayoutInflater.from(context).inflate(R.layout.view_hot_game, this, true)
         val manager=LinearLayoutManager(context)
         recycler_hot_game.let {
-
             manager.orientation=LinearLayoutManager.HORIZONTAL
-            it.layoutManager=manager
-            it.adapter=adapter
-            it.addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_trans)))
+            it.layoutManager = manager
+            it.addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context,
+                R.drawable.divider_trans)))
         }
         iv_right.onClick {
-            scrollRecycler(manager,true)
+            scrollRecycler(manager, true)
         }
         iv_left.onClick {
-            scrollRecycler(manager,false)
+            scrollRecycler(manager, false)
         }
+    }
+
+    fun setUpAdapter(lifecycleOwner: LifecycleOwner, homeRecommendListener: HomeRecommendListener) {
+        adapter = HotMatchAdapter(lifecycleOwner, homeRecommendListener)
+        recycler_hot_game.adapter = adapter
     }
 
     //data:List<Recommend>
-    fun setGameData(receiver: ServiceBroadcastReceiver? ,data:List<Recommend>){
-        adapter.setList(data)
-
-        receiver?.let {
-
-        }
+    fun setGameData(data: List<Recommend>) {
+        adapter?.data = data
     }
 
-
-    fun getAdapter():RecyclerHotGameAdapter{
-        return adapter
-    }
-
-    fun notifyAdapterData(index:Int){
-        adapter.notifyItemChanged(index)
+    fun notifyAdapterData(index: Int) {
+        adapter?.notifyItemChanged(index)
     }
 
     /**
@@ -78,14 +73,13 @@ class HotGameView(context: Context, attrs: AttributeSet) : FrameLayout(context, 
                 visiblePosition-1
             }
         }
-        if(position>adapter.itemCount-1){
+        if (position >= manager.itemCount - 1) {
             return
         }
-        if(position<0){
-            position=0
+        if (position < 0) {
+            position = 0
         }
         recycler_hot_game.smoothScrollToPosition(position)
     }
-
 
 }

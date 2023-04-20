@@ -19,14 +19,19 @@ import org.cxct.sportlottery.databinding.FragmentAllOkgamesBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.bet.FastBetDataBean
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchOdd
-import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
+import org.cxct.sportlottery.ui.base.ChannelType
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
+import org.cxct.sportlottery.ui.maintab.home.HomeRecommendListener
+import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 
@@ -370,12 +375,53 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     private fun initHotGameData() {
         //请求热门赛事列表
         viewModel.getRecommend()
+        binding.hotGameView.setUpAdapter(viewLifecycleOwner, HomeRecommendListener(
+            onItemClickListener = { matchInfo ->
+                if (isCreditSystem() && viewModel.isLogin.value != true) {
+                    (activity as MainTabActivity).showLoginNotify()
+                } else {
+                    matchInfo?.let {
+                        SportDetailActivity.startActivity(requireContext(), it)
+//                        navOddsDetailFragment(MatchType.IN_PLAY, it)
+                    }
+                }
+            },
+
+            onClickBetListener = { gameTypeCode, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
+                if (!mIsEnabled) {
+                    return@HomeRecommendListener
+                }
+                avoidFastDoubleClick()
+                if (isCreditSystem() && viewModel.isLogin.value != true) {
+                    (activity as MainTabActivity).showLoginNotify()
+                    return@HomeRecommendListener
+                }
+                val gameType = GameType.getGameType(gameTypeCode)
+                if (gameType == null || matchInfo == null || activity !is MainTabActivity) {
+                    return@HomeRecommendListener
+                }
+                val fastBetDataBean = FastBetDataBean(
+                    matchType = matchType,
+                    gameType = gameType,
+                    playCateCode = playCateCode,
+                    playCateName = playCateName,
+                    matchInfo = matchInfo,
+                    matchOdd = null,
+                    odd = odd,
+                    subscribeChannelType = ChannelType.HALL,
+                    betPlayCateNameMap = betPlayCateNameMap,
+                    playCateMenuCode
+                )
+            }, onClickPlayTypeListener = { _, _, _, _ ->
+
+            }
+        ))
         viewModel.publicityRecommend.observe(this) {
             //api获取热门赛事列表
             it.getContentIfNotHandled()?.let { data ->
                 //订阅监听
                 subscribeQueryData(data)
-                binding.hotGameView.setGameData(receiver, data)
+                binding.hotGameView.setGameData(data)
             }
         }
     }
@@ -402,8 +448,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
         receiver.matchStatusChange.observe(viewLifecycleOwner) { event ->
             event?.let { matchStatusChangeEvent ->
-                val targetList = binding.hotGameView.getAdapter().data
-                targetList.forEachIndexed { index, recommend ->
+                val targetList = binding.hotGameView.adapter?.data
+                targetList?.forEachIndexed { index, recommend ->
                     val matchList = mutableListOf(recommend)
                     if (SocketUpdateUtil.updateMatchStatus(
                             recommend.gameType,
@@ -412,7 +458,9 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                             context
                         )
                     ) {
-                        binding.hotGameView.getAdapter().notifyItemChanged(index)
+//                        LogUtil.e("matchStatusChange="+recommend.id+","+recommend.homeName+","+recommend.startTime+","+recommend.matchInfo?.status+","+recommend.matchInfo?.homeScore+":"+recommend.matchInfo?.awayScore)
+//                        LogUtil.toJson(recommend.matchInfo)
+                        binding.hotGameView.adapter?.notifyItemChanged(index)
                     }
                 }
             }
@@ -420,15 +468,15 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
         receiver.matchClock.observe(viewLifecycleOwner) {
             it?.let { matchClockEvent ->
-                val targetList = binding.hotGameView.getAdapter().data
-                targetList.forEachIndexed { index, recommend ->
+                val targetList = binding.hotGameView.adapter?.data
+                targetList?.forEachIndexed { index, recommend ->
                     if (
                         SocketUpdateUtil.updateMatchClock(
                             recommend,
                             matchClockEvent
                         )
                     ) {
-                        binding.hotGameView.getAdapter().notifyItemChanged(index)
+                        binding.hotGameView.adapter?.notifyItemChanged(index)
                     }
                 }
 
@@ -439,12 +487,12 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
         receiver.matchOddsLock.observe(viewLifecycleOwner) {
             it?.let { matchOddsLockEvent ->
-                val targetList = binding.hotGameView.getAdapter().data
+                val targetList = binding.hotGameView.adapter?.data
 
-                targetList.forEachIndexed { index, recommend ->
+                targetList?.forEachIndexed { index, recommend ->
                     if (SocketUpdateUtil.updateOddStatus(recommend, matchOddsLockEvent)
                     ) {
-                        binding.hotGameView.getAdapter().notifyItemChanged(index)
+                        binding.hotGameView.adapter?.notifyItemChanged(index)
                     }
                 }
 
@@ -454,13 +502,13 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
         receiver.globalStop.observe(viewLifecycleOwner) {
             it?.let { globalStopEvent ->
-                binding.hotGameView.getAdapter().data.forEachIndexed { index, recommend ->
+                binding.hotGameView.adapter?.data?.forEachIndexed { index, recommend ->
                     if (SocketUpdateUtil.updateOddStatus(
                             recommend,
                             globalStopEvent
                         )
                     ) {
-                        binding.hotGameView.getAdapter().notifyItemChanged(index)
+                        binding.hotGameView.adapter?.notifyItemChanged(index)
                     }
                 }
             }
@@ -470,13 +518,13 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             it?.let {
                 //先解除全部賽事訂閱
                 unSubscribeChannelHallAll()
-                subscribeQueryData(binding.hotGameView.getAdapter().data)
+                subscribeQueryData(binding.hotGameView.adapter?.data ?: listOf())
             }
         }
 
         receiver.closePlayCate.observe(viewLifecycleOwner) { event ->
             event?.getContentIfNotHandled()?.let {
-                binding.hotGameView.getAdapter().data.forEach { recommend ->
+                binding.hotGameView.adapter?.data?.forEach { recommend ->
                     if (recommend.gameType == it.gameType) {
                         recommend.oddsMap?.forEach { map ->
                             if (map.key == it.playCateCode) {
@@ -487,7 +535,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                         }
                     }
                 }
-                binding.hotGameView.getAdapter().notifyDataSetChanged()
+                binding.hotGameView.adapter?.notifyDataSetChanged()
             }
         }
     }
@@ -498,8 +546,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     private val mOddsChangeListener by lazy {
         ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
-            val targetList = binding.hotGameView.getAdapter().data
-            targetList.forEachIndexed { index, recommend ->
+            val targetList = binding.hotGameView.adapter?.data
+            targetList?.forEachIndexed { index, recommend ->
                 if (recommend.matchInfo?.id == oddsChangeEvent.eventId) {
                     recommend.sortOddsMap()
                     //region 翻譯更新
@@ -515,9 +563,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                             oddsChangeEvent)
                     ) {
                         matchOddMap[recommend.id] = recommend
-                        LogUtil.d(recommend.id + "," + recommend.homeName + "," + recommend.oddsMap?.size)
-                        LogUtil.toJson(recommend.oddsMap?.get(PlayCate.SINGLE.value))
-                        binding.hotGameView.getAdapter().notifyItemChanged(index)
+//                        LogUtil.toJson(recommend.oddsMap?.get(PlayCate.SINGLE.value))
+                        binding.hotGameView.adapter?.notifyItemChanged(index)
                     }
                 }
             }
