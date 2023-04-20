@@ -24,7 +24,6 @@ import org.cxct.sportlottery.net.games.data.OKGamesCategory
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
@@ -151,7 +150,6 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             }
         }
     }
-  }
 
     var recordNewhttpFlag = false //最新投注接口请求完成
     var recordResulthttpFlag = false//最新大奖接口请求完成
@@ -475,26 +473,6 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 } else {
                     connectFailed = true
                 }
-            }
-        }
-
-                    var needUpdate = false
-                    val adapterData = binding.hotGameView.getAdapter().data
-                    adapterData.forEachIndexed { index, recommend ->
-                        //取一个赛事，装成集合
-                        val testList = mutableListOf<Recommend>()
-                        testList.add(recommend)
-                        //丢进去判断是否要更新
-                        if (SocketUpdateUtil.updateMatchStatus(
-                                recommend.matchInfo?.gameType,
-                                testList as MutableList<MatchOdd>,
-                                matchStatusChangeEvent,
-                                context
-                            )
-                        ) {
-                            needUpdate = true
-                        }
-
             }
         }
 
