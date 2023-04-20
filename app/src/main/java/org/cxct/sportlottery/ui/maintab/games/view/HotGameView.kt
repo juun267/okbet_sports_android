@@ -82,7 +82,7 @@ class HotGameView(context: Context, attrs: AttributeSet) : FrameLayout(context, 
                 visiblePosition-1
             }
         }
-        if (position >= manager.itemCount - 1) {
+        if (position > manager.itemCount - 1) {
             return
         }
         if (position < 0) {
