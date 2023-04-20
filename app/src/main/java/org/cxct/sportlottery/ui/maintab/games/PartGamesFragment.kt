@@ -112,7 +112,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     }
 
     fun showSearchResault(list: List<OKGameBean>?, total: Int): Int {
-        val count = gameChildAdapter.setGameList(list?.toMutableList(), 50)
+        val count = gameChildAdapter.setGameList(list?.toMutableList(), total)
         if (list?.size ?: 0 >= pageSize) {
             pageIndx++
         }
