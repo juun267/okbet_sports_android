@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_height="wrap_content">
 
@@ -53,13 +53,17 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_hot_game"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingRight="12dp"
-            android:layout_width="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="3"
             tools:listitem="@layout/item_hot_game_view"
-            android:layout_height="wrap_content" />
+            android:orientation="horizontal" />
 
 
         <FrameLayout
