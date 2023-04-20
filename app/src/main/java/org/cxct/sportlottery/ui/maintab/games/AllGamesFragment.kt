@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.google.gson.Gson
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.extentions.setOnClickListener
@@ -451,6 +452,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                     betPlayCateNameMap = betPlayCateNameMap,
                     playCateMenuCode
                 )
+                val temp=Gson().toJson(fastBetDataBean)
+                SportDetailActivity.startActivity(requireContext(), matchInfo,matchType,false,temp)
             }, onClickPlayTypeListener = { _, _, _, _ ->
 
             }
@@ -458,6 +461,9 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         viewModel.publicityRecommend.observe(this) {
             //api获取热门赛事列表
             it.getContentIfNotHandled()?.let { data ->
+                data.forEach {
+                    unSubscribeChannelHall(it.gameType,it.matchInfo?.id)
+                }
                 //订阅监听
                 subscribeQueryData(data)
                 binding.hotGameView.setGameData(data)

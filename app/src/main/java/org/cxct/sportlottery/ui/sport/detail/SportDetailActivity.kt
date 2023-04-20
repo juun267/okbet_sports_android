@@ -22,6 +22,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.appbar.AppBarLayout
+import com.google.gson.Gson
 import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_detail_sport.*
@@ -78,7 +79,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             matchInfo: MatchInfo,
             matchType: MatchType? = null,
             intoLive: Boolean = false,
-            fastBetDataBean: FastBetDataBean? = null,
+            fastBetDataBean: String? = null,
         ) {
             matchInfo.let {
                 val intent = Intent(context, SportDetailActivity::class.java)
@@ -398,7 +399,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         matchInfo = intent.getParcelableExtra("matchInfo")
         matchType = intent.getSerializableExtra("matchType") as MatchType
         intoLive = intent.getBooleanExtra("intoLive", false)
-        fastBetDataBean = intent.getParcelableExtra("fastBetDataBean")
+        val betJson = intent.getStringExtra("fastBetDataBean")
+        fastBetDataBean=Gson().fromJson(betJson,FastBetDataBean::class.java)
         matchInfo?.let {
             setupMatchInfo(it)
         }

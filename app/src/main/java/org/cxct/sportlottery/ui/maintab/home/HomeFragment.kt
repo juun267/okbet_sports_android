@@ -3,11 +3,15 @@ package org.cxct.sportlottery.ui.maintab.home
 import android.os.Bundle
 import android.view.View
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.event.JumpInPlayEvent
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.live.HomeLiveFragment
+import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.FragmentHelper
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
 
@@ -26,6 +30,7 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         switchTabByPosition(0)
+        EventBusUtil.targetLifecycle(this)
     }
 
     private fun switchTabByPosition(position: Int) {
@@ -41,6 +46,11 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
 
     fun jumpToInplaySport() {
         (activity as MainTabActivity).jumpToInplaySport()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onJumpToInPlayEvent(event: JumpInPlayEvent){
+        jumpToInplaySport()
     }
 
     fun jumpToEarlySport() {
