@@ -21,7 +21,7 @@ import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreator
 
-class GamesTabAdapter(val onSelected: (OKGameTab) -> Unit)
+class GamesTabAdapter(private val onSelected: (OKGameTab) -> Boolean)
     : BaseQuickAdapter<OKGameTab, GamesTabAdapter.VH>(0), OnItemClickListener {
 
     private val textColor by lazy { context.getColor(R.color.color_6D7693) }
@@ -57,9 +57,8 @@ class GamesTabAdapter(val onSelected: (OKGameTab) -> Unit)
 
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
         val item = getItem(position)
-        if (selectedTab != item) {
+        if (selectedTab != item && onSelected.invoke(item)) {
             onSelectChanged(position, item)
-            onSelected.invoke(item)
         }
     }
 
@@ -82,10 +81,9 @@ class GamesTabAdapter(val onSelected: (OKGameTab) -> Unit)
 
         data.forEachIndexed { index, okGameTab ->
             if (tab.getKey() == okGameTab.getKey()) {
-                if (selectedTab != okGameTab) {
+                if (selectedTab != okGameTab && onSelected.invoke(okGameTab)) {
                     onSelectChanged(index, okGameTab)
                 }
-                onSelected.invoke(okGameTab)
                 return index
             }
         }
@@ -101,8 +99,9 @@ class GamesTabAdapter(val onSelected: (OKGameTab) -> Unit)
         init {
             root.layoutParams = ViewGroup.LayoutParams(-2, 36.dp)
             root.gravity = Gravity.CENTER_VERTICAL or Gravity.CENTER_HORIZONTAL
+            root.minimumWidth = 71.dp
             8.dp.let { root.setPadding(it, 0 , it, 0) }
-            root.background = getItemBackground()
+            root.background = getItemBackground(context)
 
             icon = AppCompatImageView(context)
             val parms = 20.dp.run { LayoutParams(this,this) }
@@ -114,11 +113,11 @@ class GamesTabAdapter(val onSelected: (OKGameTab) -> Unit)
             root.addView(name)
         }
 
-        private fun getItemBackground(): Drawable {
+        private fun getItemBackground(context: Context): Drawable {
             return DrawableCreator.Builder()
                 .setCornersRadius(8.dp.toFloat())
-                .setSelectedStrokeColor(Color.parseColor("#806FA6FF"), Color.WHITE)
-                .setSelectedSolidColor(Color.parseColor("#025BE8"), Color.WHITE)
+                .setSelectedStrokeColor(context.getColor(R.color.color_806FA6FF), Color.WHITE)
+                .setSelectedSolidColor(context.getColor(R.color.color_025BE8), Color.WHITE)
                 .setStrokeWidth(2.dp.toFloat())
                 .build()
         }

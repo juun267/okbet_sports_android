@@ -9,9 +9,11 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.view_hot_game.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.event.JumpInPlayEvent
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.ui.maintab.games.adapter.HotMatchAdapter
 import org.cxct.sportlottery.ui.maintab.home.HomeRecommendListener
+import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.view.DividerItemDecorator
 import org.cxct.sportlottery.view.onClick
 
@@ -35,6 +37,13 @@ class HotGameView(context: Context, attrs: AttributeSet) : FrameLayout(context, 
         }
         iv_left.onClick {
             scrollRecycler(manager, false)
+        }
+
+        tvHotMore.onClick {
+            EventBusUtil.post(JumpInPlayEvent())
+        }
+        ivHotMore.onClick {
+            EventBusUtil.post(JumpInPlayEvent())
         }
     }
 
@@ -73,7 +82,7 @@ class HotGameView(context: Context, attrs: AttributeSet) : FrameLayout(context, 
                 visiblePosition-1
             }
         }
-        if (position >= manager.itemCount - 1) {
+        if (position > manager.itemCount - 1) {
             return
         }
         if (position < 0) {

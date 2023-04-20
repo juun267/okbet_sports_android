@@ -11,7 +11,8 @@
         android:id="@+id/lin_categroy_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="8dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="8dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -28,15 +29,16 @@
             android:layout_weight="1"
             android:layout_marginHorizontal="4dp"
             android:textColor="@color/color_14366B"
-            android:textStyle="bold"
-            android:textSize="@dimen/textSize16sp"
+            android:fontFamily="@font/d_din_bold"
+            android:textFontWeight="1000"
+            android:textSize="16sp"
             tools:text="favorites" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/color_6D7693"
-            android:textSize="@dimen/textSize14sp"
+            android:textSize="14sp"
             android:text="@string/see_more" />
 
         <ImageView

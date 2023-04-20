@@ -35,7 +35,9 @@
             android:textStyle="bold" />
 
 
+
         <TextView
+            android:id="@+id/tvHotMore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/color_6D7693"
@@ -44,6 +46,7 @@
             android:text="@string/see_more" />
 
         <ImageView
+            android:id="@+id/ivHotMore"
             android:layout_width="@dimen/margin_16"
             android:layout_height="@dimen/margin_16"
             android:layout_gravity="center_vertical"

@@ -17,8 +17,11 @@ import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
+import org.cxct.sportlottery.common.extentions.animDuang
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.setOnClickListener
 import org.cxct.sportlottery.databinding.FragmentAllOkgamesBinding
+import org.cxct.sportlottery.databinding.ItemGameCategroyBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
 import org.cxct.sportlottery.network.Constants
@@ -43,12 +46,12 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     private lateinit var binding: FragmentAllOkgamesBinding
     private val gameAllAdapter by lazy {
-        GameCategroyAdapter(clickCollect = {
-            okGamesFragment().viewModel.collectGame(it)
+        GameCategroyAdapter(clickCollect = { view, item ->
+            if (okGamesFragment().collectGame(item)) { view.animDuang(1.2f) }
         }, clickGame = {
             okGamesFragment().viewModel.requestEnterThirdGame(it, this@AllGamesFragment)
             viewModel.addRecentPlay(it.id.toString())
-        })
+        }, okGamesFragment().gameItemViewPool)
     }
     private var collectGameAdapter: GameChildAdapter? = null
     private var recentGameAdapter: GameChildAdapter? = null
@@ -64,8 +67,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     override fun createRootView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentAllOkgamesBinding.inflate(layoutInflater)
-        return binding.root
+        return FragmentAllOkgamesBinding.inflate(layoutInflater).apply { binding = this }.root
     }
 
     override fun onBindView(view: View) {
@@ -75,6 +77,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         onBindPart3View()
         onBindPart5View()
         initHotGameData()
+        initRecent()
+        initCollectLayout()
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -152,10 +156,11 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         }
     }
 
-    var recordNewhttpFlag = false //最新投注接口请求完成
-    var recordResulthttpFlag = false//最新大奖接口请求完成
+    private var recordNewhttpFlag = false //最新投注接口请求完成
+    private var recordResulthttpFlag = false//最新大奖接口请求完成
 
     private fun onBindGamesView() = binding.includeGamesAll.run {
+        rvGamesAll.setRecycledViewPool(okGamesFragment().gameItemViewPool)
         rvGamesAll.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         rvGamesAll.adapter = gameAllAdapter
@@ -330,13 +335,22 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 }
 
                 R.id.rbtn_lb -> {
-                    gameRecordAdapter.data.clear()
-                    gameRecordAdapter.addData(p3RecordNData)
+                    if (!recordNewhttpFlag) {
+                        viewModel.getOKGamesRecordNew()
+                    } else {
+                        gameRecordAdapter.data.clear()
+                        gameRecordAdapter.addData(p3RecordNData)
+                    }
                 }
 
                 R.id.rbtn_lbw -> {
-                    gameRecordAdapter.data.clear()
-                    gameRecordAdapter.addData(p3RecordRData)
+                    if (!recordResulthttpFlag) {
+
+                        viewModel.getOKGamesRecordResult()
+                    } else {
+                        gameRecordAdapter.data.clear()
+                        gameRecordAdapter.addData(p3RecordRData)
+                    }
                 }
 
                 R.id.iv_providers_left -> {
@@ -443,6 +457,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                     betPlayCateNameMap = betPlayCateNameMap,
                     playCateMenuCode
                 )
+                val temp = JsonUtil.toJson(fastBetDataBean)
+                SportDetailActivity.startActivity(requireContext(), matchInfo,matchType,false,temp)
             }, onClickPlayTypeListener = { _, _, _, _ ->
 
             }
@@ -450,6 +466,9 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         viewModel.publicityRecommend.observe(this) {
             //api获取热门赛事列表
             it.getContentIfNotHandled()?.let { data ->
+                data.forEach {
+                    unSubscribeChannelHall(it.gameType,it.matchInfo?.id)
+                }
                 //订阅监听
                 subscribeQueryData(data)
                 binding.hotGameView.setGameData(data)
@@ -556,24 +575,24 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         }
 
         receiver.closePlayCate.observe(viewLifecycleOwner) { event ->
-            event?.getContentIfNotHandled()?.let {
-                binding.hotGameView.adapter?.data?.forEach { recommend ->
-                    if (recommend.gameType == it.gameType) {
-                        recommend.oddsMap?.forEach { map ->
-                            if (map.key == it.playCateCode) {
-                                map.value?.forEach { odd ->
-                                    odd?.status = BetStatus.DEACTIVATED.code
-                                }
+            val it = event?.getContentIfNotHandled() ?: return@observe
+
+            binding.hotGameView.adapter?.data?.forEach { recommend ->
+                if (recommend.gameType == it.gameType) {
+                    recommend.oddsMap?.forEach { map ->
+                        if (map.key == it.playCateCode) {
+                            map.value?.forEach { odd ->
+                                odd?.status = BetStatus.DEACTIVATED.code
                             }
                         }
                     }
                 }
-                binding.hotGameView.adapter?.notifyDataSetChanged()
             }
+            binding.hotGameView.adapter?.notifyDataSetChanged()
         }
     }
 
-    fun setupOddsChangeListener() {
+    private fun setupOddsChangeListener() {
         receiver.oddsChangeListener = mOddsChangeListener
     }
 
@@ -604,50 +623,50 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         }
     }
 
+    private fun initCollectLayout() {
+        collectGameAdapter = bindGameCategroyLayout(GameTab.TAB_FAVORITES, binding.includeGamesAll.inclueCollect)
+    }
+
+    private fun initRecent() {
+        recentGameAdapter = bindGameCategroyLayout(GameTab.TAB_RECENTLY, binding.includeGamesAll.inclueRecent)
+    }
+
+    private fun bindGameCategroyLayout(gameTab: GameTab, binding: ItemGameCategroyBinding) = binding.run {
+        root.gone()
+        linCategroyName.setOnClickListener { okGamesFragment().changeGameTable(gameTab) }
+        gameTab.bindLabelIcon(ivIcon)
+        gameTab.bindLabelName(tvName)
+        rvGameItem.setRecycledViewPool(okGamesFragment().gameItemViewPool)
+        rvGameItem.layoutManager = SocketLinearManager(context, RecyclerView.HORIZONTAL, false)
+        rvGameItem.addItemDecoration(SpaceItemDecoration(root.context, R.dimen.margin_10))
+        val adapter = GameChildAdapter()
+        adapter.setOnItemChildClickListener { adapter, view, position ->
+            if (okGamesFragment().collectGame(adapter.getItem(position) as OKGameBean)) {
+                view.animDuang(1.2f)
+            }
+        }
+        adapter.setOnItemClickListener { adapter, view, position ->
+            adapter.getItem(position).let {
+                okGamesFragment().viewModel.requestEnterThirdGame(
+                    it as OKGameBean, this@AllGamesFragment
+                )
+                viewModel.addRecentPlay(it.id.toString())
+            }
+        }
+
+        return@run adapter
+    }
+
     /**
      * 设置收藏游戏列表
      */
     private fun setCollectList(collectList: List<OKGameBean>) {
-        binding.includeGamesAll.inclueCollect.root.isGone = collectList.isNullOrEmpty()
-        if (!collectList.isNullOrEmpty()) {
-            binding.includeGamesAll.inclueCollect.apply {
-                linCategroyName.setOnClickListener {
-                    okGamesFragment().changeGameTable(GameTab.TAB_FAVORITES)
-                }
-                ivIcon.setImageResource(GameTab.TAB_FAVORITES.labelIcon)
-                tvName.setText(GameTab.TAB_FAVORITES.name)
-                rvGameItem.apply {
-                    if (adapter == null) {
-                        layoutManager = SocketLinearManager(context, RecyclerView.HORIZONTAL, false)
-                        if (itemDecorationCount == 0) addItemDecoration(
-                            SpaceItemDecoration(
-                                context,
-                                R.dimen.margin_10
-                            )
-                        )
-                        collectGameAdapter = GameChildAdapter().apply {
-                            setList(collectList)
-                            setOnItemChildClickListener { adapter, view, position ->
-                                data[position].let {
-                                    okGamesFragment().viewModel.collectGame(it)
-                                }
-                            }
-                            setOnItemClickListener { adapter, view, position ->
-                                data[position].let {
-                                    okGamesFragment().viewModel.requestEnterThirdGame(
-                                        it, this@AllGamesFragment
-                                    )
-                                    viewModel.addRecentPlay(it.id.toString())
-                                }
-                            }
-                        }
-                        adapter = collectGameAdapter
-                    } else {
-                        (adapter as GameChildAdapter).setList(collectList)
-                    }
-                }
-            }
+        val emptyData = collectList.isNullOrEmpty()
+        binding.includeGamesAll.inclueCollect.root.isGone = emptyData
+        if (emptyData) {
+            return
         }
+        collectGameAdapter?.setNewInstance(collectList?.toMutableList())
     }
 
     private fun subscribeQueryData(recommendList: List<Recommend>) {
@@ -658,50 +677,17 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         subscribeChannelHall(recommend.matchInfo?.gameType, recommend.matchInfo?.id)
     }
 
+
     /**
      * 设置最近游戏列表
      */
     private fun setRecent(recentList: List<OKGameBean>) {
         binding.includeGamesAll.inclueRecent.root.isGone = recentList.isNullOrEmpty()
-        if (!recentList.isNullOrEmpty()) {
-            binding.includeGamesAll.inclueRecent.apply {
-                linCategroyName.setOnClickListener {
-                    okGamesFragment().changeGameTable(GameTab.TAB_RECENTLY)
-                }
-                ivIcon.setImageResource(GameTab.TAB_RECENTLY.labelIcon)
-                tvName.setText(GameTab.TAB_RECENTLY.name)
-                rvGameItem.apply {
-                    if (adapter == null) {
-                        layoutManager = SocketLinearManager(context, RecyclerView.HORIZONTAL, false)
-                        if (itemDecorationCount == 0) addItemDecoration(
-                            SpaceItemDecoration(
-                                context,
-                                R.dimen.margin_10
-                            )
-                        )
-                        recentGameAdapter = GameChildAdapter().apply {
-                            setList(recentList)
-                            setOnItemChildClickListener { adapter, view, position ->
-                                data[position].let {
-                                    okGamesFragment().viewModel.collectGame(it)
-                                }
-                            }
-                            setOnItemClickListener { adapter, view, position ->
-                                data[position].let {
-                                    okGamesFragment().viewModel.requestEnterThirdGame(
-                                        it, this@AllGamesFragment
-                                    )
-                                    viewModel.addRecentPlay(it.id.toString())
-                                }
-                            }
-                        }
-                        adapter = recentGameAdapter
-                    } else {
-                        (adapter as GameChildAdapter).setList(recentList)
-                    }
-                }
-            }
+        if (recentList.isNullOrEmpty()) {
+            return
         }
+
+        recentGameAdapter?.setNewInstance(recentList?.toMutableList())
     }
 
     private fun Recommend.sortOddsMap() {

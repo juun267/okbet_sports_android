@@ -47,9 +47,11 @@ abstract class BindingAdapter<T, VB : ViewBinding> (data: MutableList<T>? = null
     fun removeItem(bean: T) {
         val position = positionOf(bean)
         if (position >= 0) {
-            remove(position)
+            removeAt(position)
         }
     }
+
+    fun dataCount() = getDefItemCount()
 
     override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BindingVH<VB> {
         val vbClass: Class<VB> = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VB>
@@ -65,7 +67,13 @@ abstract class BindingAdapter<T, VB : ViewBinding> (data: MutableList<T>? = null
         onBinding(positionOf(item), helper.vb, item)
     }
 
+    override fun convert(holder: BindingVH<VB>, item: T, payloads: List<Any>) {
+        onBinding(positionOf(item), holder.vb, item, payloads)
+    }
+
     abstract fun onBinding(position: Int, binding: VB, item: T)
+
+    open fun onBinding(position: Int, binding: VB, item: T, payloads: List<Any>) { }
 }
 
 class BindingVH<VB : ViewBinding>(val vb: VB) : BaseViewHolder(vb.root)

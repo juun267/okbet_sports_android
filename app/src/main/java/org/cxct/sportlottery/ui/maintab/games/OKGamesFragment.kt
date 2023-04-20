@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_home_elec.*
+import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.fitsSystemStatus
@@ -12,7 +12,6 @@ import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.databinding.FragmentOkgamesBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesFirm
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
@@ -23,6 +22,10 @@ import org.cxct.sportlottery.view.transform.TransformInDialog
 
 // okgames主Fragment
 class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesViewModel::class) {
+
+    val gameItemViewPool by lazy {
+        RecyclerView.RecycledViewPool().apply { setMaxRecycledViews(0, 20) }
+    }
 
     private lateinit var binding: FragmentOkgamesBinding
     private val fragmentHelper by lazy {
@@ -48,7 +51,6 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         initTopView()
         showGameAll()
         initObservable()
-        viewModel.getOKGamesHall()
     }
 
     private var requestTag: Any = Any()
@@ -83,24 +85,6 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
             }
         }
 
-        totalRewardAmount.observe(viewLifecycleOwner) {
-            it.getOrNull(0)?.let {
-                tv_first_game_name.text = it.name
-                tv_first_amount.text =
-                    "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(it.amount, 2)}"
-            }
-            it.getOrNull(1)?.let {
-                tv_second_game_name.text = it.name
-                tv_second_amount.text =
-                    "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(it.amount, 2)}"
-            }
-            it.getOrNull(2)?.let {
-                tv_third_game_name.text = it.name
-                tv_third_amount.text =
-                    "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(it.amount, 2)}"
-            }
-        }
-
         enterThirdGameResult.observe(viewLifecycleOwner) {
             if (isVisible)
                 enterThirdGame(it.second, it.first)
@@ -129,18 +113,27 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         }
     }
 
-    private fun onTabChange(tab: OKGameTab) {
-        if (tab.isAll()) {  // 全部
-            showGameAll()
-            return
-        }
+    private fun onTabChange(tab: OKGameTab): Boolean {
+        when {
 
-        if (tab.isRecent()) { // 最近
-            showRecentPart(tab)
-            return
-        }
+            tab.isAll() -> {  // 全部
+                showGameAll()
+                return true
+            }
 
-        reloadPartGames(tab)
+            tab.isRecent() -> { // 最近
+                return loginedRun(binding.root.context) { showRecentPart(tab) }
+            }
+
+            tab.isFavorites() -> { // 收藏
+                return loginedRun(binding.root.context) { showFavorites(tab) }
+            }
+
+            else -> {
+                reloadPartGames(tab)
+                return true
+            }
+        }
     }
 
     private fun showGameAll(): AllGamesFragment {
@@ -157,6 +150,12 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         retagRequest()
         changePartGamesLabel(tab)
         showPartGameList(viewModel.recentPlay.value, 0)
+    }
+
+    private fun showFavorites(tab: OKGameTab) {
+        retagRequest()
+        changePartGamesLabel(tab)
+        showPartGameList(viewModel.collectList.value, 0)
     }
 
     fun backGameAll() {
@@ -198,6 +197,10 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         }
         requestBlock!!.invoke(pageIndex)
         return true
+    }
+
+    fun collectGame(gameData: OKGameBean): Boolean {
+        return loginedRun(binding.root.context) { viewModel.collectGame(gameData) }
     }
 
 }

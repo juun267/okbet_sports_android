@@ -23,8 +23,7 @@
                 android:id="@+id/iv_cover"
                 android:layout_width="110dp"
                 android:layout_height="110dp"
-                android:foreground="@drawable/bg_gadient_game"
-                android:src="@drawable/ic_okgames_a" />
+                android:foreground="@drawable/bg_gadient_game" />
 
             <TextView
                 android:id="@+id/tv_name"
@@ -36,7 +35,6 @@
                 android:layout_gravity="bottom|center_horizontal"
                 android:textSize="@dimen/textSize12sp"
                 android:textColor="@color/color_FFFFFF"
-                android:textFontWeight="700"
                 android:fontFamily="@font/din_bold"
                 tools:text="ARCADE" />
 
