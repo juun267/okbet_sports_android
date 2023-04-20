@@ -77,7 +77,7 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
             }
 
             is OutrightRecordViewHolder -> {
-                holder.bind((rvData as DataItem.Item).row)
+                holder.bind((rvData as DataItem.Item).row,viewModel)
             }
 //            is LastTotalViewHolder -> {
 //                holder.bind((rvData as DataItem.Total).totalAmount)
@@ -135,7 +135,7 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                                 //uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
                                 dialog.dismiss()
                                 val newUrl =
-                                    Constants.getPrintReceipt(context) + "uniqNo=${it.remarkBetResult?.uniqNo}&addTime=$orderTime"
+                                    Constants.getPrintReceipt(context) + "uniqNo=${it.remarkBetResult?.uniqNo}&addTime=$orderTime&reMark=$it"
                                 JumpUtil.toExternalWeb(context, newUrl)
                             }
                         }
@@ -217,7 +217,7 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
             }
         }
 
-        fun bind(data: Row) {
+        fun bind(data: Row, viewModel: AccountHistoryViewModel) {
             val matchOdds = data.matchOdds[0]
             itemView.apply {
                 itemView.iv_country.setSvgDrawable(matchOdds.categoryIcon)
@@ -229,6 +229,28 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                 content_play.setGameType_MatchType_PlayCateName_OddsType(
                     data.gameType, data.matchType, matchOdds.playCateName, matchOdds.oddsType
                 )
+
+                tvPrint.visible()
+
+                tvPrint.setOnClickListener {
+                    val dialog = PrintDialog(context)
+                    dialog.tvPrintClickListener = { it ->
+                        if (it.isNotEmpty()) {
+                            val orderNo = data.orderNo
+                            val orderTime = data.betConfirmTime
+                            val requestBet = RemarkBetRequest(orderNo, it, orderTime.toString())
+                            viewModel.reMarkBet(requestBet)
+                            viewModel.remarkBetLiveData.observeForever {
+                                //uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
+                                dialog.dismiss()
+                                val newUrl =
+                                    Constants.getPrintReceipt(context) + "uniqNo=${it.remarkBetResult?.uniqNo}&addTime=$orderTime&reMark=$it"
+                                JumpUtil.toExternalWeb(context, newUrl)
+                            }
+                        }
+                    }
+                    dialog.show()
+                }
 
                 val formatForOdd =
                     if (matchOdds.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage(

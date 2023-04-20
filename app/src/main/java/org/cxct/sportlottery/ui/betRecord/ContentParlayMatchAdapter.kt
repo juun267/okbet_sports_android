@@ -121,7 +121,7 @@ class ContentParlayMatchAdapter(val data: Row, val viewModel: AccountHistoryView
 //                tv_team_names.setTeamNames(15, data.homeName, data.awayName)
                 title_team_name_parlay.setTeamsNameWithVS(data.homeName, data.awayName)
 
-                if (position == itemCount - 1) {
+                if (itemCount == 1 || position == itemCount - 1) {
                     tvPrint.visible()
                     tvPrint.setOnClickListener {
                         showPrintDialog(context, rowData)
@@ -176,7 +176,7 @@ class ContentParlayMatchAdapter(val data: Row, val viewModel: AccountHistoryView
                         //uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
                         dialog.dismiss()
                         val newUrl =
-                            Constants.getPrintReceipt(context) + "uniqNo=${it.remarkBetResult?.uniqNo}&addTime=$orderTime"
+                            Constants.getPrintReceipt(context) + "uniqNo=${it.remarkBetResult?.uniqNo}&addTime=$orderTime&reMark=$it"
                         JumpUtil.toExternalWeb(context, newUrl)
                     }
                     viewModel.reMarkBet(requestBet)
