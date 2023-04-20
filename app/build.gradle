@@ -303,7 +303,10 @@ dependencies {
 
 
     //下拉刷新，上拉加載 元件 (豎屏、橫屏) https://github.com/scwang90/SmartRefreshLayout
-    implementation 'com.scwang.smart:refresh-layout-kernel:2.0.3'
+    implementation 'io.github.scwang90:refresh-layout-kernel:2.0.5'
+    implementation 'io.github.scwang90:refresh-header-material:2.0.5'
+    implementation 'io.github.scwang90:refresh-footer-ball:2.0.5'
+
 
     //DateTimePicker
     implementation 'com.contrarywind:Android-PickerView:4.1.9'

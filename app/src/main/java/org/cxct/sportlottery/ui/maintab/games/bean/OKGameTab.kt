@@ -10,16 +10,24 @@ import org.cxct.sportlottery.ui.maintab.games.bean.GameTabIds.Companion.SEARCH
 import java.lang.annotation.Retention
 import java.lang.annotation.RetentionPolicy
 
-interface OKGameTab {
+interface OKGameTab: OKGameLabel {
 
-    fun tabId(): Int
     fun bindNameText(textView: TextView)
     fun bindTabIcon(imageView: ImageView, isSelected: Boolean)
+
+    fun isAll() = getKey() == ALL
+
+    fun isRecent() = getKey() == RECENTLY
+
+}
+
+interface OKGameLabel {
+
+    fun getKey(): Int
+
     fun bindLabelIcon(imageView: ImageView)
 
-    fun isAll() = tabId() == GameTabIds.ALL
-    fun isSearch() = tabId() == GameTabIds.SEARCH
-
+    fun bindLabelName(textView: TextView)
 }
 
 @Target(AnnotationTarget.VALUE_PARAMETER)

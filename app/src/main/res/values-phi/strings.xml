@@ -1148,7 +1148,16 @@
     <string name="N865">Ang halaga ay lumampas sa limitasyon</string>
     <string name="text_paymaya_add_success">Matagumpay ang pag-bind ng PayMaya</string>
     <string name="text_pay_maya_delete_success">Matagumpay na na-delete ang PayMaya</string>
+    <string name="N880">Provider ng laro</string>
+    <string name="N707">Pinakabagong Taya At Big Wins</string>
+    <string name="N708">Pinakabagong Taya</string>
+    <string name="N709">Pinakabagong Big Wins</string>
+    <string name="N711">Games</string>
+    <string name="N710">Player</string>
+    <string name="N713">Halaga ng Kita</string>
+    <string name="N712">Halaga ng taya</string>
     <string name="N874">kamakailang na laro</string>
     <string name="N873">Paborito</string>
     <string name="N882">Resulta ng paghahanap</string>
+    <string name="N900">Pangalan ng Laro</string>
 </resources>

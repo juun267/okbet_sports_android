@@ -8,10 +8,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemChildClickListener
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.extentions.setOnClickListener
@@ -40,15 +43,12 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     private lateinit var binding: FragmentAllOkgamesBinding
     private val gameAllAdapter by lazy {
-        GameCategroyAdapter(
-            clickCollect = {
-                okGamesFragment().viewModel.collectGame(it)
-            },
-            clickGame = {
-                okGamesFragment().viewModel.requestEnterThirdGame(it, this@AllGamesFragment)
-                viewModel.addRecentPlay(it.id.toString())
-            }
-        )
+        GameCategroyAdapter(clickCollect = {
+            okGamesFragment().viewModel.collectGame(it)
+        }, clickGame = {
+            okGamesFragment().viewModel.requestEnterThirdGame(it, this@AllGamesFragment)
+            viewModel.addRecentPlay(it.id.toString())
+        })
     }
     private var collectGameAdapter: GameChildAdapter? = null
     private var recentGameAdapter: GameChildAdapter? = null
@@ -84,8 +84,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         }
     }
 
-    private fun initObserve() {
-        okGamesFragment().viewModel.gameHall.observe(this.viewLifecycleOwner) {
+    private fun initObserve() = okGamesFragment().viewModel.run {
+        gameHall.observe(viewLifecycleOwner) {
             categoryList = it.categoryList?.filter {
                 it.gameList?.let {
                     //最多显示12个
@@ -97,14 +97,14 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             gameAllAdapter.setList(categoryList)
             viewModel.getRecentPlay()
         }
-        okGamesFragment().viewModel.collectList.observe(viewLifecycleOwner) {
+        collectList.observe(viewLifecycleOwner) {
             if (it.isNotEmpty() && it.size > 12) {
                 setCollectList(it.subList(0, 12))
             } else {
                 setCollectList(it)
             }
         }
-        okGamesFragment().viewModel.collectOkGamesResult.observe(viewLifecycleOwner) { result ->
+        collectOkGamesResult.observe(viewLifecycleOwner) { result ->
             var needUpdate = false
             gameAllAdapter.data.forEach {
                 it.gameList?.forEach { gameBean ->
@@ -143,7 +143,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 }
             }
         }
-        viewModel.recentPlay.observe(viewLifecycleOwner) {
+        recentPlay.observe(viewLifecycleOwner) {
             if (it.size > 12) {
                 setRecent(it.subList(0, 12))
             } else {
@@ -151,21 +151,20 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             }
         }
     }
+  }
 
     var recordNewhttpFlag = false //最新投注接口请求完成
     var recordResulthttpFlag = false//最新大奖接口请求完成
 
-    private fun onBindGamesView() {
-        binding.includeGamesAll.apply {
-            rvGamesAll.layoutManager =
-                LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-            rvGamesAll.adapter = gameAllAdapter
-            gameAllAdapter.setOnItemChildClickListener(OnItemChildClickListener { adapter, view, position ->
-                gameAllAdapter.data[position].let {
-                    okGamesFragment().showGameResult(it.categoryName, categoryId = it.id.toString())
-                }
-            })
-        }
+    private fun onBindGamesView() = binding.includeGamesAll.run {
+        rvGamesAll.layoutManager =
+            LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        rvGamesAll.adapter = gameAllAdapter
+        gameAllAdapter.setOnItemChildClickListener(OnItemChildClickListener { _, _, position ->
+            gameAllAdapter.getItem(position).let {
+                okGamesFragment().changeGameTable(it)
+            }
+        })
     }
 
     private fun gameRecordAdapterNotify(it: RecordNewEvent) {
@@ -180,9 +179,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         viewModel.getOKGamesRecordResult()
         binding.include3.apply {
             binding.include3.ivProvidersLeft.alpha = 0.5F
-            providersAdapter.setOnItemClickListener { adapter, view, position ->
-                var item =providersAdapter.getItem(position)
-                okGamesFragment().showGameResult(item.firmName, categoryId = item.id.toString())
+            providersAdapter.setOnItemClickListener { _, _, position ->
+                okGamesFragment().changePartGames(providersAdapter.getItem(position))
             }
             rvOkgameProviders.apply {
                 var okGameProLLM =
@@ -217,11 +215,13 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             rvOkgameRecord.itemAnimator = DefaultItemAnimator()
             viewModel.providerResult.observe(viewLifecycleOwner) { resultData ->
                 resultData?.firmList?.let {
-                    providersAdapter.addData(it)
+                    if (!providersAdapter.data.containsAll(it)) {
+                        providersAdapter.addData(it)
+                    }
                 }
             }
             viewModel.recordNewHttp.observe(viewLifecycleOwner) {
-                if(it!=null){
+                if (it != null) {
                     if (binding.include3.rbtnLb.isChecked) {
                         gameRecordAdapter.addData(0, it.subList(0, 10))
                     }
@@ -277,12 +277,21 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         val rBtnLbw = include3.rbtnLbw
         val prLeft = binding.include3.ivProvidersLeft//供应商左滑按钮
         val prRight = binding.include3.ivProvidersRight//供应商右滑按钮
+        val rcvPayment = include5.rcvPayment
         setUnderline(
             tvPrivacyPolicy, tvTermConditions, tvResponsibleGaming, tvLiveChat, tvContactUs, tvFaqs
         )
         setOnClickListener(
-            tvPrivacyPolicy, tvTermConditions, tvResponsibleGaming, tvLiveChat, tvContactUs, tvFaqs,
-            rBtnLb, rBtnLbw, prLeft, prRight
+            tvPrivacyPolicy,
+            tvTermConditions,
+            tvResponsibleGaming,
+            tvLiveChat,
+            tvContactUs,
+            tvFaqs,
+            rBtnLb,
+            rBtnLbw,
+            prLeft,
+            prRight
         ) {
             when (it.id) {
                 R.id.tvPrivacyPolicy -> {
@@ -320,14 +329,17 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                         getString(R.string.faqs)
                     )
                 }
+
                 R.id.rbtn_lb -> {
                     gameRecordAdapter.data.clear()
                     gameRecordAdapter.addData(p3RecordNData)
                 }
+
                 R.id.rbtn_lbw -> {
                     gameRecordAdapter.data.clear()
                     gameRecordAdapter.addData(p3RecordRData)
                 }
+
                 R.id.iv_providers_left -> {
                     if (p3ogProviderFirstPosi >= 3) {
                         binding.include3.rvOkgameProviders.layoutManager?.smoothScrollToPosition(
@@ -337,13 +349,12 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                         )
                     } else {
                         binding.include3.rvOkgameProviders.layoutManager?.smoothScrollToPosition(
-                            binding.include3.rvOkgameProviders,
-                            RecyclerView.State(),
-                            0
+                            binding.include3.rvOkgameProviders, RecyclerView.State(), 0
                         )
                     }
 
                 }
+
                 R.id.iv_providers_right -> {
                     if (p3ogProviderLastPosi < providersAdapter.data.size - 4) {
                         binding.include3.rvOkgameProviders.layoutManager?.smoothScrollToPosition(
@@ -361,6 +372,27 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 }
             }
         }
+        initRcvPaymentMethod(rcvPayment)
+
+    }
+
+    private fun initRcvPaymentMethod(rcvPayment: RecyclerView) {
+        val list = mutableListOf(
+            R.drawable.icon_gcash,
+            R.drawable.icon_paymaya,
+            R.drawable.icon_fortune_pay,
+            R.drawable.icon_epon
+        )
+        rcvPayment.layoutManager = GridLayoutManager(context, 4)
+        val paymentAdapter =
+            object : BaseQuickAdapter<Int, BaseViewHolder>(R.layout.item_view_payment_method) {
+                override fun convert(holder: BaseViewHolder, item: Int) {
+                    holder.setImageResource(R.id.iv, item)
+                }
+
+            }
+        rcvPayment.adapter = paymentAdapter
+        paymentAdapter.setNewInstance(list)
 
     }
 
@@ -446,39 +478,22 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             }
         }
 
-        receiver.matchStatusChange.observe(viewLifecycleOwner) { event ->
-            event?.let { matchStatusChangeEvent ->
-                val targetList = binding.hotGameView.adapter?.data
-                targetList?.forEachIndexed { index, recommend ->
-                    val matchList = mutableListOf(recommend)
-                    if (SocketUpdateUtil.updateMatchStatus(
-                            recommend.gameType,
-                            matchList as MutableList<MatchOdd>,
-                            matchStatusChangeEvent,
-                            context
-                        )
-                    ) {
-//                        LogUtil.e("matchStatusChange="+recommend.id+","+recommend.homeName+","+recommend.startTime+","+recommend.matchInfo?.status+","+recommend.matchInfo?.homeScore+":"+recommend.matchInfo?.awayScore)
-//                        LogUtil.toJson(recommend.matchInfo)
-                        binding.hotGameView.adapter?.notifyItemChanged(index)
-                    }
-                }
-            }
-        }
-
-        receiver.matchClock.observe(viewLifecycleOwner) {
-            it?.let { matchClockEvent ->
-                val targetList = binding.hotGameView.adapter?.data
-                targetList?.forEachIndexed { index, recommend ->
-                    if (
-                        SocketUpdateUtil.updateMatchClock(
-                            recommend,
-                            matchClockEvent
-                        )
-                    ) {
-                        binding.hotGameView.adapter?.notifyItemChanged(index)
-                    }
-                }
+                    var needUpdate = false
+                    val adapterData = binding.hotGameView.getAdapter().data
+                    adapterData.forEachIndexed { index, recommend ->
+                        //取一个赛事，装成集合
+                        val testList = mutableListOf<Recommend>()
+                        testList.add(recommend)
+                        //丢进去判断是否要更新
+                        if (SocketUpdateUtil.updateMatchStatus(
+                                recommend.matchInfo?.gameType,
+                                testList as MutableList<MatchOdd>,
+                                matchStatusChangeEvent,
+                                context
+                            )
+                        ) {
+                            needUpdate = true
+                        }
 
             }
         }
@@ -579,16 +594,19 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         if (!collectList.isNullOrEmpty()) {
             binding.includeGamesAll.inclueCollect.apply {
                 linCategroyName.setOnClickListener {
-                    okGamesFragment().showPartGames(GameTab.TAB_FAVORITES)
+                    okGamesFragment().changeGameTable(GameTab.TAB_FAVORITES)
                 }
                 ivIcon.setImageResource(GameTab.TAB_FAVORITES.labelIcon)
                 tvName.setText(GameTab.TAB_FAVORITES.name)
                 rvGameItem.apply {
                     if (adapter == null) {
-                        layoutManager =
-                            SocketLinearManager(context, RecyclerView.HORIZONTAL, false)
-                        if (itemDecorationCount == 0)
-                            addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_10))
+                        layoutManager = SocketLinearManager(context, RecyclerView.HORIZONTAL, false)
+                        if (itemDecorationCount == 0) addItemDecoration(
+                            SpaceItemDecoration(
+                                context,
+                                R.dimen.margin_10
+                            )
+                        )
                         collectGameAdapter = GameChildAdapter().apply {
                             setList(collectList)
                             setOnItemChildClickListener { adapter, view, position ->
@@ -598,8 +616,9 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                             }
                             setOnItemClickListener { adapter, view, position ->
                                 data[position].let {
-                                    okGamesFragment().viewModel.requestEnterThirdGame(it,
-                                        this@AllGamesFragment)
+                                    okGamesFragment().viewModel.requestEnterThirdGame(
+                                        it, this@AllGamesFragment
+                                    )
                                     viewModel.addRecentPlay(it.id.toString())
                                 }
                             }
@@ -618,9 +637,9 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     }
 
     private fun subscribeChannelHall(recommend: Recommend) {
-        LogUtil.d("subscribeChannelHall=" + recommend.matchInfo?.toJson())
         subscribeChannelHall(recommend.matchInfo?.gameType, recommend.matchInfo?.id)
     }
+
     /**
      * 设置最近游戏列表
      */
@@ -629,16 +648,19 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         if (!recentList.isNullOrEmpty()) {
             binding.includeGamesAll.inclueRecent.apply {
                 linCategroyName.setOnClickListener {
-                    okGamesFragment().showPartGames(GameTab.TAB_RECENTLY)
+                    okGamesFragment().changeGameTable(GameTab.TAB_RECENTLY)
                 }
                 ivIcon.setImageResource(GameTab.TAB_RECENTLY.labelIcon)
                 tvName.setText(GameTab.TAB_RECENTLY.name)
                 rvGameItem.apply {
                     if (adapter == null) {
-                        layoutManager =
-                            SocketLinearManager(context, RecyclerView.HORIZONTAL, false)
-                        if (itemDecorationCount == 0)
-                            addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_10))
+                        layoutManager = SocketLinearManager(context, RecyclerView.HORIZONTAL, false)
+                        if (itemDecorationCount == 0) addItemDecoration(
+                            SpaceItemDecoration(
+                                context,
+                                R.dimen.margin_10
+                            )
+                        )
                         recentGameAdapter = GameChildAdapter().apply {
                             setList(recentList)
                             setOnItemChildClickListener { adapter, view, position ->
@@ -648,8 +670,9 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                             }
                             setOnItemClickListener { adapter, view, position ->
                                 data[position].let {
-                                    okGamesFragment().viewModel.requestEnterThirdGame(it,
-                                        this@AllGamesFragment)
+                                    okGamesFragment().viewModel.requestEnterThirdGame(
+                                        it, this@AllGamesFragment
+                                    )
                                     viewModel.addRecentPlay(it.id.toString())
                                 }
                             }

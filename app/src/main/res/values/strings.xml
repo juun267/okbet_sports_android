@@ -1277,7 +1277,17 @@
     <string name="N848">Select a source of income</string>
     <string name="N850">Please select an address</string>
     <string name="N849">Address</string>
+    <string name="N880">providers</string>
+    <string name="N707">Latest Bet And Big Wins</string>
+    <string name="N708">Latest Bets</string>
+    <string name="N709">Latest Big Wins</string>
+    <string name="N711">Games</string>
+    <string name="N710">Player</string>
+    <string name="N713">Profit Amount</string>
+    <string name="N712">Bet Amount</string>
     <string name="N874">Recent</string>
     <string name="N873">Favorites</string>
     <string name="N882">Search Result</string>
+    <string name="N900">Game Name</string>
+
 </resources>

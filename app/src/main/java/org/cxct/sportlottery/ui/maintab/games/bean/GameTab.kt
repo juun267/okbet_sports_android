@@ -16,7 +16,7 @@ class GameTab private constructor(@GameTabIds val id: Int,
                                   @DrawableRes val unSelectedIcon: Int,
                                   @DrawableRes val labelIcon: Int,
                                   @StringRes val name: Int): OKGameTab {
-    override fun tabId() = id
+    override fun getKey() = id
 
     override fun bindNameText(textView: TextView) {
         textView.setText(name)
@@ -30,12 +30,16 @@ class GameTab private constructor(@GameTabIds val id: Int,
         imageView.setImageResource(labelIcon)
     }
 
+    override fun bindLabelName(textView: TextView) {
+        textView.setText(name)
+    }
+
     companion object {
         val TAB_ALL = GameTab(ALL,
             R.drawable.ic_okgame_tab_all_1,
             R.drawable.ic_okgame_tab_all_0,
             R.drawable.ic_okgame_tab_all_0,
-            R.string.bottom_nav_home)
+            R.string.label_all)
 
         val TAB_FAVORITES = GameTab(FAVORITES,
             R.drawable.ic_okgame_tab_favorite_1,

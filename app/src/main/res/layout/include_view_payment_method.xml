@@ -76,16 +76,16 @@
         app:layout_constraintTop_toTopOf="@+id/imageView4" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/rcvPayment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:layout_marginHorizontal="8dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:spanCount="4"
-        android:layout_marginStart="10dp"
         tools:itemCount="4"
         tools:listitem="@layout/item_view_payment_method" />
 
@@ -96,7 +96,7 @@
         android:layout_marginHorizontal="12dp"
         android:layout_marginTop="@dimen/margin_16"
         android:background="@color/color_e0e3ee"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView"
+        app:layout_constraintTop_toBottomOf="@+id/rcvPayment"
         tools:layout_editor_absoluteX="12dp" />
 
     <TextView
@@ -120,7 +120,7 @@
         android:textSize="16sp"
         android:textColor="@color/color_0D2245"
         android:textStyle="bold"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="40dp"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="@+id/textView5" />
 
@@ -174,7 +174,7 @@
         android:gravity="center"
         android:paddingHorizontal="10dp"
         android:textColor="@color/color_6D7693"
-        android:text="OKbet is a Registered Trade Mark, Brand and Business Name Owned by Ekxinum Inc.Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAGCOR)."
+        android:text="OKbet is a Registered Trade Mark, Brand and Business Name Owned by KINGWIN VENTURES INC.Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAGCOR)."
         app:layout_constraintEnd_toEndOf="@+id/view4"
         app:layout_constraintStart_toStartOf="@+id/view4"
         app:layout_constraintTop_toBottomOf="@+id/view4" />
@@ -202,6 +202,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:textSize="12sp"
+        android:textStyle="normal"
         android:textColor="@color/color_5E6D78"
         android:text="Copyright © 2023 OKbet ALL RIGHTS RESERVED"
         app:layout_constraintEnd_toEndOf="parent"

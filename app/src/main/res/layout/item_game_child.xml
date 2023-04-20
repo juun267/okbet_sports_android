@@ -37,14 +37,14 @@
                 android:textSize="@dimen/textSize12sp"
                 android:textColor="@color/color_FFFFFF"
                 android:textFontWeight="700"
+                android:fontFamily="@font/din_bold"
                 tools:text="ARCADE" />
 
             <ImageView
                 android:id="@+id/iv_fav"
-                android:layout_width="20dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:layout_marginRight="8dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:padding="4dp"
                 android:layout_gravity="right"
                 android:src="@drawable/selector_game_fav" />
         </androidx.cardview.widget.CardView>

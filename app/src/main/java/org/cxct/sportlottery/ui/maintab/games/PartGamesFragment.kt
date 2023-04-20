@@ -5,30 +5,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
-import com.chad.library.adapter.base.listener.OnItemChildClickListener
-import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentPartOkgamesBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
-import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
-import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
+import org.cxct.sportlottery.ui.maintab.games.bean.OKGameLabel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 // 指定类别的三方游戏
 class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesViewModel::class) {
 
+    companion object {
+        val pageSize = 12
+    }
+
     private lateinit var binding: FragmentPartOkgamesBinding
+
     private inline fun okGamesFragment() = parentFragment as OKGamesFragment
-    private val gameChildAdapter by lazy { GameChildAdapter() }
-    private var dataList = mutableListOf<OKGameBean>()
-    private var currentPage: Int = 1
-    private var tagName: String? = null
-    private var gameName: String? = null
-    private var categoryId: String? = null
-    private var firmId: String? = null
-    private var currentTab: OKGameTab? = null
+    private val gameChildAdapter by lazy { GameChildAdapter(::onMoreClick) }
+    private var currentTab: OKGameLabel? = null
+    private var pageIndx = 1
+
 
     override fun createRootView(
         inflater: LayoutInflater,
@@ -41,95 +39,53 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     override fun onBindView(view: View) {
         initObserve()
+        initGameList()
+        bindClick()
         bindLabels()
-        binding.apply {
-            tvTag.setOnClickListener {
-                okGamesFragment().backGameAll()
-            }
-            rvGamesSelect.apply {
-                layoutManager = GridLayoutManager(requireContext(), 3)
-                addItemDecoration(GridSpacingItemDecoration(3, 10.dp, false))
-                adapter = gameChildAdapter.apply {
-                    data = dataList
-                    setEmptyView(LayoutInflater.from(requireContext())
-                        .inflate(R.layout.view_no_games, null))
-                    setOnItemChildClickListener(OnItemChildClickListener { adapter, view, position ->
-                        dataList[position]?.let {
-                            okGamesFragment().viewModel.collectGame(it)
-                        }
-                    })
-                    setOnItemClickListener(OnItemClickListener { adapter, view, position ->
-                        dataList[position]?.let {
-                            okGamesFragment().viewModel.requestEnterThirdGame(it,
-                                this@PartGamesFragment)
-                            viewModel.addRecentPlay(it.id.toString())
-                        }
-                    })
-                }
-            }
-            tvShowMore.setOnClickListener {
-                okGamesFragment().backGameAll()
-            }
-        }
-        updateView()
+    }
+    private fun bindClick() {
+        binding.tvTag.setOnClickListener { okGamesFragment().backGameAll() }
+        binding.tvShowMore.setOnClickListener { okGamesFragment().backGameAll() }
     }
 
-    private fun updateView() {
-//        binding.tvTag.text = tagName
-        getGameList()
+
+
+    private fun initGameList() = binding.rvGamesSelect.run {
+
+        layoutManager = GridLayoutManager(requireContext(), 3)
+        addItemDecoration(GridSpacingItemDecoration(3, 10.dp, false))
+        adapter = gameChildAdapter
+        gameChildAdapter.setEmptyView(LayoutInflater.from(requireContext()).inflate(R.layout.view_no_games, null))
+        gameChildAdapter.setOnItemChildClickListener { _, _, position ->
+            gameChildAdapter.getItem(position).let {
+                okGamesFragment().viewModel.collectGame(it)
+            }
+        }
+        gameChildAdapter.setOnItemClickListener { _, _, position ->
+            val item = gameChildAdapter.getItem(position)
+            okGamesFragment().viewModel.requestEnterThirdGame(item, this@PartGamesFragment)
+            viewModel.addRecentPlay(item.id.toString())
+        }
     }
 
     private fun initObserve() {
         okGamesFragment().viewModel.collectOkGamesResult.observe(this.viewLifecycleOwner) { result ->
-            var needUpdate = false
-            gameChildAdapter.data.forEach {
-                if (it.id == result.first) {
-                    it.markCollect = result.second.markCollect
-                    needUpdate = true
+            gameChildAdapter.data.forEachIndexed { index, okGameBean ->
+                if (okGameBean.id == result.first) {
+                    okGameBean.markCollect = result.second.markCollect
+                    gameChildAdapter.notifyItemChanged(index)
+                    return@observe
                 }
             }
-            if (needUpdate) {
-                gameChildAdapter.notifyDataSetChanged()
-            }
         }
-        viewModel.gamesList.observe(this.viewLifecycleOwner) {
-            setItemList(it.toMutableList())
-        }
+
     }
 
-    fun setItemList(list: MutableList<OKGameBean>) {
-        dataList.clear()
-        dataList.addAll(list)
-        if (isAdded) {
-            gameChildAdapter.notifyDataSetChanged()
-        }
-    }
-
-    private fun getGameList() {
-        viewModel.getOKGamesList(currentPage, gameName, categoryId, firmId)
-    }
-
-    fun setData(
-        tagName: String?,
-        gameName: String? = null,
-        categoryId: String? = null,
-        firmId: String? = null,
-    ) {
-        this.tagName = tagName
-        this.gameName = gameName
-        this.categoryId = categoryId
-        this.firmId = firmId
-        currentPage = 1
-        if (isAdded) {
-            updateView()
-        }
-    }
-
-
-    fun changeTab(tab: OKGameTab) {
-        if (currentTab?.tabId() != tab.tabId()) {
-            currentTab = tab
-            bindLabels()
+    private fun onMoreClick() {
+        if (okGamesFragment().loadNextPage(pageIndx)) {
+            gameChildAdapter.onLoadingMore()
+        } else {
+            gameChildAdapter.disableMore()
         }
     }
 
@@ -138,14 +94,28 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             return
         }
 
-        currentTab?.let { tab ->
-            tab.bindLabelIcon(binding.ivIcon)
-            tab.bindNameText(binding.tvName)
-            tab.bindNameText(binding.tvTag)
+        gameChildAdapter.disableMore()
+        currentTab?.let {
+            it.bindLabelIcon(binding.ivIcon)
+            it.bindLabelName(binding.tvName)
+            it.bindLabelName(binding.tvTag)
         }
     }
 
-    fun showSearchResault(list: List<OKGameBean>?) {
-        gameChildAdapter.setNewInstance(list?.toMutableList())
+    fun changeLabel(gameLabel: OKGameLabel) {
+        if (currentTab != gameLabel && currentTab?.getKey() != gameLabel.getKey()) {
+            pageIndx = 1
+            currentTab = gameLabel
+            bindLabels()
+            gameChildAdapter.setNewInstance(null)
+        }
+    }
+
+    fun showSearchResault(list: List<OKGameBean>?, total: Int): Int {
+        val count = gameChildAdapter.setGameList(list?.toMutableList(), total)
+        if (list?.size ?: 0 >= pageSize) {
+            pageIndx++
+        }
+        return count
     }
 }

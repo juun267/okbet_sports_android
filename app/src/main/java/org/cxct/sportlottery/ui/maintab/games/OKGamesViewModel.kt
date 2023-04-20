@@ -13,6 +13,7 @@ import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
+import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.KvUtils
 
@@ -47,10 +48,6 @@ class OKGamesViewModel(
         get() = _collectOkGamesResult
     private val _collectOkGamesResult = MutableLiveData<Pair<Int, OKGameBean>>()
 
-    //游戏结果列表
-    val gamesList: LiveData<List<OKGameBean>>
-        get() = _gamesList
-    private val _gamesList = MutableLiveData<List<OKGameBean>>()
 
     //游戏大厅数据
     val gameHall: LiveData<OKGamesHall>
@@ -72,9 +69,10 @@ class OKGamesViewModel(
      */
     private var allGamesMap = mutableMapOf<Int, OKGameBean>()
 
-    val searchResult: LiveData<Pair<String, List<OKGameBean>?>>
-        get() = _searchResult
-    private val _searchResult = MutableLiveData<Pair<String, List<OKGameBean>?>>()
+    //游戏结果列表
+    val gamesList: LiveData<Triple<Any, Int, List<OKGameBean>?>> // 请求id-总记录数-响应结果
+        get() = _gamesList
+    private val _gamesList = MutableLiveData<Triple<Any, Int, List<OKGameBean>?>>()
 
     /**
      * 获取游戏大厅数据（包含，厂商列表，收藏列表）
@@ -98,12 +96,13 @@ class OKGamesViewModel(
      * 获取游戏分页列表
      */
     fun getOKGamesList(
-        page: Int,
-        gameName: String?,
+        requestTag: Any,
         categoryId: String?,
-        firmId: String?,
-    ) = callApi({ OKGamesRepository.getOKGamesList(page, 12, gameName, categoryId, firmId) }) {
-        _gamesList.postValue(it.getData() ?: listOf())
+        firmId: String? = null,
+        page: Int = 1,
+        pageSize: Int = 12) = callApi({ OKGamesRepository.getOKGamesList(page, pageSize, null, categoryId, firmId) }) {
+
+        _gamesList.value = Triple(requestTag, it.total, it.getData())
     }
 
     /**
@@ -111,8 +110,10 @@ class OKGamesViewModel(
      */
     fun collectGame(gameData: OKGameBean) =
         callApi({ OKGamesRepository.collectOkGames(gameData.id, !gameData.markCollect) }) {
-            gameData.markCollect = !gameData.markCollect
-            _collectOkGamesResult.postValue(Pair(gameData.id, gameData))
+            if (it.succeeded()) {
+                gameData.markCollect = !gameData.markCollect
+                _collectOkGamesResult.postValue(Pair(gameData.id, gameData))
+            }
         }
 
     /**
@@ -172,13 +173,14 @@ class OKGamesViewModel(
         }
         _recentPlay.postValue(recentList)
     }
-    fun searchGames(gameName: String,
+    fun searchGames(requestTag: Any,
+                    gameName: String,
                     page: Int = 1,
                     pageSize: Int = 15,
                     categoryId: String? = null,
                     firmId: String? = null,
     ) = callApi({ OKGamesRepository.getOKGamesList(page, pageSize, gameName, categoryId, firmId) }) {
-        _searchResult.postValue(Pair(gameName, it.getData()))
+        _gamesList.postValue(Triple(requestTag, it.total, it.getData()))
     }
 
     val recordNewHttp: LiveData<List<RecordNewEvent>>

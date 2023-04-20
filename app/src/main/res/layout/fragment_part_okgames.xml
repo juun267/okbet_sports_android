@@ -70,5 +70,6 @@
         android:background="@drawable/bg_white_radius_8"
         android:textSize="@dimen/textSize12sp"
         android:textColor="@color/color_6D7693"
+        android:visibility="gone"
         tools:text="Show More (90)" />
 </LinearLayout>

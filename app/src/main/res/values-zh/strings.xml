@@ -1220,7 +1220,16 @@
     <string name="N171">请输入正确的 11 位数手机号码</string>
     <string name="N865">金额超过限额</string>
     <string name="J369">支付方式</string>
+    <string name="N880">游戏供应商</string>
+    <string name="N707">最新投注和大奖播报</string>
+    <string name="N708">最新投注</string>
+    <string name="N709">最新大奖</string>
+    <string name="N711">游戏</string>
+    <string name="N710">昵称</string>
+    <string name="N713">盈利金额</string>
+    <string name="N712">投注金额</string>
     <string name="N874">近期游戏</string>
     <string name="N873">收藏夹</string>
     <string name="N882">搜索结果</string>
+    <string name="N900">游戏名称</string>
 </resources>
