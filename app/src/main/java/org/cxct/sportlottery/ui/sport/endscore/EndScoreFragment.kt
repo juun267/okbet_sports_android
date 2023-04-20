@@ -59,7 +59,7 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
                 return@OddsChangeListener
             }
 
-            endScoreAdapter.onMatchOdds(subscribedMatchOdd, oddsChangeEvent)
+//            endScoreAdapter.onMatchOdds(subscribedMatchOdd, oddsChangeEvent)
         }
     }
 

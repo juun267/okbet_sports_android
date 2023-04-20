@@ -17,8 +17,8 @@ class EndScoreFirstProvider(val adapter: EndScoreAdapter,
 
     override fun convert(helper: BaseViewHolder, item: BaseNode)  {
         val league = item as LeagueOdd
-        helper.setText(R.id.tv_league_name, league.league?.name)
-        helper.getView<ImageView>(R.id.iv_league_logo).setLeagueLogo(league.league?.categoryIcon)
+        helper.setText(R.id.tv_league_name, league.league.name)
+        helper.getView<ImageView>(R.id.iv_league_logo).setLeagueLogo(league.league.categoryIcon)
         setArrowSpin(helper.getView(R.id.iv_league_arrow), league, false)
     }
 
