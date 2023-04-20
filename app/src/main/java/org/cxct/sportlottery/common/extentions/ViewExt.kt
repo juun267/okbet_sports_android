@@ -6,9 +6,11 @@ import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.text.InputFilter
 import android.view.View
+import android.view.animation.BounceInterpolator
 import androidx.annotation.LayoutRes
 import com.chad.library.adapter.base.BaseQuickAdapter
 import android.view.animation.DecelerateInterpolator
+import android.view.animation.LinearInterpolator
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import androidx.core.view.ViewCompat
@@ -162,6 +164,15 @@ fun View.rotationAnimation(rotation: Float, duration: Long = 200) {
         .setDuration(duration)
 //        .setInterpolator(DecelerateInterpolator())
         .rotation(rotation)
+        .start()
+}
+
+fun View.animDuang(scale: Float, duration: Long = 300) {
+    ViewCompat.animate(this)
+        .setDuration(duration)
+        .setInterpolator(BounceInterpolator())
+        .scaleX(1.2f)
+        .scaleY(1.2f)
         .start()
 }
 

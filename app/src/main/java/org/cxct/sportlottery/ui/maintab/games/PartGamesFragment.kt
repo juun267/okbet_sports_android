@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.animDuang
 import org.cxct.sportlottery.databinding.FragmentPartOkgamesBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
@@ -56,8 +57,10 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         addItemDecoration(GridSpacingItemDecoration(3, 10.dp, false))
         adapter = gameChildAdapter
         gameChildAdapter.setEmptyView(LayoutInflater.from(requireContext()).inflate(R.layout.view_no_games, null))
-        gameChildAdapter.setOnItemChildClickListener { adapter, _, position ->
-                okGamesFragment().collectGame(adapter.getItem(position) as OKGameBean)
+        gameChildAdapter.setOnItemChildClickListener { adapter, view, position ->
+            if (okGamesFragment().collectGame(adapter.getItem(position) as OKGameBean)) {
+                view.animDuang(1.2f)
+            }
         }
         gameChildAdapter.setOnItemClickListener { _, _, position ->
             val item = gameChildAdapter.getItem(position)
@@ -66,8 +69,8 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         }
     }
 
-    private fun initObserve() {
-        okGamesFragment().viewModel.collectOkGamesResult.observe(this.viewLifecycleOwner) { result ->
+    private fun initObserve() = okGamesFragment().viewModel.run {
+        collectOkGamesResult.observe(viewLifecycleOwner) { result ->
             gameChildAdapter.data.forEachIndexed { index, okGameBean ->
                 if (okGameBean.id == result.first) {
                     okGameBean.markCollect = result.second.markCollect

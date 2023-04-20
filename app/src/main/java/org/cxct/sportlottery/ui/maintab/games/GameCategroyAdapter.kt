@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.games
 
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +17,7 @@ import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 
 class GameCategroyAdapter(
-    private val clickCollect: (gameBean: OKGameBean) -> Unit,
+    private val clickCollect: (view: View, gameBean: OKGameBean) -> Unit,
     private val clickGame: (gameGroup: OKGameBean) -> Unit,
     private val gameItemViewPool: RecyclerView.RecycledViewPool
 ) :
@@ -33,8 +34,8 @@ class GameCategroyAdapter(
             layoutManager = SocketLinearManager(context, RecyclerView.HORIZONTAL, false)
             addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_10))
             adapter = GameChildAdapter().apply {
-                setOnItemChildClickListener { _, _, position ->
-                    clickCollect.invoke(getItem(position))
+                setOnItemChildClickListener { _, view, position ->
+                    clickCollect.invoke(view, getItem(position))
                 }
                 setOnItemClickListener { _, _, position ->
                     clickGame.invoke(getItem(position))
