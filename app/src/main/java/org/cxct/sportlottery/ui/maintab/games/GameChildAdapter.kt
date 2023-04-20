@@ -54,16 +54,8 @@ class GameChildAdapter(val moreClick: (() -> Unit)? = null) : BindingAdapter<OKG
 
     override fun onBinding(position: Int, binding: ItemGameChildBinding, item: OKGameBean) {
         binding.apply {
-            ivCover.load(item.imgGame)
+            ivCover.load(item.imgGame, R.drawable.img_banner01)
             tvName.text = item.gameName
-//            tvName.text =
-//                if (item.gameNamemap == null) item.firmName else when (LanguageManager.getSelectLanguage(
-//                    context)) {
-//                    LanguageManager.Language.ZH -> item.gameNamemap.zh
-//                    LanguageManager.Language.VI -> item.gameNamemap.vi
-//                    LanguageManager.Language.PHI -> item.gameNamemap.ph
-//                    else -> item.gameNamemap.en
-//                }
             tvFirmName.text = item.firmCode
             ivFav.isSelected = item.markCollect
         }

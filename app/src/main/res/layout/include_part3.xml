@@ -86,8 +86,10 @@
 
         <RadioButton
             android:id="@+id/rbtn_lb"
-            android:layout_width="102dp"
+            android:layout_width="wrap_content"
             android:layout_height="30dp"
+            android:paddingHorizontal="15dp"
+            android:layout_marginRight="8dp"
             android:background="@drawable/selector_tab_okgame_p3"
             android:button="@null"
             android:checked="true"
@@ -95,14 +97,11 @@
             android:text="@string/N708"
             android:textColor="@color/color_white_gray" />
 
-        <View
-            android:layout_width="8dp"
-            android:layout_height="0dp" />
-
         <RadioButton
             android:id="@+id/rbtn_lbw"
-            android:layout_width="102dp"
+            android:layout_width="wrap_content"
             android:layout_height="30dp"
+            android:paddingHorizontal="15dp"
             android:background="@drawable/selector_tab_okgame_p3"
             android:button="@null"
             android:gravity="center"

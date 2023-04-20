@@ -101,8 +101,9 @@ class GamesTabAdapter(val onSelected: (OKGameTab) -> Unit)
         init {
             root.layoutParams = ViewGroup.LayoutParams(-2, 36.dp)
             root.gravity = Gravity.CENTER_VERTICAL or Gravity.CENTER_HORIZONTAL
+            root.minimumWidth = 71.dp
             8.dp.let { root.setPadding(it, 0 , it, 0) }
-            root.background = getItemBackground()
+            root.background = getItemBackground(context)
 
             icon = AppCompatImageView(context)
             val parms = 20.dp.run { LayoutParams(this,this) }
@@ -114,11 +115,11 @@ class GamesTabAdapter(val onSelected: (OKGameTab) -> Unit)
             root.addView(name)
         }
 
-        private fun getItemBackground(): Drawable {
+        private fun getItemBackground(context: Context): Drawable {
             return DrawableCreator.Builder()
                 .setCornersRadius(8.dp.toFloat())
-                .setSelectedStrokeColor(Color.parseColor("#806FA6FF"), Color.WHITE)
-                .setSelectedSolidColor(Color.parseColor("#025BE8"), Color.WHITE)
+                .setSelectedStrokeColor(context.getColor(R.color.color_806FA6FF), Color.WHITE)
+                .setSelectedSolidColor(context.getColor(R.color.color_025BE8), Color.WHITE)
                 .setStrokeWidth(2.dp.toFloat())
                 .build()
         }

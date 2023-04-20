@@ -33,8 +33,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentPartOkgamesBinding.inflate(layoutInflater)
-        return binding.root
+        return FragmentPartOkgamesBinding.inflate(layoutInflater).apply { binding = this }.root
     }
 
     override fun onBindView(view: View) {
@@ -52,6 +51,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     private fun initGameList() = binding.rvGamesSelect.run {
 
+        setRecycledViewPool(okGamesFragment().gameItemViewPool)
         layoutManager = GridLayoutManager(requireContext(), 3)
         addItemDecoration(GridSpacingItemDecoration(3, 10.dp, false))
         adapter = gameChildAdapter

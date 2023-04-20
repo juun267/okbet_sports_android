@@ -47,7 +47,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         }, clickGame = {
             okGamesFragment().viewModel.requestEnterThirdGame(it, this@AllGamesFragment)
             viewModel.addRecentPlay(it.id.toString())
-        })
+        }, okGamesFragment().gameItemViewPool)
     }
     private var collectGameAdapter: GameChildAdapter? = null
     private var recentGameAdapter: GameChildAdapter? = null
@@ -63,8 +63,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     override fun createRootView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentAllOkgamesBinding.inflate(layoutInflater)
-        return binding.root
+        return FragmentAllOkgamesBinding.inflate(layoutInflater).apply { binding = this }.root
     }
 
     override fun onBindView(view: View) {
@@ -151,10 +150,11 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         }
     }
 
-    var recordNewhttpFlag = false //最新投注接口请求完成
-    var recordResulthttpFlag = false//最新大奖接口请求完成
+    private var recordNewhttpFlag = false //最新投注接口请求完成
+    private var recordResulthttpFlag = false//最新大奖接口请求完成
 
     private fun onBindGamesView() = binding.includeGamesAll.run {
+        rvGamesAll.setRecycledViewPool(okGamesFragment().gameItemViewPool)
         rvGamesAll.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         rvGamesAll.adapter = gameAllAdapter
@@ -578,6 +578,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 tvName.setText(GameTab.TAB_FAVORITES.name)
                 rvGameItem.apply {
                     if (adapter == null) {
+                        rvGameItem.setRecycledViewPool(okGamesFragment().gameItemViewPool)
                         layoutManager = SocketLinearManager(context, RecyclerView.HORIZONTAL, false)
                         if (itemDecorationCount == 0) addItemDecoration(
                             SpaceItemDecoration(
@@ -632,6 +633,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 tvName.setText(GameTab.TAB_RECENTLY.name)
                 rvGameItem.apply {
                     if (adapter == null) {
+                        rvGameItem.setRecycledViewPool(okGamesFragment().gameItemViewPool)
                         layoutManager = SocketLinearManager(context, RecyclerView.HORIZONTAL, false)
                         if (itemDecorationCount == 0) addItemDecoration(
                             SpaceItemDecoration(
