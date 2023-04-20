@@ -30,6 +30,7 @@ import kotlinx.android.synthetic.main.content_odds_detail_list_team.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.network.common.ComparePlayCate
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.PlayCate
@@ -1521,9 +1522,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         odd.name?.replace("\\s".toRegex(), "")?.split("-")
                     stringArray?.let { stringArrayNotNull ->
 
-                        if ((stringArrayNotNull.getOrNull(0)?.toInt()
-                                ?: 0) > (stringArrayNotNull.getOrNull(1)?.toInt()
-                                ?: 0)
+                        if ((stringArrayNotNull.getOrNull(0).toIntS()) > (stringArrayNotNull.getOrNull(1).toIntS())
                         ) {
                             homeList.add(odd)
                         } else {

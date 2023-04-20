@@ -18,8 +18,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <WebView
-            android:id="@+id/web_view"
+        <org.cxct.sportlottery.view.webView.OkWebView
+            android:id="@+id/okWebView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never" />

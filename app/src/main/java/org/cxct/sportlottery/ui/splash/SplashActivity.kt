@@ -1,10 +1,11 @@
 package org.cxct.sportlottery.ui.splash
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import com.gyf.immersionbar.ImmersionBar
-import com.tencent.mmkv.MMKV
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
@@ -12,6 +13,7 @@ import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.repository.FLAG_OPEN
+import org.cxct.sportlottery.repository.NAME_LOGIN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
@@ -19,8 +21,10 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LogUtil
+import org.cxct.sportlottery.util.SPUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.system.exitProcess
@@ -32,6 +36,9 @@ import kotlin.system.exitProcess
 class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
     private val mVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
+    private val sharedPref: SharedPreferences? by lazy {
+        getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,9 +104,9 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         viewModel.configResult.observe(this) {
             //判断用户是否手动设置了语言
 
-            var languageArr = it?.configData?.supportLanguage?.split(",")
+            val languageArr = it?.configData?.supportLanguage?.split(",")
             LogUtil.d("当前语言 $languageArr")
-            var systemLanStr: String =
+            val systemLanStr: String =
                 LanguageManager.getSelectLanguage(applicationContext).key
             //1判断当前系统语言我们是否支持 如果支持使用系统语言
             if (languageArr != null && !(languageArr.contains(systemLanStr))) {
@@ -111,6 +118,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                     LanguageManager.saveSelectLanguage(applicationContext, LanguageManager.Language.EN)
                 }
                 viewModel.getConfig()
+                return@observe
             }
 
             when {
@@ -143,8 +151,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                 it.imageType == 9
                         && it.lang == LanguageManager.getSelectLanguage(this).key
                         && !it.imageName1.isNullOrEmpty()
-                        && it.startType == (if (MMKV.defaultMMKV()
-                        .getBoolean("isFirstOpen", true)
+                        && it.startType == (if (KvUtils.decodeBooleanTure("isFirstOpen", true)
                 ) 0 else 1)
             }
                 ?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
@@ -156,7 +163,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                 LaunchActivity.start(this, it, imageUrls = ArrayList(imageUrls))
                 finish()
             } else {
-                MMKV.defaultMMKV().putBoolean("isFirstOpen", false)
+                KvUtils.put("isFirstOpen", false)
                 goHomePage()
             }
         }

@@ -13,7 +13,7 @@ enum class TransferType(val type: String) {
     CRYPTO("cryptoTransfer"), //虛擬幣
     E_WALLET("eWalletTransfer"), //e wallet
     STATION("bettingStation"), //e wallet
-   // PAYMAYA("bettingStation") //e wallet
+    PAYMAYA("paymayaTransfer") //e wallet
 }
 
 /**

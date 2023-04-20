@@ -4,6 +4,7 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-android-extensions") //kotlin-parcelize
+//    id("multi-languages")
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
     id('com.google.gms.google-services')
@@ -19,8 +20,8 @@ android {
         applicationId "com.okbet.ph"
         minSdk 23
         targetSdk 31
-        versionName "1.1.48"
-        versionCode 70
+        versionName "1.1.49"
+        versionCode 71
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         ndk {
@@ -239,6 +240,9 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.2'
 
+//    implementation ('com.github.li-xiaojun:XPopup:2.9.19') {
+//        exclude group: 'com.google.android.material'
+//    }
 
     //live data
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
@@ -288,8 +292,6 @@ dependencies {
 
     //SVG rendering library
     implementation 'com.caverock:androidsvg-aar:1.4'
-    //簡易封裝的Adapter
-    implementation 'com.zhy:base-rvadapter:3.0.3'
 
     implementation 'com.github.JessYanCoding:AndroidAutoSize:v1.2.1'
 

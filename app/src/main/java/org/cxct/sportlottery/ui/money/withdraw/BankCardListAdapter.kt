@@ -48,8 +48,8 @@ class BankCardListAdapter(private val mBankCardListClickListener: BankCardListCl
                      TransferType.BANK -> CardType.EDIT.ordinal
                     TransferType.CRYPTO -> CardType.CRYPTO_EDIT.ordinal
                     TransferType.E_WALLET -> CardType.EDIT.ordinal
-              //      TransferType.PAYMAYA -> CardType.EDIT.ordinal
-                    TransferType.STATION -> CardType.EDIT.ordinal
+            TransferType.PAYMAYA -> CardType.EDIT.ordinal
+            TransferType.STATION -> CardType.EDIT.ordinal
         }
     }
 
@@ -83,7 +83,7 @@ class BankCardListAdapter(private val mBankCardListClickListener: BankCardListCl
                     TransferType.BANK.type -> LocalUtils.getString(R.string.bank_card)
                     TransferType.CRYPTO.type -> LocalUtils.getString(R.string.crypto)
                     TransferType.E_WALLET.type -> LocalUtils.getString(R.string.ewallet)
-                //    TransferType.E_WALLET.type -> LocalUtils.getString(R.string.ewallet)
+                    TransferType.PAYMAYA.type -> context.getString(R.string.ewallet)
                     else -> LocalUtils.getString(R.string.bank_card)
                 }
                 when(data.transferType){

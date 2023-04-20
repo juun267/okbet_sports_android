@@ -3,9 +3,11 @@ package org.cxct.sportlottery.net.user.api
 import com.google.gson.JsonObject
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.user.data.SendCodeRespnose
+import org.cxct.sportlottery.net.user.data.UserBasicInfoResponse
 import org.cxct.sportlottery.network.Constants.INDEX_SENDCODE
 import org.cxct.sportlottery.network.Constants.INDEX_VERIFYORRESET
 import org.cxct.sportlottery.network.Constants.SEND_EMAIL_FORGET
+import org.cxct.sportlottery.network.Constants.USER_GET_BASIC_INFO
 import retrofit2.http.Body
 import retrofit2.http.POST
 
@@ -20,4 +22,5 @@ interface UserApiService {
 
     @POST(INDEX_VERIFYORRESET)
     suspend fun verifyOrResetInfo(@Body params: JsonObject): ApiResult<SendCodeRespnose>
+
 }

@@ -49,7 +49,6 @@ import org.cxct.sportlottery.ui.sport.SportFragment
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment
 import org.cxct.sportlottery.ui.sport.list.SportLeagueAdapter
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.view.dialog.RedEnvelopeReceiveDialog
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import kotlin.system.exitProcess
@@ -101,14 +100,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         activityInstance = this
         EventBusUtil.targetLifecycle(this)
         LotteryManager.instance.getLotteryInfo()
-
-//        GlobalScope.launch {
-//            delay(5000)
-//            val redEnvelopeReceiveDialog = RedEnvelopeReceiveDialog(123)
-//            redEnvelopeReceiveDialog.show(
-//                supportFragmentManager, this::class.java.simpleName
-//            )
-//        }
     }
 
     override fun onNightModeChanged(mode: Int) {
