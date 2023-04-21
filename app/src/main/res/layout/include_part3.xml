@@ -7,6 +7,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/okgame_p3_layout_proivder"
         android:layout_width="match_parent"
         android:layout_height="24dp"
         android:layout_marginTop="16dp"
