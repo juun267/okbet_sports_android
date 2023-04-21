@@ -235,9 +235,9 @@ class OddsHotButtonHome @JvmOverloads constructor(
                         //独赢可能出现没有和的情况
                         var index = oddList.indexOf(odds)
                         when (index) {
-                            0 -> "1"
-                            1 -> if (oddList.size > 2) "X" else "2"
-                            2 -> "2"
+                            0 -> "Home"
+                            1 -> if (oddList.size > 2) "Draw" else "Away"
+                            2 -> "Away"
                             else -> ""
                         }
                     }
@@ -282,20 +282,20 @@ class OddsHotButtonHome @JvmOverloads constructor(
             requestLayout()
         }
 
-        tv_spread.apply {
-            visibility = when (!odds?.spread.isNullOrEmpty()) {
-                true -> View.VISIBLE
-                false -> {
-                    when {
-                        playCateCode.isOUType() -> View.INVISIBLE
-                        else -> View.GONE
-                    }
-                }
-            }
-            text = odds?.spread ?: ""
-            requestLayout()
-        }
-
+//        tv_spread.apply {
+//            visibility = when (!odds?.spread.isNullOrEmpty()) {
+//                true -> View.VISIBLE
+//                false -> {
+//                    when {
+//                        playCateCode.isOUType() -> View.INVISIBLE
+//                        else -> View.GONE
+//                    }
+//                }
+//            }
+//            text = odds?.spread ?: ""
+//            requestLayout()
+//        }
+        tv_spread.visibility = View.GONE
         tv_odds.apply {
             text = TextUtil.formatForOdd(getOdds(odds, oddsType))
         }
