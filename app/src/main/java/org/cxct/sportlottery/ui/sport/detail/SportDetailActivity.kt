@@ -948,6 +948,14 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private fun OddsDetailResult.setupPlayCateTab() {
         val playCateTypeList = this.oddsDetailData?.matchOdd?.playCateTypeList
         if (playCateTypeList?.isNotEmpty() == true) {
+            //如果是从篮球末位比分进入，拿到数据后，自动切换到篮球末位比分到tab下
+            if (tabCateAdapter.dataList.isNullOrEmpty() && matchType == MatchType.END_SCORE) {
+                playCateTypeList.indexOfFirst { it.code == matchType.postValue }.let {
+                    if (it >= 0) {
+                        tabCateAdapter.selectedPosition = it
+                    }
+                }
+            }
             tabCateAdapter.dataList = playCateTypeList
         } else {
             rv_cat.visibility = View.GONE

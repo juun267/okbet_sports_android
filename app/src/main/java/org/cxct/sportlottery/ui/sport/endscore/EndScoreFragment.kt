@@ -107,7 +107,8 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
         setupGameRow()
         setupGameListView()
         initObserve()
-        initSocketObserver()
+        //新版列表，不需要显示赔率和赛事状态，所以不用接收ws
+//        initSocketObserver()
         loadData()
     }
 

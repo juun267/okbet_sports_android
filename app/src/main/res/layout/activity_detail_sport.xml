@@ -194,8 +194,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:paddingHorizontal="10dp"
-            android:paddingBottom="10dp"
             tools:listitem="@layout/content_odds_detail_list_group_4_item" />
 
         <androidx.core.widget.NestedScrollView
