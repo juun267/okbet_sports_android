@@ -121,14 +121,18 @@ class OKGamesViewModel(
                 ToastUtil.showToast(MultiLanguagesApplication.appContext, it.msg)
                 return@callApi
             }
+
             gameData.markCollect = !gameData.markCollect
             _collectOkGamesResult.postValue(Pair(gameData.id, gameData))
-//            if (!gameData.markCollect) {
-//                val markedGames = _collectList.value?.toMutableList() ?: return@callApi
-//                if (markedGames.isNotEmpty()) {
-//                    _collectList.postValue(markedGames.filter { it.id != gameData.id }.toList())
-//                }
-//            }
+
+            val markedGames = _collectList.value?.toMutableList() ?: mutableListOf()
+            if (gameData.markCollect) {
+                markedGames.add(0, gameData)
+                _collectList.value = markedGames
+                return@callApi
+            }
+
+            _collectList.value = markedGames.filter { it.id != gameData.id }.toList()
         }
 
     /**

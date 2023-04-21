@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab.games
 
 import android.content.Context
 import android.view.Gravity
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
@@ -15,14 +16,11 @@ import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.ui.common.adapter.BindingAdapter
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
-class GameChildAdapter(val moreClick: (() -> Unit)? = null) : BindingAdapter<OKGameBean, ItemGameChildBinding>() {
+class GameChildAdapter(private val onFavoriate: (View, OKGameBean) -> Unit,
+                       val moreClick: (() -> Unit)? = null) : BindingAdapter<OKGameBean, ItemGameChildBinding>() {
 
     private var moreTextView: TextView? = null
     private var gameTotal: Int = 0
-
-    init {
-        addChildClickViewIds(R.id.iv_fav)
-    }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
@@ -58,6 +56,7 @@ class GameChildAdapter(val moreClick: (() -> Unit)? = null) : BindingAdapter<OKG
             tvName.text = item.gameName
             tvFirmName.text = item.firmCode
             ivFav.isSelected = item.markCollect
+            ivFav.setOnClickListener { onFavoriate.invoke(ivFav, item) }
         }
     }
 
