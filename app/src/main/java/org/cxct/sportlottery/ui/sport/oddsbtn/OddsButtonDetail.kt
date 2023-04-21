@@ -117,11 +117,6 @@ class OddsButtonDetail @JvmOverloads constructor(
                 "${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
 //                else
 //                    "$extInfoStr ${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
-
-            //篮球末尾比分，只显示最后空格后面的比分
-            if (mOdd?.playCode?.isFS_LD_CS_Type() == true) {
-                text = text.toString().split(" ")?.last()
-            }
             requestLayout()
 
             visibility =
@@ -147,10 +142,11 @@ class OddsButtonDetail @JvmOverloads constructor(
         //betStatus = if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
         betStatus = if (odd == null) BetStatus.LOCKED.code else odd.status
 
-        if (hideName && !tv_spread.isVisible) {
+        lin_name.isVisible = !(hideName && !tv_spread.isVisible)
+        //篮球末尾比分，只显示最后空格后面的比分
+        if (mOdd?.playCode?.isFS_LD_CS_Type() == true) {
+            tv_odds.text = tv_name.text.toString().split(" ")?.last()
             lin_name.isVisible = false
-        } else {
-            lin_name.isVisible = true
         }
     }
 

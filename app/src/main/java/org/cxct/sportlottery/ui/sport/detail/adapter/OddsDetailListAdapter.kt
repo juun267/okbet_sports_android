@@ -37,12 +37,12 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.base.BaseGameAdapter
 import org.cxct.sportlottery.ui.betList.BetInfoListData
+import org.cxct.sportlottery.ui.sport.detail.CustomTypefaceSpan
 import org.cxct.sportlottery.ui.sport.detail.OnOddClickListener
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.updateEPSDiscount
-import org.cxct.sportlottery.util.setTeamLogo
 import org.cxct.sportlottery.view.DividerItemDecorator
 import org.cxct.sportlottery.view.IndicatorView
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
@@ -221,10 +221,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     PlayCate.DC_OU.ordinal, PlayCate.SINGLE_OU.ordinal, PlayCate.SINGLE_BTS.ordinal, PlayCate.SINGLE_FLG.ordinal, PlayCate.DC_BTS.ordinal, PlayCate.DC_FLG.ordinal,
                     -> LayoutType.GROUP_6.layout
 
-                    PlayCate.OU_BTS.ordinal, PlayCate.OU_OE.ordinal, PlayCate.OU_TTS1ST.ordinal
+                    PlayCate.OU_BTS.ordinal, PlayCate.OU_OE.ordinal, PlayCate.OU_TTS1ST.ordinal,
                     -> LayoutType.GROUP_4.layout
 
-                    PlayCate.EPS.ordinal
+                    PlayCate.EPS.ordinal,
                     -> LayoutType.EPS.layout
 
                     else -> LayoutType.ONE_LIST.layout
@@ -261,12 +261,12 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal, PlayCate.SINGLE_SEG5.ordinal,
                     PlayCate.SET_HDP.ordinal, PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal, PlayCate.HDP_SEG4.ordinal, PlayCate.HDP_SEG5.ordinal,
                     PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OU_SEG4.ordinal, PlayCate.OU_SEG5.ordinal,
-                    PlayCate.WIN_SEG1_CHAMP.ordinal, PlayCate.LOSE_SEG1_CHAMP.ordinal, PlayCate.TIE_BREAK.ordinal
+                    PlayCate.WIN_SEG1_CHAMP.ordinal, PlayCate.LOSE_SEG1_CHAMP.ordinal, PlayCate.TIE_BREAK.ordinal,
                     -> LayoutType.SINGLE_2_ITEM.layout
 
                     PlayCate.CS.ordinal, PlayCate.CS_SEG1.ordinal, PlayCate.LCS.ordinal -> LayoutType.SINGLE_2_CS.layout
 
-                    PlayCate.EPS.ordinal
+                    PlayCate.EPS.ordinal,
                     -> LayoutType.EPS.layout
 
                     else -> LayoutType.ONE_LIST.layout
@@ -278,10 +278,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     PlayCate.SINGLE.ordinal, PlayCate.SET_HDP.ordinal, PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal, PlayCate.HDP_SEG4.ordinal, PlayCate.HDP_SEG5.ordinal,
                     PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OU_SEG4.ordinal, PlayCate.OU_SEG5.ordinal,
                     PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal, PlayCate.SINGLE_SEG5.ordinal,
-                    PlayCate.OE.ordinal, PlayCate.OE_SEG1.ordinal, PlayCate.OE_SEG2.ordinal, PlayCate.OE_SEG3.ordinal, PlayCate.OE_SEG4.ordinal, PlayCate.OE_SEG5.ordinal
+                    PlayCate.OE.ordinal, PlayCate.OE_SEG1.ordinal, PlayCate.OE_SEG2.ordinal, PlayCate.OE_SEG3.ordinal, PlayCate.OE_SEG4.ordinal, PlayCate.OE_SEG5.ordinal,
                     -> LayoutType.SINGLE_2_ITEM.layout
 
-                    PlayCate.EPS.ordinal
+                    PlayCate.EPS.ordinal,
                     -> LayoutType.EPS.layout
 
                     else -> LayoutType.ONE_LIST.layout
@@ -292,10 +292,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 when (viewType) {
                     PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal,
                     PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal,
-                    PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OE_SEG1.ordinal, PlayCate.OE_SEG2.ordinal, PlayCate.OE_SEG3.ordinal, PlayCate.OE.ordinal, PlayCate.SET_HDP.ordinal
+                    PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OE_SEG1.ordinal, PlayCate.OE_SEG2.ordinal, PlayCate.OE_SEG3.ordinal, PlayCate.OE.ordinal, PlayCate.SET_HDP.ordinal,
                     -> LayoutType.SINGLE_2_ITEM.layout
 
-                    PlayCate.EPS.ordinal
+                    PlayCate.EPS.ordinal,
                     -> LayoutType.EPS.layout
 
                     else -> LayoutType.ONE_LIST.layout
@@ -306,10 +306,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 when (viewType) {
                     PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.SINGLE_2ST.ordinal,
                     PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal, PlayCate.HDP_SEG4.ordinal, PlayCate.HDP_1ST.ordinal, PlayCate.HDP_2ST.ordinal,
-                    PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OU_SEG4.ordinal, PlayCate.OU_1ST.ordinal, PlayCate.OU_2ST.ordinal
+                    PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OU_SEG4.ordinal, PlayCate.OU_1ST.ordinal, PlayCate.OU_2ST.ordinal,
                     -> LayoutType.SINGLE_2_ITEM.layout
 
-                    PlayCate.EPS.ordinal
+                    PlayCate.EPS.ordinal,
                     -> LayoutType.EPS.layout
 
                     else -> LayoutType.ONE_LIST.layout
@@ -319,16 +319,16 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             GameType.BB -> {
                 when (viewType) {
                     PlayCate.SINGLE.ordinal, PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.OU.ordinal, PlayCate.OU_1ST.ordinal,
-                    PlayCate.EXTRA_TIME.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.TG_OU_H.ordinal, PlayCate.TG_OU_C.ordinal
+                    PlayCate.EXTRA_TIME.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.TG_OU_H.ordinal, PlayCate.TG_OU_C.ordinal,
                     -> LayoutType.SINGLE_2_ITEM.layout
 
-                    PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_1ST.ordinal
+                    PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_1ST.ordinal,
                     -> LayoutType.SINGLE.layout
 
-                    PlayCate.EPS.ordinal
+                    PlayCate.EPS.ordinal,
                     -> LayoutType.EPS.layout
 
-                    PlayCate.WM.ordinal, PlayCate.WM_1ST.ordinal
+                    PlayCate.WM.ordinal, PlayCate.WM_1ST.ordinal,
                     -> LayoutType.ONE_LIST.layout
 
                     else -> LayoutType.ONE_LIST.layout
@@ -346,10 +346,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 when (viewType) {
                     PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal,
                     PlayCate.SINGLE_SEG5.ordinal, PlayCate.SINGLE_SEG6.ordinal, PlayCate.SINGLE_SEG7.ordinal, PlayCate.SINGLE_SEG8.ordinal, PlayCate.SINGLE_1ST.ordinal,
-                    PlayCate.HDP.ordinal, PlayCate.OU.ordinal
+                    PlayCate.HDP.ordinal, PlayCate.OU.ordinal,
                     -> LayoutType.SINGLE_2_ITEM.layout
 
-                    PlayCate.EPS.ordinal
+                    PlayCate.EPS.ordinal,
                     -> LayoutType.EPS.layout
 
                     else -> LayoutType.ONE_LIST.layout
@@ -358,13 +358,13 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             GameType.IH -> {
                 when (viewType) {
-                    PlayCate.HDP.ordinal, PlayCate.OU.ordinal, PlayCate.OE.ordinal, PlayCate.SINGLE_ND.ordinal
+                    PlayCate.HDP.ordinal, PlayCate.OU.ordinal, PlayCate.OE.ordinal, PlayCate.SINGLE_ND.ordinal,
                     -> LayoutType.SINGLE_2_ITEM.layout
 
-                    PlayCate.SINGLE.ordinal
+                    PlayCate.SINGLE.ordinal,
                     -> LayoutType.SINGLE.layout
 
-                    PlayCate.EPS.ordinal
+                    PlayCate.EPS.ordinal,
                     -> LayoutType.EPS.layout
 
                     else -> LayoutType.ONE_LIST.layout
@@ -375,16 +375,16 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 when (viewType) {
                     PlayCate.SINGLE_ND.ordinal,
                     PlayCate.HDP.ordinal, PlayCate.HDP_1ST.ordinal, PlayCate.HDP_2ST.ordinal,
-                    PlayCate.OU.ordinal, PlayCate.OU_1ST.ordinal, PlayCate.OU_2ST.ordinal
+                    PlayCate.OU.ordinal, PlayCate.OU_1ST.ordinal, PlayCate.OU_2ST.ordinal,
                     -> LayoutType.SINGLE_2_ITEM.layout
 
-                    PlayCate.SINGLE.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.SINGLE_2ST.ordinal
+                    PlayCate.SINGLE.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.SINGLE_2ST.ordinal,
                     -> LayoutType.SINGLE.layout
 
-                    PlayCate.EPS.ordinal
+                    PlayCate.EPS.ordinal,
                     -> LayoutType.EPS.layout
 
-                    PlayCate.WM.ordinal
+                    PlayCate.WM.ordinal,
                     -> LayoutType.ONE_LIST.layout
 
                     else -> LayoutType.ONE_LIST.layout
@@ -396,10 +396,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal,
                     PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal, PlayCate.HDP_SEG4.ordinal,
                     PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OU_SEG4.ordinal,
-                    PlayCate.SET_HDP.ordinal
+                    PlayCate.SET_HDP.ordinal,
                     -> LayoutType.SINGLE_2_ITEM.layout
 
-                    PlayCate.EPS.ordinal
+                    PlayCate.EPS.ordinal,
                     -> LayoutType.EPS.layout
 
                     else -> LayoutType.ONE_LIST.layout
@@ -408,10 +408,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             GameType.BX -> {
                 when (viewType) {
-                    PlayCate.SINGLE.ordinal, PlayCate.OU.ordinal, PlayCate.GTD.ordinal, PlayCate.MOV.ordinal, PlayCate.MOV_UFC.ordinal, PlayCate.ROUND.ordinal, PlayCate.ROUND_UFC.ordinal
+                    PlayCate.SINGLE.ordinal, PlayCate.OU.ordinal, PlayCate.GTD.ordinal, PlayCate.MOV.ordinal, PlayCate.MOV_UFC.ordinal, PlayCate.ROUND.ordinal, PlayCate.ROUND_UFC.ordinal,
                     -> LayoutType.SINGLE_2_ITEM.layout
 
-                    PlayCate.EPS.ordinal
+                    PlayCate.EPS.ordinal,
                     -> LayoutType.EPS.layout
 
                     else -> LayoutType.ONE_LIST.layout
@@ -471,7 +471,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         }
 
                         LayoutType.GROUP_4.layout,
-                        LayoutType.GROUP_6.layout -> {
+                        LayoutType.GROUP_6.layout,
+                        -> {
                             rvBet?.apply {
 //                                addItemDecoration(
 //                                    DividerItemDecorator(
@@ -512,7 +513,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         }
 
                         LayoutType.ONE_LIST.layout,
-                        LayoutType.FG_LG.layout -> {
+                        LayoutType.FG_LG.layout,
+                        -> {
                             rvBet?.apply {
 //                                addItemDecoration(
 //                                    CustomForOddDetailVerticalDivider(
@@ -525,7 +527,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
                         LayoutType.SINGLE.layout,
                         LayoutType.SINGLE_2_ITEM.layout,
-                        LayoutType.SINGLE_2_CS.layout -> {
+                        LayoutType.SINGLE_2_CS.layout,
+                        -> {
                             rvBet?.apply {
 //                                addItemDecoration(
 //                                    GridItemDecoration(
@@ -552,7 +555,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
 
     override fun onBindViewHolder(
-        holder: RecyclerView.ViewHolder, position: Int
+        holder: RecyclerView.ViewHolder, position: Int,
     ) {
         when (holder) {
             is ViewHolder -> {
@@ -569,7 +572,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
     @Suppress("UNCHECKED_CAST")
     inner class ViewHolder(
-        itemView: View, var viewType: Int
+        itemView: View, var viewType: Int,
     ) : RecyclerView.ViewHolder(itemView) {
 
         private fun setVisibility(visible: Boolean) {
@@ -802,25 +805,25 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
                         PlayCate.LCS.ordinal -> forLCS(oddsDetail)
 
-                        PlayCate.FGLG.ordinal
+                        PlayCate.FGLG.ordinal,
                         -> forFGLG(oddsDetail)
 
-                        PlayCate.SCO.ordinal
+                        PlayCate.SCO.ordinal,
                         -> forSCO(oddsDetail, adapterPosition)
 
-                        PlayCate.SINGLE_OU.ordinal, PlayCate.SINGLE_BTS.ordinal, PlayCate.SINGLE_FLG.ordinal
+                        PlayCate.SINGLE_OU.ordinal, PlayCate.SINGLE_BTS.ordinal, PlayCate.SINGLE_FLG.ordinal,
                         -> group6Item(oddsDetail)
 
-                        PlayCate.DC_OU.ordinal, PlayCate.DC_BTS.ordinal, PlayCate.DC_FLG.ordinal
+                        PlayCate.DC_OU.ordinal, PlayCate.DC_BTS.ordinal, PlayCate.DC_FLG.ordinal,
                         -> group6ItemForDC(oddsDetail)
 
-                        PlayCate.OU_BTS.ordinal
+                        PlayCate.OU_BTS.ordinal,
                         -> group4ItemForOuBts(oddsDetail)
 
-                        PlayCate.OU_OE.ordinal, PlayCate.OU_TTS1ST.ordinal
+                        PlayCate.OU_OE.ordinal, PlayCate.OU_TTS1ST.ordinal,
                         -> group4ItemForOuTag(oddsDetail)
 
-                        PlayCate.EPS.ordinal
+                        PlayCate.EPS.ordinal,
                         -> forEPS(oddsDetail)
 
                         else -> oneList(oddsDetail)
@@ -857,7 +860,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal, PlayCate.SINGLE_SEG5.ordinal,
                         PlayCate.SET_HDP.ordinal, PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal, PlayCate.HDP_SEG4.ordinal, PlayCate.HDP_SEG5.ordinal,
                         PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OU_SEG4.ordinal, PlayCate.OU_SEG5.ordinal,
-                        PlayCate.WIN_SEG1_CHAMP.ordinal, PlayCate.LOSE_SEG1_CHAMP.ordinal, PlayCate.TIE_BREAK.ordinal
+                        PlayCate.WIN_SEG1_CHAMP.ordinal, PlayCate.LOSE_SEG1_CHAMP.ordinal, PlayCate.TIE_BREAK.ordinal,
                         -> forSingle(oddsDetail, 2)
 
                         PlayCate.CS.ordinal, PlayCate.CS_SEG1.ordinal, PlayCate.LCS.ordinal -> forSingleCS(
@@ -865,7 +868,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                             2
                         )
 
-                        PlayCate.EPS.ordinal
+                        PlayCate.EPS.ordinal,
                         -> forEPS(oddsDetail)
 
                         else -> oneList(oddsDetail)
@@ -877,10 +880,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         PlayCate.SINGLE.ordinal, PlayCate.SET_HDP.ordinal, PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal, PlayCate.HDP_SEG4.ordinal, PlayCate.HDP_SEG5.ordinal,
                         PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OU_SEG4.ordinal, PlayCate.OU_SEG5.ordinal,
                         PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal, PlayCate.SINGLE_SEG5.ordinal,
-                        PlayCate.OE.ordinal, PlayCate.OE_SEG1.ordinal, PlayCate.OE_SEG2.ordinal, PlayCate.OE_SEG3.ordinal, PlayCate.OE_SEG4.ordinal, PlayCate.OE_SEG5.ordinal
+                        PlayCate.OE.ordinal, PlayCate.OE_SEG1.ordinal, PlayCate.OE_SEG2.ordinal, PlayCate.OE_SEG3.ordinal, PlayCate.OE_SEG4.ordinal, PlayCate.OE_SEG5.ordinal,
                         -> forSingle(oddsDetail, 2)
 
-                        PlayCate.EPS.ordinal
+                        PlayCate.EPS.ordinal,
                         -> forEPS(oddsDetail)
 
                         else -> oneList(oddsDetail)
@@ -892,10 +895,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     when (viewType) {
                         PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal,
                         PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal,
-                        PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OE_SEG1.ordinal, PlayCate.OE_SEG2.ordinal, PlayCate.OE_SEG3.ordinal, PlayCate.OE.ordinal, PlayCate.SET_HDP.ordinal
+                        PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OE_SEG1.ordinal, PlayCate.OE_SEG2.ordinal, PlayCate.OE_SEG3.ordinal, PlayCate.OE.ordinal, PlayCate.SET_HDP.ordinal,
                         -> forSingle(oddsDetail, 2)
 
-                        PlayCate.EPS.ordinal
+                        PlayCate.EPS.ordinal,
                         -> forEPS(oddsDetail)
 
                         else -> oneList(oddsDetail)
@@ -906,10 +909,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     when (viewType) {
                         PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.SINGLE_2ST.ordinal,
                         PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal, PlayCate.HDP_SEG4.ordinal, PlayCate.HDP_1ST.ordinal, PlayCate.HDP_2ST.ordinal,
-                        PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OU_SEG4.ordinal, PlayCate.OU_1ST.ordinal, PlayCate.OU_2ST.ordinal
+                        PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OU_SEG4.ordinal, PlayCate.OU_1ST.ordinal, PlayCate.OU_2ST.ordinal,
                         -> forSingle(oddsDetail, 2)
 
-                        PlayCate.EPS.ordinal
+                        PlayCate.EPS.ordinal,
                         -> forEPS(oddsDetail)
 
                         else -> oneList(oddsDetail)
@@ -919,16 +922,16 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 GameType.BB -> {
                     when (viewType) {
                         PlayCate.SINGLE.ordinal, PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.OU.ordinal, PlayCate.OU_1ST.ordinal,
-                        PlayCate.EXTRA_TIME.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.TG_OU_H.ordinal, PlayCate.TG_OU_C.ordinal
+                        PlayCate.EXTRA_TIME.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.TG_OU_H.ordinal, PlayCate.TG_OU_C.ordinal,
                         -> forSingle(oddsDetail, 2)
 
-                        PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_1ST.ordinal
+                        PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_1ST.ordinal,
                         -> forSingle(oddsDetail, 3)
 
-                        PlayCate.EPS.ordinal
+                        PlayCate.EPS.ordinal,
                         -> forEPS(oddsDetail)
 
-                        PlayCate.WM.ordinal, PlayCate.WM_1ST.ordinal
+                        PlayCate.WM.ordinal, PlayCate.WM_1ST.ordinal,
                         -> oneList(oddsDetail)
 
                         else -> oneList(oddsDetail)
@@ -950,10 +953,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     when (viewType) {
                         PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal,
                         PlayCate.SINGLE_SEG5.ordinal, PlayCate.SINGLE_SEG6.ordinal, PlayCate.SINGLE_SEG7.ordinal, PlayCate.SINGLE_SEG8.ordinal, PlayCate.SINGLE_1ST.ordinal,
-                        PlayCate.HDP.ordinal, PlayCate.OU.ordinal
+                        PlayCate.HDP.ordinal, PlayCate.OU.ordinal,
                         -> forSingle(oddsDetail, 2)
 
-                        PlayCate.EPS.ordinal
+                        PlayCate.EPS.ordinal,
                         -> forEPS(oddsDetail)
 
                         else -> oneList(oddsDetail)
@@ -962,13 +965,13 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
                 GameType.IH -> {
                     when (viewType) {
-                        PlayCate.HDP.ordinal, PlayCate.OU.ordinal, PlayCate.OE.ordinal
+                        PlayCate.HDP.ordinal, PlayCate.OU.ordinal, PlayCate.OE.ordinal,
                         -> forSingle(oddsDetail, 2)
 
-                        PlayCate.SINGLE.ordinal
+                        PlayCate.SINGLE.ordinal,
                         -> forSingle(oddsDetail, 3)
 
-                        PlayCate.EPS.ordinal
+                        PlayCate.EPS.ordinal,
                         -> forEPS(oddsDetail)
 
                         else -> oneList(oddsDetail)
@@ -979,16 +982,16 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     when (viewType) {
                         PlayCate.SINGLE_ND.ordinal,
                         PlayCate.HDP.ordinal, PlayCate.HDP_1ST.ordinal, PlayCate.HDP_2ST.ordinal,
-                        PlayCate.OU.ordinal, PlayCate.OU_1ST.ordinal, PlayCate.OU_2ST.ordinal
+                        PlayCate.OU.ordinal, PlayCate.OU_1ST.ordinal, PlayCate.OU_2ST.ordinal,
                         -> forSingle(oddsDetail, 2)
 
-                        PlayCate.SINGLE.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.SINGLE_2ST.ordinal
+                        PlayCate.SINGLE.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.SINGLE_2ST.ordinal,
                         -> forSingle(oddsDetail, 3)
 
-                        PlayCate.EPS.ordinal
+                        PlayCate.EPS.ordinal,
                         -> forEPS(oddsDetail)
 
-                        PlayCate.WM.ordinal
+                        PlayCate.WM.ordinal,
                         -> oneList(oddsDetail)
 
                         else -> oneList(oddsDetail)
@@ -1000,10 +1003,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal,
                         PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal, PlayCate.HDP_SEG4.ordinal,
                         PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OU_SEG4.ordinal,
-                        PlayCate.SET_HDP.ordinal
+                        PlayCate.SET_HDP.ordinal,
                         -> forSingle(oddsDetail, 2)
 
-                        PlayCate.EPS.ordinal
+                        PlayCate.EPS.ordinal,
                         -> forEPS(oddsDetail)
 
                         else -> oneList(oddsDetail)
@@ -1012,10 +1015,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
                 GameType.BX -> {
                     when (viewType) {
-                        PlayCate.SINGLE.ordinal, PlayCate.OU.ordinal, PlayCate.GTD.ordinal, PlayCate.MOV.ordinal, PlayCate.MOV_UFC.ordinal, PlayCate.ROUND.ordinal, PlayCate.ROUND_UFC.ordinal
+                        PlayCate.SINGLE.ordinal, PlayCate.OU.ordinal, PlayCate.GTD.ordinal, PlayCate.MOV.ordinal, PlayCate.MOV_UFC.ordinal, PlayCate.ROUND.ordinal, PlayCate.ROUND_UFC.ordinal,
                         -> forSingle(oddsDetail, 2)
 
-                        PlayCate.EPS.ordinal
+                        PlayCate.EPS.ordinal,
                         -> forEPS(oddsDetail)
 
                         else -> oneList(oddsDetail)
@@ -1075,7 +1078,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
         private fun getTitle(
             context: Context,
-            oddsDetail: OddsDetailListData
+            oddsDetail: OddsDetailListData,
         ): SpannableStringBuilder {
             val textColor = ContextCompat.getColor(context, R.color.color_909090_666666)
             val gameTitleContentBuilder = SpannableStringBuilder()
@@ -1480,28 +1483,54 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         }
 
         private fun forSingle(oddsDetail: OddsDetailListData, spanCount: Int) {
-            rvBet?.apply {
-                adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, oddsType)
-                layoutManager = GridLayoutManager(itemView.context, spanCount)
-                //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
-                if (spanCount == 3) {
-                    //如果第三个标题不等于客队名，那么判断第三个为和局，迁移到第二个位置
-                    if (!TextUtils.equals(
-                            oddsDetail.matchInfo?.awayName,
-                            oddsDetail.oddArrayList[2]?.name
-                        )
-                    ) {
-                        oddsDetail.oddArrayList.add(1, oddsDetail.oddArrayList.removeAt(2))
+            if (oddsDetail.gameType == PlayCate.FS_LD_CS.value) {
+                rvBet?.apply {
+                    adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, oddsType)
+                    layoutManager = GridLayoutManager(itemView.context, 4)
+                    //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
+                    itemView.lin_match.isVisible = false
+                    oddsDetail.oddArrayList.first()?.let {
+                        val odd = TextUtil.formatForOdd(getOdds(it, oddsType))
+                        var odds = " $odd"
+                        getTitleNormal(oddsDetail).let {
+                            Spanny(it.toString())
+                                .append(" @",
+                                    ForegroundColorSpan(context.getColor(R.color.color_025BE8)))
+                                .append(odds,
+                                    ForegroundColorSpan(context.getColor(R.color.color_025BE8)),
+                                    CustomTypefaceSpan(
+                                        "din_bold.ttf", Typeface.DEFAULT_BOLD))
+                                .let {
+                                    tvGameName?.text = it
+                                }
+                        }
                     }
-                    TextUtils.equals(
-                        oddsDetail.matchInfo?.homeName,
-                        oddsDetail.oddArrayList[0]?.name
-                    ).let {
-                        itemView.tv_draw?.isVisible = true
-                        itemView.tv_draw?.text = oddsDetail.oddArrayList[1]?.name
+                }
+            } else {
+                rvBet?.apply {
+                    adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, oddsType)
+                    layoutManager = GridLayoutManager(itemView.context, spanCount)
+                    //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
+                    if (spanCount == 3) {
+                        //如果第三个标题不等于客队名，那么判断第三个为和局，迁移到第二个位置
+                        if (!TextUtils.equals(
+                                oddsDetail.matchInfo?.awayName,
+                                oddsDetail.oddArrayList[2]?.name
+                            )
+                        ) {
+                            oddsDetail.oddArrayList.add(1, oddsDetail.oddArrayList.removeAt(2))
+                        }
+                        TextUtils.equals(
+                            oddsDetail.matchInfo?.homeName,
+                            oddsDetail.oddArrayList[0]?.name
+                        ).let {
+                            itemView.tv_draw?.isVisible = true
+                            itemView.tv_draw?.text = oddsDetail.oddArrayList[1]?.name
+                        }
                     }
                 }
             }
+
         }
 
         private fun forSingleCS(oddsDetail: OddsDetailListData, spanCount: Int) {
@@ -1689,7 +1718,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         private fun selectSCO(
             oddsDetail: OddsDetailListData,
             teamName: String,
-            teamNameList: MutableList<String>
+            teamNameList: MutableList<String>,
         ): OddsDetailListData {
             tvHomeName?.isSelected = teamName == teamNameList[0]
             tvAwayName?.isSelected = teamName != teamNameList[0]
@@ -1763,7 +1792,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 }
 
 class OddsDetailListener(
-    val clickListenerFavorite: (playCate: String) -> Unit
+    val clickListenerFavorite: (playCate: String) -> Unit,
 ) {
     fun onClickFavorite(playCate: String) = clickListenerFavorite(playCate)
 }
