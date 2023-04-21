@@ -6,12 +6,26 @@
     android:minHeight="26dp"
     android:layout_gravity="center_vertical">
 
+    <ImageView
+        android:id="@+id/iv_mark_top"
+        android:src="@drawable/ic_hot_button_up"
+        android:layout_width="17dp"
+        android:layout_gravity="right"
+        android:visibility="gone"
+        android:layout_height="12dp"/>
 
+    <ImageView
+        android:id="@+id/iv_mark_bottom"
+        android:src="@drawable/ic_hot_button_down"
+        android:layout_width="17dp"
+        android:visibility="gone"
+        android:layout_gravity="bottom|right"
+        android:layout_height="12dp"/>
     <LinearLayout
         android:id="@+id/button_odd_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/selector_button_radius_4_odds"
+        android:background="@drawable/selector_button_hot_odds"
         android:paddingHorizontal="8dp"
         android:gravity="center"
         android:orientation="vertical"
@@ -61,7 +75,6 @@
             android:gravity="center">
 
             <ImageView
-                android:id="@+id/iv_arrow"
                 android:layout_width="10dp"
                 android:layout_height="10dp"
                 android:layout_marginRight="2dp"

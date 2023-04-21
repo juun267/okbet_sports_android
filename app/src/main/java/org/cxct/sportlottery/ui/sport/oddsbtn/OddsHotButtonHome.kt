@@ -21,6 +21,8 @@ import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddState
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.flashAnimation
+import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
@@ -340,8 +342,9 @@ class OddsHotButtonHome @JvmOverloads constructor(
                     R.color.selector_button_odd_bottom_text_red
                 )
             )
-            iv_arrow.setImageResource(R.drawable.ic_match_red_down)
-
+//            iv_arrow.setImageResource(R.drawable.ic_match_red_down)
+            button_odd_detail.setBackgroundResource(R.drawable.bg_hot_game_lose)
+            iv_mark_bottom.visible()
         } else if (diff > 0.0) {
             tv_odds.setTextColor(
                 ContextCompat.getColorStateList(
@@ -349,7 +352,9 @@ class OddsHotButtonHome @JvmOverloads constructor(
                     R.color.selector_button_odd_bottom_text_green
                 )
             )
-            iv_arrow.setImageResource(R.drawable.ic_match_green_up)
+            iv_mark_top.visible()
+//            iv_arrow.setImageResource(R.drawable.ic_match_green_up)
+            button_odd_detail.setBackgroundResource(R.drawable.bg_hot_game_win)
         } else {
             tv_odds.setTextColor(
                 ContextCompat.getColorStateList(
@@ -357,7 +362,10 @@ class OddsHotButtonHome @JvmOverloads constructor(
                     R.color.selector_button_odd_bottom_text_eps
                 )
             )
-            iv_arrow.setImageDrawable(null)
+            iv_mark_top.gone()
+            iv_mark_bottom.gone()
+//            iv_arrow.setImageDrawable(null)
+            button_odd_detail.setBackgroundResource(R.drawable.bg_gray_border_8)
         }
 
         isSelected = odd?.isSelected ?: false
@@ -402,10 +410,12 @@ class OddsHotButtonHome @JvmOverloads constructor(
                         R.color.color_1EB65B
                     )
                 )
-                iv_arrow.apply {
-                    setImageResource(R.drawable.ic_match_green_up)
-                    visibility = View.VISIBLE
-                }
+//                iv_arrow.apply {
+//                    setImageResource(R.drawable.ic_match_green_up)
+//                    visibility = View.VISIBLE
+//                }
+                iv_mark_top.visible()
+                button_odd_detail.setBackgroundResource(R.drawable.bg_hot_game_win)
                 status = true
                 isActivated = false
             }
@@ -416,15 +426,18 @@ class OddsHotButtonHome @JvmOverloads constructor(
                         R.color.color_E23434
                     )
                 )
-                iv_arrow.apply {
-                    setImageResource(R.drawable.ic_match_red_down)
-                    visibility = View.VISIBLE
-                }
+//                iv_arrow.apply {
+//                    setImageResource(R.drawable.ic_match_red_down)
+//                    visibility = View.VISIBLE
+//                }
+                iv_mark_bottom.visible()
+                button_odd_detail.setBackgroundResource(R.drawable.bg_hot_game_lose)
                 status = true
                 isActivated = false
             }
             OddState.SAME.state -> {
                 resetOddsValueState(tv_odds)
+                button_odd_detail.setBackgroundResource(R.drawable.bg_gray_border_8)
                 isActivated = false
             }
         }
@@ -452,10 +465,12 @@ class OddsHotButtonHome @JvmOverloads constructor(
     }
 
     private fun resetOddsValueState(textView: TextView) {
-        iv_arrow.apply {
-            setImageDrawable(null)
-            visibility = View.GONE
-        }
+//        iv_arrow.apply {
+//            setImageDrawable(null)
+//            visibility = View.GONE
+//        }
+        iv_mark_top.gone()
+        iv_mark_bottom.gone()
         textView.setTextColor(
             ContextCompat.getColorStateList(
                 context,
@@ -478,10 +493,12 @@ class OddsHotButtonHome @JvmOverloads constructor(
                     R.color.selector_button_odd_bottom_text_red
                 )
             )
-            iv_arrow.apply {
-                setImageResource(R.drawable.ic_match_red_down)
-                visibility = View.VISIBLE
-            }
+//            iv_arrow.apply {
+//                setImageResource(R.drawable.ic_match_red_down)
+//                visibility = View.VISIBLE
+//            }
+            iv_mark_bottom.visible()
+            button_odd_detail.setBackgroundResource(R.drawable.bg_hot_game_lose)
         } else if (diff > 0.0) {//正盤
             tv_odds.setTextColor(
                 ContextCompat.getColorStateList(
@@ -489,10 +506,12 @@ class OddsHotButtonHome @JvmOverloads constructor(
                     R.color.selector_button_odd_bottom_text_green
                 )
             )
-            iv_arrow.apply {
-                setImageResource(R.drawable.ic_match_green_up)
-                visibility = View.VISIBLE
-            }
+//            iv_arrow.apply {
+//                setImageResource(R.drawable.ic_match_green_up)
+//                visibility = View.VISIBLE
+//            }
+            iv_mark_top.visible()
+            button_odd_detail.setBackgroundResource(R.drawable.bg_hot_game_win)
         } else {
             tv_odds.setTextColor(
                 ContextCompat.getColorStateList(
@@ -501,10 +520,13 @@ class OddsHotButtonHome @JvmOverloads constructor(
                     else R.color.selector_button_odd_bottom_text
                 )
             )
-            iv_arrow.apply {
-                setImageDrawable(null)
-                visibility = GONE
-            }
+            iv_mark_top.gone()
+            iv_mark_bottom.gone()
+            button_odd_detail.setBackgroundResource(R.drawable.bg_gray_border_8)
+//            iv_arrow.apply {
+//                setImageDrawable(null)
+//                visibility = GONE
+//            }
         }
     }
 
