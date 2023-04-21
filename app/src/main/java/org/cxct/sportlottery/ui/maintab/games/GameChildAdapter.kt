@@ -95,5 +95,21 @@ class GameChildAdapter(val moreClick: (() -> Unit)? = null) : BindingAdapter<OKG
         it.isEnabled = false
         it.text = "${it.context.getString(R.string.loading)}..."
     }
+
+    // 如果是收藏列表，收藏状态跟新后就进行添加或移除操作
+    fun removeOrAdd(bean: OKGameBean) {
+        val item = data.firstOrNull { it.id == bean.id }
+        if (item == null) {
+            if (bean.markCollect) {
+                addData(0, bean)
+            }
+            return
+        }
+
+        remove(item)
+        if (bean.markCollect) {
+            addData(0, bean)
+        }
+    }
 }
 

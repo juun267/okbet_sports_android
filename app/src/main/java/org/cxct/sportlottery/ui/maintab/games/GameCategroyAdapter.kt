@@ -65,5 +65,21 @@ class GameCategroyAdapter(
         }
     }
 
+    fun updateMarkCollect(bean: OKGameBean) {
+        var needUpdate = false
+        data.forEach {
+            it.gameList?.forEach { gameBean ->
+                if (gameBean.id == bean.id) {
+                    gameBean.markCollect = bean.markCollect
+                    needUpdate = true
+                }
+            }
+        }
+
+        if (needUpdate) {
+            notifyDataSetChanged()
+        }
+    }
+
 }
 

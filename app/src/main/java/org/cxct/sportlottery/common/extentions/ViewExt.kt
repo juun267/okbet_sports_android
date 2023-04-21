@@ -1,11 +1,9 @@
 package org.cxct.sportlottery.common.extentions
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
+import android.animation.*
 import android.text.InputFilter
 import android.view.View
+import android.view.animation.AnimationSet
 import android.view.animation.BounceInterpolator
 import androidx.annotation.LayoutRes
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -171,13 +169,20 @@ fun View.rotationAnimation(rotation: Float, duration: Long = 200) {
         .start()
 }
 
-fun View.animDuang(scale: Float, duration: Long = 300) {
-    ViewCompat.animate(this)
-        .setDuration(duration)
-        .setInterpolator(BounceInterpolator())
-        .scaleX(scale)
-        .scaleY(scale)
-        .start()
+fun View.animDuang(scale: Float, duration: Long = 500) {
+    isEnabled = false
+    val animatorSet = AnimatorSet()
+    val scaleX = ObjectAnimator.ofFloat(this,"scaleX", 1f, scale, 1f)
+    val scaleY = ObjectAnimator.ofFloat(this,"scaleY", 1f, scale, 1f)
+    animatorSet.play(scaleX).with(scaleY)
+    animatorSet.interpolator = BounceInterpolator()
+    animatorSet.duration = duration
+    animatorSet.addListener(object : AnimatorListenerAdapter() {
+        override fun onAnimationEnd(animation: Animator?) {
+            isEnabled = true
+        }
+    })
+    animatorSet.start()
 }
 
 

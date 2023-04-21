@@ -51,19 +51,13 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         initTopView()
         showGameAll()
         initObservable()
+        viewModel.getOKGamesHall()
     }
 
     private var requestTag: Any = Any()
     private var requestBlock: ((Int) -> Unit)? = null
     private fun retagRequest(): Any {
         return Any().apply { requestTag = this }
-    }
-
-    override fun onHiddenChanged(hidden: Boolean) {
-        super.onHiddenChanged(hidden)
-        if (!hidden) {
-            viewModel.getOKGamesHall()
-        }
     }
 
     private fun initToolBar() = binding.homeToolbar.run {
@@ -104,10 +98,8 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         onTableClick = ::onTabChange
         onSearchTextChanged = { searchKey ->
             hideKeyboard()
-            if (searchKey.isEmptyStr()) {
-                showPartGameList(null, 0)
-            } else {
-                changePartGamesLabel(GameTab.TAB_SEARCH)
+            if (!searchKey.isEmptyStr()) {
+                changePartGamesLabel(GameTab.TAB_SEARCH, searchKey)
                 startLoad{ viewModel.searchGames(retagRequest(), searchKey, it, PartGamesFragment.pageSize) }
             }
         }
@@ -183,8 +175,8 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         request.invoke(1)
     }
 
-    private fun changePartGamesLabel(tab: OKGameLabel) {
-        showPartGameFragment().changeLabel(tab)
+    private fun changePartGamesLabel(tab: OKGameLabel, labelName: String ?= null) {
+        showPartGameFragment().changeLabel(tab, labelName)
     }
 
     private fun showPartGameList(gameList: List<OKGameBean>?, total: Int) {

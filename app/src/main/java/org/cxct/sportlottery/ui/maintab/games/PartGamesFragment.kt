@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.animDuang
+import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.databinding.FragmentPartOkgamesBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
@@ -27,7 +28,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     private val gameChildAdapter by lazy { GameChildAdapter(::onMoreClick) }
     private var currentTab: OKGameLabel? = null
     private var pageIndx = 1
-
+    private var labelName: String ?= null
 
     override fun createRootView(
         inflater: LayoutInflater,
@@ -59,7 +60,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         gameChildAdapter.setEmptyView(LayoutInflater.from(requireContext()).inflate(R.layout.view_no_games, null))
         gameChildAdapter.setOnItemChildClickListener { adapter, view, position ->
             if (okGamesFragment().collectGame(adapter.getItem(position) as OKGameBean)) {
-                view.animDuang(1.2f)
+                view.animDuang(1.3f)
             }
         }
         gameChildAdapter.setOnItemClickListener { _, _, position ->
@@ -99,11 +100,16 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         currentTab?.let {
             it.bindLabelIcon(binding.ivIcon)
             it.bindLabelName(binding.tvName)
-            it.bindLabelName(binding.tvTag)
+            if (labelName.isEmptyStr()) {
+                it.bindLabelName(binding.tvTag)
+            } else {
+                binding.tvTag.text = labelName
+            }
         }
     }
 
-    fun changeLabel(gameLabel: OKGameLabel) {
+    fun changeLabel(gameLabel: OKGameLabel, labelName: String ?= null) {
+        this.labelName = labelName
         if (currentTab != gameLabel && currentTab?.getKey() != gameLabel.getKey()) {
             pageIndx = 1
             currentTab = gameLabel
