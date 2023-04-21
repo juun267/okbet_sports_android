@@ -170,6 +170,7 @@ class OKGamesViewModel(
                 recentList.add(it)
             }
         }
+        recentList.reverse()
         _recentPlay.postValue(recentList)
     }
 
@@ -184,6 +185,7 @@ class OKGamesViewModel(
                 recentList.add(it)
             }
         }
+        recentList.reverse()
         _recentPlay.postValue(recentList)
     }
     fun searchGames(requestTag: Any,

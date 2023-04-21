@@ -103,7 +103,7 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="27dp"
         android:layout_marginTop="16dp"
         android:text="@string/about_us"
         android:textSize="16sp"
@@ -120,13 +120,13 @@
         android:textSize="16sp"
         android:textColor="@color/color_0D2245"
         android:textStyle="bold"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="27dp"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="@+id/textView5" />
 
     <TextView
         android:id="@+id/tvPrivacyPolicy"
-        android:text="@string/login_privacy_policy"
+        android:text="@string/J094"
         app:layout_constraintStart_toStartOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/textView5"
         style="@style/text_style_responsible" />
@@ -147,14 +147,14 @@
 
     <TextView
         android:id="@+id/tvLiveChat"
-        android:text="@string/live_chat"
+        android:text="@string/J299"
         style="@style/text_style_responsible"
         app:layout_constraintStart_toStartOf="@+id/textView8"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <TextView
         android:id="@+id/tvContactUs"
-        android:text="@string/contact"
+        android:text="@string/N019"
         style="@style/text_style_responsible"
         app:layout_constraintStart_toStartOf="@+id/tvLiveChat"
         app:layout_constraintTop_toBottomOf="@+id/tvLiveChat" />
