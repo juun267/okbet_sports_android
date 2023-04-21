@@ -205,7 +205,13 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             rvOkgameRecord.itemAnimator = DefaultItemAnimator()
             viewModel.providerResult.observe(viewLifecycleOwner) { resultData ->
                 resultData?.firmList?.let {
+                    if(it.isNotEmpty()){
+                        binding.include3.okgameP3LayoutProivder.visibility=View.VISIBLE
+                    }else{
+                        binding.include3.okgameP3LayoutProivder.visibility=View.GONE
+                    }
                     if (!providersAdapter.data.containsAll(it)) {
+
                         providersAdapter.addData(it)
                         if (it.isNotEmpty()) {
                             binding.include3.ivProvidersLeft.visible()

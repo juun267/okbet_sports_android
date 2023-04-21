@@ -31,6 +31,7 @@ class HotGameView(context: Context, attrs: AttributeSet) : FrameLayout(context, 
             it.layoutManager = manager
             it.addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context,
                 R.drawable.divider_trans)))
+            it.itemAnimator?.changeDuration=0
         }
         iv_right.onClick {
             scrollRecycler(manager, true)
