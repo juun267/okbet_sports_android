@@ -36,6 +36,11 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         )
     }
 
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        fragmentHelper.getCurrentFragment().onHiddenChanged(hidden)
+    }
+
     private inline fun mainTabActivity() = activity as MainTabActivity
 
     override fun createRootView(

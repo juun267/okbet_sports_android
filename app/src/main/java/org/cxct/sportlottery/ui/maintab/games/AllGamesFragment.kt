@@ -94,6 +94,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         if (noData || time - lastRequestTimeStamp > 60_000) { // 避免短时间重复请求
             lastRequestTimeStamp = time
             okGamesFragment().viewModel.getOKGamesHall()
+            initHotGameData()
         }
     }
 
@@ -432,6 +433,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 subscribeQueryData(data)
                 binding.hotGameView.setGameData(data)
             }
+
+
         }
     }
 
