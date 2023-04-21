@@ -122,9 +122,8 @@ class BetListRefactorAdapter(
                 )
             )
 
-            ViewType.Basketball_Ending_Card.ordinal -> BasketballEndingCardViewHolder(
-
-            )
+//            ViewType.Basketball_Ending_Card.ordinal -> BasketballEndingCardViewHolder(
+//            )
 
             else -> BpcVh(
                 layoutInflater.inflate(
