@@ -114,8 +114,8 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             pageIndx = 1
             currentTab = gameLabel
             bindLabels()
-            gameChildAdapter.setNewInstance(null)
         }
+        gameChildAdapter.setNewInstance(null)
     }
 
     fun showSearchResault(list: List<OKGameBean>?, total: Int): Int {

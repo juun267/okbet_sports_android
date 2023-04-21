@@ -148,7 +148,6 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     private var recordResulthttpFlag = false//最新大奖接口请求完成
 
     private fun onBindGamesView() = binding.includeGamesAll.run {
-        rvGamesAll.setRecycledViewPool(okGamesFragment().gameItemViewPool)
         rvGamesAll.setLinearLayoutManager()
         rvGamesAll.adapter = gameAllAdapter
         gameAllAdapter.setOnItemChildClickListener { _, _, position ->
