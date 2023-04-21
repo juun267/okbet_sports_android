@@ -235,9 +235,9 @@ class OddsHotButtonHome @JvmOverloads constructor(
                         //独赢可能出现没有和的情况
                         var index = oddList.indexOf(odds)
                         when (index) {
-                            0 -> "Home"
-                            1 -> if (oddList.size > 2) "Draw" else "Away"
-                            2 -> "Away"
+                            0 -> context.getString(R.string.odds_button_name_home)
+                            1 -> if (oddList.size > 2) context.getString(R.string.draw_name) else context.getString(R.string.odds_button_name_away)
+                            2 -> context.getString(R.string.odds_button_name_away)
                             else -> ""
                         }
                     }
