@@ -51,7 +51,6 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         initTopView()
         showGameAll()
         initObservable()
-        viewModel.getOKGamesHall()
     }
 
     private var requestTag: Any = Any()
@@ -200,8 +199,8 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         return true
     }
 
-    fun collectGame(gameData: OKGameBean) {
-        loginedRun(binding.root.context) { viewModel.collectGame(gameData) }
+    fun collectGame(gameData: OKGameBean): Boolean {
+        return loginedRun(binding.root.context) { viewModel.collectGame(gameData) }
     }
 
 }

@@ -10,7 +10,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.stx.xhb.androidx.XBanner
@@ -18,13 +17,13 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.onConfirm
+import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.ui.maintab.games.adapter.GamesTabAdapter
-import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.JumpUtil
@@ -62,8 +61,6 @@ class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: Attribut
         setUpBannerData()
     }
 
-    fun getCurrentTab() = gameTabAdapter.selectedTab
-
     private fun initSearch() {
         edtSearch.onConfirm { key -> onSearchTextChanged?.invoke(key) }
         findViewById<View>(R.id.ivSearch).setOnClickListener{ onSearchTextChanged?.invoke(edtSearch.text.toString()) }
@@ -94,7 +91,7 @@ class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: Attribut
 
     private fun setupTables() {
         rcvGamesTab.addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_8))
-        rcvGamesTab.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+        rcvGamesTab.setLinearLayoutManager(RecyclerView.HORIZONTAL)
         rcvGamesTab.adapter = gameTabAdapter
     }
 

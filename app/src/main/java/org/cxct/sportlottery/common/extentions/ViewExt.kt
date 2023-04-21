@@ -6,13 +6,17 @@ import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.text.InputFilter
 import android.view.View
+import android.view.animation.BounceInterpolator
 import androidx.annotation.LayoutRes
 import com.chad.library.adapter.base.BaseQuickAdapter
 import android.view.animation.DecelerateInterpolator
+import android.view.animation.LinearInterpolator
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import androidx.core.view.ViewCompat
 import androidx.core.view.ViewPropertyAnimatorListenerAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.util.BreatheInterpolator
 import org.cxct.sportlottery.util.ScreenUtil
 import java.util.regex.Pattern
@@ -38,11 +42,7 @@ fun setViewVisible(vararg views: View) {
 }
 
 fun setOnClickListener(vararg view: View, onClick: (View) -> Unit) {
-    view.forEach { it ->
-        it.setOnClickListener {
-            onClick(it)
-        }
-    }
+    view.forEach { it.setOnClickListener(onClick) }
 }
 
 fun setViewGone(vararg views: View) {
@@ -96,6 +96,12 @@ inline fun View.fitsSystemStatus() {
         layoutParams.height = layoutParams.height + statuHeight
     }
     setPadding(paddingLeft, paddingTop + statuHeight, paddingRight, paddingBottom)
+}
+
+inline fun RecyclerView.setLinearLayoutManager(
+    @RecyclerView.Orientation orientation: Int = RecyclerView.VERTICAL,
+    reverseLayout: Boolean = false): LinearLayoutManager {
+    return LinearLayoutManager(context, orientation, reverseLayout).apply { layoutManager = this }
 }
 
 /**
@@ -162,6 +168,15 @@ fun View.rotationAnimation(rotation: Float, duration: Long = 200) {
         .setDuration(duration)
 //        .setInterpolator(DecelerateInterpolator())
         .rotation(rotation)
+        .start()
+}
+
+fun View.animDuang(scale: Float, duration: Long = 300) {
+    ViewCompat.animate(this)
+        .setDuration(duration)
+        .setInterpolator(BounceInterpolator())
+        .scaleX(scale)
+        .scaleY(scale)
         .start()
 }
 
