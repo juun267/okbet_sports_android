@@ -597,12 +597,9 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         rvGameItem.setRecycledViewPool(okGamesFragment().gameItemViewPool)
         rvGameItem.layoutManager = SocketLinearManager(context, RecyclerView.HORIZONTAL, false)
         rvGameItem.addItemDecoration(SpaceItemDecoration(root.context, R.dimen.margin_10))
-        val gameAdapter = GameChildAdapter()
-        gameAdapter.setOnItemChildClickListener { adapter, view, position ->
-            onCollectClick(view, adapter.getItem(position) as OKGameBean)
-        }
+        val gameAdapter = GameChildAdapter(onFavoriate = ::onCollectClick)
         gameAdapter.setOnItemClickListener { adapter, _, position ->
-            adapter.getItem(position).let {
+            gameAdapter.getItem(position).let {
                 okGamesFragment().viewModel.requestEnterThirdGame(
                     it as OKGameBean, this@AllGamesFragment
                 )

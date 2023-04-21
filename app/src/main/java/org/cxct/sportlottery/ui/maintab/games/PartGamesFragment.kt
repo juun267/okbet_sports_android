@@ -25,7 +25,13 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     private lateinit var binding: FragmentPartOkgamesBinding
 
     private inline fun okGamesFragment() = parentFragment as OKGamesFragment
-    private val gameChildAdapter by lazy { GameChildAdapter(::onMoreClick) }
+    private val gameChildAdapter by lazy {
+        GameChildAdapter(onFavoriate = { view, gameBean ->
+            if (okGamesFragment().collectGame(gameBean)) {
+                view.animDuang(1.3f)
+            }
+        }, moreClick = ::onMoreClick)
+    }
     private var currentTab: OKGameLabel? = null
     private var pageIndx = 1
     private var labelName: String ?= null
@@ -58,11 +64,6 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         addItemDecoration(GridSpacingItemDecoration(3, 10.dp, false))
         adapter = gameChildAdapter
         gameChildAdapter.setEmptyView(LayoutInflater.from(requireContext()).inflate(R.layout.view_no_games, null))
-        gameChildAdapter.setOnItemChildClickListener { adapter, view, position ->
-            if (okGamesFragment().collectGame(adapter.getItem(position) as OKGameBean)) {
-                view.animDuang(1.3f)
-            }
-        }
         gameChildAdapter.setOnItemClickListener { _, _, position ->
             val item = gameChildAdapter.getItem(position)
             okGamesFragment().viewModel.requestEnterThirdGame(item, this@PartGamesFragment)
