@@ -167,16 +167,21 @@ class ContentParlayMatchAdapter(val data: Row, val viewModel: AccountHistoryView
 
         private fun showPrintDialog(context: Context, rowData: Row) {
             val dialog = PrintDialog(context)
-            dialog.tvPrintClickListener = { it ->
-                if (it.isNotEmpty()) {
+            dialog.tvPrintClickListener = { it1 ->
+                if (it1?.isNotEmpty() == true) {
                     val orderNo = rowData.orderNo
                     val orderTime = rowData.betConfirmTime
-                    val requestBet = RemarkBetRequest(orderNo, it, orderTime.toString())
+                    val requestBet = RemarkBetRequest(orderNo, it1, orderTime.toString())
                     viewModel.remarkBetLiveData.observeForever {
                         //uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
                         dialog.dismiss()
                         val newUrl =
-                            Constants.getPrintReceipt(context) + "uniqNo=${it.remarkBetResult?.uniqNo}&addTime=$orderTime&reMark=$it"
+                            Constants.getPrintReceipt(
+                                context,
+                                it.remarkBetResult?.uniqNo,
+                                orderTime.toString(),
+                                it1
+                            )
                         JumpUtil.toExternalWeb(context, newUrl)
                     }
                     viewModel.reMarkBet(requestBet)
