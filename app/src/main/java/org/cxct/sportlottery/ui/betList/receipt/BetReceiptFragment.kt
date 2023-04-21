@@ -362,7 +362,7 @@ class BetReceiptFragment :
         }
     }
 
-    fun showLoading() {
+    override fun showLoading() {
         btn_complete.isVisible = false
         lin_loading.isVisible = true
     }

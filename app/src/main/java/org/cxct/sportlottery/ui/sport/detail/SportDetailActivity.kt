@@ -22,6 +22,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.appbar.AppBarLayout
+import com.google.gson.Gson
 import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_detail_sport.*
@@ -78,6 +79,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             matchInfo: MatchInfo,
             matchType: MatchType? = null,
             intoLive: Boolean = false,
+            fastBetDataBean: String? = null,
         ) {
             matchInfo.let {
                 val intent = Intent(context, SportDetailActivity::class.java)
@@ -88,6 +90,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         ?: if (TimeUtil.isTimeInPlay(it.startTime)) MatchType.IN_PLAY else MatchType.DETAIL
                 )
                 intent.putExtra("intoLive", intoLive)
+                intent.putExtra("fastBetDataBean", fastBetDataBean)
                 context.startActivity(intent)
             }
         }
@@ -110,6 +113,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private var betListFragment = BetListFragment()
     private var matchOdd: MatchOdd? = null
     private var matchInfo: MatchInfo? = null
+    private var fastBetDataBean: FastBetDataBean? = null
     private var isFlowing = false
     private lateinit var enterAnim: Animation
     private lateinit var exitAnim: Animation
@@ -392,11 +396,16 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     private fun initData() {
         clickButton()
-        matchInfo = intent.getParcelableExtra<MatchInfo>("matchInfo")
+        matchInfo = intent.getParcelableExtra("matchInfo")
         matchType = intent.getSerializableExtra("matchType") as MatchType
         intoLive = intent.getBooleanExtra("intoLive", false)
+        val betJson = intent.getStringExtra("fastBetDataBean")
+        fastBetDataBean=Gson().fromJson(betJson,FastBetDataBean::class.java)
         matchInfo?.let {
             setupMatchInfo(it)
+        }
+        fastBetDataBean?.let {
+            viewModel.updateMatchBetListData(it)
         }
     }
 

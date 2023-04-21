@@ -25,6 +25,7 @@ import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEvent
 import org.cxct.sportlottery.network.service.ping_pong.PingPongEvent
 import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
+import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.network.service.sys_maintenance.SysMaintenanceEvent
 import org.cxct.sportlottery.network.service.user_level_config_change.UserLevelConfigListEvent
 import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
@@ -110,6 +111,11 @@ open class ServiceBroadcastReceiver(
     val closePlayCate: LiveData<Event<ClosePlayCateEvent?>>
         get() = _closePlayCate
 
+    val recordNew: LiveData<RecordNewEvent?>
+        get() = _recordNew
+    val recordResult: LiveData<RecordNewEvent?>
+        get() = _recordResult
+
     private val _globalStop = MutableLiveData<GlobalStopEvent?>()
     private val _matchClock = MutableLiveData<MatchClockEvent?>()
     private val _matchOddsChange = MutableLiveData<Event<MatchOddsChangeEvent?>>()
@@ -130,6 +136,8 @@ open class ServiceBroadcastReceiver(
     private val _dataSourceChange = MutableLiveData<Boolean?>()
     private val _userInfoChange = MutableLiveData<Boolean?>()
     private val _closePlayCate = MutableLiveData<Event<ClosePlayCateEvent?>>()
+    private val _recordNew = MutableLiveData<RecordNewEvent?>()
+    private val _recordResult = MutableLiveData<RecordNewEvent?>()
 
     override fun onReceive(context: Context?, intent: Intent) {
         val bundle = intent.extras
@@ -303,7 +311,18 @@ open class ServiceBroadcastReceiver(
             EventType.UNKNOWN -> {
                 Timber.i("Receive UnKnown EventType : $eventType")
             }
+            EventType.RECORD_NEW -> {
+                //最新投注
+                val data = ServiceMessage.getRecondNew(jObjStr)
+                _recordNew.postValue(data)
+            }
+            EventType.RECORD_RESULT -> {
+                //最新大奖
+                val data = ServiceMessage.getRecondResult(jObjStr)
+                _recordResult.postValue(data)
+            }
             else -> {}
+
         }
 
     }

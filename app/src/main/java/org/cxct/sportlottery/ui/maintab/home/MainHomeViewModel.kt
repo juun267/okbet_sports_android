@@ -34,7 +34,7 @@ import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MainHomeViewModel(
+open class MainHomeViewModel(
     androidContext: Application,
     userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
@@ -67,7 +67,7 @@ class MainHomeViewModel(
     private val _publicityPromotionList = MutableLiveData<List<PromotionItemData>>()
     val publicityPromotionList: LiveData<List<PromotionItemData>>
         get() = _publicityPromotionList
-    private val _enterThirdGameResult = MutableLiveData<Pair<String, EnterThirdGameResult>>()
+    val _enterThirdGameResult = MutableLiveData<Pair<String, EnterThirdGameResult>>()
     val enterThirdGameResult: LiveData<Pair<String, EnterThirdGameResult>>
         get() = _enterThirdGameResult
     private val _errorPromptMessage = MutableLiveData<Event<String>>()
@@ -287,9 +287,7 @@ class MainHomeViewModel(
                     url = null,
                     errorMsg = androidContext.getString(R.string.hint_game_maintenance)
                 ))
-
             )
-
             return
         }
 
@@ -298,10 +296,16 @@ class MainHomeViewModel(
 
     //避免多次请求游戏
     var jumpingGame = false
-    private fun requestEnterThirdGame(firmType: String, gameCode: String, gameCategory: String, baseFragment: BaseFragment<*>) {
+    fun requestEnterThirdGame(
+        firmType: String,
+        gameCode: String,
+        gameCategory: String,
+        baseFragment: BaseFragment<*>,
+    ) {
 //        Timber.e("gameData: $gameData")
-        if(loginRepository.isLogin.value != true) {
-            _enterThirdGameResult.postValue(Pair(firmType, EnterThirdGameResult(EnterThirdGameResult.ResultType.NEED_REGISTER,null)))
+        if (loginRepository.isLogin.value != true) {
+            _enterThirdGameResult.postValue(Pair(firmType,
+                EnterThirdGameResult(EnterThirdGameResult.ResultType.NEED_REGISTER, null)))
             return
         }
 

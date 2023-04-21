@@ -83,13 +83,14 @@ interface ThirdGameService {
 
     @GET(HOT_HANDICAP_LIST)
     suspend fun getHotHandicapList(
-        @Path("handicapType") handicapType:Int?
-    ):Response<HandicapResult>
+        @Path("handicapType") handicapType: Int?,
+    ): Response<HandicapResult>
 
     @GET(HOT_LIVE_LIST)
-    suspend fun getLiveList():Response<HotMatchLiveResult>
+    suspend fun getLiveList(): Response<HotMatchLiveResult>
 
 
     @POST(QUERY_TOTAL_REWARD_AMOUNT)
     suspend fun queryTotalRewardAmount(): Response<QueryTotalRewardAmountResult>
+
 }

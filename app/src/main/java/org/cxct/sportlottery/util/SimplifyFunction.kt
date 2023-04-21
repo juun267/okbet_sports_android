@@ -47,10 +47,9 @@ import org.cxct.sportlottery.network.service.close_play_cate.ClosePlayCateEvent
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
-import org.cxct.sportlottery.view.statusSelector.StatusSpinnerAdapter
+import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.dialog.ServiceDialog
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -64,6 +63,7 @@ import org.cxct.sportlottery.util.DisplayUtil.dpToPx
 import org.cxct.sportlottery.util.SvgUtil.setSvgIcon
 import org.cxct.sportlottery.view.boundsEditText.TextFieldBoxes
 import org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+import org.cxct.sportlottery.view.statusSelector.StatusSpinnerAdapter
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -414,41 +414,42 @@ fun View.setBackColorWithColorMode(lightModeColor: Int, darkModeColor: Int) {
     )
 }
 
-fun loginedRun(context: Context, block: ()-> Unit) {
-    if (LoginRepository.isLogin.value?: false) {
+fun loginedRun(context: Context, block: ()-> Unit): Boolean {
+    if (LoginRepository.isLogined()) {
         block.invoke()
-        return
+        return true
     }
 
-    if (context is Activity) {
-        Snackbar.make(
-            context.findViewById(android.R.id.content),
-            context.getString(R.string.login_notify),
-            Snackbar.LENGTH_LONG
-        ).apply {
-            val snackView: View = context.layoutInflater.inflate(
-                R.layout.snackbar_login_notify,
-                context.findViewById(android.R.id.content),
-                false
-            )
-            (this.view as Snackbar.SnackbarLayout).apply {
-                findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
-                    visibility = View.INVISIBLE
-                }
-                background.alpha = 0
-                addView(snackView, 0)
-                setPadding(0, 0, 0, 0)
-            }
-
-            if (context is MainTabActivity) {
-                setAnchorView(R.id.cLBottom)
-            }
-            show()
-        }
-        return
-    }
+//    if (context is Activity) {
+//        Snackbar.make(
+//            context.findViewById(android.R.id.content),
+//            context.getString(R.string.login_notify),
+//            Snackbar.LENGTH_LONG
+//        ).apply {
+//            val snackView: View = context.layoutInflater.inflate(
+//                R.layout.snackbar_login_notify,
+//                context.findViewById(android.R.id.content),
+//                false
+//            )
+//            (this.view as Snackbar.SnackbarLayout).apply {
+//                findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
+//                    visibility = View.INVISIBLE
+//                }
+//                background.alpha = 0
+//                addView(snackView, 0)
+//                setPadding(0, 0, 0, 0)
+//            }
+//
+//            if (context is MainTabActivity) {
+//                setAnchorView(R.id.cLBottom)
+//            }
+//            show()
+//        }
+//        return false
+//    }
 
     context.startActivity(Intent(context, LoginOKActivity::class.java))
+    return false
 }
 
 
@@ -1134,7 +1135,10 @@ fun View.bindExpanedAdapter(adapter: ExpanableOddsAdapter, block: ((Boolean) -> 
     }
 }
 
-fun BaseFragment<MainHomeViewModel>.enterThirdGame(result: EnterThirdGameResult, firmType: String) {
+fun BaseFragment<out MainHomeViewModel>.enterThirdGame(
+    result: EnterThirdGameResult,
+    firmType: String,
+) {
     hideLoading()
     when (result.resultType) {
         EnterThirdGameResult.ResultType.SUCCESS -> context?.run {

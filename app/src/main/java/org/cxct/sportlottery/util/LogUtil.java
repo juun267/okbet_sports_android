@@ -12,7 +12,7 @@ import org.cxct.sportlottery.BuildConfig;
 public class LogUtil {
     static {
         FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
-                .tag("hjq")
+                .tag("oklog")
                 .build();
         Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy) {
             @Override

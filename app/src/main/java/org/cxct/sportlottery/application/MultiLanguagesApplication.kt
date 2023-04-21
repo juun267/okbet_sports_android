@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentActivity
@@ -40,6 +39,7 @@ import org.cxct.sportlottery.ui.login.signUp.RegisterViewModel
 import org.cxct.sportlottery.ui.login.signUp.info.RegisterInfoViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabViewModel
 import org.cxct.sportlottery.ui.maintab.MainViewModel
+import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintenance.MaintenanceViewModel
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechViewModel
@@ -153,7 +153,8 @@ class MultiLanguagesApplication : Application() {
         viewModel { BetListViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { AuthViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { BindInfoViewModel(get(), get(), get()) }
-        viewModel { RegisterInfoViewModel(get(),get(), get(), get()) }
+        viewModel { RegisterInfoViewModel(get(), get(), get(), get()) }
+        viewModel { OKGamesViewModel(get(), get(), get(), get(), get(), get(), get()) }
     }
 
     private val repoModule = module {
@@ -250,7 +251,6 @@ class MultiLanguagesApplication : Application() {
     private fun initJpush() {
         JPushInterface.setDebugMode(BuildConfig.DEBUG)
         JPushInterface.init(this)
-        Log.d("hjq", "getRegistrationID=" + JPushInterface.getRegistrationID(this))
     }
 
     private fun setupTimber() {

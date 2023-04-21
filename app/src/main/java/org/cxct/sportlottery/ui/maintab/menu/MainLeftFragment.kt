@@ -1,9 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.menu
 
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.fragment_main_left.*
@@ -12,9 +9,8 @@ import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.MenuEvent
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.network.Constants
-import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.HandicapType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -49,16 +45,9 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             }
         }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        return inflater.inflate(R.layout.fragment_main_left, container, false)
-    }
+    override fun layoutId() = R.layout.fragment_main_left
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onBindView(view: View) {
         initView()
         initOddsTypeView()
         initLanguageView()
@@ -77,29 +66,30 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun initView() {
         lin_home.isSelected = fromPage == 0
+        lin_slot.gone()
         lin_home.setOnClickListener {
             EventBusUtil.post(MenuEvent(false))
-            (activity as MainTabActivity).jumpToHome(0)
+            (activity as MainTabActivity).backMainHome()
         }
         lin_sport.setOnClickListener {
             EventBusUtil.post(MenuEvent(false))
-            (activity as MainTabActivity).jumpToTheSport(MatchType.EARLY, GameType.FT)
+            (activity as MainTabActivity).jumpToEarlySport()
         }
         lin_inplay.setOnClickListener {
             EventBusUtil.post(MenuEvent(false))
-            (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)
+            (activity as MainTabActivity).jumpToInplaySport()
         }
         lin_live.setOnClickListener {
             EventBusUtil.post(MenuEvent(false))
-            (activity as MainTabActivity).jumpToHome(1)
+            (activity as MainTabActivity).jumpToLive()
         }
         lin_poker.setOnClickListener {
             EventBusUtil.post(MenuEvent(false))
-            (activity as MainTabActivity).jumpToHome(4)
+            (activity as MainTabActivity).jumpToOKGames()
         }
         lin_slot.setOnClickListener {
             EventBusUtil.post(MenuEvent(false))
-            (activity as MainTabActivity).jumpToHome(3)
+            (activity as MainTabActivity).jumpToOKGames()
         }
         lin_promotion.setOnClickListener {
             EventBusUtil.post(MenuEvent(false))

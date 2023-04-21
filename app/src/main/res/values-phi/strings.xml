@@ -1132,6 +1132,7 @@
     <string name="sms_code_length_error">Verification code kailangan 4 na digit</string>
     <string name="phone_no_error">Ang numero ng mobile phone ay dapat na 11 digit simula sa 09</string>
 
+    <string name="J369">Paraan ng Pagbayad</string>
 
     <string name="N849">Address</string>
     <string name="bet_details_title">Mga detalye ng kumbinasyon ng link</string>
@@ -1157,4 +1158,16 @@
     <string name="N890">Print</string>
     <string name="N891">Paki-type ang pangalan</string>
     <string name="J033">Pangalan</string>
+    <string name="N880">Provider ng laro</string>
+    <string name="N707">Pinakabagong Taya At Big Wins</string>
+    <string name="N708">Pinakabagong Taya</string>
+    <string name="N709">Pinakabagong Big Wins</string>
+    <string name="N711">Games</string>
+    <string name="N710">Player</string>
+    <string name="N713">Halaga ng Kita</string>
+    <string name="N712">Halaga ng taya</string>
+    <string name="N874">kamakailang na laro</string>
+    <string name="N873">Paborito</string>
+    <string name="N882">Resulta ng paghahanap</string>
+    <string name="N900">Pangalan ng Laro</string>
 </resources>

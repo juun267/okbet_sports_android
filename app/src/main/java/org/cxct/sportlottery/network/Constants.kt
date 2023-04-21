@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import org.cxct.sportlottery.BuildConfig
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.KvUtils
@@ -567,5 +567,19 @@ object Constants {
     //全局抽奖活动
     const val LOTTERY_GET = "/api/front/lottery/get"
 
+    // 游戏大厅
+    const val OKGAMES_HALL = "/api/front/gameEntryGames/getHallOkGames"
+
+    // 游戏分页列表
+    const val OKGAMES_GAME_LIST = "/api/front/gameEntryGames/getPageOkGames"
+
+    // 收藏或取消OKGames
+    const val OKGAMES_COLLECT = "/api/front/gameEntryGames/collectOkGames"
+
+    // 最新投注
+    const val OKGAMES_RECORD_NEW = "/api/front/sport/recordNewList"
+
+    // 最新大奖
+    const val OKGAMES_RECORD_RESULT = "/api/front/sport/recordResultList"
 
 }

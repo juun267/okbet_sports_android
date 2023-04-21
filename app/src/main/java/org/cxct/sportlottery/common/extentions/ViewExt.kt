@@ -6,12 +6,17 @@ import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.text.InputFilter
 import android.view.View
+import android.view.animation.BounceInterpolator
 import androidx.annotation.LayoutRes
 import com.chad.library.adapter.base.BaseQuickAdapter
 import android.view.animation.DecelerateInterpolator
+import android.view.animation.LinearInterpolator
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import androidx.core.view.ViewCompat
 import androidx.core.view.ViewPropertyAnimatorListenerAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.util.BreatheInterpolator
 import org.cxct.sportlottery.util.ScreenUtil
 import java.util.regex.Pattern
@@ -37,11 +42,7 @@ fun setViewVisible(vararg views: View) {
 }
 
 fun setOnClickListener(vararg view: View, onClick: (View) -> Unit) {
-    view.forEach { it ->
-        it.setOnClickListener {
-            onClick(it)
-        }
-    }
+    view.forEach { it.setOnClickListener(onClick) }
 }
 
 fun setViewGone(vararg views: View) {
@@ -91,10 +92,16 @@ fun <T : View> T.clickWithDuration(time: Long = 300, block: (T) -> Unit) {
 inline fun View.fitsSystemStatus() {
 
     val statuHeight = ScreenUtil.getStatusBarHeight(context)
-    if (layoutParams.height > 0) {
+    if (layoutParams?.height ?: 0 > 0) {
         layoutParams.height = layoutParams.height + statuHeight
     }
     setPadding(paddingLeft, paddingTop + statuHeight, paddingRight, paddingBottom)
+}
+
+inline fun RecyclerView.setLinearLayoutManager(
+    @RecyclerView.Orientation orientation: Int = RecyclerView.VERTICAL,
+    reverseLayout: Boolean = false): LinearLayoutManager {
+    return LinearLayoutManager(context, orientation, reverseLayout).apply { layoutManager = this }
 }
 
 /**
@@ -164,6 +171,15 @@ fun View.rotationAnimation(rotation: Float, duration: Long = 200) {
         .start()
 }
 
+fun View.animDuang(scale: Float, duration: Long = 300) {
+    ViewCompat.animate(this)
+        .setDuration(duration)
+        .setInterpolator(BounceInterpolator())
+        .scaleX(scale)
+        .scaleY(scale)
+        .start()
+}
+
 
 fun EditText.filterSpecialCharacters() {
     val spaceFilter = InputFilter { source, _, _, _, _, _ ->
@@ -182,4 +198,17 @@ fun EditText.filterSpecialCharacters() {
     }
 
     filters = arrayOf(spaceFilter, specialFilter)
+}
+
+
+fun EditText.onConfirm(block: (String) -> Unit) {
+    imeOptions = EditorInfo.IME_ACTION_DONE
+    setOnEditorActionListener { _, actionId, _ ->
+        if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_GO) {
+            block.invoke(text.toString())
+            return@setOnEditorActionListener true
+        }
+
+        return@setOnEditorActionListener false
+    }
 }

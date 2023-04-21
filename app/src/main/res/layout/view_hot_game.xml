@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/llayout_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingBottom="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_okgame_p" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hot Match"
+            android:paddingLeft="4dp"
+            android:textColor="@color/color_0D2245"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:textSize="@dimen/textSize16sp"
+            android:textStyle="bold" />
+
+
+
+        <TextView
+            android:id="@+id/tvHotMore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_6D7693"
+            android:layout_gravity="center_vertical"
+            android:textSize="@dimen/textSize14sp"
+            android:text="@string/see_more" />
+
+        <ImageView
+            android:id="@+id/ivHotMore"
+            android:layout_width="@dimen/margin_16"
+            android:layout_height="@dimen/margin_16"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_game_gray_arrow_right" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_hot_game"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="12dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_hot_game_view"
+            android:orientation="horizontal" />
+
+
+        <FrameLayout
+            android:background="@drawable/bg_hot_game_right"
+            android:layout_width="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_height="200dp"/>
+
+        <ImageView
+            android:id="@+id/iv_left"
+            android:layout_marginStart="@dimen/margin_8"
+            android:src="@drawable/icon_arrow_b"
+            android:layout_centerVertical="true"
+            android:layout_width="24dp"
+            android:layout_height="24dp"/>
+
+        <ImageView
+            android:id="@+id/iv_right"
+            android:layout_marginEnd="@dimen/margin_8"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/icon_arrow_a"
+            android:layout_width="24dp"
+            android:layout_height="24dp"/>
+    </RelativeLayout>
+
+</LinearLayout>
