@@ -56,33 +56,29 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
 
 
     companion object {
-        private const val BET_CONFIRM_TIPS = 1001
-
         /**
          * 投注类型
          * PARLAY 串关投注
          * SINGLE 单项投注
+         * BASKETBALL_ENDING_CARD 篮球末位比分
          */
         const val SINGLE = 0
         const val PARLAY = 1
+        const val BASKETBALL_ENDING_CARD = 2
 
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @return A new instance of fragment BetListFragment.
-         */
         @JvmStatic
-        fun newInstance(betResultListener: BetResultListener, showToolbar: Boolean = false) =
+        fun newInstance(betResultListener: BetResultListener, showToolbar: Boolean = false,currentBetType:Int = 0 ) =
             BetListFragment().apply {
                 this.betResultListener = betResultListener
                 this.showToolbar = showToolbar
+                this.currentBetType = currentBetType
             }
     }
 
     /**
-     *  SINGLE
-     *  PARLAY
+     *  SINGLE 0
+     *  PARLAY 1
+     *  BASKETBALL_ENDING_CARD 2
      */
     private var currentBetType: Int = 0
 
@@ -139,17 +135,10 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         )
     )
 
-    //提示
-    private var snackBarNotify: Snackbar? = null
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        binding =/*DataBindingUtil.inflate(inflater, R.layout.fragment_bet_list, container, false)*/
-            FragmentBetListBinding.inflate(layoutInflater)
-//        binding.apply {
-////            gameViewModel = this@BetListFragment.viewModel
-//        }
+        binding = FragmentBetListBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -188,9 +177,8 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         initToolBar()
 
         ll_root.setOnClickListener {
-//            betListRefactorAdapter?.closeAllKeyboard()
-//            betSingleListAdapter?.closeAllKeyboard()
-//            betParlayListRefactorAdapter?.closeAllKeyboard()
+            //点击外部区域是否清空购物车
+
             onBackPressed()
         }
         parlayLayout.setOnClickListener {
@@ -216,7 +204,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
 
 
     private fun onBackPressed() {
-        if (currentBetType == SINGLE) {
+        if (BetInfoRepository.currentState == SINGLE) {
             clearCarts()
         } else {
             activity?.onBackPressed()
@@ -243,7 +231,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
     }
 
     private fun initTabLayout() {
-        val type = BetInfoRepository.currentStateSingleOrParlay
+        val type = BetInfoRepository.currentBetType
         Timber.d("currentStateSingleOrParlay:${type}")
         btnParlaySingle.text = if (type == 0) {
             getString(R.string.bet_parlay)
@@ -253,15 +241,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         }
     }
 
-    /**
-     * 檢查是否顯示填充單注or串關layout
-     */
-//    private fun checkSingleAndParlayBetLayoutVisible() {
-//        binding.apply {
-////            clSingleList.isVisible = getCurrentBetList().size > 1 && currentBetType == 0
-////            if (currentBetType == 1) refreshLlMoreOption()
-//        }
-//    }
 
     private fun refreshLlMoreOption(showParlayList: Boolean = true) {
         binding.apply {
@@ -295,16 +274,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
 
     private fun initRecyclerView() {
         initAdapter()
-
-        //单项投注项
-//        val singleLayoutManager =
-//            ScrollCenterLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-//        rv_single_list.layoutManager = singleLayoutManager
-//        (rv_single_list.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-//
-//        betSingleListAdapter?.setHasStableIds(true)
-//        rv_single_list.adapter = betSingleListAdapter
-
         //串关投注项
         val layoutManager = ScrollCenterLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv_bet_list.layoutManager = layoutManager
@@ -320,7 +289,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         betParlayListRefactorAdapter?.setHasStableIds(true)
         rv_parlay_list.adapter = betParlayListRefactorAdapter
 
-        if (BetInfoRepository.currentStateSingleOrParlay == 0) {
+        if (BetInfoRepository.currentBetType == 0) {
             currentBetType = 0
             betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.SINGLE
             binding.apply {
@@ -648,7 +617,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
     private fun setCurrentBetModeSingle() {
         currentBetType = SINGLE
         BetInfoRepository.setCurrentBetState(SINGLE)
-
         betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.SINGLE
     }
 

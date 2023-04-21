@@ -176,7 +176,7 @@ abstract class BaseOddButtonViewModel(
                     savedOddId = "savedOddId" //重設savedOddId
                     if (result.success) {
                         val betInfo = result.BetInfo
-                        Timber.d("betInfoRepository:$betInfoRepository  ${betInfoRepository.currentStateSingleOrParlay}")
+                        Timber.d("betInfoRepository:$betInfoRepository  ${betInfoRepository.currentState}")
                         betInfoRepository.addInBetInfo(
                             matchType,
                             gameType,

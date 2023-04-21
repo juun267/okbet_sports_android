@@ -11,6 +11,7 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.adapter.BetListRefactorAdapter.BetRvType.*
+import org.cxct.sportlottery.ui.betList.holder.BasketballEndingCardViewHolder
 import org.cxct.sportlottery.ui.betList.listener.OnItemClickListener
 import org.cxct.sportlottery.ui.betList.listener.OnSelectedPositionListener
 import org.cxct.sportlottery.util.KeyboardView
@@ -23,10 +24,9 @@ class BetListRefactorAdapter(
     private val keyboardView: KeyboardView,
     private val onItemClickListener: OnItemClickListener,
     private val userBalance: () -> Double
-) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private enum class ViewType { Bet, Parlay, OddsWarn }
+    private enum class ViewType { Bet, Parlay, OddsWarn, Basketball_Ending_Card }
     enum class BetViewType { SINGLE, PARLAY, NULL }
 
     private val attachedViewSet = HashSet<RecyclerView.ViewHolder>()
@@ -37,7 +37,7 @@ class BetListRefactorAdapter(
      * @property PARLAY_SINGLE 串关-单注
      * @property PARLAY 串关-多注
      */
-    enum class BetRvType { SINGLE, PARLAY_SINGLE, PARLAY }
+    enum class BetRvType { SINGLE, PARLAY_SINGLE, PARLAY, Basketball_Ending_Card }
 
     var adapterBetType: BetRvType = SINGLE
 
@@ -116,20 +116,20 @@ class BetListRefactorAdapter(
                 ContentBetInfoItemV32Binding.inflate(layoutInflater), userBalance
             )
 
-//            ViewType.Single.ordinal -> bsiMoVh(
-//                ItemBetListBatchControlV3Binding.inflate(layoutInflater)
-//            )
-
             ViewType.OddsWarn.ordinal -> OcWvH(
                 layoutInflater.inflate(
                     R.layout.content_odds_changed_warn, parent, false
                 )
             )
 
+            ViewType.Basketball_Ending_Card.ordinal -> BasketballEndingCardViewHolder(
+
+            )
+
             else -> BpcVh(
                 layoutInflater.inflate(
                     R.layout.item_bet_list_batch_control_connect_v3, parent, false
-                ),keyboardView
+                ), keyboardView
             )
         }
     }
@@ -190,7 +190,7 @@ class BetListRefactorAdapter(
                     betList ?: mutableListOf(),
                     currentOddsType,
                     onItemClickListener,
-                    {          notifyDataSetChanged() },
+                    { notifyDataSetChanged() },
                     mSelectedPosition,
                     mBetView,
                     onSelectedPositionListener,
@@ -219,6 +219,10 @@ class BetListRefactorAdapter(
                         ViewType.Parlay.ordinal
                     }
                 }
+            }
+
+            Basketball_Ending_Card -> {
+                ViewType.Basketball_Ending_Card.ordinal
             }
         }
     }
@@ -265,7 +269,7 @@ class BetListRefactorAdapter(
         val betListSize = betList?.size ?: 0
 
         return when (adapterBetType) {
-            SINGLE, PARLAY_SINGLE -> {
+            SINGLE, PARLAY_SINGLE,Basketball_Ending_Card -> {
                 betListSize
             }
 
@@ -274,6 +278,7 @@ class BetListRefactorAdapter(
                     betListSize < 2 -> {
                         0
                     }
+
                     else -> {
                         val parlayListSize = parlayList?.size ?: 0
                         if (isOddsChangedWarn) {

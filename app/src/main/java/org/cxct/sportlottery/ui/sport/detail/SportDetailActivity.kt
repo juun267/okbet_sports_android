@@ -132,7 +132,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     else -> {
                     }
                 }
-
             }
             //过滤部分球类
             if (when (matchInfo?.gameType) {
