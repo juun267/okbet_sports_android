@@ -7,6 +7,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.databinding.ContentBetInfoItemV32Binding
+import org.cxct.sportlottery.databinding.ContentBetInfoItemV3BaseketballEndingCardBinding
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.ui.betList.BetInfoListData
@@ -26,7 +27,7 @@ class BetListRefactorAdapter(
     private val userBalance: () -> Double
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private enum class ViewType { Bet, Parlay, OddsWarn, Basketball_Ending_Card }
+    private enum class ViewType { Bet, Parlay, OddsWarn, BasketballEndingCard }
     enum class BetViewType { SINGLE, PARLAY, NULL }
 
     private val attachedViewSet = HashSet<RecyclerView.ViewHolder>()
@@ -37,7 +38,7 @@ class BetListRefactorAdapter(
      * @property PARLAY_SINGLE 串关-单注
      * @property PARLAY 串关-多注
      */
-    enum class BetRvType { SINGLE, PARLAY_SINGLE, PARLAY, Basketball_Ending_Card }
+    enum class BetRvType { SINGLE, PARLAY_SINGLE, PARLAY, BasketballEndingCard }
 
     var adapterBetType: BetRvType = SINGLE
 
@@ -122,8 +123,10 @@ class BetListRefactorAdapter(
                 )
             )
 
-//            ViewType.Basketball_Ending_Card.ordinal -> BasketballEndingCardViewHolder(
-//            )
+            ViewType.BasketballEndingCard.ordinal -> BasketballEndingCardViewHolder(
+                ContentBetInfoItemV3BaseketballEndingCardBinding.inflate(layoutInflater),
+                userBalance
+            )
 
             else -> BpcVh(
                 layoutInflater.inflate(
@@ -140,8 +143,63 @@ class BetListRefactorAdapter(
                 currentOddsType = OddsType.EU
             }
         }
+        extracted(holder, position, currentOddsType)
+    }
 
+
+    override fun getItemViewType(position: Int): Int {
+        return when (adapterBetType) {
+            SINGLE, PARLAY_SINGLE -> {
+                ViewType.Bet.ordinal
+            }
+
+            PARLAY -> {
+                when {
+                    isOddsChangedWarn && position == 0 -> {
+                        ViewType.OddsWarn.ordinal
+                    }
+
+                    else -> {
+                        ViewType.Parlay.ordinal
+                    }
+                }
+            }
+
+            BasketballEndingCard -> {
+                ViewType.BasketballEndingCard.ordinal
+            }
+        }
+    }
+
+    override fun getItemCount(): Int {
+        //region 20220607 投注單版面調整
+        return getListSize()
+    }
+
+    private fun extracted(
+        holder: RecyclerView.ViewHolder,
+        position: Int,
+        currentOddsType: OddsType
+    ) {
         when (holder) {
+            is BasketballEndingCardViewHolder -> {
+                betList?.getOrNull(position)?.let { betInfoListData ->
+                    holder.bind(
+                        betInfoListData,
+                        currentOddsType,
+                        itemCount,
+                        onItemClickListener,
+                        betList?.size ?: 0,
+                        mSelectedPosition,
+                        onSelectedPositionListener,
+                        position,
+                        userMoney,
+                        userLogin,
+                        adapterBetType
+                    )
+                }
+            }
+
             is BiVh -> {
                 betList?.getOrNull(position)?.let { betInfoListData ->
                     holder.bind(
@@ -202,45 +260,12 @@ class BetListRefactorAdapter(
         }
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return when (adapterBetType) {
-            SINGLE, PARLAY_SINGLE -> {
-                ViewType.Bet.ordinal
-            }
-
-            PARLAY -> {
-                when {
-                    isOddsChangedWarn && position == 0 -> {
-                        ViewType.OddsWarn.ordinal
-                    }
-
-                    else -> {
-                        ViewType.Parlay.ordinal
-                    }
-                }
-            }
-
-            Basketball_Ending_Card -> {
-                ViewType.Basketball_Ending_Card.ordinal
-            }
-        }
-    }
-
-    override fun getItemCount(): Int {
-        //region 20220607 投注單版面調整
-        return getListSize()
-    }
-
     override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
         super.onViewAttachedToWindow(holder)
         attachedViewSet.add(holder)
     }
 
     override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
-        //隐藏键盘
-//        if ((holder is BiVh) or (holder is bsiMoVh) or (holder is BpcVh)) {
-////            holder.itemView.layoutKeyBoard.hideKeyboard()
-//        }
         super.onViewDetachedFromWindow(holder)
         attachedViewSet.remove(holder)
     }
@@ -268,7 +293,7 @@ class BetListRefactorAdapter(
         val betListSize = betList?.size ?: 0
 
         return when (adapterBetType) {
-            SINGLE, PARLAY_SINGLE,Basketball_Ending_Card -> {
+            SINGLE, PARLAY_SINGLE, BasketballEndingCard -> {
                 betListSize
             }
 

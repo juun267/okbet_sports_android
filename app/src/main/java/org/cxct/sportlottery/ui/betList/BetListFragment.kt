@@ -67,12 +67,15 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         const val BASKETBALL_ENDING_CARD = 2
 
         @JvmStatic
-        fun newInstance(betResultListener: BetResultListener, showToolbar: Boolean = false,currentBetType:Int = 0 ) =
-            BetListFragment().apply {
-                this.betResultListener = betResultListener
-                this.showToolbar = showToolbar
-                this.currentBetType = currentBetType
-            }
+        fun newInstance(
+            betResultListener: BetResultListener,
+            showToolbar: Boolean = false,
+            currentBetType: Int = 0
+        ) = BetListFragment().apply {
+            this.betResultListener = betResultListener
+            this.showToolbar = showToolbar
+            this.currentBetType = currentBetType
+        }
     }
 
     /**
@@ -178,19 +181,18 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
 
         ll_root.setOnClickListener {
             //点击外部区域是否清空购物车
-
             onBackPressed()
         }
         parlayLayout.setOnClickListener {
             println("点击底部区域")
         }
-//        binding.clTitle.tvBalance.text = TextUtil.formatMoney(0.0)
-        binding.tvBalance.text = "${sConfigData?.systemCurrencySign}${TextUtil.formatMoney(0.0)}"
-        binding.clTitle.ivArrow.rotation = 180f //注單開啟後，箭頭朝下
 
         //設定本金, 可贏的systemCurrencySign
         binding.apply {
-            titleAllBet.text = getString(R.string.total_bet_money_colon, sConfigData?.systemCurrencySign)
+            tvBalance.text = "${sConfigData?.systemCurrencySign}${TextUtil.formatMoney(0.0)}"
+            clTitle.ivArrow.rotation = 180f //注單開啟後，箭頭朝下
+            titleAllBet.text =
+                getString(R.string.total_bet_money_colon, sConfigData?.systemCurrencySign)
             titleWinnableAmount.text = getString(R.string.total_all_win_amount)
         }
     }
@@ -243,32 +245,32 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
 
 
     private fun refreshLlMoreOption(showParlayList: Boolean = true) {
-        binding.apply {
-            /**
-             * @since 只有一張投注單時 串關資料會存在一筆parlayType為1C1的資料
-             * @since 投注單無法串關時 串關資料為空(parlayList), 經處理會塞入一項資料(singleParlayList)作為"單項投注"填充所有單注使用
-             * @see org.cxct.sportlottery.util.parlaylimit.ParlayLimitUtil.getCom
-             * @see singleParlayList
-             */
-            val currentParlayList = getCurrentParlayList()
-            if (currentParlayList.isEmpty()) {
-                EventBusUtil.post(BetModeChangeEvent(SINGLE))
-                return@apply
-            }else{
-                EventBusUtil.post(BetModeChangeEvent(PARLAY))
+        /**
+         * @since 只有一張投注單時 串關資料會存在一筆parlayType為1C1的資料
+         * @since 投注單無法串關時 串關資料為空(parlayList), 經處理會塞入一項資料(singleParlayList)作為"單項投注"填充所有單注使用
+         * @see org.cxct.sportlottery.util.parlaylimit.ParlayLimitUtil.getCom
+         * @see singleParlayList
+         */
+        val currentParlayList = getCurrentParlayList()
+
+        if (currentParlayList.isEmpty() && BetInfoRepository.currentBetType == SINGLE) {
+            EventBusUtil.post(BetModeChangeEvent(SINGLE))
+        } else if (currentParlayList.isEmpty() && BetInfoRepository.currentBetType == BASKETBALL_ENDING_CARD) {
+            EventBusUtil.post(BetModeChangeEvent(BASKETBALL_ENDING_CARD))
+        } else {
+            EventBusUtil.post(BetModeChangeEvent(PARLAY))
+        }
+        Timber.d("currentParlayList.size():${currentParlayList.size}")
+        if (currentParlayList.any {
+                val isEmpty = it.parlayType.isNotEmpty()
+                val parlayType = it.parlayType != "1C1"
+                isEmpty && parlayType
+            }) {
+            if (showParlayList) {
+                binding.clParlayList.visible()
             }
-            Timber.d("currentParlayList.size():${currentParlayList.size}")
-            if (currentParlayList.any {
-                    val isEmpty = it.parlayType.isNotEmpty()
-                    val parlayType = it.parlayType != "1C1"
-                    isEmpty && parlayType
-                }) {
-                if (showParlayList) {
-                    clParlayList.visibility = View.VISIBLE
-                }
-            } else {
-                clParlayList.visibility = View.GONE
-            }
+        } else {
+            binding.clParlayList.gone()
         }
     }
 
@@ -289,30 +291,41 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         betParlayListRefactorAdapter?.setHasStableIds(true)
         rv_parlay_list.adapter = betParlayListRefactorAdapter
 
-        if (BetInfoRepository.currentBetType == 0) {
-            currentBetType = 0
-            betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.SINGLE
-            binding.apply {
-                clParlayList.visibility = View.GONE
-                clTitle.ivArrow.setImageResource(R.drawable.ic_single_bet_delete)
+        when (BetInfoRepository.currentBetType) {
+            SINGLE -> {
+                currentBetType = SINGLE
+                betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.SINGLE
+                binding.apply {
+                    clParlayList.visibility = View.GONE
+                    clTitle.ivArrow.setImageResource(R.drawable.ic_single_bet_delete)
+                }
+                line_shadow.gone()
             }
-            line_shadow.gone()
 
-        } else {
-            currentBetType = 1
-            betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.PARLAY_SINGLE
-            refreshLlMoreOption()
-            binding.clTitle.ivArrow.setImageResource(
-                R.drawable.ic_arrow_up_double
-            )
-            line_shadow.visible()
+            PARLAY -> {
+                currentBetType = PARLAY
+                betListRefactorAdapter?.adapterBetType =
+                    BetListRefactorAdapter.BetRvType.PARLAY_SINGLE
+                refreshLlMoreOption()
+                binding.clTitle.ivArrow.setImageResource(
+                    R.drawable.ic_arrow_up_double
+                )
+                line_shadow.visible()
+            }
+
+            else -> {
+                currentBetType = BASKETBALL_ENDING_CARD
+                betListRefactorAdapter?.adapterBetType =
+                    BetListRefactorAdapter.BetRvType.BasketballEndingCard
+                refreshLlMoreOption()
+                line_shadow.visible()
+            }
         }
         BetInfoRepository.isTouched = false
         checkAllAmountCanBet()
         refreshAllAmount()
-//        checkSingleAndParlayBetLayoutVisible()
 
-        clExpandOrStacked.setOnClickListener {
+        binding.clExpandOrStacked.setOnClickListener {
             if (isOpen) {
                 cl_total_info.gone()
                 tvExpandOrStacked.text = getString(R.string.expand_more_combinations)
@@ -350,7 +363,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             clearCarts()
         }
 
-        btnParlaySingle.setOnClickListener {
+        binding.btnParlaySingle.setOnClickListener {
             switchCurrentBetMode()
         }
     }
@@ -372,9 +385,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
     private fun initAdapter() {
         val adapterItemClickListener = object : OnItemClickListener {
             override fun onDeleteClick(oddsId: String, currentItemCount: Int) {
-//                betListRefactorAdapter?.closeAllKeyboard()
-//                betSingleListAdapter?.closeAllKeyboard()
-//                betParlayListRefactorAdapter?.closeAllKeyboard()
                 viewModel.removeBetInfoItem(oddsId)
             }
 
@@ -420,7 +430,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 }
                 checkAllAmountCanBet()
                 refreshAllAmount()
-//                    btn_bet.isOddsChanged = false //輸入金額一樣顯示接受的文案
             }
 
             override fun showParlayRule(parlayType: String, parlayRule: String) {
@@ -437,10 +446,9 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             override fun onOddsChangeAcceptSelect(tvTextSelect: TextView) {
                 try {
                     tvTextSelect.setCompoundDrawablesWithIntrinsicBounds(
-                        null,
-                        null,
-                        ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_down_double, null),
-                        null
+                        null, null, ResourcesCompat.getDrawable(
+                            resources, R.drawable.ic_arrow_down_double, null
+                        ), null
                     )
                     val popupWindow = OkPopupWindow(
                         requireContext(), tvTextSelect.text.toString()
@@ -542,9 +550,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
 
         binding.tvTotalBetAmount.text = TextUtil.formatForOdd(totalBetAmount)
         binding.tvTotalWinnableAmount.text =
-                "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(winnableAmount,2)}"
-
-//        Timber.d("原始值:${winnableAmount} 四舍五入的值:${TextUtil.formatForOdd(winnableAmount)} 保留两位小数的值:${TextUtil.formatMoney(winnableAmount,2)}")
+            "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(winnableAmount, 2)}"
 
 
         val betCount = if (currentBetType == 0) {
@@ -563,9 +569,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
     }
 
     private fun getWinnable(betAmount: Double, odds: Double, oddsType: OddsType): Double {
-
         return when (oddsType) {
-
             OddsType.MYS -> {
                 if (odds < 0) {
                     betAmount
@@ -623,7 +627,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
     private fun switchCurrentBetMode() {
         if (mIsEnabled) {
             avoidFastDoubleClick()
-            if (btnParlaySingle.text == "+"+getString(R.string.bet_single)) {
+            if (btnParlaySingle.text == "+" + getString(R.string.bet_single)) {
                 //玩法变成单注
                 currentBetType = SINGLE
                 BetInfoRepository.setCurrentBetState(SINGLE)
@@ -777,10 +781,10 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 betParlayListRefactorAdapter?.parlayList = it
             }
 
-            if(isOpen){
+            if (isOpen) {
                 betParlayListRefactorAdapter?.let { it1 ->
-                    BetListRcvUtil.setWrapHeight(binding.rvParlayList,
-                        it1
+                    BetListRcvUtil.setWrapHeight(
+                        binding.rvParlayList, it1
                     )
                 }
             }

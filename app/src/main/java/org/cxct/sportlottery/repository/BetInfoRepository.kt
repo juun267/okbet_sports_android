@@ -45,6 +45,10 @@ object BetInfoRepository {
     var isTouched = false
 
     var currentBetType: Int = BetListFragment.SINGLE
+        set(value) {
+            println("currentBetType:${value}")
+            field = value
+        }
 
     private val _showBetInfoSingle = MutableLiveData<Event<Boolean?>>()
 
@@ -387,7 +391,8 @@ object BetInfoRepository {
             if (matchType == MatchType.END_SCORE) {
                 oddIDArray.add(it.oddsId)
                 betList.add(data)
-                currentState = 2
+                setCurrentBetState(BetListFragment.BASKETBALL_ENDING_CARD)
+                currentBetType = BetListFragment.BASKETBALL_ENDING_CARD
             } else {
                 if (currentState == 0) {
                     //单注模式
