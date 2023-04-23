@@ -66,19 +66,19 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcvBasketballScore"
-            android:layout_marginHorizontal="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintHeight_max="100dp"
+            android:layout_marginHorizontal="15dp"
             android:layout_marginTop="5dp"
             android:visibility="visible"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="5"
-            tools:itemCount="10"
-            tools:listitem="@layout/item_bet_basketball_ending_cart"
+            app:layout_constraintHeight_max="100dp"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="@+id/odds_content_container"
             app:layout_constraintTop_toBottomOf="@+id/odds_content_container"
+            app:spanCount="5"
+            tools:itemCount="10"
+            tools:listitem="@layout/item_bet_basketball_ending_cart"
             tools:text="让球(1-1) container " />
 
         <TextView

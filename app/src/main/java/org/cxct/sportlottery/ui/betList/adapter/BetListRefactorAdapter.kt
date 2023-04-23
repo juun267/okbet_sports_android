@@ -177,15 +177,15 @@ class BetListRefactorAdapter(
     }
 
     private fun extracted(
-        holder: RecyclerView.ViewHolder,
-        position: Int,
-        currentOddsType: OddsType
+        holder: RecyclerView.ViewHolder, position: Int, currentOddsType: OddsType
     ) {
         when (holder) {
             is BasketballEndingCardViewHolder -> {
-                betList?.getOrNull(position)?.let { betInfoListData ->
+//                betList?.getOrNull(position)?.let { betInfoListData ->
+                betList?.get(0)?.let {
                     holder.bind(
-                        betInfoListData,
+                        betList,
+                        it,
                         currentOddsType,
                         itemCount,
                         onItemClickListener,
@@ -198,6 +198,7 @@ class BetListRefactorAdapter(
                         adapterBetType
                     )
                 }
+//                }
             }
 
             is BiVh -> {
@@ -293,8 +294,13 @@ class BetListRefactorAdapter(
         val betListSize = betList?.size ?: 0
 
         return when (adapterBetType) {
-            SINGLE, PARLAY_SINGLE, BasketballEndingCard -> {
+            SINGLE, PARLAY_SINGLE -> {
                 betListSize
+            }
+
+            //篮球只有一行数据
+            BasketballEndingCard -> {
+                1
             }
 
             PARLAY -> {

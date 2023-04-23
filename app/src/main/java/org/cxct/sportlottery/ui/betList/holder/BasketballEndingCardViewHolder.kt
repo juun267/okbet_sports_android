@@ -13,12 +13,16 @@ import android.text.style.StyleSpan
 import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
+import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
@@ -42,8 +46,10 @@ import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 import timber.log.Timber
 
-class BasketballEndingCardViewHolder(val contentView: ContentBetInfoItemV3BaseketballEndingCardBinding,
-                                     val userBalance: () -> Double,) : RecyclerView.ViewHolder(contentView.root) {
+class BasketballEndingCardViewHolder(
+    val contentView: ContentBetInfoItemV3BaseketballEndingCardBinding,
+    val userBalance: () -> Double,
+) : RecyclerView.ViewHolder(contentView.root) {
 
     private var inputMaxMoney: Double = 0.0
     private var inputMinMoney: Double = 0.0
@@ -53,6 +59,7 @@ class BasketballEndingCardViewHolder(val contentView: ContentBetInfoItemV3Baseke
     private var mUserLogin: Boolean = false
 
     fun bind(
+        betList: MutableList<BetInfoListData>?,
         itemData: BetInfoListData,
         currentOddsType: OddsType,
         itemCount: Int,
@@ -84,6 +91,7 @@ class BasketballEndingCardViewHolder(val contentView: ContentBetInfoItemV3Baseke
 
 
             setupBetAmountInput(
+                betList,
                 itemData,
                 if (itemData.matchOdd.isOnlyEUType) OddsType.EU else currentOddsType,
                 onItemClickListener,
@@ -98,7 +106,6 @@ class BasketballEndingCardViewHolder(val contentView: ContentBetInfoItemV3Baseke
     }
 
 
-
     private fun setupInputLimit(itemData: BetInfoListData) {
         val maxBet = itemData.parlayOdds?.max ?: 0
         //未登录的情况下，最大限额为7个9
@@ -111,6 +118,7 @@ class BasketballEndingCardViewHolder(val contentView: ContentBetInfoItemV3Baseke
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setupBetAmountInput(
+        betList: MutableList<BetInfoListData>?,
         itemData: BetInfoListData,
         currentOddsType: OddsType,
         onItemClickListener: OnItemClickListener,
@@ -129,6 +137,20 @@ class BasketballEndingCardViewHolder(val contentView: ContentBetInfoItemV3Baseke
             onFocusChangeListener = null
             filters = arrayOf(MoneyInputFilter())
         }
+
+        Timber.d("itemData:${itemData}")
+
+
+        val rcvBasketballAdapter =  object :
+            BaseQuickAdapter<BetInfoListData, BaseViewHolder>(R.layout.item_bet_basketball_ending_cart) {
+            override fun convert(holder: BaseViewHolder, item: BetInfoListData) {
+                    holder.setText(R.id.btnMatchOdds,item.matchOdd.playName)
+            }
+        }
+        rcvBasketballScore.adapter = rcvBasketballAdapter
+        rcvBasketballAdapter.setNewInstance(betList)
+        rcvBasketballScore.layoutManager  = GridLayoutManager(root.context,5)
+
 
         //設定editText內容
         etBet.apply {
@@ -264,10 +286,6 @@ class BasketballEndingCardViewHolder(val contentView: ContentBetInfoItemV3Baseke
     private val animationDuration = 750L //單次動畫持續時間
     private val delayResetTime = totalAnimationDuration - animationDuration * 2
 
-    var repeatCount = 0
-
-
-
 
     private fun setupOddInfo(
         itemData: BetInfoListData,
@@ -315,11 +333,6 @@ class BasketballEndingCardViewHolder(val contentView: ContentBetInfoItemV3Baseke
 
         oddsContentContainer.setBackgroundResource(R.color.transparent)
         tvOddsContent.setOUStyle(false)
-
-        val inPlay = System.currentTimeMillis() > (itemData.matchOdd.startTime ?: 0)
-
-        Timber.d("itemData:${itemData.matchOdd}")
-        Timber.d("itemData:${false}")
 
         //設定隊伍名稱, 聯賽名稱, 開賽時間
         when (itemData.matchType) {
@@ -374,9 +387,11 @@ class BasketballEndingCardViewHolder(val contentView: ContentBetInfoItemV3Baseke
                 tvLeagueName -> {
                     showPopAsTop(tvLeagueName, itemData.matchOdd.leagueName)
                 }
+
                 tvMatchHome -> {
                     showPopAsTop(tvMatchHome, itemData.matchOdd.homeName)
                 }
+
                 tvMatchAway -> {
                     showPopAsTop(tvMatchAway, itemData.matchOdd.awayName)
                 }
