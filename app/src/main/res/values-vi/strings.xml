@@ -1055,6 +1055,7 @@
     <string name="error_tips_confirm_password">Mật khẩu bạn nhập khác nhau, mời nhập lại</string>
     <string name="error_new_password">Mật khẩu từ 6-20 ký tự bao gồm cả chữ và số</string>
     <string name="error_verification_code_forget">Mã xác nhận sai</string>
+    <string name="str_total_stake">Tổng tiền cược：</string>
     <string name="pay_maya">Paymaya</string>
     <string name="format_error">Định dạng không phù hợp</string>
     <string name="over_size">Tệp quá lớn</string>
@@ -1187,4 +1188,5 @@
     <string name="N900">Tên game</string>
     <string name="N899">Nếu bạn chỉ muốn xóa một tỷ số, chạm vào Xóa một tỷ số.</string>
     <string name="N379">Không có mẹo</string>
+    <string name="N903">Bảng điểm số bóng rổ</string>
 </resources>

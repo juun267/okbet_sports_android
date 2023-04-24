@@ -1164,4 +1164,6 @@
     <string name="N900">Pangalan ng Laro</string>
     <string name="N899">" "</string>
     <string name="N379">Huwag nang ipaalala muli</string>
+    <string name="N903">Last digit score sa basketball</string>
+    <string name="str_total_stake">Kabuuang taya：</string>
 </resources>

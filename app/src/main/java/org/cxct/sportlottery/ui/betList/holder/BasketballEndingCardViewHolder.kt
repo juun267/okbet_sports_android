@@ -76,10 +76,6 @@ class BasketballEndingCardViewHolder(
         mUserLogin = userLogin
         //設置投注限額
         setupInputLimit(itemData)
-        val odds = getOddsAndSaveRealAmount(itemData, currentOddsType)
-        //設置可贏限額
-        inputWinMaxMoney = inputMaxMoney * odds
-        inputWinMinMoney = inputMinMoney * odds
 
         contentView.apply {
             setupBetAmountInput(
@@ -105,8 +101,6 @@ class BasketballEndingCardViewHolder(
         val minBet = itemData.parlayOdds?.min ?: 0
         inputMinMoney = minBet.toDouble()
     }
-
-    var isSingleBetFirstOpenKeyboard = true
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setupBetAmountInput(
@@ -143,7 +137,7 @@ class BasketballEndingCardViewHolder(
         rcvBasketballAdapter.setNewInstance(betList)
         rcvBasketballScore.layoutManager = GridLayoutManager(root.context, 5)
 
-
+        tvBasketBetListCount.text = "X${betList?.size}"
         //設定editText內容
         etBet.apply {
             if (itemData.input != null) setText(itemData.inputBetAmountStr) else text.clear()
@@ -169,10 +163,9 @@ class BasketballEndingCardViewHolder(
                     itemData.betAmount = 0.000
                     itemData.inputBetAmountStr = ""
                     itemData.input = null
-
                     itemData.realAmount = 0.0
-                    //更新可贏額
-                    tvCanWin.text = "${root.context.getString(R.string.bet_win)}: --"
+                    tvTotalStakeAmount.text = ""
+                    tvTotalWinAmount.text = ""
                 } else {
                     val quota = it.toString().toDouble()
                     itemData.betAmount = quota
@@ -186,28 +179,14 @@ class BasketballEndingCardViewHolder(
                         }
                         return
                     }
-                    val win = itemData.betAmount * getOddsAndSaveRealAmount(
-                        itemData, currentOddsType
-                    )
-                    //更新可贏額
-                    val strTvCanWin =
-                        "${root.context.getString(R.string.bet_win)}：${sConfigData?.systemCurrencySign} ${
-                            TextUtil.formatInputMoney(win)
-                        }"
-                    val canWinSpannable = SpannableString(strTvCanWin)
-                    canWinSpannable.setSpan(
-                        ForegroundColorSpan(root.context.getColor(R.color.color_E23434)),
-                        "${LocalUtils.getString(R.string.bet_win)}：".length,
-                        strTvCanWin.length,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                    canWinSpannable.setSpan(
-                        StyleSpan(Typeface.BOLD),
-                        "${LocalUtils.getString(R.string.bet_win)}：".length,
-                        strTvCanWin.length,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                    tvCanWin.text = canWinSpannable
+
+                    //总投注
+                    val bet = it.toString().toInt()
+                    val totalBet = bet * betListSize
+                    val totalCanWin = bet * itemData.matchOdd.odds
+                    tvTotalStakeAmount.text = "${sConfigData?.systemCurrencySign}${totalBet}"
+                    tvTotalWinAmount.text = "${sConfigData?.systemCurrencySign}${totalCanWin}"
+
                 }
                 checkBetLimit(itemData)
                 onItemClickListener.refreshBetInfoTotal()
@@ -269,10 +248,6 @@ class BasketballEndingCardViewHolder(
     var oddsId = ""
     var oldOdds = ""
     var handler = Handler(Looper.getMainLooper())
-    private val totalAnimationDuration = 3000L //動畫總共呈現時間
-    private val totalAnimationTipsDur = 5000L //
-    private val animationDuration = 750L //單次動畫持續時間
-    private val delayResetTime = totalAnimationDuration - animationDuration * 2
 
 
     private fun setupOddInfo(
@@ -283,14 +258,6 @@ class BasketballEndingCardViewHolder(
         adapterBetType: BetListRefactorAdapter.BetRvType?
     ) = contentView.run {
 
-        val spread: String =
-            if (itemData.matchOdd.spread.isEmpty() || !PlayCate.needShowSpread(itemData.matchOdd.playCode) || itemData.matchType == MatchType.OUTRIGHT) {
-                ""
-            } else {
-                itemData.matchOdd.spread
-            }
-
-        tvOddsContent.text = itemData.matchOdd.playName
         if (itemData.matchOdd.status == BetStatus.ACTIVATED.code && oldOdds != TextUtil.formatForOdd(
                 getOdds(itemData.matchOdd, currentOddsType)
             )
@@ -320,26 +287,13 @@ class BasketballEndingCardViewHolder(
         }
 
         oddsContentContainer.setBackgroundResource(R.color.transparent)
-        tvOddsContent.setOUStyle(false)
-
         //設定隊伍名稱, 聯賽名稱, 開賽時間
-        when (itemData.matchType) {
-            MatchType.OUTRIGHT -> {
-//                tvMatch.text = itemData.outrightMatchInfo?.name
-                tvMatchHome.text = itemData.outrightMatchInfo?.name
-                tvMatchHome.maxWidth = 330.dp
-                setViewGone(tvVs, tvMatchAway, tvLeagueName)
-//                tvStartTime.isVisible = false
-            }
+        tvMatchHome.text = itemData.matchOdd.homeName
+        tvMatchHome.maxWidth = 160.dp
+        tvMatchAway.text = itemData.matchOdd.awayName
+        setViewVisible(tvVs, tvMatchAway, tvLeagueName)
+        tvLeagueName.text = itemData.matchOdd.leagueName?.trim()
 
-            else -> {
-                tvMatchHome.text = itemData.matchOdd.homeName
-                tvMatchHome.maxWidth = 160.dp
-                tvMatchAway.text = itemData.matchOdd.awayName
-                setViewVisible(tvVs, tvMatchAway, tvLeagueName)
-                tvLeagueName.text = itemData.matchOdd.leagueName
-            }
-        }
         val view = View.inflate(tvMatchHome.context, R.layout.popupwindow_tips, null)
         val pop = PopupWindow(tvMatchHome.context).apply {
             contentView = view
@@ -371,7 +325,6 @@ class BasketballEndingCardViewHolder(
 
         setOnClickListener(tvLeagueName, tvMatchHome, tvMatchAway) {
             when (it) {
-
                 tvLeagueName -> {
                     showPopAsTop(tvLeagueName, itemData.matchOdd.leagueName)
                 }
@@ -392,76 +345,6 @@ class BasketballEndingCardViewHolder(
             tvMatchAway.setTextColor(tvLeagueName.context.getColor(R.color.color_A7B2C4))
         }
 
-    }
-
-    private fun TextView.setOUStyle(isOUType: Boolean) {
-        if (isOUType) {
-            setTextColor(ContextCompat.getColor(context, R.color.color_141931_F9F9F9))
-            setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12f)
-        } else {
-            setTextColor(ContextCompat.getColor(context, R.color.color_FFFFFF_414655))
-            setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14f)
-        }
-    }
-
-    private fun getOddsAndSaveRealAmount(
-        itemData: BetInfoListData, currentOddsType: OddsType
-    ): Double {
-        var odds = 0.0
-        var realAmount = itemData.betAmount
-        val tempOdds = getOdds(itemData.matchOdd, currentOddsType)
-        when (currentOddsType) {
-            OddsType.MYS -> {
-                if (tempOdds < 0) {
-//                    odds = ArithUtil.div(1.0, Math.abs(tempOdds), 2)
-                    realAmount = itemData.betAmount * Math.abs(tempOdds)
-//                        win = itemData.betAmount
-                    odds = 1.0
-                } else {
-//                        win = itemData.betAmount * getOdds(
-//                            itemData.matchOdd,
-//                            currentOddsType
-//                        )
-                    odds = tempOdds
-                }
-
-            }
-
-            OddsType.IDN -> {
-                if (tempOdds < 0) {
-//                    odds = ArithUtil.div(1.0, Math.abs(tempOdds), 2)
-                    realAmount = itemData.betAmount * Math.abs(tempOdds)
-//                        win = itemData.betAmount
-                    odds = 1.0
-                } else {
-//                        win = itemData.betAmount * getOdds(
-//                            itemData.matchOdd,
-//                            currentOddsType
-//                        )
-                    odds = tempOdds
-                }
-            }
-
-            OddsType.EU -> {
-//                    win = itemData.betAmount * (getOdds(
-//                        itemData.matchOdd,
-//                        currentOddsType
-//                    ) - 1)
-                odds = (tempOdds - 1)
-            }
-
-            else -> {
-//                    win = itemData.betAmount * getOdds(
-//                        itemData.matchOdd,
-//                        currentOddsType
-//                    )
-                odds = tempOdds
-            }
-        }
-        itemData.realAmount = realAmount
-        odds = ArithUtil.toOddFormat(odds, 2).toDouble()
-//            Timber.e("odds: $odds")
-        return odds
     }
 
     private fun setEtBackground(itemData: BetInfoListData) {
@@ -532,17 +415,4 @@ class BasketballEndingCardViewHolder(
         }
         setEtBackground(itemData)
     }
-
-//    private fun setupDeleteButton(
-//        itemData: BetInfoListData, itemCount: Int, onItemClickListener: OnItemClickListener
-//    ) {
-////        contentView.tvClose.setOnClickListener {
-////            onItemClickListener.onDeleteClick(itemData.matchOdd.oddsId, itemCount)
-////        }
-////        contentView.btnDelete.setOnClickListener {
-////            contentView.slideLayout.quickClose()
-////            onItemClickListener.onDeleteClick(itemData.matchOdd.oddsId, itemCount)
-////        }
-//    }
-
 }
