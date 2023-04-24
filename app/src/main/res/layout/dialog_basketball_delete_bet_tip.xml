@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="26dp"
+    app:cardBackgroundColor="@color/color_191919_FCFCFC"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="0dp"
+    tools:context="org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minWidth="300dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:text="@string/N900"
+            android:textColor="@color/color_414655"
+            android:textSize="@dimen/textSize18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/tv_message"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="14dp"
+            android:gravity="center_horizontal"
+            android:overScrollMode="never"
+            android:text="@string/N899"
+            android:textColor="@color/color_535D76"
+            android:textSize="@dimen/textSize14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_max="170dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+
+        <ImageView
+            android:id="@+id/iv_gif_basket"
+            android:layout_width="267dp"
+            android:layout_height="72dp"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/basketball_delete_bet_tip"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_message" />
+
+        <CheckBox
+            android:id="@+id/cb_ok_iknow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:button="@drawable/cb_circle_blue_basketball_delete_tip"
+            android:text="@string/N379"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_gif_basket" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="13dp"
+            android:background="@color/color_191919_EEEFF0"
+            app:layout_constraintBottom_toTopOf="@id/block_bottom_bar"
+            app:layout_constraintTop_toBottomOf="@id/cb_ok_iknow"
+            app:layout_constraintVertical_bias="1" />
+
+        <LinearLayout
+            android:id="@+id/block_bottom_bar"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/btn_positive"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:minWidth="135dp"
+                android:minHeight="36dp"
+                android:text="think again"
+                android:textAllCaps="false"
+                android:textColor="@color/color_317FFF_0760D4"
+                android:textSize="@dimen/textSize18sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_negative"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:minWidth="135dp"
+                android:minHeight="36dp"
+                android:text="confirm"
+                android:textAllCaps="false"
+                android:textColor="@color/color_FFFFFF_414655"
+                android:textSize="@dimen/textSize18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

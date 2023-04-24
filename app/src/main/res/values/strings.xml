@@ -1289,4 +1289,7 @@
 
     <string name="N177">Please enter the correct phone number</string>
     <string name="N889">Please enter correct email</string>
+    <string name="N900">Game Name</string>
+    <string name="N899">If you only want to delete a single score, you can click on delete a single score.</string>
+    <string name="N379">No tip</string>
 </resources>
