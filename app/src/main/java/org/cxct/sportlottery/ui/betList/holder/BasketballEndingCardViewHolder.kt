@@ -142,18 +142,25 @@ class BasketballEndingCardViewHolder(
 
                 tvMatchOdds.setOnClickListener {
                     //刷新上一次点击的区域
-                    betList?.get(lastSelectPo)?.isClickForBasketball = false
-                    notifyItemChanged(lastSelectPo)
+                    if ((betList?.size ?: 0) > lastSelectPo) {
+                        betList?.get(lastSelectPo)?.isClickForBasketball = false
+                        notifyItemChanged(lastSelectPo)
+                    }
+
                     //记录本地点击的区域
                     val currentPosition = holder.layoutPosition
-                    betList?.get(currentPosition)?.isClickForBasketball = true
-                    notifyItemChanged(currentPosition)
-                    lastSelectPo = currentPosition
-                    //蒙层点击事件
-                    tvHide.setOnClickListener {
-                        betList?.remove(item)
+                    if ((betList?.size ?: 0) > currentPosition) {
+                        betList?.get(currentPosition)?.isClickForBasketball = true
                         notifyItemChanged(currentPosition)
+                        lastSelectPo = currentPosition
                     }
+                }
+
+                //蒙版点击事件
+                tvHide.setOnClickListener {
+                    val currentPosition = holder.layoutPosition
+                    betList?.removeAt(currentPosition)
+                    notifyItemChanged(currentPosition)
                 }
             }
         }
