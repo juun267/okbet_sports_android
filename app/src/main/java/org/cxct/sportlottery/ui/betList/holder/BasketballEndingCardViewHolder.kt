@@ -41,10 +41,11 @@ import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.drawable.DrawableCreator
 import org.cxct.sportlottery.util.drawable.DrawableUtils
 import org.cxct.sportlottery.util.getOdds
+import org.cxct.sportlottery.view.dialog.BasketballDelBetTipDialog
 import timber.log.Timber
 
 class BasketballEndingCardViewHolder(
-    val contentView: ContentBetInfoItemV3BaseketballEndingCardBinding,
+    private val contentView: ContentBetInfoItemV3BaseketballEndingCardBinding,
     val userBalance: () -> Double,
 ) : RecyclerView.ViewHolder(contentView.root) {
 
@@ -123,7 +124,7 @@ class BasketballEndingCardViewHolder(
 
         Timber.d("itemData:${itemData}")
 
-
+        var lastSelectPo = 0
         val rcvBasketballAdapter = object :
             BaseQuickAdapter<BetInfoListData, BaseViewHolder>(R.layout.item_bet_basketball_ending_cart) {
             override fun convert(holder: BaseViewHolder, item: BetInfoListData) {
@@ -132,13 +133,26 @@ class BasketballEndingCardViewHolder(
                 holder.setText(R.id.tvMatchOdds, item.matchOdd.playName)
                 val tvHide = holder.getView<TextView>(R.id.tvHide)
                 tvHide.background = DrawableUtils.getBasketballDeleteButton(root)
+
+                if (item.isClickForBasketball == true) {
+                    tvHide.visible()
+                } else {
+                    tvHide.gone()
+                }
+
                 tvMatchOdds.setOnClickListener {
-                    if (!tvHide.isVisible) {
-                        tvHide.visible()
-                        tvHide.setOnClickListener {
-                            betList?.remove(item)
-                            notifyDataSetChanged()
-                        }
+                    //刷新上一次点击的区域
+                    betList?.get(lastSelectPo)?.isClickForBasketball = false
+                    notifyItemChanged(lastSelectPo)
+                    //记录本地点击的区域
+                    val currentPosition = holder.layoutPosition
+                    betList?.get(currentPosition)?.isClickForBasketball = true
+                    notifyItemChanged(currentPosition)
+                    lastSelectPo = currentPosition
+                    //蒙层点击事件
+                    tvHide.setOnClickListener {
+                        betList?.remove(item)
+                        notifyItemChanged(currentPosition)
                     }
                 }
             }
@@ -306,7 +320,12 @@ class BasketballEndingCardViewHolder(
 
         btnBasketballDeleteAll.background = DrawableUtils.getBasketballDeleteAllDrawable(root)
         btnBasketballDeleteAll.setOnClickListener {
-            ToastUtil.showToast(root.context, "删除全部", Toast.LENGTH_LONG)
+            BasketballDelBetTipDialog.Builder(root.context)
+                .setPositiveListener(object : BasketballDelBetTipDialog.OnPositiveListener {
+                    override fun positiveClick(isCheck: Boolean) {
+//                    ToastUtils.s(it1, "$isCheck")
+                    }
+                }).create().show()
         }
 
         val view = View.inflate(tvMatchHome.context, R.layout.popupwindow_tips, null)
