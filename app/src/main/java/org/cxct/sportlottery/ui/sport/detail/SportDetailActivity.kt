@@ -543,6 +543,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 //            }
 //        }
         viewModel.showBetInfoSingle.observe(this) {
+            if(fastBetDataBean!=null){
+                showBetListPage()
+                return@observe
+            }
             it.getContentIfNotHandled()?.let {
                 showBetListPage()
             }
