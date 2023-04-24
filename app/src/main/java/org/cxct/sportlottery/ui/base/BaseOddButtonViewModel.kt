@@ -389,6 +389,13 @@ abstract class BaseOddButtonViewModel(
             }
         }
 
+
+        val betType = if (normalBetList[0].matchType == MatchType.END_SCORE) {
+            1
+        } else {
+            0
+        }
+
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.betService.addBet(
@@ -398,7 +405,8 @@ abstract class BaseOddButtonViewModel(
                         oddsChangeOption,
                         2,
                         deviceId,
-                        channelType = 0 //先寫死固定帶0
+                        channelType = 0,//先寫死固定帶0
+                        betType = betType
                     )
                 )
             }
