@@ -171,7 +171,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_okgame_record"
         android:layout_width="match_parent"
-        android:layout_height="450dp"
+        android:layout_height="wrap_content"
+        android:minHeight="453dp"
         android:layout_marginHorizontal="12dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_okgame_p3_record" />

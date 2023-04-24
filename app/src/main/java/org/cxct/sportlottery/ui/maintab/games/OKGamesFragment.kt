@@ -152,7 +152,14 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
     private fun showFavorites(tab: OKGameTab) {
         retagRequest()
         changePartGamesLabel(tab)
-        showPartGameList(viewModel.collectList.value, 0)
+        showPartGameList(viewModel.collectList.value?.second, 0)
+    }
+
+    fun enterGame(okGameBean: OKGameBean) {
+        loginedRun(binding.root.context) {
+            viewModel.requestEnterThirdGame(okGameBean, this)
+            viewModel.addRecentPlay(okGameBean)
+        }
     }
 
     fun backGameAll() {

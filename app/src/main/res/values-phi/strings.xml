@@ -738,7 +738,7 @@
     <string name="terms_conditions">Termino at Kundisyon</string>
     <string name="privacy_policy">Proteksyon sa privacy</string>
     <string name="help">Kailangan ng tulong？</string>
-    <string name="faqs">Karaniwang problema</string>
+    <string name="faqs">Kadalasang Tanong</string>
     <string name="live_chat">Online serbisyo</string>
     <string name="contact">Makipag-ugnayan sa amin</string>
     <string name="front_side_result">Front side scan resulta ng dokumento</string>
@@ -1164,8 +1164,9 @@
     <string name="N881">Popular event</string>
     <string name="N702">Higit pa</string>
     <string name="J094">Proteksyon sa privacy</string>
-    <string name="N019">Liên hệ chúng tôi</string>
+    <string name="N019">Kontakin kami</string>
     <string name="J299">Online serbisyo</string>
     <string name="B023">Kadalasang Tanong</string>
     <string name="N883">Wala pang resulta!</string>
+    <string name="J095">Termino at Kundisyon</string>
 </resources>

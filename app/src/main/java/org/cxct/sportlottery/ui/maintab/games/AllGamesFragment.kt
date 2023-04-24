@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.*
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -46,10 +47,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     private lateinit var binding: FragmentAllOkgamesBinding
     private val gameAllAdapter by lazy {
         GameCategroyAdapter(clickCollect = ::onCollectClick,
-            clickGame = {
-            okGamesFragment().viewModel.requestEnterThirdGame(it, this@AllGamesFragment)
-            viewModel.addRecentPlay(it.id.toString())
-        }, okGamesFragment().gameItemViewPool)
+            clickGame = ::enterGame, okGamesFragment().gameItemViewPool)
     }
     private var collectGameAdapter: GameChildAdapter? = null
     private var recentGameAdapter: GameChildAdapter? = null
@@ -111,10 +109,15 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             viewModel.getRecentPlay()
         }
         collectList.observe(viewLifecycleOwner) {
-            if (it.isNotEmpty() && it.size > 12) {
-                setCollectList(it.subList(0, 12))
+            if (!it.first && collectGameAdapter?.dataCount() ?: 0 > 0) { //如果当前收藏列表可见，切收藏列表不为空则走全部刷新逻辑（走单挑刷新逻辑）
+                return@observe
+            }
+
+            val list = it.second
+            if (list.isNotEmpty() && list.size > 12) {
+                setCollectList(list.subList(0, 12))
             } else {
-                setCollectList(it)
+                setCollectList(list)
             }
         }
         collectOkGamesResult.observe(viewLifecycleOwner) { result ->
@@ -126,6 +129,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 //添加收藏或者移除
                 adapter.removeOrAdd(result.second)
                 binding.includeGamesAll.inclueCollect.root.isGone = adapter.data.isNullOrEmpty()
+                setItemMoreVisiable(binding.includeGamesAll.inclueCollect, adapter.dataCount() > 3)
             }
             //更新最近列表
             recentGameAdapter?.data?.forEachIndexed { index, okGameBean ->
@@ -140,6 +144,16 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 setRecent(it.subList(0, 12))
             } else {
                 setRecent(it)
+            }
+        }
+
+        newRecentPlay.observe(viewLifecycleOwner) { okgameBean ->
+
+            recentGameAdapter?.let { adapter ->
+                binding.includeGamesAll.inclueRecent.root.visible()
+                adapter.data.find { it.id == okgameBean.id }?.let { adapter.remove(it) }
+                adapter.addData(0, okgameBean)
+                setItemMoreVisiable(binding.includeGamesAll.inclueRecent, adapter.dataCount() > 3)
             }
         }
     }
@@ -610,17 +624,16 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         rvGameItem.layoutManager = SocketLinearManager(context, RecyclerView.HORIZONTAL, false)
         rvGameItem.addItemDecoration(SpaceItemDecoration(root.context, R.dimen.margin_10))
         val gameAdapter = GameChildAdapter(onFavoriate = ::onCollectClick)
-        gameAdapter.setOnItemClickListener { adapter, _, position ->
-            gameAdapter.getItem(position).let {
-                okGamesFragment().viewModel.requestEnterThirdGame(
-                    it as OKGameBean, this@AllGamesFragment
-                )
-                viewModel.addRecentPlay(it.id.toString())
-            }
+        gameAdapter.setOnItemClickListener { _, _, position ->
+            enterGame(gameAdapter.getItem(position))
         }
 
         rvGameItem.adapter = gameAdapter
         return@run gameAdapter
+    }
+
+    private inline fun enterGame(okGameBean: OKGameBean) {
+        okGamesFragment().enterGame(okGameBean)
     }
 
     /**
@@ -628,11 +641,11 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
      */
     private fun setCollectList(collectList: List<OKGameBean>) {
         val emptyData = collectList.isNullOrEmpty()
+        setItemMoreVisiable(binding.includeGamesAll.inclueCollect, collectList.size > 3)
         binding.includeGamesAll.inclueCollect.root.isGone = emptyData
-        if (emptyData) {
-            return
+        if (!emptyData) {
+            collectGameAdapter?.setNewInstance(collectList?.toMutableList())
         }
-        collectGameAdapter?.setNewInstance(collectList?.toMutableList())
     }
 
     private fun subscribeQueryData(recommendList: List<Recommend>) {
@@ -648,12 +661,17 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
      * 设置最近游戏列表
      */
     private fun setRecent(recentList: List<OKGameBean>) {
-        binding.includeGamesAll.inclueRecent.root.isGone = recentList.isNullOrEmpty()
-        if (recentList.isNullOrEmpty()) {
-            return
+        setItemMoreVisiable(binding.includeGamesAll.inclueRecent, recentList.size > 3)
+        val emptyData = recentList.isNullOrEmpty()
+        binding.includeGamesAll.inclueRecent.root.isGone = emptyData
+        if (!emptyData) {
+            recentGameAdapter?.setNewInstance(recentList?.toMutableList())
         }
+    }
 
-        recentGameAdapter?.setNewInstance(recentList?.toMutableList())
+    private fun setItemMoreVisiable(binding: ItemGameCategroyBinding, visisable: Boolean) {
+        binding.ivMore.isVisible = visisable
+        binding.tvMore.isVisible = visisable
     }
 
     private fun Recommend.sortOddsMap() {
