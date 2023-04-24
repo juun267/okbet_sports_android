@@ -228,14 +228,16 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                             LinearLayoutManager(rv_endscore_info.context,
                                 RecyclerView.HORIZONTAL,
                                 false)
+                        rv_endscore_info.addItemDecoration(SpaceItemDecoration(context,
+                            R.dimen.margin_4))
                         val scoreAdapter = BetRecordEndScoreAdapter()
                         rv_endscore_info.adapter = scoreAdapter
-                        scoreAdapter.setList(data.multiCode ?: listOf())
+                        scoreAdapter.setList(data.matchOdds.firstOrNull()?.multiCode ?: listOf())
                     } else {
-                        (rv_endscore_info.adapter as BetRecordEndScoreAdapter).setList(data.multiCode)
+                        (rv_endscore_info.adapter as BetRecordEndScoreAdapter).setList(data.matchOdds.firstOrNull()?.multiCode)
                     }
                     tv_more?.let {
-                        tv_more.isVisible = data.multiCode?.size ?: 0 > 7
+                        tv_more.isVisible = data.matchOdds.firstOrNull()?.multiCode?.size ?: 0 > 6
                         (rv_endscore_info.layoutParams as LinearLayout.LayoutParams).apply {
                             this.weight = if (tv_more.isVisible) 1f else 0f
                             rv_endscore_info.layoutParams = this

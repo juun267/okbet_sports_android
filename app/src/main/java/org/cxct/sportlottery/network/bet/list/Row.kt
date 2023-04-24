@@ -60,6 +60,4 @@ data class Row (
     val winnable: Double,
     @Json(name = "cancelledBy")
     val cancelledBy: String?, //备注栏位："mts" (风控) => "因系统审核不成立","own"、"source" (后台) => "因机制审核不成立"
-    @Json(name = "multiCode")
-    val multiCode: List<EndScoreInfo>?,
 ): Parcelable

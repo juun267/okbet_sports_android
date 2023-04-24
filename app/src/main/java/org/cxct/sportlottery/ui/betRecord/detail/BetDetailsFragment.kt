@@ -133,9 +133,9 @@ class BetDetailsFragment : BaseFragment<BetListViewModel>(BetListViewModel::clas
                     rv_endscore_info.addItemDecoration(GridSpacingItemDecoration(8, 4.dp, false))
                     val scoreAdapter = BetRecordEndScoreAdapter()
                     rv_endscore_info.adapter = scoreAdapter
-                    scoreAdapter.setList(row.multiCode ?: listOf())
+                    scoreAdapter.setList(row.matchOdds.firstOrNull()?.multiCode ?: listOf())
                 } else {
-                    (rv_endscore_info.adapter as BetRecordEndScoreAdapter).setList(row.multiCode)
+                    (rv_endscore_info.adapter as BetRecordEndScoreAdapter).setList(row.matchOdds.firstOrNull()?.multiCode)
                 }
                 tv_more.gone()
             }

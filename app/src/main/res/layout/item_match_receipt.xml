@@ -165,7 +165,7 @@
             android:id="@+id/tv_team_names"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-           android:layout_marginStart="5dp"
+            android:layout_marginStart="5dp"
             android:ellipsize="end"
             android:textColor="@color/color_A7B2C4"
             android:maxLines="1"
@@ -177,6 +177,21 @@
             android:layout_marginEnd="10dp"
             app:layout_constraintTop_toTopOf="@+id/tv_league"
             tools:text="日本奥运队 v 纽西兰奥运队" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvEndScoreInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            tools:listitem="@layout/item_bet_receipt_endscore"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="5"
+            tools:itemCount="13"
+            app:layout_constraintTop_toBottomOf="@+id/tv_team_names"
+            android:layout_marginHorizontal="@dimen/margin_10"
+            app:layout_constraintStart_toStartOf="@+id/tv_league"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <include
             android:id="@+id/match_receipt_bet_layout"
@@ -190,7 +205,7 @@
             app:layout_constraintBottom_toTopOf="@+id/llcOrder"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_league"
-            app:layout_constraintTop_toBottomOf="@+id/viewDivider" />
+            app:layout_constraintTop_toBottomOf="@+id/rvEndScoreInfo" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/llcOrder"
