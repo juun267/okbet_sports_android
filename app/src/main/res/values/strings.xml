@@ -1136,7 +1136,7 @@
     <string name="self_limit_error_format">The field format is incorrect, please enter an integer %d~%d.</string>
     <string name="draw_time">Draw Time</string>
     <string name="closing_time">Closing Time</string>
-    <string name="end_time">End Time</string>
+    <string name="N577">End Time</string>
     <string name="draw_countdown">Draw Countdown</string>
 
     <string name="recover_password">Recover password</string>
@@ -1218,10 +1218,9 @@
     <string name="str_market_is_closed">Market closed</string>
     <string name="kyc_unverifing">Verifying</string>
     <string name="enter_game">Enter game</string>
-    <string name="hint_transform_money">Transfer prompt</string>
-    <string name="confirm_transform_in_money">Please confirm amount transferred to game account</string>
-    <string name="game_account_money">Game balance</string>
-    <string name="transform_in_amount">Transfer-in amount</string>
+    <string name="N483">Please confirm amount transferred to game account</string>
+    <string name="N485">Game balance</string>
+    <string name="N486">Transfer-in amount</string>
     <string name="hint_transform_in_amount">Only supported the amount transferred from 0 to the platform account balance</string>
     <string name="account_balance_unenough">Platform account balance not enough</string>
     <string name="platform_user_money">Platform balance</string>
@@ -1298,4 +1297,5 @@
     <string name="B023">FAQs</string>
     <string name="N883">There is no date yet!</string>
     <string name="J095">Terms &amp; Condition</string>
+    <string name="N482">Transfer prompt</string>
 </resources>

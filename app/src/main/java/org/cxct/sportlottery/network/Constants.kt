@@ -550,9 +550,9 @@ object Constants {
     const val OKGAMES_COLLECT = "/api/front/gameEntryGames/collectOkGames"
 
     // 最新投注
-    const val OKGAMES_RECORD_NEW = "/api/front/sport/recordNewList"
+    const val OKGAMES_RECORD_NEW = "/api/front/index/recordNewOkGamesList"
 
     // 最新大奖
-    const val OKGAMES_RECORD_RESULT = "/api/front/sport/recordResultList"
+    const val OKGAMES_RECORD_RESULT = "/api/front/index/recordResultOkGamesList"
 
 }

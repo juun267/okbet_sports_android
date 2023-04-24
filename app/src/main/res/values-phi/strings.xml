@@ -199,6 +199,9 @@
     <string name="recharge">Deposito</string>
     <string name="recharge_channel_online">Online Bayad</string>
     <string name="account_transfer">Ilipat ang balanse</string>
+    <string name="N485">Balanse sa laro</string>
+    <string name="N486">Halaga ng paglipat</string>
+    <string name="enter_game">Pumasok sa laro</string>
     <string name="platform_user_money">Balanse sa platform</string>
     <string name="third_party">3rd party</string>
     <string name="N643">Maaring pumunta sa Glife applet para mag-recharge</string>
@@ -298,7 +301,6 @@
     <string name="edt_hint_wx_id">Paki lagay ang wechat ID</string>
     <string name="title_bank_account">Numero ng bank card</string>
     <string name="please_enter_bank_card_rule">Ilagay ang numero ng bank card</string>
-    <string name="title_recharge_time">Oras ng deposito</string>
     <string name="title_current_money">Kasalukuyang balanse</string>
     <string name="btn_submit">Ipasa</string>
     <string name="btn_copy">Kopya</string>
@@ -1069,7 +1071,7 @@
     <string name="str_odds_description">Paglalarawan ng odds</string>
     <string name="draw_time">Draw time</string>
     <string name="closing_time">Oras ng Pagsara ng Sweepstakes</string>
-    <string name="end_time">Oras ng Pagtapos</string>
+    <string name="N577">Oras ng Pagtapos</string>
     <string name="draw_countdown">Draw Countdown</string>
     <string name="recover_password">Pagbawi ng password</string>
     <string name="need_help">Kailangan ng tulong?</string>
@@ -1156,7 +1158,7 @@
     <string name="N710">Player</string>
     <string name="N713">Halaga ng Kita</string>
     <string name="N712">Halaga ng taya</string>
-    <string name="N874">kamakailang na laro</string>
+    <string name="N874">Kamakailang laro</string>
     <string name="N873">Paborito</string>
     <string name="N882">Resulta ng paghahanap</string>
     <string name="N900">Pangalan ng Laro</string>
@@ -1169,4 +1171,6 @@
     <string name="B023">Kadalasang Tanong</string>
     <string name="N883">Wala pang resulta!</string>
     <string name="J095">Termino at Kundisyon</string>
+    <string name="N482">Prompt ng Paglipat</string>
+    <string name="N483">Pakikumpirma ang halagang inilipat sa game account</string>
 </resources>

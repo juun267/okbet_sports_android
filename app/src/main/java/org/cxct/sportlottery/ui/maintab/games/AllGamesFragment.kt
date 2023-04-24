@@ -15,10 +15,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
-import org.cxct.sportlottery.common.extentions.animDuang
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
-import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.FragmentAllOkgamesBinding
 import org.cxct.sportlottery.databinding.ItemGameCategroyBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
@@ -223,22 +220,22 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             rvOkgameRecord.adapter = gameRecordAdapter
             rvOkgameRecord.itemAnimator = DefaultItemAnimator()
             viewModel.providerResult.observe(viewLifecycleOwner) { resultData ->
-                resultData?.firmList?.let {
-                    if(it.isNotEmpty()){
-                        binding.include3.okgameP3LayoutProivder.visibility=View.VISIBLE
-                    }else{
-                        binding.include3.okgameP3LayoutProivder.visibility=View.GONE
-                    }
-                    if (!providersAdapter.data.containsAll(it)) {
+                val firmList = resultData?.firmList ?: return@observe
 
-                        providersAdapter.addData(it)
-                        if (it.isNotEmpty()) {
-                            binding.include3.ivProvidersLeft.visible()
-                            binding.include3.ivProvidersRight.visible()
-                        }
-                    }
+                providersAdapter.setNewInstance(firmList.toMutableList())
+                if(firmList.isNotEmpty()) {
+                    binding.include3.run { setViewVisible(rvOkgameProviders, okgameP3LayoutProivder) }
+                } else {
+                    binding.include3.run { setViewGone(rvOkgameProviders, okgameP3LayoutProivder) }
+                }
+
+                if (firmList.size > 3) {
+                    binding.include3.run { setViewVisible(ivProvidersLeft, ivProvidersRight) }
+                } else {
+                    binding.include3.run {  setViewGone(ivProvidersLeft, ivProvidersRight) }
                 }
             }
+
             viewModel.recordNewHttp.observe(viewLifecycleOwner) {
                 if (it != null) {
                     if (binding.include3.rbtnLb.isChecked) {

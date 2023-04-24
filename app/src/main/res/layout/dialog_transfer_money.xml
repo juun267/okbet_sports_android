@@ -26,7 +26,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:text="@string/hint_transform_money"/>
+            android:text="@string/N482"/>
 
         <ImageView
             android:id="@+id/ivClose"
@@ -51,7 +51,7 @@
             android:textFontWeight="650"
             android:textSize="14sp"
             android:textColor="@color/color_535D76"
-            android:text="@string/confirm_transform_in_money"/>
+            android:text="@string/N483"/>
 
         <TextView
             android:id="@+id/tvBanlanceTitle"
