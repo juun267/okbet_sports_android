@@ -74,11 +74,11 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     override fun onBindView(view: View) {
         initObserve()
-        initSocketObservers()
+        initHotGameData()
         onBindGamesView()
         onBindPart3View()
         onBindPart5View()
-        initHotGameData()
+        initSocketObservers()
         initRecent()
         initCollectLayout()
     }
@@ -94,7 +94,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         if (noData || time - lastRequestTimeStamp > 60_000) { // 避免短时间重复请求
             lastRequestTimeStamp = time
             okGamesFragment().viewModel.getOKGamesHall()
-            initHotGameData()
+            initSocketObservers()
+
         }
     }
 
@@ -377,6 +378,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
 
     private fun initHotGameData() {
+        binding.hotGameView.gone()
+//        initSocketObservers()
         //请求热门赛事列表
         viewModel.getRecommend()
         binding.hotGameView.setUpAdapter(viewLifecycleOwner, HomeRecommendListener(
@@ -425,6 +428,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         viewModel.publicityRecommend.observe(this) {
             //api获取热门赛事列表
             it.getContentIfNotHandled()?.let { data ->
+                binding.hotGameView.visible()
                 data.forEach {
                     unSubscribeChannelHall(it.gameType,it.matchInfo?.id)
                 }
@@ -433,11 +437,9 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 binding.hotGameView.setGameData(data)
             }
 
-
         }
     }
 
-    private var connectFailed = true
 
     //用户缓存最新赔率，方便当从api拿到新赛事数据时，赋值赔率信息给新赛事
     private val matchOddMap = HashMap<String, Recommend>()
@@ -445,14 +447,14 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         receiver.serviceConnectStatus.observe(viewLifecycleOwner) {
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
-                    connectFailed = false
-                    if (viewModel.publicityRecommend.value == null) {
-                        viewModel.getRecommend()
-                    } else {
-                        subscribeSportChannelHall()
-                    }
-                } else {
-                    connectFailed = true
+                    initHotGameData()
+//                    binding.hotGameView.adapter?.let {adapter->
+//                        adapter.data.let { data->
+//                            if(data.isEmpty()){
+//                                initHotGameData()
+//                            }
+//                        }
+//                    }
                 }
             }
         }
@@ -475,7 +477,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                         context
                     )
                 ) {
-                    binding.hotGameView.notifyAdapterData(index)
+                    binding.hotGameView.notifyAdapterData(index,testList[0])
                 }
             }
 
@@ -490,7 +492,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                             matchClockEvent
                         )
                     ) {
-                        binding.hotGameView.adapter?.notifyItemChanged(index)
+                        binding.hotGameView.adapter?.notifyItemChanged(index,recommend)
                     }
                 }
 
@@ -505,7 +507,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 targetList?.forEachIndexed { index, recommend ->
                     if (SocketUpdateUtil.updateOddStatus(recommend, matchOddsLockEvent)
                     ) {
-                        binding.hotGameView.adapter?.notifyItemChanged(index)
+                        binding.hotGameView.adapter?.notifyItemChanged(index,recommend)
                     }
                 }
 
@@ -577,7 +579,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                     ) {
                         matchOddMap[recommend.id] = recommend
 //                        LogUtil.toJson(recommend.oddsMap?.get(PlayCate.SINGLE.value))
-                        binding.hotGameView.adapter?.notifyItemChanged(index)
+                        binding.hotGameView.adapter?.notifyItemChanged(index,recommend)
                     }
                 }
             }
