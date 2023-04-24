@@ -25,4 +25,9 @@ object DrawableUtils {
             .setSolidColor(root.context.getColor(R.color.color_F7FAFE)).build()
     }
 
+    fun getBasketballDeleteButton(root:View) :Drawable {
+        return DrawableCreator.Builder().setCornersRadius(5.dp.toFloat())
+            .setSolidColor(root.context.getColor(R.color.color_636466)).build()
+    }
+
 }

@@ -1243,5 +1243,6 @@
     <string name="str_total_stake">总投注：</string>
     <string name="N904">我再想想</string>
     <string name="N905">确认全部删除</string>
+    <string name="N374">全部删除</string>
 
 </resources>

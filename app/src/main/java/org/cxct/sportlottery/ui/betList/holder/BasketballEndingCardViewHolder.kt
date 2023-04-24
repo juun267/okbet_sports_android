@@ -14,6 +14,7 @@ import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -21,8 +22,10 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.setOnClickListener
 import org.cxct.sportlottery.common.extentions.setViewVisible
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ContentBetInfoItemV3BaseketballEndingCardBinding
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.LoginRepository
@@ -127,6 +130,17 @@ class BasketballEndingCardViewHolder(
                 val tvMatchOdds = holder.getView<TextView>(R.id.tvMatchOdds)
                 tvMatchOdds.background = DrawableUtils.getBasketballBetListButton(root)
                 holder.setText(R.id.tvMatchOdds, item.matchOdd.playName)
+                val tvHide = holder.getView<TextView>(R.id.tvHide)
+                tvHide.background = DrawableUtils.getBasketballDeleteButton(root)
+                tvMatchOdds.setOnClickListener {
+                    if (!tvHide.isVisible) {
+                        tvHide.visible()
+                        tvHide.setOnClickListener {
+                            betList?.remove(item)
+                            notifyDataSetChanged()
+                        }
+                    }
+                }
             }
         }
         rcvBasketballScore.adapter = rcvBasketballAdapter

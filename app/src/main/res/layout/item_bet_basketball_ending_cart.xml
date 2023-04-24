@@ -21,6 +21,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tvHide"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:text="Delete"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:textColor="@color/color_FFFFFF"
+        android:layout_marginHorizontal="4dp"
+        android:layout_marginVertical="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
