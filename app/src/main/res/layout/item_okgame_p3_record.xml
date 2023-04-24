@@ -12,8 +12,8 @@
         android:id="@+id/item_okgame_name"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginRight="18dp"
         android:layout_weight="1"
+        android:layout_marginRight="8dp"
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="1"
@@ -26,7 +26,6 @@
         android:id="@+id/item_okgame_user_nick"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginRight="18dp"
         android:layout_weight="1"
         android:ellipsize="end"
         android:gravity="center"
@@ -37,11 +36,9 @@
         tools:text="bibia0299" />
 
     <TextView
-
         android:id="@+id/item_okgame_bet_amount"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginRight="18dp"
         android:layout_weight="1"
         android:ellipsize="end"
         android:gravity="center"

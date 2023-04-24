@@ -24,6 +24,8 @@ import org.cxct.sportlottery.network.user.info.UserBasicInfoRequest
 import org.cxct.sportlottery.util.*
 import retrofit2.Response
 
+// 原则上键定义在什么地方就只能在什么地方，对外暴露的只有读取和修改所存储数据的方法
+
 const val NAME_LOGIN = "login"
 const val KEY_TOKEN = "token"
 const val KEY_ACCOUNT = "account"
@@ -36,6 +38,7 @@ const val KEY_USER_ID = "user_id"
 const val KEY_USER_LEVEL_ID = "user_Level_Id"
 const val KEY_LIVE_USER_INFO = "live_user_info"
 
+private const val KEY_GAME_RECENT_PLAY = "recentPlay"
 
 object LoginRepository {
     private val sharedPref: SharedPreferences by lazy {
@@ -427,6 +430,7 @@ object LoginRepository {
             KvUtils.removeKey(KV_STR_SELECT_ODDS_MODE)
             apply()
         }
+        clearRecentPlayGame()
         clearUserInfo()
     }
 
@@ -469,4 +473,22 @@ object LoginRepository {
             verified = loginData.verified,
             vipType = loginData.vipType,
         )
+
+    fun addRecentPlayGame(gameId: String): LinkedHashSet<String> {
+        val recentGameIds = KvUtils.decodeStringSet(KEY_GAME_RECENT_PLAY)
+        recentGameIds.add(gameId)
+        if (recentGameIds.size > 12) {
+            recentGameIds.remove(recentGameIds.first())
+        }
+        KvUtils.encodeSet(KEY_GAME_RECENT_PLAY, recentGameIds)
+        return recentGameIds
+    }
+
+    fun getRecentPlayGameIds(): LinkedHashSet<String> {
+        return KvUtils.decodeStringSet(KEY_GAME_RECENT_PLAY)
+    }
+
+    private fun clearRecentPlayGame() {
+        KvUtils.removeKey(KEY_GAME_RECENT_PLAY)
+    }
 }

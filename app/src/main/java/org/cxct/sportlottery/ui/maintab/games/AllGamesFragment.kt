@@ -20,6 +20,7 @@ import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.extentions.animDuang
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentAllOkgamesBinding
 import org.cxct.sportlottery.databinding.ItemGameCategroyBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
@@ -46,9 +47,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     private lateinit var binding: FragmentAllOkgamesBinding
     private val gameAllAdapter by lazy {
-        GameCategroyAdapter(clickCollect = { view, item ->
-            if (okGamesFragment().collectGame(item)) { view.animDuang(1.2f) }
-        }, clickGame = {
+        GameCategroyAdapter(clickCollect = ::onCollectClick,
+            clickGame = {
             okGamesFragment().viewModel.requestEnterThirdGame(it, this@AllGamesFragment)
             viewModel.addRecentPlay(it.id.toString())
         }, okGamesFragment().gameItemViewPool)
@@ -63,6 +63,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     private var p3ogProviderFirstPosi: Int = 0
     private var p3ogProviderLastPosi: Int = 3
 
+    private var lastRequestTimeStamp = 0L
+
     private fun okGamesFragment() = parentFragment as OKGamesFragment
     override fun createRootView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
@@ -72,19 +74,28 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     override fun onBindView(view: View) {
         initObserve()
-        initSocketObservers()
+        initHotGameData()
         onBindGamesView()
         onBindPart3View()
         onBindPart5View()
-        initHotGameData()
+        initSocketObservers()
         initRecent()
         initCollectLayout()
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-        if (!hidden) {
+        if (hidden) {
+            return
+        }
+
+        val noData = okGamesFragment().viewModel.gameHall.value == null
+        val time = System.currentTimeMillis()
+        if (noData || time - lastRequestTimeStamp > 60_000) { // 避免短时间重复请求
+            lastRequestTimeStamp = time
             okGamesFragment().viewModel.getOKGamesHall()
+            initSocketObservers()
+
         }
     }
 
@@ -109,41 +120,20 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             }
         }
         collectOkGamesResult.observe(viewLifecycleOwner) { result ->
-            var needUpdate = false
-            gameAllAdapter.data.forEach {
-                it.gameList?.forEach { gameBean ->
-                    if (gameBean.id == result.first) {
-                        gameBean.markCollect = result.second.markCollect
-                        needUpdate = true
-                    }
-                }
-            }
 
-            if (needUpdate) {
-                gameAllAdapter.notifyDataSetChanged()
-            }
+            gameAllAdapter.updateMarkCollect(result.second)
+
             //更新收藏列表
             collectGameAdapter?.let { adapter ->
-                //添加收藏
-                if (result.second.markCollect) {
-                    adapter.data.firstOrNull() { it.id == result.first }?.let {
-                        adapter.data.remove(it)
-                    }
-                    adapter.data.add(0, result.second)
-                    adapter.notifyDataSetChanged()
-                } else {//取消收藏
-                    adapter.data.firstOrNull { it.id == result.first }?.let {
-                        adapter.data.remove(it)
-                        adapter.notifyDataSetChanged()
-                    }
-                }
+                //添加收藏或者移除
+                adapter.removeOrAdd(result.second)
                 binding.includeGamesAll.inclueCollect.root.isGone = adapter.data.isNullOrEmpty()
             }
             //更新最近列表
             recentGameAdapter?.data?.forEachIndexed { index, okGameBean ->
                 if (okGameBean.id == result.first) {
                     okGameBean.markCollect = result.second.markCollect
-                    recentGameAdapter?.notifyItemChanged(index)
+                    recentGameAdapter?.notifyItemChanged(index, okGameBean)
                 }
             }
         }
@@ -160,7 +150,6 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     private var recordResulthttpFlag = false//最新大奖接口请求完成
 
     private fun onBindGamesView() = binding.includeGamesAll.run {
-        rvGamesAll.setRecycledViewPool(okGamesFragment().gameItemViewPool)
         rvGamesAll.setLinearLayoutManager()
         rvGamesAll.adapter = gameAllAdapter
         gameAllAdapter.setOnItemChildClickListener { _, _, position ->
@@ -217,8 +206,18 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             rvOkgameRecord.itemAnimator = DefaultItemAnimator()
             viewModel.providerResult.observe(viewLifecycleOwner) { resultData ->
                 resultData?.firmList?.let {
+                    if(it.isNotEmpty()){
+                        binding.include3.okgameP3LayoutProivder.visibility=View.VISIBLE
+                    }else{
+                        binding.include3.okgameP3LayoutProivder.visibility=View.GONE
+                    }
                     if (!providersAdapter.data.containsAll(it)) {
+
                         providersAdapter.addData(it)
+                        if (it.isNotEmpty()) {
+                            binding.include3.ivProvidersLeft.visible()
+                            binding.include3.ivProvidersRight.visible()
+                        }
                     }
                 }
             }
@@ -284,7 +283,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
         jumpToWebView(tvPrivacyPolicy, Constants.getPrivacyRuleUrl(requireContext()), R.string.privacy_policy)
         jumpToWebView(tvTermConditions, Constants.getAgreementRuleUrl(requireContext()), R.string.terms_conditions)
-        jumpToWebView(tvTermConditions, Constants.getDutyRuleUrl(requireContext()), R.string.responsible)
+        jumpToWebView(tvResponsibleGaming, Constants.getDutyRuleUrl(requireContext()), R.string.responsible)
+        jumpToWebView(include5.textView16, Constants.getDutyRuleUrl(requireContext()), R.string.responsible)
         jumpToWebView(tvFaqs, Constants.getFAQsUrl(requireContext()), R.string.faqs)
 
         tvLiveChat.setServiceClick(childFragmentManager)
@@ -378,6 +378,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
 
     private fun initHotGameData() {
+        binding.hotGameView.gone()
+//        initSocketObservers()
         //请求热门赛事列表
         viewModel.getRecommend()
         binding.hotGameView.setUpAdapter(viewLifecycleOwner, HomeRecommendListener(
@@ -426,6 +428,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         viewModel.publicityRecommend.observe(this) {
             //api获取热门赛事列表
             it.getContentIfNotHandled()?.let { data ->
+                binding.hotGameView.visible()
                 data.forEach {
                     unSubscribeChannelHall(it.gameType,it.matchInfo?.id)
                 }
@@ -433,10 +436,10 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 subscribeQueryData(data)
                 binding.hotGameView.setGameData(data)
             }
+
         }
     }
 
-    private var connectFailed = true
 
     //用户缓存最新赔率，方便当从api拿到新赛事数据时，赋值赔率信息给新赛事
     private val matchOddMap = HashMap<String, Recommend>()
@@ -444,14 +447,14 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         receiver.serviceConnectStatus.observe(viewLifecycleOwner) {
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
-                    connectFailed = false
-                    if (viewModel.publicityRecommend.value == null) {
-                        viewModel.getRecommend()
-                    } else {
-                        subscribeSportChannelHall()
-                    }
-                } else {
-                    connectFailed = true
+                    initHotGameData()
+//                    binding.hotGameView.adapter?.let {adapter->
+//                        adapter.data.let { data->
+//                            if(data.isEmpty()){
+//                                initHotGameData()
+//                            }
+//                        }
+//                    }
                 }
             }
         }
@@ -474,7 +477,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                         context
                     )
                 ) {
-                    binding.hotGameView.notifyAdapterData(index)
+                    binding.hotGameView.notifyAdapterData(index,testList[0])
                 }
             }
 
@@ -489,7 +492,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                             matchClockEvent
                         )
                     ) {
-                        binding.hotGameView.adapter?.notifyItemChanged(index)
+                        binding.hotGameView.adapter?.notifyItemChanged(index,recommend)
                     }
                 }
 
@@ -504,7 +507,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 targetList?.forEachIndexed { index, recommend ->
                     if (SocketUpdateUtil.updateOddStatus(recommend, matchOddsLockEvent)
                     ) {
-                        binding.hotGameView.adapter?.notifyItemChanged(index)
+                        binding.hotGameView.adapter?.notifyItemChanged(index,recommend)
                     }
                 }
 
@@ -576,7 +579,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                     ) {
                         matchOddMap[recommend.id] = recommend
 //                        LogUtil.toJson(recommend.oddsMap?.get(PlayCate.SINGLE.value))
-                        binding.hotGameView.adapter?.notifyItemChanged(index)
+                        binding.hotGameView.adapter?.notifyItemChanged(index,recommend)
                     }
                 }
             }
@@ -599,14 +602,9 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         rvGameItem.setRecycledViewPool(okGamesFragment().gameItemViewPool)
         rvGameItem.layoutManager = SocketLinearManager(context, RecyclerView.HORIZONTAL, false)
         rvGameItem.addItemDecoration(SpaceItemDecoration(root.context, R.dimen.margin_10))
-        val adapter = GameChildAdapter()
-        adapter.setOnItemChildClickListener { adapter, view, position ->
-            if (okGamesFragment().collectGame(adapter.getItem(position) as OKGameBean)) {
-                view.animDuang(1.2f)
-            }
-        }
-        adapter.setOnItemClickListener { adapter, view, position ->
-            adapter.getItem(position).let {
+        val gameAdapter = GameChildAdapter(onFavoriate = ::onCollectClick)
+        gameAdapter.setOnItemClickListener { adapter, _, position ->
+            gameAdapter.getItem(position).let {
                 okGamesFragment().viewModel.requestEnterThirdGame(
                     it as OKGameBean, this@AllGamesFragment
                 )
@@ -614,8 +612,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             }
         }
 
-        rvGameItem.adapter = adapter
-        return@run adapter
+        rvGameItem.adapter = gameAdapter
+        return@run gameAdapter
     }
 
     /**
@@ -660,5 +658,9 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 value?.sortBy { it?.marketSort }
             }
         }
+    }
+
+    private fun onCollectClick(view: View, gameData: OKGameBean) {
+        if (okGamesFragment().collectGame(gameData)) { view.animDuang(1.3f) }
     }
 }

@@ -7,10 +7,12 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/okgame_p3_layout_proivder"
         android:layout_width="match_parent"
         android:layout_height="24dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
+        android:layout_marginHorizontal="12dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -20,32 +22,27 @@
             android:src="@drawable/ic_okgame_p" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/N880"
             android:textColor="#0D2245"
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
         <ImageView
             android:id="@+id/iv_providers_left"
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:layout_marginRight="8dp"
+            android:visibility="gone"
             android:src="@drawable/ic_okgame_arrow_left" />
-
-        <View
-            android:layout_width="8dp"
-            android:layout_height="0dp" />
 
         <ImageView
             android:id="@+id/iv_providers_right"
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:visibility="gone"
             android:src="@drawable/ic_okgame_arrow_right" />
     </LinearLayout>
 
@@ -53,16 +50,17 @@
         android:id="@+id/rv_okgame_providers"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        tools:listitem="@layout/item_okgame_p3_porviders" />
+        android:paddingHorizontal="12dp"
+        android:clipToPadding="false"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="24dp"
         android:layout_marginTop="18dp"
         android:layout_marginBottom="8dp"
+        android:layout_marginHorizontal="12dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
-
 
         <ImageView
             android:layout_width="24dp"
@@ -82,14 +80,16 @@
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="30dp"
+        android:layout_marginHorizontal="12dp"
         android:orientation="horizontal">
 
         <RadioButton
             android:id="@+id/rbtn_lb"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:paddingHorizontal="15dp"
+            android:paddingHorizontal="10dp"
             android:layout_marginRight="8dp"
+            android:minWidth="80dp"
             android:background="@drawable/selector_tab_okgame_p3"
             android:button="@null"
             android:checked="true"
@@ -101,8 +101,10 @@
             android:id="@+id/rbtn_lbw"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:paddingHorizontal="15dp"
+            android:paddingHorizontal="10dp"
+            android:minWidth="80dp"
             android:background="@drawable/selector_tab_okgame_p3"
+            android:maxLines="1"
             android:button="@null"
             android:gravity="center"
             android:text="@string/N709"
@@ -113,6 +115,7 @@
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:layout_marginTop="12dp"
+        android:layout_marginHorizontal="12dp"
         android:background="@drawable/bg_okgame_p3"
         android:orientation="horizontal"
         android:paddingLeft="8dp"
@@ -121,9 +124,9 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginRight="18dp"
             android:layout_weight="1"
             android:gravity="center"
+            android:layout_marginRight="8dp"
             android:text="@string/N711"
             android:textColor="@color/color_14366B"
             android:textSize="14sp"
@@ -132,7 +135,6 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginRight="18dp"
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/N710"
@@ -143,7 +145,6 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginRight="18dp"
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/N712"
@@ -167,6 +168,7 @@
         android:id="@+id/rv_okgame_record"
         android:layout_width="match_parent"
         android:layout_height="450dp"
+        android:layout_marginHorizontal="12dp"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_okgame_p3_record" />

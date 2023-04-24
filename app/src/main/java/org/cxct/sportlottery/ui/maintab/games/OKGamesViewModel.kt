@@ -14,9 +14,7 @@ import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
-import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
-import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.util.ToastUtil
 
 class OKGamesViewModel(
@@ -36,10 +34,6 @@ class OKGamesViewModel(
     favoriteRepository,
     sportMenuRepository,
 ) {
-    companion object {
-        const val KEY_RECENT_PLAY = "recentPlay"
-    }
-
 
     val providerResult: LiveData<OKGamesHall>
         get() = _providerresult
@@ -76,20 +70,30 @@ class OKGamesViewModel(
         get() = _gamesList
     private val _gamesList = MutableLiveData<Triple<Any, Int, List<OKGameBean>?>>()
 
+    private var isLoadingOKGamesHall = false
     /**
      * 获取游戏大厅数据（包含，厂商列表，收藏列表）
      */
-    fun getOKGamesHall() = callApi({ OKGamesRepository.okGamesHall() }) {
-        it.getData()?.let {
-            _gameHall.postValue(it)
-            _collectList.postValue(it.collectList ?: listOf())
-            it.categoryList?.forEach {
-                it.gameList?.forEach {
-                    allGamesMap[it.id] = it
+    fun getOKGamesHall() {
+        if (isLoadingOKGamesHall) {
+            return
+        }
+
+        isLoadingOKGamesHall = true
+        callApi({ OKGamesRepository.okGamesHall() }) {
+
+            isLoadingOKGamesHall = false
+            it.getData()?.let {
+                _gameHall.postValue(it)
+                _collectList.postValue(it.collectList ?: listOf())
+                it.categoryList?.forEach {
+                    it.gameList?.forEach {
+                        allGamesMap[it.id] = it
+                    }
                 }
-            }
-            if (it.firmList != null) {
-                _providerresult.postValue(it)
+                if (it.firmList != null) {
+                    _providerresult.postValue(it)
+                }
             }
         }
     }
@@ -117,14 +121,18 @@ class OKGamesViewModel(
                 ToastUtil.showToast(MultiLanguagesApplication.appContext, it.msg)
                 return@callApi
             }
+
             gameData.markCollect = !gameData.markCollect
             _collectOkGamesResult.postValue(Pair(gameData.id, gameData))
-//            if (!gameData.markCollect) {
-//                val markedGames = _collectList.value?.toMutableList() ?: return@callApi
-//                if (markedGames.isNotEmpty()) {
-//                    _collectList.postValue(markedGames.filter { it.id != gameData.id }.toList())
-//                }
-//            }
+
+            val markedGames = _collectList.value?.toMutableList() ?: mutableListOf()
+            if (gameData.markCollect) {
+                markedGames.add(0, gameData)
+                _collectList.value = markedGames
+                return@callApi
+            }
+
+            _collectList.value = markedGames.filter { it.id != gameData.id }.toList()
         }
 
     /**
@@ -155,37 +163,29 @@ class OKGamesViewModel(
      * 获取最近游戏
      */
     fun getRecentPlay() {
-        val ids = KvUtils.decodeString(KEY_RECENT_PLAY)
-        if (ids.isNotEmpty()) {
-            var playList = ids.split(",").toMutableList()
-            val recentList = mutableListOf<OKGameBean>()
-            playList.forEach {
-                allGamesMap[it.toIntS(-1)]?.let {
-                    recentList.add(it)
-                }
+        val ids = LoginRepository.getRecentPlayGameIds()
+        val recentList = mutableListOf<OKGameBean>()
+        ids.forEach {
+            allGamesMap[it.toIntS(-1)]?.let {
+                recentList.add(it)
             }
-            _recentPlay.postValue(recentList)
         }
+        recentList.reverse()
+        _recentPlay.postValue(recentList)
     }
 
     /**
      * 记录最近游戏
      */
     fun addRecentPlay(gameId: String) {
-        val ids = KvUtils.decodeString(KEY_RECENT_PLAY)
-        var playList = if (ids.isNotEmpty()) ids.split(",").toMutableList() else mutableListOf()
-        playList.remove(gameId)
-        playList.add(gameId)
-        if (playList.size > 12) {
-            playList.subList(0, 12)
-        }
-        KvUtils.put(KEY_RECENT_PLAY, playList.joinToString(separator = ","))
+        val ids = LoginRepository.addRecentPlayGame(gameId)
         val recentList = mutableListOf<OKGameBean>()
-        playList.forEach {
+        ids.forEach {
             allGamesMap[it.toIntS(-1)]?.let {
                 recentList.add(it)
             }
         }
+        recentList.reverse()
         _recentPlay.postValue(recentList)
     }
     fun searchGames(requestTag: Any,

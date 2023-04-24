@@ -58,8 +58,8 @@ class HotGameView(context: Context, attrs: AttributeSet) : FrameLayout(context, 
         adapter?.data = data
     }
 
-    fun notifyAdapterData(index: Int) {
-        adapter?.notifyItemChanged(index)
+    fun notifyAdapterData(index: Int,recommend: Recommend) {
+        adapter?.notifyItemChanged(index,recommend)
     }
 
     /**

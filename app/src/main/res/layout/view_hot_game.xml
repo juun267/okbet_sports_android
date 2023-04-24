@@ -89,8 +89,9 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:src="@drawable/icon_arrow_a"
-            android:layout_width="24dp"
-            android:layout_height="24dp"/>
+            android:padding="5dp"
+            android:layout_width="34dp"
+            android:layout_height="34dp"/>
     </RelativeLayout>
 
 </LinearLayout>
