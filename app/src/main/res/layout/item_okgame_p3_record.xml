@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="44dp"
+    android:layout_height="45dp"
     android:orientation="horizontal"
     android:paddingLeft="8dp"
     android:paddingRight="8dp">
@@ -18,7 +18,7 @@
         android:gravity="center"
         android:maxLines="1"
         android:textColor="@color/color_14366B"
-        android:textSize="14sp"
+        android:textSize="12sp"
         android:textStyle="bold"
         tools:text="game name" />
 
@@ -31,7 +31,7 @@
         android:gravity="center"
         android:maxLines="1"
         android:textColor="@color/color_14366B"
-        android:textSize="14sp"
+        android:textSize="12sp"
         android:textStyle="bold"
         tools:text="bibia0299" />
 
@@ -44,7 +44,7 @@
         android:gravity="center"
         android:maxLines="1"
         android:textColor="@color/color_14366B"
-        android:textSize="14sp"
+        android:textSize="12sp"
         android:textStyle="bold"
         tools:text="9,805.00" />
 
@@ -57,7 +57,7 @@
         android:gravity="center"
         android:maxLines="1"
         android:textColor="@color/color_14366B"
-        android:textSize="14sp"
+        android:textSize="12sp"
         android:textStyle="bold"
         tools:text="-8,125,04" />
 
