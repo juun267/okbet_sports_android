@@ -359,7 +359,18 @@ abstract class BaseOddButtonViewModel(
                 } else {
                     oddsType
                 }
-            val betAmount = if (tabPosition == 0) it.betAmount else 0.0
+            val betAmount = when (tabPosition) {
+                0 -> {
+                    it.betAmount
+                }
+                2 -> {
+                    it.betAmount * normalBetList.size
+                }
+                else -> {
+                    0.0
+                }
+            }
+
             matchList.add(
                 Odd(
                     it.matchOdd.oddsId,
@@ -388,7 +399,6 @@ abstract class BaseOddButtonViewModel(
                 )
             }
         }
-
 
         val betType = if (normalBetList[0].matchType == MatchType.END_SCORE) {
             1
