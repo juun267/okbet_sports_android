@@ -7,9 +7,12 @@ import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.view_hot_game.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.JumpInPlayEvent
+import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.ui.maintab.games.adapter.HotMatchAdapter
 import org.cxct.sportlottery.ui.maintab.home.HomeRecommendListener
@@ -32,7 +35,22 @@ class HotGameView(context: Context, attrs: AttributeSet) : FrameLayout(context, 
             it.addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context,
                 R.drawable.divider_trans)))
             it.itemAnimator?.changeDuration=0
+//            it.setOnScrollChangeListener(object :On)
         }
+        recycler_hot_game.setOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val position=manager.findFirstCompletelyVisibleItemPosition()
+                if(position==-1){
+                    iv_left.visible()
+                    iv_right.visible()
+                }else{
+                    scrollImageStatus(position)
+                }
+            }
+        })
+//        val position = recycler_hot_game.getChildAdapterPosition(v)
+//        scrollImageStatus(position)
         iv_right.onClick {
             scrollRecycler(manager, true)
         }
@@ -46,16 +64,19 @@ class HotGameView(context: Context, attrs: AttributeSet) : FrameLayout(context, 
         ivHotMore.onClick {
             EventBusUtil.post(JumpInPlayEvent())
         }
+
     }
 
     fun setUpAdapter(lifecycleOwner: LifecycleOwner, homeRecommendListener: HomeRecommendListener) {
         adapter = HotMatchAdapter(lifecycleOwner, homeRecommendListener)
         recycler_hot_game.adapter = adapter
+        scrollImageStatus(0)
     }
 
     //data:List<Recommend>
     fun setGameData(data: List<Recommend>) {
         adapter?.data = data
+
     }
 
     fun notifyAdapterData(index: Int,recommend: Recommend) {
@@ -89,7 +110,24 @@ class HotGameView(context: Context, attrs: AttributeSet) : FrameLayout(context, 
         if (position < 0) {
             position = 0
         }
+//        scrollImageStatus(position)
+
         recycler_hot_game.smoothScrollToPosition(position)
     }
 
+
+    private fun scrollImageStatus(position:Int){
+        if(position==0){
+            iv_left.gone()
+        }else{
+            iv_left.visible()
+        }
+        adapter?.let {
+            if(position==it.data.size-1){
+                iv_right.gone()
+            }else{
+                iv_right.visible()
+            }
+        }
+    }
 }

@@ -381,63 +381,67 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
 
     private fun initHotGameData() {
-        binding.hotGameView.gone()
+        if(binding.hotGameView.adapter==null){
+            binding.hotGameView.gone()
+        }
 //        initSocketObservers()
         //请求热门赛事列表
         viewModel.getRecommend()
-        binding.hotGameView.setUpAdapter(viewLifecycleOwner, HomeRecommendListener(
-            onItemClickListener = { matchInfo ->
-                if (isCreditSystem() && viewModel.isLogin.value != true) {
-                    (activity as MainTabActivity).showLoginNotify()
-                } else {
-                    matchInfo?.let {
-                        SportDetailActivity.startActivity(requireContext(), it)
-//                        navOddsDetailFragment(MatchType.IN_PLAY, it)
-                    }
-                }
-            },
 
-            onClickBetListener = { gameTypeCode, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
-                if (!mIsEnabled) {
-                    return@HomeRecommendListener
-                }
-                avoidFastDoubleClick()
-                if (isCreditSystem() && viewModel.isLogin.value != true) {
-                    (activity as MainTabActivity).showLoginNotify()
-                    return@HomeRecommendListener
-                }
-                val gameType = GameType.getGameType(gameTypeCode)
-                if (gameType == null || matchInfo == null || activity !is MainTabActivity) {
-                    return@HomeRecommendListener
-                }
-                val fastBetDataBean = FastBetDataBean(
-                    matchType = matchType,
-                    gameType = gameType,
-                    playCateCode = playCateCode,
-                    playCateName = playCateName,
-                    matchInfo = matchInfo,
-                    matchOdd = null,
-                    odd = odd,
-                    subscribeChannelType = ChannelType.HALL,
-                    betPlayCateNameMap = betPlayCateNameMap,
-                    playCateMenuCode
-                )
-                val temp = JsonUtil.toJson(fastBetDataBean)
-                SportDetailActivity.startActivity(requireContext(), matchInfo,matchType,false,temp)
-            }, onClickPlayTypeListener = { _, _, _, _ ->
-
-            }
-        ))
         viewModel.publicityRecommend.observe(this) {
             //api获取热门赛事列表
             it.getContentIfNotHandled()?.let { data ->
+                binding.hotGameView.setUpAdapter(viewLifecycleOwner, HomeRecommendListener(
+                    onItemClickListener = { matchInfo ->
+                        if (isCreditSystem() && viewModel.isLogin.value != true) {
+                            (activity as MainTabActivity).showLoginNotify()
+                        } else {
+                            matchInfo?.let {
+                                SportDetailActivity.startActivity(requireContext(), it)
+//                        navOddsDetailFragment(MatchType.IN_PLAY, it)
+                            }
+                        }
+                    },
+
+                    onClickBetListener = { gameTypeCode, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
+                        if (!mIsEnabled) {
+                            return@HomeRecommendListener
+                        }
+                        avoidFastDoubleClick()
+                        if (isCreditSystem() && viewModel.isLogin.value != true) {
+                            (activity as MainTabActivity).showLoginNotify()
+                            return@HomeRecommendListener
+                        }
+                        val gameType = GameType.getGameType(gameTypeCode)
+                        if (gameType == null || matchInfo == null || activity !is MainTabActivity) {
+                            return@HomeRecommendListener
+                        }
+                        val fastBetDataBean = FastBetDataBean(
+                            matchType = matchType,
+                            gameType = gameType,
+                            playCateCode = playCateCode,
+                            playCateName = playCateName,
+                            matchInfo = matchInfo,
+                            matchOdd = null,
+                            odd = odd,
+                            subscribeChannelType = ChannelType.HALL,
+                            betPlayCateNameMap = betPlayCateNameMap,
+                            playCateMenuCode
+                        )
+                        val temp = JsonUtil.toJson(fastBetDataBean)
+                        SportDetailActivity.startActivity(requireContext(), matchInfo,matchType,false,temp)
+                    }, onClickPlayTypeListener = { _, _, _, _ ->
+
+                    }
+                ))
+
                 binding.hotGameView.visible()
                 data.forEach {
                     unSubscribeChannelHall(it.gameType,it.matchInfo?.id)
                 }
+                binding.hotGameView.setGameData(data)
                 //订阅监听
                 subscribeQueryData(data)
-                binding.hotGameView.setGameData(data)
             }
 
         }
