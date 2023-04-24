@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.maintab.games.adapter
 import android.app.ActionBar.LayoutParams
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.view.Gravity
 import android.view.View
@@ -49,10 +50,16 @@ class GamesTabAdapter(private val onSelected: (OKGameTab) -> Boolean)
 
     override fun convert(holder: VH, item: OKGameTab) = holder.run {
         val isSelected = selectedTab == item
+        root.isSelected = isSelected
         item.bindNameText(name)
         item.bindTabIcon(icon, isSelected)
-        name.setTextColor(if (isSelected) Color.WHITE else textColor)
-        root.isSelected = isSelected
+        if (isSelected) {
+            name.setTextColor(Color.WHITE)
+            name.typeface = Typeface.DEFAULT_BOLD
+        } else {
+            name.setTextColor(textColor)
+            name.typeface = Typeface.DEFAULT
+        }
     }
 
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
