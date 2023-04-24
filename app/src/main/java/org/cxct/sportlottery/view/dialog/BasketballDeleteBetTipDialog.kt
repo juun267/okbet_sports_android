@@ -29,12 +29,12 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
  * this.setCanceledOnTouchOutside(false) //disable 點擊外部關閉 dialog
  * this.setCancelable(false) //disable 按實體鍵 BACK 關閉 dialog
  */
-class BasketBallDeleteBetTipDialog(private val mContext: Context? = null) : DialogFragment() {
+class BasketballDeleteBetTipDialog(private val mContext: Context? = null) : DialogFragment() {
 
 
     private var mPositiveClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
     private var mNegativeClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
-    var dissmisCallback: ((BasketBallDeleteBetTipDialog) -> Unit)? = null
+    var dissmisCallback: ((BasketballDeleteBetTipDialog) -> Unit)? = null
 
     var isShowing = dialog?.isShowing
 

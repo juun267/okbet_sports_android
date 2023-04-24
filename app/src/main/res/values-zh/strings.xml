@@ -1241,5 +1241,7 @@
     <string name="N379">不再提示</string>
     <string name="N903">篮球末位比分</string>
     <string name="str_total_stake">总投注：</string>
+    <string name="N904">我再想想</string>
+    <string name="N905">确认全部删除</string>
 
 </resources>
