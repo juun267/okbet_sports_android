@@ -57,11 +57,12 @@ class GameCategroyAdapter(
         }
 
         root.visible()
+        val moreEnable = item.gameList.size > 3
+        tvMore.isVisible = moreEnable
+        ivMore.isVisible = moreEnable
         ivIcon.load(item.icon)
         tvName.text = item.categoryName
-        item.gameList.toMutableList()?.let { gameList ->
-            (rvGameItem.adapter as GameChildAdapter).setList(gameList)
-        }
+        (rvGameItem.adapter as GameChildAdapter).setList(item.gameList.toMutableList())
     }
 
     fun updateMarkCollect(bean: OKGameBean) {

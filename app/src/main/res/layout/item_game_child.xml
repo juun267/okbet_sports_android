@@ -22,8 +22,13 @@
             <ImageView
                 android:id="@+id/iv_cover"
                 android:layout_width="110dp"
-                android:layout_height="110dp"
-                android:foreground="@drawable/bg_gadient_game" />
+                android:layout_height="110dp" />
+
+            <View
+                android:layout_width="110dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/bg_gadient_game"/>
 
             <TextView
                 android:id="@+id/tv_name"

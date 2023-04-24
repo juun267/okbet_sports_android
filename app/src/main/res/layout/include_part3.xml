@@ -96,6 +96,7 @@
             android:gravity="center"
             android:minWidth="80dp"
             android:paddingHorizontal="10dp"
+            android:textSize="13sp"
             android:text="@string/N708"
             android:textColor="@color/color_white_gray" />
 
@@ -109,6 +110,7 @@
             android:maxLines="1"
             android:minWidth="80dp"
             android:paddingHorizontal="10dp"
+            android:textSize="13sp"
             android:text="@string/N709"
             android:textColor="@color/color_white_gray" />
     </RadioGroup>

@@ -110,12 +110,10 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     }
 
     fun changeLabel(gameLabel: OKGameLabel, labelName: String ?= null) {
+        pageIndx = 1
+        currentTab = gameLabel
         this.labelName = labelName
-        if (currentTab != gameLabel && currentTab?.getKey() != gameLabel.getKey()) {
-            pageIndx = 1
-            currentTab = gameLabel
-            bindLabels()
-        }
+        bindLabels()
         gameChildAdapter.setNewInstance(null)
     }
 
