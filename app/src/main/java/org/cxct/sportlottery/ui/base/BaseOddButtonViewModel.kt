@@ -176,7 +176,7 @@ abstract class BaseOddButtonViewModel(
                     savedOddId = "savedOddId" //重設savedOddId
                     if (result.success) {
                         val betInfo = result.BetInfo
-                        Timber.d("betInfoRepository:$betInfoRepository  ${betInfoRepository.currentStateSingleOrParlay}")
+                        Timber.d("betInfoRepository:$betInfoRepository  ${betInfoRepository.currentState}")
                         betInfoRepository.addInBetInfo(
                             matchType,
                             gameType,
@@ -353,11 +353,12 @@ abstract class BaseOddButtonViewModel(
         //一般注單
         val matchList: MutableList<Odd> = mutableListOf()
         normalBetList.forEach {
-            if (it.matchOdd.isOnlyEUType || it.matchType == MatchType.OUTRIGHT || it.matchType == MatchType.OTHER_OUTRIGHT) {
-                currentOddsTypes = OddsType.EU
-            } else {
-                currentOddsTypes = oddsType
-            }
+            currentOddsTypes =
+                if (it.matchOdd.isOnlyEUType || it.matchType == MatchType.OUTRIGHT || it.matchType == MatchType.OTHER_OUTRIGHT || it.matchType == MatchType.END_SCORE) {
+                    OddsType.EU
+                } else {
+                    oddsType
+                }
             val betAmount = if (tabPosition == 0) it.betAmount else 0.0
             matchList.add(
                 Odd(
@@ -368,6 +369,7 @@ abstract class BaseOddButtonViewModel(
                 )
             )
         }
+
         //若有串關 則改為EU
         currentOddsTypes = if (normalBetList.size == 1) {
             normalBetList.getOrNull(0)?.singleBetOddsType ?: OddsType.EU
@@ -387,6 +389,13 @@ abstract class BaseOddButtonViewModel(
             }
         }
 
+
+        val betType = if (normalBetList[0].matchType == MatchType.END_SCORE) {
+            1
+        } else {
+            0
+        }
+
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.betService.addBet(
@@ -396,7 +405,8 @@ abstract class BaseOddButtonViewModel(
                         oddsChangeOption,
                         2,
                         deviceId,
-                        channelType = 0 //先寫死固定帶0
+                        channelType = 0,//先寫死固定帶0
+                        betType = betType
                     )
                 )
             }

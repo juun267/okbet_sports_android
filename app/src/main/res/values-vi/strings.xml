@@ -1184,5 +1184,10 @@
     <string name="N867_1">"Email đã thay đổi! "</string>
     <string name="N177">Vui lòng nhập số điện thoại chính xác</string>
     <string name="N889">Vui lòng nhận chính xác email</string>
+    <string name="N900">Tên game</string>
+    <string name="N899">Nếu bạn chỉ muốn xóa một tỷ số, chạm vào Xóa một tỷ số.</string>
+    <string name="N379">Không có mẹo</string>
+    <string name="N904">Tôi muốn suy nghĩ thêm</string>
+    <string name="N905">Xác nhận xoá toàn bộ</string>
     <string name="J220">Hơn</string>
 </resources>

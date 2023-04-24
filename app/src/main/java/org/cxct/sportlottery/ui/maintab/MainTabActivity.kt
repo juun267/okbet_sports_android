@@ -31,6 +31,7 @@ import org.cxct.sportlottery.databinding.ActivityMainTabBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.network.bet.settledDetailList.BetInfo
 import org.cxct.sportlottery.network.bet.settledList.Row
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
@@ -271,6 +272,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     fun onBetModeChangeEvent(event: BetModeChangeEvent) {
         if (event.currentMode == BetListFragment.SINGLE) {
             BetInfoRepository.currentBetType = BetListFragment.SINGLE
+            parlayFloatWindow.gone()
+        } else if (event.currentMode == BetListFragment.BASKETBALL_ENDING_CARD) {
+            BetInfoRepository.currentBetType = BetListFragment.BASKETBALL_ENDING_CARD
             parlayFloatWindow.gone()
         } else {
             BetInfoRepository.currentBetType = BetListFragment.PARLAY

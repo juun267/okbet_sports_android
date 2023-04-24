@@ -45,6 +45,10 @@ object BetInfoRepository {
     var isTouched = false
 
     var currentBetType: Int = BetListFragment.SINGLE
+        set(value) {
+            println("currentBetType:${value}")
+            field = value
+        }
 
     private val _showBetInfoSingle = MutableLiveData<Event<Boolean?>>()
 
@@ -118,10 +122,15 @@ object BetInfoRepository {
         _settlementNotificationMsg.postValue(Event(sportBet))
     }
 
-    var currentStateSingleOrParlay: Int = 0
+    /**
+     * 0.单关
+     * 1.串关
+     * 2.篮球末位比分
+     */
+    var currentState: Int = 0
 
     fun setCurrentBetState(currentState: Int) {
-        currentStateSingleOrParlay = (currentState)
+        this.currentState = currentState
     }
 
     /**
@@ -278,7 +287,7 @@ object BetInfoRepository {
         _betIDList.postValue(Event(oddIDArray))
         _betInfoList.postValue(Event(betList))
         betListTabPosition = 0
-        currentStateSingleOrParlay = 0
+        currentState = 0
     }
 
     fun switchSingleMode() {
@@ -378,25 +387,35 @@ object BetInfoRepository {
             Timber.d("==Bet Refactor==> _betIDList.size():${_betIDList.value?.peekContent()?.size}")
             val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
 
-            if (currentStateSingleOrParlay == 0) {
-                //单注模式
-                Timber.d("单注模式")
-                if (oddIDArray.size != 0) {
-                    oddIDArray[0] = it.oddsId
-                } else {
-                    oddIDArray.add(it.oddsId)
-                }
-                if (betList.size != 0) {
-                    betList[0] = data
-                } else {
-                    betList.add(data)
-                }
-            } else {
-                Timber.d("串关模式")
-                //串关投注
+            //篮球末位比分
+            if (matchType == MatchType.END_SCORE) {
                 oddIDArray.add(it.oddsId)
                 betList.add(data)
+                setCurrentBetState(BetListFragment.BASKETBALL_ENDING_CARD)
+                currentBetType = BetListFragment.BASKETBALL_ENDING_CARD
+            } else {
+                if (currentState == 0) {
+                    //单注模式
+                    Timber.d("单注模式")
+                    if (oddIDArray.size != 0) {
+                        oddIDArray[0] = it.oddsId
+                    } else {
+                        oddIDArray.add(it.oddsId)
+                    }
+                    if (betList.size != 0) {
+                        betList[0] = data
+                    } else {
+                        betList.add(data)
+                    }
+                } else if (currentState == 1) {
+                    Timber.d("串关模式")
+                    //串关投注
+                    oddIDArray.add(it.oddsId)
+                    betList.add(data)
+                }
             }
+
+
 
             _betIDList.postValue(Event(oddIDArray))
             updateQuickListManager(betList)
@@ -405,6 +424,8 @@ object BetInfoRepository {
             updateBetOrderParlay(betList)
             checkBetInfoContent(betList)
             _betInfoList.postValue(Event(betList))
+
+            //单注才弹出购物车
             if (betList.size == 1) {
                 _showBetInfoSingle.postValue(Event(true))
             }
