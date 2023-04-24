@@ -498,9 +498,12 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         val betList = getCurrentBetList()
         val parlayList = getCurrentParlayList()
         //僅判斷對應tab裡的amountError
-        if (currentBetType == 0) {
+        Timber.d("amountError3:${currentBetType}")
+        if (currentBetType == SINGLE || currentBetType == BASKETBALL_ENDING_CARD) {
             betList.forEach {
+                Timber.d("balanceError3:${it.amountError}")
                 if (it.amountError) {
+                    Timber.d("balanceError4:${it.amountError}")
                     btn_bet.amountCanBet = false
                     return
                 }
@@ -514,6 +517,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             }
         }
         btn_bet.amountCanBet = true
+        Timber.d("balanceError5:${btn_bet.amountCanBet}")
     }
 
     private fun refreshAllAmount(newBetList: List<BetInfoListData>? = null) {
@@ -553,11 +557,13 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(winnableAmount, 2)}"
 
 
-        val betCount = if (currentBetType == 0) {
+        val betCount = if (currentBetType == SINGLE || currentBetType == BASKETBALL_ENDING_CARD) {
             list.count { it.betAmount > 0 }
         } else {
             parlayList.filter { it.betAmount > 0 }.sumOf { it.num }
         }
+
+
         binding.btnBet.apply {
             isParlay = currentBetType == 1
             betCounts = betCount

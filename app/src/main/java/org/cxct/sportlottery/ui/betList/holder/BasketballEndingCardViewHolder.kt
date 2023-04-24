@@ -82,14 +82,6 @@ class BasketballEndingCardViewHolder(
         inputWinMinMoney = inputMinMoney * odds
 
         contentView.apply {
-
-
-            //不支援串關
-            //僅有串關的單注才會出現此提示
-            val cannotParlay =
-                adapterBetType == BetListRefactorAdapter.BetRvType.PARLAY_SINGLE && itemData.pointMarked && betListSize > 1
-
-
             setupBetAmountInput(
                 betList,
                 itemData,
@@ -101,7 +93,7 @@ class BasketballEndingCardViewHolder(
                 position,
                 adapterBetType
             )
-            setupDeleteButton(itemData, itemCount, onItemClickListener)
+//            setupDeleteButton(itemData, itemCount, onItemClickListener)
         }
     }
 
@@ -141,15 +133,15 @@ class BasketballEndingCardViewHolder(
         Timber.d("itemData:${itemData}")
 
 
-        val rcvBasketballAdapter =  object :
+        val rcvBasketballAdapter = object :
             BaseQuickAdapter<BetInfoListData, BaseViewHolder>(R.layout.item_bet_basketball_ending_cart) {
             override fun convert(holder: BaseViewHolder, item: BetInfoListData) {
-                    holder.setText(R.id.btnMatchOdds,item.matchOdd.playName)
+                holder.setText(R.id.btnMatchOdds, item.matchOdd.playName)
             }
         }
         rcvBasketballScore.adapter = rcvBasketballAdapter
         rcvBasketballAdapter.setNewInstance(betList)
-        rcvBasketballScore.layoutManager  = GridLayoutManager(root.context,5)
+        rcvBasketballScore.layoutManager = GridLayoutManager(root.context, 5)
 
 
         //設定editText內容
@@ -180,9 +172,7 @@ class BasketballEndingCardViewHolder(
 
                     itemData.realAmount = 0.0
                     //更新可贏額
-//                    if (itemData.isInputBet) {
                     tvCanWin.text = "${root.context.getString(R.string.bet_win)}: --"
-//                    }
                 } else {
                     val quota = it.toString().toDouble()
                     itemData.betAmount = quota
@@ -265,7 +255,6 @@ class BasketballEndingCardViewHolder(
             }
         }
         etBet.setOnFocusChangeListener { _, hasFocus ->
-//                    if (!hasFocus) layoutKeyBoard?.hideKeyboard() //兩個輸入匡會互搶focus不能這樣關閉鍵盤
             itemData.isInputBet = hasFocus
             if (hasFocus) {
                 etBet.setSelection(etBet.text.length)
@@ -273,7 +262,6 @@ class BasketballEndingCardViewHolder(
             setEtBackground(itemData)
         }
         clItemBackground.setOnClickListener {
-//            onItemClickListener.onHideKeyBoard()
             clItemBackground.clearFocus()
         }
     }
@@ -532,28 +520,29 @@ class BasketballEndingCardViewHolder(
 
             Timber.d("用户余额:$mUserMoney")
             if (betAmount != 0.0 && betAmount > mUserMoney) {
-//                    tvErrorMessage.isVisible = false //同時滿足限額和餘額不足提示條件，優先顯示餘額不足
                 balanceError = true
                 View.VISIBLE
             } else {
                 balanceError = false
                 View.GONE
             }
+            Timber.d("balanceError1:${balanceError} amountError:$amountError")
             itemData.amountError = balanceError || amountError
+            Timber.d("balanceError2:${itemData.amountError} ")
         }
         setEtBackground(itemData)
     }
 
-    private fun setupDeleteButton(
-        itemData: BetInfoListData, itemCount: Int, onItemClickListener: OnItemClickListener
-    ) {
-//        contentView.tvClose.setOnClickListener {
-//            onItemClickListener.onDeleteClick(itemData.matchOdd.oddsId, itemCount)
-//        }
-//        contentView.btnDelete.setOnClickListener {
-//            contentView.slideLayout.quickClose()
-//            onItemClickListener.onDeleteClick(itemData.matchOdd.oddsId, itemCount)
-//        }
-    }
+//    private fun setupDeleteButton(
+//        itemData: BetInfoListData, itemCount: Int, onItemClickListener: OnItemClickListener
+//    ) {
+////        contentView.tvClose.setOnClickListener {
+////            onItemClickListener.onDeleteClick(itemData.matchOdd.oddsId, itemCount)
+////        }
+////        contentView.btnDelete.setOnClickListener {
+////            contentView.slideLayout.quickClose()
+////            onItemClickListener.onDeleteClick(itemData.matchOdd.oddsId, itemCount)
+////        }
+//    }
 
 }

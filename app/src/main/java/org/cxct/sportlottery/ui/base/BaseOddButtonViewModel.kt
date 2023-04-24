@@ -353,11 +353,12 @@ abstract class BaseOddButtonViewModel(
         //一般注單
         val matchList: MutableList<Odd> = mutableListOf()
         normalBetList.forEach {
-            if (it.matchOdd.isOnlyEUType || it.matchType == MatchType.OUTRIGHT || it.matchType == MatchType.OTHER_OUTRIGHT) {
-                currentOddsTypes = OddsType.EU
-            } else {
-                currentOddsTypes = oddsType
-            }
+            currentOddsTypes =
+                if (it.matchOdd.isOnlyEUType || it.matchType == MatchType.OUTRIGHT || it.matchType == MatchType.OTHER_OUTRIGHT || it.matchType == MatchType.END_SCORE) {
+                    OddsType.EU
+                } else {
+                    oddsType
+                }
             val betAmount = if (tabPosition == 0) it.betAmount else 0.0
             matchList.add(
                 Odd(
@@ -368,6 +369,7 @@ abstract class BaseOddButtonViewModel(
                 )
             )
         }
+
         //若有串關 則改為EU
         currentOddsTypes = if (normalBetList.size == 1) {
             normalBetList.getOrNull(0)?.singleBetOddsType ?: OddsType.EU
