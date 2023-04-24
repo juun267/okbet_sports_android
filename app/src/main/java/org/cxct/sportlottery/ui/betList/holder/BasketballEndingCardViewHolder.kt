@@ -5,20 +5,15 @@ import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
-import android.text.SpannableString
-import android.text.Spanned
 import android.text.TextWatcher
-import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
-import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
-import android.widget.GridLayout
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -27,10 +22,8 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.setOnClickListener
-import org.cxct.sportlottery.common.extentions.setViewGone
 import org.cxct.sportlottery.common.extentions.setViewVisible
 import org.cxct.sportlottery.databinding.ContentBetInfoItemV3BaseketballEndingCardBinding
-import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
@@ -38,11 +31,12 @@ import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.betList.listener.OnItemClickListener
 import org.cxct.sportlottery.ui.betList.listener.OnSelectedPositionListener
-import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.MoneyInputFilter
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.drawable.DrawableCreator
+import org.cxct.sportlottery.util.drawable.DrawableUtils
 import org.cxct.sportlottery.util.getOdds
 import timber.log.Timber
 
@@ -130,7 +124,9 @@ class BasketballEndingCardViewHolder(
         val rcvBasketballAdapter = object :
             BaseQuickAdapter<BetInfoListData, BaseViewHolder>(R.layout.item_bet_basketball_ending_cart) {
             override fun convert(holder: BaseViewHolder, item: BetInfoListData) {
-                holder.setText(R.id.btnMatchOdds, item.matchOdd.playName)
+                val tvMatchOdds = holder.getView<TextView>(R.id.tvMatchOdds)
+                tvMatchOdds.background = DrawableUtils.getBasketballBetListButton(root)
+                holder.setText(R.id.tvMatchOdds, item.matchOdd.playName)
             }
         }
         rcvBasketballScore.adapter = rcvBasketballAdapter
@@ -293,6 +289,11 @@ class BasketballEndingCardViewHolder(
         tvMatchAway.text = itemData.matchOdd.awayName
         setViewVisible(tvVs, tvMatchAway, tvLeagueName)
         tvLeagueName.text = itemData.matchOdd.leagueName?.trim()
+
+        btnBasketballDeleteAll.background = DrawableUtils.getBasketballDeleteAllDrawable(root)
+        btnBasketballDeleteAll.setOnClickListener {
+            ToastUtil.showToast(root.context, "删除全部", Toast.LENGTH_LONG)
+        }
 
         val view = View.inflate(tvMatchHome.context, R.layout.popupwindow_tips, null)
         val pop = PopupWindow(tvMatchHome.context).apply {
