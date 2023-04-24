@@ -75,8 +75,13 @@ class HotGameView(context: Context, attrs: AttributeSet) : FrameLayout(context, 
 
     //data:List<Recommend>
     fun setGameData(data: List<Recommend>) {
+        if(adapter==null){
+            return
+        }
+//        if(adapter!!.data.size==data.size){
+//            return
+//        }
         adapter?.data = data
-
     }
 
     fun notifyAdapterData(index: Int,recommend: Recommend) {
