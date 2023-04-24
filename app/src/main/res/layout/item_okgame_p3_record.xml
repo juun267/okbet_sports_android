@@ -36,7 +36,6 @@
         tools:text="bibia0299" />
 
     <TextView
-
         android:id="@+id/item_okgame_bet_amount"
         android:layout_width="0dp"
         android:layout_height="match_parent"

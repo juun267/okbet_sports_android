@@ -38,7 +38,7 @@
     <string name="error_register_password">Password ay kumbinasyon ng 6~20 numero at letra</string>
     <string name="error_password_format">Kailangang kumbinasyon ng 6-20 Letra at Numero</string>
     <string name="register_please_read">Mangyaring basahin mabuti ang aming</string>
-    <string name="register_responsibilities"><u>Gambling Responsibility</u></string>
+    <string name="register_responsibilities"><u>Responsableng Paglalaro</u></string>
     <string name="register_privacy_policy">Patakaran sa privacy</string>
     <string name="register_privacy_policy_promotions">Sundin ang %s para mapadalhan ng update at promosyon</string>
     <string name="register_over_21">Ako ay higit sa 21 taong gulang, nabasa at sumang-ayon sa %s</string>
@@ -1162,4 +1162,10 @@
     <string name="N900">Pangalan ng Laro</string>
 
     <string name="N881">Popular event</string>
+    <string name="N702">Higit pa</string>
+    <string name="J094">Proteksyon sa privacy</string>
+    <string name="N019">Liên hệ chúng tôi</string>
+    <string name="J299">Online serbisyo</string>
+    <string name="B023">Kadalasang Tanong</string>
+    <string name="N883">Wala pang resulta!</string>
 </resources>

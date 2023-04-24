@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/color_6D7693"
             android:textSize="14sp"
-            android:text="@string/see_more" />
+            android:text="@string/N702" />
 
         <ImageView
             android:layout_width="@dimen/margin_16"
