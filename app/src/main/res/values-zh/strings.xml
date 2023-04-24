@@ -1239,5 +1239,7 @@
     <string name="N900">游戏名称</string>
     <string name="N899">如果您只想删除单个比分，可以触碰单个比分删除。</string>
     <string name="N379">不再提示</string>
+    <string name="N904">我再想想</string>
+    <string name="N905">确认全部删除</string>
 
 </resources>
