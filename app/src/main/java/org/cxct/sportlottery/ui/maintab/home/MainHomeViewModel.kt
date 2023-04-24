@@ -118,7 +118,7 @@ open class MainHomeViewModel(
     //region 宣傳頁用
     fun getRecommend() {
         viewModelScope.launch {
-            doNetwork(androidContext) {
+            val resultRecommend=doNetwork(androidContext) {
                 val currentTimeMillis = System.currentTimeMillis()
                 val calendar = Calendar.getInstance()
                 calendar.timeInMillis = currentTimeMillis
@@ -134,7 +134,8 @@ open class MainHomeViewModel(
                         startTimeStamp.toString()
                     )
                 )
-            }?.let { result ->
+            }
+            resultRecommend?.let { result ->
                 if (result.success) {
                     result.result.recommendList.filter {
                         !it.menuList.isNullOrEmpty()
