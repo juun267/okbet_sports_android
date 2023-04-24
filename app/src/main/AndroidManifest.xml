@@ -103,7 +103,7 @@
 
 
         <activity
-            android:name=".ui.maintab.betdetails.BetDetailsActivity"
+            android:name=".ui.betRecord.detail.BetDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.money.recharge.MoneyRechargeActivity"

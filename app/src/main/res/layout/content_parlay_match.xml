@@ -147,42 +147,15 @@
 
     </LinearLayout>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <TextView
+        android:id="@+id/parlay_play_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-        android:gravity="center_vertical"
-        android:layout_height="wrap_content">
-        <!--playName spread @ odd-->
-        <TextView
-            android:id="@+id/parlay_play_content"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="21dp"
-            android:textAlignment="viewStart"
-            android:textColor="@color/color_9BB3D9_535D76"
-            android:textSize="@dimen/textSize12sp"
-            tools:text="密尔沃基雄鹿 6.5 \@ 1.860" />
-
-
-        <TextView
-            android:layout_gravity="end"
-            android:id="@+id/tvPrint"
-            android:layout_width="42dp"
-            android:layout_height="20dp"
-            android:layout_marginEnd="5dp"
-            android:background="@drawable/bg_radius_4_button_blue_stroke_half_line"
-            android:gravity="center"
-            android:text="@string/N890"
-            android:textColor="@color/color_025BE8"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/title_team_name_parlay"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1"
-            app:layout_constraintStart_toEndOf="@+id/title_team_name_parlay" />
-
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
+        android:layout_marginStart="21dp"
+        android:textAlignment="viewStart"
+        android:textColor="@color/color_9BB3D9_535D76"
+        android:textSize="@dimen/textSize12sp"
+        tools:text="密尔沃基雄鹿 6.5 \@ 1.860" />
 
 </LinearLayout>

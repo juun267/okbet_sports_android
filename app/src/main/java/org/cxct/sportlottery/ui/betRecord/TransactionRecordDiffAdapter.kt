@@ -1,9 +1,11 @@
 package org.cxct.sportlottery.ui.betRecord
 
+import android.content.Intent
 import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_match_record.view.*
 import kotlinx.android.synthetic.main.content_parlay_record.view.*
+import kotlinx.android.synthetic.main.include_bet_record_endscore.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
@@ -23,8 +26,10 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.ui.betRecord.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
+import org.cxct.sportlottery.ui.betRecord.detail.BetDetailsActivity
 import org.cxct.sportlottery.ui.betRecord.dialog.PrintDialog
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.view.onClick
 
 //TODO 20210719當前api缺少總金額,待後端修正後進行確認
 class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
@@ -147,8 +152,12 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                     if (matchOdds.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage(
                         matchOdds.odds - 1
                     ) else TextUtil.formatForOdd(matchOdds.odds)
+                val playName =
+                    if (matchOdds.playCateCode == PlayCate.FS_LD_CS.value)
+                        context.getString(R.string.N903)
+                    else matchOdds.playName
                 play_content.setPlayContent(
-                    matchOdds.playName, matchOdds.spread, formatForOdd
+                    playName, matchOdds.spread, formatForOdd
                 )
 
                 match_play_time.text =
@@ -202,6 +211,40 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                 ll_copy_bet_order.setOnClickListener {
                     context.copyToClipboard(data.orderNo)
                 }
+                lin_endscore.isVisible =
+                    data.matchOdds.firstOrNull()?.playCateCode == PlayCate.FS_LD_CS.value
+                if (lin_endscore.isVisible) {
+                    content_play.setCompoundDrawablesWithIntrinsicBounds(null,
+                        null,
+                        context.getDrawable(R.drawable.ic_right_arrow_gray),
+                        null)
+                    itemView.onClick {
+                        val intent = Intent(context, BetDetailsActivity::class.java)
+                        intent.putExtra("data", data)
+                        context?.startActivity(intent)
+                    }
+                    if (rv_endscore_info.adapter == null) {
+                        rv_endscore_info.layoutManager =
+                            LinearLayoutManager(rv_endscore_info.context,
+                                RecyclerView.HORIZONTAL,
+                                false)
+                        rv_endscore_info.addItemDecoration(SpaceItemDecoration(context,
+                            R.dimen.margin_4))
+                        val scoreAdapter = BetRecordEndScoreAdapter()
+                        rv_endscore_info.adapter = scoreAdapter
+                        scoreAdapter.setList(data.matchOdds.firstOrNull()?.multiCode ?: listOf())
+                    } else {
+                        (rv_endscore_info.adapter as BetRecordEndScoreAdapter).setList(data.matchOdds.firstOrNull()?.multiCode)
+                    }
+                    tv_more?.let {
+                        tv_more.isVisible = data.matchOdds.firstOrNull()?.multiCode?.size ?: 0 > 6
+                        (rv_endscore_info.layoutParams as LinearLayout.LayoutParams).apply {
+                            this.weight = if (tv_more.isVisible) 1f else 0f
+                            rv_endscore_info.layoutParams = this
+                        }
+                    }
+
+                }
             }
         }
     }
@@ -229,7 +272,6 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                 content_play.setGameType_MatchType_PlayCateName_OddsType(
                     data.gameType, data.matchType, matchOdds.playCateName, matchOdds.oddsType
                 )
-
                 tvPrint.visible()
 
                 tvPrint.setOnClickListener {
@@ -256,8 +298,13 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                     if (matchOdds.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage(
                         matchOdds.odds - 1
                     ) else TextUtil.formatForOdd(matchOdds.odds)
+
+                val playName =
+                    if (matchOdds.playCateCode == PlayCate.FS_LD_CS.value)
+                        context.getString(R.string.N903)
+                    else matchOdds.playName
                 play_content.setPlayContent(
-                    matchOdds.playName, matchOdds.spread, formatForOdd
+                    playName, matchOdds.spread, formatForOdd
                 )
                 matchOdds.startTime?.let {
                     match_play_time.text = TimeUtil.timeFormat(it, TimeUtil.DM_HM_FORMAT)
