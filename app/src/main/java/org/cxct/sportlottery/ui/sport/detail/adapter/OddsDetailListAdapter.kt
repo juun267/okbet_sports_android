@@ -37,7 +37,6 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.base.BaseGameAdapter
 import org.cxct.sportlottery.ui.betList.BetInfoListData
-import org.cxct.sportlottery.ui.sport.detail.CustomTypefaceSpan
 import org.cxct.sportlottery.ui.sport.detail.OnOddClickListener
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp

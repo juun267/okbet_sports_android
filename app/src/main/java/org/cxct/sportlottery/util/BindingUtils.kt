@@ -11,18 +11,25 @@ import android.text.style.ClickableSpan
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
+import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
-import org.cxct.sportlottery.application.MultiLanguagesApplication
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
+import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.ThirdGameRepository
-import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.ui.betRecord.BetRecordEndScoreAdapter
 import org.cxct.sportlottery.util.TimeUtil.DM_HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.MD_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
@@ -542,4 +549,34 @@ fun TextView.makeLinks(vararg links: Pair<String, View.OnClickListener>) {
 @BindingAdapter("svgDrawable")
 fun ImageView.setSvgDrawable(svgData: String?) {
     this.setImageDrawable(SvgUtil.getSvgDrawable(context, svgData ?: SvgUtil.defaultIconPath))
+}
+
+fun Row.setBetRecordEndScoreInfo(
+    linEndScoreInfo: LinearLayout,
+    rvInfo: RecyclerView,
+    tvMore: TextView?,
+) {
+    LogUtil.toJson(matchOdds)
+    LogUtil.d(matchOdds.firstOrNull()?.playCateCode)
+    linEndScoreInfo.isVisible = matchOdds.firstOrNull()?.playCateCode == PlayCate.FS_LD_CS.value
+    if (linEndScoreInfo.isVisible) {
+        LogUtil.toJson(multiCode)
+        if (rvInfo.adapter == null) {
+            rvInfo.layoutManager =
+                LinearLayoutManager(rvInfo.context, RecyclerView.HORIZONTAL, false)
+            val scoreAdapter = BetRecordEndScoreAdapter()
+            rvInfo.adapter = scoreAdapter
+            scoreAdapter.setList(multiCode ?: listOf())
+        } else {
+            (rvInfo.adapter as BetRecordEndScoreAdapter).setList(multiCode)
+        }
+        tvMore?.let {
+            tvMore.isVisible = multiCode?.size ?: 0 > 7
+            (rvInfo.layoutParams as LinearLayout.LayoutParams).apply {
+                this.weight = if (tvMore.isVisible) 1f else 0f
+                rvInfo.layoutParams = this
+            }
+        }
+
+    }
 }

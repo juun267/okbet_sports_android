@@ -3,8 +3,9 @@ package org.cxct.sportlottery.network.bet.list
 
 import android.os.Parcelable
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguards.KeepMembers
+import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
+import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.network.bet.MatchOdd
 import org.cxct.sportlottery.network.bet.settledDetailList.ParlayComsDetailVO
 
@@ -58,5 +59,7 @@ data class Row (
     @Json(name = "winnable")
     val winnable: Double,
     @Json(name = "cancelledBy")
-    val cancelledBy: String? //备注栏位："mts" (风控) => "因系统审核不成立","own"、"source" (后台) => "因机制审核不成立"
+    val cancelledBy: String?, //备注栏位："mts" (风控) => "因系统审核不成立","own"、"source" (后台) => "因机制审核不成立"
+    @Json(name = "multiCode")
+    val multiCode: List<EndScoreInfo>?,
 ): Parcelable

@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.sport.detail;
+package org.cxct.sportlottery.util;
 
 import android.graphics.Paint;
 import android.graphics.Typeface;

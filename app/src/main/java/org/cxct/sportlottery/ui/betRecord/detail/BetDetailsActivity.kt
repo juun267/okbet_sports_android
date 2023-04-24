@@ -1,7 +1,6 @@
-package org.cxct.sportlottery.ui.maintab.betdetails
+package org.cxct.sportlottery.ui.betRecord.detail
 
 import android.os.Bundle
-import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.activity_help_center.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityBetDetailsBinding
@@ -26,21 +25,24 @@ class BetDetailsActivity : BaseActivity<BetListViewModel>(BetListViewModel::clas
         initView()
         initData()
         replaceFragment(R.id.fl_container,betDetailsFragment)
-
     }
 
     private fun initData(){
         val data: Row? =intent.getParcelableExtra("data")
         val bundle=Bundle()
-        bundle.putParcelable("data",data)
-        betDetailsFragment.arguments=bundle
+        bundle.putParcelable("data", data)
+        betDetailsFragment.arguments = bundle
     }
 
 
-    private fun initView(){
+    private fun initView() {
         custom_tool_bar.setOnBackPressListener {
             finish()
         }
+    }
+
+    open fun setTitleName(title: String) {
+        binding.customToolBar.titleText = title
     }
 
 

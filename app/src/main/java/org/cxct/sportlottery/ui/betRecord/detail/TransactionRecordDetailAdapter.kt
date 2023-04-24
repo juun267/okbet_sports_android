@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.maintab.betdetails
+package org.cxct.sportlottery.ui.betRecord.detail
 
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +14,7 @@ import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.bet.settledDetailList.ParlayComsDetailVO
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.ui.betRecord.ParlayType
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.TextUtil
 
 class TransactionRecordDetailAdapter :
     ListAdapter<ParlayComsDetailVO, RecyclerView.ViewHolder>(TransactionRecordDiffCallBack()) {
