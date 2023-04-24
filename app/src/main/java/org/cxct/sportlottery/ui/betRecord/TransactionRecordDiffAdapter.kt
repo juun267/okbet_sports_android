@@ -154,7 +154,7 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                     ) else TextUtil.formatForOdd(matchOdds.odds)
                 val playName =
                     if (matchOdds.playCateCode == PlayCate.FS_LD_CS.value)
-                        context.getString(R.string.home_tab_end_score)
+                        context.getString(R.string.N903)
                     else matchOdds.playName
                 play_content.setPlayContent(
                     playName, matchOdds.spread, formatForOdd
@@ -299,7 +299,7 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
 
                 val playName =
                     if (matchOdds.playCateCode == PlayCate.FS_LD_CS.value)
-                        context.getString(R.string.home_tab_end_score)
+                        context.getString(R.string.N903)
                     else matchOdds.playName
                 play_content.setPlayContent(
                     playName, matchOdds.spread, formatForOdd
