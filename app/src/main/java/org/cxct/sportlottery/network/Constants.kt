@@ -273,7 +273,7 @@ object Constants {
 
     //https://okbet-v2.cxsport.net/activity/mobile/#/print?uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
     //打印小票H5地址
-    fun getPrintReceipt(context:Context):String {
+    fun getPrintReceipt(context:Context,uniqNo:String?,addTime:String?,reMark:String?):String {
         var language = getLanguageTag(context)
         val base = getH5BaseUrl()
         if (language.contains("/")){
@@ -281,7 +281,7 @@ object Constants {
         }else if (language.isEmpty()){
             language = "zh"
         }
-        return "${base}activity/mobile/#/print?lang=${language}&"
+        return "${base}activity/mobile/#/print?lang=${language}&uniqNo=$uniqNo&addTime=$addTime&reMark=$reMark"
     }
 
 
