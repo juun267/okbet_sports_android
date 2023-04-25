@@ -137,6 +137,12 @@ class SingleViewHolder private constructor(itemView: View) :
                 rvEndScoreInfo.isVisible =
                     itemData.matchOdds?.firstOrNull()?.playCateCode == PlayCate.FS_LD_CS.value
                 if (rvEndScoreInfo.isVisible) {
+                    tvTypeMatch.isVisible = false
+                    dividerTitle.isVisible = false
+                    tv_play_content.apply {
+                        text = context.getString(R.string.N903)
+                        paint.isFakeBoldText = true
+                    }
                     if (rvEndScoreInfo.adapter == null) {
                         rvEndScoreInfo.layoutManager = GridLayoutManager(context, 5)
                         rvEndScoreInfo.addItemDecoration(GridSpacingItemDecoration(5, 5.dp, false))

@@ -76,6 +76,7 @@
                 tools:text="日本奥运队" />
 
             <View
+                android:id="@+id/dividerTitle"
                 android:layout_width="1dp"
                 android:layout_height="13dp"
                 android:layout_marginTop="1dp"
