@@ -49,7 +49,7 @@ class BetDetailsFragment : BaseFragment<BetListViewModel>(BetListViewModel::clas
 
     private fun setupEndScore(row: Row, matchOdds: MatchOdd) {
         include_endscore.apply {
-            iv_country.setSvgDrawable(matchOdds.categoryIcon)
+            iv_country.setLeagueLogo(matchOdds.categoryIcon)
             title_league_name.text = matchOdds.leagueName.replace("\n", "")
             title_team_name.setTeamsNameWithVS(matchOdds.homeName, matchOdds.awayName)
 

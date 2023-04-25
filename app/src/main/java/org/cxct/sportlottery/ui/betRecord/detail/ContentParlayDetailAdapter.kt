@@ -74,7 +74,7 @@ class ContentParlayDetailAdapter(val status: Int) :
                 )
 
                 parlay_play_time.text = TimeUtil.timeFormat(data.startTime, TimeUtil.DM_HM_FORMAT)
-                itemView.iv_country.setSvgDrawable(data.categoryIcon)
+                itemView.iv_country.setLeagueLogo(data.categoryIcon)
                 content_league.text = data.leagueName
             }
         }
