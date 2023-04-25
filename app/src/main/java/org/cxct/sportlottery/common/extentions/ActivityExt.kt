@@ -1,20 +1,43 @@
 package org.cxct.sportlottery.common.extentions
 
 import android.app.Activity
-import android.app.Application
 import android.content.Intent
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.MainThread
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
-import kotlinx.coroutines.*
-import okhttp3.ResponseBody.Companion.toResponseBody
+import androidx.viewbinding.ViewBinding
 import org.cxct.sportlottery.application.MultiLanguagesApplication
-import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.util.ToastUtil
-import retrofit2.Response
+import java.lang.reflect.ParameterizedType
+import kotlin.reflect.KClass
 
+
+fun Any.getKClass(index: Int) : KClass<*> {
+    val parameterizedType = this::class.java.genericSuperclass as ParameterizedType
+    val actualTypeArguments = parameterizedType.actualTypeArguments
+    return (actualTypeArguments[index] as Class<*>).kotlin
+}
+
+fun <VB: ViewBinding> Any.createVBinding(layoutInflater: LayoutInflater, index: Int = 0): VB {
+    val parameterizedType = this::class.java.genericSuperclass as ParameterizedType
+    val actualTypeArguments = parameterizedType.actualTypeArguments
+    val clazz = actualTypeArguments[index] as Class<VB>
+    val method = clazz.getMethod("inflate", LayoutInflater::class.java)
+    return method.invoke(null, layoutInflater) as VB
+}
+
+fun <VDB: ViewDataBinding> LifecycleOwner.createDataBinding(layoutInflater: LayoutInflater, index: Int = 0): VDB {
+    val owner = this
+    val parameterizedType = this::class.java.genericSuperclass as ParameterizedType
+    val actualTypeArguments = parameterizedType.actualTypeArguments
+    val clazz = actualTypeArguments[index] as Class<VDB>
+    val method = clazz.getMethod("inflate", LayoutInflater::class.java)
+    return (method.invoke(null, layoutInflater) as VDB).apply { lifecycleOwner = owner }
+}
 
 // 防止LiveData数据倒灌
 @MainThread
