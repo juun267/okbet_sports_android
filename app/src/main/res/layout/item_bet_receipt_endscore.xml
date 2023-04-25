@@ -7,6 +7,7 @@
     android:gravity="center"
     android:textColor="@color/color_111216"
     android:textSize="@dimen/textSize14sp"
+    android:fontFamily="@font/din_bold"
     tools:text="0-0">
 
 </TextView>
