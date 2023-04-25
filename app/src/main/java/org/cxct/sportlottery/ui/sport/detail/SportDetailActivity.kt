@@ -673,9 +673,17 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
 
         viewModel.showBetUpperLimit.observe(this) {
-            if (it.getContentIfNotHandled() == true) snackBarBetUpperLimitNotify.apply {
-                setAnchorView(R.id.cl_bet_list_bar)
-                show()
+            if (it.getContentIfNotHandled() == true) {
+                showSnackBarBetUpperLimitNotify(
+                    getString(R.string.bet_basketball_notify_max_limit)
+                ).setAnchorView(R.id.cl_bet_list_bar).show()
+            }
+        }
+        viewModel.showBetBasketballUpperLimit.observe(this) {
+            if (it.getContentIfNotHandled() == true) {
+                showSnackBarBetUpperLimitNotify(
+                    getString(R.string.bet_basketball_notify_max_limit)
+                ).setAnchorView(R.id.cl_bet_list_bar).show()
             }
         }
         viewModel.liveLoginInfo.observe(this) {

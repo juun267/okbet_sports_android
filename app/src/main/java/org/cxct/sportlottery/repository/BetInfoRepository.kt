@@ -72,6 +72,8 @@ object BetInfoRepository {
         get() = _betIDList
 
     private val _showBetUpperLimit = MutableLiveData<Event<Boolean>>()
+
+    var showBetBasketballUpperLimit :MutableLiveData<Event<Boolean>> =MutableLiveData()
     val showBetUpperLimit: LiveData<Event<Boolean>>
         get() = _showBetUpperLimit
 
@@ -235,6 +237,7 @@ object BetInfoRepository {
 
     fun removeItem(oddId: String?) {
         val betList = _betInfoList.value?.peekContent() ?: CopyOnWriteArrayList()
+        Timber.d("betList:${betList}")
 
         val item = betList.find { it.matchOdd.oddsId == oddId }
         betList.remove(item)
@@ -356,14 +359,14 @@ object BetInfoRepository {
 
         if (matchType == MatchType.END_SCORE) {
             if (betList.size >= BET_BASKETBALL_ENDING_SCORE_MAX_COUNT) {
+                showBetBasketballUpperLimit.postValue(Event(true))
+                return
+            }
+        } else {
+            if (betList.size >= BET_INFO_MAX_COUNT) {
                 _showBetUpperLimit.postValue(Event(true))
                 return
             }
-        }
-
-        if (betList.size >= BET_INFO_MAX_COUNT) {
-            _showBetUpperLimit.postValue(Event(true))
-            return
         }
 
         val emptyFilter = { item: String? ->

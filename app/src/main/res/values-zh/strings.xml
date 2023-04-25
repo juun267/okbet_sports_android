@@ -577,6 +577,7 @@
     <string name="spt_number_5_3_vb">5局3胜</string>
     <string name="spt_number_7_4_tt">7局4胜</string>
     <string name="bet_notify_max_limit">最多可添加10个选项至投注单</string>
+    <string name="bet_basketball_notify_max_limit">最多可添加100个选项至投注单</string>
     <string name="myfavorite_notify_league_add">已添加至我的联赛</string>
     <string name="myfavorite_notify_league_remove">从我的联赛中移除</string>
     <string name="myfavorite_notify_match_add">已添加至我的赛事</string>

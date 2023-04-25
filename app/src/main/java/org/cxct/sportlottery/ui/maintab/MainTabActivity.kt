@@ -120,9 +120,18 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             }
         }
         viewModel.showBetUpperLimit.observe(this) {
-            if (it.getContentIfNotHandled() == true) snackBarBetUpperLimitNotify.apply {
-                setAnchorView(R.id.parlayFloatWindow)
-                show()
+            if (it.getContentIfNotHandled() == true) {
+                showSnackBarBetUpperLimitNotify(
+                    getString(R.string.bet_notify_max_limit)
+                ).setAnchorView(R.id.parlayFloatWindow).show()
+            }
+        }
+
+        viewModel.showBetBasketballUpperLimit.observe(this) {
+            if (it.getContentIfNotHandled() == true) {
+                showSnackBarBetUpperLimitNotify(
+                    getString(R.string.bet_basketball_notify_max_limit)
+                ).setAnchorView(R.id.parlayFloatWindow).show()
             }
         }
     }

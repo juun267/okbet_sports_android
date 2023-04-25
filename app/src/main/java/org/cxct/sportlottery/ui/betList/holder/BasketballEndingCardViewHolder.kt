@@ -37,8 +37,6 @@ import org.cxct.sportlottery.ui.betList.listener.OnSelectedPositionListener
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.MoneyInputFilter
 import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.ToastUtil
-import org.cxct.sportlottery.util.drawable.DrawableCreator
 import org.cxct.sportlottery.util.drawable.DrawableUtils
 import org.cxct.sportlottery.util.getOdds
 import org.cxct.sportlottery.view.dialog.BasketballDelBetTipDialog
@@ -87,7 +85,6 @@ class BasketballEndingCardViewHolder(
                 position,
                 adapterBetType
             )
-//            setupDeleteButton(itemData, itemCount, onItemClickListener)
         }
     }
 
@@ -158,9 +155,7 @@ class BasketballEndingCardViewHolder(
 
                 //蒙版点击事件
                 tvHide.setOnClickListener {
-                    val currentPosition = holder.layoutPosition
-                    betList?.removeAt(currentPosition)
-                    notifyItemChanged(currentPosition)
+                    onItemClickListener.onDeleteClick(itemData.matchOdd.oddsId, itemCount)
                 }
             }
         }
@@ -442,7 +437,7 @@ class BasketballEndingCardViewHolder(
                 }
             }
 
-            Timber.d("用户余额:$mUserMoney")
+//            Timber.d("用户余额:$mUserMoney")
             if (betAmount != 0.0 && betAmount > mUserMoney) {
                 balanceError = true
                 View.VISIBLE
@@ -456,4 +451,6 @@ class BasketballEndingCardViewHolder(
         }
         setEtBackground(itemData)
     }
+
+
 }

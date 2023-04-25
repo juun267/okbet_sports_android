@@ -11,6 +11,7 @@ import android.view.animation.Animation
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -42,6 +43,7 @@ import org.cxct.sportlottery.ui.betRecord.ParlayType.Companion.getParlayStringRe
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.results.StatusType
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.OkPopupWindow
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 import timber.log.Timber
@@ -152,7 +154,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         initView()
         initObserver()
         initSocketObserver()
-
         queryData()
     }
 
@@ -313,12 +314,17 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 line_shadow.visible()
             }
 
+            //篮球末位比分
             else -> {
                 currentBetType = BASKETBALL_ENDING_CARD
                 betListRefactorAdapter?.adapterBetType =
                     BetListRefactorAdapter.BetRvType.BasketballEndingCard
                 refreshLlMoreOption()
                 line_shadow.visible()
+                binding.btnParlaySingle.gone()
+                binding.btnBet.updateLayoutParams {
+                    width = 225.dp
+                }
             }
         }
         BetInfoRepository.isTouched = false

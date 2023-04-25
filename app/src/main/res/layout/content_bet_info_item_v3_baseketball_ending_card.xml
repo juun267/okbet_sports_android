@@ -64,20 +64,20 @@
         </LinearLayout>
 
 
-        <androidx.recyclerview.widget.RecyclerView
+        <org.cxct.sportlottery.view.ChildRecyclerView
             android:id="@+id/rcvBasketballScore"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
             android:layout_marginTop="5dp"
+            android:scrollbars="vertical"
             android:visibility="visible"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:layout_constraintHeight_max="100dp"
-            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintHeight_max="112dp"
             app:layout_constraintStart_toStartOf="@+id/odds_content_container"
             app:layout_constraintTop_toBottomOf="@+id/odds_content_container"
             app:spanCount="5"
-            tools:itemCount="10"
+            tools:itemCount="20"
             tools:listitem="@layout/item_bet_basketball_ending_cart"
             tools:text="让球(1-1) container " />
 

@@ -1298,4 +1298,5 @@
     <string name="N374">Delete ALL</string>
     <string name="N905">Confirm delete all</string>
     <string name="J220">More</string>
+    <string name="bet_basketball_notify_max_limit">Can add maximum 100 options to betslip</string>
 </resources>
