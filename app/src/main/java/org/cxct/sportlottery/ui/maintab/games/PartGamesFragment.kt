@@ -38,6 +38,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     private var currentTab: OKGameLabel? = null
     private var pageIndx = 1
     private var labelName: String ?= null
+    private var isLoading = true
     private val emptyView by lazy { LayoutInflater.from(binding.root.context).inflate(R.layout.view_no_games, binding.root, false) }
     private val loadingView by lazy {
         val view = LayoutInflater.from(binding.root.context).inflate(R.layout.layout_loading, binding.root, false)
@@ -104,7 +105,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             return
         }
 
-        gameChildAdapter.setEmptyView(loadingView)
+        gameChildAdapter.setEmptyView(if (isLoading) loadingView else emptyView)
         gameChildAdapter.disableMore()
         currentTab?.let {
             it.bindLabelIcon(binding.ivIcon)
@@ -120,17 +121,22 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     fun changeLabel(gameLabel: OKGameLabel, labelName: String ?= null) {
         pageIndx = 1
         currentTab = gameLabel
+        isLoading = true
         this.labelName = labelName
         bindLabels()
         gameChildAdapter.setNewInstance(null)
     }
 
     fun showSearchResault(list: List<OKGameBean>?, total: Int): Int {
+
         val count = gameChildAdapter.setGameList(list?.toMutableList(), total)
-        gameChildAdapter.setEmptyView(emptyView)
         if (list?.size ?: 0 >= pageSize) {
             pageIndx++
         }
+        if (::binding.isInitialized) {
+            gameChildAdapter.setEmptyView(emptyView)
+        }
+        isLoading = false
         return count
     }
 }
