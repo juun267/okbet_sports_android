@@ -122,6 +122,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         initSocketObservers()
         initRecent()
         initCollectLayout()
+//        initHotGameData()
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -129,6 +130,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         if (hidden) {
             return
         }
+        setupOddsChangeListener()
         val noData = okGamesFragment().viewModel.gameHall.value == null
         val time = System.currentTimeMillis()
         if (noData || time - lastRequestTimeStamp > 60_000) { // 避免短时间重复请求
@@ -520,7 +522,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         if (binding.hotGameView.adapter == null) {
             binding.hotGameView.gone()
         }
-        unSubscribeChannelHallAll()
+//        unSubscribeChannelHallAll()
         //请求热门赛事列表
         viewModel.getRecommend()
     }

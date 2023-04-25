@@ -48,7 +48,7 @@ class ItemHotMatchHolder(
         var oddList = listOf<Odd?>()
 
         val oddsMap = mutableMapOf<String, List<Odd?>?>()
-        data.oddsMap?.forEach {
+        data.odds?.forEach {
             oddsMap[it.key] = it.value
         }
         val sortOddsMap = oddsMap.filterValues { it?.size ?: 0 > 0 }.sortOdds(data.oddsSort)
@@ -312,7 +312,9 @@ class ItemHotMatchHolder(
 
                 } else {
                     stopTimer()
-                    binding.tvGamePlayTime.visibility = View.GONE
+//                    binding.tvGamePlayTime.visibility = View.GONE
+                    binding.tvGamePlayTime.text =
+                        TimeUtil.timeFormat(item.startTime, TimeUtil.DM_HM_FORMAT)
                 }
             }
             else -> {
