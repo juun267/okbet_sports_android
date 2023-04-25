@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.core.view.postDelayed
 import androidx.recyclerview.widget.*
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -67,9 +68,9 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     }
 
     override fun onBindView(view: View) {
+        unSubscribeChannelHallAll()
         initObserve()
         initHotGameAdapter()
-        initHotGameData()
         onBindGamesView()
         onBindPart3View()
         onBindPart5View()
@@ -83,14 +84,12 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         if (hidden) {
             return
         }
-        initSocketObservers()
-        initHotGameData()
         val noData = okGamesFragment().viewModel.gameHall.value == null
         val time = System.currentTimeMillis()
         if (noData || time - lastRequestTimeStamp > 60_000) { // 避免短时间重复请求
             lastRequestTimeStamp = time
             okGamesFragment().viewModel.getOKGamesHall()
-
+//            initHotGameData()
         }
     }
 
@@ -467,31 +466,27 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
             }
         ))
+
+        viewModel.publicityRecommend.observe(this) {
+            //api获取热门赛事列表
+            it.peekContent().let { data ->
+                binding.hotGameView.visible()
+                binding.hotGameView.postDelayed({
+                    binding.hotGameView.setGameData(data)
+                    //订阅监听
+                    subscribeQueryData(data)
+                },200)
+            }
+        }
     }
 
     private fun initHotGameData() {
         if (binding.hotGameView.adapter == null) {
             binding.hotGameView.gone()
         }
-//        initSocketObservers()
+//        unSubscribeChannelHallAll()
         //请求热门赛事列表
         viewModel.getRecommend()
-
-        viewModel.publicityRecommend.observe(this) {
-            //api获取热门赛事列表
-            it.peekContent().let { data ->
-
-
-                binding.hotGameView.visible()
-                data.forEach {
-                    unSubscribeChannelHall(it.gameType, it.matchInfo?.id)
-                }
-                binding.hotGameView.setGameData(data)
-                //订阅监听
-                subscribeQueryData(data)
-            }
-
-        }
     }
 
 
@@ -501,23 +496,20 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         receiver.serviceConnectStatus.observe(viewLifecycleOwner) {
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
-//                    initHotGameData()
-//                    binding.hotGameView.adapter?.let {adapter->
-//                        adapter.data.let { data->
-//                            if(data.isEmpty()){
-//                                initHotGameData()
-//                            }
-//                        }
-//                    }
+                    Log.e("dachang","connected")
+                    initHotGameData()
                 }
             }
         }
         //观察比赛状态改变
         receiver.matchStatusChange.observe(viewLifecycleOwner) { matchStatusChangeEvent ->
-            if (matchStatusChangeEvent == null || binding.hotGameView.adapter?.data?.isNullOrEmpty() == true) {
+            if (matchStatusChangeEvent == null ) {
                 return@observe
             }
 
+            if(binding.hotGameView.adapter==null||binding.hotGameView.adapter!!.data.isEmpty()){
+                return@observe
+            }
             val adapterData = binding.hotGameView.adapter?.data
             adapterData?.forEachIndexed { index, recommend ->
                 //取一个赛事，装成集合
