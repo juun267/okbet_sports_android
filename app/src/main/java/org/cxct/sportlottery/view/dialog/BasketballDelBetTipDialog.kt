@@ -5,10 +5,8 @@ import android.content.Context
 import android.os.Bundle
 import android.view.*
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.dialog_basketball_delete_bet_tip.*
-import kotlinx.android.synthetic.main.dialog_custom_alert.btn_negative
-import kotlinx.android.synthetic.main.dialog_custom_alert.btn_positive
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.DialogBasketballDeleteBetTipBinding
 import org.cxct.sportlottery.util.SPUtil
 
 /**
@@ -19,24 +17,26 @@ class BasketballDelBetTipDialog(context: Context) : Dialog(context) {
 
     private var mPositiveClickListener: OnPositiveListener? = null
     private var mNegativeClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
+    private lateinit var binding : DialogBasketballDeleteBetTipBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window?.requestFeature(Window.FEATURE_NO_TITLE)
-        setContentView(R.layout.dialog_basketball_delete_bet_tip)
+        binding= DialogBasketballDeleteBetTipBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         window?.setBackgroundDrawableResource(android.R.color.transparent)
         window?.setLayout(
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.MATCH_PARENT
         )
-        btn_positive.setOnClickListener {
-            SPUtil.saveBoolean(SPUtil.BASKETBALL_DEL_TIP_FLAG,cb_ok_iknow.isChecked)
-            mPositiveClickListener?.positiveClick(cb_ok_iknow.isChecked)
+        binding.btnPositive.setOnClickListener {
+            SPUtil.saveBoolean(SPUtil.BASKETBALL_DEL_TIP_FLAG,binding.cbOkIknow.isChecked)
+            mPositiveClickListener?.positiveClick(binding.cbOkIknow.isChecked)
             dismiss()
         }
-        btn_negative.setOnClickListener(mNegativeClickListener)
+        binding.btnNegative.setOnClickListener(mNegativeClickListener)
         context?.let {
-            Glide.with(it).load(R.drawable.basketball_delete_bet_tip).into(iv_gif_basket)
+            Glide.with(it).load(R.drawable.basketball_delete_bet_tip).into(binding.ivGifBasket)
         }
     }
 
