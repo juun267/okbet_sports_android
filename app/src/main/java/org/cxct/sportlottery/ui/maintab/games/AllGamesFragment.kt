@@ -509,11 +509,9 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             //api获取热门赛事列表
             it.peekContent().let { data ->
                 binding.hotGameView.visible()
-                binding.hotGameView.postDelayed({
-                    binding.hotGameView.setGameData(data)
-                    //订阅监听
-                    subscribeQueryData(data)
-                },200)
+                binding.hotGameView.setGameData(data)
+                //订阅监听
+                subscribeQueryData(data)
             }
         }
     }
@@ -522,7 +520,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         if (binding.hotGameView.adapter == null) {
             binding.hotGameView.gone()
         }
-//        unSubscribeChannelHallAll()
+        unSubscribeChannelHallAll()
         //请求热门赛事列表
         viewModel.getRecommend()
     }
@@ -534,7 +532,6 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         receiver.serviceConnectStatus.observe(viewLifecycleOwner) {
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
-                    Log.e("dachang","connected")
                     initHotGameData()
                 }
             }
@@ -549,6 +546,12 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 return@observe
             }
             val adapterData = binding.hotGameView.adapter?.data
+            Log.e("dachang","收到订阅 ${matchStatusChangeEvent.matchStatusCO?.matchId}")
+            adapterData?.forEach {
+                if(it.matchInfo?.id==matchStatusChangeEvent.matchStatusCO?.matchId){
+                    Log.e("dachang","匹配到  ${it.matchInfo?.id} ${it.matchInfo?.homeName}")
+                }
+            }
             adapterData?.forEachIndexed { index, recommend ->
                 //取一个赛事，装成集合
                 val testList = mutableListOf<Recommend>()
