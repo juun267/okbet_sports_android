@@ -1,3 +1,4 @@
+
 package org.cxct.sportlottery.ui.maintab.games.adapter
 
 import android.view.View
@@ -278,7 +279,7 @@ class ItemHotMatchHolder(
         isTimerPause: Boolean,
     ) {
         when {
-            TimeUtil.isTimeInPlay(item.matchInfo?.startTime) -> {
+            TimeUtil.isTimeInPlay(item.startTime) -> {
                 val socketValue = item.matchInfo?.socketMatchStatus
 
                 if (needCountStatus(socketValue, item.matchInfo?.leagueTime)) {
@@ -317,7 +318,7 @@ class ItemHotMatchHolder(
             else -> {
                 stopTimer()
                 binding.tvGamePlayTime.text =
-                    TimeUtil.timeFormat(item.matchInfo?.startTime, TimeUtil.DM_HM_FORMAT)
+                    TimeUtil.timeFormat(item.startTime, TimeUtil.DM_HM_FORMAT)
             }
         }
     }
@@ -346,19 +347,19 @@ class ItemHotMatchHolder(
 
     private fun setTextViewStatus(item: Recommend) {
         when {
-            (TimeUtil.isTimeInPlay(item.matchInfo?.startTime)
+            (TimeUtil.isTimeInPlay(item.startTime)
                     && item.matchInfo?.status == GameStatus.POSTPONED.code
                     && (item.matchInfo?.gameType == GameType.FT.name || item.matchInfo?.gameType == GameType.BK.name || item.matchInfo?.gameType == GameType.TN.name)) -> {
                 binding.tvGamePlayTime.visibility = View.GONE
             }
 
-            TimeUtil.isTimeInPlay(item.matchInfo?.startTime) -> {
+            TimeUtil.isTimeInPlay(item.startTime) -> {
                 if (item.matchInfo?.statusName18n != null) {
                     binding.tvGameStatus.visibility = View.VISIBLE
                 }
             }
 
-            TimeUtil.isTimeAtStart(item.matchInfo?.startTime) -> {
+            TimeUtil.isTimeAtStart(item.startTime) -> {
                 binding.tvGameStatus.visibility = View.GONE
             }
         }
