@@ -123,7 +123,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
             }
 
             tab.isFavorites() -> { // 收藏
-                return loginedRun(binding.root.context) { showFavorites(tab) }
+                return loginedRun(binding.root.context) { loadFavorite(tab) }
             }
 
             else -> {
@@ -174,6 +174,11 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         changePartGamesLabel(okgamesFirm)
         val firmId = okgamesFirm.getKey().toString()
         startLoad{ viewModel.getOKGamesList(retagRequest(), null, firmId, it, PartGamesFragment.pageSize) }
+    }
+
+    private fun loadFavorite(tab: OKGameTab) {
+        changePartGamesLabel(tab)
+        startLoad{ viewModel.getFavoriteOKGames(retagRequest(), it, PartGamesFragment.pageSize) }
     }
 
     private fun reloadPartGames(tab: OKGameTab) {

@@ -111,10 +111,18 @@ class OKGamesViewModel(
         requestTag: Any,
         categoryId: String?,
         firmId: String? = null,
-        page: Int = 1,
-        pageSize: Int = 12
+        page: Int,
+        pageSize: Int
     ) = callApi({ OKGamesRepository.getOKGamesList(page, pageSize, null, categoryId, firmId) }) {
 
+        _gamesList.value = Triple(requestTag, it.total, it.getData())
+    }
+
+    fun getFavoriteOKGames(
+        requestTag: Any,
+        page: Int = 1,
+        pageSize: Int = 12
+    ) = callApi({ OKGamesRepository.getOKGamesList(page, pageSize, null, null, null, true) }) {
         _gamesList.value = Triple(requestTag, it.total, it.getData())
     }
 
