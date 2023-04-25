@@ -2,10 +2,13 @@ package org.cxct.sportlottery.ui.maintab.games
 
 import android.graphics.Paint
 import android.os.Bundle
+import android.os.Handler
+import android.os.Message
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Switch
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.core.view.isGone
@@ -15,6 +18,7 @@ import androidx.recyclerview.widget.*
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import kotlinx.android.synthetic.main.fragment_all_okgames.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.extentions.*
@@ -39,26 +43,67 @@ import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
+import org.koin.core.logger.MESSAGE
+import kotlin.random.Random
 
 // OkGames所有分类
 class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesViewModel::class) {
 
     private lateinit var binding: FragmentAllOkgamesBinding
     private val gameAllAdapter by lazy {
-        GameCategroyAdapter(clickCollect = ::onCollectClick,
-            clickGame = ::enterGame, okGamesFragment().gameItemViewPool)
+        GameCategroyAdapter(
+            clickCollect = ::onCollectClick,
+            clickGame = ::enterGame, okGamesFragment().gameItemViewPool
+        )
     }
     private var collectGameAdapter: GameChildAdapter? = null
     private var recentGameAdapter: GameChildAdapter? = null
     private val providersAdapter by lazy { OkGameProvidersAdapter() }
     private val gameRecordAdapter by lazy { OkGameRecordAdapter() }
     private var categoryList = mutableListOf<OKGamesCategory>()
-    private val p3RecordNData: MutableList<RecordNewEvent> = mutableListOf()
-    private val p3RecordRData: MutableList<RecordNewEvent> = mutableListOf()
+    private val p3RecordNData: MutableList<RecordNewEvent> = mutableListOf()//接口返回的最新投注
+    private val p3RecordNwsData: MutableList<RecordNewEvent> = mutableListOf()//ws的最新投注
+    private val p3RecordNShowData: MutableList<RecordNewEvent> = mutableListOf()//最新投注显示在界面上的数据
+    private var recordNewIndex = 0
+    private var recordNewWsIndex = 0
+    private val p3RecordRData: MutableList<RecordNewEvent> = mutableListOf()//接口返回的最新大奖
+    private val p3RecordRwsData: MutableList<RecordNewEvent> = mutableListOf()//ws的最新大奖
+    private val p3RecordRShowData: MutableList<RecordNewEvent> = mutableListOf()//最新大奖显示在界面上的数据
+    private var recordResultIndex = 0
+    private var recordResultWsIndex = 0
     private var p3ogProviderFirstPosi: Int = 0
     private var p3ogProviderLastPosi: Int = 3
 
     private var lastRequestTimeStamp = 0L
+
+    private var recordHandler = object : Handler() {
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            var newItem: RecordNewEvent? = null
+            if (binding.include3.rbtnLb.isChecked) {
+                if (recordNewWsIndex < p3RecordNwsData.size) {
+                    newItem = p3RecordNwsData[recordNewWsIndex]
+                    recordNewWsIndex++
+                } else if (recordNewIndex < p3RecordNData.size) {
+                    newItem = p3RecordNData[recordNewIndex]
+                    recordNewIndex++
+                }
+            } else if (binding.include3.rbtnLbw.isChecked) {
+                if (recordResultWsIndex < p3RecordRwsData.size) {
+                    newItem = p3RecordRwsData[recordResultWsIndex]
+                    recordResultWsIndex++
+
+                } else if (recordResultIndex < p3RecordRData.size) {
+                    newItem = p3RecordRData[recordResultIndex]
+                    recordResultIndex++
+                }
+            }
+            if (newItem != null) {
+                gameRecordAdapterNotify(newItem)
+            }
+            sendEmptyMessageDelayed(0, (Random.nextLong(1000) + 500))
+        }
+    }
 
     private fun okGamesFragment() = parentFragment as OKGamesFragment
     override fun createRootView(
@@ -177,6 +222,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     }
 
     private fun onBindPart3View() {
+        recordHandler.sendEmptyMessageDelayed(0, (Random.nextLong(1000) + 500))
         viewModel.getOKGamesRecordNew()
         viewModel.getOKGamesRecordResult()
         binding.include3.apply {
@@ -225,8 +271,13 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 val firmList = resultData?.firmList ?: return@observe
 
                 providersAdapter.setNewInstance(firmList.toMutableList())
-                if(firmList.isNotEmpty()) {
-                    binding.include3.run { setViewVisible(rvOkgameProviders, okgameP3LayoutProivder) }
+                if (firmList.isNotEmpty()) {
+                    binding.include3.run {
+                        setViewVisible(
+                            rvOkgameProviders,
+                            okgameP3LayoutProivder
+                        )
+                    }
                 } else {
                     binding.include3.run { setViewGone(rvOkgameProviders, okgameP3LayoutProivder) }
                 }
@@ -234,56 +285,95 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 if (firmList.size > 3) {
                     binding.include3.run { setViewVisible(ivProvidersLeft, ivProvidersRight) }
                 } else {
-                    binding.include3.run {  setViewGone(ivProvidersLeft, ivProvidersRight) }
+                    binding.include3.run { setViewGone(ivProvidersLeft, ivProvidersRight) }
                 }
             }
 
             viewModel.recordNewHttp.observe(viewLifecycleOwner) {
                 if (it != null) {
-                    if (binding.include3.rbtnLb.isChecked) {
-                        gameRecordAdapter.addData(0, it.subList(0, 10))
-                    }
-                    p3RecordNData.addAll(0, it.subList(0, 10))
+                    p3RecordNData.addAll(0, it)
                     recordNewhttpFlag = true
                 }
             }
             viewModel.recordResultHttp.observe(viewLifecycleOwner) {
-                if (binding.include3.rbtnLbw.isChecked) {
-                    gameRecordAdapter.addData(0, it.subList(0, 10))
+                if (it != null) {
+                    p3RecordRData.addAll(0, it)
+                    recordResulthttpFlag = true
                 }
-                p3RecordRData.addAll(0, it.subList(0, 10))
-                recordResulthttpFlag = true
             }
             receiver.recordNew.observe(viewLifecycleOwner) {
                 if (recordNewhttpFlag && it != null) {
-                    if (binding.include3.rbtnLb.isChecked) {
-                        gameRecordAdapterNotify(it)
-                    }
-                    if (p3RecordNData.size >= 10) {
-                        p3RecordNData.removeAt(p3RecordNData.size - 1)
-                    }
-                    p3RecordNData.add(0, it)
+                    p3RecordNwsData.add(0, it)
                 }
             }
             receiver.recordResult.observe(viewLifecycleOwner) {
                 if (recordResulthttpFlag && it != null) {
-                    if (binding.include3.rbtnLbw.isChecked) {
-                        gameRecordAdapterNotify(it)
-                    }
+                    p3RecordRwsData.add(0, it)
+                }
+            }
 
-                    if (p3RecordRData.size >= 10) {
-                        p3RecordRData.removeAt(p3RecordRData.size - 1)
+        }
+        binding.include3.rGroupRecord.setOnCheckedChangeListener { group, checkedId ->
+            when (checkedId) {
+                R.id.rbtn_lb -> {
+                    if (!recordNewhttpFlag) {
+                        viewModel.getOKGamesRecordNew()
                     }
-                    p3RecordRData.add(0, it)
-
+                    if (gameRecordAdapter.data.isNotEmpty()) {
+                        p3RecordRShowData.clear()
+                        p3RecordRShowData.addAll(gameRecordAdapter.data)
+                        gameRecordAdapter.data.clear()
+                        gameRecordAdapter.notifyDataSetChanged()
+                        gameRecordAdapter.addData(p3RecordNShowData)
+                    }
+                }
+                R.id.rbtn_lbw -> {
+                    if (!recordResulthttpFlag) {
+                        viewModel.getOKGamesRecordResult()
+                    }
+                    if (gameRecordAdapter.data.isNotEmpty()) {
+                        p3RecordNShowData.clear()
+                        p3RecordNShowData.addAll(gameRecordAdapter.data)
+                        gameRecordAdapter.data.clear()
+                        gameRecordAdapter.notifyDataSetChanged()
+                        gameRecordAdapter.addData(p3RecordRShowData)
+                    }
                 }
             }
         }
-
+        //供应商左滑按钮
+        binding.include3.ivProvidersLeft.setOnClickListener {
+            if (p3ogProviderFirstPosi >= 3) {
+                binding.include3.rvOkgameProviders.layoutManager?.smoothScrollToPosition(
+                    binding.include3.rvOkgameProviders,
+                    RecyclerView.State(),
+                    p3ogProviderFirstPosi - 2
+                )
+            } else {
+                binding.include3.rvOkgameProviders.layoutManager?.smoothScrollToPosition(
+                    binding.include3.rvOkgameProviders, RecyclerView.State(), 0
+                )
+            }
+        }
+        //供应商右滑按钮
+        binding.include3.ivProvidersRight.setOnClickListener {
+            if (p3ogProviderLastPosi < providersAdapter.data.size - 4) {
+                binding.include3.rvOkgameProviders.layoutManager?.smoothScrollToPosition(
+                    binding.include3.rvOkgameProviders,
+                    RecyclerView.State(),
+                    p3ogProviderLastPosi + 2
+                )
+            } else {
+                binding.include3.rvOkgameProviders.layoutManager?.smoothScrollToPosition(
+                    binding.include3.rvOkgameProviders,
+                    RecyclerView.State(),
+                    providersAdapter.data.size - 1
+                )
+            }
+        }
     }
 
     private fun onBindPart5View() {
-        val include3 = binding.include3
         val include5 = binding.include5
         val tvPrivacyPolicy = include5.tvPrivacyPolicy
         val tvTermConditions = include5.tvTermConditions
@@ -291,10 +381,6 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         val tvLiveChat = include5.tvLiveChat
         val tvContactUs = include5.tvContactUs
         val tvFaqs = include5.tvFaqs
-        val rBtnLb = include3.rbtnLb
-        val rBtnLbw = include3.rbtnLbw
-        val prLeft = binding.include3.ivProvidersLeft//供应商左滑按钮
-        val prRight = binding.include3.ivProvidersRight//供应商右滑按钮
         val rcvPayment = include5.rcvPayment
         setUnderline(
             tvPrivacyPolicy,
@@ -330,54 +416,6 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         tvLiveChat.setServiceClick(childFragmentManager)
         tvContactUs.setServiceClick(childFragmentManager)
 
-        rBtnLb.setOnClickListener {
-            if (!recordNewhttpFlag) {
-                viewModel.getOKGamesRecordNew()
-            } else {
-                gameRecordAdapter.data.clear()
-                gameRecordAdapter.addData(p3RecordNData)
-            }
-        }
-
-        rBtnLbw.setOnClickListener {
-            if (!recordResulthttpFlag) {
-
-                viewModel.getOKGamesRecordResult()
-            } else {
-                gameRecordAdapter.data.clear()
-                gameRecordAdapter.addData(p3RecordRData)
-            }
-        }
-
-        prLeft.setOnClickListener {
-            if (p3ogProviderFirstPosi >= 3) {
-                binding.include3.rvOkgameProviders.layoutManager?.smoothScrollToPosition(
-                    binding.include3.rvOkgameProviders,
-                    RecyclerView.State(),
-                    p3ogProviderFirstPosi - 2
-                )
-            } else {
-                binding.include3.rvOkgameProviders.layoutManager?.smoothScrollToPosition(
-                    binding.include3.rvOkgameProviders, RecyclerView.State(), 0
-                )
-            }
-        }
-
-        prRight.setOnClickListener {
-            if (p3ogProviderLastPosi < providersAdapter.data.size - 4) {
-                binding.include3.rvOkgameProviders.layoutManager?.smoothScrollToPosition(
-                    binding.include3.rvOkgameProviders,
-                    RecyclerView.State(),
-                    p3ogProviderLastPosi + 2
-                )
-            } else {
-                binding.include3.rvOkgameProviders.layoutManager?.smoothScrollToPosition(
-                    binding.include3.rvOkgameProviders,
-                    RecyclerView.State(),
-                    providersAdapter.data.size - 1
-                )
-            }
-        }
 
         initRcvPaymentMethod(rcvPayment)
     }
