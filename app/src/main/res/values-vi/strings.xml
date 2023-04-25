@@ -1076,7 +1076,7 @@
     <string name="self_limit_error_format">Định dạng trường không chính xác, vui lòng nhập số nguyên %d ~ %d.</string>
     <string name="draw_time">Thời gian rút thăm</string>
     <string name="closing_time">Thời gian đóng</string>
-    <string name="end_time">Thời gian kết thúc</string>
+    <string name="N577">Thời gian kết thúc</string>
     <string name="draw_countdown">Đếm ngược rút thăm</string>
     <string name="recover_password">Tìm lại mật khẩu</string>
     <string name="need_help">Cần hỗ trợ?</string>
@@ -1117,10 +1117,9 @@
     <string name="str_market_is_closed">Thị trường đã đóng</string>
     <string name="kyc_unverifing">Đang xác minh</string>
     <string name="enter_game">Vào trò chơi</string>
-    <string name="hint_transform_money">Mẹo chuyển khoản</string>
-    <string name="confirm_transform_in_money">Vui lòng xác nhận số tiền đã chuyển vào tài khoản trò chơi</string>
-    <string name="game_account_money">số dư trò chơi</string>
-    <string name="transform_in_amount">Số tiền chuyển khoản</string>
+    <string name="N483">Vui lòng xác nhận số tiền đã chuyển vào tài khoản trò chơi</string>
+    <string name="N485">Số dư trò chơi</string>
+    <string name="N486">Số tiền chuyển khoản</string>
     <string name="account_balance_unenough">Số dư tài khoản nền tảng không đủ</string>
     <string name="platform_user_money">Số dư nền tảng</string>
     <string name="third_party">Bên thứ ba</string>
@@ -1189,8 +1188,10 @@
     <string name="N881">Trận đấu hot</string>
     <string name="N702">Thêm</string>
     <string name="J094">Chính Sách Bảo Mật</string>
-    <string name="N019">Kontakin kami</string>
+    <string name="N019">Liên hệ chúng tôi</string>
     <string name="J299">Trò Chuyện Trực Tuyến</string>
     <string name="B023">Q&amp;A</string>
     <string name="N883">Hiện không có kết quả!</string>
+    <string name="J095">Điều Khoản Và Điều Kiện</string>
+    <string name="N482">Mẹo chuyển khoản</string>
 </resources>

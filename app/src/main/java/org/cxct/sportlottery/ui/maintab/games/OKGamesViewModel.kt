@@ -51,14 +51,18 @@ class OKGamesViewModel(
     private val _gameHall = MutableLiveData<OKGamesHall>()
 
     //收藏游戏列表
-    val collectList: LiveData<List<OKGameBean>>
+    val collectList: LiveData<Pair<Boolean, List<OKGameBean>>> // 是否是通过服务端拉取-收藏列表
         get() = _collectList
-    private val _collectList = MutableLiveData<List<OKGameBean>>()
+    private val _collectList = MutableLiveData<Pair<Boolean, List<OKGameBean>>>()
 
     //最近游戏列表
     val recentPlay: LiveData<List<OKGameBean>>
         get() = _recentPlay
     private val _recentPlay = MutableLiveData<List<OKGameBean>>()
+
+    val newRecentPlay: LiveData<OKGameBean>
+        get() = _newRecentPlay
+    private val _newRecentPlay = MutableLiveData<OKGameBean>()
 
     /**
      * 全部的赛事，map 类型
@@ -83,17 +87,19 @@ class OKGamesViewModel(
         callApi({ OKGamesRepository.okGamesHall() }) {
 
             isLoadingOKGamesHall = false
-            it.getData()?.let {
-                _gameHall.postValue(it)
-                _collectList.postValue(it.collectList ?: listOf())
-                it.categoryList?.forEach {
-                    it.gameList?.forEach {
-                        allGamesMap[it.id] = it
-                    }
+            val data = it.getData() ?: return@callApi
+
+            _gameHall.postValue(data)
+            _collectList.postValue(Pair(true, data.collectList ?: listOf()))
+
+            data.categoryList?.forEach {
+                it.gameList?.forEach {
+                    allGamesMap[it.id] = it
                 }
-                if (it.firmList != null) {
-                    _providerresult.postValue(it)
-                }
+            }
+
+            if (data.firmList != null) {
+                _providerresult.postValue(data)
             }
         }
     }
@@ -125,14 +131,14 @@ class OKGamesViewModel(
             gameData.markCollect = !gameData.markCollect
             _collectOkGamesResult.postValue(Pair(gameData.id, gameData))
 
-            val markedGames = _collectList.value?.toMutableList() ?: mutableListOf()
+            val markedGames = _collectList.value?.second?.toMutableList() ?: mutableListOf()
             if (gameData.markCollect) {
                 markedGames.add(0, gameData)
-                _collectList.value = markedGames
+                _collectList.value = Pair(false, markedGames)
                 return@callApi
             }
 
-            _collectList.value = markedGames.filter { it.id != gameData.id }.toList()
+            _collectList.value = Pair(false, markedGames.filter { it.id != gameData.id }.toList())
         }
 
     /**
@@ -177,15 +183,17 @@ class OKGamesViewModel(
     /**
      * 记录最近游戏
      */
-    fun addRecentPlay(gameId: String) {
-        val ids = LoginRepository.addRecentPlayGame(gameId)
+    fun addRecentPlay(okGameBean: OKGameBean) {
+        val ids = LoginRepository.addRecentPlayGame(okGameBean.id.toString())
         val recentList = mutableListOf<OKGameBean>()
         ids.forEach {
             allGamesMap[it.toIntS(-1)]?.let {
                 recentList.add(it)
             }
         }
+
         recentList.reverse()
+        _newRecentPlay.value = okGameBean
         _recentPlay.postValue(recentList)
     }
     fun searchGames(requestTag: Any,

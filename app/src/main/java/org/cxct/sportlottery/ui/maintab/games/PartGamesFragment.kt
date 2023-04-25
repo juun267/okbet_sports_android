@@ -65,9 +65,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         adapter = gameChildAdapter
         gameChildAdapter.setEmptyView(LayoutInflater.from(requireContext()).inflate(R.layout.view_no_games, null))
         gameChildAdapter.setOnItemClickListener { _, _, position ->
-            val item = gameChildAdapter.getItem(position)
-            okGamesFragment().viewModel.requestEnterThirdGame(item, this@PartGamesFragment)
-            viewModel.addRecentPlay(item.id.toString())
+            okGamesFragment().enterGame(gameChildAdapter.getItem(position))
         }
     }
 
