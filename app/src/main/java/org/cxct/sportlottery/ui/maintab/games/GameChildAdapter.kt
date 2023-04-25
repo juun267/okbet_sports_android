@@ -70,7 +70,7 @@ class GameChildAdapter(private val onFavoriate: (View, OKGameBean) -> Unit,
             if (total > count) {
                 textView.visible()
                 textView.isEnabled = true
-                textView.text = "${textView.context.getString(R.string.display_more)}(${total - count})"
+                textView.text = "${textView.context.getString(R.string.N885)}(${total - count})"
             } else {
                 disableMore()
             }

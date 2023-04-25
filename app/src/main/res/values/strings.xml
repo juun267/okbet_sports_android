@@ -1283,7 +1283,7 @@
     <string name="N711">Games</string>
     <string name="N710">Player</string>
     <string name="N713">Profit Amount</string>
-    <string name="N712">Bet Amount</string>
+    <string name="N712">Stake</string>
     <string name="N874">Recent</string>
     <string name="N873">Favorites</string>
     <string name="N882">Search Result</string>
@@ -1298,4 +1298,5 @@
     <string name="N883">There is no date yet!</string>
     <string name="J095">Terms &amp; Condition</string>
     <string name="N482">Transfer prompt</string>
+    <string name="N885">Load More</string>
 </resources>
