@@ -181,11 +181,10 @@ class BetListRefactorAdapter(
     ) {
         when (holder) {
             is BasketballEndingCardViewHolder -> {
-//                betList?.getOrNull(position)?.let { betInfoListData ->
-                betList?.get(0)?.let {
+                betList?.getOrNull(position)?.let { betInfoListData ->
                     holder.bind(
                         betList,
-                        it,
+                        betInfoListData,
                         currentOddsType,
                         itemCount,
                         onItemClickListener,
@@ -198,7 +197,6 @@ class BetListRefactorAdapter(
                         adapterBetType
                     )
                 }
-//                }
             }
 
             is BiVh -> {
@@ -298,7 +296,7 @@ class BetListRefactorAdapter(
                 betListSize
             }
 
-            //篮球只有一行数据
+            //篮球末位比分只有一行数据
             BasketballEndingCard -> {
                 1
             }

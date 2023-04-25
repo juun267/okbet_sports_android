@@ -5,20 +5,16 @@ import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
-import android.text.SpannableString
-import android.text.Spanned
 import android.text.TextWatcher
-import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
-import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
-import android.widget.GridLayout
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -26,11 +22,11 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.setOnClickListener
-import org.cxct.sportlottery.common.extentions.setViewGone
 import org.cxct.sportlottery.common.extentions.setViewVisible
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ContentBetInfoItemV3BaseketballEndingCardBinding
-import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
@@ -38,16 +34,18 @@ import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.betList.listener.OnItemClickListener
 import org.cxct.sportlottery.ui.betList.listener.OnSelectedPositionListener
-import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.MoneyInputFilter
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.drawable.DrawableCreator
+import org.cxct.sportlottery.util.drawable.DrawableUtils
 import org.cxct.sportlottery.util.getOdds
+import org.cxct.sportlottery.view.dialog.BasketballDelBetTipDialog
 import timber.log.Timber
 
 class BasketballEndingCardViewHolder(
-    val contentView: ContentBetInfoItemV3BaseketballEndingCardBinding,
+    private val contentView: ContentBetInfoItemV3BaseketballEndingCardBinding,
     val userBalance: () -> Double,
 ) : RecyclerView.ViewHolder(contentView.root) {
 
@@ -126,11 +124,44 @@ class BasketballEndingCardViewHolder(
 
         Timber.d("itemData:${itemData}")
 
-
+        var lastSelectPo = 0
         val rcvBasketballAdapter = object :
             BaseQuickAdapter<BetInfoListData, BaseViewHolder>(R.layout.item_bet_basketball_ending_cart) {
             override fun convert(holder: BaseViewHolder, item: BetInfoListData) {
-                holder.setText(R.id.btnMatchOdds, item.matchOdd.playName)
+                val tvMatchOdds = holder.getView<TextView>(R.id.tvMatchOdds)
+                tvMatchOdds.background = DrawableUtils.getBasketballBetListButton(root)
+                holder.setText(R.id.tvMatchOdds, item.matchOdd.playName)
+                val tvHide = holder.getView<TextView>(R.id.tvHide)
+                tvHide.background = DrawableUtils.getBasketballDeleteButton(root)
+
+                if (item.isClickForBasketball == true) {
+                    tvHide.visible()
+                } else {
+                    tvHide.gone()
+                }
+
+                tvMatchOdds.setOnClickListener {
+                    //刷新上一次点击的区域
+                    if ((betList?.size ?: 0) > lastSelectPo) {
+                        betList?.get(lastSelectPo)?.isClickForBasketball = false
+                        notifyItemChanged(lastSelectPo)
+                    }
+
+                    //记录本地点击的区域
+                    val currentPosition = holder.layoutPosition
+                    if ((betList?.size ?: 0) > currentPosition) {
+                        betList?.get(currentPosition)?.isClickForBasketball = true
+                        notifyItemChanged(currentPosition)
+                        lastSelectPo = currentPosition
+                    }
+                }
+
+                //蒙版点击事件
+                tvHide.setOnClickListener {
+                    val currentPosition = holder.layoutPosition
+                    betList?.removeAt(currentPosition)
+                    notifyItemChanged(currentPosition)
+                }
             }
         }
         rcvBasketballScore.adapter = rcvBasketballAdapter
@@ -293,6 +324,16 @@ class BasketballEndingCardViewHolder(
         tvMatchAway.text = itemData.matchOdd.awayName
         setViewVisible(tvVs, tvMatchAway, tvLeagueName)
         tvLeagueName.text = itemData.matchOdd.leagueName?.trim()
+
+        btnBasketballDeleteAll.background = DrawableUtils.getBasketballDeleteAllDrawable(root)
+        btnBasketballDeleteAll.setOnClickListener {
+            BasketballDelBetTipDialog.Builder(root.context)
+                .setPositiveListener(object : BasketballDelBetTipDialog.OnPositiveListener {
+                    override fun positiveClick(isCheck: Boolean) {
+//                    ToastUtils.s(it1, "$isCheck")
+                    }
+                }).create().show()
+        }
 
         val view = View.inflate(tvMatchHome.context, R.layout.popupwindow_tips, null)
         val pop = PopupWindow(tvMatchHome.context).apply {

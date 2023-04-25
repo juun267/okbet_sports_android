@@ -2,12 +2,12 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_margin="26dp"
     app:cardBackgroundColor="@color/color_191919_FCFCFC"
     app:cardCornerRadius="8dp"
+    android:layout_margin="40dp"
     app:cardElevation="0dp"
     tools:context="org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog">
 
@@ -15,7 +15,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:minWidth="300dp"
         android:orientation="vertical">
 
         <TextView
@@ -54,9 +53,9 @@
 
         <ImageView
             android:id="@+id/iv_gif_basket"
-            android:layout_width="267dp"
-            android:layout_height="72dp"
-            android:layout_marginTop="12dp"
+            android:layout_width="286dp"
+            android:layout_height="77dp"
+            android:layout_marginTop="10dp"
             android:src="@drawable/basketball_delete_bet_tip"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -67,8 +66,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
-            android:button="@drawable/cb_circle_blue_basketball_delete_tip"
+            android:drawableLeft="@drawable/cb_circle_blue_basketball_delete_tip"
+            android:button="@null"
             android:text="@string/N379"
+            android:checked="false"
+            android:drawablePadding="10dp"
+            android:background="@color/transparent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_gif_basket" />
@@ -105,8 +108,7 @@
                 android:text="@string/N904"
                 android:textAllCaps="false"
                 android:textColor="@color/color_317FFF_0760D4"
-                android:textSize="@dimen/textSize18sp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/textSize18sp"/>
 
             <Button
                 android:id="@+id/btn_negative"
@@ -120,8 +122,7 @@
                 android:text="@string/N905"
                 android:textAllCaps="false"
                 android:textColor="@color/color_FFFFFF_414655"
-                android:textSize="@dimen/textSize18sp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/textSize18sp"/>
 
         </LinearLayout>
 

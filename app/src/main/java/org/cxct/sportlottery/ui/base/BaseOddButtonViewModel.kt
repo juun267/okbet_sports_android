@@ -363,9 +363,11 @@ abstract class BaseOddButtonViewModel(
                 0 -> {
                     it.betAmount
                 }
+
                 2 -> {
                     it.betAmount * normalBetList.size
                 }
+
                 else -> {
                     0.0
                 }

@@ -36,6 +36,7 @@ import kotlin.math.abs
 
 
 const val BET_INFO_MAX_COUNT = 10
+const val BET_BASKETBALL_ENDING_SCORE_MAX_COUNT = 100
 
 
 object BetInfoRepository {
@@ -352,6 +353,14 @@ object BetInfoRepository {
         oddsType?.let {
             this.oddsType = it
         }
+
+        if (matchType == MatchType.END_SCORE) {
+            if (betList.size >= BET_BASKETBALL_ENDING_SCORE_MAX_COUNT) {
+                _showBetUpperLimit.postValue(Event(true))
+                return
+            }
+        }
+
         if (betList.size >= BET_INFO_MAX_COUNT) {
             _showBetUpperLimit.postValue(Event(true))
             return

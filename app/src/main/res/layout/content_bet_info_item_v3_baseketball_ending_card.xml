@@ -68,7 +68,7 @@
             android:id="@+id/rcvBasketballScore"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="12dp"
+            android:layout_marginHorizontal="10dp"
             android:layout_marginTop="5dp"
             android:visibility="visible"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
@@ -126,7 +126,7 @@
             android:id="@+id/tvLeagueName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="10dp"
             android:ellipsize="end"
             android:maxLines="1"
@@ -190,7 +190,7 @@
                     android:paddingHorizontal="10dp"
                     android:textColor="@color/color_025BE8"
                     android:textColorHint="@color/color_455074_C9CFD7"
-                    android:textSize="@dimen/textSize16sp"
+                    android:textSize="@dimen/textSize14sp"
                     android:textStyle="bold"
                     android:visibility="visible"
                     app:layout_constraintStart_toEndOf="@+id/tv_bet"
@@ -207,15 +207,14 @@
                     tools:text="X3" />
 
                 <TextView
-                    android:id="@+id/button2"
+                    android:id="@+id/btnBasketballDeleteAll"
                     android:layout_width="74dp"
                     android:layout_height="30dp"
                     android:gravity="center"
-                    android:text="Delete all"
+                    android:text="@string/N374"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -245,34 +244,34 @@
 
                     <TextView
                         android:id="@+id/tvTotalStakeAmount"
-                        android:textStyle="bold"
-                        android:textColor="@color/color_535D76"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/color_535D76"
+                        android:textStyle="bold" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="0dp"
-                    android:gravity="center_vertical|end"
                     android:layout_height="match_parent"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|end">
 
                     <TextView
                         android:id="@+id/tvTotalWin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="12sp"
+                        android:text="@string/total_all_win_amount"
                         android:textColor="@color/color_535D76"
-                        android:text="@string/total_all_win_amount" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/tvTotalWinAmount"
-                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_marginEnd="15dp"
                         android:textColor="@color/color_E23434"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"/>
+                        android:textStyle="bold" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
