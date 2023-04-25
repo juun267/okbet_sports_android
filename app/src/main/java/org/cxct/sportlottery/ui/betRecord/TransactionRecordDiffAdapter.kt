@@ -113,7 +113,7 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
         fun bind(data: Row, viewModel: AccountHistoryViewModel) {
             val matchOdds = data.matchOdds[0]
             itemView.apply {
-                itemView.iv_country.setSvgDrawable(matchOdds.categoryIcon)
+                itemView.iv_country.setLeagueLogo(matchOdds.categoryIcon)
                 title_league_name.text = matchOdds.leagueName.replace("\n", "")
                 title_team_name.setTeamsNameWithVS(matchOdds.homeName, matchOdds.awayName)
 
@@ -227,7 +227,7 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
         fun bind(data: Row, viewModel: AccountHistoryViewModel) {
             val matchOdds = data.matchOdds[0]
             itemView.apply {
-                itemView.iv_country.setSvgDrawable(matchOdds.categoryIcon)
+                itemView.iv_country.setLeagueLogo(matchOdds.categoryIcon)
 //                title_league_name.text = "${matchOdds.leagueName} - ${matchOdds.playCateName}"
                 title_league_name.text = matchOdds.leagueName
                 title_team_name.text = matchOdds.leagueName
