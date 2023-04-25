@@ -73,7 +73,7 @@ object BetInfoRepository {
 
     private val _showBetUpperLimit = MutableLiveData<Event<Boolean>>()
 
-    var showBetBasketballUpperLimit :MutableLiveData<Event<Boolean>> =MutableLiveData()
+    var showBetBasketballUpperLimit: MutableLiveData<Event<Boolean>> = MutableLiveData()
     val showBetUpperLimit: LiveData<Event<Boolean>>
         get() = _showBetUpperLimit
 
@@ -369,10 +369,6 @@ object BetInfoRepository {
             }
         }
 
-        val emptyFilter = { item: String? ->
-            if (item.isNullOrEmpty()) null else item
-        }
-
         val betInfoMatchOdd = MatchOddUtil.transfer(
             matchType = matchType,
             gameType = gameType.key,
@@ -401,29 +397,31 @@ object BetInfoRepository {
 
             //篮球末位比分
             if (matchType == MatchType.END_SCORE) {
+                Timber.d("篮球末位比分模式")
                 oddIDArray.add(it.oddsId)
                 betList.add(data)
                 setCurrentBetState(BetListFragment.BASKETBALL_ENDING_CARD)
                 currentBetType = BetListFragment.BASKETBALL_ENDING_CARD
             } else {
+
+                if (currentState != 1) {
+                    setCurrentBetState(0)
+                }
+
                 if (currentState == 0) {
                     //单注模式
                     Timber.d("单注模式")
-                    if (oddIDArray.size != 0) {
-                        oddIDArray[0] = it.oddsId
-                    } else {
-                        oddIDArray.add(it.oddsId)
-                    }
-                    if (betList.size != 0) {
-                        betList[0] = data
-                    } else {
-                        betList.add(data)
-                    }
+                    oddIDArray.clear()
+                    betList.clear()
+                    oddIDArray.add(it.oddsId)
+                    betList.add(data)
+                    currentBetType = BetListFragment.SINGLE
                 } else if (currentState == 1) {
                     Timber.d("串关模式")
                     //串关投注
                     oddIDArray.add(it.oddsId)
                     betList.add(data)
+                    currentBetType = BetListFragment.PARLAY
                 }
             }
 

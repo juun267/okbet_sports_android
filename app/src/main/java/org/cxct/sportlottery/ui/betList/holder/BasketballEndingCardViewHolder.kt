@@ -126,6 +126,7 @@ class BasketballEndingCardViewHolder(
                 val tvHide = holder.getView<TextView>(R.id.tvHide)
                 tvHide.background = DrawableUtils.getBasketballDeleteButton(root)
 
+                Timber.d("isClicked = ${item.isClickForBasketball}")
                 if (item.isClickForBasketball == true) {
                     tvHide.visible()
                 } else {
@@ -150,6 +151,7 @@ class BasketballEndingCardViewHolder(
 
                 //蒙版点击事件
                 tvHide.setOnClickListener {
+                    betList?.get(holder.layoutPosition)?.isClickForBasketball = false
                     onItemClickListener.onDeleteClick(itemData.matchOdd.oddsId, itemCount)
                 }
             }
@@ -248,11 +250,10 @@ class BasketballEndingCardViewHolder(
             etBet.requestFocus()
             itemData.isInputBet = true
             layoutKeyBoard.setupMaxBetMoney(inputMaxMoney)
-            if (adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE) {
-                layoutKeyBoard.showKeyboard(
-                    etBet, position
-                )
-            }
+            layoutKeyBoard.showKeyboard(
+                etBet, position
+            )
+
         }
         etBet.setOnFocusChangeListener { _, hasFocus ->
             itemData.isInputBet = hasFocus
@@ -317,13 +318,19 @@ class BasketballEndingCardViewHolder(
 
         btnBasketballDeleteAll.background = DrawableUtils.getBasketballDeleteAllDrawable(root)
         btnBasketballDeleteAll.setOnClickListener {
-            if(!KvUtils.decodeBooleanTure(BASKETBALL_DEL_TIP_FLAG,false)){
-                BasketballDelBetTipDialog.Builder(root.context)
-                    .setPositiveListener(object : BasketballDelBetTipDialog.OnPositiveListener {
-                        override fun positiveClick(isCheck: Boolean) {
-
-                        }
-                    }).create().show()
+            if (!KvUtils.decodeBooleanTure(BASKETBALL_DEL_TIP_FLAG, false)) {
+                val dialog = BasketballDelBetTipDialog(root.context)
+                dialog.setNegativeClickListener(object :
+                    BasketballDelBetTipDialog.OnNegativeListener {
+                    override fun negativeClick(isCheck: Boolean) {
+                        KvUtils.put(BASKETBALL_DEL_TIP_FLAG, isCheck)
+                        onItemClickListener.clearCarts()
+                        dialog.dismiss()
+                    }
+                })
+                dialog.show()
+            } else {
+                onItemClickListener.clearCarts()
             }
         }
 

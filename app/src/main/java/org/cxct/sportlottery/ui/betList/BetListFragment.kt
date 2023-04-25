@@ -394,6 +394,10 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 viewModel.removeBetInfoItem(oddsId)
             }
 
+            override fun clearCarts() {
+                this@BetListFragment.clearCarts()
+            }
+
             override fun onRechargeClick() {
                 if (viewModel.getLoginBoolean()) {
                     startActivity(Intent(context, MoneyRechargeActivity::class.java))

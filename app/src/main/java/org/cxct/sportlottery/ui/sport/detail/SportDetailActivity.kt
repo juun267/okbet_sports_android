@@ -126,9 +126,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     GameType.FT.key -> {
                         timeMillis += 1000
                     }
+
                     GameType.BK.key, GameType.RB.key, GameType.AFT.key -> {
                         timeMillis -= 1000
                     }
+
                     else -> {
                     }
                 }
@@ -146,8 +148,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 return@Handler false
             }
             tv_match_time?.apply {
-                if (needCountStatus(matchOdd?.matchInfo?.socketMatchStatus,
-                        matchOdd?.matchInfo?.leagueTime)
+                if (needCountStatus(
+                        matchOdd?.matchInfo?.socketMatchStatus, matchOdd?.matchInfo?.leagueTime
+                    )
                 ) {
                     if (timeMillis >= 1000) {
                         text = TimeUtil.longToMmSs(timeMillis)
@@ -821,9 +824,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     GameType.FT.key -> {
                         matchClockEvent.matchClockCO?.matchTime
                     }
+
                     GameType.BK.key, GameType.RB.key, GameType.AFT.key -> {
                         matchClockEvent.matchClockCO?.remainingTimeInPeriod
                     }
+
                     else -> null
                 }
 
@@ -1099,6 +1104,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 lin_tips.isVisible = false
                 content_baseball_status.isVisible = true
             }
+
             else -> {
                 lin_tips.isVisible = true
                 content_baseball_status.isVisible = false
@@ -1276,6 +1282,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         ic_attack_c.visibility = View.VISIBLE
                     }
                 }
+
                 else -> {
                     ic_attack_h.visibility = View.GONE
                     ic_attack_c.visibility = View.GONE
@@ -1300,6 +1307,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             text = when (matchInfo.gameType) {
                 GameType.VB.key, GameType.TT.key, GameType.BM.key, GameType.TN.key -> (matchInfo.homeTotalScore
                     ?: 0).toString() + " - " + (matchInfo.awayTotalScore ?: 0).toString()
+
                 else -> (matchInfo.homeScore ?: 0).toString() + " - " + (matchInfo.awayScore
                     ?: 0).toString()
             }
@@ -1328,6 +1336,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             (TimeUtil.isTimeInPlay(matchInfo.startTime) && matchInfo.status == GameStatus.POSTPONED.code && (matchInfo.gameType == GameType.FT.name || matchInfo.gameType == GameType.BK.name || matchInfo.gameType == GameType.TN.name)) -> {
                 getString(R.string.game_postponed) + setSptText(matchInfo)
             }
+
             TimeUtil.isTimeInPlay(matchInfo.startTime) -> {
                 if (matchInfo.statusName18n != null) {
                     //网球，排球，乒乓，羽毛球，就不显示
@@ -1341,6 +1350,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     ""
                 }
             }
+
             else -> {
                 if (TimeUtil.isTimeToday(matchInfo.startTime)) getString((R.string.home_tab_today))
                 else matchInfo.startDateDisplay
@@ -1513,12 +1523,14 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         activity.setUpBetBarVisible()
                     }
                 }
+
                 "onEmoji" -> {
                     activity.runOnUiThread {
                         activity.showEmoji = data
                         activity.setUpBetBarVisible()
                     }
                 }
+
                 "requireLogin" -> {
                     activity.runOnUiThread {
                         activity.startLogin()
