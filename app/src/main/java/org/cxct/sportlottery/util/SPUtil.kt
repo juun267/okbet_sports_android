@@ -10,8 +10,6 @@ object SPUtil {
 
     //上架市场，隐藏功能的开关
     const val MARKET_SWITCH = "market_switch"
-    //篮球删除投注信息提示弹窗  不再提示标记
-    const val BASKETBALL_DEL_TIP_FLAG = "basketball_del_tip_flag"
     private var mSharedPreferences: SharedPreferences? = null
     var systemCurrentLocal: Locale = Locale.ENGLISH
 

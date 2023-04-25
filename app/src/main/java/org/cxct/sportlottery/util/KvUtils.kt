@@ -8,6 +8,10 @@ import org.cxct.sportlottery.application.MultiLanguagesApplication
 
 object KvUtils {
 
+
+    //篮球删除投注信息提示弹窗  不再提示标记
+    const val BASKETBALL_DEL_TIP_FLAG = "basketball_del_tip_flag"
+
     private val mv: MMKV by lazy {
         MMKV.initialize(MultiLanguagesApplication.appContext)
         if (BuildConfig.DEBUG) {

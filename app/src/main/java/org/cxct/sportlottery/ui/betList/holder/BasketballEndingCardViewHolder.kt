@@ -1,20 +1,16 @@
 package org.cxct.sportlottery.ui.betList.holder
 
 import android.annotation.SuppressLint
-import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.MotionEvent
 import android.view.View
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -34,13 +30,10 @@ import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.betList.listener.OnItemClickListener
 import org.cxct.sportlottery.ui.betList.listener.OnSelectedPositionListener
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.MoneyInputFilter
-import org.cxct.sportlottery.util.SPUtil
-import org.cxct.sportlottery.util.SPUtil.BASKETBALL_DEL_TIP_FLAG
-import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.KvUtils.BASKETBALL_DEL_TIP_FLAG
 import org.cxct.sportlottery.util.drawable.DrawableUtils
-import org.cxct.sportlottery.util.getOdds
 import org.cxct.sportlottery.view.dialog.BasketballDelBetTipDialog
 import timber.log.Timber
 
@@ -324,7 +317,7 @@ class BasketballEndingCardViewHolder(
 
         btnBasketballDeleteAll.background = DrawableUtils.getBasketballDeleteAllDrawable(root)
         btnBasketballDeleteAll.setOnClickListener {
-            if(SPUtil.getBoolean(BASKETBALL_DEL_TIP_FLAG) == false){
+            if(!KvUtils.decodeBooleanTure(BASKETBALL_DEL_TIP_FLAG,false)){
                 BasketballDelBetTipDialog.Builder(root.context)
                     .setPositiveListener(object : BasketballDelBetTipDialog.OnPositiveListener {
                         override fun positiveClick(isCheck: Boolean) {

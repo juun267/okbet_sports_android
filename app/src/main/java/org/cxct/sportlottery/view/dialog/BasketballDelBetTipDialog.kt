@@ -7,7 +7,7 @@ import android.view.*
 import com.bumptech.glide.Glide
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBasketballDeleteBetTipBinding
-import org.cxct.sportlottery.util.SPUtil
+import org.cxct.sportlottery.util.KvUtils
 
 /**
  * 常用提示對話框
@@ -17,20 +17,20 @@ class BasketballDelBetTipDialog(context: Context) : Dialog(context) {
 
     private var mPositiveClickListener: OnPositiveListener? = null
     private var mNegativeClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
-    private lateinit var binding : DialogBasketballDeleteBetTipBinding
+    private lateinit var binding: DialogBasketballDeleteBetTipBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window?.requestFeature(Window.FEATURE_NO_TITLE)
-        binding= DialogBasketballDeleteBetTipBinding.inflate(layoutInflater)
+        binding = DialogBasketballDeleteBetTipBinding.inflate(layoutInflater)
         setContentView(binding.root)
         window?.setBackgroundDrawableResource(android.R.color.transparent)
         window?.setLayout(
-            WindowManager.LayoutParams.MATCH_PARENT,
-            WindowManager.LayoutParams.MATCH_PARENT
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
         )
         binding.btnPositive.setOnClickListener {
-            SPUtil.saveBoolean(SPUtil.BASKETBALL_DEL_TIP_FLAG,binding.cbOkIknow.isChecked)
+            KvUtils.put(KvUtils.BASKETBALL_DEL_TIP_FLAG, binding.cbOkIknow.isChecked)
             mPositiveClickListener?.positiveClick(binding.cbOkIknow.isChecked)
             dismiss()
         }
