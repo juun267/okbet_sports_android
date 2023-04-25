@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="375dp"
+    android:layout_height="430dp"
+    android:layout_gravity="center"
+    tools:ignore="SpUsage, ContentDescription">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/red_enp_close"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        tools:visibility="visible">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_line_v_26"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.26" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_line_v_74"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.74" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_line_h_18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.18" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_line_h_185"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.185" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_line_h_135"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.135" />
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/chat_red_enp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/btn_close"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:src="@drawable/red_enp_close"
+            android:layout_marginEnd="3dp"
+            app:layout_constraintEnd_toEndOf="@+id/guide_line_v_74"
+            app:layout_constraintTop_toBottomOf="@+id/guide_line_h_135" />
+
+        <!-- 紅包訊息 -->
+        <LinearLayout
+            android:id="@+id/titleLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/guide_line_v_74"
+            app:layout_constraintStart_toStartOf="@+id/guide_line_v_26"
+            app:layout_constraintTop_toBottomOf="@+id/guide_line_h_18"
+            tools:visibility="visible">
+
+            <org.cxct.sportlottery.widget.MixFontTextView
+                android:id="@+id/title_one"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                tools:text="@string/chat_gong_xi_fa_cai"
+                app:mix_font_text="@string/chat_gong_xi_fa_cai"
+                android:textColor="#fce36f"
+                android:textSize="@dimen/textSize16sp" />
+
+            <org.cxct.sportlottery.widget.MixFontTextView
+                android:id="@+id/title_two"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                tools:text="@string/chat_good_luck"
+                app:mix_font_text="@string/chat_good_luck"
+                android:textColor="#fce36f"
+                android:textSize="@dimen/textSize16sp" />
+        </LinearLayout>
+
+        <!-- 口令紅包 -->
+        <LinearLayout
+            android:id="@+id/watchWordLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_close"
+            tools:visibility="gone">
+
+            <EditText
+                android:id="@+id/watchWordInput"
+                android:layout_width="172dp"
+                android:layout_height="30dp"
+                android:background="@drawable/bg_packet_edittext"
+                android:drawableStart="@drawable/ic_key"
+                android:drawablePadding="7dp"
+                android:gravity="start|center"
+                android:hint="@string/chat_enter_password"
+                android:paddingHorizontal="10dp"
+                android:textColor="@color/redPacketEditTextYellow"
+                android:textColorHint="@drawable/selector_watchword_hint"
+                android:textCursorDrawable="@drawable/text_cursor_white"
+                android:fontFamily="@font/roboto"
+                android:textSize="@dimen/textSize12sp" />
+
+            <org.cxct.sportlottery.widget.MixFontTextView
+                android:id="@+id/watchWordMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:textColor="@color/redPacketEditTextErrorHint"
+                android:textSize="@dimen/textSize12sp"
+                tools:text="輸入口令" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btn_red_packet_open"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <org.cxct.sportlottery.widget.MixFontTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:mix_font_text="@string/chat_open"
+                android:textColor="#ed3931"
+                android:textSize="@dimen/textSize30sp"
+                android:textStyle="bold"
+                tools:text="@string/chat_open" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/red_enp_open"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="gone">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/chat_red_enp_open"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_line_h_155"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.17" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.6" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_line_80"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.72" />
+
+        <TextView
+            android:id="@+id/tv_money"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/color_FFFFFF_FFFFFF"
+            android:textSize="36dp"
+            android:textStyle="bold"
+            android:fontFamily="@font/roboto"
+            android:shadowColor="#80000000"
+            android:shadowDx="0"
+            android:shadowDy="2"
+            android:shadowRadius="4"
+            app:layout_constraintEnd_toStartOf="@+id/guide_line_v_75"
+            app:layout_constraintStart_toEndOf="@+id/guide_line_v_25"
+            app:layout_constraintTop_toTopOf="@+id/guide_line_h_155"
+            tools:text="16.000" />
+
+        <LinearLayout
+            android:id="@+id/card_view"
+            android:layout_width="84dp"
+            android:layout_height="26dp"
+            android:background="@drawable/ic_chat_yellow_btn"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:cardBackgroundColor="#fce36f"
+            app:cardCornerRadius="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/guide_line_80"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guide_line">
+
+            <org.cxct.sportlottery.widget.MixFontTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingVertical="4dp"
+                android:paddingHorizontal="10dp"
+                android:textColor="@color/redPacketButtonYellowText"
+                android:textSize="12dp"
+                android:textStyle="bold"
+                app:mix_font_text="@string/chat_confirm"
+                tools:text="@string/chat_confirm" />
+
+        </LinearLayout>
+
+        <org.cxct.sportlottery.widget.MixFontTextView
+            android:id="@+id/tv_open_dec"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:mix_font_text="@string/chat_automatically_added_red_packet"
+            android:textColor="#ffc935"
+            android:textSize="11dp"
+            android:textStyle="bold"
+            tools:text="@string/chat_automatically_added_red_packet"
+            app:layout_constraintEnd_toStartOf="@+id/guide_line_v_75"
+            app:layout_constraintStart_toEndOf="@+id/guide_line_v_25"
+            app:layout_constraintTop_toBottomOf="@+id/guide_line_80" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_line_v_25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.25" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_line_v_75"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.75" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

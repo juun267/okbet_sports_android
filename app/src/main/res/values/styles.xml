@@ -101,9 +101,13 @@
     </style>
 
     <declare-styleable name="SwipeMenuLayout">
-        <attr format="boolean" name="swipeEnable"/>
-        <attr format="boolean" name="ios"/>
-        <attr format="boolean" name="leftSwipe"/>
+        <attr format="boolean" name="swipeEnable" />
+        <attr format="boolean" name="ios" />
+        <attr format="boolean" name="leftSwipe" />
     </declare-styleable>
 
+    <!--弹窗动画-->
+    <style name="AnimDialogEnter" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/dialog_enter</item>
+    </style>
 </resources>

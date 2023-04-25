@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.chat.ChatFragment"
+    tools:ignore="SpUsage, ContentDescription">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/v_chat_action"
+        android:background="@drawable/bg_chat">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_chat_message"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="97dp"
+            android:visibility="invisible"
+            android:clipToPadding="false"
+            tools:listitem="@layout/item_chat_message_red_envelope" />
+    </FrameLayout>
+
+    <org.cxct.sportlottery.ui.common.NoDragRecyclerView
+        android:id="@+id/rv_welcome"
+        android:layout_width="310dp"
+        android:layout_height="70dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="107dp"
+        android:orientation="vertical"
+        tools:listitem="@layout/item_chat_welcome" />
+
+    <org.cxct.sportlottery.ui.chat.ChatActionView
+        android:id="@+id/v_chat_action"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+
+    <ImageView
+        android:id="@+id/ivDownBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/v_chat_action"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="12dp"
+        android:src="@drawable/chat_down_btn"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <!-- region 尚未領取紅包的圖示 -->
+    <org.cxct.sportlottery.ui.chat.ChatRedEnvelopeView
+        android:id="@+id/chatRedEnpView"
+        android:layout_width="44dp"
+        android:layout_height="52dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="106dp"
+        android:layout_marginEnd="8dp"
+        android:visibility="gone"
+        tools:visibility="visible" />
+    <!-- endregion -->
+
+    <include
+        android:id="@+id/v_chat_toast"
+        layout="@layout/view_chat_toast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/v_chat_action"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+</RelativeLayout>

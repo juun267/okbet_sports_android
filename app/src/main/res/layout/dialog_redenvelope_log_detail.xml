@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="40dp"
+    app:cardCornerRadius="8dp"
+    tools:context="org.cxct.sportlottery.ui.finance.WithdrawLogDetailDialog">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:background="@color/color_191919_FCFCFC">
+
+        <TextView
+            android:id="@+id/wd_log_detail_title"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:gravity="center"
+            android:padding="9dp"
+            android:text="@string/log_detail_title"
+            android:textColor="@color/color_CCCCCC_000000"
+            android:textStyle="bold"
+            android:textSize="@dimen/textSize16sp"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_191919_EEEFF0"
+            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_title"
+            app:layout_constraintBottom_toTopOf="@id/wd_log_detail_trans_num_subtitle" />
+
+        <TextView
+            android:id="@+id/wd_log_detail_trans_num_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="14dp"
+            android:text="@string/log_detail_trans_num_sub"
+            android:textColor="@color/color_AEAEAE_404040"
+            android:textSize="@dimen/textSize14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider" />
+
+        <TextView
+            android:id="@+id/wd_log_detail_trans_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_BBBBBB_333333"
+            android:textSize="@dimen/textSize14sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_trans_num_subtitle"
+            app:layout_constraintStart_toEndOf="@id/wd_log_detail_trans_num_subtitle"
+            tools:text="10201223151804075637" />
+
+        <TextView
+            android:id="@+id/wd_log_detail_time_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/text_account_history_time"
+            android:textColor="@color/color_AEAEAE_404040"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_trans_num_subtitle" />
+
+        <TextView
+            android:id="@+id/wd_log_detail_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_BBBBBB_333333"
+            android:textSize="@dimen/textSize14sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_time_subtitle"
+            app:layout_constraintStart_toEndOf="@id/wd_log_detail_time_subtitle"
+            tools:text="2020-12-12 19:58:22" />
+
+        <TextView
+            android:id="@+id/wd_log_detail_amount_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/redenvelope_amount_sub"
+            android:textColor="@color/color_AEAEAE_404040"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_time_subtitle" />
+
+        <TextView
+            android:id="@+id/wd_log_detail_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_BBBBBB_333333"
+            android:ellipsize="end"
+            android:textSize="@dimen/textSize14sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_amount_subtitle"
+            app:layout_constraintStart_toEndOf="@id/wd_log_detail_amount_subtitle"
+            tools:text="₱ 1,000,000.00" />
+
+        <TextView
+            android:id="@+id/wd_log_detail_type_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/tran_type"
+            android:textColor="@color/color_AEAEAE_404040"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_amount_subtitle" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_BBBBBB_333333"
+            android:textSize="@dimen/textSize14sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_type_title"
+            app:layout_constraintStart_toEndOf="@id/wd_log_detail_type_title"
+            tools:text="@string/redenvelope_trantype_received" />
+
+
+        <View
+            android:id="@+id/log_detail_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="17dp"
+            android:background="@color/color_191919_EEEFF0"
+            app:layout_constraintBottom_toTopOf="@id/log_detail_confirm"
+            app:layout_constraintVertical_bias="1"
+            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_type_title" />
+
+        <Button
+            android:id="@+id/log_detail_confirm"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:text="@string/btn_confirm"
+            android:textColor="@color/color_317FFF_0760D4"
+            android:textSize="@dimen/textSize14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

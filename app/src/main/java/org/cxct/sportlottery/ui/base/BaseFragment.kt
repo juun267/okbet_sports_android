@@ -5,6 +5,7 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.view.LayoutInflater
@@ -255,8 +256,8 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() ,IUiVi
         findNavController().navigateUp()
     }
 
-    fun avoidFastDoubleClick(){
+    fun avoidFastDoubleClick(delayMills: Long? = 300) {
         mIsEnabled = false
-        Handler().postDelayed({ mIsEnabled = true }, 300)
+        Handler(Looper.getMainLooper()).postDelayed({ mIsEnabled = true }, delayMills ?: 300)
     }
 }

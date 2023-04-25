@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingVertical="8dp"
+    tools:ignore="SpUsage">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/iv_avatar"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="12dp"
+        android:src="@drawable/ic_chat_avatar_system"
+        app:riv_corner_radius="18dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="48dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/ll_message_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:textColor="@color/color_chat_message_name"
+                android:textSize="@dimen/textSize12sp"
+                tools:text="System" />
+
+            <org.cxct.sportlottery.widget.MixFontTextView
+                android:id="@+id/tv_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_chat_pop_system"
+                android:gravity="center_vertical"
+                android:minHeight="42dp"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="12dp"
+                android:textColor="@color/color_chat_message_text_admin"
+                android:textSize="@dimen/textSize12sp"
+                app:lineHeight="18dp"
+                tools:text="Lorem ipsum dolor sit ametsfafasdfasfa fdfadfasdfsdf" />
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="6dp"
+            android:fontFamily="@font/roboto"
+            android:textColor="@color/color_chat_message_time"
+            android:textSize="@dimen/textSize10sp"
+            tools:text="11:37" />
+
+    </LinearLayout>
+
+</LinearLayout>

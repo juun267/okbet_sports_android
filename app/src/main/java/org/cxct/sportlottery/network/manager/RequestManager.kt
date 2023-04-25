@@ -14,9 +14,10 @@ import org.cxct.sportlottery.network.Constants.WRITE_TIMEOUT
 import org.cxct.sportlottery.network.interceptor.HttpLogInterceptor
 import org.cxct.sportlottery.network.interceptor.MoreBaseUrlInterceptor
 import org.cxct.sportlottery.network.interceptor.RequestInterceptor
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.NullValueAdapter
-import org.cxct.sportlottery.util.fastjson.FastJsonConverterFactory
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.security.SecureRandom
 import java.security.cert.CertificateException
@@ -42,6 +43,30 @@ class RequestManager private constructor(context: Context) {
     }
 
     var retrofit: Retrofit
+
+    val chatRetrofit: Retrofit by lazy {
+        Retrofit.Builder()
+            .baseUrl(sConfigData?.chatHost)
+            .client(mOkHttpClientBuilder.build())
+            .addConverterFactory(MoshiConverterFactory.create(mMoshi))
+            .build()
+    }
+
+    val signRetrofit: Retrofit by lazy {
+        Retrofit.Builder()
+            .baseUrl(Constants.getBaseUrl())
+            .client(mOkHttpClientBuilder.build())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    val chatGsonRetrofit: Retrofit by lazy {
+        Retrofit.Builder()
+            .baseUrl(sConfigData?.chatHost)
+            .client(mOkHttpClientBuilder.build())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
 
     private val logging: HttpLoggingInterceptor =
         HttpLoggingInterceptor().setLevel(
@@ -86,6 +111,14 @@ class RequestManager private constructor(context: Context) {
             .build()
     }
 
+    fun createDefaultRetrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(Constants.getBaseUrl())
+            .client(mOkHttpClientBuilder.build())
+            .addConverterFactory(MoshiConverterFactory.create(mMoshi))
+            .build()
+    }
+
     //20190617 記錄問題: OkHttp 強制信任所有認證
     private fun getUnsafeOkHttpClient(): OkHttpClient.Builder {
         return try {
@@ -94,7 +127,7 @@ class RequestManager private constructor(context: Context) {
                 object : X509TrustManager {
                     @Throws(CertificateException::class)
                     override fun checkClientTrusted(
-                        chain: Array<X509Certificate?>?, authType: String?
+                        chain: Array<X509Certificate?>?, authType: String?,
                     ) {
                         checkServerTrusted(chain)
                     }

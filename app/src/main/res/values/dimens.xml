@@ -70,6 +70,8 @@
 
     <dimen name="recyclerview_news_item_dec_spec">10dp</dimen>
 
+    <dimen name="recyclerview_chat_welcome_item_dec_spec">6dp</dimen>
+
     <!-- Login Bounds EditText -->
     <!-- Normal Spacing -->
     <dimen name="label_idle_margin_top">6dp</dimen>

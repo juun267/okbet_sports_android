@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--  不需翻譯  -->
+    <string name="join_cooperation_qq">QQ</string>
+    <string name="join_cooperation_zalo">Zalo</string>
+    <string name="chat_sec">\"</string>
+    <string name="icon_close">\ue66b</string>
+    <!--  xml 預設值  -->
+    <string name="text_money_bind_bank_limit">单笔下限%s元</string>
+    <string name="hello">您好!</string>
+    <string name="icon_tv_check">✓</string>
+    <string name="bet_page_play_hint">玩法说明文字玩法说明文字</string>
+    <string name="_00_99">00 - 99</string>
+    <string name="_00_99_no_space">00-99</string>
+    <string name="_0">0</string>
+    <string name="_1">1</string>
+    <string name="get_redpack_money">抢到了金额为元的红包</string>
+    <string name="icon_menu">\ue614</string>
+    <string name="usdt">USDT</string>
+    <string name="icon_people">\ue632</string>
+    <string name="icon_calendar">\ue60a</string>
+    <string name="icon_down_arrow">\ue786</string>
+    <string name="icon_reload"></string>
+    <string name="icon_headset">\uE705</string>
+    <string name="icon_note">\uE643</string>
+    <string name="icon_mail">\uE61D</string>
+    <string name="icon_eye">\ue613</string>
+    <string name="icon_default">--</string>
+    <string name="icon_check_circle_mark">\ue601</string>
+    <string name="icon_lock">\uE62D</string>
+    <string name="icon_warning">\ue8b2</string>
+    <!--    <string name="total_num">总数：</string>-->
+    <!--    <string name="total_money">总金额：</string>-->
+</resources>

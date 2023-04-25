@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="end"
+    android:orientation="horizontal"
+    android:paddingVertical="8dp"
+    tools:ignore="SpUsage">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="6dp"
+        android:fontFamily="@font/roboto"
+        android:gravity="end"
+        android:textColor="@color/color_chat_message_time"
+        android:textSize="@dimen/textSize10sp"
+        tools:text="11:37" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp">
+
+        <LinearLayout
+            android:id="@+id/message_border"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_chat_pop_me_custom_border"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_max="224dp"
+            tools:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivChatImage"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="4dp"
+                android:adjustViewBounds="true"
+                android:gravity="center_vertical"
+                android:minHeight="42dp"
+                android:visibility="gone"
+                tools:src="@drawable/ic_image_load"
+                tools:visibility="gone" />
+
+            <View
+                android:id="@+id/paddingView"
+                android:layout_width="1dp"
+                android:layout_height="10dp"
+                tools:visibility="visible" />
+
+            <org.cxct.sportlottery.widget.MixFontTextView
+                android:id="@+id/tv_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="15dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="14dp"
+                android:textSize="@dimen/textSize12sp"
+                tools:text="N"
+                tools:visibility="visible" />
+
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

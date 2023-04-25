@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.chat.ChatActivity"
+    tools:ignore="SpUsage">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/container"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/chat_navigation" />
+
+    <eightbitlab.com.blurview.BlurView
+        android:id="@+id/bv_tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="73dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.9"
+            android:background="@drawable/bg_chat_toolbar_background" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="25dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/tool_bar_height"
+                android:gravity="center"
+                android:text="@string/chat_chat_room_lobby"
+                android:textColor="@color/color_chat_toolbar_title"
+                android:textSize="@dimen/textSize18sp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:paddingHorizontal="20dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_union" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_gravity="bottom"
+            android:background="@color/color_tool_bar_bottom_line" />
+
+    </eightbitlab.com.blurview.BlurView>
+
+    <LinearLayout
+        android:id="@+id/ll_marquee"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_below="@+id/bv_tool_bar"
+        android:background="@color/color_chat_marquee_background"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <org.cxct.sportlottery.widget.MixFontTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:drawableStart="@drawable/ic_chat_announce"
+            android:drawablePadding="8.45dp"
+            android:textColor="@color/color_chat_marquee_text"
+            android:textSize="@dimen/textSize12sp"
+            app:mix_font_text="@string/chat_notify" />
+
+        <org.cxct.sportlottery.view.AutoScrollRecyclerView
+            android:id="@+id/rv_marquee"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:speed_dp_sec="60dp"
+            tools:itemCount="1" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_chat_photo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>

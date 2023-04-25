@@ -179,7 +179,11 @@
         <attr name="ob_fillet" format="boolean" />
         <attr name="ob_background" format="reference" />
         <attr name="ob_hide_item_flag" format="boolean" />
-        <attr name="ob_orientation" format="integer"/>
+        <attr name="ob_orientation" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="MixFontTextView">
+        <attr name="mix_font_text" format="string" />
     </declare-styleable>
 
     <declare-styleable name="BottomNavigationItem">
@@ -329,5 +333,19 @@
     <declare-styleable name="StrokeStyleable">
         <attr name="strokeColor" format="color" />
         <attr name="strokeWidth" format="dimension" />
+    </declare-styleable>
+    <declare-styleable name="ChatMessagePopView">
+        <attr name="cmp_border_src" format="reference" />
+        <attr name="cmp_fill_src" format="reference" />
+        <attr name="cmp_border_tint" format="color" />
+        <attr name="cmp_fill_tint" format="color" />
+    </declare-styleable>
+    <declare-styleable name="SubsamplingScaleImageView">
+        <attr name="ssiv_assetName" format="string" />
+        <attr name="ssiv_src" format="integer" />
+        <attr name="ssiv_panEnabled" format="boolean" />
+        <attr name="ssiv_zoomEnabled" format="boolean" />
+        <attr name="ssiv_quickScaleEnabled" format="boolean" />
+        <attr name="ssiv_tileBackgroundColor" format="reference" />
     </declare-styleable>
 </resources>
