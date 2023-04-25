@@ -546,12 +546,6 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 return@observe
             }
             val adapterData = binding.hotGameView.adapter?.data
-            Log.e("dachang","收到订阅 ${matchStatusChangeEvent.matchStatusCO?.matchId}")
-            adapterData?.forEach {
-                if(it.matchInfo?.id==matchStatusChangeEvent.matchStatusCO?.matchId){
-                    Log.e("dachang","匹配到  ${it.matchInfo?.id} ${it.matchInfo?.homeName}")
-                }
-            }
             adapterData?.forEachIndexed { index, recommend ->
                 //取一个赛事，装成集合
                 val testList = mutableListOf<Recommend>()
@@ -579,7 +573,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                             matchClockEvent
                         )
                     ) {
-                        binding.hotGameView.adapter?.notifyItemChanged(index, recommend)
+                        binding.hotGameView.notifyAdapterData(index,recommend)
                     }
                 }
 
@@ -594,7 +588,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 targetList?.forEachIndexed { index, recommend ->
                     if (SocketUpdateUtil.updateOddStatus(recommend, matchOddsLockEvent)
                     ) {
-                        binding.hotGameView.adapter?.notifyItemChanged(index, recommend)
+                        binding.hotGameView.notifyAdapterData(index,recommend)
                     }
                 }
 
@@ -610,7 +604,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                             globalStopEvent
                         )
                     ) {
-                        binding.hotGameView.adapter?.notifyItemChanged(index)
+                        binding.hotGameView.notifyAdapterData(index,recommend)
                     }
                 }
             }
