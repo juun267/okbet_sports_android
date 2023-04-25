@@ -1,9 +1,12 @@
 package org.cxct.sportlottery.ui.maintab.games
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.ProgressBar
 import androidx.recyclerview.widget.GridLayoutManager
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.R
@@ -35,6 +38,13 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     private var currentTab: OKGameLabel? = null
     private var pageIndx = 1
     private var labelName: String ?= null
+    private val emptyView by lazy { LayoutInflater.from(binding.root.context).inflate(R.layout.view_no_games, binding.root, false) }
+    private val loadingView by lazy {
+        val view = LayoutInflater.from(binding.root.context).inflate(R.layout.layout_loading, binding.root, false)
+        view.setBackgroundColor(Color.TRANSPARENT)
+        view.minimumHeight = 300.dp
+        view
+    }
 
     override fun createRootView(
         inflater: LayoutInflater,
@@ -63,7 +73,6 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         layoutManager = GridLayoutManager(requireContext(), 3)
         addItemDecoration(GridSpacingItemDecoration(3, 10.dp, false))
         adapter = gameChildAdapter
-        gameChildAdapter.setEmptyView(LayoutInflater.from(requireContext()).inflate(R.layout.view_no_games, null))
         gameChildAdapter.setOnItemClickListener { _, _, position ->
             okGamesFragment().enterGame(gameChildAdapter.getItem(position))
         }
@@ -95,6 +104,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             return
         }
 
+        gameChildAdapter.setEmptyView(loadingView)
         gameChildAdapter.disableMore()
         currentTab?.let {
             it.bindLabelIcon(binding.ivIcon)
@@ -117,6 +127,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     fun showSearchResault(list: List<OKGameBean>?, total: Int): Int {
         val count = gameChildAdapter.setGameList(list?.toMutableList(), total)
+        gameChildAdapter.setEmptyView(emptyView)
         if (list?.size ?: 0 >= pageSize) {
             pageIndx++
         }
