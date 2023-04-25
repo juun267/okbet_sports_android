@@ -54,7 +54,7 @@ class GameChildAdapter(private val onFavoriate: (View, OKGameBean) -> Unit,
         binding.apply {
             ivCover.load(item.imgGame, R.drawable.img_banner01)
             tvName.text = item.gameName
-            tvFirmName.text = item.firmCode
+            tvFirmName.text = item.firmName
             ivFav.isSelected = item.markCollect
             ivFav.setOnClickListener { onFavoriate.invoke(ivFav, item) }
         }
