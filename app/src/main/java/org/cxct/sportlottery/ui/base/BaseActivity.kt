@@ -56,7 +56,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
     private var mRunnable: Runnable? = null
     private val mHandler by lazy { Handler(Looper.getMainLooper()) }
 
-    val viewModel: T by viewModel(clazz = (getKClass(0) as KClass<T>))
+    val viewModel: T by viewModel(clazz = clazz ?: getKClass(0) as KClass<T>)
 
     private var loadingView: View? = null
 
