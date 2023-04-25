@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.dialog_basketball_delete_bet_tip.*
 import kotlinx.android.synthetic.main.dialog_custom_alert.btn_negative
 import kotlinx.android.synthetic.main.dialog_custom_alert.btn_positive
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.util.SPUtil
 
 /**
  * 常用提示對話框
@@ -29,6 +30,7 @@ class BasketballDelBetTipDialog(context: Context) : Dialog(context) {
             WindowManager.LayoutParams.MATCH_PARENT
         )
         btn_positive.setOnClickListener {
+            SPUtil.saveBoolean(SPUtil.BASKETBALL_DEL_TIP_FLAG,cb_ok_iknow.isChecked)
             mPositiveClickListener?.positiveClick(cb_ok_iknow.isChecked)
             dismiss()
         }

@@ -36,6 +36,8 @@ import org.cxct.sportlottery.ui.betList.listener.OnItemClickListener
 import org.cxct.sportlottery.ui.betList.listener.OnSelectedPositionListener
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.MoneyInputFilter
+import org.cxct.sportlottery.util.SPUtil
+import org.cxct.sportlottery.util.SPUtil.BASKETBALL_DEL_TIP_FLAG
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.drawable.DrawableUtils
 import org.cxct.sportlottery.util.getOdds
@@ -322,12 +324,14 @@ class BasketballEndingCardViewHolder(
 
         btnBasketballDeleteAll.background = DrawableUtils.getBasketballDeleteAllDrawable(root)
         btnBasketballDeleteAll.setOnClickListener {
-            BasketballDelBetTipDialog.Builder(root.context)
-                .setPositiveListener(object : BasketballDelBetTipDialog.OnPositiveListener {
-                    override fun positiveClick(isCheck: Boolean) {
-//                    ToastUtils.s(it1, "$isCheck")
-                    }
-                }).create().show()
+            if(SPUtil.getBoolean(BASKETBALL_DEL_TIP_FLAG) == false){
+                BasketballDelBetTipDialog.Builder(root.context)
+                    .setPositiveListener(object : BasketballDelBetTipDialog.OnPositiveListener {
+                        override fun positiveClick(isCheck: Boolean) {
+
+                        }
+                    }).create().show()
+            }
         }
 
         val view = View.inflate(tvMatchHome.context, R.layout.popupwindow_tips, null)
