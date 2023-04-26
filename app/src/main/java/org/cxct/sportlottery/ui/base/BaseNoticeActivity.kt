@@ -23,10 +23,8 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
     open fun onCloseMenu() {}
     open fun updateNoticeButton(noticeCount: Int) {}
 
-    fun showSnackBarBetUpperLimitNotify(limitContent:String) = Snackbar.make(
-        findViewById(android.R.id.content),
-        getString(R.string.login_notify),
-        Snackbar.LENGTH_LONG
+    fun showSnackBarBetUpperLimitNotify(limitContent: String) = Snackbar.make(
+        findViewById(android.R.id.content), getString(R.string.login_notify), Snackbar.LENGTH_LONG
     ).apply {
         val snackView: View = layoutInflater.inflate(
             R.layout.snackbar_login_notify, findViewById(android.R.id.content), false
@@ -56,8 +54,7 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
         mNoticeButton?.setOnClickListener {
             startActivity(
                 Intent(
-                    this,
-                    InfoCenterActivity::class.java
+                    this, InfoCenterActivity::class.java
                 ).putExtra(InfoCenterActivity.KEY_READ_PAGE, InfoCenterActivity.YET_READ)
             )
         }
@@ -71,8 +68,7 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
             onCloseMenu()
             startActivity(
                 Intent(
-                    this,
-                    InfoCenterActivity::class.java
+                    this, InfoCenterActivity::class.java
                 ).putExtra(InfoCenterActivity.KEY_READ_PAGE, InfoCenterActivity.YET_READ)
             )
         }

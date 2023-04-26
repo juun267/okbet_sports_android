@@ -351,23 +351,26 @@ object BetInfoRepository {
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
         betInfo: BetInfo? = null
     ) {
-        Timber.v("Bill====>betInfo:${betInfo}")
+//        Timber.v("Bill====>betInfo:${betInfo}")
         val betList = _betInfoList.value?.peekContent() ?: CopyOnWriteArrayList()
         oddsType?.let {
             this.oddsType = it
         }
 
-        if (matchType == MatchType.END_SCORE) {
+        if (playCateCode == PlayCate.FS_LD_CS.value) {
             if (betList.size >= BET_BASKETBALL_ENDING_SCORE_MAX_COUNT) {
                 showBetBasketballUpperLimit.postValue(Event(true))
                 return
             }
         } else {
-            if (betList.size >= BET_INFO_MAX_COUNT) {
+            val isAllBas = betList.any { it.matchType == MatchType.END_SCORE }
+            Timber.d("isAllBas:${isAllBas}")
+            if (!isAllBas && betList.size >= BET_INFO_MAX_COUNT) {
                 _showBetUpperLimit.postValue(Event(true))
                 return
             }
         }
+
 
         val betInfoMatchOdd = MatchOddUtil.transfer(
             matchType = matchType,
@@ -396,18 +399,17 @@ object BetInfoRepository {
             val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
 
             //篮球末位比分
-            if (matchType == MatchType.END_SCORE) {
+            if (playCateCode == PlayCate.FS_LD_CS.value) {
                 Timber.d("篮球末位比分模式")
                 oddIDArray.add(it.oddsId)
                 betList.add(data)
                 setCurrentBetState(BetListFragment.BASKETBALL_ENDING_CARD)
                 currentBetType = BetListFragment.BASKETBALL_ENDING_CARD
             } else {
-
+                Timber.d("currentState:${currentState}")
                 if (currentState != 1) {
                     setCurrentBetState(0)
                 }
-
                 if (currentState == 0) {
                     //单注模式
                     Timber.d("单注模式")
@@ -424,8 +426,6 @@ object BetInfoRepository {
                     currentBetType = BetListFragment.PARLAY
                 }
             }
-
-
 
             _betIDList.postValue(Event(oddIDArray))
             updateQuickListManager(betList)

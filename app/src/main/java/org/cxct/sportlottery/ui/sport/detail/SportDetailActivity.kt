@@ -25,6 +25,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_detail_sport.*
+import kotlinx.android.synthetic.main.activity_main_tab.parlayFloatWindow
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import kotlinx.android.synthetic.main.content_baseball_status.*
 import kotlinx.android.synthetic.main.item_sport_odd.view.*
@@ -42,6 +43,7 @@ import org.cxct.sportlottery.common.extentions.setFbKicks
 import org.cxct.sportlottery.common.extentions.setMatchAttack
 import org.cxct.sportlottery.common.extentions.setMatchRoundScore
 import org.cxct.sportlottery.common.extentions.setMatchScore
+import org.cxct.sportlottery.databinding.ActivityDetailSportBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
@@ -191,10 +193,14 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
     }
 
+    private val binding by lazy {
+        ActivityDetailSportBinding.inflate(layoutInflater)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        setContentView(R.layout.activity_detail_sport)
+        setContentView(binding.root)
         AndroidBug5497Workaround.assistActivity(this)
         initToolBar()
         initData()
@@ -331,7 +337,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 //        cl_bet_list_bar.tv_balance_currency.text = sConfigData?.systemCurrencySign
 //        cl_bet_list_bar.tv_balance.text = TextUtil.formatMoney(0.0)
 //
-        cl_bet_list_bar.setOnClickListener {
+        binding.parlayFloatWindow.onViewClick = {
             showBetListPage()
         }
     }
@@ -365,16 +371,17 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     override fun updateBetListCount(num: Int) {
         setUpBetBarVisible()
-        cl_bet_list_bar.tv_bet_list_count.text = num.toString()
+//        cl_bet_list_bar.tv_bet_list_count.text = num.toString()
+        binding.parlayFloatWindow.tv_bet_list_count.text = num.toString()
         Timber.e("num: $num")
         if (num > 0) viewModel.getMoneyAndTransferOut()
     }
 
     override fun updateBetListOdds(list: MutableList<BetInfoListData>) {
-        if (list.size > 1) {
-            val multipleOdds = getMultipleOdds(list)
-            cl_bet_list_bar.tvOdds.text = multipleOdds
-        }
+//        if (list.size > 1) {
+//            val multipleOdds = getMultipleOdds(list)
+////            parlayFloatWindow.tvOdds.text = multipleOdds
+//        }
     }
 
     override fun showLoginNotify() {
@@ -682,14 +689,14 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             if (it.getContentIfNotHandled() == true) {
                 showSnackBarBetUpperLimitNotify(
                     getString(R.string.bet_basketball_notify_max_limit)
-                ).setAnchorView(R.id.cl_bet_list_bar).show()
+                ).setAnchorView(R.id.parlayFloatWindow).show()
             }
         }
         viewModel.showBetBasketballUpperLimit.observe(this) {
             if (it.getContentIfNotHandled() == true) {
                 showSnackBarBetUpperLimitNotify(
                     getString(R.string.bet_basketball_notify_max_limit)
-                ).setAnchorView(R.id.cl_bet_list_bar).show()
+                ).setAnchorView(R.id.parlayFloatWindow).show()
             }
         }
         viewModel.liveLoginInfo.observe(this) {
@@ -1560,16 +1567,16 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 wv_chat.isVisible = false
             }
         }
-
-        (cl_bet_list_bar.layoutParams as ConstraintLayout.LayoutParams).apply {
-            bottomMargin = if (visible) 57.dp else 0
-        }
+//
+//        (cl_bet_list_bar.layoutParams as ConstraintLayout.LayoutParams).apply {
+//            bottomMargin = if (visible) 57.dp else 0
+//        }
     }
 
     var showEmoji = false
     var onMini = true
     fun setUpBetBarVisible() {
-        cl_bet_list_bar.isVisible = !BetInfoRepository.betInfoList.value?.peekContent()
+        binding.parlayFloatWindow.isVisible = !BetInfoRepository.betInfoList.value?.peekContent()
             .isNullOrEmpty() && (!showEmoji && onMini)
     }
 

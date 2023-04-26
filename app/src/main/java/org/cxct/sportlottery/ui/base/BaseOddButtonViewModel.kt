@@ -402,7 +402,7 @@ abstract class BaseOddButtonViewModel(
             }
         }
 
-        val betType = if (normalBetList[0].matchType == MatchType.END_SCORE) {
+        val betType = if (normalBetList[0].matchOdd.playCode == PlayCate.FS_LD_CS.value) {
             1
         } else {
             0
