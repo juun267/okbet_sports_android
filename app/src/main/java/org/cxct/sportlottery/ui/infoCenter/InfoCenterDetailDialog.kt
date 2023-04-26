@@ -12,8 +12,16 @@ import org.cxct.sportlottery.databinding.DialogInfoCenterDetailListBinding
 import org.cxct.sportlottery.network.infoCenter.InfoCenterData
 import org.cxct.sportlottery.ui.base.BaseDialog
 
-class InfoCenterDetailDialog(val data: InfoCenterData) :
-    BaseDialog<InfoCenterViewModel>(InfoCenterViewModel::class) {
+class InfoCenterDetailDialog: BaseDialog<InfoCenterViewModel>(InfoCenterViewModel::class) {
+
+
+    private var data: InfoCenterData? = null
+        get() {
+            if (field == null) {
+                field = arguments?.getParcelable("data")
+            }
+            return field
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,7 +50,10 @@ class InfoCenterDetailDialog(val data: InfoCenterData) :
         info_center_detail_confirm.setOnClickListener {
             dismiss()
         }
-        txv_title.text = data.title
-        txv_detail.text = data.content
+
+        data?.let {
+            txv_title.text = it.title
+            txv_detail.text = it.content
+        }
     }
 }

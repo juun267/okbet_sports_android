@@ -70,8 +70,8 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
         InfoCenterAdapter(this@InfoCenterActivity).apply {
             setOnItemClickListener { adapter, view, position ->
 
-                val data = adapter.getItem(position) as InfoCenterData
-                val detailDialog = InfoCenterDetailDialog(data)
+                val detailDialog = InfoCenterDetailDialog()
+                detailDialog.arguments = Bundle().apply { putParcelable("data", data) }
                 detailDialog.show(supportFragmentManager, "")
                 if (currentPage == YET_READ) {
                     markMessageReaded(data)
