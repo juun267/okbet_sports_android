@@ -578,7 +578,7 @@ class BetInfoItemViewHolder(
             pop.showAsDropDown(it, xOff, yOff)
         }
 
-        setOnClickListener(tvName, tvLeagueName, tvMatchHome, tvMatchAway) {
+        setOnClickListener(tvName, tvLeagueName, tvMatchHome, tvMatchAway,tvOddsContent) {
             when (it) {
                 tvName -> {
                     showPopAsTop(tvName, tvNameText)
@@ -591,6 +591,9 @@ class BetInfoItemViewHolder(
                 }
                 tvMatchAway -> {
                     showPopAsTop(tvMatchAway, itemData.matchOdd.awayName)
+                }
+                tvOddsContent -> {
+                    showPopAsTop(tvOddsContent, itemData.matchOdd.playName)
                 }
             }
         }
