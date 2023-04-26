@@ -71,7 +71,6 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             when (msg.what) {
-
                 HANDLER_RECORD_GET -> {
                     var newItem: RecordNewEvent? = null
                     if (binding.include3.rbtnLb.isChecked) {
@@ -302,12 +301,12 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 }
             }
             receiver.recordNew.observe(viewLifecycleOwner) {
-                if (it != null && binding.include3.rbtnLb.isChecked) {
+                if (it != null) {
                     p3RecordNwsData.add(it)//最新投注(当前正处于主线程，直接将数据加到队列里面去)
                 }
             }
             receiver.recordResult.observe(viewLifecycleOwner) {
-                if (it != null && binding.include3.rbtnLbw.isChecked) {
+                if (it != null) {
                     p3RecordRwsData.add(it)//最新大奖
                 }
             }

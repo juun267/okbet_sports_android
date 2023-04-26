@@ -18,6 +18,4 @@ data class RecordNewEvent(
     val betAmount: String,
     @Json(name = "profitAmount")
     var profitAmount: String,
-    @Json(name = "betTime")
-    var betTime: String,
     ) : ServiceEventType
