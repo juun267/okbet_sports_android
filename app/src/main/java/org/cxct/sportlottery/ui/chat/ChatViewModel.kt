@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.chat
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -12,8 +13,7 @@ import org.cxct.sportlottery.network.chat.queryList.Row
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.*
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
-import org.cxct.sportlottery.repository.AvatarRepository
-import org.cxct.sportlottery.repository.ChatRepository
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.repository.ChatRepository.chatToken
 import org.cxct.sportlottery.repository.ChatRepository.uniqueChatMessageList
 import org.cxct.sportlottery.repository.ChatRepository.userCurrency
@@ -30,7 +30,21 @@ import java.util.*
  * @description
  * @property uniqueChatMessageList 聊天室訊息內容
  */
-class ChatViewModel(private val avatarRepository: AvatarRepository) : BaseSocketViewModel() {
+class ChatViewModel(
+    androidContext: Application,
+    val avatarRepository: AvatarRepository,
+    userInfoRepository: UserInfoRepository,
+    loginRepository: LoginRepository,
+    betInfoRepository: BetInfoRepository,
+    infoCenterRepository: InfoCenterRepository,
+    favoriteRepository: MyFavoriteRepository,
+) : BaseSocketViewModel(
+    androidContext,
+    userInfoRepository,
+    loginRepository,
+    betInfoRepository,
+    infoCenterRepository,
+    favoriteRepository) {
 
     companion object {
         private const val MAX_MSG_SIZE = 500
@@ -383,7 +397,7 @@ class ChatViewModel(private val avatarRepository: AvatarRepository) : BaseSocket
         return TimeUtil.timeStampToDateString(timeStamp, TimeUtil.D_NARROW_MONTH, Locale.US)
     }
 
-    fun checkLoginStatus() {
+    fun checkLoginStatus1() {
         when (loginRepository.isLogin.value) {
             true -> {
                 Timber.i("[Chat] 已登入(一般用户,游客) 執行chatInit")
@@ -424,7 +438,7 @@ class ChatViewModel(private val avatarRepository: AvatarRepository) : BaseSocket
                 }.let { tokenResult ->
                     if (tokenResult?.success == false) {
                         Timber.e("[Chat] tokenResult: $tokenResult")
-                        checkLoginStatus()
+                        checkLoginStatus1()
                     }
                 }
             }

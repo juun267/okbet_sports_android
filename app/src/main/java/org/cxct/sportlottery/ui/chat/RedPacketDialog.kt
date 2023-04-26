@@ -12,6 +12,8 @@ import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.dialog_chat_red_enp.*
 import kotlinx.android.synthetic.main.dialog_chat_red_enp.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.hide
+import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.network.chat.luckyBag.LuckyBagRequest
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.util.*

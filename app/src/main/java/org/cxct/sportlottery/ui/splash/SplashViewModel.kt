@@ -1,11 +1,10 @@
 package org.cxct.sportlottery.ui.splash
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.network.Constants
@@ -22,14 +21,14 @@ import timber.log.Timber
 import kotlin.random.Random
 
 class SplashViewModel(
-    private val androidContext: Context,
+    androidContext: Application,
     private val hostRepository: HostRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     private val userInfoRepository: UserInfoRepository,
-    private val playQuotaComRepository: PlayQuotaComRepository
-) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+    private val playQuotaComRepository: PlayQuotaComRepository,
+) : BaseViewModel(androidContext, loginRepository, betInfoRepository, infoCenterRepository) {
 
     //當獲取 host 失敗時，就使用下一順位的 serverUrl，重新 request，直到遍歷 ServerUrlList，或成功獲取 host 即停止
     private var mServerUrlIndex = 0

@@ -46,12 +46,15 @@ import timber.log.Timber
 
 
 abstract class BaseOddButtonViewModel(
-    val androidContext: Application,
+    androidContext: Application,
     loginRepository: LoginRepository,
     userInfoRepository: UserInfoRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-) : BaseWithdrawViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+) : BaseWithdrawViewModel(androidContext,
+    loginRepository,
+    betInfoRepository,
+    infoCenterRepository) {
 
     val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo
 

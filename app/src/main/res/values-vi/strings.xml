@@ -895,6 +895,7 @@
     <string name="redenvelope_amount">Số tiền</string>
     <string name="tran_type">Loại giao dịch</string>
     <string name="redenvelope_record">lịch Sử  Tiền lì xì</string>
+    <string name="redenvelope_amount_sub">Số tiền nhận thực tế：</string>
     <string name="btn_sure">Xác nhận</string>
     <string name="Outlets_Reserve">Trang web đặt hẹn</string>
     <string name="select_area">Chọn vùng</string>

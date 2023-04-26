@@ -65,7 +65,7 @@ class RedEnvelopeListDialog(
                 RecycleViewDivider(
                     context,
                     LinearLayoutManager.HORIZONTAL,
-                    MetricsUtil.convertDpToPixel(context, 5f),
+                    MetricsUtil.convertDpToPixel(5f, context).toInt(),
                     ContextCompat.getColor(context, R.color.transparent)
                 )
             )

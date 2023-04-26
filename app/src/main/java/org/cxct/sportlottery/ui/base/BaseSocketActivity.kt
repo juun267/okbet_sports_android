@@ -9,9 +9,11 @@ import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
-import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.repository.KEY_USER_LEVEL_ID
+import org.cxct.sportlottery.repository.NAME_LOGIN
 import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
+import org.cxct.sportlottery.ui.chat.LiveMsgEntity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.util.GameConfigManager
 import org.koin.android.ext.android.inject
@@ -178,13 +180,41 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
     fun unSubscribeChannelHall(
         gameType: String?,
-        eventId: String?
+        eventId: String?,
     ) {
         backService?.unsubscribeHallChannel(gameType, eventId)
     }
 
+    fun subscribeChatRoom(
+        roomId: String?,
+    ) {
+        backService?.subscribeChatRoom(roomId)
+    }
+
+    fun unSubscribeChatRoom(
+        roomId: String?,
+    ) {
+        backService?.unSubscribeChatRoom(roomId)
+    }
+
+    fun subscribeChatUser(
+        userId: String?,
+    ) {
+        backService?.subscribeChatUser(userId)
+    }
+
+    fun unSubscribeChatUser(
+        userId: String?,
+    ) {
+        backService?.unSubscribeChatUser(userId)
+    }
+
+    fun chatSendMessage(liveMsgEntity: LiveMsgEntity?) {
+        backService?.sendMessage(liveMsgEntity)
+    }
+
     fun unSubscribeChannelHall(
-        eventId: String?
+        eventId: String?,
     ) {
         backService?.unsubscribeHallChannel(eventId)
     }

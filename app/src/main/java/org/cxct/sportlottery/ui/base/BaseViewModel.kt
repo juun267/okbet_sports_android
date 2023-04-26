@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.base
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import androidx.annotation.Nullable
@@ -27,12 +28,12 @@ import timber.log.Timber
 
 
 abstract class BaseViewModel(
-    val androidContext: Application = MultiLanguagesApplication.appContext as Application,
+    val androidContext: Application,
     val loginRepository: LoginRepository,
     val betInfoRepository: BetInfoRepository,
     val infoCenterRepository: InfoCenterRepository,
 ) : ViewModel() {
-
+    @SuppressLint("StaticFieldLeak")
     private lateinit var liveSet: HashMap<Class<*>, MutableLiveData<*>>
 
     @Synchronized

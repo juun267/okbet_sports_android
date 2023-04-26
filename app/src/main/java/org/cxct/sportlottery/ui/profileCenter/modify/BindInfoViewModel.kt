@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter.modify
 
+import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.net.ApiResult
@@ -11,14 +12,16 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
 class BindInfoViewModel(
+    androidContext: Application,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-): BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+) : BaseViewModel(androidContext, loginRepository, betInfoRepository, infoCenterRepository) {
 
     val sendCodeResult = MutableLiveData<ApiResult<SendCodeRespnose>>()                 // 发送验证码
     val verifyResult = MutableLiveData<ApiResult<SendCodeRespnose>>()                   // 验证验证码
-    val resetResult = MutableLiveData<ApiResult<SendCodeRespnose>>()                    // 修改手机号或者邮箱后
+    val resetResult =
+        MutableLiveData<ApiResult<SendCodeRespnose>>()                    // 修改手机号或者邮箱后
 
     fun sendSMSOrEmailCode(phoneNumOrEmail: String, identity: String, validCode: String) {
         callApi({ UserRepository.sendEmailOrPhoneCode(phoneNumOrEmail, identity, validCode) }) {

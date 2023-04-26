@@ -5,24 +5,25 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.SingleEvent
-import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.net.user.data.UserBasicInfoResponse
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bettingStation.AreaAll
 import org.cxct.sportlottery.network.index.config.SalarySource
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.user.info.UserBasicInfoRequest
-import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.repository.InfoCenterRepository
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.VerifyConstUtil
 
 class RegisterInfoViewModel(
-    val androidContext: Application,
+    androidContext: Application,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+) : BaseViewModel(androidContext, loginRepository, betInfoRepository, infoCenterRepository) {
 
     //登录数据
     var loginResult: LoginResult? = null
@@ -31,8 +32,8 @@ class RegisterInfoViewModel(
     var birthdayTimeInput = ""
 
     //手机号
-    var phoneNumberInput=""
-    var phoneEnable=false
+    var phoneNumberInput = ""
+    var phoneEnable = false
 
     //邮箱
     var emailInput=""

@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter.versionUpdate
 
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
@@ -19,11 +20,11 @@ import org.cxct.sportlottery.util.SPUtil
 import timber.log.Timber
 
 class VersionUpdateViewModel(
-    private val androidContext: Context,
+    androidContext: Application,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
-) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+    infoCenterRepository: InfoCenterRepository,
+) : BaseViewModel(androidContext, loginRepository, betInfoRepository, infoCenterRepository) {
 
     companion object {
         const val KEY_LAST_SHOW_UPDATE_TIME = "key-last-show-update-time"

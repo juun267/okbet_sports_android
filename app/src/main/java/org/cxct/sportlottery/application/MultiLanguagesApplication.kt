@@ -29,6 +29,7 @@ import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.betList.BetListViewModel
 import org.cxct.sportlottery.ui.betRecord.TransactionStatusViewModel
 import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
+import org.cxct.sportlottery.ui.chat.ChatViewModel
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.ui.finance.FinanceViewModel
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterViewModel
@@ -152,9 +153,10 @@ class MultiLanguagesApplication : Application() {
         viewModel { ForgetViewModel(get(), get(), get(), get()) }
         viewModel { BetListViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { AuthViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { BindInfoViewModel(get(), get(), get()) }
+        viewModel { BindInfoViewModel(get(), get(), get(), get()) }
         viewModel { RegisterInfoViewModel(get(), get(), get(), get()) }
         viewModel { OKGamesViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { ChatViewModel(get(), get(), get(), get(), get(), get(), get()) }
     }
 
     private val repoModule = module {

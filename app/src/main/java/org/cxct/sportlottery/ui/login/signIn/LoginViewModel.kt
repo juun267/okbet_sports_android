@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.ui.login.signIn
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -26,12 +26,12 @@ import org.cxct.sportlottery.util.VerifyConstUtil
 
 
 class LoginViewModel(
-    private val androidContext: Context,
+    androidContext: Application,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-    protected val userInfoRepository: UserInfoRepository
-) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+    protected val userInfoRepository: UserInfoRepository,
+) : BaseViewModel(androidContext, loginRepository, betInfoRepository, infoCenterRepository) {
 
     val loginFormState: LiveData<LoginFormState>
         get() = _loginFormState

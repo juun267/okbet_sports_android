@@ -18,6 +18,7 @@ import android.webkit.WebView
 import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,7 +26,6 @@ import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_sport_list.*
 import kotlinx.android.synthetic.main.item_favorite.view.*
 import kotlinx.android.synthetic.main.view_account_balance_2.*
@@ -52,7 +52,6 @@ import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.dialog.ServiceDialog
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
-import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.live.HomeLiveAdapter
@@ -939,6 +938,13 @@ fun isMultipleSitePlat(): Boolean {
     return appName == "ONbet" || appName == "BET88" || appName == "OKbet9"
 }
 
+/**
+ * 判斷是否為遊客(試玩帳號)
+ */
+fun isGuest(): Boolean {
+    return MultiLanguagesApplication.mInstance.userInfo()?.testFlag == TestFlag.GUEST.index
+}
+
 fun isForQA(): Boolean = BuildConfig.FLAVOR == "forqa"
 
 /**
@@ -1043,6 +1049,10 @@ fun Activity.startRegister() {
 //        else
 //            RegisterActivity::class.java)
 //    )
+}
+
+fun DialogFragment.showAllowingStateLoss(fragmentManager: FragmentManager, tag: String? = null) {
+    fragmentManager.beginTransaction().add(this, tag).commitAllowingStateLoss()
 }
 
 fun Activity.startLogin() {

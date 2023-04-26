@@ -260,4 +260,11 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() ,IUiVi
         mIsEnabled = false
         Handler(Looper.getMainLooper()).postDelayed({ mIsEnabled = true }, delayMills ?: 300)
     }
+
+    open fun isGuest(hasBottomNavigation: Boolean = true): Boolean {
+        return if (activity is BaseBottomNavActivity<*>)
+            (activity as BaseBottomNavActivity<*>).isGuest(hasBottomNavigation)
+        else
+            false
+    }
 }

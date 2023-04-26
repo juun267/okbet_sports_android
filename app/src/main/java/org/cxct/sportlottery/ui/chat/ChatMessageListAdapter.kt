@@ -24,7 +24,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.dialog_redenvelope_fail.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.hide
+import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.databinding.*
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.*
 import org.cxct.sportlottery.repository.sConfigData
@@ -481,7 +482,7 @@ class ChatMessageListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                             TimeUtil.HM_FORMAT
                         ) else ""
 
-                        binding.tvRedEnvelope.apply { if (isAdmin) gone() else () }
+                        binding.tvRedEnvelope.apply { if (isAdmin) hide() else show() }
                         binding.tvRedEnvelope.setOnClickListener {
                             itemContentClickListener?.onRedEnvelopeClick(
                                 id.toString(),

@@ -215,6 +215,15 @@
         <activity
             android:name=".ui.profileCenter.authbind.AuthActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.chat.ChatActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
 
         <service android:name=".service.BackService" /> <!-- broadCast -->
 

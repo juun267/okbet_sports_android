@@ -46,6 +46,13 @@ object MatchOddUtil {
                             gameType = gameType,
                             homeScore = matchInfo.homeScore?.toIntOrNull() ?: 0,
                             awayScore = matchInfo.awayScore?.toIntOrNull() ?: 0,
+                            betPlayCateNameMap = null,
+                            playCateNameMap = null,
+                            matchInfo = null,
+                            oddsMap = null,
+                            oddsSort = null,
+                            quickPlayCateList = null,
+                            oddsEps = null,
                         ).apply {
                             extInfo = odd.extInfo
                             isOnlyEUType = odd.isOnlyEUType
@@ -60,7 +67,6 @@ object MatchOddUtil {
         }
         return null
     }
-
     fun MutableMap<String, MutableList<Odd>?>.updateOddsDiscount(discount: Float, newDiscount: Float) {
         this.toMap().forEach { (_, value) ->
             value?.toList()?.forEach { odd ->

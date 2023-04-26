@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.base
 
+import org.cxct.sportlottery.ui.chat.LiveMsgEntity
 import kotlin.reflect.KClass
 
 abstract class BaseSocketFragment<T : BaseSocketViewModel>(clazz: KClass<T>) :
@@ -23,9 +24,29 @@ abstract class BaseSocketFragment<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
     protected fun unSubscribeChannelHall(
         gameType: String?,
-        eventId: String?
+        eventId: String?,
     ) {
         (activity as BaseSocketActivity<*>).unSubscribeChannelHall(gameType, eventId)
+    }
+
+    protected fun subscribeChatRoom(roomId: String?) {
+        (activity as BaseSocketActivity<*>).subscribeChatRoom(roomId)
+    }
+
+    protected fun unSubscribeChatRoom(roomId: String?) {
+        (activity as BaseSocketActivity<*>).unSubscribeChatRoom(roomId)
+    }
+
+    protected fun subscribeChatUser(userId: String?) {
+        (activity as BaseSocketActivity<*>).subscribeChatUser(userId)
+    }
+
+    protected fun unSubscribeChatUser(userId: String?) {
+        (activity as BaseSocketActivity<*>).unSubscribeChatUser(userId)
+    }
+
+    protected fun chatSendMessage(liveMsgEntity: LiveMsgEntity?) {
+        (activity as BaseSocketActivity<*>).chatSendMessage(liveMsgEntity)
     }
 
     protected fun unSubscribeChannelEvent(eventId: String?) {

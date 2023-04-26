@@ -13,7 +13,6 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -36,11 +35,13 @@ import org.cxct.sportlottery.network.bet.settledList.Row
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.ui.betRecord.BetRecordFragment
 import org.cxct.sportlottery.ui.betRecord.accountHistory.next.AccountHistoryNextFragment
+import org.cxct.sportlottery.ui.chat.ChatActivity
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment
@@ -624,5 +625,12 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     override fun updateBetListOdds(list: MutableList<BetInfoListData>) {
+    }
+
+    fun jumpChatActivity() {
+        when (sConfigData?.chatOpen) {
+            "1" -> startActivity(Intent(this@MainTabActivity, ChatActivity::class.java))
+            else -> ToastUtil.showToast(this, getString(R.string.chat_room_is_closed))
+        }
     }
 }

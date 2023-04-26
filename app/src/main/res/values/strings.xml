@@ -911,6 +911,7 @@
     <string name="redenvelope_amount">Amount</string>
     <string name="tran_type">Type</string>
     <string name="redenvelope_record">Lucky Money Records</string>
+    <string name="redenvelope_amount_sub">Lucky Money Amount ：</string>
     <string name="btn_sure">Confirm</string>
     <string name="Outlets_Reserve">Outlets  Reserve</string>
     <string name="select_area">Select Region</string>

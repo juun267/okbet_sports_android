@@ -910,6 +910,7 @@
     <string name="redenvelope_amount">红包金额</string>
     <string name="tran_type">交易类型</string>
     <string name="redenvelope_record">红包纪录</string>
+    <string name="redenvelope_amount_sub">红包金额：</string>
     <string name="btn_sure">确定</string>
     <string name="Outlets_Reserve">网点预约</string>
     <string name="select_area">选择地区</string>
