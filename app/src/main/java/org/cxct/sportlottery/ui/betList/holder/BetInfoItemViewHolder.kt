@@ -168,6 +168,32 @@ class BetInfoItemViewHolder(
         adapterBetType: BetListRefactorAdapter.BetRvType?
     ) = contentView.run {
 
+        fun update(){
+            //更新可贏額
+           var win= itemData.betAmount * getOddsAndSaveRealAmount(
+                itemData, currentOddsType)
+
+            val strTvCanWin =
+                "${root.context.getString(R.string.bet_win)}：${sConfigData?.systemCurrencySign} ${
+                    TextUtil.formatInputMoney(win)
+                }"
+            val canWinSpannable = SpannableString(strTvCanWin)
+            canWinSpannable.setSpan(
+                ForegroundColorSpan(root.context.getColor(R.color.color_E23434)),
+                "${LocalUtils.getString(R.string.bet_win)}：".length,
+                strTvCanWin.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            canWinSpannable.setSpan(
+                StyleSpan(Typeface.BOLD),
+                "${LocalUtils.getString(R.string.bet_win)}：".length,
+                strTvCanWin.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            tvCanWin.text = canWinSpannable
+        }
+
+
         //移除TextChangedListener
         etBet.apply {
             if (tag is TextWatcher) {
@@ -177,9 +203,18 @@ class BetInfoItemViewHolder(
             filters = arrayOf(MoneyInputFilter())
         }
 
+
+
         //設定editText內容
         etBet.apply {
-            if (itemData.input != null) setText(itemData.inputBetAmountStr) else text.clear()
+            if (itemData.input == null) {
+                val minBet = itemData.parlayOdds?.min ?: 0
+                itemData.input = minBet.toDouble().toString()
+            }
+            itemData.inputBetAmountStr = itemData.input
+            itemData.betAmount = itemData.input!!.toDouble()
+            setText(itemData.inputBetAmountStr)
+            update()
             setSelection(text.length)
         }
         checkBetLimit(itemData)
@@ -213,7 +248,7 @@ class BetInfoItemViewHolder(
                     itemData.betAmount = quota
                     itemData.inputBetAmountStr = it.toString()
                     itemData.input = it.toString()
-                    val max = inputMaxMoney.coerceAtMost(0.0.coerceAtLeast(userBalance()))
+                    val max = inputMaxMoney.coerceAtMost(quota.coerceAtLeast(userBalance()))
                     if (quota > max) {
                         etBet.apply {
                             setText(TextUtil.formatInputMoney(max))
@@ -221,28 +256,7 @@ class BetInfoItemViewHolder(
                         }
                         return
                     }
-                    val win = itemData.betAmount * getOddsAndSaveRealAmount(
-                        itemData, currentOddsType
-                    )
-                    //更新可贏額
-                    val strTvCanWin =
-                        "${root.context.getString(R.string.bet_win)}：${sConfigData?.systemCurrencySign} ${
-                            TextUtil.formatInputMoney(win)
-                        }"
-                    val canWinSpannable = SpannableString(strTvCanWin)
-                    canWinSpannable.setSpan(
-                        ForegroundColorSpan(root.context.getColor(R.color.color_E23434)),
-                        "${LocalUtils.getString(R.string.bet_win)}：".length,
-                        strTvCanWin.length,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                    canWinSpannable.setSpan(
-                        StyleSpan(Typeface.BOLD),
-                        "${LocalUtils.getString(R.string.bet_win)}：".length,
-                        strTvCanWin.length,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                    tvCanWin.text = canWinSpannable
+                    update()
                 }
                 checkBetLimit(itemData)
                 onItemClickListener.refreshBetInfoTotal()
@@ -660,7 +674,7 @@ class BetInfoItemViewHolder(
 //                        itemData.matchOdd,
 //                        currentOddsType
 //                    ) - 1)
-                odds = (tempOdds - 1)
+                odds = tempOdds
             }
 
             else -> {
