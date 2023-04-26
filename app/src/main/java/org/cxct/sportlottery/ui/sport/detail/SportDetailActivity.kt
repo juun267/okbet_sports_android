@@ -417,7 +417,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     override fun onStart() {
         super.onStart()
         fastBetDataBean?.let { viewModel.updateMatchBetListData(it) } // 这里将传入的赔率玩法加到注单，这个页面优先消费该注单事件
-        fastBetDataBean = null
+//        fastBetDataBean = null
     }
 
     override fun onPause() {
