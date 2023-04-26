@@ -400,12 +400,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         matchType = intent.getSerializableExtra("matchType") as MatchType
         intoLive = intent.getBooleanExtra("intoLive", false)
         val betJson = intent.getStringExtra("fastBetDataBean")
-        fastBetDataBean=Gson().fromJson(betJson,FastBetDataBean::class.java)
+        fastBetDataBean = Gson().fromJson(betJson,FastBetDataBean::class.java)
         matchInfo?.let {
             setupMatchInfo(it)
-        }
-        fastBetDataBean?.let {
-            viewModel.updateMatchBetListData(it)
         }
     }
 
@@ -415,6 +412,12 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         isLogin = viewModel.loginRepository.isLogin.value == true
         live_view_tool_bar.initLoginStatus(isLogin)
         live_view_tool_bar.startPlayer()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        fastBetDataBean?.let { viewModel.updateMatchBetListData(it) } // 这里将传入的赔率玩法加到注单，这个页面优先消费该注单事件
+        fastBetDataBean = null
     }
 
     override fun onPause() {
@@ -543,10 +546,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 //            }
 //        }
         viewModel.showBetInfoSingle.observe(this) {
-            if(fastBetDataBean!=null){
-                showBetListPage()
-                return@observe
-            }
             it.getContentIfNotHandled()?.let {
                 showBetListPage()
             }
