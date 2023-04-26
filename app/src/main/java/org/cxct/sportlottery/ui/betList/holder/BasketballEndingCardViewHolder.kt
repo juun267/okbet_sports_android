@@ -133,6 +133,17 @@ class BasketballEndingCardViewHolder(
                     tvHide.gone()
                 }
 
+                if (holder.layoutPosition == betList?.size) {
+                    holder.setGone(R.id.tvMatchOdds, true).setVisible(R.id.tvBsMore, true)
+                    val tvBsMore = holder.getView<TextView>(R.id.tvBsMore)
+                    tvBsMore.background = DrawableUtils.getBasketballPlusMore(root)
+                    tvBsMore.setOnClickListener {
+                        onItemClickListener.addMore()
+                    }
+                } else {
+                    holder.setVisible(R.id.tvMatchOdds, true).setGone(R.id.tvBsMore, true)
+                }
+
                 tvMatchOdds.setOnClickListener {
                     //刷新上一次点击的区域
                     if ((betList?.size ?: 0) > lastSelectPo) {
@@ -157,7 +168,14 @@ class BasketballEndingCardViewHolder(
             }
         }
         rcvBasketballScore.adapter = rcvBasketballAdapter
-        rcvBasketballAdapter.setNewInstance(betList)
+
+        val newList = mutableListOf<BetInfoListData>()
+        if (betList != null) {
+            newList.addAll(betList)
+            newList.add(betList[0])
+        }
+
+        rcvBasketballAdapter.setNewInstance(newList)
         rcvBasketballScore.layoutManager = GridLayoutManager(root.context, 5)
 
         tvBasketBetListCount.text = "X${betList?.size}"

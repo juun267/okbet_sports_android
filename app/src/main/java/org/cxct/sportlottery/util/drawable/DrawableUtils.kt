@@ -30,4 +30,11 @@ object DrawableUtils {
             .setSolidColor(root.context.getColor(R.color.color_636466)).build()
     }
 
+    fun getBasketballPlusMore(root:View):Drawable{
+        return DrawableCreator.Builder().setCornersRadius(5.dp.toFloat())
+            .setStrokeWidth(1.dp.toFloat())
+            .setStrokeColor(root.context.getColor(R.color.color_025BE8))
+            .setSolidColor(root.context.getColor(R.color.color_FFFFFF)).build()
+    }
+
 }

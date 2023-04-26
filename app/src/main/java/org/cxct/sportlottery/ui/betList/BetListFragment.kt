@@ -394,6 +394,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 viewModel.removeBetInfoItem(oddsId)
             }
 
+
             override fun clearCarts() {
                 this@BetListFragment.clearCarts()
             }
@@ -484,6 +485,10 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
 
             override fun onOddsChangesSetOptionListener(text: String) {
                 currentBetOption = OddsModeUtil.currentSelectModeIndexWithText(text)
+            }
+
+            override fun addMore() {
+                onBackPressed()
             }
         }
 
