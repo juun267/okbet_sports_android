@@ -64,13 +64,12 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     private val p3RecordNData: MutableList<RecordNewEvent> = mutableListOf()//接口返回的最新投注
     private val p3RecordNwsData: MutableList<RecordNewEvent> = mutableListOf()//ws的最新投注
     private val p3RecordNShowData: MutableList<RecordNewEvent> = mutableListOf()//最新投注显示在界面上的数据
-    private var recordNewIndex = 0
-    private var recordNewWsIndex = 0
+    private val HANDLER_RECORD_NEW_ADD = 1//最新投注  数据 添加
+    private val HANDLER_RECORD_RESULT_ADD = 2//最新大奖数据 添加
+    private val HANDLER_RECORD_GET = 3//最新投注 最新大奖数据 获取
     private val p3RecordRData: MutableList<RecordNewEvent> = mutableListOf()//接口返回的最新大奖
     private val p3RecordRwsData: MutableList<RecordNewEvent> = mutableListOf()//ws的最新大奖
     private val p3RecordRShowData: MutableList<RecordNewEvent> = mutableListOf()//最新大奖显示在界面上的数据
-    private var recordResultIndex = 0
-    private var recordResultWsIndex = 0
     private var p3ogProviderFirstPosi: Int = 0
     private var p3ogProviderLastPosi: Int = 3
 
@@ -79,29 +78,40 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     private var recordHandler = object : Handler() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
-            var newItem: RecordNewEvent? = null
-            if (binding.include3.rbtnLb.isChecked) {
-                if (recordNewWsIndex < p3RecordNwsData.size) {
-                    newItem = p3RecordNwsData[recordNewWsIndex]
-                    recordNewWsIndex++
-                } else if (recordNewIndex < p3RecordNData.size) {
-                    newItem = p3RecordNData[recordNewIndex]
-                    recordNewIndex++
+            when (msg.what) {
+                HANDLER_RECORD_NEW_ADD -> {
+                    var wsData: RecordNewEvent = msg.obj as RecordNewEvent
+                    p3RecordNwsData.add(wsData)//最新投注
                 }
-            } else if (binding.include3.rbtnLbw.isChecked) {
-                if (recordResultWsIndex < p3RecordRwsData.size) {
-                    newItem = p3RecordRwsData[recordResultWsIndex]
-                    recordResultWsIndex++
 
-                } else if (recordResultIndex < p3RecordRData.size) {
-                    newItem = p3RecordRData[recordResultIndex]
-                    recordResultIndex++
+                HANDLER_RECORD_RESULT_ADD -> {
+                    var wsData: RecordNewEvent = msg.obj as RecordNewEvent
+                    p3RecordRwsData.add(wsData)//最新大奖
+                }
+
+                HANDLER_RECORD_GET -> {
+                    var newItem: RecordNewEvent? = null
+                    if (binding.include3.rbtnLb.isChecked) {
+                        if (p3RecordNwsData.isNotEmpty()) {
+                            newItem = p3RecordNwsData.removeAt(0)//ws 最新投注
+                        } else if (p3RecordNData.isNotEmpty()) {
+                            newItem = p3RecordNData.removeAt(0)
+                        }
+                    } else if (binding.include3.rbtnLbw.isChecked) {
+                        if (p3RecordRwsData.isNotEmpty()) {
+                            newItem = p3RecordRwsData.removeAt(0)//ws 最新大奖
+
+                        } else if (p3RecordRData.isNotEmpty()) {
+                            newItem = p3RecordRData.removeAt(0)
+                        }
+                    }
+                    if (newItem != null) {
+                        gameRecordAdapterNotify(newItem)
+                    }
+                    sendEmptyMessageDelayed(HANDLER_RECORD_GET, (Random.nextLong(1000) + 500))
                 }
             }
-            if (newItem != null) {
-                gameRecordAdapterNotify(newItem)
-            }
-            sendEmptyMessageDelayed(0, (Random.nextLong(1000) + 500))
+
         }
     }
 
@@ -224,9 +234,9 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     }
 
     private fun onBindPart3View() {
-        recordHandler.sendEmptyMessageDelayed(0, (Random.nextLong(1000) + 500))
         viewModel.getOKGamesRecordNew()
         viewModel.getOKGamesRecordResult()
+        recordHandler.sendEmptyMessageDelayed(HANDLER_RECORD_GET, (Random.nextLong(1000) + 500))
         binding.include3.apply {
             binding.include3.ivProvidersLeft.alpha = 0.5F
             providersAdapter.setOnItemClickListener { _, _, position ->
@@ -293,24 +303,30 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
             viewModel.recordNewHttp.observe(viewLifecycleOwner) {
                 if (it != null) {
-                    p3RecordNData.addAll(0, it)
+                    p3RecordNData.addAll(it.reversed())
                     recordNewhttpFlag = true
                 }
             }
             viewModel.recordResultHttp.observe(viewLifecycleOwner) {
                 if (it != null) {
-                    p3RecordRData.addAll(0, it)
+                    p3RecordRData.addAll(it.reversed())
                     recordResulthttpFlag = true
                 }
             }
             receiver.recordNew.observe(viewLifecycleOwner) {
-                if (recordNewhttpFlag && it != null) {
-                    p3RecordNwsData.add(0, it)
+                if (it != null && binding.include3.rbtnLb.isChecked) {
+                    var msg = Message()
+                    msg.what = HANDLER_RECORD_NEW_ADD
+                    msg.obj = it
+                    recordHandler.sendMessage(msg)
                 }
             }
             receiver.recordResult.observe(viewLifecycleOwner) {
-                if (recordResulthttpFlag && it != null) {
-                    p3RecordRwsData.add(0, it)
+                if (it != null && binding.include3.rbtnLbw.isChecked) {
+                    var msg = Message()
+                    msg.what = HANDLER_RECORD_RESULT_ADD
+                    msg.obj = it
+                    recordHandler.sendMessage(msg)
                 }
             }
 
@@ -329,6 +345,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                         gameRecordAdapter.addData(p3RecordNShowData)
                     }
                 }
+
                 R.id.rbtn_lbw -> {
                     if (!recordResulthttpFlag) {
                         viewModel.getOKGamesRecordResult()
@@ -540,11 +557,11 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         }
         //观察比赛状态改变
         receiver.matchStatusChange.observe(viewLifecycleOwner) { matchStatusChangeEvent ->
-            if (matchStatusChangeEvent == null ) {
+            if (matchStatusChangeEvent == null) {
                 return@observe
             }
 
-            if(binding.hotGameView.adapter==null||binding.hotGameView.adapter!!.data.isEmpty()){
+            if (binding.hotGameView.adapter == null || binding.hotGameView.adapter!!.data.isEmpty()) {
                 return@observe
             }
             val adapterData = binding.hotGameView.adapter?.data
@@ -560,7 +577,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                         context
                     )
                 ) {
-                    if(tempList.isNotEmpty()){
+                    if (tempList.isNotEmpty()) {
                         binding.hotGameView.notifyAdapterData(index, tempList[0])
                     }
                 }
@@ -577,7 +594,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                             matchClockEvent
                         )
                     ) {
-                        binding.hotGameView.notifyAdapterData(index,recommend)
+                        binding.hotGameView.notifyAdapterData(index, recommend)
                     }
                 }
 
@@ -592,7 +609,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 targetList?.forEachIndexed { index, recommend ->
                     if (SocketUpdateUtil.updateOddStatus(recommend, matchOddsLockEvent)
                     ) {
-                        binding.hotGameView.notifyAdapterData(index,recommend)
+                        binding.hotGameView.notifyAdapterData(index, recommend)
                     }
                 }
 
@@ -608,7 +625,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                             globalStopEvent
                         )
                     ) {
-                        binding.hotGameView.notifyAdapterData(index,recommend)
+                        binding.hotGameView.notifyAdapterData(index, recommend)
                     }
                 }
             }
