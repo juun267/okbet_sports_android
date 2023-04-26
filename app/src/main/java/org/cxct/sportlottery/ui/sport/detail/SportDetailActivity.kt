@@ -15,17 +15,16 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.webkit.*
 import android.widget.FrameLayout
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.appbar.AppBarLayout
 import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_detail_sport.*
-import kotlinx.android.synthetic.main.activity_main_tab.parlayFloatWindow
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import kotlinx.android.synthetic.main.content_baseball_status.*
 import kotlinx.android.synthetic.main.item_sport_odd.view.*
@@ -65,6 +64,7 @@ import org.cxct.sportlottery.ui.sport.SportViewModel
 import org.cxct.sportlottery.ui.sport.detail.adapter.*
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 import timber.log.Timber
 import java.net.URLEncoder
@@ -104,6 +104,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private val tabCateAdapter: TabCateAdapter by lazy {
         TabCateAdapter(OnItemSelectedListener {
             tabCateAdapter.selectedPosition = it
+            (rv_cat.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(rv_cat,
+                RecyclerView.State(),
+                tabCateAdapter.selectedPosition)
             viewModel.oddsDetailResult.value?.peekContent()?.oddsDetailData?.matchOdd?.playCateTypeList?.getOrNull(
                 it
             )?.code?.let { code ->
@@ -509,6 +512,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
         rv_cat.apply {
             adapter = tabCateAdapter
+            layoutManager =
+                ScrollCenterLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             itemAnimator?.changeDuration = 0
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
         }
@@ -979,6 +984,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 }
             }
             tabCateAdapter.dataList = playCateTypeList
+            (rv_cat.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(rv_cat,
+                RecyclerView.State(),
+                tabCateAdapter.selectedPosition)
         } else {
             rv_cat.visibility = View.GONE
         }
