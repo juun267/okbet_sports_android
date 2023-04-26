@@ -2,10 +2,13 @@ package org.cxct.sportlottery.ui.thirdGame
 
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.webkit.WebView
 import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_third_game.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.LoginRepository
@@ -46,6 +49,21 @@ open class ThirdGameActivity : WebActivity() {
         loadUrl(web_view)
         setupMenu()
         initObserve()
+    }
+
+    override fun overrideUrlLoading(view: WebView, url: String): Boolean {
+        if (url.isEmptyStr()) {
+            return super.overrideUrlLoading(view, url)
+        }
+
+        val requestUrl = url.replace("https", "http", true)
+        val host = Constants.getBaseUrl().replace("https", "http", true)
+        if (requestUrl.startsWith(host, true)) {
+            finish()
+            return true
+        }
+
+        return super.overrideUrlLoading(view, url)
     }
 
     private fun disableSystemUI() {
