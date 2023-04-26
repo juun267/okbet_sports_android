@@ -140,7 +140,9 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         //設定個人資訊頁面
         setupToInfoSettingPage()
         btn_head.setOnClickListener {
-            AvatarSelectorDialog(this, mSelectMediaListener).show(supportFragmentManager, null)
+            val dialog = AvatarSelectorDialog()
+            dialog.mSelectListener = mSelectMediaListener
+            dialog.show(supportFragmentManager, null)
         }
     }
 

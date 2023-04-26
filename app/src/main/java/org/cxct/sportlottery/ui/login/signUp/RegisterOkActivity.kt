@@ -629,11 +629,9 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             endButton.visibility =
                 if (sConfigData?.enableKYCVerify == FLAG_OPEN) View.VISIBLE else View.GONE
             endButton.setOnClickListener {
-                PicSelectorDialog(
-                    this@RegisterOkActivity,
-                    mfirstSelectDocMediaListener,
-                    PicSelectorDialog.CropType.RECTANGLE
-                ).show(supportFragmentManager, null)
+                val dialog = PicSelectorDialog()
+                dialog.mSelectListener = mfirstSelectDocMediaListener
+                dialog.show(supportFragmentManager, null)
             }
 
 
@@ -642,11 +640,9 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                         "2")
                 ) View.VISIBLE else View.GONE
             endButton2.setOnClickListener {
-                PicSelectorDialog(
-                    this@RegisterOkActivity,
-                    mSecondSelectPhotoMediaListener,
-                    PicSelectorDialog.CropType.RECTANGLE
-                ).show(supportFragmentManager, null)
+                val dialog = PicSelectorDialog()
+                dialog.mSelectListener = mSecondSelectPhotoMediaListener
+                dialog.show(supportFragmentManager, null)
             }
         }
 
