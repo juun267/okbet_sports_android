@@ -78,6 +78,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             matchInfo: MatchInfo,
             matchType: MatchType? = null,
             intoLive: Boolean = false,
+            tabCode: String? = null,
         ) {
             matchInfo.let {
                 val intent = Intent(context, SportDetailActivity::class.java)
@@ -88,6 +89,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         ?: if (TimeUtil.isTimeInPlay(it.startTime)) MatchType.IN_PLAY else MatchType.DETAIL
                 )
                 intent.putExtra("intoLive", intoLive)
+                intent.putExtra("tabCode", tabCode)
                 context.startActivity(intent)
             }
         }
@@ -110,6 +112,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private var betListFragment = BetListFragment()
     private var matchOdd: MatchOdd? = null
     private var matchInfo: MatchInfo? = null
+
+    //进来后默认切到指定tab
+    private val tabCode by lazy { intent.getStringExtra("tabCode") }
     private var isFlowing = false
     private lateinit var enterAnim: Animation
     private lateinit var exitAnim: Animation
@@ -632,7 +637,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 oddsDetailListAdapter.oddsDetailDataList.forEach {
                     it.isPin = false
                 }
-
                 pinList.forEach {
                     it.isPin = true
 
@@ -644,7 +648,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         )
                     )
                 }
-
                 oddsDetailListAdapter.notifyDataSetChanged()
             }
         }
@@ -847,17 +850,12 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         receiver.matchOddsChange.observe(this) {
             it?.getContentIfNotHandled()?.let { matchOddsChangeEvent ->
                 oddsDetailListAdapter?.oddsDetailDataList?.let { oddsDetailListDataList ->
-                    //当玩法为末位比分的时候不需要显示置顶
-                    val pinPlayCode =
-                        if (tabCateAdapter.dataList[tabCateAdapter.selectedPosition].code == MatchType.END_SCORE.postValue)
-                            null
-                        else
-                            viewModel.favorPlayCateList.value?.find { playCate -> playCate.gameType == matchInfo?.gameType }
                     SocketUpdateUtil.updateMatchOddsMap(oddsDetailListDataList,
                         matchOddsChangeEvent,
-                        pinPlayCode)?.let { updatedDataList ->
-                        oddsDetailListAdapter?.oddsDetailDataList = updatedDataList
-                    } ?: run {
+                        viewModel.favorPlayCateList.value?.find { playCate -> playCate.gameType == matchInfo?.gameType })
+                        ?.let { updatedDataList ->
+                            oddsDetailListAdapter?.oddsDetailDataList = updatedDataList
+                        } ?: run {
                         var needUpdate = false
                         oddsDetailListDataList.forEachIndexed { index, oddsDetailListData ->
                             if (SocketUpdateUtil.updateMatchOdds(
@@ -966,8 +964,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         val playCateTypeList = this.oddsDetailData?.matchOdd?.playCateTypeList
         if (playCateTypeList?.isNotEmpty() == true) {
             //如果是从篮球末位比分进入，拿到数据后，自动切换到篮球末位比分到tab下
-            if (tabCateAdapter.dataList.isNullOrEmpty() && matchType == MatchType.END_SCORE) {
-                playCateTypeList.indexOfFirst { it.code == matchType.postValue }.let {
+            if (tabCateAdapter.dataList.isEmpty() && tabCode == MatchType.END_SCORE.postValue) {
+                playCateTypeList.indexOfFirst { it.code == tabCode }.let {
                     if (it >= 0) {
                         tabCateAdapter.selectedPosition = it
                     }

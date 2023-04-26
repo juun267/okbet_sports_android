@@ -87,7 +87,12 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
 
             if (item is MatchOdd) { // 赛事栏相关点击
                 if (view is ViewGroup) { // 赛事详情
-                    item.matchInfo?.let { SportDetailActivity.startActivity(view.context, it, matchType) }
+                    item.matchInfo?.let {
+                        SportDetailActivity.startActivity(view.context,
+                            it,
+                            MatchType.EARLY,
+                            tabCode = MatchType.END_SCORE.postValue)
+                    }
                 } else { // 收藏赛事
                     viewModel.pinFavorite(FavoriteType.MATCH, item.matchInfo?.id)
                 }

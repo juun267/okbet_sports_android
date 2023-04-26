@@ -33,6 +33,7 @@ import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.network.common.ComparePlayCate
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.base.BaseGameAdapter
@@ -1069,8 +1070,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     }
                 }
             }
-
-            if (oddsDetail.isPin) {
+            //当玩法为末位比分的时候不需要显示置顶
+            if (oddsDetail.isPin && code != MatchType.END_SCORE.postValue) {
                 setVisibility(true)
             }
         }
