@@ -205,9 +205,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
     }
 
     private fun showPartGameList(gameList: List<OKGameBean>?, total: Int) {
-        if (showPartGameFragment().showSearchResault(gameList, total) > 0) {
-            binding.root.requestLayout()
-        }
+        showPartGameFragment().showSearchResault(gameList, total)
     }
 
     fun loadNextPage(pageIndex: Int): Boolean {
