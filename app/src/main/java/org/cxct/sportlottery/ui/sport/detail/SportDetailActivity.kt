@@ -847,11 +847,15 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         receiver.matchOddsChange.observe(this) {
             it?.getContentIfNotHandled()?.let { matchOddsChangeEvent ->
                 oddsDetailListAdapter?.oddsDetailDataList?.let { oddsDetailListDataList ->
+                    //当玩法为末位比分的时候不需要显示置顶
+                    val pinPlayCode =
+                        if (tabCateAdapter.dataList[tabCateAdapter.selectedPosition].code == MatchType.END_SCORE.postValue)
+                            null
+                        else
+                            viewModel.favorPlayCateList.value?.find { playCate -> playCate.gameType == matchInfo?.gameType }
                     SocketUpdateUtil.updateMatchOddsMap(oddsDetailListDataList,
                         matchOddsChangeEvent,
-                        viewModel.favorPlayCateList.value?.find { playCate ->
-                            playCate.gameType == matchInfo?.gameType
-                        })?.let { updatedDataList ->
+                        pinPlayCode)?.let { updatedDataList ->
                         oddsDetailListAdapter?.oddsDetailDataList = updatedDataList
                     } ?: run {
                         var needUpdate = false
