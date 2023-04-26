@@ -550,17 +550,19 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             val adapterData = binding.hotGameView.adapter?.data
             adapterData?.forEachIndexed { index, recommend ->
                 //取一个赛事，装成集合
-                val testList = mutableListOf<Recommend>()
-                testList.add(recommend)
+                val tempList = mutableListOf<Recommend>()
+                tempList.add(recommend)
                 //丢进去判断是否要更新
                 if (SocketUpdateUtil.updateMatchStatus(
                         recommend.matchInfo?.gameType,
-                        testList as MutableList<MatchOdd>,
+                        arrayListOf(recommend) as MutableList<MatchOdd>,
                         matchStatusChangeEvent,
                         context
                     )
                 ) {
-                    binding.hotGameView.notifyAdapterData(index, testList[0])
+                    if(tempList.isNotEmpty()){
+                        binding.hotGameView.notifyAdapterData(index, tempList[0])
+                    }
                 }
             }
 
