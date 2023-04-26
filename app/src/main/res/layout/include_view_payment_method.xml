@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/register_responsibilities"
+        android:text="@string/J093"
         android:textColor="@color/color_0D2245"
         android:textSize="16sp"
         android:textStyle="bold"
