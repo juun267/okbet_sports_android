@@ -134,7 +134,9 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             pageIndx++
         }
         if (::binding.isInitialized) {
-            gameChildAdapter.setEmptyView(emptyView)
+            if (gameChildAdapter.dataCount() == 0) {
+                gameChildAdapter.setEmptyView(emptyView)
+            }
         }
         isLoading = false
         return count

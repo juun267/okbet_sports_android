@@ -119,7 +119,8 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
             }
 
             tab.isRecent() -> { // 最近
-                return loginedRun(binding.root.context) { showRecentPart(tab) }
+                showRecentPart(tab)
+                return true
             }
 
             tab.isFavorites() -> { // 收藏
@@ -197,7 +198,9 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
     }
 
     private fun showPartGameList(gameList: List<OKGameBean>?, total: Int) {
-        showPartGameFragment().showSearchResault(gameList, total)
+        if (showPartGameFragment().showSearchResault(gameList, total) > 0) {
+            binding.root.requestLayout()
+        }
     }
 
     fun loadNextPage(pageIndex: Int): Boolean {

@@ -430,7 +430,7 @@ object LoginRepository {
             KvUtils.removeKey(KV_STR_SELECT_ODDS_MODE)
             apply()
         }
-        clearRecentPlayGame()
+//        clearRecentPlayGame()
         clearUserInfo()
     }
 
