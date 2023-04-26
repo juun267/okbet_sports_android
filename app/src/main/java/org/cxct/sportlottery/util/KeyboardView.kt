@@ -112,7 +112,14 @@ class KeyboardView @JvmOverloads constructor(
 //        }
         tvMax.setOnClickListener {
             if (isLogin) {
-                plusAll(maxBetMoney)
+                // TODO: 添加判断是不是末尾比分  用 用户余额/投注数量 来跟该盘口的最大投注额对比
+                plusAll(
+                    if (maxBetMoney.toDouble() > mUserMoney) {
+                        TextUtil.formatInputMoney(mUserMoney)
+                    } else {
+                        maxBetMoney
+                    }
+                )
             } else {
                 plusAll(_maxBetMoney)
             }
@@ -134,12 +141,14 @@ class KeyboardView @JvmOverloads constructor(
     private lateinit var mEditText: EditText
     private var mPosition: Int? = 0
     private var isParlay: Boolean = false
+
     //最大限額
     private var _maxBetMoney: String = "9999999"
     private val maxBetMoney: String
         get() = _maxBetMoney
 
     private var isShow = false
+    private var mUserMoney: Double = 0.0
 
     //是否登入
     private val isLogin: Boolean
@@ -151,6 +160,11 @@ class KeyboardView @JvmOverloads constructor(
     fun setupMaxBetMoney(max: Double) {
         _maxBetMoney = TextUtil.formatInputMoney(max)
     }
+
+    fun setUserMoney(money: Double) {
+        mUserMoney = money
+    }
+
 
     fun showKeyboard(
         editText: EditText,
@@ -222,7 +236,7 @@ class KeyboardView @JvmOverloads constructor(
     }
 
     private fun plus(count: Double) {
-        if (!this::mEditText.isInitialized){
+        if (!this::mEditText.isInitialized) {
             return
         }
         val input = if (mEditText.text.toString() == "") "0" else mEditText.text.toString()
@@ -234,7 +248,7 @@ class KeyboardView @JvmOverloads constructor(
     }
 
     private fun plusAll(all: String) {
-        if (!this::mEditText.isInitialized){
+        if (!this::mEditText.isInitialized) {
             return
         }
         mEditText.setText(all)
@@ -243,7 +257,7 @@ class KeyboardView @JvmOverloads constructor(
     }
 
     private fun insert(count: Long) {
-        if (!this::mEditText.isInitialized){
+        if (!this::mEditText.isInitialized) {
             return
         }
         val editable = mEditText.text
@@ -253,7 +267,7 @@ class KeyboardView @JvmOverloads constructor(
     }
 
     private fun insertDot() {
-        if (!this::mEditText.isInitialized){
+        if (!this::mEditText.isInitialized) {
             return
         }
         val editable = mEditText.text
@@ -271,7 +285,7 @@ class KeyboardView @JvmOverloads constructor(
     }
 
     private fun delete() {
-        if (!this::mEditText.isInitialized){
+        if (!this::mEditText.isInitialized) {
             return
         }
         val editable = mEditText.text
