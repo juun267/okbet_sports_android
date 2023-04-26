@@ -36,8 +36,16 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         )
     }
 
+    private fun isAllTba() = fragmentHelper.getCurrentFragment() is AllGamesFragment
+
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
+        if (hidden) { //不可见时切回AllGames
+            if (!isAllTba()) {
+                backGameAll()
+            }
+            binding.scrollView.smoothScrollTo(0,0)
+        }
         fragmentHelper.getCurrentFragment().onHiddenChanged(hidden)
     }
 
