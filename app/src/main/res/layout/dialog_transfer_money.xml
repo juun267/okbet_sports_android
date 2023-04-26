@@ -145,7 +145,7 @@
                     android:maxLines="1"
                     android:inputType="number"
                     android:textColorHint="@color/color_C9CFD7"
-                    android:textColor="@color/color_535D76"
+                    android:textColor="@color/color_025BE8"
                     android:background="@drawable/selector_radius_4_stroke"/>
 
                 <TextView

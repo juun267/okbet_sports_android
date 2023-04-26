@@ -43,7 +43,7 @@
             android:textColor="@color/color_6D7693"
             android:layout_gravity="center_vertical"
             android:textSize="@dimen/textSize14sp"
-            android:text="@string/see_more" />
+            android:text="@string/N702" />
 
         <ImageView
             android:id="@+id/ivHotMore"

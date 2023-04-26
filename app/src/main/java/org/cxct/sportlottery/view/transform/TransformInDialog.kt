@@ -78,7 +78,7 @@ class TransformInDialog(val firmType: String,
         edtInput.isSelected = !effective
 
         if (effective) {
-            val color = resources.getColor(R.color.color_535D76)
+            val color = resources.getColor(R.color.color_025BE8)
             edtInput.setTextColor(color)
             tvError.gone()
             return

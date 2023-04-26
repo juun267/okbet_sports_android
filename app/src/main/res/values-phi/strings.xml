@@ -1170,8 +1170,9 @@
     <string name="J299">Online serbisyo</string>
     <string name="B023">Kadalasang Tanong</string>
     <string name="N883">Wala pang resulta!</string>
-    <string name="B010">Mga Termino at Kundisyon</string>
+    <string name="J095">Termino at Kundisyon</string>
     <string name="N482">Prompt ng Paglipat</string>
     <string name="N483">Pakikumpirma ang halagang inilipat sa game account</string>
     <string name="N885">Mag-load pa</string>
+    <string name="N001">Tungkol sa Amin</string>
 </resources>
