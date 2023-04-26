@@ -14,6 +14,6 @@ interface OnItemClickListener {
         fun onMoreOptionClick()
         fun onOddsChangeAcceptSelect(tvTextSelect: TextView)
         fun onOddsChangesSetOptionListener(text: String)
-
-        fun clearCarts(){}
+        fun addMore()
+        fun clearCarts()
     }

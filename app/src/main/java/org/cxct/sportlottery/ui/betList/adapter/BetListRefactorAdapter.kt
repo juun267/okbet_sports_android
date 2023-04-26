@@ -181,6 +181,7 @@ class BetListRefactorAdapter(
     ) {
         when (holder) {
             is BasketballEndingCardViewHolder -> {
+//                betList?.add(betList!![0])
                 betList?.getOrNull(position)?.let { betInfoListData ->
                     holder.bind(
                         betList,
