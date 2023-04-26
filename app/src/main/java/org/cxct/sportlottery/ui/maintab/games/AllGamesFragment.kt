@@ -4,21 +4,17 @@ import android.graphics.Paint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Switch
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.core.view.postDelayed
 import androidx.recyclerview.widget.*
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import kotlinx.android.synthetic.main.fragment_all_okgames.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.extentions.*
@@ -29,7 +25,6 @@ import org.cxct.sportlottery.net.games.data.OKGamesCategory
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
@@ -43,7 +38,6 @@ import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
-import org.koin.core.logger.MESSAGE
 import kotlin.random.Random
 
 // OkGames所有分类
@@ -64,8 +58,6 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     private val p3RecordNData: MutableList<RecordNewEvent> = mutableListOf()//接口返回的最新投注
     private val p3RecordNwsData: MutableList<RecordNewEvent> = mutableListOf()//ws的最新投注
     private val p3RecordNShowData: MutableList<RecordNewEvent> = mutableListOf()//最新投注显示在界面上的数据
-    private val HANDLER_RECORD_NEW_ADD = 1//最新投注  数据 添加
-    private val HANDLER_RECORD_RESULT_ADD = 2//最新大奖数据 添加
     private val HANDLER_RECORD_GET = 3//最新投注 最新大奖数据 获取
     private val p3RecordRData: MutableList<RecordNewEvent> = mutableListOf()//接口返回的最新大奖
     private val p3RecordRwsData: MutableList<RecordNewEvent> = mutableListOf()//ws的最新大奖
@@ -79,15 +71,6 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             when (msg.what) {
-                HANDLER_RECORD_NEW_ADD -> {
-                    var wsData: RecordNewEvent = msg.obj as RecordNewEvent
-                    p3RecordNwsData.add(wsData)//最新投注
-                }
-
-                HANDLER_RECORD_RESULT_ADD -> {
-                    var wsData: RecordNewEvent = msg.obj as RecordNewEvent
-                    p3RecordRwsData.add(wsData)//最新大奖
-                }
 
                 HANDLER_RECORD_GET -> {
                     var newItem: RecordNewEvent? = null
@@ -108,7 +91,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                     if (newItem != null) {
                         gameRecordAdapterNotify(newItem)
                     }
-                    sendEmptyMessageDelayed(HANDLER_RECORD_GET, (Random.nextLong(1000) + 500))
+                    sendEmptyMessageDelayed(HANDLER_RECORD_GET, (Random.nextLong(1000) + 400))
                 }
             }
 
@@ -148,6 +131,11 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             okGamesFragment().viewModel.getOKGamesHall()
 //            initHotGameData()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        recordHandler.removeCallbacksAndMessages(null)
     }
 
     private fun initObserve() = okGamesFragment().viewModel.run {
@@ -315,18 +303,12 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             }
             receiver.recordNew.observe(viewLifecycleOwner) {
                 if (it != null && binding.include3.rbtnLb.isChecked) {
-                    var msg = Message()
-                    msg.what = HANDLER_RECORD_NEW_ADD
-                    msg.obj = it
-                    recordHandler.sendMessage(msg)
+                    p3RecordNwsData.add(it)//最新投注(当前正处于主线程，直接将数据加到队列里面去)
                 }
             }
             receiver.recordResult.observe(viewLifecycleOwner) {
                 if (it != null && binding.include3.rbtnLbw.isChecked) {
-                    var msg = Message()
-                    msg.what = HANDLER_RECORD_RESULT_ADD
-                    msg.obj = it
-                    recordHandler.sendMessage(msg)
+                    p3RecordRwsData.add(it)//最新大奖
                 }
             }
 
@@ -566,20 +548,16 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             }
             val adapterData = binding.hotGameView.adapter?.data
             adapterData?.forEachIndexed { index, recommend ->
-                //取一个赛事，装成集合
-                val tempList = mutableListOf<Recommend>()
-                tempList.add(recommend)
+
                 //丢进去判断是否要更新
                 if (SocketUpdateUtil.updateMatchStatus(
                         recommend.matchInfo?.gameType,
-                        arrayListOf(recommend) as MutableList<MatchOdd>,
+                        recommend,
                         matchStatusChangeEvent,
                         context
                     )
                 ) {
-                    if (tempList.isNotEmpty()) {
-                        binding.hotGameView.notifyAdapterData(index, tempList[0])
-                    }
+                    binding.hotGameView.notifyAdapterData(index, recommend)
                 }
             }
 
