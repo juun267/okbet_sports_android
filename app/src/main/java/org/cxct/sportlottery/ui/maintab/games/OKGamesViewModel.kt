@@ -177,6 +177,9 @@ class OKGamesViewModel(
      * 获取最近游戏
      */
     fun getRecentPlay() {
+        if (!LoginRepository.isLogined()) {  // 没登录不显示最近玩的游戏
+            return
+        }
         val ids = LoginRepository.getRecentPlayGameIds()
         val recentList = mutableListOf<OKGameBean>()
         ids.forEach {

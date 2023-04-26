@@ -119,8 +119,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
             }
 
             tab.isRecent() -> { // 最近
-                showRecentPart(tab)
-                return true
+                return loginedRun(binding.root.context) { showRecentPart(tab) }
             }
 
             tab.isFavorites() -> { // 收藏
