@@ -38,6 +38,7 @@ import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
+import timber.log.Timber
 import kotlin.random.Random
 
 // OkGames所有分类
@@ -58,6 +59,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     private val p3RecordNData: MutableList<RecordNewEvent> = mutableListOf()//接口返回的最新投注
     private val p3RecordNwsData: MutableList<RecordNewEvent> = mutableListOf()//ws的最新投注
     private val p3RecordNShowData: MutableList<RecordNewEvent> = mutableListOf()//最新投注显示在界面上的数据
+    private val HANDLER_RECORD_NEW_ADD = 1//最新投注  数据 添加
+    private val HANDLER_RECORD_RESULT_ADD = 2//最新大奖数据 添加
     private val HANDLER_RECORD_GET = 3//最新投注 最新大奖数据 获取
     private val p3RecordRData: MutableList<RecordNewEvent> = mutableListOf()//接口返回的最新大奖
     private val p3RecordRwsData: MutableList<RecordNewEvent> = mutableListOf()//ws的最新大奖
@@ -71,6 +74,17 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             when (msg.what) {
+                HANDLER_RECORD_NEW_ADD -> {
+                    var wsData: RecordNewEvent = msg.obj as RecordNewEvent
+                    Timber.v("RECORD_NEW_OK_GAMES 加数据: $wsData")
+                    p3RecordNwsData.add(wsData)//最新投注//最新投注(当前正处于主线程，直接将数据加到队列里面去)
+                    Timber.v("RECORD_NEW_OK_GAMES 加数据后: $p3RecordNwsData")
+                }
+
+                HANDLER_RECORD_RESULT_ADD -> {
+                    var wsData: RecordNewEvent = msg.obj as RecordNewEvent
+                    p3RecordRwsData.add(wsData)//最新大奖
+                }
                 HANDLER_RECORD_GET -> {
                     var newItem: RecordNewEvent? = null
                     if (binding.include3.rbtnLb.isChecked) {
@@ -304,12 +318,18 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             }
             receiver.recordNew.observe(viewLifecycleOwner) {
                 if (it != null) {
-                    p3RecordNwsData.add(it)//最新投注(当前正处于主线程，直接将数据加到队列里面去)
+                    var msg = Message()
+                    msg.what = HANDLER_RECORD_NEW_ADD
+                    msg.obj = it
+                    recordHandler.sendMessage(msg)
                 }
             }
             receiver.recordResult.observe(viewLifecycleOwner) {
                 if (it != null) {
-                    p3RecordRwsData.add(it)//最新大奖
+                    var msg = Message()
+                    msg.what = HANDLER_RECORD_RESULT_ADD
+                    msg.obj = it
+                    recordHandler.sendMessage(msg)
                 }
             }
 
