@@ -312,9 +312,9 @@ class ItemHotMatchHolder(
 
                 } else {
                     stopTimer()
-//                    binding.tvGamePlayTime.visibility = View.GONE
-                    binding.tvGamePlayTime.text =
-                        TimeUtil.timeFormat(item.startTime, TimeUtil.DM_HM_FORMAT)
+                    binding.tvGamePlayTime.visibility = View.GONE
+//                    binding.tvGamePlayTime.text =
+//                        TimeUtil.timeFormat(item.startTime, TimeUtil.DM_HM_FORMAT)
                 }
             }
             else -> {
