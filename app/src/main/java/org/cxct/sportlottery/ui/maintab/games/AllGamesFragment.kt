@@ -135,9 +135,9 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         if (hidden) {
             return
         }
-        setupOddsChangeListener()
-        initHotGameData()
 
+        initHotGameData()
+        setupOddsChangeListener()
         val noData = okGamesFragment().viewModel.gameHall.value == null
         val time = System.currentTimeMillis()
         if (noData || time - lastRequestTimeStamp > 60_000) { // 避免短时间重复请求
@@ -518,9 +518,12 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             //api获取热门赛事列表
             it.peekContent().let { data ->
                 binding.hotGameView.visible()
+                unSubscribeChannelHallAll()
                 binding.hotGameView.setGameData(data)
+
                 //订阅监听
                 subscribeQueryData(data)
+
             }
         }
     }

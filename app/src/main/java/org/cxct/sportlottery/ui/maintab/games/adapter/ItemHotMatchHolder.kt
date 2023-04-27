@@ -5,6 +5,7 @@ import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemHotGameViewBinding
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.Odd
@@ -309,12 +310,9 @@ class ItemHotMatchHolder(
                                 item.matchInfo?.gameType == GameType.RB.key ||
                                 item.matchInfo?.gameType == GameType.AFT.key)
                     )
-
                 } else {
                     stopTimer()
-                    binding.tvGamePlayTime.visibility = View.GONE
-//                    binding.tvGamePlayTime.text =
-//                        TimeUtil.timeFormat(item.startTime, TimeUtil.DM_HM_FORMAT)
+                    binding.tvGamePlayTime.text=""
                 }
             }
             else -> {
@@ -352,7 +350,7 @@ class ItemHotMatchHolder(
             (TimeUtil.isTimeInPlay(item.startTime)
                     && item.matchInfo?.status == GameStatus.POSTPONED.code
                     && (item.matchInfo?.gameType == GameType.FT.name || item.matchInfo?.gameType == GameType.BK.name || item.matchInfo?.gameType == GameType.TN.name)) -> {
-                binding.tvGamePlayTime.visibility = View.GONE
+                binding.tvGamePlayTime.text=""
             }
 
             TimeUtil.isTimeInPlay(item.startTime) -> {
@@ -362,7 +360,7 @@ class ItemHotMatchHolder(
             }
 
             TimeUtil.isTimeAtStart(item.startTime) -> {
-                binding.tvGameStatus.visibility = View.GONE
+                binding.tvGameStatus.text=""
             }
         }
     }
