@@ -17,10 +17,7 @@ import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
 
 object Constants {
-    val SERVER_URL_LIST = when (BuildConfig.FLAVOR) {
-        "phuat" -> listOf("abaoooiap.com")
-        else -> listOf("56wwwkvo.com", "66abnmho.com", "pukckq23.com", "tyiksa89.com")
-    }
+    val SERVER_URL_LIST = listOf("56wwwkvo.com", "66abnmho.com", "pukckq23.com", "tyiksa89.com")
     var currentServerUrl: String? = null  //當前選擇的的 server url (後續 CheckAppUpdate API 會用到)
     var currentFilename: String? = null //當前選擇的apk name
     private var mBaseUrl = ""
