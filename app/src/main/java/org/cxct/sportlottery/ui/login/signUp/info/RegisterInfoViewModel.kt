@@ -288,7 +288,12 @@ class RegisterInfoViewModel(
 
     fun setCityData( cityPosition: Int) {
         val cityList =getCityStringListByProvince()
-        cityInput = cityList[cityPosition]
+        if(cityList.size==0||cityPosition>cityList.size-1){
+            cityInput = ""
+        }else{
+            cityInput = cityList[cityPosition]
+        }
+
     }
 
     fun setProvinceData(provincePosition: Int) {

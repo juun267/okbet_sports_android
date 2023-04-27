@@ -219,11 +219,9 @@ class RegisterCredentialsFragment : BaseSocketFragment<RegisterViewModel>(Regist
                 tv_upload_tips.visibility = View.GONE
                 tv_upload.text = getString(R.string.register_identity_photo_hint_front)
                 uploadListener = UploadImageView.UploadListener {
-                    PicSelectorDialog(
-                        activityNotNull,
-                        mSelectDocMediaListener,
-                        PicSelectorDialog.CropType.RECTANGLE
-                    ).show(parentFragmentManager, RegisterCredentialsFragment::class.java.simpleName)
+                    val dialog = PicSelectorDialog()
+                    dialog.mSelectListener = mSelectDocMediaListener
+                    dialog.show(parentFragmentManager, RegisterCredentialsFragment::class.java.simpleName)
                 }
             }
 
@@ -236,11 +234,9 @@ class RegisterCredentialsFragment : BaseSocketFragment<RegisterViewModel>(Regist
                 tv_upload_tips.visibility = View.GONE
                 tv_upload.text = getString(R.string.register_identity_photo_hint_back)
                 uploadListener = UploadImageView.UploadListener {
-                    PicSelectorDialog(
-                        activityNotNull,
-                        mSelectPhotoMediaListener,
-                        PicSelectorDialog.CropType.RECTANGLE
-                    ).show(parentFragmentManager, RegisterCredentialsFragment::class.java.simpleName)
+                    val dialog = PicSelectorDialog()
+                    dialog.mSelectListener = mSelectDocMediaListener
+                    dialog.show(parentFragmentManager, RegisterCredentialsFragment::class.java.simpleName)
                 }
             }
         }

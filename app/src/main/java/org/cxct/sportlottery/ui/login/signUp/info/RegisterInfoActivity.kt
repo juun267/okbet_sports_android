@@ -66,6 +66,10 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
         //地址数据
         viewModel.areaAllList.observe(this) {
             hideLoading()
+            //请求到了空的行政区域
+            if(it.provinces.isEmpty()||it.cities.isEmpty()){
+                finishPage()
+            }
             val provinceList = viewModel.getProvinceStringList()
             provincePicker?.setPicker(provinceList)
         }

@@ -61,12 +61,11 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
         }
     }
 
-    private val detailDialog by lazy { MoneyRecordDetailDialog() }
-
     private val rvAdapter by lazy {
         MoneyTransferRecordAdapter(ItemClickListener {
+            val detailDialog = MoneyRecordDetailDialog()
             detailDialog.arguments = Bundle().apply { putParcelable("data", it) }
-            detailDialog.show(parentFragmentManager, MoneyTransferRecordFragment::class.simpleName)
+            detailDialog.show(parentFragmentManager, null)
         })
     }
 

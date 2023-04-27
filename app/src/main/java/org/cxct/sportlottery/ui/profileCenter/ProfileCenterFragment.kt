@@ -179,14 +179,12 @@ class ProfileCenterFragment :
 
     }
     private fun setupEditNickname() {
-        rl_head.setOnClickListener{
-                fragmentManager?.let { it1 ->
-                    AvatarSelectorDialog(
-                        activity as Activity,
-                        mSelectMediaListener
-                    ).show(it1, null)
-                }
-
+        rl_head.setOnClickListener {
+            fragmentManager?.let { it1 ->
+                val dialog = AvatarSelectorDialog()
+                dialog.mSelectListener = mSelectMediaListener
+                dialog.show(it1, null)
+            }
         }
     }
 
