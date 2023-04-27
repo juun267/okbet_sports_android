@@ -22,7 +22,6 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.appbar.AppBarLayout
-import com.google.gson.Gson
 import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_detail_sport.*
@@ -79,7 +78,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             matchInfo: MatchInfo,
             matchType: MatchType? = null,
             intoLive: Boolean = false,
-            fastBetDataBean: String? = null,
         ) {
             matchInfo.let {
                 val intent = Intent(context, SportDetailActivity::class.java)
@@ -90,7 +88,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         ?: if (TimeUtil.isTimeInPlay(it.startTime)) MatchType.IN_PLAY else MatchType.DETAIL
                 )
                 intent.putExtra("intoLive", intoLive)
-                intent.putExtra("fastBetDataBean", fastBetDataBean)
                 context.startActivity(intent)
             }
         }
@@ -110,10 +107,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             }
         })
     }
-    private var betListFragment = BetListFragment()
+    private var betListFragment: BetListFragment? = null
     private var matchOdd: MatchOdd? = null
     private var matchInfo: MatchInfo? = null
-    private var fastBetDataBean: FastBetDataBean? = null
     private var isFlowing = false
     private lateinit var enterAnim: Animation
     private lateinit var exitAnim: Animation
@@ -350,7 +346,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             R.anim.pop_bottom_to_top_exit,
             R.anim.push_bottom_to_top_enter,
             R.anim.pop_bottom_to_top_exit
-        ).add(R.id.fl_bet_list, betListFragment)
+        ).add(R.id.fl_bet_list, betListFragment!!)
             .addToBackStack(BetListFragment::class.java.simpleName).commit()
     }
 
@@ -399,8 +395,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         matchInfo = intent.getParcelableExtra("matchInfo")
         matchType = intent.getSerializableExtra("matchType") as MatchType
         intoLive = intent.getBooleanExtra("intoLive", false)
-        val betJson = intent.getStringExtra("fastBetDataBean")
-        fastBetDataBean = Gson().fromJson(betJson,FastBetDataBean::class.java)
+
         matchInfo?.let {
             setupMatchInfo(it)
         }
@@ -412,12 +407,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         isLogin = viewModel.loginRepository.isLogin.value == true
         live_view_tool_bar.initLoginStatus(isLogin)
         live_view_tool_bar.startPlayer()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        fastBetDataBean?.let { viewModel.updateMatchBetListData(it) } // 这里将传入的赔率玩法加到注单，这个页面优先消费该注单事件
-//        fastBetDataBean = null
     }
 
     override fun onPause() {
@@ -545,6 +534,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 ////                cl_bet_list_bar.tv_balance.text = TextUtil.formatMoney(money)
 //            }
 //        }
+
         viewModel.showBetInfoSingle.observe(this) {
             it.getContentIfNotHandled()?.let {
                 showBetListPage()
@@ -945,7 +935,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     //TODO 底部注单是否显示
     override fun getBetListPageVisible(): Boolean {
-        return betListFragment.isVisible
+        return betListFragment?.isVisible ?: false
     }
 
 

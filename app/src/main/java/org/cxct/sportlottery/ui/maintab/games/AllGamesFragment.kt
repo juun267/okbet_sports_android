@@ -499,13 +499,15 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                     betPlayCateNameMap = betPlayCateNameMap,
                     playCateMenuCode
                 )
-                val temp = JsonUtil.toJson(fastBetDataBean)
+
+                activity?.doOnStop(true) { // 延时加入注单，不然当前页面会弹出来注单列表
+                    viewModel.updateMatchBetListData(fastBetDataBean)
+                }
                 SportDetailActivity.startActivity(
                     requireContext(),
                     matchInfo,
                     matchType,
-                    false,
-                    temp
+                    false
                 )
             }, onClickPlayTypeListener = { _, _, _, _ ->
 

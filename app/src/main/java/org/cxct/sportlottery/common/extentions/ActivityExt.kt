@@ -60,28 +60,29 @@ fun ViewModel.releaseVM() {
     field.invoke(this)
 }
 
-fun LifecycleOwner.doOnResume(block: () -> Unit, interval: Int = 30_000) {
-    doWhenLife(Lifecycle.Event.ON_RESUME, interval, block)
+fun LifecycleOwner.doOnResume(interval: Int = 30_000, once: Boolean = false, block: () -> Unit) {
+    doWhenLife(Lifecycle.Event.ON_RESUME, interval, block, once)
 }
 
-fun LifecycleOwner.doOnPause(block: () -> Unit) {
-    doWhenLife(Lifecycle.Event.ON_RESUME, 0, block)
+fun LifecycleOwner.doOnPause(once: Boolean = false, block: () -> Unit) {
+    doWhenLife(Lifecycle.Event.ON_PAUSE, 0, block, once)
 }
 
-fun LifecycleOwner.doOnStop(block: () -> Unit) {
-    doWhenLife(Lifecycle.Event.ON_RESUME, 0, block)
+fun LifecycleOwner.doOnStop(once: Boolean = false, block: () -> Unit) {
+    doWhenLife(Lifecycle.Event.ON_STOP, 0, block, once)
 }
 
-fun LifecycleOwner.doOnDestory(block: () -> Unit) {
-    doWhenLife(Lifecycle.Event.ON_RESUME, 0, block)
+fun LifecycleOwner.doOnDestory(once: Boolean = false, block: () -> Unit) {
+    doWhenLife(Lifecycle.Event.ON_DESTROY, 0, block, once)
 }
 
-fun LifecycleOwner.doWhenLife(lifeEvent: Lifecycle.Event, interval: Int = 0, block: () -> Unit, ) {
+fun LifecycleOwner.doWhenLife(lifeEvent: Lifecycle.Event, interval: Int = 0, block: () -> Unit, once: Boolean) {
     lifecycle.addObserver(object : LifecycleEventObserver {
 
         var time = 0L
         override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
             if (event == lifeEvent && System.currentTimeMillis() - time > interval) {
+                if (once) { lifecycle.removeObserver(this) }
                 time = System.currentTimeMillis()
                 block.invoke()
             }
