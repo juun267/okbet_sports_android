@@ -14,12 +14,15 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MenuCode
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchRequest
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LocalUtils
+import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
+import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
 import org.cxct.sportlottery.util.TimeUtil
 
@@ -283,10 +286,15 @@ abstract class BaseFavoriteViewModel(
                     if (key == PlayCate.EPS.value)
                         odd.setupEPSDiscount(discount)
                     else
-                        odd.setupDiscount(discount)
+                        setupOddDiscount(odd, discount)
                 }
             }
         }
+    }
+
+    private fun setupOddDiscount(odd: Odd, discount: Float) {
+        odd.odds = odd.odds?.applyDiscount(discount)
+        odd.hkOdds = odd.hkOdds?.applyHKDiscount(discount)
     }
 
     private fun MatchOdd.setupOddDiscount() {
