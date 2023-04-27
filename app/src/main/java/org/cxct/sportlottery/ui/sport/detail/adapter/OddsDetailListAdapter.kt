@@ -117,9 +117,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
     var homeCornerKicks: Int? = null
     var awayCornerKicks: Int? = null
 
-
-    private lateinit var code: String
-
+    private var code: String? = null
 
     var oddsType: OddsType = OddsType.EU
         set(value) {

@@ -179,11 +179,12 @@
             app:layout_constraintTop_toTopOf="@+id/tv_league"
             tools:text="日本奥运队 v 纽西兰奥运队" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <org.cxct.sportlottery.view.ChildRecyclerView
             android:id="@+id/rvEndScoreInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            app:layout_constraintHeight_max="105dp"
             tools:listitem="@layout/item_bet_receipt_endscore"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="5"
