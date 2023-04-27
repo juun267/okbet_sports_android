@@ -352,7 +352,7 @@ abstract class BaseOddButtonViewModel(
         var currentOddsTypes: OddsType
         //一般注單
         val matchList: MutableList<Odd> = mutableListOf()
-        normalBetList.forEach {
+        normalBetList.forEachIndexed { index, it ->
             currentOddsTypes =
                 if (it.matchOdd.isOnlyEUType || it.matchType == MatchType.OUTRIGHT || it.matchType == MatchType.OTHER_OUTRIGHT || it.matchType == MatchType.END_SCORE) {
                     OddsType.EU
@@ -360,12 +360,8 @@ abstract class BaseOddButtonViewModel(
                     oddsType
                 }
             val betAmount = when (tabPosition) {
-                0 -> {
+                0,2 -> {
                     it.betAmount
-                }
-
-                2 -> {
-                    it.betAmount * normalBetList.size
                 }
 
                 else -> {
@@ -373,14 +369,34 @@ abstract class BaseOddButtonViewModel(
                 }
             }
 
-            matchList.add(
-                Odd(
-                    it.matchOdd.oddsId,
-                    getOdds(it.matchOdd, currentOddsTypes),
-                    betAmount,
-                    currentOddsTypes.code
+            if (tabPosition == 2) {
+                if (index == 0) {
+                    matchList.add(
+                        Odd(
+                            it.matchOdd.oddsId,
+                            getOdds(it.matchOdd, currentOddsTypes),
+                            betAmount,
+                            currentOddsTypes.code
+                        )
+                    )
+                } else {
+                    matchList.add(
+                        Odd(
+                            it.matchOdd.oddsId, null, null, null
+                        )
+                    )
+                }
+            } else {
+                matchList.add(
+                    Odd(
+                        it.matchOdd.oddsId,
+                        getOdds(it.matchOdd, currentOddsTypes),
+                        betAmount,
+                        currentOddsTypes.code
+                    )
                 )
-            )
+            }
+
         }
 
         //若有串關 則改為EU

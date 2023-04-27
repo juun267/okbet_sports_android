@@ -340,6 +340,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 //        cl_bet_list_bar.tv_balance_currency.text = sConfigData?.systemCurrencySign
 //        cl_bet_list_bar.tv_balance.text = TextUtil.formatMoney(0.0)
 //
+        binding.parlayFloatWindow.setBetText(getString(R.string.bet_slip))
         binding.parlayFloatWindow.onViewClick = {
             showBetListPage()
         }
