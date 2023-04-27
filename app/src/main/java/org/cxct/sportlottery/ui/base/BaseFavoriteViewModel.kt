@@ -244,7 +244,7 @@ abstract class BaseFavoriteViewModel(
                     }
 
                     leagueOdd.matchOdds.forEach { matchOdd ->
-                        matchOdd.setupOddDiscount()
+                        matchOdd.setupOddDiscountFixed()
                         matchOdd.matchInfo?.let { matchInfo ->
                             matchInfo.startDateDisplay =
                                 TimeUtil.timeFormat(matchInfo.startTime, "MM/dd")
@@ -272,6 +272,23 @@ abstract class BaseFavoriteViewModel(
             }
         }
     }
+
+    private fun MatchOdd.setupOddDiscountFixed() {
+
+        val discount = userInfo.value?.discount ?: 1.0F
+
+        this.oddsMap?.forEach { (key, value) ->
+            value?.forEach { odd ->
+                if (odd != null) {
+                    if (key == PlayCate.EPS.value)
+                        odd.setupEPSDiscount(discount)
+                    else
+                        odd.setupDiscount(discount)
+                }
+            }
+        }
+    }
+
     private fun MatchOdd.setupOddDiscount() {
 
         val discount = userInfo.value?.discount ?: 1.0F
