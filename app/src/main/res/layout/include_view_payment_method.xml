@@ -140,7 +140,7 @@
 
     <TextView
         android:id="@+id/tvResponsibleGaming"
-        android:text="@string/register_responsibilities"
+        android:text="@string/J093"
         style="@style/text_style_responsible"
         app:layout_constraintStart_toStartOf="@+id/tvTermConditions"
         app:layout_constraintTop_toBottomOf="@+id/tvTermConditions" />

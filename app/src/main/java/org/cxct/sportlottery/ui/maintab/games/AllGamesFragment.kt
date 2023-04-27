@@ -1,13 +1,12 @@
 package org.cxct.sportlottery.ui.maintab.games
 
-import android.graphics.Paint
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -70,7 +69,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     private var lastRequestTimeStamp = 0L
 
-    private var recordHandler = object : Handler() {
+    private var recordHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             when (msg.what) {
@@ -404,14 +403,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         val tvContactUs = include5.tvContactUs
         val tvFaqs = include5.tvFaqs
         val rcvPayment = include5.rcvPayment
-        setUnderline(
-            tvPrivacyPolicy,
-            tvTermConditions,
-            tvResponsibleGaming,
-            tvLiveChat,
-            tvContactUs,
-            tvFaqs
-        )
+
 
         jumpToWebView(
             tvPrivacyPolicy,
@@ -467,13 +459,6 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         rcvPayment.adapter = paymentAdapter
         paymentAdapter.setNewInstance(list)
 
-    }
-
-    private fun setUnderline(vararg view: TextView) {
-        view.forEach {
-            it.paint.flags = Paint.UNDERLINE_TEXT_FLAG; //下划线
-            it.paint.isAntiAlias = true;//抗锯齿
-        }
     }
 
     private fun initHotGameAdapter() {
