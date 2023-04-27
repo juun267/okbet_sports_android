@@ -73,7 +73,7 @@ class HotGameView(context: Context, attrs: AttributeSet) : FrameLayout(context, 
         scrollImageStatus(0)
     }
 
-    //data:List<Recommend>
+
     fun setGameData(data: List<Recommend>) {
         if(adapter==null){
             return
