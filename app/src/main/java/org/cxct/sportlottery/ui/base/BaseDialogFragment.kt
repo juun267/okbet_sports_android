@@ -7,8 +7,11 @@ import org.cxct.sportlottery.common.extentions.runWithCatch
 open class BaseDialogFragment: DialogFragment() {
 
     override fun show(manager: FragmentManager, tag: String?) = runWithCatch {
+        if (manager.isDestroyed) {
+            return@runWithCatch
+        }
 
-        runWithCatch { if (isAdded) { dismissAllowingStateLoss() } }
+        if (isAdded) { runWithCatch { dismissAllowingStateLoss() } }
 
         modifyPrivateField("mDismissed", false)
         modifyPrivateField("mShownByMe", true)
@@ -17,7 +20,7 @@ open class BaseDialogFragment: DialogFragment() {
         ft.commitAllowingStateLoss()
     }
 
-    private fun modifyPrivateField(fieldName: String, newValue: Any) {
+    protected fun modifyPrivateField(fieldName: String, newValue: Any) {
         val fieldDismissed = DialogFragment::class.java.getDeclaredField(fieldName)
         fieldDismissed.isAccessible = true
         fieldDismissed.set(this, newValue)
