@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="292dp"
+    android:layout_height="wrap_content"
+    android:elevation="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginLeft="2dp"
+    android:layout_marginBottom="10dp"
+    app:cardCornerRadius="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="36dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/bg_hot_game_title" />
+
+            <TextView
+                android:id="@+id/tvLeagueName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text=""
+                android:textColor="@color/color_FFFFFF"
+                android:textFontWeight="600"
+                android:textSize="@dimen/textSize12sp" />
+        </FrameLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingTop="12dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="8dp">
+
+            <ImageView
+                android:id="@+id/ivHomeIcon"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_bank_default" />
+
+            <TextView
+                android:id="@+id/tv_home_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingLeft="7dp"
+                android:text=""
+                android:textColor="@color/color_303030"
+                android:textSize="@dimen/textSize14sp" />
+
+            <TextView
+                android:id="@+id/tv_home_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text=""
+                android:textColor="@color/color_303030"
+                android:textSize="@dimen/textSize18sp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="38dp"
+            android:paddingRight="10dp">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingLeft="7dp"
+                android:paddingRight="12dp"
+                android:text="VS"
+                android:textColor="@color/color_303030"
+                android:textFontWeight="510"
+                android:textSize="@dimen/textSize14sp" />
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:background="@drawable/bg_blue_border_12"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:paddingRight="5dp">
+
+                <TextView
+                    android:id="@+id/tvGameStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="5dp"
+                    android:text="  ---  "
+                    android:textColor="@color/color_666666"
+                    android:textSize="@dimen/textSize12sp" />
+
+                <TextView
+                    android:id="@+id/tvGamePlayTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="5dp"
+                    android:text="  ---  "
+                    android:textColor="@color/color_FF9143_ff9200"
+                    android:textSize="@dimen/textSize12sp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:background="@color/color_EEF6FF"
+                android:layout_width="93dp"
+                android:layout_gravity="center_vertical"
+                android:layout_height="1px"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingTop="8dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="12dp">
+
+            <ImageView
+                android:id="@+id/ivAwayIcon"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_bank_default" />
+
+            <TextView
+                android:id="@+id/tv_away_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingLeft="7dp"
+                android:text=""
+                android:textColor="@color/color_303030"
+                android:textSize="@dimen/textSize14sp" />
+
+            <TextView
+                android:id="@+id/tv_away_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text=""
+                android:textColor="@color/color_303030"
+                android:textSize="@dimen/textSize18sp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginBottom="12dp"
+            android:layout_height="wrap_content">
+
+            <org.cxct.sportlottery.ui.sport.oddsbtn.OddsHotButtonHome
+                android:id="@+id/oddBtn1"
+                android:layout_width="0dp"
+                android:layout_height="34dp"
+                android:layout_marginRight="4dp"
+                android:layout_weight="1" />
+
+            <org.cxct.sportlottery.ui.sport.oddsbtn.OddsHotButtonHome
+                android:id="@+id/oddBtn2"
+                android:layout_width="0dp"
+                android:layout_marginRight="4dp"
+                android:layout_height="34dp"
+                android:layout_weight="1" />
+
+            <org.cxct.sportlottery.ui.sport.oddsbtn.OddsHotButtonHome
+                android:id="@+id/oddBtn3"
+                android:layout_width="0dp"
+                android:layout_height="34dp"
+                android:layout_weight="1"
+                android:layout_marginRight="4dp" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

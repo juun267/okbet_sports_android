@@ -19,7 +19,7 @@ class VerificationWaysActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::c
 
     companion object {
 
-        fun start(context: Context, modifyType: @ModifyType Int, phone: String?, email: String?) {
+        fun start(context: Context, @ModifyType modifyType: Int, phone: String?, email: String?) {
             val intent = Intent(context, VerificationWaysActivity::class.java)
             intent.putExtra("phone", phone)
             intent.putExtra("email", email)

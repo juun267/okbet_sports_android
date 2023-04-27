@@ -107,7 +107,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             }
         })
     }
-    private var betListFragment = BetListFragment()
+    private var betListFragment: BetListFragment? = null
     private var matchOdd: MatchOdd? = null
     private var matchInfo: MatchInfo? = null
     private var isFlowing = false
@@ -346,7 +346,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             R.anim.pop_bottom_to_top_exit,
             R.anim.push_bottom_to_top_enter,
             R.anim.pop_bottom_to_top_exit
-        ).add(R.id.fl_bet_list, betListFragment)
+        ).add(R.id.fl_bet_list, betListFragment!!)
             .addToBackStack(BetListFragment::class.java.simpleName).commit()
     }
 
@@ -392,9 +392,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     private fun initData() {
         clickButton()
-        matchInfo = intent.getParcelableExtra<MatchInfo>("matchInfo")
+        matchInfo = intent.getParcelableExtra("matchInfo")
         matchType = intent.getSerializableExtra("matchType") as MatchType
         intoLive = intent.getBooleanExtra("intoLive", false)
+
         matchInfo?.let {
             setupMatchInfo(it)
         }
@@ -533,6 +534,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 ////                cl_bet_list_bar.tv_balance.text = TextUtil.formatMoney(money)
 //            }
 //        }
+
         viewModel.showBetInfoSingle.observe(this) {
             it.getContentIfNotHandled()?.let {
                 showBetListPage()
@@ -933,7 +935,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     //TODO 底部注单是否显示
     override fun getBetListPageVisible(): Boolean {
-        return betListFragment.isVisible
+        return betListFragment?.isVisible ?: false
     }
 
 

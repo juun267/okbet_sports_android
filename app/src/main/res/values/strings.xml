@@ -1135,7 +1135,7 @@
     <string name="self_limit_error_format">The field format is incorrect, please enter an integer %d~%d.</string>
     <string name="draw_time">Draw Time</string>
     <string name="closing_time">Closing Time</string>
-    <string name="end_time">End Time</string>
+    <string name="N577">End Time</string>
     <string name="draw_countdown">Draw Countdown</string>
 
     <string name="recover_password">Recover password</string>
@@ -1217,10 +1217,9 @@
     <string name="str_market_is_closed">Market closed</string>
     <string name="kyc_unverifing">Verifying</string>
     <string name="enter_game">Enter game</string>
-    <string name="hint_transform_money">Transfer prompt</string>
-    <string name="confirm_transform_in_money">Please confirm amount transferred to game account</string>
-    <string name="game_account_money">Game balance</string>
-    <string name="transform_in_amount">Transfer-in amount</string>
+    <string name="N483">Please confirm amount transferred to game account</string>
+    <string name="N485">Game balance</string>
+    <string name="N486">Transfer-in amount</string>
     <string name="hint_transform_in_amount">Only supported the amount transferred from 0 to the platform account balance</string>
     <string name="account_balance_unenough">Platform account balance not enough</string>
     <string name="platform_user_money">Platform balance</string>
@@ -1270,6 +1269,7 @@
     <string name="N891">Please enter full name</string>
     <string name="J033">Full Name</string>
 
+    <string name="J369">Payment Method</string>
 
 
     <string name="N846">Basic Information</string>
@@ -1289,4 +1289,29 @@
 
     <string name="N177">Please enter the correct phone number</string>
     <string name="N889">Please enter correct email</string>
+    <string name="N880">Providers</string>
+    <string name="N707">Latest Bet And Big Wins</string>
+    <string name="N708">Latest Bets</string>
+    <string name="N709">Latest Big Wins</string>
+    <string name="N711">Games</string>
+    <string name="N710">Player</string>
+    <string name="N713">Profit Amount</string>
+    <string name="N712">Stake</string>
+    <string name="N874">Recent</string>
+    <string name="N873">Favorites</string>
+    <string name="N882">Search Result</string>
+    <string name="N900">Game Name</string>
+
+    <string name="N881">Hot Matches</string>
+    <string name="N702">More</string>
+    <string name="J094">Privacy Policy</string>
+    <string name="N019">Contact us</string>
+    <string name="J299">Live Chat</string>
+    <string name="B023">FAQs</string>
+    <string name="N883">There is no date yet!</string>
+    <string name="J095">Terms &amp; Condition</string>
+    <string name="N482">Transfer prompt</string>
+    <string name="N885">Load More</string>
+    <string name="N001">About Us</string>
+    <string name="J093">Responsible Gaming</string>
 </resources>

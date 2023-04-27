@@ -38,7 +38,7 @@
     <string name="error_register_password">Password ay kumbinasyon ng 6~20 numero at letra</string>
     <string name="error_password_format">Kailangang kumbinasyon ng 6-20 Letra at Numero</string>
     <string name="register_please_read">Mangyaring basahin mabuti ang aming</string>
-    <string name="register_responsibilities"><u>Gambling Responsibility</u></string>
+    <string name="register_responsibilities"><u>Responsableng Paglalaro</u></string>
     <string name="register_privacy_policy">Patakaran sa privacy</string>
     <string name="register_privacy_policy_promotions">Sundin ang %s para mapadalhan ng update at promosyon</string>
     <string name="register_over_21">Ako ay higit sa 21 taong gulang, nabasa at sumang-ayon sa %s</string>
@@ -199,6 +199,9 @@
     <string name="recharge">Deposito</string>
     <string name="recharge_channel_online">Online Bayad</string>
     <string name="account_transfer">Ilipat ang balanse</string>
+    <string name="N485">Balanse sa laro</string>
+    <string name="N486">Halaga ng paglipat</string>
+    <string name="enter_game">Pumasok sa laro</string>
     <string name="platform_user_money">Balanse sa platform</string>
     <string name="third_party">3rd party</string>
     <string name="N643">Maaring pumunta sa Glife applet para mag-recharge</string>
@@ -298,7 +301,6 @@
     <string name="edt_hint_wx_id">Paki lagay ang wechat ID</string>
     <string name="title_bank_account">Numero ng bank card</string>
     <string name="please_enter_bank_card_rule">Ilagay ang numero ng bank card</string>
-    <string name="title_recharge_time">Oras ng deposito</string>
     <string name="title_current_money">Kasalukuyang balanse</string>
     <string name="btn_submit">Ipasa</string>
     <string name="btn_copy">Kopya</string>
@@ -738,7 +740,7 @@
     <string name="terms_conditions">Termino at Kundisyon</string>
     <string name="privacy_policy">Proteksyon sa privacy</string>
     <string name="help">Kailangan ng tulong？</string>
-    <string name="faqs">Karaniwang problema</string>
+    <string name="faqs">Kadalasang Tanong</string>
     <string name="live_chat">Online serbisyo</string>
     <string name="contact">Makipag-ugnayan sa amin</string>
     <string name="front_side_result">Front side scan resulta ng dokumento</string>
@@ -1069,7 +1071,7 @@
     <string name="str_odds_description">Paglalarawan ng odds</string>
     <string name="draw_time">Draw time</string>
     <string name="closing_time">Oras ng Pagsara ng Sweepstakes</string>
-    <string name="end_time">Oras ng Pagtapos</string>
+    <string name="N577">Oras ng Pagtapos</string>
     <string name="draw_countdown">Draw Countdown</string>
     <string name="recover_password">Pagbawi ng password</string>
     <string name="need_help">Kailangan ng tulong?</string>
@@ -1132,6 +1134,7 @@
     <string name="sms_code_length_error">Verification code kailangan 4 na digit</string>
     <string name="phone_no_error">Ang numero ng mobile phone ay dapat na 11 digit simula sa 09</string>
 
+    <string name="J369">Paraan ng Pagbayad</string>
 
     <string name="N849">Address</string>
     <string name="N887">Hindi mababago ang input</string>
@@ -1161,4 +1164,30 @@
     <string name="N890">Print</string>
     <string name="N891">Paki-type ang pangalan</string>
     <string name="J033">Pangalan</string>
+    <string name="N880">Provider ng laro</string>
+    <string name="N707">Pinakabagong Taya At Big Wins</string>
+    <string name="N708">Pinakabagong Taya</string>
+    <string name="N709">Pinakabagong Big Wins</string>
+    <string name="N711">Games</string>
+    <string name="N710">Player</string>
+    <string name="N713">Halaga ng Kita</string>
+    <string name="N712">Halaga ng taya</string>
+    <string name="N874">Kamakailang laro</string>
+    <string name="N873">Paborito</string>
+    <string name="N882">Resulta ng paghahanap</string>
+    <string name="N900">Pangalan ng Laro</string>
+
+    <string name="N881">Popular event</string>
+    <string name="N702">Higit pa</string>
+    <string name="J094">Proteksyon sa privacy</string>
+    <string name="N019">Kontakin kami</string>
+    <string name="J299">Online serbisyo</string>
+    <string name="B023">Kadalasang Tanong</string>
+    <string name="N883">Wala pang resulta!</string>
+    <string name="J095">Termino at Kundisyon</string>
+    <string name="N482">Prompt ng Paglipat</string>
+    <string name="N483">Pakikumpirma ang halagang inilipat sa game account</string>
+    <string name="N885">Mag-load pa</string>
+    <string name="N001">Tungkol sa Amin</string>
+    <string name="J093">Responsableng Paglalaro</string>
 </resources>

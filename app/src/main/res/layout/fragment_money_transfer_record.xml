@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_181922_FFFFFF"
     tools:content="org.cxct.sportlottery.ui.finance.RechargeLogFragment">
+
     <View
         android:id="@+id/view"
         android:background="@color/color_141414_F3F4F5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_10" />
 
@@ -19,7 +17,7 @@
         android:id="@+id/date_range_selector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="20dp"
         app:minusDays="6" />
 
     <LinearLayout
@@ -28,7 +26,7 @@
         android:layout_height="wrap_content"
         android:background="@color/color_191D2F_F3F9FF"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/date_range_selector">
+        android:layout_below="@+id/date_range_selector">
 
         <org.cxct.sportlottery.view.statusSelector.StatusSpinnerView
             android:id="@+id/selector_out_plat"
@@ -82,15 +80,14 @@
     <LinearLayout
         android:id="@+id/ll_group"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginHorizontal="@dimen/margin_20"
-        android:background="@drawable/bg_square_shape_6dp_gray_deposit_stroke"
+        android:layout_marginBottom="20dp"
         android:orientation="vertical"
         android:layout_marginTop="@dimen/margin_14"
         android:paddingBottom="@dimen/margin_3"
-        app:layout_constraintTop_toBottomOf="@id/ll_status"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:background="@drawable/bg_square_shape_6dp_gray_deposit_stroke"
+        android:layout_below="@+id/ll_status">
 
         <LinearLayout
             android:id="@+id/linearLayout5"
@@ -156,7 +153,7 @@
             <com.scwang.smart.refresh.layout.SmartRefreshLayout
                 android:id="@+id/view_refresh"
                 android:layout_width="match_parent"
-                android:layout_height="360dp"
+                android:layout_height="match_parent"
                 app:srlDragRate="0.3"
                 app:srlEnableLoadMore="true"
                 app:srlEnablePureScrollMode="true">
@@ -181,19 +178,17 @@
     <TextView
         android:id="@+id/tv_no_data_tips"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:background="@color/color_131932_F0F5FA"
         android:gravity="center"
         android:paddingVertical="12dp"
-        android:layout_marginTop="@dimen/margin_20"
         android:text="@string/no_data"
         android:textColor="@color/color_909090_666666"
         android:textSize="@dimen/textSize12sp"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/ll_group"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
 

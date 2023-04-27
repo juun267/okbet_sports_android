@@ -27,6 +27,7 @@ import kotlinx.coroutines.launch
 import me.jessyan.autosize.AutoSizeCompat
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.getKClass
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.repository.LoginRepository
@@ -44,7 +45,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.reflect.KClass
 
-abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActivity() {
+abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCompatActivity() {
 
     private var mLayoutHandler = Handler(Looper.getMainLooper())
     private var mPromptDialog: CustomAlertDialog? = null
@@ -55,7 +56,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     private var mRunnable: Runnable? = null
     private val mHandler by lazy { Handler(Looper.getMainLooper()) }
 
-    val viewModel: T by viewModel(clazz = clazz)
+    val viewModel: T by viewModel(clazz = clazz ?: getKClass(0) as KClass<T>)
 
     private var loadingView: View? = null
 

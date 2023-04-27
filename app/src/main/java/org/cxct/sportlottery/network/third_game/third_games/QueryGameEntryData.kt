@@ -9,7 +9,7 @@ data class QueryGameEntryData(
     val gameCategory: String?, //一级分类
     val firmType: String?, //所属第三方
     val firmCode: String?, //第三方游戏编码
-    var gameCode: String?, //预留字段
+    val gameCode: String?, //预留字段
     val gameType: String?, //具体游戏
     val chineseName: String?, //游戏中文名
     val englishName: String?, //游戏英文名
@@ -28,4 +28,8 @@ data class QueryGameEntryData(
     //20200213 review API 已經沒有回傳ban 改成open
     var open: Int? = null // 維護狀態： 0 - 維護, 1 - 正常
     var firmName: String? = null
+    var gameName: String? = null  //游戏名
+    var imgGame: String? = null  //游戏封面
+    var markCollect: Boolean = false //标签名
+    var gameEntryTagName: String? = null //是否收藏 true已收藏,false未收藏(未登录默认)
 }

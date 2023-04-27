@@ -54,7 +54,7 @@ object TextUtil : DecimalFormatUtil() {
         } catch (e: Exception) {
             Timber.e("$e")
         }
-        return null
+        return "0.00"
     }
 
     fun formatInputMoney(any: Any): String {
