@@ -9,11 +9,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.common.exception.DoNoConnectException
+import org.cxct.sportlottery.common.extentions.callApi
+import org.cxct.sportlottery.net.config.ConfigRepository
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.NetworkUtil
 import org.cxct.sportlottery.util.SPUtil
 import timber.log.Timber
@@ -101,6 +104,12 @@ class VersionUpdateViewModel(
                     //当前版本是否处于控制
                     var isVersonControl =
                         result?.controlVersion?.split(",")?.contains(BuildConfig.VERSION_NAME)
+                    callApi({
+                        ConfigRepository.getConfigByName(sConfigData?.platformId.toString(),
+                            "reviewedVersionUrl")
+                    }) {
+                        LogUtil.d("reviewedVersionUrl=" + it.getData())
+                    }
                     SPUtil.saveMarketSwitch(isVersonControl == true)
                     //已有獲取的最新版本資訊
                     if (appVersionChecked) {

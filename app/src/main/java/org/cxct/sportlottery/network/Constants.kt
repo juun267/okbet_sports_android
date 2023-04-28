@@ -578,4 +578,7 @@ object Constants {
     // 最新大奖
     const val OKGAMES_RECORD_RESULT = "/api/front/index/recordResultOkGamesList"
 
+    // 安卓送审版本号
+    const val GET_CONFIG_BY_NAME = "/api/agent/game/config/getConfigByName/{name}"
+
 }
