@@ -134,7 +134,7 @@ class BasketballEndingCardViewHolder(
                 }
 
                 if (holder.layoutPosition == betList?.size) {
-                    holder.setGone(R.id.tvMatchOdds, true).setVisible(R.id.tvBsMore, true)
+                    holder.setGone(R.id.tvMatchOdds, true).setVisible(R.id.tvBsMore, true).setText(R.id.tvBsMore,R.string.J220)
                     val tvBsMore = holder.getView<TextView>(R.id.tvBsMore)
                     tvBsMore.background = DrawableUtils.getBasketballPlusMore(root)
                     tvBsMore.setOnClickListener {
@@ -222,9 +222,9 @@ class BasketballEndingCardViewHolder(
                     }
 
                     //总投注
-                    val bet = it.toString().toInt()
-                    val totalBet = bet * betListSize
-                    val totalCanWin = bet * itemData.matchOdd.odds
+                    val bet = it.toString().toDouble()
+                    val totalBet = TextUtil.formatMoney(bet * betListSize,2)
+                    val totalCanWin = TextUtil.formatMoney(bet * itemData.matchOdd.odds,2)
                     tvTotalStakeAmount.text = "${sConfigData?.systemCurrencySign}${totalBet}"
                     tvTotalWinAmount.text = "${sConfigData?.systemCurrencySign}${totalCanWin}"
 

@@ -11,6 +11,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.sport.detail.OddStateViewHolderDetail
 import org.cxct.sportlottery.ui.sport.detail.OnOddClickListener
 import org.cxct.sportlottery.ui.sport.oddsbtn.OddsButtonDetail
+import timber.log.Timber
 
 
 class TypeSingleAdapter (
@@ -23,11 +24,10 @@ class TypeSingleAdapter (
     private val mOddStateRefreshListener by lazy {
         object : OddStateViewHolderDetail.OddStateChangeListener {
             override fun refreshOddButton(odd: Odd) {
-                notifyItemChanged(oddsDetail.oddArrayList.indexOf(oddsDetail.oddArrayList.find { o -> o == odd }))
+//                notifyItemChanged(oddsDetail.oddArrayList.indexOf(oddsDetail.oddArrayList.find { o -> o == odd }))
             }
         }
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_grid_item, parent, false))
@@ -36,7 +36,10 @@ class TypeSingleAdapter (
     override fun getItemCount(): Int = oddsDetail.oddArrayList.size
 
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bindModel(oddsDetail.gameType, oddsDetail.oddArrayList[position])
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        Timber.d("===洗刷刷4 刷新布局 position：${position}")
+        holder.bindModel(oddsDetail.gameType, oddsDetail.oddArrayList[position])
+    }
 
 
     inner class ViewHolder(view: View) : OddStateViewHolderDetail(view) {
@@ -44,6 +47,7 @@ class TypeSingleAdapter (
         private val btnOdds = itemView.findViewById<OddsButtonDetail>(R.id.button_odds)
 
         fun bindModel(gameType: String?, odd: Odd?) {
+
             btnOdds?.apply {
                 setupOdd(odd, oddsType, gameType, matchInfo = oddsDetail.matchInfo)
                 setupOddState(this, odd)
