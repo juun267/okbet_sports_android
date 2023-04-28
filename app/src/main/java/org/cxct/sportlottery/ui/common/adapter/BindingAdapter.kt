@@ -68,8 +68,6 @@ abstract class BindingAdapter<T, VB : ViewBinding> (data: MutableList<T>? = null
     }
 
     override fun convert(holder: BindingVH<VB>, item: T, payloads: List<Any>) {
-        holder.bindingAdapterPosition
-        holder.absoluteAdapterPosition
         onBinding(positionOf(item), holder.vb, item, payloads)
     }
 

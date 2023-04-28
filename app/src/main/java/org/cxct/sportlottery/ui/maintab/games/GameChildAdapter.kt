@@ -57,6 +57,7 @@ class GameChildAdapter(private val onFavoriate: (View, OKGameBean) -> Unit,
             tvFirmName.text = item.firmName
             ivFav.isSelected = item.markCollect
             ivFav.setOnClickListener { onFavoriate.invoke(ivFav, item) }
+            root.setOnClickListener { getOnItemClickListener()?.onItemClick(this@GameChildAdapter, root, position) }
         }
     }
 
