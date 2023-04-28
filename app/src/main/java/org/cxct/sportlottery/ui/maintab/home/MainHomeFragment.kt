@@ -3,14 +3,12 @@ package org.cxct.sportlottery.ui.maintab.home
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.gyf.immersionbar.ImmersionBar
 import com.youth.banner.Banner
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
@@ -606,7 +604,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
 
     private fun setupBanner() {
 
-        var imageList = sConfigData?.imageList?.filter { it.imageType == 2 }
+        var imageList = sConfigData?.imageList?.filter { it.imageType == 2 && !it.isHidden }
 
         if (imageList.isNullOrEmpty()) {
             banner.setBackgroundResource(R.drawable.img_banner01)

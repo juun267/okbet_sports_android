@@ -20,11 +20,7 @@ import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.KvUtils
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.LogUtil
-import org.cxct.sportlottery.util.SPUtil
+import org.cxct.sportlottery.util.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.system.exitProcess
@@ -119,7 +115,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                 viewModel.getConfig()
                 return@observe
             }
-
+            SPUtil.saveMarketSwitch(isGooglePlayVersion() && BuildConfig.VERSION_NAME == it?.configData?.reviewedVersionUrl)
             when {
                 it?.configData?.maintainStatus == FLAG_OPEN -> {
                     goMaintenancePage()
@@ -151,6 +147,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                         && it.lang == LanguageManager.getSelectLanguage(this).key
                         && !it.imageName1.isNullOrEmpty()
                         && it.startType == (if (KvUtils.decodeBooleanTure("isFirstOpen", true)
+                    && !it.isHidden
                 ) 0 else 1)
             }
                 ?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })

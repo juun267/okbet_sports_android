@@ -384,7 +384,7 @@ open class MainHomeViewModel(
 
     //region 宣傳頁 優惠活動文字跑馬燈、圖片公告
     fun getPublicityPromotion() {
-        sConfigData?.imageList?.filter { it.imageType == ImageType.PROMOTION.code }
+        sConfigData?.imageList?.filter { it.imageType == ImageType.PROMOTION.code && !it.isHidden }
             ?.let { promotionList ->
                 promotionList.filter {
                     (it.viewType == 1) && TextUtils.equals(LanguageManager.getSelectLanguage(

@@ -111,7 +111,7 @@ class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: Attribut
 
         val lang = LanguageManager.getSelectLanguage(context).key
         var imageList = sConfigData?.imageList?.filter {
-            it.imageType == 12 && it.lang == lang && !it.imageName1.isNullOrEmpty()
+            it.imageType == 12 && it.lang == lang && !it.imageName1.isNullOrEmpty() && !it.isHidden
         }?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
 
         val loopEnable = imageList?.size ?: 0 > 1
