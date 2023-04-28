@@ -15,10 +15,15 @@ import timber.log.Timber
 
 
 class TypeSingleAdapter (
-    private val oddsDetail: OddsDetailListData,
+    private var oddsDetail: OddsDetailListData,
     private val onOddClickListener: OnOddClickListener,
     private val oddsType: OddsType
 ) : RecyclerView.Adapter<TypeSingleAdapter.ViewHolder>() {
+
+
+    fun setOddsDetailData(oddsDetail: OddsDetailListData){
+        this.oddsDetail = oddsDetail
+    }
 
 
     private val mOddStateRefreshListener by lazy {

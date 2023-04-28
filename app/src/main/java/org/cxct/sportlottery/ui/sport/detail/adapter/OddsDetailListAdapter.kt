@@ -71,7 +71,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     if (odd?.isSelected != oddSelected) {
                         odd?.isSelected = oddSelected
                         notifyItemChanged(index, odd?.id)
-                        Timber.d("更新单个条目:${index} id:${odd?.id}")
+                        Timber.d("更新单个条目:${index} id:${odd?.id} odd.isSelected:${odd?.isSelected}")
                     }
                 }
             }
@@ -132,15 +132,15 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
 
     enum class LayoutType(val layout: Int) {
-        CS(R.layout.content_odds_detail_list_cs),
-        SINGLE_2_CS(R.layout.content_odds_detail_list_single_2_cs_item),
-        ONE_LIST(R.layout.content_odds_detail_list_one),
-        SINGLE(R.layout.content_odds_detail_list_single),
-        SINGLE_2_ITEM(R.layout.content_odds_detail_list_single_2_item),
-        FG_LG(R.layout.content_odds_detail_list_fg_lg),
-        GROUP_6(R.layout.content_odds_detail_list_group_6_item),
-        GROUP_4(R.layout.content_odds_detail_list_group_4_item),
-        SCO(R.layout.content_odds_detail_list_sco),
+        CS(R.layout.content_odds_detail_list_cs), SINGLE_2_CS(R.layout.content_odds_detail_list_single_2_cs_item), ONE_LIST(
+            R.layout.content_odds_detail_list_one
+        ),
+        SINGLE(R.layout.content_odds_detail_list_single), SINGLE_2_ITEM(R.layout.content_odds_detail_list_single_2_item), FG_LG(
+            R.layout.content_odds_detail_list_fg_lg
+        ),
+        GROUP_6(R.layout.content_odds_detail_list_group_6_item), GROUP_4(R.layout.content_odds_detail_list_group_4_item), SCO(
+            R.layout.content_odds_detail_list_sco
+        ),
         EPS(R.layout.content_odds_detail_list_eps)
     }
 
@@ -1420,26 +1420,16 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
 
             rvDraw?.apply {
-                adapter =
-                    TypeCSAdapter(
-                        oddsDetail,
-                        drawList,
-                        onOddClickListener,
-                        oddsType,
-                        isOddPercentage = true
-                    )
+                adapter = TypeCSAdapter(
+                    oddsDetail, drawList, onOddClickListener, oddsType, isOddPercentage = true
+                )
                 layoutManager = LinearLayoutManager(itemView.context)
             }
 
             rvAway?.apply {
-                adapter =
-                    TypeCSAdapter(
-                        oddsDetail,
-                        awayList,
-                        onOddClickListener,
-                        oddsType,
-                        isOddPercentage = true
-                    )
+                adapter = TypeCSAdapter(
+                    oddsDetail, awayList, onOddClickListener, oddsType, isOddPercentage = true
+                )
                 layoutManager = LinearLayoutManager(itemView.context)
             }
 
@@ -1462,7 +1452,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         itemView.lin_match.isVisible = false
                         oddsDetail.oddArrayList.first()?.let {
                             val odd = TextUtil.formatForOdd(getOdds(it, oddsType))
-                            var odds = " $odd"
+                            val odds = " $odd"
                             getTitleNormal(oddsDetail).let {
                                 Spanny(it.toString()).append(
                                     " @",
@@ -1482,14 +1472,13 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
                     if (it1.adapter != null && payloads?.isNotEmpty() == true) {
                         Timber.d("===洗刷刷1 payloads:${payloads}")
-
                         payloads.forEach { payloadItem ->
                             val index =
                                 oddsDetail.oddArrayList.indexOf(oddsDetail.oddArrayList.find { it?.id == payloadItem })
                             Timber.d("===洗刷刷3 index:${index} payloads:${payloads.size}")
+                            ((it1.adapter) as TypeSingleAdapter).setOddsDetailData(oddsDetail)
                             it1.adapter?.notifyItemChanged(index)
                         }
-
                     }
                 }
             } else {
