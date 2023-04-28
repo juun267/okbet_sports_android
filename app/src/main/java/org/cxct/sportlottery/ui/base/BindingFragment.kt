@@ -29,12 +29,12 @@ open class BindingFragment<VM : BaseViewModel, VB: ViewBinding>: BaseFragment<VM
     @Deprecated("为了避免View复用进行了防重复加载，所以View的初始化工作只应该执行一次，为了与BaseFragment中的进行区分请使用onInitView")
     override fun onBindView(view: View) { }
 
-    // 该方法在整个生命周期中只会执行一次
+    // 该方法在整个生命周期中只会执行一次(类似与RecyclerView.Adapter的oonCreateViewHolder)
     protected open fun onInitView(view: View) { }
 
     /**
      * 与onInitView方法不同在于每次onViewCreated都会执行，对于都Fragment切换时会发生多次onCreateView的情况
-     *  该方法可以用于将View设置回初始状态
+     *  该方法可以用于将View设置回初始状态(类似与RecyclerView.Adapter的onBindViewHolder)
       */
     protected open fun onBindViewStatus(view: View) { }
 
