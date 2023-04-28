@@ -5,7 +5,6 @@ import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
@@ -223,6 +222,11 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                         intent.putExtra("data", data)
                         context?.startActivity(intent)
                     }
+                    val listData = if (data.matchOdds.firstOrNull()?.multiCode?.size ?: 0 > 6) {
+                        data.matchOdds.firstOrNull()?.multiCode?.subList(0, 6)
+                    } else {
+                        data.matchOdds.firstOrNull()?.multiCode ?: listOf()
+                    }
                     if (rv_endscore_info.adapter == null) {
                         rv_endscore_info.layoutManager =
                             LinearLayoutManager(rv_endscore_info.context,
@@ -232,16 +236,12 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                             R.dimen.margin_4))
                         val scoreAdapter = BetRecordEndScoreAdapter()
                         rv_endscore_info.adapter = scoreAdapter
-                        scoreAdapter.setList(data.matchOdds.firstOrNull()?.multiCode ?: listOf())
+                        scoreAdapter.setList(listData)
                     } else {
-                        (rv_endscore_info.adapter as BetRecordEndScoreAdapter).setList(data.matchOdds.firstOrNull()?.multiCode)
+                        (rv_endscore_info.adapter as BetRecordEndScoreAdapter).setList(listData)
                     }
                     tv_more?.let {
                         tv_more.isVisible = data.matchOdds.firstOrNull()?.multiCode?.size ?: 0 > 6
-                        (rv_endscore_info.layoutParams as LinearLayout.LayoutParams).apply {
-                            this.weight = if (tv_more.isVisible) 1f else 0f
-                            rv_endscore_info.layoutParams = this
-                        }
                     }
 
                 }
