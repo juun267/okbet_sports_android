@@ -24,7 +24,6 @@ import org.cxct.sportlottery.net.games.data.OKGamesCategory
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
@@ -541,13 +540,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     //用户缓存最新赔率，方便当从api拿到新赛事数据时，赋值赔率信息给新赛事
     private val matchOddMap = HashMap<String, Recommend>()
     private fun initSocketObservers() {
-        receiver.serviceConnectStatus.observe(viewLifecycleOwner) {
-            it?.let {
-                if (it == ServiceConnectStatus.CONNECTED) {
-//                    initHotGameData()
-                }
-            }
-        }
+
+
         //观察比赛状态改变
         receiver.matchStatusChange.observe(viewLifecycleOwner) { matchStatusChangeEvent ->
             if (matchStatusChangeEvent == null) {
