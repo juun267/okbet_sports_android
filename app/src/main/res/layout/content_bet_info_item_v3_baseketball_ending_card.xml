@@ -16,7 +16,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="14dp"
-            android:layout_marginStart="14dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toStartOf="@+id/odds_change_container"
@@ -154,7 +154,7 @@
                 android:id="@+id/cl_editText_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="@dimen/margin_14"
+                android:paddingHorizontal="@dimen/margin_10"
                 android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@id/llKeyboardContainer"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -209,8 +209,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:gravity="center"
-                    android:text="@string/N374"
                     android:paddingHorizontal="3dp"
+                    android:text="@string/N374"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -232,7 +232,7 @@
                         android:id="@+id/tvTotalStake"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="13dp"
+                        android:layout_marginStart="10dp"
                         android:gravity="center_vertical"
                         android:text="@string/N918"
                         android:textColor="@color/color_414655"
@@ -245,7 +245,10 @@
                         android:id="@+id/tvTotalStakeAmount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text=""
                         android:textColor="@color/color_535D76"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -269,7 +272,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginEnd="15dp"
+                        android:gravity="center"
+                        android:text=""
                         android:textColor="@color/color_E23434"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>

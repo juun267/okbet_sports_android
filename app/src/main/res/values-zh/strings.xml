@@ -1246,8 +1246,8 @@
     <string name="N905">确认全部删除</string>
     <string name="N374">全部删除</string>
     <string name="J220">+更多</string>
-    <string name="N918">总投注额</string>
-    <string name="N919">总可赢</string>
+    <string name="N918">总投注额:</string>
+    <string name="N919">总可赢:</string>
     <string name="N920">+更多</string>
-
+    <string name="N901">删除确认</string>
 </resources>
