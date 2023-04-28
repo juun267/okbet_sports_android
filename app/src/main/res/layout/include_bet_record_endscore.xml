@@ -8,12 +8,14 @@
     android:visibility="gone"
     tools:visibility="visible"
     android:layout_marginBottom="@dimen/margin_8"
-    android:layout_marginHorizontal="@dimen/margin_20">
+    android:layout_marginLeft="@dimen/margin_20"
+    android:layout_marginRight="@dimen/margin_8">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_endscore_info"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_bet_record_endscore"
@@ -21,11 +23,14 @@
 
     <TextView
         android:id="@+id/tv_more"
-        android:layout_width="60dp"
+        android:layout_width="wrap_content"
         android:layout_height="24dp"
+        android:minWidth="60dp"
+        android:paddingHorizontal="@dimen/margin_3"
         android:background="@drawable/bg_blue_stroke_radius_3"
         android:gravity="center"
         android:textSize="@dimen/textSize12sp"
+        android:singleLine="true"
         android:textColor="@color/color_025BE8"
         android:text="@string/J220" />
 </LinearLayout>

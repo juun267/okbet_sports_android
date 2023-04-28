@@ -52,7 +52,7 @@ class BetDetailsFragment : BaseFragment<BetListViewModel>(BetListViewModel::clas
             iv_country.setLeagueLogo(matchOdds.categoryIcon)
             title_league_name.text = matchOdds.leagueName.replace("\n", "")
             title_team_name.setTeamsNameWithVS(matchOdds.homeName, matchOdds.awayName)
-
+            content_play.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
             //篮球 滚球 全场让分【欧洲盘】
             content_play.setGameType_MatchType_PlayCateName_OddsType(
                 row.gameType, row.matchType, matchOdds.playCateName, matchOdds.oddsType
