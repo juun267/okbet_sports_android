@@ -1443,31 +1443,31 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             oddsDetail: OddsDetailListData, spanCount: Int, payloads: MutableList<Any>?
         ) {
             if (oddsDetail.gameType == PlayCate.FS_LD_CS.value) {
+                //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
+                itemView.lin_match.isVisible = false
+                oddsDetail.oddArrayList.first()?.let {
+                    val odd = TextUtil.formatForOdd(getOdds(it, oddsType))
+                    val odds = " $odd"
+                    getTitleNormal(oddsDetail).let {
+                        Spanny(it.toString()).append(
+                            " @",
+                            ForegroundColorSpan(itemView.context.getColor(R.color.color_025BE8))
+                        ).append(
+                            odds,
+                            ForegroundColorSpan(itemView.context.getColor(R.color.color_025BE8)),
+                            CustomTypefaceSpan(
+                                "din_bold.ttf", Typeface.DEFAULT_BOLD
+                            )
+                        ).let {
+                            tvGameName?.text = it
+                        }
+                    }
+                }
                 rvBet?.let { it1 ->
                     if (it1.adapter == null) {
                         Timber.d("===洗刷刷0 设置adapter")
                         it1.adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, oddsType)
                         it1.layoutManager = GridLayoutManager(itemView.context, 4)
-                        //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
-                        itemView.lin_match.isVisible = false
-                        oddsDetail.oddArrayList.first()?.let {
-                            val odd = TextUtil.formatForOdd(getOdds(it, oddsType))
-                            val odds = " $odd"
-                            getTitleNormal(oddsDetail).let {
-                                Spanny(it.toString()).append(
-                                    " @",
-                                    ForegroundColorSpan(it1.context.getColor(R.color.color_025BE8))
-                                ).append(
-                                    odds,
-                                    ForegroundColorSpan(it1.context.getColor(R.color.color_025BE8)),
-                                    CustomTypefaceSpan(
-                                        "din_bold.ttf", Typeface.DEFAULT_BOLD
-                                    )
-                                ).let {
-                                    tvGameName?.text = it
-                                }
-                            }
-                        }
                     }
 
                     if (it1.adapter != null && payloads?.isNotEmpty() == true) {
