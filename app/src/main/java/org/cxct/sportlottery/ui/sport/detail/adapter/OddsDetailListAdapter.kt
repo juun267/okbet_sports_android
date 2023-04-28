@@ -67,11 +67,11 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             oddsDetailDataList.forEachIndexed { index, data ->
                 data.oddArrayList.forEach { odd ->
                     val oddSelected = betInfoList.any { it.matchOdd.oddsId == odd?.id }
-                    Timber.d("=== odd?.isSelected:${odd?.isSelected} oddSelected:${oddSelected} index:${index}")
+//                    Timber.d("=== odd?.isSelected:${odd?.isSelected} oddSelected:${oddSelected} index:${index}")
                     if (odd?.isSelected != oddSelected) {
                         odd?.isSelected = oddSelected
                         notifyItemChanged(index, odd?.id)
-                        Timber.d("更新单个条目:${index} id:${odd?.id} odd.isSelected:${odd?.isSelected}")
+//                        Timber.d("更新单个条目:${index} id:${odd?.id} odd.isSelected:${odd?.isSelected}")
                     }
                 }
             }
@@ -1445,7 +1445,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             if (oddsDetail.gameType == PlayCate.FS_LD_CS.value) {
                 rvBet?.let { it1 ->
                     if (it1.adapter == null) {
-                        Timber.d("===洗刷刷0 设置adapter")
+//                        Timber.d("===洗刷刷0 设置adapter")
                         it1.adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, oddsType)
                         it1.layoutManager = GridLayoutManager(itemView.context, 4)
                         //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
@@ -1471,11 +1471,11 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     }
 
                     if (it1.adapter != null && payloads?.isNotEmpty() == true) {
-                        Timber.d("===洗刷刷1 payloads:${payloads}")
+//                        Timber.d("===洗刷刷1 payloads:${payloads}")
                         payloads.forEach { payloadItem ->
                             val index =
                                 oddsDetail.oddArrayList.indexOf(oddsDetail.oddArrayList.find { it?.id == payloadItem })
-                            Timber.d("===洗刷刷3 index:${index} payloads:${payloads.size}")
+//                            Timber.d("===洗刷刷3 index:${index} payloads:${payloads.size}")
                             ((it1.adapter) as TypeSingleAdapter).setOddsDetailData(oddsDetail)
                             it1.adapter?.notifyItemChanged(index)
                         }

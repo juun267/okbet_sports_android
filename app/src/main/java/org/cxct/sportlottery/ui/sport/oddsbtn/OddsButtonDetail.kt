@@ -139,7 +139,7 @@ class OddsButtonDetail @JvmOverloads constructor(
 //        updateOddsTextColor()
 
 
-        Timber.d("更新单个条目 isSelected:${isSelected} oddName:${odd?.name}")
+//        Timber.d("更新单个条目 isSelected:${isSelected} oddName:${odd?.name}")
         isSelected = odd?.isSelected ?: false
         //[Martin]馬來盤＆印尼盤會有負數的賠率
         //betStatus = if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
