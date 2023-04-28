@@ -476,7 +476,7 @@ class ProfileCenterFragment :
         viewModel.needToSendTwoFactor.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    customSecurityDialog = CustomSecurityDialog(requireContext()).apply {
+                    customSecurityDialog = CustomSecurityDialog().apply {
                         getSecurityCodeClickListener {
                             this.showSmeTimer300()
                             viewModel.sendTwoFactor()

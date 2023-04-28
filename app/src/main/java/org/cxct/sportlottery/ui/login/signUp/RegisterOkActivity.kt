@@ -1455,7 +1455,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         hideLoading()
         if (loginResult.success) {
             //finish()
-            RegisterSuccessDialog(this).apply {
+            RegisterSuccessDialog().apply {
                 setNegativeClickListener {
                     dismiss()
                     //判斷要跳宣傳頁顯示驗證彈窗，還是檢查充值系統

@@ -32,7 +32,6 @@ class CustomSecurityDialog : DialogFragment() {
         sConfigData?.hasGetTwoFactorResult = false
     }
     var positiveClickListener: PositiveClickListener? = null
-    var mContext = context
     var isPstBtnClickable = false
 
     override fun onCreateView(
