@@ -617,7 +617,7 @@ object SocketUpdateUtil {
                     mutableMapOf(
                         Pair(
                             PlayCate.EPS.value,
-                            matchOdd.oddsEps?.eps?.toMutableList() ?: mutableListOf()
+                            matchOdd.oddsEps?.eps?.toMutableList() ?: mutableListOf<Odd?>()
                         )
                     ), oddsChangeEvent.odds
                 )
@@ -629,7 +629,7 @@ object SocketUpdateUtil {
                     matchOdd.oddsMap?.let { oddsMap ->
                         if (oddsMap.containsKey(key)) {
                             updated = updateMatchOdds(
-                                mutableMapOf(Pair(key, oddsMap[key])),
+                                mutableMapOf(Pair(key, oddsMap[key] as MutableList<Odd?>?)),
                                 mutableMapOf(Pair(key, value))
                             )
                         } else {
@@ -642,7 +642,7 @@ object SocketUpdateUtil {
             }
 
             (QuickPlayCate.values().map { it.value }.contains(cateMenuCode)) -> {
-                updateMatchOdds_1(
+                updateMatchOdds(
                     matchOdd.quickPlayCateList?.find { it.isSelected }?.quickOdds?.toMutableFormat_1()
                         ?: mutableMapOf(), oddsChangeEvent.odds
                 )
@@ -652,7 +652,7 @@ object SocketUpdateUtil {
                 if (matchOdd.oddsMap == null) {
                     matchOdd.oddsMap = mutableMapOf()
                 }
-                updateMatchOdds(matchOdd.oddsMap ?: mutableMapOf(), oddsChangeEvent.odds)
+                updateMatchOdds(matchOdd.oddsMap as MutableMap<String, MutableList<Odd?>?>? ?: mutableMapOf(), oddsChangeEvent.odds)
             }
         }
 
@@ -728,9 +728,7 @@ object SocketUpdateUtil {
                                 if (oddsMap.containsKey(key)) {
                                     if (updateMatchOdds(
                                             mutableMapOf(
-                                                Pair(
-                                                    key, oddsMap[key]
-                                                )
+                                                Pair(key, oddsMap[key] as MutableList<Odd?>?)
                                             ), mutableMapOf(Pair(key, value))
                                         )
                                     ) updated = true
@@ -744,7 +742,7 @@ object SocketUpdateUtil {
                     }
 
                     (QuickPlayCate.values().map { it.value }.contains(cateMenuCode)) -> {
-                        updateMatchOdds_1(
+                        updateMatchOdds(
                             hotMatchInfo.quickPlayCateList?.find { it.isSelected }?.quickOdds?.toMutableFormat_1()
                                 ?: mutableMapOf(), oddsChangeEvent.odds
                         )
@@ -755,7 +753,7 @@ object SocketUpdateUtil {
                             hotMatchInfo.oddsMap = mutableMapOf()
                         }
                         updateMatchOdds(
-                            hotMatchInfo.oddsMap ?: mutableMapOf(),
+                            hotMatchInfo.oddsMap as MutableMap<String, MutableList<Odd?>?>? ?: mutableMapOf(),
                             oddsChangeEvent.odds,
                         )
                     }
@@ -808,8 +806,8 @@ object SocketUpdateUtil {
     }
 
     private fun updateMatchOdds(
-        oddsMap: MutableMap<String, MutableList<Odd>?>,
-        oddsMapSocket: Map<String, List<Odd>?>?,
+        oddsMap: MutableMap<String, MutableList<Odd?>?>,
+        oddsMapSocket: Map<String, List<Odd?>?>?,
     ): Boolean {
         return when (oddsMap.isNullOrEmpty()) {
             true -> {
@@ -822,22 +820,7 @@ object SocketUpdateUtil {
         }
     }
 
-    private fun updateMatchOdds_1(
-        oddsMap: MutableMap<String, MutableList<Odd?>?>,
-        oddsMapSocket: Map<String, List<Odd?>?>?,
-    ): Boolean {
-        return when (oddsMap.isNullOrEmpty()) {
-            true -> {
-                insertMatchOdds_1(oddsMap, oddsMapSocket)
-            }
-
-            false -> {
-                refreshMatchOdds_1(oddsMap, oddsMapSocket)
-            }
-        }
-    }
-
-    private fun insertMatchOdds_1(
+    private fun insertMatchOdds(
         oddsMap: MutableMap<String, MutableList<Odd?>?>,
         oddsMapSocket: Map<String, List<Odd?>?>?,
     ): Boolean {
@@ -847,7 +830,7 @@ object SocketUpdateUtil {
         return oddsMapSocket?.isNotEmpty() ?: false
     }
 
-    private fun refreshMatchOdds_1(
+    private fun refreshMatchOdds(
         oddsMap: MutableMap<String, MutableList<Odd?>?>,
         oddsMapSocket: Map<String, List<Odd?>?>?,
     ): Boolean {
@@ -1227,15 +1210,7 @@ object SocketUpdateUtil {
         return isNeedRefresh
     }
 
-    private fun insertMatchOdds(
-        oddsMap: MutableMap<String, MutableList<Odd>?>,
-        oddsMapSocket: Map<String, List<Odd>?>?,
-    ): Boolean {
 
-        oddsMap.putAll(oddsMapSocket?.toMutableFormat() ?: mapOf())
-
-        return oddsMapSocket?.isNotEmpty() ?: false
-    }
 
     private fun insertMatchOdds(
         oddsDetailListData: OddsDetailListData, matchOddsChangeEvent: MatchOddsChangeEvent
@@ -1272,99 +1247,6 @@ object SocketUpdateUtil {
         return oddsChangeEvent.quickPlayCateList?.isNotEmpty() ?: false
     }
 
-    private fun refreshMatchOdds(
-        oddsMap: MutableMap<String, MutableList<Odd>?>,
-        oddsMapSocket: Map<String, List<Odd>?>?,
-    ): Boolean {
-        var isNeedRefresh = false
-
-        oddsMapSocket?.forEach { oddsMapEntrySocket ->
-            //全null : 有玩法沒賠率資料
-            when (oddsMap.keys.contains(oddsMapEntrySocket.key) && oddsMap[oddsMapEntrySocket.key]?.all { it == null } == false) {
-                true -> {
-                    oddsMap.forEach { oddTypeMap ->
-                        val oddsSocket = oddsMapEntrySocket.value
-                        val odds = oddTypeMap.value
-
-                        oddsSocket?.forEach { oddSocket ->
-                            when (odds?.map { it?.id }?.contains(oddSocket?.id)) {
-                                true -> {
-                                    val odd = odds.find { odd ->
-                                        odd?.id == oddSocket?.id
-                                    }
-
-                                    odd?.odds?.let { oddValue ->
-                                        oddSocket?.odds?.let { oddSocketValue ->
-                                            when {
-                                                oddValue > oddSocketValue -> {
-                                                    odd.oddState = OddState.SMALLER.state
-
-                                                    isNeedRefresh = true
-                                                }
-
-                                                oddValue < oddSocketValue -> {
-                                                    odd.oddState = OddState.LARGER.state
-
-                                                    isNeedRefresh = true
-                                                }
-
-                                                oddValue == oddSocketValue -> {
-                                                    odd.oddState = OddState.SAME.state
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    odd?.odds = oddSocket?.odds
-                                    odd?.hkOdds = oddSocket?.hkOdds
-                                    odd?.malayOdds = oddSocket?.malayOdds
-                                    odd?.indoOdds = oddSocket?.indoOdds
-
-                                    //更新是不是只有歐洲盤 (因為棒球socket有機會一開始全部賠率推0.0)，跟後端(How)確認過目前只有棒球會這樣。
-                                    odd?.isOnlyEUType =
-                                        oddSocket?.odds == oddSocket?.hkOdds && oddSocket?.odds == oddSocket?.malayOdds && oddSocket?.odds == oddSocket?.indoOdds
-
-                                    if (odd?.status != oddSocket?.status) {
-                                        odd?.status = oddSocket?.status
-
-                                        isNeedRefresh = true
-                                    }
-
-                                    if (odd?.spread != oddSocket?.spread) {
-                                        odd?.spread = oddSocket?.spread
-
-                                        isNeedRefresh = true
-                                    }
-
-                                    if (odd?.extInfo != oddSocket?.extInfo) {
-                                        odd?.extInfo = oddSocket?.extInfo
-
-                                        isNeedRefresh = true
-                                    }
-                                }
-
-                                false -> {
-                                    if (oddTypeMap.key == oddsMapEntrySocket.key && oddSocket != null) odds.add(
-                                        oddSocket
-                                    )
-
-                                    isNeedRefresh = true
-                                }
-                            }
-                        }
-                    }
-                }
-
-                false -> {
-                    oddsMap[oddsMapEntrySocket.key] = oddsMapEntrySocket.value?.toMutableList()
-
-                    isNeedRefresh = true
-                }
-            }
-        }
-
-        return isNeedRefresh
-    }
 
     private fun refreshMatchOdds(
         oddsDetailListData: OddsDetailListData, matchOddsChangeEvent: MatchOddsChangeEvent
