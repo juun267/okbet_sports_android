@@ -1171,4 +1171,7 @@
     <string name="N374">Delete lahat</string>
     <string name="J220">+Madami pa</string>
     <string name="bet_basketball_notify_max_limit">Hanggang 100 mga pagpipilian ang maaaring idagdag sa slip ng taya</string>
+    <string name="N918">Total stake</string>
+    <string name="N919">Total Win</string>
+    <string name="N920">+More</string>
 </resources>

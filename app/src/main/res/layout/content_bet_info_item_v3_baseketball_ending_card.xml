@@ -29,8 +29,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:maxWidth="170dp"
-                android:maxLines="1"
                 android:text="@string/N903"
                 android:textColor="@color/color_FFFFFF_414655"
                 android:textSize="14sp"
@@ -236,7 +234,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginStart="13dp"
                         android:gravity="center_vertical"
-                        android:text="@string/str_total_stake"
+                        android:text="@string/N918"
                         android:textColor="@color/color_414655"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -262,7 +260,7 @@
                         android:id="@+id/tvTotalWin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/total_all_win_amount"
+                        android:text="@string/N919"
                         android:textColor="@color/color_535D76"
                         android:textSize="12sp" />
 

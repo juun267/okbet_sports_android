@@ -134,7 +134,7 @@ class BasketballEndingCardViewHolder(
                 }
 
                 if (holder.layoutPosition == betList?.size) {
-                    holder.setGone(R.id.tvMatchOdds, true).setVisible(R.id.tvBsMore, true).setText(R.id.tvBsMore,R.string.J220)
+                    holder.setGone(R.id.tvMatchOdds, true).setVisible(R.id.tvBsMore, true).setText(R.id.tvBsMore,R.string.N920)
                     val tvBsMore = holder.getView<TextView>(R.id.tvBsMore)
                     tvBsMore.background = DrawableUtils.getBasketballPlusMore(root)
                     tvBsMore.setOnClickListener {
