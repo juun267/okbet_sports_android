@@ -42,7 +42,7 @@ class TypeSingleAdapter (
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Timber.d("===洗刷刷4 刷新布局 position：${position}")
+//        Timber.d("===洗刷刷4 刷新布局 position：${position}")
         holder.bindModel(oddsDetail.gameType, oddsDetail.oddArrayList[position])
     }
 
