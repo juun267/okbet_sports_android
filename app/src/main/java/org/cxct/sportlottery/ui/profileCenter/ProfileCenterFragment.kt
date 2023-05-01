@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.view.View
 import android.widget.LinearLayout
@@ -251,8 +250,11 @@ class ProfileCenterFragment :
         block_amount.setVisibilityByMarketSwitch()
         tv_terms_condition.setVisibilityByMarketSwitch()
         btn_fund_detail.setVisibilityByMarketSwitch()
+        btn_help_center.setVisibilityByMarketSwitch()
         btn_promotion.setVisibilityByMarketSwitch()
         btn_other_bet_record.setVisibilityByMarketSwitch()
+        btn_affiliate.setVisibilityByMarketSwitch()
+        btn_about_us.setVisibilityByMarketSwitch()
         iv_profile.setOnClickListener {
             startActivity(Intent(requireActivity(), ProfileActivity::class.java))
         }

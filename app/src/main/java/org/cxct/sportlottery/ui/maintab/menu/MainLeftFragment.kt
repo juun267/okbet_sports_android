@@ -5,8 +5,8 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.fragment_main_left.*
 import org.cxct.sportlottery.BuildConfig
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.gone
@@ -14,8 +14,8 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.HandicapType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.util.*
 
 class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
@@ -91,6 +91,7 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             EventBusUtil.post(MenuEvent(false))
             (activity as MainTabActivity).jumpToOKGames()
         }
+        lin_promotion.setVisibilityByMarketSwitch()
         lin_promotion.setOnClickListener {
             EventBusUtil.post(MenuEvent(false))
             JumpUtil.toInternalWeb(
@@ -114,6 +115,7 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             lin_language.isSelected = isSelected
             rv_language.isVisible = isSelected
         }
+        lin_aboutus.setVisibilityByMarketSwitch()
         lin_aboutus.setOnClickListener {
             JumpUtil.toInternalWeb(requireContext(),
                 Constants.getAboutUsUrl(requireContext()),
