@@ -213,6 +213,8 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                 lin_endscore.isVisible =
                     data.matchOdds.firstOrNull()?.playCateCode == PlayCate.FS_LD_CS.value
                 if (lin_endscore.isVisible) {
+                    val sortList = data.matchOdds.firstOrNull()?.multiCode?.sortedBy { it.playCode }
+                        ?: listOf()
                     content_play.setCompoundDrawablesWithIntrinsicBounds(null,
                         null,
                         context.getDrawable(R.drawable.ic_right_arrow_gray),
@@ -222,10 +224,10 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                         intent.putExtra("data", data)
                         context?.startActivity(intent)
                     }
-                    val listData = if (data.matchOdds.firstOrNull()?.multiCode?.size ?: 0 > 6) {
-                        data.matchOdds.firstOrNull()?.multiCode?.subList(0, 6)
+                    val listData = if (sortList.size > 6) {
+                        sortList.subList(0, 6)
                     } else {
-                        data.matchOdds.firstOrNull()?.multiCode ?: listOf()
+                        sortList
                     }
                     if (rv_endscore_info.adapter == null) {
                         rv_endscore_info.layoutManager =
@@ -241,9 +243,8 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                         (rv_endscore_info.adapter as BetRecordEndScoreAdapter).setList(listData)
                     }
                     tv_more?.let {
-                        tv_more.isVisible = data.matchOdds.firstOrNull()?.multiCode?.size ?: 0 > 6
+                        tv_more.isVisible = sortList.size > 6
                     }
-
                 }
             }
         }

@@ -160,9 +160,10 @@ class BetDetailsFragment : BaseFragment<BetListViewModel>(BetListViewModel::clas
                     rv_endscore_info.addItemDecoration(GridSpacingItemDecoration(8, 4.dp, false))
                     val scoreAdapter = BetRecordEndScoreAdapter()
                     rv_endscore_info.adapter = scoreAdapter
-                    scoreAdapter.setList(row.matchOdds.firstOrNull()?.multiCode ?: listOf())
+                    scoreAdapter.setList(row.matchOdds.firstOrNull()?.multiCode?.sortedBy { it.playCode }
+                        ?: listOf())
                 } else {
-                    (rv_endscore_info.adapter as BetRecordEndScoreAdapter).setList(row.matchOdds.firstOrNull()?.multiCode)
+                    (rv_endscore_info.adapter as BetRecordEndScoreAdapter).setList(row.matchOdds.firstOrNull()?.multiCode?.sortedBy { it.playCode })
                 }
                 tv_more.gone()
             }
@@ -255,9 +256,10 @@ class BetDetailsFragment : BaseFragment<BetListViewModel>(BetListViewModel::clas
                     rv_endscore_info.addItemDecoration(GridSpacingItemDecoration(8, 4.dp, false))
                     val scoreAdapter = BetRecordEndScoreAdapter()
                     rv_endscore_info.adapter = scoreAdapter
-                    scoreAdapter.setList(row.matchOdds.firstOrNull()?.multiCode ?: listOf())
+                    scoreAdapter.setList(row.matchOdds.firstOrNull()?.multiCode?.sortedBy { it.playCode }
+                        ?: listOf())
                 } else {
-                    (rv_endscore_info.adapter as BetRecordEndScoreAdapter).setList(row.matchOdds.firstOrNull()?.multiCode)
+                    (rv_endscore_info.adapter as BetRecordEndScoreAdapter).setList(row.matchOdds.firstOrNull()?.multiCode?.sortedBy { it.playCode })
                 }
                 tv_more.gone()
             }
