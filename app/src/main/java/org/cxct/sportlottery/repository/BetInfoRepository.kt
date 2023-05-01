@@ -371,7 +371,6 @@ object BetInfoRepository {
             }
         }
 
-
         val betInfoMatchOdd = MatchOddUtil.transfer(
             matchType = matchType,
             gameType = gameType.key,
@@ -395,14 +394,30 @@ object BetInfoRepository {
                 this.betInfo = betInfo
             }
 
-            Timber.d("==Bet Refactor==> _betIDList.size():${_betIDList.value?.peekContent()?.size}")
+//            Timber.d("==Bet Refactor==> _betIDList.size():${_betIDList.value?.peekContent()?.size}")
             val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
 
+            //是不是同一场比赛
+            //规则 主队+客队名称完全相同
+            val currentMatchName = it.awayName + it.homeName
+            var lastMatchName: String? = null
+            if (betList.isNotEmpty()) {
+                lastMatchName = betList.last().matchOdd.awayName + betList.last().matchOdd.homeName
+            }
+            val isSameMatch = (currentMatchName == lastMatchName) || (lastMatchName == null)
+//            Timber.d("isSameMatch:${isSameMatch} currentMatchName:${currentMatchName} lastMatchName:${lastMatchName}")
             //篮球末位比分
             if (playCateCode == PlayCate.FS_LD_CS.value) {
-                Timber.d("篮球末位比分模式")
-                oddIDArray.add(it.oddsId)
-                betList.add(data)
+                if (isSameMatch){
+                    Timber.d("篮球末位比分模式")
+                    oddIDArray.add(it.oddsId)
+                    betList.add(data)
+                }else{
+                    oddIDArray.clear()
+                    betList.clear()
+                    oddIDArray.add(it.oddsId)
+                    betList.add(data)
+                }
                 setCurrentBetState(BetListFragment.BASKETBALL_ENDING_CARD)
                 currentBetType = BetListFragment.BASKETBALL_ENDING_CARD
             } else {
