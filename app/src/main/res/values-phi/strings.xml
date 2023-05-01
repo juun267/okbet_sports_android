@@ -1161,4 +1161,18 @@
     <string name="N890">Print</string>
     <string name="N891">Paki-type ang pangalan</string>
     <string name="J033">Pangalan</string>
+    <string name="N900">Pangalan ng Laro</string>
+    <string name="N899">Kung gusto mo lang magtanggal ng single score, maaari mong pindutin ang magtangal ng single score.</string>
+    <string name="N379">Huwag nang ipaalala muli</string>
+    <string name="N903">Last digit score sa basketball</string>
+    <string name="str_total_stake">Kabuuang taya：</string>
+    <string name="N904">Pag isipan</string>
+    <string name="N905">Kumpirma</string>
+    <string name="N374">Delete lahat</string>
+    <string name="J220">+Madami pa</string>
+    <string name="bet_basketball_notify_max_limit">Hanggang 100 mga pagpipilian ang maaaring idagdag sa slip ng taya</string>
+    <string name="N918">Total stake:</string>
+    <string name="N919">Total Win:</string>
+    <string name="N920">+More</string>
+    <string name="N901">Kumpirmasyon sa pag-delete</string>
 </resources>

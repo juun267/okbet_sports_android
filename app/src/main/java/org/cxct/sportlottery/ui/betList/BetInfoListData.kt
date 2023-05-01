@@ -47,5 +47,7 @@ class BetInfoListData(
 
     //保存betInfo
     var betInfo: BetInfo? = null
+    //是否点击了,用于篮球末位比分购物车
+    var isClickForBasketball:Boolean?  = false
 }
 

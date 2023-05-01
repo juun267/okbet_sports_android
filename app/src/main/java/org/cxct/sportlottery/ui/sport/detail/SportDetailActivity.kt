@@ -15,11 +15,11 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.webkit.*
 import android.widget.FrameLayout
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.appbar.AppBarLayout
 import com.gyf.immersionbar.BarHide
@@ -42,6 +42,7 @@ import org.cxct.sportlottery.common.extentions.setFbKicks
 import org.cxct.sportlottery.common.extentions.setMatchAttack
 import org.cxct.sportlottery.common.extentions.setMatchRoundScore
 import org.cxct.sportlottery.common.extentions.setMatchScore
+import org.cxct.sportlottery.databinding.ActivityDetailSportBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
@@ -63,6 +64,7 @@ import org.cxct.sportlottery.ui.sport.SportViewModel
 import org.cxct.sportlottery.ui.sport.detail.adapter.*
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 import timber.log.Timber
 import java.net.URLEncoder
@@ -78,6 +80,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             matchInfo: MatchInfo,
             matchType: MatchType? = null,
             intoLive: Boolean = false,
+            tabCode: String? = null,
         ) {
             matchInfo.let {
                 val intent = Intent(context, SportDetailActivity::class.java)
@@ -88,6 +91,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         ?: if (TimeUtil.isTimeInPlay(it.startTime)) MatchType.IN_PLAY else MatchType.DETAIL
                 )
                 intent.putExtra("intoLive", intoLive)
+                intent.putExtra("tabCode", tabCode)
                 context.startActivity(intent)
             }
         }
@@ -100,6 +104,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private val tabCateAdapter: TabCateAdapter by lazy {
         TabCateAdapter(OnItemSelectedListener {
             tabCateAdapter.selectedPosition = it
+            (rv_cat.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(rv_cat,
+                RecyclerView.State(),
+                tabCateAdapter.selectedPosition)
             viewModel.oddsDetailResult.value?.peekContent()?.oddsDetailData?.matchOdd?.playCateTypeList?.getOrNull(
                 it
             )?.code?.let { code ->
@@ -110,6 +117,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private var betListFragment = BetListFragment()
     private var matchOdd: MatchOdd? = null
     private var matchInfo: MatchInfo? = null
+
+    //进来后默认切到指定tab
+    private val tabCode by lazy { intent.getStringExtra("tabCode") }
     private var isFlowing = false
     private lateinit var enterAnim: Animation
     private lateinit var exitAnim: Animation
@@ -126,13 +136,14 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     GameType.FT.key -> {
                         timeMillis += 1000
                     }
+
                     GameType.BK.key, GameType.RB.key, GameType.AFT.key -> {
                         timeMillis -= 1000
                     }
+
                     else -> {
                     }
                 }
-
             }
             //过滤部分球类
             if (when (matchInfo?.gameType) {
@@ -147,8 +158,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 return@Handler false
             }
             tv_match_time?.apply {
-                if (needCountStatus(matchOdd?.matchInfo?.socketMatchStatus,
-                        matchOdd?.matchInfo?.leagueTime)
+                if (needCountStatus(
+                        matchOdd?.matchInfo?.socketMatchStatus, matchOdd?.matchInfo?.leagueTime
+                    )
                 ) {
                     if (timeMillis >= 1000) {
                         text = TimeUtil.longToMmSs(timeMillis)
@@ -184,10 +196,14 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
     }
 
+    private val binding by lazy {
+        ActivityDetailSportBinding.inflate(layoutInflater)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        setContentView(R.layout.activity_detail_sport)
+        setContentView(binding.root)
         AndroidBug5497Workaround.assistActivity(this)
         initToolBar()
         initData()
@@ -324,7 +340,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 //        cl_bet_list_bar.tv_balance_currency.text = sConfigData?.systemCurrencySign
 //        cl_bet_list_bar.tv_balance.text = TextUtil.formatMoney(0.0)
 //
-        cl_bet_list_bar.setOnClickListener {
+        binding.parlayFloatWindow.setBetText(getString(R.string.bet_slip))
+        binding.parlayFloatWindow.onViewClick = {
             showBetListPage()
         }
     }
@@ -358,16 +375,17 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     override fun updateBetListCount(num: Int) {
         setUpBetBarVisible()
-        cl_bet_list_bar.tv_bet_list_count.text = num.toString()
+//        cl_bet_list_bar.tv_bet_list_count.text = num.toString()
+        binding.parlayFloatWindow.tv_bet_list_count.text = num.toString()
         Timber.e("num: $num")
         if (num > 0) viewModel.getMoneyAndTransferOut()
     }
 
     override fun updateBetListOdds(list: MutableList<BetInfoListData>) {
-        if (list.size > 1) {
-            val multipleOdds = getMultipleOdds(list)
-            cl_bet_list_bar.tvOdds.text = multipleOdds
-        }
+//        if (list.size > 1) {
+//            val multipleOdds = getMultipleOdds(list)
+////            parlayFloatWindow.tvOdds.text = multipleOdds
+//        }
     }
 
     override fun showLoginNotify() {
@@ -495,6 +513,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
         rv_cat.apply {
             adapter = tabCateAdapter
+            layoutManager =
+                ScrollCenterLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             itemAnimator?.changeDuration = 0
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
         }
@@ -630,7 +650,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 oddsDetailListAdapter.oddsDetailDataList.forEach {
                     it.isPin = false
                 }
-
                 pinList.forEach {
                     it.isPin = true
 
@@ -642,7 +661,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         )
                     )
                 }
-
                 oddsDetailListAdapter.notifyDataSetChanged()
             }
         }
@@ -674,9 +692,17 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
 
         viewModel.showBetUpperLimit.observe(this) {
-            if (it.getContentIfNotHandled() == true) snackBarBetUpperLimitNotify.apply {
-                setAnchorView(R.id.cl_bet_list_bar)
-                show()
+            if (it.getContentIfNotHandled() == true) {
+                showSnackBarBetUpperLimitNotify(
+                    getString(R.string.bet_basketball_notify_max_limit)
+                ).setAnchorView(R.id.parlayFloatWindow).show()
+            }
+        }
+        viewModel.showBetBasketballUpperLimit.observe(this) {
+            if (it.getContentIfNotHandled() == true) {
+                showSnackBarBetUpperLimitNotify(
+                    getString(R.string.bet_basketball_notify_max_limit)
+                ).setAnchorView(R.id.parlayFloatWindow).show()
             }
         }
         viewModel.liveLoginInfo.observe(this) {
@@ -814,9 +840,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     GameType.FT.key -> {
                         matchClockEvent.matchClockCO?.matchTime
                     }
+
                     GameType.BK.key, GameType.RB.key, GameType.AFT.key -> {
                         matchClockEvent.matchClockCO?.remainingTimeInPeriod
                     }
+
                     else -> null
                 }
 
@@ -837,11 +865,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 oddsDetailListAdapter?.oddsDetailDataList?.let { oddsDetailListDataList ->
                     SocketUpdateUtil.updateMatchOddsMap(oddsDetailListDataList,
                         matchOddsChangeEvent,
-                        viewModel.favorPlayCateList.value?.find { playCate ->
-                            playCate.gameType == matchInfo?.gameType
-                        })?.let { updatedDataList ->
-                        oddsDetailListAdapter?.oddsDetailDataList = updatedDataList
-                    } ?: run {
+                        viewModel.favorPlayCateList.value?.find { playCate -> playCate.gameType == matchInfo?.gameType })
+                        ?.let { updatedDataList ->
+                            oddsDetailListAdapter?.oddsDetailDataList = updatedDataList
+                        } ?: run {
                         var needUpdate = false
                         oddsDetailListDataList.forEachIndexed { index, oddsDetailListData ->
                             if (SocketUpdateUtil.updateMatchOdds(
@@ -949,7 +976,18 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private fun OddsDetailResult.setupPlayCateTab() {
         val playCateTypeList = this.oddsDetailData?.matchOdd?.playCateTypeList
         if (playCateTypeList?.isNotEmpty() == true) {
+            //如果是从篮球末位比分进入，拿到数据后，自动切换到篮球末位比分到tab下
+            if (tabCateAdapter.dataList.isEmpty() && tabCode == MatchType.END_SCORE.postValue) {
+                playCateTypeList.indexOfFirst { it.code == tabCode }.let {
+                    if (it >= 0) {
+                        tabCateAdapter.selectedPosition = it
+                    }
+                }
+            }
             tabCateAdapter.dataList = playCateTypeList
+            (rv_cat.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(rv_cat,
+                RecyclerView.State(),
+                tabCateAdapter.selectedPosition)
         } else {
             rv_cat.visibility = View.GONE
         }
@@ -1084,6 +1122,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 lin_tips.isVisible = false
                 content_baseball_status.isVisible = true
             }
+
             else -> {
                 lin_tips.isVisible = true
                 content_baseball_status.isVisible = false
@@ -1261,6 +1300,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         ic_attack_c.visibility = View.VISIBLE
                     }
                 }
+
                 else -> {
                     ic_attack_h.visibility = View.GONE
                     ic_attack_c.visibility = View.GONE
@@ -1285,6 +1325,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             text = when (matchInfo.gameType) {
                 GameType.VB.key, GameType.TT.key, GameType.BM.key, GameType.TN.key -> (matchInfo.homeTotalScore
                     ?: 0).toString() + " - " + (matchInfo.awayTotalScore ?: 0).toString()
+
                 else -> (matchInfo.homeScore ?: 0).toString() + " - " + (matchInfo.awayScore
                     ?: 0).toString()
             }
@@ -1313,6 +1354,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             (TimeUtil.isTimeInPlay(matchInfo.startTime) && matchInfo.status == GameStatus.POSTPONED.code && (matchInfo.gameType == GameType.FT.name || matchInfo.gameType == GameType.BK.name || matchInfo.gameType == GameType.TN.name)) -> {
                 getString(R.string.game_postponed) + setSptText(matchInfo)
             }
+
             TimeUtil.isTimeInPlay(matchInfo.startTime) -> {
                 if (matchInfo.statusName18n != null) {
                     //网球，排球，乒乓，羽毛球，就不显示
@@ -1326,6 +1368,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     ""
                 }
             }
+
             else -> {
                 if (TimeUtil.isTimeToday(matchInfo.startTime)) getString((R.string.home_tab_today))
                 else matchInfo.startDateDisplay
@@ -1498,12 +1541,14 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         activity.setUpBetBarVisible()
                     }
                 }
+
                 "onEmoji" -> {
                     activity.runOnUiThread {
                         activity.showEmoji = data
                         activity.setUpBetBarVisible()
                     }
                 }
+
                 "requireLogin" -> {
                     activity.runOnUiThread {
                         activity.startLogin()
@@ -1531,16 +1576,16 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 wv_chat.isVisible = false
             }
         }
-
-        (cl_bet_list_bar.layoutParams as ConstraintLayout.LayoutParams).apply {
-            bottomMargin = if (visible) 57.dp else 0
-        }
+//
+//        (cl_bet_list_bar.layoutParams as ConstraintLayout.LayoutParams).apply {
+//            bottomMargin = if (visible) 57.dp else 0
+//        }
     }
 
     var showEmoji = false
     var onMini = true
     fun setUpBetBarVisible() {
-        cl_bet_list_bar.isVisible = !BetInfoRepository.betInfoList.value?.peekContent()
+        binding.parlayFloatWindow.isVisible = !BetInfoRepository.betInfoList.value?.peekContent()
             .isNullOrEmpty() && (!showEmoji && onMini)
     }
 

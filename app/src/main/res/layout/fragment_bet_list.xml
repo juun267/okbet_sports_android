@@ -23,13 +23,6 @@
         android:orientation="vertical"
         tools:ignore="SpUsage, ContentDescription">
 
-        <!--<include
-            android:id="@+id/tool_bar"
-            layout="@layout/view_toolbar_main"
-            android:background="@color/transparent_black_0"
-            android:visibility="invisible" />-->
-
-
         <RelativeLayout
             android:id="@+id/ll_root"
             android:layout_width="match_parent"
@@ -49,7 +42,7 @@
                     android:layout_height="44dp" />
 
 
-                <androidx.recyclerview.widget.RecyclerView
+                <org.cxct.sportlottery.view.ParentRecyclerView
                     android:id="@+id/rv_bet_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -57,6 +50,7 @@
                     android:background="@color/color_202541_FFFFFF"
                     android:overScrollMode="never"
                     tools:itemCount="3"
+                    tools:visibility="visible"
                     tools:listitem="@layout/content_bet_info_item_v3_2" />
 
 
@@ -93,7 +87,7 @@
                     android:orientation="vertical"
                     android:paddingTop="10dp"
                     android:visibility="gone"
-                    tools:visibility="visible">
+                    tools:visibility="gone">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_parlay_list"
@@ -103,9 +97,6 @@
                         app:layout_constraintTop_toTopOf="parent"
                         tools:itemCount="1"
                         tools:listitem="@layout/item_bet_list_batch_control_connect_v3" />
-
-
-
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/clExpandOrStacked"
@@ -275,6 +266,7 @@
                     android:background="@drawable/bg_radius_8_bet_parlay"
                     android:gravity="center"
                     android:text="@string/bet_parlay"
+
                     android:textColor="@color/color_25BF63"
                     android:textSize="@dimen/textSize16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -342,7 +334,7 @@
                     android:textColor="@color/color_535D76"
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/btnParlaySingle" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
                 <TextView
@@ -353,7 +345,7 @@
                     android:text="12.6445.45.45"
                     android:textColor="@color/color_414655"
                     android:textSize="@dimen/textSize14sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/btnParlaySingle"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/textView6"
                     app:layout_constraintTop_toBottomOf="@+id/textView6" />
                 <!--endregion bet loading view-->

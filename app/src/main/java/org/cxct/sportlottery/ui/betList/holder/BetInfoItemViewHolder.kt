@@ -583,12 +583,15 @@ class BetInfoItemViewHolder(
                 tvName -> {
                     showPopAsTop(tvName, tvNameText)
                 }
+
                 tvLeagueName -> {
                     showPopAsTop(tvLeagueName, itemData.matchOdd.leagueName)
                 }
+
                 tvMatchHome -> {
                     showPopAsTop(tvMatchHome, itemData.matchOdd.homeName)
                 }
+
                 tvMatchAway -> {
                     showPopAsTop(tvMatchAway, itemData.matchOdd.awayName)
                 }

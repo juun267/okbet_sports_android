@@ -64,7 +64,7 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
     }
 
     private fun setupOddsChangeListener() {
-        receiver.oddsChangeListener = mOddsChangeListener
+//        receiver.oddsChangeListener = mOddsChangeListener
     }
 
     private val endScoreAdapter: EndScoreAdapter by lazy {
@@ -87,7 +87,12 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
 
             if (item is MatchOdd) { // 赛事栏相关点击
                 if (view is ViewGroup) { // 赛事详情
-                    item.matchInfo?.let { SportDetailActivity.startActivity(view.context, it, matchType) }
+                    item.matchInfo?.let {
+                        SportDetailActivity.startActivity(view.context,
+                            it,
+                            MatchType.EARLY,
+                            tabCode = MatchType.END_SCORE.postValue)
+                    }
                 } else { // 收藏赛事
                     viewModel.pinFavorite(FavoriteType.MATCH, item.matchInfo?.id)
                 }
@@ -107,7 +112,8 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
         setupGameRow()
         setupGameListView()
         initObserve()
-        initSocketObserver()
+        //新版列表，不需要显示赔率和赛事状态，所以不用接收ws
+//        initSocketObserver()
         loadData()
     }
 

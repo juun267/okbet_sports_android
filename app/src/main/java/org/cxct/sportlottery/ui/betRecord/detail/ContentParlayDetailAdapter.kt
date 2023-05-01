@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.maintab.betdetails
+package org.cxct.sportlottery.ui.betRecord.detail
 
 import android.view.LayoutInflater
 import android.view.View
@@ -74,7 +74,7 @@ class ContentParlayDetailAdapter(val status: Int) :
                 )
 
                 parlay_play_time.text = TimeUtil.timeFormat(data.startTime, TimeUtil.DM_HM_FORMAT)
-                itemView.iv_country.setSvgDrawable(data.categoryIcon)
+                itemView.iv_country.setLeagueLogo(data.categoryIcon)
                 content_league.text = data.leagueName
             }
         }

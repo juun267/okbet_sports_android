@@ -1289,4 +1289,18 @@
 
     <string name="N177">Please enter the correct phone number</string>
     <string name="N889">Please enter correct email</string>
+    <string name="N900">Game Name</string>
+    <string name="N899">If you only want to delete a single score, you can click on delete a single score.</string>
+    <string name="N379">No tip</string>
+    <string name="N903">Basketball Ending Card</string>
+    <string name="str_total_stake">Total stake：</string>
+    <string name="N904">Think again</string>
+    <string name="N374">Delete ALL</string>
+    <string name="N905">Confirm</string>
+    <string name="J220">+More</string>
+    <string name="bet_basketball_notify_max_limit">Can add maximum 100 options to betslip</string>
+    <string name="N918">Total stake:</string>
+    <string name="N919">Total Win:</string>
+    <string name="N920">+More</string>
+    <string name="N901">Confirm delete</string>
 </resources>

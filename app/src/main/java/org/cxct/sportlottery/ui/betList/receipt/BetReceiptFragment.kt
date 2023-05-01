@@ -199,7 +199,7 @@ class BetReceiptFragment :
 
     private fun initButton() {
 
-        if (BetInfoRepository.currentStateSingleOrParlay == 0) {
+        if (BetInfoRepository.currentState == 0) {
             iv_arrow.setImageResource(R.drawable.ic_single_bet_delete)
         } else {
             iv_arrow.setImageResource(R.drawable.ic_arrow_down_double)

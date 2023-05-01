@@ -204,7 +204,7 @@ class KeyboardView @JvmOverloads constructor(
                     (context as Activity).findViewById(android.R.id.content),
                     false
                 )
-                snackView.tv_notify.text = title
+                snackView.tvNotify.text = title
 
                 (this.view as Snackbar.SnackbarLayout).apply {
                     findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
@@ -219,6 +219,7 @@ class KeyboardView @JvmOverloads constructor(
     }
 
     private fun disableKeyboard() {
+
         var cls: Class<EditText> = EditText::class.java
         var method: Method
         try {
