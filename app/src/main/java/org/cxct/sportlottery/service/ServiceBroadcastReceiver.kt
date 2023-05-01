@@ -8,6 +8,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.*
+import org.cxct.sportlottery.network.chat.UserLevelConfigVO
+import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.*
+import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.subscribeSuccess.SubscribeSuccessResult
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.service.EventType
@@ -30,12 +33,14 @@ import org.cxct.sportlottery.network.service.sys_maintenance.SysMaintenanceEvent
 import org.cxct.sportlottery.network.service.user_level_config_change.UserLevelConfigListEvent
 import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
 import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.repository.ChatRepository
 import org.cxct.sportlottery.repository.PlayRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.service.BackService.Companion.CHANNEL_KEY
 import org.cxct.sportlottery.service.BackService.Companion.CONNECT_STATUS
 import org.cxct.sportlottery.service.BackService.Companion.SERVER_MESSAGE_KEY
 import org.cxct.sportlottery.service.BackService.Companion.mUserId
+import org.cxct.sportlottery.ui.chat.ChatMsgReceiveType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
@@ -142,7 +147,7 @@ open class ServiceBroadcastReceiver(
     override fun onReceive(context: Context?, intent: Intent) {
         val bundle = intent.extras
         receiveConnectStatus(bundle)
-        receiveMessage(bundle)
+        bundle?.let { receiveMessage(it) }
     }
 
     private fun receiveConnectStatus(bundle: Bundle?) {
@@ -152,8 +157,15 @@ open class ServiceBroadcastReceiver(
         }
     }
 
-    private fun receiveMessage(bundle: Bundle?) {
+    private fun receiveMessage(bundle: Bundle) {
+
         CoroutineScope(Dispatchers.IO).launch {
+            if (bundle.getString(BackService.MESSAGE_CATE) == ChatService.MessageCate.Chat.cate) {
+                val messageStr = bundle.getString(SERVER_MESSAGE_KEY, "") ?: ""
+                handleChatEvent(messageStr)
+                return@launch
+            }
+
             val channelStr = bundle?.getString(CHANNEL_KEY, "") ?: ""
             val messageStr = bundle?.getString(SERVER_MESSAGE_KEY, "") ?: ""
             val decryptMessage = EncryptUtil.uncompress(messageStr)
@@ -325,6 +337,99 @@ open class ServiceBroadcastReceiver(
 
         }
 
+    }
+
+
+    @Suppress("USELESS_CAST")
+    private suspend fun handleChatEvent(message: String) {
+        JSONTokener(message).nextValue().apply {
+            when (this) {
+                is JSONObject -> {
+                    val jsonObject = JSONObject(message)
+                    if (jsonObject.has("bulletinList") && jsonObject.has("messageList")) {
+                        val subscribeSuccessResult = message.fromJson<SubscribeSuccessResult>()
+                        ChatRepository.emitSubscribeSuccessResult(subscribeSuccessResult)
+                    } else {
+                        if (jsonObject.has("type")) {
+                            when (jsonObject.getInt("type") as? Int) {
+                                ChatMsgReceiveType.CHAT_MSG,
+                                ChatMsgReceiveType.CHAT_SEND_PIC,
+                                ChatMsgReceiveType.CHAT_SEND_PIC_AND_TEXT -> {
+                                    val chatMessage = message.fromJson<ChatReceiveContent<ChatMessageResult>>()
+                                    ChatRepository.emitChatMessage(chatMessage)
+                                }
+
+                                ChatMsgReceiveType.CHAT_SEND_RED_ENVELOPE -> {
+                                    val chatMessage = message.fromJson<ChatReceiveContent<ChatRedEnvelopeResult>>()
+                                    ChatRepository.emitChatMessage(chatMessage)
+                                }
+
+//                                ChatMsgReceiveType.CHAT_USER_LEAVE.code,離開房間不需要顯示
+                                ChatMsgReceiveType.CHAT_USER_ENTER,
+                                -> {
+                                    val chatMessage = message.fromJson<ChatReceiveContent<ChatUserResult>>()
+                                    ChatRepository.emitChatMessage(chatMessage)
+                                }
+
+                                ChatMsgReceiveType.CHAT_SILENCE_ROOM -> {
+                                    val chatMessage = message.fromJson<ChatReceiveContent<ChatSilenceRoomResult>>()
+                                    ChatRepository.emitChatMessage(chatMessage)
+                                }
+
+                                ChatMsgReceiveType.CHAT_WIN_RED_ENVELOPE_ROOM_NOTIFY,
+                                ChatMsgReceiveType.CHAT_WIN_RED_ENVELOPE_RAIN_NOTIFY -> {
+                                    val chatMessage = message.fromJson<ChatReceiveContent<ChatWinRedEnvelopeResult>>()
+                                    ChatRepository.emitChatMessage(chatMessage)
+                                }
+
+                                ChatMsgReceiveType.CHAT_SILENCE,
+                                ChatMsgReceiveType.CHAT_RELIEVE_SILENCE,
+                                ChatMsgReceiveType.CHAT_KICK_OUT -> {
+                                    val chatMessage = message.fromJson<ChatReceiveContent<ChatPersonalMsgResult>>()
+                                    ChatRepository.emitChatMessage(chatMessage)
+                                }
+
+                                ChatMsgReceiveType.CHAT_SEND_PERSONAL_RED_ENVELOPE -> {
+                                    val chatMessage = message.fromJson<ChatReceiveContent<ChatPersonalRedEnvelopeResult>>()
+                                    ChatRepository.emitChatMessage(chatMessage)
+                                }
+
+                                ChatMsgReceiveType.CHAT_USER_PROMPT -> {
+                                    val chatMessage = message.fromJson<ChatReceiveContent<ChatMessageResult>>()
+                                    ChatRepository.emitChatMessage(chatMessage)
+                                }
+
+                                ChatMsgReceiveType.CHAT_MSG_REMOVE -> {
+                                    val chatMessage = message.fromJson<ChatReceiveContent<ChatRemoveMsgResult>>()
+                                    ChatRepository.emitChatMessage(chatMessage)
+                                }
+
+                                ChatMsgReceiveType.CHAT_MSG_RED_ENVELOPE -> {
+                                    val chatMessage = message.fromJson<ChatReceiveContent<ChatRedEnvelopeMessageResult>>()
+                                    ChatRepository.emitChatMessage(chatMessage)
+                                }
+
+                                ChatMsgReceiveType.CHAT_UPDATE_USER_LEVEL_CONFIG -> {
+                                    val chatMessage = message.fromJson<ChatReceiveContent<UserLevelConfigVO>>()
+                                    ChatRepository.emitChatMessage(chatMessage)
+                                }
+
+                                ChatMsgReceiveType.CHAT_UPDATE_MEMBER -> {
+                                    val chatMessage = message.fromJson<ChatReceiveContent<UserLevelConfigVO>>()
+                                    ChatRepository.emitChatMessage(chatMessage)
+                                }
+
+                                ChatMsgReceiveType.CHAT_ERROR -> {
+
+                                }
+
+                                else -> {}
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private suspend fun onOddsEvent(socketEvent: OddsChangeEvent) {

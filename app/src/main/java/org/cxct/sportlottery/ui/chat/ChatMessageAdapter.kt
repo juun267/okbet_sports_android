@@ -198,11 +198,11 @@ class ChatMessageAdapter(val activity: Activity) : RecyclerView.Adapter<Recycler
                     }
 
                     when (data.chatType) {
-                        ChatMessageType.SPEAKING_BANNED.type -> viewHolder.tvContent.text =
+                        ChatMessageType.SPEAKING_BANNED -> viewHolder.tvContent.text =
                             viewHolder.tvContent.context.getString(R.string.chat)
-                        ChatMessageType.CANCEL_SPEAKING_BANNED.type -> viewHolder.tvContent.text =
+                        ChatMessageType.CANCEL_SPEAKING_BANNED -> viewHolder.tvContent.text =
                             viewHolder.tvContent.context.getString(R.string.unbanned_already)
-                        ChatMessageType.CHAT_TIME.type -> {
+                        ChatMessageType.CHAT_TIME -> {
                             when (data.content) {
                                 "1" -> viewHolder.tvContent.text =
                                     viewHolder.tvContent.context.getString(R.string.chat_open_chat)
@@ -213,7 +213,7 @@ class ChatMessageAdapter(val activity: Activity) : RecyclerView.Adapter<Recycler
                                 }: ${data.content}"
                             }
                         }
-                        ChatMessageType.SYSTEM_PRIVATE_MSG.type -> {
+                        ChatMessageType.SYSTEM_PRIVATE_MSG -> {
                             viewHolder.tvContent.text =
                                 viewHolder.tvContent.context.getString(R.string.chat_above_history_msg)
                             viewHolder.iconWarning.visibility = View.GONE
@@ -659,7 +659,7 @@ class ChatMessageAdapter(val activity: Activity) : RecyclerView.Adapter<Recycler
 
     private fun setLevelPic(imageView: ImageView, data: ChatMessage) {
         try {
-            if (data.chatType != ChatMessageType.PLAN_ADMIN_MSG.type) {
+            if (data.chatType != ChatMessageType.PLAN_ADMIN_MSG) {
                 imageView.visibility = View.VISIBLE
 
                 val requestOptions = RequestOptions()

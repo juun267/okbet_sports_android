@@ -93,26 +93,26 @@ class ChatMessageListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
             else -> {
                 when (dataList[position].type) {
-                    ChatMsgReceiveType.CHAT_MSG.code,
-                    ChatMsgReceiveType.CHAT_SEND_PIC.code,
-                    ChatMsgReceiveType.CHAT_SEND_PIC_AND_TEXT.code,
+                    ChatMsgReceiveType.CHAT_MSG,
+                    ChatMsgReceiveType.CHAT_SEND_PIC,
+                    ChatMsgReceiveType.CHAT_SEND_PIC_AND_TEXT,
                     -> {
                         when (dataList[position].isMySelf) {
                             true -> ItemType.MESSAGE_ME.ordinal
                             else -> ItemType.MESSAGE_USER.ordinal
                         }
                     }
-                    ChatMsgReceiveType.CHAT_USER_PROMPT.code -> {
+                    ChatMsgReceiveType.CHAT_USER_PROMPT -> {
                         ItemType.SYSTEM.ordinal
                     }
-                    ChatMsgReceiveType.CHAT_MSG_RED_ENVELOPE.code,
-                    ChatMsgReceiveType.CHAT_SEND_RED_ENVELOPE.code,
-                    ChatMsgReceiveType.CHAT_SEND_PERSONAL_RED_ENVELOPE.code,
+                    ChatMsgReceiveType.CHAT_MSG_RED_ENVELOPE,
+                    ChatMsgReceiveType.CHAT_SEND_RED_ENVELOPE,
+                    ChatMsgReceiveType.CHAT_SEND_PERSONAL_RED_ENVELOPE,
                     -> {
                         ItemType.RED_ENVELOPE.ordinal
                     }
-                    ChatMsgReceiveType.CHAT_WIN_RED_ENVELOPE_ROOM_NOTIFY.code,
-                    ChatMsgReceiveType.CHAT_WIN_RED_ENVELOPE_RAIN_NOTIFY.code,
+                    ChatMsgReceiveType.CHAT_WIN_RED_ENVELOPE_ROOM_NOTIFY,
+                    ChatMsgReceiveType.CHAT_WIN_RED_ENVELOPE_RAIN_NOTIFY,
                     -> {
                         ItemType.WIN_RED_ENVELOPE.ordinal
                     }
@@ -368,7 +368,7 @@ class ChatMessageListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun bind(data: ChatReceiveContent<*>) {
             when (data.type) {
                 //1001
-                ChatMsgReceiveType.CHAT_SEND_RED_ENVELOPE.code -> {
+                ChatMsgReceiveType.CHAT_SEND_RED_ENVELOPE -> {
                     data.getThisContent<ChatRedEnvelopeResult>().apply {
                         when (packetType) {
                             RedEnvelopeType.RANDOM.type -> {
@@ -417,7 +417,7 @@ class ChatMessageListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 }
 
                 //2005
-                ChatMsgReceiveType.CHAT_SEND_PERSONAL_RED_ENVELOPE.code -> {
+                ChatMsgReceiveType.CHAT_SEND_PERSONAL_RED_ENVELOPE -> {
                     data.getThisContent<ChatPersonalRedEnvelopeResult>().apply {
                         binding.tvName.text =
                             binding.root.context.getString(R.string.system_red_packet)
@@ -442,7 +442,7 @@ class ChatMessageListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 }
 
                 //2008
-                ChatMsgReceiveType.CHAT_MSG_RED_ENVELOPE.code -> {
+                ChatMsgReceiveType.CHAT_MSG_RED_ENVELOPE -> {
                     data.getThisContent<ChatMessageResult>().chatRedEnvelopeMessageResult?.apply {
                         when (packetType) {
                             RedEnvelopeType.RANDOM.type -> {
@@ -573,8 +573,8 @@ class ChatMessageListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     ) {
         val content = data.content
         when (data.type) {
-            ChatMsgReceiveType.CHAT_SEND_PIC.code,
-            ChatMsgReceiveType.CHAT_SEND_PIC_AND_TEXT.code,
+            ChatMsgReceiveType.CHAT_SEND_PIC,
+            ChatMsgReceiveType.CHAT_SEND_PIC_AND_TEXT,
             -> {
                 imageView.isVisible = true
                 //content:[img:{imagePath}]{message}
@@ -717,36 +717,41 @@ class ChatMessageListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    enum class UserType(
+    data class UserType private constructor(
         val code: String,
         val borderColor: Int,
         val fillColor: Int,
         val textColor: Int,
     ) {
-        GUEST(
+        companion object {
+            val GUEST = UserType(
             "0",
             R.color.color_chat_message_border_guest,
             R.color.color_chat_message_fill_guest,
             R.color.color_chat_message_text_guest
-        ),
-        MEMBER(
+            )
+
+            val MEMBER = UserType(
             "1",
             R.color.color_chat_message_border_member,
             R.color.color_chat_message_fill_member,
             R.color.color_chat_message_text_member
-        ),
-        ADMIN(
+            )
+
+            val ADMIN = UserType(
             "2",
             R.color.color_chat_message_border_admin,
             R.color.color_chat_message_fill_admin,
             R.color.color_chat_message_text_admin
-        ),
-        VISITOR(
+            )
+
+            val VISITOR = UserType(
             "3",
             R.color.color_chat_message_border_guest,
             R.color.color_chat_message_fill_guest,
             R.color.color_chat_message_text_guest
-        )
+            )
+        }
     }
 
     fun getBorderColor(userType: String?): Int =

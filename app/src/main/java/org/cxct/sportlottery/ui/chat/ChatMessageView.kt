@@ -22,7 +22,7 @@ class ChatMessageView @JvmOverloads constructor(
     private var mCurrentAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>? = null
 
     init {
-        addView(LayoutInflater.from(context).inflate(R.layout.view_chat_message, this, false))
+        addView(LayoutInflater.from(context).inflate(R.layout.view_chat_message, this, true))
     }
 
     override fun onAttachedToWindow() {

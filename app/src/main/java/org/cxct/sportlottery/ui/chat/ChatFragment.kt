@@ -69,7 +69,7 @@ class ChatFragment : BaseSocketFragment<ChatViewModel>(ChatViewModel::class), Vi
                     ?: 0)
             ) {
                 val itemData = chatMessageListAdapter.dataList[itemPosition]
-                itemData.isCustomMessage && itemData.type == ChatMsgCustomType.DATE_TIP.code
+                itemData.isCustomMessage && itemData.type == ChatMsgCustomType.DATE_TIP
             } else false
         }
     }
@@ -127,7 +127,7 @@ class ChatFragment : BaseSocketFragment<ChatViewModel>(ChatViewModel::class), Vi
                 val firstPosition = layoutManager.findFirstVisibleItemPosition()
                 val itemData = chatMessageListAdapter.dataList.getOrNull(firstPosition)
                 val firstView = layoutManager.findViewByPosition(firstPosition)
-                if ((itemData?.isCustomMessage == true) && (itemData.type == ChatMsgCustomType.DATE_TIP.code)) {
+                if ((itemData?.isCustomMessage == true) && (itemData.type == ChatMsgCustomType.DATE_TIP)) {
                     firstView?.visibility = View.GONE
                 }
 
@@ -135,7 +135,7 @@ class ChatFragment : BaseSocketFragment<ChatViewModel>(ChatViewModel::class), Vi
                 val secondPosition = firstPosition + 1
                 val secondItemData = chatMessageListAdapter.dataList.getOrNull(secondPosition)
                 val secondView = layoutManager.findViewByPosition(secondPosition)
-                if ((secondItemData?.isCustomMessage == true) && (secondItemData.type == ChatMsgCustomType.DATE_TIP.code)) {
+                if ((secondItemData?.isCustomMessage == true) && (secondItemData.type == ChatMsgCustomType.DATE_TIP)) {
                     secondView?.visibility = View.VISIBLE
                 }
                 //endregion
@@ -159,7 +159,7 @@ class ChatFragment : BaseSocketFragment<ChatViewModel>(ChatViewModel::class), Vi
                                 //判斷可視範圍內第一項內容文字是否與標題內容文字相符
                                 //皆相符的話不須隱藏Header
                                 if (!((firstItemData?.isCustomMessage == true)
-                                            && (firstItemData.type == ChatMsgCustomType.DATE_TIP.code)
+                                            && (firstItemData.type == ChatMsgCustomType.DATE_TIP)
                                             && (headerItemDecoration.getHeaderItemView()
                                         ?.findViewById<TextView>(R.id.tvDate)?.text?.toString() == firstItemData.content))
                                 ) {
@@ -533,7 +533,7 @@ class ChatFragment : BaseSocketFragment<ChatViewModel>(ChatViewModel::class), Vi
         }
 
         //上傳圖片server的result
-        viewModel.editIconUrlResult.observe(this) {
+        viewModel.editIconUrlResult.observe(viewLifecycleOwner) {
             val iconUrlResult = it.getContentIfNotHandled()
             if (iconUrlResult?.success == true) {
                 viewModel.tempChatImgUrl = iconUrlResult.t
