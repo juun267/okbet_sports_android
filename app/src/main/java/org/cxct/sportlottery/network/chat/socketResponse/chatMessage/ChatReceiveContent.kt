@@ -18,8 +18,8 @@ data class ChatReceiveContent<T>(
     val type: Int?,
 ) {
     @Suppress("UNCHECKED_CAST")
-    fun <T> getThisContent(): T {
-        return content as T
+    fun <T> getThisContent(): T? {
+        return content as T?
     }
 
     var isMySelf = false //自己的訊息

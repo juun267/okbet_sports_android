@@ -226,7 +226,7 @@ class ChatMessageListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     inner class UserViewHolder(val binding: ItemChatMessageUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: ChatReceiveContent<*>) {
-            data.getThisContent<ChatMessageResult>().apply {
+            data.getThisContent<ChatMessageResult>()?.apply {
                 binding.tvName.text = nickName
                 val checkedContent = checkContent(content, userType)
                 val stringBuilder = SpannableStringBuilder()
@@ -311,7 +311,7 @@ class ChatMessageListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     inner class MeViewHolder(val binding: ItemChatMessageMeBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: ChatReceiveContent<*>) {
-            data.getThisContent<ChatMessageResult>().apply {
+            data.getThisContent<ChatMessageResult>()?.apply {
                 val checkedContent = checkContent(content, userType)
                 val stringBuilder = SpannableStringBuilder()
                 val checkTag =
@@ -369,7 +369,7 @@ class ChatMessageListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             when (data.type) {
                 //1001
                 ChatMsgReceiveType.CHAT_SEND_RED_ENVELOPE -> {
-                    data.getThisContent<ChatRedEnvelopeResult>().apply {
+                    data.getThisContent<ChatRedEnvelopeResult>()?.apply {
                         when (packetType) {
                             RedEnvelopeType.RANDOM.type -> {
                                 binding.tvName.text = nickName
@@ -418,7 +418,7 @@ class ChatMessageListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
                 //2005
                 ChatMsgReceiveType.CHAT_SEND_PERSONAL_RED_ENVELOPE -> {
-                    data.getThisContent<ChatPersonalRedEnvelopeResult>().apply {
+                    data.getThisContent<ChatPersonalRedEnvelopeResult>()?.apply {
                         binding.tvName.text =
                             binding.root.context.getString(R.string.system_red_packet)
 
@@ -443,7 +443,7 @@ class ChatMessageListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
                 //2008
                 ChatMsgReceiveType.CHAT_MSG_RED_ENVELOPE -> {
-                    data.getThisContent<ChatMessageResult>().chatRedEnvelopeMessageResult?.apply {
+                    data.getThisContent<ChatMessageResult>()?.chatRedEnvelopeMessageResult?.apply {
                         when (packetType) {
                             RedEnvelopeType.RANDOM.type -> {
                                 binding.tvName.text = nickName
@@ -498,7 +498,7 @@ class ChatMessageListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     inner class WinRedEnvelopeViewHolder(val binding: ItemChatMessageWinRedEnvelopeBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: ChatReceiveContent<*>) {
-            data.getThisContent<ChatWinRedEnvelopeResult>().apply {
+            data.getThisContent<ChatWinRedEnvelopeResult>()?.apply {
                 binding.tvName.text = if (!nickName.isNullOrEmpty()) nickName else userName
                 binding.tvMoney.text = TextUtil.format(money.toString()) //應正確顯示到小數第二位
                 binding.tvCurrency.text = currency
@@ -509,7 +509,7 @@ class ChatMessageListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     inner class SystemViewHolder(val binding: ItemChatMessageSystemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: ChatReceiveContent<*>) {
-            data.getThisContent<ChatMessageResult>().apply {
+            data.getThisContent<ChatMessageResult>()?.apply {
                 binding.tvName.text = binding.root.context.getString(R.string.system_notify)
                 binding.tvMessage.mixFontText = content
                 binding.tvTime.text =

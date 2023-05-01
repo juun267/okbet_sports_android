@@ -2,9 +2,7 @@ package org.cxct.sportlottery.service
 
 import android.app.Service
 import android.content.Intent
-import android.os.Bundle
 import android.os.IBinder
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -32,16 +30,13 @@ import java.util.concurrent.TimeUnit
  */
 class ChatService : Service() {
 
-    enum class MessageCate(val cate: String) {
-        Chat("1")
-    }
-
     companion object {
         const val MESSAGE_CATE = "message_cate"
         const val SERVER_MESSAGE_KEY = "serverMessage"
         const val SERVICE_SEND_DATA = "SERVICE_SEND_DATA"
         const val URL_CHAT_ROOM = "/ws/notify/room" //订阅聊天室
         const val URL_CHAT_USER = "/ws/notify/user" //订阅用户
+        const val MESSAGECATE_CHAT = "1"
     }
 
     private val chatHost: String get() = "${sConfigData?.chatHost?.replace("https", "wss")}"
@@ -177,7 +172,7 @@ class ChatService : Service() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ topicMessage ->
                     Timber.d("[Chat] ===>\"[$url] 訂閱接收訊息: ${topicMessage.payload}\"")
-                    sendChatMessageToViewModule(topicMessage.payload)
+                    topicMessage.payload?.let { sendChatMessageToViewModule(topicMessage.payload) }
 //                    getSocketMsg(type, topicMessage.payload)
                 }, { throwable ->
                     Timber.e("[Chat] ===>\"[$url] 訂閱通道失敗: $throwable")
@@ -204,12 +199,7 @@ class ChatService : Service() {
     }
 
     private fun sendChatMessageToViewModule(message: String) {
-        val bundle = Bundle()
-        bundle.putString(MESSAGE_CATE, MessageCate.Chat.cate)
-        bundle.putString(SERVER_MESSAGE_KEY, message)
-        val intent = Intent(SERVICE_SEND_DATA)
-        intent.putExtras(bundle)
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+        ChatMessageDispatcher.onChatMessage(message)
     }
 
     private fun reconnectChat() {

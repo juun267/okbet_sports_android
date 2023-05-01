@@ -418,7 +418,7 @@ class ChatFragment : BaseSocketFragment<ChatViewModel>(ChatViewModel::class), Vi
                             //TODO Bill 更新聊天室列表的紅包狀態
                         } else {
                             when (chatEvent.luckyBagResult.code) {
-                                ChatViewModel.ChatErrorCode.NOT_ENOUGH_BET_AND_RECH_MONEY.code, ChatViewModel.ChatErrorCode.GOT_ALREADY.code -> {
+                                ChatViewModel.ChatErrorCode.NOT_ENOUGH_BET_AND_RECH_MONEY, ChatViewModel.ChatErrorCode.GOT_ALREADY -> {
                                     showPromptDialog(
                                         getString(
                                             R.string.chat_hint
@@ -428,10 +428,10 @@ class ChatFragment : BaseSocketFragment<ChatViewModel>(ChatViewModel::class), Vi
                                         dismissDiaolg()
                                     }
                                 }
-                                ChatViewModel.ChatErrorCode.PW_ERROR.code -> {
+                                ChatViewModel.ChatErrorCode.PW_ERROR -> {
                                     redPacketDialog?.showPWErrorHint()
                                 }
-                                ChatViewModel.ChatErrorCode.NET_ERROR.code -> {
+                                ChatViewModel.ChatErrorCode.NET_ERROR -> {
                                     showPromptDialog(
                                         getString(R.string.chat_hint),
                                         chatEvent.luckyBagResult.msg

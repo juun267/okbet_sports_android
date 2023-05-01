@@ -178,7 +178,7 @@ class MultiLanguagesApplication : Application() {
 
 
     private val serviceModule = module {
-        factory { ServiceBroadcastReceiver(get(), get()) }
+        factory { ServiceBroadcastReceiver() }
     }
 
     override fun attachBaseContext(base: Context) {
