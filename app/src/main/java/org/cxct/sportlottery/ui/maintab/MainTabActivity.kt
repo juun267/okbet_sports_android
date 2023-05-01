@@ -158,6 +158,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                         binding.llHomeBack.gone()
                     }
                     setupBetBarVisiblity(position)
+                    if (menuItem.itemId == R.id.i_favorite) {
+                        jumpChatActivity()
+                    }
                     return@OnNavigationItemSelectedListener true
                 }
 

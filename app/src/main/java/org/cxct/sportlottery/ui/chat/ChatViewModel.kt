@@ -84,16 +84,15 @@ class ChatViewModel(
             ChatRepository.subscribeSuccessResult.collect {
                 val chatMessageList = mutableListOf<ChatReceiveContent<*>>()
                 it?.messageList?.forEach { chatMessageResult ->
-                    if (chatMessageResult.type == ChatMsgReceiveType.CHAT_MSG_RED_ENVELOPE) {
-                        chatMessageResult.chatRedEnvelopeMessageResult =
-                            chatMessageResult.content?.fromJson()
+                    if (chatMessageResult.type == ChatMsgReceiveType.CHAT_MSG_RED_ENVELOPE.code) {
+                        chatMessageResult.chatRedEnvelopeMessageResult = chatMessageResult.content?.fromJson()
                     }
                     chatMessageList.add(
                         ChatReceiveContent(
                             content = chatMessageResult,
                             msg = null,
                             seq = null,
-                            time = if (chatMessageResult.curTime.isNullOrEmpty()) 0 else chatMessageResult.curTime.toLong(),
+                            time = if (chatMessageResult.curTime.isNullOrEmpty()) null else chatMessageResult.curTime.toLong(),
                             type = chatMessageResult.type
                         ).apply {
                             isMySelf = content?.userId == userId
@@ -120,13 +119,10 @@ class ChatViewModel(
         }
         viewModelScope.launch {
             ChatRepository.chatMessage.collect { chatReceiveContent ->
-                if (chatReceiveContent == null) {
-                    return@collect
-                }
-                when (chatReceiveContent.type) {
+                when (chatReceiveContent?.type) {
                     //房间聊天訊息
-                    ChatMsgReceiveType.CHAT_MSG -> {
-                        chatReceiveContent.let {
+                    ChatMsgReceiveType.CHAT_MSG.code -> {
+                        chatReceiveContent?.let {
                             it.isMySelf = it.getThisContent<ChatMessageResult>().userId == userId
                             uniqueChatMessageList.add(it)
                             _chatEvent.emit(ChatEvent.UpdateList(uniqueChatMessageList))
@@ -135,10 +131,9 @@ class ChatViewModel(
                     }
 
                     //用户发送图片讯息
-                    ChatMsgReceiveType.CHAT_SEND_PIC,
-                    ChatMsgReceiveType.CHAT_SEND_PIC_AND_TEXT,
-                    -> {
-                        chatReceiveContent.let {
+                    ChatMsgReceiveType.CHAT_SEND_PIC.code,
+                    ChatMsgReceiveType.CHAT_SEND_PIC_AND_TEXT.code -> {
+                        chatReceiveContent?.let {
                             it.isMySelf = it.getThisContent<ChatMessageResult>().userId == userId
                             uniqueChatMessageList.add(it)
                             _chatEvent.emit(ChatEvent.UpdateList(uniqueChatMessageList))
@@ -147,7 +142,7 @@ class ChatViewModel(
                     }
 
                     //ChatType 1001 发送红包
-                    ChatMsgReceiveType.CHAT_SEND_RED_ENVELOPE -> {
+                    ChatMsgReceiveType.CHAT_SEND_RED_ENVELOPE.code -> {
                         if ((chatReceiveContent?.content as ChatRedEnvelopeResult).currency == userCurrency) {
                             //更新未領取紅包列表
                             if (ChatRepository.unPacketList?.any { it.id.toString() == chatReceiveContent.content.id.toString() } == false) {
@@ -185,7 +180,7 @@ class ChatViewModel(
                     }
 
                     //ChatType 1002 用户进入房间
-                    ChatMsgReceiveType.CHAT_USER_ENTER -> {
+                    ChatMsgReceiveType.CHAT_USER_ENTER.code -> {
                         chatReceiveContent?.getThisContent<ChatUserResult>()?.let {
                             uniqueChatUserEnterList.add(it)
                             _chatEvent.emit(ChatEvent.UpdateUserEnterList(uniqueChatUserEnterList))
@@ -194,14 +189,14 @@ class ChatViewModel(
                     }
 
                     //ChatType 1003 用户离开房间
-                    ChatMsgReceiveType.CHAT_USER_LEAVE -> {
+                    ChatMsgReceiveType.CHAT_USER_LEAVE.code -> {
                         chatReceiveContent?.getThisContent<ChatUserResult>()?.let {
                             _chatEvent.emit(ChatEvent.UserLeave(it))
                         }
                     }
 
                     //ChatType 1006 推送平台聊天室是否禁言
-                    ChatMsgReceiveType.CHAT_SILENCE_ROOM -> {
+                    ChatMsgReceiveType.CHAT_SILENCE_ROOM.code -> {
                         chatReceiveContent?.getThisContent<ChatSilenceRoomResult>()?.let {
                             roomIsSpeak = it.isSpeak == "1" //ws推送聊天室是否禁言
                             emitIsSpeakStatus()
@@ -209,7 +204,7 @@ class ChatViewModel(
                     }
 
                     //ChatType 1005 推送中奖红包金额
-                    ChatMsgReceiveType.CHAT_WIN_RED_ENVELOPE_ROOM_NOTIFY -> {
+                    ChatMsgReceiveType.CHAT_WIN_RED_ENVELOPE_ROOM_NOTIFY.code -> {
                         if ((chatReceiveContent?.content as ChatWinRedEnvelopeResult).currency == userCurrency) {
                             chatReceiveContent.let {
                                 uniqueChatMessageList.add(it)
@@ -220,8 +215,8 @@ class ChatViewModel(
                     }
 
                     //ChatType 1007 推送来自红包雨中奖红包通知
-                    ChatMsgReceiveType.CHAT_WIN_RED_ENVELOPE_RAIN_NOTIFY -> {
-                        chatReceiveContent.let {
+                    ChatMsgReceiveType.CHAT_WIN_RED_ENVELOPE_RAIN_NOTIFY.code -> {
+                        chatReceiveContent?.let {
                             uniqueChatMessageList.add(it)
                             _chatEvent.emit(ChatEvent.UpdateList(uniqueChatMessageList))
                             _chatEvent.emit(ChatEvent.WinRedEnvelope)
@@ -229,7 +224,7 @@ class ChatViewModel(
                     }
 
                     //ChatType 1009 推送用户层级设定修改
-                    ChatMsgReceiveType.CHAT_UPDATE_USER_LEVEL_CONFIG -> {
+                    ChatMsgReceiveType.CHAT_UPDATE_USER_LEVEL_CONFIG.code -> {
                         chatReceiveContent?.getThisContent<UserLevelConfigVO>()?.let {
                             if (it.code == userLevelConfigVO?.code) {
                                 userLevelConfigVO = it
@@ -239,14 +234,14 @@ class ChatViewModel(
                     }
 
                     //ChatType 2002 房间用户禁言
-                    ChatMsgReceiveType.CHAT_SILENCE -> {
+                    ChatMsgReceiveType.CHAT_SILENCE.code -> {
                         userIsSpeak = false //禁言
                         _chatEvent.emit(ChatEvent.Silence)
                         emitIsSpeakStatus()
                     }
 
                     //ChatType 2003 房间用户解除禁言
-                    ChatMsgReceiveType.CHAT_RELIEVE_SILENCE -> {
+                    ChatMsgReceiveType.CHAT_RELIEVE_SILENCE.code -> {
                         userIsSpeak = true //解除禁言
                         if (checkIsSpeak()) _chatEvent.emit(ChatEvent.UnSilence) //真正能發言狀態才ChatEvent.UnSilence
                         //收到用戶解禁言event，應檢查是否可以發言&發圖
@@ -254,13 +249,13 @@ class ChatViewModel(
                     }
 
                     //ChatType 2004 踢出房间
-                    ChatMsgReceiveType.CHAT_KICK_OUT -> {
+                    ChatMsgReceiveType.CHAT_KICK_OUT.code -> {
                         unSubscribeChatRoomAndUser() //收到被踢出房間的event就不再更新聊天室訊息
                         _chatEvent.emit(ChatEvent.KickOut)
                     }
 
                     //ChatType 2005 发送用户个人红包
-                    ChatMsgReceiveType.CHAT_SEND_PERSONAL_RED_ENVELOPE -> {
+                    ChatMsgReceiveType.CHAT_SEND_PERSONAL_RED_ENVELOPE.code -> {
                         if ((chatReceiveContent?.content as ChatPersonalRedEnvelopeResult).currency == userCurrency) {
                             chatReceiveContent.let {
                                 uniqueChatMessageList.add(it)
@@ -281,7 +276,7 @@ class ChatViewModel(
                     }
 
                     //ChatType 2006 发送用户系统提示讯息
-                    ChatMsgReceiveType.CHAT_USER_PROMPT -> {
+                    ChatMsgReceiveType.CHAT_USER_PROMPT.code -> {
                         chatReceiveContent?.let {
                             uniqueChatMessageList.add(it)
                             _chatEvent.emit(ChatEvent.UpdateList(uniqueChatMessageList))
@@ -290,7 +285,7 @@ class ChatViewModel(
                     }
 
                     //ChatType 2007 删除消息
-                    ChatMsgReceiveType.CHAT_MSG_REMOVE -> {
+                    ChatMsgReceiveType.CHAT_MSG_REMOVE.code -> {
                         chatReceiveContent?.getThisContent<ChatRemoveMsgResult>()?.let { result ->
                             val messageItemPosition = uniqueChatMessageList.indexOf(
                                 uniqueChatMessageList.find {
@@ -304,7 +299,7 @@ class ChatViewModel(
                     }
 
                     //ChatType 2008 房间用户红包消息
-                    ChatMsgReceiveType.CHAT_MSG_RED_ENVELOPE -> {
+                    ChatMsgReceiveType.CHAT_MSG_RED_ENVELOPE.code -> {
                         if ((chatReceiveContent?.content as ChatPersonalRedEnvelopeResult).currency == userCurrency) {
                             chatReceiveContent.let {
                                 uniqueChatMessageList.add(it)
@@ -315,12 +310,12 @@ class ChatViewModel(
                     }
 
                     //ChatType 2009 推送会员用户层级变更
-                    ChatMsgReceiveType.CHAT_UPDATE_MEMBER -> {
+                    ChatMsgReceiveType.CHAT_UPDATE_MEMBER.code -> {
                         updateUserLevelConfigFromMemberChange()
                     }
 
                     //异常信息
-                    ChatMsgReceiveType.CHAT_ERROR -> {
+                    ChatMsgReceiveType.CHAT_ERROR.code -> {
 
                     }
                 }
@@ -332,16 +327,12 @@ class ChatViewModel(
             chatEvent.collect { chatEvent ->
                 when (chatEvent) {
                     is ChatEvent.CheckMessageCount -> {
-                        if (uniqueChatMessageList.size > MAX_MSG_SIZE) {
-                            val originalMessageList =
-                                uniqueChatMessageList.filter { !it.isCustomMessage }.toMutableList()
-                            uniqueChatMessageList = originalMessageList.subList(REMOVE_COUNT,
-                                originalMessageList.count())
+                        if (uniqueChatMessageList.size > MAX_MSG_SIZE){
+                            val originalMessageList = uniqueChatMessageList.filter { !it.isCustomMessage }.toMutableList()
+                            uniqueChatMessageList = originalMessageList.subList(REMOVE_COUNT, originalMessageList.count())
                             setupDateTipsMessage()
                             _removeRangeEvent.emit(ChatEvent.UpdateList(uniqueChatMessageList))
-                            _removeRangeEvent.emit(ChatEvent.RemoveRangeMessageItem(
-                                uniqueChatMessageList,
-                                REMOVE_COUNT))
+                            _removeRangeEvent.emit(ChatEvent.RemoveRangeMessageItem(uniqueChatMessageList, REMOVE_COUNT))
                         }
                     }
                 }
@@ -353,8 +344,7 @@ class ChatViewModel(
      * 將歷史訊息配置時間提示訊息
      */
     private fun setupDateTipsMessage() {
-        val originalMessageList =
-            uniqueChatMessageList.filter { !it.isCustomMessage }.toMutableList()
+        val originalMessageList = uniqueChatMessageList.filter { !it.isCustomMessage }.toMutableList()
         val groupMessage = originalMessageList.groupBy {
             getChatDateByTimeStamp(getChatMessageTime(it))
         }
@@ -372,7 +362,7 @@ class ChatViewModel(
                     msg = null,
                     seq = null,
                     time = null,
-                    type = ChatMsgCustomType.DATE_TIP
+                    type = ChatMsgCustomType.DATE_TIP.code
                 ).apply { isCustomMessage = true },
             )
         }
@@ -400,7 +390,7 @@ class ChatViewModel(
         return TimeUtil.timeStampToDateString(timeStamp, TimeUtil.D_NARROW_MONTH, Locale.US)
     }
 
-    fun checkLoginStatus1() {
+    override fun checkLoginStatus(): Boolean {
         when (loginRepository.isLogin.value) {
             true -> {
                 Timber.i("[Chat] 已登入(一般用户,游客) 執行chatInit")
@@ -411,6 +401,7 @@ class ChatViewModel(
                 guestChatInit()
             }
         }
+        return super.checkLoginStatus()
     }
 
     private fun updateUserLevelConfigFromMemberChange() {
@@ -441,7 +432,7 @@ class ChatViewModel(
                 }.let { tokenResult ->
                     if (tokenResult?.success == false) {
                         Timber.e("[Chat] tokenResult: $tokenResult")
-                        checkLoginStatus1()
+                        checkLoginStatus()
                     }
                 }
             }
@@ -520,9 +511,7 @@ class ChatViewModel(
             ChatRepository.queryList()
         }?.let { queryListResult ->
             if (queryListResult.success) {
-                queryListResult.rows?.find {
-                    it.language == LanguageManager.getLanguageString(androidContext) && it.isOpen == "1"
-                }?.let {
+                queryListResult.rows?.find { it.language == LanguageManager.getLanguageString(androidContext) && it.isOpen == "1" }?.let {
                     _chatEvent.emit(ChatEvent.IsAdminType(checkIsAdminType()))
                     if (ChatRepository.chatRoomID != it.id) {
                         //背景返回之後，比較既有roomId，如果不同才重新joinRoom
@@ -545,9 +534,7 @@ class ChatViewModel(
             ChatRepository.getUnPacket(roomId, UnPacketRequest(roomId))
         }?.let { getUnPacketResult ->
             Timber.i("[Chat] 獲取未領取紅包資訊 ：\n${getUnPacketResult.rows}")
-            ChatRepository.unPacketList =
-                getUnPacketResult.rows?.filter { row -> row.currency == userCurrency }
-                    ?.toMutableList()
+            ChatRepository.unPacketList = getUnPacketResult.rows?.filter { row -> row.currency == userCurrency }?.toMutableList()
             _chatEvent.emit(
                 ChatEvent.GetUnPacket(getUnPacketResult, checkIsAdminType()) //未領取紅包，如為管理員則不顯示
             )
@@ -576,13 +563,12 @@ class ChatViewModel(
                 ChatRepository.luckyBag(luckyBagRequest)
             }?.let { luckyBagResult ->
                 Timber.i("[Chat] 紅包結果：${luckyBagResult}")
-                when (luckyBagResult.code) {
+                when(luckyBagResult.code){
                     ChatErrorCode.PW_ERROR.code, ChatErrorCode.NET_ERROR.code, ChatErrorCode.BET_NOT_ENOUGH_ERROR.code -> {}
                     else -> {
                         //刪除紅包
-                        if (ChatRepository.unPacketList?.any { it.id.toString() == luckyBagRequest.packetId.toString() } == true) {
-                            val newUnPacketList =
-                                ChatRepository.unPacketList?.filter { it.id.toString() != luckyBagRequest.packetId.toString() }
+                        if(ChatRepository.unPacketList?.any { it.id.toString() == luckyBagRequest.packetId.toString() } == true){
+                            val newUnPacketList = ChatRepository.unPacketList?.filter { it.id.toString() != luckyBagRequest.packetId.toString() }
                             ChatRepository.unPacketList = newUnPacketList?.toMutableList()
                             _chatEvent.emit(ChatEvent.UpdateUnPacketList(luckyBagRequest.packetId.toString()))
                             isShowChatRedEnpView()
@@ -708,11 +694,11 @@ class ChatViewModel(
 
     private fun clearRemoveRedEnvelope() {
         uniqueChatMessageList.retainAll {
-            it.type == ChatMsgReceiveType.CHAT_MSG || it.type == ChatMsgReceiveType.CHAT_SEND_PIC
+            it.type == ChatMsgReceiveType.CHAT_MSG.code || it.type == ChatMsgReceiveType.CHAT_SEND_PIC.code
         }
     }
 
-    fun showPhoto(url: String) {
+    fun showPhoto(url: String){
         viewModelScope.launch {
             _chatEvent.emit(ChatEvent.ShowPhoto(url))
         }
