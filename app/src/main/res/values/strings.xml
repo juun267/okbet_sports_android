@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="loading">Loading</string>
+    <string name="loading">Loading...</string>
     <string name="connect_first">Select the internet to connect</string>
     <string name="error_url_fail">Jumping to address error</string>
     <string name="unknown_error">unknown error</string>
