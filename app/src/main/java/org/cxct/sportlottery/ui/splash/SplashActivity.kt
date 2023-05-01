@@ -147,7 +147,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                         && it.lang == LanguageManager.getSelectLanguage(this).key
                         && !it.imageName1.isNullOrEmpty()
                         && it.startType == (if (KvUtils.decodeBooleanTure("isFirstOpen", true)
-                    && !it.isHidden
+                    && !(isGooglePlayVersion() && it.isHidden)
                 ) 0 else 1)
             }
                 ?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })

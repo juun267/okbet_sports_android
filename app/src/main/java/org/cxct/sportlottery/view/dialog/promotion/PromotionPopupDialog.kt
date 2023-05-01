@@ -12,6 +12,7 @@ import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ScreenUtil
+import org.cxct.sportlottery.util.isGooglePlayVersion
 
 class PromotionPopupDialog(val activity: FragmentActivity, private val promotionPopupListener: PromotionPopupListener) :
     AlertDialog(activity) {
@@ -40,7 +41,7 @@ class PromotionPopupDialog(val activity: FragmentActivity, private val promotion
         val promotionList = mutableListOf<PromotionData>()
         sConfigData?.imageList?.map { imageData ->
             //最多顯示9筆
-            if (promotionList.size < 9 && imageData.imageType == ImageType.PROMOTION.code && !imageData.imageName3.isNullOrEmpty() && !imageData.isHidden) {
+            if (promotionList.size < 9 && imageData.imageType == ImageType.PROMOTION.code && !imageData.imageName3.isNullOrEmpty() && !(isGooglePlayVersion() && imageData.isHidden)) {
                 promotionList.add(
                     PromotionData(
                         imgUrl = "${sConfigData?.resServerHost}${imageData.imageName3}",

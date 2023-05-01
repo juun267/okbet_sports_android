@@ -411,7 +411,7 @@ class MultiLanguagesApplication : Application() {
         open fun showPromotionPopupDialog(activity: FragmentActivity) {
             val token = loginSharedPref.getString(KEY_TOKEN, "")
 
-            if (!isCreditSystem() && sConfigData?.imageList?.any { it.imageType == ImageType.PROMOTION.code && !it.imageName3.isNullOrEmpty() && !it.isHidden } == true) PromotionPopupDialog(
+            if (!isCreditSystem() && sConfigData?.imageList?.any { it.imageType == ImageType.PROMOTION.code && !it.imageName3.isNullOrEmpty() && !(isGooglePlayVersion() && it.isHidden) } == true) PromotionPopupDialog(
                 activity, PromotionPopupDialog.PromotionPopupListener(onClickImageListener = {
                     JumpUtil.toInternalWeb(
                         activity, Constants.getPromotionUrl(
