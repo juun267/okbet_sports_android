@@ -305,7 +305,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
                 viewModel.salaryList.value?.let {
                     it[options1].let { salary ->
                         viewModel.sourceInput = salary.id
-                        binding.etSource.setText(viewModel.salaryList.value?.get(options1)?.name)
+                        binding.etSource.setText(salary.name)
                         checkStatus()
                     }
                 }
