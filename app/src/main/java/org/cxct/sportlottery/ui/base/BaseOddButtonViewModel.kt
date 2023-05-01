@@ -167,25 +167,6 @@ abstract class BaseOddButtonViewModel(
         }
 
         if (betItem == null) {
-            if (lastMatchId == matchInfo.id){
-                if (lastBetInfo!=null){
-                    betInfoRepository.addInBetInfo(
-                        matchType,
-                        gameType,
-                        playCateCode,
-                        otherPlayCateName ?: playCateName,
-                        odd.nameMap?.get(LanguageManager.getSelectLanguage(androidContext).key)
-                            ?: odd.name ?: "",
-                        matchInfo,
-                        odd,
-                        subscribeChannelType,
-                        playCateMenuCode,
-                        currentOddsType,
-                        betPlayCateNameMap,
-                        betInfo = lastBetInfo
-                    )
-                }
-            }else{
                 viewModelScope.launch {
                     doNetwork(androidContext) {
                         OneBoSportApi.betService.getBetInfo(
@@ -199,8 +180,6 @@ abstract class BaseOddButtonViewModel(
                         if (result.success) {
                             val betInfo = result.BetInfo
                             Timber.d("betInfoRepository:$betInfoRepository  ${betInfoRepository.currentState}")
-                            lastMatchId = matchInfo.id
-                            lastBetInfo = betInfo
                             betInfoRepository.addInBetInfo(
                                 matchType,
                                 gameType,
@@ -219,15 +198,11 @@ abstract class BaseOddButtonViewModel(
                         }
                     }
                 }
-            }
 
         } else {
             odd.id?.let { removeBetInfoItem(it) }
         }
     }
-
-    var lastMatchId: String? = null
-    var lastBetInfo: BetInfo? = null
 
     private fun updateMatchBetListForOutRight(
         matchType: MatchType,
@@ -247,20 +222,6 @@ abstract class BaseOddButtonViewModel(
         }
 
         if (betItem == null) {
-            if (matchOdd.matchInfo?.id == lastMatchId) {
-                if (lastBetInfo != null) {
-                    extracted(
-                        matchOdd,
-                        matchType,
-                        gameType,
-                        playCateCode,
-                        playCateName,
-                        odd,
-                        currentOddsType,
-                        lastBetInfo
-                    )
-                }
-            } else {
                 viewModelScope.launch {
                     doNetwork(androidContext) {
                         OneBoSportApi.betService.getBetInfo(
@@ -272,11 +233,9 @@ abstract class BaseOddButtonViewModel(
                         //如有其他地方呼叫getBetInfo，api回傳之後也要重設savedOddId
                         savedOddId = "savedOddId" //重設savedOddId
                         Timber.d("savedOddId result:${result}")
-                        lastMatchId = matchOdd.matchInfo?.id
 
                         if (result.success) {
                             val betInfo = result.BetInfo
-                            lastBetInfo = betInfo
                             extracted(
                                 matchOdd,
                                 matchType,
@@ -290,7 +249,6 @@ abstract class BaseOddButtonViewModel(
                         }
                     }
                 }
-            }
         } else {
             odd.id?.let { removeBetInfoItem(it) }
         }

@@ -67,11 +67,11 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             oddsDetailDataList.forEachIndexed { index, data ->
                 data.oddArrayList.forEach { odd ->
                     val oddSelected = betInfoList.any { it.matchOdd.oddsId == odd?.id }
-//                    Timber.d("=== odd?.isSelected:${odd?.isSelected} oddSelected:${oddSelected} index:${index}")
+//                    Timber.d("===洗刷刷-2 odd?.isSelected:${odd?.isSelected} oddSelected:${oddSelected} index:${index}")
                     if (odd?.isSelected != oddSelected) {
                         odd?.isSelected = oddSelected
                         notifyItemChanged(index, odd?.id)
-//                        Timber.d("更新单个条目:${index} id:${odd?.id} odd.isSelected:${odd?.isSelected}")
+//                        Timber.d("===洗刷刷 更新单个条目:${index} id:${odd?.id} odd.isSelected:${odd?.isSelected}")
                     }
                 }
             }
@@ -1442,6 +1442,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         private fun forSingle(
             oddsDetail: OddsDetailListData, spanCount: Int, payloads: MutableList<Any>?
         ) {
+
+//            Timber.d("===洗刷刷oddsDetail.gameType: ${oddsDetail.gameType}")
             if (oddsDetail.gameType == PlayCate.FS_LD_CS.value) {
                 //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
                 itemView.lin_match.isVisible = false
@@ -1463,13 +1465,14 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         }
                     }
                 }
+//                Timber.d("===洗刷刷1 设置adapter rvBet:${rvBet}")
                 rvBet?.let { it1 ->
                     if (it1.adapter == null) {
 //                        Timber.d("===洗刷刷0 设置adapter")
                         it1.adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, oddsType)
                         it1.layoutManager = GridLayoutManager(itemView.context, 4)
                     }
-
+//                    Timber.d("===洗刷刷2 adapter:${it1.adapter} payloads:${payloads?.size}")
                     if (it1.adapter != null && payloads?.isNotEmpty() == true) {
 //                        Timber.d("===洗刷刷1 payloads:${payloads}")
                         payloads.forEach { payloadItem ->
