@@ -12,6 +12,7 @@ import org.cxct.sportlottery.network.Constants.CONNECT_TIMEOUT
 import org.cxct.sportlottery.network.Constants.READ_TIMEOUT
 import org.cxct.sportlottery.network.Constants.WRITE_TIMEOUT
 import org.cxct.sportlottery.network.interceptor.HttpLogInterceptor
+import org.cxct.sportlottery.network.interceptor.HttpStatusInterceptor
 import org.cxct.sportlottery.network.interceptor.MoreBaseUrlInterceptor
 import org.cxct.sportlottery.network.interceptor.RequestInterceptor
 import org.cxct.sportlottery.util.NullValueAdapter
@@ -56,6 +57,7 @@ class RequestManager private constructor(context: Context) {
         .connectTimeout(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
         .writeTimeout(WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
         .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
+        .addInterceptor(HttpStatusInterceptor()) // 处理token过期
         .addInterceptor(MoreBaseUrlInterceptor())
         .addInterceptor(RequestInterceptor(context))
         //.addInterceptor(LogInterceptor().setLevel(LogInterceptor.Level.BODY))
