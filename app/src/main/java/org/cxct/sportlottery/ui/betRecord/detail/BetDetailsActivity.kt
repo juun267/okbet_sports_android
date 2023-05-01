@@ -28,9 +28,17 @@ class BetDetailsActivity : BaseActivity<BetListViewModel>(BetListViewModel::clas
     }
 
     private fun initData(){
-        val data: Row? =intent.getParcelableExtra("data")
-        val bundle=Bundle()
-        bundle.putParcelable("data", data)
+        val bundle = Bundle()
+        var data: Row? = intent.getParcelableExtra("data")
+        if (data == null) {
+            val detailRow: org.cxct.sportlottery.network.bet.settledDetailList.Row? =
+                intent?.getParcelableExtra("detailRow")
+            if (detailRow != null) {
+                bundle.putParcelable("detailRow", detailRow)
+            }
+        } else {
+            bundle.putParcelable("data", data)
+        }
         betDetailsFragment.arguments = bundle
     }
 
