@@ -119,30 +119,33 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     override fun onBindView(view: View) {
         unSubscribeChannelHallAll()
         initObserve()
-        initHotGameAdapter()
         onBindGamesView()
         onBindPart3View()
         onBindPart5View()
-        initSocketObservers()
         initRecent()
         initCollectLayout()
-        initHotGameData()
+        //初始化热门赛事
+        binding.hotMatchView.onCreate(viewModel.publicityRecommend,this)
+        //请求热门赛事数据  在hotMatchView初始化之后
+        viewModel.getRecommend()
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (hidden) {
+            //隐藏时取消赛事监听
+            unSubscribeChannelHallAll()
             return
         }
+        //重新设置赔率监听
+        binding.hotMatchView.onResume(this)
 
-        initHotGameData()
-        setupOddsChangeListener()
         val noData = okGamesFragment().viewModel.gameHall.value == null
         val time = System.currentTimeMillis()
         if (noData || time - lastRequestTimeStamp > 60_000) { // 避免短时间重复请求
             lastRequestTimeStamp = time
             okGamesFragment().viewModel.getOKGamesHall()
-//            initHotGameData()
+            viewModel.getRecommend()
         }
     }
 
@@ -150,6 +153,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         super.onDestroyView()
         recordHandler.removeCallbacksAndMessages(null)
     }
+
 
     private fun initObserve() = okGamesFragment().viewModel.run {
         gameHall.observe(viewLifecycleOwner) {
@@ -460,218 +464,6 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     }
 
-    private fun initHotGameAdapter() {
-        binding.hotGameView.setUpAdapter(viewLifecycleOwner, HomeRecommendListener(
-            onItemClickListener = { matchInfo ->
-                if (isCreditSystem() && viewModel.isLogin.value != true) {
-                    (activity as MainTabActivity).showLoginNotify()
-                } else {
-                    matchInfo?.let {
-                        SportDetailActivity.startActivity(requireContext(), it)
-//                        navOddsDetailFragment(MatchType.IN_PLAY, it)
-                    }
-                }
-            },
-
-            onClickBetListener = { gameTypeCode, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
-                if (!mIsEnabled) {
-                    return@HomeRecommendListener
-                }
-                avoidFastDoubleClick()
-                if (isCreditSystem() && viewModel.isLogin.value != true) {
-                    (activity as MainTabActivity).showLoginNotify()
-                    return@HomeRecommendListener
-                }
-                val gameType = GameType.getGameType(gameTypeCode)
-                if (gameType == null || matchInfo == null || activity !is MainTabActivity) {
-                    return@HomeRecommendListener
-                }
-                val fastBetDataBean = FastBetDataBean(
-                    matchType = matchType,
-                    gameType = gameType,
-                    playCateCode = playCateCode,
-                    playCateName = playCateName,
-                    matchInfo = matchInfo,
-                    matchOdd = null,
-                    odd = odd,
-                    subscribeChannelType = ChannelType.HALL,
-                    betPlayCateNameMap = betPlayCateNameMap,
-                    playCateMenuCode
-                )
-
-                activity?.doOnStop(true) { // 延时加入注单，不然当前页面会弹出来注单列表
-                    viewModel.updateMatchBetListData(fastBetDataBean)
-                }
-                SportDetailActivity.startActivity(
-                    requireContext(),
-                    matchInfo,
-                    matchType,
-                    false
-                )
-            }, onClickPlayTypeListener = { _, _, _, _ ->
-
-            }
-        ))
-
-        viewModel.publicityRecommend.observe(this) {
-            //api获取热门赛事列表
-            it.peekContent().let { data ->
-                binding.hotGameView.visible()
-                unSubscribeChannelHallAll()
-                binding.hotGameView.setGameData(data)
-
-                //订阅监听
-                subscribeQueryData(data)
-
-            }
-        }
-    }
-
-    private fun initHotGameData() {
-        if (binding.hotGameView.adapter == null) {
-            binding.hotGameView.gone()
-        }
-//        unSubscribeChannelHallAll()
-        //请求热门赛事列表
-        viewModel.getRecommend()
-    }
-
-
-    //用户缓存最新赔率，方便当从api拿到新赛事数据时，赋值赔率信息给新赛事
-    private val matchOddMap = HashMap<String, Recommend>()
-    private fun initSocketObservers() {
-
-
-        //观察比赛状态改变
-        receiver.matchStatusChange.observe(viewLifecycleOwner) { matchStatusChangeEvent ->
-            if (matchStatusChangeEvent == null) {
-                return@observe
-            }
-
-            if (binding.hotGameView.adapter == null || binding.hotGameView.adapter!!.data.isEmpty()) {
-                return@observe
-            }
-            val adapterData = binding.hotGameView.adapter?.data
-            adapterData?.forEachIndexed { index, recommend ->
-
-                //丢进去判断是否要更新
-                if (SocketUpdateUtil.updateMatchStatus(
-                        recommend.matchInfo?.gameType,
-                        recommend,
-                        matchStatusChangeEvent,
-                        context
-                    )
-                ) {
-                    binding.hotGameView.notifyAdapterData(index, recommend)
-                }
-            }
-
-        }
-        receiver.matchClock.observe(viewLifecycleOwner) {
-            it?.let { matchClockEvent ->
-                val targetList = binding.hotGameView.adapter?.data
-                targetList?.forEachIndexed { index, recommend ->
-                    if (
-                        SocketUpdateUtil.updateMatchClock(
-                            recommend,
-                            matchClockEvent
-                        )
-                    ) {
-                        binding.hotGameView.notifyAdapterData(index, recommend)
-                    }
-                }
-
-            }
-        }
-        setupOddsChangeListener()
-
-        receiver.matchOddsLock.observe(viewLifecycleOwner) {
-            it?.let { matchOddsLockEvent ->
-                val targetList = binding.hotGameView.adapter?.data
-
-                targetList?.forEachIndexed { index, recommend ->
-                    if (SocketUpdateUtil.updateOddStatus(recommend, matchOddsLockEvent)
-                    ) {
-                        binding.hotGameView.notifyAdapterData(index, recommend)
-                    }
-                }
-
-            }
-        }
-
-
-        receiver.globalStop.observe(viewLifecycleOwner) {
-            it?.let { globalStopEvent ->
-                binding.hotGameView.adapter?.data?.forEachIndexed { index, recommend ->
-                    if (SocketUpdateUtil.updateOddStatus(
-                            recommend,
-                            globalStopEvent
-                        )
-                    ) {
-                        binding.hotGameView.notifyAdapterData(index, recommend)
-                    }
-                }
-            }
-        }
-
-        receiver.producerUp.observe(viewLifecycleOwner) {
-            it?.let {
-                //先解除全部賽事訂閱
-                unSubscribeChannelHallAll()
-                subscribeQueryData(binding.hotGameView.adapter?.data ?: listOf())
-            }
-        }
-
-        receiver.closePlayCate.observe(viewLifecycleOwner) { event ->
-            val it = event?.getContentIfNotHandled() ?: return@observe
-
-            binding.hotGameView.adapter?.data?.forEach { recommend ->
-                if (recommend.gameType == it.gameType) {
-                    recommend.oddsMap?.forEach { map ->
-                        if (map.key == it.playCateCode) {
-                            map.value?.forEach { odd ->
-                                odd?.status = BetStatus.DEACTIVATED.code
-                            }
-                        }
-                    }
-                }
-            }
-            binding.hotGameView.adapter?.notifyDataSetChanged()
-        }
-    }
-
-    private fun setupOddsChangeListener() {
-        receiver.oddsChangeListener = mOddsChangeListener
-    }
-
-    private val mOddsChangeListener by lazy {
-        ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
-            val targetList = binding.hotGameView.adapter?.data
-            targetList?.forEachIndexed { index, recommend ->
-                if (recommend.matchInfo?.id == oddsChangeEvent.eventId) {
-                    recommend.sortOddsMap()
-                    //region 翻譯更新
-                    oddsChangeEvent.playCateNameMap?.let { playCateNameMap ->
-                        recommend.playCateNameMap?.putAll(playCateNameMap)
-                    }
-                    oddsChangeEvent.betPlayCateNameMap?.let { betPlayCateNameMap ->
-                        recommend.betPlayCateNameMap?.putAll(betPlayCateNameMap)
-                    }
-                    //endregion
-                    if (SocketUpdateUtil.updateMatchOdds(
-                            context,
-                            recommend,
-                            oddsChangeEvent
-                        )
-                    ) {
-                        matchOddMap[recommend.id] = recommend
-//                        LogUtil.toJson(recommend.oddsMap?.get(PlayCate.SINGLE.value))
-                        binding.hotGameView.adapter?.notifyItemChanged(index, recommend)
-                    }
-                }
-            }
-        }
-    }
 
     private fun initCollectLayout() {
         collectGameAdapter =
@@ -717,14 +509,6 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         }
     }
 
-    private fun subscribeQueryData(recommendList: List<Recommend>) {
-        recommendList.forEach { subscribeChannelHall(it) }
-    }
-
-    private fun subscribeChannelHall(recommend: Recommend) {
-        subscribeChannelHall(recommend.matchInfo?.gameType, recommend.matchInfo?.id)
-    }
-
 
     /**
      * 设置最近游戏列表
@@ -743,16 +527,6 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         binding.tvMore.isVisible = visisable
     }
 
-    private fun Recommend.sortOddsMap() {
-        this.oddsMap?.forEach { (_, value) ->
-            if ((value?.size ?: 0) > 3
-                && value?.first()?.marketSort != 0
-                && (value?.first()?.odds != value?.first()?.malayOdds)
-            ) {
-                value?.sortBy { it?.marketSort }
-            }
-        }
-    }
 
     private fun onCollectClick(view: View, gameData: OKGameBean) {
         if (okGamesFragment().collectGame(gameData)) {
