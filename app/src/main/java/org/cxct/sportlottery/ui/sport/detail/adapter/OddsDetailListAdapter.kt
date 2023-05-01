@@ -46,7 +46,6 @@ import org.cxct.sportlottery.util.MatchOddUtil.updateEPSDiscount
 import org.cxct.sportlottery.view.DividerItemDecorator
 import org.cxct.sportlottery.view.IndicatorView
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
-import timber.log.Timber
 import java.util.*
 
 /**
@@ -1450,19 +1449,17 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 oddsDetail.oddArrayList.first()?.let {
                     val odd = TextUtil.formatForOdd(getOdds(it, oddsType))
                     val odds = " $odd"
-                    getTitleNormal(oddsDetail).let {
-                        Spanny(it.toString()).append(
-                            " @",
-                            ForegroundColorSpan(itemView.context.getColor(R.color.color_025BE8))
-                        ).append(
-                            odds,
-                            ForegroundColorSpan(itemView.context.getColor(R.color.color_025BE8)),
-                            CustomTypefaceSpan(
-                                "din_bold.ttf", Typeface.DEFAULT_BOLD
-                            )
-                        ).let {
-                            tvGameName?.text = it
-                        }
+                    Spanny(itemView.context.getString(R.string.N888)).append(
+                        " @",
+                        ForegroundColorSpan(itemView.context.getColor(R.color.color_025BE8))
+                    ).append(
+                        odds,
+                        ForegroundColorSpan(itemView.context.getColor(R.color.color_025BE8)),
+                        CustomTypefaceSpan(
+                            "din_bold.ttf", Typeface.DEFAULT_BOLD
+                        )
+                    ).let {
+                        tvGameName?.text = it
                     }
                 }
 //                Timber.d("===洗刷刷1 设置adapter rvBet:${rvBet}")
