@@ -7,32 +7,19 @@ import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.StringRes
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.*
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.FragmentAllOkgamesBinding
 import org.cxct.sportlottery.databinding.ItemGameCategroyBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
-import org.cxct.sportlottery.network.Constants
-import org.cxct.sportlottery.network.bet.FastBetDataBean
-import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
-import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
-import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
-import org.cxct.sportlottery.ui.base.ChannelType
-import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
-import org.cxct.sportlottery.ui.maintab.home.HomeRecommendListener
-import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
@@ -398,70 +385,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     }
 
     private fun onBindPart5View() {
-        val include5 = binding.include5
-        val tvPrivacyPolicy = include5.tvPrivacyPolicy
-        val tvTermConditions = include5.tvTermConditions
-        val tvResponsibleGaming = include5.tvResponsibleGaming
-        val tvLiveChat = include5.tvLiveChat
-        val tvContactUs = include5.tvContactUs
-        val tvFaqs = include5.tvFaqs
-        val rcvPayment = include5.rcvPayment
-
-
-        jumpToWebView(
-            tvPrivacyPolicy,
-            Constants.getPrivacyRuleUrl(requireContext()),
-            R.string.privacy_policy
-        )
-        jumpToWebView(
-            tvTermConditions,
-            Constants.getAgreementRuleUrl(requireContext()),
-            R.string.terms_conditions
-        )
-        jumpToWebView(
-            tvResponsibleGaming,
-            Constants.getDutyRuleUrl(requireContext()),
-            R.string.responsible
-        )
-        jumpToWebView(
-            include5.textView16,
-            Constants.getDutyRuleUrl(requireContext()),
-            R.string.responsible
-        )
-        jumpToWebView(tvFaqs, Constants.getFAQsUrl(requireContext()), R.string.faqs)
-
-        tvLiveChat.setServiceClick(childFragmentManager)
-        tvContactUs.setServiceClick(childFragmentManager)
-
-
-        initRcvPaymentMethod(rcvPayment)
-    }
-
-    private fun jumpToWebView(view: View, url: String?, @StringRes title: Int) {
-        view.setOnClickListener {
-            val context = binding.root.context
-            JumpUtil.toInternalWeb(context, url, context.getString(title))
-        }
-    }
-
-    private fun initRcvPaymentMethod(rcvPayment: RecyclerView) {
-        val list = mutableListOf(
-            R.drawable.icon_gcash,
-            R.drawable.icon_paymaya,
-            R.drawable.icon_fortune_pay,
-            R.drawable.icon_epon
-        )
-        rcvPayment.layoutManager = GridLayoutManager(context, 4)
-        val paymentAdapter =
-            object : BaseQuickAdapter<Int, BaseViewHolder>(R.layout.item_view_payment_method) {
-                override fun convert(holder: BaseViewHolder, item: Int) {
-                    holder.setImageResource(R.id.iv, item)
-                }
-
-            }
-        rcvPayment.adapter = paymentAdapter
-        paymentAdapter.setNewInstance(list)
-
+       binding.homeBottumView.bindServiceClick(childFragmentManager)
     }
 
 

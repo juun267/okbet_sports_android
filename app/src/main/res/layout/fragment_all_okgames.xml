@@ -31,12 +31,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <!--part-5-->
-    <include
-        android:id="@+id/include5"
-        layout="@layout/include_view_payment_method"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp" />
 
+    <org.cxct.sportlottery.ui.maintab.home.HomeButtomView
+        android:id="@+id/homeBottumView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

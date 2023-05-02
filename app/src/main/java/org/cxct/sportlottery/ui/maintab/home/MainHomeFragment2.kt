@@ -23,6 +23,7 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
 
     override fun onBindViewStatus(view: View) {
         initToolBar()
+        binding.homeBottumView.bindServiceClick(childFragmentManager)
     }
 
     override fun onInitData() {
