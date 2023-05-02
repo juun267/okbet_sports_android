@@ -377,6 +377,7 @@ class OddsHotButtonHome @JvmOverloads constructor(
 
     //常駐顯示按鈕 依狀態隱藏鎖頭
     private fun setupBetStatus(betStatus: Int) {
+        button_odd_detail.setBackgroundResource(R.drawable.bg_gray_border_8)
         img_odd_lock.apply {
             visibility =
                 if (betStatus == BetStatus.LOCKED.code) {

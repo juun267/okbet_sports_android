@@ -322,6 +322,7 @@ class HotMatchView(context: Context, attrs: AttributeSet
     fun<T: BaseSocketViewModel> onResume(fragment: BaseSocketFragment<T>?) {
         fragment?.receiver?.oddsChangeListener = mOddsChangeListener
         adapter?.clearSubCache()
+        adapter?.notifyDataSetChanged()
     }
 
     private val mOddsChangeListener by lazy {
