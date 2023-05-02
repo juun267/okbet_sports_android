@@ -401,10 +401,10 @@ object BetInfoRepository {
 
             //是不是同一场比赛
             //规则 主队+客队名称完全相同
-            val currentMatchName = it.awayName + it.homeName
+            val currentMatchName = it.playCateName
             var lastMatchName: String? = null
             if (betList.isNotEmpty()) {
-                lastMatchName = betList.last().matchOdd.awayName + betList.last().matchOdd.homeName
+                lastMatchName = betList.last().matchOdd.playCateName
             }
             val isSameMatch = (currentMatchName == lastMatchName) || (lastMatchName == null)
 //            Timber.d("isSameMatch:${isSameMatch} currentMatchName:${currentMatchName} lastMatchName:${lastMatchName}")
