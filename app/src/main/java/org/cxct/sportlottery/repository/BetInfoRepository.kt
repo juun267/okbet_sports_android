@@ -241,7 +241,9 @@ object BetInfoRepository {
 
         val item = betList.find { it.matchOdd.oddsId == oddId }
         betList.remove(item)
-
+        if (betList.isNotEmpty()) {
+            betList[0].input = null
+        }
         updateQuickListManager(betList)
 
         val oddIDStr = oddId ?: ""
@@ -363,7 +365,7 @@ object BetInfoRepository {
                 return
             }
         } else {
-            val isAllBas = betList.all { it.matchOdd.playCateName == PlayCate.FS_LD_CS.name  }
+            val isAllBas = betList.all { it.matchOdd.playCateName == PlayCate.FS_LD_CS.name }
             Timber.d("isAllBasEndScore:${isAllBas}")
             if (isAllBas && betList.size >= BET_INFO_MAX_COUNT) {
                 _showBetUpperLimit.postValue(Event(true))
@@ -408,11 +410,12 @@ object BetInfoRepository {
 //            Timber.d("isSameMatch:${isSameMatch} currentMatchName:${currentMatchName} lastMatchName:${lastMatchName}")
             //篮球末位比分
             if (playCateCode == PlayCate.FS_LD_CS.value) {
-                if (isSameMatch){
+                if (isSameMatch) {
                     Timber.d("篮球末位比分模式")
                     oddIDArray.add(it.oddsId)
                     betList.add(data)
-                }else{
+                    betList[0].input = null
+                } else {
                     oddIDArray.clear()
                     betList.clear()
                     oddIDArray.add(it.oddsId)

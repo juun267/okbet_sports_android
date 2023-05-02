@@ -114,7 +114,6 @@ class KeyboardView @JvmOverloads constructor(
         tvMax.setOnClickListener {
             if (gameType != null && PlayCate.FS_LD_CS.value == gameType) {
                 if (isLogin) {
-                    // TODO: 添加判断是不是末尾比分  用 用户余额/投注数量 来跟该盘口的最大投注额对比
                     var betMoney =
                         mUserMoney.toBigDecimal().setScale(3).div(betItemCount.toBigDecimal()).toDouble()
                     plusAll(

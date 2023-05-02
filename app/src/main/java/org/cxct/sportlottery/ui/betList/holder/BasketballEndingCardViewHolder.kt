@@ -111,6 +111,12 @@ class BasketballEndingCardViewHolder(
         position: Int,
         adapterBetType: BetListRefactorAdapter.BetRvType?
     ) = contentView.run {
+        fun showTotalStakeWinAmount( bet: Double){
+            val totalBet = TextUtil.formatMoney(bet * betListSize, 2)
+            val totalCanWin = TextUtil.formatMoney(bet * itemData.matchOdd.odds, 2)
+            tvTotalStakeAmount.text = "${sConfigData?.systemCurrencySign}${totalBet}"
+            tvTotalWinAmount.text = "${sConfigData?.systemCurrencySign}${totalCanWin}"
+        }
         //移除TextChangedListener
         etBet.apply {
             if (tag is TextWatcher) {
@@ -196,6 +202,10 @@ class BasketballEndingCardViewHolder(
             itemData.betAmount = itemData.input!!.toDouble()
             setText(itemData.inputBetAmountStr)
             setSelection(text.length)
+
+            //显示总投注
+            val bet = itemData.inputBetAmountStr!!.toDouble()
+            showTotalStakeWinAmount(bet)
         }
         checkBetLimit(itemData)
 
@@ -236,11 +246,7 @@ class BasketballEndingCardViewHolder(
 
                     //总投注
                     val bet = it.toString().toDouble()
-                    val totalBet = TextUtil.formatMoney(bet * betListSize, 2)
-                    val totalCanWin = TextUtil.formatMoney(bet * itemData.matchOdd.odds, 2)
-                    tvTotalStakeAmount.text = "${sConfigData?.systemCurrencySign}${totalBet}"
-                    tvTotalWinAmount.text = "${sConfigData?.systemCurrencySign}${totalCanWin}"
-
+                    showTotalStakeWinAmount(bet)
                 }
                 checkBetLimit(itemData)
                 onItemClickListener.refreshBetInfoTotal()
