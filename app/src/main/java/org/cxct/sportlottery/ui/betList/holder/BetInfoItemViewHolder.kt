@@ -209,7 +209,7 @@ class BetInfoItemViewHolder(
         etBet.apply {
             if (itemData.input == null) {
                 val minBet = itemData.parlayOdds?.min ?: 0
-                itemData.input = minBet.toDouble().toString()
+                itemData.input = minBet.toString()
             }
             itemData.inputBetAmountStr = itemData.input
             itemData.betAmount = itemData.input!!.toDouble()

@@ -196,7 +196,7 @@ class BasketballEndingCardViewHolder(
         etBet.apply {
             if (itemData.input == null) {
                 val minBet = itemData.parlayOdds?.min ?: 0
-                itemData.input = minBet.toDouble().toString()
+                itemData.input = minBet.toString()
             }
             itemData.inputBetAmountStr = itemData.input
             itemData.betAmount = itemData.input!!.toDouble()
@@ -235,7 +235,7 @@ class BasketballEndingCardViewHolder(
                     itemData.betAmount = quota
                     itemData.inputBetAmountStr = it.toString()
                     itemData.input = it.toString()
-                    val max = inputMaxMoney.coerceAtMost(0.0.coerceAtLeast(userBalance()))
+                    val max = inputMaxMoney.coerceAtMost(quota.coerceAtLeast(userBalance()))
                     if (quota > max) {
                         etBet.apply {
                             setText(TextUtil.formatInputMoney(max))

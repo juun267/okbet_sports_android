@@ -115,7 +115,8 @@ class KeyboardView @JvmOverloads constructor(
             if (gameType != null && PlayCate.FS_LD_CS.value == gameType) {
                 if (isLogin) {
                     var betMoney =
-                        mUserMoney.toBigDecimal().setScale(3).div(betItemCount.toBigDecimal()).toDouble()
+                        mUserMoney.toBigDecimal().setScale(3).div(betItemCount.toBigDecimal())
+                            .toDouble()
                     plusAll(
                         if (maxBetMoney.toDouble() > betMoney) {
                             TextUtil.formatInputMoney(betMoney)
@@ -125,8 +126,12 @@ class KeyboardView @JvmOverloads constructor(
                     )
                 } else {
                     plusAll(
-                        (maxBetMoney.toDouble().toBigDecimal().setScale(3)
-                            .div(betItemCount.toBigDecimal())).toString()
+                        if (betItemCount > 1) {
+                            (maxBetMoney.toDouble().toBigDecimal().setScale(3)
+                                .div(betItemCount.toBigDecimal())).toString()
+                        } else {
+                            maxBetMoney
+                        }
                     )
                 }
             } else {
