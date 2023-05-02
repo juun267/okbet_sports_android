@@ -12,7 +12,9 @@ import kotlinx.android.synthetic.main.dialog_withdraw_password.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.login.afterTextChanged
 
-class WithdrawPassWordDialog(private val listener: WithdrawPasswordDialogListener) : DialogFragment() {
+class WithdrawPassWordDialog : DialogFragment() {
+
+    var listener: WithdrawPasswordDialogListener? = null
 
     private val passwordViewList by lazy { mutableListOf<ImageView>(iv_first, iv_second, iv_third, iv_fourth) }
 
@@ -85,7 +87,12 @@ class WithdrawPassWordDialog(private val listener: WithdrawPasswordDialogListene
             if (checkPasswordFormat()) {
                 dismiss()
                 et_withdrawal_password?.let {
-                    listener.onConfirm(it.text.toString())
+                    if (listener == null) {
+                        dismiss()
+                        return@setOnClickListener
+                    }
+
+                    listener!!.onConfirm(it.text.toString())
                 }
             }
         }

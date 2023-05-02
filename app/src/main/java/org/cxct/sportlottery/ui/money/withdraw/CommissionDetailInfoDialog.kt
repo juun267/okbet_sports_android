@@ -18,8 +18,7 @@ class CommissionDetailInfoDialog : DialogFragment() {
         savedInstanceState: Bundle?,
     ): View?{
         dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-      var view  = inflater.inflate(R.layout.dialog_commission_detail_info, container, false)
-        return view
+        return inflater.inflate(R.layout.dialog_commission_detail_info, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

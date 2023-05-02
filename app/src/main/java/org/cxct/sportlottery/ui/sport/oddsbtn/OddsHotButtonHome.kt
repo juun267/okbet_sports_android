@@ -282,20 +282,20 @@ class OddsHotButtonHome @JvmOverloads constructor(
             requestLayout()
         }
 
-//        tv_spread.apply {
-//            visibility = when (!odds?.spread.isNullOrEmpty()) {
-//                true -> View.VISIBLE
-//                false -> {
-//                    when {
-//                        playCateCode.isOUType() -> View.INVISIBLE
-//                        else -> View.GONE
-//                    }
-//                }
-//            }
-//            text = odds?.spread ?: ""
-//            requestLayout()
-//        }
-        tv_spread.visibility = View.GONE
+        tv_spread.apply {
+            visibility = when (!odds?.spread.isNullOrEmpty()) {
+                true -> View.VISIBLE
+                false -> {
+                    when {
+                        playCateCode.isOUType() -> View.INVISIBLE
+                        else -> View.GONE
+                    }
+                }
+            }
+            text = odds?.spread ?: ""
+            requestLayout()
+        }
+//        tv_spread.visibility = View.GONE
         tv_odds.apply {
             text = TextUtil.formatForOdd(getOdds(odds, oddsType))
         }

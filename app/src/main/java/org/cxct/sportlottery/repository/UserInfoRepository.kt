@@ -15,7 +15,7 @@ import retrofit2.Response
 
 object UserInfoRepository {
 
-    private val sharedPref: SharedPreferences by lazy {
+    val sharedPref: SharedPreferences by lazy {
         MultiLanguagesApplication.appContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
 

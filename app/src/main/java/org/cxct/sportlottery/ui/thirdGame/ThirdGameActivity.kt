@@ -219,7 +219,7 @@ open class ThirdGameActivity : WebActivity() {
         viewModel.needToSendTwoFactor.observe(this) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                        customSecurityDialog = CustomSecurityDialog(this).apply {
+                        customSecurityDialog = CustomSecurityDialog().apply {
                             getSecurityCodeClickListener {
                                 this.showSmeTimer300()
                                 viewModel.sendTwoFactor()

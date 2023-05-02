@@ -40,6 +40,10 @@ class BetListRefactorAdapter(
     enum class BetRvType { SINGLE, PARLAY_SINGLE, PARLAY }
 
     var adapterBetType: BetRvType = SINGLE
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
 
     var betList: MutableList<BetInfoListData>? = mutableListOf()

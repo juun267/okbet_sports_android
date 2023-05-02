@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_height="wrap_content">
 
     <LinearLayout
@@ -57,23 +56,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_hot_game"
+        <androidx.cardview.widget.CardView
+            app:cardCornerRadius="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingRight="12dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="3"
-            tools:listitem="@layout/item_hot_game_view"
-            android:orientation="horizontal" />
+            android:layout_marginRight="12dp"
+            app:cardBackgroundColor="@color/transparent"
+            app:cardElevation="0dp"
+            android:layout_height="wrap_content">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_hot_game"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_hot_game_view"
+                android:orientation="horizontal" />
+        </androidx.cardview.widget.CardView>
 
 
-        <FrameLayout
-            android:background="@drawable/bg_hot_game_right"
-            android:layout_width="40dp"
-            android:layout_alignParentRight="true"
-            android:layout_height="200dp"/>
 
         <ImageView
             android:id="@+id/iv_left"
@@ -92,6 +93,7 @@
             android:padding="5dp"
             android:layout_width="34dp"
             android:layout_height="34dp"/>
+
     </RelativeLayout>
 
-</LinearLayout>
+</merge>

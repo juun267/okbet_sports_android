@@ -274,7 +274,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         viewModel.needToSendTwoFactor.observe(this) {
             val b = it.getContentIfNotHandled() ?: return@observe
             if (b) {
-                customSecurityDialog = CustomSecurityDialog(this).apply {
+                customSecurityDialog = CustomSecurityDialog().apply {
                     getSecurityCodeClickListener {
                         this.showSmeTimer300()
                         viewModel.sendTwoFactor()

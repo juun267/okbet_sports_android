@@ -22,8 +22,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_sport_list.*
@@ -35,6 +33,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.rotationAnimation
 import org.cxct.sportlottery.common.extentions.screenHeight
 import org.cxct.sportlottery.common.extentions.translationXAnimation
@@ -965,13 +964,7 @@ fun ImageView.setTeamLogo(icon: String?) {
         setImageResource(R.drawable.ic_team_default)
     } else {
         if (icon.startsWith("http")) {
-            Glide.with(this).load(icon)
-                .apply(
-                    RequestOptions()
-                        .placeholder(R.drawable.ic_team_default)
-                        .error(R.drawable.ic_team_default)
-                )
-                .into(this)
+            load(icon, R.drawable.ic_team_default)
         } else {
             setSvgIcon(icon, R.drawable.ic_team_default)
         }
@@ -985,13 +978,7 @@ fun ImageView.setLeagueLogo(icon: String?) {
         setImageResource(R.drawable.ic_league_default)
     } else {
         if (icon.startsWith("http")) {
-            Glide.with(this).load(icon)
-                .apply(
-                    RequestOptions()
-                        .placeholder(R.drawable.ic_league_default)
-                        .error(R.drawable.ic_league_default)
-                )
-                .into(this)
+            load(icon, R.drawable.ic_league_default)
         } else {
             setSvgIcon(icon, R.drawable.ic_league_default)
         }

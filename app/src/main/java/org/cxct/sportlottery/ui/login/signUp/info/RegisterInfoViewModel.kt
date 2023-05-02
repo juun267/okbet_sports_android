@@ -95,6 +95,7 @@ class RegisterInfoViewModel(
                 OneBoSportApi.indexService.getUserSalaryList()
             }
             result?.let {
+                salaryStringList.clear()
                 result.rows?.forEach { salary ->
                     salaryStringList.add(salary.name)
                 }

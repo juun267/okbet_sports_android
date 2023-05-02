@@ -6,10 +6,7 @@ import okhttp3.OkHttpClient
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.network.Constants
-import org.cxct.sportlottery.network.interceptor.Http400or500Interceptor
-import org.cxct.sportlottery.network.interceptor.HttpLogInterceptor
-import org.cxct.sportlottery.network.interceptor.MoreBaseUrlInterceptor
-import org.cxct.sportlottery.network.interceptor.RequestInterceptor
+import org.cxct.sportlottery.network.interceptor.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.security.SecureRandom
@@ -37,6 +34,7 @@ object RetrofitHolder {
         getUnsafeOkHttpClient().connectTimeout(Constants.CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
             .writeTimeout(Constants.WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
             .readTimeout(Constants.READ_TIMEOUT, TimeUnit.MILLISECONDS)
+            .addInterceptor(HttpStatusInterceptor()) // 处理token过期
             .addNetworkInterceptor(Http400or500Interceptor()) //处理后端的沙雕行为
             .addInterceptor(MoreBaseUrlInterceptor())
             .addInterceptor(RequestInterceptor(MultiLanguagesApplication.appContext))
