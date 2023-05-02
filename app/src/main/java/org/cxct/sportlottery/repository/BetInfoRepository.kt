@@ -398,7 +398,6 @@ object BetInfoRepository {
             val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
 
             //是不是同一场比赛
-            //规则 主队+客队名称完全相同
             val currentMatchName = it.playCateName
             var lastMatchName: String? = null
             if (betList.isNotEmpty()) {

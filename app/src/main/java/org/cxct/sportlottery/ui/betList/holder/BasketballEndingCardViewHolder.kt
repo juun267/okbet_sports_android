@@ -181,6 +181,13 @@ class BasketballEndingCardViewHolder(
         rcvBasketballAdapter.setNewInstance(newList)
         rcvBasketballScore.layoutManager = GridLayoutManager(root.context, 5)
         tvBasketBetListCount.text = "X${betList?.size}"
+        clItemBackground.setOnClickListener {
+            rcvBasketballAdapter.data.forEach { itemD->
+                itemD.isClickForBasketball = false
+            }
+            it.clearFocus()
+            rcvBasketballAdapter.notifyDataSetChanged()
+        }
         //設定editText內容
         etBet.apply {
             if (itemData.input != null) setText(itemData.inputBetAmountStr) else text.clear()
@@ -282,9 +289,9 @@ class BasketballEndingCardViewHolder(
             }
             setEtBackground(itemData)
         }
-        clItemBackground.setOnClickListener {
-            clItemBackground.clearFocus()
-        }
+//        clItemBackground.setOnClickListener {
+//            clItemBackground.clearFocus()
+//        }
     }
 
     var oddsId = ""
@@ -353,6 +360,7 @@ class BasketballEndingCardViewHolder(
                 onItemClickListener.clearCarts()
             }
         }
+
 
         val view = View.inflate(tvMatchHome.context, R.layout.popupwindow_tips, null)
         val pop = PopupWindow(tvMatchHome.context).apply {
