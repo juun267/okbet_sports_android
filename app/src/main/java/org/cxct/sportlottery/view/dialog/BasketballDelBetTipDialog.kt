@@ -35,6 +35,8 @@ class BasketballDelBetTipDialog(context: Context) : Dialog(context) {
         binding.btnNegative.setOnClickListener {
             mNegativeClickListener?.negativeClick(binding.cbOkIknow.isChecked)
         }
+        binding.tvMessage.text =
+            context.resources.getString(R.string.N898) + context.resources.getString(R.string.N899)
         Glide.with(context).load(R.drawable.basketball_delete_bet_tip).into(binding.ivGifBasket)
 
     }
