@@ -92,7 +92,7 @@ class BasketballEndingCardViewHolder(
         inputMinMoney = minBet.toDouble()
     }
 
-    var lastSelectPo = 0
+
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setupBetAmountInput(
@@ -116,6 +116,7 @@ class BasketballEndingCardViewHolder(
         }
 
         Timber.d("itemData:${itemData}")
+        var lastSelectPo = 0
 
         val rcvBasketballAdapter = object :
             BaseQuickAdapter<BetInfoListData, BaseViewHolder>(R.layout.item_bet_basketball_ending_cart) {
@@ -178,10 +179,14 @@ class BasketballEndingCardViewHolder(
         newList.sortBy { it.matchOdd.playName.split("-")[1].toInt() }
         newList.sortBy { it.matchOdd.playName.split("-")[0].toInt() }
         newList.add(newList[0])
+        newList.forEach {
+            it.isClickForBasketball = false
+        }
         rcvBasketballAdapter.setNewInstance(newList)
         rcvBasketballScore.layoutManager = GridLayoutManager(root.context, 5)
         tvBasketBetListCount.text = "X${betList?.size}"
-        clItemBackground.setOnClickListener {
+
+        setOnClickListener(rcvBasketballScore,clItemBackground){
             rcvBasketballAdapter.data.forEach { itemD->
                 itemD.isClickForBasketball = false
             }
