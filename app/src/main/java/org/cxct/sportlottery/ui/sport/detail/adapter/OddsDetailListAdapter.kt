@@ -81,7 +81,7 @@ class OddsDetailListAdapter(
                             withContext(Dispatchers.Main) {
                                 notifyItemChanged(index, odd?.id)
                             }
-                            Timber.d("===洗刷刷 更新单个条目:${index} id:${odd?.id} odd.isSelected:${odd?.isSelected}")
+//                            Timber.d("===洗刷刷 更新单个条目:${index} id:${odd?.id} odd.isSelected:${odd?.isSelected}")
                         }
                     }
                 }
@@ -1480,6 +1480,7 @@ class OddsDetailListAdapter(
                     if (isFirstRefresh || it1.adapter == null) {
                         it1.adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, oddsType)
                         it1.layoutManager = GridLayoutManager(itemView.context, 4)
+                        isFirstRefresh = false
                     }
 
                     if (it1.adapter != null && payloads?.isNotEmpty() == true) {
