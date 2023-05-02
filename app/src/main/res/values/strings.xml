@@ -1304,4 +1304,5 @@
     <string name="N920">+More</string>
     <string name="N901">Confirm delete</string>
     <string name="N888">The individual odds are the same for all selections in the final score.</string>
+    <string name="N898">Are you sure you want to delete all score options?</string>
 </resources>
