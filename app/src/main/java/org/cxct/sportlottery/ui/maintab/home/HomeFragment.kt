@@ -19,7 +19,8 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
 
         FragmentHelper(childFragmentManager, R.id.fl_content, arrayOf(
             Pair(MainHomeFragment::class.java, null),
-            Pair(HomeLiveFragment::class.java, null),
+//            Pair(HomeLiveFragment::class.java, null),
+            Pair(MainHomeFragment2::class.java, null),
             Pair(OKGamesFragment::class.java, null)
         ))
 
