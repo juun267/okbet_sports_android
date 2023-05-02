@@ -92,6 +92,8 @@ class BasketballEndingCardViewHolder(
         inputMinMoney = minBet.toDouble()
     }
 
+    var lastSelectPo = 0
+
     @SuppressLint("ClickableViewAccessibility")
     private fun setupBetAmountInput(
         betList: MutableList<BetInfoListData>?,
@@ -104,7 +106,6 @@ class BasketballEndingCardViewHolder(
         position: Int,
         adapterBetType: BetListRefactorAdapter.BetRvType?
     ) = contentView.run {
-
         //移除TextChangedListener
         etBet.apply {
             if (tag is TextWatcher) {
@@ -116,25 +117,26 @@ class BasketballEndingCardViewHolder(
 
         Timber.d("itemData:${itemData}")
 
-        var lastSelectPo = 0
         val rcvBasketballAdapter = object :
             BaseQuickAdapter<BetInfoListData, BaseViewHolder>(R.layout.item_bet_basketball_ending_cart) {
             override fun convert(holder: BaseViewHolder, item: BetInfoListData) {
+
                 val tvMatchOdds = holder.getView<TextView>(R.id.tvMatchOdds)
                 tvMatchOdds.background = DrawableUtils.getBasketballBetListButton(root)
                 holder.setText(R.id.tvMatchOdds, item.matchOdd.playName)
                 val tvHide = holder.getView<TextView>(R.id.tvHide)
                 tvHide.background = DrawableUtils.getBasketballDeleteButton(root)
 
-                Timber.d("isClicked = ${item.isClickForBasketball}")
                 if (item.isClickForBasketball == true) {
                     tvHide.visible()
                 } else {
                     tvHide.gone()
                 }
 
-                if (holder.layoutPosition == betList?.size) {
-                    holder.setGone(R.id.tvMatchOdds, true).setVisible(R.id.tvBsMore, true).setText(R.id.tvBsMore,R.string.N920)
+                //设置+More
+                if (holder.layoutPosition == data.size - 1) {
+                    holder.setGone(R.id.tvMatchOdds, true).setVisible(R.id.tvBsMore, true)
+                        .setText(R.id.tvBsMore, R.string.N920)
                     val tvBsMore = holder.getView<TextView>(R.id.tvBsMore)
                     tvBsMore.background = DrawableUtils.getBasketballPlusMore(root)
                     tvBsMore.setOnClickListener {
@@ -144,17 +146,17 @@ class BasketballEndingCardViewHolder(
                     holder.setVisible(R.id.tvMatchOdds, true).setGone(R.id.tvBsMore, true)
                 }
 
+                //点击赔率
                 tvMatchOdds.setOnClickListener {
                     //刷新上一次点击的区域
-                    if ((betList?.size ?: 0) > lastSelectPo) {
-                        betList?.get(lastSelectPo)?.isClickForBasketball = false
+                    if (data.size > lastSelectPo) {
+                        data[lastSelectPo].isClickForBasketball = false
                         notifyItemChanged(lastSelectPo)
                     }
-
-                    //记录本地点击的区域
                     val currentPosition = holder.layoutPosition
-                    if ((betList?.size ?: 0) > currentPosition) {
-                        betList?.get(currentPosition)?.isClickForBasketball = true
+                    //记录本次点击的区域
+                    if (data.size > currentPosition) {
+                        data[currentPosition].isClickForBasketball = true
                         notifyItemChanged(currentPosition)
                         lastSelectPo = currentPosition
                     }
@@ -162,13 +164,13 @@ class BasketballEndingCardViewHolder(
 
                 //蒙版点击事件
                 tvHide.setOnClickListener {
-                    betList?.get(holder.layoutPosition)?.isClickForBasketball = false
+                    data[holder.layoutPosition].isClickForBasketball = false
+                    lastSelectPo = 0
                     onItemClickListener.onDeleteClick(itemData.matchOdd.oddsId, itemCount)
                 }
             }
         }
         rcvBasketballScore.adapter = rcvBasketballAdapter
-
         val newList = mutableListOf<BetInfoListData>()
         if (betList != null) {
             newList.addAll(betList)
@@ -178,7 +180,6 @@ class BasketballEndingCardViewHolder(
         newList.add(newList[0])
         rcvBasketballAdapter.setNewInstance(newList)
         rcvBasketballScore.layoutManager = GridLayoutManager(root.context, 5)
-
         tvBasketBetListCount.text = "X${betList?.size}"
         //設定editText內容
         etBet.apply {
@@ -224,8 +225,8 @@ class BasketballEndingCardViewHolder(
 
                     //总投注
                     val bet = it.toString().toDouble()
-                    val totalBet = TextUtil.formatMoney(bet * betListSize,2)
-                    val totalCanWin = TextUtil.formatMoney(bet * itemData.matchOdd.odds,2)
+                    val totalBet = TextUtil.formatMoney(bet * betListSize, 2)
+                    val totalCanWin = TextUtil.formatMoney(bet * itemData.matchOdd.odds, 2)
                     tvTotalStakeAmount.text = "${sConfigData?.systemCurrencySign}${totalBet}"
                     tvTotalWinAmount.text = "${sConfigData?.systemCurrencySign}${totalCanWin}"
 

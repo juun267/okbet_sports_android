@@ -284,7 +284,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             parlayFloatWindow.gone()
         } else if (event.currentMode == BetListFragment.BASKETBALL_ENDING_CARD) {
             BetInfoRepository.currentBetType = BetListFragment.BASKETBALL_ENDING_CARD
-            parlayFloatWindow.gone()
+            if (betListCount != 0) {
+                parlayFloatWindow.visible()
+            }
         } else {
             BetInfoRepository.currentBetType = BetListFragment.PARLAY
             if (betListCount != 0) {
@@ -357,14 +359,18 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             else -> false
         }
 
-        if (betListCount == 0 || !needShowBetBar || BetInfoRepository.currentBetType == BetListFragment.SINGLE) {
+        if (betListCount == 0 || !needShowBetBar || BetInfoRepository.currentBetType
+            == BetListFragment.SINGLE) {
 //            Timber.d("ParlayFloatWindow隐藏：betListCount:${betListCount} !needShowBetBar:${!needShowBetBar} currentBetMode:${BetInfoRepository.currentBetType}")
             parlayFloatWindow.gone()
         } else {
-            if (BetInfoRepository.currentBetType == BetListFragment.PARLAY) {
-//                Timber.d("ParlayFloatWindow显示")
-                parlayFloatWindow.visible()
+            if (BetInfoRepository.currentBetType == BetListFragment.PARLAY
+            ) {
+                parlayFloatWindow.setBetText(getString(R.string.conspire))
+            }else{
+                parlayFloatWindow.setBetText(getString(R.string.bet_slip))
             }
+            parlayFloatWindow.visible()
         }
     }
 
