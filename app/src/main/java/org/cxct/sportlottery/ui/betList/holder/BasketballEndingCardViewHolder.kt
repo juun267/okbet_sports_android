@@ -166,7 +166,7 @@ class BasketballEndingCardViewHolder(
                 tvHide.setOnClickListener {
                     data[holder.layoutPosition].isClickForBasketball = false
                     lastSelectPo = 0
-                    onItemClickListener.onDeleteClick(itemData.matchOdd.oddsId, itemCount)
+                    onItemClickListener.onDeleteClick(data[holder.layoutPosition].matchOdd.oddsId, itemCount)
                 }
             }
         }
