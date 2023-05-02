@@ -1,45 +1,90 @@
 package org.cxct.sportlottery.ui.base
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
-import org.cxct.sportlottery.common.extentions.createVBinding
 
-open class BindingSocketFragment<VM : BaseViewModel, VB: ViewBinding>: BaseFragment<VM>() {
+open class BindingSocketFragment<VM : BaseViewModel, VB: ViewBinding>: BindingFragment<VM, VB>() {
 
-    protected val binding: VB by lazy { createVBinding(layoutInflater, 1) }
-    private var _first = true
 
-    override fun createRootView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ) = binding.root
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        if (_first) {
-            _first = false
-            onInitView(view)
-        }
-        onBindViewStatus(view)
-        onInitData()
+    val receiver by lazy {
+        (activity as BaseSocketActivity<*>).receiver
     }
 
-    @Deprecated("为了避免View复用进行了防重复加载，所以View的初始化工作只应该执行一次，为了与BaseFragment中的进行区分请使用onInitView")
-    override fun onBindView(view: View) { }
+    protected fun subscribeSportChannelHall() {
+        (activity as BaseSocketActivity<*>).subscribeSportChannelHall()
+    }
 
-    // 该方法在整个生命周期中只会执行一次(类似与RecyclerView.Adapter的oonCreateViewHolder)
-    protected open fun onInitView(view: View) { }
+    protected fun subscribeChannelHall(gameType: String?, eventId: String?) {
+        (activity as BaseSocketActivity<*>).subscribeChannelHall(gameType, eventId)
+    }
 
-    /**
-     * 与onInitView方法不同在于每次onViewCreated都会执行，对于都Fragment切换时会发生多次onCreateView的情况
-     *  该方法可以用于将View设置回初始状态(类似与RecyclerView.Adapter的onBindViewHolder)
-      */
-    protected open fun onBindViewStatus(view: View) { }
+    fun subscribeChannel2HotMatch(gameType: String?, eventId: String?) {
+        (activity as BaseSocketActivity<*>).subscribeChannelHall(gameType, eventId)
+    }
 
-    // 该方法每次onCreateView后都会执行
-    protected open fun onInitData() { }
+    protected fun subscribeChannelEvent(eventId: String?) {
+        (activity as BaseSocketActivity<*>).subscribeChannelEvent(eventId)
+    }
+
+    protected fun unSubscribeChannelHall(
+        gameType: String?,
+        eventId: String?
+    ) {
+        (activity as BaseSocketActivity<*>).unSubscribeChannelHall(gameType, eventId)
+    }
+
+    protected fun unSubscribeChannelEvent(eventId: String?) {
+        (activity as BaseSocketActivity<*>).unSubscribeChannelEvent(eventId)
+    }
+
+    protected fun unsubscribeHallChannel(eventId: String?) {
+        (activity as BaseSocketActivity<*>).unsubscribeHallChannel(eventId)
+    }
+
+    protected fun unSubscribeChannelHall(eventId: String?) {
+        (activity as BaseSocketActivity<*>).unSubscribeChannelHall(eventId)
+    }
+
+    protected fun unSubscribeChannelHallAll() {
+        (activity as BaseSocketActivity<*>).unSubscribeChannelHallAll()
+    }
+
+    fun unSubscribeChannel2HotMatch(){
+        (activity as BaseSocketActivity<*>).unSubscribeChannelHallAll()
+    }
+
+    protected fun unSubscribeChannelHallSport() {
+        (activity as BaseSocketActivity<*>).unSubscribeChannelHallSport()
+    }
+
+    protected fun unSubscribeChannelEventAll() {
+        (activity as BaseSocketActivity<*>).unSubscribeChannelEventAll()
+    }
+
+    protected fun betListPageSubscribeEvent() {
+        (activity as BaseSocketActivity<*>).betListPageSubscribeEvent()
+    }
+
+    protected fun betListPageUnSubScribeEvent() {
+        (activity as BaseSocketActivity<*>).betListPageUnSubScribeEvent()
+    }
+
+    protected fun fastBetPageSubscribeHallEvent(gameType: String?, eventId: String?) {
+        (activity as BaseSocketActivity<*>).fastBetPageSubscribeHallEvent(gameType, eventId)
+    }
+
+    protected fun fastBetPageSubscribeEvent(eventId: String?) {
+        (activity as BaseSocketActivity<*>).fastBetPageSubscribeEvent(eventId)
+    }
+
+    protected fun fastBetPageUnSubscribeEvent() {
+        (activity as BaseSocketActivity<*>).fastBetPageUnSubscribeEvent()
+    }
+
+    protected fun getBetListPageVisible(): Boolean {
+        return when (val thisActivity = activity) {
+            is BaseBottomNavActivity<*> -> thisActivity.getBetListPageVisible()
+            else -> false
+        }
+    }
 
 }
