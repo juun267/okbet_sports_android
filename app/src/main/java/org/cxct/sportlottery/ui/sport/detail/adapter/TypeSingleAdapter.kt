@@ -57,6 +57,7 @@ class TypeSingleAdapter (
                 setupOdd(odd, oddsType, gameType, matchInfo = oddsDetail.matchInfo)
                 setupOddState(this, odd)
                 setOnClickListener {
+                    Timber.d("===洗刷刷-1 设置点击事件")
                     odd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
                 }
             }

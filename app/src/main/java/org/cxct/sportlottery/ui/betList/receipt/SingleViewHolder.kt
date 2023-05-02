@@ -148,9 +148,9 @@ class SingleViewHolder private constructor(itemView: View) :
                         rvEndScoreInfo.addItemDecoration(GridSpacingItemDecoration(5, 5.dp, false))
                         var endScoreAdapter = BetReceiptEndScoreAdapter()
                         rvEndScoreInfo.adapter = endScoreAdapter
-                        endScoreAdapter.setList(itemData.matchOdds?.firstOrNull()?.multiCode)
+                        endScoreAdapter.setList(itemData.matchOdds?.firstOrNull()?.multiCode?.sortedBy { it.playCode })
                     } else {
-                        (rvEndScoreInfo.adapter as BetReceiptEndScoreAdapter).setList(itemData.matchOdds?.firstOrNull()?.multiCode)
+                        (rvEndScoreInfo.adapter as BetReceiptEndScoreAdapter).setList(itemData.matchOdds?.firstOrNull()?.multiCode?.sortedBy { it.playCode })
                     }
                 }
             }

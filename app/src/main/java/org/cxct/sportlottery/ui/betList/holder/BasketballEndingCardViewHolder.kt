@@ -172,9 +172,10 @@ class BasketballEndingCardViewHolder(
         val newList = mutableListOf<BetInfoListData>()
         if (betList != null) {
             newList.addAll(betList)
-            newList.add(betList[0])
         }
-
+        newList.sortBy { it.matchOdd.playName.split("-")[1].toInt() }
+        newList.sortBy { it.matchOdd.playName.split("-")[0].toInt() }
+        newList.add(newList[0])
         rcvBasketballAdapter.setNewInstance(newList)
         rcvBasketballScore.layoutManager = GridLayoutManager(root.context, 5)
 
