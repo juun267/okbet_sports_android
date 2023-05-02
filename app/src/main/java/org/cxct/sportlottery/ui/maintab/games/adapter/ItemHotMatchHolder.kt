@@ -5,7 +5,6 @@ import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
-import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemHotGameViewBinding
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.Odd
@@ -42,9 +41,9 @@ class ItemHotMatchHolder(
 
         //設置背景、隊伍名稱、點擊事件
         setupGameInfo()
-
+        //根据sofia 说法，只获取有效玩法中的第一个玩法，而不是直接获取独赢玩法，因为赛事列表有可能不存在独赢玩法
         //玩法Code
-        var oddPlayCateCode = PlayCate.SINGLE.value
+        var oddPlayCateCode = ""
 
         var oddList = listOf<Odd?>()
 
