@@ -20,10 +20,18 @@
             android:orientation="vertical"
             android:descendantFocusability="blocksDescendants">
 
+            <include
+                android:id="@+id/includeNews"
+                layout="@layout/include_home_news" />
+
+            <include
+                android:id="@+id/includeRecord"
+                layout="@layout/include_home_record" />
+
             <org.cxct.sportlottery.ui.maintab.home.HomeButtomView
                 android:id="@+id/homeBottumView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
@@ -38,5 +46,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="20dp" />
+
 
 </RelativeLayout>

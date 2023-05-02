@@ -7,6 +7,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.callApi
+import org.cxct.sportlottery.common.extentions.toast
+import org.cxct.sportlottery.net.games.OKGamesRepository
+import org.cxct.sportlottery.net.news.NewsRepository
+import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.FavoriteType
@@ -14,6 +19,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.match.MatchRound
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.list.MatchLiveData
+import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuFilter
 import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendRequest
@@ -113,12 +119,25 @@ open class MainHomeViewModel(
         get() = _liveRoundCount
     val gameBalanceResult: LiveData<Event<Triple<String, EnterThirdGameResult, Double>>>
         get() = _gameBalanceResult
-    private var _gameBalanceResult = MutableLiveData<Event<Triple<String, EnterThirdGameResult, Double>>>()
+    private var _gameBalanceResult =
+        MutableLiveData<Event<Triple<String, EnterThirdGameResult, Double>>>()
+
+    val homeNewsList: LiveData<List<NewsItem>>
+        get() = _homeNewsList
+    private val _homeNewsList = MutableLiveData<List<NewsItem>>()
+
+    val recordNewHttp: LiveData<List<RecordNewEvent>>
+        get() = _recordNewHttp
+    val recordResultHttp: LiveData<List<RecordNewEvent>>
+        get() = _recordResultHttp
+
+    private val _recordNewHttp = MutableLiveData<List<RecordNewEvent>>()
+    private val _recordResultHttp = MutableLiveData<List<RecordNewEvent>>()
 
     //region 宣傳頁用
     fun getRecommend() {
         viewModelScope.launch {
-            val resultRecommend=doNetwork(androidContext) {
+            val resultRecommend = doNetwork(androidContext) {
                 val currentTimeMillis = System.currentTimeMillis()
                 val calendar = Calendar.getInstance()
                 calendar.timeInMillis = currentTimeMillis
@@ -568,7 +587,11 @@ open class MainHomeViewModel(
         }
     }
 
-    private fun getGameBalance(firmType: String, thirdGameResult: EnterThirdGameResult, baseFragment: BaseFragment<*>) {
+    private fun getGameBalance(
+        firmType: String,
+        thirdGameResult: EnterThirdGameResult,
+        baseFragment: BaseFragment<*>,
+    ) {
         doRequest(androidContext, { OneBoSportApi.thirdGameService.getAllBalance() }) { result ->
             baseFragment.hideLoading()
             var balance: Double = result?.resultMap?.get(firmType)?.money ?: (0).toDouble()
@@ -576,5 +599,31 @@ open class MainHomeViewModel(
         }
     }
 
-    //endregion
+    /**
+     * 获取新闻资讯列表
+     */
+    fun getGameList(pageNum: Int, pageSize: Int, categoryIds: List<Int>) {
+        viewModelScope.launch {
+            callApi({ NewsRepository.getListHome(pageNum, pageNum, categoryIds) }) {
+                if (it.succeeded()) {
+                    _homeNewsList.postValue(it.getData()?.detailList ?: listOf())
+                } else {
+                    toast(it.msg)
+                }
+            }
+        }
+    }
+
+    fun getRecordNew() = callApi({ OKGamesRepository.getRecordNew() }) {
+        if (it.succeeded()) {
+            _recordNewHttp.postValue(it.getData())
+        }
+    }
+
+    fun getRecordResult() = callApi({ OKGamesRepository.getRecordResult() }) {
+        if (it.succeeded()) {
+            _recordResultHttp.postValue(it.getData())
+        }
+    }
+
 }

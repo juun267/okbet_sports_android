@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="@dimen/margin_12">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ivCover"
+            android:layout_width="138dp"
+            android:layout_height="70dp"
+            android:background="@color/colorRedLight" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/margin_8">
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_303C55"
+                android:textSize="@dimen/textSize14sp"
+                android:lines="2"
+                tools:text="OKBet supports Miss Grand PH for the upcoming. Max  lines..." />
+
+            <TextView
+                android:id="@+id/tvTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                tools:text="Feb 12, 202310:16AM"
+                android:textColor="@color/color_BEC7DC"
+                android:textSize="@dimen/textSize12sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:maxLines="2"
+        tools:text="Lorem ipsum dolor sit amet, consectetur abor adipisci incididunt ut labore. Max is 2 lines. amet, cons  ectetur abor adipis 2 lines..."
+        android:textColor="@color/color_6D7693"
+        android:textSize="@dimen/textSize12sp" />
+
+</LinearLayout>

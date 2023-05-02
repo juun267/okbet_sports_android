@@ -19,7 +19,7 @@
 
     <include
         android:id="@+id/include3"
-        layout="@layout/include_part3"
+        layout="@layout/include_okgame_record"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

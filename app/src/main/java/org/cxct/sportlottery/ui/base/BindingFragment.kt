@@ -6,10 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import org.cxct.sportlottery.common.extentions.createVBinding
+import kotlin.reflect.KClass
 
-open class BindingFragment<VM : BaseViewModel, VB: ViewBinding>: BaseFragment<VM>() {
+open class BindingFragment<VM : BaseViewModel, VB: ViewBinding>(clazz: KClass<VM>? = null): BaseFragment<VM>(clazz) {
 
-    private val binding: VB by lazy { createVBinding(layoutInflater, 1) }
+    protected val binding: VB by lazy { createVBinding(layoutInflater, 1) }
     private var _first = true
 
     override fun createRootView(
