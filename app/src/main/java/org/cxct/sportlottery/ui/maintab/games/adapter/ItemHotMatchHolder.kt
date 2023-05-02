@@ -1,6 +1,7 @@
 
 package org.cxct.sportlottery.ui.maintab.games.adapter
 
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import org.cxct.sportlottery.R
@@ -48,7 +49,7 @@ class ItemHotMatchHolder(
         var oddList = listOf<Odd?>()
 
         val oddsMap = mutableMapOf<String, List<Odd?>?>()
-        data.odds?.forEach {
+        data.oddsMap?.forEach {
             oddsMap[it.key] = it.value
         }
         val sortOddsMap = oddsMap.filterValues { it?.size ?: 0 > 0 }.sortOdds(data.oddsSort)

@@ -140,6 +140,7 @@ open class MainHomeViewModel(
                     result.result.recommendList.filter {
                         !it.menuList.isNullOrEmpty()
                     }.forEach { recommend ->
+                        recommend.oddsMap=recommend.odds
                         with(recommend) {
                             setupOddsSort()
                             setupMatchType()

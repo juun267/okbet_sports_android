@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.maintab.games.view
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
@@ -108,7 +107,6 @@ class HotMatchView(context: Context, attrs: AttributeSet
         initAdapter(fragment)
         //设置item attached 后，订阅该赛事
         adapter?.setOnViewAttach {
-            Log.e("dachang","订阅: ${it.matchInfo?.homeName}")
             subscribeChannelHall(it,fragment)
         }
         //适配器初始化结束
@@ -331,7 +329,6 @@ class HotMatchView(context: Context, attrs: AttributeSet
             val targetList = adapter?.data
             targetList?.forEachIndexed { index, recommend ->
                 if (recommend.matchInfo?.id == oddsChangeEvent.eventId) {
-                    Log.e("dachang","收到倍率变化: ${recommend.matchInfo?.homeName}")
                     recommend.sortOddsMap()
                     //region 翻譯更新
                     oddsChangeEvent.playCateNameMap?.let { playCateNameMap ->

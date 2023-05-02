@@ -59,7 +59,7 @@
                 android:fontFamily="@font/din_regular"
                 android:maxLines="1"
                 android:textColor="@color/selector_button_odd_top_text"
-                android:textSize="@dimen/textSize14sp"
+                android:textSize="@dimen/textSize12sp"
                 android:textFontWeight="700"
                 tools:text="-0.5/1"
                 tools:textColor="@color/color_A7B2C4" />
