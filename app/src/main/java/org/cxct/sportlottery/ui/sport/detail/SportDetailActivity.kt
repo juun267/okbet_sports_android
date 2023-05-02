@@ -495,7 +495,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         viewModel.updateMatchBetListData(fastBetDataBean)
                     }
                 }
-            }).apply {
+            },this).apply {
                 discount = viewModel.userInfo.value?.discount ?: 1.0F
 
                 oddsDetailListener = OddsDetailListener {
@@ -694,7 +694,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         viewModel.showBetUpperLimit.observe(this) {
             if (it.getContentIfNotHandled() == true) {
                 showSnackBarBetUpperLimitNotify(
-                    getString(R.string.bet_basketball_notify_max_limit)
+                    getString(R.string.bet_notify_max_limit)
                 ).setAnchorView(R.id.parlayFloatWindow).show()
             }
         }
