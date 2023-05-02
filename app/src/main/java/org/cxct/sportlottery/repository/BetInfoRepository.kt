@@ -398,10 +398,11 @@ object BetInfoRepository {
             val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
 
             //是不是同一场比赛
-            val currentMatchName = it.playCateName
+            val currentMatchName = it.playCateName + it.awayName + it.homeName
             var lastMatchName: String? = null
             if (betList.isNotEmpty()) {
-                lastMatchName = betList.last().matchOdd.playCateName
+                val lastMatchOdd = betList.last().matchOdd
+                lastMatchName = lastMatchOdd.playCateName + lastMatchOdd.awayName + lastMatchOdd.homeName
             }
             val isSameMatch = (currentMatchName == lastMatchName) || (lastMatchName == null)
 //            Timber.d("isSameMatch:${isSameMatch} currentMatchName:${currentMatchName} lastMatchName:${lastMatchName}")
