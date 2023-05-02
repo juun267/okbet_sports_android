@@ -69,6 +69,11 @@ class BasketballEndingCardViewHolder(
         setupInputLimit(itemData)
 
         contentView.apply {
+            layoutKeyBoard.setUserMoney(mUserMoney)
+            layoutKeyBoard.setGameType(itemData.matchOdd.playCode)
+            if (betList != null) {
+                layoutKeyBoard.setBetItemCount(betList.size)
+            }
             setupBetAmountInput(
                 betList,
                 itemData,
@@ -183,7 +188,13 @@ class BasketballEndingCardViewHolder(
         tvBasketBetListCount.text = "X${betList?.size}"
         //設定editText內容
         etBet.apply {
-            if (itemData.input != null) setText(itemData.inputBetAmountStr) else text.clear()
+            if (itemData.input == null) {
+                val minBet = itemData.parlayOdds?.min ?: 0
+                itemData.input = minBet.toDouble().toString()
+            }
+            itemData.inputBetAmountStr = itemData.input
+            itemData.betAmount = itemData.input!!.toDouble()
+            setText(itemData.inputBetAmountStr)
             setSelection(text.length)
         }
         checkBetLimit(itemData)

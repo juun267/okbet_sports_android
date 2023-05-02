@@ -223,6 +223,7 @@ class BetInfoItemViewHolder(
             itemData, currentOddsType, betListSize, onItemClickListener, adapterBetType
         )
 
+        layoutKeyBoard.setUserMoney(mUserMoney)
         if (itemData.isInputWin) {
             layoutKeyBoard.setupMaxBetMoney(inputWinMaxMoney)
         } else {

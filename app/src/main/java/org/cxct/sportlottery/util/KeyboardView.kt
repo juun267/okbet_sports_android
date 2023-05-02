@@ -13,6 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.item_number_keyboard_layout2.view.*
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import java.lang.reflect.Method
@@ -111,18 +112,38 @@ class KeyboardView @JvmOverloads constructor(
 //            hideKeyboard()
 //        }
         tvMax.setOnClickListener {
-            if (isLogin) {
-                // TODO: 添加判断是不是末尾比分  用 用户余额/投注数量 来跟该盘口的最大投注额对比
-                plusAll(
-                    if (maxBetMoney.toDouble() > mUserMoney) {
-                        TextUtil.formatInputMoney(mUserMoney)
-                    } else {
-                        maxBetMoney
-                    }
-                )
+            if (gameType != null && PlayCate.FS_LD_CS.value == gameType) {
+                if (isLogin) {
+                    // TODO: 添加判断是不是末尾比分  用 用户余额/投注数量 来跟该盘口的最大投注额对比
+                    var betMoney =
+                        mUserMoney.toBigDecimal().setScale(3).div(betItemCount.toBigDecimal()).toDouble()
+                    plusAll(
+                        if (maxBetMoney.toDouble() > betMoney) {
+                            TextUtil.formatInputMoney(betMoney)
+                        } else {
+                            maxBetMoney
+                        }
+                    )
+                } else {
+                    plusAll(
+                        (maxBetMoney.toDouble().toBigDecimal().setScale(3)
+                            .div(betItemCount.toBigDecimal())).toString()
+                    )
+                }
             } else {
-                plusAll(_maxBetMoney)
+                if (isLogin) {
+                    plusAll(
+                        if (maxBetMoney.toDouble() > mUserMoney) {
+                            TextUtil.formatInputMoney(mUserMoney)
+                        } else {
+                            maxBetMoney
+                        }
+                    )
+                } else {
+                    plusAll(maxBetMoney)
+                }
             }
+
         }
         setOnClickListener { /*这里加个点击事件空实现，为了防止点击到间隔处把键盘消失*/ }
     }
@@ -143,12 +164,13 @@ class KeyboardView @JvmOverloads constructor(
     private var isParlay: Boolean = false
 
     //最大限額
-    private var _maxBetMoney: String = "9999999"
-    private val maxBetMoney: String
-        get() = _maxBetMoney
+    private var maxBetMoney: String = "9999999"
 
     private var isShow = false
     private var mUserMoney: Double = 0.0
+
+    private var gameType: String? = null
+    private var betItemCount: Int = 0 //注数
 
     //是否登入
     private val isLogin: Boolean
@@ -158,7 +180,15 @@ class KeyboardView @JvmOverloads constructor(
     private var snackBarNotify: Snackbar? = null
 
     fun setupMaxBetMoney(max: Double) {
-        _maxBetMoney = TextUtil.formatInputMoney(max)
+        maxBetMoney = TextUtil.formatInputMoney(max)
+    }
+
+    fun setGameType(gt: String) {
+        gameType = gt
+    }
+
+    fun setBetItemCount(num: Int) {
+        this.betItemCount = num
     }
 
     fun setUserMoney(money: Double) {
