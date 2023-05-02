@@ -363,9 +363,9 @@ object BetInfoRepository {
                 return
             }
         } else {
-            val isAllBas = betList.any { it.matchType == MatchType.END_SCORE }
-            Timber.d("isAllBas:${isAllBas}")
-            if (!isAllBas && betList.size >= BET_INFO_MAX_COUNT) {
+            val isAllBas = betList.all { it.matchOdd.playCateName == PlayCate.FS_LD_CS.name  }
+            Timber.d("isAllBasEndScore:${isAllBas}")
+            if (isAllBas && betList.size >= BET_INFO_MAX_COUNT) {
                 _showBetUpperLimit.postValue(Event(true))
                 return
             }

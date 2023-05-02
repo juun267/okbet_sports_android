@@ -25,7 +25,7 @@ class EndScoreAdapter(val playCate: String, val onItemClick:(Int, View, BaseNode
     init {
         addFullSpanNodeProvider(EndScoreFirstProvider(this, onItemClick)) // 联赛
         addFullSpanNodeProvider(EndScoreSecondProvider(this, onItemClick)) // 比赛球队
-        addNodeProvider(EndScoreThirdProvider(this, onItemClick)) //赔率
+//        addNodeProvider(EndScoreThirdProvider(this, onItemClick)) //赔率
     }
 
     override fun getItemType(data: List<BaseNode>, position: Int): Int {
