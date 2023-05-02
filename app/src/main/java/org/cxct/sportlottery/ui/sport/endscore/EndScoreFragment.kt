@@ -64,7 +64,7 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
     }
 
     private fun setupOddsChangeListener() {
-//        receiver.oddsChangeListener = mOddsChangeListener
+        receiver.oddsChangeListener = mOddsChangeListener
     }
 
     private val endScoreAdapter: EndScoreAdapter by lazy {
