@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -290,7 +291,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
 
             //棋牌
             val mHotChessList = gameList.filter { it.gameType?.equals("1") == true }
-            if (mHotChessList.isNullOrEmpty()) {
+            if (mHotChessList.isNullOrEmpty() || SPUtil.getMarketSwitch()) {
                 setViewGone(view1, hot_card_game_include)
             } else {
                 setViewVisible(view1, hot_card_game_include)
@@ -300,7 +301,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
 
             //电子
             val mHotelList = gameList.filter { it.gameType?.equals("2") == true }
-            if (mHotelList.isNullOrEmpty()){
+            if (mHotelList.isNullOrEmpty() || SPUtil.getMarketSwitch()) {
                 setViewGone(view2, hot_gaming_include)
             } else {
                 setViewVisible(view2, hot_gaming_include)
@@ -775,7 +776,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
     }
 
     private fun initListView(){
-
+        hot_gaming_include.isGone = SPUtil.getMarketSwitch()
         //热门电子游戏
         rv_egame.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         rv_egame.adapter = hotElectronicAdapter
@@ -792,6 +793,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
             }
         }
 
+        hot_card_game_include.isGone = SPUtil.getMarketSwitch()
         //棋牌
         rv_chess.layoutManager = LinearLayoutManager(rv_chess.context, LinearLayoutManager.HORIZONTAL, false)
         rv_chess.addItemDecoration(SpaceItemDecoration(rv_chess.context, R.dimen.recyclerview_news_item_dec_spec))
