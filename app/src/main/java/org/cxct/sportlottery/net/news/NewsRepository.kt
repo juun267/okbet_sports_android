@@ -5,11 +5,16 @@ import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.net.news.api.NewsApi
 import org.cxct.sportlottery.net.news.data.NewsCategory
+import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.toJson
 
 object NewsRepository {
 
-    val newsApi by lazy { RetrofitHolder.createApiService(NewsApi::class.java) }
+    private val newsApi: NewsApi by lazy {
+        RetrofitHolder.createNewRetrofit(sConfigData?.cmsUrl ?: Constants.getBaseUrl())
+            .create(NewsApi::class.java)
+    }
 
     private fun paramDevice(): JsonObject {
         val params = JsonObject()
