@@ -34,12 +34,18 @@
                 android:layout_height="wrap_content"/>
             <!--part-2-end-->
 
+            <include
+                android:id="@+id/includeNews"
+                layout="@layout/include_home_news" />
+
+            <include
+                android:id="@+id/includeRecord"
+                layout="@layout/include_home_record" />
+
             <org.cxct.sportlottery.ui.maintab.home.view.HomeButtomView
                 android:id="@+id/homeBottumView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

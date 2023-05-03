@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.*
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
@@ -20,8 +22,9 @@ import org.cxct.sportlottery.net.games.data.OKGamesCategory
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
-import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.RCVDecoration
+import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 import timber.log.Timber
 import kotlin.random.Random
@@ -293,19 +296,19 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 }
             }
 
-            viewModel.recordNewHttp.observe(viewLifecycleOwner) {
+            viewModel.recordNewHttpOkGame.observe(viewLifecycleOwner) {
                 if (it != null) {
                     p3RecordNData.addAll(it.reversed())
                     recordNewhttpFlag = true
                 }
             }
-            viewModel.recordResultHttp.observe(viewLifecycleOwner) {
+            viewModel.recordResultHttpOkGame.observe(viewLifecycleOwner) {
                 if (it != null) {
                     p3RecordRData.addAll(it.reversed())
                     recordResulthttpFlag = true
                 }
             }
-            receiver.recordNew.observe(viewLifecycleOwner) {
+            receiver.recordNewOkGame.observe(viewLifecycleOwner) {
                 if (it != null) {
                     var msg = Message()
                     msg.what = HANDLER_RECORD_NEW_ADD
@@ -313,7 +316,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                     recordHandler.sendMessage(msg)
                 }
             }
-            receiver.recordResult.observe(viewLifecycleOwner) {
+            receiver.recordResultOkGame.observe(viewLifecycleOwner) {
                 if (it != null) {
                     var msg = Message()
                     msg.what = HANDLER_RECORD_RESULT_ADD

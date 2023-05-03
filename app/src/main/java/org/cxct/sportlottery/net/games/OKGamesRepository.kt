@@ -37,13 +37,21 @@ object OKGamesRepository {
         return okGamesApi.getOKGamesRecordResult()
     }
 
+    suspend fun getRecordNew(): ApiResult<List<RecordNewEvent>> {
+        return okGamesApi.getRecordNew()
+    }
+
+    suspend fun getRecordResult(): ApiResult<List<RecordNewEvent>> {
+        return okGamesApi.getRecordResult()
+    }
+
     suspend fun getOKGamesList(
         page: Int,
         pageSize: Int,
         gameName: String?,
         categoryId: String?,
         firmId: String?,
-        markCollect: Boolean? = null // 获取收藏列表时为：true
+        markCollect: Boolean? = null, // 获取收藏列表时为：true
     ): ApiResult<List<OKGameBean>> {
 
         val params = paramDevice()
