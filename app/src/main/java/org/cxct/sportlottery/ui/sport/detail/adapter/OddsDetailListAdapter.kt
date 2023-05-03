@@ -22,6 +22,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.text.getSpans
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -71,7 +72,7 @@ class OddsDetailListAdapter(
     var betInfoList: MutableList<BetInfoListData> = mutableListOf()
         set(value) {
             field = value
-            sportDetailActivity.viewModel.viewModelScope.launch {
+            sportDetailActivity.lifecycleScope.launch(Dispatchers.IO) {
                 oddsDetailDataList.forEachIndexed { index, data ->
                     data.oddArrayList.forEach { odd ->
                         val oddSelected = betInfoList.any { it.matchOdd.oddsId == odd?.id }
