@@ -578,4 +578,13 @@ object Constants {
     // 最新大奖
     const val OKGAMES_RECORD_RESULT = "/api/front/index/recordResultOkGamesList"
 
+    // 首页最新投注
+    const val RECORD_NEW = "/api/front/index/recordNewList"
+
+    // 首页最新大奖
+    const val RECORD_RESULT = "/api/front/index/recordResultList"
+
+    //首页资讯列表
+    const val NEW_LIST_HOME = "/api/front/content/getListHome"
+
 }
