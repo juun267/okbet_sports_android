@@ -372,14 +372,7 @@ class ProfileCenterFragment :
                 tv_account_balance.text = TextUtil.format(it)
             }
         }
-          viewModel.isWithdrawShowVerifyDialog.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b)
-                    showKYCVerifyDialog()
-                else
-                    viewModel.checkWithdrawSystem()
-            }
-        }
+
         viewModel.userInfo.observe(viewLifecycleOwner) {
             updateUI(it)
         }
@@ -399,6 +392,7 @@ class ProfileCenterFragment :
         }
 
         viewModel.rechargeSystemOperation.observe(viewLifecycleOwner) {
+            hideLoading()
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
                     startActivity(Intent(requireActivity(), MoneyRechargeActivity::class.java))
@@ -592,8 +586,10 @@ class ProfileCenterFragment :
             it.getContentIfNotHandled()?.let { b ->
                 if (b)
                     showKYCVerifyDialog()
-                else
+                else {
                     viewModel.checkWithdrawSystem()
+                }
+
             }
         }
 
@@ -601,8 +597,11 @@ class ProfileCenterFragment :
             it.getContentIfNotHandled()?.let { b ->
                 if (b)
                     showKYCVerifyDialog()
-                else
+                else {
+                    loading()
                     viewModel.checkRechargeSystem()
+                }
+
             }
         }
 

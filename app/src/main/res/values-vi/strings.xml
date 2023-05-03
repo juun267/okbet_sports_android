@@ -200,7 +200,7 @@
     <string name="fourth">bốn</string>
     <string name="fifth">năm</string>
     <string name="account_balance">Tổng tài chính</string>
-    <string name="recharge">Gửi tiền</string>
+    <string name="J285">Gửi tiền</string>
     <string name="account_transfer">Chuyển đổi hạn mức</string>
     <string name="money_recycle_succeed">Thu hồi hạn mức thành công</string>
     <string name="news_center">Trung tâm tin nhắn</string>
@@ -1208,4 +1208,7 @@
     <string name="N885">Tải thêm</string>
     <string name="N001">Về chúng tôi</string>
     <string name="J093">Chơi có trách nhiệm</string>
+
+    <string name="M013">Sắp ra mắt</string>
+    <string name="N703">Địa điểm OKBET Game</string>
 </resources>

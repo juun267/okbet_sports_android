@@ -33,6 +33,9 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
     private inline fun getMainTabActivity() = activity as MainTabActivity
     private inline fun getHomeFragment() = parentFragment as HomeFragment
 
+    fun jumpToInplaySport() = getMainTabActivity().jumpToInplaySport()
+    fun jumpToOKGames() = getMainTabActivity().jumpToOKGames()
+
     private val gameRecordAdapter by lazy { OkGameRecordAdapter() }
     private var categoryList = mutableListOf<OKGamesCategory>()
     private val p3RecordNData: MutableList<RecordNewEvent> = mutableListOf()//接口返回的最新投注
@@ -51,7 +54,6 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
 
     private var recordHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
-            super.handleMessage(msg)
             when (msg.what) {
                 HANDLER_RECORD_NEW_ADD -> {
                     var wsData: RecordNewEvent = msg.obj as RecordNewEvent
@@ -95,13 +97,15 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
         homeBottumView.bindServiceClick(childFragmentManager)
         initToolBar()
         initNews()
-        onBindRecordView()
-
-        binding.hotMatchView.onCreate(viewModel.publicityRecommend,this@MainHomeFragment2)
+        initRecordView()
     }
 
 
     override fun onBindViewStatus(view: View) {
+        binding.homeTopView.setup(this)
+        onBindRecordView()
+        initObservable()
+        binding.hotMatchView.onCreate(viewModel.publicityRecommend,this@MainHomeFragment2)
     }
 
     override fun onInitData() {
@@ -147,10 +151,8 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
     }
     //hot match end
     private fun initNews() {
-        binding.includeNews.apply {
-            tabNews.setCustomTabSelectedListener {
-                viewModel.getGameList(1, 5, listOf(12))
-            }
+        binding.includeNews.tabNews.setCustomTabSelectedListener {
+            viewModel.getGameList(1, 5, listOf(12))
         }
     }
 
@@ -165,10 +167,8 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
         }
     }
 
-    private fun onBindRecordView() {
-        viewModel.getRecordNew()
-        viewModel.getRecordResult()
-        recordHandler.sendEmptyMessageDelayed(HANDLER_RECORD_GET, (Random.nextLong(1000) + 500))
+    private fun initRecordView() {
+
         binding.includeRecord.apply {
 
             rvOkgameRecord.addItemDecoration(
@@ -176,39 +176,12 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
                     .setColor(rvOkgameRecord.context.getColor(R.color.color_EEF3FC))
                     .setMargin(10.dp.toFloat())
             )
+
             rvOkgameRecord.adapter = gameRecordAdapter
             rvOkgameRecord.itemAnimator = DefaultItemAnimator()
 
-            viewModel.recordNewHttp.observe(viewLifecycleOwner) {
-                if (it != null) {
-                    p3RecordNData.addAll(it.reversed())
-                    recordNewhttpFlag = true
-                }
-            }
-            viewModel.recordResultHttp.observe(viewLifecycleOwner) {
-                if (it != null) {
-                    p3RecordRData.addAll(it.reversed())
-                    recordResulthttpFlag = true
-                }
-            }
-            receiver.recordNew.observe(viewLifecycleOwner) {
-                if (it != null) {
-                    var msg = Message()
-                    msg.what = HANDLER_RECORD_NEW_ADD
-                    msg.obj = it
-                    recordHandler.sendMessage(msg)
-                }
-            }
-            receiver.recordResult.observe(viewLifecycleOwner) {
-                if (it != null) {
-                    var msg = Message()
-                    msg.what = HANDLER_RECORD_RESULT_ADD
-                    msg.obj = it
-                    recordHandler.sendMessage(msg)
-                }
-            }
-
         }
+
         binding.includeRecord.rGroupRecord.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
                 R.id.rbtn_lb -> {
@@ -223,6 +196,7 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
                         gameRecordAdapter.addData(p3RecordNShowData)
                     }
                 }
+
 
                 R.id.rbtn_lbw -> {
                     if (!recordResulthttpFlag) {
@@ -240,10 +214,50 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
         }
     }
 
+    private fun onBindRecordView() {
+        viewModel.getRecordNew()
+        viewModel.getRecordResult()
+        recordHandler.sendEmptyMessageDelayed(HANDLER_RECORD_GET, (Random.nextLong(1000) + 500))
+
+        viewModel.recordNewHttp.observe(viewLifecycleOwner) {
+            if (it != null) {
+                p3RecordNData.addAll(it.reversed())
+                recordNewhttpFlag = true
+            }
+        }
+        viewModel.recordResultHttp.observe(viewLifecycleOwner) {
+            if (it != null) {
+                p3RecordRData.addAll(it.reversed())
+                recordResulthttpFlag = true
+            }
+        }
+        receiver.recordNew.observe(viewLifecycleOwner) {
+            if (it != null) {
+                var msg = Message()
+                msg.what = HANDLER_RECORD_NEW_ADD
+                msg.obj = it
+                recordHandler.sendMessage(msg)
+            }
+        }
+        receiver.recordResult.observe(viewLifecycleOwner) {
+            if (it != null) {
+                var msg = Message()
+                msg.what = HANDLER_RECORD_RESULT_ADD
+                msg.obj = it
+                recordHandler.sendMessage(msg)
+            }
+        }
+    }
+
     private fun reecordAdapterNotify(it: RecordNewEvent) {
         if (gameRecordAdapter.data.size >= 10) {
             gameRecordAdapter.removeAt(gameRecordAdapter.data.size - 1)
         }
         gameRecordAdapter.addData(0, it)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        recordHandler.removeCallbacksAndMessages(null)
     }
 }
