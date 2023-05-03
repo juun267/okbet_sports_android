@@ -927,7 +927,7 @@
     <string name="error_recharge_amount_format">Lỗi định dạng số tiền nạp</string>
     <string name="error_amount_limit_exceeded">Số tiền vượt hạn mức</string>
     <string name="next_step">Bước tiếp theo</string>
-
+    <string name="str_bet_other_game">Cược thị trường khác</string>
     <string name="kyc_type">Loại giấy tờ</string>
     <string name="kyc_num">Số giấy tờ</string>
     <string name="kyc_type2">Loại giấy tờ 2</string>
