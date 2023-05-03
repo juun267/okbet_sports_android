@@ -531,7 +531,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 }
             }
         }
-        btn_bet.amountCanBet = true
+        btn_bet.amountCanBet = false
         Timber.d("balanceError5:${btn_bet.amountCanBet}")
     }
 

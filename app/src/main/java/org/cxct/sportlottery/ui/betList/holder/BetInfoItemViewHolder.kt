@@ -51,6 +51,8 @@ class BetInfoItemViewHolder(
     private var inputWinMinMoney: Double = 0.0
     private var mUserMoney: Double = 0.0
     private var mUserLogin: Boolean = false
+    private val isLogin: Boolean
+        get() = LoginRepository.isLogin.value == true
     fun bind(
         itemData: BetInfoListData,
         currentOddsType: OddsType,
@@ -209,7 +211,16 @@ class BetInfoItemViewHolder(
         etBet.apply {
             if (itemData.input == null) {
                 val minBet = itemData.parlayOdds?.min ?: 0
-                itemData.input = minBet.toString()
+
+                if (isLogin) {
+                    if (minBet > mUserMoney) {
+                        itemData.input = mUserMoney.toString()
+                    } else {
+                        itemData.input = minBet.toString()
+                    }
+                }else{
+                    itemData.input = minBet.toString()
+                }
             }
             itemData.inputBetAmountStr = itemData.input
             itemData.betAmount = itemData.input!!.toDouble()

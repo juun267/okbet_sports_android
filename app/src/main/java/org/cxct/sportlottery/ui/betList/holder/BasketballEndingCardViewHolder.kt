@@ -48,6 +48,8 @@ class BasketballEndingCardViewHolder(
     private var inputWinMinMoney: Double = 0.0
     private var mUserMoney: Double = 0.0
     private var mUserLogin: Boolean = false
+    private val isLogin: Boolean
+        get() = LoginRepository.isLogin.value == true
 
     fun bind(
         betList: MutableList<BetInfoListData>?,
@@ -178,7 +180,10 @@ class BasketballEndingCardViewHolder(
                 tvHide.setOnClickListener {
                     data[holder.layoutPosition].isClickForBasketball = false
                     lastSelectPo = 0
-                    onItemClickListener.onDeleteClick(data[holder.layoutPosition].matchOdd.oddsId, itemCount)
+                    onItemClickListener.onDeleteClick(
+                        data[holder.layoutPosition].matchOdd.oddsId,
+                        itemCount
+                    )
                 }
             }
         }
@@ -197,8 +202,8 @@ class BasketballEndingCardViewHolder(
         rcvBasketballScore.layoutManager = GridLayoutManager(root.context, 5)
         tvBasketBetListCount.text = "X${betList?.size}"
 
-        setOnClickListener(rcvBasketballScore,clItemBackground){
-            rcvBasketballAdapter.data.forEach { itemD->
+        setOnClickListener(rcvBasketballScore, clItemBackground) {
+            rcvBasketballAdapter.data.forEach { itemD ->
                 itemD.isClickForBasketball = false
             }
             it.clearFocus()
@@ -208,7 +213,15 @@ class BasketballEndingCardViewHolder(
         etBet.apply {
             if (itemData.input == null) {
                 val minBet = itemData.parlayOdds?.min ?: 0
-                itemData.input = minBet.toString()
+                if (isLogin) {
+                    if (minBet > mUserMoney) {
+                        itemData.input = mUserMoney.toString()
+                    } else {
+                        itemData.input = minBet.toString()
+                    }
+                }else{
+                    itemData.input = minBet.toString()
+                }
             }
             itemData.inputBetAmountStr = itemData.input
             itemData.betAmount = itemData.input!!.toDouble()
