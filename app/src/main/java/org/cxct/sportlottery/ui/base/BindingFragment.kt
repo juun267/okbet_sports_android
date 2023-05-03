@@ -24,6 +24,7 @@ open class BindingFragment<VM : BaseViewModel, VB: ViewBinding>(clazz: KClass<VM
             _first = false
             onInitView(view)
         }
+        onBindViewStatus(view)
         onInitData()
     }
 

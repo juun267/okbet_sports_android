@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.ui.maintab.home
 
+
 import android.view.View
+
 import kotlinx.android.synthetic.main.fragment_main_home.*
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.fitsSystemStatus
@@ -18,12 +20,12 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
 
     override fun onInitView(view: View) = binding.run {
         scrollView.setupBackTop(ivBackTop, 180.dp)
+        homeBottumView.bindServiceClick(childFragmentManager)
+        initToolBar()
 
     }
 
     override fun onBindViewStatus(view: View) {
-        initToolBar()
-        binding.homeBottumView.bindServiceClick(childFragmentManager)
     }
 
     override fun onInitData() {
@@ -38,6 +40,10 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
             getMainTabActivity().showLeftFrament(0, 0)
         }
     }
+
+
+
+
 
     override fun onHiddenChanged(hidden: Boolean) {
         homeToolbar.onRefreshMoney()

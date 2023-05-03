@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.maintab.home
+package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.content.Context
 import android.util.AttributeSet
