@@ -17,6 +17,7 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import java.lang.reflect.Method
+import java.math.BigDecimal
 
 class KeyboardView @JvmOverloads constructor(
     context: Context,
@@ -115,7 +116,7 @@ class KeyboardView @JvmOverloads constructor(
             if (gameType != null && PlayCate.FS_LD_CS.value == gameType) {
                 if (isLogin) {
                     var betMoney =
-                        mUserMoney.toBigDecimal().setScale(3).div(betItemCount.toBigDecimal())
+                        mUserMoney.toBigDecimal().setScale(3,BigDecimal.ROUND_UP).div(betItemCount.toBigDecimal())
                             .toDouble()
                     plusAll(
                         if (maxBetMoney.toDouble() > betMoney) {
@@ -127,7 +128,7 @@ class KeyboardView @JvmOverloads constructor(
                 } else {
                     plusAll(
                         if (betItemCount > 1) {
-                            (maxBetMoney.toDouble().toBigDecimal().setScale(3)
+                            (maxBetMoney.toDouble().toBigDecimal().setScale(3,BigDecimal.ROUND_UP)
                                 .div(betItemCount.toBigDecimal())).toString()
                         } else {
                             maxBetMoney
