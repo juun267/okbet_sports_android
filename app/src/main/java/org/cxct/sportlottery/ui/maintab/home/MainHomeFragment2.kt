@@ -23,7 +23,9 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
         homeBottumView.bindServiceClick(childFragmentManager)
         initToolBar()
 
+        binding.hotMatchView.onCreate(viewModel.publicityRecommend,this@MainHomeFragment2)
     }
+
 
     override fun onBindViewStatus(view: View) {
     }
@@ -42,12 +44,28 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
     }
 
 
-
-
-
+    override fun onResume() {
+        super.onResume()
+        refreshHotMatch()
+    }
     override fun onHiddenChanged(hidden: Boolean) {
         homeToolbar.onRefreshMoney()
+
+        if (hidden) {
+            //隐藏时取消赛事监听
+            unSubscribeChannelHallAll()
+            return
+        }
+        refreshHotMatch()
+
     }
 
+    //hot match
+    private fun refreshHotMatch(){
+        //重新设置赔率监听
+        binding.hotMatchView.onResume(this@MainHomeFragment2)
+        viewModel.getRecommend()
+    }
+    //hot match end
 
 }
