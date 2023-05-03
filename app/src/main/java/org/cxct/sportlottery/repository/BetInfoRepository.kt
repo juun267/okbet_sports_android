@@ -363,14 +363,13 @@ object BetInfoRepository {
                 return
             }
         } else {
-            val isAllBas = betList.any { it.matchType == MatchType.END_SCORE }
-            Timber.d("isAllBas:${isAllBas}")
-            if (!isAllBas && betList.size >= BET_INFO_MAX_COUNT) {
+            val isAllBas = betList.all { it.matchOdd.playCateName == PlayCate.FS_LD_CS.name  }
+            Timber.d("isAllBasEndScore:${isAllBas}")
+            if (isAllBas && betList.size >= BET_INFO_MAX_COUNT) {
                 _showBetUpperLimit.postValue(Event(true))
                 return
             }
         }
-
 
         val betInfoMatchOdd = MatchOddUtil.transfer(
             matchType = matchType,
@@ -395,14 +394,30 @@ object BetInfoRepository {
                 this.betInfo = betInfo
             }
 
-            Timber.d("==Bet Refactor==> _betIDList.size():${_betIDList.value?.peekContent()?.size}")
+//            Timber.d("==Bet Refactor==> _betIDList.size():${_betIDList.value?.peekContent()?.size}")
             val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
 
+            //是不是同一场比赛
+            val currentMatchName = it.playCateName + it.awayName + it.homeName
+            var lastMatchName: String? = null
+            if (betList.isNotEmpty()) {
+                val lastMatchOdd = betList.last().matchOdd
+                lastMatchName = lastMatchOdd.playCateName + lastMatchOdd.awayName + lastMatchOdd.homeName
+            }
+            val isSameMatch = (currentMatchName == lastMatchName) || (lastMatchName == null)
+//            Timber.d("isSameMatch:${isSameMatch} currentMatchName:${currentMatchName} lastMatchName:${lastMatchName}")
             //篮球末位比分
             if (playCateCode == PlayCate.FS_LD_CS.value) {
-                Timber.d("篮球末位比分模式")
-                oddIDArray.add(it.oddsId)
-                betList.add(data)
+                if (isSameMatch){
+                    Timber.d("篮球末位比分模式")
+                    oddIDArray.add(it.oddsId)
+                    betList.add(data)
+                }else{
+                    oddIDArray.clear()
+                    betList.clear()
+                    oddIDArray.add(it.oddsId)
+                    betList.add(data)
+                }
                 setCurrentBetState(BetListFragment.BASKETBALL_ENDING_CARD)
                 currentBetType = BetListFragment.BASKETBALL_ENDING_CARD
             } else {

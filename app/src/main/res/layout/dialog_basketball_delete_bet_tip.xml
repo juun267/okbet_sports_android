@@ -28,13 +28,13 @@
             android:textColor="@color/color_414655"
             android:textSize="@dimen/textSize18sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/tv_message"
+            app:layout_constraintBottom_toTopOf="@id/tvMessage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_message"
+            android:id="@+id/tvMessage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="12dp"
@@ -59,7 +59,7 @@
             android:src="@drawable/basketball_delete_bet_tip"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_message" />
+            app:layout_constraintTop_toBottomOf="@+id/tvMessage" />
 
         <CheckBox
             android:id="@+id/cbOkIknow"

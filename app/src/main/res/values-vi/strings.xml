@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="loading">đang tải</string>
+    <string name="loading">Loading...</string>
     <string name="connect_first">vui lòng kết nối mạng</string>
     <string name="error_url_fail">chuyển đổi địa chỉ bị lỗi</string>
     <string name="unknown_error">Lỗi chưa biết</string>
@@ -1199,4 +1199,5 @@
     <string name="N920">+Nhiều hơn</string>
     <string name="N901">Xác nhận xoá</string>
     <string name="N888">Tất cả tùy chọn cùng tỷ lệ cược cho điểm số cuối</string>
+    <string name="N898">Bạn muốn xóa tất cả tùy chọn tỷ số không?</string>
 </resources>

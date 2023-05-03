@@ -52,12 +52,12 @@ class TypeSingleAdapter (
         private val btnOdds = itemView.findViewById<OddsButtonDetail>(R.id.button_odds)
 
         fun bindModel(gameType: String?, odd: Odd?) {
-
+//            Timber.d("===洗刷刷-1 设置点击事件123")
             btnOdds?.apply {
                 setupOdd(odd, oddsType, gameType, matchInfo = oddsDetail.matchInfo)
                 setupOddState(this, odd)
                 setOnClickListener {
-                    Timber.d("===洗刷刷-1 设置点击事件")
+//                    Timber.d("===洗刷刷-1 设置点击事件")
                     odd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
                 }
             }

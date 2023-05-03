@@ -256,7 +256,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
 
         if (currentParlayList.isEmpty() && BetInfoRepository.currentBetType == SINGLE) {
             EventBusUtil.post(BetModeChangeEvent(SINGLE))
-        } else if (currentParlayList.isEmpty() && BetInfoRepository.currentBetType == BASKETBALL_ENDING_CARD) {
+        } else if (getCurrentBetList().isEmpty() && BetInfoRepository.currentBetType == BASKETBALL_ENDING_CARD) {
             EventBusUtil.post(BetModeChangeEvent(BASKETBALL_ENDING_CARD))
         } else {
             EventBusUtil.post(BetModeChangeEvent(PARLAY))

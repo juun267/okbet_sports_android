@@ -22,11 +22,16 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.text.getSpans
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import kotlinx.android.synthetic.main.content_odds_detail_list_team.view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.OddsType
@@ -39,6 +44,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.base.BaseGameAdapter
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.sport.detail.OnOddClickListener
+import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
@@ -46,6 +52,7 @@ import org.cxct.sportlottery.util.MatchOddUtil.updateEPSDiscount
 import org.cxct.sportlottery.view.DividerItemDecorator
 import org.cxct.sportlottery.view.IndicatorView
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
+import timber.log.Timber
 import java.util.*
 
 /**
@@ -56,24 +63,31 @@ import java.util.*
  * 2021/08/17 玩法六個一組和四個一組的排版改為依順序分組
  */
 @SuppressLint("NotifyDataSetChanged")
-class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) :
-    BaseGameAdapter() {
+class OddsDetailListAdapter(
+    private val onOddClickListener: OnOddClickListener,
+    private val sportDetailActivity: SportDetailActivity
+) : BaseGameAdapter() {
 
 
     var betInfoList: MutableList<BetInfoListData> = mutableListOf()
         set(value) {
             field = value
-            oddsDetailDataList.forEachIndexed { index, data ->
-                data.oddArrayList.forEach { odd ->
-                    val oddSelected = betInfoList.any { it.matchOdd.oddsId == odd?.id }
+            sportDetailActivity.lifecycleScope.launch(Dispatchers.IO) {
+                oddsDetailDataList.forEachIndexed { index, data ->
+                    data.oddArrayList.forEach { odd ->
+                        val oddSelected = betInfoList.any { it.matchOdd.oddsId == odd?.id }
 //                    Timber.d("===洗刷刷-2 odd?.isSelected:${odd?.isSelected} oddSelected:${oddSelected} index:${index}")
-                    if (odd?.isSelected != oddSelected) {
-                        odd?.isSelected = oddSelected
-                        notifyItemChanged(index, odd?.id)
-//                        Timber.d("===洗刷刷 更新单个条目:${index} id:${odd?.id} odd.isSelected:${odd?.isSelected}")
+                        if (odd?.isSelected != oddSelected) {
+                            odd?.isSelected = oddSelected
+                            withContext(Dispatchers.Main) {
+                                notifyItemChanged(index, odd?.id)
+                            }
+//                            Timber.d("===洗刷刷 更新单个条目:${index} id:${odd?.id} odd.isSelected:${odd?.isSelected}")
+                        }
                     }
                 }
             }
+
         }
 
     var discount: Float = 1.0F
@@ -579,9 +593,11 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
     fun notifyDataSetChangedByCode(code: String) {
         this.code = code
+        isFirstRefresh = true
         notifyDataSetChanged()
     }
 
+    private var isFirstRefresh = false
 
     @Suppress("UNCHECKED_CAST")
     inner class ViewHolder(
@@ -1441,7 +1457,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         private fun forSingle(
             oddsDetail: OddsDetailListData, spanCount: Int, payloads: MutableList<Any>?
         ) {
-
 //            Timber.d("===洗刷刷oddsDetail.gameType: ${oddsDetail.gameType}")
             if (oddsDetail.gameType == PlayCate.FS_LD_CS.value) {
                 //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
@@ -1450,8 +1465,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     val odd = getOdds(it, oddsType).toInt().toString()
                     val odds = " $odd"
                     Spanny(itemView.context.getString(R.string.N888)).append(
-                        " @",
-                        ForegroundColorSpan(itemView.context.getColor(R.color.color_025BE8))
+                        " @", ForegroundColorSpan(itemView.context.getColor(R.color.color_025BE8))
                     ).append(
                         odds,
                         ForegroundColorSpan(itemView.context.getColor(R.color.color_025BE8)),
@@ -1462,16 +1476,15 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         tvGameName?.text = it
                     }
                 }
-//                Timber.d("===洗刷刷1 设置adapter rvBet:${rvBet}")
+//                Timber.d("===洗刷刷3 index:${12} payloads:${payloads?.size}")
                 rvBet?.let { it1 ->
-                    if (it1.adapter == null) {
-//                        Timber.d("===洗刷刷0 设置adapter")
+                    if (isFirstRefresh || it1.adapter == null) {
                         it1.adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, oddsType)
                         it1.layoutManager = GridLayoutManager(itemView.context, 4)
+                        isFirstRefresh = false
                     }
-//                    Timber.d("===洗刷刷2 adapter:${it1.adapter} payloads:${payloads?.size}")
+
                     if (it1.adapter != null && payloads?.isNotEmpty() == true) {
-//                        Timber.d("===洗刷刷1 payloads:${payloads}")
                         payloads.forEach { payloadItem ->
                             val index =
                                 oddsDetail.oddArrayList.indexOf(oddsDetail.oddArrayList.find { it?.id == payloadItem })
@@ -1483,6 +1496,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 }
             } else {
                 rvBet?.apply {
+//                    Timber.d("===洗刷刷4 else index:${12} payloads:${payloads?.size}")
                     val singleAdapter = TypeSingleAdapter(oddsDetail, onOddClickListener, oddsType)
                     adapter = singleAdapter
                     layoutManager = GridLayoutManager(itemView.context, spanCount)
