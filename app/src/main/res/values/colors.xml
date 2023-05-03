@@ -67,6 +67,7 @@
     <color name="color_E9F4FA">#E9F4FA</color>
     <color name="color_EFFFF5">#EFFFF5</color>
     <color name="color_25BF63">#25BF63</color>
+    <color name="color_7599FF">#7599FF</color>
 
     <color name="color_7F7F7F">#7F7F7F</color>
     <color name="color_909090">#909090</color>
@@ -87,6 +88,9 @@
     <color name="color_7CBDFF">#807CBDFF</color>
     <color name="color_0063FF">#1A0063FF</color>
     <color name="color_B3F0F5FA">#B3F0F5FA</color>
+    <color name="color_F8F9FD">#F8F9FD</color>
+    <color name="color_806FA6FF">#806FA6FF</color>
+
     <!--以下部分，是系统中的白天的色值 -->
     <!--命名規則，color_[夜間色碼]_[白天色碼] -->
 
@@ -332,7 +336,10 @@
     <color name="color_261B3A98">#261B3A98</color>
     <color name="color_CDD8EA">#CDD8EA</color>
     <color name="color_CCCDD8EA">#ccCDD8EA</color>
-
+    <color name="color_14366B">#14366B</color>
+    <color name="color_6D7693">#6D7693</color>
+    <color name="color_BEC7DC">#BEC7DC</color>
+    <color name="color_EEF3FC">#EEF3FC</color>
 
     <!--region keyboard-->
     <!--endregion keyboard-->
@@ -399,5 +406,16 @@
     <color name="color_636466">#9A000000</color>
 
     <color name="color_444E57">#444E57</color>
+    <color name="color_0D2245">#0D2245</color>
+    <color name="color_e0e3ee">#e0e3ee</color>
+    <color name="color_1CD219">#1CD219</color>
+    <color name="color_FF2E00">#FF2E00</color>
+    <color name="color_A0ACC9">#A0ACC9</color>
 
+
+    <color name="color_4CC700">#4CC700</color>
+    <color name="color_104CC700">#104CC700</color>
+
+    <color name="color_F23C3B">#F23C3B</color>
+    <color name="color_10F23C3B">#10F23C3B</color>
 </resources>

@@ -740,7 +740,7 @@
     <string name="self_limit_per_bet_limit_content">You can apply for a \"limit bet\" to limit your bet amount each time. After applying for a limit bet, your total bet will not exceed your set value:</string>
     <string name="self_limit_per_bet_limit_highest">Upper limit</string>
     <string name="self_limit_per_bet_limit_input_highest">Please enter the number</string>
-    <string name="self_limit_per_bet_limit_impotent">• You can modify your limit bet at any time. The modification will be active, after that sending the request. </string>
+    <string name="self_limit_per_bet_limit_impotent">You can modify your limit bet at any time. The modification will be active, after that sending the request. </string>
     <string name="self_limit_per_bet_limit_user">• Current limit Bet: %1$s %2$s</string>
     <string name="self_limit_per_bet_limit_user_none">None</string>
     <string name="self_limit_per_bet_limit_user_limit">• Maximum limited bet:%1$s %2$s-%1$s %3$s</string>
@@ -775,10 +775,10 @@
     <string name="btm_navigation_affiliate">Affiliate</string>
     <string name="expire_date">ID expiration date</string>
     <string name="self_limit_froze_impotent_1">Self-exclusion takes effect immediately after setting</string>
-    <string name="self_limit_froze_impotent_2">We will keep your balance during the set period of self-exclusion.</string>
+    <string name="self_limit_froze_impotent_2">We will keep your balance during the set period of self-exclusion.However, if more than 6 months since the last login time, OKBET reserves the right to charge a monthly administrative fee until the account balance reaches zero.</string>
     <string name="self_limit_froze_impotent_3">If you apply for self-exclusion in other gaming games, it will not automatically apply to this game.</string>
     <string name="self_limit_froze_impotent_4">During the self-exclusion period, if you try to open a new account, the account may be frozen after the system detects it.</string>
-    <string name="self_limit_froze_impotent_5" translatable="false">During the self-exclusion period, you can contact customer service to cancel the self-exclusion function.</string>
+    <string name="self_limit_froze_impotent_5">During the self-exclusion time, you will be unable to deactivate your self-exclusion until the expiration of the minimum exclusion time frame.</string>
     <string name="self_limit_froze_impotent_6">After the self-exclusion expires, your account will be automatically reactivated.</string>
     <!-- 複式串關詳情 -->
     <string name="submit_success">submitted successfully</string>
@@ -1135,7 +1135,7 @@
     <string name="self_limit_error_format">The field format is incorrect, please enter an integer %d~%d.</string>
     <string name="draw_time">Draw Time</string>
     <string name="closing_time">Closing Time</string>
-    <string name="end_time">End Time</string>
+    <string name="N577">End Time</string>
     <string name="draw_countdown">Draw Countdown</string>
 
     <string name="recover_password">Recover password</string>
@@ -1217,10 +1217,9 @@
     <string name="str_market_is_closed">Market closed</string>
     <string name="kyc_unverifing">Verifying</string>
     <string name="enter_game">Enter game</string>
-    <string name="hint_transform_money">Transfer prompt</string>
-    <string name="confirm_transform_in_money">Please confirm amount transferred to game account</string>
-    <string name="game_account_money">Game balance</string>
-    <string name="transform_in_amount">Transfer-in amount</string>
+    <string name="N483">Please confirm amount transferred to game account</string>
+    <string name="N485">Game balance</string>
+    <string name="N486">Transfer-in amount</string>
     <string name="hint_transform_in_amount">Only supported the amount transferred from 0 to the platform account balance</string>
     <string name="account_balance_unenough">Platform account balance not enough</string>
     <string name="platform_user_money">Platform balance</string>
@@ -1270,6 +1269,7 @@
     <string name="N891">Please enter full name</string>
     <string name="J033">Full Name</string>
 
+    <string name="J369">Payment Method</string>
 
 
     <string name="N846">Basic Information</string>
@@ -1305,4 +1305,29 @@
     <string name="N901">Confirm delete</string>
     <string name="N888">The individual odds are the same for all selections in the final score.</string>
     <string name="N898">Are you sure you want to delete all score options?</string>
+    <string name="N880">Providers</string>
+    <string name="N707">Latest Bet And Big Wins</string>
+    <string name="N708">Latest Bets</string>
+    <string name="N709">Latest Big Wins</string>
+    <string name="N711">Games</string>
+    <string name="N710">Player</string>
+    <string name="N713">Profit Amount</string>
+    <string name="N712">Stake</string>
+    <string name="N874">Recent</string>
+    <string name="N873">Favorites</string>
+    <string name="N882">Search Result</string>
+    <string name="N900">Game Name</string>
+
+    <string name="N881">Hot Matches</string>
+    <string name="N702">More</string>
+    <string name="J094">Privacy Policy</string>
+    <string name="N019">Contact us</string>
+    <string name="J299">Live Chat</string>
+    <string name="B023">FAQs</string>
+    <string name="N883">There is no date yet!</string>
+    <string name="J095">Terms &amp; Condition</string>
+    <string name="N482">Transfer prompt</string>
+    <string name="N885">Load More</string>
+    <string name="N001">About Us</string>
+    <string name="J093">Responsible Gaming</string>
 </resources>

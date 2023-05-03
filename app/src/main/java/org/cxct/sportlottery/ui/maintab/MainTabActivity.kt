@@ -13,6 +13,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -138,7 +139,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     private fun initBottomFragment(position: Int) {
         binding.llHomeBack.setOnClickListener {
-            (fragmentHelper.getFragment(0) as HomeFragment).switchTabByPosition(0)
+            homeFragment().backMainHome()
         }
         binding.bottomNavigationView.apply {
             enableAnimation(false)
@@ -161,7 +162,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                     val position = getMenuItemPosition(menuItem)
                     fragmentHelper.showFragment(position)
                     if (position == 0) {
-                        (fragmentHelper.getFragment(0) as HomeFragment).switchTabByPosition(0)
+                        homeFragment().backMainHome()
                     } else {
                         binding.llHomeBack.gone()
                     }
@@ -343,7 +344,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         return betListFragment?.isVisible ?: false
     }
 
-    var betListCount = 0
+    private var betListCount = 0
 
     override fun updateBetListCount(num: Int) {
         betListCount = num
@@ -353,7 +354,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
 
-    fun setupBetBarVisiblity(position: Int) {
+    private fun setupBetBarVisiblity(position: Int) {
         val needShowBetBar = when (position) {
             0, 1, 3 -> true
             else -> false
@@ -572,24 +573,44 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             .addToBackStack(AccountHistoryNextFragment::class.java.simpleName).commit()
     }
 
-    fun switchTabByPosition(position: Int) {
+    fun jumpToTheSport(matchType: MatchType, gameType: GameType) {
+        resetBackIcon(1)
+        (fragmentHelper.getFragment(1) as SportFragment).setJumpSport(matchType, gameType)
+    }
+
+    private fun resetBackIcon(position: Int) {
         if (bottom_navigation_view.currentItem != position) {
             bottom_navigation_view.currentItem = position
         }
     }
 
-    fun jumpToTheSport(matchType: MatchType, gameType: GameType) {
-        if (bottom_navigation_view.currentItem != 1) {
-            bottom_navigation_view.currentItem = 1
-        }
-        (fragmentHelper.getFragment(1) as SportFragment).setJumpSport(matchType, gameType)
+    private inline fun homeFragment() = fragmentHelper.getFragment(0) as HomeFragment
+
+    fun backMainHome() {
+        resetBackIcon(0)
+        homeFragment().backMainHome()
     }
 
-    fun jumpToHome(tabPosition: Int) {
-        if (bottom_navigation_view.currentItem != 0) {
-            bottom_navigation_view.currentItem = 0
-        }
-        (fragmentHelper.getFragment(0) as HomeFragment).switchTabByPosition(tabPosition)
+    fun jumpToLive() {
+        resetBackIcon(0)
+        homeFragment().jumpToLive()
+    }
+
+    fun jumpToOKGames() {
+        resetBackIcon(0)
+        homeFragment().jumpToOKGames()
+    }
+
+    fun jumpToInplaySport(){
+        resetBackIcon(1)
+        ll_home_back.gone()
+        jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)
+    }
+
+    fun jumpToEarlySport() {
+        resetBackIcon(1)
+        ll_home_back.gone()
+        jumpToTheSport(MatchType.EARLY, GameType.FT)
     }
 
     fun jumpToBetInfo(tabPosition: Int) {

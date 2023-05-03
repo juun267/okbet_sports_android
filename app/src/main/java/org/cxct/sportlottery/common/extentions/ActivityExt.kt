@@ -2,15 +2,42 @@ package org.cxct.sportlottery.common.extentions
 
 import android.app.Activity
 import android.content.Intent
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.MainThread
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
-import kotlinx.coroutines.*
-import okhttp3.ResponseBody.Companion.toResponseBody
-import org.cxct.sportlottery.network.common.BaseResult
-import retrofit2.Response
+import androidx.viewbinding.ViewBinding
+import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.util.ToastUtil
+import java.lang.reflect.ParameterizedType
+import kotlin.reflect.KClass
 
+
+fun Any.getKClass(index: Int) : KClass<*> {
+    val parameterizedType = this::class.java.genericSuperclass as ParameterizedType
+    val actualTypeArguments = parameterizedType.actualTypeArguments
+    return (actualTypeArguments[index] as Class<*>).kotlin
+}
+
+fun <VB: ViewBinding> Any.createVBinding(layoutInflater: LayoutInflater, index: Int = 0): VB {
+    val parameterizedType = this::class.java.genericSuperclass as ParameterizedType
+    val actualTypeArguments = parameterizedType.actualTypeArguments
+    val clazz = actualTypeArguments[index] as Class<VB>
+    val method = clazz.getMethod("inflate", LayoutInflater::class.java)
+    return method.invoke(null, layoutInflater) as VB
+}
+
+fun <VDB: ViewDataBinding> LifecycleOwner.createDataBinding(layoutInflater: LayoutInflater, index: Int = 0): VDB {
+    val owner = this
+    val parameterizedType = this::class.java.genericSuperclass as ParameterizedType
+    val actualTypeArguments = parameterizedType.actualTypeArguments
+    val clazz = actualTypeArguments[index] as Class<VDB>
+    val method = clazz.getMethod("inflate", LayoutInflater::class.java)
+    return (method.invoke(null, layoutInflater) as VDB).apply { lifecycleOwner = owner }
+}
 
 // 防止LiveData数据倒灌
 @MainThread
@@ -33,28 +60,29 @@ fun ViewModel.releaseVM() {
     field.invoke(this)
 }
 
-fun LifecycleOwner.doOnResume(block: () -> Unit, interval: Int = 30_000) {
-    doWhenLife(Lifecycle.Event.ON_RESUME, interval, block)
+fun LifecycleOwner.doOnResume(interval: Int = 30_000, once: Boolean = false, block: () -> Unit) {
+    doWhenLife(Lifecycle.Event.ON_RESUME, interval, block, once)
 }
 
-fun LifecycleOwner.doOnPause(block: () -> Unit) {
-    doWhenLife(Lifecycle.Event.ON_RESUME, 0, block)
+fun LifecycleOwner.doOnPause(once: Boolean = false, block: () -> Unit) {
+    doWhenLife(Lifecycle.Event.ON_PAUSE, 0, block, once)
 }
 
-fun LifecycleOwner.doOnStop(block: () -> Unit) {
-    doWhenLife(Lifecycle.Event.ON_RESUME, 0, block)
+fun LifecycleOwner.doOnStop(once: Boolean = false, block: () -> Unit) {
+    doWhenLife(Lifecycle.Event.ON_STOP, 0, block, once)
 }
 
-fun LifecycleOwner.doOnDestory(block: () -> Unit) {
-    doWhenLife(Lifecycle.Event.ON_RESUME, 0, block)
+fun LifecycleOwner.doOnDestory(once: Boolean = false, block: () -> Unit) {
+    doWhenLife(Lifecycle.Event.ON_DESTROY, 0, block, once)
 }
 
-fun LifecycleOwner.doWhenLife(lifeEvent: Lifecycle.Event, interval: Int = 0, block: () -> Unit, ) {
+fun LifecycleOwner.doWhenLife(lifeEvent: Lifecycle.Event, interval: Int = 0, block: () -> Unit, once: Boolean) {
     lifecycle.addObserver(object : LifecycleEventObserver {
 
         var time = 0L
         override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
             if (event == lifeEvent && System.currentTimeMillis() - time > interval) {
+                if (once) { lifecycle.removeObserver(this) }
                 time = System.currentTimeMillis()
                 block.invoke()
             }
@@ -78,4 +106,8 @@ inline fun Activity.startActivity(activity: Class<out Activity>) {
 fun Activity.bindFinish(vararg views: View) {
     val finishClick = View.OnClickListener { finish() }
     views.forEach { it.setOnClickListener(finishClick) }
+}
+
+fun toast(str:String){
+    ToastUtil.showToast(MultiLanguagesApplication.appContext,str,Toast.LENGTH_LONG)
 }

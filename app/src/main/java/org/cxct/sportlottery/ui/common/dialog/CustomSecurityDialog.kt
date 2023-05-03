@@ -22,7 +22,7 @@ import java.util.*
  * this.setCanceledOnTouchOutside(false) //disable 點擊外部關閉 dialog
  * this.setCancelable(false) //disable 按實體鍵 BACK 關閉 dialog
  */
-class CustomSecurityDialog(context: Context) : DialogFragment() {
+class CustomSecurityDialog : DialogFragment() {
 
     private var mSmsTimer: Timer? = null
     private var mGetSecurityCodeClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
@@ -32,7 +32,6 @@ class CustomSecurityDialog(context: Context) : DialogFragment() {
         sConfigData?.hasGetTwoFactorResult = false
     }
     var positiveClickListener: PositiveClickListener? = null
-    var mContext = context
     var isPstBtnClickable = false
 
     override fun onCreateView(
@@ -87,9 +86,9 @@ class CustomSecurityDialog(context: Context) : DialogFragment() {
         val hasInput = securityCodeStyleEditText.edt_security_code.text.toString().isNotEmpty()
         isPstBtnClickable = isClickable && hasInput
         if(isPstBtnClickable)
-            btn_positive.setTextColor(ContextCompat.getColor(mContext,R.color.color_317FFF_0760D4))
+            btn_positive.setTextColor(ContextCompat.getColor(btn_positive.context, R.color.color_317FFF_0760D4))
         else
-            btn_positive.setTextColor(ContextCompat.getColor(mContext,R.color.color_cccccc_e2e2e2))
+            btn_positive.setTextColor(ContextCompat.getColor(btn_positive.context, R.color.color_cccccc_e2e2e2))
     }
 
     fun showErrorStatus(b:Boolean){

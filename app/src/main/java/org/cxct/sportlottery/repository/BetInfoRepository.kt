@@ -754,7 +754,8 @@ object BetInfoRepository {
                 }
             }
         }
-        betInfoList.value?.peekContent()?.toList()?.forEach {
+
+        betInfoList.value?.peekContent()?.toArray()?.forEach {it as BetInfoListData
             updateItem(it.matchOdd, newList)
         }
         notifyBetInfoChanged()

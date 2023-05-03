@@ -1124,7 +1124,7 @@
     <string name="str_odds_description">赔率说明</string>
     <string name="draw_time">抽奖时间</string>
     <string name="closing_time">"抽奖关闭时间 "</string>
-    <string name="end_time">活动结束时间</string>
+    <string name="N577">活动结束时间</string>
     <string name="draw_countdown">抽奖倒计时</string>
     <string name="recover_password">密码找回</string>
     <string name="need_help">需要帮助?</string>
@@ -1165,10 +1165,9 @@
     <string name="referral_code_invalid">邀请码无效</string>
     <string name="str_market_is_closed">盘口已关闭，无法投注</string>
     <string name="enter_game">进入游戏</string>
-    <string name="hint_transform_money">转账提示</string>
-    <string name="confirm_transform_in_money">请确认转入游戏账户的金额</string>
-    <string name="game_account_money">游戏余额</string>
-    <string name="transform_in_amount">转入金额</string>
+    <string name="N483">请确认转入游戏账户的金额</string>
+    <string name="N485">游戏余额</string>
+    <string name="N486">转入金额</string>
     <string name="account_balance_unenough">平台账户余额不足</string>
     <string name="platform_user_money">平台余额</string>
     <string name="N589">用谷歌登录</string>
@@ -1226,6 +1225,32 @@
     <string name="N850">请选择地址</string>
     <string name="N171">请输入正确的 11 位数手机号码</string>
     <string name="N865">金额超过限额</string>
+    <string name="J369">支付方式</string>
+    <string name="N880">游戏供应商</string>
+    <string name="N707">最新投注和大奖播报</string>
+    <string name="N708">最新投注</string>
+    <string name="N709">最新大奖</string>
+    <string name="N711">游戏</string>
+    <string name="N710">昵称</string>
+    <string name="N713">盈利金额</string>
+    <string name="N712">投注金额</string>
+    <string name="N874">近期游戏</string>
+    <string name="N873">收藏夹</string>
+    <string name="N882">搜索结果</string>
+    <string name="N900">游戏名称</string>
+
+    <string name="N881">热门赛事</string>
+    <string name="N702">更多</string>
+    <string name="J094">隐私保护</string>
+    <string name="N019">联系我们</string>
+    <string name="J299">在线客服</string>
+    <string name="B023">常见问题</string>
+    <string name="N883">暂无结果！</string>
+    <string name="J095">规则条款</string>
+    <string name="N482">转账提示</string>
+    <string name="N885">加载更多</string>
+    <string name="N001">关于我们</string>
+    <string name="J093">博彩责任</string>
 
 
     <string name="N177">请输入正确的手机号码</string>

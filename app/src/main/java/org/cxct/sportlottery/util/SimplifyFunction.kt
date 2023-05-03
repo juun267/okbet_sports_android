@@ -22,8 +22,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_sport_list.*
@@ -35,6 +33,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.rotationAnimation
 import org.cxct.sportlottery.common.extentions.screenHeight
 import org.cxct.sportlottery.common.extentions.translationXAnimation
@@ -47,10 +46,9 @@ import org.cxct.sportlottery.network.service.close_play_cate.ClosePlayCateEvent
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
-import org.cxct.sportlottery.view.statusSelector.StatusSpinnerAdapter
+import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.dialog.ServiceDialog
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -64,6 +62,7 @@ import org.cxct.sportlottery.util.DisplayUtil.dpToPx
 import org.cxct.sportlottery.util.SvgUtil.setSvgIcon
 import org.cxct.sportlottery.view.boundsEditText.TextFieldBoxes
 import org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+import org.cxct.sportlottery.view.statusSelector.StatusSpinnerAdapter
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -414,10 +413,10 @@ fun View.setBackColorWithColorMode(lightModeColor: Int, darkModeColor: Int) {
     )
 }
 
-fun loginedRun(context: Context, block: ()-> Unit) {
-    if (LoginRepository.isLogin.value?: false) {
+fun loginedRun(context: Context, block: ()-> Unit): Boolean {
+    if (LoginRepository.isLogined()) {
         block.invoke()
-        return
+        return true
     }
 
     if (context is Activity) {
@@ -445,10 +444,11 @@ fun loginedRun(context: Context, block: ()-> Unit) {
             }
             show()
         }
-        return
+        return false
     }
 
     context.startActivity(Intent(context, LoginOKActivity::class.java))
+    return false
 }
 
 
@@ -964,13 +964,7 @@ fun ImageView.setTeamLogo(icon: String?) {
         setImageResource(R.drawable.ic_team_default)
     } else {
         if (icon.startsWith("http")) {
-            Glide.with(this).load(icon)
-                .apply(
-                    RequestOptions()
-                        .placeholder(R.drawable.ic_team_default)
-                        .error(R.drawable.ic_team_default)
-                )
-                .into(this)
+            load(icon, R.drawable.ic_team_default)
         } else {
             setSvgIcon(icon, R.drawable.ic_team_default)
         }
@@ -984,13 +978,7 @@ fun ImageView.setLeagueLogo(icon: String?) {
         setImageResource(R.drawable.ic_league_default)
     } else {
         if (icon.startsWith("http")) {
-            Glide.with(this).load(icon)
-                .apply(
-                    RequestOptions()
-                        .placeholder(R.drawable.ic_league_default)
-                        .error(R.drawable.ic_league_default)
-                )
-                .into(this)
+            load(icon, R.drawable.ic_league_default)
         } else {
             setSvgIcon(icon, R.drawable.ic_league_default)
         }
@@ -1134,7 +1122,10 @@ fun View.bindExpanedAdapter(adapter: ExpanableOddsAdapter, block: ((Boolean) -> 
     }
 }
 
-fun BaseFragment<MainHomeViewModel>.enterThirdGame(result: EnterThirdGameResult, firmType: String) {
+fun BaseFragment<out MainHomeViewModel>.enterThirdGame(
+    result: EnterThirdGameResult,
+    firmType: String,
+) {
     hideLoading()
     when (result.resultType) {
         EnterThirdGameResult.ResultType.SUCCESS -> context?.run {

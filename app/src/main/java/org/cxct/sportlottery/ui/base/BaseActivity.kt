@@ -27,6 +27,7 @@ import kotlinx.coroutines.launch
 import me.jessyan.autosize.AutoSizeCompat
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.getKClass
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.repository.LoginRepository
@@ -35,6 +36,8 @@ import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
+import org.cxct.sportlottery.ui.splash.LaunchActivity
+import org.cxct.sportlottery.ui.splash.SplashActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
 import org.cxct.sportlottery.util.LotteryManager
 import org.cxct.sportlottery.util.RedEnvelopeManager
@@ -44,7 +47,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.reflect.KClass
 
-abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActivity() {
+abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCompatActivity() {
 
     private var mLayoutHandler = Handler(Looper.getMainLooper())
     private var mPromptDialog: CustomAlertDialog? = null
@@ -55,7 +58,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     private var mRunnable: Runnable? = null
     private val mHandler by lazy { Handler(Looper.getMainLooper()) }
 
-    val viewModel: T by viewModel(clazz = clazz)
+    val viewModel: T by viewModel(clazz = clazz ?: getKClass(0) as KClass<T>)
 
     private var loadingView: View? = null
 
@@ -66,10 +69,8 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
     override fun onStart() {
         super.onStart()
-        startCheckToken()
         RedEnvelopeManager.instance.bind(this as BaseActivity<BaseViewModel>)
         LotteryManager.instance.bind(this as BaseActivity<BaseViewModel>)
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,9 +86,12 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
     private fun onTokenStateChanged() {
         viewModel.errorResultToken.observe(this) {
-            if (this.javaClass.simpleName == MaintenanceActivity::class.java.simpleName) return@observe
-            if (it.code != HttpError.KICK_OUT_USER.code)
-                toMaintenanceOrShowDialog(it)
+            if (this is MaintenanceActivity) return@observe
+            it.getContentIfNotHandled()?.let {
+                if (it.code != HttpError.KICK_OUT_USER.code) {
+                    toMaintenanceOrShowDialog(it)
+                }
+            }
         }
     }
 
@@ -100,17 +104,25 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
                 finish()
             }
             else -> {
-                if (this.javaClass.simpleName == MaintenanceActivity::class.java.simpleName) return
+                if (this is MaintenanceActivity) {
+                    return
+                }
                 showTokenPromptDialog(result.msg) {
                     viewModel.doLogoutCleanUser {
 //                        if (sConfigData?.thirdOpen == FLAG_OPEN)
 //                            MainActivity.reStart(this)
 //                        else
-                        MainTabActivity.reStart(this)
+                        if (isErrorTokenToMainActivity()) {
+                            MainTabActivity.reStart(this)
+                        }
                     }
                 }
             }
         }
+    }
+
+    private fun isErrorTokenToMainActivity(): Boolean {
+        return this !is MaintenanceActivity && this !is SplashActivity && this !is LaunchActivity
     }
 
     private fun netError(errorMessage: String) {
@@ -203,32 +215,30 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     }
 
     private fun showTokenPromptDialog(errorMessage: String, positiveClickListener: () -> Unit?) {
-        safelyUpdateLayout(Runnable {
-            try {
-                //防止跳出多個 error dialog
-                if (mTokenPromptDialog?.isShowing == true)
-                    return@Runnable
+        try {
+            //防止跳出多個 error dialog
+            if (mTokenPromptDialog != null)
+                return
 
-                mTokenPromptDialog = CustomAlertDialog(this@BaseActivity).apply {
-                    setTextColor(R.color.color_E44438_e44438)
-                    setTitle(this@BaseActivity.getString(R.string.prompt))
-                    setMessage(errorMessage)
-                    setPositiveButtonText(this@BaseActivity.getString(R.string.btn_confirm))
-                    setNegativeButtonText(null)
-                    setPositiveClickListener(View.OnClickListener {
-                        positiveClickListener()
-                        mTokenPromptDialog?.dismiss()
-                        mTokenPromptDialog = null
-                    })
-
-                    setCanceledOnTouchOutside(false)
-                    isCancelable = false //不能用系統 BACK 按鈕關閉 dialog
+            mTokenPromptDialog = CustomAlertDialog(this@BaseActivity).apply {
+                setTextColor(R.color.color_E44438_e44438)
+                setTitle(this@BaseActivity.getString(R.string.prompt))
+                setMessage(errorMessage)
+                setPositiveButtonText(this@BaseActivity.getString(R.string.btn_confirm))
+                setNegativeButtonText(null)
+                setCanceledOnTouchOutside(false)
+                isCancelable = false //不能用系統 BACK 按鈕關閉 dialog
+                setPositiveClickListener{
+                    positiveClickListener()
+                    mTokenPromptDialog?.dismiss()
+                    mTokenPromptDialog = null
                 }
-                if (!supportFragmentManager.isDestroyed) mTokenPromptDialog?.show(supportFragmentManager, null)
-            } catch (e: Exception) {
-                e.printStackTrace()
             }
-        })
+
+            if (!supportFragmentManager.isDestroyed) mTokenPromptDialog?.show(supportFragmentManager, null)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     fun showPromptDialog(
@@ -406,27 +416,6 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         mHandler.postDelayed({ mIsEnabled = true }, 500)
     }
 
-    private fun startCheckToken() {
-        if (!LoginRepository.hasToken()) {
-            return
-        }
-        if (mRunnable == null) {
-            mRunnable = getRunnable()
-            mHandler.post(mRunnable!!)
-        }
-    }
-
-    private fun getRunnable(): Runnable {
-        return Runnable {
-            viewModel.viewModelScope.launch { viewModel.checkIsUserAlive() }
-            mRunnable?.let { mHandler.postDelayed(it, 30_000) }
-        }
-    }
-
-    private fun stopRunnable() {
-        mRunnable?.let { mHandler.removeCallbacks(it) }
-        mRunnable = null
-    }
 
     private val localeResources by lazy { ResourceWrapper(this@BaseActivity, super.getResources()) }
 
@@ -451,7 +440,6 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     override fun onDestroy() {
         super.onDestroy()
         LotteryManager.instance.onDestroy(this)
-        stopRunnable()
         mHandler.removeCallbacksAndMessages(null)
     }
 

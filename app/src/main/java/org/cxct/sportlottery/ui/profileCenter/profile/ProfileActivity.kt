@@ -140,7 +140,9 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         //設定個人資訊頁面
         setupToInfoSettingPage()
         btn_head.setOnClickListener {
-            AvatarSelectorDialog(this, mSelectMediaListener).show(supportFragmentManager, null)
+            val dialog = AvatarSelectorDialog()
+            dialog.mSelectListener = mSelectMediaListener
+            dialog.show(supportFragmentManager, null)
         }
     }
 
@@ -176,7 +178,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         ll_cancel_account.setOnClickListener { startActivity(CancelAccountActivity::class.java) }
     }
 
-    private fun editBindInfo(modifyType: @ModifyType Int) {
+    private fun editBindInfo(@ModifyType modifyType: Int) {
         val userInfo = viewModel.userInfo.value
         val phoneNo = userInfo?.phone
         val email = userInfo?.email
@@ -190,7 +192,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         }
     }
 
-    private fun putExtraForProfileInfoActivity(modifyType: @ModifyType Int) {
+    private fun putExtraForProfileInfoActivity(@ModifyType modifyType: Int) {
         val intent = Intent(this, ModifyProfileInfoActivity::class.java)
         intent.putExtra(MODIFY_INFO, modifyType)
         startActivity(intent)
@@ -272,7 +274,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         viewModel.needToSendTwoFactor.observe(this) {
             val b = it.getContentIfNotHandled() ?: return@observe
             if (b) {
-                customSecurityDialog = CustomSecurityDialog(this).apply {
+                customSecurityDialog = CustomSecurityDialog().apply {
                     getSecurityCodeClickListener {
                         this.showSmeTimer300()
                         viewModel.sendTwoFactor()

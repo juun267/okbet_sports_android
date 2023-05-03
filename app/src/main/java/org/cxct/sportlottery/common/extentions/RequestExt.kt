@@ -4,10 +4,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.cxct.sportlottery.net.ApiResult
 
 import java.io.IOException
@@ -44,3 +41,5 @@ fun <T> callApiWithNoCancel(apiCall: suspend() -> ApiResult<T>, block: (ApiResul
 }
 
 fun <T> ViewModel.callApi(apiCall: suspend() -> ApiResult<T>, block: (ApiResult<T>) -> Unit) = viewModelScope.callApi(apiCall, block)
+
+fun <T> CoroutineScope.asyncApi(block: suspend() -> ApiResult<T>) = async { safeApi { block() } }

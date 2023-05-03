@@ -308,7 +308,8 @@ public class StompClient {
     }
 
     public boolean isConnected() {
-        return getConnectionStream().getValue();
+        Boolean connected = getConnectionStream().getValue();
+        return connected == null ? false : connected.booleanValue() ;
     }
 
     /**

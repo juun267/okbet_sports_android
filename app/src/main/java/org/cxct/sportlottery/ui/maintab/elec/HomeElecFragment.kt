@@ -13,15 +13,14 @@ import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.fitsSystemStatus
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
-import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
-import org.cxct.sportlottery.view.transform.TransformInDialog
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.home.HomeTabAdapter
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
+import org.cxct.sportlottery.view.transform.TransformInDialog
 
 /**
  * 首页电子
@@ -50,7 +49,6 @@ class HomeElecFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
         if (!hidden) {
             viewModel.getGameEntryConfig(2, 2)
             viewModel.getTotalRewardAmount()
-            viewModel.getRecommend()
         }
     }
 

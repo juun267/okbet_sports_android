@@ -21,7 +21,7 @@ class PrintDialog(mContext: Context) : Dialog(mContext) {
         initDialog()
     }
 
-    var tvPrintClickListener: ((String) -> Unit)? = null
+    var tvPrintClickListener: ((String?) -> Unit)? = null
 
     private fun initDialog() {
 

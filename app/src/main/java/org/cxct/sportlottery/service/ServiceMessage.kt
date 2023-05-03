@@ -16,6 +16,7 @@ import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEve
 import org.cxct.sportlottery.network.service.ping_pong.PingPongEvent
 import org.cxct.sportlottery.network.service.play_quota_change.PlayQuotaChangeEvent
 import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
+import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.network.service.sys_maintenance.SysMaintenanceEvent
 import org.cxct.sportlottery.network.service.user_level_config_change.UserLevelConfigListEvent
 import org.cxct.sportlottery.network.service.user_money.LockMoneyEvent
@@ -147,9 +148,15 @@ object ServiceMessage {
     }
 
     fun getClosePlayCate(messageStr: String): ClosePlayCateEvent? {
-//        val adapter = moshi.adapter(ClosePlayCateEvent::class.java)
-//        return adapter.fromJson(messageStr)
         return FastJsonUtils.jsonToObject(messageStr,ClosePlayCateEvent::class.java)
+    }
+
+    fun getRecondNew(messageStr: String): RecordNewEvent? {
+        return FastJsonUtils.jsonToObject(messageStr,RecordNewEvent::class.java)
+    }
+
+    fun getRecondResult(messageStr: String): RecordNewEvent? {
+        return FastJsonUtils.jsonToObject(messageStr,RecordNewEvent::class.java)
     }
 
 }
