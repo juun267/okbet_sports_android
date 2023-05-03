@@ -763,7 +763,7 @@ class BetInfoItemViewHolder(
         contentView.apply {
             val betAmount = itemData.betAmount
             val balanceError: Boolean
-            val amountError: Boolean = if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
+            var amountError: Boolean = if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
                 !itemData.input.isNullOrEmpty()
             } else {
                 if (betAmount > inputMaxMoney) {
@@ -772,6 +772,9 @@ class BetInfoItemViewHolder(
                 } else {
                     betAmount != 0.0 && betAmount < inputMinMoney
                 }
+            }
+            if(itemData.input.isNullOrEmpty()){
+                amountError = true
             }
 
             Timber.d("用户余额:$mUserMoney")
