@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.maintab.home
+package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.content.Context
 import android.text.TextUtils
@@ -22,12 +22,14 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.setVisibilityByMarketSwitch
 import org.cxct.sportlottery.util.startLogin
 
-class HomeToolbarView : LinearLayout {
+class HomeToolbarView@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
+    : LinearLayout(context, attrs, defStyle) {
 
     companion object {
         private val textStyle by lazy {
@@ -37,14 +39,6 @@ class HomeToolbarView : LinearLayout {
             )
         }
     }
-
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
-    )
 
     init {
         setBackgroundResource(R.color.color_B3F0F5FA)

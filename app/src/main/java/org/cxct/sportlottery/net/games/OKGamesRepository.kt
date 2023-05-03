@@ -67,4 +67,22 @@ object OKGamesRepository {
 
         return okGamesApi.getOKGamesList(params)
     }
+
+
+    /**
+     * 首页okgames列表数据
+     */
+    suspend fun getHomeOKGamesList(
+        page: Int,
+        pageSize: Int
+    ): ApiResult<List<OKGameBean>> {
+
+        val params = paramDevice()
+        params.addProperty("page", page)
+        params.addProperty("pageSize", pageSize)
+        //首页推荐 1启用,2禁用
+        params.addProperty("enableHome", 1)
+
+        return okGamesApi.getOKGamesList(params)
+    }
 }

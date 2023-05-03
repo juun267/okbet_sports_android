@@ -1,9 +1,11 @@
 package org.cxct.sportlottery.ui.maintab.home
 
+
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.view.View
+
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -90,13 +92,13 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
 
     override fun onInitView(view: View) = binding.run {
         scrollView.setupBackTop(ivBackTop, 180.dp)
+        homeBottumView.bindServiceClick(childFragmentManager)
+        initToolBar()
         initNews()
         onBindRecordView()
     }
 
     override fun onBindViewStatus(view: View) {
-        initToolBar()
-        binding.homeBottumView.bindServiceClick(childFragmentManager)
     }
 
     override fun onInitData() {
@@ -111,6 +113,10 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
             getMainTabActivity().showLeftFrament(0, 0)
         }
     }
+
+
+
+
 
     override fun onHiddenChanged(hidden: Boolean) {
         homeToolbar.onRefreshMoney()

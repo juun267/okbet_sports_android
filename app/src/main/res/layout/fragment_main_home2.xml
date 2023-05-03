@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <org.cxct.sportlottery.ui.maintab.home.HomeToolbarView
+    <org.cxct.sportlottery.ui.maintab.home.view.HomeToolbarView
         android:id="@+id/homeToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -20,6 +21,15 @@
             android:orientation="vertical"
             android:descendantFocusability="blocksDescendants">
 
+            <org.cxct.sportlottery.ui.maintab.home.view.HomeTopView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <org.cxct.sportlottery.ui.maintab.home.view.HomeButtomView
+                android:id="@+id/homeBottumView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
             <include
                 android:id="@+id/includeNews"
                 layout="@layout/include_home_news" />
@@ -27,11 +37,6 @@
             <include
                 android:id="@+id/includeRecord"
                 layout="@layout/include_home_record" />
-
-            <org.cxct.sportlottery.ui.maintab.home.HomeButtomView
-                android:id="@+id/homeBottumView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
@@ -46,6 +51,5 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="20dp" />
-
 
 </RelativeLayout>
