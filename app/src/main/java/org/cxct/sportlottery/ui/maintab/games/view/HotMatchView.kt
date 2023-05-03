@@ -20,9 +20,7 @@ import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
-import org.cxct.sportlottery.ui.base.BaseSocketFragment
-import org.cxct.sportlottery.ui.base.BaseSocketViewModel
-import org.cxct.sportlottery.ui.base.ChannelType
+import org.cxct.sportlottery.ui.base.*
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.adapter.HotMatchAdapter
 import org.cxct.sportlottery.ui.maintab.home.HomeRecommendListener
@@ -97,10 +95,11 @@ class HotMatchView(context: Context, attrs: AttributeSet
     /**
      * 初始化热门赛事控件
      */
-    fun<T: BaseSocketViewModel> onCreate(data:LiveData<Event<List<Recommend>>>, fragment: BaseSocketFragment<T>?){
+    fun onCreate(data:LiveData<Event<List<Recommend>>>, fragment: BaseFragment<*>?){
         if(fragment==null){
             return
         }
+
         //初始化api变量监听
         initDataObserve(data,fragment)
         //初始化adapter
@@ -112,13 +111,21 @@ class HotMatchView(context: Context, attrs: AttributeSet
         //适配器初始化结束
 
         //初始化ws广播监听
-        initSocketObservers(fragment)
+        if(fragment is BaseSocketFragment){
+            initSocketObservers(fragment.receiver,fragment.getViewLifecycleOwner(),fragment)
+        }
+
+        //初始化ws广播监听
+        if(fragment is BindingSocketFragment<*, *>){
+            initSocketObservers(fragment.receiver,fragment.getViewLifecycleOwner(),fragment)
+        }
+
     }
 
     /**
      * 数据变量监听
      */
-    private fun<T: BaseSocketViewModel> initDataObserve(data:LiveData<Event<List<Recommend>>>, fragment: BaseSocketFragment<T>){
+    private fun initDataObserve(data:LiveData<Event<List<Recommend>>>, fragment: BaseFragment<*>){
         data.observe(fragment.viewLifecycleOwner){
             this.visible()
             //api获取热门赛事列表
@@ -126,7 +133,12 @@ class HotMatchView(context: Context, attrs: AttributeSet
                 //清除上次订阅的赛事记录
                 adapter?.clearSubCache()
                 //取消所有订阅
-                fragment.unSubscribeChannel2HotMatch()
+                if(fragment is BindingSocketFragment<*, *>){
+                    fragment.unSubscribeChannel2HotMatch()
+                }
+                if(fragment is BaseSocketFragment){
+                    fragment.unSubscribeChannel2HotMatch()
+                }
                 adapter?.data = data
             }
         }
@@ -135,10 +147,11 @@ class HotMatchView(context: Context, attrs: AttributeSet
     /**
      * ws订阅监听
      */
-    private fun<T: BaseSocketViewModel> initSocketObservers(fragment: BaseSocketFragment<T>?){
-        fragment?.let {
+    private fun initSocketObservers(receiver:ServiceBroadcastReceiver,
+                                                            viewLifecycleOwner: LifecycleOwner,fragment:BaseFragment<*>){
+
             //观察比赛状态改变
-            fragment.receiver.matchStatusChange.observe(fragment.viewLifecycleOwner) { matchStatusChangeEvent ->
+            receiver.matchStatusChange.observe(viewLifecycleOwner) { matchStatusChangeEvent ->
                 if (matchStatusChangeEvent == null) {
                     return@observe
                 }
@@ -163,7 +176,7 @@ class HotMatchView(context: Context, attrs: AttributeSet
             }
 
 
-            fragment.receiver.matchClock.observe(fragment.viewLifecycleOwner) {
+            receiver.matchClock.observe(viewLifecycleOwner) {
                 it?.let { matchClockEvent ->
                     val targetList = adapter?.data
                     targetList?.forEachIndexed { index, recommend ->
@@ -179,7 +192,7 @@ class HotMatchView(context: Context, attrs: AttributeSet
                 }
             }
 
-            fragment.receiver.matchClock.observe(fragment.viewLifecycleOwner) {
+            receiver.matchClock.observe(viewLifecycleOwner) {
                 it?.let { matchClockEvent ->
                     val targetList = adapter?.data
                     targetList?.forEachIndexed { index, recommend ->
@@ -195,9 +208,9 @@ class HotMatchView(context: Context, attrs: AttributeSet
 
                 }
             }
-            fragment.receiver.oddsChangeListener = mOddsChangeListener
+            receiver.oddsChangeListener = mOddsChangeListener
 
-            fragment.receiver.matchOddsLock.observe(fragment.viewLifecycleOwner) {
+            receiver.matchOddsLock.observe(viewLifecycleOwner) {
                 it?.let { matchOddsLockEvent ->
                     val targetList = adapter?.data
 
@@ -212,7 +225,7 @@ class HotMatchView(context: Context, attrs: AttributeSet
             }
 
 
-            fragment.receiver.globalStop.observe(fragment.viewLifecycleOwner) {
+            receiver.globalStop.observe(viewLifecycleOwner) {
                 it?.let { globalStopEvent ->
                     adapter?.data?.forEachIndexed { index, recommend ->
                         if (SocketUpdateUtil.updateOddStatus(
@@ -226,17 +239,28 @@ class HotMatchView(context: Context, attrs: AttributeSet
                 }
             }
 
-            fragment.receiver.producerUp.observe(fragment.viewLifecycleOwner) {
+            receiver.producerUp.observe(viewLifecycleOwner) {
                 it?.let {
-                    //先解除全部賽事訂閱
-                    fragment.unSubscribeChannel2HotMatch()
-                    adapter?.data ?: listOf<Recommend>().forEach {recommend->
-                        subscribeChannelHall(recommend,fragment)
+                    if(fragment is BaseSocketFragment){
+                        //先解除全部賽事訂閱
+                        fragment.unSubscribeChannel2HotMatch()
+                        adapter?.data ?: listOf<Recommend>().forEach {recommend->
+                            subscribeChannelHall(recommend,fragment)
+                        }
                     }
+                    if(fragment is BindingSocketFragment<*, *>){
+                        //先解除全部賽事訂閱
+                        fragment.unSubscribeChannel2HotMatch()
+                        adapter?.data ?: listOf<Recommend>().forEach {recommend->
+                            subscribeChannelHall(recommend,fragment)
+                        }
+                    }
+
+
                 }
             }
 
-            fragment.receiver.closePlayCate.observe(fragment.viewLifecycleOwner) { event ->
+            receiver.closePlayCate.observe(viewLifecycleOwner) { event ->
                 val it = event?.getContentIfNotHandled() ?: return@observe
                 adapter?.data?.forEachIndexed {index, recommend ->
                     if (recommend.gameType == it.gameType) {
@@ -252,11 +276,10 @@ class HotMatchView(context: Context, attrs: AttributeSet
                 }
 
             }
-        }
     }
 
 
-    private fun<T: BaseSocketViewModel> initAdapter(fragment:BaseSocketFragment<T>){
+    private fun initAdapter(fragment:BaseFragment<*>){
         setUpAdapter(fragment.viewLifecycleOwner, HomeRecommendListener(
             onItemClickListener = { matchInfo ->
                 if (isCreditSystem() && fragment.viewModel.isLogin.value != true) {
@@ -295,7 +318,8 @@ class HotMatchView(context: Context, attrs: AttributeSet
                 )
 
                 fragment.requireActivity().doOnStop(true) { // 延时加入注单，不然当前页面会弹出来注单列表
-                    fragment.viewModel.updateMatchBetListData(fastBetDataBean)
+                    val viewModel=fragment.viewModel as BaseSocketViewModel
+                    viewModel.updateMatchBetListData(fastBetDataBean)
                 }
                 SportDetailActivity.startActivity(
                     fragment.requireContext(),
@@ -315,12 +339,22 @@ class HotMatchView(context: Context, attrs: AttributeSet
         scrollImageStatus(0)
     }
 
-    private fun<T: BaseSocketViewModel> subscribeChannelHall(recommend: Recommend,fragment:BaseSocketFragment<T>) {
-        fragment.subscribeChannel2HotMatch(recommend.matchInfo?.gameType, recommend.matchInfo?.id)
+    private fun subscribeChannelHall(recommend: Recommend,fragment:BaseFragment<*>) {
+        if(fragment is BaseSocketFragment){
+            fragment.subscribeChannel2HotMatch(recommend.matchInfo?.gameType, recommend.matchInfo?.id)
+        }
+        if(fragment is BindingSocketFragment<*, *>){
+            fragment.subscribeChannel2HotMatch(recommend.matchInfo?.gameType, recommend.matchInfo?.id)
+        }
     }
 
-    fun<T: BaseSocketViewModel> onResume(fragment: BaseSocketFragment<T>?) {
-        fragment?.receiver?.oddsChangeListener = mOddsChangeListener
+    fun onResume(fragment: BaseFragment<*>?) {
+        if(fragment is BaseSocketFragment){
+            fragment.receiver.oddsChangeListener = mOddsChangeListener
+        }
+        if(fragment is BindingSocketFragment<*, *>){
+            fragment.receiver.oddsChangeListener = mOddsChangeListener
+        }
         adapter?.clearSubCache()
     }
 
