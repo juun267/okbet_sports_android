@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.core.view.postDelayed
 import androidx.recyclerview.widget.*
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -134,7 +135,11 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         super.onResume()
         unSubscribeChannelHallAll()
         //重新设置赔率监听
-        binding.hotMatchView.onResume(this)
+        binding.hotMatchView.postDelayed({
+            binding.hotMatchView.onResume(this)
+        },500)
+
+
         //请求热门赛事数据  在hotMatchView初始化之后
 //        viewModel.getRecommend()
     }
