@@ -26,6 +26,7 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
     }
 
     override fun onBindViewStatus(view: View) {
+        binding.homeTopView.setup(this)
     }
 
     override fun onInitData() {
@@ -39,15 +40,15 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
             EventBusUtil.post(MenuEvent(true))
             getMainTabActivity().showLeftFrament(0, 0)
         }
+
     }
-
-
-
-
 
     override fun onHiddenChanged(hidden: Boolean) {
         homeToolbar.onRefreshMoney()
     }
 
+    fun jumpToInplaySport() = getMainTabActivity().jumpToInplaySport()
+
+    fun jumpToOKGames() = getMainTabActivity().jumpToOKGames()
 
 }

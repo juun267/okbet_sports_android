@@ -22,6 +22,7 @@
             android:descendantFocusability="blocksDescendants">
 
             <org.cxct.sportlottery.ui.maintab.home.view.HomeTopView
+                android:id="@+id/homeTopView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 

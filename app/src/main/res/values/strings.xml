@@ -209,7 +209,7 @@
     <string name="fourth">Four</string>
     <string name="fifth">Five</string>
     <string name="account_balance">Total Balance</string>
-    <string name="recharge">Deposit</string>
+    <string name="J285">Deposit</string>
     <string name="account_transfer">Transfer Balance</string>
     <string name="money_recycle_succeed">Recovery limit successfully</string>
     <string name="news_center">My Messages</string>
@@ -1314,4 +1314,6 @@
     <string name="N885">Load More</string>
     <string name="N001">About Us</string>
     <string name="J093">Responsible Gaming</string>
+    <string name="M013">Coming soon</string>
+    <string name="N703">OKBET Game Venues</string>
 </resources>
