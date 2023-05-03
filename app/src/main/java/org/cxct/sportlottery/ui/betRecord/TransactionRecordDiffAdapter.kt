@@ -151,13 +151,17 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                     if (matchOdds.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage(
                         matchOdds.odds - 1
                     ) else TextUtil.formatForOdd(matchOdds.odds)
-                val playName =
-                    if (matchOdds.playCateCode == PlayCate.FS_LD_CS.value)
-                        context.getString(R.string.N903)
-                    else matchOdds.playName
-                play_content.setPlayContent(
-                    playName, matchOdds.spread, formatForOdd
-                )
+
+                if (matchOdds.playCateCode == PlayCate.FS_LD_CS.value)
+                    play_content.setPlayContent(
+                        context.getString(R.string.N903),
+                        matchOdds.spread,
+                        matchOdds.odds.toInt().toString()
+                    )
+                else
+                    play_content.setPlayContent(
+                        matchOdds.playName, matchOdds.spread, formatForOdd
+                    )
 
                 match_play_time.text =
                     TimeUtil.timeFormat(matchOdds.startTime, TimeUtil.DM_HM_FORMAT)
