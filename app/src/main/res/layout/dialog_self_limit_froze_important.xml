@@ -11,7 +11,7 @@
     app:cardElevation="0dp"
     tools:context="org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -20,56 +20,67 @@
         android:elevation="0dp"
         android:paddingTop="11dp">
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="11dp"
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:gravity="center"
-            android:text="@string/self_limit_impotent"
-            android:textColor="@color/color_CCCCCC_000000"
-            android:textSize="@dimen/textSize16sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/btn_close"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:layout_marginEnd="15dp"
-            android:src="@drawable/icon_close_gray_12"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_title" />
+            <TextView
+                android:layout_gravity="center"
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/self_limit_impotent"
+                android:layout_marginLeft="30dp"
+                android:textColor="@color/color_CCCCCC_000000"
+                android:textSize="@dimen/textSize16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/btn_close"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="45dp"
+                android:src="@drawable/icon_close_gray_12"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_title" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_1F1F1F_E2E2E2"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintVertical_bias="1" />
 
 
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title">
+            app:layout_constraintTop_toBottomOf="@+id/divider">
             <LinearLayout
                 android:id="@+id/ll_froze"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="visible"
                 >
 
-                <View
-                    android:id="@+id/divider"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/color_1F1F1F_E2E2E2"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_title"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginTop="10dp"
-                    app:layout_constraintVertical_bias="1" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -221,14 +232,10 @@
 
         <LinearLayout
             android:id="@+id/ll_bet"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -256,6 +263,6 @@
 
         </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.cardview.widget.CardView>
