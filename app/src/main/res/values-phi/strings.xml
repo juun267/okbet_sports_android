@@ -726,7 +726,7 @@
     <string name="self_limit_per_bet_limit_user_limit">• Saklaw ng taya:%1$s %2$s-%1$s %3$s</string>
     <string name="self_limit_error">Hindi tumutugma ang format ng data, mangyaring ilagay ang integer</string>
     <string name="self_limit_input_password_for_confirm">Mangyaring ipasok ang login password upang kumpirmahin ang application</string>
-    <string name="self_limit_input_password_for_modification">Mangyaring ipasok ang login password upang kumpirmahin ang application</string>
+    <string name="self_limit_input_password_for_modification">Mangyaring ipasok ang password sa pag-login upang kumpirmahin ang pagbabago</string>
     <string name="self_limit_submit_input_password_hint">Pakilagay ang password</string>
 
     <!--自我禁制-->

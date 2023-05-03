@@ -786,7 +786,7 @@
     <string name="self_limit_per_bet_limit_user_limit">• Cược giới hạn tối đa:%1$s %2$s-%1$s %3$s</string>
     <string name="self_limit_error">Định dạng trường không chính xác, vui lòng nhập một số nguyên.</string>
     <string name="self_limit_input_password_for_confirm">Vui lòng nhập mật khẩu đăng nhập để xác nhận ứng dụng.</string>
-    <string name="self_limit_input_password_for_modification">Vui lòng nhập mật khẩu đăng nhập để xác nhận sửa đổi.</string>
+    <string name="self_limit_input_password_for_modification">Vui lòng nhập mật khẩu đăng nhập để xác nhận sửa đổi</string>
     <string name="self_limit_submit_input_password_hint">Hãy nhập mật khẩu</string>
     <!--自我禁制-->
 
