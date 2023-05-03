@@ -1,32 +1,24 @@
 package org.cxct.sportlottery.ui.betRecord
 
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.luck.picture.lib.tools.JumpUtils
 import kotlinx.android.synthetic.main.content_parlay_match.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.MatchOdd
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.bet.settledDetailList.RemarkBetRequest
 import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
+import org.cxct.sportlottery.ui.betRecord.detail.BetDetailsActivity
 import org.cxct.sportlottery.ui.betRecord.dialog.PrintDialog
-import org.cxct.sportlottery.ui.maintab.detail.BetDetailsActivity
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.drawable.DrawableCreator
 import org.cxct.sportlottery.view.onClick
 
 

@@ -122,8 +122,14 @@ abstract class BaseViewModel(
         }
 
         val errorResult = ErrorUtils.parseError(response)
-        if (errorResult?.code == HttpError.UNAUTHORIZED.code || errorResult?.code == HttpError.KICK_OUT_USER.code || errorResult?.code == HttpError.MAINTENANCE.code) {
-            errorResult.let {
+        val errorList = mutableListOf(
+            HttpError.BALANCE_IS_LOW.code,
+            HttpError.UNAUTHORIZED.code,
+            HttpError.KICK_OUT_USER.code,
+            HttpError.MAINTENANCE.code
+        )
+        errorResult?.let {
+            if (errorList.contains(it.code)) {
                 _errorResultToken.postValue(Event(it))
             }
         }
@@ -135,6 +141,7 @@ abstract class BaseViewModel(
             is kotlinx.coroutines.CancellationException -> {
                 // 取消线程不执行业务
             }
+
             else -> {
                 _networkExceptionUnavailable.postValue(context.getString(R.string.message_network_no_connect))
             }
@@ -185,10 +192,8 @@ abstract class BaseViewModel(
     }
 
 
-
-
-    fun launch(block:suspend (coroutine:CoroutineScope)->Unit){
-        viewModelScope.launch{
+    fun launch(block: suspend (coroutine: CoroutineScope) -> Unit) {
+        viewModelScope.launch {
             block(this)
         }
     }

@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.betRecord
 
+import android.content.Intent
 import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
