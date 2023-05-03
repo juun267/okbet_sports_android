@@ -29,7 +29,11 @@
 
             <!--part-2-->
             <org.cxct.sportlottery.ui.maintab.games.view.HotMatchView
-                android:id="@+id/hot_match_view"
+                android:id="@+id/hotMatchView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <org.cxct.sportlottery.ui.maintab.home.view.HomeBingoView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <!--part-2-end-->
