@@ -948,7 +948,7 @@ fun isOKPlat(): Boolean = MultiLanguagesApplication.stringOf(R.string.app_name).
 
 fun isUAT(): Boolean = BuildConfig.FLAVOR == "phuat"
 
-fun isGooglePlayVersion() = BuildConfig.FLAVOR == "forqa"
+fun isGooglePlayVersion() = BuildConfig.FLAVOR == "google"
 
 fun ImageView.setTeamLogo(icon: String?) {
     if (icon.isNullOrEmpty()) {
