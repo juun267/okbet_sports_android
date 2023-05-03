@@ -313,23 +313,33 @@ class BasketballEndingCardViewHolder(
             oddsId = itemData.matchOdd.oddsId
             oldOdds = TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))
         }
-        //反波膽顯示 %
-        var tvOdd = "@ " + TextUtil.formatForOdd(
-            getOdds(
-                itemData.matchOdd,
-                currentOddsType,
-                adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE
-            )
-        )
-        if (itemData.matchOdd.playCode == PlayCate.LCS.value) tvOdd =
-            "@ " + TextUtil.formatForOddPercentage(
-                getOdds(
+        val tvOdd = when (itemData.matchOdd.playCode) {
+            PlayCate.LCS.value -> {
+                "@ " + TextUtil.formatForOddPercentage(
+                    getOdds(
+                        itemData.matchOdd,
+                        currentOddsType,
+                        adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE
+                    ) - 1
+                )
+            }
+            PlayCate.FS_LD_CS.value -> {
+                "@ " + getOdds(
                     itemData.matchOdd,
                     currentOddsType,
                     adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE
-                ) - 1
-            )
-
+                ).toInt().toString()
+            }
+            else -> {
+                "@ " + TextUtil.formatForOdd(
+                    getOdds(
+                        itemData.matchOdd,
+                        currentOddsType,
+                        adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE
+                    )
+                )
+            }
+        }
         tvOdds.text = if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) tvOdd else {
             tvOdd
         }
