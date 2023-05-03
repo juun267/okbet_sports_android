@@ -92,12 +92,11 @@ class BetDetailsFragment : BaseFragment<BetListViewModel>(BetListViewModel::clas
                 if (matchOdds.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage(
                     matchOdds.odds - 1
                 ) else TextUtil.formatForOdd(matchOdds.odds)
-            val playName =
-                if (matchOdds.playCateCode == PlayCate.FS_LD_CS.value)
-                    context.getString(R.string.N903)
-                else matchOdds.playName
+
             play_content.setPlayContent(
-                playName, matchOdds.spread, formatForOdd
+                context.getString(R.string.N903),
+                matchOdds.spread,
+                matchOdds.odds.toInt().toString()
             )
 
             match_play_time.text =
@@ -287,12 +286,10 @@ class BetDetailsFragment : BaseFragment<BetListViewModel>(BetListViewModel::clas
                 if (matchOdds.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage(
                     matchOdds.odds ?: 0 - 1
                 ) else TextUtil.formatForOdd(matchOdds.odds ?: 0)
-            val playName =
-                if (matchOdds.playCateCode == PlayCate.FS_LD_CS.value)
-                    context.getString(R.string.N903)
-                else matchOdds.playName
             play_content.setPlayContent(
-                playName, matchOdds.spread, formatForOdd
+                context.getString(R.string.N903),
+                matchOdds.spread,
+                matchOdds.odds?.toInt().toString()
             )
 
             match_play_time.text =

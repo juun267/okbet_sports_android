@@ -86,11 +86,17 @@ class SingleViewHolder private constructor(itemView: View) :
             itemData.apply {
                 matchOdds?.firstOrNull()?.apply {
                     val formatForOdd =
-                        if (this.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage(
-                            getOdds(this, oddsType ?: OddsType.EU) - 1
-                        ) else TextUtil.formatForOdd(
-                            getOdds(this, oddsType)
-                        )
+                        when (this.playCateCode) {
+                            PlayCate.LCS.value -> TextUtil.formatForOddPercentage(
+                                getOdds(this, oddsType ?: OddsType.EU) - 1
+                            )
+                            PlayCate.FS_LD_CS.value -> {
+                                getOdds(this, oddsType).toInt().toString()
+                            }
+                            else -> TextUtil.formatForOdd(
+                                getOdds(this, oddsType)
+                            )
+                        }
 //                    tv_play_content.text = setSpannedString(
 //                        PlayCate.needShowSpread(playCateCode) && (matchType != MatchType.OUTRIGHT),
 //                        playName,

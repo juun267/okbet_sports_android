@@ -1462,7 +1462,7 @@ class OddsDetailListAdapter(
                 //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
                 itemView.lin_match.isVisible = false
                 oddsDetail.oddArrayList.first()?.let {
-                    val odd = TextUtil.formatForOdd(getOdds(it, oddsType))
+                    val odd = getOdds(it, oddsType).toInt().toString()
                     val odds = " $odd"
                     Spanny(itemView.context.getString(R.string.N888)).append(
                         " @", ForegroundColorSpan(itemView.context.getColor(R.color.color_025BE8))

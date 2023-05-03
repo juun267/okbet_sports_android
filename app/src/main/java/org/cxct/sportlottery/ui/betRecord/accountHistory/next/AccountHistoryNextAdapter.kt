@@ -332,8 +332,12 @@ class AccountHistoryNextAdapter(private val itemClickListener: ItemClickListener
                         itemView.context.getString(R.string.N903)
                     else it.playName
                 val formatForOdd =
-                    if (it.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage((it.odds
-                        ?: 0.0) - 1.0) else TextUtil.formatForOdd(it.odds ?: 0)
+                    when (it.playCateCode) {
+                        PlayCate.LCS.value -> TextUtil.formatForOddPercentage((it.odds
+                            ?: 0.0) - 1.0)
+                        PlayCate.FS_LD_CS.value -> (it.odds ?: 0.0).toInt().toString()
+                        else -> TextUtil.formatForOdd(it.odds ?: 0)
+                    }
                 binding.tvContent.setPlayContent(
                     playName,
                     it.spread,
