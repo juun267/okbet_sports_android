@@ -44,6 +44,7 @@ import org.cxct.sportlottery.ui.betRecord.accountHistory.next.AccountHistoryNext
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment
+import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment2
 import org.cxct.sportlottery.ui.maintab.menu.SportLeftFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.ui.sport.SportFragment
@@ -70,7 +71,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     private var betListFragment: BetListFragment? = null
-    private val homeLeftFragment by lazy { MainLeftFragment() }
+    private val homeLeftFragment by lazy { MainLeftFragment2() }
     private val sportLeftFragment by lazy { SportLeftFragment() }
     private var exitTime: Long = 0
 
@@ -180,6 +181,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         drawerLayout.openDrawer(Gravity.LEFT)
     }
 
+    fun closeDrawerLayout() {
+        drawerLayout.closeDrawer(Gravity.LEFT)
+    }
+
     private fun initDrawerLayout() {
         showLeftFrament(0)
 //        drawerLayout.setScrimColor(Color.TRANSPARENT)
@@ -225,15 +230,27 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         })
     }
 
+    var lastMenu = 0
     fun showLeftFrament(position: Int, fromPage: Int = -1) {
+
         if (position == 0) {
-            supportFragmentManager.beginTransaction().replace(R.id.left_menu, homeLeftFragment)
+            if (lastMenu != 0) {
+                left_menu.layoutParams.width = MetricsUtil.getScreenWidth() //動態調整側邊欄寬
+            }
+            lastMenu = position
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.left_menu, homeLeftFragment)
                 .commit()
             homeLeftFragment.fromPage = fromPage
             return
         }
+        if (lastMenu != position) {
+            left_menu.layoutParams.width = (MetricsUtil.getScreenWidth() * 0.75f).toInt() //動態調整側邊欄寬
+        }
+        lastMenu = position
 
-        supportFragmentManager.beginTransaction().replace(R.id.left_menu, sportLeftFragment)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.left_menu, sportLeftFragment)
             .commit()
 
         val currentFragment = fragmentHelper.getCurrentFragment()
@@ -250,8 +267,8 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             //關閉側邊欄滑動行為
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
             drawerLayout.setScrimColor(getColor(R.color.transparent_black_20))
-            //選單選擇結束要收起選單
-            left_menu.layoutParams.width = (MetricsUtil.getScreenWidth() * 0.75).toInt() //動態調整側邊欄寬
+//            //選單選擇結束要收起選單
+            left_menu.layoutParams.width = MetricsUtil.getScreenWidth() //動態調整側邊欄寬
 
         } catch (e: Exception) {
             e.printStackTrace()

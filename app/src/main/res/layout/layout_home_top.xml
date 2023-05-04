@@ -133,7 +133,6 @@
         app:pointLeftRightPadding="1dp"/>
 
     <LinearLayout
-        android:id="@+id/lin_categroy_name"
         android:layout_width="match_parent"
         android:layout_height="24dp"
         android:layout_marginTop="16dp"
@@ -158,21 +157,6 @@
             android:textStyle="bold"
             android:textSize="16sp"
             android:text="@string/N703" />
-
-        <TextView
-            android:id="@+id/tvMore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingRight="4dp"
-            android:textColor="@color/color_6D7693"
-            android:textSize="14sp"
-            android:text="@string/N702" />
-
-        <ImageView
-            android:id="@+id/ivMore"
-            android:layout_width="@dimen/margin_16"
-            android:layout_height="@dimen/margin_16"
-            android:src="@drawable/ic_game_gray_arrow_right" />
     </LinearLayout>
 
     <LinearLayout

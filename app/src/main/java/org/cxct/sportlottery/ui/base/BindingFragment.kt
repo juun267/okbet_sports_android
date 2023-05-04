@@ -8,7 +8,7 @@ import androidx.viewbinding.ViewBinding
 import org.cxct.sportlottery.common.extentions.createVBinding
 import kotlin.reflect.KClass
 
-open class BindingFragment<VM : BaseViewModel, VB: ViewBinding>(clazz: KClass<VM>? = null): BaseFragment<VM>(clazz) {
+open class BindingFragment<VM : BaseViewModel, VB: ViewBinding>: BaseFragment<VM>(null) {
 
     protected val binding: VB by lazy { createVBinding(layoutInflater, 1) }
     private var _first = true

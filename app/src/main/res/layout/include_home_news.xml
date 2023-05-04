@@ -41,13 +41,11 @@
         app:tabTextColor="@color/color_6C7BA8_A7B2C4">
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/tabOkbet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/login_password" />
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/tabSport"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/withdrawal_password" />
