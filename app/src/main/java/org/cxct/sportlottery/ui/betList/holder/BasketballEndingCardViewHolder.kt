@@ -93,7 +93,6 @@ class BasketballEndingCardViewHolder(
     }
 
 
-
     @SuppressLint("ClickableViewAccessibility")
     private fun setupBetAmountInput(
         betList: MutableList<BetInfoListData>?,
@@ -116,7 +115,7 @@ class BasketballEndingCardViewHolder(
         }
 
         Timber.d("itemData:${itemData}")
-        var lastSelectPo = 0
+//        var lastSelectPo = 0
 
         val rcvBasketballAdapter = object :
             BaseQuickAdapter<BetInfoListData, BaseViewHolder>(R.layout.item_bet_basketball_ending_cart) {
@@ -150,24 +149,27 @@ class BasketballEndingCardViewHolder(
                 //点击赔率
                 tvMatchOdds.setOnClickListener {
                     //刷新上一次点击的区域
-                    if (data.size > lastSelectPo) {
-                        data[lastSelectPo].isClickForBasketball = false
-                        notifyItemChanged(lastSelectPo)
+                    data.forEachIndexed { index, betInfoListData ->
+                        if (betInfoListData.isClickForBasketball == true) {
+                            betInfoListData.isClickForBasketball = false
+                        }
+                        notifyItemChanged(index)
                     }
                     val currentPosition = holder.layoutPosition
                     //记录本次点击的区域
                     if (data.size > currentPosition) {
                         data[currentPosition].isClickForBasketball = true
                         notifyItemChanged(currentPosition)
-                        lastSelectPo = currentPosition
+                        Timber.d("currentSelectPo:${currentPosition}")
                     }
                 }
 
                 //蒙版点击事件
                 tvHide.setOnClickListener {
                     data[holder.layoutPosition].isClickForBasketball = false
-                    lastSelectPo = 0
-                    onItemClickListener.onDeleteClick(data[holder.layoutPosition].matchOdd.oddsId, itemCount)
+                    onItemClickListener.onDeleteClick(
+                        data[holder.layoutPosition].matchOdd.oddsId, itemCount
+                    )
                 }
             }
         }
@@ -179,15 +181,15 @@ class BasketballEndingCardViewHolder(
         newList.sortBy { it.matchOdd.playName.split("-")[1].toInt() }
         newList.sortBy { it.matchOdd.playName.split("-")[0].toInt() }
         newList.add(newList[0])
-        newList.forEach {
-            it.isClickForBasketball = false
-        }
+//        newList.forEach {
+//            it.isClickForBasketball = false
+//        }
         rcvBasketballAdapter.setNewInstance(newList)
         rcvBasketballScore.layoutManager = GridLayoutManager(root.context, 5)
         tvBasketBetListCount.text = "X${betList?.size}"
 
-        setOnClickListener(rcvBasketballScore,clItemBackground){
-            rcvBasketballAdapter.data.forEach { itemD->
+        setOnClickListener(rcvBasketballScore, clItemBackground) {
+            rcvBasketballAdapter.data.forEach { itemD ->
                 itemD.isClickForBasketball = false
             }
             it.clearFocus()
@@ -329,6 +331,7 @@ class BasketballEndingCardViewHolder(
                     ) - 1
                 )
             }
+
             PlayCate.FS_LD_CS.value -> {
                 "@ " + getOdds(
                     itemData.matchOdd,
@@ -336,6 +339,7 @@ class BasketballEndingCardViewHolder(
                     adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE
                 ).toInt().toString()
             }
+
             else -> {
                 "@ " + TextUtil.formatForOdd(
                     getOdds(
