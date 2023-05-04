@@ -237,11 +237,14 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             if (lastMenu != 0) {
                 left_menu.layoutParams.width = MetricsUtil.getScreenWidth() //動態調整側邊欄寬
             }
+            if (fromPage == 5) {
+                homeLeftFragment.openWithOKGames()
+            }
+
             lastMenu = position
             supportFragmentManager.beginTransaction()
                 .replace(R.id.left_menu, homeLeftFragment)
                 .commit()
-            homeLeftFragment.fromPage = fromPage
             return
         }
         if (lastMenu != position) {

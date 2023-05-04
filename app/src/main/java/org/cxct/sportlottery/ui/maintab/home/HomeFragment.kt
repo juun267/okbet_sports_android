@@ -43,7 +43,7 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
 
     fun jumpToLive() = switchTabByPosition(1)
 
-    fun jumpToOKGames() = switchTabByPosition(2)
+    fun jumpToOKGames() = switchTabByPosition(1)
 
     fun jumpToInplaySport() {
         (activity as MainTabActivity).jumpToInplaySport()

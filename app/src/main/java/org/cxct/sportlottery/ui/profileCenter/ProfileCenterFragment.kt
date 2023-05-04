@@ -270,22 +270,7 @@ class ProfileCenterFragment :
             startActivity(Intent(requireActivity(), FinanceActivity::class.java))
         }
         //優惠活動
-        btn_promotion.setOnClickListener {
-            when (viewModel.userInfo.value?.testFlag) {
-                TestFlag.NORMAL.index -> {
-                    toProfileCenter()
-                }
-                TestFlag.TEST.index -> { // TODO 20220108 新增內部測試人員選項 by Hewie
-                    toProfileCenter()
-                }
-                else -> { // TODO 20220108 沒有遊客的話，要確認一下文案是否正確 by Hewie
-                    ToastUtil.showToastInCenter(
-                        requireContext(),
-                        getString(R.string.message_guest_no_permission)
-                    )
-                }
-            }
-        }
+        btn_promotion.bindPromoClick()
         //代理加盟
         btn_affiliate.setOnClickListener {
             JumpUtil.toInternalWeb(

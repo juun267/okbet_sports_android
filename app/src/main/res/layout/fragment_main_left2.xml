@@ -55,23 +55,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="16.5dp"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:background="@drawable/selector_cor30_tran_blue">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_main_menu_sports_0" />
+                    android:layout_marginLeft="12dp"
+                    android:src="@drawable/selector_main_menu_sport" />
 
                 <TextView
+                    android:id="@+id/tvSports"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
                     android:layout_weight="1"
                     android:text="@string/B001"
-                    android:textColor="@color/color_black_white"
+                    android:textColor="@color/color_6D7693"
                     android:textSize="14sp" />
 
                 <ImageView
+                    android:id="@+id/ivSportsIndicator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_selected_indicator" />
@@ -82,23 +86,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="4.5dp"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:background="@drawable/selector_cor30_tran_blue">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_main_menu_okgames_0" />
+                    android:layout_marginLeft="12dp"
+                    android:src="@drawable/selector_main_menu_okgames" />
 
                 <TextView
+                    android:id="@+id/tvOKGames"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
                     android:layout_weight="1"
                     android:text="@string/J203"
-                    android:textColor="@color/color_black_white"
+                    android:textColor="@color/color_6D7693"
                     android:textSize="14sp" />
 
                 <ImageView
+                    android:id="@+id/ivOKGamesIndicator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_selected_indicator"/>
@@ -110,23 +118,27 @@
                 android:layout_height="40dp"
                 android:layout_marginTop="4.5dp"
                 android:gravity="center_vertical"
-                android:visibility="gone">
+                android:visibility="gone"
+                android:background="@drawable/selector_cor30_tran_blue">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_marginLeft="12dp"
                     android:src="@drawable/ic_main_menu_bingo_0" />
 
                 <TextView
+                    android:id="@+id/tvBingo"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
                     android:layout_weight="1"
                     android:text="@string/B001"
-                    android:textColor="@color/color_black_white"
+                    android:textColor="@color/color_6D7693"
                     android:textSize="14sp" />
 
                 <ImageView
+                    android:id="@+id/ivBingoIndicatot"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_selected_indicator" />
@@ -138,23 +150,27 @@
                 android:layout_height="40dp"
                 android:layout_marginTop="4.5dp"
                 android:gravity="center_vertical"
-                android:visibility="gone">
+                android:visibility="gone"
+                android:background="@drawable/selector_cor30_tran_blue">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_marginLeft="12dp"
                     android:src="@drawable/ic_main_menu_oklive_0" />
 
                 <TextView
+                    android:id="@+id/tvOKLive"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
                     android:layout_weight="1"
                     android:text="@string/B001"
-                    android:textColor="@color/color_black_white"
+                    android:textColor="@color/color_6D7693"
                     android:textSize="14sp" />
 
                 <ImageView
+                    android:id="@+id/ivOKLiveIndicator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_selected_indicator" />
@@ -171,11 +187,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="9.5dp"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:background="@drawable/selector_cor30_tran_blue">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_marginLeft="12dp"
                     android:src="@drawable/ic_main_menu_promo_0" />
 
                 <TextView
@@ -184,7 +202,7 @@
                     android:layout_marginLeft="12dp"
                     android:layout_weight="1"
                     android:text="@string/B005"
-                    android:textColor="@color/color_black_white"
+                    android:textColor="@color/color_6D7693"
                     android:textSize="14sp" />
 
             </LinearLayout>
@@ -194,11 +212,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="4dp"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:background="@drawable/selector_cor30_tran_blue">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_marginLeft="12dp"
                     android:src="@drawable/ic_main_menu_affiliate_0" />
 
                 <TextView
@@ -207,7 +227,7 @@
                     android:layout_marginLeft="12dp"
                     android:layout_weight="1"
                     android:text="@string/B015"
-                    android:textColor="@color/color_black_white"
+                    android:textColor="@color/color_6D7693"
                     android:textSize="14sp" />
 
             </LinearLayout>
@@ -217,20 +237,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="4dp"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:background="@drawable/selector_cor30_tran_blue">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_marginLeft="12dp"
                     android:src="@drawable/ic_main_menu_news_0"/>
 
                 <TextView
+                    android:id="@+id/tvNews"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
                     android:layout_weight="1"
                     android:text="@string/N909"
-                    android:textColor="@color/color_black_white"
+                    android:textColor="@color/color_6D7693"
                     android:textSize="14sp" />
 
             </LinearLayout>
@@ -240,11 +263,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="4dp"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:background="@drawable/selector_cor30_tran_blue">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_marginLeft="12dp"
                     android:src="@drawable/ic_main_menu_livesupport_0" />
 
                 <TextView
@@ -253,7 +278,7 @@
                     android:layout_marginLeft="12dp"
                     android:layout_weight="1"
                     android:text="@string/LT050"
-                    android:textColor="@color/color_black_white"
+                    android:textColor="@color/color_6D7693"
                     android:textSize="14sp" />
 
             </LinearLayout>
@@ -263,11 +288,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="4dp"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:background="@drawable/selector_cor30_tran_blue">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_marginLeft="12dp"
                     android:src="@drawable/ic_main_menu_verify_0" />
 
                 <TextView
@@ -275,8 +302,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
                     android:layout_weight="1"
-                    android:text="@string/B001"
-                    android:textColor="@color/color_black_white"
+                    android:text="@string/identity"
+                    android:textColor="@color/color_6D7693"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvVerifyStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_6D7693"
                     android:textSize="14sp" />
 
             </LinearLayout>
@@ -288,32 +322,34 @@
                 android:background="@color/color_e0e3ee" />
 
             <LinearLayout
-                android:id="@+id/lin_language"
+                android:id="@+id/llLanguage"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="6dp"
-                android:background="@drawable/selector_tran_blue"
+                android:background="@drawable/selector_cor30_tran_blue"
                 android:gravity="center_vertical">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_marginLeft="12dp"
                     android:src="@drawable/ic_main_menu_language_0" />
 
                 <TextView
-                    android:id="@+id/tv_language"
+                    android:id="@+id/tvLanguage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/margin_12"
                     android:layout_weight="1"
-                    android:text="@string/language_en"
-                    android:textColor="@color/color_black_white"
-                    android:textSize="14sp" />
+                    android:textColor="@color/color_6D7693"
+                    android:textSize="14sp"
+                    tools:text="@string/language_en"/>
 
                 <ImageView
+                    android:id="@+id/ivLanguageIndicator"
                     android:layout_width="12dp"
                     android:layout_height="12dp"
-                    android:src="@drawable/selector_arrow_right_up" />
+                    android:src="@drawable/ic_arrow_gray_right" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -337,11 +373,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="72dp"
                 android:gravity="center_vertical"
-                android:visibility="gone">
+                android:visibility="gone"
+                android:background="@drawable/selector_cor30_tran_blue">
 
                 <ImageView
                     android:layout_width="20dp"
-                    android:layout_height="20dp" />
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="12dp"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -349,7 +387,7 @@
                     android:layout_marginLeft="12dp"
                     android:layout_weight="1"
                     android:text="@string/B001"
-                    android:textColor="@color/color_black_white"
+                    android:textColor="@color/color_6D7693"
                     android:textSize="14sp" />
 
                 <ImageView
@@ -367,11 +405,13 @@
                 android:id="@+id/llSponsorship"
                 android:layout_width="match_parent"
                 android:layout_height="72dp"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:background="@drawable/selector_cor30_tran_blue">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_marginLeft="12dp"
                     android:src="@drawable/ic_main_menu_sponsorship_0" />
 
                 <TextView
@@ -380,7 +420,7 @@
                     android:layout_marginLeft="12dp"
                     android:layout_weight="1"
                     android:text="sponsorship"
-                    android:textColor="@color/color_black_white"
+                    android:textColor="@color/color_6D7693"
                     android:textSize="14sp" />
 
                 <ImageView
