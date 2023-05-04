@@ -110,7 +110,7 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
 
     override fun onBindViewStatus(view: View) {
         binding.homeTopView.setup(this)
-        onBindRecordView()
+        initRecordView()
         initObservable()
         binding.hotMatchView.onCreate(viewModel.publicityRecommend,this@MainHomeFragment2)
     }
