@@ -20,8 +20,8 @@ android {
         applicationId "com.okbet.ph"
         minSdk 23
         targetSdk 31
-        versionName "1.1.50"
-        versionCode 72
+        versionName "1.1.51"
+        versionCode 73
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         ndk {
@@ -132,9 +132,9 @@ android {
                                     INVITE_CODE: "inmobi"]
         }
         //okbet预发环境 app-phuat.abaoooiap.com
-//        phuat {
-//            buildConfigField "String", "CHANNEL_NAME", "\"yfp2\""
-//        }
+        phuat {
+            buildConfigField "String", "CHANNEL_NAME", "\"yfp2\""
+        }
         //okbet9测试环境
 //        credit {
 //            buildConfigField "String", "CHANNEL_NAME", "\"cdplat1\""
@@ -246,6 +246,7 @@ dependencies {
 
     //live data
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
+    api "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0"
 
     //annotation
     implementation 'androidx.annotation:annotation:1.1.0'
@@ -277,15 +278,16 @@ dependencies {
     //動態權限請求 https://github.com/tbruyelle/RxPermissions
     implementation 'com.github.tbruyelle:rxpermissions:0.11'
 
-    //圖片輪播功能 https://github.com/xiaohaibin/XBanner
-    implementation 'com.xhb:xbanner:1.4.1'
     //androidX 版本使用下面的依赖
-    implementation 'com.github.xiaohaibin:XBanner:androidx_v1.1.3'
+    implementation 'com.github.xiaohaibin:XBanner:androidx_v1.2.8'
     implementation 'io.github.youth5201314:banner:2.2.2'
 
 
     //下拉刷新，上拉加載 元件 (豎屏、橫屏) https://github.com/scwang90/SmartRefreshLayout
-    implementation 'com.scwang.smart:refresh-layout-kernel:2.0.3'
+    implementation 'io.github.scwang90:refresh-layout-kernel:2.0.5'
+    implementation 'io.github.scwang90:refresh-header-material:2.0.5'
+    implementation 'io.github.scwang90:refresh-footer-ball:2.0.5'
+
 
     //DateTimePicker
     implementation 'com.contrarywind:Android-PickerView:4.1.9'

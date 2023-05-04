@@ -20,7 +20,9 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
  * this.setCanceledOnTouchOutside(false) //disable 點擊外部關閉 dialog
  * this.setCancelable(false) //disable 按實體鍵 BACK 關閉 dialog
  */
-class SelfLimitFrozeImportantDialog(private var isBet: Boolean): DialogFragment() {
+class SelfLimitFrozeImportantDialog: DialogFragment() {
+
+    private val isBet by lazy { arguments?.getBoolean("isBet") ?: true }
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.betRecord
 
+import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -114,7 +115,7 @@ class ContentParlayMatchAdapter(val data: Row, val viewModel: AccountHistoryView
                 )
 
                 parlay_play_time.text = TimeUtil.timeFormat(data.startTime, TimeUtil.DM_HM_FORMAT)
-                itemView.iv_country.setSvgDrawable(data.categoryIcon)
+                itemView.iv_country.setLeagueLogo(data.categoryIcon)
                 content_league.text = data.leagueName
 //                if (position == 0) {
 //                    if(betConfirmTime?.toInt() != 0){
@@ -142,6 +143,31 @@ class ContentParlayMatchAdapter(val data: Row, val viewModel: AccountHistoryView
 //                }
 //                if (data.rtScore?.isNotEmpty() == true) tv_score_parlay.text = "(${data.rtScore})"
             }
+        }
+
+        private fun showPrintDialog(context: Context, rowData: Row) {
+            val dialog = PrintDialog(context)
+            dialog.tvPrintClickListener = { it1 ->
+                if (it1?.isNotEmpty() == true) {
+                    val orderNo = rowData.orderNo
+                    val orderTime = rowData.betConfirmTime
+                    val requestBet = RemarkBetRequest(orderNo, it1, orderTime.toString())
+                    viewModel.remarkBetLiveData.observeForever {
+                        //uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
+                        dialog.dismiss()
+                        val newUrl =
+                            Constants.getPrintReceipt(
+                                context,
+                                it.remarkBetResult?.uniqNo,
+                                orderTime.toString(),
+                                it1
+                            )
+                        JumpUtil.toExternalWeb(context, newUrl)
+                    }
+                    viewModel.reMarkBet(requestBet)
+                }
+            }
+            dialog.show()
         }
     }
 }

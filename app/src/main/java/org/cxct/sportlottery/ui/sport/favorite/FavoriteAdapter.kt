@@ -177,70 +177,63 @@ class FavoriteAdapter(private val matchType: MatchType) :
         if (payloads.isNullOrEmpty()) {
             onBindViewHolder(holder, position)
             //if(holder is ItemViewHolder) holder.update(data[position], matchType, oddsType)
-        } else {
-            // Update with payload
-                payloads.forEach {
+            return
+        }
+
+        // Update with payload
+        payloads.forEach {
+            when (it) {
+                is LeagueOdd -> {
+                    (holder as FavoriteAdapter.ItemViewHolder).updateLeagueOdd(it,
+                        matchType,
+                        oddsType)
+                }
+                is MatchOdd -> {
+                    (holder as FavoriteAdapter.ItemViewHolder).updateMatchOdd(it,
+                        matchType,
+                        oddsType)
+                }
+                is PayLoadEnum -> {
                     when (it) {
-                        is LeagueOdd -> {
-                            val leagueOdd = payloads.first() as LeagueOdd
-                            (holder as FavoriteAdapter.ItemViewHolder).update(leagueOdd,
-                                matchType,
-                                oddsType)
+                        PayLoadEnum.PAYLOAD_BET_INFO -> {
+                            (holder as FavoriteAdapter.ItemViewHolder).updateByBetInfo()
                         }
-                        is MatchOdd -> {
-                            (holder as FavoriteAdapter.ItemViewHolder).update(it,
-                                matchType,
-                                oddsType)
+                        PayLoadEnum.PAYLOAD_PLAYCATE -> {
+                            (holder as FavoriteAdapter.ItemViewHolder).updateByPlayCate()
                         }
-                        is PayLoadEnum -> {
-                            when (it) {
-                                PayLoadEnum.PAYLOAD_BET_INFO -> {
-                                    (holder as FavoriteAdapter.ItemViewHolder).updateByBetInfo()
-                                }
-                                PayLoadEnum.PAYLOAD_PLAYCATE -> {
-                                    (holder as FavoriteAdapter.ItemViewHolder).updateByPlayCate()
-                                }
-                                PayLoadEnum.EXPAND -> {
-                                    (holder as FavoriteAdapter.ItemViewHolder).updateLeagueExpand(
-                                        data[position],
-                                        matchType)
-                                }
-                            }
-                        }
-                        // 作用於賠率刷新、波坦tab切換
-                        is MatchOdd -> {
-                            (holder as FavoriteAdapter.ItemViewHolder).updateByMatchIdForOdds(it)
+                        PayLoadEnum.EXPAND -> {
+                            (holder as FavoriteAdapter.ItemViewHolder).updateLeagueExpand(
+                                data[position],
+                                matchType)
                         }
                     }
                 }
+                // 作用於賠率刷新、波坦tab切換
+                is MatchOdd -> {
+                    (holder as FavoriteAdapter.ItemViewHolder).updateByMatchIdForOdds(it)
+                }
+            }
         }
     }
     // endregion
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (holder) {
-            is ItemViewHolder -> {
-                val item = data[position]
-                holder.bind(
-                    item,
-                    matchType,
-                    leagueListener,
-                    leagueOddListener,
-                    oddsType
-                )
-            }
+        if(holder is ItemViewHolder) {
+            holder.bind(
+                data[position],
+                matchType,
+                leagueListener,
+                leagueOddListener,
+                oddsType
+            )
         }
     }
 
     override fun getItemCount(): Int = data.size
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
-        super.onViewRecycled(holder)
-
-        when (holder) {
-            is ItemViewHolder -> {
-                holder.itemView.rv_league.adapter = null
-            }
+        if (holder is ItemViewHolder) {
+            holder.itemView.rv_league.adapter = null
         }
     }
 
@@ -276,7 +269,7 @@ class FavoriteAdapter(private val matchType: MatchType) :
         }
 
         // region update functions
-        fun update(item: LeagueOdd, matchType: MatchType, oddsType: OddsType) {
+        fun updateLeagueOdd(item: LeagueOdd, matchType: MatchType, oddsType: OddsType) {
             var gameType =
                 if (item.gameType != null) item.gameType!!.key else item.matchOdds[0].matchInfo?.gameType!!
             val position = data.indexOf(item)
@@ -291,7 +284,7 @@ class FavoriteAdapter(private val matchType: MatchType) :
             updateTimer(matchType, item.gameType)
         }
 
-        fun update(item: MatchOdd, matchType: MatchType, oddsType: OddsType) {
+        fun updateMatchOdd(item: MatchOdd, matchType: MatchType, oddsType: OddsType) {
             sportFavoriteAdapter.oddsType = oddsType
             sportFavoriteAdapter.data.forEachIndexed { index, matchOdd ->
                 if (item.matchInfo?.id == matchOdd.matchInfo?.id) {

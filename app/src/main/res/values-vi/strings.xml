@@ -787,7 +787,7 @@
     <string name="self_limit_per_bet_limit_user_limit">• Cược giới hạn tối đa:%1$s %2$s-%1$s %3$s</string>
     <string name="self_limit_error">Định dạng trường không chính xác, vui lòng nhập một số nguyên.</string>
     <string name="self_limit_input_password_for_confirm">Vui lòng nhập mật khẩu đăng nhập để xác nhận ứng dụng.</string>
-    <string name="self_limit_input_password_for_modification">Vui lòng nhập mật khẩu đăng nhập để xác nhận sửa đổi.</string>
+    <string name="self_limit_input_password_for_modification">Vui lòng nhập mật khẩu đăng nhập để xác nhận sửa đổi</string>
     <string name="self_limit_submit_input_password_hint">Hãy nhập mật khẩu</string>
     <!--自我禁制-->
 
@@ -1078,7 +1078,7 @@
     <string name="self_limit_error_format">Định dạng trường không chính xác, vui lòng nhập số nguyên %d ~ %d.</string>
     <string name="draw_time">Thời gian rút thăm</string>
     <string name="closing_time">Thời gian đóng</string>
-    <string name="end_time">Thời gian kết thúc</string>
+    <string name="N577">Thời gian kết thúc</string>
     <string name="draw_countdown">Đếm ngược rút thăm</string>
     <string name="recover_password">Tìm lại mật khẩu</string>
     <string name="need_help">Cần hỗ trợ?</string>
@@ -1119,10 +1119,9 @@
     <string name="str_market_is_closed">Thị trường đã đóng</string>
     <string name="kyc_unverifing">Đang xác minh</string>
     <string name="enter_game">Vào trò chơi</string>
-    <string name="hint_transform_money">Mẹo chuyển khoản</string>
-    <string name="confirm_transform_in_money">Vui lòng xác nhận số tiền đã chuyển vào tài khoản trò chơi</string>
-    <string name="game_account_money">số dư trò chơi</string>
-    <string name="transform_in_amount">Số tiền chuyển khoản</string>
+    <string name="N483">Vui lòng xác nhận số tiền đã chuyển vào tài khoản trò chơi</string>
+    <string name="N485">Số dư trò chơi</string>
+    <string name="N486">Số tiền chuyển khoản</string>
     <string name="account_balance_unenough">Số dư tài khoản nền tảng không đủ</string>
     <string name="platform_user_money">Số dư nền tảng</string>
     <string name="third_party">Bên thứ ba</string>
@@ -1186,7 +1185,32 @@
     <string name="N867_1">"Email đã thay đổi! "</string>
     <string name="N177">Vui lòng nhập số điện thoại chính xác</string>
     <string name="N889">Vui lòng nhận chính xác email</string>
+    <string name="J369">Kiểu thanh toán</string>
+    <string name="N880">Nhà phát hành</string>
+    <string name="N707">Cược mới nhất và giải thưởng khủng</string>
+    <string name="N708">Cược mới nhất</string>
+    <string name="N709">Giải thưởng mới</string>
+    <string name="N711">Game</string>
+    <string name="N710">Biệt danh</string>
+    <string name="N713">Lợi nhuận</string>
+    <string name="N712">Tiền cược</string>
+    <string name="N874">Gần đây</string>
+    <string name="N873">Yêu thích</string>
+    <string name="N882">Tìm kết quả</string>
     <string name="N900">Tên game</string>
+
+    <string name="N881">Trận đấu hot</string>
+    <string name="N702">Thêm</string>
+    <string name="J094">Chính Sách Bảo Mật</string>
+    <string name="N019">Liên hệ chúng tôi</string>
+    <string name="J299">Trò Chuyện Trực Tuyến</string>
+    <string name="B023">Q&amp;A</string>
+    <string name="N883">Hiện không có kết quả!</string>
+    <string name="J095">Thoả thuận</string>
+    <string name="N482">Mẹo chuyển khoản</string>
+    <string name="N885">Tải thêm</string>
+    <string name="N001">Về chúng tôi</string>
+    <string name="J093">Chơi có trách nhiệm</string>
     <string name="N899">Nếu bạn chỉ muốn xóa một tỷ số, chạm vào Xóa một tỷ số.</string>
     <string name="N379">Không có mẹo</string>
     <string name="N903">Bảng điểm số bóng rổ</string>

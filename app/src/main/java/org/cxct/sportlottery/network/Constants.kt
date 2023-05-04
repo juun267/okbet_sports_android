@@ -4,23 +4,19 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import org.cxct.sportlottery.BuildConfig
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
 import org.cxct.sportlottery.util.isMultipleSitePlat
-import org.cxct.sportlottery.util.isUAT
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
 
 object Constants {
-    val SERVER_URL_LIST = when (BuildConfig.FLAVOR) {
-        "phuat" -> listOf("abaoooiap.com")
-        else -> listOf("56wwwkvo.com", "66abnmho.com", "pukckq23.com", "tyiksa89.com")
-    }
+    val SERVER_URL_LIST = listOf("56wwwkvo.com", "66abnmho.com", "pukckq23.com", "tyiksa89.com")
     var currentServerUrl: String? = null  //當前選擇的的 server url (後續 CheckAppUpdate API 會用到)
     var currentFilename: String? = null //當前選擇的apk name
     private var mBaseUrl = ""
@@ -273,7 +269,7 @@ object Constants {
 
     //https://okbet-v2.cxsport.net/activity/mobile/#/print?uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
     //打印小票H5地址
-    fun getPrintReceipt(context:Context):String {
+    fun getPrintReceipt(context:Context,uniqNo:String?,addTime:String?,reMark:String?):String {
         var language = getLanguageTag(context)
         val base = getH5BaseUrl()
         if (language.contains("/")){
@@ -281,7 +277,7 @@ object Constants {
         }else if (language.isEmpty()){
             language = "zh"
         }
-        return "${base}activity/mobile/#/print?lang=${language}&"
+        return "${base}activity/mobile/#/print?lang=${language}&uniqNo=$uniqNo&addTime=$addTime&reMark=$reMark"
     }
 
 
@@ -307,12 +303,12 @@ object Constants {
 
     //獲取檢查APP是否有更新版本的URL //輪詢 SERVER_URL_LIST 成功的那組 serverUrl 用來 download .apk
     fun getCheckAppUpdateUrl(serverUrl: String?): String {
-        return "https://download." + serverUrl + (if (isUAT()) "/platform/" else "/sportnative/platform/") + BuildConfig.CHANNEL_NAME + "/version-Android" + (if (BuildConfig.FLAVOR != "google") "" else "-${BuildConfig.FLAVOR}") + ".json"
+        return "https://download." + serverUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/version-Android" + (if (BuildConfig.FLAVOR != "google") "" else "-${BuildConfig.FLAVOR}") + ".json"
     }
 
     //.apk 下載 url
     fun getAppDownloadUrl(): String {
-        return "https://download." + currentServerUrl + (if (isUAT()) "/platform/" else "/sportnative/platform/") + BuildConfig.CHANNEL_NAME + "/${currentFilename}.apk"
+        return "https://download." + currentServerUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/${currentFilename}.apk"
     }
 
     fun getHostListUrl(serverUrl: String?): String {
@@ -567,5 +563,19 @@ object Constants {
     //全局抽奖活动
     const val LOTTERY_GET = "/api/front/lottery/get"
 
+    // 游戏大厅
+    const val OKGAMES_HALL = "/api/front/gameEntryGames/getHallOkGames"
+
+    // 游戏分页列表
+    const val OKGAMES_GAME_LIST = "/api/front/gameEntryGames/getPageOkGames"
+
+    // 收藏或取消OKGames
+    const val OKGAMES_COLLECT = "/api/front/gameEntryGames/collectOkGames"
+
+    // 最新投注
+    const val OKGAMES_RECORD_NEW = "/api/front/index/recordNewOkGamesList"
+
+    // 最新大奖
+    const val OKGAMES_RECORD_RESULT = "/api/front/index/recordResultOkGamesList"
 
 }

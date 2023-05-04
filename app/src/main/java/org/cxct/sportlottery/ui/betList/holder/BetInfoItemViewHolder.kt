@@ -209,7 +209,7 @@ class BetInfoItemViewHolder(
                     tvCanWin.text = "${root.context.getString(R.string.bet_win)}: --"
 //                    }
                 } else {
-                    val quota = it.toString().toDouble()
+                    val quota = it.toString().toDoubleS()
                     itemData.betAmount = quota
                     itemData.inputBetAmountStr = it.toString()
                     itemData.input = it.toString()
@@ -686,7 +686,7 @@ class BetInfoItemViewHolder(
             }
         }
         itemData.realAmount = realAmount
-        odds = ArithUtil.toOddFormat(odds, 2).toDouble()
+        odds = ArithUtil.toOddFormat(odds, 2).toDoubleS()
 //            Timber.e("odds: $odds")
         return odds
     }

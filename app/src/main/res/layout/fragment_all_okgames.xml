@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <include
+        android:id="@+id/include_games_all"
+        layout="@layout/include_view_okgames_all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <!--part-1-->
+
+    <!--part-2-->
+
+    <!--part-3-->
+
+
+    <include
+        android:id="@+id/include3"
+        layout="@layout/include_part3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+    <!--part-4-->
+
+    <org.cxct.sportlottery.ui.maintab.games.view.HotMatchView
+        android:id="@+id/hot_match_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <!--part-5-->
+    <include
+        android:id="@+id/include5"
+        layout="@layout/include_view_payment_method"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp" />
+
+
+</LinearLayout>

@@ -172,7 +172,6 @@ class HomeLiveFragment :
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
                     subscribeSportChannelHall()
-                    viewModel.getRecommend()
                 }
             }
         }

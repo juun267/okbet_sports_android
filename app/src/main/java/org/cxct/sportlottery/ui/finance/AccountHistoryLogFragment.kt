@@ -115,7 +115,7 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewMode
 
         viewModel.userSportBillListResult.observe(this.viewLifecycleOwner) {
             it?.apply {
-                tv_total_number.text = it.total.toString()
+//                tv_total_number.text = it.total.toString()
             }
         }
 

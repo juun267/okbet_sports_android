@@ -211,11 +211,9 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
                 tv_upload_tips.visibility = View.GONE
                 tv_upload.text = LocalUtils.getString(R.string.upload_content)
                 uploadListener = UploadImageView.UploadListener {
-                    PicSelectorDialog(
-                        activityNotNull,
-                        mSelectDocMediaListener,
-                        PicSelectorDialog.CropType.RECTANGLE
-                    ).show(parentFragmentManager, CredentialsFragment::class.java.simpleName)
+                    val dialog = PicSelectorDialog()
+                    dialog.mSelectListener = mSelectDocMediaListener
+                    dialog.show(parentFragmentManager, CredentialsFragment::class.java.simpleName)
                 }
             }
 
@@ -225,11 +223,9 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
                 tv_upload_tips.visibility = View.GONE
                 tv_upload.text = LocalUtils.getString(R.string.upload_photo_content)
                 uploadListener = UploadImageView.UploadListener {
-                    PicSelectorDialog(
-                        activityNotNull,
-                        mSelectPhotoMediaListener,
-                        PicSelectorDialog.CropType.RECTANGLE
-                    ).show(parentFragmentManager, CredentialsFragment::class.java.simpleName)
+                    val dialog = PicSelectorDialog()
+                    dialog.mSelectListener = mSelectPhotoMediaListener
+                    dialog.show(parentFragmentManager, CredentialsFragment::class.java.simpleName)
                 }
             }
         }

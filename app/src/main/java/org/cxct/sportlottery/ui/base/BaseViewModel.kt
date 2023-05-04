@@ -32,40 +32,11 @@ abstract class BaseViewModel(
     val infoCenterRepository: InfoCenterRepository
 ) : ViewModel() {
 
-    private lateinit var liveSet: HashMap<Class<*>, MutableLiveData<*>>
+    companion object {
+        private val _errorResultToken = MutableLiveData<Event<BaseResult>>()
 
-    @Synchronized
-    private fun <T> getLiveData(clazz: Class<T>): MutableLiveData<T> {
-
-        var liveData: MutableLiveData<T>? = null
-        if (!::liveSet.isInitialized) {
-            liveSet = HashMap()
-            liveData = MutableLiveData<T>()
-            liveSet.put(clazz, liveData)
-            return liveData
-        }
-
-        liveData = liveSet.get(clazz) as MutableLiveData<T>?
-        if (liveData == null) {
-            liveData = MutableLiveData<T>()
-            liveSet.put(clazz, liveData)
-            return liveData
-        }
-
-        return liveData!!
-    }
-
-    fun <T> oberserve(lifecycleOwner: LifecycleOwner, clazz: Class<T>, oberver: Observer<T>) {
-        getLiveData(clazz).observe(lifecycleOwner, oberver)
-    }
-
-    protected fun post(data: Any) {
-        getLiveData(data::class.java).postValue(data as Nothing)
-    }
-
-    override fun onCleared() {
-        if (::liveSet.isInitialized) {
-            liveSet.values.forEach { it.clean() }
+        fun postErrorResut(result: BaseResult) {
+            _errorResultToken.postValue(Event(result))
         }
     }
 
@@ -83,7 +54,7 @@ abstract class BaseViewModel(
     val errorResultIndex: LiveData<String>
         get() = _errorResultIndex
 
-    val errorResultToken: LiveData<BaseResult>
+    val errorResultToken: LiveData<Event<BaseResult>>
         get() = _errorResultToken
 
     val networkExceptionUnavailable: LiveData<String>
@@ -96,7 +67,6 @@ abstract class BaseViewModel(
         get() = _networkExceptionUnknown
 
     private val _errorResultIndex = MutableLiveData<String>()
-    private val _errorResultToken = MutableLiveData<BaseResult>()
     private val _networkExceptionUnavailable = MutableLiveData<String>()
     private val _networkExceptionTimeout = MutableLiveData<String>()
     private val _networkExceptionUnknown = MutableLiveData<String>()
@@ -154,7 +124,7 @@ abstract class BaseViewModel(
         val errorResult = ErrorUtils.parseError(response)
         if (errorResult?.code == HttpError.UNAUTHORIZED.code || errorResult?.code == HttpError.KICK_OUT_USER.code || errorResult?.code == HttpError.MAINTENANCE.code) {
             errorResult.let {
-                _errorResultToken.postValue(it)
+                _errorResultToken.postValue(Event(it))
             }
         }
         return errorResult
