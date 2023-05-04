@@ -130,7 +130,7 @@ class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: Attribut
 
         val host = sConfigData?.resServerHost
         val images = imageList.map{
-            XBannerImage(it.imageText1 + "", host + it.imageName1, it.imageLink)
+            XBannerImage(it.imageText1 + "", host + it.imageName1, it.appUrl)
         }
 
         okgamesBanner.setBannerData(images.toMutableList())
