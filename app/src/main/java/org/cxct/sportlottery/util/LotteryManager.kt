@@ -61,14 +61,18 @@ class LotteryManager {
     /**
      * 限定指定页面不能显示
      */
-    fun allowdShow(): Boolean = when (activity!!::class) {
-        SplashActivity::class -> false
-        LaunchActivity::class -> false
-        MaintenanceActivity::class -> false
-        ThirdGameActivity::class -> false
-        LotteryActivity::class -> false
-        else -> true
-    }
+    private fun allowdShow(): Boolean =
+        if (SPUtil.getMarketSwitch())
+            false
+        else
+            when (activity!!::class) {
+                SplashActivity::class -> false
+                LaunchActivity::class -> false
+                MaintenanceActivity::class -> false
+                ThirdGameActivity::class -> false
+                LotteryActivity::class -> false
+                else -> true
+            }
 
     private fun startTimer() {
         if (countdownTimer != null) {
