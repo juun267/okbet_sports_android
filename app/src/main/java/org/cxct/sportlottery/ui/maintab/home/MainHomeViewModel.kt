@@ -218,13 +218,13 @@ open class MainHomeViewModel(
             //hide loading
             _homeGamesList.value= arrayListOf()
         }else{
+            totalCount=it.total
             if(totalPage==0){
                 totalPage=totalCount/pageSize
                 if(totalCount%pageSize!=0){
                     totalPage++
                 }
             }
-            totalCount=it.total
             _homeGamesList.value=it.getData()
         }
     }

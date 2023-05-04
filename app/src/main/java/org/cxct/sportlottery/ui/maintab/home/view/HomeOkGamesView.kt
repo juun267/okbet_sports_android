@@ -40,10 +40,12 @@ class HomeOkGamesView(context: Context, attrs: AttributeSet) : RelativeLayout(co
         fragment.viewModel.getHomeOKGamesList()
         fragment.viewModel.homeGamesList.observe(fragment.viewLifecycleOwner) {
             fragment.hideLoading()
+            //缓存这一页数据到map
             totalGameMap[fragment.viewModel.pageIndex] = it
             gameAdapter.setList(it)
             //设置当前条目数量
             setIndexCount(fragment.viewModel.pageIndex)
+            //总条目数量
             tvPageSize.text = "/${fragment.viewModel.totalCount}"
         }
 
