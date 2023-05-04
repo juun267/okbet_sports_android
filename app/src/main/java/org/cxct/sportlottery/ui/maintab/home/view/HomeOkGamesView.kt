@@ -13,7 +13,10 @@ import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ScreenUtil
+import org.cxct.sportlottery.util.enterThirdGame
+import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.view.onClick
+import org.cxct.sportlottery.view.transform.TransformInDialog
 
 class HomeOkGamesView(context: Context, attrs: AttributeSet) : RelativeLayout(context, attrs) {
     private val gameAdapter = RecyclerHomeOkGamesAdapter()
@@ -49,6 +52,9 @@ class HomeOkGamesView(context: Context, attrs: AttributeSet) : RelativeLayout(co
             tvPageSize.text = "/${fragment.viewModel.totalCount}"
         }
 
+        //监听进入游戏
+        initEnterGame(fragment)
+
         //上一页
         ivBackPage.onClick {
             if(fragment.viewModel.pageIndex==1){
@@ -64,6 +70,16 @@ class HomeOkGamesView(context: Context, attrs: AttributeSet) : RelativeLayout(co
                 return@onClick
             }
             changePageData(false,fragment)
+        }
+
+        //item点击 进入游戏
+        gameAdapter.setOnItemClickListener{ _, _, position ->
+            loginedRun(fragment.requireContext()) {
+                gameAdapter.data[position].let {okGameBean->
+                    fragment.viewModel.homeOkGamesEnterThirdGame(okGameBean, fragment)
+                    fragment.viewModel.homeOkGameAddRecentPlay(okGameBean)
+                }
+            }
         }
     }
 
@@ -86,6 +102,20 @@ class HomeOkGamesView(context: Context, attrs: AttributeSet) : RelativeLayout(co
             //请求该页数据
             fragment.loading()
             fragment.viewModel.getHomeOKGamesList()
+        }
+    }
+
+    private fun<T : MainHomeViewModel> initEnterGame(fragment: BindingSocketFragment<T, *>){
+        fragment.viewModel.enterThirdGameResult.observe(fragment.viewLifecycleOwner) {
+            if (fragment.isVisible)
+                fragment.enterThirdGame(it.second, it.first)
+        }
+        fragment.viewModel.gameBalanceResult.observe(fragment.viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { event ->
+                TransformInDialog(event.first, event.second, event.third) {enterResult->
+                    fragment.enterThirdGame(enterResult, event.first)
+                }.show(fragment.childFragmentManager, null)
+            }
         }
     }
 

@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.callApi
+import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.common.extentions.toast
 import org.cxct.sportlottery.net.bettingStation.BettingStationRepository
 import org.cxct.sportlottery.net.games.OKGamesRepository
@@ -227,6 +228,38 @@ open class MainHomeViewModel(
             }
             _homeGamesList.value=it.getData()
         }
+    }
+
+
+    /**
+     * 进入OKgame游戏
+     */
+    fun homeOkGamesEnterThirdGame(gameData: OKGameBean?, baseFragment: BaseFragment<*>) {
+        if (gameData == null) {
+            _enterThirdGameResult.postValue(
+                Pair(
+                    "${gameData?.firmCode}", EnterThirdGameResult(
+                        resultType = EnterThirdGameResult.ResultType.FAIL,
+                        url = null,
+                        errorMsg = androidContext.getString(R.string.hint_game_maintenance)
+                    )
+                )
+            )
+            return
+        }
+        requestEnterThirdGame(
+            "${gameData.firmType}",
+            "${gameData.gameCode}",
+            "${gameData.gameCode}",
+            baseFragment
+        )
+    }
+
+    /**
+     * 记录最近游戏
+     */
+    fun homeOkGameAddRecentPlay(okGameBean: OKGameBean) {
+         LoginRepository.addRecentPlayGame(okGameBean.id.toString())
     }
 
     //region 宣傳頁推薦賽事資料處理
