@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.view.View
+
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
@@ -33,6 +34,9 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
     private inline fun getMainTabActivity() = activity as MainTabActivity
     private inline fun getHomeFragment() = parentFragment as HomeFragment
 
+    fun jumpToInplaySport() = getMainTabActivity().jumpToInplaySport()
+    fun jumpToOKGames() = getMainTabActivity().jumpToOKGames()
+
     private val gameRecordAdapter by lazy { OkGameRecordAdapter() }
     private var categoryList = mutableListOf<OKGamesCategory>()
     private val p3RecordNData: MutableList<RecordNewEvent> = mutableListOf()//接口返回的最新投注
@@ -53,7 +57,6 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
 
     private var recordHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
-            super.handleMessage(msg)
             when (msg.what) {
                 HANDLER_RECORD_NEW_ADD -> {
                     var wsData: RecordNewEvent = msg.obj as RecordNewEvent
@@ -97,7 +100,7 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
         homeBottumView.bindServiceClick(childFragmentManager)
         initToolBar()
         initNews()
-        onBindRecordView()
+        initRecordView()
         initObservable()
         binding.hotMatchView.onCreate(viewModel.publicityRecommend, this@MainHomeFragment2)
         viewModel.getHomeNews(1, 5, listOf(NEWS_OKBET_ID))
@@ -106,6 +109,10 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
 
 
     override fun onBindViewStatus(view: View) {
+        binding.homeTopView.setup(this)
+        onBindRecordView()
+        initObservable()
+        binding.hotMatchView.onCreate(viewModel.publicityRecommend,this@MainHomeFragment2)
     }
 
     override fun onInitData() {
@@ -181,7 +188,7 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
         }
     }
 
-    private fun onBindRecordView() {
+    private fun initRecordView() {
         viewModel.getRecordNew()
         viewModel.getRecordResult()
         recordHandler.sendEmptyMessageDelayed(HANDLER_RECORD_GET, (Random.nextLong(1000) + 500))
@@ -194,7 +201,36 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
             )
             rvOkgameRecord.adapter = gameRecordAdapter
             rvOkgameRecord.itemAnimator = DefaultItemAnimator()
+            binding.includeRecord.rGroupRecord.setOnCheckedChangeListener { group, checkedId ->
+                when (checkedId) {
+                    R.id.rbtn_lb -> {
+                        if (!recordNewhttpFlag) {
+                            viewModel.getRecordNew()
+                        }
+                        if (gameRecordAdapter.data.isNotEmpty()) {
+                            p3RecordRShowData.clear()
+                            p3RecordRShowData.addAll(gameRecordAdapter.data)
+                            gameRecordAdapter.data.clear()
+                            gameRecordAdapter.notifyDataSetChanged()
+                            gameRecordAdapter.addData(p3RecordNShowData)
+                        }
+                    }
 
+
+                    R.id.rbtn_lbw -> {
+                        if (!recordResulthttpFlag) {
+                            viewModel.getRecordResult()
+                        }
+                        if (gameRecordAdapter.data.isNotEmpty()) {
+                            p3RecordNShowData.clear()
+                            p3RecordNShowData.addAll(gameRecordAdapter.data)
+                            gameRecordAdapter.data.clear()
+                            gameRecordAdapter.notifyDataSetChanged()
+                            gameRecordAdapter.addData(p3RecordRShowData)
+                        }
+                    }
+                }
+            }
             viewModel.recordNewHttp.observe(viewLifecycleOwner) {
                 if (it != null) {
                     p3RecordNData.addAll(it.reversed())
@@ -289,5 +325,10 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
                 (rvBettingStation.adapter as HomeBettingStationAdapter).setList(newsList)
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        recordHandler.removeCallbacksAndMessages(null)
     }
 }

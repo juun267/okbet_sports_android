@@ -58,6 +58,12 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         private const val SELF_LIMIT = 1130
         const val LOGIN_TYPE_CODE = 0
         const val LOGIN_TYPE_PWD = 1
+
+        fun startRegist(context: Context) {
+            val intent = Intent(context, LoginOKActivity::class.java)
+            intent.putExtra("login_type", LOGIN_TYPE_CODE)
+            context.startActivity(intent)
+        }
     }
 
     private var countDownGoing = false
@@ -84,6 +90,10 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         initObserve()
         viewModel.focusChangeCheckAllInputComplete()
         EventBusUtil.targetLifecycle(this)
+
+        if(LOGIN_TYPE_CODE == intent.getIntExtra("login_type", LOGIN_TYPE_PWD)) {
+            switchLoginType(LOGIN_TYPE_CODE)
+        }
     }
 
     private fun initOnClick() {
@@ -477,7 +487,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         }
     }
 
-    fun setupRecommendCodeVisible() {
+    private fun setupRecommendCodeVisible() {
         binding.etRecommendCode.isVisible =
             viewModel.loginType == LOGIN_TYPE_CODE && viewModel.checkUserExist.value == false
     }

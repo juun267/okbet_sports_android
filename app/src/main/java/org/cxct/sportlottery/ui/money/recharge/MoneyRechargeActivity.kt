@@ -57,7 +57,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
 
     private fun initToolbar() {
         tv_toolbar_title.setTitleLetterSpacing()
-        tv_toolbar_title.text = getString(R.string.recharge)
+        tv_toolbar_title.text = getString(R.string.J285)
         btn_toolbar_back.setOnClickListener {
             finish()
         }

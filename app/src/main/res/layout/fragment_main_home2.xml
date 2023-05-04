@@ -21,6 +21,7 @@
             android:descendantFocusability="blocksDescendants">
 
             <org.cxct.sportlottery.ui.maintab.home.view.HomeTopView
+                android:id="@+id/homeTopView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
@@ -28,7 +29,11 @@
 
             <!--part-2-->
             <org.cxct.sportlottery.ui.maintab.games.view.HotMatchView
-                android:id="@+id/hot_match_view"
+                android:id="@+id/hotMatchView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <org.cxct.sportlottery.ui.maintab.home.view.HomeBingoView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <!--part-2-end-->
@@ -54,10 +59,9 @@
 
     <ImageView
         android:id="@+id/ivBackTop"
-        android:src="@drawable/icon_top_arrow_up"
-        android:layout_width="70dp"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="10dp"
+        android:src="@drawable/icon_backtop_blue"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:adjustViewBounds="true"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"

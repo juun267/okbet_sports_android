@@ -196,7 +196,7 @@
     <string name="fourth">Apat</string>
     <string name="fifth">Lima</string>
     <string name="account_balance">Kabuuang asset</string>
-    <string name="recharge">Deposito</string>
+    <string name="J285">Deposito</string>
     <string name="recharge_channel_online">Online Bayad</string>
     <string name="account_transfer">Ilipat ang balanse</string>
     <string name="N485">Balanse sa laro</string>
@@ -1190,4 +1190,7 @@
     <string name="N885">Mag-load pa</string>
     <string name="N001">Tungkol sa Amin</string>
     <string name="J093">Responsableng Paglalaro</string>
+
+    <string name="M013">Malapit na</string>
+    <string name="N703">Mga Lugar para sa OKBET Game</string>
 </resources>

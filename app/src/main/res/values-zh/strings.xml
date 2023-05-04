@@ -197,7 +197,7 @@
     <string name="fourth">四</string>
     <string name="fifth">五</string>
     <string name="account_balance">总资产</string>
-    <string name="recharge">存款</string>
+    <string name="J285">存款</string>
     <string name="account_transfer">额度转换</string>
     <string name="money_recycle_succeed">额度回收成功</string>
     <string name="news_center">消息中心</string>
@@ -1261,5 +1261,8 @@
     <string name="N890">打印</string>
     <string name="N891">请输入姓名</string>
     <string name="J033">姓名</string>
+
+    <string name="M013">即将推出</string>
+    <string name="N703">OKBET游戏场馆</string>
 
 </resources>

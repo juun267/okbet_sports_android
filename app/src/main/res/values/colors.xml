@@ -91,6 +91,7 @@
     <color name="color_F8F9FD">#F8F9FD</color>
     <color name="color_806FA6FF">#806FA6FF</color>
     <color name="color_326BFF">#326BFF</color>
+    <color name="color_4C326BFF">#4c326BFF</color>
 
 
     <!--以下部分，是系统中的白天的色值 -->
@@ -342,6 +343,7 @@
     <color name="color_6D7693">#6D7693</color>
     <color name="color_BEC7DC">#BEC7DC</color>
     <color name="color_EEF3FC">#EEF3FC</color>
+    <color name="color_FF8A00">#FF8A00</color>
 
     <!--region keyboard-->
     <!--endregion keyboard-->
@@ -414,5 +416,8 @@
     <color name="color_F23C3B">#F23C3B</color>
     <color name="color_10F23C3B">#10F23C3B</color>
     <color name="color_303C55">#303C55</color>
+
+    <color name="color_0199FC">#0199FC</color>
+
 
 </resources>
