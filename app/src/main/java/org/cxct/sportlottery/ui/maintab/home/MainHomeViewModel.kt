@@ -10,6 +10,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.toast
 import org.cxct.sportlottery.net.games.OKGamesRepository
+import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.network.NetResult
@@ -131,6 +132,13 @@ open class MainHomeViewModel(
     val recordResultHttp: LiveData<List<RecordNewEvent>>
         get() = _recordResultHttp
 
+
+    //okgames游戏列表
+    val homeGamesList: LiveData< List<OKGameBean>>
+        get() = _homeGamesList
+    private val _homeGamesList = MutableLiveData< List<OKGameBean>>()
+
+
     private val _recordNewHttp = MutableLiveData<List<RecordNewEvent>>()
     private val _recordResultHttp = MutableLiveData<List<RecordNewEvent>>()
 
@@ -187,6 +195,31 @@ open class MainHomeViewModel(
                 PlayCateMenuFilterUtils.filterList = it.t?.sportMenuList
                 _sportMenuFilterList.postValue(Event(it.t?.sportMenuList))
             }
+        }
+    }
+
+
+    /**
+     * 获取首页okgames列表
+     */
+    var pageIndex=1
+    val pageSize=6
+    var totalCount=0
+    var totalPage=0
+    fun getHomeOKGamesList(
+    ) = callApi({ OKGamesRepository.getHomeOKGamesList(pageIndex, pageSize) }) {
+        if(it.getData()==null){
+            //hide loading
+            _homeGamesList.value= arrayListOf()
+        }else{
+            if(totalPage==0){
+                totalPage=totalCount/pageSize
+                if(totalCount%pageSize!=0){
+                    totalPage++
+                }
+            }
+            totalCount=it.total
+            _homeGamesList.value=it.getData()
         }
     }
 
