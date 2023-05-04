@@ -1134,7 +1134,6 @@
     <string name="sms_code_length_error">Verification code kailangan 4 na digit</string>
     <string name="phone_no_error">Ang numero ng mobile phone ay dapat na 11 digit simula sa 09</string>
 
-    <string name="J369">Paraan ng Pagbayad</string>
 
     <string name="N849">Address</string>
     <string name="N887">Hindi mababago ang input</string>
@@ -1190,4 +1189,19 @@
     <string name="N885">Mag-load pa</string>
     <string name="N001">Tungkol sa Amin</string>
     <string name="J093">Responsableng Paglalaro</string>
+    <string name="N899">Kung gusto mo lang magtanggal ng single score, maaari mong pindutin ang magtangal ng single score.</string>
+    <string name="N379">Huwag nang ipaalala muli</string>
+    <string name="N903">Last digit score sa basketball</string>
+    <string name="str_total_stake">Kabuuang taya：</string>
+    <string name="N904">Pag isipan</string>
+    <string name="N905">Kumpirma</string>
+    <string name="N374">Delete lahat</string>
+    <string name="J220">+Madami pa</string>
+    <string name="bet_basketball_notify_max_limit">Hanggang 100 mga pagpipilian ang maaaring idagdag sa slip ng taya</string>
+    <string name="N918">Total stake:</string>
+    <string name="N919">Total Win:</string>
+    <string name="N920">+More</string>
+    <string name="N901">Kumpirmasyon sa pag-delete</string>
+    <string name="N888">Lahat ng pagpipilian ay may parehong mga odds para sa huling iskor</string>
+    <string name="N898">Sigurado ka bang gusto mong tanggalin ang lahat ng seleksyon ng iskor?</string>
 </resources>

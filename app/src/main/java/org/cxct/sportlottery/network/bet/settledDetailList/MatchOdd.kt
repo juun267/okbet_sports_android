@@ -4,8 +4,9 @@ package org.cxct.sportlottery.network.bet.settledDetailList
 import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import org.cxct.sportlottery.common.proguards.KeepMembers
 import kotlinx.android.parcel.Parcelize
+import org.cxct.sportlottery.common.proguards.KeepMembers
+import org.cxct.sportlottery.network.bet.list.EndScoreInfo
 import org.cxct.sportlottery.network.bet.settledList.PlayCateMatchResult
 
 @Parcelize
@@ -67,5 +68,7 @@ data class MatchOdd(
     @Json(name = "oddsType")
     val oddsType: String?,
     @Json(name = "categoryIcon")
-    val categoryIcon: String?
+    val categoryIcon: String?,
+    @Json(name = "multiCode")
+    val multiCode: List<EndScoreInfo>?,
 ) : Parcelable

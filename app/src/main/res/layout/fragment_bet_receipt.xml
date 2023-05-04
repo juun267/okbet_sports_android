@@ -93,7 +93,7 @@
             android:layout_weight="1"
             android:background="@color/color_202541_FFFFFF">
 
-            <androidx.recyclerview.widget.RecyclerView
+            <org.cxct.sportlottery.view.ParentRecyclerView
                 android:paddingTop="10dp"
                 android:id="@+id/rv_bet_receipt"
                 android:layout_width="match_parent"

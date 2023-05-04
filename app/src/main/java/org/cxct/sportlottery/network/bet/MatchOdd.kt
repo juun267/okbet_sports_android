@@ -3,8 +3,10 @@ package org.cxct.sportlottery.network.bet
 
 import android.os.Parcelable
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguards.KeepMembers
+import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
+import org.cxct.sportlottery.common.proguards.KeepMembers
+import org.cxct.sportlottery.network.bet.list.EndScoreInfo
 
 @Parcelize
 @JsonClass(generateAdapter = true) @KeepMembers
@@ -53,4 +55,6 @@ data class MatchOdd(
     val rtScore: String?,
     @Json(name = "categoryIcon")
     val categoryIcon: String?,
+    @Json(name = "multiCode")
+    val multiCode: List<EndScoreInfo>?,
 ): Parcelable

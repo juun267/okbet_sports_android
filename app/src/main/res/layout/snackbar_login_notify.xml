@@ -6,7 +6,7 @@
     android:padding="8dp">
 
     <TextView
-        android:id="@+id/tv_notify"
+        android:id="@+id/tvNotify"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@color/color_FF9143_ff9200"

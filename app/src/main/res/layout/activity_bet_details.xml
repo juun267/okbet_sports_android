@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_141414_F3F4F5"
     android:orientation="vertical"
-    tools:context=".ui.maintab.betdetails.BetDetailsActivity">
+    tools:context=".ui.betRecord.detail.BetDetailsActivity">
 
     <org.cxct.sportlottery.view.CustomTopToolbar
         android:id="@+id/custom_tool_bar"

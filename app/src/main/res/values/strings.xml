@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="loading">Loading</string>
+    <string name="loading">Loading...</string>
     <string name="connect_first">Select the internet to connect</string>
     <string name="error_url_fail">Jumping to address error</string>
     <string name="unknown_error">unknown error</string>
@@ -1314,4 +1314,19 @@
     <string name="N885">Load More</string>
     <string name="N001">About Us</string>
     <string name="J093">Responsible Gaming</string>
+    <string name="N899">If you only want to delete a single score, you can click on delete a single score.</string>
+    <string name="N379">No tip</string>
+    <string name="N903">Basketball Ending Card</string>
+    <string name="str_total_stake">Total stake：</string>
+    <string name="N904">Think again</string>
+    <string name="N374">Delete ALL</string>
+    <string name="N905">Confirm</string>
+    <string name="J220">+More</string>
+    <string name="bet_basketball_notify_max_limit">Can add maximum 100 options to betslip</string>
+    <string name="N918">Total stake:</string>
+    <string name="N919">Total Win:</string>
+    <string name="N920">+More</string>
+    <string name="N901">Confirm delete</string>
+    <string name="N888">The individual odds are the same for all selections in the final score.</string>
+    <string name="N898">Are you sure you want to delete all score options?</string>
 </resources>

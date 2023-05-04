@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
@@ -91,6 +91,11 @@
         <item name="android:textSize">22sp</item>
     </style>
 
+    <style name="text_bold">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textFontWeight" tools:ignore="NewApi">700</item>
+    </style>
+
     <style name="text_style_responsible">
         <item name="android:autoLink">all</item>
         <item name="android:layout_width">wrap_content</item>
@@ -101,9 +106,9 @@
     </style>
 
     <declare-styleable name="SwipeMenuLayout">
-        <attr format="boolean" name="swipeEnable"/>
-        <attr format="boolean" name="ios"/>
-        <attr format="boolean" name="leftSwipe"/>
+        <attr format="boolean" name="swipeEnable" />
+        <attr format="boolean" name="ios" />
+        <attr format="boolean" name="leftSwipe" />
     </declare-styleable>
 
 </resources>
