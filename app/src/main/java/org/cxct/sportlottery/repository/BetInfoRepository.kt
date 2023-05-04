@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.repository
 
 
+import androidx.exifinterface.media.ExifInterface.IfdType
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.application.MultiLanguagesApplication
@@ -357,19 +358,44 @@ object BetInfoRepository {
             this.oddsType = it
         }
 
-        if (playCateCode == PlayCate.FS_LD_CS.value) {
-            if (betList.size >= BET_BASKETBALL_ENDING_SCORE_MAX_COUNT) {
+        //如果当前选择的是篮球末位比分
+        if (playCateCode == PlayCate.FS_LD_CS.name) {
+            //如果当前选择的注单数量大于100个
+            if (betList.size > BET_BASKETBALL_ENDING_SCORE_MAX_COUNT) {
                 showBetBasketballUpperLimit.postValue(Event(true))
                 return
             }
         } else {
-            val isAllBas = betList.all { it.matchOdd.playCateName == PlayCate.FS_LD_CS.name  }
-            Timber.d("isAllBasEndScore:${isAllBas}")
-            if (isAllBas && betList.size >= BET_INFO_MAX_COUNT) {
+            //如果当前选择的不是篮球末位比分
+            //选择的篮球末位比分的个数
+            val basketballCount =
+                betList.count { it.matchOdd.playCateName == PlayCate.FS_LD_CS.name }
+            //除了篮球末位比分以外的数量
+            val otherCount = betList.size - basketballCount
+            Timber.d("otherCount:${otherCount}")
+            if (otherCount > BET_INFO_MAX_COUNT) {
                 _showBetUpperLimit.postValue(Event(true))
                 return
             }
         }
+
+
+//        if (playCateCode == PlayCate.FS_LD_CS.value) {
+//            if (betList.size >= BET_BASKETBALL_ENDING_SCORE_MAX_COUNT) {
+//                showBetBasketballUpperLimit.postValue(Event(true))
+//                return
+//            }
+//        } else {
+//            //全是篮球末位比分
+//            val isAllBas = betList.all { it.matchOdd.playCateName == PlayCate.FS_LD_CS.name  }
+//            //至少有一个是篮球末位比分
+//            val isAnyBas = betList.none { it.matchOdd.playCateName != PlayCate.FS_LD_CS.name }
+//            Timber.d("isAllBasEndScore:${isAllBas}")
+//            if (isAllBas && betList.size >= BET_INFO_MAX_COUNT) {
+//                _showBetUpperLimit.postValue(Event(true))
+//                return
+//            }
+//        }
 
         val betInfoMatchOdd = MatchOddUtil.transfer(
             matchType = matchType,
@@ -402,17 +428,18 @@ object BetInfoRepository {
             var lastMatchName: String? = null
             if (betList.isNotEmpty()) {
                 val lastMatchOdd = betList.last().matchOdd
-                lastMatchName = lastMatchOdd.playCateName + lastMatchOdd.awayName + lastMatchOdd.homeName
+                lastMatchName =
+                    lastMatchOdd.playCateName + lastMatchOdd.awayName + lastMatchOdd.homeName
             }
             val isSameMatch = (currentMatchName == lastMatchName) || (lastMatchName == null)
 //            Timber.d("isSameMatch:${isSameMatch} currentMatchName:${currentMatchName} lastMatchName:${lastMatchName}")
             //篮球末位比分
             if (playCateCode == PlayCate.FS_LD_CS.value) {
-                if (isSameMatch){
+                if (isSameMatch) {
                     Timber.d("篮球末位比分模式")
                     oddIDArray.add(it.oddsId)
                     betList.add(data)
-                }else{
+                } else {
                     oddIDArray.clear()
                     betList.clear()
                     oddIDArray.add(it.oddsId)
