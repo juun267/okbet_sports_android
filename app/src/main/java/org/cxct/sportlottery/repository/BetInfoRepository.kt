@@ -359,9 +359,13 @@ object BetInfoRepository {
         }
 
         //如果当前选择的是篮球末位比分
-        if (playCateCode == PlayCate.FS_LD_CS.name) {
+        if (playCateCode == PlayCate.FS_LD_CS.value) {
+            //注单中选择的篮球末位比分的个数
+            val basketballCount =
+                betList.count { it.matchOdd.playCode == PlayCate.FS_LD_CS.value }
             //如果当前选择的注单数量大于100个
-            if (betList.size > BET_BASKETBALL_ENDING_SCORE_MAX_COUNT) {
+//            Timber.d("basketballCount:${basketballCount}")
+            if (basketballCount >= BET_BASKETBALL_ENDING_SCORE_MAX_COUNT) {
                 showBetBasketballUpperLimit.postValue(Event(true))
                 return
             }
@@ -369,33 +373,17 @@ object BetInfoRepository {
             //如果当前选择的不是篮球末位比分
             //选择的篮球末位比分的个数
             val basketballCount =
-                betList.count { it.matchOdd.playCateName == PlayCate.FS_LD_CS.name }
+                betList.count {
+                    it.matchOdd.playCode == PlayCate.FS_LD_CS.value
+                }
             //除了篮球末位比分以外的数量
             val otherCount = betList.size - basketballCount
-            Timber.d("otherCount:${otherCount}")
-            if (otherCount > BET_INFO_MAX_COUNT) {
+//            Timber.d("basketballCount:${basketballCount} betList:${betList} otherCount:${otherCount}")
+            if (otherCount >= BET_INFO_MAX_COUNT) {
                 _showBetUpperLimit.postValue(Event(true))
                 return
             }
         }
-
-
-//        if (playCateCode == PlayCate.FS_LD_CS.value) {
-//            if (betList.size >= BET_BASKETBALL_ENDING_SCORE_MAX_COUNT) {
-//                showBetBasketballUpperLimit.postValue(Event(true))
-//                return
-//            }
-//        } else {
-//            //全是篮球末位比分
-//            val isAllBas = betList.all { it.matchOdd.playCateName == PlayCate.FS_LD_CS.name  }
-//            //至少有一个是篮球末位比分
-//            val isAnyBas = betList.none { it.matchOdd.playCateName != PlayCate.FS_LD_CS.name }
-//            Timber.d("isAllBasEndScore:${isAllBas}")
-//            if (isAllBas && betList.size >= BET_INFO_MAX_COUNT) {
-//                _showBetUpperLimit.postValue(Event(true))
-//                return
-//            }
-//        }
 
         val betInfoMatchOdd = MatchOddUtil.transfer(
             matchType = matchType,
