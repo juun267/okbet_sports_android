@@ -36,7 +36,9 @@ data class BettingStation(
     @Json(name = "type")
     val type: Int,
     @Json(name = "addr")
-    val addr: String
+    val addr: String,
+    @Json(name = "stationImage")
+    val stationImage: String,
 ) : Serializable {
     var isSelected = false
     var appointmentTime: String = ""

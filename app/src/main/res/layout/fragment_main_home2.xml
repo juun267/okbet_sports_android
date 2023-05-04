@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -31,7 +30,7 @@
             <org.cxct.sportlottery.ui.maintab.games.view.HotMatchView
                 android:id="@+id/hot_match_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
             <!--part-2-end-->
 
             <include
@@ -42,10 +41,14 @@
                 android:id="@+id/includeRecord"
                 layout="@layout/include_home_record" />
 
+            <include
+                android:id="@+id/includeBettingStation"
+                layout="@layout/include_home_bettingstation" />
+
             <org.cxct.sportlottery.ui.maintab.home.view.HomeButtomView
                 android:id="@+id/homeBottumView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

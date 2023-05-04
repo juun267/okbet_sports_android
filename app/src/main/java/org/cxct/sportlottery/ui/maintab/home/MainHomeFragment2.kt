@@ -5,10 +5,11 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.view.View
-
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_main_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
@@ -16,15 +17,14 @@ import org.cxct.sportlottery.common.extentions.fitsSystemStatus
 import org.cxct.sportlottery.databinding.FragmentMainHome2Binding
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
 import org.cxct.sportlottery.net.news.data.NewsItem
+import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OkGameRecordAdapter
 import org.cxct.sportlottery.ui.maintab.home.news.HomeNewsAdapter
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.util.RCVDecoration
-import org.cxct.sportlottery.util.setupBackTop
 import timber.log.Timber
 import kotlin.random.Random
 
@@ -48,6 +48,8 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
     private var lastRequestTimeStamp = 0L
     private var recordNewhttpFlag = false //最新投注接口请求完成
     private var recordResulthttpFlag = false//最新大奖接口请求完成
+    private val NEWS_OKBET_ID = 12
+    private val NEWS_SPORT_ID = 13
 
     private var recordHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
@@ -96,8 +98,10 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
         initToolBar()
         initNews()
         onBindRecordView()
-
-        binding.hotMatchView.onCreate(viewModel.publicityRecommend,this@MainHomeFragment2)
+        initObservable()
+        binding.hotMatchView.onCreate(viewModel.publicityRecommend, this@MainHomeFragment2)
+        viewModel.getHomeNews(1, 5, listOf(NEWS_OKBET_ID))
+        viewModel.getBettingStationList()
     }
 
 
@@ -105,7 +109,7 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
     }
 
     override fun onInitData() {
-        viewModel.getGameList(1, 5, listOf(12))
+
     }
 
     fun initToolBar() = binding.run {
@@ -138,6 +142,9 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
         viewModel.homeNewsList.observe(viewLifecycleOwner) {
             setupNews(it)
         }
+        viewModel.bettingStationList.observe(viewLifecycleOwner) {
+            setupBettingStation(it)
+        }
     }
     //hot match
     private fun refreshHotMatch(){
@@ -148,9 +155,18 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
     //hot match end
     private fun initNews() {
         binding.includeNews.apply {
-            tabNews.setCustomTabSelectedListener {
-                viewModel.getGameList(1, 5, listOf(12))
-            }
+            tabNews.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    val categoryId = if (tab?.position == 0) NEWS_OKBET_ID else NEWS_SPORT_ID
+                    viewModel.getHomeNews(1, 5, listOf(categoryId))
+                }
+
+                override fun onTabUnselected(tab: TabLayout.Tab?) {
+                }
+
+                override fun onTabReselected(tab: TabLayout.Tab?) {
+                }
+            })
         }
     }
 
@@ -245,5 +261,33 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
             gameRecordAdapter.removeAt(gameRecordAdapter.data.size - 1)
         }
         gameRecordAdapter.addData(0, it)
+    }
+
+    private fun setupBettingStation(newsList: List<BettingStation>) {
+        binding.includeBettingStation.apply {
+            if (rvBettingStation.adapter == null) {
+                rvBettingStation.layoutManager =
+                    LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+                rvBettingStation.addItemDecoration(SpaceItemDecoration(requireContext(),
+                    R.dimen.margin_10))
+                PagerSnapHelper().attachToRecyclerView(rvBettingStation)
+                rvBettingStation.adapter = HomeBettingStationAdapter().apply {
+                    setList(newsList)
+                    setOnItemChildClickListener { adapter, view, position ->
+                        val data = (adapter as HomeBettingStationAdapter).data[position]
+                        JumpUtil.toInternalWeb(
+                            requireContext(),
+                            "https://maps.google.com/?q=@" + data.lon + "," + data.lat,
+                            getString(R.string.outlets_address),
+                            true,
+                            true,
+                            data
+                        )
+                    }
+                }
+            } else {
+                (rvBettingStation.adapter as HomeBettingStationAdapter).setList(newsList)
+            }
+        }
     }
 }

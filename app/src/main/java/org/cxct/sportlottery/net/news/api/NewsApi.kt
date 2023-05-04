@@ -10,6 +10,6 @@ import retrofit2.http.POST
 interface NewsApi {
 
     @POST(Constants.NEW_LIST_HOME)
-    suspend fun getListHome(@Body params: JsonObject): ApiResult<NewsCategory>
+    suspend fun getListHome(@Body params: JsonObject): ApiResult<List<NewsCategory>>
 
 }

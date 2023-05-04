@@ -26,14 +26,34 @@
             android:text="NEWS" />
     </LinearLayout>
 
-    <org.cxct.sportlottery.view.CustomTabLayout
+    <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabNews"
-        android:layout_width="180dp"
-        android:layout_height="wrap_content"
-        android:background="@color/color_FFFFFF"
-        android:layout_marginTop="1dp"
-        app:firstTabText="OKBet"
-        app:secondTabText="Sports" />
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:tabTextAppearance="@style/NoCaseTab"
+        app:tabIndicator="@drawable/custom_tab_indicator_40"
+        app:tabIndicatorFullWidth="false"
+        app:tabMode="scrollable"
+        app:tabPaddingEnd="10dp"
+        app:tabPaddingStart="10dp"
+        app:tabRippleColor="@null"
+        app:tabSelectedTextColor="@color/color_D2E4FF_414655"
+        app:tabTextColor="@color/color_6C7BA8_A7B2C4">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabOkbet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_password" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabSport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/withdrawal_password" />
+
+    </com.google.android.material.tabs.TabLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvNews"
