@@ -9,12 +9,14 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.toast
+import org.cxct.sportlottery.net.bettingStation.BettingStationRepository
 import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.match.MatchRound
@@ -141,6 +143,10 @@ open class MainHomeViewModel(
 
     private val _recordNewHttp = MutableLiveData<List<RecordNewEvent>>()
     private val _recordResultHttp = MutableLiveData<List<RecordNewEvent>>()
+
+    val bettingStationList: LiveData<List<BettingStation>>
+        get() = _bettingStationList
+    private val _bettingStationList = MutableLiveData<List<BettingStation>>()
 
     //region 宣傳頁用
     fun getRecommend() {
@@ -635,11 +641,11 @@ open class MainHomeViewModel(
     /**
      * 获取新闻资讯列表
      */
-    fun getGameList(pageNum: Int, pageSize: Int, categoryIds: List<Int>) {
+    fun getHomeNews(pageNum: Int, pageSize: Int, categoryIds: List<Int>) {
         viewModelScope.launch {
-            callApi({ NewsRepository.getListHome(pageNum, pageNum, categoryIds) }) {
+            callApi({ NewsRepository.getHomeNews(pageNum, pageNum, categoryIds) }) {
                 if (it.succeeded()) {
-                    _homeNewsList.postValue(it.getData()?.detailList ?: listOf())
+                    _homeNewsList.postValue(it.getData()?.firstOrNull()?.detailList ?: listOf())
                 } else {
                     toast(it.msg)
                 }
@@ -650,13 +656,24 @@ open class MainHomeViewModel(
     fun getRecordNew() = callApi({ OKGamesRepository.getRecordNew() }) {
         if (it.succeeded()) {
             _recordNewHttp.postValue(it.getData())
+        } else {
+            toast(it.msg)
         }
     }
 
     fun getRecordResult() = callApi({ OKGamesRepository.getRecordResult() }) {
         if (it.succeeded()) {
             _recordResultHttp.postValue(it.getData())
+        } else {
+            toast(it.msg)
         }
     }
 
+    fun getBettingStationList() = callApi({ BettingStationRepository.getBettingStationList() }) {
+        if (it.succeeded()) {
+            _bettingStationList.postValue(it.getData())
+        } else {
+            toast(it.msg)
+        }
+    }
 }
