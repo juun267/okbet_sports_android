@@ -185,10 +185,10 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         val oldInfo = if (modifyType == ModifyType.Email) email else phoneNo
         // 如果未设置过对应的信息，就直接去设置不需要校验
         if (oldInfo.isEmptyStr()) {
-            putExtraForProfileInfoActivity(modifyType)
-//            ModifyBindInfoActivity.start(this, modifyType, 100, null, null, null)
-//        } else {
-//            VerificationWaysActivity.start(this, modifyType, phoneNo, email)
+//            putExtraForProfileInfoActivity(modifyType)
+            ModifyBindInfoActivity.start(this, modifyType, 100, null, null, null)
+        } else {
+            VerificationWaysActivity.start(this, modifyType, phoneNo, email)
         }
     }
 
@@ -361,8 +361,8 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     private fun setWithdrawInfo(userInfo: UserInfo) = userInfo.run {
         judgeImproveInfo(ll_real_name, tv_real_name, icon_real_name, fullName)
         judgeImproveInfo(ll_qq_number, tv_qq_number, icon_qq_number, qq)
-        judgeImproveInfo(ll_e_mail, tv_e_mail, icon_e_mail, email)
-        judgeImproveInfo(ll_phone_number, tv_phone_number, icon_phone_number, phone)
+        judgeImproveInfo(ll_e_mail, tv_e_mail, icon_e_mail, email, true)
+        judgeImproveInfo(ll_phone_number, tv_phone_number, icon_phone_number, phone, true)
         judgeImproveInfo(ll_wechat, tv_we_chat, icon_wechat, wechat)
     }
 
