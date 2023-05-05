@@ -1320,4 +1320,6 @@
     <string name="B015">Affiliate</string>
     <string name="N909">News</string>
     <string name="LT050">Customer service</string>
+
+    <string name="scan">Scan</string>
 </resources>

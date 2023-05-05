@@ -1150,7 +1150,7 @@ fun BaseFragment<out MainHomeViewModel>.enterThirdGame(
 }
 
 // 设置优惠活动点击事件
-fun View.bindPromoClick() = setOnClickListener {
+fun View.bindPromoClick(click: (() -> Unit)? = null) = setOnClickListener {
 
     when (UserInfoRepository.userInfo.value?.testFlag) {
         TestFlag.NORMAL.index, TestFlag.TEST.index -> {
