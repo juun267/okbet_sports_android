@@ -332,25 +332,27 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
 
         when (userInfo?.verified) {
             ProfileActivity.VerifiedType.PASSED.value -> {
-                setVerify(false, false, R.string.kyc_passed)
+                setVerify(false, false, R.string.kyc_passed, resources.getColor(R.color.color_1CD219))
+
             }
             ProfileActivity.VerifiedType.NOT_YET.value -> {
-                setVerify(true, true, R.string.kyc_unverified)
+                setVerify(true, true, R.string.kyc_unverified, resources.getColor(R.color.color_6D7693))
             }
             ProfileActivity.VerifiedType.VERIFYING.value -> {
-                setVerify(false, false, R.string.kyc_unverifing)
+                setVerify(false, false, R.string.kyc_unverifing, resources.getColor(R.color.color_6D7693))
 
             }
             else -> {
-                setVerify(true, true, R.string.kyc_unverified)
+                setVerify(true, true, R.string.kyc_unverified, resources.getColor(R.color.color_6D7693))
             }
         }
     }
 
-    private inline fun setVerify(enable: Boolean, clickAble: Boolean, text: Int) = binding.run  {
+    private inline fun setVerify(enable: Boolean, clickAble: Boolean, text: Int, statusColor: Int) = binding.run  {
         llVerify.isEnabled = enable
         llVerify.isClickable = clickAble
         tvVerifyStatus.setText(text)
+        binding.tvVerifyStatus.setTextColor(statusColor)
     }
 
 }
