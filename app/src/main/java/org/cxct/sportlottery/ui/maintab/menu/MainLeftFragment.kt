@@ -148,18 +148,21 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
         tv_version.text = "V${BuildConfig.VERSION_NAME}"
         lin_scan.setOnClickListener {
-            RxPermissions(this).request(Manifest.permission.CAMERA).subscribe { onNext ->
-                if (onNext) {
-                    val scanPhotoDialog = ScanPhotoDialog(requireContext())
-                    scanPhotoDialog.tvCameraScanClickListener = {
+            val scanPhotoDialog = ScanPhotoDialog(requireContext())
+            scanPhotoDialog.tvCameraScanClickListener = {
+                RxPermissions(this).request(Manifest.permission.CAMERA).subscribe { onNext ->
+                    if (onNext) {
                         startActivity(Intent(requireContext(), ScannerActivity::class.java))
                     }
-                    scanPhotoDialog.tvAlbumClickListener = {
-                        selectAlbum()
-                    }
-                    scanPhotoDialog.show()
-                }
-            }.isDisposed
+                }.isDisposed
+
+            }
+            scanPhotoDialog.tvAlbumClickListener = {
+                selectAlbum()
+            }
+            scanPhotoDialog.show()
+
+
 //
         }
 
@@ -184,7 +187,7 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 override fun onResult(result: MutableList<LocalMedia>?) {
                     val firstImage = result?.firstOrNull()
                     val bitmap = BitmapFactory.decodeFile(firstImage?.compressPath)
-                    val bitResult= BarcodeUtils.decodeBitmap(bitmap)
+                    val bitResult = BarcodeUtils.decodeBitmap(bitmap)
                     Timber.d("bitmap:${bitResult}")
 
                 }
