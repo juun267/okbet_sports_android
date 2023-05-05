@@ -7,6 +7,7 @@ import org.cxct.sportlottery.common.event.JumpInPlayEvent
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
+import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.maintab.live.HomeLiveFragment
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.FragmentHelper
@@ -21,7 +22,8 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
 //            Pair(MainHomeFragment::class.java, null),
 //            Pair(HomeLiveFragment::class.java, null),
             Pair(MainHomeFragment2::class.java, null),
-            Pair(OKGamesFragment::class.java, null)
+            Pair(OKGamesFragment::class.java, null),
+            Pair(NewsHomeFragment::class.java, null)
         ))
 
     }
@@ -44,6 +46,8 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
     fun jumpToLive() = switchTabByPosition(1)
 
     fun jumpToOKGames() = switchTabByPosition(1)
+
+    fun jumpToNews() = switchTabByPosition(2)
 
     fun jumpToInplaySport() {
         (activity as MainTabActivity).jumpToInplaySport()

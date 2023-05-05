@@ -23,12 +23,22 @@ fun ImageView.circleOf(url: String?, @DrawableRes placeHolder: Int = 0) {
 }
 
 fun ImageView.roundOf(url: String?, radius: Int = 0, @DrawableRes placeHolder: Int = 0) {
-    val requestOptions = RequestOptions().centerCrop().transform(RoundedCorners(radius))
+    val requestOptions = RequestOptions().transform(RoundedCorners(radius))
     if (placeHolder != 0) {
         requestOptions.placeholder(placeHolder)
     }
     runWithCatch {
         Glide.with(context).load("$url")
+            .apply(requestOptions).into(this)
+    }
+}
+fun ImageView.roundOf(@DrawableRes drawableResId: Int =0 , radius: Int = 0, @DrawableRes placeHolder: Int = 0) {
+    val requestOptions = RequestOptions().transform(RoundedCorners(radius))
+    if (placeHolder != 0) {
+        requestOptions.placeholder(placeHolder)
+    }
+    runWithCatch {
+        Glide.with(context).load(drawableResId)
             .apply(requestOptions).into(this)
     }
 }

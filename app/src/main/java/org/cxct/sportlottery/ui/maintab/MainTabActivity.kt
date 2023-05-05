@@ -601,6 +601,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         resetBackIcon(0)
         homeFragment().jumpToOKGames()
     }
+    fun jumpToNews() {
+        resetBackIcon(0)
+        homeFragment().jumpToNews()
+    }
 
     fun jumpToInplaySport(){
         resetBackIcon(1)

@@ -81,7 +81,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
 
     private val okBingosItem by lazy { binding.run { MenuItem(llOKBingo, tvBingo, ivBingoIndicatot) { getMainTabActivity().jumpToEarlySport() } } }
     private val okLiveItem by lazy { binding.run { MenuItem(llOKLive, tvOKLive, ivOKLiveIndicator) { getMainTabActivity().jumpToEarlySport() } } }
-    private val newsItem by lazy { binding.run { MenuItem(llNews, tvNews, null) { getMainTabActivity().jumpToEarlySport() } } }
+    private val newsItem by lazy { binding.run { MenuItem(llNews, tvNews, null) { getMainTabActivity().jumpToNews() } } }
     private val languageItem by lazy { binding.run { MenuItem(llLanguage, tvLanguage, null) { getMainTabActivity().jumpToEarlySport() } } }
 
     private fun initMenuItem() = binding.run {

@@ -28,3 +28,10 @@ data class NewsItem(
     val createTimeInMillisecond: Long,
     val updateTimeInMillisecond: Long,
 ):Parcelable
+
+@Parcelize
+@KeepMembers
+data class NewsDetail(
+    val detail: NewsItem,
+    val relatedList: List<NewsItem>?,
+):Parcelable

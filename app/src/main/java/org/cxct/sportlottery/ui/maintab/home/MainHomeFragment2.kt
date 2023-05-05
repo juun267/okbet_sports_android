@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab.home
 
 
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
@@ -181,6 +182,9 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
                 override fun onTabReselected(tab: TabLayout.Tab?) {
                 }
             })
+            linTab.setOnClickListener {
+                getHomeFragment().jumpToNews()
+            }
         }
     }
 
