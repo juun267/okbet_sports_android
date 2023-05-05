@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.maintab.home
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.os.Bundle
 import android.view.View
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -21,7 +20,6 @@ import kotlinx.android.synthetic.main.hot_gaming_include.*
 import kotlinx.android.synthetic.main.hot_handicap_include.*
 import kotlinx.android.synthetic.main.hot_live_match_include.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.*
@@ -50,7 +48,6 @@ import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.OKVideoPlayer
-import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.transform.TransformInDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -251,18 +248,18 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
             }
 
             viewModel.getSportMenuFilter()
-            if (!PopImageDialog.firstShow) {
-                MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
-                return@observe
-            }
-            requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
-                putInt(PopImageDialog.DrawableResID, R.drawable.img_thirdgame)
-            }).apply {
-                onClick = { getHomeFragment().jumpToOKGames() }
-                onDismiss = {
-                    MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
-                }
-            }.show(childFragmentManager, PopImageDialog::class.simpleName)
+//            if (!PopImageDialog.firstShow) {
+//                MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
+//                return@observe
+//            }
+//            requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
+//                putInt(PopImageDialog.DrawableResID, R.drawable.img_thirdgame)
+//            }).apply {
+//                onClick = { getHomeFragment().jumpToOKGames() }
+//                onDismiss = {
+//                    MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
+//                }
+//            }.show(childFragmentManager, PopImageDialog::class.simpleName)
 
         }
 //
