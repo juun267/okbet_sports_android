@@ -8,9 +8,11 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.callApi
+import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.common.extentions.toast
 import org.cxct.sportlottery.net.bettingStation.BettingStationRepository
 import org.cxct.sportlottery.net.games.OKGamesRepository
+import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.network.NetResult
@@ -133,6 +135,13 @@ open class MainHomeViewModel(
     val recordResultHttp: LiveData<List<RecordNewEvent>>
         get() = _recordResultHttp
 
+
+    //okgames游戏列表
+    val homeGamesList: LiveData< List<OKGameBean>>
+        get() = _homeGamesList
+    private val _homeGamesList = MutableLiveData< List<OKGameBean>>()
+
+
     private val _recordNewHttp = MutableLiveData<List<RecordNewEvent>>()
     private val _recordResultHttp = MutableLiveData<List<RecordNewEvent>>()
 
@@ -194,6 +203,63 @@ open class MainHomeViewModel(
                 _sportMenuFilterList.postValue(Event(it.t?.sportMenuList))
             }
         }
+    }
+
+
+    /**
+     * 获取首页okgames列表
+     */
+    var pageIndex=1
+    val pageSize=6
+    var totalCount=0
+    var totalPage=0
+    fun getHomeOKGamesList(
+    ) = callApi({ OKGamesRepository.getHomeOKGamesList(pageIndex, pageSize) }) {
+        if(it.getData()==null){
+            //hide loading
+            _homeGamesList.value= arrayListOf()
+        }else{
+            totalCount=it.total
+            if(totalPage==0){
+                totalPage=totalCount/pageSize
+                if(totalCount%pageSize!=0){
+                    totalPage++
+                }
+            }
+            _homeGamesList.value=it.getData()
+        }
+    }
+
+
+    /**
+     * 进入OKgame游戏
+     */
+    fun homeOkGamesEnterThirdGame(gameData: OKGameBean?, baseFragment: BaseFragment<*>) {
+        if (gameData == null) {
+            _enterThirdGameResult.postValue(
+                Pair(
+                    "${gameData?.firmCode}", EnterThirdGameResult(
+                        resultType = EnterThirdGameResult.ResultType.FAIL,
+                        url = null,
+                        errorMsg = androidContext.getString(R.string.hint_game_maintenance)
+                    )
+                )
+            )
+            return
+        }
+        requestEnterThirdGame(
+            "${gameData.firmType}",
+            "${gameData.gameCode}",
+            "${gameData.gameCode}",
+            baseFragment
+        )
+    }
+
+    /**
+     * 记录最近游戏
+     */
+    fun homeOkGameAddRecentPlay(okGameBean: OKGameBean) {
+         LoginRepository.addRecentPlayGame(okGameBean.id.toString())
     }
 
     //region 宣傳頁推薦賽事資料處理

@@ -37,6 +37,7 @@ import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.rotationAnimation
 import org.cxct.sportlottery.common.extentions.screenHeight
 import org.cxct.sportlottery.common.extentions.translationXAnimation
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.CateDetailData
@@ -1146,5 +1147,25 @@ fun BaseFragment<out MainHomeViewModel>.enterThirdGame(
     }
     if (result.resultType != EnterThirdGameResult.ResultType.NONE)
         viewModel.clearThirdGame()
+}
+
+// 设置优惠活动点击事件
+fun View.bindPromoClick() = setOnClickListener {
+
+    when (UserInfoRepository.userInfo.value?.testFlag) {
+        TestFlag.NORMAL.index, TestFlag.TEST.index -> {
+            JumpUtil.toInternalWeb(
+                context,
+                Constants.getPromotionUrl(
+                    LoginRepository.token,
+                    LanguageManager.getSelectLanguage(context)
+                ),
+                context.getString(R.string.promotion)
+            )
+        }
+        else -> { // TODO 20220108 沒有遊客的話，要確認一下文案是否正確 by Hewie
+            ToastUtil.showToastInCenter(context, context.getString(R.string.message_guest_no_permission))
+        }
+    }
 }
 

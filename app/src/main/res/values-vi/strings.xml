@@ -115,7 +115,7 @@
     <string name="btn_login">Đăng nhập</string>
     <string name="btn_register">Đăng ký</string>
     <string name="lottery">Xổ số</string>
-    <string name="poker">Cờ vua</string>
+    <string name="J203">Cờ vua</string>
     <string name="slot">"Trò Chơi "</string>
     <string name="fishing">Bắn cá</string>
     <string name="home_tan_main">THỂ THAO</string>
@@ -527,7 +527,7 @@
     <string name="sorry_website_is_now_maintenance">Trang web hiện đang được bảo trì</string>
     <string name="if_there_is_any_question_please_consult">Nếu bạn có bất kỳ câu hỏi nào, xin vui lòng đi đến tư vấn%1$s</string>
     <string name="bottom_nav_home">Trang chủ</string>
-    <string name="sport">Thể thao</string>
+    <string name="B001">Thể thao</string>
     <string name="live">Live</string>
     <string name="sport_bet_record">lịch sử đặt cược thể thao</string>
     <string name="my_favorite">Ưu thích</string>
@@ -1211,4 +1211,8 @@
 
     <string name="M013">Sắp ra mắt</string>
     <string name="N703">Địa điểm OKBET Game</string>
+    <string name="B005">Ưu đãi</string>
+    <string name="B015">Đại lý</string>
+    <string name="N909">Tin mới</string>
+    <string name="LT050">CSKH</string>
 </resources>

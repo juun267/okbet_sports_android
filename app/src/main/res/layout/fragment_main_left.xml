@@ -100,7 +100,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/margin_12"
-                        android:text="@string/sport"
+                        android:text="@string/B001"
                         android:textColor="@color/color_black_white"
                         android:textSize="@dimen/textSize14sp" />
 
@@ -255,7 +255,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/margin_12"
-                        android:text="@string/poker"
+                        android:text="@string/J203"
                         android:textColor="@color/color_black_white"
                         android:textSize="@dimen/textSize14sp" />
 

@@ -113,7 +113,7 @@
     <string name="btn_login">Mag log in</string>
     <string name="btn_register">Magrehistro</string>
     <string name="lottery">lottery</string>
-    <string name="poker">OKGames</string>
+    <string name="J203">OKGames</string>
     <string name="slot">E- sport</string>
     <string name="fishing">Pangigisda</string>
     <string name="home_tan_main">Home page</string>
@@ -502,7 +502,7 @@
     <string name="sorry_website_is_now_maintenance">Kasalukuyang nasa ilalim ng maintenance ang website</string>
     <string name="if_there_is_any_question_please_consult">Kung may pagdududa, mangyaring kumonsulta%1$s</string>
     <string name="bottom_nav_home">Home</string>
-    <string name="sport">Sports</string>
+    <string name="B001">Sports</string>
     <string name="live">Live </string>
     <string name="log_detail_rebate_money">Halaga ng rebate：</string>
     <string name="sport_bet_record">Tala sa pagtaya sa sports</string>
@@ -1193,4 +1193,8 @@
 
     <string name="M013">Malapit na</string>
     <string name="N703">Mga Lugar para sa OKBET Game</string>
+    <string name="B005">Promo</string>
+    <string name="B015">Ahente para sumali</string>
+    <string name="N909">Balita</string>
+    <string name="LT050">Customer service</string>
 </resources>

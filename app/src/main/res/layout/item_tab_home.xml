@@ -23,5 +23,5 @@
         android:layout_height="wrap_content"
         android:textColor="@color/selector_white_gray"
         android:textSize="14sp"
-        tools:text="@string/sport" />
+        tools:text="@string/B001" />
 </LinearLayout>

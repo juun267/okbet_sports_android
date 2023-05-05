@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.view.View
+import androidx.core.view.postDelayed
 
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -115,6 +116,7 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
         initRecordView()
         initObservable()
         binding.hotMatchView.onCreate(viewModel.publicityRecommend,this@MainHomeFragment2)
+        binding.okGamesView.setOkGamesData(this)
     }
 
     override fun onInitData() {
@@ -158,8 +160,11 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
     //hot match
     private fun refreshHotMatch(){
         //重新设置赔率监听
-        binding.hotMatchView.onResume(this@MainHomeFragment2)
-        viewModel.getRecommend()
+        binding.hotMatchView.postDelayed({
+            binding.hotMatchView.onResume(this@MainHomeFragment2)
+            viewModel.getRecommend()
+        },500)
+
     }
     //hot match end
     private fun initNews() {

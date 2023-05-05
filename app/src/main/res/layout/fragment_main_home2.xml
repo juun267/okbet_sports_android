@@ -35,7 +35,12 @@
 
             <org.cxct.sportlottery.ui.maintab.home.view.HomeBingoView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
+
+            <org.cxct.sportlottery.ui.maintab.home.view.HomeOkGamesView
+                android:id="@+id/okGamesView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
             <!--part-2-end-->
 
             <include

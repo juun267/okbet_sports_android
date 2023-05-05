@@ -115,7 +115,7 @@
     <string name="btn_login">Login</string>
     <string name="btn_register">Register</string>
     <string name="lottery">Lottery</string>
-    <string name="poker">OKGames</string>
+    <string name="J203">OKGames</string>
     <string name="slot">Slot</string>
     <string name="fishing">Fishing</string>
     <string name="home_tan_main">HOME</string>
@@ -535,7 +535,7 @@
     <string name="sorry_website_is_now_maintenance">The website is under maintenance</string>
     <string name="if_there_is_any_question_please_consult">If you have any questions, please contact%1$s</string>
     <string name="bottom_nav_home">Home</string>
-    <string name="sport">Sports</string>
+    <string name="B001">Sports</string>
     <string name="live">Live</string>
     <string name="sport_bet_record">Sports betting history</string>
     <string name="other_bet_record">Other Betting History</string>
@@ -1316,4 +1316,8 @@
     <string name="J093">Responsible Gaming</string>
     <string name="M013">Coming soon</string>
     <string name="N703">OKBET Game Venues</string>
+    <string name="B005">Promotion</string>
+    <string name="B015">Affiliate</string>
+    <string name="N909">News</string>
+    <string name="LT050">Customer service</string>
 </resources>

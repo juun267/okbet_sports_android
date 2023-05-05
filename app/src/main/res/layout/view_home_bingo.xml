@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:paddingHorizontal="12dp"
-    android:paddingBottom="16dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content">
+
 
     <LinearLayout
         android:id="@+id/linearTitle"
         android:layout_width="match_parent"
+        android:paddingHorizontal="12dp"
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
         android:paddingBottom="8dp"
@@ -40,8 +39,9 @@
         android:id="@+id/linearMgea"
         android:layout_below="@+id/linearTitle"
         android:orientation="horizontal"
+        android:layout_marginLeft="12dp"
         android:gravity="center"
-        android:layout_toLeftOf="@+id/vLine"
+        android:layout_toStartOf="@+id/vLine"
         android:background="@drawable/bg_home_bingo_press"
         android:layout_width="match_parent"
         android:layout_height="50dp">
@@ -57,7 +57,7 @@
             android:textColor="@color/color_FFFFFF"
             android:textSize="@dimen/textSize14sp"
             android:layout_width="wrap_content"
-            android:paddingLeft="12dp"
+            android:paddingStart="12dp"
             android:textStyle="bold"
             android:layout_height="wrap_content"/>
     </LinearLayout>
@@ -73,8 +73,9 @@
         android:id="@+id/linearRush"
         android:layout_below="@+id/linearTitle"
         android:orientation="horizontal"
+        android:layout_marginEnd="12dp"
         android:gravity="center"
-        android:layout_toRightOf="@+id/vLine"
+        android:layout_toEndOf="@+id/vLine"
         android:background="@drawable/bg_home_bingo_normal"
         android:layout_width="match_parent"
         android:layout_height="50dp">
@@ -90,7 +91,7 @@
             android:textColor="@color/color_0199FC"
             android:textSize="@dimen/textSize14sp"
             android:layout_width="wrap_content"
-            android:paddingLeft="12dp"
+            android:paddingStart="12dp"
             android:textStyle="bold"
             android:layout_height="wrap_content"/>
     </LinearLayout>
@@ -98,6 +99,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardVideo"
         android:layout_below="@+id/linearMgea"
+        android:layout_marginHorizontal="12dp"
         android:layout_width="match_parent"
         app:cardCornerRadius="12dp"
         android:layout_marginTop="12dp"
@@ -127,8 +129,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerExtra"
         android:layout_marginTop="8dp"
+        android:paddingHorizontal="12dp"
         android:layout_width="match_parent"
         android:layout_below="@+id/cardVideo"
         tools:listitem="@layout/item_bingo_extra"
         android:layout_height="60dp"/>
-</RelativeLayout>
+
+</merge>

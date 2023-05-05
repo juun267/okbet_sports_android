@@ -18,7 +18,7 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
     private val fragmentHelper by lazy {
 
         FragmentHelper(childFragmentManager, R.id.fl_content, arrayOf(
-            Pair(MainHomeFragment::class.java, null),
+//            Pair(MainHomeFragment::class.java, null),
 //            Pair(HomeLiveFragment::class.java, null),
             Pair(MainHomeFragment2::class.java, null),
             Pair(OKGamesFragment::class.java, null)
@@ -43,7 +43,7 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
 
     fun jumpToLive() = switchTabByPosition(1)
 
-    fun jumpToOKGames() = switchTabByPosition(2)
+    fun jumpToOKGames() = switchTabByPosition(1)
 
     fun jumpToInplaySport() {
         (activity as MainTabActivity).jumpToInplaySport()

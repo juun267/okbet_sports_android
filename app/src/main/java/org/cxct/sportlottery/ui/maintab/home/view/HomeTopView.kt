@@ -72,7 +72,7 @@ class HomeTopView @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
         val host = sConfigData?.resServerHost
         val images = imageList.map {
-            XBannerImage(it.imageText1 + "", host + it.imageName1, it.imageLink)
+            XBannerImage(it.imageText1 + "", host + it.imageName1, it.appUrl)
         }
 
         xbanner.setBannerData(images.toMutableList())
