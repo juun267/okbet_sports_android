@@ -42,7 +42,6 @@ import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.CateDetailData
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
-import org.cxct.sportlottery.network.odds.list.MatchLiveData
 import org.cxct.sportlottery.network.service.close_play_cate.ClosePlayCateEvent
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -55,8 +54,6 @@ import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
-import org.cxct.sportlottery.ui.maintab.live.HomeLiveAdapter
-import org.cxct.sportlottery.ui.maintab.live.ItemHomeLiveHolder
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteAdapter
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dpToPx
@@ -116,11 +113,7 @@ fun RecyclerView.addScrollWithItemVisibility(
                             }
                         }
 
-                        is HomeLiveAdapter -> {
-                            getVisibleRangePosition().forEach { leaguePosition ->
-                                visibleRangePair.add(Pair(leaguePosition, -1))
-                            }
-                        }
+
                     }
 
                     onVisible(visibleRangePair)
@@ -305,36 +298,6 @@ fun RecyclerView.firstVisibleRange(
     }
 }
 
-@SuppressLint("LogNotTimber")
-fun RecyclerView.firstVisibleRange(adapter: HomeLiveAdapter, activity: Activity) {
-    post {
-        getVisibleRangePosition().forEach { leaguePosition ->
-            val viewByPosition = layoutManager?.findViewByPosition(leaguePosition)
-            when (adapter) {
-                is HomeLiveAdapter -> {
-                    viewByPosition?.let { view ->
-                        if (getChildViewHolder(view) is ItemHomeLiveHolder) {
-                            val itemdata = adapter.data[leaguePosition]
-                            if (itemdata is MatchLiveData) {
-                                Log.d(
-                                    "[subscribe]",
-                                    "訂閱 ${itemdata.matchInfo?.name} -> " +
-                                            "${itemdata.matchInfo?.homeName} vs " +
-                                            "${itemdata.matchInfo?.awayName}"
-                                )
-                                (activity as BaseSocketActivity<*>).subscribeChannelHall(
-                                    itemdata.matchInfo?.gameType,
-                                    itemdata.matchInfo?.id
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-    }
-}
 
 /**
  * 設置大廳所需顯示的快捷玩法 (api未回傳的玩法需以“—”表示)

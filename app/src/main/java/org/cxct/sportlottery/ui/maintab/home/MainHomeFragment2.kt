@@ -128,7 +128,7 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
         homeToolbar.fitsSystemStatus()
         homeToolbar.ivMenuLeft.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
-            getMainTabActivity().showLeftFrament(0, 0)
+            getMainTabActivity().showMainLeftMenu(null)
         }
     }
 

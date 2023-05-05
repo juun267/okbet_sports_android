@@ -4,8 +4,10 @@ import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.LinearLayout.LayoutParams
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
@@ -21,9 +23,11 @@ import org.cxct.sportlottery.network.user.UserInfo
 
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.util.*
@@ -33,7 +37,7 @@ import org.cxct.sportlottery.util.drawable.DrawableCreator
 class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Binding>() {
 
 
-    private open inner class MenuItem(val group: View,
+    private inner class MenuItem(val group: View,
                                       val icon: ImageView,
                                       val tvName: TextView,
                                       val ivIndicator: ImageView?,
@@ -55,33 +59,43 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             }
         }
 
-        open fun clearSelected() {
+        fun clearSelected() {
+            if (lastItem == this) {
+                lastItem = null
+            }
+
+            onClearSelected?.let {
+                it.invoke()
+                return
+            }
+
             group.isSelected = false
             icon.isSelected = false
             ivIndicator?.gone()
             tvName.typeface = Typeface.DEFAULT
             tvName.setTextColor(resources.getColor(R.color.color_6D7693))
-            if (lastItem == this) {
-                lastItem = null
-            }
-            onClearSelected?.invoke()
+
+
         }
 
-        open fun setSelected() {
+        fun setSelected() {
             if (lastItem == this) {
                 return
             } else if (lastItem != null) {
                 lastItem!!.clearSelected()
             }
+            lastItem = this
+            onSetSelected?.let {
+                it.invoke()
+                return
+            }
+
             group.isSelected = true
             icon.isSelected = true
             tvName.typeface = Typeface.DEFAULT_BOLD
             tvName.setTextColor(resources.getColor(R.color.color_025BE8))
             ivIndicator?.visible()
-            lastItem = this
-            onSetSelected?.invoke()
         }
-
     }
 
     private fun getIconSelector(selected: Int, unSelected: Int): Drawable {
@@ -96,11 +110,11 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
     }
 
     private fun addMenu(index: Int,
-                        params: LinearLayout.LayoutParams,
-                        iconParams: LinearLayout.LayoutParams,
+                        params: LayoutParams,
+                        iconParams: LayoutParams,
                         selectedIcon: Int,
                         unSelectedIcon: Int,
-                        textParams: LinearLayout.LayoutParams,
+                        textParams: LayoutParams,
                         text: Int,
                         hasIndicator: Boolean = false,
                         needClose: Boolean = true,
@@ -132,7 +146,6 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
     }
 
     private inline fun getMainTabActivity() = activity as MainTabActivity
-    private lateinit var languageAdapter: LanguageAdapter
 
     private var lastItem: MenuItem? = null
 
@@ -148,11 +161,14 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
     // 新增菜单在这里修改
     private fun initMenuItem() = binding.run {
 
-        val groupParams = LinearLayout.LayoutParams(-1, 40.dp)
+        val hMargin = 28.dp
+        val groupParams = LayoutParams(-1, 40.dp)
         groupParams.topMargin = 4.5f.dp
-        val iconParams = 20.dp.let { LinearLayout.LayoutParams(it, it) }
+        groupParams.leftMargin = hMargin
+        groupParams.rightMargin = hMargin
+        val iconParams = 20.dp.let { LayoutParams(it, it) }
         iconParams.leftMargin = 12.dp
-        val textParams = LinearLayout.LayoutParams(0, -2, 1f)
+        val textParams = LayoutParams(0, -2, 1f)
         textParams.leftMargin = iconParams.leftMargin
 
         sportsItem = addMenu(0,
@@ -220,39 +236,17 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         )
         serviceItem.group.setServiceClick(childFragmentManager) { close() }
 
-        languageItem = addMenu(binding.llMenuRoot.indexOfChild(rvLanguage),
-            groupParams,
-            iconParams,
-            R.drawable.ic_main_menu_language_1,
-            R.drawable.ic_main_menu_language_0,
-            textParams,
-            R.string.language_en,
-            true,
-            false
-        ) {
-            if (languageItem.group.isSelected) languageItem.clearSelected() else languageItem.setSelected()
-        }
-        languageItem.ivIndicator?.setImageResource(R.drawable.ic_arrow_gray_right)
-        languageItem.ivIndicator?.visible()
-        languageItem.onClearSelected = {
-            rvLanguage.isVisible = false
-            languageItem.ivIndicator?.visible()
-            languageItem.ivIndicator?.rotation = 0f
-        }
+        val group2Params = LayoutParams(-1, 40.dp)
+        group2Params.leftMargin = hMargin
+        group2Params.rightMargin = hMargin
+        group2Params.topMargin = 6.dp
 
-        languageItem.onSetSelected = {
-            rvLanguage.isVisible = true
-            languageItem.ivIndicator?.visible()
-            languageItem.ivIndicator?.rotation = -90f
-        }
+        val toRight = resources.getDrawable(R.drawable.ic_arrow_gray_right)
+        toRight.setTint(resources.getColor(R.color.color_6D7693))
+        initLanguageItem(group2Params, iconParams, textParams, toRight)
 
-        val scanParams = LinearLayout.LayoutParams(-1, 40.dp)
-        16.dp.let {
-            scanParams.topMargin = it
-            scanParams.bottomMargin = it
-        }
         scanItem = addMenu(binding.llMenuRoot.indexOfChild(divider3) + 1,
-            scanParams,
+            group2Params,
             iconParams,
             R.drawable.ic_main_menu_scan_0,
             R.drawable.ic_main_menu_scan_0,
@@ -263,19 +257,75 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         ) {
         }
         scanItem.onClearSelected = { scanItem.ivIndicator?.visible() }
-        scanItem.ivIndicator?.visible()
-        scanItem.ivIndicator?.setImageResource(R.drawable.ic_arrow_gray_right)
+        scanItem.ivIndicator?.let {
+            it.visible()
+            it.setImageDrawable(toRight)
+        }
+    }
+
+    private fun initLanguageItem(group2Params: LayoutParams,
+                                 iconParams: LayoutParams,
+                                 textParams: LayoutParams,
+                                 toRight: Drawable) = binding.run {
+        languageItem = addMenu(binding.llMenuRoot.indexOfChild(rvLanguage),
+            group2Params,
+            iconParams,
+            R.drawable.ic_main_menu_language_1,
+            R.drawable.ic_main_menu_language_0,
+            textParams,
+            R.string.M169,
+            true,
+            false
+        ) {
+            if (rvLanguage.isVisible) languageItem.clearSelected() else languageItem.setSelected()
+        }
+
+        val toUp = resources.getDrawable(R.drawable.ic_arrow_gray_right)
+        toUp.setTint(resources.getColor(R.color.color_025BE8))
+        languageItem.ivIndicator?.setImageDrawable(toRight)
+        languageItem.ivIndicator?.visible()
+
+        languageItem.onClearSelected = {
+            rvLanguage.isVisible = false
+            (divider3.layoutParams as ViewGroup.MarginLayoutParams).topMargin = 6.dp
+            languageItem.ivIndicator?.rotation = 0f
+            languageItem.ivIndicator?.setImageDrawable(toRight)
+        }
+
+        languageItem.onSetSelected = {
+            showLanguageList()
+            (divider3.layoutParams as ViewGroup.MarginLayoutParams).topMargin = 0
+            languageItem.ivIndicator?.rotation = -90f
+            languageItem.ivIndicator?.setImageDrawable(toUp)
+        }
     }
 
     private fun close() {
         getMainTabActivity().closeDrawerLayout()
     }
 
-    fun openWithOKGames() {
-        if (lastItem == okGamesItem) {
+    private var currentContent: BaseFragment<*>? = null
+
+    fun openWithFragment(menuContentFragment: BaseFragment<*>?) {
+        val isSame = currentContent == menuContentFragment
+        currentContent = menuContentFragment
+        if (menuContentFragment == null) {
+            lastItem?.clearSelected()
             return
         }
-        okGamesItem.setSelected()
+
+        if (isSame || !::okGamesItem.isInitialized) {
+            return
+        }
+
+        binSelected()
+    }
+
+
+    private fun binSelected() {
+        if (currentContent is OKGamesFragment) {
+            okGamesItem.setSelected()
+        }
     }
 
     override fun onInitView(view: View) {
@@ -284,10 +334,10 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
     }
 
     override fun onBindViewStatus(view: View) {
-        initLanguageList()
         initObserver()
         promotionItem.group.setVisibilityByMarketSwitch()
         bindVerifyStatus(UserInfoRepository.userInfo.value)
+        binSelected()
     }
 
     private fun initView() = binding.run {
@@ -299,8 +349,13 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         }
     }
 
-    private fun initLanguageList() {
-        languageAdapter = LanguageAdapter(LanguageManager.makeUseLanguage())
+    private fun showLanguageList() {
+        binding.rvLanguage.visible()
+        if (binding.rvLanguage.adapter != null) {
+            return
+        }
+
+        val languageAdapter = LanguageAdapter(LanguageManager.makeUseLanguage())
         languageItem.tvName.text = LanguageManager.getLanguageStringResource(context)
         binding.rvLanguage.layoutManager = GridLayoutManager(context, 2)
         binding.rvLanguage.adapter = languageAdapter

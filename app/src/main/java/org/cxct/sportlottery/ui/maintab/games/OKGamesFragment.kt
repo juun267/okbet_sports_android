@@ -78,7 +78,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         fitsSystemStatus()
         ivMenuLeft.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
-            mainTabActivity().showLeftFrament(0, 5)
+            mainTabActivity().showMainLeftMenu(this@OKGamesFragment)
         }
     }
     private fun initObservable() = viewModel.run {

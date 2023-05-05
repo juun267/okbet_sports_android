@@ -76,7 +76,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         setBackgroundColor(Color.WHITE)
         searchView.setOnClickListener { startActivity(SportSearchtActivity::class.java) }
         ivMenuLeft.setOnClickListener {
-            getMainTabActivity().showLeftFrament(1, tabLayout.selectedTabPosition)
+            getMainTabActivity().showSportLeftMenu(getCurMatchType(), getCurGameType())
             EventBusUtil.post(MenuEvent(true))
         }
     }
