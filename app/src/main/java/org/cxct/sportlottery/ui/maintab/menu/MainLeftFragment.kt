@@ -32,6 +32,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.GlideEngine
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.view.PictureSelectUtil
 import org.cxct.sportlottery.view.dialog.ScanPhotoDialog
 import timber.log.Timber
 
@@ -155,46 +156,30 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                         startActivity(Intent(requireContext(), ScannerActivity::class.java))
                     }
                 }.isDisposed
-
             }
             scanPhotoDialog.tvAlbumClickListener = {
                 selectAlbum()
             }
             scanPhotoDialog.show()
-
-
-//
         }
-
     }
 
     private fun selectAlbum() {
-        PictureSelector.create(activity).openGallery(PictureMimeType.ofImage())
-            .imageEngine(GlideEngine.createGlideEngine())
-            .setLanguage(LanguageUtil.getLanguage()) // 设置语言，默认中文
-            .isCamera(false) // 是否显示拍照按钮 true or false
-            .selectionMode(PictureConfig.SINGLE) // 多选 or 单选 PictureConfig.MULTIPLE or PictureConfig.SINGLE
-            .isEnableCrop(false) // 是否裁剪 true or false
-            .isCompress(true) // 是否压缩 true or false
-            .rotateEnabled(true) // 裁剪是否可旋转图片 true or false
-            .circleDimmedLayer(false) // 是否圆形裁剪 true or false
-            .showCropFrame(false) // 是否显示裁剪矩形边框 圆形裁剪时
-            // 建议设为false   true or false
-            .showCropGrid(false) // 是否显示裁剪矩形网格 圆形裁剪时建议设为false    true or false
-            .withAspectRatio(1, 1) // int 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
-            .minimumCompressSize(100) // 小于100kb的图片不压缩
-            .forResult(object : OnResultCallbackListener<LocalMedia> {
-                override fun onResult(result: MutableList<LocalMedia>?) {
-                    val firstImage = result?.firstOrNull()
-                    val bitmap = BitmapFactory.decodeFile(firstImage?.compressPath)
-                    val bitResult = BarcodeUtils.decodeBitmap(bitmap)
-                    Timber.d("bitmap:${bitResult}")
+        PictureSelectUtil.pictureSelect(requireActivity(),object :OnResultCallbackListener<LocalMedia>{
+            override fun onResult(result: MutableList<LocalMedia>?) {
+                val firstImage = result?.firstOrNull()
+                val bitmap = BitmapFactory.decodeFile(firstImage?.compressPath)
+                val bitResult = BarcodeUtils.decodeBitmap(bitmap)
+                Timber.d("bitmap:${bitResult}")
+                Toast.makeText(requireContext(), "Scan result: $bitResult", Toast.LENGTH_LONG).show()
 
-                }
+            }
 
-                override fun onCancel() {
-                }
-            })
+            override fun onCancel() {
+            }
+
+        })
+
     }
 
     private fun initOddsTypeView() {
