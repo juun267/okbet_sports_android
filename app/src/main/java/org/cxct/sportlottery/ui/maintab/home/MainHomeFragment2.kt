@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_main_home.*
 import org.cxct.sportlottery.R
@@ -24,6 +25,7 @@ import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OkGameRecordAdapter
 import org.cxct.sportlottery.ui.maintab.home.news.HomeNewsAdapter
+import org.cxct.sportlottery.ui.maintab.home.news.NewsDetailActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import timber.log.Timber
@@ -181,7 +183,12 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
         binding.includeNews.apply {
             if (rvNews.adapter == null) {
                 rvNews.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-                rvNews.adapter = HomeNewsAdapter().apply { setList(newsList) }
+                rvNews.adapter = HomeNewsAdapter().apply {
+                    setList(newsList)
+                    setOnItemClickListener(listener = OnItemClickListener { adapter, view, position ->
+                        NewsDetailActivity.start(requireContext(),(adapter.data[position] as NewsItem))
+                    })
+                }
             } else {
                 (rvNews.adapter as HomeNewsAdapter).setList(newsList)
             }
@@ -311,13 +318,9 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
                     setList(newsList)
                     setOnItemChildClickListener { adapter, view, position ->
                         val data = (adapter as HomeBettingStationAdapter).data[position]
-                        JumpUtil.toInternalWeb(
+                        JumpUtil.toExternalWeb(
                             requireContext(),
-                            "https://maps.google.com/?q=@" + data.lon + "," + data.lat,
-                            getString(R.string.outlets_address),
-                            true,
-                            true,
-                            data
+                            "https://maps.google.com/?q=@" + data.lon + "," + data.lat
                         )
                     }
                 }
