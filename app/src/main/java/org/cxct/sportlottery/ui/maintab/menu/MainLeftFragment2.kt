@@ -341,7 +341,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
     }
 
     private fun initView() = binding.run {
-        llVerify.setOnClickListener { startActivity(VerifyIdentityActivity::class.java) }
+        llVerify.setOnClickListener { loginedRun(it.context) { startActivity(VerifyIdentityActivity::class.java) } }
         ivClose.setOnClickListener { close() }
         ivHome.setOnClickListener {
             getMainTabActivity().backMainHome()
@@ -356,7 +356,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         }
 
         val languageAdapter = LanguageAdapter(LanguageManager.makeUseLanguage())
-        languageItem.tvName.text = LanguageManager.getLanguageStringResource(context)
+//        languageItem.tvName.text = LanguageManager.getLanguageStringResource(context)
         binding.rvLanguage.layoutManager = GridLayoutManager(context, 2)
         binding.rvLanguage.adapter = languageAdapter
         languageAdapter.setOnItemClickListener { adapter, _, position ->

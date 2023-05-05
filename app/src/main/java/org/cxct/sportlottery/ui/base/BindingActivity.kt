@@ -12,9 +12,12 @@ open abstract class BindingActivity<VM : BaseViewModel, VB: ViewBinding>: BaseAc
         super.onCreate(savedInstanceState)
         setContentLayout()
         onInitView()
+        onInitData()
     }
 
     protected open fun setContentLayout() = setContentView(binding.root)
 
     protected abstract fun onInitView()
+
+    protected open fun onInitData() { }
 }

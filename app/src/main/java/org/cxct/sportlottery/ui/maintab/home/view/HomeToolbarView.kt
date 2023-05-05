@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.content.Context
+import android.graphics.Color
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
@@ -41,9 +42,8 @@ class HomeToolbarView@JvmOverloads constructor(context: Context, attrs: Attribut
     }
 
     init {
-        setBackgroundResource(R.color.color_B3F0F5FA)
-        val padding = 14.dp
-        setPadding(padding, 0, padding, 0)
+        setBackgroundResource(R.color.color_F8F9FD)
+        12.dp.let { setPadding(it, it, it, it) }
         gravity = Gravity.LEFT or Gravity.CENTER_VERTICAL
         addChildView()
     }
@@ -64,15 +64,14 @@ class HomeToolbarView@JvmOverloads constructor(context: Context, attrs: Attribut
 
     private fun addChildView() {
         ivMenuLeft = AppCompatImageView(context)
-        ivMenuLeft.setImageResource(R.drawable.icon_menu)
-        addView(ivMenuLeft, LayoutParams(-2, 24.dp))
+        ivMenuLeft.setImageResource(R.drawable.ic_home_menu)
+
+        val wh = 36.dp
+        addView(ivMenuLeft, LayoutParams(wh, wh))
 
         ivLogo = AppCompatImageView(context)
         ivLogo.setImageResource(R.drawable.logo_okbet_color)
-        addView(ivLogo, LayoutParams(-2, 32.dp).apply {
-            leftMargin = 8.dp
-            bottomMargin = 5.dp
-        })
+        addView(ivLogo, LayoutParams(-2, wh).apply { leftMargin = 12.dp })
 
         addSearchView()
         addUserView()
@@ -204,8 +203,6 @@ class HomeToolbarView@JvmOverloads constructor(context: Context, attrs: Attribut
     }
 
     private fun initView() {
-        layoutParams.height = 40.dp
-        layoutParams.width = -1
         setupLogin()
         userMoneyView.gone()
         tvLogin.setOnClickListener { activity.startLogin() }

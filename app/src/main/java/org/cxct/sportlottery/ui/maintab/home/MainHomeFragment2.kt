@@ -91,6 +91,7 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
                     if (newItem != null) {
                         reecordAdapterNotify(newItem)
                     }
+
                     sendEmptyMessageDelayed(HANDLER_RECORD_GET, (Random.nextLong(1000) + 400))
                 }
             }
@@ -257,18 +258,20 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
             }
             receiver.recordNew.observe(viewLifecycleOwner) {
                 if (it != null) {
-                    var msg = Message()
-                    msg.what = HANDLER_RECORD_NEW_ADD
-                    msg.obj = it
-                    recordHandler.sendMessage(msg)
+                    p3RecordNwsData.add(it)
+//                    var msg = Message()
+//                    msg.what = HANDLER_RECORD_NEW_ADD
+//                    msg.obj = it
+//                    recordHandler.sendMessage(msg)
                 }
             }
             receiver.recordResult.observe(viewLifecycleOwner) {
                 if (it != null) {
-                    var msg = Message()
-                    msg.what = HANDLER_RECORD_RESULT_ADD
-                    msg.obj = it
-                    recordHandler.sendMessage(msg)
+//                    var msg = Message()
+//                    msg.what = HANDLER_RECORD_RESULT_ADD
+//                    msg.obj = it
+//                    recordHandler.sendMessage(msg)
+                    p3RecordRwsData.add(it)//最新大奖
                 }
             }
 
