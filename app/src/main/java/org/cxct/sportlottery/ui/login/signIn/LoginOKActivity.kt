@@ -23,6 +23,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.crash.FirebaseLog
 import org.cxct.sportlottery.common.event.RegisterInfoEvent
+import org.cxct.sportlottery.common.extentions.doOnResume
 import org.cxct.sportlottery.databinding.ActivityLoginOkBinding
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.network.Constants
@@ -58,6 +59,13 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         private const val SELF_LIMIT = 1130
         const val LOGIN_TYPE_CODE = 0
         const val LOGIN_TYPE_PWD = 1
+        const val LOGIN_TYPE_GOOGLE = 2
+
+        fun googleLoging(context: Context) {
+            val intent = Intent(context, LoginOKActivity::class.java)
+            intent.putExtra("login_type", LOGIN_TYPE_GOOGLE)
+            context.startActivity(intent)
+        }
 
         fun startRegist(context: Context) {
             val intent = Intent(context, LoginOKActivity::class.java)
@@ -91,8 +99,11 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         viewModel.focusChangeCheckAllInputComplete()
         EventBusUtil.targetLifecycle(this)
 
-        if(LOGIN_TYPE_CODE == intent.getIntExtra("login_type", LOGIN_TYPE_PWD)) {
+        val loginType = intent.getIntExtra("login_type", LOGIN_TYPE_PWD)
+        if(LOGIN_TYPE_CODE == loginType) {
             switchLoginType(LOGIN_TYPE_CODE)
+        } else if (loginType == LOGIN_TYPE_GOOGLE) {
+            doOnResume(once = true) { AuthManager.authGoogle(this@LoginOKActivity) }
         }
     }
 
