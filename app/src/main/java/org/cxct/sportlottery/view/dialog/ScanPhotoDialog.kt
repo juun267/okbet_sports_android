@@ -23,13 +23,13 @@ class ScanPhotoDialog(mContext: Context) : Dialog(mContext) {
         val tvCameraScan = findViewById<TextView>(R.id.tvCameraScan)
 
         tvAlbum.background = DrawableUtils.getCommonBackgroundStyle(
-            cornerRadius = 20.dp.toFloat(),
+            cornerRadius = 20,
             strokeColor = R.color.color_025BE8,
             solidColor = R.color.color_025BE8,
         )
 
         tvCameraScan.background = DrawableUtils.getCommonBackgroundStyle(
-            cornerRadius = 20.dp.toFloat(),
+            cornerRadius = 20,
             strokeColor = R.color.color_ff8A00,
             solidColor = R.color.color_ff8A00,
         )
@@ -42,7 +42,6 @@ class ScanPhotoDialog(mContext: Context) : Dialog(mContext) {
             tvCameraScanClickListener?.invoke()
             dismiss()
         }
-
 
     }
 
