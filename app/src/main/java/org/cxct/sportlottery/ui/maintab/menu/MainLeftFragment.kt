@@ -1,8 +1,21 @@
 package org.cxct.sportlottery.ui.maintab.menu
 
+import android.Manifest
+import android.content.Intent
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
+import com.budiyev.android.codescanner.AutoFocusMode
+import com.budiyev.android.codescanner.BarcodeUtils
+import com.budiyev.android.codescanner.CodeScanner
+import com.budiyev.android.codescanner.ScanMode
+import com.luck.picture.lib.PictureSelector
+import com.luck.picture.lib.config.PictureConfig
+import com.luck.picture.lib.config.PictureMimeType
+import com.luck.picture.lib.entity.LocalMedia
+import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.fragment_main_left.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
@@ -16,7 +29,9 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
+import org.cxct.sportlottery.ui.profileCenter.profile.GlideEngine
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.view.dialog.ScanPhotoDialog
 
 class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
@@ -95,12 +110,10 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         lin_promotion.setOnClickListener {
             EventBusUtil.post(MenuEvent(false))
             JumpUtil.toInternalWeb(
-                requireContext(),
-                Constants.getPromotionUrl(
-                    viewModel.token,
-                    LanguageManager.getSelectLanguage(requireContext())
-                ),
-                getString(R.string.promotion))
+                requireContext(), Constants.getPromotionUrl(
+                    viewModel.token, LanguageManager.getSelectLanguage(requireContext())
+                ), getString(R.string.promotion)
+            )
         }
         lin_odds_type.setOnClickListener {
             var isSelected = !lin_odds_type.isSelected
@@ -117,18 +130,66 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
         lin_aboutus.setVisibilityByMarketSwitch()
         lin_aboutus.setOnClickListener {
-            JumpUtil.toInternalWeb(requireContext(),
+            JumpUtil.toInternalWeb(
+                requireContext(),
                 Constants.getAboutUsUrl(requireContext()),
-                getString(R.string.about_us))
+                getString(R.string.about_us)
+            )
         }
         lin_term.setVisibilityByMarketSwitch()
         lin_term.setOnClickListener {
-            JumpUtil.toInternalWeb(requireContext(),
+            JumpUtil.toInternalWeb(
+                requireContext(),
                 Constants.getAgreementRuleUrl(requireContext()),
-                getString(R.string.terms_conditions))
+                getString(R.string.terms_conditions)
+            )
         }
         tv_version.text = "V${BuildConfig.VERSION_NAME}"
+        lin_scan.setOnClickListener {
+            RxPermissions(this).request(Manifest.permission.CAMERA).subscribe { onNext ->
+                if (onNext) {
+                    val scanPhotoDialog = ScanPhotoDialog(requireContext())
+                    scanPhotoDialog.tvCameraScanClickListener = {
+                        startActivity(Intent(requireContext(), ScannerActivity::class.java))
+                    }
+                    scanPhotoDialog.tvAlbumClickListener = {
+                        selectAlbum()
+                    }
+                    scanPhotoDialog.show()
+                }
+            }.isDisposed
+//
+        }
 
+    }
+
+    private fun selectAlbum() {
+        PictureSelector.create(activity).openGallery(PictureMimeType.ofImage())
+            .imageEngine(GlideEngine.createGlideEngine())
+            .setLanguage(LanguageUtil.getLanguage()) // 设置语言，默认中文
+            .isCamera(false) // 是否显示拍照按钮 true or false
+            .selectionMode(PictureConfig.SINGLE) // 多选 or 单选 PictureConfig.MULTIPLE or PictureConfig.SINGLE
+            .isEnableCrop(false) // 是否裁剪 true or false
+            .isCompress(true) // 是否压缩 true or false
+            .rotateEnabled(true) // 裁剪是否可旋转图片 true or false
+            .circleDimmedLayer(false) // 是否圆形裁剪 true or false
+            .showCropFrame(false) // 是否显示裁剪矩形边框 圆形裁剪时
+            // 建议设为false   true or false
+            .showCropGrid(false) // 是否显示裁剪矩形网格 圆形裁剪时建议设为false    true or false
+            .withAspectRatio(1, 1) // int 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
+            .minimumCompressSize(100) // 小于100kb的图片不压缩
+            .forResult(object : OnResultCallbackListener<LocalMedia> {
+                override fun onResult(result: MutableList<LocalMedia>?) {
+                    val firstImage = result?.firstOrNull()
+                    val codeScanResult =
+                        BitmapUtil.stringToBitmap(firstImage?.compressPath.toString())
+                            ?.let { BarcodeUtils.decodeBitmap(it) }
+                    ToastUtil.showToast(requireContext(),codeScanResult?.text)
+                }
+
+                override fun onCancel() {
+                }
+            })
     }
 
     private fun initOddsTypeView() {
@@ -176,12 +237,15 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             OddsType.EU -> {
                 tv_odds_type.text = getString(R.string.odd_type_eu)
             }
+
             OddsType.HK -> {
                 tv_odds_type.text = getString(R.string.odd_type_hk)
             }
+
             OddsType.MYS -> {
                 tv_odds_type.text = getString(R.string.odd_type_mys)
             }
+
             OddsType.IDN -> {
                 tv_odds_type.text = getString(R.string.odd_type_idn)
             }
@@ -206,12 +270,15 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                         OddsType.EU -> {
                             oddsTypeAdapter.setSelectPos(0)
                         }
+
                         OddsType.HK -> {
                             oddsTypeAdapter.setSelectPos(1)
                         }
+
                         OddsType.MYS -> {
                             oddsTypeAdapter.setSelectPos(2)
                         }
+
                         OddsType.IDN -> {
                             oddsTypeAdapter.setSelectPos(3)
                         }

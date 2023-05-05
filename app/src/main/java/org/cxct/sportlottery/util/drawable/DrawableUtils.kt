@@ -7,6 +7,13 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 
 object DrawableUtils {
 
+    fun getCommonBackgroundStyle(
+        cornerRadius: Float, strokeWith: Float = 1.dp.toFloat(), strokeColor: Int, solidColor: Int
+    ): Drawable {
+        return DrawableCreator.Builder().setCornersRadius(cornerRadius).setStrokeWidth(strokeWith)
+            .setStrokeColor(strokeColor).setSolidColor(solidColor).build()
+    }
+
     /**
      * 篮球末位比分，删除按钮
      */
@@ -18,19 +25,19 @@ object DrawableUtils {
     }
 
 
-    fun getBasketballBetListButton(root:View):Drawable{
+    fun getBasketballBetListButton(root: View): Drawable {
         return DrawableCreator.Builder().setCornersRadius(5.dp.toFloat())
             .setStrokeWidth(1.dp.toFloat())
             .setStrokeColor(root.context.getColor(R.color.color_E1E9F8))
             .setSolidColor(root.context.getColor(R.color.color_FFFFFF)).build()
     }
 
-    fun getBasketballDeleteButton(root:View) :Drawable {
+    fun getBasketballDeleteButton(root: View): Drawable {
         return DrawableCreator.Builder().setCornersRadius(5.dp.toFloat())
             .setSolidColor(root.context.getColor(R.color.color_636466)).build()
     }
 
-    fun getBasketballPlusMore(root:View):Drawable{
+    fun getBasketballPlusMore(root: View): Drawable {
         return DrawableCreator.Builder().setCornersRadius(5.dp.toFloat())
             .setStrokeWidth(1.dp.toFloat())
             .setStrokeColor(root.context.getColor(R.color.color_025BE8))

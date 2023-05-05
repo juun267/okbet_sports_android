@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="245dp"
+    android:layout_height="115dp"
+    android:layout_margin="5dp"
+    android:background="@drawable/bg_radius_8_white_only"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/tvAlbum"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="5dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="相册导入"
+        android:textColor="@color/color_FFFFFF" />
+
+    <TextView
+        android:id="@+id/tvCameraScan"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="15dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="相机扫码"
+        android:textColor="@color/color_FFFFFF" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>
