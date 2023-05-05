@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab.menu
 
 import android.Manifest
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
@@ -32,6 +33,7 @@ import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.GlideEngine
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.ScanPhotoDialog
+import timber.log.Timber
 
 class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
@@ -181,10 +183,10 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             .forResult(object : OnResultCallbackListener<LocalMedia> {
                 override fun onResult(result: MutableList<LocalMedia>?) {
                     val firstImage = result?.firstOrNull()
-                    val codeScanResult =
-                        BitmapUtil.stringToBitmap(firstImage?.compressPath.toString())
-                            ?.let { BarcodeUtils.decodeBitmap(it) }
-                    ToastUtil.showToast(requireContext(),codeScanResult?.text)
+                    val bitmap = BitmapFactory.decodeFile(firstImage?.compressPath)
+                    val bitResult= BarcodeUtils.decodeBitmap(bitmap)
+                    Timber.d("bitmap:${bitResult}")
+
                 }
 
                 override fun onCancel() {

@@ -13,6 +13,7 @@ import com.budiyev.android.codescanner.DecodeCallback
 import com.budiyev.android.codescanner.ErrorCallback
 import com.budiyev.android.codescanner.ScanMode
 import com.gyf.immersionbar.ImmersionBar
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityScannerBinding
 import org.cxct.sportlottery.ui.base.BaseActivity
@@ -46,6 +47,8 @@ class ScannerActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         codeScanner.decodeCallback = DecodeCallback {
             runOnUiThread {
                 Toast.makeText(this, "Scan result: ${it.text}", Toast.LENGTH_LONG).show()
+                binding.ivScan.gone()
+                animator.cancel()
             }
         }
 
@@ -74,6 +77,8 @@ class ScannerActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         animator.duration = 2000
         animator.repeatCount = ValueAnimator.INFINITE
         animator.start()
+
+
 
     }
 
