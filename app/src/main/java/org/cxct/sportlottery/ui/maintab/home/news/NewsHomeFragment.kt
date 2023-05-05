@@ -46,7 +46,7 @@ class NewsHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentNewsHo
         attach(this@NewsHomeFragment, getMainTabActivity(), viewModel)
         ivMenuLeft.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
-            getMainTabActivity().showLeftFrament(0, 1)
+            getMainTabActivity().showMainLeftMenu(this@NewsHomeFragment)
         }
     }
     private fun initObservable() {

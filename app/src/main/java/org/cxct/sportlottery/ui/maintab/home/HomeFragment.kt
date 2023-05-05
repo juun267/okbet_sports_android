@@ -8,7 +8,6 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
-import org.cxct.sportlottery.ui.maintab.live.HomeLiveFragment
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.FragmentHelper
 import org.greenrobot.eventbus.Subscribe

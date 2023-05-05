@@ -224,7 +224,9 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             R.drawable.ic_main_menu_news_0,
             textParams,
             R.string.N909,
-        ) {  }
+        ) {
+            getMainTabActivity().jumpToNews()
+        }
 
         serviceItem = addMenu(++index,
             groupParams,
