@@ -131,10 +131,6 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         return MenuItem(linearLayout, icon, textView, imageView, needClose, click)
     }
 
-    private fun close() {
-        getMainTabActivity().closeDrawerLayout()
-    }
-
     private inline fun getMainTabActivity() = activity as MainTabActivity
     private lateinit var languageAdapter: LanguageAdapter
 
@@ -152,50 +148,50 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
     // 新增菜单在这里修改
     private fun initMenuItem() = binding.run {
 
-        val p = LinearLayout.LayoutParams(-1, 40.dp)
-        p.topMargin = 4.5f.dp
-        val p1 = 20.dp.let { LinearLayout.LayoutParams(it, it) }
-        p1.leftMargin = 12.dp
-        val p2 = LinearLayout.LayoutParams(0, -2, 1f)
-        p2.leftMargin = p1.leftMargin
+        val groupParams = LinearLayout.LayoutParams(-1, 40.dp)
+        groupParams.topMargin = 4.5f.dp
+        val iconParams = 20.dp.let { LinearLayout.LayoutParams(it, it) }
+        iconParams.leftMargin = 12.dp
+        val textParams = LinearLayout.LayoutParams(0, -2, 1f)
+        textParams.leftMargin = iconParams.leftMargin
 
         sportsItem = addMenu(0,
-            p,
-            p1,
+            groupParams,
+            iconParams,
             R.drawable.ic_main_menu_sports_1,
             R.drawable.ic_main_menu_sports_0,
-            p2,
+            textParams,
             R.string.B001,
             true
         ) { getMainTabActivity().jumpToEarlySport() }
 
         okGamesItem = addMenu(1,
-            p,
-            p1,
+            groupParams,
+            iconParams,
             R.drawable.ic_main_menu_okgames_1,
             R.drawable.ic_main_menu_okgames_0,
-            p2,
+            textParams,
             R.string.J203,
             true
         ) { getMainTabActivity().jumpToOKGames() }
 
         var index = binding.llMenuRoot.indexOfChild(divider1)
         promotionItem = addMenu(++index,
-            p,
-            p1,
+            groupParams,
+            iconParams,
             R.drawable.ic_main_menu_promo_1,
             R.drawable.ic_main_menu_promo_0,
-            p2,
+            textParams,
             R.string.B005,
         )
         promotionItem.group.bindPromoClick { close() }
 
         affiliateItem = addMenu(++index,
-            p,
-            p1,
+            groupParams,
+            iconParams,
             R.drawable.ic_main_menu_affiliate_1,
             R.drawable.ic_main_menu_affiliate_0,
-            p2,
+            textParams,
             R.string.B015,
         ) {
             JumpUtil.toInternalWeb(
@@ -206,30 +202,30 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         }
 
         newsItem = addMenu(++index,
-            p,
-            p1,
+            groupParams,
+            iconParams,
             R.drawable.ic_main_menu_news_0,
             R.drawable.ic_main_menu_news_0,
-            p2,
+            textParams,
             R.string.N909,
         ) {  }
 
         serviceItem = addMenu(++index,
-            p,
-            p1,
+            groupParams,
+            iconParams,
             R.drawable.ic_main_menu_livesupport_1,
             R.drawable.ic_main_menu_livesupport_0,
-            p2,
+            textParams,
             R.string.LT050,
         )
         serviceItem.group.setServiceClick(childFragmentManager) { close() }
 
         languageItem = addMenu(binding.llMenuRoot.indexOfChild(rvLanguage),
-            p,
-            p1,
+            groupParams,
+            iconParams,
             R.drawable.ic_main_menu_language_1,
             R.drawable.ic_main_menu_language_0,
-            p2,
+            textParams,
             R.string.language_en,
             true,
             false
@@ -257,10 +253,10 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         }
         scanItem = addMenu(binding.llMenuRoot.indexOfChild(divider3) + 1,
             scanParams,
-            p1,
+            iconParams,
             R.drawable.ic_main_menu_scan_0,
             R.drawable.ic_main_menu_scan_0,
-            p2,
+            textParams,
             R.string.scan,
             true,
             false
@@ -269,6 +265,10 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         scanItem.onClearSelected = { scanItem.ivIndicator?.visible() }
         scanItem.ivIndicator?.visible()
         scanItem.ivIndicator?.setImageResource(R.drawable.ic_arrow_gray_right)
+    }
+
+    private fun close() {
+        getMainTabActivity().closeDrawerLayout()
     }
 
     fun openWithOKGames() {
@@ -293,6 +293,10 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
     private fun initView() = binding.run {
         llVerify.setOnClickListener { startActivity(VerifyIdentityActivity::class.java) }
         ivClose.setOnClickListener { close() }
+        ivHome.setOnClickListener {
+            getMainTabActivity().backMainHome()
+            close()
+        }
     }
 
     private fun initLanguageList() {
@@ -328,28 +332,25 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
 
         when (userInfo?.verified) {
             ProfileActivity.VerifiedType.PASSED.value -> {
-                llVerify.isEnabled = false
-                llVerify.isClickable = false
-                tvVerifyStatus.text = getString(R.string.kyc_passed)
+                setVerify(false, false, R.string.kyc_passed)
             }
             ProfileActivity.VerifiedType.NOT_YET.value -> {
-                llVerify.isEnabled = true
-                llVerify.isClickable = true
-                tvVerifyStatus.text = getString(R.string.kyc_unverified)
-
+                setVerify(true, true, R.string.kyc_unverified)
             }
             ProfileActivity.VerifiedType.VERIFYING.value -> {
-                llVerify.isEnabled = false
-                llVerify.isClickable = false
-                tvVerifyStatus.text = getString(R.string.kyc_unverifing)
+                setVerify(false, false, R.string.kyc_unverifing)
 
             }
             else -> {
-                llVerify.isEnabled = true
-                llVerify.isClickable = true
-                tvVerifyStatus.text = getString(R.string.kyc_unverified)
+                setVerify(true, true, R.string.kyc_unverified)
             }
         }
+    }
+
+    private inline fun setVerify(enable: Boolean, clickAble: Boolean, text: Int) = binding.run  {
+        llVerify.isEnabled = enable
+        llVerify.isClickable = clickAble
+        tvVerifyStatus.setText(text)
     }
 
 }
