@@ -33,7 +33,7 @@ import org.cxct.sportlottery.ui.betList.listener.OnSelectedPositionListener
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.KvUtils.BASKETBALL_DEL_TIP_FLAG
-import org.cxct.sportlottery.util.drawable.DrawableUtils
+import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import org.cxct.sportlottery.view.dialog.BasketballDelBetTipDialog
 import timber.log.Timber
 
@@ -122,10 +122,10 @@ class BasketballEndingCardViewHolder(
             override fun convert(holder: BaseViewHolder, item: BetInfoListData) {
 
                 val tvMatchOdds = holder.getView<TextView>(R.id.tvMatchOdds)
-                tvMatchOdds.background = DrawableUtils.getBasketballBetListButton()
+                tvMatchOdds.background = DrawableCreatorUtils.getBasketballBetListButton()
                 holder.setText(R.id.tvMatchOdds, item.matchOdd.playName)
                 val tvHide = holder.getView<TextView>(R.id.tvHide)
-                tvHide.background = DrawableUtils.getBasketballDeleteButton()
+                tvHide.background = DrawableCreatorUtils.getBasketballDeleteButton()
 
                 if (item.isClickForBasketball == true) {
                     tvHide.visible()
@@ -138,7 +138,7 @@ class BasketballEndingCardViewHolder(
                     holder.setGone(R.id.tvMatchOdds, true).setVisible(R.id.tvBsMore, true)
                         .setText(R.id.tvBsMore, R.string.N920)
                     val tvBsMore = holder.getView<TextView>(R.id.tvBsMore)
-                    tvBsMore.background = DrawableUtils.getBasketballPlusMore()
+                    tvBsMore.background = DrawableCreatorUtils.getBasketballPlusMore()
                     tvBsMore.setOnClickListener {
                         onItemClickListener.addMore()
                     }
@@ -181,9 +181,6 @@ class BasketballEndingCardViewHolder(
         newList.sortBy { it.matchOdd.playName.split("-")[1].toInt() }
         newList.sortBy { it.matchOdd.playName.split("-")[0].toInt() }
         newList.add(newList[0])
-//        newList.forEach {
-//            it.isClickForBasketball = false
-//        }
         rcvBasketballAdapter.setNewInstance(newList)
         rcvBasketballScore.layoutManager = GridLayoutManager(root.context, 5)
         tvBasketBetListCount.text = "X${betList?.size}"
@@ -362,7 +359,7 @@ class BasketballEndingCardViewHolder(
         setViewVisible(tvVs, tvMatchAway, tvLeagueName)
         tvLeagueName.text = itemData.matchOdd.leagueName?.trim()
 
-        btnBasketballDeleteAll.background = DrawableUtils.getBasketballDeleteAllDrawable()
+        btnBasketballDeleteAll.background = DrawableCreatorUtils.getBasketballDeleteAllDrawable()
         btnBasketballDeleteAll.setOnClickListener {
             if (!KvUtils.decodeBooleanTure(BASKETBALL_DEL_TIP_FLAG, false)) {
                 val dialog = BasketballDelBetTipDialog(root.context)

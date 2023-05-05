@@ -4,8 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.widget.TextView
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.drawable.DrawableUtils
+import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 
 class ScanPhotoDialog(mContext: Context) : Dialog(mContext) {
 
@@ -22,16 +21,14 @@ class ScanPhotoDialog(mContext: Context) : Dialog(mContext) {
         val tvAlbum = findViewById<TextView>(R.id.tvAlbum)
         val tvCameraScan = findViewById<TextView>(R.id.tvCameraScan)
 
-        tvAlbum.background = DrawableUtils.getCommonBackgroundStyle(
-            cornerRadius = 20,
-            strokeColor = R.color.color_025BE8,
-            solidColor = R.color.color_025BE8,
+        tvAlbum.background = DrawableCreatorUtils.getCommonBackgroundStyle(
+            20,
+            R.color.color_025BE8,
         )
 
-        tvCameraScan.background = DrawableUtils.getCommonBackgroundStyle(
-            cornerRadius = 20,
-            strokeColor = R.color.color_ff8A00,
-            solidColor = R.color.color_ff8A00,
+        tvCameraScan.background = DrawableCreatorUtils.getCommonBackgroundStyle(
+            20,
+            R.color.color_ff8A00,
         )
 
         tvAlbum.setOnClickListener {
