@@ -40,7 +40,7 @@
     <ImageView
         android:id="@+id/ivScan"
         android:layout_width="match_parent"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="48dp"
         android:background="@drawable/ic_scan_frame"

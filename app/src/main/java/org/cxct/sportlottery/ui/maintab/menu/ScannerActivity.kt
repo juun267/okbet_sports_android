@@ -9,6 +9,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Toast
 import com.budiyev.android.codescanner.AutoFocusMode
 import com.budiyev.android.codescanner.CodeScanner
+import com.budiyev.android.codescanner.CodeScannerView
 import com.budiyev.android.codescanner.DecodeCallback
 import com.budiyev.android.codescanner.ErrorCallback
 import com.budiyev.android.codescanner.ScanMode
@@ -19,74 +20,95 @@ import org.cxct.sportlottery.databinding.ActivityScannerBinding
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import timber.log.Timber
 
 class ScannerActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private lateinit var codeScanner: CodeScanner
     private lateinit var animator: ValueAnimator
-    private val binding by lazy {
+
+    private val binding by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
         ActivityScannerBinding.inflate(layoutInflater)
+    }
+    private val scannerView by lazy {
+        binding.scannerView
+    }
+    private val ivScanFrame by lazy {
+        binding.ivScan
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        val scannerView = binding.scannerView
-
         ImmersionBar.with(this).statusBarDarkFont(false).transparentStatusBar()
             .fitsSystemWindows(false).init()
-
-        codeScanner = CodeScanner(this, scannerView)
-        codeScanner.camera = CodeScanner.CAMERA_BACK // or CAMERA_FRONT or specific camera id
-        codeScanner.formats = CodeScanner.ALL_FORMATS // list of type BarcodeFormat,
-        codeScanner.autoFocusMode = AutoFocusMode.SAFE // or CONTINUOUS
-        codeScanner.scanMode = ScanMode.SINGLE // or CONTINUOUS or PREVIEW
-        codeScanner.isAutoFocusEnabled = true // Whether to enable auto focus or not
-        codeScanner.isFlashEnabled = true // Whether to enable flash or not
-
-        codeScanner.decodeCallback = DecodeCallback {
-            runOnUiThread {
-                Toast.makeText(this, "Scan result: ${it.text}", Toast.LENGTH_LONG).show()
-                binding.ivScan.gone()
-                animator.cancel()
-            }
-        }
-
-        codeScanner.errorCallback = ErrorCallback { // or ErrorCallback.SUPPRESS
-            runOnUiThread {
-                Toast.makeText(
-                    this, "Camera initialization error: ${it.message}", Toast.LENGTH_LONG
-                ).show()
-            }
-        }
-
+        initCodeScanner()
         binding.ivClose.setOnClickListener {
             finish()
         }
+    }
 
-
+    private fun initCodeScanner() {
+        codeScanner = CodeScanner(this, scannerView).apply {
+            camera = CodeScanner.CAMERA_BACK
+            formats = CodeScanner.TWO_DIMENSIONAL_FORMATS
+            autoFocusMode = AutoFocusMode.SAFE
+            scanMode = ScanMode.SINGLE
+            isAutoFocusEnabled = true
+            isFlashEnabled = false
+            decodeCallback = DecodeCallback {
+                runOnUiThread {
+                    Toast.makeText(
+                        this@ScannerActivity, "Scan result: ${it.text}", Toast.LENGTH_LONG
+                    ).show()
+                    stopScanAnim()
+                }
+            }
+            errorCallback = ErrorCallback {
+                runOnUiThread {
+                    Toast.makeText(
+                        this@ScannerActivity,
+                        "Camera initialization error: ${it.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
     }
 
     private fun startScanAnim() {
-        binding.ivScan.visible()
-        animator = ObjectAnimator.ofFloat(
-            binding.ivScan, "translationY", -140.dp.toFloat(), 140.dp.toFloat()
-        )
-        animator.interpolator = AccelerateDecelerateInterpolator()
-        animator.repeatMode = ValueAnimator.REVERSE
-        animator.duration = 2000
-        animator.repeatCount = ValueAnimator.INFINITE
-        animator.start()
+        ivScanFrame.visible()
+        ivScanFrame.post {
+            //frameSize取值范围为0.0 - 1.0 ， 占用父控件的大小比例
+            val height = (scannerView.frameSize * scannerView.width) / 2
+//            Timber.d(
+//                "scannerView.frameSize:${scannerView.frameSize} " + "scannerView.width:${scannerView.width} height:${height}"
+//            )
+            animator = ObjectAnimator.ofFloat(
+                ivScanFrame, "translationY", -height, height
+            ).apply {
+                interpolator = AccelerateDecelerateInterpolator()
+                repeatMode = ValueAnimator.REVERSE
+                duration = 2000
+                repeatCount = ValueAnimator.INFINITE
+                start()
+            }
 
+        }
+    }
 
-
+    private fun stopScanAnim() {
+        ivScanFrame.gone()
+        animator.cancel()
     }
 
     override fun onResume() {
         super.onResume()
-
         codeScanner.startPreview()
-        startScanAnim()
+        ivScanFrame.postDelayed({
+            startScanAnim()
+        }, 500)
+
     }
 
 

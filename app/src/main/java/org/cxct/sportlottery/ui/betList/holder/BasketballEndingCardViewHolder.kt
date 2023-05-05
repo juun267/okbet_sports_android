@@ -122,10 +122,10 @@ class BasketballEndingCardViewHolder(
             override fun convert(holder: BaseViewHolder, item: BetInfoListData) {
 
                 val tvMatchOdds = holder.getView<TextView>(R.id.tvMatchOdds)
-                tvMatchOdds.background = DrawableUtils.getBasketballBetListButton(root)
+                tvMatchOdds.background = DrawableUtils.getBasketballBetListButton()
                 holder.setText(R.id.tvMatchOdds, item.matchOdd.playName)
                 val tvHide = holder.getView<TextView>(R.id.tvHide)
-                tvHide.background = DrawableUtils.getBasketballDeleteButton(root)
+                tvHide.background = DrawableUtils.getBasketballDeleteButton()
 
                 if (item.isClickForBasketball == true) {
                     tvHide.visible()
@@ -138,7 +138,7 @@ class BasketballEndingCardViewHolder(
                     holder.setGone(R.id.tvMatchOdds, true).setVisible(R.id.tvBsMore, true)
                         .setText(R.id.tvBsMore, R.string.N920)
                     val tvBsMore = holder.getView<TextView>(R.id.tvBsMore)
-                    tvBsMore.background = DrawableUtils.getBasketballPlusMore(root)
+                    tvBsMore.background = DrawableUtils.getBasketballPlusMore()
                     tvBsMore.setOnClickListener {
                         onItemClickListener.addMore()
                     }
@@ -362,7 +362,7 @@ class BasketballEndingCardViewHolder(
         setViewVisible(tvVs, tvMatchAway, tvLeagueName)
         tvLeagueName.text = itemData.matchOdd.leagueName?.trim()
 
-        btnBasketballDeleteAll.background = DrawableUtils.getBasketballDeleteAllDrawable(root)
+        btnBasketballDeleteAll.background = DrawableUtils.getBasketballDeleteAllDrawable()
         btnBasketballDeleteAll.setOnClickListener {
             if (!KvUtils.decodeBooleanTure(BASKETBALL_DEL_TIP_FLAG, false)) {
                 val dialog = BasketballDelBetTipDialog(root.context)
