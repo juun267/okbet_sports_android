@@ -75,7 +75,10 @@
             android:src="@drawable/ic_game_gray_arrow_right" />
     </LinearLayout>
 
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_0.5"
+        android:background="@color/color_EEF3FC"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvNews"
