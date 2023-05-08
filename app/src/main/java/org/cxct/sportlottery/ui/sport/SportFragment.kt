@@ -9,7 +9,6 @@ import kotlinx.android.synthetic.main.fragment_sport.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
-import org.cxct.sportlottery.common.extentions.fitsSystemStatus
 import org.cxct.sportlottery.common.extentions.newInstanceFragment
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.network.common.GameType
@@ -35,12 +34,12 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
     companion object {
 
         val matchTypeTabPositionMap = mapOf(
-            MatchType.IN_PLAY to 0,
-            MatchType.AT_START to 1,
-            MatchType.TODAY to 2,
-            MatchType.EARLY to 3,
-            MatchType.PARLAY to 4,
-            MatchType.END_SCORE to 5,
+            MatchType.END_SCORE to 0,
+            MatchType.IN_PLAY to 1,
+            MatchType.AT_START to 2,
+            MatchType.TODAY to 3,
+            MatchType.EARLY to 4,
+            MatchType.PARLAY to 5,
             MatchType.CS to 6,
             MatchType.OUTRIGHT to 7,
             MatchType.MAIN to 99
@@ -62,17 +61,16 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         viewModel.getMatchData()
         viewModel.firstSwitchMatch(jumpMatchType ?: MatchType.IN_PLAY)
         navGameFragment(jumpMatchType ?: MatchType.IN_PLAY)
-        if (showBKEndDialog) {
-            showBKEndDialog = false
-            showBKEndDialog()
-        }
+//        if (showBKEndDialog) {
+//            showBKEndDialog = false
+//            showBKEndDialog()
+//        }
     }
 
     private inline fun getMainTabActivity() = activity as MainTabActivity
 
     fun initToolBar() = homeToolbar.run {
         attach(this@SportFragment, getMainTabActivity(), viewModel, false)
-        fitsSystemStatus()
         setBackgroundColor(Color.WHITE)
         searchView.setOnClickListener { startActivity(SportSearchtActivity::class.java) }
         ivMenuLeft.setOnClickListener {
@@ -114,12 +112,12 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         val countParlay = sportMenuData?.menu?.parlay?.items?.sumOf { it.num } ?: 0
         val countBkEnd = sportMenuData?.menu?.bkEnd?.items?.sumOf { it.num } ?: 0
 
-        addTab(getString(R.string.home_tab_in_play), countInPlay, 0)
-        addTab(getString(R.string.home_tab_at_start), countAtStart, 1)
-        addTab(getString(R.string.home_tab_today), countToday, 2)
-        addTab(getString(R.string.home_tab_early), countEarly, 3)
-        addTab(getString(R.string.home_tab_parlay), countParlay, 4)
-        addTab(getString(R.string.home_tab_end_score), countBkEnd, 5)
+        addTab(getString(R.string.home_tab_end_score), countBkEnd, 0)
+        addTab(getString(R.string.home_tab_in_play), countInPlay, 1)
+        addTab(getString(R.string.home_tab_at_start), countAtStart, 2)
+        addTab(getString(R.string.home_tab_today), countToday, 3)
+        addTab(getString(R.string.home_tab_early), countEarly, 4)
+        addTab(getString(R.string.home_tab_parlay), countParlay, 5)
         addTab(getString(R.string.home_tab_cs), countCS, 6)
         addTab(getString(R.string.home_tab_outright), countOutright, 7)
     }

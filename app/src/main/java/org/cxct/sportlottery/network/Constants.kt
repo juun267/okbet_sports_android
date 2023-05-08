@@ -592,5 +592,7 @@ object Constants {
 
     //资讯详情
     const val NEWS_DETIAL = "/front/content/getOne"
+    // 安卓送审版本号
+    const val GET_CONFIG_BY_NAME = "/api/agent/game/config/getConfigByName/{name}"
 
 }

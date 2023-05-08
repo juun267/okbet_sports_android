@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.maintab.betdetails
+package org.cxct.sportlottery.ui.betRecord.detail
 
 import android.view.LayoutInflater
 import android.view.View

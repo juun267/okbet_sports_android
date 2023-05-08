@@ -10,6 +10,7 @@ import androidx.annotation.StringRes
 import androidx.appcompat.widget.AppCompatTextView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.SPUtil
 
 object MainHomeItemHelper {
 
@@ -21,18 +22,21 @@ object MainHomeItemHelper {
         val nameSize: Int = 10,
     )
 
-    private val items = arrayOf(
-        HomeItem(R.string.home_recommend,
+    private val items = mutableListOf<HomeItem>().apply {
+        add(HomeItem(R.string.home_recommend,
             R.drawable.icon_recommend,
             R.drawable.bg_tab_open_selector,
             R.color.color_E9F4FA,
-            11), // 推荐
-        HomeItem(R.string.home_sports, R.drawable.sport0), //体育
-        HomeItem(R.string.home_in_play, R.drawable.icon_in_play0), //滚球
-        HomeItem(R.string.home_on_game, R.drawable.icon_on_game0), //棋牌
-        HomeItem(R.string.promo, R.drawable.ic_home_promo_nor), // 优惠
-        HomeItem(R.string.home_live, R.drawable.live0), //直播
-    )
+            11))
+        // 推荐
+        add(HomeItem(R.string.home_sports, R.drawable.sport0)) //体育
+        add(HomeItem(R.string.home_in_play, R.drawable.icon_in_play0)) //滚球
+        if (!SPUtil.getMarketSwitch()) {
+            add(HomeItem(R.string.home_on_game, R.drawable.icon_on_game0)) //棋牌
+            add(HomeItem(R.string.promo, R.drawable.ic_home_promo_nor)) // 优惠
+        }
+        add(HomeItem(R.string.home_live, R.drawable.live0)) //直播
+    }
 
 
     fun fillingItems(parent: LinearLayout, itemClick: (Int) -> Unit) {

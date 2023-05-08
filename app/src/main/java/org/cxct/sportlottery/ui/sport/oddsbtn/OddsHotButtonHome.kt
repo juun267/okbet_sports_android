@@ -345,6 +345,7 @@ class OddsHotButtonHome @JvmOverloads constructor(
 //            iv_arrow.setImageResource(R.drawable.ic_match_red_down)
             button_odd_detail.setBackgroundResource(R.drawable.bg_hot_game_lose)
             iv_mark_bottom.visible()
+            iv_mark_top.gone()
         } else if (diff > 0.0) {
             tv_odds.setTextColor(
                 ContextCompat.getColorStateList(
@@ -353,6 +354,7 @@ class OddsHotButtonHome @JvmOverloads constructor(
                 )
             )
             iv_mark_top.visible()
+            iv_mark_bottom.gone()
 //            iv_arrow.setImageResource(R.drawable.ic_match_green_up)
             button_odd_detail.setBackgroundResource(R.drawable.bg_hot_game_win)
         } else {
@@ -377,6 +379,7 @@ class OddsHotButtonHome @JvmOverloads constructor(
 
     //常駐顯示按鈕 依狀態隱藏鎖頭
     private fun setupBetStatus(betStatus: Int) {
+//        button_odd_detail.setBackgroundResource(R.drawable.bg_gray_border_8)
         img_odd_lock.apply {
             visibility =
                 if (betStatus == BetStatus.LOCKED.code) {
@@ -415,6 +418,7 @@ class OddsHotButtonHome @JvmOverloads constructor(
 //                    visibility = View.VISIBLE
 //                }
                 iv_mark_top.visible()
+                iv_mark_bottom.gone()
                 button_odd_detail.setBackgroundResource(R.drawable.bg_hot_game_win)
                 status = true
                 isActivated = false
@@ -431,13 +435,13 @@ class OddsHotButtonHome @JvmOverloads constructor(
 //                    visibility = View.VISIBLE
 //                }
                 iv_mark_bottom.visible()
+                iv_mark_top.gone()
                 button_odd_detail.setBackgroundResource(R.drawable.bg_hot_game_lose)
                 status = true
                 isActivated = false
             }
             OddState.SAME.state -> {
                 resetOddsValueState(tv_odds)
-                button_odd_detail.setBackgroundResource(R.drawable.bg_gray_border_8)
                 isActivated = false
             }
         }
@@ -452,14 +456,13 @@ class OddsHotButtonHome @JvmOverloads constructor(
         }
 
         if (status) {
-            lin_odd.tag = lin_odd.flashAnimation(1000,2,0.3f).apply {
+            lin_odd.tag = lin_odd.flashAnimation(1000,2,0.9f).apply {
                 addListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator) {
                         resetOddsValueState(tv_odds)
                     }
                 })
             }
-
         }
 //        updateOddsTextColor()
     }
@@ -471,6 +474,7 @@ class OddsHotButtonHome @JvmOverloads constructor(
 //        }
         iv_mark_top.gone()
         iv_mark_bottom.gone()
+        button_odd_detail.setBackgroundResource(R.drawable.bg_gray_border_8)
         textView.setTextColor(
             ContextCompat.getColorStateList(
                 context,

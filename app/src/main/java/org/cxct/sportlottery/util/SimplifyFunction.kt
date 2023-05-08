@@ -911,17 +911,7 @@ fun isOKPlat(): Boolean = MultiLanguagesApplication.stringOf(R.string.app_name).
 
 fun isUAT(): Boolean = BuildConfig.FLAVOR == "phuat"
 
-/**
- * 解析以下报错，不能用lambda
- *  Cannot add the same observer with different lifecycles
- */
-//fun <T> LiveData<T>.observe(@NonNull owner: LifecycleOwner, callback: (T) -> Unit) {
-//    this.observe(owner, object : Observer<T> {
-//        override fun onChanged(t: T) {
-//            callback.invoke(t)
-//        }
-//    })
-//}
+fun isGooglePlayVersion() = BuildConfig.FLAVOR == "google"
 
 fun ImageView.setTeamLogo(icon: String?) {
     if (icon.isNullOrEmpty()) {

@@ -31,6 +31,7 @@ import org.cxct.sportlottery.databinding.ActivityMainTabBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.network.bet.settledDetailList.BetInfo
 import org.cxct.sportlottery.network.bet.settledList.Row
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
@@ -120,9 +121,18 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             }
         }
         viewModel.showBetUpperLimit.observe(this) {
-            if (it.getContentIfNotHandled() == true) snackBarBetUpperLimitNotify.apply {
-                setAnchorView(R.id.parlayFloatWindow)
-                show()
+            if (it.getContentIfNotHandled() == true) {
+                showSnackBarBetUpperLimitNotify(
+                    getString(R.string.bet_notify_max_limit)
+                ).setAnchorView(R.id.parlayFloatWindow).show()
+            }
+        }
+
+        viewModel.showBetBasketballUpperLimit.observe(this) {
+            if (it.getContentIfNotHandled() == true) {
+                showSnackBarBetUpperLimitNotify(
+                    getString(R.string.bet_basketball_notify_max_limit)
+                ).setAnchorView(R.id.parlayFloatWindow).show()
             }
         }
     }
@@ -230,7 +240,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     var menuClass: Class<*>? = null
 
-    fun showMainLeftMenu(contentFragment: BaseFragment<*>?) {
+    fun showMainLeftMenu(contentFragment: Class<BaseFragment<*>>?) {
         if (menuClass != homeLeftFragment::class.java) {
             menuClass = homeLeftFragment::class.java
             left_menu.layoutParams.width = MetricsUtil.getScreenWidth()
@@ -282,6 +292,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         if (event.currentMode == BetListFragment.SINGLE) {
             BetInfoRepository.currentBetType = BetListFragment.SINGLE
             parlayFloatWindow.gone()
+        } else if (event.currentMode == BetListFragment.BASKETBALL_ENDING_CARD) {
+            BetInfoRepository.currentBetType = BetListFragment.BASKETBALL_ENDING_CARD
+            if (betListCount != 0) {
+                parlayFloatWindow.visible()
+            }
         } else {
             BetInfoRepository.currentBetType = BetListFragment.PARLAY
             if (betListCount != 0) {
@@ -354,14 +369,18 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             else -> false
         }
 
-        if (betListCount == 0 || !needShowBetBar || BetInfoRepository.currentBetType == BetListFragment.SINGLE) {
+        if (betListCount == 0 || !needShowBetBar || BetInfoRepository.currentBetType
+            == BetListFragment.SINGLE) {
 //            Timber.d("ParlayFloatWindow隐藏：betListCount:${betListCount} !needShowBetBar:${!needShowBetBar} currentBetMode:${BetInfoRepository.currentBetType}")
             parlayFloatWindow.gone()
         } else {
-            if (BetInfoRepository.currentBetType == BetListFragment.PARLAY) {
-//                Timber.d("ParlayFloatWindow显示")
-                parlayFloatWindow.visible()
+            if (BetInfoRepository.currentBetType == BetListFragment.PARLAY
+            ) {
+                parlayFloatWindow.setBetText(getString(R.string.conspire))
+            }else{
+                parlayFloatWindow.setBetText(getString(R.string.bet_slip))
             }
+            parlayFloatWindow.visible()
         }
     }
 

@@ -2,15 +2,13 @@ package org.cxct.sportlottery.ui.maintab.home
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.os.Bundle
-import android.util.Log
 import android.view.View
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.gyf.immersionbar.ImmersionBar
 import com.youth.banner.Banner
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
@@ -22,7 +20,6 @@ import kotlinx.android.synthetic.main.hot_gaming_include.*
 import kotlinx.android.synthetic.main.hot_handicap_include.*
 import kotlinx.android.synthetic.main.hot_live_match_include.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.*
@@ -51,7 +48,6 @@ import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.OKVideoPlayer
-import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.transform.TransformInDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -217,7 +213,6 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
 
     fun initToolBar() {
         homeToolbar.attach(this, getMainTabActivity(), viewModel)
-        homeToolbar.fitsSystemStatus()
         homeToolbar.ivMenuLeft.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
             getMainTabActivity().showMainLeftMenu(null)
@@ -252,18 +247,18 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
             }
 
             viewModel.getSportMenuFilter()
-            if (!PopImageDialog.firstShow) {
-                MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
-                return@observe
-            }
-            requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
-                putInt(PopImageDialog.DrawableResID, R.drawable.img_thirdgame)
-            }).apply {
-                onClick = { getHomeFragment().jumpToOKGames() }
-                onDismiss = {
-                    MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
-                }
-            }.show(childFragmentManager, PopImageDialog::class.simpleName)
+//            if (!PopImageDialog.firstShow) {
+//                MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
+//                return@observe
+//            }
+//            requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
+//                putInt(PopImageDialog.DrawableResID, R.drawable.img_thirdgame)
+//            }).apply {
+//                onClick = { getHomeFragment().jumpToOKGames() }
+//                onDismiss = {
+//                    MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
+//                }
+//            }.show(childFragmentManager, PopImageDialog::class.simpleName)
 
         }
 //
@@ -292,7 +287,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
 
             //棋牌
             val mHotChessList = gameList.filter { it.gameType?.equals("1") == true }
-            if (mHotChessList.isNullOrEmpty()) {
+            if (mHotChessList.isNullOrEmpty() || SPUtil.getMarketSwitch()) {
                 setViewGone(view1, hot_card_game_include)
             } else {
                 setViewVisible(view1, hot_card_game_include)
@@ -302,7 +297,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
 
             //电子
             val mHotelList = gameList.filter { it.gameType?.equals("2") == true }
-            if (mHotelList.isNullOrEmpty()){
+            if (mHotelList.isNullOrEmpty() || SPUtil.getMarketSwitch()) {
                 setViewGone(view2, hot_gaming_include)
             } else {
                 setViewVisible(view2, hot_gaming_include)
@@ -606,7 +601,8 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
 
     private fun setupBanner() {
 
-        var imageList = sConfigData?.imageList?.filter { it.imageType == 2 }
+        var imageList =
+            sConfigData?.imageList?.filter { it.imageType == 2 && !(isGooglePlayVersion() && it.isHidden) }
 
         if (imageList.isNullOrEmpty()) {
             banner.setBackgroundResource(R.drawable.img_banner01)
@@ -776,7 +772,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
     }
 
     private fun initListView(){
-
+        hot_gaming_include.isGone = SPUtil.getMarketSwitch()
         //热门电子游戏
         rv_egame.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         rv_egame.adapter = hotElectronicAdapter
@@ -793,6 +789,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
             }
         }
 
+        hot_card_game_include.isGone = SPUtil.getMarketSwitch()
         //棋牌
         rv_chess.layoutManager = LinearLayoutManager(rv_chess.context, LinearLayoutManager.HORIZONTAL, false)
         rv_chess.addItemDecoration(SpaceItemDecoration(rv_chess.context, R.dimen.recyclerview_news_item_dec_spec))

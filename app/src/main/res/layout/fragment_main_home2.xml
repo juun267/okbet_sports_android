@@ -47,9 +47,10 @@
                 android:id="@+id/includeNews"
                 layout="@layout/include_home_news" />
 
-            <include
-                android:id="@+id/includeRecord"
-                layout="@layout/include_home_record" />
+            <org.cxct.sportlottery.ui.maintab.home.view.WinsRankView
+                android:id="@+id/winsRankView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
             <include
                 android:id="@+id/includeBettingStation"

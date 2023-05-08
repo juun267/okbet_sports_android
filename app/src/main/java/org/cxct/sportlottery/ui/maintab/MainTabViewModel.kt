@@ -20,4 +20,5 @@ class MainTabViewModel(
     favoriteRepository
 ) {
     val showBetUpperLimit = betInfoRepository.showBetUpperLimit
+    val showBetBasketballUpperLimit = betInfoRepository.showBetBasketballUpperLimit
 }

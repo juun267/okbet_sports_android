@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lin_match"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -113,59 +114,92 @@
     <LinearLayout
         android:id="@+id/llMatchInfo"
         android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/margin_15">
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:layout_weight="1"
-            android:gravity="center_vertical">
+            android:gravity="center">
 
             <ImageView
                 android:id="@+id/ivHomeLogo"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="18dp"/>
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="5dp"
+                android:background="@drawable/bg_stroke_team_logo" />
 
             <TextView
                 android:id="@+id/tvHomeName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
                 android:textColor="@color/color_535D76"
+                android:singleLine="true"
+                android:ellipsize="end"
                 android:textStyle="bold"
                 android:textSize="13sp"
-                android:maxLines="1"/>
+                android:maxLines="1" />
 
         </LinearLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:layout_marginHorizontal="20dp"
+            android:textSize="@dimen/textSize20sp"
+            android:textColor="@color/color_A7B2C4"
+            android:text="@string/verse_upper" />
+
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:layout_weight="1"
-            android:paddingRight="5dp"
-            android:gravity="center_vertical">
+            android:gravity="center">
 
             <ImageView
                 android:id="@+id/ivAwayLogo"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="18dp"/>
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="5dp"
+                android:background="@drawable/bg_stroke_team_logo" />
 
             <TextView
                 android:id="@+id/tvAwayName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
                 android:textColor="@color/color_535D76"
+                android:singleLine="true"
+                android:ellipsize="end"
                 android:textStyle="bold"
                 android:textSize="13sp"
-                android:maxLines="1"/>
+                android:maxLines="1" />
 
         </LinearLayout>
+
     </LinearLayout>
 
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="38dp"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/margin_10"
+        android:layout_marginBottom="@dimen/margin_15"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/bg_radius_4_button_blue"
+        android:textSize="@dimen/textSize14sp"
+        android:textColor="@color/color_FFFFFF"
+        android:text="@string/betting" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/color_261B3A98" />
 </LinearLayout>

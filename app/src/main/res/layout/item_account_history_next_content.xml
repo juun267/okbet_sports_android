@@ -239,11 +239,20 @@
                         android:textSize="@dimen/textSize12sp"
                         tools:text="密尔沃基雄鹿 6.5 \@ 1.860" />
 
+                    <include
+                        android:id="@+id/lin_endscore_parent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_20"
+                        android:layout_marginRight="@dimen/margin_8"
+                        android:layout_marginTop="@dimen/margin_8"
+                        layout="@layout/include_bet_record_endscore" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:layout_marginHorizontal="8dp"
+                        android:layout_marginTop="@dimen/margin_8"
                         android:background="@drawable/bg_square_shape_2dp_gray"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
