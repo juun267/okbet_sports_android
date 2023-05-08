@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:paddingHorizontal="@dimen/margin_12">
+    android:paddingHorizontal="@dimen/margin_12"
+    android:foreground="@drawable/fg_ripple">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,6 +33,7 @@
                 android:textColor="@color/color_303C55"
                 android:textSize="@dimen/textSize14sp"
                 android:lines="2"
+                android:textStyle="bold"
                 tools:text="OKBet supports Miss Grand PH for the upcoming. Max  lines..." />
 
             <TextView
