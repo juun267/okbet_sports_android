@@ -1280,4 +1280,5 @@
     <string name="N951">相册导入</string>
     <string name="N952">相机扫码</string>
     <string name="N956">无法识别此二维码</string>
+    <string name="picture_camera">获取系统相机权限被拒绝</string>
 </resources>

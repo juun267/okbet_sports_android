@@ -155,8 +155,15 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 RxPermissions(this).request(Manifest.permission.CAMERA).subscribe { onNext ->
                     if (onNext) {
                         startActivity(Intent(requireContext(), ScannerActivity::class.java))
+                    } else {
+                        ToastUtil.showToast(
+                            requireContext(),
+                            LocalUtils.getString(R.string.picture_camera)
+                        )
                     }
                 }.isDisposed
+
+
             }
             scanPhotoDialog.tvAlbumClickListener = {
                 selectAlbum()
@@ -182,8 +189,8 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                             getString(R.string.N890)
                         )
                     } else {
-                        val errorDialog = ScanErrorDialog(requireContext())
-                        errorDialog.show()
+                        val errorDialog = activity?.let { ScanErrorDialog(it) }
+                        errorDialog?.show()
                     }
                 }
 

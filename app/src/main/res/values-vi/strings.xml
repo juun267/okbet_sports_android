@@ -1227,5 +1227,6 @@
     <string name="N908">Quét</string>
     <string name="N951">Vào album</string>
     <string name="N952">Quét máy ảnh</string>
-    <string name="N956">Bật quyền đối với máy ảnh/album</string>
+    <string name="N956">Không nhận được mã QR</string>
+    <string name="picture_camera">Quyền truy cập máy ảnh bị từ chối</string>
 </resources>

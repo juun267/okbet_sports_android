@@ -1208,4 +1208,5 @@
     <string name="N951">Import ng album</string>
     <string name="N952">Camera scan</string>
     <string name="N956">Hindi mabasa ang QR code</string>
+    <string name="picture_camera">Tinanggihan ang permiso sa camera</string>
 </resources>
