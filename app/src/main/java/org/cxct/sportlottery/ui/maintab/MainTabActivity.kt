@@ -169,7 +169,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                         if (position == 1) {
                             GlobalScope.launch {
                                 delay(500)
-                                jumpToTheSport(null, null)
+                                jumpToTheSport()
                             }
                         }
                     }

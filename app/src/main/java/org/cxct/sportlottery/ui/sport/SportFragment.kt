@@ -173,7 +173,9 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         //distinctUntilChanged() -> 相同的matchType僅會執行一次，有變化才會observe
         curMatchType.distinctUntilChanged().observe(viewLifecycleOwner) {
             it?.let {
-                matchTypeTabPositionMap[it]?.let { it1 -> tabLayout.getTabAt(it1)?.select() }
+                matchTypeTabPositionMap[it]?.let { it1 ->
+                    tabLayout.getTabAt(it1)?.select()
+                }
             }
         }
         sportMenuResult.distinctUntilChanged().observe(viewLifecycleOwner) {
@@ -188,9 +190,17 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
             refreshTabLayout(sportMenuResult)
             EventBusUtil.post(sportMenuResult)
             if (isFirstSwitch) {
-                defaultMatchType?.let {
-                    viewModel.setCurMatchType(it)
-                    navGameFragment(it)
+                if (viewModel.curMatchType.value == null) {
+                    if (defaultMatchType != null) {
+                        viewModel.setCurMatchType(defaultMatchType)
+                        navGameFragment(defaultMatchType!!)
+                    }
+                } else {
+                    viewModel.curMatchType.value?.let {
+                        matchTypeTabPositionMap[it]?.let { position ->
+                            tabLayout.getTabAt(position)?.select()
+                        }
+                    }
                 }
             }
         }

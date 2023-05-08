@@ -49,7 +49,7 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
     }
 
     fun jumpToDefaultSport() {
-        (activity as MainTabActivity).jumpToTheSport(null, null)
+        (activity as MainTabActivity).jumpToTheSport()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
