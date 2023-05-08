@@ -15,6 +15,7 @@ import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
+import timber.log.Timber
 
 class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(BetReceiptCallback()) {
 
@@ -158,12 +159,6 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
         var currentOddsType = oddsType
-
-        betParlayList?.getOrNull(position)?.let {
-            if (it.odds == it.malayOdds) {
-                currentOddsType = OddsType.EU
-            }
-        }
 
         when (holder) {
             is SingleViewHolder -> {

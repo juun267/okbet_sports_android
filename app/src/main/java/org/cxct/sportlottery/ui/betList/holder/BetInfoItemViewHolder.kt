@@ -109,6 +109,7 @@ class BetInfoItemViewHolder(
             } else {
                 setupContainerUI(isVisible = false, isLock = true, cannotParlay)
             }
+            Timber.d("isOnlyEUType:${itemData.matchOdd.isOnlyEUType}")
             setupBetAmountInput(
                 itemData,
                 if (itemData.matchOdd.isOnlyEUType) OddsType.EU else currentOddsType,
