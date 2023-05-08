@@ -25,10 +25,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.adapter.HotMatchAdapter
 import org.cxct.sportlottery.ui.maintab.home.HomeRecommendListener
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
-import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.util.SocketUpdateUtil
-import org.cxct.sportlottery.util.isCreditSystem
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.DividerItemDecorator
 import org.cxct.sportlottery.view.onClick
 
@@ -99,7 +96,7 @@ class HotMatchView(context: Context, attrs: AttributeSet
         if(fragment==null){
             return
         }
-
+        this.gone()
         //初始化api变量监听
         initDataObserve(data,fragment)
         //初始化adapter
@@ -127,9 +124,17 @@ class HotMatchView(context: Context, attrs: AttributeSet
      */
     private fun initDataObserve(data:LiveData<Event<List<Recommend>>>, fragment: BaseFragment<*>){
         data.observe(fragment.viewLifecycleOwner){
-            this.visible()
+
             //api获取热门赛事列表
             it.peekContent().let { data ->
+                if(data.isNotEmpty()){
+                    this.visible()
+                }
+                //如果体育服务关闭
+                if(getSportEnterIsClose()){
+                    this.gone()
+                    return@observe
+                }
                 //清除上次订阅的赛事记录
                 adapter?.clearSubCache()
                 //取消所有订阅

@@ -292,7 +292,10 @@ class ProfileCenterFragment :
         }
         //赛果结算
         btn_game_settlement.setOnClickListener {
-            startActivity(Intent(requireActivity(), ResultsSettlementActivity::class.java))
+            //检查是否关闭入口
+            checkSportStatus(requireActivity()){
+                startActivity(Intent(requireActivity(), ResultsSettlementActivity::class.java))
+            }
         }
         //时区切换
         btn_time_zone.setOnClickListener {

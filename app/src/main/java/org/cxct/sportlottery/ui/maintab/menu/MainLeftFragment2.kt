@@ -180,7 +180,12 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             textParams,
             R.string.B001,
             true
-        ) { getMainTabActivity().jumpToEarlySport() }
+        ) {
+            //检查是否关闭入口
+            checkSportStatus(requireActivity()){
+                getMainTabActivity().jumpToEarlySport()
+            }
+        }
 
         okGamesItem = addMenu(1,
             groupParams,

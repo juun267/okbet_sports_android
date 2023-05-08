@@ -1234,4 +1234,7 @@
     <string name="N901">Xác nhận xoá</string>
     <string name="N888">Tất cả tùy chọn cùng tỷ lệ cược cho điểm số cuối</string>
     <string name="N898">Bạn muốn xóa tất cả tùy chọn tỷ số không?</string>
+
+    <string name="N969">Cược thể thao đang bảo trì!</string>
+    <string name="N257">Đang bảo trì</string>
 </resources>

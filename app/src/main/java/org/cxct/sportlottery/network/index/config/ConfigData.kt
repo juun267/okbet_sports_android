@@ -61,6 +61,7 @@ data class ConfigData(
     val mainWxUrl: String?, //推广面微信连接
     val maintainInfo: String?, //维护页面描述
     val maintainStatus: String?, //系统维护开关 (1：开启，0：关闭)
+    val sportMaintainStatus: String?, //体育服务维护开关 (1：开启，0：关闭)
     val minRechMoney: String?, //最低充值金额限制
     val mobileAppDownUrl: String?, //手机版APP下载地址
     val navigationUrl: String?, //navigationUrl导航地址

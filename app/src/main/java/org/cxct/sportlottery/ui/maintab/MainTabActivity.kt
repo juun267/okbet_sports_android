@@ -150,6 +150,19 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             menu.getItem(2).isVisible = !SPUtil.getMarketSwitch()
             onNavigationItemSelectedListener =
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
+
+                    val position = getMenuItemPosition(menuItem)
+
+                    // index1,2,3。  体育赛事，注单，收藏赛事      在体育服务维护中时 不能点击
+                    if(position in 1..3){
+                        //体育服务是否关闭
+                        if(getSportEnterIsClose()){
+                            ToastUtil.showToast(context, context.getString(R.string.N969))
+                            return@OnNavigationItemSelectedListener false
+                        }
+                    }
+
+
                     when (menuItem.itemId) {
                         R.id.i_betlist, R.id.i_favorite, R.id.i_user -> {
                             if (viewModel.isLogin.value == false) {
@@ -159,7 +172,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                         }
                     }
 
-                    val position = getMenuItemPosition(menuItem)
                     fragmentHelper.showFragment(position)
                     if (position == 0) {
                         homeFragment().backMainHome()
@@ -370,14 +382,15 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
 
         if (betListCount == 0 || !needShowBetBar || BetInfoRepository.currentBetType
-            == BetListFragment.SINGLE) {
+            == BetListFragment.SINGLE
+        ) {
 //            Timber.d("ParlayFloatWindow隐藏：betListCount:${betListCount} !needShowBetBar:${!needShowBetBar} currentBetMode:${BetInfoRepository.currentBetType}")
             parlayFloatWindow.gone()
         } else {
             if (BetInfoRepository.currentBetType == BetListFragment.PARLAY
             ) {
                 parlayFloatWindow.setBetText(getString(R.string.conspire))
-            }else{
+            } else {
                 parlayFloatWindow.setBetText(getString(R.string.bet_slip))
             }
             parlayFloatWindow.visible()
@@ -609,15 +622,19 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         resetBackIcon(0)
         homeFragment().jumpToOKGames()
     }
+
     fun jumpToNews() {
         resetBackIcon(0)
         homeFragment().jumpToNews()
     }
 
-    fun jumpToInplaySport(){
-        resetBackIcon(1)
-        ll_home_back.gone()
-        jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)
+    fun jumpToInplaySport() {
+        //检测体育服务是否关闭
+        checkSportStatus(this){
+            resetBackIcon(1)
+            ll_home_back.gone()
+            jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)
+        }
     }
 
     fun jumpToEarlySport() {

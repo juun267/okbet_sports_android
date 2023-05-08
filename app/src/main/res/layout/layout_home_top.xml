@@ -186,6 +186,17 @@
                 android:src="@drawable/img_sports"
                 android:scaleType="centerCrop"/>
 
+            <TextView
+                android:id="@+id/tvSportClose"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#90000000"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:visibility="gone"
+                android:textColor="@color/color_FFFFFF"
+                android:textStyle="bold"
+                android:text="@string/N257"/>
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView

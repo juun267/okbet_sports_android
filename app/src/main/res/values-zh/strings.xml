@@ -1287,4 +1287,7 @@
     <string name="N901">删除确认</string>
     <string name="N888">末位比分所有选项单个赔率都相同</string>
     <string name="N898">您确认要删除所有的比分选项吗？</string>
+
+    <string name="N969">体育投注服务暂时维护中！</string>
+    <string name="N257">维护中</string>
 </resources>

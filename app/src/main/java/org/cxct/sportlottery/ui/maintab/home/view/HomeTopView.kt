@@ -25,6 +25,7 @@ import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.getSportEnterIsClose
 
 class HomeTopView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : LinearLayout(context, attrs, defStyle), XBanner.OnItemClickListener {
@@ -33,8 +34,17 @@ class HomeTopView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         orientation = VERTICAL
         LayoutInflater.from(context).inflate(R.layout.layout_home_top, this, true)
         initLogin()
+        initSportEnterStatus()
     }
 
+    /**
+     * 检测体育服务是否关闭
+     */
+    private fun initSportEnterStatus(){
+        if(getSportEnterIsClose()){
+            findViewById<View>(R.id.tvSportClose).visible()
+        }
+    }
 
     private fun initBanner() {
         val lang = LanguageManager.getSelectLanguage(context).key
