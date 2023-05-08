@@ -74,7 +74,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             icon.isSelected = false
             ivIndicator?.gone()
             tvName.typeface = Typeface.DEFAULT
-            tvName.setTextColor(resources.getColor(R.color.color_6D7693))
+            tvName.setTextColor(icon.context.resources.getColor(R.color.color_6D7693))
 
 
         }
@@ -94,7 +94,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             group.isSelected = true
             icon.isSelected = true
             tvName.typeface = Typeface.DEFAULT_BOLD
-            tvName.setTextColor(resources.getColor(R.color.color_025BE8))
+            tvName.setTextColor(icon.context.resources.getColor(R.color.color_025BE8))
             ivIndicator?.visible()
         }
     }
