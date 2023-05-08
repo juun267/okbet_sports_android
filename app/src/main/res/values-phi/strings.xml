@@ -1205,4 +1205,7 @@
     <string name="N888">Lahat ng pagpipilian ay may parehong mga odds para sa huling iskor</string>
     <string name="N898">Sigurado ka bang gusto mong tanggalin ang lahat ng seleksyon ng iskor?</string>
     <string name="N908">I-scan</string>
+    <string name="N951">Import ng album</string>
+    <string name="N952">Scan code ng camera</string>
+    <string name="N956">Hindi mabasa ang QR code</string>
 </resources>

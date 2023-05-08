@@ -33,6 +33,7 @@ import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.GlideEngine
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.PictureSelectUtil
+import org.cxct.sportlottery.view.dialog.ScanErrorDialog
 import org.cxct.sportlottery.view.dialog.ScanPhotoDialog
 import timber.log.Timber
 
@@ -165,20 +166,31 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun selectAlbum() {
-        PictureSelectUtil.pictureSelect(requireActivity(),object :OnResultCallbackListener<LocalMedia>{
-            override fun onResult(result: MutableList<LocalMedia>?) {
-                val firstImage = result?.firstOrNull()
-                val bitmap = BitmapFactory.decodeFile(firstImage?.compressPath)
-                val bitResult = BarcodeUtils.decodeBitmap(bitmap)
-                Timber.d("bitmap:${bitResult}")
-                Toast.makeText(requireContext(), "Scan result: $bitResult", Toast.LENGTH_LONG).show()
+        PictureSelectUtil.pictureSelect(requireActivity(),
+            object : OnResultCallbackListener<LocalMedia> {
+                override fun onResult(result: MutableList<LocalMedia>?) {
+                    val firstImage = result?.firstOrNull()
+                    val bitmap = BitmapFactory.decodeFile(firstImage?.compressPath)
+                    val bitResult = BarcodeUtils.decodeBitmap(bitmap)
+                    Timber.d("bitmap:${bitResult}")
+                    val newUrl =
+                        Constants.getPrintReceiptScan(requireContext(), bitResult.toString())
+                    if (newUrl.isNotEmpty()) {
+                        JumpUtil.toInternalWeb(
+                            requireContext(),
+                            href = newUrl,
+                            getString(R.string.N890)
+                        )
+                    } else {
+                        val errorDialog = ScanErrorDialog(requireContext())
+                        errorDialog.show()
+                    }
+                }
 
-            }
+                override fun onCancel() {
+                }
 
-            override fun onCancel() {
-            }
-
-        })
+            })
 
     }
 

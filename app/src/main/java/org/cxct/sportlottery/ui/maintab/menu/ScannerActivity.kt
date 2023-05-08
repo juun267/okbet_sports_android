@@ -14,12 +14,17 @@ import com.budiyev.android.codescanner.DecodeCallback
 import com.budiyev.android.codescanner.ErrorCallback
 import com.budiyev.android.codescanner.ScanMode
 import com.gyf.immersionbar.ImmersionBar
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityScannerBinding
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.view.dialog.ScanErrorDialog
 import timber.log.Timber
 
 class ScannerActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
@@ -58,19 +63,29 @@ class ScannerActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             isFlashEnabled = false
             decodeCallback = DecodeCallback {
                 runOnUiThread {
-                    Toast.makeText(
-                        this@ScannerActivity, "Scan result: ${it.text}", Toast.LENGTH_LONG
-                    ).show()
                     stopScanAnim()
+                    val newUrl =
+                        Constants.getPrintReceiptScan(this@ScannerActivity, it.text.toString())
+                    if (newUrl.isNotEmpty()) {
+                        JumpUtil.toInternalWeb(this@ScannerActivity, href = newUrl,getString(R.string.N890))
+                        finish()
+                    } else {
+                        val errorDialog = ScanErrorDialog(this@ScannerActivity)
+                        errorDialog.onIvCloseClickListener = {
+                            startPreview()
+                            startScanAnim()
+                        }
+                        errorDialog.show()
+                    }
                 }
             }
             errorCallback = ErrorCallback {
                 runOnUiThread {
-                    Toast.makeText(
-                        this@ScannerActivity,
-                        "Camera initialization error: ${it.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
+//                    Toast.makeText(
+//                        this@ScannerActivity,
+//                        "Camera initialization error: ${it.message}",
+//                        Toast.LENGTH_LONG
+//                    ).show()
                 }
             }
         }
@@ -108,12 +123,12 @@ class ScannerActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         ivScanFrame.postDelayed({
             startScanAnim()
         }, 500)
-
     }
 
 
     override fun onPause() {
         super.onPause()
         codeScanner.releaseResources()
+        stopScanAnim()
     }
 }

@@ -1330,4 +1330,7 @@
     <string name="N888">The individual odds are the same for all selections in the final score.</string>
     <string name="N898">Are you sure you want to delete all score options?</string>
     <string name="N908">Scan</string>
+    <string name="N951">Album import</string>
+    <string name="N952">Please enable camera/album permission</string>
+    <string name="N956">Can\'t recognize this QR code</string>
 </resources>

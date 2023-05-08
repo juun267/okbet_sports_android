@@ -1225,4 +1225,7 @@
     <string name="N888">Tất cả tùy chọn cùng tỷ lệ cược cho điểm số cuối</string>
     <string name="N898">Bạn muốn xóa tất cả tùy chọn tỷ số không?</string>
     <string name="N908">Quét</string>
+    <string name="N951">Vào album</string>
+    <string name="N952">Quét máy ảnh</string>
+    <string name="N956">Bật quyền đối với máy ảnh/album</string>
 </resources>

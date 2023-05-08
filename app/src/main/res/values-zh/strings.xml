@@ -1277,4 +1277,7 @@
     <string name="N888">末位比分所有选项单个赔率都相同</string>
     <string name="N898">您确认要删除所有的比分选项吗？</string>
     <string name="N908">扫码</string>
+    <string name="N951">相册导入</string>
+    <string name="N952">相机扫码</string>
+    <string name="N956">无法识别此二维码</string>
 </resources>
