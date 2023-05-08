@@ -240,7 +240,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     var menuClass: Class<*>? = null
 
-    fun showMainLeftMenu(contentFragment: BaseFragment<*>?) {
+    fun showMainLeftMenu(contentFragment: Class<BaseFragment<*>>?) {
         if (menuClass != homeLeftFragment::class.java) {
             menuClass = homeLeftFragment::class.java
             left_menu.layoutParams.width = MetricsUtil.getScreenWidth()

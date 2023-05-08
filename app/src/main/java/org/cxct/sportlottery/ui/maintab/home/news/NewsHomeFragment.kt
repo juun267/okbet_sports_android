@@ -10,7 +10,6 @@ import kotlinx.android.synthetic.main.activity_help_center.*
 import kotlinx.android.synthetic.main.fragment_home_live.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
-import org.cxct.sportlottery.common.extentions.fitsSystemStatus
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.roundOf
 import org.cxct.sportlottery.databinding.FragmentMainHome2Binding
@@ -34,7 +33,6 @@ class NewsHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentNewsHo
 
     override fun onInitView(view: View) {
         super.onInitView(view)
-        view.fitsSystemStatus()
         initToolBar()
         initNews()
         initObservable()
@@ -42,11 +40,10 @@ class NewsHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentNewsHo
     }
 
     fun initToolBar() = homeToolbar.run {
-        view?.setPadding(0, ImmersionBar.getStatusBarHeight(this@NewsHomeFragment), 0, 0)
         attach(this@NewsHomeFragment, getMainTabActivity(), viewModel)
         ivMenuLeft.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
-            getMainTabActivity().showMainLeftMenu(this@NewsHomeFragment)
+            getMainTabActivity().showMainLeftMenu(this@NewsHomeFragment.javaClass)
         }
     }
     private fun initObservable() {

@@ -225,22 +225,22 @@ class OKGamesViewModel(
         _gamesList.postValue(Triple(requestTag, it.total, it.getData()))
     }
 
-    val recordNewHttpOkGame: LiveData<List<RecordNewEvent>>
-        get() = _recordNewHttpOkGame
-    val recordResultHttpOkGame: LiveData<List<RecordNewEvent>>
-        get() = _recordResultHttpOkGame
+    val recordNewBetHttpOkGame: LiveData<List<RecordNewEvent>>
+        get() = _recordNewBetHttpOkGame
+    val recordResultWinsHttpOkGame: LiveData<List<RecordNewEvent>>
+        get() = _recordResultWinsHttpOkGame
 
-    private val _recordNewHttpOkGame = MutableLiveData<List<RecordNewEvent>>()
-    private val _recordResultHttpOkGame = MutableLiveData<List<RecordNewEvent>>()
+    private val _recordNewBetHttpOkGame = MutableLiveData<List<RecordNewEvent>>()
+    private val _recordResultWinsHttpOkGame = MutableLiveData<List<RecordNewEvent>>()
     fun getOKGamesRecordNew() = callApi({ OKGamesRepository.getOKGamesRecordNew() }) {
         if (it.succeeded()) {
-            _recordNewHttpOkGame.postValue(it.getData())
+            _recordNewBetHttpOkGame.postValue(it.getData())
         }
     }
 
     fun getOKGamesRecordResult() = callApi({ OKGamesRepository.getOKGamesRecordResult() }) {
         if (it.succeeded()) {
-            _recordResultHttpOkGame.postValue(it.getData())
+            _recordResultWinsHttpOkGame.postValue(it.getData())
         }
     }
 

@@ -213,7 +213,6 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
 
     fun initToolBar() {
         homeToolbar.attach(this, getMainTabActivity(), viewModel)
-        homeToolbar.fitsSystemStatus()
         homeToolbar.ivMenuLeft.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
             getMainTabActivity().showMainLeftMenu(null)

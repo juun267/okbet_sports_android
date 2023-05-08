@@ -117,10 +117,10 @@ open class ServiceBroadcastReceiver(
     val closePlayCate: LiveData<Event<ClosePlayCateEvent?>>
         get() = _closePlayCate
 
-    val recordNew: LiveData<RecordNewEvent?>
-        get() = _recordNew
-    val recordResult: LiveData<RecordNewEvent?>
-        get() = _recordResult
+    val recordBetNew: LiveData<RecordNewEvent?>
+        get() = _recordBetNew
+    val recordWinsResult: LiveData<RecordNewEvent?>
+        get() = _recordWinsResult
     val recordNewOkGame: LiveData<RecordNewEvent?>
         get() = _recordNewOkGame
     val recordResultOkGame: LiveData<RecordNewEvent?>
@@ -146,8 +146,8 @@ open class ServiceBroadcastReceiver(
     private val _dataSourceChange = MutableLiveData<Boolean?>()
     private val _userInfoChange = MutableLiveData<Boolean?>()
     private val _closePlayCate = MutableLiveData<Event<ClosePlayCateEvent?>>()
-    private val _recordNew = MutableLiveData<RecordNewEvent?>()
-    private val _recordResult = MutableLiveData<RecordNewEvent?>()
+    private val _recordBetNew = MutableLiveData<RecordNewEvent?>()
+    private val _recordWinsResult = MutableLiveData<RecordNewEvent?>()
     private val _recordNewOkGame = MutableLiveData<RecordNewEvent?>()
     private val _recordResultOkGame = MutableLiveData<RecordNewEvent?>()
 
@@ -327,12 +327,12 @@ open class ServiceBroadcastReceiver(
             EventType.RECORD_NEW -> {
                 //首页最新投注
                 val data = ServiceMessage.getRecondNew(jObjStr)
-                _recordNew.postValue(data)
+                _recordBetNew.postValue(data)
             }
             EventType.RECORD_RESULT -> {
                 //首页最新大奖
                 val data = ServiceMessage.getRecondResult(jObjStr)
-                _recordResult.postValue(data)
+                _recordWinsResult.postValue(data)
             }
             EventType.RECORD_NEW_OK_GAMES -> {
                 //最新投注

@@ -28,6 +28,7 @@ import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
+import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.util.*
@@ -224,6 +225,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             R.drawable.ic_main_menu_news_0,
             textParams,
             R.string.N909,
+            hasIndicator = true
         ) {
             getMainTabActivity().jumpToNews()
         }
@@ -306,9 +308,9 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         getMainTabActivity().closeDrawerLayout()
     }
 
-    private var currentContent: BaseFragment<*>? = null
+    private var currentContent: Class<BaseFragment<*>>? = null
 
-    fun openWithFragment(menuContentFragment: BaseFragment<*>?) {
+    fun openWithFragment(menuContentFragment: Class<BaseFragment<*>>?) {
         val isSame = currentContent == menuContentFragment
         currentContent = menuContentFragment
         if (menuContentFragment == null) {
@@ -324,10 +326,12 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
     }
 
 
-    private fun binSelected() {
-        if (currentContent is OKGamesFragment) {
-            okGamesItem.setSelected()
-        }
+    private fun binSelected() = when(currentContent) {
+        OKGamesFragment::class.java -> okGamesItem.setSelected()
+        NewsHomeFragment::class.java -> newsItem.setSelected()
+
+        else -> {}
+
     }
 
     override fun onInitView(view: View) {

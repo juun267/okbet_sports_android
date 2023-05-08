@@ -1,62 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-    <LinearLayout
-        android:id="@+id/okgame_p3_layout_proivder"
-        android:layout_width="match_parent"
-        android:layout_height="24dp"
-        android:layout_marginHorizontal="12dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        tools:visibility="visible">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_okgame_p" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_weight="1"
-            android:text="@string/N880"
-            android:textColor="#0D2245"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/iv_providers_left"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginRight="8dp"
-            android:rotation="180"
-            android:src="@drawable/ic_okgame_arrow_right"
-            android:visibility="gone" />
-
-        <ImageView
-            android:id="@+id/iv_providers_right"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_okgame_arrow_right"
-            android:visibility="gone" />
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_okgame_providers"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:clipToPadding="false"
-        android:paddingHorizontal="12dp"
-        android:visibility="gone" />
+    xmlns:tools="http://schemas.android.com/tools" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -172,20 +117,14 @@
 
     </LinearLayout>
 
-    <RelativeLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_okgame_record"
         android:layout_width="match_parent"
-        android:layout_height="453dp"
-        android:layout_marginHorizontal="12dp">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_okgame_record"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="false"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_okgame_p3_record" />
-    </RelativeLayout>
-
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:nestedScrollingEnabled="false"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_okgame_p3_record" />
 
     <View
         android:layout_width="match_parent"
@@ -193,4 +132,4 @@
         android:layout_marginHorizontal="12dp"
         android:background="@color/color_e0e3ee" />
 
-</LinearLayout>
+</merge>

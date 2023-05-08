@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.menu
 
 import android.content.Intent
-import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,14 +21,6 @@ import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.setVisibilityByMarketSwitch
 
 class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
-    companion object {
-        fun newInstance(): SportLeftFragment {
-            val args = Bundle()
-            val fragment = SportLeftFragment()
-            fragment.arguments = args
-            return fragment
-        }
-    }
 
     private val sportClassifyAdapter by lazy {
         SportClassifyAdapter(mutableListOf())

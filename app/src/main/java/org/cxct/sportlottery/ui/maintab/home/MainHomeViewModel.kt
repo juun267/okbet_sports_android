@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.callApi
-import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.common.extentions.toast
 import org.cxct.sportlottery.net.bettingStation.BettingStationRepository
 import org.cxct.sportlottery.net.games.OKGamesRepository
@@ -139,10 +138,10 @@ open class MainHomeViewModel(
         get() = _newsDetail
     private val _newsDetail = MutableLiveData<NewsDetail>()
 
-    val recordNewHttp: LiveData<List<RecordNewEvent>>
-        get() = _recordNewHttp
-    val recordResultHttp: LiveData<List<RecordNewEvent>>
-        get() = _recordResultHttp
+    val recordBetNewHttp: LiveData<List<RecordNewEvent>>
+        get() = _recordBetNewHttp
+    val recordWinsResultHttp: LiveData<List<RecordNewEvent>>
+        get() = _recordWinsResultHttp
 
 
     //okgames游戏列表
@@ -151,8 +150,8 @@ open class MainHomeViewModel(
     private val _homeGamesList = MutableLiveData< List<OKGameBean>>()
 
 
-    private val _recordNewHttp = MutableLiveData<List<RecordNewEvent>>()
-    private val _recordResultHttp = MutableLiveData<List<RecordNewEvent>>()
+    private val _recordBetNewHttp = MutableLiveData<List<RecordNewEvent>>()
+    private val _recordWinsResultHttp = MutableLiveData<List<RecordNewEvent>>()
 
     val bettingStationList: LiveData<List<BettingStation>>
         get() = _bettingStationList
@@ -727,7 +726,7 @@ open class MainHomeViewModel(
 
     fun getRecordNew() = callApi({ OKGamesRepository.getRecordNew() }) {
         if (it.succeeded()) {
-            _recordNewHttp.postValue(it.getData())
+            _recordBetNewHttp.postValue(it.getData())
         } else {
             toast(it.msg)
         }
@@ -735,7 +734,7 @@ open class MainHomeViewModel(
 
     fun getRecordResult() = callApi({ OKGamesRepository.getRecordResult() }) {
         if (it.succeeded()) {
-            _recordResultHttp.postValue(it.getData())
+            _recordWinsResultHttp.postValue(it.getData())
         } else {
             toast(it.msg)
         }

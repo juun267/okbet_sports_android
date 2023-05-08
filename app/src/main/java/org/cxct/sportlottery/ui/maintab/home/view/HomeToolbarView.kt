@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.common.extentions.fitsSystemStatus
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.repository.showCurrencySign
@@ -78,6 +79,7 @@ class HomeToolbarView@JvmOverloads constructor(context: Context, attrs: Attribut
         addSearchView()
         addUserView()
         addLoginBtn()
+        fitsSystemStatus()
     }
 
     private fun addSearchView() {
