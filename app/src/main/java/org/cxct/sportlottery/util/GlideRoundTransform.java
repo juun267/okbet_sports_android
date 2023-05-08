@@ -9,7 +9,7 @@ import android.graphics.RectF;
 
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
-import com.didichuxing.doraemonkit.widget.tableview.utils.DensityUtils;
+//import com.didichuxing.doraemonkit.widget.tableview.utils.DensityUtils;
 
 import java.security.MessageDigest;
 
