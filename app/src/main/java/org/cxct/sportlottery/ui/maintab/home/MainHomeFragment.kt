@@ -636,7 +636,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
                         .into(holder.imageView)
 
                     holder.imageView.setOnClickListener {
-                        data?.imageLink?.let {
+                        data?.appUrl?.let {
                             if (it.isNotBlank()) {
                                 if (it.contains("sweepstakes")) {
                                     JumpUtil.toLottery(requireContext(),
