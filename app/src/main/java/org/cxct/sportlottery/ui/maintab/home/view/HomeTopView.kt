@@ -119,16 +119,22 @@ class HomeTopView @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
     private fun initRechargeClick(fragment: MainHomeFragment2) {
 
-        findViewById<View>(R.id.tvDeposit).setOnClickListener {
+        val depositClick = OnClickListener {
             if (UserInfoRepository.userInfo.value?.vipType != 1) {
                 fragment.viewModel.checkRechargeKYCVerify()
-                return@setOnClickListener
+                return@OnClickListener
             }
 
             fragment.showPromptDialog(context.getString(R.string.prompt), context.getString(R.string.N643)) {
 
             }
         }
+
+        findViewById<View>(R.id.tvDeposit).setOnClickListener(depositClick)
+        findViewById<View>(R.id.ivGLive).setOnClickListener(depositClick)
+        findViewById<View>(R.id.ivPaymaya).setOnClickListener(depositClick)
+        findViewById<View>(R.id.ivPayX).setOnClickListener(depositClick)
+        findViewById<View>(R.id.ivFortunepay).setOnClickListener(depositClick)
 
         fragment.viewModel.isRechargeShowVerifyDialog.observe(fragment.viewLifecycleOwner) {
             val b = it.getContentIfNotHandled() ?: return@observe

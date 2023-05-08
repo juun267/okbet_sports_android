@@ -95,24 +95,28 @@
             android:text="With"/>
         
         <ImageView
+            android:id="@+id/ivGLive"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginRight="8dp"
             android:src="@drawable/ic_circle_glive"/>
 
         <ImageView
+            android:id="@+id/ivPaymaya"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginRight="8dp"
             android:src="@drawable/ic_circle_paymaya"/>
 
         <ImageView
+            android:id="@+id/ivPayX"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginRight="8dp"
             android:src="@drawable/ic_circle_pay_x"/>
 
         <ImageView
+            android:id="@+id/ivFortunepay"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginRight="8dp"

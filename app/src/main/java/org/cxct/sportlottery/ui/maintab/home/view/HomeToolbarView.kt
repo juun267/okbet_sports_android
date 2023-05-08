@@ -147,11 +147,12 @@ class HomeToolbarView@JvmOverloads constructor(context: Context, attrs: Attribut
     }
 
     private fun createBtnText(text: Int, background: Int): TextView {
-        return AppCompatButton(context).apply {
-            minWidth = 70.dp
+        return AppCompatTextView(context).apply {
+            minWidth = 74.dp
             maxLines = 1
             ellipsize = TextUtils.TruncateAt.END
             gravity = Gravity.CENTER
+            elevation = 2.dp.toFloat()
             textSize = 14f
             setText(text)
             val padding = 10.dp
