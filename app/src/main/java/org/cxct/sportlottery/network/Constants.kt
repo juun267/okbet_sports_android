@@ -585,6 +585,12 @@ object Constants {
     const val RECORD_RESULT = "/api/front/index/recordResultList"
 
     //首页资讯列表
-    const val NEW_LIST_HOME = "/front/content/getListHome"
+    const val NEWS_LIST_HOME = "/front/content/getListHome"
+
+    //推荐列表不带Contents
+    const val NEWS_LIST_RECOMMEND = "/front/content/getListRecommend"
+
+    //资讯详情
+    const val NEWS_DETIAL = "/front/content/getOne"
 
 }

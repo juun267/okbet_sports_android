@@ -14,6 +14,7 @@ import org.cxct.sportlottery.net.bettingStation.BettingStationRepository
 import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.news.NewsRepository
+import org.cxct.sportlottery.net.news.data.NewsDetail
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -129,6 +130,14 @@ open class MainHomeViewModel(
     val homeNewsList: LiveData<List<NewsItem>>
         get() = _homeNewsList
     private val _homeNewsList = MutableLiveData<List<NewsItem>>()
+
+    val recommendNewsList: LiveData<List<NewsItem>>
+        get() = _recommendNewsList
+    private val _recommendNewsList = MutableLiveData<List<NewsItem>>()
+
+    val newsDetail: LiveData<NewsDetail>
+        get() = _newsDetail
+    private val _newsDetail = MutableLiveData<NewsDetail>()
 
     val recordNewHttp: LiveData<List<RecordNewEvent>>
         get() = _recordNewHttp
@@ -685,6 +694,36 @@ open class MainHomeViewModel(
             }
         }
     }
+    /**
+     * 获取资讯推荐列表
+     */
+    fun getRecommendNews(pageNum: Int, pageSize: Int, categoryIds: List<Int>) {
+        viewModelScope.launch {
+            callApi({ NewsRepository.getRecommendNews(pageNum, pageNum, categoryIds) }) {
+                if (it.succeeded()) {
+                    _recommendNewsList.postValue(it.getData()?.firstOrNull()?.detailList ?: listOf())
+                } else {
+                    toast(it.msg)
+                }
+            }
+        }
+    }
+
+    /**
+     * 获取新闻资讯列表
+     */
+    fun getNewsDetail(id: Int) {
+        viewModelScope.launch {
+            callApi({ NewsRepository.getNewsDetail(id) }) {
+                if (it.succeeded()) {
+                    _newsDetail.postValue(it.getData())
+                } else {
+                    toast(it.msg)
+                }
+            }
+        }
+    }
+
 
     fun getRecordNew() = callApi({ OKGamesRepository.getRecordNew() }) {
         if (it.succeeded()) {

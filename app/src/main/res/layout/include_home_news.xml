@@ -18,39 +18,63 @@
             android:src="@drawable/ic_cate_news" />
 
         <TextView
+            android:id="@+id/tvCateName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_4"
             android:textSize="@dimen/textSize16sp"
             android:textColor="@color/color_0D2245"
-            android:text="NEWS" />
+            android:text="@string/N909" />
     </LinearLayout>
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabNews"
+    <LinearLayout
+        android:id="@+id/linTab"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        app:tabTextAppearance="@style/NoCaseTab"
-        app:tabIndicator="@drawable/custom_tab_indicator_40"
-        app:tabIndicatorFullWidth="false"
-        app:tabMode="scrollable"
-        app:tabPaddingEnd="10dp"
-        app:tabPaddingStart="10dp"
-        app:tabRippleColor="@null"
-        app:tabSelectedTextColor="@color/color_D2E4FF_414655"
-        app:tabTextColor="@color/color_6C7BA8_A7B2C4">
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingRight="@dimen/margin_12">
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabNews"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            app:tabTextAppearance="@style/NoCaseTab"
+            app:tabIndicator="@drawable/custom_tab_indicator_40"
+            app:tabIndicatorFullWidth="false"
+            app:tabMode="scrollable"
+            app:tabPaddingEnd="10dp"
+            app:tabPaddingStart="10dp"
+            app:tabRippleColor="@null"
+            app:tabSelectedTextColor="@color/color_D2E4FF_414655"
+            app:tabTextColor="@color/color_6C7BA8_A7B2C4">
 
-        <com.google.android.material.tabs.TabItem
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/B001" />
+
+        </com.google.android.material.tabs.TabLayout>
+        <TextView
+            android:id="@+id/tvMore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/login_password" />
+            android:paddingRight="4dp"
+            android:textColor="@color/color_6D7693"
+            android:textSize="14sp"
+            android:text="@string/N702" />
 
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/withdrawal_password" />
+        <ImageView
+            android:id="@+id/ivMore"
+            android:layout_width="@dimen/margin_16"
+            android:layout_height="@dimen/margin_16"
+            android:src="@drawable/ic_game_gray_arrow_right" />
+    </LinearLayout>
 
-    </com.google.android.material.tabs.TabLayout>
 
 
     <androidx.recyclerview.widget.RecyclerView

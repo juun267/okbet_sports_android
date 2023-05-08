@@ -44,7 +44,7 @@ class HomeTopView @JvmOverloads constructor(context: Context, attrs: AttributeSe
     private fun initBanner() {
         val lang = LanguageManager.getSelectLanguage(context).key
         setUpBanner(lang,2, R.id.topBanner)
-        setUpBanner(lang, 12, R.id.promotionsBanner)
+        setUpBanner(lang, 5, R.id.promotionsBanner)
     }
 
     private fun setUpBanner(lang: String,
@@ -101,6 +101,7 @@ class HomeTopView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         findViewById<View>(R.id.loginLayout).visible()
         findViewById<View>(R.id.tvLogin).setOnClickListener { context.startActivity(Intent(context, LoginOKActivity::class.java)) }
         findViewById<View>(R.id.tvRegist).setOnClickListener { LoginOKActivity.startRegist(context) }
+
     }
 
     fun setup(fragment: MainHomeFragment2) {
@@ -109,6 +110,7 @@ class HomeTopView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         findViewById<View>(R.id.vOkgames).setOnClickListener { fragment.jumpToOKGames() }
 
         if (!LoginRepository.isLogined()) {
+            findViewById<View>(R.id.ivGoogle).setOnClickListener { LoginOKActivity.googleLoging(context) }
             return
         }
 

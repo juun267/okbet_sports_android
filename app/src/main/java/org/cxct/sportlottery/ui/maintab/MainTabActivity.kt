@@ -13,7 +13,6 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -37,13 +36,13 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.ui.betRecord.BetRecordFragment
 import org.cxct.sportlottery.ui.betRecord.accountHistory.next.AccountHistoryNextFragment
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
-import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment2
 import org.cxct.sportlottery.ui.maintab.menu.SportLeftFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
@@ -186,7 +185,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     private fun initDrawerLayout() {
-        showLeftFrament(0)
 //        drawerLayout.setScrimColor(Color.TRANSPARENT)
         drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
             override fun onDrawerStateChanged(newState: Int) {
@@ -230,40 +228,31 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         })
     }
 
-    var lastMenu = 0
-    fun showLeftFrament(position: Int, fromPage: Int = -1) {
+    var menuClass: Class<*>? = null
 
-        if (position == 0) {
-            if (lastMenu != 0) {
-                left_menu.layoutParams.width = MetricsUtil.getScreenWidth() //動態調整側邊欄寬
-            }
-            if (fromPage == 5) {
-                homeLeftFragment.openWithOKGames()
-            }
-
-            lastMenu = position
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.left_menu, homeLeftFragment)
-                .commit()
-            return
+    fun showMainLeftMenu(contentFragment: BaseFragment<*>?) {
+        if (menuClass != homeLeftFragment::class.java) {
+            menuClass = homeLeftFragment::class.java
+            left_menu.layoutParams.width = MetricsUtil.getScreenWidth()
         }
-        if (lastMenu != position) {
-            left_menu.layoutParams.width = (MetricsUtil.getScreenWidth() * 0.75f).toInt() //動態調整側邊欄寬
-        }
-        lastMenu = position
+        homeLeftFragment.openWithFragment(contentFragment)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.left_menu, homeLeftFragment)
+            .commit()
+    }
 
+    fun showSportLeftMenu(matchType: MatchType, gameType: GameType?) {
+        if (menuClass != sportLeftFragment::class.java) {
+            menuClass = sportLeftFragment::class.java
+            left_menu.layoutParams.width = (MetricsUtil.getScreenWidth() * 0.75f).toInt()
+        }
         supportFragmentManager.beginTransaction()
             .replace(R.id.left_menu, sportLeftFragment)
             .commit()
-
-        val currentFragment = fragmentHelper.getCurrentFragment()
-        if (currentFragment is SportFragment) {
-            sportLeftFragment.matchType = currentFragment.getCurMatchType()
-            sportLeftFragment.gameType = currentFragment.getCurGameType()
-            return
-        }
-
+        sportLeftFragment.matchType = matchType
+        sportLeftFragment.gameType = gameType
     }
+
 
     override fun initMenu() {
         try {
@@ -600,6 +589,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     fun jumpToOKGames() {
         resetBackIcon(0)
         homeFragment().jumpToOKGames()
+    }
+    fun jumpToNews() {
+        resetBackIcon(0)
+        homeFragment().jumpToNews()
     }
 
     fun jumpToInplaySport(){

@@ -6,6 +6,7 @@ import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.net.news.api.NewsApi
 import org.cxct.sportlottery.net.news.data.NewsCategory
+import org.cxct.sportlottery.net.news.data.NewsDetail
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.sConfigData
 
@@ -32,6 +33,26 @@ object NewsRepository {
         params.addProperty("pageSize", pageSize)
         params.add("categoryIds", Gson().toJsonTree(categoryIds))
         return newsApi.getListHome(params)
+    }
+
+    suspend fun getRecommendNews(
+        pageNum: Int,
+        pageSize: Int,
+        categoryIds: List<Int>,
+    ): ApiResult<List<NewsCategory>> {
+        val params = JsonObject()
+        params.addProperty("pageNum", pageNum)
+        params.addProperty("pageSize", pageSize)
+        params.add("categoryIds", Gson().toJsonTree(categoryIds))
+        return newsApi.getListRecommend(params)
+    }
+
+    suspend fun getNewsDetail(
+        id: Int
+    ): ApiResult<NewsDetail> {
+        val params = JsonObject()
+        params.addProperty("id", id)
+        return newsApi.getNewsDetail(params)
     }
 
 

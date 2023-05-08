@@ -58,6 +58,7 @@
             android:text="OR"/>
 
         <ImageView
+            android:id="@+id/ivGoogle"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginRight="8dp"

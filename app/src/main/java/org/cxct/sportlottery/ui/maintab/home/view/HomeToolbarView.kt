@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.content.Context
+import android.graphics.Color
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
@@ -10,6 +11,7 @@ import android.view.animation.RotateAnimation
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.res.ResourcesCompat
@@ -21,12 +23,12 @@ import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.setVisibilityByMarketSwitch
-import org.cxct.sportlottery.util.startLogin
+import org.w3c.dom.Text
 
 class HomeToolbarView@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : LinearLayout(context, attrs, defStyle) {
@@ -41,9 +43,8 @@ class HomeToolbarView@JvmOverloads constructor(context: Context, attrs: Attribut
     }
 
     init {
-        setBackgroundResource(R.color.color_B3F0F5FA)
-        val padding = 14.dp
-        setPadding(padding, 0, padding, 0)
+        setBackgroundResource(R.color.color_F8F9FD)
+        12.dp.let { setPadding(it, it, it, it) }
         gravity = Gravity.LEFT or Gravity.CENTER_VERTICAL
         addChildView()
     }
@@ -56,6 +57,7 @@ class HomeToolbarView@JvmOverloads constructor(context: Context, attrs: Attribut
     lateinit var ivRefreshMoney: ImageView
     lateinit var loginLayout: LinearLayout
     lateinit var tvLogin: TextView
+    lateinit var tvRegist: TextView
 
     private lateinit var fragment: LifecycleOwner
     private lateinit var activity: MainTabActivity
@@ -64,15 +66,14 @@ class HomeToolbarView@JvmOverloads constructor(context: Context, attrs: Attribut
 
     private fun addChildView() {
         ivMenuLeft = AppCompatImageView(context)
-        ivMenuLeft.setImageResource(R.drawable.icon_menu)
-        addView(ivMenuLeft, LayoutParams(-2, 24.dp))
+        ivMenuLeft.setImageResource(R.drawable.ic_home_menu)
+
+        val wh = 36.dp
+        addView(ivMenuLeft, LayoutParams(wh, wh))
 
         ivLogo = AppCompatImageView(context)
         ivLogo.setImageResource(R.drawable.logo_okbet_color)
-        addView(ivLogo, LayoutParams(-2, 32.dp).apply {
-            leftMargin = 8.dp
-            bottomMargin = 5.dp
-        })
+        addView(ivLogo, LayoutParams(-2, wh).apply { leftMargin = 12.dp })
 
         addSearchView()
         addUserView()
@@ -134,23 +135,30 @@ class HomeToolbarView@JvmOverloads constructor(context: Context, attrs: Attribut
             gravity = Gravity.RIGHT or Gravity.CENTER_VERTICAL
         }
 
-        tvLogin = AppCompatTextView(context).apply {
-            minWidth = 60.dp
+        val params = LayoutParams(-2, 30.dp)
+        params.rightMargin = 8.dp
+        tvLogin = createBtnText(R.string.btn_login, R.drawable.bg_blue_radius_15)
+        loginLayout.addView(tvLogin, params)
+
+        tvRegist = createBtnText(R.string.btn_register, R.drawable.bg_orange_radius_15)
+        loginLayout.addView(tvRegist, params)
+
+        addView(loginLayout, LayoutParams(0, -2, 1f))
+    }
+
+    private fun createBtnText(text: Int, background: Int): TextView {
+        return AppCompatButton(context).apply {
+            minWidth = 70.dp
             maxLines = 1
             ellipsize = TextUtils.TruncateAt.END
             gravity = Gravity.CENTER
             textSize = 14f
-            text =
-                "${resources.getString(R.string.btn_login)} / ${resources.getString(R.string.btn_register)}"
+            setText(text)
             val padding = 10.dp
             setPadding(padding, 0, padding, 0)
-            setBackgroundResource(R.drawable.bg_blue_radius_15)
+            setBackgroundResource(background)
             setTextColor(resources.getColor(R.color.color_FFFFFF))
-
-            loginLayout.addView(this, LayoutParams(-2, 30.dp))
         }
-
-        addView(loginLayout, LayoutParams(0, -2, 1f))
     }
 
     private fun initObserver() = viewModel.run {
@@ -204,11 +212,10 @@ class HomeToolbarView@JvmOverloads constructor(context: Context, attrs: Attribut
     }
 
     private fun initView() {
-        layoutParams.height = 40.dp
-        layoutParams.width = -1
         setupLogin()
         userMoneyView.gone()
         tvLogin.setOnClickListener { activity.startLogin() }
+        tvRegist.setOnClickListener { LoginOKActivity.startRegist(context) }
         ivRefreshMoney.setOnClickListener { onRefreshMoney() }
         if (fragment !is MainHomeFragment) {
             ivLogo.setOnClickListener { activity.backMainHome() }

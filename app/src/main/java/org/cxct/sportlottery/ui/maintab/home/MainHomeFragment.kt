@@ -220,7 +220,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
         homeToolbar.fitsSystemStatus()
         homeToolbar.ivMenuLeft.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
-            getMainTabActivity().showLeftFrament(0, 0)
+            getMainTabActivity().showMainLeftMenu(null)
         }
     }
 

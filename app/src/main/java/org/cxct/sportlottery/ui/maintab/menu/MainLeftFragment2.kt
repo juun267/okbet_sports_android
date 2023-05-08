@@ -1,12 +1,18 @@
 package org.cxct.sportlottery.ui.maintab.menu
 
 import android.graphics.Typeface
+import android.graphics.drawable.Drawable
+import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.LinearLayout.LayoutParams
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
-import kotlinx.android.synthetic.main.fragment_main_left2.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.startActivity
@@ -14,11 +20,14 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentMainLeft2Binding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.user.UserInfo
+
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.util.*
@@ -27,32 +36,269 @@ import org.cxct.sportlottery.util.drawable.DrawableCreator
 
 class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Binding>() {
 
+
     private inner class MenuItem(val group: View,
-                                 val tvName: TextView,
-                                 val ivIndicator: ImageView?,
-                                 val click: () -> Unit) {
+                                      val icon: ImageView,
+                                      val tvName: TextView,
+                                      val ivIndicator: ImageView?,
+                                      val needClose: Boolean,
+                                      val click: (() -> Unit)? = null) {
+
+        var onSetSelected: (() -> Unit)? = null
+        var onClearSelected: (() -> Unit)? = null
+
         init {
-            group.setOnClickListener {
-                if (this@MenuItem != lastItem) {
-                    clearSelected()
+
+            click?.let {
+                group.setOnClickListener {
                     click.invoke()
+                    if (needClose) {
+                        close()
+                    }
                 }
             }
         }
 
         fun clearSelected() {
+            if (lastItem == this) {
+                lastItem = null
+            }
+
+            onClearSelected?.let {
+                it.invoke()
+                return
+            }
+
             group.isSelected = false
+            icon.isSelected = false
             ivIndicator?.gone()
             tvName.typeface = Typeface.DEFAULT
             tvName.setTextColor(resources.getColor(R.color.color_6D7693))
+
+
         }
 
         fun setSelected() {
+            if (lastItem == this) {
+                return
+            } else if (lastItem != null) {
+                lastItem!!.clearSelected()
+            }
+            lastItem = this
+            onSetSelected?.let {
+                it.invoke()
+                return
+            }
+
             group.isSelected = true
+            icon.isSelected = true
             tvName.typeface = Typeface.DEFAULT_BOLD
             tvName.setTextColor(resources.getColor(R.color.color_025BE8))
             ivIndicator?.visible()
-            lastItem = this
+        }
+    }
+
+    private fun getIconSelector(selected: Int, unSelected: Int): Drawable {
+        val selectDrawable = resources.getDrawable(selected)
+        val unSelecteDrawable = resources.getDrawable(unSelected)
+        return DrawableCreator.Builder()
+            .setSelectedDrawable(selectDrawable)
+            .setUnSelectedDrawable(unSelecteDrawable)
+            .setPressedDrawable(selectDrawable)
+            .setUnPressedDrawable(unSelecteDrawable)
+            .build()
+    }
+
+    private fun addMenu(index: Int,
+                        params: LayoutParams,
+                        iconParams: LayoutParams,
+                        selectedIcon: Int,
+                        unSelectedIcon: Int,
+                        textParams: LayoutParams,
+                        text: Int,
+                        hasIndicator: Boolean = false,
+                        needClose: Boolean = true,
+                        click: (() -> Unit)? = null): MenuItem {
+
+        val linearLayout = LinearLayout(context)
+        linearLayout.gravity = Gravity.CENTER_VERTICAL
+        linearLayout.setBackgroundResource(R.drawable.selector_cor30_tran_blue)
+        binding.llMenuRoot.addView(linearLayout, index, params)
+
+        val icon = AppCompatImageView(linearLayout.context)
+        icon.setImageDrawable(getIconSelector(selectedIcon, unSelectedIcon))
+        linearLayout.addView(icon, iconParams)
+
+        val textView = AppCompatTextView(linearLayout.context)
+        textView.textSize = 14f
+        textView.setText(text)
+        linearLayout.addView(textView, textParams)
+
+        var imageView: ImageView? = null
+        if (hasIndicator) {
+            imageView = AppCompatImageView(linearLayout.context)
+            imageView.setImageResource(R.drawable.ic_selected_indicator)
+            imageView.gone()
+            linearLayout.addView(imageView)
+        }
+
+        return MenuItem(linearLayout, icon, textView, imageView, needClose, click)
+    }
+
+    private inline fun getMainTabActivity() = activity as MainTabActivity
+
+    private var lastItem: MenuItem? = null
+
+    private lateinit var sportsItem: MenuItem
+    private lateinit var okGamesItem: MenuItem
+    private lateinit var promotionItem: MenuItem
+    private lateinit var affiliateItem: MenuItem
+    private lateinit var newsItem: MenuItem
+    private lateinit var serviceItem: MenuItem
+    private lateinit var languageItem: MenuItem
+    private lateinit var scanItem: MenuItem
+
+    // 新增菜单在这里修改
+    private fun initMenuItem() = binding.run {
+
+        val hMargin = 28.dp
+        val groupParams = LayoutParams(-1, 40.dp)
+        groupParams.topMargin = 4.5f.dp
+        groupParams.leftMargin = hMargin
+        groupParams.rightMargin = hMargin
+        val iconParams = 20.dp.let { LayoutParams(it, it) }
+        iconParams.leftMargin = 12.dp
+        val textParams = LayoutParams(0, -2, 1f)
+        textParams.leftMargin = iconParams.leftMargin
+
+        sportsItem = addMenu(0,
+            groupParams,
+            iconParams,
+            R.drawable.ic_main_menu_sports_1,
+            R.drawable.ic_main_menu_sports_0,
+            textParams,
+            R.string.B001,
+            true
+        ) { getMainTabActivity().jumpToEarlySport() }
+
+        okGamesItem = addMenu(1,
+            groupParams,
+            iconParams,
+            R.drawable.ic_main_menu_okgames_1,
+            R.drawable.ic_main_menu_okgames_0,
+            textParams,
+            R.string.J203,
+            true
+        ) { getMainTabActivity().jumpToOKGames() }
+
+        var index = binding.llMenuRoot.indexOfChild(divider1)
+        promotionItem = addMenu(++index,
+            groupParams,
+            iconParams,
+            R.drawable.ic_main_menu_promo_1,
+            R.drawable.ic_main_menu_promo_0,
+            textParams,
+            R.string.B005,
+        )
+        promotionItem.group.bindPromoClick { close() }
+
+        affiliateItem = addMenu(++index,
+            groupParams,
+            iconParams,
+            R.drawable.ic_main_menu_affiliate_1,
+            R.drawable.ic_main_menu_affiliate_0,
+            textParams,
+            R.string.B015,
+        ) {
+            JumpUtil.toInternalWeb(
+                binding.root.context,
+                Constants.getAffiliateUrl(binding.root.context),
+                resources.getString(R.string.btm_navigation_affiliate)
+            )
+        }
+
+        newsItem = addMenu(++index,
+            groupParams,
+            iconParams,
+            R.drawable.ic_main_menu_news_0,
+            R.drawable.ic_main_menu_news_0,
+            textParams,
+            R.string.N909,
+        ) {
+            getMainTabActivity().jumpToNews()
+        }
+
+        serviceItem = addMenu(++index,
+            groupParams,
+            iconParams,
+            R.drawable.ic_main_menu_livesupport_1,
+            R.drawable.ic_main_menu_livesupport_0,
+            textParams,
+            R.string.LT050,
+        )
+        serviceItem.group.setServiceClick(childFragmentManager) { close() }
+
+        val group2Params = LayoutParams(-1, 40.dp)
+        group2Params.leftMargin = hMargin
+        group2Params.rightMargin = hMargin
+        group2Params.topMargin = 6.dp
+
+        val toRight = resources.getDrawable(R.drawable.ic_arrow_gray_right)
+        toRight.setTint(resources.getColor(R.color.color_6D7693))
+        initLanguageItem(group2Params, iconParams, textParams, toRight)
+
+        scanItem = addMenu(binding.llMenuRoot.indexOfChild(divider3) + 1,
+            group2Params,
+            iconParams,
+            R.drawable.ic_main_menu_scan_0,
+            R.drawable.ic_main_menu_scan_0,
+            textParams,
+            R.string.scan,
+            true,
+            false
+        ) {
+        }
+        scanItem.onClearSelected = { scanItem.ivIndicator?.visible() }
+        scanItem.ivIndicator?.let {
+            it.visible()
+            it.setImageDrawable(toRight)
+        }
+    }
+
+    private fun initLanguageItem(group2Params: LayoutParams,
+                                 iconParams: LayoutParams,
+                                 textParams: LayoutParams,
+                                 toRight: Drawable) = binding.run {
+        languageItem = addMenu(binding.llMenuRoot.indexOfChild(rvLanguage),
+            group2Params,
+            iconParams,
+            R.drawable.ic_main_menu_language_1,
+            R.drawable.ic_main_menu_language_0,
+            textParams,
+            R.string.M169,
+            true,
+            false
+        ) {
+            if (rvLanguage.isVisible) languageItem.clearSelected() else languageItem.setSelected()
+        }
+
+        val toUp = resources.getDrawable(R.drawable.ic_arrow_gray_right)
+        toUp.setTint(resources.getColor(R.color.color_025BE8))
+        languageItem.ivIndicator?.setImageDrawable(toRight)
+        languageItem.ivIndicator?.visible()
+
+        languageItem.onClearSelected = {
+            rvLanguage.isVisible = false
+            (divider3.layoutParams as ViewGroup.MarginLayoutParams).topMargin = 6.dp
+            languageItem.ivIndicator?.rotation = 0f
+            languageItem.ivIndicator?.setImageDrawable(toRight)
+        }
+
+        languageItem.onSetSelected = {
+            showLanguageList()
+            (divider3.layoutParams as ViewGroup.MarginLayoutParams).topMargin = 0
+            languageItem.ivIndicator?.rotation = -90f
+            languageItem.ivIndicator?.setImageDrawable(toUp)
         }
     }
 
@@ -60,89 +306,59 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         getMainTabActivity().closeDrawerLayout()
     }
 
-    private inline fun getMainTabActivity() = activity as MainTabActivity
-    private lateinit var languageAdapter: LanguageAdapter
+    private var currentContent: BaseFragment<*>? = null
 
-    private val selectedBg by lazy {
-        DrawableCreator.Builder()
-            .setSolidColor(resources.getColor(R.color.color_025BE8))
-            .setShapeAlpha(0.1f)
-            .setCornersRadius(30.dp.toFloat())
-            .build()
-    }
-
-    private var lastItem: MenuItem? = null
-    private val okGamesItem by lazy {
-        binding.run { MenuItem(llOKGames, tvOKGames, ivOKGamesIndicator) {
-            getMainTabActivity().jumpToOKGames()
-            close()
-        } }
-    }
-
-    private val okBingosItem by lazy { binding.run { MenuItem(llOKBingo, tvBingo, ivBingoIndicatot) { getMainTabActivity().jumpToEarlySport() } } }
-    private val okLiveItem by lazy { binding.run { MenuItem(llOKLive, tvOKLive, ivOKLiveIndicator) { getMainTabActivity().jumpToEarlySport() } } }
-    private val newsItem by lazy { binding.run { MenuItem(llNews, tvNews, null) { getMainTabActivity().jumpToEarlySport() } } }
-    private val languageItem by lazy { binding.run { MenuItem(llLanguage, tvLanguage, null) { getMainTabActivity().jumpToEarlySport() } } }
-
-    private fun initMenuItem() = binding.run {
-        okGamesItem.setSelected()
-        llSports.setOnClickListener {
-            resetSelected()
-            close()
-            getMainTabActivity().jumpToEarlySport()
+    fun openWithFragment(menuContentFragment: BaseFragment<*>?) {
+        val isSame = currentContent == menuContentFragment
+        currentContent = menuContentFragment
+        if (menuContentFragment == null) {
+            lastItem?.clearSelected()
+            return
         }
 
-        llLive.setServiceClick(childFragmentManager) { close() }
-        llPromo.setVisibilityByMarketSwitch()
-        llPromo.bindPromoClick() // 优惠活动
-        llAffliate.setOnClickListener { //代理加盟
-            close()
-            JumpUtil.toInternalWeb(
-                llAffliate.context,
-                Constants.getAffiliateUrl(llAffliate.context),
-                resources.getString(R.string.btm_navigation_affiliate)
-            )
+        if (isSame || !::okGamesItem.isInitialized) {
+            return
         }
 
+        binSelected()
     }
 
-    fun openWithOKGames() {
-        resetSelected()
-        okGamesItem.setSelected()
-        lastItem = okGamesItem
-    }
 
-    private fun resetSelected() {
-        lastItem?.clearSelected()
-        lastItem = null
+    private fun binSelected() {
+        if (currentContent is OKGamesFragment) {
+            okGamesItem.setSelected()
+        }
     }
-
 
     override fun onInitView(view: View) {
-        initView()
         initMenuItem()
+        initView()
     }
 
     override fun onBindViewStatus(view: View) {
-        initLanguageView()
         initObserver()
+        promotionItem.group.setVisibilityByMarketSwitch()
         bindVerifyStatus(UserInfoRepository.userInfo.value)
+        binSelected()
     }
 
     private fun initView() = binding.run {
-        llVerify.setOnClickListener { startActivity(VerifyIdentityActivity::class.java) }
+        llVerify.setOnClickListener { loginedRun(it.context) { startActivity(VerifyIdentityActivity::class.java) } }
         ivClose.setOnClickListener { close() }
-        llLanguage.setOnClickListener {
-            resetSelected()
-            var isSelected = !llLanguage.isSelected
-            llLanguage.isSelected = isSelected
-            rvLanguage.isVisible = isSelected
+        ivHome.setOnClickListener {
+            getMainTabActivity().backMainHome()
+            close()
         }
     }
 
-    private fun initLanguageView() {
-        languageAdapter = LanguageAdapter(LanguageManager.makeUseLanguage())
-        tvLanguage.text = LanguageManager.getLanguageStringResource(tvLanguage.context)
+    private fun showLanguageList() {
+        binding.rvLanguage.visible()
+        if (binding.rvLanguage.adapter != null) {
+            return
+        }
+
+        val languageAdapter = LanguageAdapter(LanguageManager.makeUseLanguage())
+//        languageItem.tvName.text = LanguageManager.getLanguageStringResource(context)
         binding.rvLanguage.layoutManager = GridLayoutManager(context, 2)
         binding.rvLanguage.adapter = languageAdapter
         languageAdapter.setOnItemClickListener { adapter, _, position ->
@@ -173,28 +389,27 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
 
         when (userInfo?.verified) {
             ProfileActivity.VerifiedType.PASSED.value -> {
-                llVerify.isEnabled = false
-                llVerify.isClickable = false
-                tvVerifyStatus.text = getString(R.string.kyc_passed)
-            }
-            ProfileActivity.VerifiedType.NOT_YET.value -> {
-                llVerify.isEnabled = true
-                llVerify.isClickable = true
-                tvVerifyStatus.text = getString(R.string.kyc_unverified)
+                setVerify(false, false, R.string.kyc_passed, resources.getColor(R.color.color_1CD219))
 
             }
+            ProfileActivity.VerifiedType.NOT_YET.value -> {
+                setVerify(true, true, R.string.kyc_unverified, resources.getColor(R.color.color_6D7693))
+            }
             ProfileActivity.VerifiedType.VERIFYING.value -> {
-                llVerify.isEnabled = false
-                llVerify.isClickable = false
-                tvVerifyStatus.text = getString(R.string.kyc_unverifing)
+                setVerify(false, false, R.string.kyc_unverifing, resources.getColor(R.color.color_6D7693))
 
             }
             else -> {
-                llVerify.isEnabled = true
-                llVerify.isClickable = true
-                tvVerifyStatus.text = getString(R.string.kyc_unverified)
+                setVerify(true, true, R.string.kyc_unverified, resources.getColor(R.color.color_6D7693))
             }
         }
+    }
+
+    private inline fun setVerify(enable: Boolean, clickAble: Boolean, text: Int, statusColor: Int) = binding.run  {
+        llVerify.isEnabled = enable
+        llVerify.isClickable = clickAble
+        tvVerifyStatus.setText(text)
+        binding.tvVerifyStatus.setTextColor(statusColor)
     }
 
 }
