@@ -496,7 +496,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         viewModel.updateMatchBetListData(fastBetDataBean)
                     }
                 }
-            },this).apply {
+            }).apply {
                 discount = viewModel.userInfo.value?.discount ?: 1.0F
 
                 oddsDetailListener = OddsDetailListener {

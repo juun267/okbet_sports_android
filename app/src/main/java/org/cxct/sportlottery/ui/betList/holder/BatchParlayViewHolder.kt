@@ -279,11 +279,13 @@ abstract class BatchParlayViewHolder(
             itemView.tvCanWinAmount.text = "${sConfigData?.systemCurrencySign} --"
         } else {
             val w = itemData.betAmount.toBigDecimal().multiply(itemData.odds.toBigDecimal())
-            val winnable =
-                w.subtract(itemData.betAmount.toBigDecimal().multiply(itemData.num.toBigDecimal()))
-                    .toDouble()
+//            val winnable =
+//                w.subtract(itemData.betAmount.toBigDecimal().multiply(itemData.num.toBigDecimal()))
+//                    .toDouble()
+//            Timber.d("w:${w} winnable:${winnable} item.betAmount:${itemData.betAmount} itemData.num:${itemData.num}")
+
             itemView.tvCanWinAmount.text =
-                "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(winnable, 2)}"
+                "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(w, 2)}"
         }
     }
 
