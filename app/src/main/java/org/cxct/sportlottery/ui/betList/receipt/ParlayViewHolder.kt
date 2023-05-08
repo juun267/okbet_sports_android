@@ -120,13 +120,10 @@ class ParlayViewHolder private constructor(itemView: View) :
                 tv_bet_status.gone()
             }
 
-
             //"status": 7 顯示賠率已改變
             Timber.d("parlayViewHolderCurrentStatus: $status")
             if (status == 7)
                 interfaceStatusChangeListener?.onChange(code)
-
-
         }
     }
 }

@@ -53,6 +53,7 @@ class BetInfoItemViewHolder(
     private var mUserLogin: Boolean = false
     private val isLogin: Boolean
         get() = LoginRepository.isLogin.value == true
+
     fun bind(
         itemData: BetInfoListData,
         currentOddsType: OddsType,
@@ -171,10 +172,11 @@ class BetInfoItemViewHolder(
         adapterBetType: BetListRefactorAdapter.BetRvType?
     ) = contentView.run {
 
-        fun update(){
+        fun update() {
             //更新可贏額
-           var win= itemData.betAmount * getOddsAndSaveRealAmount(
-                itemData, currentOddsType)
+            var win = itemData.betAmount * getOddsAndSaveRealAmount(
+                itemData, currentOddsType
+            )
 
             val strTvCanWin =
                 "${root.context.getString(R.string.bet_win)}：${sConfigData?.systemCurrencySign} ${
@@ -207,7 +209,6 @@ class BetInfoItemViewHolder(
         }
 
 
-
         //設定editText內容
         etBet.apply {
             if (itemData.input == null) {
@@ -219,7 +220,7 @@ class BetInfoItemViewHolder(
                     } else {
                         itemData.input = minBet.toString()
                     }
-                }else{
+                } else {
                     itemData.input = minBet.toString()
                 }
             }
@@ -442,6 +443,7 @@ class BetInfoItemViewHolder(
                     ) - 1
                 )
             }
+
             PlayCate.FS_LD_CS.value -> {
                 "@ " + getOdds(
                     itemData.matchOdd,
@@ -449,6 +451,7 @@ class BetInfoItemViewHolder(
                     adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE
                 ).toInt().toString()
             }
+
             else -> {
                 "@ " + TextUtil.formatForOdd(
                     getOdds(
@@ -602,7 +605,7 @@ class BetInfoItemViewHolder(
             pop.showAsDropDown(it, xOff, yOff)
         }
 
-        setOnClickListener(tvName, tvLeagueName, tvMatchHome, tvMatchAway,tvOddsContent) {
+        setOnClickListener(tvName, tvLeagueName, tvMatchHome, tvMatchAway, tvOddsContent) {
             when (it) {
                 tvName -> {
                     showPopAsTop(tvName, tvNameText)
@@ -619,6 +622,7 @@ class BetInfoItemViewHolder(
                 tvMatchAway -> {
                     showPopAsTop(tvMatchAway, itemData.matchOdd.awayName)
                 }
+
                 tvOddsContent -> {
                     showPopAsTop(tvOddsContent, itemData.matchOdd.playName)
                 }
@@ -707,12 +711,13 @@ class BetInfoItemViewHolder(
                 odds = tempOdds
             }
 
+
             else -> {
 //                    win = itemData.betAmount * getOdds(
 //                        itemData.matchOdd,
 //                        currentOddsType
 //                    )
-                odds = tempOdds
+                odds = tempOdds + 1
             }
         }
         itemData.realAmount = realAmount
@@ -774,7 +779,7 @@ class BetInfoItemViewHolder(
                     betAmount != 0.0 && betAmount < inputMinMoney
                 }
             }
-            if(itemData.input.isNullOrEmpty()){
+            if (itemData.input.isNullOrEmpty()) {
                 amountError = true
             }
 
