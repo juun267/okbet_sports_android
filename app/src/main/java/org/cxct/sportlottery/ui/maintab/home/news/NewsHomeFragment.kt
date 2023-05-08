@@ -1,21 +1,15 @@
 package org.cxct.sportlottery.ui.maintab.home.news
 
-import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
-import com.gyf.immersionbar.ImmersionBar
-import kotlinx.android.synthetic.main.activity_help_center.*
-import kotlinx.android.synthetic.main.fragment_home_live.*
+import kotlinx.android.synthetic.main.fragment_news_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.roundOf
-import org.cxct.sportlottery.databinding.FragmentMainHome2Binding
 import org.cxct.sportlottery.databinding.FragmentNewsHomeBinding
 import org.cxct.sportlottery.net.news.data.NewsItem
-import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
