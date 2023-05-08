@@ -2,10 +2,14 @@ package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.RelativeLayout
 import androidx.recyclerview.widget.GridLayoutManager
+import com.drake.spannable.addSpan
+import com.drake.spannable.setSpan
+import com.drake.spannable.span.ColorSpan
 import kotlinx.android.synthetic.main.view_home_okgame.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.net.games.data.OKGameBean
@@ -46,10 +50,8 @@ class HomeOkGamesView(context: Context, attrs: AttributeSet) : RelativeLayout(co
             //缓存这一页数据到map
             totalGameMap[fragment.viewModel.pageIndex] = it
             gameAdapter.setList(it)
-            //设置当前条目数量
-            setIndexCount(fragment.viewModel.pageIndex)
-            //总条目数量
-            tvPageSize.text = "/${fragment.viewModel.totalCount}"
+            //设置当前条目数量 / 总条目数量
+            setIndexCount(fragment.viewModel.pageIndex, fragment.viewModel.totalCount)
         }
 
         //监听进入游戏
@@ -96,7 +98,7 @@ class HomeOkGamesView(context: Context, attrs: AttributeSet) : RelativeLayout(co
         //如果缓存在map
         if(totalGameMap.containsKey(fragment.viewModel.pageIndex)){
             //设置当前条目数量
-            setIndexCount(fragment.viewModel.pageIndex)
+            setIndexCount(fragment.viewModel.pageIndex, fragment.viewModel.totalCount)
             gameAdapter.setList(totalGameMap[fragment.viewModel.pageIndex])
         }else{
             //请求该页数据
@@ -123,14 +125,16 @@ class HomeOkGamesView(context: Context, attrs: AttributeSet) : RelativeLayout(co
 
     //设置当前页条目数量
     @SuppressLint("SetTextI18n")
-    private fun setIndexCount(currentPage:Int){
-        if(totalGameMap.size-currentPage<-1){
+    private fun setIndexCount(currentPage:Int, total: Int){
+        if (totalGameMap.size - currentPage <- 1) {
             return
         }
-        val currentCount=totalGameMap[currentPage]?.size
-        currentCount?.let {
-            tvPageIndex.text="${(currentPage*6)-6+currentCount}"
-        }
+
+        val currentCount = totalGameMap[currentPage]?.size ?: return
+        val pageIndex = (currentPage * 6) - 6 + currentCount
+        tvPageIndex.text = "$pageIndex".setSpan(ColorSpan(context.getColor(R.color.color_025BE8)))
+            .addSpan("/$total", ColorSpan(context.getColor(R.color.color_6D7693)))
+
     }
 
 }

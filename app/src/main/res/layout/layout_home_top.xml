@@ -178,7 +178,8 @@
             android:layout_weight="1"
             android:layout_marginRight="5dp"
             app:cardCornerRadius="12dp"
-            app:cardElevation="0dp">
+            app:cardElevation="0dp"
+            android:foreground="@drawable/fg_ripple">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -206,7 +207,8 @@
             android:layout_weight="1"
             android:layout_marginLeft="5dp"
             app:cardCornerRadius="12dp"
-            app:cardElevation="0dp">
+            app:cardElevation="0dp"
+            android:foreground="@drawable/fg_ripple">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -232,7 +234,8 @@
             android:layout_weight="1"
             android:layout_marginRight="5dp"
             app:cardCornerRadius="12dp"
-            app:cardElevation="0dp">
+            app:cardElevation="0dp"
+            android:foreground="@drawable/fg_ripple">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -259,7 +262,8 @@
             android:layout_weight="1"
             android:layout_marginLeft="5dp"
             app:cardCornerRadius="12dp"
-            app:cardElevation="0dp">
+            app:cardElevation="0dp"
+            android:foreground="@drawable/fg_ripple">
 
             <ImageView
                 android:layout_width="match_parent"
