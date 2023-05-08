@@ -73,7 +73,7 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
         lin_sport.setOnClickListener {
             EventBusUtil.post(MenuEvent(false))
-            (activity as MainTabActivity).jumpToEarlySport()
+            (activity as MainTabActivity).jumpToTheSport(null, null)
         }
         lin_inplay.setOnClickListener {
             EventBusUtil.post(MenuEvent(false))
