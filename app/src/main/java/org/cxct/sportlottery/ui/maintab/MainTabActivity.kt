@@ -13,7 +13,6 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -22,6 +21,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.android.synthetic.main.activity_main_tab.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.BetModeChangeEvent
@@ -32,7 +34,6 @@ import org.cxct.sportlottery.databinding.ActivityMainTabBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
-import org.cxct.sportlottery.network.bet.settledDetailList.BetInfo
 import org.cxct.sportlottery.network.bet.settledList.Row
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
@@ -165,6 +166,12 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                         homeFragment().backMainHome()
                     } else {
                         binding.llHomeBack.gone()
+                        if (position == 1) {
+                            GlobalScope.launch {
+                                delay(500)
+                                jumpToTheSport(null, null)
+                            }
+                        }
                     }
                     setupBetBarVisiblity(position)
                     return@OnNavigationItemSelectedListener true
@@ -573,7 +580,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             .addToBackStack(AccountHistoryNextFragment::class.java.simpleName).commit()
     }
 
-    fun jumpToTheSport(matchType: MatchType, gameType: GameType) {
+    fun jumpToTheSport(matchType: MatchType? = null, gameType: GameType? = null) {
         resetBackIcon(1)
         (fragmentHelper.getFragment(1) as SportFragment).setJumpSport(matchType, gameType)
     }

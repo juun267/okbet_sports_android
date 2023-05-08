@@ -48,8 +48,12 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
         (activity as MainTabActivity).jumpToInplaySport()
     }
 
+    fun jumpToDefaultSport() {
+        (activity as MainTabActivity).jumpToTheSport(null, null)
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onJumpToInPlayEvent(event: JumpInPlayEvent){
+    fun onJumpToInPlayEvent(event: JumpInPlayEvent) {
         jumpToInplaySport()
     }
 
