@@ -42,7 +42,13 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
 
 
     override fun onBindViewStatus(view: View) = binding.run {
-        homeTopView.setup(this@MainHomeFragment2)
+        //刷新config
+        viewModel.getConfigData()
+        viewModel.gotConfig.observe(this@MainHomeFragment2){
+            //获得config再初始化banner
+            homeTopView.setup(this@MainHomeFragment2)
+        }
+
         hotMatchView.onCreate(viewModel.publicityRecommend,this@MainHomeFragment2)
         okGamesView.setOkGamesData(this@MainHomeFragment2)
         initBetWinsRecodeLayout()
