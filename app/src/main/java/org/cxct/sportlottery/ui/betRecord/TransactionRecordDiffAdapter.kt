@@ -399,7 +399,32 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                     )
 
                 }
+                tvParlayPrint.visible()
 
+                tvParlayPrint.setOnClickListener {
+                    val dialog = PrintDialog(context)
+                    dialog.tvPrintClickListener = { it1 ->
+                        if (it1?.isNotEmpty() == true) {
+                            val orderNo = data.orderNo
+                            val orderTime = data.betConfirmTime
+                            val requestBet = RemarkBetRequest(orderNo, it1, orderTime.toString())
+                            viewModel.remarkBetLiveData.observeForever {
+                                //uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
+                                dialog.dismiss()
+                                val newUrl =
+                                    Constants.getPrintReceipt(
+                                        context,
+                                        it.remarkBetResult?.uniqNo,
+                                        orderTime.toString(),
+                                        it1
+                                    )
+                                JumpUtil.toExternalWeb(context, newUrl)
+                            }
+                            viewModel.reMarkBet(requestBet)
+                        }
+                    }
+                    dialog.show()
+                }
 
                 content_parlay_bet_amount.text = TextUtil.format(data.totalAmount)
                 content_parlay_winnable_amount.text = TextUtil.format(data.winnable)

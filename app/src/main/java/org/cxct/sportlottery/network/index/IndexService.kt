@@ -28,7 +28,6 @@ import org.cxct.sportlottery.network.Constants.SEND_SMS_FORGET
 import org.cxct.sportlottery.network.Constants.USER_BASIC_INFO_UPDATE
 import org.cxct.sportlottery.network.Constants.VALIDATE_USER
 import org.cxct.sportlottery.network.NetResult
-import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.index.forgetPassword.*
@@ -164,4 +163,5 @@ interface IndexService {
 
     @POST(BIND_FACEBOOK)
     suspend fun bindFacebook(@Body loginTokenRequest: LoginTokenRequest): Response<AuthBindResult>
+
 }
