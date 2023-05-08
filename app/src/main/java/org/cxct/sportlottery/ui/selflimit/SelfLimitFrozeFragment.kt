@@ -31,7 +31,7 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
         when (v) {
             binding.llImportant -> {
                 val dialog = SelfLimitFrozeImportantDialog()
-                dialog.arguments = Bundle().apply { putBoolean("isBet", true) }
+                dialog.arguments = Bundle().apply { putBoolean("isBet", false) }
                 dialog.setCanceledOnTouchOutside(true)
                 dialog.isCancelable = true
                 dialog.show(childFragmentManager, null)

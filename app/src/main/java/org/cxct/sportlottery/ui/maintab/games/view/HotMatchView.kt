@@ -356,6 +356,7 @@ class HotMatchView(context: Context, attrs: AttributeSet
             fragment.receiver.oddsChangeListener = mOddsChangeListener
         }
         adapter?.clearSubCache()
+        adapter?.notifyDataSetChanged()
     }
 
     private val mOddsChangeListener by lazy {

@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.ui.betRecord
 
-import android.content.Context
+import android.content.Intent
 import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_match_record.view.*
 import kotlinx.android.synthetic.main.content_parlay_record.view.*
+import kotlinx.android.synthetic.main.include_bet_record_endscore.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
@@ -24,8 +25,10 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.ui.betRecord.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
+import org.cxct.sportlottery.ui.betRecord.detail.BetDetailsActivity
 import org.cxct.sportlottery.ui.betRecord.dialog.PrintDialog
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.view.onClick
 
 //TODO 20210719當前api缺少總金額,待後端修正後進行確認
 class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
@@ -153,9 +156,17 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                     if (matchOdds.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage(
                         matchOdds.odds - 1
                     ) else TextUtil.formatForOdd(matchOdds.odds)
-                play_content.setPlayContent(
-                    matchOdds.playName, matchOdds.spread, formatForOdd
-                )
+
+                if (matchOdds.playCateCode == PlayCate.FS_LD_CS.value)
+                    play_content.setPlayContent(
+                        context.getString(R.string.N903),
+                        matchOdds.spread,
+                        matchOdds.odds.toInt().toString()
+                    )
+                else
+                    play_content.setPlayContent(
+                        matchOdds.playName, matchOdds.spread, formatForOdd
+                    )
 
                 match_play_time.text =
                     TimeUtil.timeFormat(matchOdds.startTime, TimeUtil.DM_HM_FORMAT)
@@ -208,6 +219,42 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                 ll_copy_bet_order.setOnClickListener {
                     context.copyToClipboard(data.orderNo)
                 }
+                lin_endscore.isVisible =
+                    data.matchOdds.firstOrNull()?.playCateCode == PlayCate.FS_LD_CS.value
+                if (lin_endscore.isVisible) {
+                    val sortList = data.matchOdds.firstOrNull()?.multiCode?.sortedBy { it.playCode }
+                        ?: listOf()
+                    content_play.setCompoundDrawablesWithIntrinsicBounds(null,
+                        null,
+                        context.getDrawable(R.drawable.ic_right_arrow_gray),
+                        null)
+                    itemView.onClick {
+                        val intent = Intent(context, BetDetailsActivity::class.java)
+                        intent.putExtra("data", data)
+                        context?.startActivity(intent)
+                    }
+                    val listData = if (sortList.size > 6) {
+                        sortList.subList(0, 6)
+                    } else {
+                        sortList
+                    }
+                    if (rv_endscore_info.adapter == null) {
+                        rv_endscore_info.layoutManager =
+                            LinearLayoutManager(rv_endscore_info.context,
+                                RecyclerView.HORIZONTAL,
+                                false)
+                        rv_endscore_info.addItemDecoration(SpaceItemDecoration(context,
+                            R.dimen.margin_4))
+                        val scoreAdapter = BetRecordEndScoreAdapter()
+                        rv_endscore_info.adapter = scoreAdapter
+                        scoreAdapter.setList(listData)
+                    } else {
+                        (rv_endscore_info.adapter as BetRecordEndScoreAdapter).setList(listData)
+                    }
+                    tv_more?.let {
+                        tv_more.isVisible = sortList.size > 6
+                    }
+                }
             }
         }
 
@@ -236,7 +283,6 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                 content_play.setGameType_MatchType_PlayCateName_OddsType(
                     data.gameType, data.matchType, matchOdds.playCateName, matchOdds.oddsType
                 )
-
                 tvPrint.visible()
 
                 tvPrint.setOnClickListener {
@@ -268,8 +314,13 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                     if (matchOdds.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage(
                         matchOdds.odds - 1
                     ) else TextUtil.formatForOdd(matchOdds.odds)
+
+                val playName =
+                    if (matchOdds.playCateCode == PlayCate.FS_LD_CS.value)
+                        context.getString(R.string.N903)
+                    else matchOdds.playName
                 play_content.setPlayContent(
-                    matchOdds.playName, matchOdds.spread, formatForOdd
+                    playName, matchOdds.spread, formatForOdd
                 )
                 matchOdds.startTime?.let {
                     match_play_time.text = TimeUtil.timeFormat(it, TimeUtil.DM_HM_FORMAT)
@@ -348,7 +399,32 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                     )
 
                 }
+                tvParlayPrint.visible()
 
+                tvParlayPrint.setOnClickListener {
+                    val dialog = PrintDialog(context)
+                    dialog.tvPrintClickListener = { it1 ->
+                        if (it1?.isNotEmpty() == true) {
+                            val orderNo = data.orderNo
+                            val orderTime = data.betConfirmTime
+                            val requestBet = RemarkBetRequest(orderNo, it1, orderTime.toString())
+                            viewModel.remarkBetLiveData.observeForever {
+                                //uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
+                                dialog.dismiss()
+                                val newUrl =
+                                    Constants.getPrintReceipt(
+                                        context,
+                                        it.remarkBetResult?.uniqNo,
+                                        orderTime.toString(),
+                                        it1
+                                    )
+                                JumpUtil.toExternalWeb(context, newUrl)
+                            }
+                            viewModel.reMarkBet(requestBet)
+                        }
+                    }
+                    dialog.show()
+                }
 
                 content_parlay_bet_amount.text = TextUtil.format(data.totalAmount)
                 content_parlay_winnable_amount.text = TextUtil.format(data.winnable)

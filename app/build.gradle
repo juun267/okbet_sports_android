@@ -20,8 +20,8 @@ android {
         applicationId "com.okbet.ph"
         minSdk 23
         targetSdk 31
-        versionName "1.1.51"
-        versionCode 73
+        versionName "1.1.52"
+        versionCode 74
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         ndk {

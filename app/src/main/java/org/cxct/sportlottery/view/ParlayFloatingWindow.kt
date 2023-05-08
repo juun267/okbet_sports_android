@@ -3,12 +3,14 @@ package org.cxct.sportlottery.view
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import me.jessyan.autosize.utils.ScreenUtils
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.BetBarLayout2Binding
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import timber.log.Timber
 import kotlin.math.abs
@@ -28,10 +30,11 @@ class ParlayFloatingWindow @JvmOverloads constructor(
     }
 
     lateinit var tv_bet_list_count: TextView
+    lateinit var binding: BetBarLayout2Binding
 
     private fun initView() {
-        val view = View.inflate(context, R.layout.bet_bar_layout2, this)
-        tv_bet_list_count = view.findViewById(R.id.tv_bet_list_count)
+        binding = BetBarLayout2Binding.inflate(LayoutInflater.from(context),this,true)
+        tv_bet_list_count = binding.tvBetListCount
     }
 
 
@@ -68,10 +71,11 @@ class ParlayFloatingWindow @JvmOverloads constructor(
 
         Timber.d("x:$x y:$y")
         when (event.action) {
-            MotionEvent.ACTION_DOWN ->{
+            MotionEvent.ACTION_DOWN -> {
                 mLastDownX = event.rawX.toInt()
                 mLastDownY = event.rawY.toInt()
             }
+
             MotionEvent.ACTION_MOVE -> {
                 val deltaX: Int = x - mLastX
                 val deltaY: Int = y - mLastY
@@ -81,6 +85,7 @@ class ParlayFloatingWindow @JvmOverloads constructor(
                 setTranslationX(translationX)
                 setTranslationY(translationY)
             }
+
             MotionEvent.ACTION_UP -> {
                 val upRawX = event.rawX.toInt()
                 val upRawY = event.rawY.toInt()
@@ -100,6 +105,10 @@ class ParlayFloatingWindow @JvmOverloads constructor(
         mLastX = x
         mLastY = y
         return true
+    }
+
+    fun setBetText(string: String) {
+        binding.tvBetList.text = string
     }
 
 

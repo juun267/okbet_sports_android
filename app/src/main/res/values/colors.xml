@@ -410,6 +410,13 @@
     <color name="color_FF2E00">#FF2E00</color>
     <color name="color_A0ACC9">#A0ACC9</color>
 
+    <color name="color_227F8CA4">#227F8CA4</color>
+    <color name="color_EAEAEA">#EAEAEA</color>
+    <color name="color_E1E9F8">#E1E9F8</color>
+    <color name="color_F7FAFE">#F7FAFE</color>
+    <color name="color_636466">#9A000000</color>
+
+    <color name="color_444E57">#444E57</color>
 
     <color name="color_4CC700">#4CC700</color>
     <color name="color_104CC700">#104CC700</color>

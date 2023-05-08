@@ -116,10 +116,21 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         initCollectLayout()
         //初始化热门赛事
         binding.hotMatchView.onCreate(viewModel.publicityRecommend,this)
-        //请求热门赛事数据  在hotMatchView初始化之后
         viewModel.getRecommend()
     }
 
+    override fun onResume() {
+        super.onResume()
+        unSubscribeChannelHallAll()
+        //重新设置赔率监听
+        binding.hotMatchView.postDelayed({
+            binding.hotMatchView.onResume(this)
+        },500)
+
+
+        //请求热门赛事数据  在hotMatchView初始化之后
+//        viewModel.getRecommend()
+    }
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (hidden) {
@@ -129,13 +140,13 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         }
         //重新设置赔率监听
         binding.hotMatchView.onResume(this)
-
+        viewModel.getRecommend()
         val noData = okGamesFragment().viewModel.gameHall.value == null
         val time = System.currentTimeMillis()
         if (noData || time - lastRequestTimeStamp > 60_000) { // 避免短时间重复请求
             lastRequestTimeStamp = time
             okGamesFragment().viewModel.getOKGamesHall()
-            viewModel.getRecommend()
+
         }
     }
 

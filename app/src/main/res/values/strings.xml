@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="loading">Loading</string>
+    <string name="loading">Loading...</string>
     <string name="connect_first">Select the internet to connect</string>
     <string name="error_url_fail">Jumping to address error</string>
     <string name="unknown_error">unknown error</string>
@@ -740,7 +740,7 @@
     <string name="self_limit_per_bet_limit_content">You can apply for a \"limit bet\" to limit your bet amount each time. After applying for a limit bet, your total bet will not exceed your set value:</string>
     <string name="self_limit_per_bet_limit_highest">Upper limit</string>
     <string name="self_limit_per_bet_limit_input_highest">Please enter the number</string>
-    <string name="self_limit_per_bet_limit_impotent">• You can modify your limit bet at any time. The modification will be active, after that sending the request. </string>
+    <string name="self_limit_per_bet_limit_impotent">You can modify your limit bet at any time. The modification will be active, after that sending the request. </string>
     <string name="self_limit_per_bet_limit_user">• Current limit Bet: %1$s %2$s</string>
     <string name="self_limit_per_bet_limit_user_none">None</string>
     <string name="self_limit_per_bet_limit_user_limit">• Maximum limited bet:%1$s %2$s-%1$s %3$s</string>
@@ -775,10 +775,10 @@
     <string name="btm_navigation_affiliate">Affiliate</string>
     <string name="expire_date">ID expiration date</string>
     <string name="self_limit_froze_impotent_1">Self-exclusion takes effect immediately after setting</string>
-    <string name="self_limit_froze_impotent_2">We will keep your balance during the set period of self-exclusion.</string>
+    <string name="self_limit_froze_impotent_2">We will keep your balance during the set period of self-exclusion.However, if more than 6 months since the last login time, OKBET reserves the right to charge a monthly administrative fee until the account balance reaches zero.</string>
     <string name="self_limit_froze_impotent_3">If you apply for self-exclusion in other gaming games, it will not automatically apply to this game.</string>
     <string name="self_limit_froze_impotent_4">During the self-exclusion period, if you try to open a new account, the account may be frozen after the system detects it.</string>
-    <string name="self_limit_froze_impotent_5" translatable="false">During the self-exclusion period, you can contact customer service to cancel the self-exclusion function.</string>
+    <string name="self_limit_froze_impotent_5">During the self-exclusion time, you will be unable to deactivate your self-exclusion until the expiration of the minimum exclusion time frame.</string>
     <string name="self_limit_froze_impotent_6">After the self-exclusion expires, your account will be automatically reactivated.</string>
     <!-- 複式串關詳情 -->
     <string name="submit_success">submitted successfully</string>
@@ -1325,4 +1325,19 @@
     <string name="M169">Language</string>
     <string name="N913">Related News</string>
     <string name="N912">News List</string>
+    <string name="N899">If you only want to delete a single score, you can click on delete a single score.</string>
+    <string name="N379">No tip</string>
+    <string name="N903">Basketball Ending Card</string>
+    <string name="str_total_stake">Total stake：</string>
+    <string name="N904">Think again</string>
+    <string name="N374">Delete ALL</string>
+    <string name="N905">Confirm</string>
+    <string name="J220">+More</string>
+    <string name="bet_basketball_notify_max_limit">Can add maximum 100 options to betslip</string>
+    <string name="N918">Total stake:</string>
+    <string name="N919">Total Win:</string>
+    <string name="N920">+More</string>
+    <string name="N901">Confirm delete</string>
+    <string name="N888">The individual odds are the same for all selections in the final score.</string>
+    <string name="N898">Are you sure you want to delete all score options?</string>
 </resources>

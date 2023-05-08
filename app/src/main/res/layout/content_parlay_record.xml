@@ -177,7 +177,7 @@
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:src="@drawable/ic_clock"
-                        android:layout_marginRight="4dp"/>
+                        android:layout_marginRight="4dp" />
 
                     <TextView
                         android:id="@+id/content_parlay_time_type"
@@ -187,6 +187,17 @@
                         android:textColor="@color/color_A5A9B3"
                         android:textSize="@dimen/textSize10sp"
                         tools:text="08/12 11:31" />
+
+                    <TextView
+                        android:id="@+id/tvParlayPrint"
+                        android:layout_width="42dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="8dp"
+                        android:background="@drawable/bg_radius_4_button_blue_stroke_half_line"
+                        android:gravity="center"
+                        android:text="@string/N890"
+                        android:textColor="@color/color_025BE8"
+                        android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
 
