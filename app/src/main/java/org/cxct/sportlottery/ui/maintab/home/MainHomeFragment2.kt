@@ -103,7 +103,6 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
         initNews()
         initRecordView()
         initObservable()
-        binding.hotMatchView.onCreate(viewModel.publicityRecommend, this@MainHomeFragment2)
         viewModel.getHomeNews(1, 5, listOf(NEWS_OKBET_ID))
         viewModel.getBettingStationList()
     }
