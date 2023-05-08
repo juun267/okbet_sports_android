@@ -2,14 +2,11 @@ package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.lifecycle.findViewTreeLifecycleOwner
-import androidx.viewpager.widget.ViewPager
 import com.stx.xhb.androidx.XBanner
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.isEmptyStr
@@ -17,6 +14,7 @@ import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.config.ImageData
+import org.cxct.sportlottery.repository.ConfigRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
@@ -25,11 +23,8 @@ import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment2
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
-import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.drawable.DrawableCreator
-import org.cxct.sportlottery.view.IndicatorWidget
 
 class HomeTopView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : LinearLayout(context, attrs, defStyle), XBanner.OnItemClickListener {
@@ -37,9 +32,9 @@ class HomeTopView @JvmOverloads constructor(context: Context, attrs: AttributeSe
     init {
         orientation = VERTICAL
         LayoutInflater.from(context).inflate(R.layout.layout_home_top, this, true)
-        initBanner()
         initLogin()
     }
+
 
     private fun initBanner() {
         val lang = LanguageManager.getSelectLanguage(context).key
@@ -106,6 +101,7 @@ class HomeTopView @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
     fun setup(fragment: MainHomeFragment2) {
 
+        ConfigRepository.onNewConfig(fragment) { initBanner() }
         findViewById<View>(R.id.vSports).setOnClickListener { fragment.jumpToInplaySport() }
         findViewById<View>(R.id.vOkgames).setOnClickListener { fragment.jumpToOKGames() }
 

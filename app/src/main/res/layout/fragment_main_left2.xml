@@ -101,6 +101,14 @@
                     android:textColor="@color/color_6D7693"
                     android:textSize="14sp" />
 
+                <ImageView
+                    android:id="@+id/ivVerifyIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:src="@drawable/ic_arrow_gray_right"
+                    android:tint="@color/color_6D7693"/>
+
             </LinearLayout>
 
             <View

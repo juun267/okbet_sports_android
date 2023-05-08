@@ -414,6 +414,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         llVerify.isClickable = clickAble
         tvVerifyStatus.setText(text)
         binding.tvVerifyStatus.setTextColor(statusColor)
+        binding.ivVerifyIndicator.isVisible = enable
     }
 
 }
