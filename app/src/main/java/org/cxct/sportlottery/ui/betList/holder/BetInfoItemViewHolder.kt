@@ -591,6 +591,7 @@ class BetInfoItemViewHolder(
             setBackgroundDrawable(null)
             isOutsideTouchable = true
         }
+        val textView = view.findViewById<TextView>(R.id.tvContent)
         val imageView = view.findViewById<ImageView>(R.id.ivPopupWindowTipsBg)
         val showPopAsTop: (TextView, String?) -> Unit = { it, it2 ->
             if (pop.isShowing) {
@@ -598,7 +599,7 @@ class BetInfoItemViewHolder(
             }
 
             it.setTextColor(it.context.getColor(R.color.color_025BE8))
-            tvContent.text = it2
+            textView.text = it2
             val xOff: Int
             val yOff = (-50).dp
             if (it == tvMatchAway) {
