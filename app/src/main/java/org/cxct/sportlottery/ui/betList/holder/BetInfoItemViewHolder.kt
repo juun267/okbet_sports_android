@@ -476,11 +476,7 @@ class BetInfoItemViewHolder(
                 tvContent.text = spread
             }
         }
-        if(tvContent.text.isNullOrEmpty()){
-            tvPlaceHolderLine.gone()
-        }else{
-            tvPlaceHolderLine.visible()
-        }
+
 
         //設定playCateCode為OU時, container背景, 文字大小和顏色
 //            if (itemData.matchOdd.playCode == PlayCate.OU.value) {
@@ -492,7 +488,14 @@ class BetInfoItemViewHolder(
         tvOddsContent.setOUStyle(false)
         tvContent.setOUStyle(false)
 
-//            }
+        if (tvContent.text.isNullOrEmpty()) {
+            tvPlaceHolderLine.gone()
+//            Timber.d("===> 线隐藏")
+        } else {
+            tvPlaceHolderLine.visible()
+//            Timber.d("===> 线显示")
+        }
+
         //玩法名稱 目前詳細玩法裡面是沒有給betPlayCateNameMap，所以顯示邏輯沿用舊版
         val nameOneLine = { inputStr: String ->
             inputStr.replace("\n", "-")
