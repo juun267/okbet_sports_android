@@ -476,6 +476,11 @@ class BetInfoItemViewHolder(
                 tvContent.text = spread
             }
         }
+        if(tvContent.text.isNullOrEmpty()){
+            tvPlaceHolderLine.gone()
+        }else{
+            tvPlaceHolderLine.visible()
+        }
 
         //設定playCateCode為OU時, container背景, 文字大小和顏色
 //            if (itemData.matchOdd.playCode == PlayCate.OU.value) {
@@ -486,6 +491,7 @@ class BetInfoItemViewHolder(
         oddsContentContainer.setBackgroundResource(R.color.transparent)
         tvOddsContent.setOUStyle(false)
         tvContent.setOUStyle(false)
+
 //            }
         //玩法名稱 目前詳細玩法裡面是沒有給betPlayCateNameMap，所以顯示邏輯沿用舊版
         val nameOneLine = { inputStr: String ->
@@ -582,7 +588,6 @@ class BetInfoItemViewHolder(
             setBackgroundDrawable(null)
             isOutsideTouchable = true
         }
-        val textView = view.findViewById<TextView>(R.id.tvContent)
         val imageView = view.findViewById<ImageView>(R.id.ivPopupWindowTipsBg)
         val showPopAsTop: (TextView, String?) -> Unit = { it, it2 ->
             if (pop.isShowing) {
@@ -590,7 +595,7 @@ class BetInfoItemViewHolder(
             }
 
             it.setTextColor(it.context.getColor(R.color.color_025BE8))
-            textView.text = it2
+            tvContent.text = it2
             val xOff: Int
             val yOff = (-50).dp
             if (it == tvMatchAway) {
