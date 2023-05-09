@@ -4,16 +4,9 @@ import android.Manifest
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.view.View
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
-import com.budiyev.android.codescanner.AutoFocusMode
 import com.budiyev.android.codescanner.BarcodeUtils
-import com.budiyev.android.codescanner.CodeScanner
-import com.budiyev.android.codescanner.ScanMode
-import com.luck.picture.lib.PictureSelector
-import com.luck.picture.lib.config.PictureConfig
-import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.tbruyelle.rxpermissions2.RxPermissions
@@ -30,7 +23,6 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
-import org.cxct.sportlottery.ui.profileCenter.profile.GlideEngine
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.PictureSelectUtil
 import org.cxct.sportlottery.view.dialog.ScanErrorDialog
@@ -186,7 +178,7 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                         JumpUtil.toInternalWeb(
                             requireContext(),
                             href = newUrl,
-                            getString(R.string.N890)
+                             getString(R.string.N890)
                         )
                     } else {
                         val errorDialog = activity?.let { ScanErrorDialog(it) }

@@ -2,8 +2,12 @@ package org.cxct.sportlottery.view.dialog
 
 import android.app.Dialog
 import android.content.Context
+import android.view.Gravity
+import android.view.WindowManager
 import android.widget.TextView
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.DialogScanCameraPhotoBinding
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 
 class ScanPhotoDialog(mContext: Context) : Dialog(mContext) {
@@ -15,8 +19,10 @@ class ScanPhotoDialog(mContext: Context) : Dialog(mContext) {
     var tvAlbumClickListener: (() -> Unit)? = null
     var tvCameraScanClickListener: (() -> Unit)? = null
 
+
     private fun initDialog() {
-        setContentView(R.layout.dialog_scan_camera_photo)
+        val binding = DialogScanCameraPhotoBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         window?.setBackgroundDrawableResource(android.R.color.transparent)
         val tvAlbum = findViewById<TextView>(R.id.tvAlbum)
         val tvCameraScan = findViewById<TextView>(R.id.tvCameraScan)
@@ -35,11 +41,17 @@ class ScanPhotoDialog(mContext: Context) : Dialog(mContext) {
             tvAlbumClickListener?.invoke()
             dismiss()
         }
+
         tvCameraScan.setOnClickListener {
             tvCameraScanClickListener?.invoke()
             dismiss()
         }
 
+        val lp = window?.attributes
+        lp?.width = WindowManager.LayoutParams.WRAP_CONTENT
+        lp?.height = WindowManager.LayoutParams.WRAP_CONTENT
+        lp?.gravity = Gravity.CENTER
+        window?.attributes = lp
     }
 
 
