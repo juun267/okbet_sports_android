@@ -1,12 +1,14 @@
 package org.cxct.sportlottery.network.credential
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguards.KeepMembers
+import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-@JsonClass(generateAdapter = true) @KeepMembers
+@JsonClass(generateAdapter = true)
+@Keep
 data class CredentialCompleteData(
     @Json(name = "result")
     val result: CredentialDetailData?,
