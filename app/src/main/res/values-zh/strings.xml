@@ -926,7 +926,7 @@
     <string name="total_win_amount">可赢：</string>
     <string name="total_all_win_amount">总可赢：</string>
     <string name="delete_bet">删除</string>
-    <string name="btn_login_bet">登录</string>
+    <string name="A006">登录</string>
     <string name="btn_remove_closed_selections">移除已关闭的选项</string>
     <string name="bet_info_list_bet">投注</string>
     <string name="bet_info_bet">投注</string>
@@ -1016,8 +1016,6 @@
     <string name="unbound_bank_card">您尚未绑定%1$s</string>
     <string name="change_other_ID_photos">变更其他证件照</string>
     <string name="customer_service">如需帮助，请</string>
-    <string name="N158">请描述您遇到的问题</string>
-    <string name="N158">请描述您遇到的问题</string>
     <string name="N158">请描述您遇到的问题</string>
     <string name="error_full_name">您输入的姓名不正确</string>
     <string name="hint_verification_code">请输入验证码</string>

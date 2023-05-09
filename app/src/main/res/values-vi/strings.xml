@@ -912,7 +912,7 @@
     <string name="total_win_amount">Thắng：</string> <!--F005-->
     <string name="total_all_win_amount">Tổng tiền ước thắng：</string> <!--F005-->
     <string name="delete_bet">Xóa bỏ</string>
-    <string name="btn_login_bet">Đăng nhập</string>
+    <string name="A006">Đăng nhập</string>
     <string name="btn_remove_closed_selections">Xóa cược đã đóng</string>
     <string name="bet_info_list_bet">Đặt cược</string>
     <string name="bet_info_bet">Tiền Cược</string>
