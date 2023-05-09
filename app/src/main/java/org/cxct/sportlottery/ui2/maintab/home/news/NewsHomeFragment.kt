@@ -72,14 +72,12 @@ class NewsHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentNewsHo
     private fun initNews() {
         binding.includeNews.apply {
             tvCateName.text = getString(R.string.N912)
-            tabNews.addOnTabSelectedListener(object : TabSelectedAdapter() {
-                override fun onTabSelected(tab: TabLayout.Tab) {
-                    categoryIds = listOf(if (tab?.position == 0) NEWS_OKBET_ID else NEWS_SPORT_ID)
-                    viewModel.getPageNews(1, PAGE_SIZE, categoryIds)
-                }
-            })
             tvMore.gone()
             ivMore.gone()
+            tabNews.addOnTabSelectedListener(TabSelectedAdapter {
+                categoryIds = listOf(if (it.position == 0) NEWS_OKBET_ID else NEWS_SPORT_ID)
+                viewModel.getPageNews(1, PAGE_SIZE, categoryIds)
+            })
         }
         binding.tvShowMore.setOnClickListener {
             viewModel.getPageNews(currentPage + 1, PAGE_SIZE, categoryIds)

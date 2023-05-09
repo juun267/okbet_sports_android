@@ -112,4 +112,9 @@ class NewsDetailActivity : BindingActivity<MainHomeViewModel, ActivityNewsDetail
                 "</head>";
         return "<html>$head<body>$bodyHTML</body></html>";
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.okWebContent.destroy()
+    }
 }
