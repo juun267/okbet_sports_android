@@ -1321,7 +1321,6 @@
     <string name="N909">News</string>
     <string name="LT050">Customer service</string>
 
-    <string name="scan">Scan</string>
     <string name="M169">Language</string>
     <string name="N913">Related News</string>
     <string name="N912">News List</string>
@@ -1344,4 +1343,6 @@
     <string name="N969">Sports betting service is temporarily under maintenance!</string>
     <string name="N257">Maintenance</string>
     <string name="N960">News Details</string>
+    <string name="N915">Sponsorship</string>
+    <string name="N908">Scan</string>
 </resources>

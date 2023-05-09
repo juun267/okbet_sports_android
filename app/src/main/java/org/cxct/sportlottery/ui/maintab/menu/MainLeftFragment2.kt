@@ -260,7 +260,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             R.drawable.ic_main_menu_scan_0,
             R.drawable.ic_main_menu_scan_0,
             textParams,
-            R.string.scan,
+            R.string.N908,
             true,
             false
         ) {
