@@ -22,16 +22,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.text.getSpans
 import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import kotlinx.android.synthetic.main.content_odds_detail_list_team.view.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.OddsType
@@ -44,7 +39,6 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.base.BaseGameAdapter
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.sport.detail.OnOddClickListener
-import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
@@ -52,7 +46,6 @@ import org.cxct.sportlottery.util.MatchOddUtil.updateEPSDiscount
 import org.cxct.sportlottery.view.DividerItemDecorator
 import org.cxct.sportlottery.view.IndicatorView
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
-import timber.log.Timber
 import java.util.*
 
 /**
@@ -64,26 +57,22 @@ import java.util.*
  */
 @SuppressLint("NotifyDataSetChanged")
 class OddsDetailListAdapter(
-    private val onOddClickListener: OnOddClickListener,
-    private val sportDetailActivity: SportDetailActivity
+    private val onOddClickListener: OnOddClickListener
 ) : BaseGameAdapter() {
 
 
+    @set:Synchronized
     var betInfoList: MutableList<BetInfoListData> = mutableListOf()
         set(value) {
             field = value
-            sportDetailActivity.lifecycleScope.launch(Dispatchers.IO) {
-                oddsDetailDataList.forEachIndexed { index, data ->
-                    data.oddArrayList.forEach { odd ->
-                        val oddSelected = betInfoList.any { it.matchOdd.oddsId == odd?.id }
+            oddsDetailDataList.forEachIndexed { index, data ->
+                data.oddArrayList.forEach { odd ->
+                    val oddSelected = betInfoList.any { it.matchOdd.oddsId == odd?.id }
 //                    Timber.d("===洗刷刷-2 odd?.isSelected:${odd?.isSelected} oddSelected:${oddSelected} index:${index}")
-                        if (odd?.isSelected != oddSelected) {
-                            odd?.isSelected = oddSelected
-                            withContext(Dispatchers.Main) {
-                                notifyItemChanged(index, odd?.id)
-                            }
+                    if (odd?.isSelected != oddSelected) {
+                        odd?.isSelected = oddSelected
+                        notifyItemChanged(index, odd?.id)
 //                            Timber.d("===洗刷刷 更新单个条目:${index} id:${odd?.id} odd.isSelected:${odd?.isSelected}")
-                        }
                     }
                 }
             }

@@ -12,7 +12,7 @@
         android:layout_width="17dp"
         android:layout_gravity="right"
         android:visibility="gone"
-        android:layout_height="12dp"/>
+        android:layout_height="13dp"/>
 
     <ImageView
         android:id="@+id/iv_mark_bottom"
@@ -20,7 +20,7 @@
         android:layout_width="17dp"
         android:visibility="gone"
         android:layout_gravity="bottom|right"
-        android:layout_height="12dp"/>
+        android:layout_height="13dp"/>
     <LinearLayout
         android:id="@+id/button_odd_detail"
         android:layout_width="match_parent"

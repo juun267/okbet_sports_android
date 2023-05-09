@@ -553,7 +553,7 @@
     <string name="bet_notify_max_limit">Hanggang 10 mga pagpipilian ang maaaring idagdag sa slip ng taya</string>
     <string name="myfavorite_notify_league_add">Idinagdag sa aking liga</string>
     <string name="myfavorite_notify_league_remove">Tanggalin sa liga ko</string>
-    <string name="myfavorite_notify_match_add">nadagdag sa aking event</string>
+    <string name="myfavorite_notify_match_add">Nadagdag sa aking event</string>
     <string name="myfavorite_notify_match_remove">Tanggalin sa event ko</string>
     <!--F039-->
     <string name="bet_receipt_all_bet">Kabuuang halaga ng taya</string>
@@ -956,7 +956,7 @@
     <string name="click_upload_id_photo">I-click para mag-upload ng ID</string>
     <string name="main_tab_sport">Sports</string>
     <string name="main_tab_betlist">Bet slip</string>
-    <string name="main_tab_mine">Akin</string>
+    <string name="main_tab_mine">Aking</string>
     <string name="skin_mode">Mode: Araw/Gabi</string>
     <string name="live_streaming">Live streaming</string>
     <string name="transaction_record">Transaction record details</string>
