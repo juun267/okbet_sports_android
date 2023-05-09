@@ -6,20 +6,16 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.listener.OnItemClickListener
-import kotlinx.android.synthetic.main.activity_help_center.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.roundOf
 import org.cxct.sportlottery.common.extentions.visible
-import org.cxct.sportlottery.databinding.ActivityBetDetailsBinding
 import org.cxct.sportlottery.databinding.ActivityNewsDetailBinding
-import org.cxct.sportlottery.net.news.data.NewsDetail
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.betList.BetListViewModel
-import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TimeUtil
 
 
@@ -62,14 +58,18 @@ class NewsDetailActivity : BaseActivity<MainHomeViewModel>(MainHomeViewModel::cl
         binding.apply {
             ivCover.roundOf(newsItem?.image, 12.dp, R.drawable.img_banner01)
             tvTitle.text = newsItem?.title
-            tvTime.text = TimeUtil.timeFormat(newsItem?.updateTimeInMillisecond, TimeUtil.YMD_HMS_FORMAT)
-            tvContent.text = newsItem?.metaDetail
+            tvTime.text =
+                TimeUtil.timeFormat(newsItem?.updateTimeInMillisecond, TimeUtil.YMD_HMS_FORMAT)
+//            okWebContent.settings.useWideViewPort = false
+            okWebContent.setBackgroundColor(getColor(R.color.color_F8F9FD))
+            okWebContent.loadData(getHtmlData(newsItem?.contents ?: ""), "text/html", null)
         }
     }
 
     private fun initObservable() {
         viewModel.newsDetail.observe(this){
              setupNews(it.detail)
+            LogUtil.toJson(it.detail)
             if(it.relatedList.isNullOrEmpty()){
                 binding.linNews.gone()
             }else{
@@ -85,7 +85,7 @@ class NewsDetailActivity : BaseActivity<MainHomeViewModel>(MainHomeViewModel::cl
                 rvNews.adapter = HomeNewsAdapter().apply {
                     setList(newsList)
                     setOnItemClickListener(listener = OnItemClickListener { adapter, view, position ->
-                        start(this@NewsDetailActivity,(adapter.data[position] as NewsItem))
+                        start(this@NewsDetailActivity, (adapter.data[position] as NewsItem))
                     })
                 }
             } else {
@@ -94,4 +94,11 @@ class NewsDetailActivity : BaseActivity<MainHomeViewModel>(MainHomeViewModel::cl
         }
     }
 
+    private fun getHtmlData(bodyHTML: String): String {
+        val head = "<head>" +
+                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\"> " +
+                "<style>img{max-width: 100%; width:auto; height:auto!important;}</style>" +
+                "</head>";
+        return "<html>$head<body>$bodyHTML</body></html>";
+    }
 }

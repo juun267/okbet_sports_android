@@ -590,8 +590,12 @@ object Constants {
     //推荐列表不带Contents
     const val NEWS_LIST_RECOMMEND = "/front/content/getListRecommend"
 
+    //新闻列表不带Contents
+    const val NEWS_LIST_PAGE = "/front/content/getPage"
+
     //资讯详情
     const val NEWS_DETIAL = "/front/content/getOne"
+
     // 安卓送审版本号
     const val GET_CONFIG_BY_NAME = "/api/agent/game/config/getConfigByName/{name}"
 

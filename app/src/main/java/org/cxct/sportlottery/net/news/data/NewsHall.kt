@@ -27,6 +27,7 @@ data class NewsItem(
     val tagNameList: List<String>?,
     val createTimeInMillisecond: Long,
     val updateTimeInMillisecond: Long,
+    val contents: String?,
 ):Parcelable
 
 @Parcelize

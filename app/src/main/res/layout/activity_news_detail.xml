@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_141414_F3F4F5"
+    android:background="@color/color_F8F9FD"
     android:orientation="vertical"
-    tools:context=".ui.maintab.betdetails.BetDetailsActivity">
+    tools:context=".ui.maintab.home.news.NewsDetailActivity">
 
     <org.cxct.sportlottery.view.CustomTopToolbar
         android:id="@+id/custom_tool_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:topTitleText="@string/news_detail" />
+        app:topTitleText="@string/N960" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -43,26 +43,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginBottom="@dimen/margin_8"
                 android:textColor="@color/color_BEC7DC"
                 android:textSize="@dimen/textSize12sp"
-                tools:text="Feb 12, 2023 10:16AM"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_e0e3ee"/>
-            <TextView
-                android:id="@+id/tvContent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_8"
-                android:layout_marginBottom="@dimen/margin_16"
-                android:textColor="@color/color_14366B"
-                android:textSize="@dimen/textSize14sp"
-                tools:text="content"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_e0e3ee"/>
+                tools:text="Feb 12, 2023 10:16AM" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/color_e0e3ee" />
+
+                <org.cxct.sportlottery.view.webView.OkWebView
+                    android:id="@+id/okWebContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:layout_marginBottom="@dimen/margin_16"
+                    tools:text="content" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/color_e0e3ee" />
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/linNews"

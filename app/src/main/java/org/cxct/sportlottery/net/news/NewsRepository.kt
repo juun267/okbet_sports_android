@@ -3,10 +3,12 @@ package org.cxct.sportlottery.net.news
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import org.cxct.sportlottery.net.ApiResult
+import org.cxct.sportlottery.net.PageInfo
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.net.news.api.NewsApi
 import org.cxct.sportlottery.net.news.data.NewsCategory
 import org.cxct.sportlottery.net.news.data.NewsDetail
+import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.sConfigData
 
@@ -47,8 +49,20 @@ object NewsRepository {
         return newsApi.getListRecommend(params)
     }
 
+    suspend fun getPageNews(
+        pageNum: Int,
+        pageSize: Int,
+        categoryIds: List<Int>,
+    ): ApiResult<PageInfo<NewsItem>> {
+        val params = JsonObject()
+        params.addProperty("pageNum", pageNum)
+        params.addProperty("pageSize", pageSize)
+        params.add("categoryIds", Gson().toJsonTree(categoryIds))
+        return newsApi.getListPage(params)
+    }
+
     suspend fun getNewsDetail(
-        id: Int
+        id: Int,
     ): ApiResult<NewsDetail> {
         val params = JsonObject()
         params.addProperty("id", id)

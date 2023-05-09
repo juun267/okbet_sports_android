@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.toast
+import org.cxct.sportlottery.net.PageInfo
 import org.cxct.sportlottery.net.bettingStation.BettingStationRepository
 import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.games.data.OKGameBean
@@ -130,9 +131,9 @@ open class MainHomeViewModel(
         get() = _homeNewsList
     private val _homeNewsList = MutableLiveData<List<NewsItem>>()
 
-    val recommendNewsList: LiveData<List<NewsItem>>
-        get() = _recommendNewsList
-    private val _recommendNewsList = MutableLiveData<List<NewsItem>>()
+    val pageNewsList: LiveData<PageInfo<NewsItem>>
+        get() = _pageNewsList
+    private val _pageNewsList = MutableLiveData<PageInfo<NewsItem>>()
 
     val newsDetail: LiveData<NewsDetail>
         get() = _newsDetail
@@ -684,7 +685,7 @@ open class MainHomeViewModel(
      */
     fun getHomeNews(pageNum: Int, pageSize: Int, categoryIds: List<Int>) {
         viewModelScope.launch {
-            callApi({ NewsRepository.getHomeNews(pageNum, pageNum, categoryIds) }) {
+            callApi({ NewsRepository.getHomeNews(pageNum, pageSize, categoryIds) }) {
                 if (it.succeeded()) {
                     _homeNewsList.postValue(it.getData()?.firstOrNull()?.detailList ?: listOf())
                 } else {
@@ -693,20 +694,22 @@ open class MainHomeViewModel(
             }
         }
     }
+
     /**
-     * 获取资讯推荐列表
+     * 获取新闻分页列表
      */
-    fun getRecommendNews(pageNum: Int, pageSize: Int, categoryIds: List<Int>) {
+    fun getPageNews(pageNum: Int, pageSize: Int, categoryIds: List<Int>) {
         viewModelScope.launch {
-            callApi({ NewsRepository.getRecommendNews(pageNum, pageNum, categoryIds) }) {
+            callApi({ NewsRepository.getPageNews(pageNum, pageSize, categoryIds) }) {
                 if (it.succeeded()) {
-                    _recommendNewsList.postValue(it.getData()?.firstOrNull()?.detailList ?: listOf())
+                    _pageNewsList.postValue(it.getData())
                 } else {
                     toast(it.msg)
                 }
             }
         }
     }
+
 
     /**
      * 获取新闻资讯列表
