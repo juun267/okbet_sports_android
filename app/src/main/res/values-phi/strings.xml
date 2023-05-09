@@ -518,7 +518,7 @@
     <string name="game_name">Pangalan ng laro</string>
     <string name="all_out_plat">All out</string>
     <string name="all_in_plat">All in</string>
-    <string name="write_suggestion">Punan ang mga mungkahi</string>
+    <string name="N729">Pagsusumite</string>
     <string name="can_input_1_to_500_word">Pakilarawan ang problemang iyong nararanasan(Maaaring maglagay ng 1-500 character)</string>
     <string name="third_game_ky">OKgames</string>
     <string name="odd_type_eu">EU</string>
@@ -887,7 +887,7 @@
     <string name="total_win_amount">Mapapanalo：</string>
     <string name="total_all_win_amount">Kabuuang mapanalo：</string>
     <string name="delete_bet">Tanggalin</string>
-    <string name="btn_login_bet">Login muna</string>
+    <string name="A006">Mag log in</string>
     <string name="btn_remove_closed_selections">Isara ang option</string>
     <string name="bet_info_list_bet">Taya</string>
     <string name="bet_info_bet">Taya</string>
@@ -976,6 +976,8 @@
     <string name="unbound_bank_card">Hindi mo natali ang %1$s</string>
     <string name="change_other_ID_photos">Palitan ng larawan</string>
     <string name="customer_service">Kung may katanungan, &#160;</string>
+    <string name="N158">Pakilarawan ang iyong problema</string>
+    <string name="N158">Pakilarawan ang iyong problema</string>
     <string name="error_full_name">Pangalan na iyong inilagay ay mali</string>
     <string name="hint_verification_code">Pakilagay ang verification code</string>
     <string name="hint_game_maintenance">Ang laro ay maintenance, mangyaring subukan sa ibang pagkakataon</string>
@@ -1208,5 +1210,5 @@
     <string name="N951">Import ng album</string>
     <string name="N952">Camera scan</string>
     <string name="N956">Hindi mabasa ang QR code</string>
-    <string name="picture_camera">Tinanggihan ang permiso sa camera</string>
+    <string name="N980">Tinanggihan ang permiso sa camera</string>
 </resources>

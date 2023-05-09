@@ -150,7 +150,7 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                     } else {
                         ToastUtil.showToast(
                             requireContext(),
-                            LocalUtils.getString(R.string.picture_camera)
+                            LocalUtils.getString(R.string.N980)
                         )
                     }
                 }.isDisposed

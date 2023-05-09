@@ -544,7 +544,7 @@
     <string name="game_name">游戏名</string>
     <string name="all_out_plat">全部转出</string>
     <string name="all_in_plat">全部转入</string>
-    <string name="write_suggestion">填写建议</string>
+    <string name="N729">填写建议</string>
     <string name="can_input_1_to_500_word">请描述您遇到的问题(可输入1–500字)</string>
     <string name="third_game_ky">开元棋牌</string>
     <string name="odd_type_eu">欧洲盘</string>
@@ -926,7 +926,7 @@
     <string name="total_win_amount">可赢：</string>
     <string name="total_all_win_amount">总可赢：</string>
     <string name="delete_bet">删除</string>
-    <string name="btn_login_bet">登录后可投注</string>
+    <string name="btn_login_bet">登录</string>
     <string name="btn_remove_closed_selections">移除已关闭的选项</string>
     <string name="bet_info_list_bet">投注</string>
     <string name="bet_info_bet">投注</string>
@@ -1016,6 +1016,9 @@
     <string name="unbound_bank_card">您尚未绑定%1$s</string>
     <string name="change_other_ID_photos">变更其他证件照</string>
     <string name="customer_service">如需帮助，请</string>
+    <string name="N158">请描述您遇到的问题</string>
+    <string name="N158">请描述您遇到的问题</string>
+    <string name="N158">请描述您遇到的问题</string>
     <string name="error_full_name">您输入的姓名不正确</string>
     <string name="hint_verification_code">请输入验证码</string>
     <string name="hint_game_maintenance">该游戏维护中，请稍后尝试</string>
@@ -1280,5 +1283,5 @@
     <string name="N951">相册导入</string>
     <string name="N952">相机扫码</string>
     <string name="N956">无法识别此二维码</string>
-    <string name="picture_camera">获取系统相机权限被拒绝</string>
+    <string name="N980">获取系统相机权限被拒绝</string>
 </resources>
