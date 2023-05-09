@@ -1,6 +1,7 @@
 
 package org.cxct.sportlottery.ui.maintab.games.adapter
 
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
@@ -154,7 +155,10 @@ class ItemHotMatchHolder(
         }
 
         setupOddsButton(currentOddBtn, odd)
-        currentOddBtn.setupOdd4hall(oddPlayCateCode, odd, oddList, oddsType)
+        val hideName =odd?.nameMap?.containsValue(data?.homeName)==true
+           || odd?.nameMap?.containsValue(data?.awayName)==true
+           || odd?.nameMap?.containsValue(binding.root.context.getString(R.string.draw)) ==true
+        currentOddBtn.setupOdd4hall(oddPlayCateCode, odd, oddList, oddsType,hideName = hideName)
         currentOddBtn.setButtonBetClick(
             data = data,
             odd = odd,

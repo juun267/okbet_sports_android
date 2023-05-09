@@ -7,6 +7,7 @@ import android.content.Context
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
@@ -226,12 +227,13 @@ class OddsHotButtonHome @JvmOverloads constructor(
                     else -> ""
                 }
             } else {
-                visibility = when {
-                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() || playCateCode.isCSType() || playCateCode.isSingleType() -> View.VISIBLE
-                    else -> View.GONE
-                }
+                visibility = View.VISIBLE
+//                    when {
+//                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() || playCateCode.isCSType() || playCateCode.isSingleType() -> View.VISIBLE
+//                    else -> View.GONE
+//                }
                 text = when {
-                    playCateCode.isSingleType() -> {
+                   hideName -> {
                         //独赢可能出现没有和的情况
                         var index = oddList.indexOf(odds)
                         when (index) {
@@ -241,44 +243,45 @@ class OddsHotButtonHome @JvmOverloads constructor(
                             else -> ""
                         }
                     }
-                    playCateCode.isCSType() -> {
+                    else -> {
                         odds?.nameMap?.get(
                             LanguageManager.getSelectLanguage(context).key
                         ) ?: odds?.name
                     }
-                    playCateCode.isOUType() -> {
-                        //越南語大小顯示又要特殊處理(用O/U)
-                        val language =
-                            if (LanguageManager.getSelectLanguage(context).key == LanguageManager.Language.VI.key) LanguageManager.Language.EN.key else LanguageManager.getSelectLanguage(
-                                context
-                            ).key
-                        (odds?.nameMap?.get(
-                            language
-                        ) ?: odds?.name)?.abridgeOddsName()
-                    }
-                    playCateCode.isOEType() || playCateCode.isBTSType() -> {
-                        (odds?.nameMap?.get(
-                            LanguageManager.getSelectLanguage(
-                                context
-                            ).key
-                        ) ?: odds?.name)?.abridgeOddsName()
-                    }
-                    playCateCode.isNOGALType() -> {
-                        when (LanguageManager.getSelectLanguage(this.context)) {
-                            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
-                                "第" + odds?.nextScore.toString()
-                            }
-                            else -> {
-                                getOrdinalNumbers(odds?.nextScore.toString())
-                            }
-                        }
-                    }
-                    else -> ""
+
+//                    playCateCode.isOUType() -> {
+//                        //越南語大小顯示又要特殊處理(用O/U)
+//                        val language =
+//                            if (LanguageManager.getSelectLanguage(context).key == LanguageManager.Language.VI.key) LanguageManager.Language.EN.key else LanguageManager.getSelectLanguage(
+//                                context
+//                            ).key
+//                        (odds?.nameMap?.get(
+//                            language
+//                        ) ?: odds?.name)?.abridgeOddsName()
+//                    }
+//                    playCateCode.isOEType() || playCateCode.isBTSType() -> {
+//                        (odds?.nameMap?.get(
+//                            LanguageManager.getSelectLanguage(
+//                                context
+//                            ).key
+//                        ) ?: odds?.name)?.abridgeOddsName()
+//                    }
+//                    playCateCode.isNOGALType() -> {
+//                        when (LanguageManager.getSelectLanguage(this.context)) {
+//                            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
+//                                "第" + odds?.nextScore.toString()
+//                            }
+//                            else -> {
+//                                getOrdinalNumbers(odds?.nextScore.toString())
+//                            }
+//                        }
+//                    }
+//                    else -> ""
                 }
             }
-            if (hideName) {
-                tv_name.isVisible = false
-            }
+//            if (hideName) {
+//                tv_name.isVisible = false
+//            }
             requestLayout()
         }
 

@@ -125,7 +125,7 @@
     <string name="home_tab_cs">CORRECT SCORE</string>
     <string name="home_tab_parlay">PARLAY</string>
     <string name="home_tab_outright">OUTRIGHTS</string>
-    <string name="home_tab_end_score">Basketball Ending Card</string>
+    <string name="home_tab_end_score">Basketball Ending</string>
     <string name="home_tab_at_start">SOON</string>
     <string name="home_tab_eps">PRICE BOOSTS</string>
     <string name="label_all">All</string>
@@ -1316,7 +1316,7 @@
     <string name="J093">Responsible Gaming</string>
     <string name="N899">If you only want to delete a single score, you can click on delete a single score.</string>
     <string name="N379">No tip</string>
-    <string name="N903">Basketball Ending Card</string>
+    <string name="N903">Basketball Ending</string>
     <string name="str_total_stake">Total stake：</string>
     <string name="N904">Think again</string>
     <string name="N374">Delete ALL</string>
