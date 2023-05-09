@@ -7,6 +7,7 @@ import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.ui.common.adapter.BindingAdapter
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TimeUtil
+import java.util.*
 
 class HomeNewsAdapter : BindingAdapter<NewsItem, ItemHomeNewsBinding>() {
 
@@ -17,7 +18,9 @@ class HomeNewsAdapter : BindingAdapter<NewsItem, ItemHomeNewsBinding>() {
     ) = vb.run {
         ivCover.roundOf(item.image, 7.dp, R.drawable.img_banner01)
         tvTitle.text = item.title
-        tvTime.text = TimeUtil.timeFormat(item.updateTimeInMillisecond, TimeUtil.YMD_HMS_FORMAT)
+        tvTime.text = TimeUtil.timeFormat(item.updateTimeInMillisecond,
+            TimeUtil.NEWS_TIME_FORMAT,
+            locale = Locale.ENGLISH)
         tvContent.text = item.summary
     }
 }

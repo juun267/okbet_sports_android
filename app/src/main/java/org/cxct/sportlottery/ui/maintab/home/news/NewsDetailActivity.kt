@@ -17,6 +17,7 @@ import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TimeUtil
+import java.util.*
 
 
 class NewsDetailActivity : BaseActivity<MainHomeViewModel>(MainHomeViewModel::class){
@@ -58,9 +59,9 @@ class NewsDetailActivity : BaseActivity<MainHomeViewModel>(MainHomeViewModel::cl
         binding.apply {
             ivCover.roundOf(newsItem?.image, 12.dp, R.drawable.img_banner01)
             tvTitle.text = newsItem?.title
-            tvTime.text =
-                TimeUtil.timeFormat(newsItem?.updateTimeInMillisecond, TimeUtil.YMD_HMS_FORMAT)
-//            okWebContent.settings.useWideViewPort = false
+            tvTime.text = TimeUtil.timeFormat(newsItem?.updateTimeInMillisecond,
+                TimeUtil.NEWS_TIME_FORMAT,
+                locale = Locale.ENGLISH)
             okWebContent.setBackgroundColor(getColor(R.color.color_F8F9FD))
             okWebContent.loadData(getHtmlData(newsItem?.contents ?: ""), "text/html", null)
         }
