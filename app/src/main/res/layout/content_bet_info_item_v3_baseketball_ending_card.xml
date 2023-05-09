@@ -210,6 +210,7 @@
                     android:layout_height="30dp"
                     android:gravity="center"
                     android:paddingHorizontal="3dp"
+                    android:textColor="@color/color_C04F4F"
                     android:text="@string/N374"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

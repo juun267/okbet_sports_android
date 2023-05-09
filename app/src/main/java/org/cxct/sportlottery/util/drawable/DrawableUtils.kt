@@ -13,8 +13,8 @@ object DrawableUtils {
     fun getBasketballDeleteAllDrawable(root: View): Drawable {
         return DrawableCreator.Builder().setCornersRadius(5.dp.toFloat())
             .setStrokeWidth(1.dp.toFloat())
-            .setStrokeColor(root.context.getColor(R.color.color_EAEAEA))
-            .setSolidColor(root.context.getColor(R.color.color_F9F9F9)).build()
+            .setStrokeColor(root.context.getColor(R.color.color_C04F4F))
+            .setSolidColor(root.context.getColor(R.color.color_05C04F4F)).build()
     }
 
 
