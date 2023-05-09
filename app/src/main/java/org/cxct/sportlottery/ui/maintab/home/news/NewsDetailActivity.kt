@@ -6,21 +6,24 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.listener.OnItemClickListener
+import kotlinx.android.synthetic.main.activity_help_center.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.roundOf
 import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.databinding.ActivityBetDetailsBinding
 import org.cxct.sportlottery.databinding.ActivityNewsDetailBinding
+import org.cxct.sportlottery.net.news.data.NewsDetail
 import org.cxct.sportlottery.net.news.data.NewsItem
-import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TimeUtil
+import java.util.*
 import java.util.*
 
 
-class NewsDetailActivity : BaseActivity<MainHomeViewModel>(MainHomeViewModel::class){
+class NewsDetailActivity : BindingActivity<MainHomeViewModel, ActivityNewsDetailBinding>(){
 
     companion object{
         fun start(context: Context,newsItem: NewsItem){
@@ -30,13 +33,10 @@ class NewsDetailActivity : BaseActivity<MainHomeViewModel>(MainHomeViewModel::cl
         }
     }
 
-    private lateinit var binding: ActivityNewsDetailBinding
     private val newsItem by lazy { intent.getParcelableExtra("newsItem") as NewsItem? }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
-        binding = ActivityNewsDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.customToolBar.setOnBackPressListener {
             finish()
@@ -50,6 +50,7 @@ class NewsDetailActivity : BaseActivity<MainHomeViewModel>(MainHomeViewModel::cl
 
     private fun initData(){
         newsItem?.let {
+            loading()
             viewModel.getNewsDetail(it.id)
         }
     }
@@ -69,8 +70,8 @@ class NewsDetailActivity : BaseActivity<MainHomeViewModel>(MainHomeViewModel::cl
 
     private fun initObservable() {
         viewModel.newsDetail.observe(this){
+             hideLoading()
              setupNews(it.detail)
-            LogUtil.toJson(it.detail)
             if(it.relatedList.isNullOrEmpty()){
                 binding.linNews.gone()
             }else{

@@ -135,9 +135,9 @@ open class MainHomeViewModel(
         get() = _pageNewsList
     private val _pageNewsList = MutableLiveData<PageInfo<NewsItem>>()
 
-    val newsDetail: LiveData<NewsDetail>
+    val newsDetail: LiveData<Pair<Int, NewsDetail?>>
         get() = _newsDetail
-    private val _newsDetail = MutableLiveData<NewsDetail>()
+    private val _newsDetail = MutableLiveData<Pair<Int, NewsDetail?>>()
 
     val recordBetNewHttp: LiveData<List<RecordNewEvent>>
         get() = _recordBetNewHttp
@@ -714,15 +714,12 @@ open class MainHomeViewModel(
     /**
      * 获取新闻资讯列表
      */
-    fun getNewsDetail(id: Int) {
-        viewModelScope.launch {
-            callApi({ NewsRepository.getNewsDetail(id) }) {
-                if (it.succeeded()) {
-                    _newsDetail.postValue(it.getData())
-                } else {
-                    toast(it.msg)
-                }
-            }
+    fun getNewsDetail(id: Int) = callApi({ NewsRepository.getNewsDetail(id) }) {
+        if (it.succeeded()) {
+            _newsDetail.postValue(Pair(id, it.getData()))
+        } else {
+            _newsDetail.postValue(Pair(id, null))
+            toast(it.msg)
         }
     }
 

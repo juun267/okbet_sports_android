@@ -220,6 +220,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.maintab.home.news.NewsDetailActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <service android:name=".service.BackService" /> <!-- broadCast -->
