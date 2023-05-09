@@ -33,10 +33,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-            <org.cxct.sportlottery.ui2.maintab.home.view.HomeBingoView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
             <org.cxct.sportlottery.ui2.maintab.home.view.HomeOkGamesView
                 android:id="@+id/okGamesView"
                 android:layout_width="match_parent"

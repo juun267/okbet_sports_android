@@ -36,19 +36,18 @@ class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHo
         homeBottumView.bindServiceClick(childFragmentManager)
         initToolBar()
         initNews()
+    }
+
+    override fun onInitData() {
         viewModel.getHomeNews(1, 5, listOf(NEWS_OKBET_ID))
         viewModel.getBettingStationList()
+        //刷新config
+        viewModel.getConfigData()
     }
 
 
     override fun onBindViewStatus(view: View) = binding.run {
-        //刷新config
-        viewModel.getConfigData()
-        viewModel.gotConfig.observe(this@MainHomeFragment2){
-            //获得config再初始化banner
-            homeTopView.setup(this@MainHomeFragment2)
-        }
-
+        homeTopView.setup(this@MainHomeFragment2)
         hotMatchView.onCreate(viewModel.publicityRecommend,this@MainHomeFragment2)
         okGamesView.setOkGamesData(this@MainHomeFragment2)
         initBetWinsRecodeLayout()
