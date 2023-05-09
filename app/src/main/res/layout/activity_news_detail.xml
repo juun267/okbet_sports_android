@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_141414_F3F4F5"
-    android:orientation="vertical"
-    tools:context=".ui.maintab.betdetails.BetDetailsActivity">
+    android:orientation="vertical">
 
     <org.cxct.sportlottery.view.CustomTopToolbar
         android:id="@+id/custom_tool_bar"
@@ -15,6 +14,7 @@
         app:topTitleText="@string/news_detail" />
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
