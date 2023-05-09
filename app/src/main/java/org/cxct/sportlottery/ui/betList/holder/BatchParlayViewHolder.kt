@@ -111,6 +111,15 @@ abstract class BatchParlayViewHolder(
     ) {
         itemView.apply {
 
+            if (position==0){
+                if (mUserMoney < inputMinMoney) {
+                    et_bet_parlay.setText(mUserMoney.toString())
+                } else {
+                    et_bet_parlay.setText(inputMinMoney.toString())
+                }
+            }
+
+
             et_bet_parlay.apply {
                 //第1步：為了避免TextWatcher在第2步被調用，提前移除
                 if (tag is TextWatcher) {
@@ -243,6 +252,7 @@ abstract class BatchParlayViewHolder(
                 if (mHasBetClosed) {
                     tv_hint_parlay_default.text =
                         LocalUtils.getString(R.string.str_market_is_closed)
+                    et_bet_parlay.setText("")
                 } else {
                     //限額用整數提示
                     tv_hint_parlay_default.text = betHint
