@@ -111,7 +111,7 @@ abstract class BatchParlayViewHolder(
     ) {
         itemView.apply {
 
-            if (position==0){
+            if (position == 0 && et_bet_parlay.text.isNullOrEmpty()) {
                 if (mUserMoney < inputMinMoney) {
                     et_bet_parlay.setText(mUserMoney.toString())
                 } else {
@@ -138,7 +138,7 @@ abstract class BatchParlayViewHolder(
                 Timber.d("1 进来了- - - -- - - - - - - :isTouched:${false}")
                 et_bet_parlay.requestFocus()
                 data.isInputBet = true
-                keyboardView.showKeyboard(et_bet_parlay,0)
+                keyboardView.showKeyboard(et_bet_parlay, 0)
             }
 
             onFocusChangeListener = null
