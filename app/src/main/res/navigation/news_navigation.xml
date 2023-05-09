@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/newsFragment"
-        android:name="org.cxct.sportlottery.ui.news.NewsFragment"
+        android:name="org.cxct.sportlottery.ui2.news.NewsFragment"
         android:label="NewsFragment">
         <action
             android:id="@+id/action_newsFragment_to_newsDetailFragment"
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/newsDetailFragment"
-        android:name="org.cxct.sportlottery.ui.news.NewsDetailFragment"
+        android:name="org.cxct.sportlottery.ui2.news.NewsDetailFragment"
         android:label="NewsDetailFragment" >
         <argument
             android:name="news"

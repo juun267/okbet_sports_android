@@ -20,7 +20,7 @@ import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel.Companion.PAGE_SIZE
 import org.cxct.sportlottery.ui.betRecord.accountHistory.first.AccountHistoryAdapter
 import org.cxct.sportlottery.ui.betRecord.accountHistory.first.ItemClickListener
-import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
+import org.cxct.sportlottery.ui2.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.favorite.SportTypeTextAdapter
 import org.cxct.sportlottery.util.EventBusUtil

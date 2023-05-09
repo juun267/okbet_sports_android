@@ -6,7 +6,7 @@
     android:background="@color/color_F8F9FD"
     android:orientation="vertical">
 
-    <org.cxct.sportlottery.ui.maintab.home.view.HomeToolbarView
+    <org.cxct.sportlottery.ui2.maintab.home.view.HomeToolbarView
         android:id="@+id/homeToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -41,7 +41,7 @@
                 android:textColor="@color/color_6D7693"
                 android:visibility="gone"
                 tools:text="Show More (90)" />
-            <org.cxct.sportlottery.ui.maintab.home.view.HomeButtomView
+            <org.cxct.sportlottery.ui2.maintab.home.view.HomeButtomView
                 android:id="@+id/homeBottumView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

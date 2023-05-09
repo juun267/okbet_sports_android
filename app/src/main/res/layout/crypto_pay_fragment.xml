@@ -328,7 +328,7 @@
 -->
         </androidx.cardview.widget.CardView>
         <!-- 充值個數 -->
-        <org.cxct.sportlottery.ui.login.LoginEditText
+        <org.cxct.sportlottery.view.LoginEditText
             android:id="@+id/et_recharge_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -363,7 +363,7 @@
 
 
         <!-- 區塊鏈交易ID -->
-        <org.cxct.sportlottery.ui.login.LoginEditText
+        <org.cxct.sportlottery.view.LoginEditText
             android:id="@+id/et_transaction_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

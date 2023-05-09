@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
+import org.cxct.sportlottery.ui2.infoCenter.InfoCenterActivity
 import kotlin.reflect.KClass
 
 abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :

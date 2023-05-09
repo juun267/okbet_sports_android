@@ -32,8 +32,8 @@ import org.cxct.sportlottery.network.bettingStation.Province
 import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
-import org.cxct.sportlottery.ui.login.LoginEditText
+import org.cxct.sportlottery.ui2.common.adapter.StatusSheetData
+import org.cxct.sportlottery.view.LoginEditText
 import org.cxct.sportlottery.util.*
 import java.math.RoundingMode
 import java.util.*

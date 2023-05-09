@@ -210,7 +210,7 @@
 
                     </LinearLayout>
                     <!-- 提款金額 -->
-                    <org.cxct.sportlottery.ui.login.LoginEditText
+                    <org.cxct.sportlottery.view.LoginEditText
                         android:id="@+id/et_withdrawal_amount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -310,7 +310,7 @@
                     </LinearLayout>
 
                     <!-- 提款密碼 -->
-                    <org.cxct.sportlottery.ui.login.LoginEditText
+                    <org.cxct.sportlottery.view.LoginEditText
                         android:id="@+id/et_withdrawal_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.component_date_range_new_selector.view.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_record.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
-import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
+import org.cxct.sportlottery.ui2.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 
 /**

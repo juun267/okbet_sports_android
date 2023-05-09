@@ -17,8 +17,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
 import kotlinx.android.synthetic.main.view_status_selector.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.common.adapter.StatusSheetAdapter
-import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
+import org.cxct.sportlottery.ui2.common.adapter.StatusSheetAdapter
+import org.cxct.sportlottery.ui2.common.adapter.StatusSheetData
 import org.cxct.sportlottery.util.MetricsUtil.convertDpToPixel
 
 class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : FrameLayout(context, attrs, defStyle) {

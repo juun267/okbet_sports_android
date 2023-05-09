@@ -14,7 +14,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.dialog.CustomPasswordVerifyDialog
-import org.cxct.sportlottery.ui.login.afterTextChanged
+import org.cxct.sportlottery.view.afterTextChanged
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 
 /**

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import kotlinx.android.synthetic.main.item_play_spinner.view.*
 import org.cxct.sportlottery.databinding.ItemPlaySpinnerBinding
-import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
+import org.cxct.sportlottery.ui2.common.adapter.StatusSheetData
 
 class StatusSpinnerAdapter(dataItems: MutableList<StatusSheetData> = mutableListOf()) : BaseAdapter() {
 

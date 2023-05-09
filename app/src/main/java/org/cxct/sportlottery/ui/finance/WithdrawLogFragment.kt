@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.component_date_range_new_selector.view.*
 import kotlinx.android.synthetic.main.view_no_record.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
+import org.cxct.sportlottery.ui2.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.CheckStatus
 import org.cxct.sportlottery.ui.finance.df.UWType
 import org.cxct.sportlottery.util.DisplayUtil.dp

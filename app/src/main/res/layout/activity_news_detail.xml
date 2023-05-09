@@ -102,7 +102,7 @@
                     tools:listitem="@layout/item_home_news"
                     tools:itemCount="5" />
             </LinearLayout>
-            <org.cxct.sportlottery.ui.maintab.home.view.HomeButtomView
+            <org.cxct.sportlottery.ui2.maintab.home.view.HomeButtomView
                 android:id="@+id/homeBottumView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

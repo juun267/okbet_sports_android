@@ -17,8 +17,8 @@ import androidx.navigation.fragment.findNavController
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.getKClass
 import org.cxct.sportlottery.net.flow.IUiView
-import org.cxct.sportlottery.ui.common.adapter.StatusSheetAdapter
-import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
+import org.cxct.sportlottery.ui2.common.adapter.StatusSheetAdapter
+import org.cxct.sportlottery.ui2.common.adapter.StatusSheetData
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import kotlin.reflect.KClass
 

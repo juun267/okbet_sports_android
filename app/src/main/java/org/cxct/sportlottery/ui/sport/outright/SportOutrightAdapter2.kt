@@ -12,7 +12,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.outright.odds.CategoryOdds
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
-import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
+import org.cxct.sportlottery.ui2.common.adapter.ExpanableOddsAdapter
 import org.cxct.sportlottery.util.SocketUpdateUtil.updateOddStatus
 
 class SportOutrightAdapter2(val lifecycle: LifecycleOwner, val onItemClick:(Int, View, BaseNode) -> Unit): ExpanableOddsAdapter() {

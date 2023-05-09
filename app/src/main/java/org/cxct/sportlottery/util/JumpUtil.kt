@@ -11,7 +11,7 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.maintab.lottery.LotteryActivity
-import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
+import org.cxct.sportlottery.ui2.thirdGame.ThirdGameActivity
 import timber.log.Timber
 
 object JumpUtil {

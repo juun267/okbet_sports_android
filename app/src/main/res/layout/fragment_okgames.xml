@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:background="@color/color_F8F9FD">
 
-    <org.cxct.sportlottery.ui.maintab.home.view.HomeToolbarView
+    <org.cxct.sportlottery.ui2.maintab.home.view.HomeToolbarView
         android:id="@+id/homeToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <org.cxct.sportlottery.ui.maintab.games.view.OKGamesTopView
+            <org.cxct.sportlottery.ui2.maintab.games.view.OKGamesTopView
                 android:id="@+id/topView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>

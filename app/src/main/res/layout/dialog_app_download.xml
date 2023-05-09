@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     tools:background="@android:drawable/screen_background_dark_transparent"
-    tools:context=".ui.splash.AppDownloadDialog">
+    tools:context=".ui2.splash.AppDownloadDialog">
 
     <View
         android:layout_width="0dp"

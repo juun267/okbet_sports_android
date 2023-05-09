@@ -14,7 +14,7 @@ import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.user.odds.OddsChangeOptionRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
-import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
+import org.cxct.sportlottery.ui2.common.adapter.StatusSheetData
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.TimeUtil

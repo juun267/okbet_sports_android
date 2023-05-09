@@ -24,11 +24,11 @@ import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.base.BindingFragment
+import org.cxct.sportlottery.ui2.base.BindingFragment
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
-import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
+import org.cxct.sportlottery.ui2.maintab.games.OKGamesFragment
+import org.cxct.sportlottery.ui2.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.util.*

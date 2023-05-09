@@ -13,9 +13,9 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
-import org.cxct.sportlottery.ui.splash.LaunchActivity
-import org.cxct.sportlottery.ui.splash.SplashActivity
-import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
+import org.cxct.sportlottery.ui2.splash.LaunchActivity
+import org.cxct.sportlottery.ui2.splash.SplashActivity
+import org.cxct.sportlottery.ui2.thirdGame.ThirdGameActivity
 import org.cxct.sportlottery.view.dialog.RedEnvelopeReceiveDialog
 import org.cxct.sportlottery.view.floatingbtn.RedEnvelopeFloatingButton
 import java.util.*
