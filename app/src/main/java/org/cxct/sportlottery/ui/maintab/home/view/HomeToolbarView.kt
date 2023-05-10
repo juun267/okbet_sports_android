@@ -136,10 +136,10 @@ class HomeToolbarView@JvmOverloads constructor(context: Context, attrs: Attribut
 
         val params = LayoutParams(-2, 30.dp)
         params.rightMargin = 8.dp
-        tvLogin = createBtnText(R.string.btn_login, R.drawable.bg_blue_radius_15)
+        tvLogin = createBtnText(R.string.J134, R.drawable.bg_blue_radius_15)
         loginLayout.addView(tvLogin, params)
 
-        tvRegist = createBtnText(R.string.btn_register, R.drawable.bg_orange_radius_15)
+        tvRegist = createBtnText(R.string.J151, R.drawable.bg_orange_radius_15)
         loginLayout.addView(tvRegist, params)
 
         addView(loginLayout, LayoutParams(0, -2, 1f))
