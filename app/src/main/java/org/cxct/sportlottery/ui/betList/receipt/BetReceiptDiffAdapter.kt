@@ -159,12 +159,6 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
 
         var currentOddsType = oddsType
 
-        betParlayList?.getOrNull(position)?.let {
-            if (it.odds == it.malayOdds) {
-                currentOddsType = OddsType.EU
-            }
-        }
-
         when (holder) {
             is SingleViewHolder -> {
                 val itemData = getItem(position) as DataItem.SingleData
@@ -187,6 +181,11 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
             }
 
             is ParlayViewHolder -> {
+                betParlayList?.getOrNull(position)?.let {
+                    if (it.odds == it.malayOdds) {
+                        currentOddsType = OddsType.EU
+                    }
+                }
                 val itemData = getItem(position) as DataItem.ParlayData
                 holder.bind(
                     itemData.result,
