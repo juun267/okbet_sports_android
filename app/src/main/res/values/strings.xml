@@ -1009,7 +1009,7 @@
     <string name="my_favorite_empty">You don\'t have favorite events yet</string>
     <string name="remove_account_warning">Are you sure you want to cancel your current account?</string>
     <string name="cruel_write_off">Still delete</string>
-    <string name="can_input_1_to_500_word">Can enter 1–500 words</string>
+    <string name="can_input_1_to_500_word">Please describe the problem(Can enter 1–500 words)</string>
     <string name="half">Half</string>
     <string name="other_bet">Other betting</string>
     <string name="skin_mode">Mode: Day/Night</string>
