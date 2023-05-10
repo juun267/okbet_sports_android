@@ -473,7 +473,7 @@
     <string name="finance_list_no_record">Walang laman</string>
     <string name="feedback_detail">Detalye ng Feedback</string>
     <string name="feedback_tabName_problem">Tanong at Mungkahi</string>
-    <string name="feedback_tabName_record">Tala ng feedback</string>
+    <string name="feedback_tabName_record">History ng Feedback</string>
     <string name="feedback_description">Kung mayroon kang magandang mungkahi para sa laro o platform o makahanap ng bug, maaari mo itong isumite, at tutugon ang opisyal na serbisyo sa customer sa loob ng 48 oras. Agad naming itatama ang mga bug o patuloy na i-optimize ang aming mga produkto at serbisyo na may kaugnayan sa iyong feedback. (Kung maraming feedback para sa parehong mungkahi o BUG, ipapadala ang bonus sa unang feedback. Tandaang magbigay ng feedback sa sandaling makita mo ang problema.)</string>
     <string name="feedback_description_money">Kung pinagtibay ang mungkahi o na-verify ang bug, ang maximum na reward ay 3000 {currency} (o iba pang katumbas na currency).。</string>
     <string name="feedback_submit_succeed">Matagumpay na naisumite ang feedback</string>
