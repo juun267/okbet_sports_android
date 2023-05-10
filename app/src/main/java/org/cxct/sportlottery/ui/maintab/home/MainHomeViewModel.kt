@@ -142,7 +142,8 @@ open class MainHomeViewModel(
                     }.forEach { recommend ->
                         recommend.oddsMap=recommend.odds
                         with(recommend) {
-                            setupOddsSort()
+//                            setupOddsSort()
+                            sortOddsByMenu()
                             setupMatchType()
                             setupMatchTime()
                             setupPlayCateNum()
@@ -413,6 +414,21 @@ open class MainHomeViewModel(
 
         oddsSort = oddsSortFilter
         playCateNameMap = playCateNameMapFilter
+    }
+
+    private fun Recommend.sortOddsByMenu() {
+        val sortOrder = this.menuList?.firstOrNull()?.playCateList?.map { it.code }
+
+        oddsMap?.let { map ->
+            val filterPlayCateMap = map.filter { sortOrder?.contains(it.key) == true }
+            val sortedMap = filterPlayCateMap.toSortedMap(compareBy<String> {
+                sortOrder?.indexOf(it)
+            }.thenBy { it })
+
+            map.clear()
+            map.putAll(sortedMap)
+        }
+        oddsSort = oddsMap?.keys?.first()
     }
 
     /**

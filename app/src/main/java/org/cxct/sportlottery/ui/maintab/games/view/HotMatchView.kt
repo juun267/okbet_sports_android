@@ -109,8 +109,6 @@ class HotMatchView(context: Context, attrs: AttributeSet
         adapter?.setOnViewAttach {
             subscribeChannelHall(it,fragment)
         }
-        //适配器初始化结束
-
         //初始化ws广播监听
         initSocketObservers(fragment)
     }
@@ -128,6 +126,9 @@ class HotMatchView(context: Context, attrs: AttributeSet
                 //取消所有订阅
                 fragment.unSubscribeChannel2HotMatch()
                 adapter?.data = data
+                data.forEach {
+                    subscribeChannelHall(it, fragment)
+                }
             }
         }
     }
