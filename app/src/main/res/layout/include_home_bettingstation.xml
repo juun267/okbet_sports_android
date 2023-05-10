@@ -23,7 +23,7 @@
             android:layout_marginLeft="@dimen/margin_4"
             android:textSize="@dimen/textSize16sp"
             android:textColor="@color/color_0D2245"
-            android:text="OKBET betting Station" />
+            android:text="@string/N910" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
