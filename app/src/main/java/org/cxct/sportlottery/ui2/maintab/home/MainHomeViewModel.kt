@@ -313,6 +313,7 @@ open class MainHomeViewModel(
             }?.let { configResult ->
                 if (configResult.success) {
                     sConfigData = configResult.configData
+                    ConfigRepository.config.postValue(configResult)
                     setupDefaultHandicapType()
                     _gotConfig.postValue(Event(true))
                 }
