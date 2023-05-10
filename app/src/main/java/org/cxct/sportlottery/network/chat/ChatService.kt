@@ -44,7 +44,7 @@ interface ChatService {
 
     @POST(Constants.CHAT_INIT)
     suspend fun chatInit(
-        @Body t: JsonElement?,
+        @Body t: JsonElement,
     ): Response<InitResult>
 
     @POST(Constants.CHAT_GUEST_INIT)

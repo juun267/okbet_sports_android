@@ -4,7 +4,6 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
@@ -17,8 +16,6 @@ import java.util.*
 class ChatActivity : BaseSocketActivity<ChatViewModel>(ChatViewModel::class) {
 
     private lateinit var binding: ActivityChatBinding
-
-    private val navController by lazy { findNavController(R.id.container) }
 
     private var chatTimer: Timer? = null
 

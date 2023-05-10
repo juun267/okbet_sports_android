@@ -402,8 +402,8 @@ class ChatViewModel(
     }
 
     private fun updateUserLevelConfigFromMemberChange() {
+        val sign = userInfoRepository.chatSign ?: return
         viewModelScope.launch {
-            val sign = userInfoRepository.chatSign
             doNetwork {
                 ChatRepository.chatInit(sign)
             }?.let {
@@ -437,31 +437,30 @@ class ChatViewModel(
     }
 
     /* 游客、一般用户 */
-    private fun chatInit() {
-        viewModelScope.launch {
-            val sign = userInfoRepository.chatSign
-            doNetwork(androidContext) {
-                ChatRepository.chatInit(sign)
-            }?.let {
-                if (it.success) {
-                    Timber.i("[Chat] 初始化成功 用戶遊客獲取房間列表")
-                    initTimes = 0
-                    userIsSpeak = it.t?.state == 0 //state（0正常、1禁言、2禁止登录)
-                    queryList()
-                } else {
-                    when {
-                        initTimes < 2 -> {
-                            initTimes++
-                            getSign()
-                            Timber.i("[Chat] init 失敗 重新 getSign, 次數 -> $initTimes")
-                        }
-                        else -> {
-                            _chatEvent.emit(ChatEvent.InitFail(it.msg))
-                        }
-                    }
-                }
-            }
+    private fun chatInit() = viewModelScope.launch {
+        val sign = userInfoRepository.chatSign
+        if (sign == null) {
+            getSign()
+            return@launch
         }
+
+        val result = doNetwork(androidContext) { ChatRepository.chatInit(sign) } ?: return@launch
+        if (result.success) {
+            Timber.i("[Chat] 初始化成功 用戶遊客獲取房間列表")
+            initTimes = 0
+            userIsSpeak = result.t?.state == 0 //state（0正常、1禁言、2禁止登录)
+            queryList()
+            return@launch
+        }
+
+        if (initTimes > 1) {
+            _chatEvent.emit(ChatEvent.InitFail(result.msg))
+            return@launch
+        }
+
+        initTimes++
+        getSign()
+        Timber.i("[Chat] init 失敗 重新 getSign, 次數 -> $initTimes")
     }
 
     /* 访客 */
@@ -487,19 +486,38 @@ class ChatViewModel(
                     }
                 }
             }
+
+//            doNetwork(androidContext) {
+//                ChatRepository.chatInit(sign)
+//            }?.let {
+//                if (it.success) {
+//                    Timber.i("[Chat] 初始化成功 用戶遊客獲取房間列表")
+//                    initTimes = 0
+//                    userIsSpeak = it.t?.state == 0 //state（0正常、1禁言、2禁止登录)
+//                    queryList()
+//                } else {
+//                    when {
+//                        initTimes < 2 -> {
+//                            initTimes++
+//                            getSign()
+//                            Timber.i("[Chat] init 失敗 重新 getSign, 次數 -> $initTimes")
+//                        }
+//                        else -> {
+//                            _chatEvent.emit(ChatEvent.InitFail(it.msg))
+//                        }
+//                    }
+//                }
+//            }
         }
     }
 
     private suspend fun getSign() {
-        doNetwork(androidContext) {
-            userInfoRepository.getSign()
-        }?.let {
-            if (it.success) {
-                Timber.i("[Chat] 執行 getSign")
-                chatInit()
-            } else {
-                _chatEvent.emit(ChatEvent.InitFail(it.msg))
-            }
+        val result = doNetwork(androidContext) { userInfoRepository.getSign() } ?: return
+        if (result.success) {
+            Timber.i("[Chat] 執行 getSign")
+            chatInit()
+        } else {
+            _chatEvent.emit(ChatEvent.InitFail(result.msg))
         }
     }
 

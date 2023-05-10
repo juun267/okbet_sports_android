@@ -353,12 +353,13 @@ class BackService : Service() {
     }
 
     private fun sendChatMessageToViewModule(message: String) {
-        val bundle = Bundle()
-        bundle.putString(MESSAGE_CATE, MessageCate.Chat.cate)
-        bundle.putString(SERVER_MESSAGE_KEY, message)
-        val intent = Intent(SERVICE_SEND_DATA)
-        intent.putExtras(bundle)
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+        ChatMessageDispatcher.onChatMessage(message)
+//        val bundle = Bundle()
+//        bundle.putString(MESSAGE_CATE, MessageCate.Chat.cate)
+//        bundle.putString(SERVER_MESSAGE_KEY, message)
+//        val intent = Intent(SERVICE_SEND_DATA)
+//        intent.putExtras(bundle)
+//        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
 
     private fun sendMessageToActivity(

@@ -59,7 +59,7 @@ object ChatRepository {
     suspend fun checkToken(token: String): Response<TokenResult> =
         OneBoSportApi.chatService.checkToken(token)
 
-    suspend fun chatInit(t: JsonElement?): Response<InitResult> =
+    suspend fun chatInit(t: JsonElement): Response<InitResult> =
         OneBoSportApi.chatService.chatInit(t).apply {
             if (isSuccessful && body()?.success == true) {
                 chatToken = body()?.t?.token
