@@ -54,6 +54,7 @@ class BetInfoItemViewHolder(
     private val isLogin: Boolean
         get() = LoginRepository.isLogin.value == true
 
+    private var isTouched: Boolean = false
     fun bind(
         itemData: BetInfoListData,
         currentOddsType: OddsType,
@@ -211,9 +212,12 @@ class BetInfoItemViewHolder(
 
         //設定editText內容
         etBet.apply {
+            //金额只默认填充一次，输入之后就不在默认填充
+            if (isTouched) {
+                return@apply
+            }
             if (itemData.input == null) {
                 val minBet = itemData.parlayOdds?.min ?: 0
-
                 if (isLogin) {
                     if (minBet > mUserMoney) {
                         itemData.input = mUserMoney.toString()
@@ -246,6 +250,7 @@ class BetInfoItemViewHolder(
         val tw: TextWatcher?
         tw = object : TextWatcher {
             override fun afterTextChanged(it: Editable?) {
+                isTouched = true
                 Timber.d("textChange:${it.toString()}")
                 if (it.isNullOrEmpty()) {
                     itemData.betAmount = 0.000
