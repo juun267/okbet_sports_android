@@ -43,7 +43,7 @@ object DrawableCreatorUtils {
      */
     fun getBasketballDeleteAllDrawable(): Drawable {
         return getCommonBackgroundStyle(
-            cornerRadius = 5, strokeColor = R.color.color_EAEAEA, solidColor = R.color.color_F9F9F9
+            cornerRadius = 5, strokeColor = R.color.color_FFCCC9, solidColor = R.color.color_f8f8f8
         )
     }
 
