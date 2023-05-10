@@ -251,7 +251,7 @@
                 android:textSize="14sp"
                 android:textColor="@color/color_FFFFFF"
                 android:textStyle="bold"
-                android:text="@string/M013"/>
+                android:text="@string/N700"/>
 
         </androidx.cardview.widget.CardView>
 
@@ -279,7 +279,7 @@
                 android:textSize="14sp"
                 android:textColor="@color/color_FFFFFF"
                 android:textStyle="bold"
-                android:text="@string/M013"/>
+                android:text="@string/N700"/>
 
         </androidx.cardview.widget.CardView>
 
