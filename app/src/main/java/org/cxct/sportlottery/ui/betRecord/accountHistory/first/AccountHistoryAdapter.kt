@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemAccountHistoryBinding
 import org.cxct.sportlottery.network.bet.settledList.Row
-import org.cxct.sportlottery.ui2.common.adapter.StatusSheetData
+import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.util.TextUtil
 
 class AccountHistoryAdapter(

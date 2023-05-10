@@ -31,14 +31,14 @@ import org.cxct.sportlottery.common.extentions.getKClass
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.ui2.common.adapter.StatusSheetAdapter
-import org.cxct.sportlottery.ui2.common.adapter.StatusSheetData
+import org.cxct.sportlottery.ui.common.adapter.StatusSheetAdapter
+import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
-import org.cxct.sportlottery.ui2.splash.LaunchActivity
-import org.cxct.sportlottery.ui2.splash.SplashActivity
-import org.cxct.sportlottery.ui2.thirdGame.ThirdGameActivity
+import org.cxct.sportlottery.ui.splash.LaunchActivity
+import org.cxct.sportlottery.ui.splash.SplashActivity
+import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
 import org.cxct.sportlottery.util.LotteryManager
 import org.cxct.sportlottery.util.RedEnvelopeManager
 import org.cxct.sportlottery.util.ResourceWrapper
@@ -401,14 +401,6 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
             }
         }
         return defaultPosition
-    }
-
-    private fun safelyUpdateLayout(runnable: Runnable) {
-        try {
-            mLayoutHandler.post(runnable)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
     }
 
     fun avoidFastDoubleClick() {

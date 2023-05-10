@@ -28,8 +28,8 @@ import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
-import org.cxct.sportlottery.ui.game.hall.adapter.*
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.sport.common.*
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.util.*

@@ -9,7 +9,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.bindFinish
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui2.login.foget.ForgetViewModel
+import org.cxct.sportlottery.ui.login.foget.ForgetViewModel
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.setBtnEnable

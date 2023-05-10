@@ -5,8 +5,8 @@ import android.widget.TextView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.proguards.KeepMembers
-import org.cxct.sportlottery.ui2.maintab.games.bean.OKGameLabel
-import org.cxct.sportlottery.ui2.maintab.games.bean.OKGameTab
+import org.cxct.sportlottery.ui.maintab.games.bean.OKGameLabel
+import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
 
 @KeepMembers
 class OKGamesHall(

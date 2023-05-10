@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutDescription="@xml/line_detail_scene"
-    tools:context="org.cxct.sportlottery.ui2.thirdGame.MotionFloatingMenu">
+    tools:context="org.cxct.sportlottery.ui.thirdGame.MotionFloatingMenu">
 
     <View
         android:id="@+id/mask"

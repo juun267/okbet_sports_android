@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <org.cxct.sportlottery.ui2.maintab.home.view.HomeToolbarView
+    <org.cxct.sportlottery.ui.maintab.home.view.HomeToolbarView
         android:id="@+id/homeToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -20,7 +20,7 @@
             android:orientation="vertical"
             android:descendantFocusability="blocksDescendants">
 
-            <org.cxct.sportlottery.ui2.maintab.home.view.HomeTopView
+            <org.cxct.sportlottery.ui.maintab.home.view.HomeTopView
                 android:id="@+id/homeTopView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -28,12 +28,12 @@
 
 
             <!--part-2-->
-            <org.cxct.sportlottery.ui2.maintab.games.view.HotMatchView
+            <org.cxct.sportlottery.ui.maintab.games.view.HotMatchView
                 android:id="@+id/hotMatchView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-            <org.cxct.sportlottery.ui2.maintab.home.view.HomeOkGamesView
+            <org.cxct.sportlottery.ui.maintab.home.view.HomeOkGamesView
                 android:id="@+id/okGamesView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -43,7 +43,7 @@
                 android:id="@+id/includeNews"
                 layout="@layout/include_home_news" />
 
-            <org.cxct.sportlottery.ui2.maintab.home.view.WinsRankView
+            <org.cxct.sportlottery.ui.maintab.home.view.WinsRankView
                 android:id="@+id/winsRankView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -52,7 +52,7 @@
                 android:id="@+id/includeBettingStation"
                 layout="@layout/include_home_bettingstation" />
 
-            <org.cxct.sportlottery.ui2.maintab.home.view.HomeButtomView
+            <org.cxct.sportlottery.ui.maintab.home.view.HomeButtomView
                 android:id="@+id/homeBottumView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

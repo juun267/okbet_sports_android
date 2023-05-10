@@ -6,7 +6,7 @@
     android:background="@color/color_1A1A1A_FFFFFF"
     android:orientation="vertical">
 
-    <org.cxct.sportlottery.ui2.maintab.home.view.HomeToolbarView
+    <org.cxct.sportlottery.ui.maintab.home.view.HomeToolbarView
         android:id="@+id/homeToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

@@ -16,7 +16,7 @@ import com.luck.picture.lib.tools.ScreenUtils
 import kotlinx.android.synthetic.main.view_status_selector.view.cl_root
 import kotlinx.android.synthetic.main.view_status_spinner.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui2.common.adapter.StatusSheetData
+import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 class StatusSpinnerView @JvmOverloads constructor(

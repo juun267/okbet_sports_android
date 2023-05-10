@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:overScrollMode="never"/>
 
-    <org.cxct.sportlottery.ui2.thirdGame.MotionFloatingMenu
+    <org.cxct.sportlottery.ui.thirdGame.MotionFloatingMenu
         android:id="@+id/motion_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

@@ -24,7 +24,7 @@ import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.network.withdraw.uwcheck.CheckList
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
-import org.cxct.sportlottery.ui2.common.adapter.StatusSheetData
+import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.UWType
 import org.cxct.sportlottery.util.*
 import java.math.RoundingMode

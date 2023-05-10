@@ -78,16 +78,12 @@ abstract class BaseFavoriteActivity<T : BaseFavoriteViewModel>(clazz: KClass<T>)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        viewModel.isLogin.observe(this, {
-            when (it) {
-                true -> {
-                    viewModel.getFavorite()
-                }
-                false -> {
-                    viewModel.clearFavorite()
-                }
+        viewModel.isLogin.observe(this) {
+            if (it == true) {
+                viewModel.getFavorite()
+            } else {
+                viewModel.clearFavorite()
             }
-        })
+        }
     }
 }

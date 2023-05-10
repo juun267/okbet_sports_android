@@ -46,14 +46,14 @@ import org.cxct.sportlottery.network.service.close_play_cate.ClosePlayCateEvent
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.ui2.common.adapter.ExpanableOddsAdapter
-import org.cxct.sportlottery.ui2.common.adapter.StatusSheetData
+import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
+import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.dialog.ServiceDialog
-import org.cxct.sportlottery.ui2.login.signIn.LoginOKActivity
+import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
-import org.cxct.sportlottery.ui2.maintab.home.MainHomeViewModel
+import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteAdapter
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dpToPx
@@ -1061,7 +1061,7 @@ fun <T> BaseQuickAdapter<T, *>.doOnVisiableRange(block: (Int, T) -> Unit) {
     }
 }
 
-fun View.bindExpanedAdapter(adapter: ExpanableOddsAdapter, block: ((Boolean) -> Unit)? = null) {
+fun View.bindExpanedAdapter(adapter: org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter, block: ((Boolean) -> Unit)? = null) {
     setOnClickListener {
         block?.invoke(isSelected)
         val selected = !isSelected

@@ -42,7 +42,7 @@ import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.ui.betRecord.BetRecordFragment
 import org.cxct.sportlottery.ui.betRecord.accountHistory.next.AccountHistoryNextFragment
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
-import org.cxct.sportlottery.ui2.maintab.home.HomeFragment
+import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment2
 import org.cxct.sportlottery.ui.maintab.menu.SportLeftFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment

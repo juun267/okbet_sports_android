@@ -17,7 +17,7 @@ import com.luck.picture.lib.tools.ScreenUtils
 import kotlinx.android.synthetic.main.view_status_spinner_new.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemPlaySpinnerNewBinding
-import org.cxct.sportlottery.ui2.common.adapter.StatusSheetData
+import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 
 
 @Deprecated("宽度自适应有问题(虽然已处理)，但建议使用")

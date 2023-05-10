@@ -55,7 +55,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
         <activity
-            android:name=".ui2.news.NewsActivity"
+            android:name=".ui.news.NewsActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
@@ -78,7 +78,7 @@
             android:windowSoftInputMode="adjustResize" /> <!-- 後臺服務-長連線 -->
 
         <activity
-            android:name=".ui2.login.signUp.info.RegisterInfoActivity"
+            android:name=".ui.login.signUp.info.RegisterInfoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
 
@@ -95,7 +95,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".ui2.infoCenter.InfoCenterActivity"
+            android:name=".ui.infoCenter.InfoCenterActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.finance.FinanceActivity"
@@ -121,11 +121,11 @@
             android:name=".ui.results.ResultsSettlementActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui2.helpCenter.HelpCenterActivity"
+            android:name=".ui.helpCenter.HelpCenterActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui2.splash.SplashActivity"
+            android:name=".ui.splash.SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -135,32 +135,32 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui2.splash.LaunchActivity"
+            android:name=".ui.splash.LaunchActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui2.login.signIn.LoginOKActivity"
+            android:name=".ui.login.signIn.LoginOKActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui2.login.foget.ForgetPasswordActivity"
+            android:name=".ui.login.foget.ForgetPasswordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui2.login.foget.reset.ResetPasswordActivity"
+            android:name=".ui.login.foget.reset.ResetPasswordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui2.login.foget.ForgetWaysActivity"
+            android:name=".ui.login.foget.ForgetWaysActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui2.login.signIn.PhoneVerifyActivity"
+            android:name=".ui.login.signIn.PhoneVerifyActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".ui2.login.signUp.RegisterOkActivity"
+            android:name=".ui.login.signUp.RegisterOkActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui2.login.signUp.RegisterActivity"
+            android:name=".ui.login.signUp.RegisterActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
@@ -183,7 +183,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:configChanges="orientation|screenSize"
-            android:name=".ui2.thirdGame.ThirdGameActivity" />
+            android:name=".ui.thirdGame.ThirdGameActivity" />
         <activity
             android:name=".ui.selflimit.SelfLimitActivity"
             android:screenOrientation="portrait"
@@ -207,7 +207,7 @@
             android:name=".ui.maintab.menu.SettingCenterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui2.aboutMe.AboutMeActivity"
+            android:name=".ui.aboutMe.AboutMeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.maintab.lottery.LotteryActivity"
@@ -219,7 +219,7 @@
             android:name=".ui.maintab.home.news.NewsHomeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui2.maintab.home.news.NewsDetailActivity"
+            android:name=".ui.maintab.home.news.NewsDetailActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 

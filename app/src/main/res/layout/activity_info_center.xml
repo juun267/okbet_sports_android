@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never"
-            tools:context="org.cxct.sportlottery.ui2.infoCenter.InfoCenterAdapter"
+            tools:context="org.cxct.sportlottery.ui.infoCenter.InfoCenterAdapter"
             tools:itemCount="5"
             tools:listitem="@layout/content_infocenter_list"
             tools:orientation="vertical" />

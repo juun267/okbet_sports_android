@@ -64,7 +64,7 @@
         android:visibility="gone" />
 
 
-    <org.cxct.sportlottery.ui2.maintab.home.view.WinsRankView
+    <org.cxct.sportlottery.ui.maintab.home.view.WinsRankView
         android:id="@+id/winsRankView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -72,13 +72,13 @@
 
     <!--part-4-->
 
-    <org.cxct.sportlottery.ui2.maintab.games.view.HotMatchView
+    <org.cxct.sportlottery.ui.maintab.games.view.HotMatchView
         android:id="@+id/hot_match_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <!--part-5-->
 
-    <org.cxct.sportlottery.ui2.maintab.home.view.HomeButtomView
+    <org.cxct.sportlottery.ui.maintab.home.view.HomeButtomView
         android:id="@+id/homeBottumView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

@@ -4,7 +4,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.ui2.common.adapter.StatusSheetData
+import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 
 class SportClassifyAdapter(data: MutableList<StatusSheetData>) :
     BaseQuickAdapter<StatusSheetData, BaseViewHolder>(

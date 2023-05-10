@@ -24,7 +24,7 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.ui.betRecord.BetRecordEndScoreAdapter
 import org.cxct.sportlottery.ui.betRecord.ParlayType
 import org.cxct.sportlottery.ui.betRecord.detail.BetDetailsActivity
-import org.cxct.sportlottery.ui2.common.adapter.StatusSheetData
+import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.onClick
 

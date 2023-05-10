@@ -8,7 +8,7 @@
 
         <variable
             name="infoCenterViewModel"
-            type="org.cxct.sportlottery.ui2.infoCenter.InfoCenterViewModel" />
+            type="org.cxct.sportlottery.ui.infoCenter.InfoCenterViewModel" />
 
         <variable
             name="infoCenterData"
