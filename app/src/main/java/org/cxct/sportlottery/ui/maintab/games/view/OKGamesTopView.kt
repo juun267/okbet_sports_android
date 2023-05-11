@@ -30,6 +30,7 @@ import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.drawable.DrawableCreator
+import org.cxct.sportlottery.util.isGooglePlayVersion
 import org.cxct.sportlottery.view.IndicatorWidget
 
 
@@ -111,7 +112,7 @@ class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: Attribut
 
         val lang = LanguageManager.getSelectLanguage(context).key
         var imageList = sConfigData?.imageList?.filter {
-            it.imageType == 12 && it.lang == lang && !it.imageName1.isNullOrEmpty()
+            it.imageType == 12 && it.lang == lang && !it.imageName1.isNullOrEmpty() && !(isGooglePlayVersion() && it.isHidden)
         }?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
 
         val loopEnable = imageList?.size ?: 0 > 1
@@ -130,7 +131,7 @@ class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: Attribut
 
         val host = sConfigData?.resServerHost
         val images = imageList.map{
-            XBannerImage(it.imageText1 + "", host + it.imageName1, it.imageLink)
+            XBannerImage(it.imageText1 + "", host + it.imageName1, it.appUrl)
         }
 
         okgamesBanner.setBannerData(images.toMutableList())

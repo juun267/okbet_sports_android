@@ -167,6 +167,7 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
 
         webView.webViewClient = object : OkWebViewClient(object : WebViewCallBack {
+
             override fun pageStarted(view: View?, url: String?) {
                 loading()
             }
@@ -185,19 +186,7 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             }
 
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-                if (!url.startsWith("http")) {
-                    try {
-                        val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                        i.flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                        startActivity(i)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                    return true
-                }
-
-                view.loadUrl(url)
-                return true
+                return overrideUrlLoading(view, url)
             }
 
             override fun onReceivedSslError(
@@ -224,6 +213,22 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                 startActivity(intent)
             }
         }
+    }
+
+    protected open fun overrideUrlLoading(view: WebView, url: String): Boolean {
+        if (!url.startsWith("http")) {
+            try {
+                val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                i.flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                startActivity(i)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            return true
+        }
+
+        view.loadUrl(url)
+        return true
     }
 
     fun loadUrl(webView: WebView) {

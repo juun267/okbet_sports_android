@@ -12,7 +12,7 @@
         android:layout_width="17dp"
         android:layout_gravity="right"
         android:visibility="gone"
-        android:layout_height="12dp"/>
+        android:layout_height="13dp"/>
 
     <ImageView
         android:id="@+id/iv_mark_bottom"
@@ -20,7 +20,7 @@
         android:layout_width="17dp"
         android:visibility="gone"
         android:layout_gravity="bottom|right"
-        android:layout_height="12dp"/>
+        android:layout_height="13dp"/>
     <LinearLayout
         android:id="@+id/button_odd_detail"
         android:layout_width="match_parent"
@@ -46,10 +46,9 @@
                 android:fontFamily="@font/din_regular"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textColor="@color/selector_button_odd_top_text"
-                android:textSize="@dimen/textSize14sp"
+                android:textColor="@color/color_6D7693"
+                android:textSize="@dimen/textSize12sp"
                 android:paddingRight="5dp"
-                android:textStyle="bold"
                 android:text=""
                 tools:textColor="@color/color_A7B2C4" />
 
@@ -60,7 +59,7 @@
                 android:fontFamily="@font/din_regular"
                 android:maxLines="1"
                 android:textColor="@color/selector_button_odd_top_text"
-                android:textSize="@dimen/textSize14sp"
+                android:textSize="@dimen/textSize12sp"
                 android:textFontWeight="700"
                 tools:text="-0.5/1"
                 tools:textColor="@color/color_A7B2C4" />
@@ -88,9 +87,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/selector_button_odd_bottom_text"
-                android:textSize="@dimen/textSize14sp"
+                android:textSize="@dimen/textSize12sp"
                 android:fontFamily="@font/din_pro_medium"
-                android:textStyle="bold"
+                android:textFontWeight="600"
                 tools:text="1.067" />
         </LinearLayout>
 

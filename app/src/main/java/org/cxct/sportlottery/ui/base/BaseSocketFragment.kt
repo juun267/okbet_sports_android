@@ -18,6 +18,10 @@ abstract class BaseSocketFragment<T : BaseSocketViewModel>(clazz: KClass<T>) :
         (activity as BaseSocketActivity<*>).subscribeChannelHall(gameType, eventId)
     }
 
+    fun subscribeChannel2HotMatch(gameType: String?, eventId: String?) {
+        (activity as BaseSocketActivity<*>).subscribeChannelHall(gameType, eventId)
+    }
+
     protected fun subscribeChannelEvent(eventId: String?) {
         (activity as BaseSocketActivity<*>).subscribeChannelEvent(eventId)
     }
@@ -62,6 +66,10 @@ abstract class BaseSocketFragment<T : BaseSocketViewModel>(clazz: KClass<T>) :
     }
 
     protected fun unSubscribeChannelHallAll() {
+        (activity as BaseSocketActivity<*>).unSubscribeChannelHallAll()
+    }
+
+    fun unSubscribeChannel2HotMatch(){
         (activity as BaseSocketActivity<*>).unSubscribeChannelHallAll()
     }
 

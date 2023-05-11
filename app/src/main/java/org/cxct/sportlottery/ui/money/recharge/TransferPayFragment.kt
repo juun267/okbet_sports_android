@@ -125,16 +125,10 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         }
 
         bt_check_files.setOnClickListener {
-            this.activity?.let { activity ->
-                activity.supportFragmentManager.let { fragmentManager ->
-                    RechargePicSelectorDialog(
-                        activity,
-                        mSelectMediaListener,
-                        RechargePicSelectorDialog.CropType.SQUARE
-                    ).show(
-                        fragmentManager, null
-                    )
-                }
+            this.activity?.let {
+                val dialog = RechargePicSelectorDialog()
+                dialog.mSelectListener = mSelectMediaListener
+                dialog.show(it.supportFragmentManager, null)
             }
         }
         //複製姓名

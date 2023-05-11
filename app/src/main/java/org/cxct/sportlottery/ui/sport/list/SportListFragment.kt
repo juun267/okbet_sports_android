@@ -49,7 +49,7 @@ import java.util.*
 /**
  * @app_destination 滾球、即將、今日、早盤、冠軍、串關
  */
-class SportListFragment :
+open class SportListFragment :
     BaseBottomNavigationFragment<SportListViewModel>(SportListViewModel::class) {
 
 
@@ -88,8 +88,7 @@ class SportListFragment :
                 notifyDataSetChanged()
                 viewModel.cleanGameHallResult()
                 sportLeagueAdapter.removePreloadItem()
-                (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
-                    sport_type_list,
+                (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(sport_type_list,
                     RecyclerView.State(),
                     dataSport.indexOfFirst { it.isSelected })
                 //切換球種後要重置位置
@@ -131,15 +130,15 @@ class SportListFragment :
                         navMatchDetailPage(it)
                     }
                 },
-                clickListenerBet = { view, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
-                    if (mIsEnabled) {
-                        avoidFastDoubleClick()
-                        addOddsDialog(
-                            view, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap
-                        )
-                    }
-                },
-                clickListenerQuickCateTab = { matchOdd, quickPlayCate ->
+                    clickListenerBet = { view, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
+                        if (mIsEnabled) {
+                            avoidFastDoubleClick()
+                            addOddsDialog(
+                                view, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap
+                            )
+                        }
+                    },
+                    clickListenerQuickCateTab = { matchOdd, quickPlayCate ->
 
                     },
                     clickListenerQuickCateClose = {
@@ -268,7 +267,11 @@ class SportListFragment :
     private fun setupToolbar() {
 
         appbar_layout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
-            offsetScrollListener?.invoke((-verticalOffset) / Math.max(1.0, appbar_layout.measuredHeight.toDouble()))
+            offsetScrollListener?.invoke(
+                (-verticalOffset) / Math.max(
+                    1.0, appbar_layout.measuredHeight.toDouble()
+                )
+            )
         })
 
         iv_calendar.apply {
@@ -305,12 +308,7 @@ class SportListFragment :
             }
 
             LeagueSelectActivity.start(
-                requireContext(),
-                gameType!!,
-                matchType,
-                null,
-                null,
-                leagueIdList
+                requireContext(), gameType!!, matchType, null, null, leagueIdList
             )
         }
         iv_arrow.isSelected = false
@@ -562,7 +560,7 @@ class SportListFragment :
     }
 
 
-//    private val leagueOddMap = HashMap<String, LeagueOdd>()
+    //    private val leagueOddMap = HashMap<String, LeagueOdd>()
     private fun initSocketObserver() {
 
         receiver.serviceConnectStatus.observe(this.viewLifecycleOwner) {
@@ -585,7 +583,8 @@ class SportListFragment :
 
             val matchStatusChangeEvent = it!!
 
-            val isFinished = matchStatusChangeEvent.matchStatusCO?.status == GameMatchStatus.FINISH.value
+            val isFinished =
+                matchStatusChangeEvent.matchStatusCO?.status == GameMatchStatus.FINISH.value
             val matchId = matchStatusChangeEvent.matchStatusCO?.matchId
             sportLeagueAdapter.data.toList().forEachIndexed { index, leagueOdd ->
                 if (isFinished) {
@@ -603,11 +602,10 @@ class SportListFragment :
                     }
                 } else {
                     leagueOdd.matchOdds.forEach { matchOdd ->
-                        if (SocketUpdateUtil.updateMatchStatus(leagueOdd.gameType?.key,
-                                matchOdd,
-                                matchStatusChangeEvent,
-                                context)
-                            && leagueOdd.unfoldStatus == FoldState.UNFOLD.code) {
+                        if (SocketUpdateUtil.updateMatchStatus(
+                                leagueOdd.gameType?.key, matchOdd, matchStatusChangeEvent, context
+                            ) && leagueOdd.unfoldStatus == FoldState.UNFOLD.code
+                        ) {
                             sportLeagueAdapter.updateMatch(index, matchOdd)
                         }
                     }
@@ -626,8 +624,11 @@ class SportListFragment :
             leagueOdds.forEachIndexed { leagueIndex, leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
 
-                    if (SocketUpdateUtil.updateMatchClock(matchOdd, matchClockEvent)
-                        && leagueOdd.unfoldStatus == FoldState.UNFOLD.code) {
+                    if (SocketUpdateUtil.updateMatchClock(
+                            matchOdd,
+                            matchClockEvent
+                        ) && leagueOdd.unfoldStatus == FoldState.UNFOLD.code
+                    ) {
                         updateMatch(leagueIndex, matchOdd)
                     }
                 }
@@ -645,8 +646,11 @@ class SportListFragment :
 
             leagueOdds.forEachIndexed { leagueIndex, leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
-                    if (SocketUpdateUtil.updateOddStatus(matchOdd, matchOddsLockEvent)
-                        && leagueOdd.unfoldStatus == FoldState.UNFOLD.code) {
+                    if (SocketUpdateUtil.updateOddStatus(
+                            matchOdd,
+                            matchOddsLockEvent
+                        ) && leagueOdd.unfoldStatus == FoldState.UNFOLD.code
+                    ) {
                         updateMatch(leagueIndex, matchOdd)
                     }
                 }
@@ -662,8 +666,11 @@ class SportListFragment :
             val globalStopEvent = it
             leagueOdds.forEachIndexed { leagueIndex, leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
-                    if (SocketUpdateUtil.updateOddStatus(matchOdd, globalStopEvent)
-                        && leagueOdd.unfoldStatus == FoldState.UNFOLD.code) {
+                    if (SocketUpdateUtil.updateOddStatus(
+                            matchOdd,
+                            globalStopEvent
+                        ) && leagueOdd.unfoldStatus == FoldState.UNFOLD.code
+                    ) {
                         //暫時不處理 防止過多更新
                         updateMatch(leagueIndex, matchOdd)
                     }
@@ -709,10 +716,9 @@ class SportListFragment :
             val leagueOdds = sportLeagueAdapter.data
             leagueOdds.forEachIndexed { leagueIndex, leagueOdd ->
                 leagueOdd.matchOdds.forEachIndexed { index, matchOdd ->
-                    if (SocketUpdateUtil.updateMatchOdds(context,
-                            matchOdd,
-                            oddsChangeEvent,
-                            matchType)
+                    if (SocketUpdateUtil.updateMatchOdds(
+                            context, matchOdd, oddsChangeEvent, matchType
+                        )
                     ) {
 //                        leagueOddMap[leagueOdd.league.id] = leagueOdd
                         updateMatch(leagueIndex, matchOdd)
@@ -837,7 +843,8 @@ class SportListFragment :
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
     ) {
 
-        var gameType = GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+        var gameType =
+            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
         if (gameType == null || matchInfo == null) {
             return
         }
@@ -949,34 +956,36 @@ class SportListFragment :
         }
     }
 
-     @SuppressLint("SuspiciousIndentation")
-     private fun firstVisibleRange(delay: Long = 100) = subscribeHandler.postDelayed({
-         if (game_list == null || game_list.scrollState != RecyclerView.SCROLL_STATE_IDLE) {
-             return@postDelayed
-         }
+    @SuppressLint("SuspiciousIndentation")
+    private fun firstVisibleRange(delay: Long = 100) = subscribeHandler.postDelayed({
+        if (game_list == null || game_list.scrollState != RecyclerView.SCROLL_STATE_IDLE) {
+            return@postDelayed
+        }
 
-         val adapter = game_list.adapter as SportLeagueAdapter
-        if(adapter.data.isNullOrEmpty()) {
+        val adapter = game_list.adapter as SportLeagueAdapter
+        if (adapter.data.isNullOrEmpty()) {
             return@postDelayed
         }
 
         game_list.getVisibleRangePosition().forEach { leaguePosition ->
-            val view = game_list.layoutManager?.findViewByPosition(leaguePosition) ?: return@postDelayed
+            val view =
+                game_list.layoutManager?.findViewByPosition(leaguePosition) ?: return@postDelayed
             val viewHolder = game_list.getChildViewHolder(view)
             if (viewHolder is SportLeagueAdapter.ItemViewHolder) {
-                viewHolder.itemView.league_odd_list.getVisibleRangePosition().forEach { matchPosition ->
-                    if (leaguePosition < adapter.data.size) {
+                viewHolder.itemView.league_odd_list.getVisibleRangePosition()
+                    .forEach { matchPosition ->
+                        if (leaguePosition < adapter.data.size) {
 
-                        val leagueOdd = adapter.data.getOrNull(leaguePosition)
-                        val matchOdd = leagueOdd?.matchOdds?.getOrNull(matchPosition)
+                            val leagueOdd = adapter.data.getOrNull(leaguePosition)
+                            val matchOdd = leagueOdd?.matchOdds?.getOrNull(matchPosition)
 
-                        printLog("訂閱 ${leagueOdd?.gameType?.key} ${leagueOdd?.league?.name} -> " +
-                                        "${matchOdd?.matchInfo?.homeName} vs " +
-                                        "${matchOdd?.matchInfo?.awayName}")
+                            printLog(
+                                "訂閱 ${leagueOdd?.gameType?.key} ${leagueOdd?.league?.name} -> " + "${matchOdd?.matchInfo?.homeName} vs " + "${matchOdd?.matchInfo?.awayName}"
+                            )
 
-                        subscribeChannel(leagueOdd?.gameType?.key, matchOdd?.matchInfo?.id)
+                            subscribeChannel(leagueOdd?.gameType?.key, matchOdd?.matchInfo?.id)
+                        }
                     }
-                }
             } else if (isVisible) {
                 resubscribeChannel(50)
                 return@postDelayed

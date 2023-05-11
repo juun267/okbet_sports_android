@@ -11,15 +11,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_parlay_match.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.MatchOdd
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.bet.settledDetailList.RemarkBetRequest
 import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
+import org.cxct.sportlottery.ui.betRecord.detail.BetDetailsActivity
 import org.cxct.sportlottery.ui.betRecord.dialog.PrintDialog
-import org.cxct.sportlottery.ui.maintab.betdetails.BetDetailsActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.onClick
 
@@ -115,15 +113,6 @@ class ContentParlayMatchAdapter(val data: Row, val viewModel: AccountHistoryView
 //                tv_team_names.setTeamNames(15, data.homeName, data.awayName)
                 title_team_name_parlay.setTeamsNameWithVS(data.homeName, data.awayName)
 
-                if (itemCount == 1 || position == itemCount - 1) {
-                    tvPrint.visible()
-                    tvPrint.setOnClickListener {
-                        showPrintDialog(context, rowData)
-                    }
-                } else {
-                    tvPrint.gone()
-                }
-
                 parlay_play_content.setPlayContent(
                     data.playName, data.spread, TextUtil.formatForOdd(data.odds)
                 )
@@ -159,29 +148,5 @@ class ContentParlayMatchAdapter(val data: Row, val viewModel: AccountHistoryView
             }
         }
 
-        private fun showPrintDialog(context: Context, rowData: Row) {
-            val dialog = PrintDialog(context)
-            dialog.tvPrintClickListener = { it1 ->
-                if (it1?.isNotEmpty() == true) {
-                    val orderNo = rowData.orderNo
-                    val orderTime = rowData.betConfirmTime
-                    val requestBet = RemarkBetRequest(orderNo, it1, orderTime.toString())
-                    viewModel.remarkBetLiveData.observeForever {
-                        //uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
-                        dialog.dismiss()
-                        val newUrl =
-                            Constants.getPrintReceipt(
-                                context,
-                                it.remarkBetResult?.uniqNo,
-                                orderTime.toString(),
-                                it1
-                            )
-                        JumpUtil.toExternalWeb(context, newUrl)
-                    }
-                    viewModel.reMarkBet(requestBet)
-                }
-            }
-            dialog.show()
-        }
     }
 }

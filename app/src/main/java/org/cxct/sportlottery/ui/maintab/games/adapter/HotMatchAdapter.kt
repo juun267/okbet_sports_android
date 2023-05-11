@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.games.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
@@ -44,13 +45,40 @@ class HotMatchAdapter(
             notifyDataSetChanged()
         }
 
-
     override fun onBindViewHolder(holder: ItemHotMatchHolder, position: Int) {
+
         val itemData = data[position]
         holder.bind(data = itemData, oddsType = oddsType)
     }
 
     override fun getItemCount(): Int = data.size
 
+    //缓存订阅过的赛事
+    private var subCacheList= hashSetOf<String>()
+    private lateinit var subBlock:(data:Recommend)->Unit
+
+    /**
+     * 设置赛事绑定block
+     */
+    fun setOnViewAttach(block:(data:Recommend)->Unit){
+        subBlock=block
+    }
+
+    /**
+     * 清除记录订阅过的赛事
+     */
+    fun clearSubCache(){
+        subCacheList.clear()
+    }
+    override fun onViewAttachedToWindow(holder: ItemHotMatchHolder) {
+        super.onViewAttachedToWindow(holder)
+        //检测是否已订阅
+        if(subCacheList.contains(holder.data.id)){
+            return
+        }
+        //订阅该赛事
+        subBlock(holder.data)
+        subCacheList.add(holder.data.id)
+    }
 
 }

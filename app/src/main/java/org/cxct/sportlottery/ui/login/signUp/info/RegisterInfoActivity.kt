@@ -66,6 +66,10 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
         //地址数据
         viewModel.areaAllList.observe(this) {
             hideLoading()
+            //请求到了空的行政区域
+            if(it.provinces.isEmpty()||it.cities.isEmpty()){
+                finishPage()
+            }
             val provinceList = viewModel.getProvinceStringList()
             provincePicker?.setPicker(provinceList)
         }
@@ -301,7 +305,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
                 viewModel.salaryList.value?.let {
                     it[options1].let { salary ->
                         viewModel.sourceInput = salary.id
-                        binding.etSource.setText(viewModel.salaryList.value?.get(options1)?.name)
+                        binding.etSource.setText(salary.name)
                         checkStatus()
                     }
                 }

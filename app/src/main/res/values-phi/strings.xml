@@ -16,7 +16,7 @@
     <string name="congratulation_win">Binabati kita! Bet suffix:%1$s Panalo:%2$s</string>
     <string name="warning_cancel">Paalaala ang bet suffix code:%s ay nakansela</string>
     <string name="prompt">Pahiwatig</string>
-    <string name="btn_confirm">Kumpirmahin</string>
+    <string name="btn_confirm">Kumpirma</string>
     <string name="btn_cancel">Kanselahin</string>
     <string name="btn_retry">Subukan ulit</string>
     <string name="error_config_title">Bad line</string>
@@ -199,6 +199,9 @@
     <string name="recharge">Deposito</string>
     <string name="recharge_channel_online">Online Bayad</string>
     <string name="account_transfer">Ilipat ang balanse</string>
+    <string name="N485">Balanse sa laro</string>
+    <string name="N486">Halaga ng paglipat</string>
+    <string name="enter_game">Pumasok sa laro</string>
     <string name="platform_user_money">Balanse sa platform</string>
     <string name="third_party">3rd party</string>
     <string name="N643">Maaring pumunta sa Glife applet para mag-recharge</string>
@@ -298,7 +301,6 @@
     <string name="edt_hint_wx_id">Paki lagay ang wechat ID</string>
     <string name="title_bank_account">Numero ng bank card</string>
     <string name="please_enter_bank_card_rule">Ilagay ang numero ng bank card</string>
-    <string name="title_recharge_time">Oras ng deposito</string>
     <string name="title_current_money">Kasalukuyang balanse</string>
     <string name="btn_submit">Ipasa</string>
     <string name="btn_copy">Kopya</string>
@@ -471,7 +473,7 @@
     <string name="finance_list_no_record">Walang laman</string>
     <string name="feedback_detail">Detalye ng Feedback</string>
     <string name="feedback_tabName_problem">Tanong at Mungkahi</string>
-    <string name="feedback_tabName_record">Tala ng feedback</string>
+    <string name="feedback_tabName_record">History ng Feedback</string>
     <string name="feedback_description">Kung mayroon kang magandang mungkahi para sa laro o platform o makahanap ng bug, maaari mo itong isumite, at tutugon ang opisyal na serbisyo sa customer sa loob ng 48 oras. Agad naming itatama ang mga bug o patuloy na i-optimize ang aming mga produkto at serbisyo na may kaugnayan sa iyong feedback. (Kung maraming feedback para sa parehong mungkahi o BUG, ipapadala ang bonus sa unang feedback. Tandaang magbigay ng feedback sa sandaling makita mo ang problema.)</string>
     <string name="feedback_description_money">Kung pinagtibay ang mungkahi o na-verify ang bug, ang maximum na reward ay 3000 {currency} (o iba pang katumbas na currency).。</string>
     <string name="feedback_submit_succeed">Matagumpay na naisumite ang feedback</string>
@@ -516,7 +518,7 @@
     <string name="game_name">Pangalan ng laro</string>
     <string name="all_out_plat">All out</string>
     <string name="all_in_plat">All in</string>
-    <string name="write_suggestion">Punan ang mga mungkahi</string>
+    <string name="N729">Pagsusumite</string>
     <string name="can_input_1_to_500_word">Pakilarawan ang problemang iyong nararanasan(Maaaring maglagay ng 1-500 character)</string>
     <string name="third_game_ky">OKgames</string>
     <string name="odd_type_eu">EU</string>
@@ -551,7 +553,7 @@
     <string name="bet_notify_max_limit">Hanggang 10 mga pagpipilian ang maaaring idagdag sa slip ng taya</string>
     <string name="myfavorite_notify_league_add">Idinagdag sa aking liga</string>
     <string name="myfavorite_notify_league_remove">Tanggalin sa liga ko</string>
-    <string name="myfavorite_notify_match_add">nadagdag sa aking event</string>
+    <string name="myfavorite_notify_match_add">Nadagdag sa aking event</string>
     <string name="myfavorite_notify_match_remove">Tanggalin sa event ko</string>
     <!--F039-->
     <string name="bet_receipt_all_bet">Kabuuang halaga ng taya</string>
@@ -724,7 +726,7 @@
     <string name="self_limit_per_bet_limit_user_limit">• Saklaw ng taya:%1$s %2$s-%1$s %3$s</string>
     <string name="self_limit_error">Hindi tumutugma ang format ng data, mangyaring ilagay ang integer</string>
     <string name="self_limit_input_password_for_confirm">Mangyaring ipasok ang login password upang kumpirmahin ang application</string>
-    <string name="self_limit_input_password_for_modification">Mangyaring ipasok ang login password upang kumpirmahin ang application</string>
+    <string name="self_limit_input_password_for_modification">Mangyaring ipasok ang password sa pag-login upang kumpirmahin ang pagbabago</string>
     <string name="self_limit_submit_input_password_hint">Pakilagay ang password</string>
 
     <!--自我禁制-->
@@ -738,7 +740,7 @@
     <string name="terms_conditions">Termino at Kundisyon</string>
     <string name="privacy_policy">Proteksyon sa privacy</string>
     <string name="help">Kailangan ng tulong？</string>
-    <string name="faqs">Karaniwang problema</string>
+    <string name="faqs">Kadalasang Tanong</string>
     <string name="live_chat">Online serbisyo</string>
     <string name="contact">Makipag-ugnayan sa amin</string>
     <string name="front_side_result">Front side scan resulta ng dokumento</string>
@@ -870,7 +872,7 @@
     <string name="redenvelope_amount">Halaga ng pulang sobre</string>
     <string name="tran_type">Type</string>
     <string name="redenvelope_record">Rekord ng pulang sobre</string>
-    <string name="btn_sure">Kumpirmahin</string>
+    <string name="btn_sure">Kumpirma</string>
     <string name="Outlets_Reserve">Outlets Reserve</string>
     <string name="select_area">Piliin ang rehiyon</string>
     <string name="select_city">Piliin ang lungsod</string>
@@ -885,7 +887,7 @@
     <string name="total_win_amount">Mapapanalo：</string>
     <string name="total_all_win_amount">Kabuuang mapanalo：</string>
     <string name="delete_bet">Tanggalin</string>
-    <string name="btn_login_bet">Login muna</string>
+    <string name="A006">Mag log in</string>
     <string name="btn_remove_closed_selections">Isara ang option</string>
     <string name="bet_info_list_bet">Taya</string>
     <string name="bet_info_bet">Taya</string>
@@ -954,7 +956,7 @@
     <string name="click_upload_id_photo">I-click para mag-upload ng ID</string>
     <string name="main_tab_sport">Sports</string>
     <string name="main_tab_betlist">Bet slip</string>
-    <string name="main_tab_mine">Akin</string>
+    <string name="main_tab_mine">Aking</string>
     <string name="skin_mode">Mode: Araw/Gabi</string>
     <string name="live_streaming">Live streaming</string>
     <string name="transaction_record">Transaction record details</string>
@@ -974,6 +976,7 @@
     <string name="unbound_bank_card">Hindi mo natali ang %1$s</string>
     <string name="change_other_ID_photos">Palitan ng larawan</string>
     <string name="customer_service">Kung may katanungan, &#160;</string>
+    <string name="N158">Pakilarawan ang iyong problema</string>
     <string name="error_full_name">Pangalan na iyong inilagay ay mali</string>
     <string name="hint_verification_code">Pakilagay ang verification code</string>
     <string name="hint_game_maintenance">Ang laro ay maintenance, mangyaring subukan sa ibang pagkakataon</string>
@@ -1069,7 +1072,7 @@
     <string name="str_odds_description">Paglalarawan ng odds</string>
     <string name="draw_time">Draw time</string>
     <string name="closing_time">Oras ng Pagsara ng Sweepstakes</string>
-    <string name="end_time">Oras ng Pagtapos</string>
+    <string name="N577">Oras ng Pagtapos</string>
     <string name="draw_countdown">Draw Countdown</string>
     <string name="recover_password">Pagbawi ng password</string>
     <string name="need_help">Kailangan ng tulong?</string>
@@ -1135,6 +1138,10 @@
     <string name="J369">Paraan ng Pagbayad</string>
 
     <string name="N849">Address</string>
+    <string name="N887">Hindi mababago ang input</string>
+    <string name="J566">Paki lagay ang inyong mobile</string>
+    <string name="J558">Paki lagay ang email</string>
+
     <string name="bet_details_title">Mga detalye ng kumbinasyon ng link</string>
     <string name="recharge_channel_paymaya">PayMaya</string>
     <string name="tail_number">Last digit number</string>
@@ -1148,6 +1155,9 @@
     <string name="N865">Ang halaga ay lumampas sa limitasyon</string>
     <string name="text_paymaya_add_success">Matagumpay ang pag-bind ng PayMaya</string>
     <string name="text_pay_maya_delete_success">Matagumpay na na-delete ang PayMaya</string>
+
+    <string name="N177">Pakilagay ang tamang numero ng telepono</string>
+    <string name="N889">Pakilagay ang valid email</string>
     <string name="N866">Matagumpay na nai-set up ang mobile number</string>
     <string name="N867">Matagumpay na nai-set up ang mailbox</string>
     <string name="N866_1">Nabago na ang mobile!</string>
@@ -1166,7 +1176,7 @@
     <string name="N710">Player</string>
     <string name="N713">Halaga ng Kita</string>
     <string name="N712">Halaga ng taya</string>
-    <string name="N874">kamakailang na laro</string>
+    <string name="N874">Kamakailang laro</string>
     <string name="N873">Paborito</string>
     <string name="N882">Resulta ng paghahanap</string>
     <string name="N900">Pangalan ng Laro</string>
@@ -1174,8 +1184,34 @@
     <string name="N881">Popular event</string>
     <string name="N702">Higit pa</string>
     <string name="J094">Proteksyon sa privacy</string>
-    <string name="N019">Liên hệ chúng tôi</string>
+    <string name="N019">Kontakin kami</string>
     <string name="J299">Online serbisyo</string>
     <string name="B023">Kadalasang Tanong</string>
     <string name="N883">Wala pang resulta!</string>
+    <string name="J095">Termino at Kundisyon</string>
+    <string name="N482">Prompt ng Paglipat</string>
+    <string name="N483">Pakikumpirma ang halagang inilipat sa game account</string>
+    <string name="N885">Mag-load pa</string>
+    <string name="N001">Tungkol sa Amin</string>
+    <string name="J093">Responsableng Paglalaro</string>
+    <string name="N899">Kung gusto mo lang magtanggal ng single score, maaari mong pindutin ang magtangal ng single score.</string>
+    <string name="N379">Huwag nang ipaalala muli</string>
+    <string name="N903">Basketball Ending</string>
+    <string name="str_total_stake">Kabuuang taya：</string>
+    <string name="N904">Pag isipan</string>
+    <string name="N905">Kumpirma</string>
+    <string name="N374">Delete lahat</string>
+    <string name="J220">+Madami pa</string>
+    <string name="bet_basketball_notify_max_limit">Hanggang 100 mga pagpipilian ang maaaring idagdag sa slip ng taya</string>
+    <string name="N918">Total stake:</string>
+    <string name="N919">Total Win:</string>
+    <string name="N920">+More</string>
+    <string name="N901">Kumpirmasyon sa pag-delete</string>
+    <string name="N888">Lahat ng pagpipilian ay may parehong mga odds para sa huling iskor</string>
+    <string name="N898">Sigurado ka bang gusto mong tanggalin ang lahat ng seleksyon ng iskor?</string>
+    <string name="N908">I-scan</string>
+    <string name="N951">Import ng album</string>
+    <string name="N952">Camera scan</string>
+    <string name="N956">Hindi mabasa ang QR code</string>
+    <string name="N980">Tinanggihan ang permiso sa camera</string>
 </resources>

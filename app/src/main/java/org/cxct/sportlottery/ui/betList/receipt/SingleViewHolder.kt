@@ -4,7 +4,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import kotlinx.android.synthetic.main.item_match_receipt.view.*
 import kotlinx.android.synthetic.main.view_match_receipt_bet.view.*
 import org.cxct.sportlottery.R
@@ -16,7 +19,9 @@ import org.cxct.sportlottery.network.bet.add.betReceipt.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.betList.adapter.BetReceiptEndScoreAdapter
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 
 class SingleViewHolder private constructor(itemView: View) :
     RecyclerView.ViewHolder(itemView) {
@@ -81,11 +86,17 @@ class SingleViewHolder private constructor(itemView: View) :
             itemData.apply {
                 matchOdds?.firstOrNull()?.apply {
                     val formatForOdd =
-                        if (this.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage(
-                            getOdds(this, oddsType ?: OddsType.EU) - 1
-                        ) else TextUtil.formatForOdd(
-                            getOdds(this, oddsType)
-                        )
+                        when (this.playCateCode) {
+                            PlayCate.LCS.value -> TextUtil.formatForOddPercentage(
+                                getOdds(this, oddsType ?: OddsType.EU) - 1
+                            )
+                            PlayCate.FS_LD_CS.value -> {
+                                getOdds(this, oddsType).toInt().toString()
+                            }
+                            else -> TextUtil.formatForOdd(
+                                getOdds(this, oddsType)
+                            )
+                        }
 //                    tv_play_content.text = setSpannedString(
 //                        PlayCate.needShowSpread(playCateCode) && (matchType != MatchType.OUTRIGHT),
 //                        playName,
@@ -127,6 +138,26 @@ class SingleViewHolder private constructor(itemView: View) :
 
                 if (matchType == MatchType.OUTRIGHT) {
                     tv_team_names.visibility = View.GONE
+                }
+                //篮球末位比分，细节显示
+                rvEndScoreInfo.isVisible =
+                    itemData.matchOdds?.firstOrNull()?.playCateCode == PlayCate.FS_LD_CS.value
+                if (rvEndScoreInfo.isVisible) {
+                    tvTypeMatch.isVisible = false
+                    dividerTitle.isVisible = false
+                    tv_play_content.apply {
+                        text = context.getString(R.string.N903)
+                        paint.isFakeBoldText = true
+                    }
+                    if (rvEndScoreInfo.adapter == null) {
+                        rvEndScoreInfo.layoutManager = GridLayoutManager(context, 5)
+                        rvEndScoreInfo.addItemDecoration(GridSpacingItemDecoration(5, 5.dp, false))
+                        var endScoreAdapter = BetReceiptEndScoreAdapter()
+                        rvEndScoreInfo.adapter = endScoreAdapter
+                        endScoreAdapter.setList(itemData.matchOdds?.firstOrNull()?.multiCode?.sortedBy { it.playCode })
+                    } else {
+                        (rvEndScoreInfo.adapter as BetReceiptEndScoreAdapter).setList(itemData.matchOdds?.firstOrNull()?.multiCode?.sortedBy { it.playCode })
+                    }
                 }
             }
         }

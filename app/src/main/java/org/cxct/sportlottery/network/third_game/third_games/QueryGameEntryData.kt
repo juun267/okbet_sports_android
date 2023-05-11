@@ -9,7 +9,7 @@ data class QueryGameEntryData(
     val gameCategory: String?, //一级分类
     val firmType: String?, //所属第三方
     val firmCode: String?, //第三方游戏编码
-    var gameCode: String?, //预留字段
+    val gameCode: String?, //预留字段
     val gameType: String?, //具体游戏
     val chineseName: String?, //游戏中文名
     val englishName: String?, //游戏英文名

@@ -23,8 +23,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
 import kotlinx.android.synthetic.main.fragment_sport_list.*
 import kotlinx.android.synthetic.main.item_favorite.view.*
@@ -35,6 +33,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.rotationAnimation
 import org.cxct.sportlottery.common.extentions.screenHeight
 import org.cxct.sportlottery.common.extentions.translationXAnimation
@@ -419,33 +418,33 @@ fun loginedRun(context: Context, block: ()-> Unit): Boolean {
         return true
     }
 
-//    if (context is Activity) {
-//        Snackbar.make(
-//            context.findViewById(android.R.id.content),
-//            context.getString(R.string.login_notify),
-//            Snackbar.LENGTH_LONG
-//        ).apply {
-//            val snackView: View = context.layoutInflater.inflate(
-//                R.layout.snackbar_login_notify,
-//                context.findViewById(android.R.id.content),
-//                false
-//            )
-//            (this.view as Snackbar.SnackbarLayout).apply {
-//                findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
-//                    visibility = View.INVISIBLE
-//                }
-//                background.alpha = 0
-//                addView(snackView, 0)
-//                setPadding(0, 0, 0, 0)
-//            }
-//
-//            if (context is MainTabActivity) {
-//                setAnchorView(R.id.cLBottom)
-//            }
-//            show()
-//        }
-//        return false
-//    }
+    if (context is Activity) {
+        Snackbar.make(
+            context.findViewById(android.R.id.content),
+            context.getString(R.string.login_notify),
+            Snackbar.LENGTH_LONG
+        ).apply {
+            val snackView: View = context.layoutInflater.inflate(
+                R.layout.snackbar_login_notify,
+                context.findViewById(android.R.id.content),
+                false
+            )
+            (this.view as Snackbar.SnackbarLayout).apply {
+                findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
+                    visibility = View.INVISIBLE
+                }
+                background.alpha = 0
+                addView(snackView, 0)
+                setPadding(0, 0, 0, 0)
+            }
+
+            if (context is MainTabActivity) {
+                setAnchorView(R.id.cLBottom)
+            }
+            show()
+        }
+        return false
+    }
 
     context.startActivity(Intent(context, LoginOKActivity::class.java))
     return false
@@ -954,30 +953,14 @@ fun isOKPlat(): Boolean = MultiLanguagesApplication.stringOf(R.string.app_name).
 
 fun isUAT(): Boolean = BuildConfig.FLAVOR == "phuat"
 
-/**
- * 解析以下报错，不能用lambda
- *  Cannot add the same observer with different lifecycles
- */
-//fun <T> LiveData<T>.observe(@NonNull owner: LifecycleOwner, callback: (T) -> Unit) {
-//    this.observe(owner, object : Observer<T> {
-//        override fun onChanged(t: T) {
-//            callback.invoke(t)
-//        }
-//    })
-//}
+fun isGooglePlayVersion() = BuildConfig.FLAVOR == "google"
 
 fun ImageView.setTeamLogo(icon: String?) {
     if (icon.isNullOrEmpty()) {
         setImageResource(R.drawable.ic_team_default)
     } else {
         if (icon.startsWith("http")) {
-            Glide.with(this).load(icon)
-                .apply(
-                    RequestOptions()
-                        .placeholder(R.drawable.ic_team_default)
-                        .error(R.drawable.ic_team_default)
-                )
-                .into(this)
+            load(icon, R.drawable.ic_team_default)
         } else {
             setSvgIcon(icon, R.drawable.ic_team_default)
         }
@@ -991,13 +974,7 @@ fun ImageView.setLeagueLogo(icon: String?) {
         setImageResource(R.drawable.ic_league_default)
     } else {
         if (icon.startsWith("http")) {
-            Glide.with(this).load(icon)
-                .apply(
-                    RequestOptions()
-                        .placeholder(R.drawable.ic_league_default)
-                        .error(R.drawable.ic_league_default)
-                )
-                .into(this)
+            load(icon, R.drawable.ic_league_default)
         } else {
             setSvgIcon(icon, R.drawable.ic_league_default)
         }

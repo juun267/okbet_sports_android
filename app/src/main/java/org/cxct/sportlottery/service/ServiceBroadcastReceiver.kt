@@ -311,12 +311,12 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
             EventType.UNKNOWN -> {
                 Timber.i("Receive UnKnown EventType : $eventType")
             }
-            EventType.RECORD_NEW -> {
+            EventType.RECORD_NEW_OK_GAMES -> {
                 //最新投注
                 val data = ServiceMessage.getRecondNew(jObjStr)
                 _recordNew.postValue(data)
             }
-            EventType.RECORD_RESULT -> {
+            EventType.RECORD_RESULT_OK_GAMES -> {
                 //最新大奖
                 val data = ServiceMessage.getRecondResult(jObjStr)
                 _recordResult.postValue(data)

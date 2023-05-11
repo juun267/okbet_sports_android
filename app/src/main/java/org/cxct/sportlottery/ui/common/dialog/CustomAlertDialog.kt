@@ -21,6 +21,7 @@ import androidx.lifecycle.LifecycleOwner
 import kotlinx.android.synthetic.main.dialog_custom_alert.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.runWithCatch
+import org.cxct.sportlottery.ui.base.BaseDialogFragment
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 /**
@@ -31,7 +32,7 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
  * this.setCanceledOnTouchOutside(false) //disable 點擊外部關閉 dialog
  * this.setCancelable(false) //disable 按實體鍵 BACK 關閉 dialog
  */
-class CustomAlertDialog(private val mContext: Context? = null) : DialogFragment() {
+class CustomAlertDialog(private val mContext: Context? = null) : BaseDialogFragment() {
 
     private var mTitle: String? = null
     private var mMessage: String? = null
@@ -202,8 +203,11 @@ class CustomAlertDialog(private val mContext: Context? = null) : DialogFragment(
     }
 
     override fun show(manager: FragmentManager, tag: String?) = runWithCatch {
+        if (manager.isDestroyed) {
+            return@runWithCatch
+        }
 
-        runWithCatch { if (isAdded) { dismissAllowingStateLoss() } }
+        if (isAdded) { runWithCatch { dismissAllowingStateLoss() } }
         modifyPrivateField("mDismissed", false)
         modifyPrivateField("mShownByMe", true)
         val ft = manager.beginTransaction()
@@ -213,19 +217,6 @@ class CustomAlertDialog(private val mContext: Context? = null) : DialogFragment(
         addDialogTag(mContext, getMessageTag())
     }
 
-    private fun modifyPrivateField(fieldName: String, newValue: Any) {
-        val fieldDismissed = DialogFragment::class.java.getDeclaredField(fieldName)
-        fieldDismissed.isAccessible = true
-        fieldDismissed.set(this, newValue)
-    }
-
-    override fun dismiss() = runWithCatch {
-        if (isAdded) { super.dismiss() }
-    }
-
-    override fun dismissAllowingStateLoss() = runWithCatch {
-        if (isAdded) { super.dismissAllowingStateLoss() }
-    }
 
     companion object {
 

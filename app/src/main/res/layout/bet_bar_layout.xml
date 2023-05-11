@@ -55,16 +55,20 @@
 
     <TextView
         android:id="@+id/tv_bet_list_count"
-        android:layout_width="18dp"
-        android:layout_height="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_marginStart="4dp"
         android:gravity="center"
         android:textColor="@color/color_FFFFFF_FFFFFF"
         android:textSize="@dimen/textSize14sp"
+        app:autoSizeMinTextSize="8sp"
+        app:autoSizeMaxTextSize="14sp"
+        app:autoSizeStepGranularity="1dp"
+        app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_bet_list"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="10" />
+        tools:text="100" />
 
 
 <!--    <TextView-->

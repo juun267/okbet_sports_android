@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/register_responsibilities"
+        android:text="@string/J093"
         android:textColor="@color/color_0D2245"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -103,9 +103,9 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="27dp"
+        android:layout_marginStart="19dp"
         android:layout_marginTop="16dp"
-        android:text="@string/about_us"
+        android:text="@string/N001"
         android:textSize="16sp"
         android:textColor="@color/color_0D2245"
         android:textStyle="bold"
@@ -120,7 +120,7 @@
         android:textSize="16sp"
         android:textColor="@color/color_0D2245"
         android:textStyle="bold"
-        android:layout_marginStart="27dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="@+id/textView5" />
 
@@ -133,14 +133,14 @@
 
     <TextView
         android:id="@+id/tvTermConditions"
-        android:text="@string/terms_conditions"
+        android:text="@string/J095"
         style="@style/text_style_responsible"
         app:layout_constraintStart_toStartOf="@+id/tvPrivacyPolicy"
         app:layout_constraintTop_toBottomOf="@+id/tvPrivacyPolicy" />
 
     <TextView
         android:id="@+id/tvResponsibleGaming"
-        android:text="@string/register_responsibilities"
+        android:text="@string/J093"
         style="@style/text_style_responsible"
         app:layout_constraintStart_toStartOf="@+id/tvTermConditions"
         app:layout_constraintTop_toBottomOf="@+id/tvTermConditions" />
@@ -173,6 +173,7 @@
         android:layout_marginTop="16dp"
         android:gravity="center"
         android:paddingHorizontal="10dp"
+        android:textSize="@dimen/textSize12sp"
         android:textColor="@color/color_6D7693"
         android:text="OKbet is a Registered Trade Mark, Brand and Business Name Owned by KINGWIN VENTURES INC.Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAGCOR)."
         app:layout_constraintEnd_toEndOf="@+id/view4"

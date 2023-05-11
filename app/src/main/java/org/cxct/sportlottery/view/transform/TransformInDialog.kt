@@ -53,8 +53,8 @@ class TransformInDialog(val firmType: String,
     private fun initView() {
 
         tvBanlanceTitle.text = "${resources.getString(R.string.platform_user_money)}:"
-        tvGameBanlanceTitle.text = "${resources.getString(R.string.game_account_money)}:"
-        tvInputTitle.text = "${resources.getString(R.string.transform_in_amount)}:"
+        tvGameBanlanceTitle.text = "${resources.getString(R.string.N485)}:"
+        tvInputTitle.text = "${resources.getString(R.string.N486)}:"
 
         val systemCurrencySign = sConfigData?.systemCurrencySign
         val formatedBalance = TextUtil.format(getUserBalance())
@@ -78,7 +78,7 @@ class TransformInDialog(val firmType: String,
         edtInput.isSelected = !effective
 
         if (effective) {
-            val color = resources.getColor(R.color.color_535D76)
+            val color = resources.getColor(R.color.color_025BE8)
             edtInput.setTextColor(color)
             tvError.gone()
             return

@@ -54,9 +54,10 @@ class GameChildAdapter(private val onFavoriate: (View, OKGameBean) -> Unit,
         binding.apply {
             ivCover.load(item.imgGame, R.drawable.img_banner01)
             tvName.text = item.gameName
-            tvFirmName.text = item.firmCode
+            tvFirmName.text = item.firmName
             ivFav.isSelected = item.markCollect
             ivFav.setOnClickListener { onFavoriate.invoke(ivFav, item) }
+            root.setOnClickListener { getOnItemClickListener()?.onItemClick(this@GameChildAdapter, root, position) }
         }
     }
 
@@ -70,7 +71,7 @@ class GameChildAdapter(private val onFavoriate: (View, OKGameBean) -> Unit,
             if (total > count) {
                 textView.visible()
                 textView.isEnabled = true
-                textView.text = "${textView.context.getString(R.string.display_more)}(${total - count})"
+                textView.text = "${textView.context.getString(R.string.N885)}(${total - count})"
             } else {
                 disableMore()
             }

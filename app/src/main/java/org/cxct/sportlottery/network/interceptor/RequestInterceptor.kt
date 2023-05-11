@@ -47,6 +47,8 @@ class RequestInterceptor(private val context: Context?) : Interceptor {
             chain.proceed(newRequest)
         } catch (e: IOException) {
             throw IOException("${e.localizedMessage} ${request.url.toString()}")
+        } catch (e: RuntimeException) {
+            throw RuntimeException("${e.javaClass.simpleName}: ${e.localizedMessage} ${request.url.toString()}")
         }
     }
 }

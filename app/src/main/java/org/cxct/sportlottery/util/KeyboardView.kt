@@ -13,9 +13,11 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.item_number_keyboard_layout2.view.*
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import java.lang.reflect.Method
+import java.math.BigDecimal
 
 class KeyboardView @JvmOverloads constructor(
     context: Context,
@@ -111,11 +113,42 @@ class KeyboardView @JvmOverloads constructor(
 //            hideKeyboard()
 //        }
         tvMax.setOnClickListener {
-            if (isLogin) {
-                plusAll(maxBetMoney)
+            if (gameType != null && PlayCate.FS_LD_CS.value == gameType) {
+                if (isLogin) {
+                    var betMoney =
+                        mUserMoney.toBigDecimal().setScale(2,BigDecimal.ROUND_UP).div(betItemCount.toBigDecimal())
+                            .toDouble()
+                    plusAll(
+                        if (maxBetMoney.toDouble() > betMoney) {
+                            TextUtil.formatInputMoney(betMoney)
+                        } else {
+                            maxBetMoney
+                        }
+                    )
+                } else {
+                    plusAll(
+                        if (betItemCount > 1) {
+                            (maxBetMoney.toDouble().toBigDecimal().setScale(2,BigDecimal.ROUND_UP)
+                                .div(betItemCount.toBigDecimal())).toString()
+                        } else {
+                            maxBetMoney
+                        }
+                    )
+                }
             } else {
-                setSnackBarNotify()
+                if (isLogin) {
+                    plusAll(
+                        if (maxBetMoney.toDouble() > mUserMoney) {
+                            TextUtil.formatInputMoney(mUserMoney)
+                        } else {
+                            maxBetMoney
+                        }
+                    )
+                } else {
+                    plusAll(maxBetMoney)
+                }
             }
+
         }
         setOnClickListener { /*这里加个点击事件空实现，为了防止点击到间隔处把键盘消失*/ }
     }
@@ -134,12 +167,15 @@ class KeyboardView @JvmOverloads constructor(
     private lateinit var mEditText: EditText
     private var mPosition: Int? = 0
     private var isParlay: Boolean = false
+
     //最大限額
-    private var _maxBetMoney: String = "9999999"
-    private val maxBetMoney: String
-        get() = _maxBetMoney
+    private var maxBetMoney: String = "9999999"
 
     private var isShow = false
+    private var mUserMoney: Double = 0.0
+
+    private var gameType: String? = null
+    private var betItemCount: Int = 0 //注数
 
     //是否登入
     private val isLogin: Boolean
@@ -149,8 +185,21 @@ class KeyboardView @JvmOverloads constructor(
     private var snackBarNotify: Snackbar? = null
 
     fun setupMaxBetMoney(max: Double) {
-        _maxBetMoney = TextUtil.formatInputMoney(max)
+        maxBetMoney = TextUtil.formatInputMoney(max)
     }
+
+    fun setGameType(gt: String) {
+        gameType = gt
+    }
+
+    fun setBetItemCount(num: Int) {
+        this.betItemCount = num
+    }
+
+    fun setUserMoney(money: Double) {
+        mUserMoney = money
+    }
+
 
     fun showKeyboard(
         editText: EditText,
@@ -190,7 +239,7 @@ class KeyboardView @JvmOverloads constructor(
                     (context as Activity).findViewById(android.R.id.content),
                     false
                 )
-                snackView.tv_notify.text = title
+                snackView.tvNotify.text = title
 
                 (this.view as Snackbar.SnackbarLayout).apply {
                     findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
@@ -205,6 +254,7 @@ class KeyboardView @JvmOverloads constructor(
     }
 
     private fun disableKeyboard() {
+
         var cls: Class<EditText> = EditText::class.java
         var method: Method
         try {
@@ -222,7 +272,7 @@ class KeyboardView @JvmOverloads constructor(
     }
 
     private fun plus(count: Double) {
-        if (!this::mEditText.isInitialized){
+        if (!this::mEditText.isInitialized) {
             return
         }
         val input = if (mEditText.text.toString() == "") "0" else mEditText.text.toString()
@@ -234,7 +284,7 @@ class KeyboardView @JvmOverloads constructor(
     }
 
     private fun plusAll(all: String) {
-        if (!this::mEditText.isInitialized){
+        if (!this::mEditText.isInitialized) {
             return
         }
         mEditText.setText(all)
@@ -243,7 +293,7 @@ class KeyboardView @JvmOverloads constructor(
     }
 
     private fun insert(count: Long) {
-        if (!this::mEditText.isInitialized){
+        if (!this::mEditText.isInitialized) {
             return
         }
         val editable = mEditText.text
@@ -253,7 +303,7 @@ class KeyboardView @JvmOverloads constructor(
     }
 
     private fun insertDot() {
-        if (!this::mEditText.isInitialized){
+        if (!this::mEditText.isInitialized) {
             return
         }
         val editable = mEditText.text
@@ -271,7 +321,7 @@ class KeyboardView @JvmOverloads constructor(
     }
 
     private fun delete() {
-        if (!this::mEditText.isInitialized){
+        if (!this::mEditText.isInitialized) {
             return
         }
         val editable = mEditText.text

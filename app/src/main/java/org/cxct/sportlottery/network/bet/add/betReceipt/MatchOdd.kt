@@ -4,6 +4,7 @@ package org.cxct.sportlottery.network.bet.add.betReceipt
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.network.bet.add.StatusNameI18n
+import org.cxct.sportlottery.network.bet.list.EndScoreInfo
 
 @JsonClass(generateAdapter = true) @KeepMembers
 data class MatchOdd(
@@ -58,5 +59,7 @@ data class MatchOdd(
     @Json(name = "status")
     val status: Int?,
     @Json(name = "statusNameI18n")
-    val statusNameI18n: StatusNameI18n?
+    val statusNameI18n: StatusNameI18n?,
+    @Json(name = "multiCode")
+    val multiCode: List<EndScoreInfo>?,
 )

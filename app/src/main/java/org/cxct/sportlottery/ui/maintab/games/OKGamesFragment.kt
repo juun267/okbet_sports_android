@@ -36,8 +36,16 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         )
     }
 
+    private fun isAllTba() = fragmentHelper.getCurrentFragment() is AllGamesFragment
+
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
+        if (hidden) { //不可见时切回AllGames
+            if (!isAllTba()) {
+                backGameAll()
+            }
+            binding.scrollView.smoothScrollTo(0,0)
+        }
         fragmentHelper.getCurrentFragment().onHiddenChanged(hidden)
     }
 
@@ -123,7 +131,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
             }
 
             tab.isFavorites() -> { // 收藏
-                return loginedRun(binding.root.context) { showFavorites(tab) }
+                return loginedRun(binding.root.context) { loadFavorite(tab) }
             }
 
             else -> {
@@ -152,7 +160,14 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
     private fun showFavorites(tab: OKGameTab) {
         retagRequest()
         changePartGamesLabel(tab)
-        showPartGameList(viewModel.collectList.value, 0)
+        showPartGameList(viewModel.collectList.value?.second, 0)
+    }
+
+    fun enterGame(okGameBean: OKGameBean) {
+        loginedRun(binding.root.context) {
+            viewModel.requestEnterThirdGame(okGameBean, this)
+            viewModel.addRecentPlay(okGameBean)
+        }
     }
 
     fun backGameAll() {
@@ -167,6 +182,11 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         changePartGamesLabel(okgamesFirm)
         val firmId = okgamesFirm.getKey().toString()
         startLoad{ viewModel.getOKGamesList(retagRequest(), null, firmId, it, PartGamesFragment.pageSize) }
+    }
+
+    private fun loadFavorite(tab: OKGameTab) {
+        changePartGamesLabel(tab)
+        startLoad{ viewModel.getFavoriteOKGames(retagRequest(), it, PartGamesFragment.pageSize) }
     }
 
     private fun reloadPartGames(tab: OKGameTab) {

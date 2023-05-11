@@ -29,6 +29,7 @@ import org.cxct.sportlottery.util.LocalUtils.getString
 import org.cxct.sportlottery.util.QuickListManager
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
+import timber.log.Timber
 
 
 /**
@@ -117,11 +118,6 @@ class OddsButtonDetail @JvmOverloads constructor(
                 "${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
 //                else
 //                    "$extInfoStr ${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
-
-            //篮球末尾比分，只显示最后空格后面的比分
-            if (mOdd?.playCode?.isFS_LD_CS_Type() == true) {
-                text = text.toString().split(" ")?.last()
-            }
             requestLayout()
 
             visibility =
@@ -142,15 +138,18 @@ class OddsButtonDetail @JvmOverloads constructor(
 
 //        updateOddsTextColor()
 
+
+//        Timber.d("更新单个条目 isSelected:${isSelected} oddName:${odd?.name}")
         isSelected = odd?.isSelected ?: false
         //[Martin]馬來盤＆印尼盤會有負數的賠率
         //betStatus = if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
         betStatus = if (odd == null) BetStatus.LOCKED.code else odd.status
 
-        if (hideName && !tv_spread.isVisible) {
+        lin_name.isVisible = !(hideName && !tv_spread.isVisible)
+        //篮球末尾比分，只显示最后空格后面的比分
+        if (mOdd?.playCode?.isFS_LD_CS_Type() == true) {
+            tv_odds.text = tv_name.text.toString().split(" ")?.last()
             lin_name.isVisible = false
-        } else {
-            lin_name.isVisible = true
         }
     }
 

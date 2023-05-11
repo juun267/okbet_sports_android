@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="loading">Loading</string>
+    <string name="loading">Loading...</string>
     <string name="connect_first">Select the internet to connect</string>
     <string name="error_url_fail">Jumping to address error</string>
     <string name="unknown_error">unknown error</string>
@@ -125,7 +125,7 @@
     <string name="home_tab_cs">CORRECT SCORE</string>
     <string name="home_tab_parlay">PARLAY</string>
     <string name="home_tab_outright">OUTRIGHTS</string>
-    <string name="home_tab_end_score">Basketball Ending Card</string>
+    <string name="home_tab_end_score">Basketball Ending</string>
     <string name="home_tab_at_start">SOON</string>
     <string name="home_tab_eps">PRICE BOOSTS</string>
     <string name="label_all">All</string>
@@ -550,7 +550,7 @@
     <string name="game_name">Game name</string>
     <string name="all_out_plat">All out</string>
     <string name="all_in_plat">All in</string>
-    <string name="write_suggestion">Submission</string>
+    <string name="N729">Submission</string>
     <!-- <string name="can_input_1_to_500_word">Can enter 1–500 words</string>&lt;!&ndash;请描述您遇到的问题&ndash;&gt;-->
     <string name="third_game_ky">KY games</string>
     <string name="odd_type_eu">EU</string>
@@ -740,7 +740,7 @@
     <string name="self_limit_per_bet_limit_content">You can apply for a \"limit bet\" to limit your bet amount each time. After applying for a limit bet, your total bet will not exceed your set value:</string>
     <string name="self_limit_per_bet_limit_highest">Upper limit</string>
     <string name="self_limit_per_bet_limit_input_highest">Please enter the number</string>
-    <string name="self_limit_per_bet_limit_impotent">• You can modify your limit bet at any time. The modification will be active, after that sending the request. </string>
+    <string name="self_limit_per_bet_limit_impotent">You can modify your limit bet at any time. The modification will be active, after that sending the request. </string>
     <string name="self_limit_per_bet_limit_user">• Current limit Bet: %1$s %2$s</string>
     <string name="self_limit_per_bet_limit_user_none">None</string>
     <string name="self_limit_per_bet_limit_user_limit">• Maximum limited bet:%1$s %2$s-%1$s %3$s</string>
@@ -775,10 +775,10 @@
     <string name="btm_navigation_affiliate">Affiliate</string>
     <string name="expire_date">ID expiration date</string>
     <string name="self_limit_froze_impotent_1">Self-exclusion takes effect immediately after setting</string>
-    <string name="self_limit_froze_impotent_2">We will keep your balance during the set period of self-exclusion.</string>
+    <string name="self_limit_froze_impotent_2">We will keep your balance during the set period of self-exclusion.However, if more than 6 months since the last login time, OKBET reserves the right to charge a monthly administrative fee until the account balance reaches zero.</string>
     <string name="self_limit_froze_impotent_3">If you apply for self-exclusion in other gaming games, it will not automatically apply to this game.</string>
     <string name="self_limit_froze_impotent_4">During the self-exclusion period, if you try to open a new account, the account may be frozen after the system detects it.</string>
-    <string name="self_limit_froze_impotent_5" translatable="false">During the self-exclusion period, you can contact customer service to cancel the self-exclusion function.</string>
+    <string name="self_limit_froze_impotent_5">During the self-exclusion time, you will be unable to deactivate your self-exclusion until the expiration of the minimum exclusion time frame.</string>
     <string name="self_limit_froze_impotent_6">After the self-exclusion expires, your account will be automatically reactivated.</string>
     <!-- 複式串關詳情 -->
     <string name="submit_success">submitted successfully</string>
@@ -927,7 +927,7 @@
     <string name="total_win_amount">Winning：</string>
     <string name="total_all_win_amount">Total Win：</string>
     <string name="delete_bet">Delete</string>
-    <string name="btn_login_bet">Login first</string>
+    <string name="A006">Login</string>
     <string name="btn_remove_closed_selections">Remove closed selections</string>
     <string name="bet_info_list_bet">Betting</string>
     <string name="bet_info_bet">Stake</string>
@@ -1010,7 +1010,7 @@
     <string name="my_favorite_empty">You don\'t have favorite events yet</string>
     <string name="remove_account_warning">Are you sure you want to cancel your current account?</string>
     <string name="cruel_write_off">Still delete</string>
-    <string name="can_input_1_to_500_word">Can enter 1–500 words</string>
+    <string name="can_input_1_to_500_word">Please describe the problem(Can enter 1–500 words)</string>
     <string name="half">Half</string>
     <string name="other_bet">Other betting</string>
     <string name="skin_mode">Mode: Day/Night</string>
@@ -1025,7 +1025,7 @@
     <string name="unbound_bank_card">You do not have %1$s bound</string>
     <string name="km">Km</string>
     <string name="outlet">Outlet</string>
-    <string name="please_enter_question">Please describe the problem</string>
+    <string name="N158">Please describe the problem</string>
     <string name="error_full_name">The name that you entered is not valid</string>
     <string name="hint_verification_code">Please enter verify code</string>
     <string name="to_back_login">Back to login page</string>
@@ -1136,7 +1136,7 @@
     <string name="self_limit_error_format">The field format is incorrect, please enter an integer %d~%d.</string>
     <string name="draw_time">Draw Time</string>
     <string name="closing_time">Closing Time</string>
-    <string name="end_time">End Time</string>
+    <string name="N577">End Time</string>
     <string name="draw_countdown">Draw Countdown</string>
 
     <string name="recover_password">Recover password</string>
@@ -1218,10 +1218,9 @@
     <string name="str_market_is_closed">Market closed</string>
     <string name="kyc_unverifing">Verifying</string>
     <string name="enter_game">Enter game</string>
-    <string name="hint_transform_money">Transfer prompt</string>
-    <string name="confirm_transform_in_money">Please confirm amount transferred to game account</string>
-    <string name="game_account_money">Game balance</string>
-    <string name="transform_in_amount">Transfer-in amount</string>
+    <string name="N483">Please confirm amount transferred to game account</string>
+    <string name="N485">Game balance</string>
+    <string name="N486">Transfer-in amount</string>
     <string name="hint_transform_in_amount">Only supported the amount transferred from 0 to the platform account balance</string>
     <string name="account_balance_unenough">Platform account balance not enough</string>
     <string name="platform_user_money">Platform balance</string>
@@ -1298,7 +1297,7 @@
     <string name="N711">Games</string>
     <string name="N710">Player</string>
     <string name="N713">Profit Amount</string>
-    <string name="N712">Bet Amount</string>
+    <string name="N712">Stake</string>
     <string name="N874">Recent</string>
     <string name="N873">Favorites</string>
     <string name="N882">Search Result</string>
@@ -1311,6 +1310,31 @@
     <string name="J299">Live Chat</string>
     <string name="B023">FAQs</string>
     <string name="N883">There is no date yet!</string>
+    <string name="J095">Terms &amp; Condition</string>
+    <string name="N482">Transfer prompt</string>
+    <string name="N885">Load More</string>
+    <string name="N001">About Us</string>
+    <string name="J093">Responsible Gaming</string>
+    <string name="N899">If you only want to delete a single score, you can click on delete a single score.</string>
+    <string name="N379">No tip</string>
+    <string name="N903">Basketball Ending</string>
+    <string name="str_total_stake">Total stake：</string>
+    <string name="N904">Think again</string>
+    <string name="N374">Delete ALL</string>
+    <string name="N905">Confirm</string>
+    <string name="J220">+More</string>
+    <string name="bet_basketball_notify_max_limit">Can add maximum 100 options to betslip</string>
+    <string name="N918">Total stake:</string>
+    <string name="N919">Total Win:</string>
+    <string name="N920">+More</string>
+    <string name="N901">Confirm delete</string>
+    <string name="N888">The individual odds are the same for all selections in the final score.</string>
+    <string name="N898">Are you sure you want to delete all score options?</string>
+    <string name="N908">Scan</string>
+    <string name="N951">Album import</string>
+    <string name="N952">Camera scan</string>
+    <string name="N956">Can\'t recognize this QR code</string>
+    <string name="N980">Denied camera permission</string>
 
     <!--    Chat 等PM翻譯-->
     <string name="chat_room">Phòng trò chuyện</string>

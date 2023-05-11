@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.login.signUp
 
-import android.content.Context
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.LayoutInflater
@@ -9,13 +8,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialog_register_success.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
-class RegisterSuccessDialog(context: Context) : DialogFragment() {
+class RegisterSuccessDialog: DialogFragment() {
 
 
-    private var mContext: Context = context
+
     private var mNegativeClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
 
     override fun onCreateView(
@@ -70,7 +70,8 @@ class RegisterSuccessDialog(context: Context) : DialogFragment() {
 //        if (sConfigData?.thirdOpen == FLAG_OPEN) {
 //            MainActivity.reStart(mContext)
 //        } else {
-        MainTabActivity.reStart(mContext)
+        val cxt = context ?: MultiLanguagesApplication.appContext
+        MainTabActivity.reStart(cxt)
 //        }
     }
 

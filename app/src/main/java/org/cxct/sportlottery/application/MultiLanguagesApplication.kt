@@ -319,7 +319,6 @@ class MultiLanguagesApplication : Application() {
         const val UUID = "uuid"
         private var instance: MultiLanguagesApplication? = null
         lateinit var mInstance: MultiLanguagesApplication
-        const val isGooglePlayVersion = BuildConfig.FLAVOR.equals("google")
 
         fun stringOf(@StringRes strId: Int): String {
             return mInstance.getString(strId)
@@ -414,7 +413,7 @@ class MultiLanguagesApplication : Application() {
         open fun showPromotionPopupDialog(activity: FragmentActivity) {
             val token = loginSharedPref.getString(KEY_TOKEN, "")
 
-            if (!isCreditSystem() && sConfigData?.imageList?.any { it.imageType == ImageType.PROMOTION.code && !it.imageName3.isNullOrEmpty() } == true) PromotionPopupDialog(
+            if (!isCreditSystem() && sConfigData?.imageList?.any { it.imageType == ImageType.PROMOTION.code && !it.imageName3.isNullOrEmpty() && !(isGooglePlayVersion() && it.isHidden) } == true) PromotionPopupDialog(
                 activity, PromotionPopupDialog.PromotionPopupListener(onClickImageListener = {
                     JumpUtil.toInternalWeb(
                         activity, Constants.getPromotionUrl(

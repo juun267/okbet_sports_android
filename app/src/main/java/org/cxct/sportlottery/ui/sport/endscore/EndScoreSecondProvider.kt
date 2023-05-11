@@ -27,7 +27,11 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
         setText(R.id.league_odd_match_time, TimeUtil.timeFormat(matchInfo?.startTime, TimeUtil.DM_HM_FORMAT))
         getView<ImageView>(R.id.ivHomeLogo).setTeamLogo(matchInfo?.homeIcon)
         getView<ImageView>(R.id.ivAwayLogo).setTeamLogo(matchInfo?.awayIcon)
-        getView<View>(R.id.llMatchInfo).setOnClickListener { onItemClick.invoke(helper.bindingAdapterPosition, it, item) }
+        getView<View>(R.id.lin_match).setOnClickListener {
+            onItemClick.invoke(helper.bindingAdapterPosition,
+                it,
+                item)
+        }
         getView<View>(R.id.league_odd_match_favorite).run {
             isSelected = matchInfo?.isFavorite ?: false
             setOnClickListener { onItemClick.invoke(helper.bindingAdapterPosition, this, item) }
