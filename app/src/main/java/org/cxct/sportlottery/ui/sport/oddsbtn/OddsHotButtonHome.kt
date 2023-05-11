@@ -7,6 +7,7 @@ import android.content.Context
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
@@ -226,12 +227,13 @@ class OddsHotButtonHome @JvmOverloads constructor(
                     else -> ""
                 }
             } else {
-                visibility = when {
-                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() || playCateCode.isCSType() || playCateCode.isSingleType() -> View.VISIBLE
-                    else -> View.GONE
-                }
+                visibility = View.VISIBLE
+//                    when {
+//                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() || playCateCode.isCSType() || playCateCode.isSingleType() -> View.VISIBLE
+//                    else -> View.GONE
+//                }
                 text = when {
-                    playCateCode.isSingleType() -> {
+                   hideName -> {
                         //独赢可能出现没有和的情况
                         var index = oddList.indexOf(odds)
                         when (index) {
@@ -241,61 +243,62 @@ class OddsHotButtonHome @JvmOverloads constructor(
                             else -> ""
                         }
                     }
-                    playCateCode.isCSType() -> {
+                    else -> {
                         odds?.nameMap?.get(
                             LanguageManager.getSelectLanguage(context).key
                         ) ?: odds?.name
                     }
-                    playCateCode.isOUType() -> {
-                        //越南語大小顯示又要特殊處理(用O/U)
-                        val language =
-                            if (LanguageManager.getSelectLanguage(context).key == LanguageManager.Language.VI.key) LanguageManager.Language.EN.key else LanguageManager.getSelectLanguage(
-                                context
-                            ).key
-                        (odds?.nameMap?.get(
-                            language
-                        ) ?: odds?.name)?.abridgeOddsName()
-                    }
-                    playCateCode.isOEType() || playCateCode.isBTSType() -> {
-                        (odds?.nameMap?.get(
-                            LanguageManager.getSelectLanguage(
-                                context
-                            ).key
-                        ) ?: odds?.name)?.abridgeOddsName()
-                    }
-                    playCateCode.isNOGALType() -> {
-                        when (LanguageManager.getSelectLanguage(this.context)) {
-                            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
-                                "第" + odds?.nextScore.toString()
-                            }
-                            else -> {
-                                getOrdinalNumbers(odds?.nextScore.toString())
-                            }
-                        }
-                    }
-                    else -> ""
+
+//                    playCateCode.isOUType() -> {
+//                        //越南語大小顯示又要特殊處理(用O/U)
+//                        val language =
+//                            if (LanguageManager.getSelectLanguage(context).key == LanguageManager.Language.VI.key) LanguageManager.Language.EN.key else LanguageManager.getSelectLanguage(
+//                                context
+//                            ).key
+//                        (odds?.nameMap?.get(
+//                            language
+//                        ) ?: odds?.name)?.abridgeOddsName()
+//                    }
+//                    playCateCode.isOEType() || playCateCode.isBTSType() -> {
+//                        (odds?.nameMap?.get(
+//                            LanguageManager.getSelectLanguage(
+//                                context
+//                            ).key
+//                        ) ?: odds?.name)?.abridgeOddsName()
+//                    }
+//                    playCateCode.isNOGALType() -> {
+//                        when (LanguageManager.getSelectLanguage(this.context)) {
+//                            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
+//                                "第" + odds?.nextScore.toString()
+//                            }
+//                            else -> {
+//                                getOrdinalNumbers(odds?.nextScore.toString())
+//                            }
+//                        }
+//                    }
+//                    else -> ""
                 }
             }
-            if (hideName) {
-                tv_name.isVisible = false
-            }
+//            if (hideName) {
+//                tv_name.isVisible = false
+//            }
             requestLayout()
         }
 
-//        tv_spread.apply {
-//            visibility = when (!odds?.spread.isNullOrEmpty()) {
-//                true -> View.VISIBLE
-//                false -> {
-//                    when {
-//                        playCateCode.isOUType() -> View.INVISIBLE
-//                        else -> View.GONE
-//                    }
-//                }
-//            }
-//            text = odds?.spread ?: ""
-//            requestLayout()
-//        }
-        tv_spread.visibility = View.GONE
+        tv_spread.apply {
+            visibility = when (!odds?.spread.isNullOrEmpty()) {
+                true -> View.VISIBLE
+                false -> {
+                    when {
+                        playCateCode.isOUType() -> View.INVISIBLE
+                        else -> View.GONE
+                    }
+                }
+            }
+            text = odds?.spread ?: ""
+            requestLayout()
+        }
+//        tv_spread.visibility = View.GONE
         tv_odds.apply {
             text = TextUtil.formatForOdd(getOdds(odds, oddsType))
         }
@@ -345,6 +348,7 @@ class OddsHotButtonHome @JvmOverloads constructor(
 //            iv_arrow.setImageResource(R.drawable.ic_match_red_down)
             button_odd_detail.setBackgroundResource(R.drawable.bg_hot_game_lose)
             iv_mark_bottom.visible()
+            iv_mark_top.gone()
         } else if (diff > 0.0) {
             tv_odds.setTextColor(
                 ContextCompat.getColorStateList(
@@ -353,6 +357,7 @@ class OddsHotButtonHome @JvmOverloads constructor(
                 )
             )
             iv_mark_top.visible()
+            iv_mark_bottom.gone()
 //            iv_arrow.setImageResource(R.drawable.ic_match_green_up)
             button_odd_detail.setBackgroundResource(R.drawable.bg_hot_game_win)
         } else {
@@ -377,6 +382,7 @@ class OddsHotButtonHome @JvmOverloads constructor(
 
     //常駐顯示按鈕 依狀態隱藏鎖頭
     private fun setupBetStatus(betStatus: Int) {
+//        button_odd_detail.setBackgroundResource(R.drawable.bg_gray_border_8)
         img_odd_lock.apply {
             visibility =
                 if (betStatus == BetStatus.LOCKED.code) {
@@ -415,6 +421,7 @@ class OddsHotButtonHome @JvmOverloads constructor(
 //                    visibility = View.VISIBLE
 //                }
                 iv_mark_top.visible()
+                iv_mark_bottom.gone()
                 button_odd_detail.setBackgroundResource(R.drawable.bg_hot_game_win)
                 status = true
                 isActivated = false
@@ -431,13 +438,13 @@ class OddsHotButtonHome @JvmOverloads constructor(
 //                    visibility = View.VISIBLE
 //                }
                 iv_mark_bottom.visible()
+                iv_mark_top.gone()
                 button_odd_detail.setBackgroundResource(R.drawable.bg_hot_game_lose)
                 status = true
                 isActivated = false
             }
             OddState.SAME.state -> {
                 resetOddsValueState(tv_odds)
-                button_odd_detail.setBackgroundResource(R.drawable.bg_gray_border_8)
                 isActivated = false
             }
         }
@@ -452,14 +459,13 @@ class OddsHotButtonHome @JvmOverloads constructor(
         }
 
         if (status) {
-            lin_odd.tag = lin_odd.flashAnimation(1000,2,0.3f).apply {
+            lin_odd.tag = lin_odd.flashAnimation(1000,2,0.9f).apply {
                 addListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator) {
                         resetOddsValueState(tv_odds)
                     }
                 })
             }
-
         }
 //        updateOddsTextColor()
     }
@@ -471,6 +477,7 @@ class OddsHotButtonHome @JvmOverloads constructor(
 //        }
         iv_mark_top.gone()
         iv_mark_bottom.gone()
+        button_odd_detail.setBackgroundResource(R.drawable.bg_gray_border_8)
         textView.setTextColor(
             ContextCompat.getColorStateList(
                 context,

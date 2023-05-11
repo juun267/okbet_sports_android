@@ -71,6 +71,7 @@ class SportViewModel(
         get() = _searchResult
 
     val showBetUpperLimit = betInfoRepository.showBetUpperLimit
+    val showBetBasketballUpperLimit = betInfoRepository.showBetBasketballUpperLimit
 
     private val _messageListResult = MutableLiveData<Event<MessageListResult?>>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()

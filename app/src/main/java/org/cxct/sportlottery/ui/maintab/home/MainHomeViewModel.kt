@@ -140,8 +140,10 @@ open class MainHomeViewModel(
                     result.result.recommendList.filter {
                         !it.menuList.isNullOrEmpty()
                     }.forEach { recommend ->
+                        recommend.oddsMap=recommend.odds
                         with(recommend) {
-                            setupOddsSort()
+//                            setupOddsSort()
+                            sortOddsByMenu()
                             setupMatchType()
                             setupMatchTime()
                             setupPlayCateNum()
@@ -384,7 +386,7 @@ open class MainHomeViewModel(
 
     //region 宣傳頁 優惠活動文字跑馬燈、圖片公告
     fun getPublicityPromotion() {
-        sConfigData?.imageList?.filter { it.imageType == ImageType.PROMOTION.code }
+        sConfigData?.imageList?.filter { it.imageType == ImageType.PROMOTION.code && !(isGooglePlayVersion() && it.isHidden) }
             ?.let { promotionList ->
                 promotionList.filter {
                     (it.viewType == 1) && TextUtils.equals(LanguageManager.getSelectLanguage(
@@ -412,6 +414,21 @@ open class MainHomeViewModel(
 
         oddsSort = oddsSortFilter
         playCateNameMap = playCateNameMapFilter
+    }
+
+    private fun Recommend.sortOddsByMenu() {
+        val sortOrder = this.menuList?.firstOrNull()?.playCateList?.map { it.code }
+
+        oddsMap?.let { map ->
+            val filterPlayCateMap = map.filter { sortOrder?.contains(it.key) == true }
+            val sortedMap = filterPlayCateMap.toSortedMap(compareBy<String> {
+                sortOrder?.indexOf(it)
+            }.thenBy { it })
+
+            map.clear()
+            map.putAll(sortedMap)
+        }
+        oddsSort = oddsMap?.keys?.first()
     }
 
     /**

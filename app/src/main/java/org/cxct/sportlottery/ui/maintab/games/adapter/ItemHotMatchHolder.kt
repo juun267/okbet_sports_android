@@ -1,3 +1,4 @@
+
 package org.cxct.sportlottery.ui.maintab.games.adapter
 
 import android.view.View
@@ -40,9 +41,13 @@ class ItemHotMatchHolder(
 
         //設置背景、隊伍名稱、點擊事件
         setupGameInfo()
-
+        //根据sofia 说法，只获取有效玩法中的第一个玩法，而不是直接获取独赢玩法，因为赛事列表有可能不存在独赢玩法
         //玩法Code
-        var oddPlayCateCode = PlayCate.SINGLE.value
+        var oddPlayCateCode = ""
+
+        data.oddsSort?.let {
+            oddPlayCateCode = it
+        }
 
         var oddList = listOf<Odd?>()
 
@@ -152,7 +157,10 @@ class ItemHotMatchHolder(
         }
 
         setupOddsButton(currentOddBtn, odd)
-        currentOddBtn.setupOdd4hall(oddPlayCateCode, odd, oddList, oddsType)
+        val hideName =odd?.nameMap?.containsValue(data?.homeName)==true
+           || odd?.nameMap?.containsValue(data?.awayName)==true
+           || odd?.nameMap?.containsValue(binding.root.context.getString(R.string.draw)) ==true
+        currentOddBtn.setupOdd4hall(oddPlayCateCode, odd, oddList, oddsType,hideName = hideName)
         currentOddBtn.setButtonBetClick(
             data = data,
             odd = odd,
@@ -308,10 +316,9 @@ class ItemHotMatchHolder(
                                 item.matchInfo?.gameType == GameType.RB.key ||
                                 item.matchInfo?.gameType == GameType.AFT.key)
                     )
-
                 } else {
                     stopTimer()
-                    binding.tvGamePlayTime.visibility = View.GONE
+                    binding.tvGamePlayTime.text=""
                 }
             }
             else -> {
@@ -349,7 +356,7 @@ class ItemHotMatchHolder(
             (TimeUtil.isTimeInPlay(item.startTime)
                     && item.matchInfo?.status == GameStatus.POSTPONED.code
                     && (item.matchInfo?.gameType == GameType.FT.name || item.matchInfo?.gameType == GameType.BK.name || item.matchInfo?.gameType == GameType.TN.name)) -> {
-                binding.tvGamePlayTime.visibility = View.GONE
+                binding.tvGamePlayTime.text=""
             }
 
             TimeUtil.isTimeInPlay(item.startTime) -> {
@@ -359,7 +366,7 @@ class ItemHotMatchHolder(
             }
 
             TimeUtil.isTimeAtStart(item.startTime) -> {
-                binding.tvGameStatus.visibility = View.GONE
+                binding.tvGameStatus.text=""
             }
         }
     }

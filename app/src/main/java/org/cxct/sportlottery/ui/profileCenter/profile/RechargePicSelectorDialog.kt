@@ -1,10 +1,10 @@
 package org.cxct.sportlottery.ui.profileCenter.profile
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
@@ -16,12 +16,10 @@ import kotlinx.android.synthetic.main.dialog_avatar_selector.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.LanguageManager
 
-class RechargePicSelectorDialog(
-    val activity: Activity,
-    private val mSelectListener: OnResultCallbackListener<LocalMedia>,
-    val cropType: CropType
-) : BottomSheetDialogFragment() {
+class RechargePicSelectorDialog : BottomSheetDialogFragment() {
 
+    private val cropType: CropType = CropType.SQUARE
+    var mSelectListener: OnResultCallbackListener<LocalMedia>? = null
     enum class CropType(val code: MutableList<Int>) {
         SQUARE(mutableListOf<Int>(1, 1)),
         RECTANGLE(mutableListOf<Int>(16, 9))
@@ -55,6 +53,9 @@ class RechargePicSelectorDialog(
 
     //選擇相片
     private fun pickPhoto() {
+        if (activity == null) {
+            return
+        }
         PictureSelector.create(activity)
             .openGallery(PictureMimeType.ofImage())
             .imageEngine(GlideEngine.createGlideEngine())
@@ -74,6 +75,9 @@ class RechargePicSelectorDialog(
 
     //拍照
     private fun openCamera() {
+        if (activity == null) {
+            return
+        }
         PictureSelector.create(activity)
             .openCamera(PictureMimeType.ofImage())
             .imageEngine(GlideEngine.createGlideEngine())
@@ -104,6 +108,12 @@ class RechargePicSelectorDialog(
 
     fun setTitle(titleName: String?) {
         tv_title.text = titleName
+    }
+
+    override fun show(manager: FragmentManager, tag: String?) {
+        if (mSelectListener != null) {
+            super.show(manager, tag)
+        }
     }
 
 }

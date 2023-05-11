@@ -1,9 +1,14 @@
 package org.cxct.sportlottery.network.infoCenter
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguards.KeepMembers
+import com.squareup.moshi.JsonClass
+import kotlinx.android.parcel.Parcelize
+import org.cxct.sportlottery.common.proguards.KeepMembers
 
-@JsonClass(generateAdapter = true) @KeepMembers
+@JsonClass(generateAdapter = true)
+@KeepMembers
+@Parcelize
 data class InfoCenterData(
     @Json(name = "id")
     val id: Int?,
@@ -27,4 +32,4 @@ data class InfoCenterData(
     val platformId: Int?,
     @Json(name = "operatorName")//发件人
     val operatorName: String?
-)
+): Parcelable

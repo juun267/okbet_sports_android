@@ -19,7 +19,7 @@ const val KEY_CHAT_SIGN = "chat_sign"
 
 object UserInfoRepository {
 
-    private val sharedPref: SharedPreferences by lazy {
+    val sharedPref: SharedPreferences by lazy {
         MultiLanguagesApplication.appContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
 

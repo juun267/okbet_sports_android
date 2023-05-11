@@ -5,14 +5,11 @@ import android.os.Handler
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import kotlin.reflect.KClass
 
-open class BaseDialog<T : BaseViewModel>(clazz: KClass<T>) : DialogFragment() {
+open class BaseDialog<T : BaseViewModel>(clazz: KClass<T>) : BaseDialogFragment() {
 
     val viewModel: T by sharedViewModel(clazz = clazz)
     private var mIsEnabled = true //避免快速連點，所有的 item 一次只能點擊一個
@@ -111,28 +108,4 @@ open class BaseDialog<T : BaseViewModel>(clazz: KClass<T>) : DialogFragment() {
     }
 
 
-    override fun show(manager: FragmentManager, tag: String?) = runWithCatch {
-
-        runWithCatch { if (isAdded) { dismissAllowingStateLoss() } }
-
-        modifyPrivateField("mDismissed", false)
-        modifyPrivateField("mShownByMe", true)
-        val ft = manager.beginTransaction()
-        ft.add(this, tag)
-        ft.commitAllowingStateLoss()
-    }
-
-    private fun modifyPrivateField(fieldName: String, newValue: Any) {
-        val fieldDismissed = DialogFragment::class.java.getDeclaredField(fieldName)
-        fieldDismissed.isAccessible = true
-        fieldDismissed.set(this, newValue)
-    }
-
-    override fun dismiss() = runWithCatch {
-        if (isAdded) { super.dismiss() }
-    }
-
-    override fun dismissAllowingStateLoss() = runWithCatch {
-        if (isAdded) { super.dismissAllowingStateLoss() }
-    }
 }

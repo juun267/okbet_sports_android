@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
@@ -16,14 +16,14 @@ import com.luck.picture.lib.language.LanguageConfig
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.dialog_selector_dialog.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.ui.base.BaseDialogFragment
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LocalUtils
 
-class PicSelectorDialog(
-    val activity: Activity,
-    private val mSelectListener: OnResultCallbackListener<LocalMedia>,
-    val cropType: CropType
-) : DialogFragment() {
+class PicSelectorDialog : BaseDialogFragment() {
+
+    var cropType = CropType.RECTANGLE
+    var mSelectListener: OnResultCallbackListener<LocalMedia>? = null
 
     enum class CropType(val code: MutableList<Int>) {
         SQUARE(mutableListOf<Int>(1, 1)),
@@ -62,6 +62,9 @@ class PicSelectorDialog(
 
     //選擇相片
     private fun pickPhoto() {
+        if (activity == null) {
+            return
+        }
         PictureSelector.create(activity)
             .openGallery(PictureMimeType.ofImage())
             .imageEngine(GlideEngine.createGlideEngine())
@@ -81,6 +84,9 @@ class PicSelectorDialog(
 
     //拍照
     private fun openCamera() {
+        if (activity == null) {
+            return
+        }
         PictureSelector.create(activity)
             .openCamera(PictureMimeType.ofImage())
             .imageEngine(GlideEngine.createGlideEngine())
@@ -109,6 +115,12 @@ class PicSelectorDialog(
 
     fun setTitle(titleName: String?) {
         tv_title.text = titleName
+    }
+
+    override fun show(manager: FragmentManager, tag: String?) {
+        if (mSelectListener != null) {
+            super.show(manager, tag)
+        }
     }
 
 }

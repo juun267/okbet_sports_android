@@ -1,10 +1,10 @@
 package org.cxct.sportlottery.ui.profileCenter.profile
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
@@ -16,10 +16,9 @@ import kotlinx.android.synthetic.main.dialog_avatar_selector.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.LanguageManager
 
-class AvatarSelectorDialog(
-    val activity: Activity,
-    private val mSelectListener: OnResultCallbackListener<LocalMedia>
-) : BottomSheetDialogFragment() {
+class AvatarSelectorDialog: BottomSheetDialogFragment() {
+
+    var mSelectListener:  OnResultCallbackListener<LocalMedia>? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.dialog_avatar_selector, container, false)
@@ -45,6 +44,9 @@ class AvatarSelectorDialog(
 
     //選擇相片
     private fun pickPhoto() {
+        if (activity == null) {
+            return
+        }
         PictureSelector.create(activity)
             .openGallery(PictureMimeType.ofImage())
             .imageEngine(GlideEngine.createGlideEngine())
@@ -55,7 +57,8 @@ class AvatarSelectorDialog(
             .isCompress(true) // 是否压缩 true or false
             .rotateEnabled(true) // 裁剪是否可旋转图片 true or false
             .circleDimmedLayer(true) // 是否圆形裁剪 true or false
-            .showCropFrame(false) // 是否显示裁剪矩形边框 圆形裁剪时建议设为false   true or false
+            .showCropFrame(false) // 是否显示裁剪矩形边框 圆形裁剪时
+            // 建议设为false   true or false
             .showCropGrid(false) // 是否显示裁剪矩形网格 圆形裁剪时建议设为false    true or false
             .withAspectRatio(1, 1) // int 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
             .minimumCompressSize(100) // 小于100kb的图片不压缩
@@ -64,6 +67,9 @@ class AvatarSelectorDialog(
 
     //拍照
     private fun openCamera() {
+        if (activity == null) {
+            return
+        }
         PictureSelector.create(activity)
             .openCamera(PictureMimeType.ofImage())
             .imageEngine(GlideEngine.createGlideEngine())
@@ -90,6 +96,12 @@ class AvatarSelectorDialog(
                 LanguageConfig.ENGLISH
             }
 
+        }
+    }
+
+    override fun show(manager: FragmentManager, tag: String?) {
+        if (mSelectListener != null) {
+            super.show(manager, tag)
         }
     }
 

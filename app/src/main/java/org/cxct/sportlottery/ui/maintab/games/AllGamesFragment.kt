@@ -1,67 +1,110 @@
 package org.cxct.sportlottery.ui.maintab.games
 
-import android.graphics.Paint
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.core.view.isGone
-import androidx.recyclerview.widget.*
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.enums.BetStatus
-import org.cxct.sportlottery.common.extentions.animDuang
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
-import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.FragmentAllOkgamesBinding
 import org.cxct.sportlottery.databinding.ItemGameCategroyBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
 import org.cxct.sportlottery.network.Constants
-import org.cxct.sportlottery.network.bet.FastBetDataBean
-import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.common.MatchOdd
-import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
-import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
-import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
-import org.cxct.sportlottery.ui.base.ChannelType
-import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
-import org.cxct.sportlottery.ui.maintab.home.HomeRecommendListener
-import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
-import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.RCVDecoration
+import org.cxct.sportlottery.util.SpaceItemDecoration
+import org.cxct.sportlottery.util.setServiceClick
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
+import timber.log.Timber
+import kotlin.random.Random
 
 // OkGames所有分类
 class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesViewModel::class) {
 
     private lateinit var binding: FragmentAllOkgamesBinding
     private val gameAllAdapter by lazy {
-        GameCategroyAdapter(clickCollect = ::onCollectClick,
-            clickGame = {
-            okGamesFragment().viewModel.requestEnterThirdGame(it, this@AllGamesFragment)
-            viewModel.addRecentPlay(it.id.toString())
-        }, okGamesFragment().gameItemViewPool)
+        GameCategroyAdapter(
+            clickCollect = ::onCollectClick,
+            clickGame = ::enterGame, okGamesFragment().gameItemViewPool
+        )
     }
     private var collectGameAdapter: GameChildAdapter? = null
     private var recentGameAdapter: GameChildAdapter? = null
     private val providersAdapter by lazy { OkGameProvidersAdapter() }
     private val gameRecordAdapter by lazy { OkGameRecordAdapter() }
     private var categoryList = mutableListOf<OKGamesCategory>()
-    private val p3RecordNData: MutableList<RecordNewEvent> = mutableListOf()
-    private val p3RecordRData: MutableList<RecordNewEvent> = mutableListOf()
+    private val p3RecordNData: MutableList<RecordNewEvent> = mutableListOf()//接口返回的最新投注
+    private val p3RecordNwsData: MutableList<RecordNewEvent> = mutableListOf()//ws的最新投注
+    private val p3RecordNShowData: MutableList<RecordNewEvent> = mutableListOf()//最新投注显示在界面上的数据
+    private val HANDLER_RECORD_NEW_ADD = 1//最新投注  数据 添加
+    private val HANDLER_RECORD_RESULT_ADD = 2//最新大奖数据 添加
+    private val HANDLER_RECORD_GET = 3//最新投注 最新大奖数据 获取
+    private val p3RecordRData: MutableList<RecordNewEvent> = mutableListOf()//接口返回的最新大奖
+    private val p3RecordRwsData: MutableList<RecordNewEvent> = mutableListOf()//ws的最新大奖
+    private val p3RecordRShowData: MutableList<RecordNewEvent> = mutableListOf()//最新大奖显示在界面上的数据
     private var p3ogProviderFirstPosi: Int = 0
     private var p3ogProviderLastPosi: Int = 3
 
     private var lastRequestTimeStamp = 0L
+
+    private var recordHandler = object : Handler(Looper.getMainLooper()) {
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            when (msg.what) {
+                HANDLER_RECORD_NEW_ADD -> {
+                    var wsData: RecordNewEvent = msg.obj as RecordNewEvent
+                    Timber.v("RECORD_NEW_OK_GAMES 加数据: $wsData")
+                    p3RecordNwsData.add(wsData)//最新投注//最新投注(当前正处于主线程，直接将数据加到队列里面去)
+                    Timber.v("RECORD_NEW_OK_GAMES 加数据后: $p3RecordNwsData")
+                }
+
+                HANDLER_RECORD_RESULT_ADD -> {
+                    var wsData: RecordNewEvent = msg.obj as RecordNewEvent
+                    p3RecordRwsData.add(wsData)//最新大奖
+                }
+                HANDLER_RECORD_GET -> {
+                    var newItem: RecordNewEvent? = null
+                    if (binding.include3.rbtnLb.isChecked) {
+                        if (p3RecordNwsData.isNotEmpty()) {
+                            newItem = p3RecordNwsData.removeAt(0)//ws 最新投注
+                        } else if (p3RecordNData.isNotEmpty()) {
+                            newItem = p3RecordNData.removeAt(0)
+                        }
+                    } else if (binding.include3.rbtnLbw.isChecked) {
+                        if (p3RecordRwsData.isNotEmpty()) {
+                            newItem = p3RecordRwsData.removeAt(0)//ws 最新大奖
+
+                        } else if (p3RecordRData.isNotEmpty()) {
+                            newItem = p3RecordRData.removeAt(0)
+                        }
+                    }
+                    if (newItem != null) {
+                        gameRecordAdapterNotify(newItem)
+                    }
+                    sendEmptyMessageDelayed(HANDLER_RECORD_GET, (Random.nextLong(1000) + 400))
+                }
+            }
+
+        }
+    }
 
     private fun okGamesFragment() = parentFragment as OKGamesFragment
     override fun createRootView(
@@ -71,32 +114,57 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     }
 
     override fun onBindView(view: View) {
+        unSubscribeChannelHallAll()
         initObserve()
-        initHotGameAdapter()
-        initHotGameData()
         onBindGamesView()
         onBindPart3View()
         onBindPart5View()
-        initSocketObservers()
         initRecent()
         initCollectLayout()
+        //初始化热门赛事
+        binding.hotMatchView.onCreate(viewModel.publicityRecommend,this)
+        viewModel.getRecommend()
     }
 
+    override fun onResume() {
+        super.onResume()
+        unSubscribeChannelHallAll()
+        //重新设置赔率监听
+        binding.hotMatchView.postDelayed({
+            binding.hotMatchView.onResume(this)
+        }, 500)
+        viewModel.publicityRecommend.value?.peekContent()?.let {
+            it.forEach {
+                subscribeChannelHall(it.gameType, it.id)
+            }
+        }
+        //请求热门赛事数据  在hotMatchView初始化之后
+//        viewModel.getRecommend()
+    }
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (hidden) {
+            //隐藏时取消赛事监听
+            unSubscribeChannelHallAll()
             return
         }
-
+        //重新设置赔率监听
+        binding.hotMatchView.onResume(this)
+        viewModel.getRecommend()
         val noData = okGamesFragment().viewModel.gameHall.value == null
         val time = System.currentTimeMillis()
         if (noData || time - lastRequestTimeStamp > 60_000) { // 避免短时间重复请求
             lastRequestTimeStamp = time
             okGamesFragment().viewModel.getOKGamesHall()
-            initSocketObservers()
 
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        recordHandler.removeCallbacksAndMessages(null)
+    }
+
 
     private fun initObserve() = okGamesFragment().viewModel.run {
         gameHall.observe(viewLifecycleOwner) {
@@ -112,10 +180,15 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             viewModel.getRecentPlay()
         }
         collectList.observe(viewLifecycleOwner) {
-            if (it.isNotEmpty() && it.size > 12) {
-                setCollectList(it.subList(0, 12))
+            if (!it.first && collectGameAdapter?.dataCount() ?: 0 > 0) { //如果当前收藏列表可见，切收藏列表不为空则走全部刷新逻辑（走单挑刷新逻辑）
+                return@observe
+            }
+
+            val list = it.second
+            if (list.isNotEmpty() && list.size > 12) {
+                setCollectList(list.subList(0, 12))
             } else {
-                setCollectList(it)
+                setCollectList(list)
             }
         }
         collectOkGamesResult.observe(viewLifecycleOwner) { result ->
@@ -127,6 +200,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 //添加收藏或者移除
                 adapter.removeOrAdd(result.second)
                 binding.includeGamesAll.inclueCollect.root.isGone = adapter.data.isNullOrEmpty()
+                setItemMoreVisiable(binding.includeGamesAll.inclueCollect, adapter.dataCount() > 3)
             }
             //更新最近列表
             recentGameAdapter?.data?.forEachIndexed { index, okGameBean ->
@@ -141,6 +215,16 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 setRecent(it.subList(0, 12))
             } else {
                 setRecent(it)
+            }
+        }
+
+        newRecentPlay.observe(viewLifecycleOwner) { okgameBean ->
+
+            recentGameAdapter?.let { adapter ->
+                binding.includeGamesAll.inclueRecent.root.visible()
+                adapter.data.find { it.id == okgameBean.id }?.let { adapter.remove(it) }
+                adapter.addData(0, okgameBean)
+                setItemMoreVisiable(binding.includeGamesAll.inclueRecent, adapter.dataCount() > 3)
             }
         }
     }
@@ -168,6 +252,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     private fun onBindPart3View() {
         viewModel.getOKGamesRecordNew()
         viewModel.getOKGamesRecordResult()
+        recordHandler.sendEmptyMessageDelayed(HANDLER_RECORD_GET, (Random.nextLong(1000) + 500))
         binding.include3.apply {
             binding.include3.ivProvidersLeft.alpha = 0.5F
             providersAdapter.setOnItemClickListener { _, _, position ->
@@ -203,117 +288,96 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             }
 
 
-            rvOkgameRecord.addItemDecoration(RCVDecoration().setDividerHeight(2f)
-                .setColor(rvOkgameRecord.context.getColor(R.color.color_EEF3FC))
-                .setMargin(10.dp.toFloat()))
+            rvOkgameRecord.addItemDecoration(
+                RCVDecoration().setDividerHeight(2f)
+                    .setColor(rvOkgameRecord.context.getColor(R.color.color_EEF3FC))
+                    .setMargin(10.dp.toFloat())
+            )
             rvOkgameRecord.adapter = gameRecordAdapter
             rvOkgameRecord.itemAnimator = DefaultItemAnimator()
             viewModel.providerResult.observe(viewLifecycleOwner) { resultData ->
-                resultData?.firmList?.let {
-                    if(it.isNotEmpty()){
-                        binding.include3.okgameP3LayoutProivder.visibility=View.VISIBLE
-                    }else{
-                        binding.include3.okgameP3LayoutProivder.visibility=View.GONE
-                    }
-                    if (!providersAdapter.data.containsAll(it)) {
+                val firmList = resultData?.firmList ?: return@observe
 
-                        providersAdapter.addData(it)
-                        if (it.isNotEmpty()) {
-                            binding.include3.ivProvidersLeft.visible()
-                            binding.include3.ivProvidersRight.visible()
-                        }
+                providersAdapter.setNewInstance(firmList.toMutableList())
+                if (firmList.isNotEmpty()) {
+                    binding.include3.run {
+                        setViewVisible(
+                            rvOkgameProviders,
+                            okgameP3LayoutProivder
+                        )
                     }
+                } else {
+                    binding.include3.run { setViewGone(rvOkgameProviders, okgameP3LayoutProivder) }
+                }
+
+                if (firmList.size > 3) {
+                    binding.include3.run { setViewVisible(ivProvidersLeft, ivProvidersRight) }
+                } else {
+                    binding.include3.run { setViewGone(ivProvidersLeft, ivProvidersRight) }
                 }
             }
+
             viewModel.recordNewHttp.observe(viewLifecycleOwner) {
                 if (it != null) {
-                    if (binding.include3.rbtnLb.isChecked) {
-                        gameRecordAdapter.addData(0, it.subList(0, 10))
-                    }
-                    p3RecordNData.addAll(0, it.subList(0, 10))
+                    p3RecordNData.addAll(it.reversed())
                     recordNewhttpFlag = true
                 }
             }
             viewModel.recordResultHttp.observe(viewLifecycleOwner) {
-                if (binding.include3.rbtnLbw.isChecked) {
-                    gameRecordAdapter.addData(0, it.subList(0, 10))
+                if (it != null) {
+                    p3RecordRData.addAll(it.reversed())
+                    recordResulthttpFlag = true
                 }
-                p3RecordRData.addAll(0, it.subList(0, 10))
-                recordResulthttpFlag = true
             }
             receiver.recordNew.observe(viewLifecycleOwner) {
-                if (recordNewhttpFlag && it != null) {
-                    if (binding.include3.rbtnLb.isChecked) {
-                        gameRecordAdapterNotify(it)
-                    }
-                    if (p3RecordNData.size >= 10) {
-                        p3RecordNData.removeAt(p3RecordNData.size - 1)
-                    }
-                    p3RecordNData.add(0, it)
+                if (it != null) {
+                    var msg = Message()
+                    msg.what = HANDLER_RECORD_NEW_ADD
+                    msg.obj = it
+                    recordHandler.sendMessage(msg)
                 }
             }
             receiver.recordResult.observe(viewLifecycleOwner) {
-                if (recordResulthttpFlag && it != null) {
-                    if (binding.include3.rbtnLbw.isChecked) {
-                        gameRecordAdapterNotify(it)
-                    }
+                if (it != null) {
+                    var msg = Message()
+                    msg.what = HANDLER_RECORD_RESULT_ADD
+                    msg.obj = it
+                    recordHandler.sendMessage(msg)
+                }
+            }
 
-                    if (p3RecordRData.size >= 10) {
-                        p3RecordRData.removeAt(p3RecordRData.size - 1)
+        }
+        binding.include3.rGroupRecord.setOnCheckedChangeListener { group, checkedId ->
+            when (checkedId) {
+                R.id.rbtn_lb -> {
+                    if (!recordNewhttpFlag) {
+                        viewModel.getOKGamesRecordNew()
                     }
-                    p3RecordRData.add(0, it)
+                    if (gameRecordAdapter.data.isNotEmpty()) {
+                        p3RecordRShowData.clear()
+                        p3RecordRShowData.addAll(gameRecordAdapter.data)
+                        gameRecordAdapter.data.clear()
+                        gameRecordAdapter.notifyDataSetChanged()
+                        gameRecordAdapter.addData(p3RecordNShowData)
+                    }
+                }
 
+                R.id.rbtn_lbw -> {
+                    if (!recordResulthttpFlag) {
+                        viewModel.getOKGamesRecordResult()
+                    }
+                    if (gameRecordAdapter.data.isNotEmpty()) {
+                        p3RecordNShowData.clear()
+                        p3RecordNShowData.addAll(gameRecordAdapter.data)
+                        gameRecordAdapter.data.clear()
+                        gameRecordAdapter.notifyDataSetChanged()
+                        gameRecordAdapter.addData(p3RecordRShowData)
+                    }
                 }
             }
         }
-
-    }
-
-    private fun onBindPart5View() {
-        val include3 = binding.include3
-        val include5 = binding.include5
-        val tvPrivacyPolicy = include5.tvPrivacyPolicy
-        val tvTermConditions = include5.tvTermConditions
-        val tvResponsibleGaming = include5.tvResponsibleGaming
-        val tvLiveChat = include5.tvLiveChat
-        val tvContactUs = include5.tvContactUs
-        val tvFaqs = include5.tvFaqs
-        val rBtnLb = include3.rbtnLb
-        val rBtnLbw = include3.rbtnLbw
-        val prLeft = binding.include3.ivProvidersLeft//供应商左滑按钮
-        val prRight = binding.include3.ivProvidersRight//供应商右滑按钮
-        val rcvPayment = include5.rcvPayment
-        setUnderline(tvPrivacyPolicy, tvTermConditions, tvResponsibleGaming, tvLiveChat, tvContactUs, tvFaqs)
-
-        jumpToWebView(tvPrivacyPolicy, Constants.getPrivacyRuleUrl(requireContext()), R.string.privacy_policy)
-        jumpToWebView(tvTermConditions, Constants.getAgreementRuleUrl(requireContext()), R.string.terms_conditions)
-        jumpToWebView(tvResponsibleGaming, Constants.getDutyRuleUrl(requireContext()), R.string.responsible)
-        jumpToWebView(include5.textView16, Constants.getDutyRuleUrl(requireContext()), R.string.responsible)
-        jumpToWebView(tvFaqs, Constants.getFAQsUrl(requireContext()), R.string.faqs)
-
-        tvLiveChat.setServiceClick(childFragmentManager)
-        tvContactUs.setServiceClick(childFragmentManager)
-
-        rBtnLb.setOnClickListener {
-            if (!recordNewhttpFlag) {
-                viewModel.getOKGamesRecordNew()
-            } else {
-                gameRecordAdapter.data.clear()
-                gameRecordAdapter.addData(p3RecordNData)
-            }
-        }
-
-        rBtnLbw.setOnClickListener {
-            if (!recordResulthttpFlag) {
-
-                viewModel.getOKGamesRecordResult()
-            } else {
-                gameRecordAdapter.data.clear()
-                gameRecordAdapter.addData(p3RecordRData)
-            }
-        }
-
-        prLeft.setOnClickListener {
+        //供应商左滑按钮
+        binding.include3.ivProvidersLeft.setOnClickListener {
             if (p3ogProviderFirstPosi >= 3) {
                 binding.include3.rvOkgameProviders.layoutManager?.smoothScrollToPosition(
                     binding.include3.rvOkgameProviders,
@@ -326,8 +390,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 )
             }
         }
-
-        prRight.setOnClickListener {
+        //供应商右滑按钮
+        binding.include3.ivProvidersRight.setOnClickListener {
             if (p3ogProviderLastPosi < providersAdapter.data.size - 4) {
                 binding.include3.rvOkgameProviders.layoutManager?.smoothScrollToPosition(
                     binding.include3.rvOkgameProviders,
@@ -342,6 +406,44 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 )
             }
         }
+    }
+
+    private fun onBindPart5View() {
+        val include5 = binding.include5
+        val tvPrivacyPolicy = include5.tvPrivacyPolicy
+        val tvTermConditions = include5.tvTermConditions
+        val tvResponsibleGaming = include5.tvResponsibleGaming
+        val tvLiveChat = include5.tvLiveChat
+        val tvContactUs = include5.tvContactUs
+        val tvFaqs = include5.tvFaqs
+        val rcvPayment = include5.rcvPayment
+
+
+        jumpToWebView(
+            tvPrivacyPolicy,
+            Constants.getPrivacyRuleUrl(requireContext()),
+            R.string.privacy_policy
+        )
+        jumpToWebView(
+            tvTermConditions,
+            Constants.getAgreementRuleUrl(requireContext()),
+            R.string.terms_conditions
+        )
+        jumpToWebView(
+            tvResponsibleGaming,
+            Constants.getDutyRuleUrl(requireContext()),
+            R.string.responsible
+        )
+        jumpToWebView(
+            include5.textView16,
+            Constants.getDutyRuleUrl(requireContext()),
+            R.string.responsible
+        )
+        jumpToWebView(tvFaqs, Constants.getFAQsUrl(requireContext()), R.string.faqs)
+
+        tvLiveChat.setServiceClick(childFragmentManager)
+        tvContactUs.setServiceClick(childFragmentManager)
+
 
         initRcvPaymentMethod(rcvPayment)
     }
@@ -373,258 +475,37 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     }
 
-    private fun setUnderline(vararg view: TextView) {
-        view.forEach {
-            it.paint.flags = Paint.UNDERLINE_TEXT_FLAG; //下划线
-            it.paint.isAntiAlias = true;//抗锯齿
-        }
-    }
-
-    private fun initHotGameAdapter(){
-        binding.hotGameView.setUpAdapter(viewLifecycleOwner, HomeRecommendListener(
-            onItemClickListener = { matchInfo ->
-                if (isCreditSystem() && viewModel.isLogin.value != true) {
-                    (activity as MainTabActivity).showLoginNotify()
-                } else {
-                    matchInfo?.let {
-                        SportDetailActivity.startActivity(requireContext(), it)
-//                        navOddsDetailFragment(MatchType.IN_PLAY, it)
-                    }
-                }
-            },
-
-            onClickBetListener = { gameTypeCode, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
-                if (!mIsEnabled) {
-                    return@HomeRecommendListener
-                }
-                avoidFastDoubleClick()
-                if (isCreditSystem() && viewModel.isLogin.value != true) {
-                    (activity as MainTabActivity).showLoginNotify()
-                    return@HomeRecommendListener
-                }
-                val gameType = GameType.getGameType(gameTypeCode)
-                if (gameType == null || matchInfo == null || activity !is MainTabActivity) {
-                    return@HomeRecommendListener
-                }
-                val fastBetDataBean = FastBetDataBean(
-                    matchType = matchType,
-                    gameType = gameType,
-                    playCateCode = playCateCode,
-                    playCateName = playCateName,
-                    matchInfo = matchInfo,
-                    matchOdd = null,
-                    odd = odd,
-                    subscribeChannelType = ChannelType.HALL,
-                    betPlayCateNameMap = betPlayCateNameMap,
-                    playCateMenuCode
-                )
-                val temp = JsonUtil.toJson(fastBetDataBean)
-                SportDetailActivity.startActivity(requireContext(), matchInfo,matchType,false,temp)
-            }, onClickPlayTypeListener = { _, _, _, _ ->
-
-            }
-        ))
-    }
-
-    private fun initHotGameData() {
-        if(binding.hotGameView.adapter==null){
-            binding.hotGameView.gone()
-        }
-//        initSocketObservers()
-        //请求热门赛事列表
-        viewModel.getRecommend()
-
-        viewModel.publicityRecommend.observe(this) {
-            //api获取热门赛事列表
-            it.getContentIfNotHandled()?.let { data ->
-
-
-                binding.hotGameView.visible()
-                data.forEach {
-                    unSubscribeChannelHall(it.gameType,it.matchInfo?.id)
-                }
-                binding.hotGameView.setGameData(data)
-                //订阅监听
-                subscribeQueryData(data)
-            }
-
-        }
-    }
-
-
-    //用户缓存最新赔率，方便当从api拿到新赛事数据时，赋值赔率信息给新赛事
-    private val matchOddMap = HashMap<String, Recommend>()
-    private fun initSocketObservers() {
-        receiver.serviceConnectStatus.observe(viewLifecycleOwner) {
-            it?.let {
-                if (it == ServiceConnectStatus.CONNECTED) {
-                    initHotGameData()
-//                    binding.hotGameView.adapter?.let {adapter->
-//                        adapter.data.let { data->
-//                            if(data.isEmpty()){
-//                                initHotGameData()
-//                            }
-//                        }
-//                    }
-                }
-            }
-        }
-        //观察比赛状态改变
-        receiver.matchStatusChange.observe(viewLifecycleOwner) { matchStatusChangeEvent ->
-            if (matchStatusChangeEvent == null || binding.hotGameView.adapter?.data?.isNullOrEmpty() == true) {
-                return@observe
-            }
-
-            val adapterData = binding.hotGameView.adapter?.data
-            adapterData?.forEachIndexed { index, recommend ->
-                //取一个赛事，装成集合
-                val testList = mutableListOf<Recommend>()
-                testList.add(recommend)
-                //丢进去判断是否要更新
-                if (SocketUpdateUtil.updateMatchStatus(
-                        recommend.matchInfo?.gameType,
-                        testList as MutableList<MatchOdd>,
-                        matchStatusChangeEvent,
-                        context
-                    )
-                ) {
-                    binding.hotGameView.notifyAdapterData(index,testList[0])
-                }
-            }
-
-        }
-        receiver.matchClock.observe(viewLifecycleOwner) {
-            it?.let { matchClockEvent ->
-                val targetList = binding.hotGameView.adapter?.data
-                targetList?.forEachIndexed { index, recommend ->
-                    if (
-                        SocketUpdateUtil.updateMatchClock(
-                            recommend,
-                            matchClockEvent
-                        )
-                    ) {
-                        binding.hotGameView.adapter?.notifyItemChanged(index,recommend)
-                    }
-                }
-
-            }
-        }
-        setupOddsChangeListener()
-
-        receiver.matchOddsLock.observe(viewLifecycleOwner) {
-            it?.let { matchOddsLockEvent ->
-                val targetList = binding.hotGameView.adapter?.data
-
-                targetList?.forEachIndexed { index, recommend ->
-                    if (SocketUpdateUtil.updateOddStatus(recommend, matchOddsLockEvent)
-                    ) {
-                        binding.hotGameView.adapter?.notifyItemChanged(index,recommend)
-                    }
-                }
-
-            }
-        }
-
-
-        receiver.globalStop.observe(viewLifecycleOwner) {
-            it?.let { globalStopEvent ->
-                binding.hotGameView.adapter?.data?.forEachIndexed { index, recommend ->
-                    if (SocketUpdateUtil.updateOddStatus(
-                            recommend,
-                            globalStopEvent
-                        )
-                    ) {
-                        binding.hotGameView.adapter?.notifyItemChanged(index)
-                    }
-                }
-            }
-        }
-
-        receiver.producerUp.observe(viewLifecycleOwner) {
-            it?.let {
-                //先解除全部賽事訂閱
-                unSubscribeChannelHallAll()
-                subscribeQueryData(binding.hotGameView.adapter?.data ?: listOf())
-            }
-        }
-
-        receiver.closePlayCate.observe(viewLifecycleOwner) { event ->
-            val it = event?.getContentIfNotHandled() ?: return@observe
-
-            binding.hotGameView.adapter?.data?.forEach { recommend ->
-                if (recommend.gameType == it.gameType) {
-                    recommend.oddsMap?.forEach { map ->
-                        if (map.key == it.playCateCode) {
-                            map.value?.forEach { odd ->
-                                odd?.status = BetStatus.DEACTIVATED.code
-                            }
-                        }
-                    }
-                }
-            }
-            binding.hotGameView.adapter?.notifyDataSetChanged()
-        }
-    }
-
-    private fun setupOddsChangeListener() {
-        receiver.oddsChangeListener = mOddsChangeListener
-    }
-
-    private val mOddsChangeListener by lazy {
-        ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
-            val targetList = binding.hotGameView.adapter?.data
-            targetList?.forEachIndexed { index, recommend ->
-                if (recommend.matchInfo?.id == oddsChangeEvent.eventId) {
-                    recommend.sortOddsMap()
-                    //region 翻譯更新
-                    oddsChangeEvent.playCateNameMap?.let { playCateNameMap ->
-                        recommend.playCateNameMap?.putAll(playCateNameMap)
-                    }
-                    oddsChangeEvent.betPlayCateNameMap?.let { betPlayCateNameMap ->
-                        recommend.betPlayCateNameMap?.putAll(betPlayCateNameMap)
-                    }
-                    //endregion
-                    if (SocketUpdateUtil.updateMatchOdds(context,
-                            recommend,
-                            oddsChangeEvent)
-                    ) {
-                        matchOddMap[recommend.id] = recommend
-//                        LogUtil.toJson(recommend.oddsMap?.get(PlayCate.SINGLE.value))
-                        binding.hotGameView.adapter?.notifyItemChanged(index,recommend)
-                    }
-                }
-            }
-        }
-    }
 
     private fun initCollectLayout() {
-        collectGameAdapter = bindGameCategroyLayout(GameTab.TAB_FAVORITES, binding.includeGamesAll.inclueCollect)
+        collectGameAdapter =
+            bindGameCategroyLayout(GameTab.TAB_FAVORITES, binding.includeGamesAll.inclueCollect)
     }
 
     private fun initRecent() {
-        recentGameAdapter = bindGameCategroyLayout(GameTab.TAB_RECENTLY, binding.includeGamesAll.inclueRecent)
+        recentGameAdapter =
+            bindGameCategroyLayout(GameTab.TAB_RECENTLY, binding.includeGamesAll.inclueRecent)
     }
 
-    private fun bindGameCategroyLayout(gameTab: GameTab, binding: ItemGameCategroyBinding) = binding.run {
-        root.gone()
-        linCategroyName.setOnClickListener { okGamesFragment().changeGameTable(gameTab) }
-        gameTab.bindLabelIcon(ivIcon)
-        gameTab.bindLabelName(tvName)
-        rvGameItem.setRecycledViewPool(okGamesFragment().gameItemViewPool)
-        rvGameItem.layoutManager = SocketLinearManager(context, RecyclerView.HORIZONTAL, false)
-        rvGameItem.addItemDecoration(SpaceItemDecoration(root.context, R.dimen.margin_10))
-        val gameAdapter = GameChildAdapter(onFavoriate = ::onCollectClick)
-        gameAdapter.setOnItemClickListener { adapter, _, position ->
-            gameAdapter.getItem(position).let {
-                okGamesFragment().viewModel.requestEnterThirdGame(
-                    it as OKGameBean, this@AllGamesFragment
-                )
-                viewModel.addRecentPlay(it.id.toString())
+    private fun bindGameCategroyLayout(gameTab: GameTab, binding: ItemGameCategroyBinding) =
+        binding.run {
+            root.gone()
+            linCategroyName.setOnClickListener { okGamesFragment().changeGameTable(gameTab) }
+            gameTab.bindLabelIcon(ivIcon)
+            gameTab.bindLabelName(tvName)
+            rvGameItem.setRecycledViewPool(okGamesFragment().gameItemViewPool)
+            rvGameItem.layoutManager = SocketLinearManager(context, RecyclerView.HORIZONTAL, false)
+            rvGameItem.addItemDecoration(SpaceItemDecoration(root.context, R.dimen.margin_10))
+            val gameAdapter = GameChildAdapter(onFavoriate = ::onCollectClick)
+            gameAdapter.setOnItemClickListener { _, _, position ->
+                enterGame(gameAdapter.getItem(position))
             }
+
+            rvGameItem.adapter = gameAdapter
+            return@run gameAdapter
         }
 
-        rvGameItem.adapter = gameAdapter
-        return@run gameAdapter
+    private inline fun enterGame(okGameBean: OKGameBean) {
+        okGamesFragment().enterGame(okGameBean)
     }
 
     /**
@@ -632,19 +513,11 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
      */
     private fun setCollectList(collectList: List<OKGameBean>) {
         val emptyData = collectList.isNullOrEmpty()
+        setItemMoreVisiable(binding.includeGamesAll.inclueCollect, collectList.size > 3)
         binding.includeGamesAll.inclueCollect.root.isGone = emptyData
-        if (emptyData) {
-            return
+        if (!emptyData) {
+            collectGameAdapter?.setNewInstance(collectList?.toMutableList())
         }
-        collectGameAdapter?.setNewInstance(collectList?.toMutableList())
-    }
-
-    private fun subscribeQueryData(recommendList: List<Recommend>) {
-        recommendList.forEach { subscribeChannelHall(it) }
-    }
-
-    private fun subscribeChannelHall(recommend: Recommend) {
-        subscribeChannelHall(recommend.matchInfo?.gameType, recommend.matchInfo?.id)
     }
 
 
@@ -652,26 +525,23 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
      * 设置最近游戏列表
      */
     private fun setRecent(recentList: List<OKGameBean>) {
-        binding.includeGamesAll.inclueRecent.root.isGone = recentList.isNullOrEmpty()
-        if (recentList.isNullOrEmpty()) {
-            return
-        }
-
-        recentGameAdapter?.setNewInstance(recentList?.toMutableList())
-    }
-
-    private fun Recommend.sortOddsMap() {
-        this.oddsMap?.forEach { (_, value) ->
-            if ((value?.size ?: 0) > 3
-                && value?.first()?.marketSort != 0
-                && (value?.first()?.odds != value?.first()?.malayOdds)
-            ) {
-                value?.sortBy { it?.marketSort }
-            }
+        setItemMoreVisiable(binding.includeGamesAll.inclueRecent, recentList.size > 3)
+        val emptyData = recentList.isNullOrEmpty()
+        binding.includeGamesAll.inclueRecent.root.isGone = emptyData
+        if (!emptyData) {
+            recentGameAdapter?.setNewInstance(recentList?.toMutableList())
         }
     }
+
+    private fun setItemMoreVisiable(binding: ItemGameCategroyBinding, visisable: Boolean) {
+        binding.ivMore.isVisible = visisable
+        binding.tvMore.isVisible = visisable
+    }
+
 
     private fun onCollectClick(view: View, gameData: OKGameBean) {
-        if (okGamesFragment().collectGame(gameData)) { view.animDuang(1.3f) }
+        if (okGamesFragment().collectGame(gameData)) {
+            view.animDuang(1.3f)
+        }
     }
 }

@@ -48,6 +48,7 @@ data class Recommend(
     val playCateNum: Int,
     @Json(name = "spt")
     val spt: Int,
+    var odds: MutableMap<String, MutableList<Odd>?>?,
     @Json(name = "startTime")
     val startTime: Long,
     @Json(name = "status")

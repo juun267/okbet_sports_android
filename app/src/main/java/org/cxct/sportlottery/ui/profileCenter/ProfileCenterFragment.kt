@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.view.View
 import android.widget.LinearLayout
@@ -108,7 +107,7 @@ class ProfileCenterFragment :
                 return@observe
             }
 
-            update_version.setOnClickListener { }
+            update_version.setOnClickListener {  }
             iv_version_new.visibility = View.GONE
         }
 
@@ -120,7 +119,10 @@ class ProfileCenterFragment :
     }
 
     fun initToolBar() {
-        ImmersionBar.with(this).statusBarView(R.id.v_statusbar).statusBarDarkFont(true).init()
+        ImmersionBar.with(this)
+            .statusBarView(R.id.v_statusbar)
+            .statusBarDarkFont(true)
+            .init()
 //        v_statusbar?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
         iv_menu.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
@@ -177,11 +179,10 @@ class ProfileCenterFragment :
     private fun setupEditNickname() {
         rl_head.setOnClickListener {
             fragmentManager?.let { it1 ->
-                AvatarSelectorDialog(
-                    activity as Activity, mSelectMediaListener
-                ).show(it1, null)
+                val dialog = AvatarSelectorDialog()
+                dialog.mSelectListener = mSelectMediaListener
+                dialog.show(it1, null)
             }
-
         }
     }
 
@@ -196,8 +197,7 @@ class ProfileCenterFragment :
             avoidFastDoubleClick()
             //Glife用户
             if (viewModel.userInfo.value?.vipType == 1) {
-                showPromptDialog(
-                    title = getString(R.string.prompt),
+                showPromptDialog(title = getString(R.string.prompt),
                     message = getString(R.string.N643),
                     {})
             } else {
@@ -211,8 +211,7 @@ class ProfileCenterFragment :
             avoidFastDoubleClick()
             //Glife用户
             if (viewModel.userInfo.value?.vipType == 1) {
-                showPromptDialog(
-                    title = getString(R.string.prompt),
+                showPromptDialog(title = getString(R.string.prompt),
                     message = getString(R.string.N644),
                     {})
             } else {
@@ -371,10 +370,12 @@ class ProfileCenterFragment :
                 tv_account_balance.text = TextUtil.format(it)
             }
         }
-        viewModel.isWithdrawShowVerifyDialog.observe(viewLifecycleOwner) {
+          viewModel.isWithdrawShowVerifyDialog.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
-                if (b) showKYCVerifyDialog()
-                else viewModel.checkWithdrawSystem()
+                if (b)
+                    showKYCVerifyDialog()
+                else
+                    viewModel.checkWithdrawSystem()
             }
         }
         viewModel.userInfo.observe(viewLifecycleOwner) {
@@ -389,7 +390,8 @@ class ProfileCenterFragment :
             val operation = it.getContentIfNotHandled()
             if (operation == false) {
                 showPromptDialog(
-                    getString(R.string.prompt), getString(R.string.message_withdraw_maintain)
+                    getString(R.string.prompt),
+                    getString(R.string.message_withdraw_maintain)
                 ) {}
             }
         }
@@ -400,7 +402,8 @@ class ProfileCenterFragment :
                     startActivity(Intent(requireActivity(), MoneyRechargeActivity::class.java))
                 } else {
                     showPromptDialog(
-                        getString(R.string.prompt), getString(R.string.message_recharge_maintain)
+                        getString(R.string.prompt),
+                        getString(R.string.message_recharge_maintain)
                     ) {}
                 }
             }
@@ -468,7 +471,7 @@ class ProfileCenterFragment :
         viewModel.needToSendTwoFactor.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    customSecurityDialog = CustomSecurityDialog(requireContext()).apply {
+                    customSecurityDialog = CustomSecurityDialog().apply {
                         getSecurityCodeClickListener {
                             this.showSmeTimer300()
                             viewModel.sendTwoFactor()
@@ -485,7 +488,7 @@ class ProfileCenterFragment :
 
         viewModel.errorMessageDialog.observe(viewLifecycleOwner) {
             val errorMsg = it ?: getString(R.string.unknown_error)
-            CustomAlertDialog(requireContext()).apply {
+            CustomAlertDialog().apply {
                 setMessage(errorMsg)
                 setNegativeButtonText(null)
                 setCanceledOnTouchOutside(false)
@@ -519,13 +522,16 @@ class ProfileCenterFragment :
                         getString(R.string.go_to_setting),
                         true
                     ) {
-                        startActivity(Intent(
-                            requireActivity(), SettingPasswordActivity::class.java
-                        ).apply {
-                            putExtra(
-                                PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD
-                            )
-                        })
+                        startActivity(
+                            Intent(
+                                requireActivity(),
+                                SettingPasswordActivity::class.java
+                            ).apply {
+                                putExtra(
+                                    PWD_PAGE,
+                                    SettingPasswordActivity.PwdPage.BANK_PWD
+                                )
+                            })
                     }
                 } else if (!b) {
                     startActivity(Intent(requireActivity(), BankActivity::class.java))
@@ -552,10 +558,13 @@ class ProfileCenterFragment :
 
         viewModel.editIconUrlResult.observe(viewLifecycleOwner) {
             val iconUrlResult = it?.getContentIfNotHandled()
-            if (iconUrlResult?.success == true) showPromptDialog(
-                getString(R.string.prompt), getString(R.string.save_avatar_success)
-            ) {}
-            else iconUrlResult?.msg?.let { msg -> showErrorPromptDialog(title = "", msg) {} }
+            if (iconUrlResult?.success == true)
+                showPromptDialog(
+                    getString(R.string.prompt),
+                    getString(R.string.save_avatar_success)
+                ) {}
+            else
+                iconUrlResult?.msg?.let { msg -> showErrorPromptDialog(title = "", msg) {} }
         }
 
         viewModel.intoWithdraw.observe(viewLifecycleOwner) { it ->
@@ -575,15 +584,19 @@ class ProfileCenterFragment :
 
         viewModel.isWithdrawShowVerifyDialog.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
-                if (b) showKYCVerifyDialog()
-                else viewModel.checkWithdrawSystem()
+                if (b)
+                    showKYCVerifyDialog()
+                else
+                    viewModel.checkWithdrawSystem()
             }
         }
 
         viewModel.isRechargeShowVerifyDialog.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
-                if (b) showKYCVerifyDialog()
-                else viewModel.checkRechargeSystem()
+                if (b)
+                    showKYCVerifyDialog()
+                else
+                    viewModel.checkRechargeSystem()
             }
         }
 
@@ -591,8 +604,10 @@ class ProfileCenterFragment :
 
     @SuppressLint("SetTextI18n")
     private fun updateUI(userInfo: UserInfo?) {
-        Glide.with(this).load(userInfo?.iconUrl)
-            .apply(RequestOptions().placeholder(R.drawable.ic_person_avatar)).into(iv_head1) //載入頭像
+        Glide.with(this)
+            .load(userInfo?.iconUrl)
+            .apply(RequestOptions().placeholder(R.drawable.ic_person_avatar))
+            .into(iv_head1) //載入頭像
 
         tv_user_nickname.text = if (userInfo?.nickName.isNullOrEmpty()) {
             userInfo?.userName

@@ -26,7 +26,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:text="@string/hint_transform_money"/>
+            android:text="@string/N482"/>
 
         <ImageView
             android:id="@+id/ivClose"
@@ -51,7 +51,7 @@
             android:textFontWeight="650"
             android:textSize="14sp"
             android:textColor="@color/color_535D76"
-            android:text="@string/confirm_transform_in_money"/>
+            android:text="@string/N483"/>
 
         <TextView
             android:id="@+id/tvBanlanceTitle"
@@ -145,7 +145,7 @@
                     android:maxLines="1"
                     android:inputType="number"
                     android:textColorHint="@color/color_C9CFD7"
-                    android:textColor="@color/color_535D76"
+                    android:textColor="@color/color_025BE8"
                     android:background="@drawable/selector_radius_4_stroke"/>
 
                 <TextView
@@ -176,6 +176,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/vDivider"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             android:layout_marginVertical="12dp"
             android:gravity="center"
             android:textSize="20sp"

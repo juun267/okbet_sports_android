@@ -288,11 +288,9 @@ class VerifyKYCFragment :
                 this.tvUploadTip2.isVisible = false
                 this.txv_title_num.text = LocalUtils.getString(R.string.kyc_num)
                 this.cl_pic.setOnClickListener {
-                    PicSelectorDialog(
-                        activityNotNull,
-                        mfirstSelectDocMediaListener,
-                        PicSelectorDialog.CropType.RECTANGLE
-                    ).show(parentFragmentManager, VerifyKYCFragment::class.java.simpleName)
+                    val dialog = PicSelectorDialog()
+                    dialog.mSelectListener = mfirstSelectDocMediaListener
+                    dialog.show(parentFragmentManager, VerifyKYCFragment::class.java.simpleName)
                 }
             }
 
@@ -301,11 +299,9 @@ class VerifyKYCFragment :
                 this.tvUploadTip2.isVisible = true
                 this.txv_title_num.text = LocalUtils.getString(R.string.kyc_num2)
                 this.cl_pic.setOnClickListener {
-                    PicSelectorDialog(
-                        activityNotNull,
-                        mSecondSelectPhotoMediaListener,
-                        PicSelectorDialog.CropType.RECTANGLE
-                    ).show(parentFragmentManager, VerifyKYCFragment::class.java.simpleName)
+                    val dialog = PicSelectorDialog()
+                    dialog.mSelectListener = mSecondSelectPhotoMediaListener
+                    dialog.show(parentFragmentManager, VerifyKYCFragment::class.java.simpleName)
                 }
             }
         }

@@ -14,12 +14,15 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MenuCode
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchRequest
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LocalUtils
+import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
+import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
 import org.cxct.sportlottery.util.TimeUtil
 
@@ -244,7 +247,7 @@ abstract class BaseFavoriteViewModel(
                     }
 
                     leagueOdd.matchOdds.forEach { matchOdd ->
-                        matchOdd.setupOddDiscount()
+                        matchOdd.setupOddDiscountFixed()
                         matchOdd.matchInfo?.let { matchInfo ->
                             matchInfo.startDateDisplay =
                                 TimeUtil.timeFormat(matchInfo.startTime, "MM/dd")
@@ -272,6 +275,28 @@ abstract class BaseFavoriteViewModel(
             }
         }
     }
+
+    private fun MatchOdd.setupOddDiscountFixed() {
+
+        val discount = userInfo.value?.discount ?: 1.0F
+
+        this.oddsMap?.forEach { (key, value) ->
+            value?.forEach { odd ->
+                if (odd != null) {
+                    if (key == PlayCate.EPS.value)
+                        odd.setupEPSDiscount(discount)
+                    else
+                        setupOddDiscount(odd, discount)
+                }
+            }
+        }
+    }
+
+    private fun setupOddDiscount(odd: Odd, discount: Float) {
+        odd.odds = odd.odds?.applyDiscount(discount)
+        odd.hkOdds = odd.hkOdds?.applyHKDiscount(discount)
+    }
+
     private fun MatchOdd.setupOddDiscount() {
 
         val discount = userInfo.value?.discount ?: 1.0F

@@ -14,6 +14,7 @@ import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.VerifyConstUtil
 import java.text.Collator
 import java.util.*
 
@@ -80,6 +81,9 @@ class LeagueSelectViewModel(
             Collections.sort(leagueData, kotlin.Comparator { o1, o2 ->
                 compar.compare(o1.name, o2.name)
             })
+            leagueData.filter { !VerifyConstUtil.isValidEnglishWord(it.firstCap) }?.forEach {
+                it.firstCap = "#"
+            }
             _leagueList.postValue(leagueData)
 
             notifyFavorite(FavoriteType.LEAGUE)

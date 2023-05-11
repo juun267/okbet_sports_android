@@ -24,27 +24,23 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
     open fun onCloseMenu() {}
     open fun updateNoticeButton(noticeCount: Int) {}
 
-    protected val snackBarBetUpperLimitNotify by lazy {
-        Snackbar.make(
-            findViewById(android.R.id.content),
-            getString(R.string.login_notify),
-            Snackbar.LENGTH_LONG
-        ).apply {
-            val snackView: View = layoutInflater.inflate(
-                R.layout.snackbar_login_notify,
-                findViewById(android.R.id.content),
-                false
-            )
-            snackView.tv_notify.text = getString(R.string.bet_notify_max_limit)
-            (this.view as Snackbar.SnackbarLayout).apply {
-                findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
-                    visibility = View.INVISIBLE
-                }
-                background.alpha = 0
-                addView(snackView, 0)
-                setPadding(0, 0, 0, 0)
+    fun showSnackBarBetUpperLimitNotify(limitContent: String) = Snackbar.make(
+        findViewById(android.R.id.content), getString(R.string.login_notify), Snackbar.LENGTH_LONG
+    ).apply {
+        val snackView: View = layoutInflater.inflate(
+            R.layout.snackbar_login_notify, findViewById(android.R.id.content), false
+        )
+        snackView.tvNotify.text = limitContent
+
+        (this.view as Snackbar.SnackbarLayout).apply {
+            findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
+                visibility = View.INVISIBLE
             }
+            background.alpha = 0
+            addView(snackView, 0)
+            setPadding(0, 0, 0, 0)
         }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,11 +54,13 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
         mNoticeButton = noticeButton
         mNoticeButton?.setOnClickListener {
             startActivity(
-                Intent(this, InfoCenterActivity::class.java)
-                    .putExtra(InfoCenterActivity.KEY_READ_PAGE, InfoCenterActivity.YET_READ)
+                Intent(
+                    this, InfoCenterActivity::class.java
+                ).putExtra(InfoCenterActivity.KEY_READ_PAGE, InfoCenterActivity.YET_READ)
             )
         }
     }
+
     //有 child activity 給定 notice button 顯示
     fun setupNoticeButton(noticeButton: ImageView, noticeCircle: ImageView) {
         mNoticeButton = noticeButton
@@ -70,8 +68,9 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
         mNoticeButton?.setOnClickListener {
             onCloseMenu()
             startActivity(
-                Intent(this, InfoCenterActivity::class.java)
-                    .putExtra(InfoCenterActivity.KEY_READ_PAGE, InfoCenterActivity.YET_READ)
+                Intent(
+                    this, InfoCenterActivity::class.java
+                ).putExtra(InfoCenterActivity.KEY_READ_PAGE, InfoCenterActivity.YET_READ)
             )
         }
     }

@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.repository
 
 
+import androidx.exifinterface.media.ExifInterface.IfdType
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.application.MultiLanguagesApplication
@@ -36,6 +37,7 @@ import kotlin.math.abs
 
 
 const val BET_INFO_MAX_COUNT = 10
+const val BET_BASKETBALL_ENDING_SCORE_MAX_COUNT = 100
 
 
 object BetInfoRepository {
@@ -45,6 +47,10 @@ object BetInfoRepository {
     var isTouched = false
 
     var currentBetType: Int = BetListFragment.SINGLE
+        set(value) {
+            println("currentBetType:${value}")
+            field = value
+        }
 
     private val _showBetInfoSingle = MutableLiveData<Event<Boolean?>>()
 
@@ -67,6 +73,8 @@ object BetInfoRepository {
         get() = _betIDList
 
     private val _showBetUpperLimit = MutableLiveData<Event<Boolean>>()
+
+    var showBetBasketballUpperLimit: MutableLiveData<Event<Boolean>> = MutableLiveData()
     val showBetUpperLimit: LiveData<Event<Boolean>>
         get() = _showBetUpperLimit
 
@@ -118,10 +126,15 @@ object BetInfoRepository {
         _settlementNotificationMsg.postValue(Event(sportBet))
     }
 
-    var currentStateSingleOrParlay: Int = 0
+    /**
+     * 0.单关
+     * 1.串关
+     * 2.篮球末位比分
+     */
+    var currentState: Int = 0
 
     fun setCurrentBetState(currentState: Int) {
-        currentStateSingleOrParlay = (currentState)
+        this.currentState = currentState
     }
 
     /**
@@ -225,10 +238,13 @@ object BetInfoRepository {
 
     fun removeItem(oddId: String?) {
         val betList = _betInfoList.value?.peekContent() ?: CopyOnWriteArrayList()
+        Timber.d("betList:${betList}")
 
         val item = betList.find { it.matchOdd.oddsId == oddId }
         betList.remove(item)
-
+        if (betList.isNotEmpty()) {
+            betList[0].input = null
+        }
         updateQuickListManager(betList)
 
         val oddIDStr = oddId ?: ""
@@ -278,7 +294,7 @@ object BetInfoRepository {
         _betIDList.postValue(Event(oddIDArray))
         _betInfoList.postValue(Event(betList))
         betListTabPosition = 0
-        currentStateSingleOrParlay = 0
+        currentState = 0
     }
 
     fun switchSingleMode() {
@@ -338,18 +354,37 @@ object BetInfoRepository {
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
         betInfo: BetInfo? = null
     ) {
-        Timber.v("Bill====>betInfo:${betInfo}")
+//        Timber.v("Bill====>betInfo:${betInfo}")
         val betList = _betInfoList.value?.peekContent() ?: CopyOnWriteArrayList()
         oddsType?.let {
             this.oddsType = it
         }
-        if (betList.size >= BET_INFO_MAX_COUNT) {
-            _showBetUpperLimit.postValue(Event(true))
-            return
-        }
 
-        val emptyFilter = { item: String? ->
-            if (item.isNullOrEmpty()) null else item
+        //如果当前选择的是篮球末位比分
+        if (playCateCode == PlayCate.FS_LD_CS.value) {
+            //注单中选择的篮球末位比分的个数
+            val basketballCount =
+                betList.count { it.matchOdd.playCode == PlayCate.FS_LD_CS.value }
+            //如果当前选择的注单数量大于100个
+//            Timber.d("basketballCount:${basketballCount}")
+            if (basketballCount >= BET_BASKETBALL_ENDING_SCORE_MAX_COUNT) {
+                showBetBasketballUpperLimit.postValue(Event(true))
+                return
+            }
+        } else {
+            //如果当前选择的不是篮球末位比分
+            //选择的篮球末位比分的个数
+            val basketballCount =
+                betList.count {
+                    it.matchOdd.playCode == PlayCate.FS_LD_CS.value
+                }
+            //除了篮球末位比分以外的数量
+            val otherCount = betList.size - basketballCount
+//            Timber.d("basketballCount:${basketballCount} betList:${betList} otherCount:${otherCount}")
+            if (otherCount >= BET_INFO_MAX_COUNT) {
+                _showBetUpperLimit.postValue(Event(true))
+                return
+            }
         }
 
         val betInfoMatchOdd = MatchOddUtil.transfer(
@@ -375,27 +410,54 @@ object BetInfoRepository {
                 this.betInfo = betInfo
             }
 
-            Timber.d("==Bet Refactor==> _betIDList.size():${_betIDList.value?.peekContent()?.size}")
+//            Timber.d("==Bet Refactor==> _betIDList.size():${_betIDList.value?.peekContent()?.size}")
             val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
 
-            if (currentStateSingleOrParlay == 0) {
-                //单注模式
-                Timber.d("单注模式")
-                if (oddIDArray.size != 0) {
-                    oddIDArray[0] = it.oddsId
-                } else {
+            //是不是同一场比赛
+            val currentMatchName = it.playCateName + it.awayName + it.homeName
+            var lastMatchName: String? = null
+            if (betList.isNotEmpty()) {
+                val lastMatchOdd = betList.last().matchOdd
+                lastMatchName =
+                    lastMatchOdd.playCateName + lastMatchOdd.awayName + lastMatchOdd.homeName
+            }
+            val isSameMatch = (currentMatchName == lastMatchName) || (lastMatchName == null)
+//            Timber.d("isSameMatch:${isSameMatch} currentMatchName:${currentMatchName} lastMatchName:${lastMatchName}")
+            //篮球末位比分
+            if (playCateCode == PlayCate.FS_LD_CS.value) {
+                if (isSameMatch) {
+                    Timber.d("篮球末位比分模式")
                     oddIDArray.add(it.oddsId)
-                }
-                if (betList.size != 0) {
-                    betList[0] = data
+                    betList.add(data)
+                    betList[0].input = null
                 } else {
+                    oddIDArray.clear()
+                    betList.clear()
+                    oddIDArray.add(it.oddsId)
                     betList.add(data)
                 }
+                setCurrentBetState(BetListFragment.BASKETBALL_ENDING_CARD)
+                currentBetType = BetListFragment.BASKETBALL_ENDING_CARD
             } else {
-                Timber.d("串关模式")
-                //串关投注
-                oddIDArray.add(it.oddsId)
-                betList.add(data)
+                Timber.d("currentState:${currentState}")
+                if (currentState != 1) {
+                    setCurrentBetState(0)
+                }
+                if (currentState == 0) {
+                    //单注模式
+                    Timber.d("单注模式")
+                    oddIDArray.clear()
+                    betList.clear()
+                    oddIDArray.add(it.oddsId)
+                    betList.add(data)
+                    currentBetType = BetListFragment.SINGLE
+                } else if (currentState == 1) {
+                    Timber.d("串关模式")
+                    //串关投注
+                    oddIDArray.add(it.oddsId)
+                    betList.add(data)
+                    currentBetType = BetListFragment.PARLAY
+                }
             }
 
             _betIDList.postValue(Event(oddIDArray))
@@ -405,6 +467,8 @@ object BetInfoRepository {
             updateBetOrderParlay(betList)
             checkBetInfoContent(betList)
             _betInfoList.postValue(Event(betList))
+
+            //单注才弹出购物车
             if (betList.size == 1) {
                 _showBetInfoSingle.postValue(Event(true))
             }
@@ -705,7 +769,8 @@ object BetInfoRepository {
                 }
             }
         }
-        betInfoList.value?.peekContent()?.toList()?.forEach {
+
+        betInfoList.value?.peekContent()?.toArray()?.forEach {it as BetInfoListData
             updateItem(it.matchOdd, newList)
         }
         notifyBetInfoChanged()

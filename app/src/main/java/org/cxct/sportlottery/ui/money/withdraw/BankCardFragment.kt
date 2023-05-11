@@ -322,9 +322,10 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
         btn_delete_bank.setOnClickListener {
             modifyFinish()
-            val passwordDialog = WithdrawPassWordDialog(WithdrawPasswordDialogListener {
+            val passwordDialog = WithdrawPassWordDialog()
+            passwordDialog.listener = WithdrawPasswordDialogListener {
                 viewModel.deleteBankCard(args.editBankCard?.id!!.toLong(), it)
-            })
+            }
             passwordDialog.show(childFragmentManager, null)
 
         }

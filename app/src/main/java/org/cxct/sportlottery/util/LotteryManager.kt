@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.lottery.LotteryInfo
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.maintab.lottery.LotteryActivity
+import org.cxct.sportlottery.ui.maintab.menu.ScannerActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.splash.LaunchActivity
 import org.cxct.sportlottery.ui.splash.SplashActivity
@@ -44,7 +45,7 @@ class LotteryManager {
      * 注意：若viewmodel被回收，则无法请求网络
      *
      */
-     fun bind(activity: BaseActivity<BaseViewModel>) {
+    fun bind(activity: BaseActivity<BaseViewModel>) {
         this.viewModel = activity.viewModel
         this.activity = activity
         startShow()
@@ -61,14 +62,19 @@ class LotteryManager {
     /**
      * 限定指定页面不能显示
      */
-    fun allowdShow(): Boolean = when (activity!!::class) {
-        SplashActivity::class -> false
-        LaunchActivity::class -> false
-        MaintenanceActivity::class -> false
-        ThirdGameActivity::class -> false
-        LotteryActivity::class -> false
-        else -> true
-    }
+    private fun allowdShow(): Boolean =
+        if (SPUtil.getMarketSwitch())
+            false
+        else
+            when (activity!!::class) {
+                SplashActivity::class,
+                LaunchActivity::class,
+                MaintenanceActivity::class,
+                ThirdGameActivity::class,
+                LotteryActivity::class,
+                ScannerActivity::class -> false
+                else -> true
+            }
 
     private fun startTimer() {
         if (countdownTimer != null) {
@@ -90,6 +96,7 @@ class LotteryManager {
             }
         }, 1000, 1000)
     }
+
     private fun startShow() {
         if (!allowdShow() || lotteryInfo == null) {
             activity?.lifecycleScope?.launch(Dispatchers.Main) {
@@ -140,11 +147,12 @@ class LotteryManager {
                 val isSameDay =
                     TimeUtil.timeFormat(nextDrawTime, TimeUtil.YMD_FORMAT) == TimeUtil.timeFormat(
                         nowMoment,
-                        TimeUtil.YMD_FORMAT)
+                        TimeUtil.YMD_FORMAT
+                    )
                 var countdownTitle = ""
                 var countdownTime = ""
                 if (nextDrawTime == 0L) {
-                    countdownTitle = LocalUtils.getString(R.string.end_time)
+                    countdownTitle = LocalUtils.getString(R.string.N577)
                     countdownTime = TimeUtil.timeFormat(it.endTime, TimeUtil.YMD_HMS_FORMAT)
                 } else if (!isSameDay) {
                     // 1 非当天 显示 开奖时间（抽奖前 抽奖后）
@@ -193,6 +201,7 @@ class LotteryManager {
     fun isLogin(): Boolean {
         return viewModel?.isLogin?.value == true
     }
+
     fun getLotteryInfo() {
         viewModel?.let {
             it.viewModelScope.launch {

@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.base
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import androidx.annotation.Nullable
@@ -9,7 +8,6 @@ import kotlinx.coroutines.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.exception.DoNoConnectException
-import org.cxct.sportlottery.common.extentions.clean
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.httpFormat
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -31,43 +29,14 @@ abstract class BaseViewModel(
     val androidContext: Application,
     val loginRepository: LoginRepository,
     val betInfoRepository: BetInfoRepository,
-    val infoCenterRepository: InfoCenterRepository,
+    val infoCenterRepository: InfoCenterRepository
 ) : ViewModel() {
-    @SuppressLint("StaticFieldLeak")
-    private lateinit var liveSet: HashMap<Class<*>, MutableLiveData<*>>
 
-    @Synchronized
-    private fun <T> getLiveData(clazz: Class<T>): MutableLiveData<T> {
+    companion object {
+        private val _errorResultToken = MutableLiveData<Event<BaseResult>>()
 
-        var liveData: MutableLiveData<T>? = null
-        if (!::liveSet.isInitialized) {
-            liveSet = HashMap()
-            liveData = MutableLiveData<T>()
-            liveSet.put(clazz, liveData)
-            return liveData
-        }
-
-        liveData = liveSet.get(clazz) as MutableLiveData<T>?
-        if (liveData == null) {
-            liveData = MutableLiveData<T>()
-            liveSet.put(clazz, liveData)
-            return liveData
-        }
-
-        return liveData!!
-    }
-
-    fun <T> oberserve(lifecycleOwner: LifecycleOwner, clazz: Class<T>, oberver: Observer<T>) {
-        getLiveData(clazz).observe(lifecycleOwner, oberver)
-    }
-
-    protected fun post(data: Any) {
-        getLiveData(data::class.java).postValue(data as Nothing)
-    }
-
-    override fun onCleared() {
-        if (::liveSet.isInitialized) {
-            liveSet.values.forEach { it.clean() }
+        fun postErrorResut(result: BaseResult) {
+            _errorResultToken.postValue(Event(result))
         }
     }
 
@@ -85,7 +54,7 @@ abstract class BaseViewModel(
     val errorResultIndex: LiveData<String>
         get() = _errorResultIndex
 
-    val errorResultToken: LiveData<BaseResult>
+    val errorResultToken: LiveData<Event<BaseResult>>
         get() = _errorResultToken
 
     val networkExceptionUnavailable: LiveData<String>
@@ -98,7 +67,6 @@ abstract class BaseViewModel(
         get() = _networkExceptionUnknown
 
     private val _errorResultIndex = MutableLiveData<String>()
-    private val _errorResultToken = MutableLiveData<BaseResult>()
     private val _networkExceptionUnavailable = MutableLiveData<String>()
     private val _networkExceptionTimeout = MutableLiveData<String>()
     private val _networkExceptionUnknown = MutableLiveData<String>()
@@ -156,9 +124,15 @@ abstract class BaseViewModel(
         }
 
         val errorResult = ErrorUtils.parseError(response)
-        if (errorResult?.code == HttpError.UNAUTHORIZED.code || errorResult?.code == HttpError.KICK_OUT_USER.code || errorResult?.code == HttpError.MAINTENANCE.code) {
-            errorResult.let {
-                _errorResultToken.postValue(it)
+        val errorList = mutableListOf(
+            HttpError.BALANCE_IS_LOW.code,
+            HttpError.UNAUTHORIZED.code,
+            HttpError.KICK_OUT_USER.code,
+            HttpError.MAINTENANCE.code
+        )
+        errorResult?.let {
+            if (errorList.contains(it.code)) {
+                _errorResultToken.postValue(Event(it))
             }
         }
         return errorResult
@@ -169,6 +143,7 @@ abstract class BaseViewModel(
             is kotlinx.coroutines.CancellationException -> {
                 // 取消线程不执行业务
             }
+
             else -> {
                 _networkExceptionUnavailable.postValue(context.getString(R.string.message_network_no_connect))
             }
@@ -219,10 +194,8 @@ abstract class BaseViewModel(
     }
 
 
-
-
-    fun launch(block:suspend (coroutine:CoroutineScope)->Unit){
-        viewModelScope.launch{
+    fun launch(block: suspend (coroutine: CoroutineScope) -> Unit) {
+        viewModelScope.launch {
             block(this)
         }
     }

@@ -140,7 +140,9 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         //設定個人資訊頁面
         setupToInfoSettingPage()
         btn_head.setOnClickListener {
-            AvatarSelectorDialog(this, mSelectMediaListener).show(supportFragmentManager, null)
+            val dialog = AvatarSelectorDialog()
+            dialog.mSelectListener = mSelectMediaListener
+            dialog.show(supportFragmentManager, null)
         }
     }
 
@@ -183,6 +185,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         val oldInfo = if (modifyType == ModifyType.Email) email else phoneNo
         // 如果未设置过对应的信息，就直接去设置不需要校验
         if (oldInfo.isEmptyStr()) {
+//            putExtraForProfileInfoActivity(modifyType)
             ModifyBindInfoActivity.start(this, modifyType, 100, null, null, null)
         } else {
             VerificationWaysActivity.start(this, modifyType, phoneNo, email)
@@ -271,7 +274,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         viewModel.needToSendTwoFactor.observe(this) {
             val b = it.getContentIfNotHandled() ?: return@observe
             if (b) {
-                customSecurityDialog = CustomSecurityDialog(this).apply {
+                customSecurityDialog = CustomSecurityDialog().apply {
                     getSecurityCodeClickListener {
                         this.showSmeTimer300()
                         viewModel.sendTwoFactor()

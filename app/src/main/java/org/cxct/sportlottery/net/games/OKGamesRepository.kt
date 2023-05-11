@@ -43,14 +43,20 @@ object OKGamesRepository {
         gameName: String?,
         categoryId: String?,
         firmId: String?,
+        markCollect: Boolean? = null // 获取收藏列表时为：true
     ): ApiResult<List<OKGameBean>> {
 
         val params = paramDevice()
         params.addProperty("page", page)
         params.addProperty("pageSize", pageSize)
-        params.addProperty("gameName", gameName)
-        params.addProperty("categoryId", categoryId)
-        params.addProperty("firmId", firmId)
+        if (markCollect == null) {
+            params.addProperty("gameName", gameName)
+            params.addProperty("categoryId", categoryId)
+            params.addProperty("firmId", firmId)
+        } else {
+            params.addProperty("markCollect", markCollect)
+        }
+
         return okGamesApi.getOKGamesList(params)
     }
 }

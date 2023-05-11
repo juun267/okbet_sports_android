@@ -21,6 +21,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.android.synthetic.main.activity_main_tab.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.BetModeChangeEvent
@@ -127,9 +130,18 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             }
         }
         viewModel.showBetUpperLimit.observe(this) {
-            if (it.getContentIfNotHandled() == true) snackBarBetUpperLimitNotify.apply {
-                setAnchorView(R.id.parlayFloatWindow)
-                show()
+            if (it.getContentIfNotHandled() == true) {
+                showSnackBarBetUpperLimitNotify(
+                    getString(R.string.bet_notify_max_limit)
+                ).setAnchorView(R.id.parlayFloatWindow).show()
+            }
+        }
+
+        viewModel.showBetBasketballUpperLimit.observe(this) {
+            if (it.getContentIfNotHandled() == true) {
+                showSnackBarBetUpperLimitNotify(
+                    getString(R.string.bet_basketball_notify_max_limit)
+                ).setAnchorView(R.id.parlayFloatWindow).show()
             }
         }
     }
@@ -177,6 +189,12 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                         homeFragment().backMainHome()
                     } else {
                         binding.llHomeBack.gone()
+                        if (position == 1) {
+                            GlobalScope.launch {
+                                delay(500)
+                                jumpToTheSport()
+                            }
+                        }
                     }
                     setupBetBarVisiblity(position)
                     return@OnNavigationItemSelectedListener true
@@ -295,6 +313,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         if (event.currentMode == BetListFragment.SINGLE) {
             BetInfoRepository.currentBetType = BetListFragment.SINGLE
             parlayFloatWindow.gone()
+        } else if (event.currentMode == BetListFragment.BASKETBALL_ENDING_CARD) {
+            BetInfoRepository.currentBetType = BetListFragment.BASKETBALL_ENDING_CARD
+            if (betListCount != 0) {
+                parlayFloatWindow.visible()
+            }
         } else {
             BetInfoRepository.currentBetType = BetListFragment.PARLAY
             if (betListCount != 0) {
@@ -367,14 +390,18 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             else -> false
         }
 
-        if (betListCount == 0 || !needShowBetBar || BetInfoRepository.currentBetType == BetListFragment.SINGLE) {
+        if (betListCount == 0 || !needShowBetBar || BetInfoRepository.currentBetType
+            == BetListFragment.SINGLE) {
 //            Timber.d("ParlayFloatWindow隐藏：betListCount:${betListCount} !needShowBetBar:${!needShowBetBar} currentBetMode:${BetInfoRepository.currentBetType}")
             parlayFloatWindow.gone()
         } else {
-            if (BetInfoRepository.currentBetType == BetListFragment.PARLAY) {
-//                Timber.d("ParlayFloatWindow显示")
-                parlayFloatWindow.visible()
+            if (BetInfoRepository.currentBetType == BetListFragment.PARLAY
+            ) {
+                parlayFloatWindow.setBetText(getString(R.string.conspire))
+            }else{
+                parlayFloatWindow.setBetText(getString(R.string.bet_slip))
             }
+            parlayFloatWindow.visible()
         }
     }
 
@@ -576,7 +603,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             .addToBackStack(AccountHistoryNextFragment::class.java.simpleName).commit()
     }
 
-    fun jumpToTheSport(matchType: MatchType, gameType: GameType) {
+    fun jumpToTheSport(matchType: MatchType? = null, gameType: GameType? = null) {
         resetBackIcon(1)
         (fragmentHelper.getFragment(1) as SportFragment).setJumpSport(matchType, gameType)
     }

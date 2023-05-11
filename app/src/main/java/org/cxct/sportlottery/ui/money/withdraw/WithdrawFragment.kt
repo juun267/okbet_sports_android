@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.fragment_withdraw.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.startActivity
+import org.cxct.sportlottery.common.extentions.toDoubleS
 import org.cxct.sportlottery.databinding.ItemListviewBankCardBinding
 import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.money.config.TransferType
@@ -269,7 +270,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 
         et_withdrawal_amount.getAllButton {
             it.setText(min(viewModel.getWithdrawAmountLimit().max,
-                viewModel.userMoney.value?.toDouble() ?: 0.0).toString())
+                viewModel.userMoney.value ?: 0.0).toString())
             et_withdrawal_amount.et_input.apply { setSelection(this.length()) }
         }
     }
@@ -352,7 +353,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         }
 
         viewModel.userMoney.observe(this.viewLifecycleOwner, Observer {
-            tv_balance.text = TextUtil.format(ArithUtil.toMoneyFormat(it).toDouble())
+            tv_balance.text = TextUtil.format(ArithUtil.toMoneyFormat(it).toDoubleS())
             viewModel.getWithdrawHint()
         })
 
@@ -470,7 +471,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             } else {
                 viewModel.getWithdrawRate(
                     withdrawBankCardData,
-                    et_withdrawal_amount.getText().toDouble()
+                    et_withdrawal_amount.getText().toDoubleS()
                 )
             }
             viewModel.getWithdrawHint()
