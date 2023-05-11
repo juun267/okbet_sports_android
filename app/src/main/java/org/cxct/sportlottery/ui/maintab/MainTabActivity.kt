@@ -174,7 +174,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                             }
                         }
                         R.id.i_favorite -> {
-                            if(!isOpenChatRoom()){
+                            if(isOpenChatRoom()){
+                                startActivity(Intent(this@MainTabActivity, ChatActivity::class.java))
+                                return@OnNavigationItemSelectedListener false
+                            }else{
                                 if (viewModel.isLogin.value == false) {
                                     startLogin()
                                     return@OnNavigationItemSelectedListener false
@@ -675,10 +678,4 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     override fun updateBetListOdds(list: MutableList<BetInfoListData>) {
     }
 
-    fun jumpChatActivity() {
-        when (sConfigData?.chatOpen) {
-            "1" -> startActivity(Intent(this@MainTabActivity, ChatActivity::class.java))
-            else -> ToastUtil.showToast(this, getString(R.string.chat_room_is_closed))
-        }
-    }
 }
