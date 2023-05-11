@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.databinding.ItemChatWelcomeBinding
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatUserResult
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 /**
@@ -23,7 +24,7 @@ class ChatWelcomeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var dataList = mutableListOf<ChatUserResult>()
 
-    var activity: ChatActivity? = null
+    var activity: MainTabActivity? = null
 
     fun insertItem() {
         notifyItemInserted(dataList.size)

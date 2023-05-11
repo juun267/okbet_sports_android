@@ -28,6 +28,7 @@ import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.repository.ChatRepository
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.login.afterTextChanged
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.GlideEngine
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
@@ -99,7 +100,7 @@ class ChatFragment : BaseSocketFragment<ChatViewModel>(ChatViewModel::class), Vi
         binding.vChatAction.binding.ivUploadImage.setOnClickListener(this)
         binding.vChatAction.binding.ivSend.setOnClickListener(this)
         binding.ivDownBtn.setOnClickListener(this)
-        chatWelcomeAdapter.activity = activity as ChatActivity?
+        chatWelcomeAdapter.activity = activity as MainTabActivity?
         binding.rvWelcome.apply {
             layoutManager = SmoothLinearLayoutManager(context)
             addItemDecoration(

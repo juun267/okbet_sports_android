@@ -28,6 +28,7 @@ import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
@@ -42,6 +43,7 @@ import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.ui.betRecord.BetRecordFragment
 import org.cxct.sportlottery.ui.betRecord.accountHistory.next.AccountHistoryNextFragment
 import org.cxct.sportlottery.ui.chat.ChatActivity
+import org.cxct.sportlottery.ui.chat.ChatFragment
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment
@@ -64,8 +66,12 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 Pair(HomeFragment::class.java, null),
                 Pair(SportFragment::class.java, null),
                 Pair(BetRecordFragment::class.java, null),
-                Pair(FavoriteFragment::class.java, null),
-                Pair(ProfileCenterFragment::class.java, null)
+                if(isOpenChatRoom())
+                  Pair(ChatFragment::class.java, null)
+                else
+                  Pair(FavoriteFragment::class.java, null),
+                Pair(ProfileCenterFragment::class.java, null),
+
             )
         )
     }
@@ -139,13 +145,28 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             setTextSize(10f)
             setIconSize(30f)
             menu.getItem(2).isVisible = !SPUtil.getMarketSwitch()
+            Constants.CONNECT_TIMEOUT
+            if(isOpenChatRoom()){
+                menu.findItem(R.id.i_favorite).apply {
+                    title = getString(R.string.chat_room)
+                    icon = getDrawable(R.drawable.selector_tab_fav)
+                }
+            }
             onNavigationItemSelectedListener =
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
                     when (menuItem.itemId) {
-                        R.id.i_betlist, R.id.i_favorite, R.id.i_user -> {
+                        R.id.i_betlist, R.id.i_user -> {
                             if (viewModel.isLogin.value == false) {
                                 startLogin()
                                 return@OnNavigationItemSelectedListener false
+                            }
+                        }
+                        R.id.i_favorite -> {
+                            if(!isOpenChatRoom()){
+                                if (viewModel.isLogin.value == false) {
+                                    startLogin()
+                                    return@OnNavigationItemSelectedListener false
+                                }
                             }
                         }
                     }
@@ -158,9 +179,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                         binding.llHomeBack.gone()
                     }
                     setupBetBarVisiblity(position)
-                    if (menuItem.itemId == R.id.i_favorite) {
-                        jumpChatActivity()
-                    }
                     return@OnNavigationItemSelectedListener true
                 }
 
