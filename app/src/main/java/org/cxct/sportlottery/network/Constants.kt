@@ -16,6 +16,9 @@ import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
 
 object Constants {
+    val SERVICE_H5_URL_LIST = listOf(
+        "https://phuat.abaoooiap.com", "https://www.okbet.com", "https://okbet-v1.cxsport.net"
+    )
     val SERVER_URL_LIST = listOf("56wwwkvo.com", "66abnmho.com", "pukckq23.com", "tyiksa89.com")
     var currentServerUrl: String? = null  //當前選擇的的 server url (後續 CheckAppUpdate API 會用到)
     var currentFilename: String? = null //當前選擇的apk name
@@ -280,7 +283,7 @@ object Constants {
 
     fun getPrintReceiptScan(url: String): String {
         val base = getH5BaseUrl()
-        return if (url.startsWith(base)) {
+        return if (url.startsWith(base) || SERVICE_H5_URL_LIST.any { it.startsWith(base) }) {
             url
         } else {
             ""
