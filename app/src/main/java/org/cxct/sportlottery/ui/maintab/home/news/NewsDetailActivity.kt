@@ -11,6 +11,7 @@ import org.cxct.sportlottery.databinding.ActivityNewsDetailBinding
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
 
@@ -33,8 +34,8 @@ class NewsDetailActivity : org.cxct.sportlottery.ui.base.BindingActivity<MainHom
         binding.customToolBar.setOnBackPressListener {
             finish()
         }
+        binding.okWebContent.setBackgroundColor(getColor(R.color.color_F8F9FD))
         initRecyclerView()
-
         initObservable()
         reload(intent)
     }
@@ -65,7 +66,7 @@ class NewsDetailActivity : org.cxct.sportlottery.ui.base.BindingActivity<MainHom
             tvTime.text = TimeUtil.timeFormat(newsItem?.updateTimeInMillisecond,
                 TimeUtil.NEWS_TIME_FORMAT,
                 locale = Locale.ENGLISH)
-            okWebContent.setBackgroundColor(getColor(R.color.color_F8F9FD))
+            LogUtil.d("contents=" + newsItem?.contents)
             okWebContent.loadData(getHtmlData(newsItem?.contents ?: ""), "text/html", null)
         }
     }
@@ -91,6 +92,7 @@ class NewsDetailActivity : org.cxct.sportlottery.ui.base.BindingActivity<MainHom
             }
 
             val detail = it.second!!
+            setupNews(detail.detail)
             if (detail.relatedList.isNullOrEmpty()) {
                 binding.linNews.gone()
             } else {
