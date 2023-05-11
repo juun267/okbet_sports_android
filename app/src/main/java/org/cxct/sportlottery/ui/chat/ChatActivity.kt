@@ -3,10 +3,11 @@ package org.cxct.sportlottery.ui.chat
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import com.gyf.immersionbar.ImmersionBar
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
-import org.cxct.sportlottery.common.extentions.launch
+import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.databinding.ActivityChatBinding
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.util.setTextTypeFace
@@ -47,24 +48,23 @@ class ChatActivity : BaseSocketActivity<ChatViewModel>(ChatViewModel::class) {
     }
 
     private fun initObserve() {
-        launch {
-            viewModel.chatEvent.collect { chatEvent ->
 
-                if (chatEvent is ChatEvent.UpdateMarquee) {
-                    marqueeAdapter.setData(chatEvent.marqueeList)
-                    binding.rvMarquee.startAuto(false)
-                    return@collect
-                }
+        viewModel.chatEvent.collectWith(lifecycleScope) { chatEvent ->
 
-                if (chatEvent is ChatEvent.ShowPhoto) {
-                    val chatPhotoFragment = ChatPhotoFragment.newInstance(chatEvent.photoUrl)
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fl_chat_photo, chatPhotoFragment)
-                        .addToBackStack(null)
-                        .commit()
-                }
-
+            if (chatEvent is ChatEvent.UpdateMarquee) {
+                marqueeAdapter.setData(chatEvent.marqueeList)
+                binding.rvMarquee.startAuto(false)
+                return@collectWith
             }
+
+            if (chatEvent is ChatEvent.ShowPhoto) {
+                val chatPhotoFragment = ChatPhotoFragment.newInstance(chatEvent.photoUrl)
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fl_chat_photo, chatPhotoFragment)
+                    .addToBackStack(null)
+                    .commit()
+            }
+
         }
     }
 

@@ -118,7 +118,7 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>? = null) : Fragment(
         }
     }
 
-    fun showErrorPromptDialog(title: String, message: String, hasCancel:Boolean = true,positiveClickListener: () -> Unit) {
+    fun showErrorPromptDialog(title: String, message: String, hasCancel:Boolean = true, positiveClickListener: () -> Unit) {
         if (activity is BaseActivity<*>) {
             (activity as BaseActivity<*>).showErrorPromptDialog(
                 title,

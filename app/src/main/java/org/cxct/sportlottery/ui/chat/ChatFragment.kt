@@ -1,8 +1,6 @@
 package org.cxct.sportlottery.ui.chat
 
-import android.annotation.SuppressLint
-import android.os.Handler
-import android.os.Looper
+
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -10,16 +8,11 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.*
-import com.luck.picture.lib.PictureSelector
-import com.luck.picture.lib.config.PictureConfig
-import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
-import com.luck.picture.lib.language.LanguageConfig
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import kotlinx.android.synthetic.main.fragment_chat.*
 import kotlinx.coroutines.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.launch
 import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.databinding.FragmentChatBinding
@@ -28,13 +21,11 @@ import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.repository.ChatRepository
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.login.afterTextChanged
-import org.cxct.sportlottery.ui.profileCenter.profile.GlideEngine
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import timber.log.Timber
 import java.io.File
-import java.io.FileNotFoundException
 
 /**
  * @author kevin
@@ -72,6 +63,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
 
     override fun onInitView(view: View) {
         initView()
+        loading()
     }
 
     override fun onBindViewStatus(view: View) {
@@ -184,25 +176,23 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
     /**
      * 加入"@nickName"訊息，並判斷前後是否需要補空格
      */
-    private fun addTagMessage(tagUser: String) {
-        binding.vChatAction.binding.etInput.apply {
-            if (!isEnabled) return@apply
-            val input = text.toString().ifEmpty { "" }
-            val space = " "
-            var plusTag = when {
-                input.isEmpty() -> input.plus(tagUser)
-                else -> {
-                    if (input.endsWith(space)) {
-                        input.plus(tagUser)
-                    } else {
-                        input.plus(space).plus(tagUser) //當tag的前面沒空格時，前面補空格
-                    }
-                }
+    private fun addTagMessage(tagUser: String) = binding.vChatAction.binding.etInput.apply {
+        if (!isEnabled) return@apply
+
+        val input = text.toString().ifEmpty { "" }
+        val space = " "
+        var plusTag = if (input.isEmpty()) {
+            input.plus(tagUser)
+        } else {
+            if (input.endsWith(space)) {
+                input.plus(tagUser)
+            } else {
+                input.plus(space).plus(tagUser) //當tag的前面沒空格時，前面補空格
             }
-            plusTag = plusTag.plus(space) //點tag，後面補空格
-            setText(plusTag)
-            text?.let { setSelection(it.length) }
         }
+        plusTag = plusTag.plus(space) //點tag，後面補空格
+        setText(plusTag)
+        text?.let { setSelection(it.length) }
     }
 
     private fun initEvent() {
@@ -223,296 +213,286 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
             }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    private fun initObserve() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.chatEvent.collect { chatEvent ->
-                when (chatEvent) {
-                    is ChatEvent.ChatRoomIsReady -> { //已訂閱roomId且已更新歷史訊息
-                        initEvent() //房間就緒後才能操作列表內容
-                            //region 選擇照片會離開聊天室頁面，返回後需等重新訂閱，聊天室就緒後才能發送圖片訊息
-                        if (!viewModel.tempChatImgUrl.isNullOrEmpty() && chatEvent.isReady) {
-                            viewModel.tempChatImgUrl?.let {
-                                delay(200)
-                                sendPictureMsgDialog = SendPictureMsgDialog.newInstance(it,
-                                    object : SendPictureMsgDialog.SendMsgListener {
-                                        override fun onSend(
-                                            msg: String,
-                                            chatType: ChatType,
-                                        ) {
-                                            chatSendMessage(
-                                                LiveMsgEntity().apply {
-                                                    content = msg
-                                                    type = chatType.code.toString()
-                                                }
-                                            )
-//                                                Timber.e("chatSendMessage msg:$msg, type:${chatType.code.toString()}")
-                                            viewModel.tempChatImgUrl = null
-                                        }
-                                    })
-                                sendPictureMsgDialog?.showAllowingStateLoss(
-                                    childFragmentManager, "SendPictureMsgDialog"
-                                )
-                            }
-                        //endregion
-                    }
-                    }
-                    is ChatEvent.UpdateList -> {
-                        chatMessageListAdapter.dataList = chatEvent.chatMessageList
-
-                        if (viewModel.isFirstInit) {
-                            binding.rvChatMessage.removeItemDecoration(headerItemDecoration)
-                            binding.rvChatMessage.addItemDecoration(headerItemDecoration)
-                        }
-                    }
-
-                    is ChatEvent.RemoveMsg -> {
-                        chatMessageListAdapter.removeItem(chatEvent.position)
-                    }
-
-                    is ChatEvent.UserEnter -> {
-
-                    }
-
-                    is ChatEvent.UserLeave -> {
-
-                    }
-
-                    is ChatEvent.SubscribeRoom -> {
-                        Timber.i("[Chat] 訂閱 roomId -> ${chatEvent.roomId}")
-                        subscribeChatRoom(chatEvent.roomId.toString()) //需要修改socket token
-                    }
-
-                    is ChatEvent.UnSubscribeRoom -> {
-                        Timber.i("[Chat] 解除訂閱 roomId -> ${chatEvent.roomId}")
-                        unSubscribeChatRoom(chatEvent.roomId.toString()) //需要修改socket token
-                    }
-
-                    is ChatEvent.SubscribeChatUser -> {
-                        Timber.i("[Chat] 訂閱 userId -> ${chatEvent.userId}")
-                        subscribeChatUser(chatEvent.userId.toString())
-                    }
-
-                    is ChatEvent.UnSubscribeChatUser -> {
-                        Timber.i("[Chat] 解除訂閱 userId -> ${chatEvent.userId}")
-                        unSubscribeChatUser(chatEvent.userId.toString())
-                    }
-
-                    is ChatEvent.InitFail -> {
-                        showErrorPromptDialog(
-                            title = getString(R.string.error),
-                            message = chatEvent.message
+    private suspend fun onChatRoomReady(chatEvent: ChatEvent.ChatRoomIsReady) {
+        initEvent() //房間就緒後才能操作列表內容
+        //region 選擇照片會離開聊天室頁面，返回後需等重新訂閱，聊天室就緒後才能發送圖片訊息
+        if (!viewModel.tempChatImgUrl.isNullOrEmpty() && chatEvent.isReady) {
+            viewModel.tempChatImgUrl?.let {
+                delay(200)
+                sendPictureMsgDialog = SendPictureMsgDialog.newInstance(it,
+                    object : SendPictureMsgDialog.SendMsgListener {
+                        override fun onSend(
+                            msg: String,
+                            chatType: ChatType,
                         ) {
-                            activity?.onBackPressed()
-                        }
-                    }
-
-                    is ChatEvent.ActionInputSendStatusAndMaxLength -> {
-                        binding.vChatAction.setInputMaxLength(chatEvent.maxLength)
-                        binding.vChatAction.setInputStatus(chatEvent.isEnable)
-                        binding.vChatAction.apply {
-                            setInputMaxLength(chatEvent.maxLength)
-                            setInputStatus(chatEvent.isEnable)
-                            setSendStatus(chatEvent.isEnable && binding.etInput.text.toString()
-                                .isNotEmpty())
-                        }
-                    }
-
-                    is ChatEvent.ActionUploadImageStatus -> {
-                        binding.vChatAction.setUploadImageStatus(chatEvent.isEnable)
-                    }
-
-                    is ChatEvent.NoMatchRoom -> {
-
-                    }
-
-                    is ChatEvent.InsertMessage -> {
-                        insertItem(chatEvent.isMe)
-                    }
-
-                    is ChatEvent.InsertPic -> {
-                        insertItem(chatEvent.isMe)
-                    }
-
-                    is ChatEvent.RedEnvelope -> {
-                        createRedPacketDialog(
-                            chatEvent.packetId,
-                            chatEvent.packetType,
-                            chatEvent.isAdmin
-                        )
-                        insertItem()
-                    }
-
-                    is ChatEvent.PersonalRedEnvelope -> {
-                        createRedPacketDialog(
-                            chatEvent.packetId,
-                            chatEvent.packetType,
-                            chatEvent.isAdmin
-                        )
-                        insertItem()
-                    }
-
-                    is ChatEvent.Silence -> {
-                        showToast(getString(R.string.chat_you_banned))
-                    }
-
-                    is ChatEvent.UnSilence -> {
-                        showToast(getString(R.string.chat_you_can_chatting))
-                    }
-
-                    is ChatEvent.KickOut -> {
-                        showPromptDialog(
-                            getString(R.string.chat_chat_room_lobby),
-                            getString(R.string.chat_you_kicked_out)
-                        ) {
-                            dismissDiaolg()
-                            activity?.onBackPressed()
-                        }
-                    }
-
-                    is ChatEvent.UserSystemPrompt -> {
-                        insertItem()
-                    }
-
-                    is ChatEvent.NotifyChange -> {
-                        chatMessageListAdapter.notifyDataSetChanged()
-                    }
-
-                    is ChatEvent.ScrollToBottom -> {
-                        binding.rvChatMessage.apply {
-                            post {
-                                scrollToPosition(chatMessageListAdapter.itemCount - 1) //滑動到底部不需動畫效果
-                                binding.rvChatMessage.isVisible = true
-                            }
-                        }
-                    }
-
-                    is ChatEvent.RedEnvelopeMsg -> {
-                        insertItem()
-                    }
-
-                    is ChatEvent.OpenLuckyBag -> {
-//                        redPacketDialog?.show()
-                    }
-
-                    is ChatEvent.GetLuckyBagResult -> {
-                        if (chatEvent.luckyBagResult.success) {
-                            redPacketDialog?.showRedPacketOpenDialog(
-                                chatEvent.luckyBagResult.t?.toDouble() ?: 0.0
+                            chatSendMessage(
+                                LiveMsgEntity().apply {
+                                    content = msg
+                                    type = chatType.code.toString()
+                                }
                             )
-                            //TODO Bill 更新聊天室列表的紅包狀態
-                        } else {
-                            when (chatEvent.luckyBagResult.code) {
-                                ChatViewModel.ChatErrorCode.NOT_ENOUGH_BET_AND_RECH_MONEY, ChatViewModel.ChatErrorCode.GOT_ALREADY -> {
-                                    showPromptDialog(
-                                        getString(
-                                            R.string.chat_hint
-                                        ),
-                                        chatEvent.luckyBagResult.msg
-                                    ) {
-                                        dismissDiaolg()
-                                    }
-                                }
-                                ChatViewModel.ChatErrorCode.PW_ERROR -> {
-                                    redPacketDialog?.showPWErrorHint()
-                                }
-                                ChatViewModel.ChatErrorCode.NET_ERROR -> {
-                                    showPromptDialog(
-                                        getString(R.string.chat_hint),
-                                        chatEvent.luckyBagResult.msg
-                                    ) {
-                                        dismissDiaolg()
-                                    }
-                                }
-                                else -> {
-                                    showPromptDialog(
-                                        getString(
-                                            R.string.chat_hint
-                                        ),
-                                        chatEvent.luckyBagResult.msg
-                                    ) {
-                                        dismissDiaolg()
-                                    }
-                                }
-                            }
-                            Timber.v("Bill===>開完紅包${chatEvent.luckyBagResult}")
+//                                                Timber.e("chatSendMessage msg:$msg, type:${chatType.code.toString()}")
+                            viewModel.tempChatImgUrl = null
                         }
-                    }
+                    })
+                sendPictureMsgDialog?.showAllowingStateLoss(
+                    childFragmentManager, "SendPictureMsgDialog"
+                )
+            }
+            //endregion
+        }
+    }
 
-                    is ChatEvent.UpdateUserEnterList -> {
-                        chatWelcomeAdapter.dataList = chatEvent.userEnterList
-                    }
+    private fun onLuckyBagResultEvent(chatEvent: ChatEvent.GetLuckyBagResult) {
+        if (chatEvent.luckyBagResult.success) {
+            redPacketDialog?.showRedPacketOpenDialog(
+                chatEvent.luckyBagResult.t?.toDouble() ?: 0.0
+            )
+            //TODO Bill 更新聊天室列表的紅包狀態
+            return
+        }
 
-                    is ChatEvent.InsertUserEnter -> {
-                        chatWelcomeAdapter.insertItem()
-                        if (jobScroll?.isActive == true) jobScroll?.cancel()
-                        jobScroll = lifecycleScope.launch {
-                            delay(2000)
-                            binding.rvWelcome.smoothScrollToPosition(chatWelcomeAdapter.itemCount - 2)
-                            delay(2000)
-                            binding.rvWelcome.smoothScrollToPosition(chatWelcomeAdapter.itemCount - 1)
-                        }
-                    }
-
-                    is ChatEvent.IsAdminType -> {
-                        chatMessageListAdapter.isAdmin = chatEvent.isAdmin
-                    }
-
-                    //獲取未領取紅包列表
-                    is ChatEvent.GetUnPacket -> {
-                        redEnvelopeListDialog = context?.let { context ->
-                            ChatRepository.unPacketList
-                                ?.toMutableList()?.let { getUnPacketList ->
-                                    RedEnvelopeListDialog(
-                                        context,
-                                        getUnPacketList,
-                                        object : RedEnvelopeListDialog.Listener { //開紅包
-                                            override fun onDialogCallback(selected: Row) {
-                                                createRedPacketDialog(
-                                                    selected.id.toString(),
-                                                    selected.packetType,
-                                                    chatEvent.isAdmin
-                                                )
-                                            }
-                                        }
-                                    )
-                                }
-                        }
-
-                        chatRedEnpView.setOnClickListener {
-                            redEnvelopeListDialog?.show()
-                        }
-                    }
-
-                    //判斷顯示懸浮紅包
-                    is ChatEvent.ChatRedEnpViewStatus -> {
-                        chatRedEnpView.isVisible = chatEvent.isShow
-                    }
-
-                    //更新未領取紅包列表
-                    is ChatEvent.UpdateUnPacketList -> {
-                        ChatRepository.unPacketList?.let { redEnvelopeListDialog?.setPackets(it) }
-                    }
-
-                    is ChatEvent.WinRedEnvelope -> {
-                        insertItem()
-                    }
-
-                    else -> Unit
+        when (chatEvent.luckyBagResult.code) {
+            ChatViewModel.ChatErrorCode.NOT_ENOUGH_BET_AND_RECH_MONEY, ChatViewModel.ChatErrorCode.GOT_ALREADY -> {
+                showPromptDialog(
+                    getString(
+                        R.string.chat_hint
+                    ),
+                    chatEvent.luckyBagResult.msg
+                ) {
+                    dismissDiaolg()
+                }
+            }
+            ChatViewModel.ChatErrorCode.PW_ERROR -> {
+                redPacketDialog?.showPWErrorHint()
+            }
+            ChatViewModel.ChatErrorCode.NET_ERROR -> {
+                showPromptDialog(
+                    getString(R.string.chat_hint),
+                    chatEvent.luckyBagResult.msg
+                ) {
+                    dismissDiaolg()
+                }
+            }
+            else -> {
+                showPromptDialog(
+                    getString(
+                        R.string.chat_hint
+                    ),
+                    chatEvent.luckyBagResult.msg
+                ) {
+                    dismissDiaolg()
                 }
             }
         }
+        Timber.v("Bill===>開完紅包${chatEvent.luckyBagResult}")
+    }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.removeRangeEvent.collect { chatEvent ->
-                when (chatEvent) {
-                    is ChatEvent.UpdateList -> {
-                        chatMessageListAdapter.dataList = chatEvent.chatMessageList
-                    }
+    private fun onGetUnPacket(chatEvent: ChatEvent.GetUnPacket) {
 
-                    is ChatEvent.RemoveRangeMessageItem -> {
-                        chatMessageListAdapter.removeRangeItem(0, chatEvent.count)
+        redEnvelopeListDialog = null
+        val cxt = context ?: return
+        val getUnPacketList = ChatRepository.unPacketList?.toMutableList() ?: return
+
+        // 之前的逻辑就是这样如果走不到下面 redEnvelopeListDialog 就会为空
+        redEnvelopeListDialog = RedEnvelopeListDialog(cxt, getUnPacketList, object : RedEnvelopeListDialog.Listener { //開紅包
+            override fun onDialogCallback(selected: Row) {
+                createRedPacketDialog(
+                    selected.id.toString(),
+                    selected.packetType,
+                    chatEvent.isAdmin
+                )
+            }
+        })
+        binding.chatRedEnpView.setOnClickListener { redEnvelopeListDialog?.show() }
+    }
+
+    private inline fun initChatEventObserver() {
+
+        viewModel.chatEvent.collectWith(lifecycleScope) { chatEvent ->
+
+            when (chatEvent) {
+                is ChatEvent.ChatRoomIsReady -> { //已訂閱roomId且已更新歷史訊息
+                    onChatRoomReady(chatEvent)
+                }
+
+                is ChatEvent.UpdateList -> {
+                    chatMessageListAdapter.dataList = chatEvent.chatMessageList
+                    if (viewModel.isFirstInit) {
+                        binding.rvChatMessage.removeItemDecoration(headerItemDecoration)
+                        binding.rvChatMessage.addItemDecoration(headerItemDecoration)
                     }
+                }
+
+                is ChatEvent.RemoveMsg -> {
+                    chatMessageListAdapter.removeItem(chatEvent.position)
+                }
+
+                is ChatEvent.UserEnter -> {
+
+                }
+
+                is ChatEvent.UserLeave -> {
+
+                }
+
+                is ChatEvent.SubscribeRoom -> {
+                    Timber.i("[Chat] 訂閱 roomId -> ${chatEvent.roomId}")
+                    subscribeChatRoom(chatEvent.roomId.toString()) //需要修改socket token
+                }
+
+                is ChatEvent.UnSubscribeRoom -> {
+                    Timber.i("[Chat] 解除訂閱 roomId -> ${chatEvent.roomId}")
+                    unSubscribeChatRoom(chatEvent.roomId.toString()) //需要修改socket token
+                }
+
+                is ChatEvent.SubscribeChatUser -> {
+                    Timber.i("[Chat] 訂閱 userId -> ${chatEvent.userId}")
+                    subscribeChatUser(chatEvent.userId.toString())
+                }
+
+                is ChatEvent.UnSubscribeChatUser -> {
+                    Timber.i("[Chat] 解除訂閱 userId -> ${chatEvent.userId}")
+                    unSubscribeChatUser(chatEvent.userId.toString())
+                }
+
+                is ChatEvent.InitFail -> {
+                    showErrorPromptDialog(getString(R.string.error), chatEvent.message) {
+                        activity?.onBackPressed()
+                    }
+                }
+
+                is ChatEvent.ActionInputSendStatusAndMaxLength -> {
+                    binding.vChatAction.apply {
+                        setInputMaxLength(chatEvent.maxLength)
+                        setInputStatus(chatEvent.isEnable)
+                        setSendStatus(chatEvent.isEnable && binding.etInput.text.toString().isNotEmpty())
+                    }
+                }
+
+                is ChatEvent.ActionUploadImageStatus -> {
+                    binding.vChatAction.setUploadImageStatus(chatEvent.isEnable)
+                }
+
+                is ChatEvent.NoMatchRoom -> {
+
+                }
+
+                is ChatEvent.InsertMessage -> {
+                    insertItem(chatEvent.isMe)
+                }
+
+                is ChatEvent.InsertPic -> {
+                    insertItem(chatEvent.isMe)
+                }
+
+                is ChatEvent.RedEnvelope -> {
+                    createRedPacketDialog(chatEvent.packetId, chatEvent.packetType, chatEvent.isAdmin)
+                    insertItem()
+                }
+
+                is ChatEvent.PersonalRedEnvelope -> {
+                    createRedPacketDialog(chatEvent.packetId, chatEvent.packetType, chatEvent.isAdmin)
+                    insertItem()
+                }
+
+                is ChatEvent.Silence -> {
+                    showToast(getString(R.string.chat_you_banned))
+                }
+
+                is ChatEvent.UnSilence -> {
+                    showToast(getString(R.string.chat_you_can_chatting))
+                }
+
+                is ChatEvent.KickOut -> {
+                    showPromptDialog(getString(R.string.chat_chat_room_lobby), getString(R.string.chat_you_kicked_out)) {
+                        dismissDiaolg()
+                        activity?.onBackPressed()
+                    }
+                }
+
+                is ChatEvent.UserSystemPrompt -> {
+                    insertItem()
+                }
+
+                is ChatEvent.NotifyChange -> {
+                    chatMessageListAdapter.notifyDataSetChanged()
+                }
+
+                is ChatEvent.ScrollToBottom -> {
+                    binding.rvChatMessage.post {
+                        binding.rvChatMessage.scrollToPosition(chatMessageListAdapter.itemCount - 1) //滑動到底部不需動畫效果
+                        binding.rvChatMessage.isVisible = true
+                    }
+                }
+
+                is ChatEvent.RedEnvelopeMsg -> {
+                    insertItem()
+                }
+
+                is ChatEvent.OpenLuckyBag -> {
+//                 redPacketDialog?.show()
+                }
+
+                is ChatEvent.GetLuckyBagResult -> {
+                    onLuckyBagResultEvent(chatEvent)
+                }
+
+                is ChatEvent.UpdateUserEnterList -> {
+                    chatWelcomeAdapter.dataList = chatEvent.userEnterList
+                }
+
+                is ChatEvent.InsertUserEnter -> {
+                    chatWelcomeAdapter.insertItem()
+                    if (jobScroll?.isActive == true) jobScroll?.cancel()
+                    jobScroll = lifecycleScope.launch {
+                        delay(2000)
+                        binding.rvWelcome.smoothScrollToPosition(chatWelcomeAdapter.itemCount - 2)
+                        delay(2000)
+                        binding.rvWelcome.smoothScrollToPosition(chatWelcomeAdapter.itemCount - 1)
+                    }
+                }
+
+                is ChatEvent.IsAdminType -> {
+                    chatMessageListAdapter.isAdmin = chatEvent.isAdmin
+                }
+
+                //獲取未領取紅包列表
+                is ChatEvent.GetUnPacket -> {
+                    onGetUnPacket(chatEvent)
+                }
+
+                //判斷顯示懸浮紅包
+                is ChatEvent.ChatRedEnpViewStatus -> {
+                    binding.chatRedEnpView.isVisible = chatEvent.isShow
+                }
+
+                //更新未領取紅包列表
+                is ChatEvent.UpdateUnPacketList -> {
+                    ChatRepository.unPacketList?.let { redEnvelopeListDialog?.setPackets(it) }
+                }
+
+                is ChatEvent.WinRedEnvelope -> {
+                    insertItem()
+                }
+
+                else -> Unit
+            }
+        }
+    }
+
+    private fun initObserve() {
+
+        initChatEventObserver()
+
+        viewModel.removeRangeEvent.collectWith(lifecycleScope) { chatEvent ->
+            when (chatEvent) {
+                is ChatEvent.UpdateList -> {
+                    chatMessageListAdapter.dataList = chatEvent.chatMessageList
+                }
+
+                is ChatEvent.RemoveRangeMessageItem -> {
+                    chatMessageListAdapter.removeRangeItem(0, chatEvent.count)
                 }
             }
         }
@@ -524,9 +504,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
                 viewModel.tempChatImgUrl = iconUrlResult.t
                 return@observe
             }
-            iconUrlResult?.msg?.let { msg ->
-                showErrorPromptDialog(getString(R.string.error), msg) {}
-            }
+            showErrorPromptDialog(getString(R.string.error), iconUrlResult.msg) {}
         }
     }
 
@@ -534,10 +512,8 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
         chatMessageListAdapter.insertItem()
         if (isMe) {
             chatListScrollToBottom(isSmooth = false) //發送自己的訊息後，需快速至聊天室底部
-        } else {
-            if (!isShowScrollBottom) {
-                chatListScrollToBottom(isSmooth = true)
-            }
+        } else if (!isShowScrollBottom) {
+            chatListScrollToBottom(isSmooth = true)
         }
     }
 
@@ -549,7 +525,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
                 .setBlurRadius(8f)
         }
         binding.vChatToast.root.isVisible = true
-        Handler(Looper.getMainLooper()).postDelayed( { binding.vChatToast.root.isVisible = false },2000)
+        binding.root.postDelayed( { binding.vChatToast.root.isVisible = false },2000)
     }
 
     private fun setupSendMessage(inputString: String): String {
@@ -603,39 +579,12 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
 
     //選擇相片
     private fun pickPhoto() {
-        PictureSelector.create(activity)
-            .openGallery(PictureMimeType.ofImage())
-            .imageEngine(GlideEngine.createGlideEngine())
-            .setLanguage(getLanguage()) // 设置语言，默认中文
-            .isCamera(false) // 是否显示拍照按钮 true or false
-            .selectionMode(PictureConfig.SINGLE) // 多选 or 单选 PictureConfig.MULTIPLE or PictureConfig.SINGLE
-            .isEnableCrop(false) // 是否裁剪 true or false
-            .isCompress(true) // 是否压缩 true or false
-            .rotateEnabled(false) // 裁剪是否可旋转图片 true or false
-            .circleDimmedLayer(false) // 是否圆形裁剪 true or false
-            .showCropFrame(false) // 是否显示裁剪矩形边框 圆形裁剪时建议设为false   true or false
-            .showCropGrid(false) // 是否显示裁剪矩形网格 圆形裁剪时建议设为false    true or false
-            .withAspectRatio(16, 9) // int 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
-            .minimumCompressSize(100) // 小于100kb的图片不压缩
-            .forResult(selectMediaListener)
-    }
-
-    private fun getLanguage(): Int {
-        return when (LanguageManager.getSelectLanguage(activity)) {
-            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> LanguageConfig.CHINESE
-            LanguageManager.Language.EN -> LanguageConfig.ENGLISH
-            LanguageManager.Language.VI -> LanguageConfig.VIETNAM
-            else -> LanguageConfig.ENGLISH // 套件無支援
-        }
+        activity?.let { PictureSelectorUtils.selectPiture(it, 1, 16, 9, selectMediaListener) }
     }
 
     private val selectMediaListener = object : OnResultCallbackListener<LocalMedia> {
         override fun onResult(result: MutableList<LocalMedia>?) {
-            LocalUtils.setLocalLanguage(
-                requireContext(),
-                LanguageManager.getSetLanguageLocale(requireContext())
-            )
-            try {
+
                 // 图片选择结果回调
                 // LocalMedia 里面返回三种path
                 // 1.media.getPath(); 为原图path
@@ -651,24 +600,19 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
                 }
 
                 val file = File(path!!)
-                if (file.exists())
+                if (file.exists()) {
                     uploadImg(file)
-                else
-                    throw FileNotFoundException()
-            } catch (e: Exception) {
-                e.printStackTrace()
-                ToastUtil.showToastInCenter(
-                    requireContext(),
-                    getString(R.string.error_reading_file)
-                )
-            }
+                    return
+                }
+
+            ToastUtil.showToastInCenter(
+                requireContext(),
+                getString(R.string.error_reading_file)
+            )
+
         }
 
         override fun onCancel() {
-            LocalUtils.setLocalLanguage(
-                requireContext(),
-                LanguageManager.getSetLanguageLocale(requireContext())
-            )
             Timber.i("PictureSelector Cancel")
         }
     }

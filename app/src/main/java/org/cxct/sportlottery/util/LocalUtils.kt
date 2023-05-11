@@ -26,11 +26,4 @@ object LocalUtils {
         return context.createConfigurationContext(conf)
     }
 
-    fun setLocalLanguage(context: Context, locale: Locale) {
-        val res = context.resources
-        val dm = res.displayMetrics
-        val config = res.configuration
-        config.locale = locale
-        res.updateConfiguration(config, dm)
-    }
 }

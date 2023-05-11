@@ -23,7 +23,7 @@ import org.cxct.sportlottery.util.MetricsUtil
 class RedEnvelopeListDialog(
     context: Context,
     private val mData: MutableList<Row>,
-    private var mListener: Listener?,
+    var mListener: Listener?,
 ) : AlertDialog(context), View.OnClickListener {
 
     private val mRVAdapter = RVAdapter()
