@@ -116,7 +116,6 @@ class HotMatchView(context: Context, attrs: AttributeSet
 
         //初始化ws广播监听
         if(fragment is org.cxct.sportlottery.ui.base.BindingSocketFragment<*, *>){
-            tvHotTitle.text=context.getString(R.string.N704)
             initSocketObservers(fragment.receiver,fragment.getViewLifecycleOwner(),fragment)
         }
 
