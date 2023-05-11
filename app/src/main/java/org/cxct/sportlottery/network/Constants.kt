@@ -283,7 +283,7 @@ object Constants {
 
     fun getPrintReceiptScan(url: String): String {
         val base = getH5BaseUrl()
-        return if (url.startsWith(base) || SERVICE_H5_URL_LIST.any { it.startsWith(base) }) {
+        return if (url.startsWith(base) || SERVICE_H5_URL_LIST.any { url.startsWith(it) }) {
             url
         } else {
             ""
