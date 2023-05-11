@@ -11,17 +11,15 @@ import kotlinx.android.synthetic.main.fragment_main_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.databinding.FragmentMainHome2Binding
+import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.news.HomeNewsAdapter
 import org.cxct.sportlottery.ui.maintab.home.news.NewsDetailActivity
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.SpaceItemDecoration
-import org.cxct.sportlottery.util.setupBackTop
 
 class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainHome2Binding>() {
 
@@ -31,9 +29,6 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
     fun jumpToInplaySport() = getMainTabActivity().jumpToInplaySport()
     fun jumpToOKGames() = getMainTabActivity().jumpToOKGames()
 
-    private val NEWS_OKBET_ID = 12
-    private val NEWS_SPORT_ID = 13
-
     override fun onInitView(view: View) = binding.run {
         scrollView.setupBackTop(ivBackTop, 180.dp)
         homeBottumView.bindServiceClick(childFragmentManager)
@@ -42,7 +37,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
     }
 
     override fun onInitData() {
-        viewModel.getHomeNews(1, 5, listOf(NEWS_OKBET_ID))
+        viewModel.getHomeNews(1, 5, listOf(NewsRepository.NEWS_OKBET_ID))
         viewModel.getBettingStationList()
         //刷新config
         viewModel.getConfigData()
@@ -101,6 +96,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
     private fun initObservable() {
         viewModel.homeNewsList.observe(viewLifecycleOwner) {
             val dataList = if (it.size > 4) it.subList(0, 4) else it
+            LogUtil.d("dataList="+dataList.size)
             setupNews(dataList)
         }
         viewModel.bettingStationList.observe(viewLifecycleOwner) {
@@ -121,7 +117,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         binding.includeNews.apply {
             tabNews.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
-                    val categoryId = if (tab?.position == 0) NEWS_OKBET_ID else NEWS_SPORT_ID
+                    val categoryId = if (tab?.position == 0) NewsRepository.NEWS_OKBET_ID else NewsRepository.NEWS_SPORT_ID
                     viewModel.getHomeNews(1, 5, listOf(categoryId))
                 }
 

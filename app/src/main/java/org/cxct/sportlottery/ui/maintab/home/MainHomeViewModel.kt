@@ -699,11 +699,13 @@ open class MainHomeViewModel(
     /**
      * 获取新闻分页列表
      */
-    fun getPageNews(pageNum: Int, pageSize: Int, categoryIds: List<Int>) {
+    fun getPageNews(pageNum: Int, pageSize: Int, categoryId: Int) {
         viewModelScope.launch {
-            callApi({ NewsRepository.getPageNews(pageNum, pageSize, categoryIds) }) {
+            callApi({ NewsRepository.getPageNews(pageNum, pageSize, categoryId) }) {
                 if (it.succeeded()) {
-                    _pageNewsList.postValue(it.getData())
+                    it.getData()?.let {
+                        _pageNewsList.postValue(it)
+                    }
                 } else {
                     toast(it.msg)
                 }

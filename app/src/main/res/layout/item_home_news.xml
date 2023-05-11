@@ -33,6 +33,7 @@
                 android:textColor="@color/color_303C55"
                 android:textSize="@dimen/textSize14sp"
                 android:lines="2"
+                android:ellipsize="end"
                 android:textStyle="bold"
                 tools:text="OKBet supports Miss Grand PH for the upcoming. Max  lines..." />
 
@@ -55,6 +56,7 @@
         android:layout_marginTop="@dimen/margin_8"
         android:layout_marginBottom="@dimen/margin_12"
         android:maxLines="2"
+        android:ellipsize="end"
         tools:text="Lorem ipsum dolor sit amet, consectetur abor adipisci incididunt ut labore. Max is 2 lines. amet, cons  ectetur abor adipis 2 lines..."
         android:textColor="@color/color_6D7693"
         android:textSize="@dimen/textSize12sp" />

@@ -21,6 +21,9 @@ object NewsRepository {
     const val SORT_CREATE_TIME ="CREATE_TIME"
     const val SORT_DEFAULT ="SORT"
 
+    const val NEWS_OKBET_ID = 12
+    const val NEWS_SPORT_ID = 13
+
     private fun paramDevice(): JsonObject {
         val params = JsonObject()
         params.addProperty("device", 2)
@@ -56,12 +59,12 @@ object NewsRepository {
     suspend fun getPageNews(
         pageNum: Int,
         pageSize: Int,
-        categoryIds: List<Int>,
+        categoryId: Int,
     ): ApiResult<PageInfo<NewsItem>> {
         val params = JsonObject()
         params.addProperty("pageNum", pageNum)
         params.addProperty("pageSize", pageSize)
-        params.add("categoryIds", Gson().toJsonTree(categoryIds))
+        params.addProperty("categoryId", categoryId)
         return newsApi.getListPage(params)
     }
 
