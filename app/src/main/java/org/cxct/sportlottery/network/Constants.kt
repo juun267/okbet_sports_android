@@ -278,10 +278,10 @@ object Constants {
     }
 
 
-    fun getPrintReceiptScan(context: Context, url: String): String {
+    fun getPrintReceiptScan(url: String): String {
         val base = getH5BaseUrl()
         return if (url.startsWith(base)) {
-            "$url&isScan=1"
+            url
         } else {
             ""
         }
