@@ -1,12 +1,13 @@
 package org.cxct.sportlottery.ui.chat
 
 import android.app.Application
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.common.extentions.toLongS
 import org.cxct.sportlottery.network.chat.UserLevelConfigVO
 import org.cxct.sportlottery.network.chat.getUnPacket.UnPacketRequest
 import org.cxct.sportlottery.network.chat.luckyBag.LuckyBagRequest
@@ -324,16 +325,15 @@ class ChatViewModel(
 
         viewModelScope.launch {
             chatEvent.collect { chatEvent ->
-                when (chatEvent) {
-                    is ChatEvent.CheckMessageCount -> {
-                        if (uniqueChatMessageList.size > MAX_MSG_SIZE){
-                            val originalMessageList = uniqueChatMessageList.filter { !it.isCustomMessage }.toMutableList()
-                            uniqueChatMessageList = originalMessageList.subList(REMOVE_COUNT, originalMessageList.count())
-                            setupDateTipsMessage()
-                            _removeRangeEvent.emit(ChatEvent.UpdateList(uniqueChatMessageList))
-                            _removeRangeEvent.emit(ChatEvent.RemoveRangeMessageItem(uniqueChatMessageList, REMOVE_COUNT))
-                        }
-                    }
+                if (chatEvent !is ChatEvent.CheckMessageCount) {
+                    return@collect
+                }
+                if (uniqueChatMessageList.size > MAX_MSG_SIZE) {
+                    val originalMessageList = uniqueChatMessageList.filter { !it.isCustomMessage }.toMutableList()
+                    uniqueChatMessageList = originalMessageList.subList(REMOVE_COUNT, originalMessageList.count())
+                    setupDateTipsMessage()
+                    _removeRangeEvent.emit(ChatEvent.UpdateList(uniqueChatMessageList))
+                    _removeRangeEvent.emit(ChatEvent.RemoveRangeMessageItem(uniqueChatMessageList, REMOVE_COUNT))
                 }
             }
         }
@@ -344,20 +344,13 @@ class ChatViewModel(
      */
     private fun setupDateTipsMessage() {
         val originalMessageList = uniqueChatMessageList.filter { !it.isCustomMessage }.toMutableList()
-        val groupMessage = originalMessageList.groupBy {
-            getChatDateByTimeStamp(getChatMessageTime(it))
-        }
+        val groupMessage = originalMessageList.groupBy { getChatDateByTimeStamp(getChatMessageTime(it)) }
+        val today = getChatDateByTimeStamp(System.currentTimeMillis())
         groupMessage.keys.forEach { groupDate ->
-            val messageDateContent = when (groupDate) {
-                getChatDateByTimeStamp(System.currentTimeMillis()) -> "Today" //需求要求寫死英文Today
-                else -> groupDate
-            }
-            val firstDateMessageIndex =
-                originalMessageList.indexOfFirst { getChatDateByTimeStamp(getChatMessageTime(it)) == groupDate }
-            originalMessageList.add(
-                firstDateMessageIndex,
-                ChatReceiveContent(
-                    content = messageDateContent,
+            val messageDateContent = if (groupDate == today) "Today" else groupDate
+            val firstDateMessageIndex = originalMessageList.indexOfFirst { getChatDateByTimeStamp(getChatMessageTime(it)) == groupDate }
+            originalMessageList.add(firstDateMessageIndex,
+                ChatReceiveContent(content = messageDateContent,
                     msg = null,
                     seq = null,
                     time = null,
@@ -372,14 +365,7 @@ class ChatViewModel(
      * 獲取聊天訊息中的時間參數(時間戳 Long)
      */
     private fun getChatMessageTime(chatReceiveContent: ChatReceiveContent<*>): Long? {
-        return when (val messageContent = chatReceiveContent.content) {
-            is ChatMessageResult -> {
-                messageContent.curTime?.toLong()
-            }
-            else -> {
-                chatReceiveContent.time
-            }
-        }
+        return if (chatReceiveContent.content is ChatMessageResult) chatReceiveContent.content.curTime?.toLongS() else chatReceiveContent.time
     }
 
     /**
@@ -390,15 +376,12 @@ class ChatViewModel(
     }
 
     override fun checkLoginStatus(): Boolean {
-        when (loginRepository.isLogin.value) {
-            true -> {
-                Timber.i("[Chat] 已登入(一般用户,游客) 執行chatInit")
-                chatInit()
-            }
-            else -> {
-                Timber.i("[Chat] 未登入(訪客) 執行guestChatInit")
-                guestChatInit()
-            }
+        if (loginRepository.isLogin.value == true) {
+            Timber.i("[Chat] 已登入(一般用户,游客) 執行chatInit")
+            chatInit()
+        } else {
+            Timber.i("[Chat] 未登入(訪客) 執行guestChatInit")
+            guestChatInit()
         }
         return super.checkLoginStatus()
     }
@@ -406,9 +389,7 @@ class ChatViewModel(
     private fun updateUserLevelConfigFromMemberChange() {
         val sign = userInfoRepository.chatSign ?: return
         viewModelScope.launch {
-            doNetwork {
-                ChatRepository.chatInit(sign)
-            }?.let {
+            doNetwork { ChatRepository.chatInit(sign) }?.let {
                 if (it.success) {
                     userLevelConfigVO = it.t?.userLevelConfigVO
                     _chatEvent.emit(ChatEvent.IsAdminType(checkIsAdminType()))
@@ -422,19 +403,15 @@ class ChatViewModel(
         }
     }
 
-    fun checkChatTokenIsAlive() {
-        viewModelScope.launch {
-            val token = chatToken.orEmpty()
-            if (token.isNotEmpty()) {
-                doNetwork(androidContext) {
-                    ChatRepository.checkToken(token)
-                }.let { tokenResult ->
-                    if (tokenResult?.success == false) {
-                        Timber.e("[Chat] tokenResult: $tokenResult")
-                        checkLoginStatus()
-                    }
-                }
-            }
+    fun checkChatTokenIsAlive() = launch {
+        val token = chatToken.orEmpty()
+        if (token.isEmptyStr()) {
+            return@launch
+        }
+        val tokenResult = doNetwork(androidContext) { ChatRepository.checkToken(token) }
+        if (tokenResult?.success == false) {
+            Timber.e("[Chat] tokenResult: $tokenResult")
+            checkLoginStatus()
         }
     }
 
@@ -497,22 +474,25 @@ class ChatViewModel(
     }
 
     private suspend fun queryList() {
-        doNetwork(androidContext) {
-            ChatRepository.queryList()
-        }?.let { queryListResult ->
-            if (queryListResult.success) {
-                queryListResult.rows?.find { it.language == LanguageManager.getLanguageString(androidContext) && it.isOpen == "1" }?.let {
-                    _chatEvent.emit(ChatEvent.IsAdminType(checkIsAdminType()))
-                    if (ChatRepository.chatRoomID != it.id) {
-                        //背景返回之後，比較既有roomId，如果不同才重新joinRoom
-                        joinRoom(it)
-                    } else {
-                        subscribeRoomAndUser(it)
-                    }
-                } ?: _chatEvent.emit(ChatEvent.NoMatchRoom)
-            } else {
-                _chatEvent.emit(ChatEvent.InitFail(queryListResult.msg))
-            }
+        val queryListResult = doNetwork(androidContext) { ChatRepository.queryList() } ?: return
+        if (!queryListResult.success) {
+            _chatEvent.emit(ChatEvent.InitFail(queryListResult.msg))
+            return
+        }
+
+        val language = LanguageManager.getLanguageString(androidContext)
+        val chatRoom = queryListResult.rows?.find { it.language == language && it.isOpen.isStatusOpen() }
+        if (chatRoom == null) {
+            _chatEvent.emit(ChatEvent.NoMatchRoom)
+            return
+        }
+
+        _chatEvent.emit(ChatEvent.IsAdminType(checkIsAdminType()))
+        if (ChatRepository.chatRoomID != chatRoom.id) {
+            //背景返回之後，比較既有roomId，如果不同才重新joinRoom
+            joinRoom(chatRoom)
+        } else {
+            subscribeRoomAndUser(chatRoom)
         }
     }
 
@@ -537,37 +517,34 @@ class ChatViewModel(
      * 2-1. 【紅包】懸浮圖示僅限「會員 (已登入)」才會顯示，訪客、游客(試玩)、管理員不會顯示。
      * */
     private suspend fun isShowChatRedEnpView() {
-        _chatEvent.emit(
-            ChatEvent.ChatRedEnpViewStatus(
-                !checkIsAdminType() //非管理員
-                        && (ChatRepository.unPacketList?.size ?: 0) > 0 //有未領取的紅包
-                        && isLogin.value == true //已登入
-                        && !isGuest() //不能為訪客
+        _chatEvent.emit(ChatEvent.ChatRedEnpViewStatus(
+            !checkIsAdminType() //非管理員
+                    && (ChatRepository.unPacketList?.size ?: 0) > 0 //有未領取的紅包
+                    && isLogin.value == true //已登入
+                    && !isGuest() //不能為訪客
             )
         )
     }
 
-    fun getLuckyBag(luckyBagRequest: LuckyBagRequest) {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                ChatRepository.luckyBag(luckyBagRequest)
-            }?.let { luckyBagResult ->
-                Timber.i("[Chat] 紅包結果：${luckyBagResult}")
-                when(luckyBagResult.code){
-                    ChatErrorCode.PW_ERROR, ChatErrorCode.NET_ERROR, ChatErrorCode.BET_NOT_ENOUGH_ERROR -> {}
-                    else -> {
-                        //刪除紅包
-                        if(ChatRepository.unPacketList?.any { it.id.toString() == luckyBagRequest.packetId.toString() } == true){
-                            val newUnPacketList = ChatRepository.unPacketList?.filter { it.id.toString() != luckyBagRequest.packetId.toString() }
-                            ChatRepository.unPacketList = newUnPacketList?.toMutableList()
-                            _chatEvent.emit(ChatEvent.UpdateUnPacketList(luckyBagRequest.packetId.toString()))
-                            isShowChatRedEnpView()
-                        }
-                    }
-                }
-                _chatEvent.emit(ChatEvent.GetLuckyBagResult(luckyBagResult))
+    fun getLuckyBag(luckyBagRequest: LuckyBagRequest) = launch {
+
+        val luckyBagResult = doNetwork(androidContext) { ChatRepository.luckyBag(luckyBagRequest) } ?: return@launch
+        Timber.i("[Chat] 紅包結果：${luckyBagResult}")
+        val resultCode = luckyBagResult.code
+
+        if(resultCode != ChatErrorCode.PW_ERROR
+            && resultCode != ChatErrorCode.NET_ERROR
+            && resultCode != ChatErrorCode.BET_NOT_ENOUGH_ERROR) {
+            //刪除紅包
+            if(ChatRepository.unPacketList?.any { it.id.toString() == luckyBagRequest.packetId.toString() } == true) {
+                val newUnPacketList = ChatRepository.unPacketList?.filter { it.id.toString() != luckyBagRequest.packetId.toString() }
+                ChatRepository.unPacketList = newUnPacketList?.toMutableList()
+                _chatEvent.emit(ChatEvent.UpdateUnPacketList(luckyBagRequest.packetId.toString()))
+                isShowChatRedEnpView()
             }
         }
+
+        _chatEvent.emit(ChatEvent.GetLuckyBagResult(luckyBagResult))
     }
 
     private suspend fun subscribeRoomAndUser(room: Row) {
@@ -585,41 +562,29 @@ class ChatViewModel(
     }
 
     private suspend fun joinRoom(room: Row) {
-        doNetwork(androidContext) {
-            ChatRepository.joinRoom(room.id)
-        }?.let {
-            if (it.success) {
-                subscribeRoomAndUser(room)
-            } else {
-                _chatEvent.emit(ChatEvent.InitFail(it.msg))
-            }
+        val result = doNetwork(androidContext) { ChatRepository.joinRoom(room.id) } ?: return
+        if (result.success) {
+            subscribeRoomAndUser(room)
+        } else {
+            _chatEvent.emit(ChatEvent.InitFail(result.msg))
         }
     }
 
     /**
      * 解訂閱Room和User
      */
-    private fun unSubscribeChatRoomAndUser() {
-        viewModelScope.launch {
-            _chatEvent.emit(ChatEvent.UnSubscribeRoom(ChatRepository.chatRoomID))
-            userId?.let {
-                _chatEvent.emit(ChatEvent.UnSubscribeChatUser(it))
-            }
-        }
+    private fun unSubscribeChatRoomAndUser() = launch {
+        _chatEvent.emit(ChatEvent.UnSubscribeRoom(ChatRepository.chatRoomID))
+        userId?.let {_chatEvent.emit(ChatEvent.UnSubscribeChatUser(it)) }
     }
 
-    fun leaveRoom() {
-        viewModelScope.launch {
-            clearRemoveRedEnvelope()
-            doNetwork(androidContext) {
-                ChatRepository.leaveRoom(ChatRepository.chatRoomID)
-            }?.let {
-                if (it.success) {
-                    Timber.i("[Chat] 離開房間 id -> ${ChatRepository.chatRoomID}")
-                    ChatRepository.chatRoomID = -1
-                    unSubscribeChatRoomAndUser()
-                }
-            }
+    private fun leaveRoom() = launch {
+        clearRemoveRedEnvelope()
+        val result = doNetwork(androidContext) { ChatRepository.leaveRoom(ChatRepository.chatRoomID) } ?: return@launch
+        if (result.success) {
+            Timber.i("[Chat] 離開房間 id -> ${ChatRepository.chatRoomID}")
+            ChatRepository.chatRoomID = -1
+            unSubscribeChatRoomAndUser()
         }
     }
 
@@ -628,12 +593,8 @@ class ChatViewModel(
     }
 
     //上傳聊天室圖片
-    fun uploadImage(uploadImgRequest: UploadImgRequest) {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                avatarRepository.uploadChatImage(uploadImgRequest)
-            }
-        }
+    fun uploadImage(uploadImgRequest: UploadImgRequest) = launch {
+        doNetwork(androidContext) { avatarRepository.uploadChatImage(uploadImgRequest) }
     }
 
     /**
@@ -674,12 +635,10 @@ class ChatViewModel(
         _chatEvent.emit(ChatEvent.ActionUploadImageStatus(checkIsSendImg()))
     }
 
-    fun getHistoryMessageList() {
-        viewModelScope.launch {
-            _chatEvent.emit(ChatEvent.UpdateList(uniqueChatMessageList))
-            _chatEvent.emit(ChatEvent.NotifyChange)
-            _chatEvent.emit(ChatEvent.ScrollToBottom)
-        }
+    fun getHistoryMessageList()= launch {
+        _chatEvent.emit(ChatEvent.UpdateList(uniqueChatMessageList))
+        _chatEvent.emit(ChatEvent.NotifyChange)
+        _chatEvent.emit(ChatEvent.ScrollToBottom)
     }
 
     private fun clearRemoveRedEnvelope() {
@@ -688,9 +647,50 @@ class ChatViewModel(
         }
     }
 
-    fun showPhoto(url: String){
-        viewModelScope.launch {
-            _chatEvent.emit(ChatEvent.ShowPhoto(url))
+    fun showPhoto(url: String) = launch {
+        _chatEvent.emit(ChatEvent.ShowPhoto(url))
+    }
+
+    fun attchLifecycleOwner(owner: LifecycleOwner) = owner.lifecycle.addObserver(object : LifecycleEventObserver {
+
+        override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+
+            when (event) {
+                Lifecycle.Event.ON_START -> startCheckToken() //
+                Lifecycle.Event.ON_RESUME -> checkLoginStatus() //背景返回必須重走checkLoginStatus
+                Lifecycle.Event.ON_STOP -> stopTimer() //
+                Lifecycle.Event.ON_DESTROY -> leaveRoom() // 退出房间
+                else -> {
+
+                }
+
+            }
+        }
+
+    })
+
+    private var chatTimer: Timer? = null
+
+    private fun startCheckToken() {
+        try {
+            if (loginRepository.isLogin.value == true) {
+                if (chatTimer == null) {
+                    chatTimer = Timer()
+                    chatTimer?.schedule(object : TimerTask() {
+                        override fun run() {
+                            checkChatTokenIsAlive()
+                        }
+                    }, 30000, 30000) //延時(delay)在30s後重複執行task, 週期(period)是30s
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
+
+    private fun stopTimer() {
+        chatTimer?.cancel()
+        chatTimer = null
+    }
+
 }

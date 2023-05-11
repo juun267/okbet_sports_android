@@ -9,7 +9,7 @@ import org.cxct.sportlottery.common.extentions.createVBinding
 
 open class BindingFragment<VM : BaseViewModel, VB: ViewBinding>: BaseFragment<VM>() {
 
-    private val binding: VB by lazy { createVBinding(layoutInflater, 1) }
+    protected val binding: VB by lazy { createVBinding(layoutInflater, 1) }
     private var _first = true
 
     override fun createRootView(
@@ -23,6 +23,7 @@ open class BindingFragment<VM : BaseViewModel, VB: ViewBinding>: BaseFragment<VM
             _first = false
             onInitView(view)
         }
+        onBindViewStatus(view)
         onInitData()
     }
 

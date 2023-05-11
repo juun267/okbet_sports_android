@@ -1,10 +1,8 @@
 package org.cxct.sportlottery.ui.chat
 
 import android.annotation.SuppressLint
-import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -22,11 +20,13 @@ import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.fragment_chat.*
 import kotlinx.coroutines.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.launch
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.databinding.FragmentChatBinding
 import org.cxct.sportlottery.network.chat.getUnPacket.Row
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.repository.ChatRepository
-import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.profileCenter.profile.GlideEngine
 import org.cxct.sportlottery.util.*
@@ -42,9 +42,7 @@ import java.io.FileNotFoundException
  * @description init 失敗重新執行 getSign 最多嘗試三次
  * @app_destination 聊天室 - 大廳群聊
  */
-class ChatFragment : BaseSocketFragment<ChatViewModel>(ChatViewModel::class), View.OnClickListener {
-
-    private lateinit var binding: FragmentChatBinding
+class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(), View.OnClickListener {
 
     private var isShowScrollBottom = false //列表正在底部附近才會自動滾至下一則訊息
 
@@ -65,28 +63,20 @@ class ChatFragment : BaseSocketFragment<ChatViewModel>(ChatViewModel::class), Vi
     //訊息列表用日期提示ItemDecoration
     private val headerItemDecoration by lazy {
         ChatDateHeaderItemDecoration(binding.rvChatMessage) { itemPosition ->
-            if (itemPosition >= 0 && itemPosition < (binding.rvChatMessage.adapter?.itemCount
-                    ?: 0)
-            ) {
+            if (itemPosition >= 0 && itemPosition < (binding.rvChatMessage.adapter?.itemCount ?: 0)) {
                 val itemData = chatMessageListAdapter.dataList[itemPosition]
                 itemData.isCustomMessage && itemData.type == ChatMsgCustomType.DATE_TIP
             } else false
         }
     }
-    private var hideDateFloatingTipsJob: Job? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        binding = FragmentChatBinding.inflate(layoutInflater)
-        return binding.root
+    override fun onInitView(view: View) {
+        initView()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initView()
+    override fun onBindViewStatus(view: View) {
         initObserve()
+        chatWelcomeAdapter.activity = activity as ChatActivity?
         viewModel.getHistoryMessageList()
     }
 
@@ -99,24 +89,24 @@ class ChatFragment : BaseSocketFragment<ChatViewModel>(ChatViewModel::class), Vi
         binding.vChatAction.binding.ivUploadImage.setOnClickListener(this)
         binding.vChatAction.binding.ivSend.setOnClickListener(this)
         binding.ivDownBtn.setOnClickListener(this)
-        chatWelcomeAdapter.activity = activity as ChatActivity?
-        binding.rvWelcome.apply {
-            layoutManager = SmoothLinearLayoutManager(context)
-            addItemDecoration(
-                SpaceItemDecoration(
-                    requireContext(),
-                    R.dimen.recyclerview_chat_welcome_item_dec_spec
-                )
-            )
-            adapter = chatWelcomeAdapter
+        binding.rvWelcome.layoutManager = SmoothLinearLayoutManager(context)
+        binding.rvWelcome.addItemDecoration(SpaceItemDecoration(requireContext(), R.dimen.recyclerview_chat_welcome_item_dec_spec))
+        binding.rvWelcome.adapter = chatWelcomeAdapter
+        binding.rvChatMessage.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.rvChatMessage.adapter = chatMessageListAdapter
+        setChatMsgScrollListener()
+
+        OverScrollDecoratorHelper.setUpOverScroll(binding.rvChatMessage, OverScrollDecoratorHelper.ORIENTATION_VERTICAL)
+
+        //設定發送按鈕是否為可點擊的狀態
+        binding.vChatAction.binding.etInput.afterTextChanged {
+            binding.vChatAction.setSendStatus(it.isNotEmpty() && viewModel.checkIsSpeak())
         }
-        binding.rvChatMessage.apply {
-            layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-            adapter = chatMessageListAdapter
-        }
+    }
+
+    private fun setChatMsgScrollListener() {
         binding.rvChatMessage.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
                 //region 處理聊天訊息中日期提示隱藏及顯示. 實際上懸浮的日期提示為RecyclerView的ItemDecoration所繪製的, 故需要在頂部顯示該日期時隱藏列表中對應的Item, 離開頂部時才顯示.
                 //可視範圍的第一個Item 若為日期提示則隱藏
                 val layoutManager = (recyclerView.layoutManager as LinearLayoutManager)
@@ -142,56 +132,53 @@ class ChatFragment : BaseSocketFragment<ChatViewModel>(ChatViewModel::class), Vi
             }
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                when (newState) {
-                    RecyclerView.SCROLL_STATE_IDLE -> {
-                        //滾動靜止一秒鐘後隱藏懸浮日期提示
-                        hideDateFloatingTipsJob = CoroutineScope(Dispatchers.IO).launch {
-                            delay(1000)
-                            launch(Dispatchers.Main) {
-                                val layoutManager =
-                                    (recyclerView.layoutManager as LinearLayoutManager)
-                                val firstPosition = layoutManager.findFirstVisibleItemPosition()
-                                val firstItemData =
-                                    chatMessageListAdapter.dataList.getOrNull(firstPosition)
+                if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                    //一滾動就顯示懸浮日期提示
+                    if (!viewModel.isFirstInit) {
+                        headerItemDecoration.setHeaderVisibility(true)
+                        clearDateFloatingTipsRunnable()
+                    }
+                    return
+                }
 
-                                //判斷是否為客製化MessageType
-                                //判斷是否為日期提示且日期內容
-                                //判斷可視範圍內第一項內容文字是否與標題內容文字相符
-                                //皆相符的話不須隱藏Header
-                                if (!((firstItemData?.isCustomMessage == true)
-                                            && (firstItemData.type == ChatMsgCustomType.DATE_TIP)
-                                            && (headerItemDecoration.getHeaderItemView()
-                                        ?.findViewById<TextView>(R.id.tvDate)?.text?.toString() == firstItemData.content))
-                                ) {
-                                    headerItemDecoration.setHeaderVisibility(
-                                        isVisible = false,
-                                        refreshRecyclerView = true
-                                    )
-                                }
-                            }
-                        }
-                    }
-                    RecyclerView.SCROLL_STATE_DRAGGING -> {
-                        //一滾動就顯示懸浮日期提示
-                        if (!viewModel.isFirstInit) {
-                            headerItemDecoration.setHeaderVisibility(true)
-                            hideDateFloatingTipsJob?.cancel() //取消一秒後隱藏懸浮日期提示的工作
-                        }
-                    }
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    //滾動靜止一秒鐘後隱藏懸浮日期提示
+                    postDateFloatingTipsRunnable()
                 }
             }
         })
-        OverScrollDecoratorHelper.setUpOverScroll(
-            binding.rvChatMessage,
-            OverScrollDecoratorHelper.ORIENTATION_VERTICAL
-        )
 
-        //設定發送按鈕是否為可點擊的狀態
-        binding.vChatAction.apply {
-            binding.etInput.afterTextChanged {
-                setSendStatus(it.isNotEmpty() && viewModel.checkIsSpeak())
+    }
+
+    private val hideDateFloatingTipsRunnable by lazy {
+        java.lang.Runnable {
+            val layoutManager = (binding.rvChatMessage.layoutManager as LinearLayoutManager)
+            val firstPosition = layoutManager.findFirstVisibleItemPosition()
+            val firstItemData = chatMessageListAdapter.dataList.getOrNull(firstPosition)
+
+            //判斷是否為客製化MessageType
+            //判斷是否為日期提示且日期內容
+            //判斷可視範圍內第一項內容文字是否與標題內容文字相符
+            //皆相符的話不須隱藏Header
+            if (!((firstItemData?.isCustomMessage == true)
+                        && (firstItemData.type == ChatMsgCustomType.DATE_TIP)
+                        && (headerItemDecoration.getHeaderItemView()?.findViewById<TextView>(R.id.tvDate)?.text?.toString() == firstItemData.content))) {
+
+                headerItemDecoration.setHeaderVisibility(
+                    isVisible = false,
+                    refreshRecyclerView = true
+                )
             }
         }
+    }
+
+    private inline fun clearDateFloatingTipsRunnable() {
+        binding.root.removeCallbacks(hideDateFloatingTipsRunnable)
+    }
+
+    private fun postDateFloatingTipsRunnable() {
+        clearDateFloatingTipsRunnable()
+        binding.root.postDelayed(hideDateFloatingTipsRunnable, 1_000)
     }
 
     /**
@@ -243,34 +230,32 @@ class ChatFragment : BaseSocketFragment<ChatViewModel>(ChatViewModel::class), Vi
                 when (chatEvent) {
                     is ChatEvent.ChatRoomIsReady -> { //已訂閱roomId且已更新歷史訊息
                         initEvent() //房間就緒後才能操作列表內容
-                        viewModel.apply {
                             //region 選擇照片會離開聊天室頁面，返回後需等重新訂閱，聊天室就緒後才能發送圖片訊息
-                            if (!tempChatImgUrl.isNullOrEmpty() && chatEvent.isReady) {
-                                tempChatImgUrl?.let {
-                                    delay(200)
-                                    sendPictureMsgDialog = SendPictureMsgDialog.newInstance(it,
-                                        object : SendPictureMsgDialog.SendMsgListener {
-                                            override fun onSend(
-                                                msg: String,
-                                                chatType: ChatType,
-                                            ) {
-                                                chatSendMessage(
-                                                    LiveMsgEntity().apply {
-                                                        content = msg
-                                                        type = chatType.code.toString()
-                                                    }
-                                                )
+                        if (!viewModel.tempChatImgUrl.isNullOrEmpty() && chatEvent.isReady) {
+                            viewModel.tempChatImgUrl?.let {
+                                delay(200)
+                                sendPictureMsgDialog = SendPictureMsgDialog.newInstance(it,
+                                    object : SendPictureMsgDialog.SendMsgListener {
+                                        override fun onSend(
+                                            msg: String,
+                                            chatType: ChatType,
+                                        ) {
+                                            chatSendMessage(
+                                                LiveMsgEntity().apply {
+                                                    content = msg
+                                                    type = chatType.code.toString()
+                                                }
+                                            )
 //                                                Timber.e("chatSendMessage msg:$msg, type:${chatType.code.toString()}")
-                                                tempChatImgUrl = null
-                                            }
-                                        })
-                                    sendPictureMsgDialog?.showAllowingStateLoss(
-                                        childFragmentManager, "SendPictureMsgDialog"
-                                    )
-                                }
+                                            viewModel.tempChatImgUrl = null
+                                        }
+                                    })
+                                sendPictureMsgDialog?.showAllowingStateLoss(
+                                    childFragmentManager, "SendPictureMsgDialog"
+                                )
                             }
-                            //endregion
-                        }
+                        //endregion
+                    }
                     }
                     is ChatEvent.UpdateList -> {
                         chatMessageListAdapter.dataList = chatEvent.chatMessageList
@@ -534,13 +519,14 @@ class ChatFragment : BaseSocketFragment<ChatViewModel>(ChatViewModel::class), Vi
 
         //上傳圖片server的result
         viewModel.editIconUrlResult.observe(viewLifecycleOwner) {
-            val iconUrlResult = it.getContentIfNotHandled()
-            if (iconUrlResult?.success == true) {
+            val iconUrlResult = it.getContentIfNotHandled() ?: return@observe
+            if (iconUrlResult.success) {
                 viewModel.tempChatImgUrl = iconUrlResult.t
-            } else
-                iconUrlResult?.msg?.let { msg ->
-                    showErrorPromptDialog(getString(R.string.error), msg) {}
-                }
+                return@observe
+            }
+            iconUrlResult?.msg?.let { msg ->
+                showErrorPromptDialog(getString(R.string.error), msg) {}
+            }
         }
     }
 
@@ -557,16 +543,13 @@ class ChatFragment : BaseSocketFragment<ChatViewModel>(ChatViewModel::class), Vi
 
     private fun showToast(msg: String) {
         binding.vChatToast.tvToast.text = msg
-        activity?.let {
-            binding.vChatToast.bvBlock.setupWith(it.window?.decorView?.rootView as ViewGroup)
-                .setFrameClearDrawable(it.window?.decorView?.background)
+        activity?.window?.decorView?.let {
+            binding.vChatToast.bvBlock.setupWith(it.rootView as ViewGroup)
+                .setFrameClearDrawable(it.background)
                 .setBlurRadius(8f)
         }
         binding.vChatToast.root.isVisible = true
-        Handler(Looper.getMainLooper()).postDelayed(
-            { binding.vChatToast.root.isVisible = false },
-            2000
-        )
+        Handler(Looper.getMainLooper()).postDelayed( { binding.vChatToast.root.isVisible = false },2000)
     }
 
     private fun setupSendMessage(inputString: String): String {
@@ -585,36 +568,36 @@ class ChatFragment : BaseSocketFragment<ChatViewModel>(ChatViewModel::class), Vi
         return result
     }
 
-    override fun onClick(v: View?) {
-        when (v) {
-            binding.vChatAction.binding.ivUploadImage -> {
-                pickPhoto()
-                hideKeyboard()
+    override fun onClick(v: View) {
+        if (v == binding.vChatAction.binding.ivUploadImage) {
+            pickPhoto()
+            hideKeyboard()
+            return
+        }
+
+        if(v == binding.vChatAction.binding.ivSend) {
+            val input = binding.vChatAction.binding.etInput.text
+            if (input.isNullOrEmpty()) return
+            if (!mIsEnabled) {
+                context?.let { showToast(getString(R.string.chat_speaking_too_often)) }
+                return
             }
-            binding.vChatAction.binding.ivSend -> {
-                val input = binding.vChatAction.binding.etInput.text
-                if (input.isNullOrEmpty()) return
-                if (mIsEnabled) {
-                    avoidFastDoubleClick(delayMills = 1500) //避免短時間重複送出訊息
-                    val sendMessage = setupSendMessage(input.toString())
-                    chatSendMessage(
-                        LiveMsgEntity().apply {
-                            content = sendMessage
-                            type = ChatType.CHAT_SEND_TEXT_MSG.code.toString()
-                        }
-                    )
-                    binding.vChatAction.binding.etInput.setText("")
-                    viewModel.tagPairList.clear()
-                    hideKeyboard()
-                } else {
-                    context?.let {
-                        showToast(getString(R.string.chat_speaking_too_often))
-                    }
-                }
-            }
-            binding.ivDownBtn -> {
-                chatListScrollToBottom(isSmooth = true)
-            }
+
+            avoidFastDoubleClick(delayMills = 1500) //避免短時間重複送出訊息
+            val sendMessage = setupSendMessage(input.toString())
+            val liveMsgEntity = LiveMsgEntity()
+            liveMsgEntity.content = sendMessage
+            liveMsgEntity.type = ChatType.CHAT_SEND_TEXT_MSG.code.toString()
+            chatSendMessage(liveMsgEntity)
+            binding.vChatAction.binding.etInput.setText("")
+            viewModel.tagPairList.clear()
+            hideKeyboard()
+            return
+        }
+
+        if (v == binding.ivDownBtn) {
+            chatListScrollToBottom(isSmooth = true)
+            return
         }
     }
 
@@ -691,31 +674,32 @@ class ChatFragment : BaseSocketFragment<ChatViewModel>(ChatViewModel::class), Vi
     }
 
     //處理聊天室是否就緒的event
-    private fun handleChatRoomIsReadyEvent(isReady: Boolean) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.emitChatRoomIsReady(isReady)
-        }
+    private fun handleChatRoomIsReadyEvent(isReady: Boolean) = launch {
+        viewModel.emitChatRoomIsReady(isReady)
     }
 
     private fun uploadImg(file: File) {
         val userId = viewModel.loginRepository.userId.toString()
-        val uploadImgRequest =
-            UploadImgRequest(userId, file, UploadImgRequest.PlatformCodeType.AVATAR)
+        val uploadImgRequest = UploadImgRequest(userId, file, UploadImgRequest.PlatformCodeType.AVATAR)
         viewModel.uploadImage(uploadImgRequest)
     }
 
-    override fun onDestroy() {
+    override fun onDestroyView() {
+        super.onDestroyView()
+        cancleJob()
+    }
+
+    private fun cancleJob() = runWithCatch {
+        clearDateFloatingTipsRunnable()
         jobScroll?.cancel()
-        super.onDestroy()
+        jobScroll = null
     }
 
     private fun chatListScrollToBottom(isSmooth: Boolean) {
-        binding.rvChatMessage.apply {
-            post {
-                val position = chatMessageListAdapter.itemCount - 1
-                if (isSmooth) smoothScrollToPosition(position)
-                else scrollToPosition(position)
-            }
+        binding.rvChatMessage.post {
+            val position = chatMessageListAdapter.itemCount - 1
+            if (isSmooth) binding.rvChatMessage.smoothScrollToPosition(position)
+            else binding.rvChatMessage.scrollToPosition(position)
         }
     }
 

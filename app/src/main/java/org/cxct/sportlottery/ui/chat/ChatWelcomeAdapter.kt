@@ -15,9 +15,8 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
  */
 class ChatWelcomeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    enum class ItemType {
-        ITEM, NULL
-    }
+    private val ITEM = 101
+    private val NULL = 99
 
     private val nullParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 32.dp)
 
@@ -32,40 +31,27 @@ class ChatWelcomeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun getItemCount(): Int = dataList.size + 2 //添加兩個空白項目用於滾出介面
 
     override fun getItemViewType(position: Int): Int {
-        return if (position < dataList.size) {
-            ItemType.ITEM.ordinal
-        } else {
-            ItemType.NULL.ordinal
-        }
+        return if (position < dataList.size) ITEM else NULL
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
-            ItemType.NULL.ordinal -> NullViewHolder(
-                View(parent.context).apply {
-                    layoutParams = nullParams
-                }
-            )
-            else -> UserViewHolder(
-                ItemChatWelcomeBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                )
-            )
+        if (viewType == NULL) {
+            return NullViewHolder(View(parent.context).apply { layoutParams = nullParams })
         }
+
+        return UserViewHolder(parent)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (holder) {
-            is UserViewHolder -> {
-                holder.bind(dataList[position])
-            }
+        if (holder is UserViewHolder) {
+            holder.bind(dataList[position])
         }
     }
 
-    inner class UserViewHolder(val binding: ItemChatWelcomeBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class UserViewHolder(parent: ViewGroup, val binding: ItemChatWelcomeBinding = ItemChatWelcomeBinding.inflate(
+                                   LayoutInflater.from(parent.context), parent, false))
+        : RecyclerView.ViewHolder(binding.root) {
+
         fun bind(data: ChatUserResult) {
             binding.tvName.text = data.nickName
             activity?.let {
