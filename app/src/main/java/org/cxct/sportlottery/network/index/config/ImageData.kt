@@ -6,6 +6,7 @@ import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguard
 data class ImageData(
     val id: Int?, //图片id
     val imageLink: String?, //图片跳转地址(可空)
+    val appUrl: String?, //图片跳转地址(可空)
     val imageName1: String?, //(1,2,3)图片名称,4.标题图片
     val imageName2: String?, //内容图片
     val imageName3: String?, //優惠活動圖片地址
