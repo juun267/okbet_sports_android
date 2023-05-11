@@ -1134,6 +1134,7 @@
     <string name="sms_code_length_error">Verification code kailangan 4 na digit</string>
     <string name="phone_no_error">Ang numero ng mobile phone ay dapat na 11 digit simula sa 09</string>
 
+    <string name="J369">Paraan ng Pagbayad</string>
 
     <string name="N849">Address</string>
     <string name="N887">Hindi mababago ang input</string>

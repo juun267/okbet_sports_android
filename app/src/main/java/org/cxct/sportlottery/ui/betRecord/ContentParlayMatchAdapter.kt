@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.betRecord
 
+import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +11,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_parlay_match.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.MatchOdd
 import org.cxct.sportlottery.network.bet.list.Row
+import org.cxct.sportlottery.network.bet.settledDetailList.RemarkBetRequest
 import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.betRecord.detail.BetDetailsActivity
+import org.cxct.sportlottery.ui.betRecord.dialog.PrintDialog
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.onClick
 

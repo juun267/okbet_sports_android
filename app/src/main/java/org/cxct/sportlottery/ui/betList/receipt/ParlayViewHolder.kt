@@ -40,6 +40,13 @@ class ParlayViewHolder private constructor(itemView: View) :
         position: Int
     ) = itemView.run {
 
+//        betParlay?.getOrNull(position)?.let {
+//            Timber.d("position:${position} it.odds:${it.odds} it.malayOdds:${it.malayOdds}")
+//            if (it.odds == it.malayOdds) {
+//                currentOddsType = OddsType.EU
+//            }
+//        }
+
         if (itemData.isFailed()) {
             tvBetResutStatu.setTextColor(context.getColor(R.color.color_E23434))
             tvBetResutStatu.setText(R.string.bet_info_add_bet_failed)
@@ -113,13 +120,10 @@ class ParlayViewHolder private constructor(itemView: View) :
                 tv_bet_status.gone()
             }
 
-
             //"status": 7 顯示賠率已改變
             Timber.d("parlayViewHolderCurrentStatus: $status")
             if (status == 7)
                 interfaceStatusChangeListener?.onChange(code)
-
-
         }
     }
 }

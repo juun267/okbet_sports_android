@@ -242,7 +242,9 @@ object BetInfoRepository {
 
         val item = betList.find { it.matchOdd.oddsId == oddId }
         betList.remove(item)
-
+        if (betList.isNotEmpty()) {
+            betList[0].input = null
+        }
         updateQuickListManager(betList)
 
         val oddIDStr = oddId ?: ""
@@ -427,6 +429,7 @@ object BetInfoRepository {
                     Timber.d("篮球末位比分模式")
                     oddIDArray.add(it.oddsId)
                     betList.add(data)
+                    betList[0].input = null
                 } else {
                     oddIDArray.clear()
                     betList.clear()

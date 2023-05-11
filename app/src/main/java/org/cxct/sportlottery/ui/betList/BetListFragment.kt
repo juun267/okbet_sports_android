@@ -573,7 +573,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
 
 
         val betCount = if (currentBetType == SINGLE || currentBetType == BASKETBALL_ENDING_CARD) {
-            list.count { it.betAmount > 0 }
+            list.size
         } else {
             parlayList.filter { it.betAmount > 0 }.sumOf { it.num }
         }
