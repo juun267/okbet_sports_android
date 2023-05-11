@@ -686,7 +686,7 @@ open class MainHomeViewModel(
      */
     fun getHomeNews(pageNum: Int, pageSize: Int, categoryIds: List<Int>) {
         viewModelScope.launch {
-            callApi({ NewsRepository.getHomeNews(pageNum, pageSize, categoryIds) }) {
+            callApi({ NewsRepository.getHomeNews(pageNum, pageSize, NewsRepository.SORT_CREATE_TIME,categoryIds) }) {
                 if (it.succeeded()) {
                     _homeNewsList.postValue(it.getData()?.firstOrNull()?.detailList ?: listOf())
                 } else {
@@ -715,7 +715,7 @@ open class MainHomeViewModel(
     /**
      * 获取新闻资讯列表
      */
-    fun getNewsDetail(id: Int) = callApi({ NewsRepository.getNewsDetail(id) }) {
+    fun getNewsDetail(id: Int) = callApi({ NewsRepository.getNewsDetail(id,NewsRepository.SORT_CREATE_TIME) }) {
         if (it.succeeded()) {
             _newsDetail.postValue(Pair(id, it.getData()))
         } else {
