@@ -2,14 +2,10 @@ package org.cxct.sportlottery.ui.maintab.menu
 
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
-import android.graphics.Interpolator
 import android.os.Bundle
-import android.support.v4.media.session.PlaybackStateCompat.RepeatMode
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.widget.Toast
 import com.budiyev.android.codescanner.AutoFocusMode
 import com.budiyev.android.codescanner.CodeScanner
-import com.budiyev.android.codescanner.CodeScannerView
 import com.budiyev.android.codescanner.DecodeCallback
 import com.budiyev.android.codescanner.ErrorCallback
 import com.budiyev.android.codescanner.ScanMode
@@ -20,12 +16,9 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityScannerBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
-import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.view.dialog.ScanErrorDialog
-import timber.log.Timber
 
 class ScannerActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
@@ -65,7 +58,7 @@ class ScannerActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                 runOnUiThread {
                     stopScanAnim()
                     val newUrl =
-                        Constants.getPrintReceiptScan(this@ScannerActivity, it.text.toString())
+                        Constants.getPrintReceiptScan(it.text.toString())
                     if (newUrl.isNotEmpty()) {
                         JumpUtil.toInternalWeb(this@ScannerActivity, href = newUrl,getString(R.string.N890))
                         finish()

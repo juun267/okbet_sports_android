@@ -173,7 +173,7 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                     val bitResult = BarcodeUtils.decodeBitmap(bitmap)
                     Timber.d("bitmap:${bitResult}")
                     val newUrl =
-                        Constants.getPrintReceiptScan(requireContext(), bitResult.toString())
+                        Constants.getPrintReceiptScan(bitResult.toString())
                     if (newUrl.isNotEmpty()) {
                         JumpUtil.toInternalWeb(
                             requireContext(),
