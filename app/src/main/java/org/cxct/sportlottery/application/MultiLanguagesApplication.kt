@@ -14,12 +14,11 @@ import androidx.multidex.MultiDex
 import cn.jpush.android.api.JPushInterface
 import com.appsflyer.AppsFlyerLib
 import com.didichuxing.doraemonkit.DoKit
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import me.jessyan.autosize.AutoSize
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.money.RedEnveLopeModel
@@ -332,20 +331,31 @@ class MultiLanguagesApplication : Application() {
             this.searchHistory = searchHistory
         }
 
-        var searchHistory: MutableList<String>?
+        var searchHistory: MutableList<String>? = null
             get() {
+                if (field == null) {
+                    field = mutableListOf()
+                    return field
+                }
+
                 val searchHistoryJson = myPref?.getString("search_history", "")
-                val gson = Gson()
-                val type = object : TypeToken<MutableList<String>?>() {}.type
-                var searchHistoryList: MutableList<String>? = gson.fromJson(searchHistoryJson, type)
-                return searchHistoryList
+                if (searchHistoryJson.isEmptyStr()) {
+                    field = mutableListOf()
+                    return field
+                }
+
+                field = JsonUtil.listFrom(searchHistoryJson!!, String::class.java)
+                return field
             }
-            set(searchHistoryList) {
-                val gson = Gson()
-                val searchHistoryJson = gson.toJson(searchHistoryList)
+            set(value) {
                 val editor = myPref?.edit()
-                editor?.putString("search_history", searchHistoryJson)
+                if (value == null) {
+                    editor?.putString("search_history", "")
+                } else {
+                    editor?.putString("search_history", JsonUtil.toJson(value))
+                }
                 editor?.apply()
+                field = value
             }
 
         fun saveNightMode(nightMode: Boolean) {

@@ -2,8 +2,10 @@ package org.cxct.sportlottery.network.chat.socketResponse.chatMessage
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.common.proguards.KeepMembers
 
 @JsonClass(generateAdapter = true)
+@KeepMembers
 data class ChatSilenceRoomResult(
     @Json(name = "roomId")
     val roomId: Long,

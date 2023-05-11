@@ -2,6 +2,7 @@ package org.cxct.sportlottery.network.chat.socketResponse.chatMessage
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.common.proguards.KeepMembers
 
 
 /**
@@ -12,6 +13,7 @@ import com.squareup.moshi.JsonClass
  * chatType 1008 删除消息
  * */
 @JsonClass(generateAdapter = true)
+@KeepMembers
 data class ChatRemoveMsgResult(
     @Json(name = "userId")
     val userId: Long,//	用户ID

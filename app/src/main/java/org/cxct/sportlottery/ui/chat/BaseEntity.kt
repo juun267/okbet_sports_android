@@ -1,11 +1,12 @@
 package org.cxct.sportlottery.ui.chat
 
-import com.google.gson.Gson
+import org.cxct.sportlottery.util.JsonUtil
 
+//聊天室消息发送的实体对象
 open class BaseEntity {
 
     fun toJSONString(): String {
-        return Gson().toJson(this)
+        return JsonUtil.toJson(this)
     }
 
 }

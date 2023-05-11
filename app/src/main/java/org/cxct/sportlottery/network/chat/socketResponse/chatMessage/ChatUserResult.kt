@@ -2,6 +2,7 @@ package org.cxct.sportlottery.network.chat.socketResponse.chatMessage
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.common.proguards.KeepMembers
 
 
 /**
@@ -13,6 +14,7 @@ import com.squareup.moshi.JsonClass
  * chatType 1003 用户离开房间
  * */
 @JsonClass(generateAdapter = true)
+@KeepMembers
 data class ChatUserResult(
     @Json(name = "userId")
     val userId: Long,//	用户ID

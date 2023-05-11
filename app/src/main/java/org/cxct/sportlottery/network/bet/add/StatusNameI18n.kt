@@ -7,7 +7,8 @@ import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguard
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-@JsonClass(generateAdapter = true) @KeepMembers
+@JsonClass(generateAdapter = true)
+@KeepMembers
 data class StatusNameI18n(
     @Json(name = "mapKey")
     val mapKey: String

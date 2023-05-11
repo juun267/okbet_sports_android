@@ -95,12 +95,14 @@
 -keepclassmembers class org.cxct.sportlottery.net.ApiResult { <fields>;}
 -keepclassmembers class * extends org.cxct.sportlottery.net.ApiResult { <fields>;}
 
+-keepclassmembers class * extends org.cxct.sportlottery.ui.chat.BaseEntity { <fields>;}
+
 #kotlin  与Moshi反序列化有关（@kotlin.Metadata涉及太广，应尽量降低keep范围）
 -keepclasseswithmembers @kotlin.Metadata class org.cxct.sportlottery.network.** { *; }
--keepclasseswithmembers @kotlin.Metadata class org.cxct.sportlottery.ui.** { *; }
+#-keepclasseswithmembers @kotlin.Metadata class org.cxct.sportlottery.ui.** { *; }
 
 #====== fastjson ============ start
--keepclassmembers class com.alibaba.fastjson.** { *; }
+#-keepclassmembers class com.alibaba.fastjson.** { *; }
 -keepclassmembers public class * {
     public void set*(***);
     public *** get*();

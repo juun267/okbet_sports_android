@@ -3,6 +3,7 @@ package org.cxct.sportlottery.network.chat.socketResponse.chatMessage
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.common.proguards.KeepMembers
 
 /**
  * @author Bill
@@ -15,6 +16,7 @@ import com.squareup.moshi.JsonClass
  * */
 
 @JsonClass(generateAdapter = true)
+@KeepMembers
 data class ChatMessageResult(
     @Json(name = "content")
     val content: String?,

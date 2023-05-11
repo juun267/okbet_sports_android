@@ -8,7 +8,8 @@ import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.network.money.config.TransferType
 
 @Parcelize
-@JsonClass(generateAdapter = true) @KeepMembers
+@JsonClass(generateAdapter = true)
+@KeepMembers
 data class BankCardList(
     @Json(name = "addTime")
     val addTime: String,

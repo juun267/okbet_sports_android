@@ -2,6 +2,7 @@ package org.cxct.sportlottery.network.chat.socketResponse.chatMessage
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.common.proguards.KeepMembers
 
 /**
  * @author Bill
@@ -11,6 +12,7 @@ import com.squareup.moshi.JsonClass
  * chatType 2005 发送用户个人红包
  * */
 @JsonClass(generateAdapter = true)
+@KeepMembers
 data class ChatPersonalRedEnvelopeResult(
     @Json(name = "id")
     val id: Long,//	红包id
