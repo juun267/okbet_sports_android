@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_sport_list.*
 import kotlinx.android.synthetic.main.item_favorite.view.*
 import kotlinx.android.synthetic.main.view_account_balance_2.*
@@ -51,6 +52,7 @@ import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.dialog.ServiceDialog
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.live.HomeLiveAdapter
@@ -1074,7 +1076,7 @@ fun View.setBtnEnable(enable: Boolean) {
 }
 
 fun BaseFragment<SportListViewModel>.showErrorMsgDialog(msg: String) {
-    val dialog = CustomAlertDialog(requireContext())
+    val dialog = CustomAlertDialog()
     dialog.setTitle(resources.getString(R.string.prompt))
     dialog.setMessage(msg)
     dialog.setTextColor(R.color.color_E44438_e44438)

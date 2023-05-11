@@ -471,7 +471,7 @@ class ProfileCenterFragment :
         viewModel.needToSendTwoFactor.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    customSecurityDialog = CustomSecurityDialog(requireContext()).apply {
+                    customSecurityDialog = CustomSecurityDialog().apply {
                         getSecurityCodeClickListener {
                             this.showSmeTimer300()
                             viewModel.sendTwoFactor()
@@ -488,7 +488,7 @@ class ProfileCenterFragment :
 
         viewModel.errorMessageDialog.observe(viewLifecycleOwner) {
             val errorMsg = it ?: getString(R.string.unknown_error)
-            CustomAlertDialog(requireContext()).apply {
+            CustomAlertDialog().apply {
                 setMessage(errorMsg)
                 setNegativeButtonText(null)
                 setCanceledOnTouchOutside(false)

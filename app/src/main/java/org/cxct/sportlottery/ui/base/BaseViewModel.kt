@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.base
 
+import android.app.Application
 import android.content.Context
 import androidx.annotation.Nullable
 import androidx.lifecycle.*
@@ -7,7 +8,6 @@ import kotlinx.coroutines.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.exception.DoNoConnectException
-import org.cxct.sportlottery.common.extentions.clean
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.httpFormat
 import org.cxct.sportlottery.network.OneBoSportApi
