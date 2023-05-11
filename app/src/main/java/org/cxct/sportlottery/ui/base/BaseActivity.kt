@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.res.Resources
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -22,6 +23,7 @@ import com.bigkoo.pickerview.view.OptionsPickerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.tools.ToastUtils
+import kotlinx.android.synthetic.main.layout_loading.ivLoading
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import kotlinx.android.synthetic.main.view_status_bar.*
 import me.jessyan.autosize.AutoSizeCompat
@@ -182,15 +184,16 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
         if (loadingView == null) {
             loadingView = layoutInflater.inflate(R.layout.layout_loading, null)
             val params = RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.MATCH_PARENT,
-                RelativeLayout.LayoutParams.MATCH_PARENT
+                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT
             )
             addContentView(loadingView, params)
         } else {
             loadingView?.rl_loading?.visibility = View.VISIBLE
             loadingView?.rl_loading?.isClickable = true
         }
-
+        loadingView?.ivLoading?.setBackgroundResource(R.drawable.anim_loading)
+        val animationDrawable = loadingView?.ivLoading?.background as AnimationDrawable
+        animationDrawable.start()
         loadingView?.pb_message?.text = message ?: getString(R.string.loading)
     }
 
@@ -200,6 +203,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
             Timber.d("loadingView不存在")
         } else {
             loadingView?.rl_loading?.visibility = View.GONE
+            (loadingView?.ivLoading?.background as AnimationDrawable).stop()
         }
     }
 
@@ -309,13 +313,8 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
         showPromptDialog(title, message, null, positiveClickListener, true)
     }
 
-    fun showErrorPromptDialog(
-        title: String,
-        message: Spanned,
-        hasCancel: Boolean,
-        positiveClickListener: () -> Unit?
-    ) {
-        showPromptDialog(title, message, null, positiveClickListener, true, hasCancel)
+    fun showErrorPromptDialog(title: String, message: Spanned,hasCancel: Boolean, positiveClickListener: () -> Unit?) {
+        showPromptDialog(title, message, null, positiveClickListener, true,hasCancel)
     }
 
     fun showPromptDialog(
