@@ -435,7 +435,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
 
     fun avoidFastDoubleClick() {
         mIsEnabled = false
-        mHandler.postDelayed({ mIsEnabled = true }, 500)
+        mHandler.postDelayed({ mIsEnabled = true }, 100)
     }
 
 

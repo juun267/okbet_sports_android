@@ -22,8 +22,7 @@ object Constants {
     private var mBaseUrl = ""
         set(value) {
             field = value
-            if (!field.isEmpty())
-                KvUtils.put("host", value)
+            if (!field.isEmpty()) KvUtils.put("host", value)
         }
         get() {
             return if (field.isEmpty()) KvUtils.decodeString("host") else field
@@ -31,8 +30,7 @@ object Constants {
     private var mSocketUrl = ""
         set(value) {
             field = value
-            if (!field.isNullOrEmpty())
-                KvUtils.put("socket_host", value)
+            if (!field.isNullOrEmpty()) KvUtils.put("socket_host", value)
         }
         get() {
             return if (field.isNullOrEmpty()) KvUtils.decodeString("socket_host") else field
@@ -93,8 +91,7 @@ object Constants {
         }
         if (value == null) {
             throw RuntimeException(
-                "The name '" + name
-                        + "' is not defined in the manifest file's meta data."
+                "The name '" + name + "' is not defined in the manifest file's meta data."
             )
         }
         return value.toString()
@@ -117,8 +114,7 @@ object Constants {
         return try {
             "${getH5BaseUrl()}activity/mobile/#/useractilistV2?lang=${language.key}&token=${
                 URLEncoder.encode(
-                    token,
-                    "utf-8"
+                    token, "utf-8"
                 )
             }${
                 if (isMultipleSitePlat()) {
@@ -142,8 +138,7 @@ object Constants {
         return try {
             "${getH5BaseUrl()}activity/mobile/#/useractivityV2/${id}?lang=${language.key}&token=${
                 URLEncoder.encode(
-                    token,
-                    "utf-8"
+                    token, "utf-8"
                 )
             }${
                 if (isMultipleSitePlat()) {
@@ -269,17 +264,29 @@ object Constants {
 
     //https://okbet-v2.cxsport.net/activity/mobile/#/print?uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
     //打印小票H5地址
-    fun getPrintReceipt(context:Context,uniqNo:String?,addTime:String?,reMark:String?):String {
+    fun getPrintReceipt(
+        context: Context, uniqNo: String?, addTime: String?, reMark: String?
+    ): String {
         var language = getLanguageTag(context)
         val base = getH5BaseUrl()
-        if (language.contains("/")){
-            language = language.substring(0,language.indexOf("/"))
-        }else if (language.isEmpty()){
+        if (language.contains("/")) {
+            language = language.substring(0, language.indexOf("/"))
+        } else if (language.isEmpty()) {
             language = "zh"
         }
         return "${base}activity/mobile/#/print?lang=${language}&uniqNo=$uniqNo&addTime=$addTime&reMark=$reMark"
     }
 
+
+    fun getPrintReceiptScan(context: Context, url: String): String {
+        val base = getH5BaseUrl()
+        return if (url.startsWith(base)) {
+            "$url&isScan=1"
+        } else {
+            ""
+        }
+
+    }
 
     //抽奖活动H5地址
     fun getLotteryH5Url(context: Context, token: String? = ""): String {
@@ -295,10 +302,9 @@ object Constants {
         if (url.isNullOrEmpty()) {
             return url
         }
-        return url + (if (url.contains("?")) "&" else "?") +
-                "mode=${(if (MultiLanguagesApplication.isNightMode) "night" else "day")}&from=android&version=${BuildConfig.VERSION_NAME}lang=${
-                    getLanguageTag(MultiLanguagesApplication.appContext)
-                }&token=${LoginRepository.token}"
+        return url + (if (url.contains("?")) "&" else "?") + "mode=${(if (MultiLanguagesApplication.isNightMode) "night" else "day")}&from=android&version=${BuildConfig.VERSION_NAME}lang=${
+            getLanguageTag(MultiLanguagesApplication.appContext)
+        }&token=${LoginRepository.token}"
     }
 
     //獲取檢查APP是否有更新版本的URL //輪詢 SERVER_URL_LIST 成功的那組 serverUrl 用來 download .apk
