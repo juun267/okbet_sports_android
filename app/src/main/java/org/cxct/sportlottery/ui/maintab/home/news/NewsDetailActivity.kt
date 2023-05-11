@@ -9,7 +9,6 @@ import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityNewsDetailBinding
 import org.cxct.sportlottery.net.news.data.NewsItem
-import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TimeUtil
@@ -96,7 +95,9 @@ class NewsDetailActivity : org.cxct.sportlottery.ui.base.BindingActivity<MainHom
                 binding.linNews.gone()
             } else {
                 binding.linNews.visible()
-                setupRelatedList(detail.relatedList)
+                val dataList = if (detail.relatedList.size > 4) detail.relatedList.subList(0,
+                    4) else detail.relatedList
+                setupRelatedList(dataList)
             }
         }
     }
