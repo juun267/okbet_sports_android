@@ -1,24 +1,24 @@
 package org.cxct.sportlottery.network.chat.socketResponse.chatMessage
 
 
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.common.proguards.KeepMembers
+import org.cxct.sportlottery.ui.chat.bean.ChatMessage
 
-@JsonClass(generateAdapter = true)
+
 @KeepMembers
-data class ChatReceiveContent<T>(
-    @Json(name = "content")
+data class ChatReceiveContent<T> (
     val content: T?,
-    @Json(name = "msg")
     val msg: String?,
-    @Json(name = "seq")
     val seq: Int?,//信息编号,client发送讯息id,如果为server主动推送，则为0
-    @Json(name = "time")
-    val time: Long?,
-    @Json(name = "type")
-    val type: Int?,
-) {
+    val time: Long,
+    val type: Int?
+): MultiItemEntity {
+
+    override val itemType: Int = 0
+
     @Suppress("UNCHECKED_CAST")
     fun <T> getThisContent(): T? {
         return content as T?

@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.dialog_red_envelope_list.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.chat.getUnPacket.UnPacketRow
+import org.cxct.sportlottery.net.chat.data.UnPacketRow
 import org.cxct.sportlottery.util.MetricsUtil
 
 /**

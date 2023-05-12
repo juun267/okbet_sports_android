@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.service
 
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -14,7 +15,7 @@ import org.json.JSONTokener
 
 object ChatMessageDispatcher {
 
-    private val contentClazz = mapOf<Int, Class<*>>(
+    private val contentClazz = mapOf<Int, Class<out MultiItemEntity>>(
         ChatMsgReceiveType.CHAT_MSG to ChatMessageResult::class.java,
         ChatMsgReceiveType.CHAT_SEND_PIC to ChatMessageResult::class.java,
         ChatMsgReceiveType.CHAT_SEND_PIC_AND_TEXT to ChatMessageResult::class.java,
@@ -57,81 +58,6 @@ object ChatMessageDispatcher {
         JsonUtil.fromJson(jString, ChatReceiveContent::class.java, clazz)?.let {
             ChatRepository.emitChatMessage(it)
         }
-
-//        when (type) {
-//            ChatMsgReceiveType.CHAT_MSG,
-//            ChatMsgReceiveType.CHAT_SEND_PIC,
-//            ChatMsgReceiveType.CHAT_SEND_PIC_AND_TEXT -> {
-//                val chatMessage = jString.fromJson<ChatReceiveContent<ChatMessageResult>>()
-//                ChatRepository.emitChatMessage(chatMessage)
-//            }
-//
-//            ChatMsgReceiveType.CHAT_SEND_RED_ENVELOPE -> {
-//                val chatMessage = jString.fromJson<ChatReceiveContent<ChatRedEnvelopeResult>>()
-//                ChatRepository.emitChatMessage(chatMessage)
-//            }
-//
-////                                ChatMsgReceiveType.CHAT_USER_LEAVE.code,離開房間不需要顯示
-//            ChatMsgReceiveType.CHAT_USER_ENTER,
-//            -> {
-//                val chatMessage = jString.fromJson<ChatReceiveContent<ChatUserResult>>()
-//                ChatRepository.emitChatMessage(chatMessage)
-//            }
-//
-//            ChatMsgReceiveType.CHAT_SILENCE_ROOM -> {
-//                val chatMessage = jString.fromJson<ChatReceiveContent<ChatSilenceRoomResult>>()
-//                ChatRepository.emitChatMessage(chatMessage)
-//            }
-//
-//            ChatMsgReceiveType.CHAT_WIN_RED_ENVELOPE_ROOM_NOTIFY,
-//            ChatMsgReceiveType.CHAT_WIN_RED_ENVELOPE_RAIN_NOTIFY -> {
-//                val chatMessage = jString.fromJson<ChatReceiveContent<ChatWinRedEnvelopeResult>>()
-//                ChatRepository.emitChatMessage(chatMessage)
-//            }
-//
-//            ChatMsgReceiveType.CHAT_SILENCE,
-//            ChatMsgReceiveType.CHAT_RELIEVE_SILENCE,
-//            ChatMsgReceiveType.CHAT_KICK_OUT -> {
-//                val chatMessage = jString.fromJson<ChatReceiveContent<ChatPersonalMsgResult>>()
-//                ChatRepository.emitChatMessage(chatMessage)
-//            }
-//
-//            ChatMsgReceiveType.CHAT_SEND_PERSONAL_RED_ENVELOPE -> {
-//                val chatMessage = jString.fromJson<ChatReceiveContent<ChatPersonalRedEnvelopeResult>>()
-//                ChatRepository.emitChatMessage(chatMessage)
-//            }
-//
-//            ChatMsgReceiveType.CHAT_USER_PROMPT -> {
-//                val chatMessage = jString.fromJson<ChatReceiveContent<ChatMessageResult>>()
-//                ChatRepository.emitChatMessage(chatMessage)
-//            }
-//
-//            ChatMsgReceiveType.CHAT_MSG_REMOVE -> {
-//                val chatMessage = jString.fromJson<ChatReceiveContent<ChatRemoveMsgResult>>()
-//                ChatRepository.emitChatMessage(chatMessage)
-//            }
-//
-//            ChatMsgReceiveType.CHAT_MSG_RED_ENVELOPE -> {
-//                val chatMessage = jString.fromJson<ChatReceiveContent<ChatRedEnvelopeMessageResult>>()
-//                ChatRepository.emitChatMessage(chatMessage)
-//            }
-//
-//            ChatMsgReceiveType.CHAT_UPDATE_USER_LEVEL_CONFIG -> {
-//                val chatMessage = jString.fromJson<ChatReceiveContent<UserLevelConfigVO>>()
-//                ChatRepository.emitChatMessage(chatMessage)
-//            }
-//
-//            ChatMsgReceiveType.CHAT_UPDATE_MEMBER -> {
-//                val chatMessage = jString.fromJson<ChatReceiveContent<UserLevelConfigVO>>()
-//                ChatRepository.emitChatMessage(chatMessage)
-//            }
-//
-//            ChatMsgReceiveType.CHAT_ERROR -> {
-//
-//            }
-//
-//            else -> {}
-//        }
     }
 
 }

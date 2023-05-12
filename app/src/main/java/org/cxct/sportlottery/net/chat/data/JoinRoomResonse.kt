@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.network.chat.joinRoom
+package org.cxct.sportlottery.net.chat.data
 
 import org.cxct.sportlottery.common.proguards.KeepMembers
 

@@ -1,7 +1,9 @@
 package org.cxct.sportlottery.network.chat
 
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.ui.chat.ChatMsgReceiveType
 
 @JsonClass(generateAdapter = true)
 data class UserLevelConfigVO(
@@ -39,4 +41,5 @@ data class UserLevelConfigVO(
     val platformId: Int?,
     @Json(name = "code")
     val code: String?,
-)
+    override val itemType: Int = ChatMsgReceiveType.CHAT_UPDATE_USER_LEVEL_CONFIG,
+): MultiItemEntity

@@ -3,6 +3,7 @@ package org.cxct.sportlottery.network.chat.guestInit
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.net.chat.data.GuestInitResponse
 import org.cxct.sportlottery.network.common.BaseResult
 
 @JsonClass(generateAdapter = true)

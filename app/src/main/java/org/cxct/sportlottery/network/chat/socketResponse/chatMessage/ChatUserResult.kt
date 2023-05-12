@@ -1,8 +1,10 @@
 package org.cxct.sportlottery.network.chat.socketResponse.chatMessage
 
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.common.proguards.KeepMembers
+import org.cxct.sportlottery.ui.chat.ChatMsgReceiveType
 
 
 /**
@@ -49,5 +51,8 @@ data class ChatUserResult(
     @Json(name = "lastMessageTime")
     val lastMessageTime: Long?,//最后一次发言时间
     @Json(name = "token")
-    val token: String?,//用户登入资讯
-)
+    val token: String?,
+    override val itemType: Int = ChatMsgReceiveType.CHAT_USER_ENTER
+): MultiItemEntity {
+
+}
