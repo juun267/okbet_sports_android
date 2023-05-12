@@ -1,8 +1,6 @@
 
 package org.cxct.sportlottery.ui.maintab.games.adapter
 
-import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import org.cxct.sportlottery.R
@@ -46,6 +44,10 @@ class ItemHotMatchHolder(
         //根据sofia 说法，只获取有效玩法中的第一个玩法，而不是直接获取独赢玩法，因为赛事列表有可能不存在独赢玩法
         //玩法Code
         var oddPlayCateCode = ""
+
+        data.oddsSort?.let {
+            oddPlayCateCode = it
+        }
 
         var oddList = listOf<Odd?>()
 

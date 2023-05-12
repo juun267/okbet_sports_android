@@ -544,7 +544,7 @@
     <string name="all_out_plat">Tất cả chuyển ra</string>
     <string name="all_in_plat">Tất cả chuyển vào</string>
     <string name="write_suggestion">Điền đề xuất</string>
-    <string name="can_input_1_to_500_word">Có thể nhập 1-500 từ</string>
+    <string name="can_input_1_to_500_word">Miêu tả vấn đề bạn gặp phải(Có thể nhập 1-500 từ)</string>
     <string name="third_game_ky">Game bài KY</string>
     <string name="odd_type_eu">EU</string>
     <string name="odd_type_hk">HK</string>
@@ -912,7 +912,7 @@
     <string name="total_win_amount">Thắng：</string> <!--F005-->
     <string name="total_all_win_amount">Tổng tiền ước thắng：</string> <!--F005-->
     <string name="delete_bet">Xóa bỏ</string>
-    <string name="btn_login_bet">Đăng nhập trước</string>
+    <string name="A006">Đăng nhập</string>
     <string name="btn_remove_closed_selections">Xóa cược đã đóng</string>
     <string name="bet_info_list_bet">Đặt cược</string>
     <string name="bet_info_bet">Tiền Cược</string>
@@ -1002,7 +1002,7 @@
     <string name="no_search_match">Không tìm thấy trận đấu</string>
     <string name="error_full_name">Họ tên bạn nhập không chính xác</string>
     <string name="hint_verification_code">Vui lòng nhập mã xác nhận.</string>
-    <string name="please_enter_question">Miêu tả vấn đề bạn gặp phải</string>
+    <string name="N158">Miêu tả vấn đề bạn gặp phải</string>
     <string name="hint_game_maintenance">Trò chơi này đang được bảo trì, vui lòng thử lại sau</string>
     <string name="to_back_login">Trở về trang đăng nhập</string>
     <string name="error_wechat">Lỗi định dạng ID WeChat</string>
@@ -1224,4 +1224,9 @@
     <string name="N901">Xác nhận xoá</string>
     <string name="N888">Tất cả tùy chọn cùng tỷ lệ cược cho điểm số cuối</string>
     <string name="N898">Bạn muốn xóa tất cả tùy chọn tỷ số không?</string>
+    <string name="N908">Quét</string>
+    <string name="N951">Vào album</string>
+    <string name="N952">Quét máy ảnh</string>
+    <string name="N956">Không nhận được mã QR</string>
+    <string name="N980">Quyền truy cập máy ảnh bị từ chối</string>
 </resources>

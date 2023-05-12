@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.betList.receipt
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -168,6 +169,7 @@ class BetReceiptFragment :
         setupReceiptStatusTips()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setupTotalValue() {
         var betCount = 0
         var totalCount = 0

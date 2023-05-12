@@ -24,7 +24,6 @@ class PrintDialog(mContext: Context) : Dialog(mContext) {
     var tvPrintClickListener: ((String?) -> Unit)? = null
 
     private fun initDialog() {
-
         setContentView(R.layout.dialog_print_enter_full_name)
         window?.setBackgroundDrawableResource(android.R.color.transparent)
         val etInputName = findViewById<EditText>(R.id.etInputFullName)

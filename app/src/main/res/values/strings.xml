@@ -550,7 +550,7 @@
     <string name="game_name">Game name</string>
     <string name="all_out_plat">All out</string>
     <string name="all_in_plat">All in</string>
-    <string name="write_suggestion">Submission</string>
+    <string name="N729">Submission</string>
     <!-- <string name="can_input_1_to_500_word">Can enter 1–500 words</string>&lt;!&ndash;请描述您遇到的问题&ndash;&gt;-->
     <string name="third_game_ky">KY games</string>
     <string name="odd_type_eu">EU</string>
@@ -926,7 +926,7 @@
     <string name="total_win_amount">Winning：</string>
     <string name="total_all_win_amount">Total Win：</string>
     <string name="delete_bet">Delete</string>
-    <string name="btn_login_bet">Login first</string>
+    <string name="A006">Login</string>
     <string name="btn_remove_closed_selections">Remove closed selections</string>
     <string name="bet_info_list_bet">Betting</string>
     <string name="bet_info_bet">Stake</string>
@@ -1009,7 +1009,7 @@
     <string name="my_favorite_empty">You don\'t have favorite events yet</string>
     <string name="remove_account_warning">Are you sure you want to cancel your current account?</string>
     <string name="cruel_write_off">Still delete</string>
-    <string name="can_input_1_to_500_word">Can enter 1–500 words</string>
+    <string name="can_input_1_to_500_word">Please describe the problem(Can enter 1–500 words)</string>
     <string name="half">Half</string>
     <string name="other_bet">Other betting</string>
     <string name="skin_mode">Mode: Day/Night</string>
@@ -1024,7 +1024,7 @@
     <string name="unbound_bank_card">You do not have %1$s bound</string>
     <string name="km">Km</string>
     <string name="outlet">Outlet</string>
-    <string name="please_enter_question">Please describe the problem</string>
+    <string name="N158">Please describe the problem</string>
     <string name="error_full_name">The name that you entered is not valid</string>
     <string name="hint_verification_code">Please enter verify code</string>
     <string name="to_back_login">Back to login page</string>
@@ -1329,4 +1329,9 @@
     <string name="N901">Confirm delete</string>
     <string name="N888">The individual odds are the same for all selections in the final score.</string>
     <string name="N898">Are you sure you want to delete all score options?</string>
+    <string name="N908">Scan</string>
+    <string name="N951">Album import</string>
+    <string name="N952">Camera scan</string>
+    <string name="N956">Can\'t recognize this QR code</string>
+    <string name="N980">Denied camera permission</string>
 </resources>

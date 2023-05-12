@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.res.Resources
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -21,9 +22,10 @@ import com.bigkoo.pickerview.builder.OptionsPickerBuilder
 import com.bigkoo.pickerview.view.OptionsPickerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.gyf.immersionbar.ImmersionBar
+import com.luck.picture.lib.tools.ToastUtils
+import kotlinx.android.synthetic.main.layout_loading.ivLoading
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import kotlinx.android.synthetic.main.view_status_bar.*
-import kotlinx.coroutines.launch
 import me.jessyan.autosize.AutoSizeCompat
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
@@ -86,9 +88,12 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
 
     private fun onTokenStateChanged() {
         viewModel.errorResultToken.observe(this) {
+
             if (this is MaintenanceActivity) return@observe
             it.getContentIfNotHandled()?.let {
-                if (it.code != HttpError.KICK_OUT_USER.code) {
+                if (it.code == HttpError.BALANCE_IS_LOW.code) {
+                    ToastUtils.s(this, it.msg)
+                } else if (it.code != HttpError.KICK_OUT_USER.code) {
                     toMaintenanceOrShowDialog(it)
                 }
             }
@@ -99,10 +104,12 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
         when (result.code) {
             HttpError.DO_NOT_HANDLE.code -> {
             }
+
             HttpError.MAINTENANCE.code -> {
                 startActivity(Intent(this, MaintenanceActivity::class.java))
                 finish()
             }
+
             else -> {
                 if (this is MaintenanceActivity) {
                     return
@@ -127,12 +134,14 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
 
     private fun netError(errorMessage: String) {
         hideLoading()
-        showPromptDialog(getString(R.string.prompt),
+        showPromptDialog(
+            getString(R.string.prompt),
             errorMessage,
             buttonText = null,
             { mOnNetworkExceptionListener?.onClick(null) },
             isError = true,
-            hasCancle = false )
+            hasCancle = false
+        )
     }
 
     private fun onNetworkException() {
@@ -175,15 +184,16 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
         if (loadingView == null) {
             loadingView = layoutInflater.inflate(R.layout.layout_loading, null)
             val params = RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.MATCH_PARENT,
-                RelativeLayout.LayoutParams.MATCH_PARENT
+                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT
             )
             addContentView(loadingView, params)
         } else {
             loadingView?.rl_loading?.visibility = View.VISIBLE
             loadingView?.rl_loading?.isClickable = true
         }
-
+        loadingView?.ivLoading?.setBackgroundResource(R.drawable.anim_loading)
+        val animationDrawable = loadingView?.ivLoading?.background as AnimationDrawable
+        animationDrawable.start()
         loadingView?.pb_message?.text = message ?: getString(R.string.loading)
     }
 
@@ -193,6 +203,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
             Timber.d("loadingView不存在")
         } else {
             loadingView?.rl_loading?.visibility = View.GONE
+            (loadingView?.ivLoading?.background as AnimationDrawable).stop()
         }
     }
 
@@ -228,14 +239,17 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
                 setNegativeButtonText(null)
                 setCanceledOnTouchOutside(false)
                 isCancelable = false //不能用系統 BACK 按鈕關閉 dialog
-                setPositiveClickListener{
+                setPositiveClickListener {
                     positiveClickListener()
                     mTokenPromptDialog?.dismiss()
                     mTokenPromptDialog = null
                 }
             }
 
-            if (!supportFragmentManager.isDestroyed) mTokenPromptDialog?.show(supportFragmentManager, null)
+            if (!supportFragmentManager.isDestroyed) mTokenPromptDialog?.show(
+                supportFragmentManager,
+                null
+            )
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -271,7 +285,14 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
         isOutsideCancelable: Boolean,
         positiveClickListener: () -> Unit?
     ) {
-        showPromptDialog(title, message, null, positiveClickListener, false, isOutsideCancelable = isOutsideCancelable)
+        showPromptDialog(
+            title,
+            message,
+            null,
+            positiveClickListener,
+            false,
+            isOutsideCancelable = isOutsideCancelable
+        )
     }
 
     fun showPromptDialog(
@@ -338,7 +359,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
             errorMessage = errorMessage,
             buttonText = buttonText,
             positiveClickListener = positiveClickListener,
-            negativeText = if(hasCancle) getString(R.string.btn_cancel) else null,
+            negativeText = if (hasCancle) getString(R.string.btn_cancel) else null,
         )
     }
 
@@ -413,7 +434,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
 
     fun avoidFastDoubleClick() {
         mIsEnabled = false
-        mHandler.postDelayed({ mIsEnabled = true }, 500)
+        mHandler.postDelayed({ mIsEnabled = true }, 100)
     }
 
 
@@ -453,9 +474,9 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
     }
 
 
-    fun replaceFragment(container:Int,fragment:Fragment){
-        val transaction= supportFragmentManager.beginTransaction();
-        transaction.replace(container,fragment)
+    fun replaceFragment(container: Int, fragment: Fragment) {
+        val transaction = supportFragmentManager.beginTransaction();
+        transaction.replace(container, fragment)
         transaction.commit()
     }
 }

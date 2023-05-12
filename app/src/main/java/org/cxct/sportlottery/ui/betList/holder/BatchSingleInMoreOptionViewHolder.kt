@@ -23,8 +23,10 @@ import org.cxct.sportlottery.util.getOdds
 import java.lang.Math.abs
 
 //填充單注
-class BatchSingleInMoreOptionViewHolder(private val contentView: ItemBetListBatchControlV3Binding,private val keyboardView: KeyboardView) :
-    BatchParlayViewHolder(contentView.root,keyboardView) {
+class BatchSingleInMoreOptionViewHolder(
+    private val contentView: ItemBetListBatchControlV3Binding,
+    private val keyboardView: KeyboardView
+) : BatchParlayViewHolder(contentView.root, keyboardView) {
     private var mUserMoney: Double = 0.0
     private var mUserLogin: Boolean = false
     private var mHasBetClosedForSingle: Boolean = false
@@ -93,9 +95,7 @@ class BatchSingleInMoreOptionViewHolder(private val contentView: ItemBetListBatc
 
             val initValue = if (itemData.singleInput != null) itemData.allSingleInput else ""
 
-            if (itemData.isInputBet) {
-//                layoutKeyBoard.setupMaxBetMoney(getMaxOrMinAmount(isGetMax = true, betList))
-            }
+
 
             etBetSingle.apply {
                 if (!initValue.isNullOrEmpty()) setText(initValue) else text.clear()
@@ -161,9 +161,7 @@ class BatchSingleInMoreOptionViewHolder(private val contentView: ItemBetListBatc
 
                             var dataOddsType = currentOddsType
                             data.apply {
-                                if (matchOdd.isOnlyEUType || matchOdd.odds == matchOdd.malayOdds
-                                    || matchType == MatchType.OUTRIGHT || matchType == MatchType.OTHER_OUTRIGHT
-                                ) {
+                                if (matchOdd.isOnlyEUType || matchOdd.odds == matchOdd.malayOdds || matchType == MatchType.OUTRIGHT || matchType == MatchType.OTHER_OUTRIGHT) {
                                     dataOddsType = OddsType.EU
                                 }
                             }
@@ -251,12 +249,6 @@ class BatchSingleInMoreOptionViewHolder(private val contentView: ItemBetListBatc
                 itemView.clearFocus()
             }
 
-//                btn_rule_single.setOnClickListener {
-//                    onItemClickListener.showParlayRule(
-//                        ParlayType.SINGLE.key,
-//                        context.getString(ParlayType.SINGLE.ruleStringRes ?: 0)
-//                    )
-//                }
         }
     }
 
@@ -367,6 +359,8 @@ class BatchSingleInMoreOptionViewHolder(private val contentView: ItemBetListBatc
                 //限額用整數提示
                 tvHintSingleDefault.text = hint
                 val etBetHasInput = !etBetSingle.text.isNullOrEmpty()
+//                et_bet_single
+//                etBetSingle.setText("")
 //                if (etBetHasInput) {
                 tvHintSingleDefault.isVisible = !etBetHasInput //僅輸入金額以後隱藏
 //                } else {

@@ -77,7 +77,7 @@
                     android:layout_marginTop="20dp"
                     android:background="@drawable/ic_submit"
                     android:gravity="center"
-                    android:text="@string/write_suggestion"
+                    android:text="@string/N729"
                     android:textAllCaps="true"
                     android:textColor="@color/color_FCFCFC"
                     android:textSize="@dimen/textSize16sp" />

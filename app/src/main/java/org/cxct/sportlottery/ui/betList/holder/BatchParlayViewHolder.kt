@@ -35,7 +35,9 @@ abstract class BatchParlayViewHolder(
     private var inputMaxMoney: Double = 0.0
     private var inputMinMoney: Double = 0.0
     private var mHasBetClosed: Boolean = false
-//    private var isTouched = false
+
+    //判断用户是否进行了操作，如果操作之后就默认设置为最小金额
+    private var isTouched = false
 
     protected fun setupParlayItem(
         itemData: ParlayOdd?,
@@ -111,6 +113,14 @@ abstract class BatchParlayViewHolder(
     ) {
         itemView.apply {
 
+            if (position == 0 && et_bet_parlay.text.isNullOrEmpty() && !isTouched) {
+                if (mUserMoney < inputMinMoney) {
+                    et_bet_parlay.setText(TextUtil.formatInputMoney(mUserMoney))
+                } else {
+                    et_bet_parlay.setText(TextUtil.formatInputMoney(inputMinMoney))
+                }
+            }
+
             et_bet_parlay.apply {
                 //第1步：為了避免TextWatcher在第2步被調用，提前移除
                 if (tag is TextWatcher) {
@@ -129,7 +139,7 @@ abstract class BatchParlayViewHolder(
                 Timber.d("1 进来了- - - -- - - - - - - :isTouched:${false}")
                 et_bet_parlay.requestFocus()
                 data.isInputBet = true
-                keyboardView.showKeyboard(et_bet_parlay,0)
+                keyboardView.showKeyboard(et_bet_parlay, 0)
             }
 
             onFocusChangeListener = null
@@ -139,6 +149,7 @@ abstract class BatchParlayViewHolder(
                 val tw: TextWatcher?
                 tw = object : TextWatcher {
                     override fun afterTextChanged(it: Editable?) {
+                        isTouched = true
                         if (it.isNullOrEmpty()) {
                             data.betAmount = 0.000
                             data.inputBetAmountStr = ""
@@ -243,6 +254,7 @@ abstract class BatchParlayViewHolder(
                 if (mHasBetClosed) {
                     tv_hint_parlay_default.text =
                         LocalUtils.getString(R.string.str_market_is_closed)
+                    et_bet_parlay.setText("")
                 } else {
                     //限額用整數提示
                     tv_hint_parlay_default.text = betHint
