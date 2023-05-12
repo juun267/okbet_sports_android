@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.chat
 
 
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -16,6 +17,7 @@ import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.launch
 import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.common.extentions.toDoubleS
+import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.FragmentChatBinding
 import org.cxct.sportlottery.network.chat.getUnPacket.UnPacketRow
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
@@ -41,7 +43,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
     private var jobScroll: Job? = null
 
     private val chatMessageListAdapter by lazy {
-        ChatMessageListAdapter()
+        ChatMessageListAdapter2()
     }
 
     private val chatWelcomeAdapter by lazy {
@@ -64,13 +66,15 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
 
     override fun onInitView(view: View) {
         initView()
-        loading()
     }
+
+    private val loadingHolder by lazy { Gloading.wrapView(binding.rvChatMessage) }
 
     override fun onBindViewStatus(view: View) {
         initObserve()
         chatWelcomeAdapter.activity = activity as ChatActivity?
         viewModel.getHistoryMessageList()
+        loadingHolder.showLoading()
     }
 
     override fun onPause() {
@@ -198,7 +202,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
 
     private fun initEvent() {
         chatMessageListAdapter.itemContentClickListener =
-            object : ChatMessageListAdapter.ItemContentClickListener {
+            object : ChatMessageListAdapter2.ItemContentClickListener {
                 override fun onRedEnvelopeClick(packetId: String, packetType: Int) {
                     createRedPacketDialog(packetId, packetType, false) //非管理原才會顯示打開按鈕，才可點擊
                 }
@@ -315,6 +319,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
             when (chatEvent) {
                 is ChatEvent.ChatRoomIsReady -> { //已訂閱roomId且已更新歷史訊息
                     onChatRoomReady(chatEvent)
+                    loadingHolder.showLoadSuccess()
                 }
 
                 is ChatEvent.UpdateList -> {
@@ -323,6 +328,8 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
                         binding.rvChatMessage.removeItemDecoration(headerItemDecoration)
                         binding.rvChatMessage.addItemDecoration(headerItemDecoration)
                     }
+
+                    Log.e("For Test", "========>>>> initChatEventObserver ${chatEvent.chatMessageList.size}")
                 }
 
                 is ChatEvent.RemoveMsg -> {

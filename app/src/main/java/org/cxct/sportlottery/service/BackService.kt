@@ -40,11 +40,6 @@ import java.util.concurrent.TimeUnit
 class BackService : Service() {
     companion object {
 
-        enum class MessageCate(val cate: String) {
-            Odds("0"),
-            Chat("1")
-        }
-
         const val MESSAGE_CATE = "message_cate"
 
         const val CUSTOM_DATA_MATCH_ODD = "CUSTOM_DATA_MATCH_ODD"
@@ -370,7 +365,6 @@ class BackService : Service() {
         isSubscribeData: Boolean,
     ) {
         val bundle = Bundle()
-        bundle.putString(MESSAGE_CATE, MessageCate.Odds.cate)
         bundle.putString(CHANNEL_KEY, channel)
         bundle.putString(SERVER_MESSAGE_KEY, setJObjToJArray(message))
         when (matchOdd) {

@@ -12,6 +12,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.load
 
 class GlobalLoadingView @JvmOverloads constructor(
     context: Context,
@@ -73,7 +74,7 @@ class GlobalLoadingView @JvmOverloads constructor(
             else -> {}
         }
         mTextView.text = str
-        mImageView.setImageResource(image)
+        mImageView.load(image)
         setOnClickListener(onClickListener)
         isVisible = show
     }

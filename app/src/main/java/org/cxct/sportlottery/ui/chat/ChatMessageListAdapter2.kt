@@ -25,10 +25,12 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.dialog_redenvelope_fail.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.hide
+import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.databinding.*
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.*
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.chat.bean.UserMessageStyle
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.widget.MixFontTextView
@@ -72,13 +74,13 @@ class ChatMessageListAdapter2 : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
 
     fun removeItem(position: Int) {
         notifyItemRemoved(position)
-        notifyItemRangeChanged(position, dataList.size - position)
+//        notifyItemRangeChanged(position, dataList.size - position)
     }
 
     fun removeRangeItem(start: Int, count: Int) {
         val change = dataList.size - start
         notifyItemRangeRemoved(start, count)
-        notifyItemRangeChanged(start, change)
+//        notifyItemRangeChanged(start, change)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -237,7 +239,7 @@ class ChatMessageListAdapter2 : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
                     setTextColor(
                         ContextCompat.getColor(
                             binding.root.context,
-                            getTextColor(userType)
+                            UserMessageStyle.getTextColor(userType)
                         )
                     )
                 }
@@ -257,7 +259,7 @@ class ChatMessageListAdapter2 : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
                         TimeUtil.HM_FORMAT
                     ) else ""
 
-                if (userType == UserType.ADMIN.code) {
+                if (UserMessageStyle.isAdmin(userType)) {
                     binding.ivAvatar.setImageResource(R.drawable.ic_chat_admin)
 
                     binding.messageBorder.setBackgroundResource(R.drawable.bg_chat_pop_admin_circle)
@@ -287,7 +289,7 @@ class ChatMessageListAdapter2 : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
                         ColorStateList.valueOf(
                             ContextCompat.getColor(
                                 binding.root.context,
-                                getBorderColor(userType)
+                                UserMessageStyle.getBorderColor(userType)
                             )
                         )
                 }
@@ -320,7 +322,7 @@ class ChatMessageListAdapter2 : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
                     setTextColor(
                         ContextCompat.getColor(
                             binding.root.context,
-                            getTextColor(userType)
+                            UserMessageStyle.getTextColor(userType)
                         )
                     )
                     mixFontText = checkTag
@@ -342,7 +344,7 @@ class ChatMessageListAdapter2 : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
                         TimeUtil.HM_FORMAT
                     ) else ""
 
-                if (userType == UserType.ADMIN.code) {
+                if (UserMessageStyle.isAdmin(userType)) {
                     binding.messageBorder.setBackgroundResource(R.drawable.bg_chat_pop_admin_circle_me)
 
                     binding.messageBorder.backgroundTintList = null
@@ -354,7 +356,7 @@ class ChatMessageListAdapter2 : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
                         ColorStateList.valueOf(
                             ContextCompat.getColor(
                                 binding.root.context,
-                                getBorderColor(userType)
+                                UserMessageStyle.getBorderColor(userType)
                             )
                         )
                 }
@@ -608,17 +610,7 @@ class ChatMessageListAdapter2 : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
                 }
 
                 val url = if (imgUrl.startsWith("http")) imgUrl else "$resServerHost/$imgUrl"
-                Glide.with(imageView.context)
-                    .load(url)
-                    .placeholder(
-                        ContextCompat.getDrawable(
-                            imageView.context,
-                            R.drawable.ic_image_load
-                        )
-                    )
-                    .error(ContextCompat.getDrawable(imageView.context, R.drawable.ic_image_load))
-                    .into(imageView)
-
+                imageView.load(url, R.drawable.ic_image_load)
                 imageView.setOnClickListener {
                     itemContentClickListener?.onPhotoClick(url)
                 }
@@ -648,38 +640,40 @@ class ChatMessageListAdapter2 : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
         context: Context,
         message: String?,
     ): SpannableStringBuilder {
+
         val startKey = "[@:"
         val endKey = "] "
         val content = message.orEmpty()
-        if (content.contains(startKey) && content.contains(endKey)) { //"[@:nickName] "
-            val words = content.split(endKey)
-//            Timber.e("words: $words")
-            val space = " "
-            for (word in words) {
-                if (word.contains(startKey)) {
-                    if (word.contains(space)) { //是否包含space
-                        val checkWords = word.split(space)
-                        for (checkWord in checkWords) {
-                            if (checkWord.contains(startKey)) {
-                                val targetWord = checkWord.replace(startKey, "@")
-                                setupTextColorAndUnderline(targetWord, context, stringBuilder)
-                            } else {
-                                stringBuilder.append(checkWord)
-                            }
-                            stringBuilder.append(space) //用(space = " ")split，需補空格
+        if (!content.contains(startKey) || !content.contains(endKey)) { //"[@:nickName] "
+            stringBuilder.append(content)
+            return stringBuilder
+        }
+
+        val words = content.split(endKey)
+        val space = " "
+        for (word in words) {
+            if (word.contains(startKey)) {
+                if (word.contains(space)) { //是否包含space
+                    val checkWords = word.split(space)
+                    for (checkWord in checkWords) {
+                        if (checkWord.contains(startKey)) {
+                            val targetWord = checkWord.replace(startKey, "@")
+                            setupTextColorAndUnderline(targetWord, context, stringBuilder)
+                        } else {
+                            stringBuilder.append(checkWord)
                         }
-                    } else {
-                        val targetWord = word.replace(startKey, "@")
-                        setupTextColorAndUnderline(targetWord, context, stringBuilder)
+                        stringBuilder.append(space) //用(space = " ")split，需補空格
                     }
                 } else {
-                    stringBuilder.append(word)
+                    val targetWord = word.replace(startKey, "@")
+                    setupTextColorAndUnderline(targetWord, context, stringBuilder)
                 }
-                stringBuilder.append(space) //用(endKey = "] ")split，需補空格
+            } else {
+                stringBuilder.append(word)
             }
-        } else {
-            stringBuilder.append(content)
+            stringBuilder.append(space) //用(endKey = "] ")split，需補空格
         }
+
         return stringBuilder
     }
 
@@ -717,66 +711,5 @@ class ChatMessageListAdapter2 : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
         }
     }
 
-    data class UserType private constructor(
-        val code: String,
-        val borderColor: Int,
-        val fillColor: Int,
-        val textColor: Int,
-    ) {
-        companion object {
-            val GUEST = UserType(
-            "0",
-            R.color.color_chat_message_border_guest,
-            R.color.color_chat_message_fill_guest,
-            R.color.color_chat_message_text_guest
-            )
-
-            val MEMBER = UserType(
-            "1",
-            R.color.color_chat_message_border_member,
-            R.color.color_chat_message_fill_member,
-            R.color.color_chat_message_text_member
-            )
-
-            val ADMIN = UserType(
-            "2",
-            R.color.color_chat_message_border_admin,
-            R.color.color_chat_message_fill_admin,
-            R.color.color_chat_message_text_admin
-            )
-
-            val VISITOR = UserType(
-            "3",
-            R.color.color_chat_message_border_guest,
-            R.color.color_chat_message_fill_guest,
-            R.color.color_chat_message_text_guest
-            )
-        }
-    }
-
-    fun getBorderColor(userType: String?): Int =
-        when (userType) {
-            UserType.GUEST.code -> UserType.GUEST.borderColor
-            UserType.MEMBER.code -> UserType.MEMBER.borderColor
-            UserType.VISITOR.code -> UserType.VISITOR.borderColor
-            else -> 0
-        }
-
-    fun getFillColor(userType: String?): Int =
-        when (userType) {
-            UserType.GUEST.code -> UserType.GUEST.fillColor
-            UserType.MEMBER.code -> UserType.MEMBER.fillColor
-            UserType.VISITOR.code -> UserType.VISITOR.fillColor
-            else -> 0
-        }
-
-    fun getTextColor(userType: String?): Int =
-        when (userType) {
-            UserType.GUEST.code -> UserType.GUEST.textColor
-            UserType.MEMBER.code -> UserType.MEMBER.textColor
-            UserType.ADMIN.code -> UserType.ADMIN.textColor
-            UserType.VISITOR.code -> UserType.VISITOR.textColor
-            else -> 0
-        }
 
 }
