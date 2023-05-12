@@ -59,14 +59,14 @@ object JumpUtil {
     //跳轉第三方遊戲網頁
     fun toThirdGameWeb(context: Context, href: String, thirdGameCategoryCode: String) {
 
-        if ("CQ9"== thirdGameCategoryCode) {  // CQ9 有兼容问题特殊处理，用外部浏览器打开
-            runWithCatch {
-                val i = Intent(Intent.ACTION_VIEW, Uri.parse(href))
-                i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                context.startActivity(i)
-            }
-            return
-        }
+//        if ("CQ9"== thirdGameCategoryCode) {  // CQ9 有兼容问题特殊处理，用外部浏览器打开
+//            runWithCatch {
+//                val i = Intent(Intent.ACTION_VIEW, Uri.parse(href))
+//                i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
+//                context.startActivity(i)
+//            }
+//            return
+//        }
 
 
 
