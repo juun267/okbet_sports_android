@@ -20,7 +20,7 @@ import org.cxct.sportlottery.ui.maintab.home.news.NewsDetailActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
-class MainHomeFragment2: org.cxct.sportlottery.ui.base.BindingSocketFragment<MainHomeViewModel, FragmentMainHome2Binding>() {
+class MainHomeFragment2: BindingSocketFragment<MainHomeViewModel, FragmentMainHome2Binding>() {
 
     private inline fun getMainTabActivity() = activity as MainTabActivity
     private inline fun getHomeFragment() = parentFragment as HomeFragment

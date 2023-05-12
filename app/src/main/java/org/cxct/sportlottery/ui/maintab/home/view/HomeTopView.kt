@@ -8,10 +8,13 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import com.stx.xhb.androidx.XBanner
+import kotlinx.android.synthetic.main.layout_home_top.view.ivPaymaya
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.load
+import org.cxct.sportlottery.common.extentions.setOnClickListeners
 import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.databinding.LayoutHomeTopBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.repository.ConfigRepository
@@ -27,12 +30,15 @@ import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.getSportEnterIsClose
 
-class HomeTopView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
-    : LinearLayout(context, attrs, defStyle), XBanner.OnItemClickListener {
+class HomeTopView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
+) : LinearLayout(context, attrs, defStyle), XBanner.OnItemClickListener {
+
+    val binding: LayoutHomeTopBinding
 
     init {
         orientation = VERTICAL
-        LayoutInflater.from(context).inflate(R.layout.layout_home_top, this, true)
+        binding = LayoutHomeTopBinding.inflate(LayoutInflater.from(context), this)
         initLogin()
         initSportEnterStatus()
     }
@@ -40,34 +46,32 @@ class HomeTopView @JvmOverloads constructor(context: Context, attrs: AttributeSe
     /**
      * 检测体育服务是否关闭
      */
-    private fun initSportEnterStatus(){
-        if(getSportEnterIsClose()){
-            findViewById<View>(R.id.tvSportClose).visible()
+    private fun initSportEnterStatus() {
+        if (getSportEnterIsClose()) {
+            binding.tvSportClose.visible()
         }
     }
 
     private fun initBanner() {
         val lang = LanguageManager.getSelectLanguage(context).key
-        setUpBanner(lang,2, R.id.topBanner)
+        setUpBanner(lang, 2, R.id.topBanner)
         setUpBanner(lang, 5, R.id.promotionsBanner)
     }
 
-    private fun setUpBanner(lang: String,
-                            imageType: Int,
-                            bannerId: Int) {
-
-
-        var imageList = sConfigData?.imageList?.filter {
+    private fun setUpBanner(
+        lang: String, imageType: Int, bannerId: Int
+    ) {
+        val imageList = sConfigData?.imageList?.filter {
             it.imageType == imageType && it.lang == lang && !it.imageName1.isNullOrEmpty()
-        }?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
+        }
+            ?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
 
-        val loopEnable = imageList?.size ?: 0 > 1
+        val loopEnable = (imageList?.size ?: 0) > 1
         if (imageList.isNullOrEmpty()) {
             return
         }
 
         val xbanner = findViewById<XBanner>(bannerId)
-
         xbanner.setHandLoop(loopEnable)
         xbanner.setAutoPlayAble(loopEnable)
         xbanner.setOnItemClickListener(this@HomeTopView)
@@ -80,6 +84,12 @@ class HomeTopView @JvmOverloads constructor(context: Context, attrs: AttributeSe
             XBannerImage(it.imageText1 + "", host + it.imageName1, it.appUrl)
         }
 
+        //opt1 ->ImageType = 5,为活动轮播图
+        //opt2 -> 后台有配置
+        //满足以上两点 -> 显示活动轮播图r
+        if (imageType == 5 && images.isNotEmpty()) {
+            xbanner.visible()
+        }
         xbanner.setBannerData(images.toMutableList())
     }
 
@@ -99,24 +109,34 @@ class HomeTopView @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
     private fun initLogin() {
         if (LoginRepository.isLogined()) {
-            findViewById<View>(R.id.depositLayout).visible()
+            binding.depositLayout.visible()
             return
         }
 
-        findViewById<View>(R.id.loginLayout).visible()
-        findViewById<View>(R.id.tvLogin).setOnClickListener { context.startActivity(Intent(context, LoginOKActivity::class.java)) }
-        findViewById<View>(R.id.tvRegist).setOnClickListener { LoginOKActivity.startRegist(context) }
+        binding.loginLayout.visible()
+        binding.tvLogin.setOnClickListener {
+            context.startActivity(
+                Intent(
+                    context, LoginOKActivity::class.java
+                )
+            )
+        }
+        binding.tvRegist.setOnClickListener { LoginOKActivity.startRegist(context) }
 
     }
 
     fun setup(fragment: MainHomeFragment2) {
 
         ConfigRepository.onNewConfig(fragment) { initBanner() }
-        findViewById<View>(R.id.vSports).setOnClickListener { fragment.jumpToInplaySport() }
-        findViewById<View>(R.id.vOkgames).setOnClickListener { fragment.jumpToOKGames() }
+        binding.vSports.setOnClickListener { fragment.jumpToInplaySport() }
+        binding.vOkgames.setOnClickListener { fragment.jumpToOKGames() }
 
         if (!LoginRepository.isLogined()) {
-            findViewById<View>(R.id.ivGoogle).setOnClickListener { LoginOKActivity.googleLoging(context) }
+            binding.ivGoogle.setOnClickListener {
+                LoginOKActivity.googleLoging(
+                    context
+                )
+            }
             return
         }
 
@@ -131,16 +151,23 @@ class HomeTopView @JvmOverloads constructor(context: Context, attrs: AttributeSe
                 return@OnClickListener
             }
 
-            fragment.showPromptDialog(context.getString(R.string.prompt), context.getString(R.string.N643)) {
+            fragment.showPromptDialog(
+                context.getString(R.string.prompt), context.getString(R.string.N643)
+            ) {
 
             }
         }
 
-        findViewById<View>(R.id.tvDeposit).setOnClickListener(depositClick)
-        findViewById<View>(R.id.ivGLive).setOnClickListener(depositClick)
-        findViewById<View>(R.id.ivPaymaya).setOnClickListener(depositClick)
-        findViewById<View>(R.id.ivPayX).setOnClickListener(depositClick)
-        findViewById<View>(R.id.ivFortunepay).setOnClickListener(depositClick)
+        setOnClickListeners(
+            binding.tvDeposit,
+            binding.ivGLive,
+            binding.ivPaymaya,
+            binding.ivPayX,
+            binding.ivFortunepay,
+        ) {
+            depositClick.onClick(it)
+        }
+
 
         fragment.viewModel.isRechargeShowVerifyDialog.observe(fragment.viewLifecycleOwner) {
             val b = it.getContentIfNotHandled() ?: return@observe
@@ -160,9 +187,10 @@ class HomeTopView @JvmOverloads constructor(context: Context, attrs: AttributeSe
                 return@observe
             }
 
-            fragment.showPromptDialog(context.getString(R.string.prompt),
-                context.getString(R.string.message_recharge_maintain)) {
-            }
+            fragment.showPromptDialog(
+                context.getString(R.string.prompt),
+                context.getString(R.string.message_recharge_maintain)
+            ) {}
 
         }
 
