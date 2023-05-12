@@ -3,12 +3,6 @@ package org.cxct.sportlottery.ui.maintab.home.news
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.net.Uri
-import android.net.http.SslError
-import android.webkit.SslErrorHandler
-import android.webkit.WebResourceRequest
-import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import org.cxct.sportlottery.R
@@ -61,7 +55,6 @@ class NewsDetailActivity :
                     JumpUtil.toInternalWeb(this@NewsDetailActivity, request?.url.toString(), "")
                     return true
                 }
-
             }
         }
         initRecyclerView()
@@ -95,11 +88,8 @@ class NewsDetailActivity :
             tvTime.text = TimeUtil.timeFormat(
                 newsItem?.createTimeInMillisecond,
                 TimeUtil.NEWS_TIME_FORMAT,
-                locale = Locale.ENGLISH
-            )
-            okWebContent.loadData(getHtmlData(newsItem.contents ?: ""), "text/html", null)
-
-
+                locale = Locale.ENGLISH)
+            okWebContent.loadData(getHtmlData(newsItem?.contents ?: ""), "text/html", null)
         }
     }
 
