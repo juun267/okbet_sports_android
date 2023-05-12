@@ -311,8 +311,8 @@ class SportListViewHolder constructor(
             ic_attack_c.isVisible = false
             ic_attack_tn_h.isInvisible = true
             ic_attack_tn_c.isInvisible = true
-            lin_home_round_score.isVisible = false
-            lin_away_round_score.isVisible = false
+            lin_home_round_score.inVisible()
+            lin_away_round_score.inVisible()
             league_odd_yellow_cards_home.isVisible = false
             league_odd_yellow_cards_away.isVisible = false
             league_odd_match_cards_home.isVisible = false
