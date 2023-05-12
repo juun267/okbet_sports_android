@@ -3,10 +3,9 @@ package org.cxct.sportlottery.ui.maintab.home.news
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.net.http.SslError
-import android.webkit.SslErrorHandler
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.roundOf
@@ -18,16 +17,20 @@ import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.view.webView.OkWebChromeClient
 import org.cxct.sportlottery.view.webView.OkWebViewClient
+import timber.log.Timber
+import java.net.URL
 import java.util.*
 
 
-class NewsDetailActivity : org.cxct.sportlottery.ui.base.BindingActivity<MainHomeViewModel, ActivityNewsDetailBinding>(){
+class NewsDetailActivity :
+    org.cxct.sportlottery.ui.base.BindingActivity<MainHomeViewModel, ActivityNewsDetailBinding>() {
 
-    companion object{
-        fun start(context: Context,newsItem: NewsItem){
+    companion object {
+        fun start(context: Context, newsItem: NewsItem) {
             val intent = Intent(context, NewsDetailActivity::class.java)
-            intent.putExtra("newsItem",newsItem)
+            intent.putExtra("newsItem", newsItem)
             context.startActivity(intent)
         }
     }
@@ -42,34 +45,16 @@ class NewsDetailActivity : org.cxct.sportlottery.ui.base.BindingActivity<MainHom
         }
         binding.okWebContent.apply {
             setBackgroundColor(getColor(R.color.color_F8F9FD))
-            webViewClient = object : OkWebViewClient() {
-                override fun shouldOverrideUrlLoading(
-                    view: WebView?,
-                    request: WebResourceRequest?
-                ): Boolean {
-                    JumpUtil.toInternalWeb(this@NewsDetailActivity,request?.url.toString(),"")
-                    return true
-                }
 
-                override fun onReceivedSslError(
-                    view: WebView?,
-                    handler: SslErrorHandler?,
-                    error: SslError?
-                ) {
-                    //此方法是为了处理在5.0以上Https的问题，必须加上
-                    //handler.proceed()
-                    if (isFinishing)
-                        return
-                    AlertDialog.Builder(this@NewsDetailActivity)
-                        .setMessage(android.R.string.httpErrorUnsupportedScheme)
-                        .setPositiveButton(
-                            "continue"
-                        ) { dialog, which -> handler?.proceed() }
-                        .setNegativeButton(
-                            "cancel"
-                        ) { dialog, which -> handler?.cancel() }
-                        .create()
-                        .show()
+            okWebChromeClient = object : OkWebChromeClient() {}
+            okWebViewClient = object : OkWebViewClient() {
+
+                override fun shouldOverrideUrlLoading(
+                    view: WebView?, request: WebResourceRequest?
+                ): Boolean {
+                    Timber.d("shouldOverrideUrlLoading request:${request?.url} path:${request?.url?.path}")
+                    JumpUtil.toInternalWeb(this@NewsDetailActivity, request?.url.toString(), "")
+                    return true
                 }
             }
         }
@@ -101,10 +86,11 @@ class NewsDetailActivity : org.cxct.sportlottery.ui.base.BindingActivity<MainHom
         binding.apply {
             ivCover.roundOf(newsItem?.image, 12.dp, R.drawable.img_banner01)
             tvTitle.text = newsItem?.title
-            tvTime.text = TimeUtil.timeFormat(newsItem?.createTimeInMillisecond,
+            tvTime.text = TimeUtil.timeFormat(
+                newsItem?.createTimeInMillisecond,
                 TimeUtil.NEWS_TIME_FORMAT,
                 locale = Locale.ENGLISH)
-            okWebContent.loadData(getHtmlData(newsItem?.contents ?: ""), "text/html", "utf-8")
+            okWebContent.loadData(getHtmlData(newsItem?.contents ?: ""), "text/html", null)
         }
     }
 
@@ -134,8 +120,9 @@ class NewsDetailActivity : org.cxct.sportlottery.ui.base.BindingActivity<MainHom
                 binding.linNews.gone()
             } else {
                 binding.linNews.visible()
-                val dataList = if (detail.relatedList.size > 4) detail.relatedList.subList(0,
-                    4) else detail.relatedList
+                val dataList = if (detail.relatedList.size > 4) detail.relatedList.subList(
+                    0, 4
+                ) else detail.relatedList
                 setupRelatedList(dataList)
             }
         }
@@ -146,10 +133,8 @@ class NewsDetailActivity : org.cxct.sportlottery.ui.base.BindingActivity<MainHom
     }
 
     private fun getHtmlData(bodyHTML: String): String {
-        val head = "<head>" +
-                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\"> " +
-                "<style>img{max-width: 100%; width:auto; height:auto!important;}</style>" +
-                "</head>";
+        val head =
+            "<head>" + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\"> " + "<style>img{max-width: 100%; width:auto; height:auto!important;}</style>" + "</head>";
         return "<html>$head<body>$bodyHTML</body></html>";
     }
 
