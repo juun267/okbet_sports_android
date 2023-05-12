@@ -1344,4 +1344,5 @@
     <string name="chat_notify">公告：</string>
     <string name="chat_room_is_closed">聊天室暂时关闭</string> <!--LT058-->
     <string name="chat_photo_download_done">已储存</string>
+    <string name="J871">加载失败</string>
 </resources>
