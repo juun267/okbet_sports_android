@@ -16,7 +16,6 @@
 
         <ImageView
             android:id="@+id/ivCover"
-            android:background="@color/color_6D7693"
             android:layout_width="match_parent"
             android:scaleType="fitXY"
             android:layout_height="match_parent"/>

@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.home.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.text.TextUtils
 import android.util.AttributeSet
@@ -13,6 +14,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import org.cxct.sportlottery.R
@@ -145,6 +147,7 @@ class HomeToolbarView@JvmOverloads constructor(context: Context, attrs: Attribut
         addView(loginLayout, LayoutParams(0, -2, 1f))
     }
 
+    @SuppressLint("RestrictedApi")
     private fun createBtnText(text: Int, background: Int): TextView {
         return AppCompatTextView(context).apply {
             minWidth = 74.dp
@@ -154,6 +157,9 @@ class HomeToolbarView@JvmOverloads constructor(context: Context, attrs: Attribut
             elevation = 2.dp.toFloat()
             textSize = 14f
             setText(text)
+            //自动调整大小
+            setAutoSizeTextTypeWithDefaults(TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM)
+            setAutoSizeTextTypeUniformWithConfiguration(10, 14, 1, TypedValue.COMPLEX_UNIT_SP)
             val padding = 10.dp
             setPadding(padding, 0, padding, 0)
             setBackgroundResource(background)

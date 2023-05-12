@@ -18,6 +18,11 @@ object NewsRepository {
         RetrofitHolder.createNewRetrofit(sConfigData?.cmsUrl ?: Constants.getBaseUrl())
             .create(NewsApi::class.java)
     }
+    const val SORT_CREATE_TIME ="CREATE_TIME"
+    const val SORT_DEFAULT ="SORT"
+
+    const val NEWS_OKBET_ID = 12
+    const val NEWS_SPORT_ID = 13
 
     private fun paramDevice(): JsonObject {
         val params = JsonObject()
@@ -28,11 +33,13 @@ object NewsRepository {
     suspend fun getHomeNews(
         pageNum: Int,
         pageSize: Int,
+        sort: String? = null,
         categoryIds: List<Int>,
     ): ApiResult<List<NewsCategory>> {
         val params = JsonObject()
         params.addProperty("pageNum", pageNum)
         params.addProperty("pageSize", pageSize)
+        params.addProperty("sort", sort)
         params.add("categoryIds", Gson().toJsonTree(categoryIds))
         return newsApi.getListHome(params)
     }
@@ -52,20 +59,22 @@ object NewsRepository {
     suspend fun getPageNews(
         pageNum: Int,
         pageSize: Int,
-        categoryIds: List<Int>,
+        categoryId: Int,
     ): ApiResult<PageInfo<NewsItem>> {
         val params = JsonObject()
         params.addProperty("pageNum", pageNum)
         params.addProperty("pageSize", pageSize)
-        params.add("categoryIds", Gson().toJsonTree(categoryIds))
+        params.addProperty("categoryId", categoryId)
         return newsApi.getListPage(params)
     }
 
     suspend fun getNewsDetail(
         id: Int,
+        sort: String? = null,
     ): ApiResult<NewsDetail> {
         val params = JsonObject()
         params.addProperty("id", id)
+        params.addProperty("sort", sort)
         return newsApi.getNewsDetail(params)
     }
 

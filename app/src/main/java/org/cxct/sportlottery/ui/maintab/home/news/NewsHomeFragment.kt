@@ -2,15 +2,13 @@ package org.cxct.sportlottery.ui.maintab.home.news
 
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.tabs.TabLayout
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
 import org.cxct.sportlottery.databinding.FragmentNewsHomeBinding
 import org.cxct.sportlottery.net.PageInfo
+import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -19,12 +17,9 @@ import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.view.tablayout.TabSelectedAdapter
 
-class NewsHomeFragment : org.cxct.sportlottery.ui.base.BindingSocketFragment<MainHomeViewModel, FragmentNewsHomeBinding>() {
+class NewsHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentNewsHomeBinding>() {
 
-
-    private val NEWS_OKBET_ID = 12
-    private val NEWS_SPORT_ID = 13
-    private var categoryIds = listOf(NEWS_OKBET_ID)
+    private var categoryId = NewsRepository.NEWS_OKBET_ID
 
     private inline fun getMainTabActivity() = activity as MainTabActivity
     private inline fun getHomeFragment() = parentFragment as HomeFragment
@@ -41,7 +36,7 @@ class NewsHomeFragment : org.cxct.sportlottery.ui.base.BindingSocketFragment<Mai
     override fun onInitData() {
         initObservable()
         if (currentPage == 1) { // 第一次进来的时候
-            viewModel.getPageNews(currentPage, PAGE_SIZE, categoryIds)
+            viewModel.getPageNews(currentPage, PAGE_SIZE, categoryId)
         }
     }
 
@@ -75,12 +70,12 @@ class NewsHomeFragment : org.cxct.sportlottery.ui.base.BindingSocketFragment<Mai
             tvMore.gone()
             ivMore.gone()
             tabNews.addOnTabSelectedListener(TabSelectedAdapter {
-                categoryIds = listOf(if (it.position == 0) NEWS_OKBET_ID else NEWS_SPORT_ID)
-                viewModel.getPageNews(1, PAGE_SIZE, categoryIds)
+                categoryId = if (it.position == 0) NewsRepository.NEWS_OKBET_ID else NewsRepository.NEWS_SPORT_ID
+                viewModel.getPageNews(1, PAGE_SIZE, categoryId)
             })
         }
         binding.tvShowMore.setOnClickListener {
-            viewModel.getPageNews(currentPage + 1, PAGE_SIZE, categoryIds)
+            viewModel.getPageNews(currentPage + 1, PAGE_SIZE, categoryId)
         }
     }
 
