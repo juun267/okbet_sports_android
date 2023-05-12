@@ -1,7 +1,11 @@
 package org.cxct.sportlottery.ui.maintab.home.news
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.net.http.SslError
+import android.webkit.SslErrorHandler
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
@@ -38,10 +42,34 @@ class NewsDetailActivity : org.cxct.sportlottery.ui.base.BindingActivity<MainHom
         }
         binding.okWebContent.apply {
             setBackgroundColor(getColor(R.color.color_F8F9FD))
-            okWebViewClient = object : OkWebViewClient() {
-                override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-                    JumpUtil.toInternalWeb(context,url,"")
+            webViewClient = object : OkWebViewClient() {
+                override fun shouldOverrideUrlLoading(
+                    view: WebView?,
+                    request: WebResourceRequest?
+                ): Boolean {
+                    JumpUtil.toInternalWeb(this@NewsDetailActivity,request?.url.toString(),"")
                     return true
+                }
+
+                override fun onReceivedSslError(
+                    view: WebView?,
+                    handler: SslErrorHandler?,
+                    error: SslError?
+                ) {
+                    //此方法是为了处理在5.0以上Https的问题，必须加上
+                    //handler.proceed()
+                    if (isFinishing)
+                        return
+                    AlertDialog.Builder(this@NewsDetailActivity)
+                        .setMessage(android.R.string.httpErrorUnsupportedScheme)
+                        .setPositiveButton(
+                            "continue"
+                        ) { dialog, which -> handler?.proceed() }
+                        .setNegativeButton(
+                            "cancel"
+                        ) { dialog, which -> handler?.cancel() }
+                        .create()
+                        .show()
                 }
             }
         }
@@ -76,7 +104,7 @@ class NewsDetailActivity : org.cxct.sportlottery.ui.base.BindingActivity<MainHom
             tvTime.text = TimeUtil.timeFormat(newsItem?.createTimeInMillisecond,
                 TimeUtil.NEWS_TIME_FORMAT,
                 locale = Locale.ENGLISH)
-            okWebContent.loadData(getHtmlData(newsItem?.contents ?: ""), "text/html", null)
+            okWebContent.loadData(getHtmlData(newsItem?.contents ?: ""), "text/html", "utf-8")
         }
     }
 

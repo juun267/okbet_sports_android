@@ -46,7 +46,6 @@ import org.cxct.sportlottery.network.service.close_play_cate.ClosePlayCateEvent
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.dialog.ServiceDialog
@@ -1104,21 +1103,13 @@ fun BaseFragment<out MainHomeViewModel>.enterThirdGame(
 
 // 设置优惠活动点击事件
 fun View.bindPromoClick(click: (() -> Unit)? = null) = setOnClickListener {
-
-    when (UserInfoRepository.userInfo.value?.testFlag) {
-        TestFlag.NORMAL.index, TestFlag.TEST.index -> {
-            JumpUtil.toInternalWeb(
-                context,
-                Constants.getPromotionUrl(
-                    LoginRepository.token,
-                    LanguageManager.getSelectLanguage(context)
-                ),
-                context.getString(R.string.promotion)
-            )
-        }
-        else -> { // TODO 20220108 沒有遊客的話，要確認一下文案是否正確 by Hewie
-            ToastUtil.showToastInCenter(context, context.getString(R.string.message_guest_no_permission))
-        }
-    }
+    JumpUtil.toInternalWeb(
+        context,
+        Constants.getPromotionUrl(
+            LoginRepository.token,
+            LanguageManager.getSelectLanguage(context)
+        ),
+        context.getString(R.string.promotion)
+    )
 }
 
