@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.maintab.home.news
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import org.cxct.sportlottery.R
