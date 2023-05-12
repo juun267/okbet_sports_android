@@ -59,9 +59,11 @@ object RetrofitHolder {
     }
 
     val signRetrofit: Retrofit by lazy {
+        val builder = getClientBulder()
+        builder.addInterceptor(RequestInterceptor(getContext(), ::getApiToken))
         Retrofit.Builder()
             .baseUrl(Constants.getBaseUrl())
-            .client(getClientBulder().build())
+            .client(builder.build())
             .addConverterFactory(GsonConverterFactory.create(GsonFactory.getSingletonGson()))
             .build()
     }
