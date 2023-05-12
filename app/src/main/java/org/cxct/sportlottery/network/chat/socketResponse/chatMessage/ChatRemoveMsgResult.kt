@@ -1,8 +1,10 @@
 package org.cxct.sportlottery.network.chat.socketResponse.chatMessage
 
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.common.proguards.KeepMembers
+import org.cxct.sportlottery.ui.chat.ChatMsgReceiveType
 
 
 /**
@@ -35,4 +37,5 @@ data class ChatRemoveMsgResult(
     val content: String?,//讯息内容
     @Json(name = "curTime")
     val curTime: String?,//讯息时间
-)
+    override val itemType: Int = ChatMsgReceiveType.CHAT_MSG_REMOVE,
+): MultiItemEntity

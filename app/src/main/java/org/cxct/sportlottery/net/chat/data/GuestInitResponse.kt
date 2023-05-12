@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.network.chat.guestInit
+package org.cxct.sportlottery.net.chat.data
 
 
 import com.squareup.moshi.Json

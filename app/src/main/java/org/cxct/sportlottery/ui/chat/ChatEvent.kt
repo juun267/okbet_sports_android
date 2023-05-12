@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.ui.chat
 
 import org.cxct.sportlottery.net.ApiResult
-import org.cxct.sportlottery.network.chat.getUnPacket.UnPacketRow
+import org.cxct.sportlottery.net.chat.data.UnPacketRow
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatReceiveContent
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatUserResult
 

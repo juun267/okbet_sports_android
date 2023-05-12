@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.RelativeLayout
 import kotlinx.android.synthetic.main.view_chat_red_envelope.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.chat.getUnPacket.UnPacketRow
+import org.cxct.sportlottery.net.chat.data.UnPacketRow
 
 
 class ChatRedEnvelopeView @JvmOverloads constructor(

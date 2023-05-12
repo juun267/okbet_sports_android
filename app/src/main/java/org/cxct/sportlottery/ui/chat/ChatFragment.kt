@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.chat
 
 
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -19,7 +18,7 @@ import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.common.extentions.toDoubleS
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.FragmentChatBinding
-import org.cxct.sportlottery.network.chat.getUnPacket.UnPacketRow
+import org.cxct.sportlottery.net.chat.data.UnPacketRow
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.repository.ChatRepository
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
@@ -43,7 +42,16 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
     private var jobScroll: Job? = null
 
     private val chatMessageListAdapter by lazy {
-        ChatMessageListAdapter2()
+        ChatMessageListAdapter2(
+            onPhotoClick = { viewModel.showPhoto(it) },
+            onUserAvatarClick = {
+                viewModel.tagPairList.add(it)
+                addTagMessage(it.second) //加入"@nickName"訊息
+            },
+            onRedEnvelopeClick = { packetId, packetType ->
+                createRedPacketDialog(packetId, packetType, false) //非管理原才會顯示打開按鈕，才可點擊
+            }
+        )
     }
 
     private val chatWelcomeAdapter by lazy {
@@ -200,26 +208,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
         text?.let { setSelection(it.length) }
     }
 
-    private fun initEvent() {
-        chatMessageListAdapter.itemContentClickListener =
-            object : ChatMessageListAdapter2.ItemContentClickListener {
-                override fun onRedEnvelopeClick(packetId: String, packetType: Int) {
-                    createRedPacketDialog(packetId, packetType, false) //非管理原才會顯示打開按鈕，才可點擊
-                }
-
-                override fun onPhotoClick(url: String) {
-                    viewModel.showPhoto(url)
-                }
-
-                override fun onUserAvatarClick(tagUserPair: Pair<String, String>) { //Pair<"[@:userId]", "@nickName">
-                    viewModel.tagPairList.add(tagUserPair)
-                    addTagMessage(tagUserPair.second) //加入"@nickName"訊息
-                }
-            }
-    }
-
     private suspend fun onChatRoomReady(chatEvent: ChatEvent.ChatRoomIsReady) {
-        initEvent() //房間就緒後才能操作列表內容
         //region 選擇照片會離開聊天室頁面，返回後需等重新訂閱，聊天室就緒後才能發送圖片訊息
         if (!viewModel.tempChatImgUrl.isNullOrEmpty() && chatEvent.isReady) {
             viewModel.tempChatImgUrl?.let {
@@ -329,7 +318,6 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
                         binding.rvChatMessage.addItemDecoration(headerItemDecoration)
                     }
 
-                    Log.e("For Test", "========>>>> initChatEventObserver ${chatEvent.chatMessageList.size}")
                 }
 
                 is ChatEvent.RemoveMsg -> {

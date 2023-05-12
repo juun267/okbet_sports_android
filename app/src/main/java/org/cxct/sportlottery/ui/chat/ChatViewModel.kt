@@ -9,7 +9,8 @@ import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.toLongS
 import org.cxct.sportlottery.network.chat.UserLevelConfigVO
-import org.cxct.sportlottery.network.chat.queryList.Row
+import org.cxct.sportlottery.net.chat.data.Row
+import org.cxct.sportlottery.net.chat.data.UnPacketRow
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.*
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
@@ -92,7 +93,7 @@ class ChatViewModel(
                         content = chatMessageResult,
                         msg = null,
                         seq = null,
-                        time = if (chatMessageResult.curTime.isNullOrEmpty()) null else chatMessageResult.curTime.toLong(),
+                        time = chatMessageResult.curTime.toLongS(),
                         type = chatMessageResult.type
                     ).apply {
                         isMySelf = content?.userId == userId
@@ -145,7 +146,7 @@ class ChatViewModel(
                         //更新未領取紅包列表
                         if (ChatRepository.unPacketList?.any { it.id.toString() == chatReceiveContent.content.id.toString() } == false) {
                             val newUnPacket =
-                                org.cxct.sportlottery.network.chat.getUnPacket.UnPacketRow(
+                                UnPacketRow(
                                     id = chatReceiveContent.content.id.toInt(),
                                     roomId = ChatRepository.chatRoomID,
                                     currency = chatReceiveContent.content.currency,
@@ -346,7 +347,7 @@ class ChatViewModel(
                 ChatReceiveContent(content = messageDateContent,
                     msg = null,
                     seq = null,
-                    time = null,
+                    time = 0,
                     type = ChatMsgCustomType.DATE_TIP
                 ).apply { isCustomMessage = true },
             )

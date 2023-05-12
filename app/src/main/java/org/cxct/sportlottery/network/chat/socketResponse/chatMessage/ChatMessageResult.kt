@@ -1,9 +1,11 @@
 package org.cxct.sportlottery.network.chat.socketResponse.chatMessage
 
 
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.common.proguards.KeepMembers
+import org.cxct.sportlottery.ui.chat.ChatMsgReceiveType
 
 /**
  * @author Bill
@@ -44,6 +46,9 @@ data class ChatMessageResult(
     val bgColor: String?,
     @Json(name = "textColor")
     val textColor: String?,
-) {
+    override val itemType: Int = ChatMsgReceiveType.CHAT_MSG,
+): MultiItemEntity {
     var chatRedEnvelopeMessageResult: ChatRedEnvelopeMessageResult? = null
+
+
 }

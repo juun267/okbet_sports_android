@@ -8,11 +8,11 @@ import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.net.chat.api.ChatService
 import org.cxct.sportlottery.network.chat.UserLevelConfigVO
-import org.cxct.sportlottery.network.chat.getUnPacket.UnPacketRow
-import org.cxct.sportlottery.network.chat.guestInit.GuestInitResponse
-import org.cxct.sportlottery.network.chat.init.ChatInitResponse
-import org.cxct.sportlottery.network.chat.joinRoom.JoinRoomResonse
-import org.cxct.sportlottery.network.chat.queryList.Row
+import org.cxct.sportlottery.net.chat.data.UnPacketRow
+import org.cxct.sportlottery.net.chat.data.GuestInitResponse
+import org.cxct.sportlottery.net.chat.data.ChatInitResponse
+import org.cxct.sportlottery.net.chat.data.JoinRoomResonse
+import org.cxct.sportlottery.net.chat.data.Row
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatReceiveContent
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.subscribeSuccess.SubscribeSuccessResult
 import org.json.JSONObject

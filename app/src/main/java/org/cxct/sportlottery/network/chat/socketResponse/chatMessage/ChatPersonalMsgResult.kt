@@ -1,8 +1,10 @@
 package org.cxct.sportlottery.network.chat.socketResponse.chatMessage
 
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.common.proguards.KeepMembers
+import org.cxct.sportlottery.ui.chat.ChatMsgReceiveType
 
 /**
  * @author Bill
@@ -17,5 +19,6 @@ import org.cxct.sportlottery.common.proguards.KeepMembers
 @KeepMembers
 data class ChatPersonalMsgResult(
     @Json(name = "userId")
-    val userId: Long,//	用户ID
-)
+    val userId: Long, //	用户ID
+    override val itemType: Int = ChatMsgReceiveType.CHAT_SILENCE,
+): MultiItemEntity
