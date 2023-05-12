@@ -14,5 +14,5 @@ data class GuestInitResult(
     @Json(name = "success")
     override val success: Boolean,
     @Json(name = "t")
-    val t: T?,
+    val guestInitResponse: GuestInitResponse?,
 ) : BaseResult()

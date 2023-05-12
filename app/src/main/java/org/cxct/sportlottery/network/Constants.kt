@@ -25,7 +25,10 @@ object Constants {
             if (!field.isEmpty()) KvUtils.put("host", value)
         }
         get() {
-            return if (field.isEmpty()) KvUtils.decodeString("host") else field
+            if (field.isEmpty()) {
+                field = KvUtils.decodeString("host")
+            }
+            return field
         }
     private var mSocketUrl = ""
         set(value) {

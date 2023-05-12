@@ -1,11 +1,12 @@
-package org.cxct.sportlottery.network.chat.joinRoom
+package org.cxct.sportlottery.network.chat.init
 
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.network.chat.UserLevelConfigVO
 
 @JsonClass(generateAdapter = true)
-data class T(
+data class ChatInitResponse(
     @Json(name = "betMoney")
     val betMoney: Int,
     @Json(name = "currency")
@@ -29,7 +30,7 @@ data class T(
     @Json(name = "rechMoney")
     val rechMoney: Int,
     @Json(name = "state")
-    val state: Int,
+    val state: Int, //state（0正常、1禁言、2禁止登录)
     @Json(name = "testFlag")
     val testFlag: Int,
     @Json(name = "token")
@@ -40,4 +41,6 @@ data class T(
     val userLevelId: Int,
     @Json(name = "userUniKey")
     val userUniKey: String,
+    @Json(name = "userLevelConfigVO")
+    val userLevelConfigVO: UserLevelConfigVO?,
 )

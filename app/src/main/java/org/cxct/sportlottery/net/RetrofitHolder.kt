@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.net
 
+import android.content.Context
+import android.content.SharedPreferences
 import com.hjq.gson.factory.GsonFactory
 import me.jessyan.retrofiturlmanager.RetrofitUrlManager
 import okhttp3.OkHttpClient
@@ -7,6 +9,10 @@ import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.interceptor.*
+import org.cxct.sportlottery.repository.ChatRepository
+import org.cxct.sportlottery.repository.KEY_TOKEN
+import org.cxct.sportlottery.repository.NAME_LOGIN
+import org.cxct.sportlottery.repository.sConfigData
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.security.SecureRandom
@@ -20,40 +26,87 @@ import javax.net.ssl.X509TrustManager
 
 object RetrofitHolder {
 
+    private inline fun getContext() = MultiLanguagesApplication.appContext
+    private val sharedPref: SharedPreferences? by lazy {
+        getContext().getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
+    }
+
+    private fun getApiToken() = sharedPref?.getString(KEY_TOKEN, null)
+
+    private val retrofit by lazy {
+        val builder = getClientBulder()
+        builder.addInterceptor(RequestInterceptor(getContext(), ::getApiToken)) // 给header添加token和语言
+        builder.addInterceptor(HttpStatusInterceptor()) // 处理token过期
+        RetrofitUrlManager.getInstance().with(builder) // 通过拦截器实现的动态切换域名
+
+        Retrofit.Builder()
+            .baseUrl(Constants.getBaseUrl())
+            .client(getClientBulder().build())
+            .addConverterFactory(GsonConverterFactory.create(GsonFactory.getSingletonGson()))
+            .build()
+    }
+
+    private val chatRrofit by lazy {
+        val builder = getClientBulder()
+        builder.addInterceptor(RequestInterceptor(getContext()) { ChatRepository.chatToken })
+        chatUrlManager.with(builder)
+
+        Retrofit.Builder()
+            .baseUrl(sConfigData?.chatHost)
+            .client(builder.build())
+            .addConverterFactory(GsonConverterFactory.create(GsonFactory.getSingletonGson()))
+            .build()
+    }
+
+    val signRetrofit: Retrofit by lazy {
+        val builder = getClientBulder()
+        builder.addInterceptor(RequestInterceptor(getContext(), ::getApiToken))
+        Retrofit.Builder()
+            .baseUrl(Constants.getBaseUrl())
+            .client(builder.build())
+            .addConverterFactory(GsonConverterFactory.create(GsonFactory.getSingletonGson()))
+            .build()
+    }
+
+    private val chatUrlManager by lazy {
+        var constructor = RetrofitUrlManager::class.java.getDeclaredConstructor()
+        constructor.isAccessible = true
+        constructor.newInstance()
+    }
+
     fun <T> createApiService(service: Class<T>): T {
         return retrofit.create(service)
+    }
+
+    fun <T> createChatApiService(service: Class<T>): T {
+        return chatRrofit.create(service)
+    }
+
+    fun <T> createSignApiService(service: Class<T>): T {
+        return signRetrofit.create(service)
     }
 
     fun changeHost(baseUrl: String) {
         RetrofitUrlManager.getInstance().setGlobalDomain(baseUrl)
     }
 
-    private val retrofit by lazy { createRetrofit(Constants.getBaseUrl()) }
+    fun changeChatHost(host: String) {
+        chatUrlManager.setGlobalDomain(host)
+    }
 
-    private val okHttpClient: OkHttpClient by lazy {
-        getUnsafeOkHttpClient().connectTimeout(Constants.CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
+    private fun getClientBulder(): OkHttpClient.Builder {
+        return getUnsafeOkHttpClient().connectTimeout(Constants.CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
             .writeTimeout(Constants.WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
             .readTimeout(Constants.READ_TIMEOUT, TimeUnit.MILLISECONDS)
-            .addInterceptor(HttpStatusInterceptor()) // 处理token过期
             .addNetworkInterceptor(Http400or500Interceptor()) //处理后端的沙雕行为
             .addInterceptor(MoreBaseUrlInterceptor())
-            .addInterceptor(RequestInterceptor(MultiLanguagesApplication.appContext))
             .apply {
                 //debug版本才打印api內容
                 if (BuildConfig.DEBUG) {
 //                    addInterceptor(HttpLoggingInterceptor())
                     addInterceptor(HttpLogInterceptor())
                 }
-            }.build()
-    }
-
-    private fun createRetrofit(baseUrl: String): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(baseUrl)
-//            .baseUrl("http://192.168.2.131:8900/")
-            .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create(GsonFactory.getSingletonGson()))
-            .build()
+            }
     }
 
     private fun getUnsafeOkHttpClient(): OkHttpClient.Builder {
@@ -83,7 +136,6 @@ object RetrofitHolder {
             // Create an ssl socket factory with our all-trusting manager
             val sslSocketFactory: SSLSocketFactory = sslContext.socketFactory
             val builder: OkHttpClient.Builder = OkHttpClient.Builder()
-            RetrofitUrlManager.getInstance().with(builder) // 通过拦截器实现的动态切换域名
             builder.sslSocketFactory(sslSocketFactory, trustAllCerts[0] as X509TrustManager)
             builder.hostnameVerifier { _, _ -> true }
             builder

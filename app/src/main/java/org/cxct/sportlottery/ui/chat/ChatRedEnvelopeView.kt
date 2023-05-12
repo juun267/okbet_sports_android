@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.RelativeLayout
 import kotlinx.android.synthetic.main.view_chat_red_envelope.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.chat.getUnPacket.Row
+import org.cxct.sportlottery.network.chat.getUnPacket.UnPacketRow
 
 
 class ChatRedEnvelopeView @JvmOverloads constructor(
@@ -18,7 +18,7 @@ class ChatRedEnvelopeView @JvmOverloads constructor(
     RedEnvelopeListDialog.Listener {
 
     private var mDialog: RedEnvelopeListDialog? = null
-    private var mPacket: MutableList<Row> = arrayListOf()
+    private var mPacket: MutableList<UnPacketRow> = arrayListOf()
     private var mCanOpen = false
 
     init {
@@ -96,7 +96,7 @@ class ChatRedEnvelopeView @JvmOverloads constructor(
         }
     }
 
-    override fun onDialogCallback(selected: Row) {
+    override fun onDialogCallback(selected: UnPacketRow) {
         refresh()
     }
 

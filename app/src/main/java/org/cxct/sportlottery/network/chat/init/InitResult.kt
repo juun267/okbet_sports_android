@@ -14,5 +14,5 @@ data class InitResult(
     @Json(name = "success")
     override val success: Boolean,
     @Json(name = "t")
-    val t: T?,
+    val chatInitResponse: ChatInitResponse?,
 ) : BaseResult()

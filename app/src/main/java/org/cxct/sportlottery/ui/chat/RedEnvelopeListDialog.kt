@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.dialog_red_envelope_list.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.chat.getUnPacket.Row
+import org.cxct.sportlottery.network.chat.getUnPacket.UnPacketRow
 import org.cxct.sportlottery.util.MetricsUtil
 
 /**
@@ -22,7 +22,7 @@ import org.cxct.sportlottery.util.MetricsUtil
 //TODO Bill 之後重構
 class RedEnvelopeListDialog(
     context: Context,
-    private val mData: MutableList<Row>,
+    private val mData: MutableList<UnPacketRow>,
     var mListener: Listener?,
 ) : AlertDialog(context), View.OnClickListener {
 
@@ -72,7 +72,7 @@ class RedEnvelopeListDialog(
             adapter = mRVAdapter
             mRVAdapter.setDatas { mData }
             mRVAdapter.setItemCallback(object : RVAdapter.ItemCallback {
-                override fun onSelect(selected: Row) {
+                override fun onSelect(selected: UnPacketRow) {
                     mListener?.onDialogCallback(selected)
                 }
             })
@@ -88,18 +88,18 @@ class RedEnvelopeListDialog(
 //        getGroupUnPacketIds(config.token, groupId)
 //    }
 
-    fun setPackets(data: MutableList<Row>) {
+    fun setPackets(data: MutableList<UnPacketRow>) {
         mData.clear()
         mData.addAll(data)
         mRVAdapter.setDatas { mData }
         mRVAdapter.setItemCallback(object : RVAdapter.ItemCallback {
-            override fun onSelect(selected: Row) {
+            override fun onSelect(selected: UnPacketRow) {
                 mListener?.onDialogCallback(selected)
             }
         })
     }
 
-    fun reload(data: MutableList<Row>) {
+    fun reload(data: MutableList<UnPacketRow>) {
         mData.clear()
         mData.addAll(data)
         mRVAdapter.setDatas { mData }
@@ -116,7 +116,7 @@ class RedEnvelopeListDialog(
     /**
      * 開啟紅包dialog
      */
-    private fun showRedPacketDialog(pocket: Row) {
+    private fun showRedPacketDialog(pocket: UnPacketRow) {
 //        val config = ChatManager.getChatConfigOutput()
 
 //        mRedPacketDialog = context.let { RedPacketDialog(it) }
@@ -133,7 +133,7 @@ class RedEnvelopeListDialog(
 //        mRedPacketDialog?.show()
     }
 
-    class RVAdapter(private val mData: ArrayList<Row> = ArrayList()) :
+    class RVAdapter(private val mData: ArrayList<UnPacketRow> = ArrayList()) :
         RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private var itemCallback: ItemCallback? = null
@@ -156,7 +156,7 @@ class RedEnvelopeListDialog(
         }
 
         interface ItemCallback {
-            fun onSelect(selected: Row)
+            fun onSelect(selected: UnPacketRow)
         }
 
         inner class ChatRedEnvelopeViewHolder(view: View) : RecyclerView.ViewHolder(view),
@@ -181,25 +181,25 @@ class RedEnvelopeListDialog(
             itemCallback = callback
         }
 
-        fun setDatas(datablock: () -> MutableList<Row>) {
+        fun setDatas(datablock: () -> MutableList<UnPacketRow>) {
             mData.clear()
             mData.addAll(datablock())
             notifyDataSetChanged()
         }
 
-        fun addDatas(datablock: () -> MutableList<Row>) {
+        fun addDatas(datablock: () -> MutableList<UnPacketRow>) {
             val newDatas = datablock()
             mData.addAll(newDatas)
             notifyItemRangeChanged((mData.size - newDatas.size - 1), mData.size - 1)
         }
 
-        fun addData(item: Row) {
+        fun addData(item: UnPacketRow) {
             mData.add(item)
             notifyItemChanged(mData.size - 1)
         }
     }
 
     interface Listener {
-        fun onDialogCallback(selected: Row)
+        fun onDialogCallback(selected: UnPacketRow)
     }
 }

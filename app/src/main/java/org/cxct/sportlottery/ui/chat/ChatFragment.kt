@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.chat
 
 
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -16,8 +17,10 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.launch
 import org.cxct.sportlottery.common.extentions.runWithCatch
+import org.cxct.sportlottery.common.extentions.toDoubleS
+import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.FragmentChatBinding
-import org.cxct.sportlottery.network.chat.getUnPacket.Row
+import org.cxct.sportlottery.network.chat.getUnPacket.UnPacketRow
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.repository.ChatRepository
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
@@ -41,7 +44,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
     private var jobScroll: Job? = null
 
     private val chatMessageListAdapter by lazy {
-        ChatMessageListAdapter()
+        ChatMessageListAdapter2()
     }
 
     private val chatWelcomeAdapter by lazy {
@@ -75,10 +78,13 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
         )
     }
 
+    private val loadingHolder by lazy { Gloading.wrapView(binding.rvChatMessage) }
+
     override fun onBindViewStatus(view: View) {
         initObserve()
         chatWelcomeAdapter.activity = activity as ChatActivity?
         viewModel.getHistoryMessageList()
+        loadingHolder.showLoading()
     }
 
     override fun onPause() {
@@ -206,7 +212,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
 
     private fun initEvent() {
         chatMessageListAdapter.itemContentClickListener =
-            object : ChatMessageListAdapter.ItemContentClickListener {
+            object : ChatMessageListAdapter2.ItemContentClickListener {
                 override fun onRedEnvelopeClick(packetId: String, packetType: Int) {
                     createRedPacketDialog(packetId, packetType, false) //非管理原才會顯示打開按鈕，才可點擊
                 }
@@ -253,9 +259,9 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
     }
 
     private fun onLuckyBagResultEvent(chatEvent: ChatEvent.GetLuckyBagResult) {
-        if (chatEvent.luckyBagResult.success) {
+        if (chatEvent.luckyBagResult.succeeded()) {
             redPacketDialog?.showRedPacketOpenDialog(
-                chatEvent.luckyBagResult.t?.toDouble() ?: 0.0
+                chatEvent.luckyBagResult.getData().toDoubleS()
             )
             //TODO Bill 更新聊天室列表的紅包狀態
             return
@@ -305,7 +311,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
 
         // 之前的逻辑就是这样如果走不到下面 redEnvelopeListDialog 就会为空
         redEnvelopeListDialog = RedEnvelopeListDialog(cxt, getUnPacketList, object : RedEnvelopeListDialog.Listener { //開紅包
-            override fun onDialogCallback(selected: Row) {
+            override fun onDialogCallback(selected: UnPacketRow) {
                 createRedPacketDialog(
                     selected.id.toString(),
                     selected.packetType,
@@ -323,6 +329,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
             when (chatEvent) {
                 is ChatEvent.ChatRoomIsReady -> { //已訂閱roomId且已更新歷史訊息
                     onChatRoomReady(chatEvent)
+                    loadingHolder.showLoadSuccess()
                 }
 
                 is ChatEvent.UpdateList -> {
@@ -331,6 +338,8 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
                         binding.rvChatMessage.removeItemDecoration(headerItemDecoration)
                         binding.rvChatMessage.addItemDecoration(headerItemDecoration)
                     }
+
+                    Log.e("For Test", "========>>>> initChatEventObserver ${chatEvent.chatMessageList.size}")
                 }
 
                 is ChatEvent.RemoveMsg -> {
@@ -649,11 +658,11 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
     }
 
     private fun chatListScrollToBottom(isSmooth: Boolean) {
-        binding.rvChatMessage.post {
+        binding.rvChatMessage.postDelayed( {
             val position = chatMessageListAdapter.itemCount - 1
             if (isSmooth) binding.rvChatMessage.smoothScrollToPosition(position)
             else binding.rvChatMessage.scrollToPosition(position)
-        }
+        }, 200)
     }
 
     fun createRedPacketDialog(packetId: String, packetType: Int, isAdmin: Boolean) {
@@ -662,8 +671,8 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
             RedPacketDialog(
                 it,
                 RedPacketDialog.PacketListener(
-                    onClickListener = { luckyBagRequest ->
-                        viewModel.getLuckyBag(luckyBagRequest)
+                    onClickListener = { packetId, watchWord ->
+                        viewModel.getLuckyBag(packetId, watchWord)
                         hideKeyboard()
                     },
                     onCancelListener = {

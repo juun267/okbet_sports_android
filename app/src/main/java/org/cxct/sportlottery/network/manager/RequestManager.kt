@@ -2,11 +2,13 @@ package org.cxct.sportlottery.network.manager
 
 import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.cxct.sportlottery.BuildConfig
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.CONNECT_TIMEOUT
 import org.cxct.sportlottery.network.Constants.READ_TIMEOUT
@@ -15,6 +17,8 @@ import org.cxct.sportlottery.network.interceptor.HttpLogInterceptor
 import org.cxct.sportlottery.network.interceptor.HttpStatusInterceptor
 import org.cxct.sportlottery.network.interceptor.MoreBaseUrlInterceptor
 import org.cxct.sportlottery.network.interceptor.RequestInterceptor
+import org.cxct.sportlottery.repository.KEY_TOKEN
+import org.cxct.sportlottery.repository.NAME_LOGIN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.NullValueAdapter
 import retrofit2.Retrofit
@@ -30,7 +34,13 @@ import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
 
-class RequestManager private constructor(context: Context) {
+class RequestManager private constructor(private val context: Context) {
+
+    private val sharedPref: SharedPreferences? by lazy {
+        context.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
+    }
+
+    private fun getApiToken() = sharedPref?.getString(KEY_TOKEN, null)
 
     companion object {
         private lateinit var staticContext: Application
@@ -44,14 +54,6 @@ class RequestManager private constructor(context: Context) {
     }
 
     var retrofit: Retrofit
-
-    val chatRetrofit: Retrofit by lazy {
-        Retrofit.Builder()
-            .baseUrl(sConfigData?.chatHost)
-            .client(mOkHttpClientBuilder.build())
-            .addConverterFactory(MoshiConverterFactory.create(mMoshi))
-            .build()
-    }
 
     val signRetrofit: Retrofit by lazy {
         Retrofit.Builder()
@@ -84,7 +86,7 @@ class RequestManager private constructor(context: Context) {
         .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
         .addInterceptor(HttpStatusInterceptor()) // 处理token过期
         .addInterceptor(MoreBaseUrlInterceptor())
-        .addInterceptor(RequestInterceptor(context))
+        .addInterceptor(RequestInterceptor(context, ::getApiToken))
         //.addInterceptor(LogInterceptor().setLevel(LogInterceptor.Level.BODY))
 
 

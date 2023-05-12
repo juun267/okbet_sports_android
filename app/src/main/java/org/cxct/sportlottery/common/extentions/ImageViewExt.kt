@@ -5,6 +5,10 @@ import androidx.annotation.DrawableRes
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
+fun ImageView.load(@DrawableRes res: Int = 0) {
+    runWithCatch { Glide.with(context).load(res).into(this) }
+}
+
 fun ImageView.load(url: String?, @DrawableRes placeHolder: Int = 0) {
     if (placeHolder == 0) {
         runWithCatch { Glide.with(context).load("$url").into(this) }

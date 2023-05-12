@@ -19,6 +19,8 @@ import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.common.loading.Gloading
+import org.cxct.sportlottery.common.loading.LoadingAdapter
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.money.RedEnveLopeModel
@@ -231,6 +233,7 @@ class MultiLanguagesApplication : Application() {
                 .build()
         }
 
+        Gloading.initDefault(LoadingAdapter())
     }
 
     private val localeResources by lazy {
