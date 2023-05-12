@@ -6,6 +6,10 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import com.google.gson.JsonElement
 import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.common.extentions.safeApi
+import org.cxct.sportlottery.net.ApiResult
+import org.cxct.sportlottery.net.RetrofitHolder
+import org.cxct.sportlottery.net.chat.api.SignService
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.chat.getSign.GetSignResult
 import org.cxct.sportlottery.network.user.UserInfo
@@ -18,6 +22,10 @@ import retrofit2.Response
 const val KEY_CHAT_SIGN = "chat_sign"
 
 object UserInfoRepository {
+
+    private val signService by lazy {
+        RetrofitHolder.createSignApiService(SignService::class.java)
+    }
 
     val sharedPref: SharedPreferences by lazy {
         MultiLanguagesApplication.appContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
@@ -223,11 +231,12 @@ object UserInfoRepository {
             vipType = userInfoData.vipType,
         )
 
-    suspend fun getSign(): Response<GetSignResult> =
-        OneBoSportApi.signService.getSign().apply {
-            if (isSuccessful && body() != null) {
-                chatSign = body()?.t
+    suspend fun getSign(): ApiResult<JsonElement> = safeApi {
+        signService.getSign().apply {
+            if (succeeded()) {
+                getData()?.let { chatSign = it }
             }
         }
+    }
 
 }

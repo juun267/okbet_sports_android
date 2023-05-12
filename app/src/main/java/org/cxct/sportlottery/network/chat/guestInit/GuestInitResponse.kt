@@ -6,7 +6,7 @@ import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.chat.UserLevelConfigVO
 
 @JsonClass(generateAdapter = true)
-data class T(
+data class GuestInitResponse (
     @Json(name = "betMoney")
     val betMoney: Int,
     @Json(name = "currency")

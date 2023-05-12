@@ -4,8 +4,6 @@ import org.cxct.sportlottery.network.appUpdate.AppUpdateService
 import org.cxct.sportlottery.network.bank.BankService
 import org.cxct.sportlottery.network.bet.BetService
 import org.cxct.sportlottery.network.bettingStation.BettingStationService
-import org.cxct.sportlottery.network.chat.ChatService
-import org.cxct.sportlottery.network.chat.SignService
 import org.cxct.sportlottery.network.credential.CredentialService
 import org.cxct.sportlottery.network.feedback.FeedbackService
 import org.cxct.sportlottery.network.host.HostService
@@ -198,13 +196,4 @@ object OneBoSportApi {
             .retrofit
             .create(LotteryService::class.java)
 
-    val chatService: ChatService
-        get() = RequestManager.instance
-            .chatGsonRetrofit
-            .create(ChatService::class.java)
-
-    val signService: SignService
-        get() = RequestManager.instance
-            .signRetrofit
-            .create(SignService::class.java)
 }

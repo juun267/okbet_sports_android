@@ -24,7 +24,7 @@ data class ChatRedEnvelopeResult(
     @Json(name = "status")
     val status: Int?,//红包状态（1：正常；2：已抢完；3：已关闭）
     @Json(name = "packetType")
-    val packetType: Int,//0-立刻发红包(系统红包) 1每日红包（暂无） 2随机红包（暂无） 3定向红包（暂无）
+    val packetType: Int= -1,//0-立刻发红包(系统红包) 1每日红包（暂无） 2随机红包（暂无） 3定向红包（暂无）
     @Json(name = "nickName")
     val nickName: String?,
 )

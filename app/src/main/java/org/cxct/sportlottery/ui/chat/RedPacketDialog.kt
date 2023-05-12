@@ -14,7 +14,6 @@ import kotlinx.android.synthetic.main.dialog_chat_red_enp.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.hide
 import org.cxct.sportlottery.common.extentions.show
-import org.cxct.sportlottery.network.chat.luckyBag.LuckyBagRequest
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.util.*
 
@@ -39,12 +38,12 @@ class RedPacketDialog(
     }
 
     class PacketListener(
-        private val onClickListener: (luckyBagRequest: LuckyBagRequest) -> Unit,
+        private val onClickListener: (packetId: Int, watchWord: String) -> Unit,
         private val onCancelListener: () -> Unit,
         private val onCompleteListener: (packetId: String) -> Unit,
         private val goRegisterPageListener: () -> Unit,
     ) {
-        fun onClick(luckyBagRequest: LuckyBagRequest) = onClickListener(luckyBagRequest)
+        fun onClick(packetId: Int, watchWord: String) = onClickListener(packetId, watchWord)
         fun onCancel() = onCancelListener()
         fun onComplete(packetId: String) = onCompleteListener(packetId)
         fun goRegisterPage() = goRegisterPageListener()
@@ -99,10 +98,8 @@ class RedPacketDialog(
                         ContextCompat.getDrawable(context, R.drawable.bg_watchword_input)
                 } else
                     packetClickListener.onClick(
-                        LuckyBagRequest(
-                            packetId.toInt(),
-                            watchWordInput.text.trim().toString()
-                        )
+                        packetId.toInt(),
+                        watchWordInput.text.trim().toString()
                     )
             }
         }

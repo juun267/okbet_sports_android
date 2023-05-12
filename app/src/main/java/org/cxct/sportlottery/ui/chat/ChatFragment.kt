@@ -15,8 +15,9 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.launch
 import org.cxct.sportlottery.common.extentions.runWithCatch
+import org.cxct.sportlottery.common.extentions.toDoubleS
 import org.cxct.sportlottery.databinding.FragmentChatBinding
-import org.cxct.sportlottery.network.chat.getUnPacket.Row
+import org.cxct.sportlottery.network.chat.getUnPacket.UnPacketRow
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.repository.ChatRepository
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
@@ -244,9 +245,9 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
     }
 
     private fun onLuckyBagResultEvent(chatEvent: ChatEvent.GetLuckyBagResult) {
-        if (chatEvent.luckyBagResult.success) {
+        if (chatEvent.luckyBagResult.succeeded()) {
             redPacketDialog?.showRedPacketOpenDialog(
-                chatEvent.luckyBagResult.t?.toDouble() ?: 0.0
+                chatEvent.luckyBagResult.getData().toDoubleS()
             )
             //TODO Bill 更新聊天室列表的紅包狀態
             return
@@ -296,7 +297,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
 
         // 之前的逻辑就是这样如果走不到下面 redEnvelopeListDialog 就会为空
         redEnvelopeListDialog = RedEnvelopeListDialog(cxt, getUnPacketList, object : RedEnvelopeListDialog.Listener { //開紅包
-            override fun onDialogCallback(selected: Row) {
+            override fun onDialogCallback(selected: UnPacketRow) {
                 createRedPacketDialog(
                     selected.id.toString(),
                     selected.packetType,
@@ -640,11 +641,11 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
     }
 
     private fun chatListScrollToBottom(isSmooth: Boolean) {
-        binding.rvChatMessage.post {
+        binding.rvChatMessage.postDelayed( {
             val position = chatMessageListAdapter.itemCount - 1
             if (isSmooth) binding.rvChatMessage.smoothScrollToPosition(position)
             else binding.rvChatMessage.scrollToPosition(position)
-        }
+        }, 200)
     }
 
     fun createRedPacketDialog(packetId: String, packetType: Int, isAdmin: Boolean) {
@@ -653,8 +654,8 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
             RedPacketDialog(
                 it,
                 RedPacketDialog.PacketListener(
-                    onClickListener = { luckyBagRequest ->
-                        viewModel.getLuckyBag(luckyBagRequest)
+                    onClickListener = { packetId, watchWord ->
+                        viewModel.getLuckyBag(packetId, watchWord)
                         hideKeyboard()
                     },
                     onCancelListener = {

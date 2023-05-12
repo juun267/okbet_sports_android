@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.ui.chat
 
-import org.cxct.sportlottery.network.chat.getUnPacket.GetUnPacketResult
-import org.cxct.sportlottery.network.chat.luckyBag.LuckyBagResult
+import org.cxct.sportlottery.net.ApiResult
+import org.cxct.sportlottery.network.chat.getUnPacket.UnPacketRow
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatReceiveContent
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatUserResult
 
@@ -21,11 +21,11 @@ sealed class ChatEvent {
 
     data class ActionUploadImageStatus(val isEnable: Boolean) : ChatEvent()
     data class UpdateMarquee(val marqueeList: MutableList<String>) : ChatEvent()
-    data class GetLuckyBagResult(val luckyBagResult: LuckyBagResult) : ChatEvent()
+    data class GetLuckyBagResult(val luckyBagResult: ApiResult<String>) : ChatEvent()
     data class InsertMessage(val isMe: Boolean) : ChatEvent()
     data class InsertPic(val isMe: Boolean) : ChatEvent()
     data class UpdateUserEnterList(val userEnterList: MutableList<ChatUserResult>) : ChatEvent()
-    data class GetUnPacket(val getUnPacketResult: GetUnPacketResult, val isAdmin: Boolean) :
+    data class GetUnPacket(val getUnPacketResult: ApiResult<List<UnPacketRow>>, val isAdmin: Boolean) :
         ChatEvent()
 
     data class RedEnvelope(val packetId: String, val packetType: Int, val isAdmin: Boolean) :
