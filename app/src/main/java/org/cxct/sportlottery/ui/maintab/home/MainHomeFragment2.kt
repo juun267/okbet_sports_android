@@ -18,8 +18,11 @@ import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.news.HomeNewsAdapter
 import org.cxct.sportlottery.ui.maintab.home.news.NewsDetailActivity
-import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.EventBusUtil
+import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.SpaceItemDecoration
+import org.cxct.sportlottery.util.setupBackTop
 
 class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainHome2Binding>() {
 
@@ -96,7 +99,6 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
     private fun initObservable() {
         viewModel.homeNewsList.observe(viewLifecycleOwner) {
             val dataList = if (it.size > 4) it.subList(0, 4) else it
-            LogUtil.d("dataList="+dataList.size)
             setupNews(dataList)
         }
         viewModel.bettingStationList.observe(viewLifecycleOwner) {
