@@ -167,10 +167,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                     } else {
                         binding.llHomeBack.gone()
                         if (position == 1) {
-                            GlobalScope.launch {
-                                delay(500)
+                            binding.llHomeBack.postDelayed({
                                 jumpToTheSport()
-                            }
+                            },500)
                         }
                     }
                     setupBetBarVisiblity(position)
