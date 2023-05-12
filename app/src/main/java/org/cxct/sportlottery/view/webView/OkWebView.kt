@@ -9,29 +9,26 @@ class OkWebView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
 ) : WebView(context, attrs, defStyle) {
 
+    var okWebViewClient: OkWebViewClient = OkWebViewClient()
+        set(value) {
+            webViewClient = value
+            field = value
+        }
+
+    var okWebChromeClient: OkWebChromeClient = OkWebChromeClient()
+        set(value) {
+            webChromeClient = value
+            field = value
+        }
+
     init {
         initWebView()
     }
 
-    var okWebViewClient: OkWebViewClient? = null
-        set(value) {
-            value?.apply {
-                webViewClient = this
-            }
-            field = value
-        }
-
-    var okWebChromeClient: OkWebChromeClient? = null
-        set(value) {
-            value?.apply {
-                webChromeClient = this
-            }
-            field = value
-        }
-
-
     private fun initWebView() {
         OkWebViewDefaultSettings().setSettings(this)
+        webViewClient = okWebViewClient
+        okWebChromeClient = okWebChromeClient
     }
 
 }
