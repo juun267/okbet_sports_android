@@ -1,11 +1,9 @@
 package org.cxct.sportlottery.ui.maintab.home.news
 
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
-import android.webkit.WebViewClient
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.roundOf
@@ -20,7 +18,6 @@ import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.view.webView.OkWebChromeClient
 import org.cxct.sportlottery.view.webView.OkWebViewClient
 import timber.log.Timber
-import java.net.URL
 import java.util.*
 
 
@@ -84,7 +81,7 @@ class NewsDetailActivity :
 
     private fun setupNews(newsItem: NewsItem) {
         binding.apply {
-            ivCover.roundOf(newsItem?.image, 12.dp, R.drawable.img_banner01)
+            ivCover.roundOf(newsItem?.image, 10.dp, R.drawable.img_banner01)
             tvTitle.text = newsItem?.title
             tvTime.text = TimeUtil.timeFormat(
                 newsItem?.createTimeInMillisecond,

@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_4"
             android:textSize="@dimen/textSize16sp"
+            android:textStyle="bold"
             android:textColor="@color/color_0D2245"
             android:text="@string/N909" />
     </LinearLayout>
@@ -45,8 +46,8 @@
             app:tabPaddingEnd="10dp"
             app:tabPaddingStart="10dp"
             app:tabRippleColor="@null"
-            app:tabSelectedTextColor="@color/color_D2E4FF_414655"
-            app:tabTextColor="@color/color_6C7BA8_A7B2C4">
+            app:tabSelectedTextColor="@color/color_025BE8"
+            app:tabTextColor="@color/color_303C55">
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
