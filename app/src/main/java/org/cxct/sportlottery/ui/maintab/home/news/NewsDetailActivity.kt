@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab.home.news
 
 import android.content.Context
 import android.content.Intent
+import android.webkit.WebView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.roundOf
@@ -11,8 +12,9 @@ import org.cxct.sportlottery.databinding.ActivityNewsDetailBinding
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.LogUtil
+import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.view.webView.OkWebViewClient
 import java.util.*
 
 
@@ -34,7 +36,15 @@ class NewsDetailActivity : org.cxct.sportlottery.ui.base.BindingActivity<MainHom
         binding.customToolBar.setOnBackPressListener {
             finish()
         }
-        binding.okWebContent.setBackgroundColor(getColor(R.color.color_F8F9FD))
+        binding.okWebContent.apply {
+            setBackgroundColor(getColor(R.color.color_F8F9FD))
+            okWebViewClient = object : OkWebViewClient() {
+                override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+                    JumpUtil.toInternalWeb(context,url,"")
+                    return true
+                }
+            }
+        }
         initRecyclerView()
         initObservable()
         reload(intent)
@@ -63,10 +73,9 @@ class NewsDetailActivity : org.cxct.sportlottery.ui.base.BindingActivity<MainHom
         binding.apply {
             ivCover.roundOf(newsItem?.image, 12.dp, R.drawable.img_banner01)
             tvTitle.text = newsItem?.title
-            tvTime.text = TimeUtil.timeFormat(newsItem?.updateTimeInMillisecond,
+            tvTime.text = TimeUtil.timeFormat(newsItem?.createTimeInMillisecond,
                 TimeUtil.NEWS_TIME_FORMAT,
                 locale = Locale.ENGLISH)
-            LogUtil.d("contents=" + newsItem?.contents)
             okWebContent.loadData(getHtmlData(newsItem?.contents ?: ""), "text/html", null)
         }
     }
