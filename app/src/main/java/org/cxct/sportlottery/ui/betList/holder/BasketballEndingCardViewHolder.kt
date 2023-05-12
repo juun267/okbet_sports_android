@@ -19,7 +19,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.setOnClickListener
+import org.cxct.sportlottery.common.extentions.setOnClickListeners
 import org.cxct.sportlottery.common.extentions.setViewVisible
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ContentBetInfoItemV3BaseketballEndingCardBinding
@@ -188,7 +188,7 @@ class BasketballEndingCardViewHolder(
         rcvBasketballScore.layoutManager = GridLayoutManager(root.context, 5)
         tvBasketBetListCount.text = "X${betList?.size}"
 
-        setOnClickListener(rcvBasketballScore, clItemBackground) {
+        setOnClickListeners(rcvBasketballScore, clItemBackground) {
             rcvBasketballAdapter.data.forEach { itemD ->
                 itemD.isClickForBasketball = false
             }
@@ -410,7 +410,7 @@ class BasketballEndingCardViewHolder(
             pop.showAsDropDown(it, xOff, yOff)
         }
 
-        setOnClickListener(tvLeagueName, tvMatchHome, tvMatchAway) {
+        setOnClickListeners(tvLeagueName, tvMatchHome, tvMatchAway) {
             when (it) {
                 tvLeagueName -> {
                     showPopAsTop(tvLeagueName, itemData.matchOdd.leagueName)

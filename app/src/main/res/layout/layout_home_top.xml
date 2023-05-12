@@ -132,6 +132,7 @@
         android:layout_marginHorizontal="12dp"
         android:layout_marginTop="16dp"
         app:isAutoPlay="false"
+        android:visibility="gone"
         app:pointSelect="@drawable/indicator_12_blue"
         app:pointNormal="@drawable/dot_4_4c326bff"
         app:pointTopBottomPadding="7dp"
