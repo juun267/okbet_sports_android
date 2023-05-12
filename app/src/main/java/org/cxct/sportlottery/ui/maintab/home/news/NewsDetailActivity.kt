@@ -42,10 +42,7 @@ class NewsDetailActivity :
         }
         binding.okWebContent.apply {
             setBackgroundColor(getColor(R.color.color_F8F9FD))
-
-            okWebChromeClient = object : OkWebChromeClient() {}
             okWebViewClient = object : OkWebViewClient() {
-
                 override fun shouldOverrideUrlLoading(
                     view: WebView?, request: WebResourceRequest?
                 ): Boolean {
