@@ -59,11 +59,13 @@ object NewsRepository {
     suspend fun getPageNews(
         pageNum: Int,
         pageSize: Int,
+        sort: String? = null,
         categoryId: Int,
     ): ApiResult<PageInfo<NewsItem>> {
         val params = JsonObject()
         params.addProperty("pageNum", pageNum)
         params.addProperty("pageSize", pageSize)
+        params.addProperty("sort", sort)
         params.addProperty("categoryId", categoryId)
         return newsApi.getListPage(params)
     }

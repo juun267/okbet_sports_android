@@ -701,7 +701,7 @@ open class MainHomeViewModel(
      */
     fun getPageNews(pageNum: Int, pageSize: Int, categoryId: Int) {
         viewModelScope.launch {
-            callApi({ NewsRepository.getPageNews(pageNum, pageSize, categoryId) }) {
+            callApi({ NewsRepository.getPageNews(pageNum, pageSize, NewsRepository.SORT_CREATE_TIME,categoryId) }) {
                 if (it.succeeded()) {
                     it.getData()?.let {
                         _pageNewsList.postValue(it)
