@@ -147,229 +147,201 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingVertical="10dp"
-                    android:gravity="center_vertical"
                     android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="12dp"
-                        android:paddingRight="10dp">
-
-                        <ImageView
-                            android:id="@+id/iv_home_team_logo"
-                            android:layout_width="17dp"
-                            android:layout_height="17dp"
-                            android:src="@drawable/ic_country" />
+                        android:paddingLeft="11dp"
+                        android:paddingRight="4dp">
 
                         <RelativeLayout
-                            android:layout_weight="1"
-                            android:layout_width="0dp"
+                            android:layout_width="17dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_gravity="center_vertical"
                             android:layout_height="wrap_content">
-                            <TextView
-                                android:id="@+id/league_odd_match_name_home"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:paddingStart="5dp"
-                                android:ellipsize="end"
-                                android:maxLines="2"
-                                android:gravity="center_vertical"
-                                android:textColor="@color/color_111216"
-                                android:textSize="@dimen/textSize12sp"
-                                tools:text="俄罗斯俄罗俄罗斯俄罗俄罗斯俄罗" />
 
+                            <ImageView
+                                android:id="@+id/iv_home_team_logo"
+                                android:layout_width="17dp"
+                                android:layout_height="17dp"
+                                android:src="@drawable/ic_country" />
+
+                            <ImageView
+                                android:id="@+id/ic_attack_h"
+                                android:layout_width="4dp"
+                                android:layout_height="4dp"
+                                android:layout_below="@+id/iv_home_team_logo"
+                                android:layout_centerInParent="true"
+                                android:layout_marginTop="3dp"
+                                android:layout_marginRight="@dimen/margin_4"
+                                android:src="@drawable/bg_green_dot"
+                                tools:visibility="visible" />
+
+
+                            <ImageView
+                                android:id="@+id/ic_attack_tn_h"
+                                android:layout_width="4dp"
+                                android:layout_height="4dp"
+                                android:layout_below="@+id/iv_home_team_logo"
+                                android:layout_centerInParent="true"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginTop="3dp"
+                                android:src="@drawable/bg_green_dot" />
+                        </RelativeLayout>
+
+
+                        <TextView
+                            android:id="@+id/league_odd_match_name_home"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:maxLines="2"
+                            android:gravity="center_vertical"
+                            android:textColor="@color/color_111216"
+                            android:textSize="@dimen/textSize12sp"
+                            tools:text="俄罗斯俄"
+                            />
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_height="wrap_content">
                             <TextView
                                 android:id="@+id/league_odd_yellow_cards_home"
                                 android:layout_width="wrap_content"
-                                android:layout_height="12dp"
+                                android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/margin_5"
                                 android:background="@drawable/bg_sport_card_yellow"
                                 android:gravity="center"
-                                android:includeFontPadding="true"
-                                android:minWidth="10dp"
                                 android:paddingHorizontal="1dp"
-                                android:layout_centerVertical="true"
                                 android:textColor="@color/color_FCFCFC"
                                 android:textSize="@dimen/textSize8sp"
-                                android:visibility="gone"
-                                android:layout_toRightOf="@+id/league_odd_match_name_home"
                                 tools:text="1"
                                 tools:visibility="visible" />
 
                             <TextView
                                 android:id="@+id/league_odd_match_cards_home"
                                 android:layout_width="wrap_content"
-                                android:layout_height="12dp"
+                                android:layout_height="wrap_content"
                                 android:layout_marginLeft="2dp"
                                 android:layout_marginRight="5dp"
                                 android:background="@drawable/bg_sport_card_red"
                                 android:gravity="center"
-                                android:layout_toRightOf="@+id/league_odd_yellow_cards_home"
-                                android:includeFontPadding="true"
-                                android:minWidth="10dp"
-                                android:layout_centerVertical="true"
                                 android:paddingHorizontal="1dp"
                                 android:textColor="@color/color_FCFCFC"
                                 android:textSize="@dimen/textSize8sp"
-                                android:visibility="invisible"
+                                tools:text="1"
+                                tools:visibility="visible" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/lin_home_round_score"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_height="wrap_content"
+                            tools:visibility="visible">
+
+
+                            <TextView
+                                android:id="@+id/league_odd_match_total_score_home_bottom"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/margin_4"
+                                android:fontFamily="@font/din_pro_medium"
+                                android:includeFontPadding="false"
+                                android:textColor="@color/color_414655"
+                                android:textSize="@dimen/textSize14sp"
                                 tools:text="1"
                                 tools:visibility="visible" />
 
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="match_parent"
-                                android:layout_below="@+id/league_odd_match_name_home"
-                                android:layout_height="wrap_content">
-                                <TextView
-                                    android:id="@+id/match_home_name2"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:paddingStart="5dp"
-                                    android:ellipsize="end"
-                                    android:maxLines="1"
-                                    android:gravity="center_vertical"
-                                    app:layout_constraintStart_toEndOf="@+id/league_odd_yellow_cards_home2"
-                                    app:layout_constraintTop_toTopOf="parent"
-                                    android:textColor="@color/color_111216"
-                                    android:textSize="@dimen/textSize12sp"
-                                    tools:text="罗罗罗罗罗罗罗罗" />
+                            <TextView
+                                android:id="@+id/league_odd_match_score_home_bottom"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="2dp"
+                                android:fontFamily="@font/din_pro_medium"
+                                android:includeFontPadding="false"
+                                android:textColor="@color/color_414655"
+                                android:textSize="@dimen/textSize14sp"
+                                tools:text="0"
+                                tools:visibility="visible" />
 
+                            <TextView
+                                android:id="@+id/league_odd_match_point_home_bottom"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="2dp"
+                                android:fontFamily="@font/din_pro_medium"
+                                android:includeFontPadding="false"
+                                android:textColor="@color/color_414655"
+                                android:textSize="@dimen/textSize14sp"
+                                tools:text="0"
+                                tools:visibility="visible" />
+                        </LinearLayout>
 
-                                <TextView
-                                    android:id="@+id/league_odd_yellow_cards_home2"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="12dp"
-                                    android:layout_marginLeft="@dimen/margin_5"
-                                    android:background="@drawable/bg_sport_card_yellow"
-                                    android:gravity="center"
-                                    android:includeFontPadding="true"
-                                    android:minWidth="10dp"
-                                    android:paddingHorizontal="1dp"
-                                    android:layout_centerVertical="true"
-                                    android:textColor="@color/color_FCFCFC"
-                                    android:textSize="@dimen/textSize8sp"
-                                    android:visibility="gone"
-                                    tools:text="1"
-                                    tools:visibility="visible" />
-
-                                <TextView
-                                    android:id="@+id/league_odd_match_cards_home2"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="12dp"
-                                    android:layout_marginLeft="2dp"
-                                    android:layout_marginRight="5dp"
-                                    android:background="@drawable/bg_sport_card_red"
-                                    android:gravity="center"
-                                    android:layout_toRightOf="@+id/league_odd_yellow_cards_home"
-                                    android:includeFontPadding="true"
-                                    android:minWidth="10dp"
-                                    android:layout_centerVertical="true"
-                                    android:paddingHorizontal="1dp"
-                                    android:textColor="@color/color_FCFCFC"
-                                    android:textSize="@dimen/textSize8sp"
-                                    android:visibility="invisible"
-                                    tools:text="1"
-                                    tools:visibility="visible" />
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        </RelativeLayout>
-
-
-                        <ImageView
-                            android:id="@+id/ic_attack_h"
-                            android:layout_width="4dp"
-                            android:layout_height="4dp"
-                            android:layout_marginRight="@dimen/margin_4"
-                            android:src="@drawable/bg_green_dot"
-                            android:visibility="gone"
-                            tools:visibility="visible" />
 
                         <TextView
                             android:id="@+id/league_odd_match_score_home"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/din_regular"
+                            android:layout_gravity="center_vertical"
+                            android:fontFamily="@font/din_pro_medium"
+                            android:paddingStart="2dp"
+                            android:visibility="gone"
                             android:textColor="@color/color_414655"
-                            android:textFontWeight="700"
                             android:textSize="@dimen/textSize14sp"
                             tools:text="0" />
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/lin_home_round_score"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="34dp"
-                        android:gravity="center_vertical"
-                        android:visibility="gone"
-                        tools:visibility="visible">
 
-                        <ImageView
-                            android:id="@+id/ic_attack_tn_h"
-                            android:layout_width="4dp"
-                            android:layout_height="4dp"
-                            android:src="@drawable/bg_green_dot" />
-
-                        <TextView
-                            android:id="@+id/league_odd_match_total_score_home_bottom"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/margin_4"
-                            android:fontFamily="@font/din_regular"
-                            android:includeFontPadding="false"
-                            android:textColor="@color/color_025BE8"
-                            android:textSize="@dimen/textSize12sp"
-                            android:visibility="gone"
-                            tools:text="1"
-                            tools:visibility="visible" />
-
-                        <TextView
-                            android:id="@+id/league_odd_match_score_home_bottom"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/margin_10"
-                            android:fontFamily="@font/din_regular"
-                            android:includeFontPadding="false"
-                            android:textColor="@color/color_FFFFFF_414655"
-                            android:textSize="@dimen/textSize12sp"
-                            android:visibility="gone"
-                            tools:text="0"
-                            tools:visibility="visible" />
-
-                        <TextView
-                            android:id="@+id/league_odd_match_point_home_bottom"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/margin_10"
-                            android:fontFamily="@font/din_regular"
-                            android:includeFontPadding="false"
-                            android:textColor="@color/color_FFFFFF_414655"
-                            android:textSize="@dimen/textSize12sp"
-                            android:visibility="gone"
-                            tools:text="0"
-                            tools:visibility="visible" />
-                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:paddingVertical="10dp"
+                    android:paddingTop="5dp"
                     android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="12dp"
-                        android:paddingRight="10dp">
+                        android:paddingLeft="11dp"
+                        android:paddingRight="4dp">
 
-                        <ImageView
-                            android:id="@+id/iv_away_team_logo"
+                        <RelativeLayout
                             android:layout_width="17dp"
-                            android:layout_height="17dp"
-                            android:src="@drawable/ic_country" />
+                            android:layout_gravity="center_vertical"
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:id="@+id/iv_away_team_logo"
+                                android:layout_width="17dp"
+                                android:layout_height="17dp"
+                                android:src="@drawable/ic_country" />
+
+                            <ImageView
+                                android:id="@+id/ic_attack_c"
+                                android:layout_width="4dp"
+                                android:layout_height="4dp"
+                                android:layout_below="@+id/iv_away_team_logo"
+                                android:layout_centerInParent="true"
+                                android:layout_marginTop="3dp"
+                                android:layout_marginRight="@dimen/margin_4"
+                                android:src="@drawable/bg_green_dot"
+                                tools:visibility="visible" />
+
+                            <ImageView
+                                android:id="@+id/ic_attack_tn_c"
+                                android:layout_width="4dp"
+                                android:layout_height="4dp"
+                                android:layout_below="@+id/iv_away_team_logo"
+                                android:layout_centerInParent="true"
+                                android:layout_marginTop="3dp"
+                                android:src="@drawable/bg_green_dot" />
+                        </RelativeLayout>
+
 
                         <TextView
                             android:id="@+id/league_odd_match_name_away"
@@ -381,7 +353,8 @@
                             android:ellipsize="end"
                             android:gravity="center_vertical"
                             android:maxLines="2"
-                            android:textColor="@color/color_111216"                            android:textSize="@dimen/textSize12sp"
+                            android:textColor="@color/color_111216"
+                            android:textSize="@dimen/textSize12sp"
                             tools:text="芬兰" />
 
                         <TextView
@@ -416,81 +389,67 @@
                             tools:text="1"
                             tools:visibility="visible" />
 
-                        <ImageView
-                            android:id="@+id/ic_attack_c"
-                            android:layout_width="4dp"
-                            android:layout_height="4dp"
-                            android:layout_marginRight="@dimen/margin_4"
-                            android:src="@drawable/bg_green_dot"
-                            android:visibility="gone"
-                            tools:visibility="visible" />
+                        <LinearLayout
+                            android:id="@+id/lin_away_round_score"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            tools:visibility="visible">
+
+
+
+                            <TextView
+                                android:id="@+id/league_odd_match_total_score_away_bottom"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/margin_4"
+                                android:fontFamily="@font/din_pro_medium"
+                                android:includeFontPadding="false"
+                                android:textColor="@color/color_414655"
+                                android:textSize="@dimen/textSize14sp"
+                                tools:text="0"
+                                tools:visibility="visible" />
+
+                            <TextView
+                                android:id="@+id/league_odd_match_score_away_bottom"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/margin_2"
+                                android:fontFamily="@font/din_pro_medium"
+                                android:includeFontPadding="false"
+                                android:textColor="@color/color_414655"
+                                android:textSize="@dimen/textSize14sp"
+                                tools:text="0"
+                                tools:visibility="visible" />
+
+                            <TextView
+                                android:id="@+id/league_odd_match_point_away_bottom"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/margin_2"
+                                android:fontFamily="@font/din_pro_medium"
+                                android:includeFontPadding="false"
+                                android:textColor="@color/color_414655"
+                                android:textSize="@dimen/textSize14sp"
+                                tools:text="0"
+                                tools:visibility="visible" />
+                        </LinearLayout>
 
                         <TextView
                             android:id="@+id/league_odd_match_score_away"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/din_regular"
+                            android:layout_gravity="center_vertical"
+                            android:fontFamily="@font/din_pro_medium"
+                            android:paddingStart="2dp"
+                            android:visibility="gone"
                             android:textColor="@color/color_414655"
-                            android:textFontWeight="700"
                             android:textSize="@dimen/textSize14sp"
                             tools:text="1" />
 
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/lin_away_round_score"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="34dp"
-                        android:gravity="center_vertical"
-                        android:visibility="gone"
-                        tools:visibility="visible">
 
-                        <ImageView
-                            android:id="@+id/ic_attack_tn_c"
-                            android:layout_width="4dp"
-                            android:layout_height="4dp"
-                            android:src="@drawable/bg_green_dot" />
-
-                        <TextView
-                            android:id="@+id/league_odd_match_total_score_away_bottom"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/margin_4"
-                            android:fontFamily="@font/din_regular"
-                            android:includeFontPadding="false"
-                            android:textColor="@color/color_025BE8"
-                            android:textSize="@dimen/textSize12sp"
-                            android:visibility="gone"
-                            tools:text="0"
-                            tools:visibility="visible" />
-
-                        <TextView
-                            android:id="@+id/league_odd_match_score_away_bottom"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/margin_10"
-                            android:fontFamily="@font/din_regular"
-                            android:includeFontPadding="false"
-                            android:textColor="@color/color_FFFFFF_414655"
-                            android:textSize="@dimen/textSize12sp"
-                            android:visibility="gone"
-                            tools:text="0"
-                            tools:visibility="visible" />
-
-                        <TextView
-                            android:id="@+id/league_odd_match_point_away_bottom"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/margin_10"
-                            android:fontFamily="@font/din_regular"
-                            android:includeFontPadding="false"
-                            android:textColor="@color/color_FFFFFF_414655"
-                            android:textSize="@dimen/textSize12sp"
-                            android:visibility="gone"
-                            tools:text="0"
-                            tools:visibility="visible" />
-                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout

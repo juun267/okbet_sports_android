@@ -135,7 +135,7 @@ class SportListViewHolder constructor(
     }
 
     private fun updateMatchInfo(item: MatchOdd, matchType: MatchType) {
-        itemView.league_odd_match_name_home.text = item.matchInfo?.homeName
+        itemView.league_odd_match_name_home.setText(item.matchInfo?.homeName)
         itemView.league_odd_match_name_away.text = item.matchInfo?.awayName
         itemView.iv_home_team_logo.setTeamLogo(item.matchInfo?.homeIcon)
         itemView.iv_away_team_logo.setTeamLogo(item.matchInfo?.awayIcon)
@@ -174,7 +174,7 @@ class SportListViewHolder constructor(
         leagueOddListener: LeagueOddListener?,
     ) {
 
-        itemView.league_odd_match_name_home.text = item.matchInfo?.homeName
+        itemView.league_odd_match_name_home.setText(item.matchInfo?.homeName)
 
         itemView.league_odd_match_name_away.text = item.matchInfo?.awayName
         itemView.iv_home_team_logo.setTeamLogo(item.matchInfo?.homeIcon)
