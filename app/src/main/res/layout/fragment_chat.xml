@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/v_chat_action"
-        android:background="@drawable/bg_chat">
+        android:background="@color/color_FFFFFF">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_chat_message"
@@ -40,11 +40,12 @@
 
     <ImageView
         android:id="@+id/ivDownBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_above="@+id/v_chat_action"
         android:layout_alignParentEnd="true"
         android:layout_margin="12dp"
+        android:elevation="2dp"
         android:src="@drawable/chat_down_btn"
         android:visibility="gone"
         tools:visibility="visible" />

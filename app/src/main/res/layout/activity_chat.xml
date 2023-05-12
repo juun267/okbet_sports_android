@@ -19,7 +19,8 @@
     <eightbitlab.com.blurview.BlurView
         android:id="@+id/bv_tool_bar"
         android:layout_width="match_parent"
-        android:layout_height="73dp">
+        android:layout_height="73dp"
+        tools:ignore="MissingClass">
 
         <View
             android:layout_width="match_parent"

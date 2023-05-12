@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
+import kotlinx.android.synthetic.main.view_chat_action.view.*
 import kotlinx.coroutines.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.collectWith
@@ -64,6 +65,14 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
     override fun onInitView(view: View) {
         initView()
         loading()
+        setWindowSoftInput(
+            float = binding.vChatAction,
+            setPadding = false,
+            editText = binding.vChatAction.binding.etInput,
+            onChanged = {
+                LogUtil.d("SoftInput visibility = ${hasSoftInput()}")
+            }
+        )
     }
 
     override fun onBindViewStatus(view: View) {

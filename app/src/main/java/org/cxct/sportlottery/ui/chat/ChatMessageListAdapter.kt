@@ -237,7 +237,7 @@ class ChatMessageListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     setTextColor(
                         ContextCompat.getColor(
                             binding.root.context,
-                            getTextColor(userType)
+                            getTextColor(userType, false)
                         )
                     )
                 }
@@ -287,7 +287,7 @@ class ChatMessageListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         ColorStateList.valueOf(
                             ContextCompat.getColor(
                                 binding.root.context,
-                                getBorderColor(userType)
+                                getBorderColor(userType, false)
                             )
                         )
                 }
@@ -320,7 +320,7 @@ class ChatMessageListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     setTextColor(
                         ContextCompat.getColor(
                             binding.root.context,
-                            getTextColor(userType)
+                            getTextColor(userType, true)
                         )
                     )
                     mixFontText = checkTag
@@ -354,7 +354,7 @@ class ChatMessageListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         ColorStateList.valueOf(
                             ContextCompat.getColor(
                                 binding.root.context,
-                                getBorderColor(userType)
+                                getBorderColor(userType, true)
                             )
                         )
                 }
@@ -727,26 +727,33 @@ class ChatMessageListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             val GUEST = UserType(
             "0",
             R.color.color_chat_message_border_guest,
-            R.color.color_chat_message_fill_guest,
-            R.color.color_chat_message_text_guest
+                R.color.color_chat_message_fill_guest,
+                R.color.color_chat_message_text_guest
             )
 
             val MEMBER = UserType(
-            "1",
-            R.color.color_chat_message_border_member,
-            R.color.color_chat_message_fill_member,
-            R.color.color_chat_message_text_member
+                "1",
+                R.color.color_chat_message_border_member,
+                R.color.color_chat_message_fill_member,
+                R.color.color_333333
+            )
+
+            val MEMBER_ME = UserType(
+                "1",
+                R.color.color_025BE8,
+                R.color.color_chat_message_fill_member,
+                R.color.color_FFFFFF
             )
 
             val ADMIN = UserType(
-            "2",
-            R.color.color_chat_message_border_admin,
-            R.color.color_chat_message_fill_admin,
-            R.color.color_chat_message_text_admin
+                "2",
+                R.color.color_chat_message_border_admin,
+                R.color.color_chat_message_fill_admin,
+                R.color.color_chat_message_text_admin
             )
 
             val VISITOR = UserType(
-            "3",
+                "3",
             R.color.color_chat_message_border_guest,
             R.color.color_chat_message_fill_guest,
             R.color.color_chat_message_text_guest
@@ -754,10 +761,10 @@ class ChatMessageListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    fun getBorderColor(userType: String?): Int =
+    fun getBorderColor(userType: String?, isMe: Boolean = false): Int =
         when (userType) {
             UserType.GUEST.code -> UserType.GUEST.borderColor
-            UserType.MEMBER.code -> UserType.MEMBER.borderColor
+            UserType.MEMBER.code -> if (isMe) UserType.MEMBER_ME.borderColor else UserType.MEMBER.borderColor
             UserType.VISITOR.code -> UserType.VISITOR.borderColor
             else -> 0
         }
@@ -770,10 +777,10 @@ class ChatMessageListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             else -> 0
         }
 
-    fun getTextColor(userType: String?): Int =
+    fun getTextColor(userType: String?, isMe: Boolean = false): Int =
         when (userType) {
             UserType.GUEST.code -> UserType.GUEST.textColor
-            UserType.MEMBER.code -> UserType.MEMBER.textColor
+            UserType.MEMBER.code -> if (isMe) UserType.MEMBER_ME.textColor else UserType.MEMBER.textColor
             UserType.ADMIN.code -> UserType.ADMIN.textColor
             UserType.VISITOR.code -> UserType.VISITOR.textColor
             else -> 0
