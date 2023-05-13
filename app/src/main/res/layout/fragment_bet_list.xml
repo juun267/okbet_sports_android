@@ -15,6 +15,7 @@
         android:focusable="true" />
 
     <LinearLayout
+        android:id="@+id/llFragmentBetListContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -24,7 +25,9 @@
         tools:ignore="SpUsage, ContentDescription">
 
         <RelativeLayout
+            android:visibility="invisible"
             android:id="@+id/ll_root"
+            tools:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">

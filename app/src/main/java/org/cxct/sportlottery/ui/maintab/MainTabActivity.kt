@@ -17,6 +17,7 @@ import android.widget.RelativeLayout
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.tools.ToastUtils
@@ -54,6 +55,7 @@ import org.cxct.sportlottery.ui.sport.list.SportLeagueAdapter
 import org.cxct.sportlottery.util.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import timber.log.Timber
 import kotlin.system.exitProcess
 
 
@@ -367,15 +369,13 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             else -> false
         }
 
-        if (betListCount == 0 || !needShowBetBar || BetInfoRepository.currentBetType
-            == BetListFragment.SINGLE) {
+        if (betListCount == 0 || !needShowBetBar || BetInfoRepository.currentBetType == BetListFragment.SINGLE) {
 //            Timber.d("ParlayFloatWindow隐藏：betListCount:${betListCount} !needShowBetBar:${!needShowBetBar} currentBetMode:${BetInfoRepository.currentBetType}")
             parlayFloatWindow.gone()
         } else {
-            if (BetInfoRepository.currentBetType == BetListFragment.PARLAY
-            ) {
+            if (BetInfoRepository.currentBetType == BetListFragment.PARLAY) {
                 parlayFloatWindow.setBetText(getString(R.string.conspire))
-            }else{
+            } else {
                 parlayFloatWindow.setBetText(getString(R.string.bet_slip))
             }
             parlayFloatWindow.visible()
@@ -448,7 +448,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 ft.remove(it)
             }
         }
-
         betListFragment = BetListFragment.newInstance(object : BetListFragment.BetResultListener {
             override fun onBetResult(
                 betResultData: Receipt?, betParlayList: List<ParlayOdd>, isMultiBet: Boolean
@@ -466,6 +465,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 //            R.anim.pickerview_slide_out_bottom
 //        )
             .add(R.id.fl_bet_list, betListFragment!!).addToBackStack(null).commit()
+
+
+
+
     }
 
 
@@ -608,7 +611,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         homeFragment().jumpToOKGames()
     }
 
-    fun jumpToInplaySport(){
+    fun jumpToInplaySport() {
         resetBackIcon(1)
         ll_home_back.gone()
         jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)

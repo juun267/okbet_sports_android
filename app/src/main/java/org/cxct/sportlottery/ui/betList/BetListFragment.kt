@@ -1,5 +1,8 @@
 package org.cxct.sportlottery.ui.betList
 
+import android.animation.Animator
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
@@ -7,11 +10,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.TextView
+import androidx.core.animation.doOnEnd
+import androidx.core.animation.doOnStart
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -20,12 +28,14 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.*
 import kotlinx.android.synthetic.main.button_bet.view.*
 import kotlinx.android.synthetic.main.fragment_bet_list.*
+import kotlinx.android.synthetic.main.single_toast.llRoot
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.BetModeChangeEvent
 import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.inVisible
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentBetListBinding
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
@@ -40,6 +50,7 @@ import org.cxct.sportlottery.ui.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.betList.adapter.BetSingleListAdapter
 import org.cxct.sportlottery.ui.betList.listener.OnItemClickListener
 import org.cxct.sportlottery.ui.betRecord.ParlayType.Companion.getParlayStringRes
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.results.StatusType
 import org.cxct.sportlottery.util.*
@@ -208,9 +219,9 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
 
     private fun onBackPressed() {
         if (BetInfoRepository.currentState == SINGLE) {
-            clearCarts()
+            exitAnimation(true)
         } else {
-            activity?.onBackPressed()
+            exitAnimation(false)
         }
     }
 
@@ -366,7 +377,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         currentBetOption = currentOddsChangeOp
 
         binding.tvDeleteAll.setOnClickListener {
-            clearCarts()
+            exitAnimation(true)
         }
 
         binding.btnParlaySingle.setOnClickListener {
@@ -396,7 +407,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
 
 
             override fun clearCarts() {
-                this@BetListFragment.clearCarts()
+                this@BetListFragment.exitAnimation(true)
             }
 
             override fun onRechargeClick() {
@@ -635,7 +646,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             viewModel.removeBetInfoAll()
             setCurrentBetModeSingle()
             EventBusUtil.post(BetModeChangeEvent(SINGLE))
-            activity?.supportFragmentManager?.popBackStack()
         }
     }
 
@@ -665,7 +675,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 SINGLE -> {
                     betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.SINGLE
                     binding.clParlayList.gone()
-//                    binding.clTotalInfo.gone()
                     binding.clTitle.ivArrow.setImageResource(
                         R.drawable.ic_single_bet_delete
                     )
@@ -677,21 +686,19 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 PARLAY -> {
                     betListRefactorAdapter?.adapterBetType =
                         BetListRefactorAdapter.BetRvType.PARLAY_SINGLE
-//                    binding.clTotalInfo.gone()
                     binding.clTitle.ivArrow.setImageResource(
                         R.drawable.ic_single_bet_delete
                     )
                     refreshLlMoreOption()
                     BetInfoRepository.switchParlayMode()
                     //从单关切换成串关会收起购物车，反之不会
-                    activity?.supportFragmentManager?.popBackStack()
+                    exitAnimation(false)
                     EventBusUtil.post(BetModeChangeEvent(PARLAY))
                 }
             }
             betListRefactorAdapter?.notifyDataSetChanged()
             checkAllAmountCanBet()
             refreshAllAmount()
-//            checkSingleAndParlayBetLayoutVisible()
         }
     }
 
@@ -996,15 +1003,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         }
     }
 
-    private fun MutableList<BetInfoListData>.isEmptyBetList(): Boolean {
-        return if (this.isEmpty() && !showReceipt) {
-            activity?.supportFragmentManager?.popBackStack()
-            true
-        } else {
-            false
-        }
-    }
-
     /**
      * 投注按鈕狀態(登入、未登入)
      */
@@ -1115,13 +1113,45 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         )
     }
 
+    var llRootHeight = 0
+
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
         if (enter) {
-            bg_dim_mount.animate().alphaBy(1f).setDuration(200).setStartDelay(200).start()
-        } else {
-            bg_dim_mount.alpha = 0f
+            binding.llFragmentBetListContent.post {
+                binding.llRoot.visible()
+                llRootHeight = binding.llRoot.height
+                AnimatorUtils.startTranslationY(
+                    targetView = binding.llFragmentBetListContent, fromY = llRootHeight, toY = 0
+                )
+                bg_dim_mount.animate().alphaBy(1f).setDuration(200).setStartDelay(200).start()
+            }
         }
+        //else{
+        //退出动画为什么不写在else里面？
+        //因为当fragment退出时，fragment里面的一切物件都会被系统回收，
+        //所以这里的一切操作都是无效的
+        //所以这里就想到了另外一个方案，
+        //在popBackStackImmediate调用之前先执行动画，
+        //动画结束之后在调用 popBackStackImmediate 方法，问题即可解决
+        //}
         return super.onCreateAnimation(transit, enter, nextAnim)
     }
+
+    private fun exitAnimation(clearCarts: Boolean) {
+        binding.bgDimMount.animate().alphaBy(0f).setDuration(300).start()
+        AnimatorUtils.startTranslationY(
+            targetView = binding.llFragmentBetListContent,
+            fromY = 0,
+            toY = llRootHeight,
+            onAnimEndListener = {
+                if (clearCarts) {
+                    clearCarts()
+                }
+                val fm = activity?.supportFragmentManager
+                fm?.popBackStackImmediate()
+
+            })
+    }
+
 
 }
