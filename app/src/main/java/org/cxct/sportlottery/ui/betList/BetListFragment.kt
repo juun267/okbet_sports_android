@@ -1123,7 +1123,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 AnimatorUtils.startTranslationY(
                     targetView = binding.llFragmentBetListContent, fromY = llRootHeight, toY = 0
                 )
-                bg_dim_mount.animate().alphaBy(1f).setDuration(200).setStartDelay(200).start()
+                binding.bgDimMount.animate().alphaBy(1f).setDuration(200).setStartDelay(200).start()
             }
         }
         //else{
@@ -1149,7 +1149,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 }
                 val fm = activity?.supportFragmentManager
                 fm?.popBackStackImmediate()
-
             })
     }
 
