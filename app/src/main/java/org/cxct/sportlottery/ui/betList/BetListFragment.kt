@@ -424,22 +424,10 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 )
             }
 
-            override fun onShowParlayKeyboard(position: Int) {
-//                (rv_parlay_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
-//                    rv_parlay_list, RecyclerView.State(), position
-//                )
-//                betParlayListRefactorAdapter?.apply {
-//                    BetListRcvUtil.setWrapHeight(rv_parlay_list, this)
-//                }
-            }
-
             override fun onHideKeyBoard() {
                 betListRefactorAdapter?.betList?.forEach {
                     it.isInputBet = false; it.isInputWin = false
                 }
-//                betListRefactorAdapter?.closeAllKeyboard()
-////                betSingleListAdapter?.closeAllKeyboard()
-//                betParlayListRefactorAdapter?.closeAllKeyboard()
             }
 
             override fun saveOddsHasChanged(matchOdd: MatchOdd) {
@@ -827,16 +815,9 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             it.getContentIfNotHandled().let { result ->
                 showReceipt = result != null
                 if (result != null) {
-                    Timber.d("失败了进来了：${result.success}")
                     if (result.success) {
                         setBetLoadingVisibility(false)
-                        //多筆和單筆投注單，下注成功後的行為不同
-//                        if (isMultiBet) {
-                        //多筆的是直接 replace fragment
                         viewModel.betInfoList.removeObservers(this.viewLifecycleOwner)
-//                        } else {
-//                            //單筆的要關掉再顯示 dialog
-//                        }
                         betResultListener?.onBetResult(
                             result.receipt, betParlayList ?: listOf(), true
                         )
@@ -847,7 +828,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                         btn_bet?.postDelayed({
                             setBetLoadingVisibility(false)
                         }, 800)
-//                        showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
                     }
                 }
             }

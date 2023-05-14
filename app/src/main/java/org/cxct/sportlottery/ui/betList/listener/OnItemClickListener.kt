@@ -6,7 +6,6 @@ interface OnItemClickListener {
         fun onDeleteClick(oddsId: String, currentItemCount: Int)
         fun onRechargeClick()
         fun onShowKeyboard(position: Int)
-        fun onShowParlayKeyboard(position: Int)
         fun onHideKeyBoard()
         fun saveOddsHasChanged(matchOdd: MatchOdd)
         fun refreshBetInfoTotal(isSingleAdapter: Boolean = false)

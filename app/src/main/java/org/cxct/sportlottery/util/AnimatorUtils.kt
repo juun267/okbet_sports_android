@@ -18,17 +18,16 @@ object AnimatorUtils {
         targetView: View,
         fromY: Int,
         toY: Int,
-        interpolator: BaseInterpolator = AccelerateDecelerateInterpolator(),
+        interpolator: BaseInterpolator? = null,
         duration: Long = 400,
         isStart: Boolean = true,
         onAnimEndListener: (() -> Unit)? = null,
         onAnimStartListener: (() -> Unit)? = null
-    ):ValueAnimator {
-
+    ): ValueAnimator {
         val translationObjectAnimator = ObjectAnimator.ofFloat(
             targetView, translationY, fromY.toFloat(), toY.toFloat()
         )
-            translationObjectAnimator.also {
+        translationObjectAnimator.also {
             it.interpolator = interpolator
             it.duration = duration
             if (isStart) {
