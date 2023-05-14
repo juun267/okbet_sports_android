@@ -108,7 +108,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
 
     private var betParlayListRefactorAdapter: BetListRefactorAdapter? = null
 
-    private var betSingleListAdapter: BetSingleListAdapter? = null
+//    private var betSingleListAdapter: BetSingleListAdapter? = null
 
     private var betAllAmount = 0.0
 
@@ -437,9 +437,9 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 betListRefactorAdapter?.betList?.forEach {
                     it.isInputBet = false; it.isInputWin = false
                 }
-                betListRefactorAdapter?.closeAllKeyboard()
-                betSingleListAdapter?.closeAllKeyboard()
-                betParlayListRefactorAdapter?.closeAllKeyboard()
+//                betListRefactorAdapter?.closeAllKeyboard()
+////                betSingleListAdapter?.closeAllKeyboard()
+//                betParlayListRefactorAdapter?.closeAllKeyboard()
             }
 
             override fun saveOddsHasChanged(matchOdd: MatchOdd) {
@@ -509,8 +509,8 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             getUserBalance()
         }
 
-        betSingleListAdapter =
-            BetSingleListAdapter(adapterItemClickListener, binding.layoutKeyBoard)
+//        betSingleListAdapter =
+//            BetSingleListAdapter(adapterItemClickListener, binding.layoutKeyBoard)
 
         betParlayListRefactorAdapter = BetListRefactorAdapter(
             binding.layoutKeyBoard,
@@ -720,7 +720,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 needUpdateBetLimit = false
             }
             betListRefactorAdapter?.userLogin = it
-            betSingleListAdapter?.userLogin = it
+//            betSingleListAdapter?.userLogin = it
             betParlayListRefactorAdapter?.userLogin = it
         }
 
@@ -732,14 +732,14 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 binding.tvBalance.text =
                     "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(money)}"
                 betListRefactorAdapter?.userMoney = money
-                betSingleListAdapter?.userMoney = money
+//                betSingleListAdapter?.userMoney = money
                 betParlayListRefactorAdapter?.userMoney = money
             }
         }
 
         viewModel.oddsType.observe(viewLifecycleOwner) {
             betListRefactorAdapter?.oddsType = it
-            betSingleListAdapter?.oddsType = it
+//            betSingleListAdapter?.oddsType = it
             betParlayListRefactorAdapter?.oddsType = it
             oddsType = it
         }
@@ -765,7 +765,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 }
                 binding.clTitle.tvBetListCount.text = list.size.toString()
                 betListRefactorAdapter?.betList = list
-                betSingleListAdapter?.betList = list
+//                betSingleListAdapter?.betList = list
                 betParlayListRefactorAdapter?.betList = list
 
 //                checkSingleAndParlayBetLayoutVisible()
@@ -782,7 +782,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 unSubscribeChannelEvent(it)
             }
             betListRefactorAdapter?.notifyDataSetChanged()
-            betSingleListAdapter?.notifyDataSetChanged()
+//            betSingleListAdapter?.notifyDataSetChanged()
             betParlayListRefactorAdapter?.notifyDataSetChanged()
         }
 
@@ -792,7 +792,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 clExpandOrStacked.gone()
                 betListRefactorAdapter?.hasParlayList = false
                 betListRefactorAdapter?.parlayList = singleParlayList
-                betSingleListAdapter?.parlayList = singleParlayList
+//                betSingleListAdapter?.parlayList = singleParlayList
                 betParlayListRefactorAdapter?.hasParlayList = false
             } else {
                 if (it.size > 1) {
@@ -802,8 +802,8 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 }
                 betListRefactorAdapter?.hasParlayList = true
                 betListRefactorAdapter?.parlayList = it
-                betSingleListAdapter?.hasParlayList = true
-                betSingleListAdapter?.parlayList = it
+//                betSingleListAdapter?.hasParlayList = true
+//                betSingleListAdapter?.parlayList = it
 
                 betParlayListRefactorAdapter?.hasParlayList = true
                 betParlayListRefactorAdapter?.parlayList = it
@@ -903,7 +903,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                     }
                 }
                 betListRefactorAdapter?.betList = betRefactorList
-                betSingleListAdapter?.betList = betRefactorList
+//                betSingleListAdapter?.betList = betRefactorList
                 betParlayListRefactorAdapter?.betList = betRefactorList
             }
         }

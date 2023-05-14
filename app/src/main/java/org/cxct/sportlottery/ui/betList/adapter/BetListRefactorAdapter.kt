@@ -27,10 +27,8 @@ class BetListRefactorAdapter(
     private val userBalance: () -> Double
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private enum class ViewType { Bet, Parlay, OddsWarn, BasketballEndingCard }
+    private enum class ViewType { Bet, Parlay, BasketballEndingCard }
     enum class BetViewType { SINGLE, PARLAY, NULL }
-
-    private val attachedViewSet = HashSet<RecyclerView.ViewHolder>()
 
 
     /**
@@ -112,26 +110,23 @@ class BetListRefactorAdapter(
         }
 
 
-    private var isOddsChangedWarn = false //顯示賠率變更提示
+//    private var isOddsChangedWarn = false //顯示賠率變更提示
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return when (viewType) {
+            //单注和串关
             ViewType.Bet.ordinal -> BiVh(
                 ContentBetInfoItemV32Binding.inflate(layoutInflater), userBalance
             )
 
-            ViewType.OddsWarn.ordinal -> OcWvH(
-                layoutInflater.inflate(
-                    R.layout.content_odds_changed_warn, parent, false
-                )
-            )
-
+            //篮球末尾比分
             ViewType.BasketballEndingCard.ordinal -> BasketballEndingCardViewHolder(
                 ContentBetInfoItemV3BaseketballEndingCardBinding.inflate(layoutInflater),
                 userBalance
             )
 
+            //串关多注、注单列表
             else -> BpcVh(
                 layoutInflater.inflate(
                     R.layout.item_bet_list_batch_control_connect_v3, parent, false
@@ -143,7 +138,10 @@ class BetListRefactorAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         var currentOddsType = oddsType
         betList?.getOrNull(position)?.apply {
-            if (matchOdd.isOnlyEUType || matchOdd.odds == matchOdd.malayOdds || matchType == MatchType.OUTRIGHT || matchType == MatchType.OTHER_OUTRIGHT) {
+            if (matchOdd.isOnlyEUType ||
+                matchOdd.odds == matchOdd.malayOdds
+                || matchType == MatchType.OUTRIGHT
+                || matchType == MatchType.OTHER_OUTRIGHT) {
                 currentOddsType = OddsType.EU
             }
         }
@@ -158,15 +156,7 @@ class BetListRefactorAdapter(
             }
 
             PARLAY -> {
-                when {
-                    isOddsChangedWarn && position == 0 -> {
-                        ViewType.OddsWarn.ordinal
-                    }
-
-                    else -> {
-                        ViewType.Parlay.ordinal
-                    }
-                }
+                ViewType.Parlay.ordinal
             }
 
             BasketballEndingCard -> {
@@ -226,10 +216,11 @@ class BetListRefactorAdapter(
                 holder.bind(
                     ////region 20220607 投注單版面調整
                     parlayList?.getOrNull(
-                        when (isOddsChangedWarn) {
-                            true -> position - 1
-                            false -> position
-                        }
+                        position
+//                        when (isOddsChangedWarn) {
+//                            true -> position - 1
+//                            false -> position
+//                        }
                     ),
                     //endregion
                     currentOddsType,
@@ -264,20 +255,20 @@ class BetListRefactorAdapter(
         }
     }
 
-    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
-        super.onViewAttachedToWindow(holder)
-        attachedViewSet.add(holder)
-    }
-
-    override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
-        super.onViewDetachedFromWindow(holder)
-        attachedViewSet.remove(holder)
-    }
-
-    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
-        super.onDetachedFromRecyclerView(recyclerView)
-        attachedViewSet.clear()
-    }
+//    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
+//        super.onViewAttachedToWindow(holder)
+//        attachedViewSet.add(holder)
+//    }
+//
+//    override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
+//        super.onViewDetachedFromWindow(holder)
+//        attachedViewSet.remove(holder)
+//    }
+//
+//    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+//        super.onDetachedFromRecyclerView(recyclerView)
+//        attachedViewSet.clear()
+//    }
 
     //使用HasStabledIds需複寫回傳的position, 若仍使用super.getItemId(position), 數據刷新會錯亂.
     //https://blog.csdn.net/karsonNet/article/details/80598435
@@ -286,11 +277,11 @@ class BetListRefactorAdapter(
     }
 
 
-    fun closeAllKeyboard() {
-        attachedViewSet.forEach {
-            it.itemView.findViewById<KeyboardView>(R.id.layoutKeyBoard)?.hideKeyboard()
-        }
-    }
+//    fun closeAllKeyboard() {
+//        attachedViewSet.forEach {
+//            it.itemView.findViewById<KeyboardView>(R.id.layoutKeyBoard)?.hideKeyboard()
+//        }
+//    }
 
     fun getListSize(): Int {
         //region 20220607 投注單版面調整
@@ -314,11 +305,7 @@ class BetListRefactorAdapter(
 
                     else -> {
                         val parlayListSize = parlayList?.size ?: 0
-                        if (isOddsChangedWarn) {
-                            parlayListSize + 1
-                        } else {
-                            parlayListSize
-                        }
+                        parlayListSize
                     }
                 }
             }

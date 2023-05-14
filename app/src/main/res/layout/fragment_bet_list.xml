@@ -90,7 +90,7 @@
                     android:orientation="vertical"
                     android:paddingTop="10dp"
                     android:visibility="gone"
-                    tools:visibility="gone">
+                    tools:visibility="visible">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_parlay_list"
