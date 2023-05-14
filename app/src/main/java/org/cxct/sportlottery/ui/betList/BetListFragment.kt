@@ -15,7 +15,6 @@ import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.button_bet.cl_bet
 import kotlinx.android.synthetic.main.button_bet.tv_login
 import kotlinx.android.synthetic.main.button_bet.tv_remove_closed_selections
@@ -37,7 +36,6 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.betList.listener.OnItemClickListener
-import org.cxct.sportlottery.ui.betRecord.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.results.StatusType
 import org.cxct.sportlottery.util.*
@@ -739,11 +737,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 }
                 binding.clTitle.tvBetListCount.text = list.size.toString()
                 betListRefactorAdapter?.betList = list
-//                betSingleListAdapter?.betList = list
                 betParlayListRefactorAdapter?.betList = list
-
-//                checkSingleAndParlayBetLayoutVisible()
-
                 subscribeChannel(list)
                 refreshAllAmount(list)
                 checkAllAmountCanBet()
@@ -756,7 +750,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 unSubscribeChannelEvent(it)
             }
             betListRefactorAdapter?.notifyDataSetChanged()
-//            betSingleListAdapter?.notifyDataSetChanged()
             betParlayListRefactorAdapter?.notifyDataSetChanged()
         }
 
@@ -766,7 +759,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 binding.clExpandOrStacked.gone()
                 betListRefactorAdapter?.hasParlayList = false
                 betListRefactorAdapter?.parlayList = singleParlayList
-//                betSingleListAdapter?.parlayList = singleParlayList
                 betParlayListRefactorAdapter?.hasParlayList = false
             } else {
                 if (it.size > 1) {
@@ -776,9 +768,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 }
                 betListRefactorAdapter?.hasParlayList = true
                 betListRefactorAdapter?.parlayList = it
-//                betSingleListAdapter?.hasParlayList = true
-//                betSingleListAdapter?.parlayList = it
-
                 betParlayListRefactorAdapter?.hasParlayList = true
                 betParlayListRefactorAdapter?.parlayList = it
             }
@@ -811,7 +800,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                         showOddChangeWarn = false
                         binding.btnBet.isOddsChanged = false
                     } else {
-                        binding.btnBet?.postDelayed({
+                        binding.btnBet.postDelayed({
                             setBetLoadingVisibility(false)
                         }, 800)
                     }
@@ -869,7 +858,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                     }
                 }
                 betListRefactorAdapter?.betList = betRefactorList
-//                betSingleListAdapter?.betList = betRefactorList
                 betParlayListRefactorAdapter?.betList = betRefactorList
             }
         }
@@ -923,9 +911,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         } else {
             parlayList.sumOf { it.betAmount * it.num }
         }
-//        val totalBetAmount =
-//            betListFilter.sumByDouble { it.realAmount } + (parlayList.sumByDouble { it.betAmount * it.num })
-
         if (totalBetAmount.toString().isEmpty()) {
             Timber.w("totalBetAmount isEmpty")
             return
