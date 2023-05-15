@@ -31,7 +31,7 @@ import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.*
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.widget.MixFontTextView
+import org.cxct.sportlottery.view.MixFontTextView
 
 /**
  * @author kevin

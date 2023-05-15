@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.widget
+package org.cxct.sportlottery.view
 
 import android.graphics.Paint
 import android.graphics.Typeface

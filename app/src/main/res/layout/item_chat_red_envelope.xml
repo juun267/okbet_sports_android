@@ -45,7 +45,7 @@
     </RelativeLayout>
 
     <!--LT037-->
-    <org.cxct.sportlottery.widget.MixFontTextView
+    <org.cxct.sportlottery.view.MixFontTextView
         android:id="@+id/tvRedEnvelopeName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
