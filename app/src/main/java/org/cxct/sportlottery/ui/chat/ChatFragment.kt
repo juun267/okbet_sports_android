@@ -112,7 +112,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
 
         //設定發送按鈕是否為可點擊的狀態
         binding.vChatAction.etInput.afterTextChanged {
-            binding.vChatAction.setSendStatus(it.isNotEmpty() && viewModel.checkIsSpeak())
+            binding.vChatAction.setSendStatus(it.trim().isNotEmpty() && viewModel.checkIsSpeak())
         }
     }
 
