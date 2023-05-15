@@ -413,7 +413,7 @@
                     android:drawableLeft="@drawable/bg_sport_card_yellow"
                     android:drawablePadding="5dp"
                     android:layout_marginRight="10dp"
-                    android:textSize="@dimen/textSize8sp"
+                    android:textSize="@dimen/textSize10sp"
                     android:textColor="@color/color_FFFFFF"
                     android:gravity="center"
                     android:fontFamily="@font/din_regular"
@@ -430,7 +430,7 @@
                     android:drawableLeft="@drawable/bg_sport_card_red"
                     android:textColor="@color/color_1A1A1A_FFFFFF"
                     android:textSize="@dimen/textSize10sp"
-                    android:visibility="gone"
+                    android:fontFamily="@font/din_regular"
                     tools:text="1-2"
                     tools:visibility="visible" />
 
