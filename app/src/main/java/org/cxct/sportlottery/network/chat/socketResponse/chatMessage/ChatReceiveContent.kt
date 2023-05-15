@@ -17,7 +17,7 @@ data class ChatReceiveContent<T> (
     val type: Int?
 ): MultiItemEntity {
 
-    override val itemType: Int = 0
+    override val itemType: Int = type ?: -1
 
     @Suppress("UNCHECKED_CAST")
     fun <T> getThisContent(): T? {
