@@ -3,9 +3,11 @@ package org.cxct.sportlottery.net.chat.data
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.network.chat.UserLevelConfigVO
 
 @JsonClass(generateAdapter = true)
+@KeepMembers
 data class ChatInitResponse(
     @Json(name = "betMoney")
     val betMoney: Int,
