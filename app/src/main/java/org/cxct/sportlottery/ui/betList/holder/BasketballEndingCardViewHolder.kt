@@ -29,7 +29,6 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.betList.listener.OnItemClickListener
-import org.cxct.sportlottery.ui.betList.listener.OnSelectedPositionListener
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.KvUtils.BASKETBALL_DEL_TIP_FLAG
@@ -55,11 +54,8 @@ class BasketballEndingCardViewHolder(
         betList: MutableList<BetInfoListData>?,
         itemData: BetInfoListData,
         currentOddsType: OddsType,
-        itemCount: Int,
         onItemClickListener: OnItemClickListener,
         betListSize: Int,
-        mSelectedPosition: Int,
-        onSelectedPositionListener: OnSelectedPositionListener,
         position: Int,
         userMoney: Double,
         userLogin: Boolean,
@@ -82,8 +78,6 @@ class BasketballEndingCardViewHolder(
                 if (itemData.matchOdd.isOnlyEUType) OddsType.EU else currentOddsType,
                 onItemClickListener,
                 betListSize,
-                mSelectedPosition,
-                onSelectedPositionListener,
                 position,
                 adapterBetType
             )
@@ -107,8 +101,6 @@ class BasketballEndingCardViewHolder(
         currentOddsType: OddsType,
         onItemClickListener: OnItemClickListener,
         betListSize: Int,
-        mSelectedPosition: Int,
-        onSelectedPositionListener: OnSelectedPositionListener,
         position: Int,
         adapterBetType: BetListRefactorAdapter.BetRvType?
     ) = contentView.run {
@@ -295,9 +287,6 @@ class BasketballEndingCardViewHolder(
                     layoutKeyBoard.setupMaxBetMoney(inputMaxMoney)
                     layoutKeyBoard.showKeyboard(
                         etBet, position
-                    )
-                    onSelectedPositionListener.onSelectChange(
-                        bindingAdapterPosition, BetListRefactorAdapter.BetViewType.SINGLE
                     )
                     onItemClickListener.onShowKeyboard(position)
                 }

@@ -17,9 +17,7 @@ import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.betList.BetInfoListData
-import org.cxct.sportlottery.ui.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.betList.listener.OnItemClickListener
-import org.cxct.sportlottery.ui.betList.listener.OnSelectedPositionListener
 import org.cxct.sportlottery.ui.betRecord.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.KeyboardView
 import org.cxct.sportlottery.util.LocalUtils
@@ -41,13 +39,8 @@ abstract class BatchParlayViewHolder(
 
     protected fun setupParlayItem(
         itemData: ParlayOdd?,
-        currentOddsType: OddsType,
         hasBetClosed: Boolean,
-        firstItem: Boolean = false,
         onItemClickListener: OnItemClickListener,
-        mSelectedPosition: Int,
-        mBetView: BetListRefactorAdapter.BetViewType,
-        onSelectedPositionListener: OnSelectedPositionListener,
         position: Int,
         userMoney: Double,
         userLogin: Boolean,
@@ -58,7 +51,6 @@ abstract class BatchParlayViewHolder(
         mHasBetClosed = hasBetClosed
         //設置投注輸入上限額
         setupInputMoney(itemData)
-        setupItemEnable(hasBetClosed)
         if (itemData != null) {
             val multipleOdds = betList?.let { getMultipleOdds(it) }
 
@@ -72,9 +64,6 @@ abstract class BatchParlayViewHolder(
                 itemData,
                 OddsType.EU,
                 onItemClickListener,
-                mSelectedPosition,
-                mBetView,
-                onSelectedPositionListener,
                 position
             )
         }
@@ -95,20 +84,11 @@ abstract class BatchParlayViewHolder(
         } ?: ""
     }
 
-    private fun setupItemEnable(hasBetClosed: Boolean) {
-//        itemView.apply {
-//            ll_hint_container.isVisible = !hasBetClosed
-//        }
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     private fun setupBetAmountInput(
         data: ParlayOdd,
         currentOddsType: OddsType,
         onItemClickListener: OnItemClickListener,
-        mSelectedPosition: Int,
-        mBetView: BetListRefactorAdapter.BetViewType,
-        onSelectedPositionListener: OnSelectedPositionListener,
         position: Int
     ) {
         itemView.apply {
@@ -201,10 +181,6 @@ abstract class BatchParlayViewHolder(
                     keyboardView.showKeyboard(
                         et_bet_parlay, position, isParlay = true
                     )
-                    onSelectedPositionListener.onSelectChange(
-                        bindingAdapterPosition, BetListRefactorAdapter.BetViewType.PARLAY
-                    )
-                    onItemClickListener.onShowParlayKeyboard(position)
                 }
                 false
             }

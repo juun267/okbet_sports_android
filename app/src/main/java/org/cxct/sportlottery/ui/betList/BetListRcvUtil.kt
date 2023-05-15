@@ -60,7 +60,4 @@ object BetListRcvUtil {
     }
 
 
-
-
-
 }
