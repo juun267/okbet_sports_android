@@ -1415,4 +1415,5 @@
     <string name="chat_photo_download_done">Saved</string>
     <string name="J871">Failed to load</string>
     <string name="N984">Chat room</string>
+    <string name="write_suggestion">Submission</string>
 </resources>

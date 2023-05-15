@@ -1341,6 +1341,7 @@
     <string name="chat_administrator">管理员</string>
     <string name="chat_currently_ban_to_speak">目前禁止发言</string>
     <string name="chat_welcome">欢迎</string>
+    <string name="write_suggestion">填写建议</string>
     <string name="LT054">公告：</string>
     <string name="LT058">聊天室暂时关闭</string> <!--LT058-->
     <string name="chat_photo_download_done">已储存</string>

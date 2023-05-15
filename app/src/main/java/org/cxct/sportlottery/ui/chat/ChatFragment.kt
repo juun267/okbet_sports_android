@@ -107,7 +107,6 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
         binding.rvWelcome.adapter = chatWelcomeAdapter
         binding.rvChatMessage.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rvChatMessage.adapter = chatMessageListAdapter
-        setChatMsgScrollListener()
 
         OverScrollDecoratorHelper.setUpOverScroll(binding.rvChatMessage, OverScrollDecoratorHelper.ORIENTATION_VERTICAL)
 
@@ -117,7 +116,11 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
         }
     }
 
-    private fun setChatMsgScrollListener() {
+    private fun setChatMsgScrollListener(isReady: Boolean) {
+        if (!isReady || binding.rvChatMessage.tag != null) {
+            return
+        }
+        binding.rvChatMessage.tag = true
         binding.rvChatMessage.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 //region 處理聊天訊息中日期提示隱藏及顯示. 實際上懸浮的日期提示為RecyclerView的ItemDecoration所繪製的, 故需要在頂部顯示該日期時隱藏列表中對應的Item, 離開頂部時才顯示.
@@ -325,6 +328,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
 
         when (chatEvent) {
             is ChatEvent.ChatRoomIsReady -> { //已訂閱roomId且已更新歷史訊息
+                setChatMsgScrollListener(chatEvent.isReady)
                 onChatRoomReady(chatEvent)
                 loadingHolder.showLoadSuccess()
             }
