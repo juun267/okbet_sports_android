@@ -1,60 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="61dp"
-    android:orientation="vertical"
-    tools:ignore="ContentDescription,SpUsage">
+    android:background="@color/color_chat_action_background">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/color_chat_action_divider" />
+        android:background="@color/color_chat_action_divider"
+        app:layout_constraintTop_toTopOf="parent"/>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/color_chat_action_background">
+    <ImageView
+        android:id="@+id/ivUploadImage"
+        android:layout_width="61dp"
+        android:layout_height="match_parent"
+        android:paddingVertical="17dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="15dp"
+        android:layout_marginTop="1dp"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:src="@drawable/ic_chat_upload_image_disable" />
 
-        <ImageView
-            android:id="@+id/iv_upload_image"
-            android:layout_width="61dp"
-            android:layout_height="match_parent"
-            android:paddingVertical="17dp"
-            android:paddingStart="20dp"
-            android:paddingEnd="15dp"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:src="@drawable/ic_chat_upload_image_disable" />
+    <ImageView
+        android:id="@+id/ivSend"
+        android:layout_width="61dp"
+        android:layout_height="match_parent"
+        android:paddingVertical="17dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="20dp"
+        android:layout_marginTop="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:src="@drawable/ic_chat_send_disable" />
 
-        <ImageView
-            android:id="@+id/iv_send"
-            android:layout_width="61dp"
-            android:layout_height="match_parent"
-            android:paddingVertical="17dp"
-            android:paddingStart="15dp"
-            android:paddingEnd="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:src="@drawable/ic_chat_send_disable" />
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/etInput"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:background="@null"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="1dp"
+        android:textColor="@color/color_chat_action_edittext_text"
+        android:textColorHint="@color/color_chat_action_edittext_hint_text"
+        android:textCursorDrawable="@drawable/cursor_common"
+        android:textSize="@dimen/textSize12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ivSend"
+        app:layout_constraintStart_toEndOf="@+id/ivUploadImage"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="1dp"
+        tools:background="@drawable/bg_chat_input_disable"
+        tools:hint="hahkghahsfhahsghshfglshfhfkhfjkshfkljhfkhaskgjhashflhflhsflhsfhashhahkghahsfhahsghshfglshfhfkhf" />
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/et_input"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:background="@null"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="1dp"
-            android:textColor="@color/color_chat_action_edittext_text"
-            android:textColorHint="@color/color_chat_action_edittext_hint_text"
-            android:textCursorDrawable="@drawable/cursor_common"
-            android:textSize="@dimen/textSize12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/iv_send"
-            app:layout_constraintStart_toEndOf="@+id/iv_upload_image"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:background="@drawable/bg_chat_input_disable"
-            tools:hint="hahkghahsfhahsghshfglshfhfkhfjkshfkljhfkhaskgjhashflhflhsflhsfhashhahkghahsfhahsghshfglshfhfkhf" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</LinearLayout>
+</merge>

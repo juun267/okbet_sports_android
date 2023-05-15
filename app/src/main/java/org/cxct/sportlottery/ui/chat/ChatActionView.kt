@@ -4,10 +4,11 @@ import android.content.Context
 import android.text.InputFilter
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.widget.LinearLayout
+import android.widget.EditText
+import android.widget.ImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.ViewChatActionBinding
 
 /**
  * @author kevin
@@ -18,15 +19,17 @@ class ChatActionView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0,
-) : LinearLayout(context, attrs, defStyle) {
+) : ConstraintLayout(context, attrs, defStyle) {
 
-    lateinit var binding: ViewChatActionBinding
+    val ivSend: ImageView
+    val ivUploadImage: ImageView
+    val etInput: EditText
 
     init {
-        if (!isInEditMode) {
-            binding = ViewChatActionBinding.inflate(LayoutInflater.from(context))
-            addView(binding.root)
-        }
+        LayoutInflater.from(context).inflate(R.layout.view_chat_action, this, true)
+        ivSend = findViewById(R.id.ivSend)
+        ivUploadImage = findViewById(R.id.ivUploadImage)
+        etInput = findViewById(R.id.etInput)
     }
 
     fun setViewStatus(isEnable: Boolean) {
@@ -35,52 +38,37 @@ class ChatActionView @JvmOverloads constructor(
     }
 
     fun setSendStatus(isEnable: Boolean) {
-        binding.ivSend.apply {
-            setImageResource(
-                if (isEnable) R.drawable.ic_chat_send else R.drawable.ic_chat_send_disable
-            )
-            isEnabled = isEnable
-        }
+        ivSend.isEnabled = isEnable
+        ivSend.setImageResource(if (isEnable) R.drawable.ic_chat_send else R.drawable.ic_chat_send_disable)
     }
 
     fun setUploadImageStatus(isEnable: Boolean) {
-        binding.ivUploadImage.apply {
-            setImageResource(
-                if (isEnable) R.drawable.ic_chat_upload_image else R.drawable.ic_chat_upload_image_disable
-            )
-            isEnabled = isEnable
-        }
+        ivUploadImage.isEnabled = isEnable
+        ivUploadImage.setImageResource(if (isEnable) R.drawable.ic_chat_upload_image else R.drawable.ic_chat_upload_image_disable)
     }
 
-    fun setInputStatus(isEnable: Boolean) {
-        binding.etInput.apply {
-            background = ContextCompat.getDrawable(
-                context,
-                if (isEnable) R.drawable.bg_chat_input else R.drawable.bg_chat_input_disable
-            )
-            hint = when {
-                isEnable -> {
-                    context.getString(R.string.chat_enter_chat_content)
-                }
-                else -> {
-                    text?.clear() //禁止發言時應清除已輸入的文字
-                    context.getString(R.string.chat_currently_ban_to_speak)
-                }
+    fun setInputStatus(isEnable: Boolean) = etInput.run  {
+        background = ContextCompat.getDrawable(
+            context,
+            if (isEnable) R.drawable.bg_chat_input else R.drawable.bg_chat_input_disable
+        )
+        hint = if(isEnable) {
+                context.getString(R.string.chat_enter_chat_content)
+            }  else {
+                text?.clear() //禁止發言時應清除已輸入的文字
+                context.getString(R.string.chat_currently_ban_to_speak)
             }
-            setHintTextColor(
-                ContextCompat.getColor(
-                    context,
-                    if (isEnable) R.color.color_chat_action_edittext_hint_text else R.color.color_chat_action_edittext_hint_text_disable
-                )
+        setHintTextColor(
+            ContextCompat.getColor(
+                context,
+                if (isEnable) R.color.color_chat_action_edittext_hint_text else R.color.color_chat_action_edittext_hint_text_disable
             )
-            isEnabled = isEnable
-        }
+        )
+        isEnabled = isEnable
     }
 
     fun setInputMaxLength(maxLength: Int) {
         if (maxLength == 0) return //@Ying: maxLength 0 代表不限制
-        binding.etInput.apply {
-            filters = arrayOf<InputFilter>(InputFilter.LengthFilter(maxLength))
-        }
+        etInput.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(maxLength))
     }
 }
