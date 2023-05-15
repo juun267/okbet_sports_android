@@ -357,13 +357,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             }
 
         })
-
-        supportFragmentManager.beginTransaction().setCustomAnimations(
-            R.anim.push_bottom_to_top_enter,
-            R.anim.pop_bottom_to_top_exit,
-            R.anim.push_bottom_to_top_enter,
-            R.anim.pop_bottom_to_top_exit
-        ).add(R.id.fl_bet_list, betListFragment!!)
+        supportFragmentManager.beginTransaction().add(R.id.fl_bet_list, betListFragment!!)
             .addToBackStack(BetListFragment::class.java.simpleName).commit()
     }
 
