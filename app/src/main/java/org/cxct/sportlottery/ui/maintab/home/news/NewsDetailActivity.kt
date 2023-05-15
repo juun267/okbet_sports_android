@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
+import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.roundOf
@@ -15,7 +16,6 @@ import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.view.webView.OkWebChromeClient
 import org.cxct.sportlottery.view.webView.OkWebViewClient
 import timber.log.Timber
 import java.util.*
@@ -37,8 +37,9 @@ class NewsDetailActivity :
     override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
         setContentView(binding.root)
-        binding.customToolBar.setOnBackPressListener {
-            finish()
+        binding.customToolBar.apply {
+            tv_toolbar_title.paint.isFakeBoldText = true
+            setOnBackPressListener { finish() }
         }
         binding.okWebContent.apply {
             setBackgroundColor(getColor(R.color.color_F8F9FD))

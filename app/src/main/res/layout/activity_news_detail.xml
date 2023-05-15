@@ -38,6 +38,7 @@
                 android:layout_marginTop="@dimen/margin_16"
                 android:textColor="@color/color_303C55"
                 android:textSize="@dimen/textSize16sp"
+                android:textStyle="bold"
                 tools:text="OKBet supports Miss Grand PH for the upcm. Max  lines Max  lines Max  lines Max "/>
             <TextView
                 android:id="@+id/tvTime"
