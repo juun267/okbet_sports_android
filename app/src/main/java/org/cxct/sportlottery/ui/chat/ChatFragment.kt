@@ -66,8 +66,8 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
     //訊息列表用日期提示ItemDecoration
     private val headerItemDecoration by lazy {
         ChatDateHeaderItemDecoration(binding.rvChatMessage) { itemPosition ->
-            if (itemPosition >= 0 && itemPosition < (binding.rvChatMessage.adapter?.itemCount ?: 0)) {
-                val itemData = chatMessageListAdapter.dataList[itemPosition]
+            if (itemPosition >= 0 && itemPosition < chatMessageListAdapter.dataCount()) {
+                val itemData = chatMessageListAdapter.getItem(itemPosition)
                 itemData.isCustomMessage && itemData.type == ChatMsgCustomType.DATE_TIP
             } else false
         }
@@ -126,11 +126,11 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
                 //可視範圍的第一個Item 若為日期提示則隱藏
                 val layoutManager = (recyclerView.layoutManager as LinearLayoutManager)
                 isShowScrollBottom =
-                    layoutManager.findLastCompletelyVisibleItemPosition() < chatMessageListAdapter.dataList.size - 3
+                    layoutManager.findLastCompletelyVisibleItemPosition() < chatMessageListAdapter.dataCount() - 3
                 binding.ivDownBtn.isVisible = isShowScrollBottom
 
                 val firstPosition = layoutManager.findFirstVisibleItemPosition()
-                val itemData = chatMessageListAdapter.dataList.getOrNull(firstPosition)
+                val itemData = chatMessageListAdapter.getItemOrNull(firstPosition)
                 val firstView = layoutManager.findViewByPosition(firstPosition)
                 if ((itemData?.isCustomMessage == true) && (itemData.type == ChatMsgCustomType.DATE_TIP)) {
                     firstView?.visibility = View.GONE
@@ -138,7 +138,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
 
                 //可視範圍的第二個Item 若為日期提示則顯示
                 val secondPosition = firstPosition + 1
-                val secondItemData = chatMessageListAdapter.dataList.getOrNull(secondPosition)
+                val secondItemData = chatMessageListAdapter.getItemOrNull(secondPosition)
                 val secondView = layoutManager.findViewByPosition(secondPosition)
                 if ((secondItemData?.isCustomMessage == true) && (secondItemData.type == ChatMsgCustomType.DATE_TIP)) {
                     secondView?.visibility = View.VISIBLE
@@ -169,7 +169,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
         java.lang.Runnable {
             val layoutManager = (binding.rvChatMessage.layoutManager as LinearLayoutManager)
             val firstPosition = layoutManager.findFirstVisibleItemPosition()
-            val firstItemData = chatMessageListAdapter.dataList.getOrNull(firstPosition)
+            val firstItemData = chatMessageListAdapter.getItemOrNull(firstPosition)
 
             //判斷是否為客製化MessageType
             //判斷是否為日期提示且日期內容
@@ -322,7 +322,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
                 }
 
                 is ChatEvent.UpdateList -> {
-                    chatMessageListAdapter.dataList = chatEvent.chatMessageList
+                    chatMessageListAdapter.setList(chatEvent.chatMessageList)
                     if (viewModel.isFirstInit) {
                         binding.rvChatMessage.removeItemDecoration(headerItemDecoration)
                         binding.rvChatMessage.addItemDecoration(headerItemDecoration)
@@ -331,7 +331,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
                 }
 
                 is ChatEvent.RemoveMsg -> {
-                    chatMessageListAdapter.removeItem(chatEvent.position)
+                    chatMessageListAdapter.removeAt(chatEvent.position)
                 }
 
                 is ChatEvent.UserEnter -> {
@@ -421,10 +421,6 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
                     insertItem()
                 }
 
-                is ChatEvent.NotifyChange -> {
-                    chatMessageListAdapter.notifyDataSetChanged()
-                }
-
                 is ChatEvent.ScrollToBottom -> {
                     binding.rvChatMessage.post {
                         binding.rvChatMessage.scrollToPosition(chatMessageListAdapter.itemCount - 1) //滑動到底部不需動畫效果
@@ -460,7 +456,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
                 }
 
                 is ChatEvent.IsAdminType -> {
-                    chatMessageListAdapter.isAdmin = chatEvent.isAdmin
+                    chatMessageListAdapter.changeRole(chatEvent.isAdmin)
                 }
 
                 //獲取未領取紅包列表
@@ -494,11 +490,11 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
         viewModel.removeRangeEvent.collectWith(lifecycleScope) { chatEvent ->
             when (chatEvent) {
                 is ChatEvent.UpdateList -> {
-                    chatMessageListAdapter.dataList = chatEvent.chatMessageList
+                    chatMessageListAdapter.setList(chatEvent.chatMessageList)
                 }
 
                 is ChatEvent.RemoveRangeMessageItem -> {
-                    chatMessageListAdapter.removeRangeItem(0, chatEvent.count)
+                    chatMessageListAdapter.removeItems(0, chatEvent.count)
                 }
             }
         }
@@ -515,7 +511,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
     }
 
     private fun insertItem(isMe: Boolean = false) {
-        chatMessageListAdapter.insertItem()
+//        chatMessageListAdapter.insertItem()
         if (isMe) {
             chatListScrollToBottom(isSmooth = false) //發送自己的訊息後，需快速至聊天室底部
         } else if (!isShowScrollBottom) {

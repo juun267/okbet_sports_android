@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemChatMessageMeBinding
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatMessageResult
@@ -20,7 +20,7 @@ import org.cxct.sportlottery.util.TimeUtil
 class MeVH (parent: ViewGroup,
             private val onPhotoClick: (String) -> Unit,
             private val binding: ItemChatMessageMeBinding = ItemChatMessageMeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-): RecyclerView.ViewHolder(binding.root) {
+): BaseViewHolder(binding.root) {
 
     fun bind(data: ChatReceiveContent<*>) {
         data.getThisContent<ChatMessageResult>()?.apply {

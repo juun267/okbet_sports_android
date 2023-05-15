@@ -103,7 +103,6 @@ class ChatViewModel(
             uniqueChatMessageList = chatMessageList
             setupDateTipsMessage()
             _chatEvent.emit(ChatEvent.UpdateList(uniqueChatMessageList))
-            _chatEvent.emit(ChatEvent.NotifyChange)
             if (isFirstInit) {
                 _chatEvent.emit(ChatEvent.ScrollToBottom)
                 isFirstInit = false
@@ -387,7 +386,6 @@ class ChatViewModel(
                 if (it.succeeded()) {
                     userLevelConfigVO = it.getData()?.userLevelConfigVO
                     _chatEvent.emit(ChatEvent.IsAdminType(checkIsAdminType()))
-                    _chatEvent.emit(ChatEvent.NotifyChange)
                     isShowChatRedEnpView()
                     emitIsSpeakStatus()
                 } else {
@@ -631,7 +629,6 @@ class ChatViewModel(
 
     fun getHistoryMessageList()= launch {
         _chatEvent.emit(ChatEvent.UpdateList(uniqueChatMessageList))
-        _chatEvent.emit(ChatEvent.NotifyChange)
         _chatEvent.emit(ChatEvent.ScrollToBottom)
     }
 

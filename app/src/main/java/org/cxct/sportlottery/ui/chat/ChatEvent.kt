@@ -56,6 +56,5 @@ sealed class ChatEvent {
     object InsertUserEnter : ChatEvent()
     object WinRedEnvelope : ChatEvent()
     object ScrollToBottom : ChatEvent()
-    object NotifyChange : ChatEvent()
     object CheckMessageCount : ChatEvent()
 }

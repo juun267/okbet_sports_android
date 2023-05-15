@@ -7,20 +7,19 @@ import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.text.style.UnderlineSpan
 import android.view.Gravity
-import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.*
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.chat.adapter.vh.*
-import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.MixFontTextView
 
 /**
@@ -31,10 +30,16 @@ import org.cxct.sportlottery.view.MixFontTextView
 class ChatMessageListAdapter2(private val onPhotoClick: (String) -> Unit,
                               private val onUserAvatarClick: (tagUserPair: Pair<String, String>) -> Unit,
                               private val onRedEnvelopeClick: (String, Int) -> Unit)
-    : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    : BaseQuickAdapter<ChatReceiveContent<*>, BaseViewHolder>(0) {
 
-    var isAdmin = false //身份是否為管理員
-    var dataList = mutableListOf<ChatReceiveContent<*>>()
+    private var isAdmin = false //身份是否為管理員
+
+    fun changeRole(isAdmin: Boolean) {
+        if (this.isAdmin != isAdmin) {
+            this.isAdmin = isAdmin
+            notifyDataSetChanged()
+        }
+    }
 
 
     //  0-立刻发红包(系统红包)
@@ -47,33 +52,29 @@ class ChatMessageListAdapter2(private val onPhotoClick: (String) -> Unit,
         RANDOM(2), ASSIGN(3), PASSWORD(5)
     }
 
+    fun dataCount() = data.size
 
-    fun insertItem() {
-        notifyItemInserted(dataList.size)
-    }
+    fun removeItems(position: Int, count: Int) {
+        if (dataCount() == 0 || position < 0 || position + count > dataCount()) {
+            return
+        }
 
-    fun removeItem(position: Int) {
-        notifyItemRemoved(position)
-//        notifyItemRangeChanged(position, dataList.size - position)
-    }
-
-    fun removeRangeItem(start: Int, count: Int) {
-        val change = dataList.size - start
-        notifyItemRangeRemoved(start, count)
-//        notifyItemRangeChanged(start, change)
+        val deleteList = data.subList(position, position + count)
+        data.removeAll(deleteList)
+        notifyItemRangeRemoved(position, count)
     }
 
     override fun getItemViewType(position: Int): Int {
-        val itemData = dataList[position]
+        val itemData = getItem(position)
         if (itemData.isCustomMessage) {
             return if (itemData.content is String) { DATE_TIP } else { -1 }
         }
 
-        return when (dataList[position].type) {
+        return when (itemData.type) {
             ChatMsgReceiveType.CHAT_MSG,
             ChatMsgReceiveType.CHAT_SEND_PIC,
             ChatMsgReceiveType.CHAT_SEND_PIC_AND_TEXT -> {
-                if(dataList[position].isMySelf) {
+                if(itemData.isMySelf) {
                     MESSAGE_ME
                 } else {
                     MESSAGE_USER
@@ -98,9 +99,40 @@ class ChatMessageListAdapter2(private val onPhotoClick: (String) -> Unit,
         }
     }
 
-    override fun getItemCount(): Int = dataList.size
+    override fun convert(holder: BaseViewHolder, item: ChatReceiveContent<*>) = when (holder) {
+        is UserVH -> {
+            holder.bind(item)
+        }
+        is MeVH -> {
+            holder.bind(item)
+        }
+        is MessageRedEnvelopeVH -> {
+            holder.bind(item)
+        }
+        is WinRedEnvelopeVH -> {
+            holder.bind(item)
+        }
+        is SystemVH -> {
+            holder.bind(item)
+        }
+        is DateVH -> {
+            holder.bind(item)
+        }
+        //ItemDecoration onDrawOver使用
+        is FloatingDateVH -> {
+            holder.bind(item)
+        }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        else -> {  }
+    }
+
+    override fun convert(holder: BaseViewHolder, item: ChatReceiveContent<*>, payloads: List<Any>) {
+        if (payloads.isEmpty()) {
+            convert(holder, item)
+        }
+    }
+
+    override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return when (viewType) {
             MESSAGE_USER -> UserVH(parent, onPhotoClick, onUserAvatarClick)
             MESSAGE_ME -> MeVH(parent, onPhotoClick)
@@ -111,51 +143,9 @@ class ChatMessageListAdapter2(private val onPhotoClick: (String) -> Unit,
             //ItemDecoration onDrawOver使用
             FLOATING_DATE_TIP -> FloatingDateVH(parent)
 
-            else -> NullViewHolder(FrameLayout(parent.context))
+            else -> BaseViewHolder(FrameLayout(parent.context))
         }
     }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) = when (holder) {
-        is UserVH -> {
-            holder.bind(dataList[position])
-        }
-        is MeVH -> {
-            holder.bind(dataList[position])
-        }
-        is MessageRedEnvelopeVH -> {
-            holder.bind(dataList[position])
-        }
-        is WinRedEnvelopeVH -> {
-            holder.bind(dataList[position])
-        }
-        is SystemVH -> {
-            holder.bind(dataList[position])
-        }
-        is DateVH -> {
-            holder.bind(dataList[position])
-        }
-        //ItemDecoration onDrawOver使用
-        is FloatingDateVH -> {
-            holder.bind(dataList[position])
-        }
-
-        else -> {  }
-    }
-
-    override fun onBindViewHolder(
-        holder: RecyclerView.ViewHolder,
-        position: Int,
-        payloads: MutableList<Any>,
-    ) {
-        if (payloads.isEmpty()) {
-            onBindViewHolder(holder, position)
-        }
-    }
-
-
-    //暫時
-    inner class NullViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-
 
     companion object {
 
@@ -188,7 +178,7 @@ class ChatMessageListAdapter2(private val onPhotoClick: (String) -> Unit,
         ) {
             val content = data.content
             if (data.type != ChatMsgReceiveType.CHAT_SEND_PIC
-                || data.type != ChatMsgReceiveType.CHAT_SEND_PIC_AND_TEXT) {
+                && data.type != ChatMsgReceiveType.CHAT_SEND_PIC_AND_TEXT) {
 
                 imageView.isVisible = false
                 textView.isVisible = true
