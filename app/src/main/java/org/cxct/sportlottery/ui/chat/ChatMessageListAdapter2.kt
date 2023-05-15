@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.chat
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
@@ -16,10 +15,8 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.dialog_redenvelope_fail.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.load
-import org.cxct.sportlottery.databinding.*
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.*
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.chat.adapter.vh.*
@@ -31,7 +28,6 @@ import org.cxct.sportlottery.widget.MixFontTextView
  * @create 2023/3/15
  * @description
  */
-@SuppressLint("SetTextI18n")
 class ChatMessageListAdapter2(private val onPhotoClick: (String) -> Unit,
                               private val onUserAvatarClick: (tagUserPair: Pair<String, String>) -> Unit,
                               private val onRedEnvelopeClick: (String, Int) -> Unit)
@@ -40,9 +36,6 @@ class ChatMessageListAdapter2(private val onPhotoClick: (String) -> Unit,
     var isAdmin = false //身份是否為管理員
     var dataList = mutableListOf<ChatReceiveContent<*>>()
 
-    enum class ItemType {
-        MESSAGE_ADMIN, MESSAGE_USER, MESSAGE_ME, TIME, SYSTEM, RED_ENVELOPE, WIN_RED_ENVELOPE, DATE_TIP, FLOATING_DATE_TIP
-    }
 
     //  0-立刻发红包(系统红包)
     //  1 每日红包（暂无）
@@ -73,32 +66,33 @@ class ChatMessageListAdapter2(private val onPhotoClick: (String) -> Unit,
     override fun getItemViewType(position: Int): Int {
         val itemData = dataList[position]
         if (itemData.isCustomMessage) {
-            return if (itemData.content is String) { ItemType.DATE_TIP.ordinal } else { -1 }
+            return if (itemData.content is String) { DATE_TIP } else { -1 }
         }
 
         return when (dataList[position].type) {
             ChatMsgReceiveType.CHAT_MSG,
             ChatMsgReceiveType.CHAT_SEND_PIC,
             ChatMsgReceiveType.CHAT_SEND_PIC_AND_TEXT -> {
-                when (dataList[position].isMySelf) {
-                    true -> ItemType.MESSAGE_ME.ordinal
-                    else -> ItemType.MESSAGE_USER.ordinal
+                if(dataList[position].isMySelf) {
+                    MESSAGE_ME
+                } else {
+                    MESSAGE_USER
                 }
             }
 
             ChatMsgReceiveType.CHAT_USER_PROMPT -> {
-                ItemType.SYSTEM.ordinal
+                SYSTEM
             }
 
             ChatMsgReceiveType.CHAT_MSG_RED_ENVELOPE,
             ChatMsgReceiveType.CHAT_SEND_RED_ENVELOPE,
             ChatMsgReceiveType.CHAT_SEND_PERSONAL_RED_ENVELOPE-> {
-                ItemType.RED_ENVELOPE.ordinal
+                RED_ENVELOPE
             }
 
             ChatMsgReceiveType.CHAT_WIN_RED_ENVELOPE_ROOM_NOTIFY,
             ChatMsgReceiveType.CHAT_WIN_RED_ENVELOPE_RAIN_NOTIFY-> {
-                ItemType.WIN_RED_ENVELOPE.ordinal
+                WIN_RED_ENVELOPE
             }
             else -> -1
         }
@@ -108,14 +102,14 @@ class ChatMessageListAdapter2(private val onPhotoClick: (String) -> Unit,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            ItemType.MESSAGE_USER.ordinal -> UserVH(parent, onPhotoClick, onUserAvatarClick)
-            ItemType.MESSAGE_ME.ordinal -> MeVH(parent, onPhotoClick)
-            ItemType.RED_ENVELOPE.ordinal -> MessageRedEnvelopeVH(parent, { isAdmin }, onRedEnvelopeClick)
-            ItemType.WIN_RED_ENVELOPE.ordinal -> WinRedEnvelopeVH(parent)
-            ItemType.SYSTEM.ordinal -> SystemVH(parent)
-            ItemType.DATE_TIP.ordinal -> DateVH(parent)
+            MESSAGE_USER -> UserVH(parent, onPhotoClick, onUserAvatarClick)
+            MESSAGE_ME -> MeVH(parent, onPhotoClick)
+            RED_ENVELOPE -> MessageRedEnvelopeVH(parent, { isAdmin }, onRedEnvelopeClick)
+            WIN_RED_ENVELOPE -> WinRedEnvelopeVH(parent)
+            SYSTEM -> SystemVH(parent)
+            DATE_TIP -> DateVH(parent)
             //ItemDecoration onDrawOver使用
-            ItemType.FLOATING_DATE_TIP.ordinal -> FloatingDateVH(parent)
+            FLOATING_DATE_TIP -> FloatingDateVH(parent)
 
             else -> NullViewHolder(FrameLayout(parent.context))
         }
@@ -164,6 +158,16 @@ class ChatMessageListAdapter2(private val onPhotoClick: (String) -> Unit,
 
 
     companion object {
+
+        const val MESSAGE_ADMIN = 2
+        const val MESSAGE_USER = 3
+        const val MESSAGE_ME = 4
+        const val TIME = 5
+        const val SYSTEM = 6
+        const val RED_ENVELOPE = 7
+        const val WIN_RED_ENVELOPE = 8
+        const val DATE_TIP = 9
+        const val FLOATING_DATE_TIP = 10
 
         //除了管理員，其他人一般訊息要濾掉 網址(.com, .net, etc.) 變成笑臉圖案
         private val urlFilterRegex =

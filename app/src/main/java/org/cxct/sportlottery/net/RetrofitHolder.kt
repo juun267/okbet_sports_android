@@ -61,6 +61,7 @@ object RetrofitHolder {
     val signRetrofit: Retrofit by lazy {
         val builder = getClientBulder()
         builder.addInterceptor(RequestInterceptor(getContext(), ::getApiToken))
+        builder.addInterceptor(HttpStatusInterceptor()) // 处理token过期
         Retrofit.Builder()
             .baseUrl(Constants.getBaseUrl())
             .client(builder.build())
