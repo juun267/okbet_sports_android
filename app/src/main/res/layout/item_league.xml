@@ -31,15 +31,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:singleLine="true"
             android:ellipsize="end"
             android:textFontWeight="500"
             android:maxLines="2"
             android:layout_marginLeft="4dp"
-            android:layout_marginRight="@dimen/margin_10"
+            android:layout_marginRight="@dimen/margin_12"
             android:textColor="@color/color_414655"
             android:textSize="@dimen/textSize12sp"
-            tools:text="欧洲足球锦标赛2020" />
+            tools:text="title" />
 
         <ImageView
             android:id="@+id/iv_arrow"
