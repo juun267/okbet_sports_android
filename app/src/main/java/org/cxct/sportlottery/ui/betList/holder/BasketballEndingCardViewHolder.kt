@@ -100,7 +100,6 @@ class BasketballEndingCardViewHolder(
     }
 
 
-
     @SuppressLint("ClickableViewAccessibility")
     private fun setupBetAmountInput(
         betList: MutableList<BetInfoListData>?,
@@ -113,7 +112,7 @@ class BasketballEndingCardViewHolder(
         position: Int,
         adapterBetType: BetListRefactorAdapter.BetRvType?
     ) = contentView.run {
-        fun showTotalStakeWinAmount( bet: Double){
+        fun showTotalStakeWinAmount(bet: Double) {
             val totalBet = TextUtil.formatMoney(bet * betListSize, 2)
             val totalCanWin = TextUtil.formatMoney(bet * itemData.matchOdd.odds, 2)
             tvTotalStakeAmount.text = "${sConfigData?.systemCurrencySign}${totalBet}"
@@ -216,7 +215,7 @@ class BasketballEndingCardViewHolder(
                     } else {
                         itemData.input = minBet.toString()
                     }
-                }else{
+                } else {
                     itemData.input = minBet.toString()
                 }
             }
@@ -257,7 +256,8 @@ class BasketballEndingCardViewHolder(
                     itemData.betAmount = quota
                     itemData.inputBetAmountStr = it.toString()
                     itemData.input = it.toString()
-                    val max = inputMaxMoney.coerceAtMost(quota.coerceAtLeast(userBalance()))
+                    val max = MAX_BET_VALUE
+//                    val max = inputMaxMoney.coerceAtMost(quota.coerceAtLeast(userBalance()))
                     if (quota > max) {
                         etBet.apply {
                             setText(TextUtil.formatInputMoney(max))
@@ -356,6 +356,7 @@ class BasketballEndingCardViewHolder(
                     ) - 1
                 )
             }
+
             PlayCate.FS_LD_CS.value -> {
                 "@ " + getOdds(
                     itemData.matchOdd,
@@ -363,6 +364,7 @@ class BasketballEndingCardViewHolder(
                     adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE
                 ).toInt().toString()
             }
+
             else -> {
                 "@ " + TextUtil.formatForOdd(
                     getOdds(
@@ -497,34 +499,30 @@ class BasketballEndingCardViewHolder(
     private fun checkBetLimit(
         itemData: BetInfoListData
     ) {
-        contentView.apply {
-            val betAmount = itemData.betAmount
-            val balanceError: Boolean
-            var amountError: Boolean = if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
-                !itemData.input.isNullOrEmpty()
-            } else {
-                if (betAmount > inputMaxMoney) {
-                    //超過最大限額
-                    true
-                } else {
-                    betAmount != 0.0 && betAmount < inputMinMoney
-                }
-            }
-            if(itemData.input.isNullOrEmpty()){
-                amountError = true
-            }
-//            Timber.d("用户余额:$mUserMoney")
-            if (betAmount != 0.0 && betAmount > mUserMoney) {
-                balanceError = true
-                View.VISIBLE
-            } else {
-                balanceError = false
-                View.GONE
-            }
-            Timber.d("balanceError1:${balanceError} amountError:$amountError")
-            itemData.amountError = balanceError || amountError
-            Timber.d("balanceError2:${itemData.amountError} ")
-        }
+//        contentView.apply {
+//            val betAmount = itemData.betAmount
+//
+//            var amountError = if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
+//                !itemData.input.isNullOrEmpty()
+//            } else {
+//                if (betAmount > inputMaxMoney) {
+//                    //超過最大限額
+//                    true
+//                } else {
+//                    betAmount != 0.0 && betAmount < inputMinMoney
+//                }
+//            }
+//
+//
+//            if (itemData.input.isNullOrEmpty()) {
+//                amountError = true
+//            }
+//
+//            val balanceError = betAmount != 0.0 && betAmount > mUserMoney
+//            Timber.d("balanceError1:${balanceError} amountError:$amountError")
+//            itemData.amountError = balanceError || amountError
+//            Timber.d("balanceError2:${itemData.amountError} ")
+//        }
         setEtBackground(itemData)
     }
 

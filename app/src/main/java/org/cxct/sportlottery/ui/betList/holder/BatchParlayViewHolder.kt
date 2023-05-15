@@ -161,7 +161,7 @@ abstract class BatchParlayViewHolder(
                             data.inputBetAmountStr = it.toString()
                             data.input = it.toString()
 
-                            inputMaxMoney.let { max ->
+                            MAX_BET_VALUE.let { max ->
                                 if (quota > max) {
                                     et_bet_parlay.apply {
                                         setText(TextUtil.formatInputMoney(max))
@@ -268,21 +268,21 @@ abstract class BatchParlayViewHolder(
     private fun checkBetLimitParlay(
         itemData: ParlayOdd, betAmount: Double = itemData.betAmount
     ) {
-        itemView.apply {
-            val amountError: Boolean = if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
-                //請輸入正確投注額
-                !itemData.input.isNullOrEmpty()
-            } else {
-                if (betAmount > inputMaxMoney) {
-                    //超過最大限額
-                    true
-                } else {
-                    betAmount != 0.0 && betAmount < inputMinMoney
-                }
-            }
-            val balanceError: Boolean = betAmount != 0.0 && betAmount > mUserMoney
-            itemData.amountError = if (balanceError) true else amountError
-        }
+//        itemView.apply {
+//            val amountError: Boolean = if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
+//                //請輸入正確投注額
+//                !itemData.input.isNullOrEmpty()
+//            } else {
+//                if (betAmount > inputMaxMoney) {
+//                    //超過最大限額
+//                    true
+//                } else {
+//                    betAmount != 0.0 && betAmount < inputMinMoney
+//                }
+//            }
+//            val balanceError: Boolean = betAmount != 0.0 && betAmount > mUserMoney
+//            itemData.amountError = if (balanceError) true else amountError
+//        }
         setEtBetParlayBackground(itemData)
     }
 

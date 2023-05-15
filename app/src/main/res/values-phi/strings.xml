@@ -1211,4 +1211,6 @@
     <string name="N952">Camera scan</string>
     <string name="N956">Hindi mabasa ang QR code</string>
     <string name="N980">Tinanggihan ang permiso sa camera</string>
+    <string name="N989">Lampas sa maximum halaga ang taya</string>
+    <string name="N990">Mas mababa sa minimum na halaga</string>
 </resources>

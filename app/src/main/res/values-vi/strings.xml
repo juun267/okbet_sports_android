@@ -1229,4 +1229,6 @@
     <string name="N952">Quét máy ảnh</string>
     <string name="N956">Không nhận được mã QR</string>
     <string name="N980">Quyền truy cập máy ảnh bị từ chối</string>
+    <string name="N989">Vượt quá số tiền cược tối đa</string>
+    <string name="N990">Thấp hơn số tiền cược tối thiểu</string>
 </resources>

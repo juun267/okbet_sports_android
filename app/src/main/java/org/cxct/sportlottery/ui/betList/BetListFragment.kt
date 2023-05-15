@@ -38,6 +38,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.betList.adapter.BetSingleListAdapter
+import org.cxct.sportlottery.ui.betList.holder.MAX_BET_VALUE
 import org.cxct.sportlottery.ui.betList.listener.OnItemClickListener
 import org.cxct.sportlottery.ui.betRecord.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
@@ -631,7 +632,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
     private fun clearCarts() {
         if (mIsEnabled) {
             avoidFastDoubleClick()
-            viewModel.betInfoList.removeObservers(viewLifecycleOwner)
+            viewModel.betInfoList.removeObservers(this)
             viewModel.removeBetInfoAll()
             setCurrentBetModeSingle()
             EventBusUtil.post(BetModeChangeEvent(SINGLE))
@@ -944,11 +945,26 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         }
         betParlayList = tempParlayList
 
+        var maxBetMoney = "999999999"
+        var minBetMoney = "0"
+        if (betListFilter.isNotEmpty()) {
+            //最大投注金额
+            maxBetMoney = betListFilter[0].betInfo?.maxBetMoneyString.toString()
+            //最小投注金额
+            minBetMoney = betListFilter[0].betInfo?.minBetMoneyString.toString()
+        }
+
         //只取得對應tab內的totalBetAmount
-        val totalBetAmount = if (currentBetType == 0) {
-            betListFilter.sumOf { it.realAmount }
-        } else {
-            parlayList.sumOf { it.betAmount * it.num }
+        val totalBetAmount = when (currentBetType) {
+            0 -> {
+                betListFilter.sumOf { it.realAmount }
+            }
+            2 -> {
+                betListFilter[0].betAmount
+            }
+            else -> {
+                parlayList.sumOf { it.betAmount * it.num }
+            }
         }
 //        val totalBetAmount =
 //            betListFilter.sumByDouble { it.realAmount } + (parlayList.sumByDouble { it.betAmount * it.num })
@@ -958,20 +974,29 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             return
         }
 
-        //下注總金額大於用戶餘額，提示餘額不足
+        Timber.d("maxBetMoney:$maxBetMoney minBetMoney:$minBetMoney totalBetAmount:$totalBetAmount")
+        //金额校验规则
+        //1.投注额大于当前余额，提示余额不足
+        //2.投注额大于最大限额，提示超出最大投注额
+        //3.投注额小于最小投注额，提示低于最低投注额
+        //4.以上都不满足==>请求后端接口
         if (totalBetAmount > (viewModel.userMoney.value ?: 0.0)) {
             setBetLoadingVisibility(false)
-            showErrorPromptDialog(
-                getString(R.string.prompt), getString(R.string.bet_info_bet_balance_insufficient)
-            ) {}
-            return
+            ToastUtil.showToast(requireContext(), R.string.bet_info_bet_balance_insufficient)
+        } else if (totalBetAmount > maxBetMoney.toDouble()) {
+            setBetLoadingVisibility(false)
+            ToastUtil.showToast(requireContext(), R.string.N989)
+        } else if (totalBetAmount < minBetMoney.toDouble()) {
+            setBetLoadingVisibility(false)
+            ToastUtil.showToast(requireContext(), R.string.N990)
+        } else {
+            MultiLanguagesApplication.mInstance.mOddsType.value?.let {
+                oddsType = it
+            }
+            viewModel.addBetList(
+                getCurrentBetList(), parlayList, oddsType, currentBetType, currentBetOption
+            )
         }
-        MultiLanguagesApplication.mInstance.mOddsType.value?.let {
-            oddsType = it
-        }
-        viewModel.addBetList(
-            getCurrentBetList(), parlayList, oddsType, currentBetType, currentBetOption
-        )
     }
 
     override fun onResume() {

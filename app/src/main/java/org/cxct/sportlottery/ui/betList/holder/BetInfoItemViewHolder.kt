@@ -267,7 +267,9 @@ class BetInfoItemViewHolder(
                     itemData.betAmount = quota
                     itemData.inputBetAmountStr = it.toString()
                     itemData.input = it.toString()
-                    val max = inputMaxMoney.coerceAtMost(quota.coerceAtLeast(userBalance()))
+                    val max = MAX_BET_VALUE
+//                    val max = inputMaxMoney.coerceAtMost(quota.coerceAtLeast(userBalance()))
+                    Timber.d("quota:$quota max:$max")
                     if (quota > max) {
                         etBet.apply {
                             setText(TextUtil.formatInputMoney(max))
@@ -780,34 +782,28 @@ class BetInfoItemViewHolder(
     private fun checkBetLimit(
         itemData: BetInfoListData
     ) {
-        contentView.apply {
-            val betAmount = itemData.betAmount
-            val balanceError: Boolean
-            var amountError: Boolean = if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
-                !itemData.input.isNullOrEmpty()
-            } else {
-                if (betAmount > inputMaxMoney) {
-                    //超過最大限額
-                    true
-                } else {
-                    betAmount != 0.0 && betAmount < inputMinMoney
-                }
-            }
-            if (itemData.input.isNullOrEmpty()) {
-                amountError = true
-            }
-
-            Timber.d("用户余额:$mUserMoney")
-            if (betAmount != 0.0 && betAmount > mUserMoney) {
-//                    tvErrorMessage.isVisible = false //同時滿足限額和餘額不足提示條件，優先顯示餘額不足
-                balanceError = true
-                View.VISIBLE
-            } else {
-                balanceError = false
-                View.GONE
-            }
-            itemData.amountError = balanceError || amountError
-        }
+//        contentView.apply {
+//            val betAmount = itemData.betAmount
+//
+//            var amountError = if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
+//                !itemData.input.isNullOrEmpty()
+//            } else {
+//                if (betAmount > inputMaxMoney) {
+//                    //超過最大限額
+//                    true
+//                } else {
+//                    betAmount != 0.0 && betAmount < inputMinMoney
+//                }
+//            }
+//            if (itemData.input.isNullOrEmpty()) {
+//                amountError = true
+//            }
+//
+//            Timber.d("用户余额:$mUserMoney")
+//            val balanceError = betAmount != 0.0 && betAmount > mUserMoney
+//            itemData.amountError = balanceError || amountError
+//        }
+        itemData.amountError = false
         setEtBackground(itemData)
     }
 

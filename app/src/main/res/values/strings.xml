@@ -1334,4 +1334,6 @@
     <string name="N952">Camera scan</string>
     <string name="N956">Can\'t recognize this QR code</string>
     <string name="N980">Denied camera permission</string>
+    <string name="N989">Over max stake</string>
+    <string name="N990">Below min stake</string>
 </resources>
