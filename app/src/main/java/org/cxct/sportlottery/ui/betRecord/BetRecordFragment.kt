@@ -35,10 +35,6 @@ class BetRecordFragment: BaseFragment<AccountHistoryViewModel>(AccountHistoryVie
 
     private val rvAdapter by lazy {
         AccountHistoryAdapter(ItemClickListener {
-            if (it == null) {
-                return@ItemClickListener
-            }
-
             viewModel.setSelectedDate(it.statDate)
             if (activity is MainTabActivity) {
                 (activity as MainTabActivity).goBetRecordDetails(it, it.statDate.orEmpty(), viewModel.gameTypeCode)
