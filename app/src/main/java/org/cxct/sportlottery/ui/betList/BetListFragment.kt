@@ -894,7 +894,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         }
         //顯示betLoading
         setBetLoadingVisibility(true)
-
         val betList = getCurrentBetList()
         val betListFilter = betList.filter { it.matchOdd.status == BetStatus.ACTIVATED.code }
 
@@ -915,15 +914,15 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             //最小投注金额
             minBetMoney = betListFilter[0].betInfo?.minBetMoneyString.toString()
         }
-
-        //只取得對應tab內的totalBetAmount
         val totalBetAmount = when (currentBetType) {
             0 -> {
                 betListFilter.sumOf { it.realAmount }
             }
+
             2 -> {
                 betListFilter[0].betAmount
             }
+
             else -> {
                 parlayList.sumOf { it.betAmount * it.num }
             }
@@ -934,27 +933,62 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         }
 
         Timber.d("maxBetMoney:$maxBetMoney minBetMoney:$minBetMoney totalBetAmount:$totalBetAmount")
-        //金额校验规则
-        //1.投注额大于当前余额，提示余额不足
-        //2.投注额大于最大限额，提示超出最大投注额
-        //3.投注额小于最小投注额，提示低于最低投注额
-        //4.以上都不满足==>请求后端接口
-        if (totalBetAmount > (viewModel.userMoney.value ?: 0.0)) {
+        MultiLanguagesApplication.mInstance.mOddsType.value?.let {
+            oddsType = it
+        }
+
+        val balanceInsufficient = {
             setBetLoadingVisibility(false)
             ToastUtil.showToast(requireContext(), R.string.bet_info_bet_balance_insufficient)
-        } else if (totalBetAmount > maxBetMoney.toDouble()) {
+        }
+        val overMax = {
             setBetLoadingVisibility(false)
             ToastUtil.showToast(requireContext(), R.string.N989)
-        } else if (totalBetAmount < minBetMoney.toDouble()) {
+        }
+
+        val belowMin = {
             setBetLoadingVisibility(false)
             ToastUtil.showToast(requireContext(), R.string.N990)
-        } else {
-            MultiLanguagesApplication.mInstance.mOddsType.value?.let {
-                oddsType = it
-            }
+        }
+
+        val addBetList = {
             viewModel.addBetList(
                 getCurrentBetList(), parlayList, oddsType, currentBetType, currentBetOption
             )
+        }
+
+        if (currentBetType == 1) {
+            //串关
+            //金额校验规则
+            //1.总投注额大于余额，提示余额不足
+            //2.只要有一个投注项投注额大于最大额度，提示超出最大投注额
+            //3.投注额小于最小投注额，提示低于最低投注额
+            //4.全部失败或者全部成功
+            if (totalBetAmount > (viewModel.userMoney.value ?: 0.0)) {
+                balanceInsufficient()
+            } else if (parlayList.any { it.betAmount > maxBetMoney.toDouble() }) {
+                overMax()
+            } else if (parlayList.any { it.betAmount < minBetMoney.toDouble() }) {
+                belowMin()
+            } else {
+                addBetList()
+            }
+        } else {
+            //单关或篮球末位比分
+            //金额校验规则
+            //1.投注额大于当前余额，提示余额不足
+            //2.投注额大于最大限额，提示超出最大投注额
+            //3.投注额小于最小投注额，提示低于最低投注额
+            //4.以上都不满足==>请求后端接口
+            if (totalBetAmount > (viewModel.userMoney.value ?: 0.0)) {
+                balanceInsufficient()
+            } else if (totalBetAmount > maxBetMoney.toDouble()) {
+                overMax()
+            } else if (totalBetAmount < minBetMoney.toDouble()) {
+                belowMin()
+            } else {
+                addBetList()
+            }
         }
     }
 
