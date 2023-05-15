@@ -33,6 +33,8 @@ class BetDetailsFragment : BaseFragment<BetListViewModel>(BetListViewModel::clas
         val row = arguments?.get("data") as Row?
         val detailRow =
             arguments?.get("detailRow") as org.cxct.sportlottery.network.bet.settledDetailList.Row?
+        LogUtil.toJson(row)
+        LogUtil.toJson(detailRow)
         when {
             row != null -> {
                 if (row.parlayType == ParlayType.SINGLE.key) {
@@ -56,20 +58,6 @@ class BetDetailsFragment : BaseFragment<BetListViewModel>(BetListViewModel::clas
                 detailRow.matchOdds?.first()?.let {
                     setupDetailEndScoreInfo(detailRow, it)
                 }
-            }
-        }
-        row?.let {
-            if (it.parlayType == ParlayType.SINGLE.key) {
-                (activity as BetDetailsActivity).setTitleName(getString(R.string.commission_detail))
-                rv_bet_record.isVisible = false
-                include_endscore.isVisible = true
-                setupEndScore(it, it.matchOdds.first())
-            } else {
-                (activity as BetDetailsActivity).setTitleName(getString(R.string.bet_details_title))
-                rv_bet_record.isVisible = true
-                include_endscore.isVisible = false
-                detailAdapter.setupBetList(row)
-                rv_bet_record.adapter = detailAdapter
             }
         }
     }
