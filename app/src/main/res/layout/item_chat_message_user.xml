@@ -82,7 +82,7 @@
                             android:layout_height="10dp"
                             tools:visibility="visible" />
 
-                        <org.cxct.sportlottery.widget.MixFontTextView
+                        <org.cxct.sportlottery.view.MixFontTextView
                             android:id="@+id/tv_message"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

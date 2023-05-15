@@ -39,7 +39,7 @@
                 android:textSize="@dimen/textSize12sp"
                 tools:text="System" />
 
-            <org.cxct.sportlottery.widget.MixFontTextView
+            <org.cxct.sportlottery.view.MixFontTextView
                 android:id="@+id/tv_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -19,7 +19,7 @@
         android:layout_marginTop="18dp"
         android:src="@drawable/dialog_close" />
 
-    <org.cxct.sportlottery.widget.MixFontTextView
+    <org.cxct.sportlottery.view.MixFontTextView
         android:id="@+id/txv_first_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
         app:mix_font_text="@string/chat_get_the_red_packet_now"
         tools:text="@string/chat_try_your_luck" />
 
-    <org.cxct.sportlottery.widget.MixFontTextView
+    <org.cxct.sportlottery.view.MixFontTextView
         android:id="@+id/txv_second_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -82,7 +82,7 @@
             app:layout_constraintTop_toBottomOf="@+id/guide_line_h_18"
             tools:visibility="visible">
 
-            <org.cxct.sportlottery.widget.MixFontTextView
+            <org.cxct.sportlottery.view.MixFontTextView
                 android:id="@+id/title_one"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -92,7 +92,7 @@
                 android:textColor="#fce36f"
                 android:textSize="@dimen/textSize16sp" />
 
-            <org.cxct.sportlottery.widget.MixFontTextView
+            <org.cxct.sportlottery.view.MixFontTextView
                 android:id="@+id/title_two"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -133,7 +133,7 @@
                 android:fontFamily="@font/roboto"
                 android:textSize="@dimen/textSize12sp" />
 
-            <org.cxct.sportlottery.widget.MixFontTextView
+            <org.cxct.sportlottery.view.MixFontTextView
                 android:id="@+id/watchWordMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -157,7 +157,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <org.cxct.sportlottery.widget.MixFontTextView
+            <org.cxct.sportlottery.view.MixFontTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:mix_font_text="@string/chat_open"
@@ -239,7 +239,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/guide_line">
 
-            <org.cxct.sportlottery.widget.MixFontTextView
+            <org.cxct.sportlottery.view.MixFontTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -253,7 +253,7 @@
 
         </LinearLayout>
 
-        <org.cxct.sportlottery.widget.MixFontTextView
+        <org.cxct.sportlottery.view.MixFontTextView
             android:id="@+id/tv_open_dec"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

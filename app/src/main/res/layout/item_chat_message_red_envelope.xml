@@ -49,7 +49,7 @@
                 android:paddingTop="13dp"
                 android:paddingBottom="12dp">
 
-                <org.cxct.sportlottery.widget.MixFontTextView
+                <org.cxct.sportlottery.view.MixFontTextView
                     android:id="@+id/tv_message"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

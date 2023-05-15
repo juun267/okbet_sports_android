@@ -16,7 +16,7 @@
         android:orientation="horizontal"
         android:paddingHorizontal="14dp">
 
-        <org.cxct.sportlottery.widget.MixFontTextView
+        <org.cxct.sportlottery.view.MixFontTextView
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
             android:textSize="@dimen/textSize12sp"
             tools:text="ke***111" />
 
-        <org.cxct.sportlottery.widget.MixFontTextView
+        <org.cxct.sportlottery.view.MixFontTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
@@ -33,7 +33,7 @@
             app:mix_font_text="@string/chat_win"
             tools:text="@string/chat_win" />
 
-        <org.cxct.sportlottery.widget.MixFontTextView
+        <org.cxct.sportlottery.view.MixFontTextView
             android:id="@+id/tv_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
             android:textSize="@dimen/textSize12sp"
             tools:text="1000" />
 
-        <org.cxct.sportlottery.widget.MixFontTextView
+        <org.cxct.sportlottery.view.MixFontTextView
             android:id="@+id/tv_currency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

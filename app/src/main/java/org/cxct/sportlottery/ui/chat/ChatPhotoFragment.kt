@@ -16,7 +16,7 @@ import com.gyf.immersionbar.ImmersionBar
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentChatPhotoBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.widget.PinchImageView
+import org.cxct.sportlottery.view.PinchImageView
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
