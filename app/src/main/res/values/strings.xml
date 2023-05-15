@@ -1336,8 +1336,6 @@
     <string name="N956">Can\'t recognize this QR code</string>
     <string name="N980">Denied camera permission</string>
 
-    <!--    Chat 等PM翻譯-->
-    <string name="chat_room">Phòng trò chuyện</string>
     <string name="guest_account_is_not_allowed_please_register_first">Tài khoản khách không được phép truy cập , vui lòng đăng ký trước</string>
     <string name="chat">Chat</string>
     <string name="bet_list">Danh sách cá cược</string>
@@ -1361,7 +1359,7 @@
     <!--聊天室LT001~LT052-->
     <string name="chat_chat">Chat</string>
     <string name="chat_return">Return</string>
-    <string name="chat_chat_room_lobby">Chat room lobby</string>
+    <string name="LT003">Chat room lobby</string>
     <string name="chat_speaking_too_often">Speaking too often</string>
     <string name="chat_speaking_conditions">Speaking conditions (the last 2 days):</string>
     <string name="chat_deposit_less">The total amount of deposit is not less than</string>
@@ -1412,8 +1410,9 @@
     <string name="chat_administrator">Administrator</string>
     <string name="chat_currently_ban_to_speak">Currently ban to speak</string>
     <string name="chat_welcome">Welcome</string>
-    <string name="chat_notify">Notifs：</string>
-    <string name="chat_room_is_closed">Chat room is temporarily closed</string> <!--LT058-->
+    <string name="LT054">Notifs：</string>
+    <string name="LT058">Chat room is temporarily closed</string> <!--LT058-->
     <string name="chat_photo_download_done">Saved</string>
     <string name="J871">Failed to load</string>
+    <string name="N984">Chat room</string>
 </resources>

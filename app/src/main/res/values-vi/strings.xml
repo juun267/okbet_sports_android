@@ -1235,7 +1235,7 @@
     <!--聊天室LT001~LT052-->
     <string name="chat_chat">Chat</string>
     <string name="chat_return">Quay lại</string>
-    <string name="chat_chat_room_lobby">Sảnh phòng chat</string>
+    <string name="LT003">Sảnh phòng chat</string>
     <string name="chat_speaking_too_often">Chat quá thường xuyên</string>
     <string name="chat_speaking_conditions">Điều kiện chat (2 ngày qua):</string>
     <string name="chat_deposit_less">Tổng số tiền gửi không ít hơn</string>
@@ -1286,8 +1286,9 @@
     <string name="chat_administrator">Quản trị viên</string>
     <string name="chat_currently_ban_to_speak">Hiện đang cấm chat</string>
     <string name="chat_welcome">Chào mừng</string>
-    <string name="chat_notify">Thông báo：</string>
-    <string name="chat_room_is_closed">Phòng chat tạm đóng</string> <!--LT058-->
+    <string name="LT054">Thông báo：</string>
+    <string name="LT058">Phòng chat tạm đóng</string> <!--LT058-->
     <string name="chat_photo_download_done">Đã lưu</string>
     <string name="J871">Tải thất bại</string>
+    <string name="N984">Phòng chat</string>
 </resources>

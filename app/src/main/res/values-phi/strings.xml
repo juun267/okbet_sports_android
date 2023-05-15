@@ -1212,5 +1212,9 @@
     <string name="N952">Camera scan</string>
     <string name="N956">Hindi mabasa ang QR code</string>
     <string name="N980">Tinanggihan ang permiso sa camera</string>
+    <string name="LT054">Anunsyo:</string>
+    <string name="LT058">Pansamantalang sarado ang chat</string>
+    <string name="LT003">Chat room lobby</string>
     <string name="J871">Failed to load</string>
+    <string name="N984">Chat room</string>
 </resources>

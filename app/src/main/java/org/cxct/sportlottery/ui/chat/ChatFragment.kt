@@ -419,7 +419,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
             }
 
             is ChatEvent.KickOut -> {
-                showPromptDialog(getString(R.string.chat_chat_room_lobby), getString(R.string.chat_you_kicked_out)) {
+                showPromptDialog(getString(R.string.LT003), getString(R.string.chat_you_kicked_out)) {
                     dismissDiaolg()
                     activity?.onBackPressed()
                 }

@@ -1290,7 +1290,7 @@
     <!--聊天室LT001~LT052-->
     <string name="chat_chat">聊天</string>
     <string name="chat_return">返回</string>
-    <string name="chat_chat_room_lobby">聊天室大厅</string>
+    <string name="LT003">聊天室大厅</string>
     <string name="chat_speaking_too_often">发言次数过于频繁</string>
     <string name="chat_speaking_conditions">发言条件(最近2天)：</string>
     <string name="chat_deposit_less">存款总额不低于</string>
@@ -1341,8 +1341,9 @@
     <string name="chat_administrator">管理员</string>
     <string name="chat_currently_ban_to_speak">目前禁止发言</string>
     <string name="chat_welcome">欢迎</string>
-    <string name="chat_notify">公告：</string>
-    <string name="chat_room_is_closed">聊天室暂时关闭</string> <!--LT058-->
+    <string name="LT054">公告：</string>
+    <string name="LT058">聊天室暂时关闭</string> <!--LT058-->
     <string name="chat_photo_download_done">已储存</string>
     <string name="J871">加载失败</string>
+    <string name="N984">聊天室</string>
 </resources>

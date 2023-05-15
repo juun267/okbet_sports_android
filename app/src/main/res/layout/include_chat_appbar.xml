@@ -34,7 +34,7 @@
             android:layout_gravity="center"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="@string/chat_room"
+            android:text="@string/N984"
             android:textColor="@android:color/white"
             android:textSize="@dimen/textSize20sp"
             app:layout_constraintBottom_toBottomOf="parent"

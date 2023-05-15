@@ -160,7 +160,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             Constants.CONNECT_TIMEOUT
             if(isOpenChatRoom()){
                 menu.findItem(R.id.i_favorite).apply {
-                    title = getString(R.string.chat_room)
+                    title = getString(R.string.N984)
                     icon = getDrawable(R.drawable.selector_tab_fav)
                 }
             }
