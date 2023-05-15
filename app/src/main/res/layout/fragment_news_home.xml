@@ -40,7 +40,7 @@
                 android:textSize="@dimen/textSize12sp"
                 android:textColor="@color/color_6D7693"
                 android:visibility="gone"
-                tools:text="@string/display_more" />
+                tools:text="@string/N885" />
             <org.cxct.sportlottery.ui.maintab.home.view.HomeButtomView
                 android:id="@+id/homeBottumView"
                 android:layout_width="match_parent"

@@ -94,7 +94,7 @@ class NewsHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentNewsHo
             isVisible = pageInfo.pageNum < pageInfo.totalNum
             if (isVisible) {
                 text =
-                    "${getString(R.string.display_more)} (${pageInfo.totalSize - pageInfo.pageNum * PAGE_SIZE})"
+                    "${getString(R.string.N885)} (${pageInfo.totalSize - pageInfo.pageNum * PAGE_SIZE})"
             }
         }
     }
