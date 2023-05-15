@@ -85,7 +85,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item>
         <item name="android:background">@drawable/bg_radius_6_num_keyboard</item>
-        <item name="android:fontFamily">@font/d_din_bold</item>
+        <item name="android:fontFamily">@font/din_bold</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/color_FFFFFF_414655</item>
         <item name="android:textSize">22sp</item>

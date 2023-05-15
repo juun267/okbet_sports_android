@@ -71,7 +71,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_E23434"
                     android:textSize="14sp"
-                    android:fontFamily="@font/d_din_bold"
+                    android:fontFamily="@font/din_bold"
                     app:layout_constraintBottom_toBottomOf="@+id/tvCanWin"
                     app:layout_constraintStart_toEndOf="@+id/tvCanWin"
                     app:layout_constraintTop_toTopOf="@+id/tvCanWin"

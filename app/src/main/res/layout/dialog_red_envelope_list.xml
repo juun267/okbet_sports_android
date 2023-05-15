@@ -79,7 +79,7 @@
         android:background="@drawable/ic_chat_yellow_btn"
         android:text="@string/btn_confirm"
         android:textAllCaps="false"
-        android:fontFamily="@font/roboto_bold"
+        android:fontFamily="@font/din_bold"
         android:textStyle="bold"
         android:textColor="@color/redPacketButtonYellowText"
         android:textSize="@dimen/textSize14sp" />

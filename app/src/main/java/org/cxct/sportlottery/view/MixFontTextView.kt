@@ -20,11 +20,9 @@ class MixFontTextView @JvmOverloads constructor(
     defStyleAttr: Int = android.R.attr.textViewStyle,
 ) : AppCompatTextView(context, attributeSet, defStyleAttr) {
 
-//    private val fontNumber = ResourcesCompat.getFont(context, R.font.din)
 
-    private val fontOther = ResourcesCompat.getFont(context, R.font.roboto)
+    private val fontOther = ResourcesCompat.getFont(context, R.font.din_regular)
 
-    private val fontChinese = ResourcesCompat.getFont(context, R.font.ping_fang)
 
     var mixFontText: CharSequence? = null
         set(value) {
@@ -49,15 +47,10 @@ class MixFontTextView @JvmOverloads constructor(
         val ssb = SpannableStringBuilder(text)
         ssb.forEachIndexed { index, c ->
             ssb.setSpan(
-                when {
-//                    isNumeric(c.toString()) -> fontNumber
-                    isValidChineseWord(c.toString()) -> fontChinese
-                    else -> fontOther
-                }?.let {
-                    CustomTypefaceSpan(
-                        it
-                    )
-                }, index, index + 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE
+                fontOther?.let {CustomTypefaceSpan(it) },
+                index,
+                index + 1,
+                Spanned.SPAN_EXCLUSIVE_INCLUSIVE
             )
         }
         setText(ssb)
