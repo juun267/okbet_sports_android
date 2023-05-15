@@ -142,7 +142,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
             tabLayout.getTabAt(position)!!
         } else {
             tabLayout.newTab().setCustomView(R.layout.home_cate_tab).apply {
-                tabLayout.addTab(this, position)
+                tabLayout.addTab(this, position, false)
             }
         }
 

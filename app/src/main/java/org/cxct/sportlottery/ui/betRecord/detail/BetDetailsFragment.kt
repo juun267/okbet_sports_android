@@ -33,8 +33,6 @@ class BetDetailsFragment : BaseFragment<BetListViewModel>(BetListViewModel::clas
         val row = arguments?.get("data") as Row?
         val detailRow =
             arguments?.get("detailRow") as org.cxct.sportlottery.network.bet.settledDetailList.Row?
-        LogUtil.toJson(row)
-        LogUtil.toJson(detailRow)
         when {
             row != null -> {
                 if (row.parlayType == ParlayType.SINGLE.key) {
