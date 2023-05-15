@@ -309,10 +309,10 @@ class SportListViewHolder constructor(
             content_baseball_status.isVisible = false
             ic_attack_h.isVisible = false
             ic_attack_c.isVisible = false
-            ic_attack_tn_h.isInvisible = true
-            ic_attack_tn_c.isInvisible = true
-            lin_home_round_score.inVisible()
-            lin_away_round_score.inVisible()
+            ic_attack_tn_h.isInvisible = false
+            ic_attack_tn_c.isInvisible = false
+            lin_home_round_score.isInvisible = false
+            lin_away_round_score.isInvisible = false
             league_odd_yellow_cards_home.isVisible = false
             league_odd_yellow_cards_away.isVisible = false
             league_odd_match_cards_home.isVisible = false
