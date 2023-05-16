@@ -10,6 +10,7 @@ import android.widget.LinearLayout
 import com.stx.xhb.androidx.XBanner
 import kotlinx.android.synthetic.main.layout_home_top.view.ivPaymaya
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.setOnClickListeners
@@ -46,9 +47,11 @@ class HomeTopView @JvmOverloads constructor(
     /**
      * 检测体育服务是否关闭
      */
-    private fun initSportEnterStatus() {
+    fun initSportEnterStatus() {
         if (getSportEnterIsClose()) {
             binding.tvSportClose.visible()
+        }else{
+            binding.tvSportClose.gone()
         }
     }
 

@@ -29,6 +29,7 @@ import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEve
 import org.cxct.sportlottery.network.service.ping_pong.PingPongEvent
 import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
+import org.cxct.sportlottery.network.service.sys_maintenance.SportMaintenanceEvent
 import org.cxct.sportlottery.network.service.sys_maintenance.SysMaintenanceEvent
 import org.cxct.sportlottery.network.service.user_level_config_change.UserLevelConfigListEvent
 import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
@@ -93,6 +94,10 @@ open class ServiceBroadcastReceiver(
     val sysMaintenance: LiveData<SysMaintenanceEvent?>
         get() = _sysMaintenance
 
+    val sportMaintenance: LiveData<SportMaintenanceEvent?>
+        get() = _sportMaintenance
+
+
     val serviceConnectStatus: LiveData<ServiceConnectStatus>
         get() = _serviceConnectStatus
 
@@ -138,6 +143,7 @@ open class ServiceBroadcastReceiver(
     private val _lockMoney = MutableLiveData<Double?>()
     private val _userNotice = MutableLiveData<UserNoticeEvent?>()
     private val _sysMaintenance = MutableLiveData<SysMaintenanceEvent?>()
+    private val _sportMaintenance = MutableLiveData<SportMaintenanceEvent?>()
     private val _serviceConnectStatus = MutableLiveData<ServiceConnectStatus>()
     private val _leagueChange = MutableLiveData<LeagueChangeEvent?>()
     private val _matchOddsLock = MutableLiveData<MatchOddsLockEvent?>()
@@ -196,6 +202,7 @@ open class ServiceBroadcastReceiver(
 
     private suspend fun handleEvent(jObj: JSONObject, jObjStr: String, channelStr: String) {
         when (val eventType = jObj.optString("eventType")) {
+
             EventType.NOTICE -> {
                 val data = ServiceMessage.getNotice(jObjStr)
                 _notice.postValue(data)
@@ -215,7 +222,11 @@ open class ServiceBroadcastReceiver(
                 val data = ServiceMessage.getSysMaintenance(jObjStr)
                 _sysMaintenance.postValue(data)
             }
-
+            //体育服务开关
+            EventType.SPORT_MAINTAIN_STATUS -> {
+                val data = ServiceMessage.getSportMaintenance(jObjStr)
+                _sportMaintenance.postValue(data)
+            }
             //公共频道
             EventType.DATA_SOURCE_CHANGE -> {
                 _dataSourceChange.postValue(true)
