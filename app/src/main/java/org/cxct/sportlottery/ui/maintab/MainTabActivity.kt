@@ -119,13 +119,8 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         receiver.sportMaintenance.observe(this){
             it?.let {
                 sConfigData?.sportMaintainStatus="${it.status}"
-                if(getCurrentPosition()==1){
+                if(needBackToMain(getCurrentPosition())){
                     backMainHome()
-                }
-                if(getCurrentPosition()==3){
-                    if(fragmentHelper.getFragment(3) is FavoriteFragment){
-                        backMainHome()
-                    }
                 }
             }
         }
@@ -151,6 +146,23 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
     }
 
+    //开启体育维护，需要返回首页
+    private fun needBackToMain(position: Int):Boolean{
+        when(position){
+            //体育，注单
+            1,2->{
+                //体育服务是否关闭
+                return if(getSportEnterIsClose()){
+                    ToastUtil.showToast(this, getString(R.string.N969))
+                    true
+                }else{
+                    false
+                }
+            }
+        }
+        return false
+    }
+
     private fun initBottomFragment(position: Int) {
         binding.llHomeBack.setOnClickListener {
             homeFragment().backMainHome()
@@ -165,21 +177,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             onNavigationItemSelectedListener =
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
                     val position = getMenuItemPosition(menuItem)
-                    // index1,3。  体育赛事，收藏赛事      在体育服务维护中时 不能点击
-                    if(position==1){
-                        //体育服务是否关闭
-                        if(getSportEnterIsClose()){
-                            ToastUtil.showToast(context, context.getString(R.string.N969))
-                            return@OnNavigationItemSelectedListener false
-                        }
+                    //=true 体育赛事关闭，不能点击
+                    if(needBackToMain(position)){
+                        return@OnNavigationItemSelectedListener false
                     }
-                    if(position==3&&fragmentHelper.getFragment(3) is FavoriteFragment){
-                        //体育服务是否关闭
-                        if(getSportEnterIsClose()){
-                            ToastUtil.showToast(context, context.getString(R.string.N969))
-                            return@OnNavigationItemSelectedListener false
-                        }
-                    }
+
 
                     when (menuItem.itemId) {
                         R.id.i_betlist, R.id.i_favorite, R.id.i_user -> {
