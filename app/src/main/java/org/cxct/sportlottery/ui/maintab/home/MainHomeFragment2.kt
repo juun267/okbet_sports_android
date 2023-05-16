@@ -108,12 +108,12 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
             setupBettingStation(it)
         }
         //体育服务开关监听
-        receiver.sportMaintenance.observe(this){
-            it?.let {
-                sConfigData?.sportMaintainStatus="${it.status}"
-                binding.homeTopView.initSportEnterStatus()
-            }
-        }
+//        receiver.sportMaintenance.observe(this){
+//            it?.let {
+//                sConfigData?.sportMaintainStatus="${it.status}"
+//                binding.homeTopView.initSportEnterStatus()
+//            }
+//        }
     }
     //hot match
     private fun refreshHotMatch(){

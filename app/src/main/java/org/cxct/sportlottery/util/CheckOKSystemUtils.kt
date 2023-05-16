@@ -23,7 +23,7 @@ fun checkSportStatus(context: Context, block: () -> Unit) {
  */
 fun getSportEnterIsClose():Boolean{
 //    status=0关闭  1开启
-    val status = sConfigData?.sportMaintainStatus
-    return "1"==status
-//    return false
+//    val status = sConfigData?.sportMaintainStatus
+//    return "1"==status
+    return false
 }
