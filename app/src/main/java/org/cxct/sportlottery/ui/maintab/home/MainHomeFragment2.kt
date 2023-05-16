@@ -10,10 +10,13 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_main_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
+import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentMainHome2Binding
 import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.network.bettingStation.BettingStation
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.news.HomeNewsAdapter
@@ -83,6 +86,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
 
     override fun onResume() {
         super.onResume()
+        binding.homeTopView.initSportEnterStatus()
         if (getMainTabActivity().getCurrentPosition() == 0 && getHomeFragment().getCurrentFragment() == this) {
             refreshHotMatch()
         }
@@ -94,6 +98,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         } else {
             homeToolbar.onRefreshMoney()
             refreshHotMatch()
+            binding.homeTopView.initSportEnterStatus()
         }
 
     }
@@ -107,12 +112,17 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
             setupBettingStation(it)
         }
         //体育服务开关监听
-//        receiver.sportMaintenance.observe(this){
-//            it?.let {
-//                sConfigData?.sportMaintainStatus="${it.status}"
-//                binding.homeTopView.initSportEnterStatus()
-//            }
-//        }
+        receiver.sportMaintenance.observe(this){
+            it?.let {
+                sConfigData?.sportMaintainStatus="${it.status}"
+                val isShow=binding.homeTopView.initSportEnterStatus()
+                if(isShow){
+                    binding.hotMatchView.gone()
+                }else{
+                    binding.hotMatchView.visible()
+                }
+            }
+        }
     }
     //hot match
     private fun refreshHotMatch(){

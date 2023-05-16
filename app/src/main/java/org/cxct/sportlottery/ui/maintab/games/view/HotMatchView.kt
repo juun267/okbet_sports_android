@@ -136,6 +136,8 @@ class HotMatchView(context: Context, attrs: AttributeSet
                 if(getSportEnterIsClose()){
                     this.gone()
                     return@observe
+                }else{
+                    this.visible()
                 }
                 //清除上次订阅的赛事记录
                 adapter?.clearSubCache()

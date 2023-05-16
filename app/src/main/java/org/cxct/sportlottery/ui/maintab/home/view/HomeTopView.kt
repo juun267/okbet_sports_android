@@ -47,11 +47,13 @@ class HomeTopView @JvmOverloads constructor(
     /**
      * 检测体育服务是否关闭
      */
-    fun initSportEnterStatus() {
-        if (getSportEnterIsClose()) {
+    fun initSportEnterStatus():Boolean {
+        return if (getSportEnterIsClose()) {
             binding.tvSportClose.visible()
+            true
         }else{
             binding.tvSportClose.gone()
+            false
         }
     }
 
