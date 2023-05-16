@@ -19,7 +19,7 @@ class HomeBettingStationAdapter : BindingAdapter<BettingStation, ItemHomeBetting
         vb: ItemHomeBettingstationBinding,
         item: BettingStation,
     ) = vb.run {
-        ivCover.roundOf(sConfigData?.resServerHost + item.stationImage, 12.dp)
+        ivCover.roundOf(sConfigData?.resServerHost + item.stationImage, 12.dp, R.drawable.img_banner01)
         tvName.text = item.name
         tvAddress.text = item.addr
         tvMobile.text = item.telephone

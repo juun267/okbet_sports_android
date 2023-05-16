@@ -8,14 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_main_home.*
-import kotlinx.android.synthetic.main.fragment_okgames.topView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.databinding.FragmentMainHome2Binding
 import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.network.bettingStation.BettingStation
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.news.HomeNewsAdapter
@@ -37,6 +35,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
     override fun onInitView(view: View) = binding.run {
         scrollView.setupBackTop(ivBackTop, 180.dp)
         homeBottumView.bindServiceClick(childFragmentManager)
+        binding.winsRankView.setTipsIcon(R.drawable.ic_okgame_p2)
         initToolBar()
         initNews()
     }
