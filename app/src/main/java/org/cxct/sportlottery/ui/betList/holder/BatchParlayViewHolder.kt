@@ -275,7 +275,7 @@ abstract class BatchParlayViewHolder(
 //            val winnable =
 //                w.subtract(itemData.betAmount.toBigDecimal().multiply(itemData.num.toBigDecimal()))
 //                    .toDouble()
-//            Timber.d("w:${w} winnable:${winnable} item.betAmount:${itemData.betAmount} itemData.num:${itemData.num}")
+            Timber.d("w:${w} winnable:${w} item.betAmount:${itemData.betAmount} itemData.num:${itemData.num}")
 
             itemView.tvCanWinAmount.text =
                 "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(w, 2)}"

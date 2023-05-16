@@ -35,7 +35,6 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.betList.adapter.BetListRefactorAdapter
-import org.cxct.sportlottery.ui.betList.adapter.BetSingleListAdapter
 import org.cxct.sportlottery.ui.betList.holder.MAX_BET_VALUE
 import org.cxct.sportlottery.ui.betList.listener.OnItemClickListener
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
@@ -45,6 +44,7 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.OkPopupWindow
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 import timber.log.Timber
+import java.math.BigDecimal
 
 /**
  * @app_destination 滿版注單(點擊賠率彈出)
@@ -190,8 +190,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         binding.apply {
             tvBalance.text = "${sConfigData?.systemCurrencySign}${TextUtil.formatMoney(0.0)}"
             clTitle.ivArrow.rotation = 180f //注單開啟後，箭頭朝下
-            titleAllBet.text =
-                getString(R.string.total_bet_money_colon, sConfigData?.systemCurrencySign)
+            titleAllBet.text = getString(R.string.total_bet_money_colon, sConfigData?.systemCurrencySign)
             titleWinnableAmount.text = getString(R.string.total_all_win_amount)
         }
     }
@@ -552,6 +551,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             }
         }
 
+
         binding.tvTotalBetAmount.text = TextUtil.formatForOdd(totalBetAmount)
         binding.tvTotalWinnableAmount.text =
             "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(winnableAmount, 2)}"
@@ -607,9 +607,8 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         return betAmount.toBigDecimal().multiply(odds.toBigDecimal()).toDouble()
     }
 
-    private fun getComboWinnable(betAmount: Double, odds: Double, num: Int): Double {
-        val winnable = betAmount.toBigDecimal().multiply(odds.toBigDecimal())
-        return winnable.subtract(betAmount.toBigDecimal().multiply(num.toBigDecimal())).toDouble()
+    private fun getComboWinnable(betAmount: Double, odds: Double, num: Int): BigDecimal {
+        return betAmount.toBigDecimal().multiply(odds.toBigDecimal())
     }
 
 
