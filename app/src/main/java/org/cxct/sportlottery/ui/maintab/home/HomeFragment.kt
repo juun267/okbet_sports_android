@@ -70,4 +70,6 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
         }
     }
 
+    open fun getCurrentFragment() = fragmentHelper.getCurrentFragment()
+
 }

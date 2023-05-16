@@ -82,17 +82,18 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
 
     override fun onResume() {
         super.onResume()
-        refreshHotMatch()
+        if (getMainTabActivity().getCurrentPosition() == 0 && getHomeFragment().getCurrentFragment() == this) {
+            refreshHotMatch()
+        }
     }
     override fun onHiddenChanged(hidden: Boolean) {
-        homeToolbar.onRefreshMoney()
-
         if (hidden) {
             //隐藏时取消赛事监听
             unSubscribeChannelHallAll()
-            return
+        } else {
+            homeToolbar.onRefreshMoney()
+            refreshHotMatch()
         }
-        refreshHotMatch()
 
     }
 

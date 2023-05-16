@@ -673,4 +673,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     override fun updateBetListOdds(list: MutableList<BetInfoListData>) {
     }
+
+    open fun getCurrentPosition(): Int = fragmentHelper.getCurrentPosition()
 }

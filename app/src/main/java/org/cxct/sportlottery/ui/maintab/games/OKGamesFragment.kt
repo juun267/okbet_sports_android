@@ -16,7 +16,10 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameLabel
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.EventBusUtil
+import org.cxct.sportlottery.util.FragmentHelper
+import org.cxct.sportlottery.util.enterThirdGame
+import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.view.transform.TransformInDialog
 
 // okgames主Fragment
@@ -225,4 +228,5 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         return loginedRun(binding.root.context) { viewModel.collectGame(gameData) }
     }
 
+    open fun getCurrentFragment() = fragmentHelper.getCurrentFragment()
 }

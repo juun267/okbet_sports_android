@@ -16,7 +16,9 @@ import org.cxct.sportlottery.databinding.ItemGameCategroyBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
+import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 
@@ -63,13 +65,21 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     override fun onResume() {
         super.onResume()
-        unSubscribeChannelHallAll()
-        //重新设置赔率监听
-        binding.hotMatchView.postDelayed({
-            binding.hotMatchView.onResume(this)
-        },500)
-
-
+        if ((activity as MainTabActivity).getCurrentPosition() == 0
+            && (okGamesFragment().parentFragment as HomeFragment).getCurrentFragment() == okGamesFragment()
+            && okGamesFragment().getCurrentFragment() == this
+        ) {
+            unSubscribeChannelHallAll()
+            //重新设置赔率监听
+            binding.hotMatchView.postDelayed({
+                binding.hotMatchView.onResume(this)
+            }, 500)
+            viewModel.publicityRecommend.value?.peekContent()?.let {
+                it.forEach {
+                    subscribeChannelHall(it.gameType, it.id)
+                }
+            }
+        }
         //请求热门赛事数据  在hotMatchView初始化之后
 //        viewModel.getRecommend()
     }
