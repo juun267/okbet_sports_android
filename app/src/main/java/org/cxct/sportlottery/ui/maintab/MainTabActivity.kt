@@ -119,8 +119,13 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         receiver.sportMaintenance.observe(this){
             it?.let {
                 sConfigData?.sportMaintainStatus="${it.status}"
-                if(getCurrentPosition()==1||getCurrentPosition()==3){
+                if(getCurrentPosition()==1){
                     backMainHome()
+                }
+                if(getCurrentPosition()==3){
+                    if(fragmentHelper.getFragment(3) is FavoriteFragment){
+                        backMainHome()
+                    }
                 }
             }
         }
@@ -159,17 +164,22 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             menu.getItem(2).isVisible = !SPUtil.getMarketSwitch()
             onNavigationItemSelectedListener =
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
-
                     val position = getMenuItemPosition(menuItem)
                     // index1,3。  体育赛事，收藏赛事      在体育服务维护中时 不能点击
-                    if(position==1||position==3){
+                    if(position==1){
                         //体育服务是否关闭
                         if(getSportEnterIsClose()){
                             ToastUtil.showToast(context, context.getString(R.string.N969))
                             return@OnNavigationItemSelectedListener false
                         }
                     }
-
+                    if(position==3&&fragmentHelper.getFragment(3) is FavoriteFragment){
+                        //体育服务是否关闭
+                        if(getSportEnterIsClose()){
+                            ToastUtil.showToast(context, context.getString(R.string.N969))
+                            return@OnNavigationItemSelectedListener false
+                        }
+                    }
 
                     when (menuItem.itemId) {
                         R.id.i_betlist, R.id.i_favorite, R.id.i_user -> {
