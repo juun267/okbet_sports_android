@@ -53,6 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
+            android:fontFamily="@font/din_pro_medium"
             android:textColor="@color/color_414655"
             android:textSize="14sp"
             android:text="OR"/>
@@ -90,6 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
+            android:fontFamily="@font/din_pro_medium"
             android:textSize="14sp"
             android:textColor="@color/color_333333"
             android:text="With"/>

@@ -6,9 +6,11 @@ import android.os.Looper
 import android.os.Message
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import androidx.annotation.DrawableRes
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
@@ -93,6 +95,10 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
 
     private fun stopPostLoop() {
         recordHandler.removeCallbacksAndMessages(null)
+    }
+
+    fun setTipsIcon(@DrawableRes icon: Int) {
+        findViewById<ImageView>(R.id.ivTipsIcon).setImageResource(icon)
     }
 
     private fun initViews() {

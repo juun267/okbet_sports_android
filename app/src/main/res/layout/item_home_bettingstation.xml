@@ -12,7 +12,7 @@
         android:id="@+id/ivCover"
         android:layout_width="match_parent"
         android:layout_height="148dp"
-        android:src="@drawable/img_banner01" />
+        android:scaleType="centerCrop" />
 
     <LinearLayout
         android:layout_width="match_parent"

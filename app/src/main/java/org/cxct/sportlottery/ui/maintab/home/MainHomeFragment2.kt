@@ -35,6 +35,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
     override fun onInitView(view: View) = binding.run {
         scrollView.setupBackTop(ivBackTop, 180.dp)
         homeBottumView.bindServiceClick(childFragmentManager)
+        binding.winsRankView.setTipsIcon(R.drawable.ic_okgame_p2)
         initToolBar()
         initNews()
     }
