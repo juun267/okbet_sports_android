@@ -968,7 +968,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 balanceInsufficient()
             } else if (parlayList.any { it.betAmount > maxBetMoney.toDouble() }) {
                 overMax()
-            } else if (parlayList.any { it.betAmount < minBetMoney.toDouble() }) {
+            } else if (parlayList.any { it.input != null && it.betAmount < minBetMoney.toDouble() }) {
                 belowMin()
             } else {
                 addBetList()
