@@ -14,6 +14,7 @@ import org.cxct.sportlottery.net.chat.data.ChatInitResponse
 import org.cxct.sportlottery.net.chat.data.JoinRoomResonse
 import org.cxct.sportlottery.net.chat.data.Row
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatReceiveContent
+import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatRoomMsg
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.subscribeSuccess.SubscribeSuccessResult
 import org.json.JSONObject
 import timber.log.Timber
@@ -26,10 +27,10 @@ import timber.log.Timber
 object ChatRepository {
 
     private val chatApi  by lazy { RetrofitHolder.createChatApiService(ChatService::class.java) }
-    var uniqueChatMessageList = mutableListOf<ChatReceiveContent<*>>()
+
     var chatToken: String? = ""
     var chatRoomID: Int = -1
-    var userId: Int? = null
+    var userId: Int = -100
     var userCurrency: String? = ""
     var userLevelConfigVO: UserLevelConfigVO? = null //用户权限
     var unPacketList: MutableList<UnPacketRow>? = mutableListOf()
@@ -110,7 +111,4 @@ object ChatRepository {
         _chatMessage.emit(chatMessage)
     }
 
-    fun clear() {
-        uniqueChatMessageList.clear()
-    }
 }

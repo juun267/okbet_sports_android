@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.coroutines.*
@@ -21,9 +22,11 @@ import org.cxct.sportlottery.common.extentions.toDoubleS
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.FragmentChatBinding
 import org.cxct.sportlottery.net.chat.data.UnPacketRow
+import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatRoomMsg
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.repository.ChatRepository
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
+import org.cxct.sportlottery.ui.chat.bean.ChatDateMsg
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
@@ -44,7 +47,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
     private var jobScroll: Job? = null
 
     private val chatMessageListAdapter by lazy {
-        ChatMessageListAdapter2(
+        ChatMessageListAdapter3(
             onPhotoClick = { viewModel.showPhoto(it) },
             onUserAvatarClick = {
                 viewModel.tagPairList.add(it)
@@ -61,13 +64,18 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
     private var redEnvelopeListDialog: RedEnvelopeListDialog? = null
     private var sendPictureMsgDialog: SendPictureMsgDialog? = null
 
+    private inline fun isDateItem(item: ChatRoomMsg<*, BaseViewHolder>) : Boolean {
+        return item::class.java == ChatDateMsg::class.java
+    }
+
     //訊息列表用日期提示ItemDecoration
     private val headerItemDecoration by lazy {
         ChatDateHeaderItemDecoration(binding.rvChatMessage) { itemPosition ->
             if (itemPosition >= 0 && itemPosition < chatMessageListAdapter.dataCount()) {
-                val itemData = chatMessageListAdapter.getItem(itemPosition)
-                itemData.isCustomMessage && itemData.type == ChatMsgCustomType.DATE_TIP
-            } else false
+                isDateItem(chatMessageListAdapter.getItem(itemPosition))
+            } else {
+                false
+            }
         }
     }
 
@@ -131,7 +139,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
                 val firstPosition = layoutManager.findFirstVisibleItemPosition()
                 val itemData = chatMessageListAdapter.getItemOrNull(firstPosition)
                 val firstView = layoutManager.findViewByPosition(firstPosition)
-                if ((itemData?.isCustomMessage == true) && (itemData.type == ChatMsgCustomType.DATE_TIP)) {
+                if (itemData != null && isDateItem(itemData)) {
                     firstView?.visibility = View.GONE
                 }
 
@@ -139,7 +147,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
                 val secondPosition = firstPosition + 1
                 val secondItemData = chatMessageListAdapter.getItemOrNull(secondPosition)
                 val secondView = layoutManager.findViewByPosition(secondPosition)
-                if ((secondItemData?.isCustomMessage == true) && (secondItemData.type == ChatMsgCustomType.DATE_TIP)) {
+                if (secondItemData != null && isDateItem(secondItemData)) {
                     secondView?.visibility = View.VISIBLE
                 }
                 //endregion
@@ -205,14 +213,13 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
         java.lang.Runnable {
             val layoutManager = (binding.rvChatMessage.layoutManager as LinearLayoutManager)
             val firstPosition = layoutManager.findFirstVisibleItemPosition()
-            val firstItemData = chatMessageListAdapter.getItemOrNull(firstPosition)
+            val firstItemData = chatMessageListAdapter.getItemOrNull(firstPosition) ?: return@Runnable
 
             //判斷是否為客製化MessageType
             //判斷是否為日期提示且日期內容
             //判斷可視範圍內第一項內容文字是否與標題內容文字相符
             //皆相符的話不須隱藏Header
-            if (!((firstItemData?.isCustomMessage == true)
-                        && (firstItemData.type == ChatMsgCustomType.DATE_TIP)
+            if (!(isDateItem(firstItemData)
                         && (headerItemDecoration.getHeaderItemView()?.findViewById<TextView>(R.id.tvDate)?.text?.toString() == firstItemData.content))) {
 
                 headerItemDecoration.setHeaderVisibility(
@@ -334,7 +341,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
             }
 
             is ChatEvent.UpdateList -> {
-                chatMessageListAdapter.setList(chatEvent.chatMessageList)
+                chatMessageListAdapter.setChatList(chatEvent.chatMessageList)
                 if (viewModel.isFirstInit) {
                     binding.rvChatMessage.removeItemDecoration(headerItemDecoration)
                     binding.rvChatMessage.addItemDecoration(headerItemDecoration)
@@ -342,8 +349,12 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
 
             }
 
+            is ChatEvent.ChatMessage -> {
+                chatMessageListAdapter.onNewMsg(chatEvent.chatMessage)
+            }
+
             is ChatEvent.RemoveMsg -> {
-                chatMessageListAdapter.removeAt(chatEvent.position)
+                chatMessageListAdapter.removeMsg(chatEvent.msgId)
             }
 
             is ChatEvent.UserEnter -> {
@@ -469,7 +480,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
             }
 
             is ChatEvent.IsAdminType -> {
-                chatMessageListAdapter.changeRole(chatEvent.isAdmin)
+                chatMessageListAdapter.isAdmin = chatEvent.isAdmin
             }
 
             //獲取未領取紅包列表
@@ -502,7 +513,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
         viewModel.removeRangeEvent.collectWith(lifecycleScope) { chatEvent ->
             when (chatEvent) {
                 is ChatEvent.UpdateList -> {
-                    chatMessageListAdapter.setList(chatEvent.chatMessageList)
+                    chatMessageListAdapter.setChatList(chatEvent.chatMessageList)
                 }
 
                 is ChatEvent.RemoveRangeMessageItem -> {

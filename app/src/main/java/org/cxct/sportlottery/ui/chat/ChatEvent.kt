@@ -2,13 +2,14 @@ package org.cxct.sportlottery.ui.chat
 
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.chat.data.UnPacketRow
-import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatReceiveContent
+import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatRoomMsg
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatUserResult
 
 sealed class ChatEvent {
     data class ChatRoomIsReady(val isReady: Boolean) : ChatEvent()
-    data class UpdateList(val chatMessageList: MutableList<ChatReceiveContent<*>>) : ChatEvent()
-    data class RemoveMsg(val position: Int) : ChatEvent()
+    data class UpdateList(val chatMessageList: MutableList<ChatRoomMsg<*, *>>) : ChatEvent()
+    data class ChatMessage(val chatMessage: ChatRoomMsg<*, *>) : ChatEvent()
+    data class RemoveMsg(val msgId: String) : ChatEvent()
     data class UserEnter(val chatUserResult: ChatUserResult) : ChatEvent()
     data class UserLeave(val chatUserResult: ChatUserResult) : ChatEvent()
     data class SubscribeRoom(val roomId: Int) : ChatEvent()
@@ -40,10 +41,7 @@ sealed class ChatEvent {
     data class IsAdminType(val isAdmin: Boolean) : ChatEvent()
     data class UpdateUnPacketList(val packetId: String) : ChatEvent()
     data class ChatRedEnpViewStatus(val isShow: Boolean) : ChatEvent()
-    data class RemoveRangeMessageItem(
-        val chatMessageList: MutableList<ChatReceiveContent<*>>,
-        val count: Int,
-    ) : ChatEvent()
+    data class RemoveRangeMessageItem(val count: Int) : ChatEvent()
 
     data class ShowPhoto(val photoUrl: String) : ChatEvent()
     object OpenLuckyBag : ChatEvent()

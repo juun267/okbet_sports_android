@@ -3,17 +3,15 @@ package org.cxct.sportlottery.ui.chat.adapter.vh
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import org.cxct.sportlottery.databinding.ItemChatDateBlurBinding
-import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatReceiveContent
+import org.cxct.sportlottery.databinding.ItemChatDateBlurBinding as ICDBB
+import org.cxct.sportlottery.ui.chat.bean.ChatFloatingDateMsg
 
 class FloatingDateVH(parent: ViewGroup,
-    private val binding: ItemChatDateBlurBinding = ItemChatDateBlurBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                     private val binding: ICDBB = ICDBB.inflate(LayoutInflater.from(parent.context), parent, false)
 ): BaseViewHolder(binding.root) {
 
-    fun bind(data: ChatReceiveContent<*>) {
-        data.getThisContent<String>().apply {
-            binding.tvDate.text = this@apply
-        }
+    fun bind(data: ChatFloatingDateMsg) {
+        binding.tvDate.text = data.date
     }
 
 }

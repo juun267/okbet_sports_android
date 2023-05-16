@@ -1,11 +1,9 @@
 package org.cxct.sportlottery.network.chat.socketResponse.chatMessage
 
 
-import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.common.proguards.KeepMembers
-import org.cxct.sportlottery.ui.chat.ChatMsgReceiveType
 
 /**
  * @author Bill
@@ -23,7 +21,7 @@ data class ChatMessageResult(
     @Json(name = "content")
     val content: String?,
     @Json(name = "curTime")
-    val curTime: String?, //讯息时间
+    val curTime: Long = 0, //讯息时间
     @Json(name = "iconMiniUrl")
     val iconMiniUrl: String?, //头像缩图
     @Json(name = "iconUrl")
@@ -35,9 +33,9 @@ data class ChatMessageResult(
     @Json(name = "remark")
     val remark: String?,
     @Json(name = "type")
-    val type: Int?, //ChatType 聊天类型
+    val type: Int = -1, //ChatType 聊天类型
     @Json(name = "userId")
-    val userId: Int?,
+    val userId: Int = -1,
     @Json(name = "userUniKey")
     val userUniKey: String?,
     @Json(name = "userType")
@@ -46,8 +44,7 @@ data class ChatMessageResult(
     val bgColor: String?,
     @Json(name = "textColor")
     val textColor: String?,
-    override val itemType: Int = ChatMsgReceiveType.CHAT_MSG,
-): MultiItemEntity {
+) {
     var chatRedEnvelopeMessageResult: ChatRedEnvelopeMessageResult? = null
 
 

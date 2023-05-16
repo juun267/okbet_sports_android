@@ -7,20 +7,19 @@ import kotlinx.coroutines.flow.asSharedFlow
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.isEmptyStr
-import org.cxct.sportlottery.common.extentions.toLongS
-import org.cxct.sportlottery.network.chat.UserLevelConfigVO
 import org.cxct.sportlottery.net.chat.data.Row
 import org.cxct.sportlottery.net.chat.data.UnPacketRow
+import org.cxct.sportlottery.network.chat.UserLevelConfigVO
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.*
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.repository.ChatRepository.chatToken
-import org.cxct.sportlottery.repository.ChatRepository.uniqueChatMessageList
 import org.cxct.sportlottery.repository.ChatRepository.userCurrency
 import org.cxct.sportlottery.repository.ChatRepository.userId
 import org.cxct.sportlottery.repository.ChatRepository.userLevelConfigVO
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
+import org.cxct.sportlottery.ui.chat.bean.*
 import org.cxct.sportlottery.util.*
 import timber.log.Timber
 import java.util.*
@@ -80,29 +79,30 @@ class ChatViewModel(
         const val NET_ERROR = 2008
     }
 
+    private inline fun convertRoomMsg(roomMsg: ChatMessageResult): ChatRoomMsg<*, *> {
+        if (roomMsg.userId == userId) {
+            return ChatMineMsg(roomMsg)
+        } else {
+            return ChatUserMsg(roomMsg)
+        }
+    }
+
     init {
 
         ChatRepository.subscribeSuccessResult.collectWith(viewModelScope) {
-            val chatMessageList = mutableListOf<ChatReceiveContent<*>>()
-            it?.messageList?.forEach { chatMessageResult ->
+
+            val messageList = it?.messageList ?: return@collectWith
+            val chatMessageList = mutableListOf<ChatRoomMsg<*, *>>()
+
+            messageList.forEach { chatMessageResult ->
                 if (chatMessageResult.type == ChatMsgReceiveType.CHAT_MSG_RED_ENVELOPE) {
                     chatMessageResult.chatRedEnvelopeMessageResult = chatMessageResult.content?.fromJson()
                 }
-                chatMessageList.add(
-                    ChatReceiveContent(
-                        content = chatMessageResult,
-                        msg = null,
-                        seq = null,
-                        time = chatMessageResult.curTime.toLongS(),
-                        type = chatMessageResult.type
-                    ).apply {
-                        isMySelf = content?.userId == userId
-                    })
-
+                chatMessageList.add(convertRoomMsg(chatMessageResult))
             }
-            uniqueChatMessageList = chatMessageList
-            setupDateTipsMessage()
-            _chatEvent.emit(ChatEvent.UpdateList(uniqueChatMessageList))
+
+            setupDateTipsMessage(chatMessageList)
+            _chatEvent.emit(ChatEvent.UpdateList(chatMessageList))
             if (isFirstInit) {
                 _chatEvent.emit(ChatEvent.ScrollToBottom)
                 isFirstInit = false
@@ -124,52 +124,51 @@ class ChatViewModel(
             when (chatReceiveContent.type) {
                 //房间聊天訊息
                 ChatMsgReceiveType.CHAT_MSG -> {
-                    chatReceiveContent.isMySelf = chatReceiveContent.getThisContent<ChatMessageResult>()?.userId == userId
-                    uniqueChatMessageList.add(chatReceiveContent)
-                    _chatEvent.emit(ChatEvent.UpdateList(uniqueChatMessageList))
-                    _chatEvent.emit(ChatEvent.InsertMessage(chatReceiveContent.isMySelf))
+                    val chatMsg = chatReceiveContent.getThisContent<ChatMessageResult>() ?: return@collectWith
+                    _chatEvent.emit(ChatEvent.ChatMessage(convertRoomMsg(chatMsg)))
+                    _chatEvent.emit(ChatEvent.InsertMessage(chatMsg.userId == userId))
                 }
 
                 //用户发送图片讯息
                 ChatMsgReceiveType.CHAT_SEND_PIC,
                 ChatMsgReceiveType.CHAT_SEND_PIC_AND_TEXT -> {
-                    chatReceiveContent.isMySelf = chatReceiveContent.getThisContent<ChatMessageResult>()?.userId == userId
-                    uniqueChatMessageList.add(chatReceiveContent)
-                    _chatEvent.emit(ChatEvent.UpdateList(uniqueChatMessageList))
-                    _chatEvent.emit(ChatEvent.InsertPic(chatReceiveContent.isMySelf))
+                    val chatMsg = chatReceiveContent.getThisContent<ChatMessageResult>() ?: return@collectWith
+                    _chatEvent.emit(ChatEvent.ChatMessage(convertRoomMsg(chatMsg)))
+                    _chatEvent.emit(ChatEvent.InsertPic(chatMsg.userId == userId))
                 }
 
                 //ChatType 1001 发送红包
                 ChatMsgReceiveType.CHAT_SEND_RED_ENVELOPE -> {
-                    if ((chatReceiveContent.content as ChatRedEnvelopeResult).currency == userCurrency) {
+
+                    val chatContent = chatReceiveContent.content ?: return@collectWith
+                    if ((chatContent as ChatRedEnvelopeResult).currency == userCurrency) {
                         //更新未領取紅包列表
-                        if (ChatRepository.unPacketList?.any { it.id.toString() == chatReceiveContent.content.id.toString() } == false) {
+                        if (ChatRepository.unPacketList?.any { it.id.toString() == chatContent.id.toString() } == false) {
                             val newUnPacket =
                                 UnPacketRow(
-                                    id = chatReceiveContent.content.id.toInt(),
+                                    id = chatContent.id.toInt(),
                                     roomId = ChatRepository.chatRoomID,
-                                    currency = chatReceiveContent.content.currency,
+                                    currency = chatContent.currency,
                                     rechMoney = 0,
                                     betMoney = 0,
-                                    createBy = chatReceiveContent.content.nickName ?: "",
+                                    createBy = chatContent.nickName ?: "",
                                     createDate = 0,
                                     status = 0,
-                                    packetType = chatReceiveContent.content.packetType,
+                                    packetType = chatContent.packetType,
                                     platformId = 0
                                 )
                             ChatRepository.unPacketList?.add(0, newUnPacket)
-                            _chatEvent.emit(ChatEvent.UpdateUnPacketList(chatReceiveContent.content.id.toString()))
+                            _chatEvent.emit(ChatEvent.UpdateUnPacketList(chatContent.id.toString()))
                         }
 
-                        chatReceiveContent.let {
-                            uniqueChatMessageList.add(it)
-                            _chatEvent.emit(ChatEvent.UpdateList(uniqueChatMessageList))
-                        }
-
+                        _chatEvent.emit(ChatEvent.ChatMessage(
+                            ChatRedEnvelopeMsg.ChatRedEnvelopeMsg1001(
+                            chatReceiveContent as ChatReceiveContent<ChatRedEnvelopeResult>
+                        )))
                         _chatEvent.emit(
                             ChatEvent.RedEnvelope(
-                                chatReceiveContent.content.id.toString(),
-                                chatReceiveContent.content.packetType,
+                                chatContent.id.toString(),
+                                chatContent.packetType,
                                 checkIsAdminType()
                             )
                         )
@@ -203,19 +202,16 @@ class ChatViewModel(
 
                 //ChatType 1005 推送中奖红包金额
                 ChatMsgReceiveType.CHAT_WIN_RED_ENVELOPE_ROOM_NOTIFY -> {
-                    if ((chatReceiveContent.content as ChatWinRedEnvelopeResult).currency == userCurrency) {
-                        chatReceiveContent.let {
-                            uniqueChatMessageList.add(it)
-                            _chatEvent.emit(ChatEvent.UpdateList(uniqueChatMessageList))
-                            _chatEvent.emit(ChatEvent.WinRedEnvelope)
-                        }
+                    val chatContent = chatReceiveContent.content ?: return@collectWith
+                    if ((chatContent as ChatWinRedEnvelopeResult).currency == userCurrency) {
+                        _chatEvent.emit(ChatEvent.ChatMessage(ChatWinRedEnvelopeMsg(chatReceiveContent as ChatReceiveContent<ChatWinRedEnvelopeResult>)))
+                        _chatEvent.emit(ChatEvent.WinRedEnvelope)
                     }
                 }
 
                 //ChatType 1007 推送来自红包雨中奖红包通知
                 ChatMsgReceiveType.CHAT_WIN_RED_ENVELOPE_RAIN_NOTIFY -> {
-                    uniqueChatMessageList.add(chatReceiveContent)
-                    _chatEvent.emit(ChatEvent.UpdateList(uniqueChatMessageList))
+                    _chatEvent.emit(ChatEvent.ChatMessage(ChatWinRedEnvelopeMsg(chatReceiveContent as ChatReceiveContent<ChatWinRedEnvelopeResult>)))
                     _chatEvent.emit(ChatEvent.WinRedEnvelope)
                 }
 
@@ -252,18 +248,19 @@ class ChatViewModel(
 
                 //ChatType 2005 发送用户个人红包
                 ChatMsgReceiveType.CHAT_SEND_PERSONAL_RED_ENVELOPE -> {
-                    if ((chatReceiveContent?.content as ChatPersonalRedEnvelopeResult).currency == userCurrency) {
-                        chatReceiveContent.let {
-                            uniqueChatMessageList.add(it)
-                            _chatEvent.emit(ChatEvent.UpdateList(uniqueChatMessageList))
-                        }
+                    val chatContent = chatReceiveContent.content as ChatPersonalRedEnvelopeResult? ?: return@collectWith
+                    if (chatContent.currency == userCurrency) {
+
+                        _chatEvent.emit(ChatEvent.ChatMessage(ChatRedEnvelopeMsg.ChatRedEnvelopeMsg2005(
+                            chatReceiveContent as ChatReceiveContent<ChatPersonalRedEnvelopeResult>
+                        )))
 
                         if (loginRepository.isLogin.value == true) getUnPacket(ChatRepository.chatRoomID)
 
                         _chatEvent.emit(
                             ChatEvent.PersonalRedEnvelope(
-                                chatReceiveContent.content.id.toString(),
-                                chatReceiveContent.content.packetType ?: -1,
+                                chatContent.id.toString(),
+                                chatContent.packetType ?: -1,
                                 checkIsAdminType()
                             )
                         )
@@ -273,34 +270,26 @@ class ChatViewModel(
 
                 //ChatType 2006 发送用户系统提示讯息
                 ChatMsgReceiveType.CHAT_USER_PROMPT -> {
-                    chatReceiveContent?.let {
-                        uniqueChatMessageList.add(it)
-                        _chatEvent.emit(ChatEvent.UpdateList(uniqueChatMessageList))
-                    }
+                    _chatEvent.emit(ChatEvent.ChatMessage(ChatSystemMsg(chatReceiveContent as ChatReceiveContent<ChatMessageResult>)))
                     _chatEvent.emit(ChatEvent.UserSystemPrompt)
                 }
 
                 //ChatType 2007 删除消息
                 ChatMsgReceiveType.CHAT_MSG_REMOVE -> {
-                    chatReceiveContent?.getThisContent<ChatRemoveMsgResult>()?.let { result ->
-                        val messageItemPosition = uniqueChatMessageList.indexOf(
-                            uniqueChatMessageList.find {
-                                it.content is ChatMessageResult && it.content.messageId == result.messageId
-                            }
-                        )
-                        uniqueChatMessageList.removeAt(messageItemPosition)
-                        _chatEvent.emit(ChatEvent.UpdateList(uniqueChatMessageList))
-                        _chatEvent.emit(ChatEvent.RemoveMsg(messageItemPosition))
+                    val result = chatReceiveContent.getThisContent<ChatRemoveMsgResult>() ?: return@collectWith
+                    if (result.messageId.isEmptyStr()) {
+                        return@collectWith
                     }
+                    _chatEvent.emit(ChatEvent.RemoveMsg(result.messageId!!))
                 }
 
                 //ChatType 2008 房间用户红包消息
                 ChatMsgReceiveType.CHAT_MSG_RED_ENVELOPE -> {
-                    if ((chatReceiveContent?.content as ChatPersonalRedEnvelopeResult).currency == userCurrency) {
-                        chatReceiveContent.let {
-                            uniqueChatMessageList.add(it)
-                            _chatEvent.emit(ChatEvent.UpdateList(uniqueChatMessageList))
-                        }
+                    val chatContent = chatReceiveContent.getThisContent<ChatPersonalRedEnvelopeResult>() ?: return@collectWith
+                    if (chatContent.currency == userCurrency) {
+                        _chatEvent.emit(ChatEvent.ChatMessage(ChatRedEnvelopeMsg.ChatRedEnvelopeMsg2008(
+                            chatReceiveContent as ChatReceiveContent<ChatMessageResult>
+                        )))
                         _chatEvent.emit(ChatEvent.RedEnvelopeMsg)
                     }
                 }
@@ -318,47 +307,42 @@ class ChatViewModel(
             _chatEvent.emit(ChatEvent.CheckMessageCount)
         }
 
-        chatEvent.collectWith(viewModelScope) { chatEvent ->
-            if (chatEvent !is ChatEvent.CheckMessageCount) {
-                return@collectWith
-            }
-            if (uniqueChatMessageList.size > MAX_MSG_SIZE) {
-                val originalMessageList = uniqueChatMessageList.filter { !it.isCustomMessage }.toMutableList()
-                uniqueChatMessageList = originalMessageList.subList(REMOVE_COUNT, originalMessageList.count())
-                setupDateTipsMessage()
-                _removeRangeEvent.emit(ChatEvent.UpdateList(uniqueChatMessageList))
-                _removeRangeEvent.emit(ChatEvent.RemoveRangeMessageItem(uniqueChatMessageList, REMOVE_COUNT))
+    }
+
+    private fun removeChatMessage(msgList: MutableList<ChatRoomMsg<*, *>>, msgId: String): Int {
+        val each = msgList.iterator()
+        var position = -1
+        while (each.hasNext()) {
+            val next = each.next()
+            position++
+            if (next.content is ChatMessageResult && next.content.messageId == msgId) {
+                each.remove()
+                return position
             }
         }
+
+        return -1
     }
 
     /**
      * 將歷史訊息配置時間提示訊息
      */
-    private fun setupDateTipsMessage() {
-        val originalMessageList = uniqueChatMessageList.filter { !it.isCustomMessage }.toMutableList()
+    private fun setupDateTipsMessage(chatMsgList: MutableList<ChatRoomMsg<*, *>>) {
+        val originalMessageList = chatMsgList.filter { it !is ChatDateMsg }.toMutableList()
         val groupMessage = originalMessageList.groupBy { getChatDateByTimeStamp(getChatMessageTime(it)) }
         val today = getChatDateByTimeStamp(System.currentTimeMillis())
         groupMessage.keys.forEach { groupDate ->
-            val messageDateContent = if (groupDate == today) "Today" else groupDate
+            val messageDateContent = if (groupDate == today) "Today" else "$groupDate"
             val firstDateMessageIndex = originalMessageList.indexOfFirst { getChatDateByTimeStamp(getChatMessageTime(it)) == groupDate }
-            originalMessageList.add(firstDateMessageIndex,
-                ChatReceiveContent(content = messageDateContent,
-                    msg = null,
-                    seq = null,
-                    time = 0,
-                    type = ChatMsgCustomType.DATE_TIP
-                ).apply { isCustomMessage = true },
-            )
+            originalMessageList.add(firstDateMessageIndex, ChatDateMsg(messageDateContent))
         }
-        uniqueChatMessageList = originalMessageList
     }
 
     /**
      * 獲取聊天訊息中的時間參數(時間戳 Long)
      */
-    private fun getChatMessageTime(chatReceiveContent: ChatReceiveContent<*>): Long? {
-        return if (chatReceiveContent.content is ChatMessageResult) chatReceiveContent.content.curTime?.toLongS() else chatReceiveContent.time
+    private fun getChatMessageTime(chatReceiveContent: ChatRoomMsg<*, *>): Long {
+        return if (chatReceiveContent.content is ChatMessageResult) chatReceiveContent.content.curTime else chatReceiveContent.time
     }
 
     /**
@@ -628,14 +612,12 @@ class ChatViewModel(
     }
 
     fun getHistoryMessageList()= launch {
-        _chatEvent.emit(ChatEvent.UpdateList(uniqueChatMessageList))
-        _chatEvent.emit(ChatEvent.ScrollToBottom)
+//        _chatEvent.emit(ChatEvent.UpdateList(ChatRepository.chatRoomMessageList))
+//        _chatEvent.emit(ChatEvent.ScrollToBottom)
     }
 
     private fun clearRemoveRedEnvelope() {
-        uniqueChatMessageList.retainAll {
-            it.type == ChatMsgReceiveType.CHAT_MSG || it.type == ChatMsgReceiveType.CHAT_SEND_PIC
-        }
+
     }
 
     fun showPhoto(url: String) = launch {

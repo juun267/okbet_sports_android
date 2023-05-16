@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.service
 
-import com.chad.library.adapter.base.entity.MultiItemEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -15,7 +14,7 @@ import org.json.JSONTokener
 
 object ChatMessageDispatcher {
 
-    private val contentClazz = mapOf<Int, Class<out MultiItemEntity>>(
+    private val contentClazz = mapOf<Int, Class<*>>(
         ChatMsgReceiveType.CHAT_MSG to ChatMessageResult::class.java,
         ChatMsgReceiveType.CHAT_SEND_PIC to ChatMessageResult::class.java,
         ChatMsgReceiveType.CHAT_SEND_PIC_AND_TEXT to ChatMessageResult::class.java,
