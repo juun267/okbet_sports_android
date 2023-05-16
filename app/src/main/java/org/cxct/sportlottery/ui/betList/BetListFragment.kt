@@ -805,6 +805,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                         binding.btnBet.postDelayed({
                             setBetLoadingVisibility(false)
                         }, 800)
+                        ToastUtil.showToast(requireContext(), result.msg)
                     }
                 }
             }
@@ -906,7 +907,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         }
         betParlayList = tempParlayList
 
-        var maxBetMoney = "999999999"
+        var maxBetMoney = MAX_BET_VALUE.toString()
         var minBetMoney = "0"
         if (betListFilter.isNotEmpty()) {
             //最大投注金额
@@ -962,7 +963,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             //金额校验规则
             //1.总投注额大于余额，提示余额不足
             //2.只要有一个投注项投注额大于最大额度，提示超出最大投注额
-            //3.投注额小于最小投注额，提示低于最低投注额
+            //3.投注额不为null并且小于最小投注额，提示低于最低投注额
             //4.全部失败或者全部成功
             if (totalBetAmount > (viewModel.userMoney.value ?: 0.0)) {
                 balanceInsufficient()

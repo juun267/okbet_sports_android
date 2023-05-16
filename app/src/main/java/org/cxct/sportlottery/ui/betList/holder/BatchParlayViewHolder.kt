@@ -21,6 +21,7 @@ import org.cxct.sportlottery.ui.betList.listener.OnItemClickListener
 import org.cxct.sportlottery.ui.betRecord.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.KeyboardView
 import org.cxct.sportlottery.util.LocalUtils
+import org.cxct.sportlottery.util.MoneyInputFilter
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getMultipleOdds
 import timber.log.Timber
@@ -119,6 +120,8 @@ abstract class BatchParlayViewHolder(
                 Timber.d("1 进来了- - - -- - - - - - - :isTouched:${false}")
                 et_bet_parlay.requestFocus()
                 data.isInputBet = true
+                keyboardView.setupMaxBetMoney(inputMaxMoney)
+                keyboardView.setUserMoney(mUserMoney)
                 keyboardView.showKeyboard(et_bet_parlay, 0)
             }
 
@@ -126,12 +129,13 @@ abstract class BatchParlayViewHolder(
             refreshSingleWinAmount(data)
             checkBetLimitParlay(data)
             et_bet_parlay.apply {
+                filters = arrayOf(MoneyInputFilter())
                 val tw: TextWatcher?
                 tw = object : TextWatcher {
                     override fun afterTextChanged(it: Editable?) {
                         isTouched = true
                         if (it.isNullOrEmpty()) {
-                            data.betAmount = 0.000
+                            data.betAmount = 0.00
                             data.inputBetAmountStr = ""
                             data.input = null
                             refreshSingleWinAmount(null)
@@ -177,6 +181,7 @@ abstract class BatchParlayViewHolder(
                 if (event.action == MotionEvent.ACTION_UP) {
 //                    et_bet_parlay.isFocusable = true
                     et_bet_parlay.requestFocus()
+                    keyboardView.setUserMoney(mUserMoney)
                     keyboardView.setupMaxBetMoney(inputMaxMoney)
                     keyboardView.showKeyboard(
                         et_bet_parlay, position, isParlay = true

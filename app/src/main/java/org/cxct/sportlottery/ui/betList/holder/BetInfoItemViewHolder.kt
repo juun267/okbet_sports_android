@@ -164,7 +164,7 @@ class BetInfoItemViewHolder(
         adapterBetType: BetListRefactorAdapter.BetRvType?
     ) = contentView.run {
 
-        fun update() {
+       val update =  {
             //更新可贏額
             var win = itemData.betAmount * getOddsAndSaveRealAmount(
                 itemData, currentOddsType
@@ -244,11 +244,10 @@ class BetInfoItemViewHolder(
                 isTouched = true
                 Timber.d("textChange:${it.toString()}")
                 if (it.isNullOrEmpty()) {
-                    itemData.betAmount = 0.000
+                    itemData.betAmount = 0.00
                     itemData.inputBetAmountStr = ""
                     itemData.input = null
-
-                    itemData.realAmount = 0.0
+                    itemData.realAmount = 0.00
                     //更新可贏額
 //                    if (itemData.isInputBet) {
                     tvCanWin.text = "${root.context.getString(R.string.bet_win)}: --"
