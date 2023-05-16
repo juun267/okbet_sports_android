@@ -461,13 +461,14 @@ class OddsDetailListAdapter(
 
                         LayoutType.SCO.layout -> {
                             rvBet?.apply {
-                                addItemDecoration(
-                                    DividerItemDecorator(
-                                        ContextCompat.getDrawable(
-                                            context, R.drawable.divider_color_silverlight_1dp
+                                if (itemDecorationCount == 0)
+                                    addItemDecoration(
+                                        DividerItemDecorator(
+                                            ContextCompat.getDrawable(
+                                                context, R.drawable.divider_color_silverlight_1dp
+                                            )
                                         )
                                     )
-                                )
                             }
                         }
 

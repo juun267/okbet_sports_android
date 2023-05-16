@@ -794,6 +794,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
     private fun initSocketObserver() {
+        unSubscribeChannelHallAll()
+        unSubscribeChannelEventAll()
         receiver.serviceConnectStatus.observe(this) {
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
@@ -809,7 +811,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         //從滾球以外的狀態轉變為滾球時, 重新獲取一次賽事資料, 看是否有新的直播或動畫url
                         if (matchType != MatchType.IN_PLAY) {
                             matchType = MatchType.IN_PLAY
-                            unsubscribeHallChannel(matchId)
+                            unSubscribeChannelEvent(matchId)
                             getData()
                         }
                         matchOdd?.let { matchOdd ->
