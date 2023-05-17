@@ -4,6 +4,8 @@ import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.ui.chat.adapter.IChatVH
+import org.cxct.sportlottery.util.TimeUtil
+import java.util.*
 
 @KeepMembers
 abstract class ChatRoomMsg<T, VH: BaseViewHolder> (
@@ -12,6 +14,12 @@ abstract class ChatRoomMsg<T, VH: BaseViewHolder> (
     val time: Long = 0,
     val type: Int = -1,
 ): MultiItemEntity, IChatVH<VH> {
+
+    // 时间标签
+    val dateTips by lazy {
+        val date = if (content is ChatMessageResult) content.curTime else time
+        "${TimeUtil.timeStampToDateString(date, TimeUtil.D_NARROW_MONTH, Locale.US)}"
+    }
 
     companion object {
 

@@ -30,7 +30,7 @@ object ChatRepository {
 
     var chatToken: String? = ""
     var chatRoomID: Int = -1
-    var userId: Int = -100
+    var userId: Int? = null
     var userCurrency: String? = ""
     var userLevelConfigVO: UserLevelConfigVO? = null //用户权限
     var unPacketList: MutableList<UnPacketRow>? = mutableListOf()

@@ -20,7 +20,10 @@ import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatMessageResult
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatRoomMsg
+import org.cxct.sportlottery.ui.chat.bean.ChatDateMsg
+import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.view.MixFontTextView
+import java.util.*
 
 /**
  * @author kevin
@@ -32,12 +35,16 @@ class ChatMessageListAdapter3(val onPhotoClick: (String) -> Unit,
                               val onRedEnvelopeClick: (String, Int) -> Unit)
     : BaseQuickAdapter<ChatRoomMsg<*, BaseViewHolder>, BaseViewHolder>(0) {
 
+    private val MAX_MSG_SIZE = 500
+    private val REMOVE_COUNT = 80
+
     var isAdmin = false //身份是否為管理員
     set(value) {
-        if (value != isAdmin) {
-            this.isAdmin = value
+        if (value != field) {
+            field = value
             notifyDataSetChanged()
         }
+
     }
 
 
@@ -53,15 +60,6 @@ class ChatMessageListAdapter3(val onPhotoClick: (String) -> Unit,
 
     fun dataCount() = data.size
 
-    fun removeItems(position: Int, count: Int) {
-        if (dataCount() == 0 || position < 0 || position + count > dataCount()) {
-            return
-        }
-
-        val deleteList = data.subList(position, position + count)
-        data.removeAll(deleteList)
-        notifyItemRangeRemoved(position, count)
-    }
 
     private val itemTypesMap = SparseArray<ChatRoomMsg<*, BaseViewHolder>>()
 
@@ -215,24 +213,77 @@ class ChatMessageListAdapter3(val onPhotoClick: (String) -> Unit,
     }
 
 
+    fun isDateItem(item: ChatRoomMsg<*, BaseViewHolder>) : Boolean {
+        return item::class.java == ChatDateMsg::class.java
+    }
+
+    private fun checkCount() {
+        val count = dataCount()
+        if (count > MAX_MSG_SIZE) {
+            val deleteList = data.subList(0, REMOVE_COUNT)
+            data.removeAll(deleteList)
+            notifyItemRangeRemoved(0, REMOVE_COUNT)
+            val first = data.first()
+            if (!isDateItem(first)) {
+                addData(ChatDateMsg(first.dateTips) as ChatRoomMsg<*, BaseViewHolder>)
+            }
+        }
+    }
+
+    private inline fun addNewsDayMsg(msg: ChatRoomMsg<*, *>) {
+        addData(ChatDateMsg(msg.dateTips) as ChatRoomMsg<*, BaseViewHolder>)
+        addData(msg as ChatRoomMsg<*, BaseViewHolder>)
+    }
+
     fun setChatList(chatMessageList: MutableList<ChatRoomMsg<*, *>>) {
+
+        val groupMessage = chatMessageList.groupBy { it.dateTips }
+        val today = TimeUtil.timeStampToDateString(System.currentTimeMillis(), TimeUtil.D_NARROW_MONTH, Locale.US)
+        groupMessage.keys.forEach { groupDate ->
+            val messageDateContent = if (groupDate == today) "Today" else "$groupDate"
+            val firstDateMessageIndex = chatMessageList.indexOfFirst { it.dateTips == groupDate }
+            chatMessageList.add(firstDateMessageIndex, ChatDateMsg(messageDateContent))
+        }
+
         setList(chatMessageList as MutableList<ChatRoomMsg<*, BaseViewHolder>>)
     }
 
     fun onNewMsg(msg: ChatRoomMsg<*, *>) {
+
+        checkCount()
+        if (dataCount() == 0) {
+            addNewsDayMsg(msg)
+            return
+        }
+
+        val last = data.last()
+        if (last.dateTips != msg.dateTips) {
+            addNewsDayMsg(msg)
+            return
+        }
+
         addData(msg as ChatRoomMsg<*, BaseViewHolder>)
     }
 
     fun removeMsg(msgId: String) {
         var position = -1
+        var withDateTips = false
         data.forEachIndexed { index, chatRoomMsg ->
             if (chatRoomMsg.content is ChatMessageResult && chatRoomMsg.content.messageId == msgId) {
                 position = index
+                val last = getItemOrNull(position - 1)
+                val next = getItemOrNull(position + 1)
+                if ((last != null && isDateItem(last)) && (next == null || isDateItem(next))) {
+                    withDateTips = true
+                }
                 return@forEachIndexed
             }
         }
 
         if (position != -1) {
+            if (withDateTips) {
+                removeAt(position - 1)
+            }
             removeAt(position)
         }
     }

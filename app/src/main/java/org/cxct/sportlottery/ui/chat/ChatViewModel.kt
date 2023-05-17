@@ -46,11 +46,6 @@ class ChatViewModel(
     infoCenterRepository,
     favoriteRepository) {
 
-    companion object {
-        private const val MAX_MSG_SIZE = 500
-        private const val REMOVE_COUNT = 100
-    }
-
     var isFirstInit = true
 
     var uniqueChatUserEnterList = mutableListOf<ChatUserResult>()
@@ -64,10 +59,6 @@ class ChatViewModel(
     private val _chatEvent = MutableSharedFlow<ChatEvent>(replay = 0)
     val chatEvent = _chatEvent.asSharedFlow()
 
-    private val _removeRangeEvent = MutableSharedFlow<ChatEvent>(replay = 0)
-    val removeRangeEvent = _removeRangeEvent.asSharedFlow()
-
-    //上傳聊天室圖片
     val editIconUrlResult: LiveData<Event<IconUrlResult?>> = avatarRepository.editIconUrlResult
     var tempChatImgUrl: String? = null
 
@@ -92,7 +83,7 @@ class ChatViewModel(
         ChatRepository.subscribeSuccessResult.collectWith(viewModelScope) {
 
             val messageList = it?.messageList ?: return@collectWith
-            val chatMessageList = mutableListOf<ChatRoomMsg<*, *>>()
+            var chatMessageList = mutableListOf<ChatRoomMsg<*, *>>()
 
             messageList.forEach { chatMessageResult ->
                 if (chatMessageResult.type == ChatMsgReceiveType.CHAT_MSG_RED_ENVELOPE) {
@@ -101,7 +92,6 @@ class ChatViewModel(
                 chatMessageList.add(convertRoomMsg(chatMessageResult))
             }
 
-            setupDateTipsMessage(chatMessageList)
             _chatEvent.emit(ChatEvent.UpdateList(chatMessageList))
             if (isFirstInit) {
                 _chatEvent.emit(ChatEvent.ScrollToBottom)
@@ -309,48 +299,6 @@ class ChatViewModel(
 
     }
 
-    private fun removeChatMessage(msgList: MutableList<ChatRoomMsg<*, *>>, msgId: String): Int {
-        val each = msgList.iterator()
-        var position = -1
-        while (each.hasNext()) {
-            val next = each.next()
-            position++
-            if (next.content is ChatMessageResult && next.content.messageId == msgId) {
-                each.remove()
-                return position
-            }
-        }
-
-        return -1
-    }
-
-    /**
-     * 將歷史訊息配置時間提示訊息
-     */
-    private fun setupDateTipsMessage(chatMsgList: MutableList<ChatRoomMsg<*, *>>) {
-        val originalMessageList = chatMsgList.filter { it !is ChatDateMsg }.toMutableList()
-        val groupMessage = originalMessageList.groupBy { getChatDateByTimeStamp(getChatMessageTime(it)) }
-        val today = getChatDateByTimeStamp(System.currentTimeMillis())
-        groupMessage.keys.forEach { groupDate ->
-            val messageDateContent = if (groupDate == today) "Today" else "$groupDate"
-            val firstDateMessageIndex = originalMessageList.indexOfFirst { getChatDateByTimeStamp(getChatMessageTime(it)) == groupDate }
-            originalMessageList.add(firstDateMessageIndex, ChatDateMsg(messageDateContent))
-        }
-    }
-
-    /**
-     * 獲取聊天訊息中的時間參數(時間戳 Long)
-     */
-    private fun getChatMessageTime(chatReceiveContent: ChatRoomMsg<*, *>): Long {
-        return if (chatReceiveContent.content is ChatMessageResult) chatReceiveContent.content.curTime else chatReceiveContent.time
-    }
-
-    /**
-     * 時間戳轉聊天室日期格式
-     */
-    private fun getChatDateByTimeStamp(timeStamp: Long?): String? {
-        return TimeUtil.timeStampToDateString(timeStamp, TimeUtil.D_NARROW_MONTH, Locale.US)
-    }
 
     override fun checkLoginStatus(): Boolean {
         if (loginRepository.isLogin.value == true) {
