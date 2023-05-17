@@ -915,14 +915,15 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             minBetMoney = betListFilter[0].betInfo?.minBetMoneyString.toString()
         }
         val totalBetAmount = when (currentBetType) {
+            //单关
             0 -> {
                 betListFilter.sumOf { it.realAmount }
             }
-
+            //篮球
             2 -> {
-                betListFilter[0].betAmount
+                betListFilter[0].betAmount * betListFilter.size
             }
-
+            //串关
             else -> {
                 parlayList.sumOf { it.betAmount * it.num }
             }

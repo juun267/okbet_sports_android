@@ -13,6 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.item_number_keyboard_layout2.view.*
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.toDoubleS
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
@@ -152,6 +153,40 @@ class KeyboardView @JvmOverloads constructor(
         }
         setOnClickListener { /*这里加个点击事件空实现，为了防止点击到间隔处把键盘消失*/ }
     }
+
+//    tvMax.setOnClickListener {
+//        //默认最大投注额(保留两位小数)
+//        val maxBetMoneyDot2 = TextUtil.formatMoney(maxBetMoney, 2).toString()
+//        //最终投注额
+//        val finalBetMoney: String
+//        //投注数量
+//        val betItemCountDecimal = betItemCount.toBigDecimal()
+//        if (gameType != null && PlayCate.FS_LD_CS.value == gameType) {
+//            //篮球末位比分
+//            finalBetMoney = if (isLogin) {
+//                val betMoney = mUserMoney.toBigDecimal().div(betItemCountDecimal).toDouble()
+//                if (maxBetMoneyDot2.toDoubleS() > betMoney) {
+//                    TextUtil.formatInputMoney(betMoney)
+//                } else {
+//                    maxBetMoneyDot2
+//                }
+//            } else {
+//                (maxBetMoneyDot2.toBigDecimal().div(betItemCountDecimal)).toString()
+//            }
+//        } else {
+//            //单注或多注(串关)
+//            finalBetMoney = if (isLogin) {
+//                if (maxBetMoneyDot2.toDouble() > mUserMoney) {
+//                    TextUtil.formatInputMoney(mUserMoney)
+//                } else {
+//                    maxBetMoneyDot2
+//                }
+//            } else {
+//                maxBetMoneyDot2
+//            }
+//        }
+//        plusAll(finalBetMoney)
+//    }
 
     private fun numberClick(number: String) {
         numCLick?.let { it(number) }
