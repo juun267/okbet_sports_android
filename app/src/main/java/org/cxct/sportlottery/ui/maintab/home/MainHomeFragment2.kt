@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab.home
 
 
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -33,7 +34,11 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
     fun jumpToOKGames() = getMainTabActivity().jumpToOKGames()
 
     override fun onInitView(view: View) = binding.run {
-        scrollView.setupBackTop(ivBackTop, 180.dp)
+        scrollView.setupBackTop(ivBackTop, 180.dp) {
+            if (hotMatchView.isVisible) {
+                hotMatchView.firstVisibleRange(this@MainHomeFragment2)
+            }
+        }
         homeBottumView.bindServiceClick(childFragmentManager)
         binding.winsRankView.setTipsIcon(R.drawable.ic_okgame_p2)
         initToolBar()
@@ -177,7 +182,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
                         val data = (adapter as HomeBettingStationAdapter).data[position]
                         JumpUtil.toExternalWeb(
                             requireContext(),
-                            "https://maps.google.com/?q=@" + data.lon + "," + data.lat
+                            "https://maps.google.com/?q=@" + data.lat + "," + data.lon
                         )
                     }
                 }
