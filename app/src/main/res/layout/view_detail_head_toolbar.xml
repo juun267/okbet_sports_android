@@ -431,6 +431,7 @@
                     android:textColor="@color/color_1A1A1A_FFFFFF"
                     android:textSize="@dimen/textSize10sp"
                     android:fontFamily="@font/din_regular"
+                    android:visibility="gone"
                     tools:text="1-2"
                     tools:visibility="visible" />
 
