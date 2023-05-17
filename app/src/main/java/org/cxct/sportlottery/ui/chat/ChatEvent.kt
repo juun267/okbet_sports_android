@@ -41,8 +41,6 @@ sealed class ChatEvent {
     data class IsAdminType(val isAdmin: Boolean) : ChatEvent()
     data class UpdateUnPacketList(val packetId: String) : ChatEvent()
     data class ChatRedEnpViewStatus(val isShow: Boolean) : ChatEvent()
-    data class RemoveRangeMessageItem(val count: Int) : ChatEvent()
-
     data class ShowPhoto(val photoUrl: String) : ChatEvent()
     object OpenLuckyBag : ChatEvent()
     object NoMatchRoom : ChatEvent()
@@ -54,5 +52,5 @@ sealed class ChatEvent {
     object InsertUserEnter : ChatEvent()
     object WinRedEnvelope : ChatEvent()
     object ScrollToBottom : ChatEvent()
-    object CheckMessageCount : ChatEvent()
+
 }

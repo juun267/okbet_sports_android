@@ -294,7 +294,7 @@ class ChatViewModel(
 
                 }
             }
-            _chatEvent.emit(ChatEvent.CheckMessageCount)
+
         }
 
     }
