@@ -2,7 +2,6 @@ package org.cxct.sportlottery.util
 
 import android.content.Context
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.util.TextUtil.strRoundUp2
 import timber.log.Timber
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -147,12 +146,12 @@ object TextUtil : DecimalFormatUtil() {
         return type == value || type.contains(value)
     }
 
-    fun String.strRoundUp2():BigDecimal {
-        return toDouble().toBigDecimal().setScale(2, BigDecimal.ROUND_UP)
+    fun String.strRoundDown2():BigDecimal {
+        return toDouble().toBigDecimal().setScale(2, BigDecimal.ROUND_DOWN)
     }
 
-    fun Double.dRoundUp2():BigDecimal {
-        return toBigDecimal().setScale(2, BigDecimal.ROUND_UP)
+    fun Double.dRoundDown2():BigDecimal {
+        return toBigDecimal().setScale(2, BigDecimal.ROUND_DOWN)
     }
 
 }

@@ -13,17 +13,16 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.item_number_keyboard_layout2.view.*
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.toDoubleS
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.util.TextUtil.dRoundDown2
+import org.cxct.sportlottery.util.TextUtil.strRoundDown2
+import timber.log.Timber
 import java.lang.reflect.Method
-import java.math.BigDecimal
 
 class KeyboardView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(
     context, attrs, defStyleAttr
 ) {
@@ -114,79 +113,35 @@ class KeyboardView @JvmOverloads constructor(
 //            hideKeyboard()
 //        }
         tvMax.setOnClickListener {
+            val finalBetMoney: String
             if (gameType != null && PlayCate.FS_LD_CS.value == gameType) {
-                if (isLogin) {
-                    var betMoney =
-                        mUserMoney.toBigDecimal().setScale(2,BigDecimal.ROUND_UP).div(betItemCount.toBigDecimal())
-                            .toDouble()
-                    plusAll(
-                        if (maxBetMoney.toDouble() > betMoney) {
-                            TextUtil.formatInputMoney(betMoney)
-                        } else {
-                            maxBetMoney
-                        }
-                    )
+                val betMoney = mUserMoney.dRoundDown2().div(betItemCount.toBigDecimal())
+                val maxItemMoney = maxBetMoney.strRoundDown2().div(betItemCount.toBigDecimal())
+                finalBetMoney = if (isLogin) {
+                    Timber.d("betMoney:$betMoney maxItemMoney:$maxItemMoney mUserMoney:$mUserMoney maxBetMoney:$maxBetMoney")
+                    if (maxItemMoney.toDouble() > betMoney.toDouble()) {
+                        TextUtil.formatMoney(betMoney, 2).toString()
+                    } else {
+                        maxItemMoney.toString()
+                    }
                 } else {
-                    plusAll(
-                        if (betItemCount > 1) {
-                            (maxBetMoney.toDouble().toBigDecimal().setScale(2,BigDecimal.ROUND_UP)
-                                .div(betItemCount.toBigDecimal())).toString()
-                        } else {
-                            maxBetMoney
-                        }
-                    )
+                    maxItemMoney.toString()
                 }
             } else {
-                if (isLogin) {
-                    plusAll(
-                        if (maxBetMoney.toDouble() > mUserMoney) {
-                            TextUtil.formatInputMoney(mUserMoney)
-                        } else {
-                            maxBetMoney
-                        }
-                    )
+                finalBetMoney = if (isLogin) {
+                    if (maxBetMoney.toDouble() > mUserMoney) {
+                        TextUtil.formatMoney(mUserMoney, 2).toString()
+                    } else {
+                        maxBetMoney
+                    }
                 } else {
-                    plusAll(maxBetMoney)
+                    maxBetMoney
                 }
             }
-
+            plusAll(finalBetMoney)
         }
         setOnClickListener { /*这里加个点击事件空实现，为了防止点击到间隔处把键盘消失*/ }
     }
-
-//    tvMax.setOnClickListener {
-//        //默认最大投注额(保留两位小数)
-//        val maxBetMoneyDot2 = TextUtil.formatMoney(maxBetMoney, 2).toString()
-//        //最终投注额
-//        val finalBetMoney: String
-//        //投注数量
-//        val betItemCountDecimal = betItemCount.toBigDecimal()
-//        if (gameType != null && PlayCate.FS_LD_CS.value == gameType) {
-//            //篮球末位比分
-//            finalBetMoney = if (isLogin) {
-//                val betMoney = mUserMoney.toBigDecimal().div(betItemCountDecimal).toDouble()
-//                if (maxBetMoneyDot2.toDoubleS() > betMoney) {
-//                    TextUtil.formatInputMoney(betMoney)
-//                } else {
-//                    maxBetMoneyDot2
-//                }
-//            } else {
-//                (maxBetMoneyDot2.toBigDecimal().div(betItemCountDecimal)).toString()
-//            }
-//        } else {
-//            //单注或多注(串关)
-//            finalBetMoney = if (isLogin) {
-//                if (maxBetMoneyDot2.toDouble() > mUserMoney) {
-//                    TextUtil.formatInputMoney(mUserMoney)
-//                } else {
-//                    maxBetMoneyDot2
-//                }
-//            } else {
-//                maxBetMoneyDot2
-//            }
-//        }
-//        plusAll(finalBetMoney)
-//    }
 
     private fun numberClick(number: String) {
         numCLick?.let { it(number) }
@@ -237,9 +192,7 @@ class KeyboardView @JvmOverloads constructor(
 
 
     fun showKeyboard(
-        editText: EditText,
-        position: Int?,
-        isParlay: Boolean = false
+        editText: EditText, position: Int?, isParlay: Boolean = false
     ) {
         this.mEditText = editText
         this.mPosition = position
@@ -263,28 +216,23 @@ class KeyboardView @JvmOverloads constructor(
 
         val layout = R.layout.snackbar_login_notify
 
-        snackBarNotify =
-            Snackbar.make(
-                mEditText,
-                title,
-                Snackbar.LENGTH_LONG
-            ).apply {
-                val snackView: View = (context as Activity).layoutInflater.inflate(
-                    layout,
-                    (context as Activity).findViewById(android.R.id.content),
-                    false
-                )
-                snackView.tvNotify.text = title
+        snackBarNotify = Snackbar.make(
+            mEditText, title, Snackbar.LENGTH_LONG
+        ).apply {
+            val snackView: View = (context as Activity).layoutInflater.inflate(
+                layout, (context as Activity).findViewById(android.R.id.content), false
+            )
+            snackView.tvNotify.text = title
 
-                (this.view as Snackbar.SnackbarLayout).apply {
-                    findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
-                        visibility = View.INVISIBLE
-                    }
-                    background.alpha = 0
-                    addView(snackView, 0)
-                    setPadding(0, 0, 0, 0)
+            (this.view as Snackbar.SnackbarLayout).apply {
+                findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
+                    visibility = View.INVISIBLE
                 }
+                background.alpha = 0
+                addView(snackView, 0)
+                setPadding(0, 0, 0, 0)
             }
+        }
         snackBarNotify?.show()
     }
 
@@ -345,8 +293,7 @@ class KeyboardView @JvmOverloads constructor(
         val start = mEditText.selectionStart
         editable.apply {
             insert(
-                start,
-                if (isNotEmpty()) {
+                start, if (isNotEmpty()) {
                     if (!this.toString().contains(".")) "." else return
                 } else {
                     "0."
