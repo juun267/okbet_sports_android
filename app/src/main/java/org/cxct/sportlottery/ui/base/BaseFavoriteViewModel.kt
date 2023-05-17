@@ -42,9 +42,9 @@ abstract class BaseFavoriteViewModel(
     infoCenterRepository
 ) {
     //TODO add notify login ui to activity/fragment
-    val notifyLogin: LiveData<Boolean>
+    val notifyLogin: LiveData<Event<Boolean>>
         get() = mNotifyLogin
-    protected val mNotifyLogin = MutableLiveData<Boolean>()
+    protected val mNotifyLogin = MutableLiveData<Event<Boolean>>()
 
     val leftNotifyLogin: LiveData<Event<Boolean>>
         get() = _leftNotifyLogin
@@ -82,7 +82,7 @@ abstract class BaseFavoriteViewModel(
             if (isFromLeftMenu) {
                 _leftNotifyLogin.postValue(Event(true))
             } else {
-                mNotifyLogin.postValue(true)
+                mNotifyLogin.postValue(Event(true))
             }
             return
         }
@@ -92,7 +92,7 @@ abstract class BaseFavoriteViewModel(
 
     fun getFavorite() {
         if (isLogin.value != true) {
-            mNotifyLogin.postValue(true)
+            mNotifyLogin.postValue(Event(true))
             return
         }
 
@@ -109,7 +109,7 @@ abstract class BaseFavoriteViewModel(
         playCateCode: String? = null,
     ) {
         if (isLogin.value != true) {
-            mNotifyLogin.postValue(true)
+            mNotifyLogin.postValue(Event(true))
             return
         }
         if (gameType.isNullOrEmpty()) {
@@ -342,7 +342,7 @@ abstract class BaseFavoriteViewModel(
         gameType: String? = null
     ) {
         if (isLogin.value != true) {
-            mNotifyLogin.postValue(true)
+            mNotifyLogin.postValue(Event(true))
             return
         }
 
@@ -441,7 +441,7 @@ abstract class BaseFavoriteViewModel(
      */
     fun checkLoginStatus(): Boolean {
         return if (isLogin.value != true) {
-            mNotifyLogin.postValue(true)
+            mNotifyLogin.postValue(Event(true))
             false
         } else {
             true

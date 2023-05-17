@@ -386,7 +386,9 @@ open class SportListFragment :
 
     private fun initObserve() {
         viewModel.notifyLogin.observe(viewLifecycleOwner) {
-            (activity as MainTabActivity).showLoginNotify()
+            it.getContentIfNotHandled()?.apply {
+                (activity as MainTabActivity).showLoginNotify()
+            }
         }
 
         viewModel.showErrorDialogMsg.observe(this.viewLifecycleOwner) {
