@@ -179,7 +179,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                     it.data.appointmentTime = reserveTime
                     JumpUtil.toInternalWeb(
                         requireContext(),
-                        "https://maps.google.com/?q=@" + it.data.lon + "," + it.data.lat,
+                        "https://maps.google.com/?q=@" + it.data.lat + "," + it.data.lon,
                         getString(R.string.outlets_address),
                         true,
                         true,
