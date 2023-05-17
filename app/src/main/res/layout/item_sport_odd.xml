@@ -169,11 +169,11 @@
                             android:id="@+id/ic_attack_h"
                             android:layout_width="4dp"
                             android:layout_height="4dp"
+                            android:visibility="gone"
                             android:layout_below="@+id/iv_home_team_logo"
                             android:layout_marginTop="3dp"
                             android:layout_centerHorizontal="true"
-                            android:src="@drawable/bg_green_dot"
-                            tools:visibility="visible" />
+                            android:src="@drawable/bg_green_dot" />
 
 
                         <ImageView
@@ -183,6 +183,7 @@
                             android:layout_below="@+id/iv_home_team_logo"
                             android:layout_centerHorizontal="true"
                             android:layout_gravity="center_vertical"
+                            android:visibility="gone"
                             android:layout_marginTop="3dp"
                             android:src="@drawable/bg_green_dot" />
                     </RelativeLayout>
@@ -343,7 +344,7 @@
                             android:layout_marginTop="3dp"
                             android:layout_marginRight="@dimen/margin_4"
                             android:src="@drawable/bg_green_dot"
-                            tools:visibility="visible" />
+                            tools:visibility="gone" />
 
 
                         <ImageView
@@ -354,6 +355,7 @@
                             android:layout_centerHorizontal="true"
                             android:layout_gravity="center_vertical"
                             android:layout_marginTop="3dp"
+                            android:visibility="gone"
                             android:src="@drawable/bg_green_dot" />
                     </RelativeLayout>
 
