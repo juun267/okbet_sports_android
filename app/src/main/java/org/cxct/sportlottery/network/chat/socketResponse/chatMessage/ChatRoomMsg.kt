@@ -2,12 +2,10 @@ package org.cxct.sportlottery.network.chat.socketResponse.chatMessage
 
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.ui.chat.adapter.IChatVH
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
 
-@KeepMembers
 abstract class ChatRoomMsg<T, VH: BaseViewHolder> (
     val content: T? = null,
     val seq: Int = 0,//信息编号,client发送讯息id,如果为server主动推送，则为0

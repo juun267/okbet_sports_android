@@ -10,6 +10,7 @@ import android.util.SparseArray
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.annotation.ColorRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -30,7 +31,7 @@ import java.util.*
  * @create 2023/3/15
  * @description
  */
-class ChatMessageListAdapter3(val onPhotoClick: (String) -> Unit,
+class ChatMessageListAdapter3(private val onPhotoClick: (String) -> Unit,
                               val onUserAvatarClick: (tagUserPair: Pair<String, String>) -> Unit,
                               val onRedEnvelopeClick: (String, Int) -> Unit)
     : BaseQuickAdapter<ChatRoomMsg<*, BaseViewHolder>, BaseViewHolder>(0) {
@@ -95,8 +96,7 @@ class ChatMessageListAdapter3(val onPhotoClick: (String) -> Unit,
         data: ChatMessageResult,
         imageView: AppCompatImageView,
         textView: MixFontTextView,
-        messageBorder: LinearLayout,
-        onPhotoClick: (String) -> Unit
+        messageBorder: LinearLayout
     ) {
         val content = data.content
         if (data.type != ChatMsgReceiveType.CHAT_SEND_PIC
@@ -133,7 +133,7 @@ class ChatMessageListAdapter3(val onPhotoClick: (String) -> Unit,
         messageBorder.post { messageBorder.gravity = Gravity.START }
         val url = if (imgUrl.startsWith("http")) imgUrl else "$resServerHost/$imgUrl"
         imageView.load(url, R.drawable.ic_image_load)
-        imageView.setOnClickListener {onPhotoClick(url) }
+        imageView.setOnClickListener { onPhotoClick(url) }
     }
 
     /**
@@ -143,6 +143,7 @@ class ChatMessageListAdapter3(val onPhotoClick: (String) -> Unit,
         stringBuilder: SpannableStringBuilder,
         context: Context,
         message: String?,
+        tagColor: Int = R.color.color_025BE8
     ): SpannableStringBuilder {
 
         val startKey = "[@:"
@@ -162,7 +163,7 @@ class ChatMessageListAdapter3(val onPhotoClick: (String) -> Unit,
                     for (checkWord in checkWords) {
                         if (checkWord.contains(startKey)) {
                             val targetWord = checkWord.replace(startKey, "@")
-                            setupTextColorAndUnderline(targetWord, context, stringBuilder)
+                            setupTextColorAndUnderline(targetWord, context, stringBuilder, tagColor)
                         } else {
                             stringBuilder.append(checkWord)
                         }
@@ -170,7 +171,7 @@ class ChatMessageListAdapter3(val onPhotoClick: (String) -> Unit,
                     }
                 } else {
                     val targetWord = word.replace(startKey, "@")
-                    setupTextColorAndUnderline(targetWord, context, stringBuilder)
+                    setupTextColorAndUnderline(targetWord, context, stringBuilder, tagColor)
                 }
             } else {
                 stringBuilder.append(word)
@@ -185,9 +186,10 @@ class ChatMessageListAdapter3(val onPhotoClick: (String) -> Unit,
         target: String,
         context: Context,
         stringBuilder: SpannableStringBuilder,
+        @ColorRes tagColor: Int
     ) {
         val tagName = SpannableString(target)
-        tagName.setSpan(ForegroundColorSpan(ContextCompat.getColor(context, R.color.color_025BE8)),
+        tagName.setSpan(ForegroundColorSpan(ContextCompat.getColor(context, tagColor)),
             0,
             tagName.length,
             Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)

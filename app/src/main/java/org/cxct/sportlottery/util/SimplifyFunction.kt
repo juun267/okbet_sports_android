@@ -957,7 +957,7 @@ fun isOKPlat(): Boolean = MultiLanguagesApplication.stringOf(R.string.app_name).
 
 fun isUAT(): Boolean = BuildConfig.FLAVOR == "phuat"
 
-fun isOpenChatRoom(): Boolean = sConfigData?.chatOpen == "1"
+fun isOpenChatRoom(): Boolean = sConfigData?.chatOpen.isStatusOpen()
 
 fun isGooglePlayVersion() = BuildConfig.FLAVOR == "google"
 
