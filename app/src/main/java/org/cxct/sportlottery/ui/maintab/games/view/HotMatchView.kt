@@ -129,16 +129,16 @@ class HotMatchView(context: Context, attrs: AttributeSet
 
             //api获取热门赛事列表
             it.peekContent().let { data ->
+                //如果没数据
                 if(data.isNotEmpty()){
-                    this.visible()
+                    //隐藏
+                    gone()
+                }else{
+                    visible()
                 }
                 //如果体育服务关闭
-                if(getSportEnterIsClose()){
-                    this.gone()
-                    return@observe
-                }else{
-                    this.visible()
-                }
+                this.goneWithSportSwitch()
+
                 //清除上次订阅的赛事记录
                 adapter?.clearSubCache()
                 //取消所有订阅
@@ -358,6 +358,9 @@ class HotMatchView(context: Context, attrs: AttributeSet
     }
 
     fun onResume(fragment: BaseFragment<*>?) {
+        //关闭/显示   热门赛事
+        goneWithSportSwitch()
+
         if(fragment is BaseSocketFragment){
             fragment.receiver.oddsChangeListener = mOddsChangeListener
         }

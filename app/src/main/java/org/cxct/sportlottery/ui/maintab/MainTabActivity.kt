@@ -35,7 +35,6 @@ import org.cxct.sportlottery.network.bet.settledList.Row
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.betList.BetInfoListData
@@ -115,14 +114,17 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 ////                cl_bet_list_bar.tv_balance.text = TextUtil.formatMoney(money)
 //            }
 //        }
-        //体育服务开关监听
-        receiver.sportMaintenance.observe(this){
-            it?.let {
-                sConfigData?.sportMaintainStatus="${it.status}"
-                if(needBackToMain(getCurrentPosition())){
+
+        //设置体育服务监听
+        setupSportStatusChange(receiver,this){
+            //如果当前在体育相关fragment， 退回到首页
+            if(checkMainPosition(getCurrentPosition())){
+                binding.bottomNavigationView.postDelayed({
                     backMainHome()
-                }
+                },200)
             }
+            //关闭已选中的投注
+            closeBetFragment()
         }
         viewModel.showBetInfoSingle.observe(this) {
             it.getContentIfNotHandled()?.let {
@@ -146,22 +148,21 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
     }
 
-    //开启体育维护，需要返回首页
-    private fun needBackToMain(position: Int):Boolean{
-        when(position){
-            //体育，注单
-            1,2->{
-                //体育服务是否关闭
-                return if(getSportEnterIsClose()){
-                    ToastUtil.showToast(this, getString(R.string.N969))
-                    true
-                }else{
-                    false
-                }
-            }
+    /**
+     * 关闭投注相关的购物车
+     */
+    private fun closeBetFragment(){
+        //投注fragment如果已显示
+        if(getBetListPageVisible()){
+            //关闭
+            betListFragment?.onBackPressed()
         }
-        return false
+        //移除选中的投注信息
+        betListFragment?.viewModel?.removeBetInfoAll()
+        //隐藏购物车view
+        parlayFloatWindow?.gone()
     }
+
 
     private fun initBottomFragment(position: Int) {
         binding.llHomeBack.setOnClickListener {
@@ -178,7 +179,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
                     val position = getMenuItemPosition(menuItem)
                     //=true 体育赛事关闭，不能点击
-                    if(needBackToMain(position)){
+                    if(checkMainPosition(position)){
                         return@OnNavigationItemSelectedListener false
                     }
 
@@ -341,6 +342,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     //系统方法
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
+
             if (drawerLayout?.isOpen == true) {
                 drawerLayout?.close()
                 return false

@@ -18,12 +18,12 @@ import kotlinx.android.synthetic.main.item_listview_settlement_league.view.*
 import kotlinx.android.synthetic.main.item_listview_settlement_league_all.*
 import kotlinx.android.synthetic.main.item_listview_settlement_league_all.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.setViewGone
 import org.cxct.sportlottery.common.extentions.setViewVisible
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
+import org.cxct.sportlottery.util.setupSportStatusChange
 import org.cxct.sportlottery.view.afterTextChanged
 import java.text.SimpleDateFormat
 import java.util.*
@@ -140,6 +140,10 @@ class ResultsSettlementActivity :
     }
 
     private fun observeData() {
+        //监听体育服务关闭
+        setupSportStatusChange(receiver,this){
+            finish()
+        }
         viewModel.apply {
             sportCodeList.observe(this@ResultsSettlementActivity) {
                 initSettleGameTypeBottomSheet(it.toMutableList())

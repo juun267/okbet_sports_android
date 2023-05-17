@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab.home
 
 
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -25,7 +26,9 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
+import org.cxct.sportlottery.util.goneWithSportSwitch
 import org.cxct.sportlottery.util.setupBackTop
+import org.cxct.sportlottery.util.setupSportStatusChange
 
 class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainHome2Binding>() {
 
@@ -86,7 +89,8 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
 
     override fun onResume() {
         super.onResume()
-        binding.homeTopView.initSportEnterStatus()
+        //返回页面时，刷新体育相关view状态
+        checkToCloseView()
         if (getMainTabActivity().getCurrentPosition() == 0 && getHomeFragment().getCurrentFragment() == this) {
             refreshHotMatch()
         }
@@ -98,7 +102,8 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         } else {
             homeToolbar.onRefreshMoney()
             refreshHotMatch()
-            binding.homeTopView.initSportEnterStatus()
+            //返回页面时，刷新体育相关view状态
+            checkToCloseView()
         }
 
     }
@@ -112,26 +117,30 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
             setupBettingStation(it)
         }
         //体育服务开关监听
-        receiver.sportMaintenance.observe(this){
-            it?.let {
-                sConfigData?.sportMaintainStatus="${it.status}"
-                val isShow=binding.homeTopView.initSportEnterStatus()
-                if(isShow){
-                    binding.hotMatchView.gone()
-                }else{
-                    binding.hotMatchView.visible()
-                }
-            }
+        requireContext().setupSportStatusChange(receiver,this){
+            checkToCloseView()
         }
     }
     //hot match
     private fun refreshHotMatch(){
+
         //重新设置赔率监听
         binding.hotMatchView.postDelayed({
             binding.hotMatchView.onResume(this@MainHomeFragment2)
             viewModel.getRecommend()
         },500)
+    }
 
+    /**
+     * 检查体育服务状态
+     */
+    private fun checkToCloseView(){
+        context?.let {
+            //关闭/显示 sports入口
+            binding.homeTopView.initSportEnterStatus()
+            //关闭/显示   热门赛事
+            binding.hotMatchView.goneWithSportSwitch()
+        }
     }
     //hot match end
     private fun initNews() {

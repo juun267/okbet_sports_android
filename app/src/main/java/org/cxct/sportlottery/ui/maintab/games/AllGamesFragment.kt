@@ -20,6 +20,8 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.util.SpaceItemDecoration
+import org.cxct.sportlottery.util.goneWithSportSwitch
+import org.cxct.sportlottery.util.setupSportStatusChange
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 
 // OkGames所有分类
@@ -58,9 +60,17 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         onBindPart5View()
         initRecent()
         initCollectLayout()
+        initSportObserve()
         //初始化热门赛事
         binding.hotMatchView.onCreate(viewModel.publicityRecommend,this)
         viewModel.getRecommend()
+    }
+
+    private fun initSportObserve(){
+        //体育服务开关监听
+        requireContext().setupSportStatusChange(receiver,this){
+            binding.hotMatchView.goneWithSportSwitch()
+        }
     }
 
     override fun onResume() {
