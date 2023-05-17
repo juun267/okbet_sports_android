@@ -33,7 +33,6 @@ class DateVH private constructor(private val tvDate: TextView, root: View): Base
 
             val root = LinearLayout(context)
             root.gravity = Gravity.CENTER_HORIZONTAL
-            root.setBackgroundColor(Color.YELLOW)
             root.layoutParams = LinearLayout.LayoutParams(-1, -2)
             root.addView(textView)
             return DateVH(textView, root)
