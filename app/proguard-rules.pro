@@ -55,6 +55,16 @@
     public static * inflate(android.view.LayoutInflater);
 }
 
+-keepclassmembers public class androidx.lifecycle.LiveData {
+    private int mVersion;
+}
+
+-keepclassmembers public class androidx.lifecycle.ViewModel {
+    private volatile boolean mCleared;
+    final void clear();
+}
+
+
 #====== GSYVideoPlayer ============ start
 -keep class com.shuyu.gsyvideoplayer.video.** { *; }
 -dontwarn com.shuyu.gsyvideoplayer.video.**
