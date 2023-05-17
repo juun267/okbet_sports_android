@@ -68,7 +68,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     private fun initSportObserve(){
         //体育服务开关监听
-        requireContext().setupSportStatusChange(receiver,this){
+        setupSportStatusChange(receiver,this){
             binding.hotMatchView.goneWithSportSwitch()
         }
     }

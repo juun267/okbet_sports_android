@@ -44,7 +44,7 @@ private fun updateSportStatus(status:Int?){
 /**
  * 监听体育服务广播
  */
-fun Context.setupSportStatusChange(receiver: ServiceBroadcastReceiver,lifecycleOwner: LifecycleOwner,block: () -> Unit){
+fun setupSportStatusChange(receiver: ServiceBroadcastReceiver,lifecycleOwner: LifecycleOwner,block: () -> Unit){
     receiver.sportMaintenance.observe(lifecycleOwner){
         it?.let {
             //更新体育开关字段
