@@ -91,6 +91,10 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
 
         linGameFav.setOnClickListener {
+            if (viewModel.isLogin.value != true){
+                EventBusUtil.post(ShowFavEvent())
+                return@setOnClickListener
+            }
             EventBusUtil.post(MenuEvent(false))
             startActivity(Intent(requireActivity(), FavoriteActivity::class.java))
         }

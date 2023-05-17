@@ -287,7 +287,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     @Subscribe
     fun onShowFavEvent(event: ShowFavEvent) {
-
+        showLoginNotify()
     }
 
     @Subscribe
@@ -372,14 +372,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             else -> false
         }
 
-        if (betListCount == 0 || !needShowBetBar || BetInfoRepository.currentBetType
-            == BetListFragment.SINGLE
-        ) {
+        if (betListCount == 0 || !needShowBetBar || BetInfoRepository.currentBetType == BetListFragment.SINGLE) {
 //            Timber.d("ParlayFloatWindow隐藏：betListCount:${betListCount} !needShowBetBar:${!needShowBetBar} currentBetMode:${BetInfoRepository.currentBetType}")
             parlayFloatWindow.gone()
         } else {
-            if (BetInfoRepository.currentBetType == BetListFragment.PARLAY
-            ) {
+            if (BetInfoRepository.currentBetType == BetListFragment.PARLAY) {
                 parlayFloatWindow.setBetText(getString(R.string.conspire))
             } else {
                 parlayFloatWindow.setBetText(getString(R.string.bet_slip))
