@@ -45,7 +45,7 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
 
     //    private val args: GameV3FragmentArgs by navArgs()
     private val matchType = MatchType.OUTRIGHT
-    private var gameType: String = GameType.FT.key
+    private var gameType: String = GameType.BK.key
     private var mLeagueIsFiltered = false // 是否套用聯賽過濾
     private var mCalendarSelected = false //紀錄日期圖示選中狀態
     var leagueIdList = mutableListOf<String>() // 赛选的联赛id
