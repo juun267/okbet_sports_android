@@ -163,6 +163,21 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         parlayFloatWindow?.gone()
     }
 
+    /**
+     * 检查是否为体育相关的fragment
+     */
+    fun checkSportFragment(position: Int):Boolean{
+        val fragment=fragmentHelper.getFragment(position)
+        if(fragment is SportFragment){
+            return true
+        }
+        if(fragment is FavoriteFragment){
+            return true
+        }
+
+        return false
+    }
+
 
     private fun initBottomFragment(position: Int) {
         binding.llHomeBack.setOnClickListener {

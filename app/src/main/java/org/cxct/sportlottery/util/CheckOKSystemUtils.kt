@@ -57,22 +57,12 @@ fun setupSportStatusChange(receiver: ServiceBroadcastReceiver,lifecycleOwner: Li
  * 如果mainActivity在体育相关页面，需要回退到首页
  */
 fun MainTabActivity.checkMainPosition(position:Int):Boolean{
-    when(position){
-        //位置在体育，注单
-        1,2->{
-            //检查体育服务是否关闭
-            return if(getSportEnterIsClose()){
-                ToastUtil.showToast(this, getString(R.string.N969))
-                //return true 需要执行回到首页
-                true
-            }else{
-                false
-            }
-        }
-        else->{
-            return false
-        }
+    //是否为体育页面
+    val result=checkSportFragment(position)
+    if(result){
+        ToastUtil.showToast(this, getString(R.string.N969))
     }
+    return result
 }
 
 /**
