@@ -28,6 +28,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.BetModeChangeEvent
 import org.cxct.sportlottery.common.event.MenuEvent
+import org.cxct.sportlottery.common.event.ShowFavEvent
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding
@@ -173,7 +174,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                             }
                         }
                     }
-                    setupBetBarVisiblity(position)
+                    setupBetBarVisibility(position)
                     return@OnNavigationItemSelectedListener true
                 }
 
@@ -284,6 +285,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
     }
 
+    @Subscribe
+    fun onShowFavEvent(event: ShowFavEvent) {
+
+    }
 
     @Subscribe
     fun onBetModeChangeEvent(event: BetModeChangeEvent) {
@@ -355,27 +360,28 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     override fun updateBetListCount(num: Int) {
         betListCount = num
-        setupBetBarVisiblity(bottom_navigation_view.currentItem)
+        setupBetBarVisibility(bottom_navigation_view.currentItem)
         parlayFloatWindow.tv_bet_list_count.text = betListCount.toString()
         if (num > 0) viewModel.getMoneyAndTransferOut()
     }
 
 
-    private fun setupBetBarVisiblity(position: Int) {
+    private fun setupBetBarVisibility(position: Int) {
         val needShowBetBar = when (position) {
             0, 1, 3 -> true
             else -> false
         }
 
         if (betListCount == 0 || !needShowBetBar || BetInfoRepository.currentBetType
-            == BetListFragment.SINGLE) {
+            == BetListFragment.SINGLE
+        ) {
 //            Timber.d("ParlayFloatWindow隐藏：betListCount:${betListCount} !needShowBetBar:${!needShowBetBar} currentBetMode:${BetInfoRepository.currentBetType}")
             parlayFloatWindow.gone()
         } else {
             if (BetInfoRepository.currentBetType == BetListFragment.PARLAY
             ) {
                 parlayFloatWindow.setBetText(getString(R.string.conspire))
-            }else{
+            } else {
                 parlayFloatWindow.setBetText(getString(R.string.bet_slip))
             }
             parlayFloatWindow.visible()
@@ -608,7 +614,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         homeFragment().jumpToOKGames()
     }
 
-    fun jumpToInplaySport(){
+    fun jumpToInplaySport() {
         resetBackIcon(1)
         ll_home_back.gone()
         jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)

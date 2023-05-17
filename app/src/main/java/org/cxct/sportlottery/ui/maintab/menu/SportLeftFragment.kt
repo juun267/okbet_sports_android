@@ -9,10 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_sport_left.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
+import org.cxct.sportlottery.common.event.ShowFavEvent
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.favorite.FavoriteActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
@@ -74,6 +76,7 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                     viewModel.getSportList()
                     (activity as MainTabActivity).jumpToTheSport(MatchType.EARLY, GameType.FT)
                 }
+
                 R.id.rbtn_inplay -> {
                     lin_sport.isVisible = false
                     lin_inplay.isVisible = true
@@ -85,6 +88,11 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         lin_game_result.setOnClickListener {
             EventBusUtil.post(MenuEvent(false))
             startActivity(Intent(requireActivity(), ResultsSettlementActivity::class.java))
+        }
+
+        linGameFav.setOnClickListener {
+            EventBusUtil.post(MenuEvent(false))
+            startActivity(Intent(requireActivity(), FavoriteActivity::class.java))
         }
 
         lin_today.setOnClickListener {
@@ -174,6 +182,7 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                     rbtn_inplay.isChecked = true
                 }
             }
+
             else -> {
                 if (rbtn_sport.isChecked) {
                     viewModel.getSportList()
@@ -193,18 +202,21 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 lin_sport_classify.isSelected = false
                 lin_today.isSelected = false
             }
+
             MatchType.EARLY -> {
                 sportInPlayAdapter.gameType = null
                 sportClassifyAdapter.gameType = gameType
                 lin_sport_classify.isSelected = expandSportClassify
                 lin_today.isSelected = false
             }
+
             MatchType.TODAY -> {
                 sportInPlayAdapter.gameType = null
                 sportClassifyAdapter.gameType = null
                 lin_sport_classify.isSelected = false
                 lin_today.isSelected = true
             }
+
             else -> {
                 sportInPlayAdapter.gameType = null
                 sportClassifyAdapter.gameType = null
