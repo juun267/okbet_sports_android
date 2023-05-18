@@ -154,6 +154,7 @@ class OddsDetailListAdapter(
 
     fun removePreloadItem() {
         oddsDetailDataList = arrayListOf()
+        isPreload=false
         notifyDataSetChanged()
     }
 
@@ -177,6 +178,11 @@ class OddsDetailListAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        when(viewType){
+            BaseItemType.PRELOAD_ITEM.type,BaseItemType.NO_DATA.type->{
+                return initBaseViewHolders(parent,viewType)
+            }
+        }
         val layout: Int = when (sportCode) {
             GameType.FT -> {
                 when (viewType) {
