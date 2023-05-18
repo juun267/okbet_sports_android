@@ -48,8 +48,6 @@ class ChatViewModel(
 
     var isFirstInit = true
 
-    var uniqueChatUserEnterList = mutableListOf<ChatUserResult>()
-
     var tagPairList = mutableListOf<Pair<String, String>>() //用來比對點選過的tag
 
     private val maxInitRetry = 3
@@ -169,9 +167,7 @@ class ChatViewModel(
                 //ChatType 1002 用户进入房间
                 ChatMsgReceiveType.CHAT_USER_ENTER -> {
                     chatReceiveContent?.getThisContent<ChatUserResult>()?.let {
-                        uniqueChatUserEnterList.add(it)
-                        _chatEvent.emit(ChatEvent.UpdateUserEnterList(uniqueChatUserEnterList))
-                        _chatEvent.emit(ChatEvent.InsertUserEnter)
+                        _chatEvent.emit(ChatEvent.UpdateUserEnterList(it))
                     }
                 }
 

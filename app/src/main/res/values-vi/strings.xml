@@ -1291,4 +1291,6 @@
     <string name="chat_photo_download_done">Đã lưu</string>
     <string name="J871">Tải thất bại</string>
     <string name="N984">Phòng chat</string>
+    <string name="N922">Phòng trò chuyện đã đóng!</string>
+    <string name="N991">Chào mừng %s tham gia trò chuyện</string>
 </resources>

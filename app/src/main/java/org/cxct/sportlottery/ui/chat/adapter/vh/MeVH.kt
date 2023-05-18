@@ -16,6 +16,7 @@ import org.cxct.sportlottery.databinding.ItemChatMessageMeBinding as ICMMB
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatMessageResult
 import org.cxct.sportlottery.ui.chat.ChatMessageListAdapter3
 import org.cxct.sportlottery.ui.chat.bean.UserMessageStyle
+import org.cxct.sportlottery.util.TimeUtil
 
 class MeVH (parent: ViewGroup,
             private val context: Context = parent.context,
@@ -45,7 +46,7 @@ class MeVH (parent: ViewGroup,
             binding.messageBorder
         )
 
-        binding.tvTime.text = msgTime
+        binding.tvTime.text = TimeUtil.timeFormat(curTime, TimeUtil.HM_FORMAT)
         binding.paddingView.isGone = binding.ivChatImage.isVisible && binding.tvMessage.isVisible
 
         if (UserMessageStyle.isAdmin(userType)) {

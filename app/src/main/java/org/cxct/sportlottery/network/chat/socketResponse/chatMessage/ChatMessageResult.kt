@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.network.chat.socketResponse.chatMessage
 
 import org.cxct.sportlottery.common.proguards.KeepMembers
-import org.cxct.sportlottery.util.TimeUtil
 
 /**
  * @author Bill
@@ -32,6 +31,4 @@ data class ChatMessageResult(
     @Transient
     var chatRedEnvelopeMessageResult: ChatRedEnvelopeMessageResult? = null
 
-    @Transient
-    val msgTime: String = TimeUtil.timeFormat(curTime, TimeUtil.HM_FORMAT)
 }

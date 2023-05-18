@@ -15,6 +15,7 @@ import org.cxct.sportlottery.databinding.ItemChatMessageUserBinding as ICMUB
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatMessageResult
 import org.cxct.sportlottery.ui.chat.ChatMessageListAdapter3
 import org.cxct.sportlottery.ui.chat.bean.UserMessageStyle
+import org.cxct.sportlottery.util.TimeUtil
 
 class UserVH(parent: ViewGroup,
              private val binding: ICMUB = ICMUB.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -38,7 +39,7 @@ class UserVH(parent: ViewGroup,
 
         binding.paddingView.isGone = binding.ivChatImage.isVisible && binding.tvMessage.isVisible
         //endregion
-        binding.tvTime.text = msgTime
+        binding.tvTime.text = TimeUtil.timeFormat(curTime, TimeUtil.HM_FORMAT)
 
         if (UserMessageStyle.isAdmin(userType)) {
             binding.ivAvatar.setImageResource(R.drawable.ic_chat_admin)

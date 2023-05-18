@@ -1269,4 +1269,6 @@
     <string name="chat_photo_download_done">Saved</string>
     <string name="J871">Failed to load</string>
     <string name="N984">Chat room</string>
+    <string name="N922">Sarado ang chat room!</string>
+    <string name="N991">Welcome %s sa chat</string>
 </resources>

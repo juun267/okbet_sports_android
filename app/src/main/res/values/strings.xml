@@ -1416,4 +1416,6 @@
     <string name="J871">Failed to load</string>
     <string name="N984">Chat room</string>
     <string name="write_suggestion">Submission</string>
+    <string name="N922">Chat room has been closed!</string>
+    <string name="N991">Welcome %s to chat</string>
 </resources>

@@ -1347,4 +1347,6 @@
     <string name="chat_photo_download_done">已储存</string>
     <string name="J871">加载失败</string>
     <string name="N984">聊天室</string>
+    <string name="N922">聊天室已关闭！</string>
+    <string name="N991">欢迎%s参加聊天</string>
 </resources>

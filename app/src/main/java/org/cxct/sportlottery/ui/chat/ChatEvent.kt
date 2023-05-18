@@ -25,7 +25,7 @@ sealed class ChatEvent {
     data class GetLuckyBagResult(val luckyBagResult: ApiResult<String>) : ChatEvent()
     data class InsertMessage(val isMe: Boolean) : ChatEvent()
     data class InsertPic(val isMe: Boolean) : ChatEvent()
-    data class UpdateUserEnterList(val userEnterList: MutableList<ChatUserResult>) : ChatEvent()
+    data class UpdateUserEnterList(val chatUser: ChatUserResult) : ChatEvent()
     data class GetUnPacket(val getUnPacketResult: ApiResult<List<UnPacketRow>>, val isAdmin: Boolean) :
         ChatEvent()
 
@@ -49,7 +49,6 @@ sealed class ChatEvent {
     object KickOut : ChatEvent()
     object UserSystemPrompt : ChatEvent()
     object RedEnvelopeMsg : ChatEvent()
-    object InsertUserEnter : ChatEvent()
     object WinRedEnvelope : ChatEvent()
     object ScrollToBottom : ChatEvent()
 

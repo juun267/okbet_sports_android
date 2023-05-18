@@ -41,8 +41,6 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
 
     private var isShowScrollBottom = false //列表正在底部附近才會自動滾至下一則訊息
 
-    private var jobScroll: Job? = null
-
     private val chatMessageListAdapter by lazy {
         ChatMessageListAdapter3(
             onPhotoClick = { viewModel.showPhoto(it) },
@@ -56,7 +54,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
         )
     }
 
-    private val chatWelcomeAdapter by lazy { ChatWelcomeAdapter() }
+    private val chatWelcomeAdapter by lazy { ChatWelcomeAdapter(viewLifecycleOwner) }
     private var redPacketDialog: RedPacketDialog? = null
     private var redEnvelopeListDialog: RedEnvelopeListDialog? = null
     private var sendPictureMsgDialog: SendPictureMsgDialog? = null
@@ -381,9 +379,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
             }
 
             is ChatEvent.InitFail -> {
-                showErrorPromptDialog(getString(R.string.error), chatEvent.message) {
-                    activity?.onBackPressed()
-                }
+                onError(chatEvent.message)
             }
 
             is ChatEvent.ActionInputSendStatusAndMaxLength -> {
@@ -399,7 +395,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
             }
 
             is ChatEvent.NoMatchRoom -> {
-
+                onError(getString(R.string.N922))
             }
 
             is ChatEvent.InsertMessage -> {
@@ -460,18 +456,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
             }
 
             is ChatEvent.UpdateUserEnterList -> {
-                chatWelcomeAdapter.dataList = chatEvent.userEnterList
-            }
-
-            is ChatEvent.InsertUserEnter -> {
-                chatWelcomeAdapter.insertItem()
-                if (jobScroll?.isActive == true) jobScroll?.cancel()
-                jobScroll = lifecycleScope.launch {
-                    delay(2000)
-                    binding.rvWelcome.smoothScrollToPosition(chatWelcomeAdapter.itemCount - 2)
-                    delay(2000)
-                    binding.rvWelcome.smoothScrollToPosition(chatWelcomeAdapter.itemCount - 1)
-                }
+                chatWelcomeAdapter.userEnter(chatEvent.chatUser)
             }
 
             is ChatEvent.IsAdminType -> {
@@ -501,6 +486,16 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
         }
     }
 
+    private fun onError(errorMsg: String, block: (() -> Unit)? = null) {
+        showErrorPromptDialog(getString(R.string.error), errorMsg) {
+            if (block != null) {
+                block.invoke()
+            } else {
+                activity?.onBackPressed()
+            }
+        }
+    }
+
     private fun initObserve() {
 
         initChatEventObserver()
@@ -512,7 +507,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
                 viewModel.tempChatImgUrl = iconUrlResult.t
                 return@observe
             }
-            showErrorPromptDialog(getString(R.string.error), iconUrlResult.msg) {}
+            onError(iconUrlResult.msg) { }
         }
     }
 
@@ -644,8 +639,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
     private fun cancleJob() = runWithCatch {
         clearDateFloatingTipsRunnable()
         clearDownBtnRunable()
-        jobScroll?.cancel()
-        jobScroll = null
+        chatWelcomeAdapter.stop()
     }
 
     private fun chatListScrollToBottom(isSmooth: Boolean) {
