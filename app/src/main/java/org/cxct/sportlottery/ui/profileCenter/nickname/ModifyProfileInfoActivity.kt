@@ -13,11 +13,11 @@ import org.cxct.sportlottery.common.extentions.filterSpecialCharacters
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
-import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.VerifyConstUtil
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 import org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
+import org.cxct.sportlottery.view.checkRegisterListener
 
 /**
  * @app_destination 修改暱稱

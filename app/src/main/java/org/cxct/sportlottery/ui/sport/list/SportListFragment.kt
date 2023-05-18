@@ -31,11 +31,10 @@ import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
-import org.cxct.sportlottery.ui.game.hall.adapter.*
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.sport.SportFragment
-import org.cxct.sportlottery.ui.sport.common.LeagueOddListener
+import org.cxct.sportlottery.ui.sport.common.*
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.ui.sport.favorite.LeagueListener
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
@@ -138,12 +137,6 @@ open class SportListFragment :
                             )
                         }
                     },
-                    clickListenerQuickCateTab = { matchOdd, quickPlayCate ->
-
-                    },
-                    clickListenerQuickCateClose = {
-
-                    },
                     clickListenerFavorite = { matchId ->
                         matchId?.let {
                             viewModel.pinFavorite(FavoriteType.MATCH, it)
@@ -160,14 +153,6 @@ open class SportListFragment :
                                 }
                             }
                         }
-                    },
-                    refreshListener = { matchId ->
-                        loading()
-//                    viewModel.refreshGame(
-//                        matchType,
-//                        listOf(),
-//                        listOf(matchId)
-//                    )
                     },
                     clickLiveIconListener = { matchId, matchInfoList, _, liveVideo ->
                         if (viewModel.checkLoginStatus()) {

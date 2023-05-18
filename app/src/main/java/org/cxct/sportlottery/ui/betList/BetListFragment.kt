@@ -24,6 +24,7 @@ import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.BetModeChangeEvent
 import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentBetListBinding
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
@@ -615,7 +616,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
     private fun clearCarts() {
         if (mIsEnabled) {
             avoidFastDoubleClick()
-            viewModel.betInfoList.removeObservers(this)
+            runWithCatch { viewModel.betInfoList.removeObservers(viewLifecycleOwner) }  // viewLifecycleOwner 有可能空
             viewModel.removeBetInfoAll()
             setCurrentBetModeSingle()
             EventBusUtil.post(BetModeChangeEvent(SINGLE))
@@ -832,7 +833,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
     private fun initSocketObserver() {
         receiver.matchStatusChange.observe(viewLifecycleOwner) {
             it?.let {
-                if (it.matchStatusCO?.status == StatusType.END_GAME.code) {
+                if (it.matchStatusCO?.status == StatusType.END_GAME) {
                     betListRefactorAdapter?.betList?.let { betInfoList ->
                         betInfoList.forEachIndexed { index, betInfoListData ->
                             if (SocketUpdateUtil.updateOddStatus(betInfoListData, it)) {

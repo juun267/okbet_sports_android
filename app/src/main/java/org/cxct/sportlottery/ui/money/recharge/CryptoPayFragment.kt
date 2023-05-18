@@ -28,10 +28,10 @@ import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.ui.profileCenter.profile.RechargePicSelectorDialog
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.MoneyManager.getCryptoIconByCryptoName
+import org.cxct.sportlottery.view.LoginEditText
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException

@@ -61,6 +61,7 @@ data class ConfigData(
     val mainWxUrl: String?, //推广面微信连接
     val maintainInfo: String?, //维护页面描述
     val maintainStatus: String?, //系统维护开关 (1：开启，0：关闭)
+    var sportMaintainStatus: String?, //体育服务维护开关 (1：开启，0：关闭)
     val minRechMoney: String?, //最低充值金额限制
     val mobileAppDownUrl: String?, //手机版APP下载地址
     val navigationUrl: String?, //navigationUrl导航地址
@@ -132,6 +133,7 @@ data class ConfigData(
     val frontEntranceStatus: String?,// 代码加盟入口状态(1：开启，0：关闭)
     var androidCarouselStatus: String?,//是否开启安卓轮播状态(1：开启，0：关闭)
     var carouselInterval: String?,//自动轮播的间隔秒数
+    var cmsUrl: String?,//新闻域名
     var reviewedVersionUrl: String?,//送审中的版本号
 ) {
     var enterCertified: Int? = -1 //ProfileCenterViewModel.SecurityEnter

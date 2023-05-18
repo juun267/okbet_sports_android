@@ -21,6 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
+            android:background="@color/color_FFFFFF"
             android:overScrollMode="never"
             android:paddingHorizontal="7dp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"

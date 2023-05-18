@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.distinctUntilChanged
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
+import com.chad.library.adapter.base.entity.node.BaseExpandNode
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_sport_list.*
@@ -214,6 +215,10 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
         oddsListGameHallResult.observe(viewLifecycleOwner) {
             val result = it.getContentIfNotHandled() ?: return@observe
             val list = result.oddsListData?.leagueOdds as MutableList<BaseNode>?
+            //api拿到到数据，第一个默认展开
+            list?.forEachIndexed { index, baseNode ->
+                (baseNode as BaseExpandNode).isExpanded = (index == 0)
+            }
             endScoreAdapter.setNewInstance(list)
 
             if (list.isNullOrEmpty()) {

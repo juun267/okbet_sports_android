@@ -124,21 +124,21 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <org.cxct.sportlottery.ui.login.LoginEditText
+        <org.cxct.sportlottery.view.LoginEditText
             android:id="@+id/et_identity_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cvEditable="false"
             app:cvTitle="@string/identity_id" />
 
-        <org.cxct.sportlottery.ui.login.LoginEditText
+        <org.cxct.sportlottery.view.LoginEditText
             android:id="@+id/et_identity_last_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cvEditable="false"
             app:cvTitle="@string/identity_last_name" />
 
-        <org.cxct.sportlottery.ui.login.LoginEditText
+        <org.cxct.sportlottery.view.LoginEditText
             android:id="@+id/et_identity_first_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -146,35 +146,35 @@
             app:cvInputType="text"
             app:cvTitle="@string/identity_first_name" />
 
-        <org.cxct.sportlottery.ui.login.LoginEditText
+        <org.cxct.sportlottery.view.LoginEditText
             android:id="@+id/et_identity_other_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cvEditable="false"
             app:cvTitle="@string/identity_other_name" />
 
-        <org.cxct.sportlottery.ui.login.LoginEditText
+        <org.cxct.sportlottery.view.LoginEditText
             android:id="@+id/et_identity_sex"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cvEditable="false"
             app:cvTitle="@string/identity_sex" />
 
-        <org.cxct.sportlottery.ui.login.LoginEditText
+        <org.cxct.sportlottery.view.LoginEditText
             android:id="@+id/et_birth"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cvEditable="false"
             app:cvTitle="@string/birth_date" />
 
-        <org.cxct.sportlottery.ui.login.LoginEditText
+        <org.cxct.sportlottery.view.LoginEditText
             android:id="@+id/et_expire_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cvEditable="false"
             app:cvTitle="@string/expire_date" />
 
-        <org.cxct.sportlottery.ui.login.LoginEditText
+        <org.cxct.sportlottery.view.LoginEditText
             android:id="@+id/et_country"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -182,7 +182,7 @@
             app:cvTitle="@string/identity_country" />
 
 
-        <org.cxct.sportlottery.ui.login.LoginEditText
+        <org.cxct.sportlottery.view.LoginEditText
             android:id="@+id/et_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

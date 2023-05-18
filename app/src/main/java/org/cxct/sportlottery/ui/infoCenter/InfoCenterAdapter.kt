@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ContentInfocenterListBinding
 import org.cxct.sportlottery.network.infoCenter.InfoCenterData
-import org.cxct.sportlottery.ui.common.adapter.BindingAdapter
+import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.util.setDateTime
 
 class InfoCenterAdapter(context: Context) : BindingAdapter<InfoCenterData, ContentInfocenterListBinding>() {

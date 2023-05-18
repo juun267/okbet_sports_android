@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.network.money.config
 
+import androidx.annotation.Keep
+
 
 class MoneyRechCfg {
     enum class Switch(val code: Int) { ON(1) }
@@ -8,6 +10,7 @@ class MoneyRechCfg {
 /**
  * MoneyConfig, uwTypes 提現Type
  */
+@Keep
 enum class TransferType(val type: String) {
     BANK("bankTransfer"), //銀行卡
     CRYPTO("cryptoTransfer"), //虛擬幣

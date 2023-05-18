@@ -14,7 +14,6 @@ import kotlinx.android.synthetic.main.fragment_verify_identity_detail_new.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
-import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 class VerifyIdentityDetailFragment :

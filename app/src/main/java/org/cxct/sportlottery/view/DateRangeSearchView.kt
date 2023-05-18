@@ -10,9 +10,6 @@ import android.widget.PopupWindow
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.archit.calendardaterangepicker.customviews.DateSelectedType
 import kotlinx.android.synthetic.main.component_date_range_new_selector.view.*
-import kotlinx.android.synthetic.main.component_date_range_selector.view.btn_search
-import kotlinx.android.synthetic.main.component_date_range_selector.view.tv_end_date
-import kotlinx.android.synthetic.main.component_date_range_selector.view.tv_start_date
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.TimeUtil

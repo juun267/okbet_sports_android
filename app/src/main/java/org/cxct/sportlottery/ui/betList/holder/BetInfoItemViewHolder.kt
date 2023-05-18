@@ -608,7 +608,7 @@ class BetInfoItemViewHolder(
             pop.showAsDropDown(it, xOff, yOff)
         }
 
-        setOnClickListener(tvName, tvLeagueName, tvMatchHome, tvMatchAway, tvOddsContent) {
+        setOnClickListeners(tvName, tvLeagueName, tvMatchHome, tvMatchAway, tvOddsContent) {
             when (it) {
                 tvName -> {
                     showPopAsTop(tvName, tvNameText)

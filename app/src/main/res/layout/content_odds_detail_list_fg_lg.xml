@@ -45,13 +45,12 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tv_fg" />
 
-            <View
+            <include
                 android:id="@+id/divider"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/color_404040_cccccc"
+                android:layout_height="@dimen/margin_0.5"
+                layout="@layout/space_content_odds_detail_list"
                 app:layout_constraintBottom_toBottomOf="parent" />
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -60,7 +59,7 @@
             android:id="@+id/rv_bet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/color_191919_FCFCFC"
+            android:background="@color/color_FFFFFF"
             android:nestedScrollingEnabled="false"
             android:overScrollMode="never"
             android:paddingHorizontal="7dp"

@@ -13,7 +13,7 @@ import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemGameChildBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
-import org.cxct.sportlottery.ui.common.adapter.BindingAdapter
+import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 class GameChildAdapter(private val onFavoriate: (View, OKGameBean) -> Unit,

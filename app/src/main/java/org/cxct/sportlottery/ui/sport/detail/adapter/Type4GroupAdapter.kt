@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.ui.sport.detail.OddsDetailListData
 import org.cxct.sportlottery.ui.sport.detail.OnOddClickListener
 import org.cxct.sportlottery.util.setTeamLogo
 
@@ -66,15 +68,18 @@ class Type4GroupAdapter(
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bindModel(oddsList: List<Odd?>, key: String) {
-
             itemView.findViewById<TextView>(R.id.tv_left_name).text =
                 leftName?.plus(if (isShowSpreadWithName) key else "")
             itemView.findViewById<TextView>(R.id.tv_right_name).text =
                 rightName?.plus(if (isShowSpreadWithName) key else "")
-            itemView.findViewById<ImageView>(R.id.iv_home_logo)
-                .setTeamLogo(oddsDetail.matchInfo?.homeIcon)
-            itemView.findViewById<ImageView>(R.id.iv_away_logo)
-                .setTeamLogo(oddsDetail.matchInfo?.awayIcon)
+            itemView.findViewById<ImageView>(R.id.iv_home_logo).apply {
+                setTeamLogo(oddsDetail.matchInfo?.homeIcon)
+                isVisible = leftName == oddsDetail.matchInfo?.homeName
+            }
+            itemView.findViewById<ImageView>(R.id.iv_away_logo).apply {
+                setTeamLogo(oddsDetail.matchInfo?.awayIcon)
+                isVisible = rightName == oddsDetail.matchInfo?.awayName
+            }
             itemView.findViewById<RecyclerView>(R.id.rv_bet)?.apply {
                 visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
                 adapter = TypeCSAdapter(oddsDetail, oddsList, onOddClickListener, oddsType)

@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.sport.detail.adapter
+package org.cxct.sportlottery.ui.sport.detail
 
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd

@@ -9,19 +9,20 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_item"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:background="@color/color_404040_cccccc">
+        android:layout_height="wrap_content"
+        android:background="@color/color_FFFFFF">
 
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:background="@color/color_191919_FCFCFC"
             android:gravity="start|center"
             android:paddingHorizontal="@dimen/activity_horizontal_margin"
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintWidth_percent="0.392"
             tools:text="Mario Gavranovic" />
 
@@ -29,7 +30,6 @@
             android:id="@+id/button_odds"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="1dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_name"
             app:layout_constraintTop_toTopOf="parent"

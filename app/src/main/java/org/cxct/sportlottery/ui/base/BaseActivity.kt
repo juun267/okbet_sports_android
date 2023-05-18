@@ -424,14 +424,6 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
         return defaultPosition
     }
 
-    private fun safelyUpdateLayout(runnable: Runnable) {
-        try {
-            mLayoutHandler.post(runnable)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
     fun avoidFastDoubleClick() {
         mIsEnabled = false
         mHandler.postDelayed({ mIsEnabled = true }, 100)
