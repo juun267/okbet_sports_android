@@ -1,5 +1,8 @@
 package org.cxct.sportlottery.ui.maintab.menu
 
+import android.Manifest
+import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.view.Gravity
@@ -13,6 +16,10 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
+import com.budiyev.android.codescanner.BarcodeUtils
+import com.luck.picture.lib.entity.LocalMedia
+import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.tbruyelle.rxpermissions2.RxPermissions
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.startActivity
@@ -20,13 +27,11 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentMainLeft2Binding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.user.UserInfo
-
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.base.BindingFragment
-import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
@@ -34,6 +39,10 @@ import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreator
+import org.cxct.sportlottery.view.PictureSelectUtil
+import org.cxct.sportlottery.view.dialog.ScanErrorDialog
+import org.cxct.sportlottery.view.dialog.ScanPhotoDialog
+import timber.log.Timber
 
 class MainLeftFragment2 : org.cxct.sportlottery.ui.base.BindingFragment<MainViewModel, FragmentMainLeft2Binding>() {
 
@@ -263,8 +272,7 @@ class MainLeftFragment2 : org.cxct.sportlottery.ui.base.BindingFragment<MainView
             R.string.N908,
             true,
             false
-        ) {
-        }
+        ) { scanQR() }
         scanItem.onClearSelected = { scanItem.ivIndicator?.visible() }
         scanItem.ivIndicator?.let {
             it.visible()
@@ -420,6 +428,55 @@ class MainLeftFragment2 : org.cxct.sportlottery.ui.base.BindingFragment<MainView
         tvVerifyStatus.setText(text)
         binding.tvVerifyStatus.setTextColor(statusColor)
         binding.ivVerifyIndicator.isVisible = enable
+    }
+
+    private fun scanQR() {
+
+        val scanPhotoDialog = ScanPhotoDialog(requireContext())
+        scanPhotoDialog.tvCameraScanClickListener = {
+            RxPermissions(this).request(Manifest.permission.CAMERA).subscribe { onNext ->
+                if (onNext) {
+                    startActivity(Intent(requireContext(), ScannerActivity::class.java))
+                } else {
+                    ToastUtil.showToast(
+                        requireContext(),
+                        LocalUtils.getString(R.string.N980)
+                    )
+                }
+            }.isDisposed
+        }
+
+        scanPhotoDialog.tvAlbumClickListener = { selectAlbum() }
+        scanPhotoDialog.show()
+    }
+
+    private fun selectAlbum() {
+        PictureSelectUtil.pictureSelect(requireActivity(),
+            object : OnResultCallbackListener<LocalMedia> {
+                override fun onResult(result: MutableList<LocalMedia>?) {
+                    val firstImage = result?.firstOrNull()
+                    val bitmap = BitmapFactory.decodeFile(firstImage?.compressPath)
+                    val bitResult = BarcodeUtils.decodeBitmap(bitmap)
+                    Timber.d("bitmap:${bitResult}")
+                    val newUrl =
+                        Constants.getPrintReceiptScan(bitResult.toString())
+                    if (newUrl.isNotEmpty()) {
+                        JumpUtil.toInternalWeb(
+                            requireContext(),
+                            href = newUrl,
+                            getString(R.string.N890)
+                        )
+                    } else {
+                        val errorDialog = activity?.let { ScanErrorDialog(it) }
+                        errorDialog?.show()
+                    }
+                }
+
+                override fun onCancel() {
+                }
+
+            })
+
     }
 
 }
