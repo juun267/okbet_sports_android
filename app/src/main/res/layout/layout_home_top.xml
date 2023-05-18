@@ -34,7 +34,7 @@
             android:textColor="@android:color/white"
             android:textSize="14sp"
             android:gravity="center"
-            android:text="@string/J134"/>
+            android:text="@string/btn_login"/>
 
         <Button
             android:id="@+id/tvRegist"
@@ -47,7 +47,7 @@
             android:textColor="@android:color/white"
             android:textSize="14sp"
             android:gravity="center"
-            android:text="@string/J151"/>
+            android:text="@string/btn_register"/>
 
         <TextView
             android:layout_width="wrap_content"
