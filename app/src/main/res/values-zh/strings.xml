@@ -1282,4 +1282,5 @@
     <string name="N952">相机扫码</string>
     <string name="N956">无法识别此二维码</string>
     <string name="N980">获取系统相机权限被拒绝</string>
+    <string name="P038">Google登录暂时无法使用，请使用手机号码注册/登陆</string>
 </resources>

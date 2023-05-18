@@ -1211,4 +1211,5 @@
     <string name="N952">Camera scan</string>
     <string name="N956">Hindi mabasa ang QR code</string>
     <string name="N980">Tinanggihan ang permiso sa camera</string>
+    <string name="P038">Google service ay hindi available, mangyaring magrehistro/mag-login gamit ang iyong mobile #.</string>
 </resources>

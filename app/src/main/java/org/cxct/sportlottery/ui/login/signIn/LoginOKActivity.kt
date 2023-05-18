@@ -1,13 +1,11 @@
 package org.cxct.sportlottery.ui.login.signIn
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
 import android.text.InputType
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
-import android.view.Gravity
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -20,11 +18,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.crash.FirebaseLog
 import org.cxct.sportlottery.common.event.RegisterInfoEvent
-import org.cxct.sportlottery.databinding.ActivityLoginOkBinding
 import org.cxct.sportlottery.common.extentions.startActivity
+import org.cxct.sportlottery.databinding.ActivityLoginOkBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.login.LoginCodeRequest
 import org.cxct.sportlottery.network.index.login.LoginRequest
@@ -440,7 +437,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                     viewModel.loginGoogle(it)
                 }
             } else {
-                showErrorDialog(msg)
+                showErrorDialog(getString(R.string.P038))
             }
         }
     }
