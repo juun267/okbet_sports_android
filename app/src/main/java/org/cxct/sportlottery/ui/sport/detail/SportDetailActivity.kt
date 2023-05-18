@@ -84,7 +84,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         ) {
             matchInfo.let {
                 val intent = Intent(context, SportDetailActivity::class.java)
-                intent.putExtra("matchInfo", matchInfo)
+                intent.putExtra("matchInfo", matchInfo.toJson())
                 intent.putExtra(
                     "matchType",
                     matchType
@@ -404,10 +404,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     private fun initData() {
         clickButton()
-        matchInfo = intent.getParcelableExtra("matchInfo")
+        matchInfo = intent.getStringExtra("matchInfo")?.fromJson<MatchInfo>()
         matchType = intent.getSerializableExtra("matchType") as MatchType
         intoLive = intent.getBooleanExtra("intoLive", false)
-
         matchInfo?.let {
             setupMatchInfo(it)
         }
@@ -572,7 +571,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         }
                         //endregion
 
-                        setupMatchInfo(matchInfo)
+                        setupMatchInfo(matchInfo,true)
                     }
                     setupLiveView(result.oddsDetailData?.matchOdd?.matchInfo?.liveVideo)
                 } else {
@@ -733,8 +732,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     /**
      * 配置賽事資訊(隊伍名稱、是否延期、賽制)
+     * fromApi api的状态不携带红黄牌等信息
      */
-    private fun setupMatchInfo(matchInfo: MatchInfo) {
+    private fun setupMatchInfo(matchInfo: MatchInfo,fromApi: Boolean=false) {
         //region 隊伍名稱
         tv_game_title.text = matchInfo.leagueName
         tv_home_name.text = matchInfo.homeName ?: ""
@@ -759,7 +759,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         if (isInPlay) {
             lin_bottom.isVisible = true
             setStatusText(matchInfo)
-            setupMatchScore(matchInfo)
+            if (!fromApi){
+                setupMatchScore(matchInfo)
+            }
         } else {
             var startDate = TimeUtil.timeFormat(matchInfo.startTime, TimeUtil.DM_HM_FORMAT)
             startDate.split(" ").let {
