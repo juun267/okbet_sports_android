@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/outright_info_block"
     android:layout_width="match_parent"
-    android:layout_height="30dp"
+    android:layout_height="40dp"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
@@ -31,11 +31,10 @@
         android:layout_marginRight="@dimen/margin_10"
         android:layout_weight="1"
         android:ellipsize="end"
-        android:maxLines="1"
-        android:singleLine="true"
+        android:maxLines="2"
         android:textColor="@color/color_535D76"
         android:textSize="@dimen/textSize12sp"
-        tools:text="欧洲足球锦标赛2020" />
+        tools:text="欧洲足球锦标赛" />
 
     <ImageView
         android:id="@+id/iv_league_arrow"
