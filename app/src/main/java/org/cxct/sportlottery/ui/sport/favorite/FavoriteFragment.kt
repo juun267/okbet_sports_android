@@ -51,15 +51,6 @@ import org.greenrobot.eventbus.EventBus
 @SuppressLint("LogNotTimber")
 class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(FavoriteViewModel::class) {
 
-    companion object {
-        fun newInstance(): FavoriteFragment {
-            val args = Bundle()
-            val fragment = FavoriteFragment()
-            fragment.arguments = args
-            return fragment
-        }
-    }
-
     var dataSport = mutableListOf<Item>()
         set(value) {
             field = value
