@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.sport.detail
 
 
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.ui.sport.detail.adapter.OddsDetailListData
 
 
 class OnOddClickListener(val _getBetInfoList: (odd: Odd, oddsDetail: OddsDetailListData?, scoPlayCateNameForBetInfo: String?) -> Unit) {

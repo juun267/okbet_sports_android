@@ -14,12 +14,9 @@ import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.adapter.BetListRefactorAdapter.BetRvType.*
 import org.cxct.sportlottery.ui.betList.holder.BasketballEndingCardViewHolder
 import org.cxct.sportlottery.ui.betList.listener.OnItemClickListener
-import org.cxct.sportlottery.ui.betList.listener.OnSelectedPositionListener
 import org.cxct.sportlottery.util.KeyboardView
 import org.cxct.sportlottery.ui.betList.holder.BatchParlayConnectViewHolder as BpcVh
-import org.cxct.sportlottery.ui.betList.holder.BatchSingleInMoreOptionViewHolder as bsiMoVh
 import org.cxct.sportlottery.ui.betList.holder.BetInfoItemViewHolder as BiVh
-import org.cxct.sportlottery.ui.betList.holder.OddsChangedWarnViewHolder as OcWvH
 
 class BetListRefactorAdapter(
     private val keyboardView: KeyboardView,
@@ -27,18 +24,13 @@ class BetListRefactorAdapter(
     private val userBalance: () -> Double
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private enum class ViewType { Bet, Parlay, OddsWarn, BasketballEndingCard }
-    enum class BetViewType { SINGLE, PARLAY, NULL }
-
-    private val attachedViewSet = HashSet<RecyclerView.ViewHolder>()
-
-
     /**
      * @property SINGLE 单注
      * @property PARLAY_SINGLE 串关-单注
      * @property PARLAY 串关-多注
      */
     enum class BetRvType { SINGLE, PARLAY_SINGLE, PARLAY, BasketballEndingCard }
+    enum class ViewType { Bet, Parlay, BasketballEndingCard }
 
     var adapterBetType: BetRvType = SINGLE
         set(value) {
@@ -64,28 +56,6 @@ class BetListRefactorAdapter(
             notifyDataSetChanged()
         }
 
-    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
-        super.onViewRecycled(holder)
-        when (holder is BiVh) {
-            true -> holder.clearHandler()
-            else -> {}
-        }
-    }
-
-    var mSelectedPosition: Int = -1
-
-    var mBetView = BetViewType.NULL
-
-    var onSelectedPositionListener: OnSelectedPositionListener =
-        object : OnSelectedPositionListener {
-            override fun onSelectChange(position: Int, single: BetViewType) {
-                if (mSelectedPosition != position || mBetView != single) {
-                    mSelectedPosition = position
-                    mBetView = single
-                    notifyDataSetChanged()
-                }
-            }
-        }
 
     var userLogin: Boolean = false
         set(value) {
@@ -112,26 +82,21 @@ class BetListRefactorAdapter(
         }
 
 
-    private var isOddsChangedWarn = false //顯示賠率變更提示
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return when (viewType) {
+            //单注和串关
             ViewType.Bet.ordinal -> BiVh(
                 ContentBetInfoItemV32Binding.inflate(layoutInflater), userBalance
             )
 
-            ViewType.OddsWarn.ordinal -> OcWvH(
-                layoutInflater.inflate(
-                    R.layout.content_odds_changed_warn, parent, false
-                )
-            )
-
+            //篮球末尾比分
             ViewType.BasketballEndingCard.ordinal -> BasketballEndingCardViewHolder(
                 ContentBetInfoItemV3BaseketballEndingCardBinding.inflate(layoutInflater),
                 userBalance
             )
 
+            //串关多注、注单列表
             else -> BpcVh(
                 layoutInflater.inflate(
                     R.layout.item_bet_list_batch_control_connect_v3, parent, false
@@ -158,15 +123,7 @@ class BetListRefactorAdapter(
             }
 
             PARLAY -> {
-                when {
-                    isOddsChangedWarn && position == 0 -> {
-                        ViewType.OddsWarn.ordinal
-                    }
-
-                    else -> {
-                        ViewType.Parlay.ordinal
-                    }
-                }
+                ViewType.Parlay.ordinal
             }
 
             BasketballEndingCard -> {
@@ -176,7 +133,6 @@ class BetListRefactorAdapter(
     }
 
     override fun getItemCount(): Int {
-        //region 20220607 投注單版面調整
         return getListSize()
     }
 
@@ -185,17 +141,13 @@ class BetListRefactorAdapter(
     ) {
         when (holder) {
             is BasketballEndingCardViewHolder -> {
-//                betList?.add(betList!![0])
                 betList?.getOrNull(position)?.let { betInfoListData ->
                     holder.bind(
                         betList,
                         betInfoListData,
                         currentOddsType,
-                        itemCount,
                         onItemClickListener,
                         betList?.size ?: 0,
-                        mSelectedPosition,
-                        onSelectedPositionListener,
                         position,
                         userMoney,
                         userLogin,
@@ -212,8 +164,6 @@ class BetListRefactorAdapter(
                         itemCount,
                         onItemClickListener,
                         betList?.size ?: 0,
-                        mSelectedPosition,
-                        onSelectedPositionListener,
                         position,
                         userMoney,
                         userLogin,
@@ -224,60 +174,18 @@ class BetListRefactorAdapter(
 
             is BpcVh -> {
                 holder.bind(
-                    ////region 20220607 投注單版面調整
-                    parlayList?.getOrNull(
-                        when (isOddsChangedWarn) {
-                            true -> position - 1
-                            false -> position
-                        }
-                    ),
-                    //endregion
-                    currentOddsType,
+                    parlayList?.getOrNull(position),
                     hasBetClosed,
                     onItemClickListener,
-                    mSelectedPosition,
-                    mBetView,
-                    onSelectedPositionListener,
                     position,
                     userMoney,
                     userLogin,
                     betList
                 )
             }
-
-            is bsiMoVh -> {
-                holder.bind(
-                    parlayList?.getOrNull(0),
-                    betList ?: mutableListOf(),
-                    currentOddsType,
-                    onItemClickListener,
-                    { notifyDataSetChanged() },
-                    mSelectedPosition,
-                    mBetView,
-                    onSelectedPositionListener,
-                    position,
-                    hasBetClosedForSingle,
-                    userMoney,
-                    userLogin
-                )
-            }
         }
     }
 
-    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
-        super.onViewAttachedToWindow(holder)
-        attachedViewSet.add(holder)
-    }
-
-    override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
-        super.onViewDetachedFromWindow(holder)
-        attachedViewSet.remove(holder)
-    }
-
-    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
-        super.onDetachedFromRecyclerView(recyclerView)
-        attachedViewSet.clear()
-    }
 
     //使用HasStabledIds需複寫回傳的position, 若仍使用super.getItemId(position), 數據刷新會錯亂.
     //https://blog.csdn.net/karsonNet/article/details/80598435
@@ -285,12 +193,6 @@ class BetListRefactorAdapter(
         return position.toLong()
     }
 
-
-    fun closeAllKeyboard() {
-        attachedViewSet.forEach {
-            it.itemView.findViewById<KeyboardView>(R.id.layoutKeyBoard)?.hideKeyboard()
-        }
-    }
 
     fun getListSize(): Int {
         //region 20220607 投注單版面調整
@@ -313,12 +215,7 @@ class BetListRefactorAdapter(
                     }
 
                     else -> {
-                        val parlayListSize = parlayList?.size ?: 0
-                        if (isOddsChangedWarn) {
-                            parlayListSize + 1
-                        } else {
-                            parlayListSize
-                        }
+                        parlayList?.size ?: 0
                     }
                 }
             }

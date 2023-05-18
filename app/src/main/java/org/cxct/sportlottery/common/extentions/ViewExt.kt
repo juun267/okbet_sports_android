@@ -3,12 +3,10 @@ package org.cxct.sportlottery.common.extentions
 import android.animation.*
 import android.text.InputFilter
 import android.view.View
-import android.view.animation.AnimationSet
 import android.view.animation.BounceInterpolator
 import androidx.annotation.LayoutRes
 import com.chad.library.adapter.base.BaseQuickAdapter
 import android.view.animation.DecelerateInterpolator
-import android.view.animation.LinearInterpolator
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import androidx.core.view.ViewCompat
@@ -39,7 +37,7 @@ fun setViewVisible(vararg views: View) {
     views.forEach { it.visibility = View.VISIBLE }
 }
 
-fun setOnClickListener(vararg view: View, onClick: (View) -> Unit) {
+fun setOnClickListeners(vararg view: View, onClick: (View) -> Unit) {
     view.forEach { it.setOnClickListener(onClick) }
 }
 

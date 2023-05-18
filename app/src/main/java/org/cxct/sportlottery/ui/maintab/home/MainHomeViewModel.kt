@@ -7,13 +7,24 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.callApi
+import org.cxct.sportlottery.common.extentions.toast
+import org.cxct.sportlottery.net.PageInfo
+import org.cxct.sportlottery.net.bettingStation.BettingStationRepository
+import org.cxct.sportlottery.net.games.OKGamesRepository
+import org.cxct.sportlottery.net.games.data.OKGameBean
+import org.cxct.sportlottery.net.news.NewsRepository
+import org.cxct.sportlottery.net.news.data.NewsDetail
+import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.match.MatchRound
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.list.MatchLiveData
+import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuFilter
 import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendRequest
@@ -113,12 +124,44 @@ open class MainHomeViewModel(
         get() = _liveRoundCount
     val gameBalanceResult: LiveData<Event<Triple<String, EnterThirdGameResult, Double>>>
         get() = _gameBalanceResult
-    private var _gameBalanceResult = MutableLiveData<Event<Triple<String, EnterThirdGameResult, Double>>>()
+    private var _gameBalanceResult =
+        MutableLiveData<Event<Triple<String, EnterThirdGameResult, Double>>>()
+
+    val homeNewsList: LiveData<List<NewsItem>>
+        get() = _homeNewsList
+    private val _homeNewsList = MutableLiveData<List<NewsItem>>()
+
+    val pageNewsList: LiveData<PageInfo<NewsItem>>
+        get() = _pageNewsList
+    private val _pageNewsList = MutableLiveData<PageInfo<NewsItem>>()
+
+    val newsDetail: LiveData<Pair<Int, NewsDetail?>>
+        get() = _newsDetail
+    private val _newsDetail = MutableLiveData<Pair<Int, NewsDetail?>>()
+
+    val recordBetNewHttp: LiveData<List<RecordNewEvent>>
+        get() = _recordBetNewHttp
+    val recordWinsResultHttp: LiveData<List<RecordNewEvent>>
+        get() = _recordWinsResultHttp
+
+
+    //okgames游戏列表
+    val homeGamesList: LiveData< List<OKGameBean>>
+        get() = _homeGamesList
+    private val _homeGamesList = MutableLiveData< List<OKGameBean>>()
+
+
+    private val _recordBetNewHttp = MutableLiveData<List<RecordNewEvent>>()
+    private val _recordWinsResultHttp = MutableLiveData<List<RecordNewEvent>>()
+
+    val bettingStationList: LiveData<List<BettingStation>>
+        get() = _bettingStationList
+    private val _bettingStationList = MutableLiveData<List<BettingStation>>()
 
     //region 宣傳頁用
     fun getRecommend() {
         viewModelScope.launch {
-            val resultRecommend=doNetwork(androidContext) {
+            val resultRecommend = doNetwork(androidContext) {
                 val currentTimeMillis = System.currentTimeMillis()
                 val calendar = Calendar.getInstance()
                 calendar.timeInMillis = currentTimeMillis
@@ -172,6 +215,63 @@ open class MainHomeViewModel(
         }
     }
 
+
+    /**
+     * 获取首页okgames列表
+     */
+    var pageIndex=1
+    val pageSize=6
+    var totalCount=0
+    var totalPage=0
+    fun getHomeOKGamesList(
+    ) = callApi({ OKGamesRepository.getHomeOKGamesList(pageIndex, pageSize) }) {
+        if(it.getData()==null){
+            //hide loading
+            _homeGamesList.value= arrayListOf()
+        }else{
+            totalCount=it.total
+            if(totalPage==0){
+                totalPage=totalCount/pageSize
+                if(totalCount%pageSize!=0){
+                    totalPage++
+                }
+            }
+            _homeGamesList.value=it.getData()
+        }
+    }
+
+
+    /**
+     * 进入OKgame游戏
+     */
+    fun homeOkGamesEnterThirdGame(gameData: OKGameBean?, baseFragment: BaseFragment<*>) {
+        if (gameData == null) {
+            _enterThirdGameResult.postValue(
+                Pair(
+                    "${gameData?.firmCode}", EnterThirdGameResult(
+                        resultType = EnterThirdGameResult.ResultType.FAIL,
+                        url = null,
+                        errorMsg = androidContext.getString(R.string.hint_game_maintenance)
+                    )
+                )
+            )
+            return
+        }
+        requestEnterThirdGame(
+            "${gameData.firmType}",
+            "${gameData.gameCode}",
+            "${gameData.gameCode}",
+            baseFragment
+        )
+    }
+
+    /**
+     * 记录最近游戏
+     */
+    fun homeOkGameAddRecentPlay(okGameBean: OKGameBean) {
+         LoginRepository.addRecentPlayGame(okGameBean.id.toString())
+    }
+
     //region 宣傳頁推薦賽事資料處理
     /**
      * 設置賽事類型參數(滾球、即將、今日、早盤,波胆)
@@ -214,6 +314,7 @@ open class MainHomeViewModel(
             }?.let { configResult ->
                 if (configResult.success) {
                     sConfigData = configResult.configData
+                    ConfigRepository.config.postValue(configResult)
                     setupDefaultHandicapType()
                     _gotConfig.postValue(Event(true))
                 }
@@ -584,7 +685,11 @@ open class MainHomeViewModel(
         }
     }
 
-    private fun getGameBalance(firmType: String, thirdGameResult: EnterThirdGameResult, baseFragment: BaseFragment<*>) {
+    private fun getGameBalance(
+        firmType: String,
+        thirdGameResult: EnterThirdGameResult,
+        baseFragment: BaseFragment<*>,
+    ) {
         doRequest(androidContext, { OneBoSportApi.thirdGameService.getAllBalance() }) { result ->
             baseFragment.hideLoading()
             var balance: Double = result?.resultMap?.get(firmType)?.money ?: (0).toDouble()
@@ -592,5 +697,73 @@ open class MainHomeViewModel(
         }
     }
 
-    //endregion
+    /**
+     * 获取新闻资讯列表
+     */
+    fun getHomeNews(pageNum: Int, pageSize: Int, categoryIds: List<Int>) {
+        viewModelScope.launch {
+            callApi({ NewsRepository.getHomeNews(pageNum, pageSize, NewsRepository.SORT_CREATE_TIME,categoryIds) }) {
+                if (it.succeeded()) {
+                    _homeNewsList.postValue(it.getData()?.firstOrNull()?.detailList ?: listOf())
+                } else {
+                    toast(it.msg)
+                }
+            }
+        }
+    }
+
+    /**
+     * 获取新闻分页列表
+     */
+    fun getPageNews(pageNum: Int, pageSize: Int, categoryId: Int) {
+        viewModelScope.launch {
+            callApi({ NewsRepository.getPageNews(pageNum, pageSize, NewsRepository.SORT_CREATE_TIME,categoryId) }) {
+                if (it.succeeded()) {
+                    it.getData()?.let {
+                        _pageNewsList.postValue(it)
+                    }
+                } else {
+                    toast(it.msg)
+                }
+            }
+        }
+    }
+
+
+    /**
+     * 获取新闻资讯列表
+     */
+    fun getNewsDetail(id: Int) = callApi({ NewsRepository.getNewsDetail(id,NewsRepository.SORT_CREATE_TIME) }) {
+        if (it.succeeded()) {
+            _newsDetail.postValue(Pair(id, it.getData()))
+        } else {
+            _newsDetail.postValue(Pair(id, null))
+            toast(it.msg)
+        }
+    }
+
+
+    fun getRecordNew() = callApi({ OKGamesRepository.getRecordNew() }) {
+        if (it.succeeded()) {
+            _recordBetNewHttp.postValue(it.getData())
+        } else {
+            toast(it.msg)
+        }
+    }
+
+    fun getRecordResult() = callApi({ OKGamesRepository.getRecordResult() }) {
+        if (it.succeeded()) {
+            _recordWinsResultHttp.postValue(it.getData())
+        } else {
+            toast(it.msg)
+        }
+    }
+
+    fun getBettingStationList() = callApi({ BettingStationRepository.getBettingStationList() }) {
+        if (it.succeeded()) {
+            _bettingStationList.postValue(it.getData())
+        } else {
+            toast(it.msg)
+        }
+    }
 }

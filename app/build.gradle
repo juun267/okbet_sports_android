@@ -20,8 +20,8 @@ android {
         applicationId "com.okbet.ph"
         minSdk 23
         targetSdk 31
-        versionName "1.1.56"
-        versionCode 78
+        versionName "1.1.57"
+        versionCode 79
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         ndk {
@@ -320,6 +320,9 @@ dependencies {
     //mmkv
     implementation 'com.tencent:mmkv:1.2.13'
     implementation 'com.github.FlyJingFish:GradientTextView:1.0.9'
+
+    // 富文本spann工具  https://github.com/liangjingkanji/spannable
+    implementation 'com.github.liangjingkanji:spannable:1.2.6'
 
     //https://developers.facebook.com/docs/facebook-login/android
     implementation 'com.facebook.android:facebook-login:latest.release'

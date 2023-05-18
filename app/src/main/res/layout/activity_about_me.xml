@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_141414_F3F4F5"
     android:orientation="vertical"
-    tools:context=".ui.helpCenter.HelpCenterActivity">
+    tools:context=".ui2.helpCenter.HelpCenterActivity">
 
     <org.cxct.sportlottery.view.CustomTopToolbar
         android:id="@+id/custom_tool_bar"
@@ -14,12 +14,106 @@
         android:layout_height="wrap_content"
         app:topTitleText="@string/about_us"/>
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/about_us_container"
-        android:name="androidx.navigation.fragment.NavHostFragment"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:navGraph="@navigation/about_us_navigation"
-        tools:layout="@layout/fragment_about_us" />
+        android:layout_height="11dp"/>
+    <LinearLayout
+        android:id="@+id/linear_about_us"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/color_191919_FCFCFC"
+        android:gravity="center"
+        android:paddingStart="18dp"
+        android:paddingEnd="20dp">
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="6dp"
+            android:layout_weight="1"
+            android:text="@string/about_us"
+            android:textColor="@color/color_BBBBBB_333333"
+            android:textSize="@dimen/textSize14sp" />
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@drawable/ic_arrow_right" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linear_responsible"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/color_191919_FCFCFC"
+        android:gravity="center"
+        android:paddingStart="18dp"
+        android:paddingEnd="20dp">
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="6dp"
+            android:layout_weight="1"
+            android:text="@string/responsible"
+            android:textColor="@color/color_BBBBBB_333333"
+            android:textSize="@dimen/textSize14sp" />
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@drawable/ic_arrow_right" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linear_terms"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/color_191919_FCFCFC"
+        android:gravity="center"
+        android:paddingStart="18dp"
+        android:paddingEnd="20dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="6dp"
+            android:layout_weight="1"
+            android:text="@string/terms_conditions"
+            android:textColor="@color/color_BBBBBB_333333"
+            android:textSize="@dimen/textSize14sp" />
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@drawable/ic_arrow_right" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linear_privacy"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/color_191919_FCFCFC"
+        android:gravity="center"
+        android:paddingStart="18dp"
+        android:paddingEnd="20dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="6dp"
+            android:layout_weight="1"
+            android:text="@string/privacy_policy"
+            android:textColor="@color/color_BBBBBB_333333"
+            android:textSize="@dimen/textSize14sp" />
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@drawable/ic_arrow_right" />
+    </LinearLayout>
 
 </LinearLayout>

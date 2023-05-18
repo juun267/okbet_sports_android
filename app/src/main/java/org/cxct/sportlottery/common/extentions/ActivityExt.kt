@@ -75,8 +75,8 @@ fun LifecycleOwner.doOnStop(once: Boolean = false, block: () -> Unit) {
     doWhenLife(Lifecycle.Event.ON_STOP, 0, block, once)
 }
 
-fun LifecycleOwner.doOnDestory(once: Boolean = false, block: () -> Unit) {
-    doWhenLife(Lifecycle.Event.ON_DESTROY, 0, block, once)
+fun LifecycleOwner.doOnDestory(block: () -> Unit) {
+    doWhenLife(Lifecycle.Event.ON_DESTROY, 0, block, true)
 }
 
 fun LifecycleOwner.doWhenLife(

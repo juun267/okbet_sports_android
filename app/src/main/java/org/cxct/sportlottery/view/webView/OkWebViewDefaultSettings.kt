@@ -32,9 +32,10 @@ class OkWebViewDefaultSettings {
         mWebSettings.javaScriptCanOpenWindowsAutomatically = true
         mWebSettings.cacheMode = WebSettings.LOAD_DEFAULT
         mWebSettings.databaseEnabled = false
+        mWebSettings.blockNetworkImage = false
 //        mWebSettings.setAppCacheEnabled(false)
 
-        mWebSettings.setSupportMultipleWindows(true) //20191120 記錄問題： target=_black 允許跳轉新窗口處理
+//        mWebSettings.setSupportMultipleWindows(true) //20191120 記錄問題： target=_black 允許跳轉新窗口處理
         mWebSettings.allowContentAccess = true
         mWebSettings.allowFileAccessFromFileURLs = true
         mWebSettings.allowUniversalAccessFromFileURLs = true

@@ -114,7 +114,7 @@
     <string name="btn_login">登录</string>
     <string name="btn_register">注册</string>
     <string name="lottery">彩票</string>
-    <string name="poker">棋牌</string>
+    <string name="J203">棋牌</string>
     <string name="slot">电子</string>
     <string name="fishing">捕鱼</string>
     <string name="home_tan_main">主页</string>
@@ -197,7 +197,7 @@
     <string name="fourth">四</string>
     <string name="fifth">五</string>
     <string name="account_balance">总资产</string>
-    <string name="recharge">存款</string>
+    <string name="J285">存款</string>
     <string name="account_transfer">额度转换</string>
     <string name="money_recycle_succeed">额度回收成功</string>
     <string name="news_center">消息中心</string>
@@ -529,7 +529,7 @@
     <string name="sorry_website_is_now_maintenance">目前网站维护中</string>
     <string name="if_there_is_any_question_please_consult">若有疑问请咨询%1$s</string>
     <string name="bottom_nav_home">首页</string>
-    <string name="sport">体育</string>
+    <string name="B001">体育</string>
     <string name="live">真人</string>
     <string name="sport_bet_record">体育投注记录</string>
     <string name="my_favorite">赛事收藏</string>
@@ -1263,6 +1263,17 @@
     <string name="N890">打印</string>
     <string name="N891">请输入姓名</string>
     <string name="J033">姓名</string>
+
+    <string name="M013">即将推出</string>
+    <string name="N703">OKBET游戏场馆</string>
+    <string name="B005">优惠活动</string>
+    <string name="B015">代理加盟</string>
+    <string name="N909">新闻</string>
+    <string name="LT050">客服</string>
+    <string name="M169">语言</string>
+    <string name="N913">相关新闻</string>
+    <string name="N912">新闻列表</string>
+
     <string name="N899">如果您只想删除单个比分，可以触碰单个比分删除。</string>
     <string name="N379">不再提示</string>
     <string name="N903">篮球末位比分</string>
@@ -1282,4 +1293,17 @@
     <string name="N952">相机扫码</string>
     <string name="N956">无法识别此二维码</string>
     <string name="N980">获取系统相机权限被拒绝</string>
+
+    <string name="N969">体育投注服务暂时维护中！</string>
+    <string name="N257">维护中</string>
+    <string name="N960">"新闻详情 "</string>
+    <string name="N915">赞助伙伴</string>
+
+    <string name="N910">OKBET投注站</string>
+    <string name="N914">实名验证</string>
+    <string name="J134">登录</string>
+    <string name="J151">注册</string>
+    <string name="N700">敬请期待</string>
+    <string name="N704">推荐棋牌游戏</string>
+    <string name="N986">方位</string>
 </resources>

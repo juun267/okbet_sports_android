@@ -37,13 +37,21 @@ object OKGamesRepository {
         return okGamesApi.getOKGamesRecordResult()
     }
 
+    suspend fun getRecordNew(): ApiResult<List<RecordNewEvent>> {
+        return okGamesApi.getRecordNew()
+    }
+
+    suspend fun getRecordResult(): ApiResult<List<RecordNewEvent>> {
+        return okGamesApi.getRecordResult()
+    }
+
     suspend fun getOKGamesList(
         page: Int,
         pageSize: Int,
         gameName: String?,
         categoryId: String?,
         firmId: String?,
-        markCollect: Boolean? = null // 获取收藏列表时为：true
+        markCollect: Boolean? = null, // 获取收藏列表时为：true
     ): ApiResult<List<OKGameBean>> {
 
         val params = paramDevice()
@@ -56,6 +64,24 @@ object OKGamesRepository {
         } else {
             params.addProperty("markCollect", markCollect)
         }
+
+        return okGamesApi.getOKGamesList(params)
+    }
+
+
+    /**
+     * 首页okgames列表数据
+     */
+    suspend fun getHomeOKGamesList(
+        page: Int,
+        pageSize: Int
+    ): ApiResult<List<OKGameBean>> {
+
+        val params = paramDevice()
+        params.addProperty("page", page)
+        params.addProperty("pageSize", pageSize)
+        //首页推荐 1启用,2禁用
+        params.addProperty("enableHome", 1)
 
         return okGamesApi.getOKGamesList(params)
     }

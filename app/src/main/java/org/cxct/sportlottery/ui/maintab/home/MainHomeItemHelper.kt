@@ -23,11 +23,13 @@ object MainHomeItemHelper {
     )
 
     private val items = mutableListOf<HomeItem>().apply {
-        add(HomeItem(R.string.home_recommend,
+        add(
+            HomeItem(R.string.home_recommend,
             R.drawable.icon_recommend,
             R.drawable.bg_tab_open_selector,
             R.color.color_E9F4FA,
-            11))
+            11)
+        )
         // 推荐
         add(HomeItem(R.string.home_sports, R.drawable.sport0)) //体育
         add(HomeItem(R.string.home_in_play, R.drawable.icon_in_play0)) //滚球

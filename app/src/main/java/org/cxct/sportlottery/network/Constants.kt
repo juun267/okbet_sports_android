@@ -587,6 +587,24 @@ object Constants {
     // 最新大奖
     const val OKGAMES_RECORD_RESULT = "/api/front/index/recordResultOkGamesList"
 
+    // 首页最新投注
+    const val RECORD_NEW = "/api/front/index/recordNewList"
+
+    // 首页最新大奖
+    const val RECORD_RESULT = "/api/front/index/recordResultList"
+
+    //首页资讯列表
+    const val NEWS_LIST_HOME = "/front/content/getListHome"
+
+    //推荐列表不带Contents
+    const val NEWS_LIST_RECOMMEND = "/front/content/getListRecommend"
+
+    //新闻列表不带Contents
+    const val NEWS_LIST_PAGE = "/front/content/getPage"
+
+    //资讯详情
+    const val NEWS_DETIAL = "/front/content/getOne"
+
     // 安卓送审版本号
     const val GET_CONFIG_BY_NAME = "/api/agent/game/config/getConfigByName/{name}"
 

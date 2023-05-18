@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialog_withdraw_password.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.login.afterTextChanged
+import org.cxct.sportlottery.view.afterTextChanged
 
 class WithdrawPassWordDialog : DialogFragment() {
 

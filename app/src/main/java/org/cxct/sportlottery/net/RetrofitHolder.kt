@@ -31,7 +31,9 @@ object RetrofitHolder {
     private val retrofit by lazy { createRetrofit(Constants.getBaseUrl()) }
 
     private val okHttpClient: OkHttpClient by lazy {
-        getUnsafeOkHttpClient().connectTimeout(Constants.CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
+        getUnsafeOkHttpClient().apply {
+            RetrofitUrlManager.getInstance().with(this)
+        }.connectTimeout(Constants.CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
             .writeTimeout(Constants.WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
             .readTimeout(Constants.READ_TIMEOUT, TimeUnit.MILLISECONDS)
             .addInterceptor(HttpStatusInterceptor()) // 处理token过期
@@ -56,13 +58,39 @@ object RetrofitHolder {
             .build()
     }
 
+    fun createNewRetrofit(baseUrl: String): Retrofit {
+        val client =
+            getUnsafeOkHttpClient().connectTimeout(Constants.CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
+                .writeTimeout(Constants.WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
+                .readTimeout(Constants.READ_TIMEOUT, TimeUnit.MILLISECONDS)
+                .addInterceptor(HttpStatusInterceptor()) // 处理token过期
+                .addNetworkInterceptor(Http400or500Interceptor()) //处理后端的沙雕行为
+                .addInterceptor(MoreBaseUrlInterceptor())
+                .addInterceptor(RequestInterceptor(MultiLanguagesApplication.appContext))
+                .apply {
+                    //debug版本才打印api內容
+                    if (BuildConfig.DEBUG) {
+//                    addInterceptor(HttpLoggingInterceptor())
+                        addInterceptor(HttpLogInterceptor())
+                    }
+                }.build()
+        return Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create(GsonFactory.getSingletonGson()))
+            .build()
+    }
+
     private fun getUnsafeOkHttpClient(): OkHttpClient.Builder {
         return try {
             // Create a trust manager that does not validate certificate chains
             val trustAllCerts: Array<TrustManager> = arrayOf(object : X509TrustManager {
 
                 @Throws(CertificateException::class)
-                override fun checkClientTrusted(chain: Array<X509Certificate?>?, authType: String?) {
+                override fun checkClientTrusted(
+                    chain: Array<X509Certificate?>?,
+                    authType: String?,
+                ) {
                     checkServerTrusted(chain)
                 }
 
@@ -83,7 +111,6 @@ object RetrofitHolder {
             // Create an ssl socket factory with our all-trusting manager
             val sslSocketFactory: SSLSocketFactory = sslContext.socketFactory
             val builder: OkHttpClient.Builder = OkHttpClient.Builder()
-            RetrofitUrlManager.getInstance().with(builder) // 通过拦截器实现的动态切换域名
             builder.sslSocketFactory(sslSocketFactory, trustAllCerts[0] as X509TrustManager)
             builder.hostnameVerifier { _, _ -> true }
             builder

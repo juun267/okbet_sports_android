@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/okbet_bg_login"
     android:focusableInTouchMode="true"
-    tools:context=".ui.login.signIn.PhoneVerifyActivity">
+    tools:context=".ui2.login.signIn.PhoneVerifyActivity">
 
     <include
         android:id="@+id/v_top"

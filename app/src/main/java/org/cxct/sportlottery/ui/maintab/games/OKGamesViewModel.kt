@@ -207,32 +207,40 @@ class OKGamesViewModel(
         _newRecentPlay.value = okGameBean
         _recentPlay.postValue(recentList)
     }
-    fun searchGames(requestTag: Any,
-                    gameName: String,
-                    page: Int = 1,
-                    pageSize: Int = 15,
-                    categoryId: String? = null,
-                    firmId: String? = null,
-    ) = callApi({ OKGamesRepository.getOKGamesList(page, pageSize, gameName, categoryId, firmId) }) {
+
+    fun searchGames(
+        requestTag: Any,
+        gameName: String,
+        page: Int = 1,
+        pageSize: Int = 15,
+        categoryId: String? = null,
+        firmId: String? = null,
+    ) = callApi({
+        OKGamesRepository.getOKGamesList(page,
+            pageSize,
+            gameName,
+            categoryId,
+            firmId)
+    }) {
         _gamesList.postValue(Triple(requestTag, it.total, it.getData()))
     }
 
-    val recordNewHttp: LiveData<List<RecordNewEvent>>
-        get() = _recordNewHttp
-    val recordResultHttp: LiveData<List<RecordNewEvent>>
-        get() = _recordResultHttp
+    val recordNewBetHttpOkGame: LiveData<List<RecordNewEvent>>
+        get() = _recordNewBetHttpOkGame
+    val recordResultWinsHttpOkGame: LiveData<List<RecordNewEvent>>
+        get() = _recordResultWinsHttpOkGame
 
-    private val _recordNewHttp = MutableLiveData<List<RecordNewEvent>>()
-    private val _recordResultHttp = MutableLiveData<List<RecordNewEvent>>()
+    private val _recordNewBetHttpOkGame = MutableLiveData<List<RecordNewEvent>>()
+    private val _recordResultWinsHttpOkGame = MutableLiveData<List<RecordNewEvent>>()
     fun getOKGamesRecordNew() = callApi({ OKGamesRepository.getOKGamesRecordNew() }) {
         if (it.succeeded()) {
-            _recordNewHttp.postValue(it.getData())
+            _recordNewBetHttpOkGame.postValue(it.getData())
         }
     }
 
     fun getOKGamesRecordResult() = callApi({ OKGamesRepository.getOKGamesRecordResult() }) {
         if (it.succeeded()) {
-            _recordResultHttp.postValue(it.getData())
+            _recordResultWinsHttpOkGame.postValue(it.getData())
         }
     }
 

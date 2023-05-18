@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.stx.xhb.androidx.XBanner
@@ -20,6 +21,7 @@ import org.cxct.sportlottery.common.extentions.onConfirm
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.config.ImageData
+import org.cxct.sportlottery.repository.ConfigRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.bean.XBannerImage
@@ -54,12 +56,16 @@ class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: Attribut
         initView()
     }
 
+    fun setup(lifecycleOwner: LifecycleOwner) {
+        ConfigRepository.onNewConfig(lifecycleOwner) {
+            it?.let { setUpBannerData() }
+        }
+    }
+
     private fun initView() {
         initIndicator()
         setupTables()
-
         initSearch()
-        setUpBannerData()
     }
 
     private fun initSearch() {

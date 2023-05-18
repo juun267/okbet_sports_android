@@ -51,15 +51,6 @@ import org.greenrobot.eventbus.EventBus
 @SuppressLint("LogNotTimber")
 class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(FavoriteViewModel::class) {
 
-    companion object {
-        fun newInstance(): FavoriteFragment {
-            val args = Bundle()
-            val fragment = FavoriteFragment()
-            fragment.arguments = args
-            return fragment
-        }
-    }
-
     var dataSport = mutableListOf<Item>()
         set(value) {
             field = value
@@ -108,12 +99,6 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
                         )
                     }
                 },
-                clickListenerQuickCateTab = { matchOdd, quickPlayCate ->
-                    setQuickPlayCateSelected(matchOdd, quickPlayCate)
-                },
-                clickListenerQuickCateClose = {
-                    clearQuickPlayCateSelected()
-                },
                 clickListenerFavorite = { matchId ->
                     viewModel.pinFavorite(FavoriteType.MATCH, matchId)
                 },
@@ -127,7 +112,6 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
                         }
                     }
                 },
-                refreshListener = {},
                 clickLiveIconListener = { matchId, _, gameMatchType, _ ->
                     if (viewModel.checkLoginStatus()) {
                         data.forEach {

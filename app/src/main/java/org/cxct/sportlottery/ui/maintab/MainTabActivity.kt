@@ -21,9 +21,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.android.synthetic.main.activity_main_tab.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.BetModeChangeEvent
@@ -40,13 +37,14 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.ui.betRecord.BetRecordFragment
 import org.cxct.sportlottery.ui.betRecord.accountHistory.next.AccountHistoryNextFragment
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
-import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment
+import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment2
 import org.cxct.sportlottery.ui.maintab.menu.SportLeftFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.ui.sport.SportFragment
@@ -73,7 +71,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     private var betListFragment: BetListFragment? = null
-    private val homeLeftFragment by lazy { MainLeftFragment() }
+    private val homeLeftFragment by lazy { MainLeftFragment2() }
     private val sportLeftFragment by lazy { SportLeftFragment() }
     private var exitTime: Long = 0
 
@@ -152,6 +150,19 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             menu.getItem(2).isVisible = !SPUtil.getMarketSwitch()
             onNavigationItemSelectedListener =
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
+
+                    val position = getMenuItemPosition(menuItem)
+
+                    // index1,2,3。  体育赛事，注单，收藏赛事      在体育服务维护中时 不能点击
+                    if(position in 1..3){
+                        //体育服务是否关闭
+                        if(getSportEnterIsClose()){
+                            ToastUtil.showToast(context, context.getString(R.string.N969))
+                            return@OnNavigationItemSelectedListener false
+                        }
+                    }
+
+
                     when (menuItem.itemId) {
                         R.id.i_betlist, R.id.i_favorite, R.id.i_user -> {
                             if (viewModel.isLogin.value == false) {
@@ -161,20 +172,13 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                         }
                     }
 
-                    val position = getMenuItemPosition(menuItem)
                     fragmentHelper.showFragment(position)
                     if (position == 0) {
                         homeFragment().backMainHome()
                     } else {
                         binding.llHomeBack.gone()
-                        if (position == 1) {
-                            GlobalScope.launch {
-                                delay(500)
-                                jumpToTheSport()
-                            }
-                        }
                     }
-                    setupBetBarVisibility(position)
+                    setupBetBarVisiblity(position)
                     return@OnNavigationItemSelectedListener true
                 }
 
@@ -198,8 +202,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         drawerLayout.openDrawer(Gravity.LEFT)
     }
 
+    fun closeDrawerLayout() {
+        drawerLayout.closeDrawer(Gravity.LEFT)
+    }
+
     private fun initDrawerLayout() {
-        showLeftFrament(0)
 //        drawerLayout.setScrimColor(Color.TRANSPARENT)
         drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
             override fun onDrawerStateChanged(newState: Int) {
@@ -243,33 +250,39 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         })
     }
 
-    fun showLeftFrament(position: Int, fromPage: Int = -1) {
-        if (position == 0) {
-            supportFragmentManager.beginTransaction().replace(R.id.left_menu, homeLeftFragment)
-                .commit()
-            homeLeftFragment.fromPage = fromPage
-            return
-        }
+    var menuClass: Class<*>? = null
 
-        supportFragmentManager.beginTransaction().replace(R.id.left_menu, sportLeftFragment)
+    fun showMainLeftMenu(contentFragment: Class<BaseFragment<*>>?) {
+        if (menuClass != homeLeftFragment::class.java) {
+            menuClass = homeLeftFragment::class.java
+            left_menu.layoutParams.width = MetricsUtil.getScreenWidth()
+        }
+        homeLeftFragment.openWithFragment(contentFragment)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.left_menu, homeLeftFragment)
             .commit()
-
-        val currentFragment = fragmentHelper.getCurrentFragment()
-        if (currentFragment is SportFragment) {
-            sportLeftFragment.matchType = currentFragment.getCurMatchType()
-            sportLeftFragment.gameType = currentFragment.getCurGameType()
-            return
-        }
-
     }
+
+    fun showSportLeftMenu(matchType: MatchType, gameType: GameType?) {
+        if (menuClass != sportLeftFragment::class.java) {
+            menuClass = sportLeftFragment::class.java
+            left_menu.layoutParams.width = (MetricsUtil.getScreenWidth() * 0.75f).toInt()
+        }
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.left_menu, sportLeftFragment)
+            .commit()
+        sportLeftFragment.matchType = matchType
+        sportLeftFragment.gameType = gameType
+    }
+
 
     override fun initMenu() {
         try {
             //關閉側邊欄滑動行為
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
             drawerLayout.setScrimColor(getColor(R.color.transparent_black_20))
-            //選單選擇結束要收起選單
-            left_menu.layoutParams.width = (MetricsUtil.getScreenWidth() * 0.75).toInt() //動態調整側邊欄寬
+//            //選單選擇結束要收起選單
+            left_menu.layoutParams.width = MetricsUtil.getScreenWidth() //動態調整側邊欄寬
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -373,6 +386,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
 
         if (betListCount == 0 || !needShowBetBar || BetInfoRepository.currentBetType == BetListFragment.SINGLE) {
+        if (betListCount == 0 || !needShowBetBar || BetInfoRepository.currentBetType
+            == BetListFragment.SINGLE
+        ) {
 //            Timber.d("ParlayFloatWindow隐藏：betListCount:${betListCount} !needShowBetBar:${!needShowBetBar} currentBetMode:${BetInfoRepository.currentBetType}")
             parlayFloatWindow.gone()
         } else {
@@ -611,10 +627,18 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         homeFragment().jumpToOKGames()
     }
 
+    fun jumpToNews() {
+        resetBackIcon(0)
+        homeFragment().jumpToNews()
+    }
+
     fun jumpToInplaySport() {
-        resetBackIcon(1)
-        ll_home_back.gone()
-        jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)
+        //检测体育服务是否关闭
+        checkSportStatus(this){
+            resetBackIcon(1)
+            ll_home_back.gone()
+            jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)
+        }
     }
 
     fun jumpToEarlySport() {
@@ -654,4 +678,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     override fun updateBetListOdds(list: MutableList<BetInfoListData>) {
     }
+
+    open fun getCurrentPosition(): Int = fragmentHelper.getCurrentPosition()
 }

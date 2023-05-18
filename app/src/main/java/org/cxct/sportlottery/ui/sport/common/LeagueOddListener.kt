@@ -19,11 +19,8 @@ class LeagueOddListener(
      */
     val clickListenerPlayType: (matchId: String?, matchInfoList: List<MatchInfo>, gameMatchType: MatchType, liveVideo: Int) -> Unit,
     val clickListenerBet: (view: View, matchInfo: MatchInfo?, odd: Odd, playCateCode: String, playCateName: String, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?) -> Unit,
-    val clickListenerQuickCateTab: (matchOdd: MatchOdd, quickPlayCate: QuickPlayCate) -> Unit,
-    val clickListenerQuickCateClose: () -> Unit,
     val clickListenerFavorite: (matchId: String?) -> Unit,
     val clickListenerStatistics: (matchId: String?) -> Unit,
-    val refreshListener: (leagueId: String) -> Unit,
     val clickLiveIconListener: (matchId: String?, matchInfoList: List<MatchInfo>, gameMatchType: MatchType, liveVideo: Int) -> Unit,
     val clickAnimationIconListener: (matchId: String?, matchInfoList: List<MatchInfo>, gameMatchType: MatchType, liveVideo: Int) -> Unit,
     val clickCsTabListener: (playCate: PlayCate, matchOdd: MatchOdd) -> Unit
@@ -45,9 +42,6 @@ class LeagueOddListener(
         clickListenerBet(view,matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap)
     }
 
-    fun onClickQuickCateTab(matchOdd: MatchOdd, quickPlayCate: QuickPlayCate) = clickListenerQuickCateTab(matchOdd, quickPlayCate)
-
-    fun onClickQuickCateClose() = clickListenerQuickCateClose()
 
     fun onClickFavorite(matchId: String?) = clickListenerFavorite(matchId)
 
@@ -55,7 +49,6 @@ class LeagueOddListener(
 
     fun onClickCsTabListener(playCate: PlayCate, matchOdd: MatchOdd) = clickCsTabListener(playCate, matchOdd)
 
-    fun onRefresh(leagueId: String) = refreshListener(leagueId)
 
     fun onClickLiveIconListener(
         matchId: String?,

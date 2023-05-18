@@ -7,7 +7,10 @@ import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.service.EventType
@@ -26,6 +29,7 @@ import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEve
 import org.cxct.sportlottery.network.service.ping_pong.PingPongEvent
 import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
+import org.cxct.sportlottery.network.service.sys_maintenance.SportMaintenanceEvent
 import org.cxct.sportlottery.network.service.sys_maintenance.SysMaintenanceEvent
 import org.cxct.sportlottery.network.service.user_level_config_change.UserLevelConfigListEvent
 import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
@@ -36,11 +40,14 @@ import org.cxct.sportlottery.service.BackService.Companion.CHANNEL_KEY
 import org.cxct.sportlottery.service.BackService.Companion.CONNECT_STATUS
 import org.cxct.sportlottery.service.BackService.Companion.SERVER_MESSAGE_KEY
 import org.cxct.sportlottery.service.BackService.Companion.mUserId
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.EncryptUtil
+import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.convertToIndoOdds
 import org.cxct.sportlottery.util.MatchOddUtil.convertToMYOdds
+import org.cxct.sportlottery.util.SocketUpdateUtil
+import org.cxct.sportlottery.util.sortOddsMap
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -87,6 +94,10 @@ open class ServiceBroadcastReceiver(
     val sysMaintenance: LiveData<SysMaintenanceEvent?>
         get() = _sysMaintenance
 
+    val sportMaintenance: LiveData<SportMaintenanceEvent?>
+        get() = _sportMaintenance
+
+
     val serviceConnectStatus: LiveData<ServiceConnectStatus>
         get() = _serviceConnectStatus
 
@@ -111,10 +122,14 @@ open class ServiceBroadcastReceiver(
     val closePlayCate: LiveData<Event<ClosePlayCateEvent?>>
         get() = _closePlayCate
 
-    val recordNew: LiveData<RecordNewEvent?>
-        get() = _recordNew
-    val recordResult: LiveData<RecordNewEvent?>
-        get() = _recordResult
+    val recordBetNew: LiveData<RecordNewEvent?>
+        get() = _recordBetNew
+    val recordWinsResult: LiveData<RecordNewEvent?>
+        get() = _recordWinsResult
+    val recordNewOkGame: LiveData<RecordNewEvent?>
+        get() = _recordNewOkGame
+    val recordResultOkGame: LiveData<RecordNewEvent?>
+        get() = _recordResultOkGame
 
     private val _globalStop = MutableLiveData<GlobalStopEvent?>()
     private val _matchClock = MutableLiveData<MatchClockEvent?>()
@@ -128,6 +143,7 @@ open class ServiceBroadcastReceiver(
     private val _lockMoney = MutableLiveData<Double?>()
     private val _userNotice = MutableLiveData<UserNoticeEvent?>()
     private val _sysMaintenance = MutableLiveData<SysMaintenanceEvent?>()
+    private val _sportMaintenance = MutableLiveData<SportMaintenanceEvent?>()
     private val _serviceConnectStatus = MutableLiveData<ServiceConnectStatus>()
     private val _leagueChange = MutableLiveData<LeagueChangeEvent?>()
     private val _matchOddsLock = MutableLiveData<MatchOddsLockEvent?>()
@@ -136,8 +152,11 @@ open class ServiceBroadcastReceiver(
     private val _dataSourceChange = MutableLiveData<Boolean?>()
     private val _userInfoChange = MutableLiveData<Boolean?>()
     private val _closePlayCate = MutableLiveData<Event<ClosePlayCateEvent?>>()
-    private val _recordNew = MutableLiveData<RecordNewEvent?>()
-    private val _recordResult = MutableLiveData<RecordNewEvent?>()
+    private val _recordBetNew = MutableLiveData<RecordNewEvent?>()
+    private val _recordWinsResult = MutableLiveData<RecordNewEvent?>()
+    private val _recordNewOkGame = MutableLiveData<RecordNewEvent?>()
+    private val _recordResultOkGame = MutableLiveData<RecordNewEvent?>()
+
 
     override fun onReceive(context: Context?, intent: Intent) {
         val bundle = intent.extras
@@ -183,6 +202,7 @@ open class ServiceBroadcastReceiver(
 
     private suspend fun handleEvent(jObj: JSONObject, jObjStr: String, channelStr: String) {
         when (val eventType = jObj.optString("eventType")) {
+
             EventType.NOTICE -> {
                 val data = ServiceMessage.getNotice(jObjStr)
                 _notice.postValue(data)
@@ -202,7 +222,11 @@ open class ServiceBroadcastReceiver(
                 val data = ServiceMessage.getSysMaintenance(jObjStr)
                 _sysMaintenance.postValue(data)
             }
-
+            //体育服务开关
+            EventType.SPORT_MAINTAIN_STATUS -> {
+                val data = ServiceMessage.getSportMaintenance(jObjStr)
+                _sportMaintenance.postValue(data)
+            }
             //公共频道
             EventType.DATA_SOURCE_CHANGE -> {
                 _dataSourceChange.postValue(true)
@@ -311,15 +335,25 @@ open class ServiceBroadcastReceiver(
             EventType.UNKNOWN -> {
                 Timber.i("Receive UnKnown EventType : $eventType")
             }
+            EventType.RECORD_NEW -> {
+                //首页最新投注
+                val data = ServiceMessage.getRecondNew(jObjStr)
+                _recordBetNew.postValue(data)
+            }
+            EventType.RECORD_RESULT -> {
+                //首页最新大奖
+                val data = ServiceMessage.getRecondResult(jObjStr)
+                _recordWinsResult.postValue(data)
+            }
             EventType.RECORD_NEW_OK_GAMES -> {
                 //最新投注
                 val data = ServiceMessage.getRecondNew(jObjStr)
-                _recordNew.postValue(data)
+                _recordNewOkGame.postValue(data)
             }
             EventType.RECORD_RESULT_OK_GAMES -> {
                 //最新大奖
                 val data = ServiceMessage.getRecondResult(jObjStr)
-                _recordResult.postValue(data)
+                _recordResultOkGame.postValue(data)
             }
             else -> {}
 

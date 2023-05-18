@@ -5,7 +5,7 @@
     android:layout_width="63dp"
     android:layout_height="56dp"
     android:background="@drawable/shape_date_item_bg_v4"
-    tools:context="org.cxct.sportlottery.ui.game.hall.adapter.DateAdapter"
+    tools:context="org.cxct.sportlottery.ui.sport.common.DateAdapter"
     tools:ignore="SpUsage">
 
     <TextView

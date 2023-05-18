@@ -26,4 +26,11 @@ interface OKGamesApi {
 
     @GET(Constants.OKGAMES_RECORD_RESULT)
     suspend fun getOKGamesRecordResult(): ApiResult<List<RecordNewEvent>>
+
+    @GET(Constants.RECORD_NEW)
+    suspend fun getRecordNew(): ApiResult<List<RecordNewEvent>>
+
+    @GET(Constants.RECORD_RESULT)
+    suspend fun getRecordResult(): ApiResult<List<RecordNewEvent>>
+
 }

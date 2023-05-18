@@ -16,7 +16,7 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityRegisterInfoBinding
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.login.checkRegisterListener
+import org.cxct.sportlottery.view.checkRegisterListener
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.SPUtil
 import org.cxct.sportlottery.util.TimeUtil

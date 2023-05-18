@@ -7,7 +7,6 @@ import android.provider.Settings
 import android.text.InputType
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
-import android.view.Gravity
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -20,9 +19,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.crash.FirebaseLog
 import org.cxct.sportlottery.common.event.RegisterInfoEvent
+import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.databinding.ActivityLoginOkBinding
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.network.Constants
@@ -35,8 +34,8 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.dialog.SelfLimitFrozeErrorDialog
 import org.cxct.sportlottery.ui.login.VerifyCodeDialog
-import org.cxct.sportlottery.ui.login.checkRegisterListener
-import org.cxct.sportlottery.ui.login.foget2.ForgetWaysActivity
+import org.cxct.sportlottery.view.checkRegisterListener
+import org.cxct.sportlottery.ui.login.foget.ForgetWaysActivity
 import org.cxct.sportlottery.ui.login.signUp.info.RegisterInfoActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.*
@@ -58,6 +57,19 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         private const val SELF_LIMIT = 1130
         const val LOGIN_TYPE_CODE = 0
         const val LOGIN_TYPE_PWD = 1
+        const val LOGIN_TYPE_GOOGLE = 2
+
+        fun googleLoging(context: Context) {
+            val intent = Intent(context, LoginOKActivity::class.java)
+            intent.putExtra("login_type", LOGIN_TYPE_GOOGLE)
+            context.startActivity(intent)
+        }
+
+        fun startRegist(context: Context) {
+            val intent = Intent(context, LoginOKActivity::class.java)
+            intent.putExtra("login_type", LOGIN_TYPE_CODE)
+            context.startActivity(intent)
+        }
     }
 
     private var countDownGoing = false
@@ -84,6 +96,13 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         initObserve()
         viewModel.focusChangeCheckAllInputComplete()
         EventBusUtil.targetLifecycle(this)
+
+        val loginType = intent.getIntExtra("login_type", LOGIN_TYPE_PWD)
+        if(LOGIN_TYPE_CODE == loginType) {
+            switchLoginType(LOGIN_TYPE_CODE)
+        } else if (loginType == LOGIN_TYPE_GOOGLE) {
+            googleLogin()
+        }
     }
 
     private fun initOnClick() {
@@ -249,10 +268,22 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         updateUiWithResult(event.loginResult)
     }
 
+    private fun googleLogin() {
+        loading()
+        AuthManager.authGoogle(this@LoginOKActivity)
+    }
+
+    override fun onPause() {
+        super.onPause()
+//        hideLoading()
+    }
+
     private fun setupAuthLogin() {
         btn_google.setOnClickListener {
-            if (binding.cbPrivacy.isChecked)
-                AuthManager.authGoogle(this@LoginOKActivity)
+            if (binding.cbPrivacy.isChecked) {
+                googleLogin()
+            }
+
         }
 
         btn_facebook.setOnClickListener {
@@ -436,10 +467,13 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         super.onActivityResult(requestCode, resultCode, data)
         AuthManager.googleCallback(requestCode, resultCode, data) { success, msg ->
             if (success) {
-                msg?.let {
-                    viewModel.loginGoogle(it)
+                if (msg.isEmptyStr()) {
+                    hideLoading()
+                } else {
+                    viewModel.loginGoogle(msg!!)
                 }
             } else {
+                hideLoading()
                 showErrorDialog(msg)
             }
         }
@@ -477,7 +511,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         }
     }
 
-    fun setupRecommendCodeVisible() {
+    private fun setupRecommendCodeVisible() {
         binding.etRecommendCode.isVisible =
             viewModel.loginType == LOGIN_TYPE_CODE && viewModel.checkUserExist.value == false
     }

@@ -19,9 +19,10 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.setOnClickListener
+import org.cxct.sportlottery.common.extentions.setOnClickListeners
 import org.cxct.sportlottery.common.extentions.setViewVisible
 import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ContentBetInfoItemV3BaseketballEndingCardBinding
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.LoginRepository
@@ -29,7 +30,6 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.betList.listener.OnItemClickListener
-import org.cxct.sportlottery.ui.betList.listener.OnSelectedPositionListener
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.KvUtils.BASKETBALL_DEL_TIP_FLAG
@@ -55,11 +55,8 @@ class BasketballEndingCardViewHolder(
         betList: MutableList<BetInfoListData>?,
         itemData: BetInfoListData,
         currentOddsType: OddsType,
-        itemCount: Int,
         onItemClickListener: OnItemClickListener,
         betListSize: Int,
-        mSelectedPosition: Int,
-        onSelectedPositionListener: OnSelectedPositionListener,
         position: Int,
         userMoney: Double,
         userLogin: Boolean,
@@ -82,8 +79,6 @@ class BasketballEndingCardViewHolder(
                 if (itemData.matchOdd.isOnlyEUType) OddsType.EU else currentOddsType,
                 onItemClickListener,
                 betListSize,
-                mSelectedPosition,
-                onSelectedPositionListener,
                 position,
                 adapterBetType
             )
@@ -108,8 +103,6 @@ class BasketballEndingCardViewHolder(
         currentOddsType: OddsType,
         onItemClickListener: OnItemClickListener,
         betListSize: Int,
-        mSelectedPosition: Int,
-        onSelectedPositionListener: OnSelectedPositionListener,
         position: Int,
         adapterBetType: BetListRefactorAdapter.BetRvType?
     ) = contentView.run {
@@ -199,7 +192,7 @@ class BasketballEndingCardViewHolder(
         rcvBasketballScore.layoutManager = GridLayoutManager(root.context, 5)
         tvBasketBetListCount.text = "X${betList?.size}"
 
-        setOnClickListener(rcvBasketballScore, clItemBackground) {
+        setOnClickListeners(rcvBasketballScore, clItemBackground) {
             rcvBasketballAdapter.data.forEach { itemD ->
                 itemD.isClickForBasketball = false
             }
@@ -253,7 +246,7 @@ class BasketballEndingCardViewHolder(
                     tvTotalStakeAmount.text = ""
                     tvTotalWinAmount.text = ""
                 } else {
-                    val quota = it.toString().toDouble()
+                    val quota = it.toString().toDoubleS()
                     itemData.betAmount = quota
                     itemData.inputBetAmountStr = it.toString()
                     itemData.input = it.toString()
@@ -267,7 +260,7 @@ class BasketballEndingCardViewHolder(
                     }
 
                     //总投注
-                    val bet = it.toString().toDouble()
+                    val bet = it.toString().toDoubleS()
                     showTotalStakeWinAmount(bet)
                 }
                 checkBetLimit(itemData)
@@ -291,13 +284,10 @@ class BasketballEndingCardViewHolder(
             if (event.action == MotionEvent.ACTION_UP) {
                 if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) {
                     etBet.isFocusable = true
-                    onItemClickListener.onHideKeyBoard()
+//                    onItemClickListener.onHideKeyBoard()
                     layoutKeyBoard.setupMaxBetMoney(inputMaxMoney)
                     layoutKeyBoard.showKeyboard(
                         etBet, position
-                    )
-                    onSelectedPositionListener.onSelectChange(
-                        bindingAdapterPosition, BetListRefactorAdapter.BetViewType.SINGLE
                     )
                     onItemClickListener.onShowKeyboard(position)
                 }
@@ -433,7 +423,7 @@ class BasketballEndingCardViewHolder(
             pop.showAsDropDown(it, xOff, yOff)
         }
 
-        setOnClickListener(tvLeagueName, tvMatchHome, tvMatchAway) {
+        setOnClickListeners(tvLeagueName, tvMatchHome, tvMatchAway) {
             when (it) {
                 tvLeagueName -> {
                     showPopAsTop(tvLeagueName, itemData.matchOdd.leagueName)

@@ -70,7 +70,7 @@
                     android:checked="false"
                     android:gravity="center"
                     android:minWidth="90dp"
-                    android:text="@string/sport"
+                    android:text="@string/B001"
                     android:textColor="@color/selector_blue_white"
                     android:textSize="@dimen/textSize14sp" />
 

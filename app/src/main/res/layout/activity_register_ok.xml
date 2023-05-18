@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@drawable/okbet_bg_login"
-        tools:context=".ui.login.signUp.RegisterOkActivity">
+        tools:context=".ui2.login.signUp.RegisterOkActivity">
 
         <include layout="@layout/view_status_bar" />
 
