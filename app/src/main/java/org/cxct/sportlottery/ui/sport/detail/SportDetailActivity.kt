@@ -758,8 +758,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         var isInPlay = TimeUtil.isTimeInPlay(matchInfo.startTime)
         if (isInPlay) {
             lin_bottom.isVisible = true
-            setStatusText(matchInfo)
             if (!fromApi){
+                setStatusText(matchInfo)
                 setupMatchScore(matchInfo)
             }
         } else {
