@@ -16,6 +16,7 @@ object CheckOKSystemUtils {
  * 检查是否关闭体育入口
  */
 fun checkSportStatus(context: Context, block: () -> Unit) {
+    val temp=getSportEnterIsClose()
     if(getSportEnterIsClose()){
         ToastUtil.showToast(context, context.getString(R.string.N969))
     }else{
@@ -59,10 +60,11 @@ fun setupSportStatusChange(receiver: ServiceBroadcastReceiver,lifecycleOwner: Li
 fun MainTabActivity.checkMainPosition(position:Int):Boolean{
     //是否为体育页面
     val result=checkSportFragment(position)
-    if(result){
+    val flag=result&&getSportEnterIsClose()
+    if(flag){
         ToastUtil.showToast(this, getString(R.string.N969))
     }
-    return result
+    return flag
 }
 
 /**
