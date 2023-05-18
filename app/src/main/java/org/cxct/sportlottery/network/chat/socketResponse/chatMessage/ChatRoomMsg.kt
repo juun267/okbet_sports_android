@@ -15,8 +15,7 @@ abstract class ChatRoomMsg<T, VH: BaseViewHolder> (
 
     // 时间标签
     val dateTips by lazy {
-        val date = if (content is ChatMessageResult) content.curTime else time
-        "${TimeUtil.timeStampToDateString(date, TimeUtil.D_NARROW_MONTH, Locale.US)}"
+        "${TimeUtil.timeStampToDateString(time, TimeUtil.D_NARROW_MONTH, Locale.US)}"
     }
 
     companion object {

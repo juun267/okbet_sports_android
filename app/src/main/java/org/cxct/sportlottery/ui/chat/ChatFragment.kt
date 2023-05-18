@@ -3,9 +3,13 @@ package org.cxct.sportlottery.ui.chat
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.content.Context
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,10 +18,7 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.coroutines.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.collectWith
-import org.cxct.sportlottery.common.extentions.launch
-import org.cxct.sportlottery.common.extentions.runWithCatch
-import org.cxct.sportlottery.common.extentions.toDoubleS
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.FragmentChatBinding
 import org.cxct.sportlottery.net.chat.data.UnPacketRow
@@ -26,6 +27,7 @@ import org.cxct.sportlottery.repository.ChatRepository
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import timber.log.Timber
@@ -60,7 +62,6 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
     private var sendPictureMsgDialog: SendPictureMsgDialog? = null
 
 
-
     //訊息列表用日期提示ItemDecoration
     private val headerItemDecoration by lazy {
         ChatDateHeaderItemDecoration(binding.rvChatMessage) { itemPosition ->
@@ -74,7 +75,6 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
 
     override fun onInitView(view: View) {
         initView()
-        loading()
         setWindowSoftInput(
             float = binding.vChatAction,
             setPadding = false,
@@ -106,8 +106,9 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
         binding.rvWelcome.layoutManager = SmoothLinearLayoutManager(context)
         binding.rvWelcome.addItemDecoration(SpaceItemDecoration(requireContext(), R.dimen.recyclerview_chat_welcome_item_dec_spec))
         binding.rvWelcome.adapter = chatWelcomeAdapter
-        binding.rvChatMessage.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.rvChatMessage.setLinearLayoutManager()
         binding.rvChatMessage.adapter = chatMessageListAdapter
+//        chatMessageListAdapter.setEmptyView(getChatEmptyView(binding.root.context))
 
         OverScrollDecoratorHelper.setUpOverScroll(binding.rvChatMessage, OverScrollDecoratorHelper.ORIENTATION_VERTICAL)
 
@@ -115,6 +116,20 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
         binding.vChatAction.etInput.afterTextChanged {
             binding.vChatAction.setSendStatus(it.trim().isNotEmpty() && viewModel.checkIsSpeak())
         }
+    }
+
+    private fun getChatEmptyView(context: Context): View {
+        val rootView = LinearLayout(context)
+        rootView.gravity = Gravity.CENTER
+        rootView.setPadding(0, 0, 0, 90.dp)
+        val textView = AppCompatTextView(context)
+        rootView.addView(textView, LinearLayout.LayoutParams(256.dp, 199.dp))
+        textView.setBackgroundResource(R.drawable.img_chat_emptymessage)
+        textView.gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
+        textView.textSize = 16f
+        textView.setTextColor(context.getColor(R.color.color_A7B2C4))
+        textView.setText(R.string.no_data)
+        return rootView
     }
 
     private fun setChatMsgScrollListener(isReady: Boolean) {
@@ -439,7 +454,6 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
                 binding.rvChatMessage.post {
                     chatListScrollToBottom(false)
 //                        binding.rvChatMessage.scrollToPosition(chatMessageListAdapter.itemCount - 1) //滑動到底部不需動畫效果
-                    binding.rvChatMessage.isVisible = true
                 }
             }
 

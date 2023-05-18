@@ -64,7 +64,7 @@ class ChatMessageListAdapter3(private val onPhotoClick: (String) -> Unit,
 
     private val itemTypesMap = SparseArray<ChatRoomMsg<*, BaseViewHolder>>()
 
-    override fun getItemViewType(position: Int): Int {
+    override fun getDefItemViewType(position: Int): Int {
         val item = getItem(position)
         itemTypesMap.put(item.itemType, item)
         return item.itemType

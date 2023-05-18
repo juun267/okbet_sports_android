@@ -18,7 +18,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingTop="97dp"
-            android:visibility="invisible"
             android:clipToPadding="false"
             tools:listitem="@layout/item_chat_message_red_envelope" />
     </FrameLayout>
