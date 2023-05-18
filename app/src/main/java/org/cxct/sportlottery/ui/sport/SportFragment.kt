@@ -9,7 +9,6 @@ import kotlinx.android.synthetic.main.fragment_sport.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
-import org.cxct.sportlottery.common.extentions.fitsSystemStatus
 import org.cxct.sportlottery.common.extentions.newInstanceFragment
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.network.common.GameType
@@ -78,11 +77,10 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
 
     fun initToolBar() = homeToolbar.run {
         attach(this@SportFragment, getMainTabActivity(), viewModel, false)
-        fitsSystemStatus()
         setBackgroundColor(Color.WHITE)
         searchView.setOnClickListener { startActivity(SportSearchtActivity::class.java) }
         ivMenuLeft.setOnClickListener {
-            getMainTabActivity().showLeftFrament(1, tabLayout.selectedTabPosition)
+            getMainTabActivity().showSportLeftMenu(getCurMatchType(), getCurGameType())
             EventBusUtil.post(MenuEvent(true))
         }
     }

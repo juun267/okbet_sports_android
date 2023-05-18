@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.component_date_range_selector.view.*
+import kotlinx.android.synthetic.main.component_date_range_new_selector.view.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_record.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment

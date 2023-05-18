@@ -5,7 +5,6 @@ import android.content.Context
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.CONNECT_TIMEOUT
@@ -16,7 +15,6 @@ import org.cxct.sportlottery.network.interceptor.HttpStatusInterceptor
 import org.cxct.sportlottery.network.interceptor.MoreBaseUrlInterceptor
 import org.cxct.sportlottery.network.interceptor.RequestInterceptor
 import org.cxct.sportlottery.util.NullValueAdapter
-import org.cxct.sportlottery.util.fastjson.FastJsonConverterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.security.SecureRandom
@@ -44,15 +42,6 @@ class RequestManager private constructor(context: Context) {
 
     var retrofit: Retrofit
 
-    private val logging: HttpLoggingInterceptor =
-        HttpLoggingInterceptor().setLevel(
-            if (BuildConfig.DEBUG) {
-                HttpLoggingInterceptor.Level.BODY
-            } else {
-                HttpLoggingInterceptor.Level.NONE
-            }
-        )
-
     private val mOkHttpClientBuilder: OkHttpClient.Builder = getUnsafeOkHttpClient()
         .connectTimeout(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
         .writeTimeout(WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
@@ -66,7 +55,6 @@ class RequestManager private constructor(context: Context) {
         .apply {
             //debug版本才打印api內容
             if (BuildConfig.DEBUG) {
-//                addInterceptor(logging)
                 addInterceptor(HttpLogInterceptor())
             }
         }

@@ -12,7 +12,7 @@ import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
 import org.cxct.sportlottery.util.SocketUpdateUtil.updateOddStatus
 
 // 篮球末位比分
-class EndScoreAdapter(val playCate: String, val onItemClick:(Int, View, BaseNode) -> Unit): ExpanableOddsAdapter()  {
+class EndScoreAdapter(val playCate: String, val onItemClick:(Int, View, BaseNode) -> Unit): org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter()  {
 
     var oddsType: OddsType = OddsType.EU
         set(value) {

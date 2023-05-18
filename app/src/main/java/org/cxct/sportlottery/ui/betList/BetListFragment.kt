@@ -831,7 +831,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
     private fun initSocketObserver() {
         receiver.matchStatusChange.observe(viewLifecycleOwner) {
             it?.let {
-                if (it.matchStatusCO?.status == StatusType.END_GAME.code) {
+                if (it.matchStatusCO?.status == StatusType.END_GAME) {
                     betListRefactorAdapter?.betList?.let { betInfoList ->
                         betInfoList.forEachIndexed { index, betInfoListData ->
                             if (SocketUpdateUtil.updateOddStatus(betInfoListData, it)) {

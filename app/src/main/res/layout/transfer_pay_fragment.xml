@@ -361,7 +361,7 @@
         </LinearLayout>
 
         <!-- 充值金額 -->
-        <org.cxct.sportlottery.ui.login.LoginEditText
+        <org.cxct.sportlottery.view.LoginEditText
             android:id="@+id/et_recharge_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -373,7 +373,7 @@
             app:cvTitle="@string/title_deposit_money" />
 
         <!-- 微信 -->
-        <org.cxct.sportlottery.ui.login.LoginEditText
+        <org.cxct.sportlottery.view.LoginEditText
             android:id="@+id/et_wx_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -385,7 +385,7 @@
             app:cvTitle="@string/title_wx_id" />
 
         <!-- 認證姓名 -->
-        <org.cxct.sportlottery.ui.login.LoginEditText
+        <org.cxct.sportlottery.view.LoginEditText
             android:id="@+id/et_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -397,7 +397,7 @@
             app:cvTitle="@string/title_real_name" />
 
         <!-- 銀行卡號 -->
-        <org.cxct.sportlottery.ui.login.LoginEditText
+        <org.cxct.sportlottery.view.LoginEditText
             android:id="@+id/et_bank_account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -409,7 +409,7 @@
             app:cvTitle="@string/title_bank_account" />
 
         <!-- 暱稱 -->
-        <org.cxct.sportlottery.ui.login.LoginEditText
+        <org.cxct.sportlottery.view.LoginEditText
             android:id="@+id/et_nickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

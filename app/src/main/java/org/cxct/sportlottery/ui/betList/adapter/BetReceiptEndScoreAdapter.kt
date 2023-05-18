@@ -2,7 +2,7 @@ package org.cxct.sportlottery.ui.betList.adapter
 
 import org.cxct.sportlottery.databinding.ItemBetReceiptEndscoreBinding
 import org.cxct.sportlottery.network.bet.list.EndScoreInfo
-import org.cxct.sportlottery.ui.common.adapter.BindingAdapter
+import org.cxct.sportlottery.common.adapter.BindingAdapter
 
 class BetReceiptEndScoreAdapter :
     BindingAdapter<EndScoreInfo, ItemBetReceiptEndscoreBinding>() {

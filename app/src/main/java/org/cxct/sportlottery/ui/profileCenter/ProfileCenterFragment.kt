@@ -12,7 +12,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import kotlinx.android.synthetic.main.fragment_about_us.*
 import kotlinx.android.synthetic.main.fragment_profile_center.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
@@ -272,22 +271,7 @@ class ProfileCenterFragment :
             startActivity(Intent(requireActivity(), FinanceActivity::class.java))
         }
         //優惠活動
-        btn_promotion.setOnClickListener {
-            when (viewModel.userInfo.value?.testFlag) {
-                TestFlag.NORMAL.index -> {
-                    toProfileCenter()
-                }
-                TestFlag.TEST.index -> { // TODO 20220108 新增內部測試人員選項 by Hewie
-                    toProfileCenter()
-                }
-                else -> { // TODO 20220108 沒有遊客的話，要確認一下文案是否正確 by Hewie
-                    ToastUtil.showToastInCenter(
-                        requireContext(),
-                        getString(R.string.message_guest_no_permission)
-                    )
-                }
-            }
-        }
+        btn_promotion.bindPromoClick()
         //代理加盟
         btn_affiliate.setOnClickListener {
             JumpUtil.toInternalWeb(
@@ -307,7 +291,10 @@ class ProfileCenterFragment :
         }
         //赛果结算
         btn_game_settlement.setOnClickListener {
-            startActivity(Intent(requireActivity(), ResultsSettlementActivity::class.java))
+            //检查是否关闭入口
+            checkSportStatus(requireActivity()){
+                startActivity(Intent(requireActivity(), ResultsSettlementActivity::class.java))
+            }
         }
         //时区切换
         btn_time_zone.setOnClickListener {
@@ -338,7 +325,7 @@ class ProfileCenterFragment :
         }
         //关于我们
         btn_about_us.setOnClickListener {
-            startActivity(Intent(requireActivity(), AboutMeActivity::class.java))
+            startActivity(Intent(requireActivity(), org.cxct.sportlottery.ui.aboutMe.AboutMeActivity::class.java))
         }
 
         //资产检测
@@ -374,14 +361,7 @@ class ProfileCenterFragment :
                 tv_account_balance.text = TextUtil.format(it)
             }
         }
-          viewModel.isWithdrawShowVerifyDialog.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b)
-                    showKYCVerifyDialog()
-                else
-                    viewModel.checkWithdrawSystem()
-            }
-        }
+
         viewModel.userInfo.observe(viewLifecycleOwner) {
             updateUI(it)
         }
@@ -401,6 +381,7 @@ class ProfileCenterFragment :
         }
 
         viewModel.rechargeSystemOperation.observe(viewLifecycleOwner) {
+            hideLoading()
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
                     startActivity(Intent(requireActivity(), MoneyRechargeActivity::class.java))
@@ -594,8 +575,10 @@ class ProfileCenterFragment :
             it.getContentIfNotHandled()?.let { b ->
                 if (b)
                     showKYCVerifyDialog()
-                else
+                else {
                     viewModel.checkWithdrawSystem()
+                }
+
             }
         }
 
@@ -603,8 +586,11 @@ class ProfileCenterFragment :
             it.getContentIfNotHandled()?.let { b ->
                 if (b)
                     showKYCVerifyDialog()
-                else
+                else {
+                    loading()
                     viewModel.checkRechargeSystem()
+                }
+
             }
         }
 

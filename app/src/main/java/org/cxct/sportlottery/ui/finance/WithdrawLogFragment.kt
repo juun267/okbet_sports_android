@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_withdraw_log.*
 import kotlinx.android.synthetic.main.activity_withdraw_log.view.*
-import kotlinx.android.synthetic.main.component_date_range_selector.view.*
+import kotlinx.android.synthetic.main.component_date_range_new_selector.view.*
 import kotlinx.android.synthetic.main.view_no_record.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -179,7 +179,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                     it.data.appointmentTime = reserveTime
                     JumpUtil.toInternalWeb(
                         requireContext(),
-                        "https://maps.google.com/?q=@" + it.data.lon + "," + it.data.lat,
+                        "https://maps.google.com/?q=@" + it.data.lat + "," + it.data.lon,
                         getString(R.string.outlets_address),
                         true,
                         true,

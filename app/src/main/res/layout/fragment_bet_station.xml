@@ -87,7 +87,7 @@
                 </LinearLayout>
 
 
-                <org.cxct.sportlottery.ui.login.LoginEditText
+                <org.cxct.sportlottery.view.LoginEditText
                     android:id="@+id/et_amount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -167,7 +167,7 @@
                 </LinearLayout>
 
 
-                <org.cxct.sportlottery.ui.login.LoginEditText
+                <org.cxct.sportlottery.view.LoginEditText
                     android:id="@+id/et_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

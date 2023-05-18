@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.game.hall.adapter
+package org.cxct.sportlottery.ui.sport.common
 
 import android.view.LayoutInflater
 import android.view.View
@@ -388,7 +388,7 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 }
                 ThirdGameCategory.QP -> {
                     itemView.sport_type_img.setImageResource(R.drawable.ic_sportbookiconpoker)
-                    itemView.sport_type_text.text = itemView.context.getString(R.string.poker)
+                    itemView.sport_type_text.text = itemView.context.getString(R.string.J203)
                 }
                 ThirdGameCategory.DZ -> {
                     itemView.sport_type_img.setImageResource(R.drawable.ic_sportbookiconslotgame)

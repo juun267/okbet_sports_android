@@ -33,8 +33,8 @@ import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
-import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.view.LoginEditText
 import java.math.RoundingMode
 import java.util.*
 
@@ -258,7 +258,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
             selectBettingStation?.let {
                 JumpUtil.toInternalWeb(
                     requireContext(),
-                    "https://maps.google.com/?q=@" + it.lon + "," + it.lat,
+                    "https://maps.google.com/?q=@" + it.lat + "," + it.lon,
                     getString(R.string.outlets_address),
                     true,
                     true,

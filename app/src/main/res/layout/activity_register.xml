@@ -8,7 +8,7 @@
     android:clickable="true"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:context=".ui.login.signUp.RegisterActivity">
+    tools:context=".ui2.login.signUp.RegisterActivity">
 
     <ImageView
         android:id="@+id/ivLogo"

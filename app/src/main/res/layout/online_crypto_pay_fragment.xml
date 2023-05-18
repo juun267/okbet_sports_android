@@ -133,7 +133,7 @@
         </androidx.cardview.widget.CardView>
 
         <!-- 充值個數 -->
-        <org.cxct.sportlottery.ui.login.LoginEditText
+        <org.cxct.sportlottery.view.LoginEditText
             android:id="@+id/et_recharge_account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

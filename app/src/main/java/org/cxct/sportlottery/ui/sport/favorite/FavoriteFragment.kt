@@ -99,12 +99,6 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
                         )
                     }
                 },
-                clickListenerQuickCateTab = { matchOdd, quickPlayCate ->
-                    setQuickPlayCateSelected(matchOdd, quickPlayCate)
-                },
-                clickListenerQuickCateClose = {
-                    clearQuickPlayCateSelected()
-                },
                 clickListenerFavorite = { matchId ->
                     viewModel.pinFavorite(FavoriteType.MATCH, matchId)
                 },
@@ -118,7 +112,6 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
                         }
                     }
                 },
-                refreshListener = {},
                 clickLiveIconListener = { matchId, _, gameMatchType, _ ->
                     if (viewModel.checkLoginStatus()) {
                         data.forEach {
