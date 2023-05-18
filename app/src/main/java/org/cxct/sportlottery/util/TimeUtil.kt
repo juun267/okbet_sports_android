@@ -36,6 +36,10 @@ object TimeUtil {
     const val YMDE_FORMAT_1 = "yyyy-MM/dd-EEE"
     const val D_NARROW_MONTH = "dd/MMM"
 
+    //Feb 12, 2023 10:16AM 新闻时间格式
+    const val NEWS_TIME_FORMAT = "MMM dd, yyyy h:mma"
+
+
     //    private const val YMDE_HMS_FORMAT = "yyyy-MM/dd-EEE HH:mm:ss"
     private const val DMY_HM_FORMAT = "yyyy-MM-dd HH:mm"
     private const val BIRTHDAY_FORMAT = "yyyy / MM / dd"

@@ -115,7 +115,7 @@
     <string name="btn_login">Login</string>
     <string name="btn_register">Register</string>
     <string name="lottery">Lottery</string>
-    <string name="poker">OKGames</string>
+    <string name="J203">OKGames</string>
     <string name="slot">Slot</string>
     <string name="fishing">Fishing</string>
     <string name="home_tan_main">HOME</string>
@@ -129,7 +129,7 @@
     <string name="home_tab_at_start">SOON</string>
     <string name="home_tab_eps">PRICE BOOSTS</string>
     <string name="label_all">All</string>
-    <string name="display_more">Show more</string>
+    <string name="display_more">Show More</string>
     <string name="conspire">Parlay</string>
     <string name="message_no_sport_game">There are currently no events for %1$s</string>
     <string name="champion">OUTRIGHT</string>
@@ -209,7 +209,7 @@
     <string name="fourth">Four</string>
     <string name="fifth">Five</string>
     <string name="account_balance">Total Balance</string>
-    <string name="recharge">Deposit</string>
+    <string name="J285">Deposit</string>
     <string name="account_transfer">Transfer Balance</string>
     <string name="money_recycle_succeed">Recovery limit successfully</string>
     <string name="news_center">My Messages</string>
@@ -535,7 +535,7 @@
     <string name="sorry_website_is_now_maintenance">The website is under maintenance</string>
     <string name="if_there_is_any_question_please_consult">If you have any questions, please contact%1$s</string>
     <string name="bottom_nav_home">Home</string>
-    <string name="sport">Sports</string>
+    <string name="B001">Sports</string>
     <string name="live">Live</string>
     <string name="sport_bet_record">Sports betting history</string>
     <string name="other_bet_record">Other Betting History</string>
@@ -1315,6 +1315,16 @@
     <string name="N885">Load More</string>
     <string name="N001">About Us</string>
     <string name="J093">Responsible Gaming</string>
+    <string name="M013">Coming soon</string>
+    <string name="N703">OKBET Game Venues</string>
+    <string name="B005">Promotion</string>
+    <string name="B015">Affiliate</string>
+    <string name="N909">News</string>
+    <string name="LT050">Customer service</string>
+
+    <string name="M169">Language</string>
+    <string name="N913">Related News</string>
+    <string name="N912">News List</string>
     <string name="N899">If you only want to delete a single score, you can click on delete a single score.</string>
     <string name="N379">No tip</string>
     <string name="N903">Basketball Ending</string>
@@ -1330,6 +1340,19 @@
     <string name="N901">Confirm delete</string>
     <string name="N888">The individual odds are the same for all selections in the final score.</string>
     <string name="N898">Are you sure you want to delete all score options?</string>
+
+    <string name="N969">Sports betting service is temporarily under maintenance!</string>
+    <string name="N257">Maintenance</string>
+    <string name="N960">News Details</string>
+    <string name="N915">Sponsorship</string>
+
+    <string name="N910">OKBET Betting Station</string>
+    <string name="N914">Get Verify</string>
+    <string name="J134">Login</string>
+    <string name="J151">Sign Up</string>
+    <string name="N700">Coming Soon</string>
+    <string name="N704">Popular OKGames</string>
+    <string name="N986">Direction</string>
     <string name="N908">Scan</string>
     <string name="N951">Album import</string>
     <string name="N952">Camera scan</string>

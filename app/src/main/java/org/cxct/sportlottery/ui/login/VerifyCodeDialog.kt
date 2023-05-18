@@ -17,6 +17,7 @@ import org.cxct.sportlottery.util.BitmapUtil
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.setBtnEnable
+import org.cxct.sportlottery.view.checkSMSCode
 
 /**
  * 顯示棋牌彈窗

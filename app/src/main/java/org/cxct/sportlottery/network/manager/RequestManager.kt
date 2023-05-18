@@ -6,9 +6,7 @@ import android.content.SharedPreferences
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import org.cxct.sportlottery.BuildConfig
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.CONNECT_TIMEOUT
 import org.cxct.sportlottery.network.Constants.READ_TIMEOUT
@@ -19,10 +17,8 @@ import org.cxct.sportlottery.network.interceptor.MoreBaseUrlInterceptor
 import org.cxct.sportlottery.network.interceptor.RequestInterceptor
 import org.cxct.sportlottery.repository.KEY_TOKEN
 import org.cxct.sportlottery.repository.NAME_LOGIN
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.NullValueAdapter
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.security.SecureRandom
 import java.security.cert.CertificateException
@@ -55,30 +51,6 @@ class RequestManager private constructor(private val context: Context) {
 
     var retrofit: Retrofit
 
-    val signRetrofit: Retrofit by lazy {
-        Retrofit.Builder()
-            .baseUrl(Constants.getBaseUrl())
-            .client(mOkHttpClientBuilder.build())
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
-    val chatGsonRetrofit: Retrofit by lazy {
-        Retrofit.Builder()
-            .baseUrl(sConfigData?.chatHost)
-            .client(mOkHttpClientBuilder.build())
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
-    private val logging: HttpLoggingInterceptor =
-        HttpLoggingInterceptor().setLevel(
-            if (BuildConfig.DEBUG) {
-                HttpLoggingInterceptor.Level.BODY
-            } else {
-                HttpLoggingInterceptor.Level.NONE
-            }
-        )
 
     private val mOkHttpClientBuilder: OkHttpClient.Builder = getUnsafeOkHttpClient()
         .connectTimeout(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)

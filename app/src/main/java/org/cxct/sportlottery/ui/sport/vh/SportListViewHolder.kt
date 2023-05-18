@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.sport.vh
 
 import android.annotation.SuppressLint
 import android.view.View
-import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -135,7 +134,7 @@ class SportListViewHolder constructor(
     }
 
     private fun updateMatchInfo(item: MatchOdd, matchType: MatchType) {
-        itemView.league_odd_match_name_home.text = item.matchInfo?.homeName
+        itemView.league_odd_match_name_home.setText(item.matchInfo?.homeName)
         itemView.league_odd_match_name_away.text = item.matchInfo?.awayName
         itemView.iv_home_team_logo.setTeamLogo(item.matchInfo?.homeIcon)
         itemView.iv_away_team_logo.setTeamLogo(item.matchInfo?.awayIcon)
@@ -174,7 +173,7 @@ class SportListViewHolder constructor(
         leagueOddListener: LeagueOddListener?,
     ) {
 
-        itemView.league_odd_match_name_home.text = item.matchInfo?.homeName
+        itemView.league_odd_match_name_home.setText(item.matchInfo?.homeName)
 
         itemView.league_odd_match_name_away.text = item.matchInfo?.awayName
         itemView.iv_home_team_logo.setTeamLogo(item.matchInfo?.homeIcon)
@@ -309,8 +308,8 @@ class SportListViewHolder constructor(
             content_baseball_status.isVisible = false
             ic_attack_h.isVisible = false
             ic_attack_c.isVisible = false
-            ic_attack_tn_h.isInvisible = true
-            ic_attack_tn_c.isInvisible = true
+            ic_attack_tn_h. isVisible= false
+            ic_attack_tn_c.isVisible = false
             lin_home_round_score.isVisible = false
             lin_away_round_score.isVisible = false
             league_odd_yellow_cards_home.isVisible = false

@@ -343,14 +343,14 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                 }
 
                 matchStatusList?.let {
-                    val firstHalf = it.find { it.status == StatusType.FIRST_HALF.code }
+                    val firstHalf = it.find { it.status == StatusType.FIRST_HALF }
                     val secondHalf =
-                        it.find { it.status == StatusType.SECOND_HALF.code }
+                        it.find { it.status == StatusType.SECOND_HALF }
                     //110: 加時, 有加時先取加時
-                    val endGame = it.find { it.status == StatusType.OVER_TIME.code }
-                        ?: it.find { it.status == StatusType.END_GAME.code }
-                    val fullGame = it.find { it.status == StatusType.OVER_TIME.code }
-                        ?: it.find { it.status == StatusType.END_GAME.code }
+                    val endGame = it.find { it.status == StatusType.OVER_TIME }
+                        ?: it.find { it.status == StatusType.END_GAME }
+                    val fullGame = it.find { it.status == StatusType.OVER_TIME }
+                        ?: it.find { it.status == StatusType.END_GAME }
                     tv_first_half_score.text =
                         firstHalf?.let { filteredItem -> "${filteredItem.homeScore}-${filteredItem.awayScore}" }
                     tv_second_half_score.text =
@@ -396,9 +396,9 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
         }
 
         private fun setupFtDetailFirstItem(data: List<MatchStatus>?) {
-            val firstHalf = data?.find { it.status == StatusType.FIRST_HALF.code }
-            val fullGame = data?.find { it.status == StatusType.OVER_TIME.code }
-                ?: data?.find { it.status == StatusType.END_GAME.code }
+            val firstHalf = data?.find { it.status == StatusType.FIRST_HALF }
+            val fullGame = data?.find { it.status == StatusType.OVER_TIME }
+                ?: data?.find { it.status == StatusType.END_GAME }
 
             fun getSituation(matchStatus: MatchStatus?, situationType: SituationType): String {
                 when (situationType) {
@@ -455,11 +455,11 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
         private fun setupIhDetailFirstItem(detailData: Match?) {
             val matchStatus = detailData?.matchStatusList
             val matchInfo = detailData?.matchInfo
-            val firstSection = matchStatus?.find { it.status == StatusType.FIRST_SECTION.code }
-            val secondSection = matchStatus?.find { it.status == StatusType.SECOND_SECTION.code }
-            val thirdSection = matchStatus?.find { it.status == StatusType.THIRD_SECTION.code }
-            val overSection = matchStatus?.find { it.status == StatusType.OVER_TIME.code }
-            val regularSection = matchStatus?.find { it.status == StatusType.END_GAME.code }
+            val firstSection = matchStatus?.find { it.status == StatusType.FIRST_SECTION }
+            val secondSection = matchStatus?.find { it.status == StatusType.SECOND_SECTION }
+            val thirdSection = matchStatus?.find { it.status == StatusType.THIRD_SECTION }
+            val overSection = matchStatus?.find { it.status == StatusType.OVER_TIME }
+            val regularSection = matchStatus?.find { it.status == StatusType.END_GAME }
 
             itemView.apply {
                 ll_game_detail_first_item.visibility = View.VISIBLE
@@ -516,12 +516,12 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
         private fun setupBkDetailFirstItem(detailData: Match?) {
             val matchStatus = detailData?.matchStatusList
             val matchInfo = detailData?.matchInfo
-            val firstSection = matchStatus?.find { it.status == StatusType.FIRST_SECTION.code }
-            val secondSection = matchStatus?.find { it.status == StatusType.SECOND_SECTION.code }
-            val thirdSection = matchStatus?.find { it.status == StatusType.THIRD_SECTION.code }
-            val fourthSection = matchStatus?.find { it.status == StatusType.FOURTH_SECTION.code }
-            val overSection = matchStatus?.find { it.status == StatusType.OVER_TIME.code }
-                ?: matchStatus?.find { it.status == StatusType.END_GAME.code }
+            val firstSection = matchStatus?.find { it.status == StatusType.FIRST_SECTION }
+            val secondSection = matchStatus?.find { it.status == StatusType.SECOND_SECTION }
+            val thirdSection = matchStatus?.find { it.status == StatusType.THIRD_SECTION }
+            val fourthSection = matchStatus?.find { it.status == StatusType.FOURTH_SECTION }
+            val overSection = matchStatus?.find { it.status == StatusType.OVER_TIME }
+                ?: matchStatus?.find { it.status == StatusType.END_GAME }
 
             itemView.apply {
                 ll_game_detail_first_item.visibility = View.VISIBLE
@@ -589,12 +589,12 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             val matchStatus = detailData?.matchStatusList
             val matchInfo = detailData?.matchInfo
 
-            val firstPlat = matchStatus?.find { it.status == StatusType.FIRST_PLAT.code }
-            val secondPlat = matchStatus?.find { it.status == StatusType.SECOND_PLAT.code }
-            val thirdPlat = matchStatus?.find { it.status == StatusType.THIRD_PLAT.code }
-            val fourthPlat = matchStatus?.find { it.status == StatusType.FOURTH_PLAT.code }
-            val fifthPlat = matchStatus?.find { it.status == StatusType.FIFTH_PLAT.code }
-            val finalPlat = matchStatus?.find { it.status == StatusType.END_GAME.code }
+            val firstPlat = matchStatus?.find { it.status == StatusType.FIRST_PLAT }
+            val secondPlat = matchStatus?.find { it.status == StatusType.SECOND_PLAT }
+            val thirdPlat = matchStatus?.find { it.status == StatusType.THIRD_PLAT }
+            val fourthPlat = matchStatus?.find { it.status == StatusType.FOURTH_PLAT }
+            val fifthPlat = matchStatus?.find { it.status == StatusType.FIFTH_PLAT }
+            val finalPlat = matchStatus?.find { it.status == StatusType.END_GAME }
             var homeRound = 0
             var awayRound = 0
 
@@ -675,10 +675,10 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             val matchStatus = detailData?.matchStatusList
             val matchInfo = detailData?.matchInfo
 
-            val firstPlat = matchStatus?.find { it.status == StatusType.FIRST_PLAT.code }
-            val secondPlat = matchStatus?.find { it.status == StatusType.SECOND_PLAT.code }
-            val thirdPlat = matchStatus?.find { it.status == StatusType.THIRD_PLAT.code }
-            val finalPlat = matchStatus?.find { it.status == StatusType.END_GAME.code }
+            val firstPlat = matchStatus?.find { it.status == StatusType.FIRST_PLAT }
+            val secondPlat = matchStatus?.find { it.status == StatusType.SECOND_PLAT }
+            val thirdPlat = matchStatus?.find { it.status == StatusType.THIRD_PLAT }
+            val finalPlat = matchStatus?.find { it.status == StatusType.END_GAME }
             var homeRound = 0
             var awayRound = 0
 
@@ -747,12 +747,12 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             val matchStatus = detailData?.matchStatusList
             val matchInfo = detailData?.matchInfo
 
-            val firstPlat = matchStatus?.find { it.status == StatusType.FIRST_PLAT.code }
-            val secondPlat = matchStatus?.find { it.status == StatusType.SECOND_PLAT.code }
-            val thirdPlat = matchStatus?.find { it.status == StatusType.THIRD_PLAT.code }
-            val fourthPlat = matchStatus?.find { it.status == StatusType.FOURTH_PLAT.code }
-            val fifthPlat = matchStatus?.find { it.status == StatusType.FIFTH_PLAT.code }
-            val finalPlat = matchStatus?.find { it.status == StatusType.END_GAME.code }
+            val firstPlat = matchStatus?.find { it.status == StatusType.FIRST_PLAT }
+            val secondPlat = matchStatus?.find { it.status == StatusType.SECOND_PLAT }
+            val thirdPlat = matchStatus?.find { it.status == StatusType.THIRD_PLAT }
+            val fourthPlat = matchStatus?.find { it.status == StatusType.FOURTH_PLAT }
+            val fifthPlat = matchStatus?.find { it.status == StatusType.FIFTH_PLAT }
+            val finalPlat = matchStatus?.find { it.status == StatusType.END_GAME }
             var homeRound = 0
             var awayRound = 0
 
@@ -832,9 +832,9 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             val matchList = detailData?.matchStatusList
             val matchInfo = detailData?.matchInfo
 
-            val firstPlat = matchList?.find { it.status == StatusType.FIRST_HALF.code }
-            val secondPlat = matchList?.find { it.status == StatusType.SECOND_HALF.code }
-            val thirdPlat = matchList?.find { it.status == StatusType.END_GAME.code }
+            val firstPlat = matchList?.find { it.status == StatusType.FIRST_HALF }
+            val secondPlat = matchList?.find { it.status == StatusType.SECOND_HALF }
+            val thirdPlat = matchList?.find { it.status == StatusType.END_GAME }
 
             itemView.apply {
                 matchInfo?.apply {
@@ -892,7 +892,7 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             val matchInfo = detailData?.matchInfo
 
             val matchList = detailData?.matchStatusList
-            val gameStatus = matchList?.find { it.status == StatusType.END_GAME.code }
+            val gameStatus = matchList?.find { it.status == StatusType.END_GAME }
 
             itemView.apply {
                 matchInfo?.apply {
@@ -966,9 +966,9 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             val matchList = detailData?.matchStatusList
             val matchInfo = detailData?.matchInfo
 
-            val firstPlat = matchList?.find { it.status == StatusType.FIRST_HALF.code }
-            val secondPlat = matchList?.find { it.status == StatusType.SECOND_HALF.code }
-            val thirdPlat = matchList?.find { it.status == StatusType.END_GAME.code }
+            val firstPlat = matchList?.find { it.status == StatusType.FIRST_HALF }
+            val secondPlat = matchList?.find { it.status == StatusType.SECOND_HALF }
+            val thirdPlat = matchList?.find { it.status == StatusType.END_GAME }
 
             itemView.apply {
                 matchInfo?.apply {

@@ -17,7 +17,7 @@ import org.cxct.sportlottery.databinding.ActivityPhoneVerifyBinding
 import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.login.checkRegisterListener
+import org.cxct.sportlottery.view.checkRegisterListener
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 import java.util.*

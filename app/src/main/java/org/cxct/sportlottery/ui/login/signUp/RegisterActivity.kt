@@ -34,7 +34,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
-import org.cxct.sportlottery.ui.login.checkRegisterListener
+import org.cxct.sportlottery.view.checkRegisterListener
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.util.*
 import timber.log.Timber

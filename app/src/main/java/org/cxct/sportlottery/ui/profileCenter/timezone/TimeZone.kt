@@ -1,5 +1,8 @@
 package org.cxct.sportlottery.ui.profileCenter.timezone
 
+import org.cxct.sportlottery.common.proguards.KeepMembers
+
+@KeepMembers
 data class TimeZone(
     val name: String,
     val country_zh: String,

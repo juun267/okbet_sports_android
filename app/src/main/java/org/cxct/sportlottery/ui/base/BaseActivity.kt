@@ -194,7 +194,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
         loadingView?.ivLoading?.setBackgroundResource(R.drawable.anim_loading)
         val animationDrawable = loadingView?.ivLoading?.background as AnimationDrawable
         animationDrawable.start()
-        loadingView?.pb_message?.text = message ?: getString(R.string.loading)
+//        loadingView?.pb_message?.text = message ?: getString(R.string.loading)
     }
 
     /*关闭加载界面*/
@@ -422,14 +422,6 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
             }
         }
         return defaultPosition
-    }
-
-    private fun safelyUpdateLayout(runnable: Runnable) {
-        try {
-            mLayoutHandler.post(runnable)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
     }
 
     fun avoidFastDoubleClick() {

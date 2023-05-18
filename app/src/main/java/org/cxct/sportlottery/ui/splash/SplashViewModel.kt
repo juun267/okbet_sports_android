@@ -38,12 +38,10 @@ class SplashViewModel(
     private var isCheckNewHost = false
 
     val configResult: LiveData<ConfigResult?>
-        get() = _configResult
+        get() = ConfigRepository.config
 
     val skipHomePage: LiveData<Boolean>
         get() = _skipHomePage
-
-    private val _configResult = MutableLiveData<ConfigResult?>()
 
     private val _skipHomePage = MutableLiveData<Boolean>()
 
@@ -179,7 +177,7 @@ class SplashViewModel(
             if (++mServerUrlIndex in Constants.SERVER_URL_LIST.indices)
                 sendGetHostRequest(mServerUrlIndex)
             else
-                if (!isCheckNewHost) _configResult.postValue(null)
+                if (!isCheckNewHost) ConfigRepository.config.postValue(null)
         }
     }
 
@@ -236,7 +234,7 @@ class SplashViewModel(
         hostRepository.platformId = result?.configData?.platformId ?: -1
         sConfigData = result?.configData
         setupDefaultHandicapType()
-        _configResult.postValue(result)
+        ConfigRepository.config.postValue(result)
     }
 
     private fun setBaseUrl(baseUrl: String, retrofit: Retrofit) {

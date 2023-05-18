@@ -195,7 +195,7 @@ abstract class BaseFavoriteViewModel(
         }
     }
 
-    fun getMyFavoriteAllMatch(
+    private fun getMyFavoriteAllMatch(
         playCateMenu: String,
         playCateCode: String?,
     ) {

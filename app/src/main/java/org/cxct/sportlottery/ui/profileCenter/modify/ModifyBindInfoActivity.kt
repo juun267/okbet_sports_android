@@ -18,9 +18,9 @@ import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityModifyBindInfoBinding
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.login.VerifyCodeDialog
-import org.cxct.sportlottery.ui.login.checkEmail
-import org.cxct.sportlottery.ui.login.checkPhoneNum
-import org.cxct.sportlottery.ui.login.checkSMSCode
+import org.cxct.sportlottery.view.checkEmail
+import org.cxct.sportlottery.view.checkPhoneNum
+import org.cxct.sportlottery.view.checkSMSCode
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
 import org.cxct.sportlottery.util.CountDownUtil
 import org.cxct.sportlottery.util.DisplayUtil.dp

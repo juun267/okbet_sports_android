@@ -11,8 +11,8 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemGameCategroyBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
-import org.cxct.sportlottery.ui.common.adapter.BindingAdapter
-import org.cxct.sportlottery.ui.common.adapter.BindingVH
+import org.cxct.sportlottery.common.adapter.BindingAdapter
+import org.cxct.sportlottery.common.adapter.BindingVH
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 

@@ -40,16 +40,15 @@ import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.rotationAnimation
 import org.cxct.sportlottery.common.extentions.screenHeight
 import org.cxct.sportlottery.common.extentions.translationXAnimation
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.CateDetailData
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
-import org.cxct.sportlottery.network.odds.list.MatchLiveData
 import org.cxct.sportlottery.network.service.close_play_cate.ClosePlayCateEvent
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.dialog.ServiceDialog
@@ -57,8 +56,6 @@ import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
-import org.cxct.sportlottery.ui.maintab.live.HomeLiveAdapter
-import org.cxct.sportlottery.ui.maintab.live.ItemHomeLiveHolder
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteAdapter
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dpToPx
@@ -118,11 +115,7 @@ fun RecyclerView.addScrollWithItemVisibility(
                             }
                         }
 
-                        is HomeLiveAdapter -> {
-                            getVisibleRangePosition().forEach { leaguePosition ->
-                                visibleRangePair.add(Pair(leaguePosition, -1))
-                            }
-                        }
+
                     }
 
                     onVisible(visibleRangePair)
@@ -187,13 +180,15 @@ fun RecyclerView.setupBackTop(targetView: View, offset: Int) {
 
 
 // 监听NestedScrollView滑出屏幕距离(offset)显示返回顶部按钮
-fun NestedScrollView.setupBackTop(targetView: View, offset: Int) {
+fun NestedScrollView.setupBackTop(targetView: View, offset: Int, onStopRunnable: Runnable? = null) {
 
     var targetWidth = 0f
     targetView.setOnClickListener { smoothScrollTo(0, 0) }
     targetView.post {
         targetWidth = targetView.measuredWidth.toFloat()
-        if (targetView.translationX != targetWidth) { targetView.translationX = targetWidth }
+        if (targetView.translationX != targetWidth) {
+            targetView.translationX = targetWidth
+        }
     }
 
     var lastY = 0
@@ -211,8 +206,11 @@ fun NestedScrollView.setupBackTop(targetView: View, offset: Int) {
             }
         }
     }
-
     setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
+        onStopRunnable?.let {
+            targetView.removeCallbacks(it)
+            targetView.postDelayed(it, 80)
+        }
         if (!animaIdle) {
             return@setOnScrollChangeListener
         }
@@ -307,36 +305,6 @@ fun RecyclerView.firstVisibleRange(
     }
 }
 
-@SuppressLint("LogNotTimber")
-fun RecyclerView.firstVisibleRange(adapter: HomeLiveAdapter, activity: Activity) {
-    post {
-        getVisibleRangePosition().forEach { leaguePosition ->
-            val viewByPosition = layoutManager?.findViewByPosition(leaguePosition)
-            when (adapter) {
-                is HomeLiveAdapter -> {
-                    viewByPosition?.let { view ->
-                        if (getChildViewHolder(view) is ItemHomeLiveHolder) {
-                            val itemdata = adapter.data[leaguePosition]
-                            if (itemdata is MatchLiveData) {
-                                Log.d(
-                                    "[subscribe]",
-                                    "訂閱 ${itemdata.matchInfo?.name} -> " +
-                                            "${itemdata.matchInfo?.homeName} vs " +
-                                            "${itemdata.matchInfo?.awayName}"
-                                )
-                                (activity as BaseSocketActivity<*>).subscribeChannelHall(
-                                    itemdata.matchInfo?.gameType,
-                                    itemdata.matchInfo?.id
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-    }
-}
 
 /**
  * 設置大廳所需顯示的快捷玩法 (api未回傳的玩法需以“—”表示)
@@ -1113,7 +1081,7 @@ fun <T> BaseQuickAdapter<T, *>.doOnVisiableRange(block: (Int, T) -> Unit) {
     }
 }
 
-fun View.bindExpanedAdapter(adapter: ExpanableOddsAdapter, block: ((Boolean) -> Unit)? = null) {
+fun View.bindExpanedAdapter(adapter: org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter, block: ((Boolean) -> Unit)? = null) {
     setOnClickListener {
         block?.invoke(isSelected)
         val selected = !isSelected
@@ -1152,5 +1120,17 @@ fun BaseFragment<out MainHomeViewModel>.enterThirdGame(
     }
     if (result.resultType != EnterThirdGameResult.ResultType.NONE)
         viewModel.clearThirdGame()
+}
+
+// 设置优惠活动点击事件
+fun View.bindPromoClick(click: (() -> Unit)? = null) = setOnClickListener {
+    JumpUtil.toInternalWeb(
+        context,
+        Constants.getPromotionUrl(
+            LoginRepository.token,
+            LanguageManager.getSelectLanguage(context)
+        ),
+        context.getString(R.string.promotion)
+    )
 }
 

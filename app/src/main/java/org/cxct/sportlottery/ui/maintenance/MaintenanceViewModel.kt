@@ -32,8 +32,8 @@ class MaintenanceViewModel(
 
 
     val configResult: LiveData<ConfigResult?>
-        get() = _configResult
-    private val _configResult = MutableLiveData<ConfigResult?>()
+        get() = ConfigRepository.config
+
     //获取配置文件
     fun getConfig() {
         val hostUrl = hostRepository.hostUrl
@@ -55,7 +55,7 @@ class MaintenanceViewModel(
     private fun setConfig(result: ConfigResult?) {
         sConfigData = result?.configData
         setupDefaultHandicapType()
-        _configResult.postValue(result)
+        ConfigRepository.config.postValue(result)
     }
 
 }

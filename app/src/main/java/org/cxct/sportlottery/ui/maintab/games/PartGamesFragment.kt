@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ProgressBar
 import androidx.recyclerview.widget.GridLayoutManager
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.R

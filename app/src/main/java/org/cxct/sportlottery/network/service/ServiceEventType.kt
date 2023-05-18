@@ -33,6 +33,7 @@ object EventType {
     const val PRODUCER_UP = ("PRODUCER_UP")  //開啟允許投注
     const val SYS_MAINTENANCE = ("SYS_MAINTENANCE")  //系统维护状态
     const val PLAY_QUOTA_CHANGE = ("PLAY_QUOTA_CHANGE")  //所有体育玩法限额变更
+    const val SPORT_MAINTAIN_STATUS=("SPORT_MAINTAIN_STATUS") //体育维护状态   1开启  0关闭
 
     /* /ws/notify/all/encrypted*/
     const val CLOSE_PLAY_CATE = ("CLOSE_PLAY_CATE")  //關閉玩法
@@ -48,6 +49,9 @@ object EventType {
 
     /*/ws/notify/platform*/
     const val USER_LEVEL_CONFIG_CHANGE = ("USER_LEVEL_CONFIG_CHANGE")
+
+    const val RECORD_NEW = ("RECORD_NEW")//最新投注
+    const val RECORD_RESULT = ("RECORD_RESULT")//最新大奖
 
     const val RECORD_NEW_OK_GAMES = ("RECORD_NEW_OK_GAMES")//最新投注
     const val RECORD_RESULT_OK_GAMES = ("RECORD_RESULT_OK_GAMES")//最新大奖

@@ -13,6 +13,7 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.PlayCode
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.sport.detail.OddStateViewHolderDetail
+import org.cxct.sportlottery.ui.sport.detail.OddsDetailListData
 import org.cxct.sportlottery.ui.sport.detail.OnOddClickListener
 import org.cxct.sportlottery.ui.sport.oddsbtn.OddsButtonDetail
 import org.cxct.sportlottery.util.TextUtil

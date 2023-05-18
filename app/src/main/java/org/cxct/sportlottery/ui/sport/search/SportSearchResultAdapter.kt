@@ -9,7 +9,7 @@ import org.cxct.sportlottery.common.extentions.toLongS
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.sport.SearchResponse
 import org.cxct.sportlottery.network.sport.SearchResult
-import org.cxct.sportlottery.ui.common.adapter.BaseNodeAdapter
+import org.cxct.sportlottery.common.adapter.BaseNodeAdapter
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.view.highLightTextView.HighlightTextView

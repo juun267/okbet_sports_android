@@ -20,7 +20,7 @@
         android:orientation="vertical">
 
         <!-- 帳號 -->
-        <org.cxct.sportlottery.ui.login.LoginEditText
+        <org.cxct.sportlottery.view.LoginEditText
             android:id="@+id/et_recharge_online_payer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
 
 
         <!-- 充值金額 -->
-        <org.cxct.sportlottery.ui.login.LoginEditText
+        <org.cxct.sportlottery.view.LoginEditText
             android:id="@+id/et_recharge_online_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

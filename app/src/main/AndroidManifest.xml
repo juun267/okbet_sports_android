@@ -142,15 +142,15 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.login.foget2.ForgetPasswordActivity2"
+            android:name=".ui.login.foget.ForgetPasswordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.login.foget2.rest.ResetPasswordActivity"
+            android:name=".ui.login.foget.reset.ResetPasswordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.login.foget2.ForgetWaysActivity"
+            android:name=".ui.login.foget.ForgetWaysActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.login.signIn.PhoneVerifyActivity"
@@ -214,6 +214,13 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.profileCenter.authbind.AuthActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.maintab.home.news.NewsHomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.maintab.home.news.NewsDetailActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.chat.ChatActivity"

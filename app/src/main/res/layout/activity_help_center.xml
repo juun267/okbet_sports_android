@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_141414_F3F4F5"
     android:orientation="vertical"
-    tools:context=".ui.helpCenter.HelpCenterActivity">
+    tools:context=".ui2.helpCenter.HelpCenterActivity">
 
     <org.cxct.sportlottery.view.CustomTopToolbar
         android:id="@+id/custom_tool_bar"
@@ -14,12 +14,81 @@
         android:layout_height="wrap_content"
         app:topTitleText="@string/help_center"/>
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/help_center_container"
-        android:name="androidx.navigation.fragment.NavHostFragment"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:navGraph="@navigation/help_center_navigation"
-        tools:layout="@layout/fragment_help_center" />
+        android:layout_height="11dp"/>
+    <LinearLayout
+        android:id="@+id/linear_common_problem"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/color_191919_FCFCFC"
+        android:gravity="center"
+        android:paddingStart="18dp"
+        android:paddingEnd="20dp">
 
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="6dp"
+            android:layout_weight="1"
+            android:text="@string/faqs"
+            android:textColor="@color/color_BBBBBB_333333"
+            android:textSize="@dimen/textSize14sp" />
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@drawable/ic_arrow_right" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linear_game_rule"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/color_191919_FCFCFC"
+        android:gravity="center"
+        android:paddingStart="18dp"
+        android:paddingEnd="20dp">
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="6dp"
+            android:layout_weight="1"
+            android:text="@string/game_rule"
+            android:textColor="@color/color_BBBBBB_333333"
+            android:textSize="@dimen/textSize14sp" />
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@drawable/ic_arrow_right" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linear_feedback"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/color_191919_FCFCFC"
+        android:gravity="center"
+        android:paddingStart="18dp"
+        android:paddingEnd="20dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="6dp"
+            android:layout_weight="1"
+            android:text="@string/feedback"
+            android:textColor="@color/color_BBBBBB_333333"
+            android:textSize="@dimen/textSize14sp" />
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@drawable/ic_arrow_right" />
+    </LinearLayout>
 </LinearLayout>

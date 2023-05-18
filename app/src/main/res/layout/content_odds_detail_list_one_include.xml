@@ -8,7 +8,7 @@
         android:id="@+id/rv_bet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_191919_FCFCFC"
+        android:background="@color/color_FFFFFF"
         android:nestedScrollingEnabled="false"
         android:padding="@dimen/odd_item_horizontal_left"
         android:overScrollMode="never" />

@@ -35,7 +35,6 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.betList.listener.OnItemClickListener
-import org.cxct.sportlottery.ui.betList.listener.OnSelectedPositionListener
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BetPlayCateFunction.getNameMap
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -61,8 +60,6 @@ class BetInfoItemViewHolder(
         itemCount: Int,
         onItemClickListener: OnItemClickListener,
         betListSize: Int,
-        mSelectedPosition: Int,
-        onSelectedPositionListener: OnSelectedPositionListener,
         position: Int,
         userMoney: Double,
         userLogin: Boolean,
@@ -117,8 +114,6 @@ class BetInfoItemViewHolder(
                 if (itemData.matchOdd.isOnlyEUType) OddsType.EU else currentOddsType,
                 onItemClickListener,
                 betListSize,
-                mSelectedPosition,
-                onSelectedPositionListener,
                 position,
                 adapterBetType
             )
@@ -159,16 +154,12 @@ class BetInfoItemViewHolder(
         inputMinMoney = minBet.toDouble()
     }
 
-    var isSingleBetFirstOpenKeyboard = true
-
     @SuppressLint("ClickableViewAccessibility")
     private fun setupBetAmountInput(
         itemData: BetInfoListData,
         currentOddsType: OddsType,
         onItemClickListener: OnItemClickListener,
         betListSize: Int,
-        mSelectedPosition: Int,
-        onSelectedPositionListener: OnSelectedPositionListener,
         position: Int,
         adapterBetType: BetListRefactorAdapter.BetRvType?
     ) = contentView.run {
@@ -302,9 +293,6 @@ class BetInfoItemViewHolder(
                     layoutKeyBoard.setupMaxBetMoney(inputMaxMoney)
                     layoutKeyBoard.showKeyboard(
                         etBet, position
-                    )
-                    onSelectedPositionListener.onSelectChange(
-                        bindingAdapterPosition, BetListRefactorAdapter.BetViewType.SINGLE
                     )
                     onItemClickListener.onShowKeyboard(position)
                 }
@@ -619,7 +607,7 @@ class BetInfoItemViewHolder(
             pop.showAsDropDown(it, xOff, yOff)
         }
 
-        setOnClickListener(tvName, tvLeagueName, tvMatchHome, tvMatchAway, tvOddsContent) {
+        setOnClickListeners(tvName, tvLeagueName, tvMatchHome, tvMatchAway, tvOddsContent) {
             when (it) {
                 tvName -> {
                     showPopAsTop(tvName, tvNameText)

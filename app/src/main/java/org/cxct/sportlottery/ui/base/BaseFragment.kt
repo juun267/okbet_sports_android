@@ -38,7 +38,7 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>? = null) : Fragment(
         return createRootView(inflater, container, savedInstanceState)
     }
 
-    open protected fun createRootView(
+    protected open fun createRootView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?

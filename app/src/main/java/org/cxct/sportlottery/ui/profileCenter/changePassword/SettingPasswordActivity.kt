@@ -12,7 +12,7 @@ import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.repository.FLAG_IS_NEED_UPDATE_PAY_PW
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.ui.login.afterTextChanged
+import org.cxct.sportlottery.view.afterTextChanged
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 import org.cxct.sportlottery.util.setVisibilityByCreditSystem
 import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationMethod

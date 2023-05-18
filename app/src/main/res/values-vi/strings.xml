@@ -116,7 +116,7 @@
     <string name="btn_login">Đăng nhập</string>
     <string name="btn_register">Đăng ký</string>
     <string name="lottery">Xổ số</string>
-    <string name="poker">Cờ vua</string>
+    <string name="J203">Cờ vua</string>
     <string name="slot">"Trò Chơi "</string>
     <string name="fishing">Bắn cá</string>
     <string name="home_tan_main">THỂ THAO</string>
@@ -201,7 +201,7 @@
     <string name="fourth">bốn</string>
     <string name="fifth">năm</string>
     <string name="account_balance">Tổng tài chính</string>
-    <string name="recharge">Gửi tiền</string>
+    <string name="J285">Gửi tiền</string>
     <string name="account_transfer">Chuyển đổi hạn mức</string>
     <string name="money_recycle_succeed">Thu hồi hạn mức thành công</string>
     <string name="news_center">Trung tâm tin nhắn</string>
@@ -527,8 +527,8 @@
     <string name="transfer_info">Thông tin chuyển đổi</string>
     <string name="sorry_website_is_now_maintenance">Trang web hiện đang được bảo trì</string>
     <string name="if_there_is_any_question_please_consult">Nếu bạn có bất kỳ câu hỏi nào, xin vui lòng đi đến tư vấn%1$s</string>
-    <string name="bottom_nav_home">Trang chủ</string>
-    <string name="sport">Thể thao</string>
+    <string name="bottom_nav_home">Trang đầu</string>
+    <string name="B001">Thể thao</string>
     <string name="live">Live</string>
     <string name="sport_bet_record">lịch sử đặt cược thể thao</string>
     <string name="my_favorite">Ưu thích</string>
@@ -1213,6 +1213,16 @@
     <string name="N885">Tải thêm</string>
     <string name="N001">Về chúng tôi</string>
     <string name="J093">Chơi có trách nhiệm</string>
+
+    <string name="M013">Sắp ra mắt</string>
+    <string name="N703">Địa điểm OKBET Game</string>
+    <string name="B005">Ưu đãi</string>
+    <string name="B015">Đại lý</string>
+    <string name="N909">Tin mới</string>
+    <string name="LT050">CSKH</string>
+    <string name="M169">Ngôn ngữ</string>
+    <string name="N913">Tin liên quan</string>
+    <string name="N912">DS tin mới</string>
     <string name="N899">Nếu bạn chỉ muốn xóa một tỷ số, chạm vào Xóa một tỷ số.</string>
     <string name="N379">Không có mẹo</string>
     <string name="N903">Bảng điểm số bóng rổ</string>
@@ -1226,11 +1236,24 @@
     <string name="N901">Xác nhận xoá</string>
     <string name="N888">Tất cả tùy chọn cùng tỷ lệ cược cho điểm số cuối</string>
     <string name="N898">Bạn muốn xóa tất cả tùy chọn tỷ số không?</string>
-    <string name="N908">Quét</string>
     <string name="N951">Vào album</string>
     <string name="N952">Quét máy ảnh</string>
     <string name="N956">Không nhận được mã QR</string>
     <string name="N980">Quyền truy cập máy ảnh bị từ chối</string>
+
+    <string name="N969">Cược thể thao đang bảo trì!</string>
+    <string name="N257">Đang bảo trì</string>
+    <string name="N960">Chi tiết tin</string>
+    <string name="N915">Nhà tài trợ</string>
+    <string name="N908">Quét</string>
+
+    <string name="N910">Trạm cược OKBET</string>
+    <string name="N914">Xác thực danh tính</string>
+    <string name="J134">Đăng nhập</string>
+    <string name="J151">Đăng ký</string>
+    <string name="N700">Sắp ra mắt</string>
+    <string name="N704">OKGames phổ biến</string>
+    <string name="N986">Hướng</string>
 
     <!--聊天室LT001~LT052-->
     <string name="chat_chat">Chat</string>

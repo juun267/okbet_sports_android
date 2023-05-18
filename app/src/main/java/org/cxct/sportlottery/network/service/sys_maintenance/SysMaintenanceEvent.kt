@@ -12,3 +12,12 @@ data class SysMaintenanceEvent(
     @Json(name = "status")
     val status: Int? = null //0 关闭 ，1 维护中
 ) : ServiceEventType
+
+
+@JsonClass(generateAdapter = true) @KeepMembers
+data class SportMaintenanceEvent(
+    @Json(name = "eventType")
+    override val eventType: String? = EventType.SPORT_MAINTAIN_STATUS,
+    @Json(name = "status")
+    val status: Int? = null //1开启维护  0关闭
+) : ServiceEventType

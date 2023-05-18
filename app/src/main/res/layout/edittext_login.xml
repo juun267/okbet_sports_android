@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/color_191919_FCFCFC"
-    tools:context="org.cxct.sportlottery.ui.login.LoginEditText">
+    tools:context="org.cxct.sportlottery.view.LoginEditText">
 
     <TextView
         android:id="@+id/tv_start"

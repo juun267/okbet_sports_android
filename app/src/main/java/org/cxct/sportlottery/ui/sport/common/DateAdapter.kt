@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.game.hall.adapter
+package org.cxct.sportlottery.ui.sport.common
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_date_v4.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.sport.common.Date
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
 

@@ -169,8 +169,6 @@
                     android:id="@+id/iv_arrow"
                     android:layout_width="@dimen/margin_40"
                     android:layout_height="match_parent"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
                     android:padding="@dimen/margin_10"
                     android:src="@drawable/selector_arrow_blue_double" />
             </LinearLayout>

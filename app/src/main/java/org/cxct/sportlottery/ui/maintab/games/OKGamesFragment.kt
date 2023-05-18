@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
-import org.cxct.sportlottery.common.extentions.fitsSystemStatus
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.databinding.FragmentOkgamesBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
@@ -17,7 +16,10 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameLabel
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.EventBusUtil
+import org.cxct.sportlottery.util.FragmentHelper
+import org.cxct.sportlottery.util.enterThirdGame
+import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.view.transform.TransformInDialog
 
 // okgames主Fragment
@@ -75,10 +77,9 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
 
     private fun initToolBar() = binding.homeToolbar.run {
         attach(this@OKGamesFragment, mainTabActivity(), viewModel)
-        fitsSystemStatus()
         ivMenuLeft.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
-            mainTabActivity().showLeftFrament(0, 5)
+            mainTabActivity().showMainLeftMenu(this@OKGamesFragment.javaClass)
         }
     }
     private fun initObservable() = viewModel.run {
@@ -108,12 +109,15 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
 
 
     private fun initTopView() = binding.topView.run {
+        setup(this@OKGamesFragment)
         onTableClick = ::onTabChange
         onSearchTextChanged = { searchKey ->
             hideKeyboard()
             if (!searchKey.isEmptyStr()) {
                 changePartGamesLabel(GameTab.TAB_SEARCH, searchKey)
-                startLoad{ viewModel.searchGames(retagRequest(), searchKey, it, PartGamesFragment.pageSize) }
+                startLoad{ viewModel.searchGames(retagRequest(), searchKey, it,
+                    PartGamesFragment.pageSize
+                ) }
             }
         }
     }
@@ -181,7 +185,9 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
     fun changePartGames(okgamesFirm: OKGamesFirm) {
         changePartGamesLabel(okgamesFirm)
         val firmId = okgamesFirm.getKey().toString()
-        startLoad{ viewModel.getOKGamesList(retagRequest(), null, firmId, it, PartGamesFragment.pageSize) }
+        startLoad{ viewModel.getOKGamesList(retagRequest(), null, firmId, it,
+            PartGamesFragment.pageSize
+        ) }
     }
 
     private fun loadFavorite(tab: OKGameTab) {
@@ -192,7 +198,9 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
     private fun reloadPartGames(tab: OKGameTab) {
         changePartGamesLabel(tab)
         val categoryId = tab.getKey().toString()
-        startLoad{ viewModel.getOKGamesList(retagRequest(), categoryId, null, it, PartGamesFragment.pageSize) }
+        startLoad{ viewModel.getOKGamesList(retagRequest(), categoryId, null, it,
+            PartGamesFragment.pageSize
+        ) }
     }
 
     private fun startLoad(request: (Int) -> Unit) {
@@ -220,4 +228,5 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         return loginedRun(binding.root.context) { viewModel.collectGame(gameData) }
     }
 
+    open fun getCurrentFragment() = fragmentHelper.getCurrentFragment()
 }

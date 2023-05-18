@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.common.adapter
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.entity.node.BaseNode
+import org.cxct.sportlottery.common.adapter.BaseNodeAdapter
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 
@@ -59,7 +60,7 @@ abstract class ExpanableOddsAdapter: BaseNodeAdapter() {
 
 
         for (i in first..last) {
-            val item = getItem(i)
+            val item = getItemOrNull(i)
             if(item is Odd) {
                 val isSelected = betInfoMap.containsKey(item.id)
                 if (isSelected != (item.isSelected == true)) {
