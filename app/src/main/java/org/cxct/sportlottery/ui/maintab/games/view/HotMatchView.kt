@@ -362,9 +362,9 @@ class HotMatchView(context: Context, attrs: AttributeSet
     }
 
     fun onResume(fragment: BaseFragment<*>?) {
+        //关闭/显示   热门赛事
+        goneWithSportSwitch()
         if (fragment is BaseSocketFragment) {
-            //关闭/显示   热门赛事
-            goneWithSportSwitch()
             fragment.receiver.oddsChangeListener = mOddsChangeListener
         }
         if (fragment is org.cxct.sportlottery.ui.base.BindingSocketFragment<*, *>) {
