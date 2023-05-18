@@ -87,6 +87,17 @@ object RetrofitHolder {
         return signRetrofit.create(service)
     }
 
+    fun createNewRetrofit(baseUrl: String): Retrofit {
+        val builder = getClientBulder()
+        builder.addInterceptor(RequestInterceptor(getContext(), ::getApiToken))
+        builder.addInterceptor(HttpStatusInterceptor()) // 处理token过期
+        return Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .client(builder.build())
+            .addConverterFactory(GsonConverterFactory.create(GsonFactory.getSingletonGson()))
+            .build()
+    }
+
     fun changeHost(baseUrl: String) {
         RetrofitUrlManager.getInstance().setGlobalDomain(baseUrl)
     }

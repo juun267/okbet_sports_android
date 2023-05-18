@@ -21,6 +21,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.android.synthetic.main.activity_main_tab.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.BetModeChangeEvent
@@ -165,9 +168,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
 
                     val position = getMenuItemPosition(menuItem)
-
+                    val endIndex = if(isOpenChatRoom()) 2 else 3
                     // index1,2,3。  体育赛事，注单，收藏赛事      在体育服务维护中时 不能点击
-                    if(position in 1..3){
+                    if(position in 1..endIndex){
                         //体育服务是否关闭
                         if(getSportEnterIsClose()){
                             ToastUtil.showToast(context, context.getString(R.string.N969))

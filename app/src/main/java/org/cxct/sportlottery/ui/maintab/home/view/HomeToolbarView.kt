@@ -26,7 +26,7 @@ import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
+import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment2
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
@@ -223,7 +223,7 @@ class HomeToolbarView@JvmOverloads constructor(context: Context, attrs: Attribut
         tvLogin.setOnClickListener { activity.startLogin() }
         tvRegist.setOnClickListener { LoginOKActivity.startRegist(context) }
         ivRefreshMoney.setOnClickListener { onRefreshMoney() }
-        if (fragment !is MainHomeFragment) {
+        if (fragment !is MainHomeFragment2) {
             ivLogo.setOnClickListener { activity.backMainHome() }
         }
     }

@@ -25,9 +25,9 @@ import org.cxct.sportlottery.net.chat.data.UnPacketRow
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.repository.ChatRepository
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
-import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.view.afterTextChanged
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import timber.log.Timber
@@ -108,7 +108,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
         binding.rvWelcome.adapter = chatWelcomeAdapter
         binding.rvChatMessage.setLinearLayoutManager()
         binding.rvChatMessage.adapter = chatMessageListAdapter
-//        chatMessageListAdapter.setEmptyView(getChatEmptyView(binding.root.context))
+        chatMessageListAdapter.setEmptyView(getChatEmptyView(binding.root.context))
 
         OverScrollDecoratorHelper.setUpOverScroll(binding.rvChatMessage, OverScrollDecoratorHelper.ORIENTATION_VERTICAL)
 
