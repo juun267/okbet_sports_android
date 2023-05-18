@@ -146,9 +146,21 @@ class OddsDetailListAdapter(
         EPS(R.layout.content_odds_detail_list_eps)
     }
 
+    fun setPreloadItem() {
+        oddsDetailDataList.clear()
+        isPreload = true
+        notifyDataSetChanged()
+    }
+
+    fun removePreloadItem() {
+        oddsDetailDataList = arrayListOf()
+        notifyDataSetChanged()
+    }
+
     override fun getItemViewType(position: Int): Int {
         return when {
-            oddsDetailDataList.isEmpty() -> BaseItemType.NO_DATA.type
+            isPreload -> BaseItemType.PRELOAD_ITEM.type
+            oddsDetailDataList.isNullOrEmpty() -> BaseItemType.NO_DATA.type
             else -> {
                 val playCateCode = oddsDetailDataList[position].gameType
                 PlayCate.getPlayCate(playCateCode).let { playCate ->
@@ -549,7 +561,7 @@ class OddsDetailListAdapter(
 
     }
 
-    override fun getItemCount(): Int = if (oddsDetailDataList.isEmpty()) {
+    override fun getItemCount(): Int = if (oddsDetailDataList.isNullOrEmpty()) {
         1
     } else {
         oddsDetailDataList.size
