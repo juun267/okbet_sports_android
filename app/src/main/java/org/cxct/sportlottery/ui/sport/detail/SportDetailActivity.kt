@@ -449,15 +449,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
     private fun initUI() {
-        lin_center.viewTreeObserver.addOnGlobalLayoutListener {
-            val location = IntArray(2)
-            lin_center.getLocationInWindow(location)
-//            chatViewHeight=ScreenUtils.getScreenHeight(this@SportDetailActivity) - location[1]-10.dp
-//            cl_bottom.layoutParams.let {
-//                it.height = chatViewHeight
-//                cl_bottom.layoutParams = it
-//            }
-        }
         iv_detail_bg.setImageResource(
             GameType.getGameTypeDetailBg(
                 GameType.getGameType(matchInfo?.gameType) ?: GameType.FT
@@ -503,7 +494,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             adapter = oddsDetailListAdapter
             layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-
+            oddsDetailListAdapter?.setPreloadItem()
         }
 
         rv_cat.apply {
@@ -593,6 +584,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         viewModel.oddsDetailList.observe(this) {
             it.peekContent()?.let { list ->
                 if (list.isNotEmpty()) {
+                    oddsDetailListAdapter?.removePreloadItem()
                     oddsDetailListAdapter?.oddsDetailDataList = list
                 }
             }
