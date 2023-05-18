@@ -14,6 +14,6 @@ class FavoriteActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class)
         super.onCreate(savedInstanceState)
         val contentId = R.id.frameLayout
         setContentView(frameLayout(contentId))
-        addFragment(contentId, FavoriteFragment.newInstance())
+        addFragment(contentId, FavoriteFragment())
     }
 }
