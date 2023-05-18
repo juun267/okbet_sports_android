@@ -373,26 +373,26 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     override fun updateBetListCount(num: Int) {
         betListCount = num
-        setupBetBarVisibility(bottom_navigation_view.currentItem)
+        setupBetBarVisiblity(bottom_navigation_view.currentItem)
         parlayFloatWindow.tv_bet_list_count.text = betListCount.toString()
         if (num > 0) viewModel.getMoneyAndTransferOut()
     }
 
 
-    private fun setupBetBarVisibility(position: Int) {
+    private fun setupBetBarVisiblity(position: Int) {
         val needShowBetBar = when (position) {
             0, 1, 3 -> true
             else -> false
         }
 
-        if (betListCount == 0 || !needShowBetBar || BetInfoRepository.currentBetType == BetListFragment.SINGLE) {
         if (betListCount == 0 || !needShowBetBar || BetInfoRepository.currentBetType
             == BetListFragment.SINGLE
         ) {
 //            Timber.d("ParlayFloatWindow隐藏：betListCount:${betListCount} !needShowBetBar:${!needShowBetBar} currentBetMode:${BetInfoRepository.currentBetType}")
             parlayFloatWindow.gone()
         } else {
-            if (BetInfoRepository.currentBetType == BetListFragment.PARLAY) {
+            if (BetInfoRepository.currentBetType == BetListFragment.PARLAY
+            ) {
                 parlayFloatWindow.setBetText(getString(R.string.conspire))
             } else {
                 parlayFloatWindow.setBetText(getString(R.string.bet_slip))
