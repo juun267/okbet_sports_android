@@ -67,12 +67,12 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         receiver.recordWinsResult.observe(viewLifecycleOwner) { it?.let { binding.winsRankView.onNewWSWinsData(it) } }//最新大奖
         viewModel.recordBetNewHttp.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) {
-                binding.winsRankView.onNewHttpBetData(it)
+                binding.winsRankView.onNewHttpBetData(it.reversed())
             }
         }
         viewModel.recordWinsResultHttp.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) {
-                binding.winsRankView.onNewHttpWinsData(it)
+                binding.winsRankView.onNewHttpWinsData(it.reversed())
             }
         }
     }
