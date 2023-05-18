@@ -177,13 +177,15 @@ fun RecyclerView.setupBackTop(targetView: View, offset: Int) {
 
 
 // 监听NestedScrollView滑出屏幕距离(offset)显示返回顶部按钮
-fun NestedScrollView.setupBackTop(targetView: View, offset: Int) {
+fun NestedScrollView.setupBackTop(targetView: View, offset: Int, onStopRunnable: Runnable? = null) {
 
     var targetWidth = 0f
     targetView.setOnClickListener { smoothScrollTo(0, 0) }
     targetView.post {
         targetWidth = targetView.measuredWidth.toFloat()
-        if (targetView.translationX != targetWidth) { targetView.translationX = targetWidth }
+        if (targetView.translationX != targetWidth) {
+            targetView.translationX = targetWidth
+        }
     }
 
     var lastY = 0
@@ -201,8 +203,11 @@ fun NestedScrollView.setupBackTop(targetView: View, offset: Int) {
             }
         }
     }
-
     setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
+        onStopRunnable?.let {
+            targetView.removeCallbacks(it)
+            targetView.postDelayed(it, 80)
+        }
         if (!animaIdle) {
             return@setOnScrollChangeListener
         }

@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.net.Uri
 import android.net.http.SslError
 import android.os.Bundle
@@ -13,10 +12,8 @@ import android.os.Message
 import android.view.View
 import android.webkit.*
 import androidx.activity.result.contract.ActivityResultContracts
-import kotlinx.android.synthetic.main.activity_register.view
 import kotlinx.android.synthetic.main.activity_web.*
 import kotlinx.android.synthetic.main.view_bettingstation_info.view.*
-import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.databinding.ActivityWebBinding
@@ -24,7 +21,6 @@ import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.setWebViewCommonBackgroundColor
 import org.cxct.sportlottery.view.webView.OkWebChromeClient
 import org.cxct.sportlottery.view.webView.OkWebViewClient
 import org.cxct.sportlottery.view.webView.WebViewCallBack
@@ -281,7 +277,7 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                 }
                 tv_address.setOnClickListener {
                     var url =
-                        "https://maps.google.com/?q=@" + bettingStation!!.lon + "," + bettingStation!!.lat
+                        "https://maps.google.com/?q=@" + bettingStation!!.lat + "," + bettingStation!!.lat
                     JumpUtil.toExternalWeb(this@WebActivity, url)
                 }
             }

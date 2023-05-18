@@ -36,7 +36,11 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
     fun jumpToOKGames() = getMainTabActivity().jumpToOKGames()
 
     override fun onInitView(view: View) = binding.run {
-        scrollView.setupBackTop(ivBackTop, 180.dp)
+        scrollView.setupBackTop(ivBackTop, 180.dp) {
+            if (hotMatchView.isVisible) {
+                hotMatchView.firstVisibleRange(this@MainHomeFragment2)
+            }
+        }
         homeBottumView.bindServiceClick(childFragmentManager)
         binding.winsRankView.setTipsIcon(R.drawable.ic_okgame_p2)
         initToolBar()
@@ -112,6 +116,9 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         }
         viewModel.bettingStationList.observe(viewLifecycleOwner) {
             setupBettingStation(it)
+        }
+        viewModel.gotConfig.observe(viewLifecycleOwner) { event ->
+            viewModel.getSportMenuFilter()
         }
         //体育服务开关监听
         setupSportStatusChange(receiver,this){
@@ -190,7 +197,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
                         val data = (adapter as HomeBettingStationAdapter).data[position]
                         JumpUtil.toExternalWeb(
                             requireContext(),
-                            "https://maps.google.com/?q=@" + data.lon + "," + data.lat
+                            "https://maps.google.com/?q=@" + data.lat + "," + data.lon
                         )
                     }
                 }

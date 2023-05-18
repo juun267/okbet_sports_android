@@ -73,7 +73,6 @@ class HomeTopView @JvmOverloads constructor(
 
         val xbanner = findViewById<XBanner>(bannerId)
         xbanner.setHandLoop(loopEnable)
-        xbanner.setAutoPlayAble(loopEnable)
         xbanner.setOnItemClickListener(this@HomeTopView)
         xbanner.loadImage { _, model, view, _ ->
             (view as ImageView).load((model as XBannerImage).imgUrl, R.drawable.img_banner01)
