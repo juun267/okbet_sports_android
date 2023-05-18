@@ -16,7 +16,6 @@ object CheckOKSystemUtils {
  * 检查是否关闭体育入口
  */
 fun checkSportStatus(context: Context, block: () -> Unit) {
-    val temp=getSportEnterIsClose()
     if(getSportEnterIsClose()){
         ToastUtil.showToast(context, context.getString(R.string.N969))
     }else{
@@ -25,10 +24,10 @@ fun checkSportStatus(context: Context, block: () -> Unit) {
 }
 
 /**
- * 是否关闭体育入口  return true 是关闭
+ * 是否关闭体育入口  return true 是关闭体育入口
  */
 private fun getSportEnterIsClose():Boolean{
-//    status=0关闭  1开启
+//    status=0关闭维护  1开启维护
     val status = sConfigData?.sportMaintainStatus
     return "1"==status
 //    return false
@@ -60,6 +59,7 @@ fun setupSportStatusChange(receiver: ServiceBroadcastReceiver,lifecycleOwner: Li
 fun MainTabActivity.checkMainPosition(position:Int):Boolean{
     //是否为体育页面
     val result=checkSportFragment(position)
+    //在体育页面&&维护开启
     val flag=result&&getSportEnterIsClose()
     if(flag){
         ToastUtil.showToast(this, getString(R.string.N969))

@@ -117,14 +117,16 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
         //设置体育服务监听
         setupSportStatusChange(receiver,this){
-            //如果当前在体育相关fragment， 退回到首页
+            //如果维护开启，当前在体育相关fragment， 退回到首页
             if(checkMainPosition(getCurrentPosition())){
+                //关闭已选中的投注
+                closeBetFragment()
+                //回到首页
                 binding.bottomNavigationView.postDelayed({
                     backMainHome()
                 },200)
             }
-            //关闭已选中的投注
-            closeBetFragment()
+
         }
         viewModel.showBetInfoSingle.observe(this) {
             it.getContentIfNotHandled()?.let {
