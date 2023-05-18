@@ -47,7 +47,7 @@
             android:textColor="@android:color/white"
             android:textSize="14sp"
             android:gravity="center"
-            android:text="@string/btn_register"/>
+            android:text="@string/J151"/>
 
         <TextView
             android:layout_width="wrap_content"
