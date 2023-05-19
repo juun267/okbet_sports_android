@@ -404,7 +404,7 @@ class ChatViewModel(
             return@launch
         }
 
-        val language = LanguageManager.getLanguageString(androidContext)
+        val language = LanguageManager.getLanguageString2(androidContext)
         val chatRoom = queryListResult.getData()?.find { it.language == language && it.isOpen.isStatusOpen() }
         if (chatRoom == null) {
             _chatEvent.emit(ChatEvent.NoMatchRoom)
