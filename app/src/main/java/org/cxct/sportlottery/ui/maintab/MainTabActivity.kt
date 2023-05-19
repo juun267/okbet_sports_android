@@ -25,6 +25,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.BetModeChangeEvent
 import org.cxct.sportlottery.common.event.MenuEvent
+import org.cxct.sportlottery.common.event.ShowFavEvent
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding
@@ -336,6 +337,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
     }
 
+    @Subscribe
+    fun onShowFavEvent(event: ShowFavEvent) {
+        showLoginNotify()
+    }
 
     @Subscribe
     fun onBetModeChangeEvent(event: BetModeChangeEvent) {
