@@ -39,7 +39,6 @@
         android:background="@null"
         android:paddingHorizontal="12dp"
         android:paddingVertical="1dp"
-        android:visibility="gone"
         android:textColor="@color/color_chat_action_edittext_text"
         android:textColorHint="@color/color_chat_action_edittext_hint_text"
         android:textCursorDrawable="@drawable/cursor_common"
