@@ -543,7 +543,7 @@
     <string name="game_name">Tên trò chơi</string>
     <string name="all_out_plat">Tất cả chuyển ra</string>
     <string name="all_in_plat">Tất cả chuyển vào</string>
-    <string name="write_suggestion">Điền đề xuất</string>
+    <string name="N729">Điền đề xuất</string>
     <string name="can_input_1_to_500_word">Miêu tả vấn đề bạn gặp phải(Có thể nhập 1-500 từ)</string>
     <string name="third_game_ky">Game bài KY</string>
     <string name="odd_type_eu">EU</string>
@@ -1238,6 +1238,8 @@
     <string name="N952">Quét máy ảnh</string>
     <string name="N956">Không nhận được mã QR</string>
     <string name="N980">Quyền truy cập máy ảnh bị từ chối</string>
+    <string name="N989">Vượt quá số tiền cược tối đa</string>
+    <string name="N990">Thấp hơn số tiền cược tối thiểu</string>
 
     <string name="N969">Cược thể thao đang bảo trì!</string>
     <string name="N257">Đang bảo trì</string>

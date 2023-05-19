@@ -1293,6 +1293,9 @@
     <string name="N952">相机扫码</string>
     <string name="N956">无法识别此二维码</string>
     <string name="N980">获取系统相机权限被拒绝</string>
+    <string name="N989">超过最大投注金额</string>
+    <string name="N990">低于最低投注额</string>
+
 
     <string name="N969">体育投注服务暂时维护中！</string>
     <string name="N257">维护中</string>
