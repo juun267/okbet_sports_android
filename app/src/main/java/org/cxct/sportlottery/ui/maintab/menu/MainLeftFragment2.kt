@@ -405,17 +405,26 @@ class MainLeftFragment2 : org.cxct.sportlottery.ui.base.BindingFragment<MainView
     }
 
     private fun bindVerifyStatus(userInfo: UserInfo?) = binding.run {
-
+        if (SPUtil.getMarketSwitch()) {
+            llVerify.setVisibilityByMarketSwitch()
+            return@run
+        }
         llVerify.isVisible = sConfigData?.realNameWithdrawVerified.isStatusOpen()
-                || sConfigData?.realNameRechargeVerified.isStatusOpen()
+                || sConfigData?.realNameRechargeVerified.isStatusOpen() || !SPUtil.getMarketSwitch()
 
         when (userInfo?.verified) {
             ProfileActivity.VerifiedType.PASSED.value -> {
-                setVerify(false, false, R.string.kyc_passed, resources.getColor(R.color.color_1CD219))
+                setVerify(false,
+                    false,
+                    R.string.kyc_passed,
+                    resources.getColor(R.color.color_1CD219))
 
             }
             ProfileActivity.VerifiedType.NOT_YET.value -> {
-                setVerify(true, true, R.string.kyc_unverified, resources.getColor(R.color.color_6D7693))
+                setVerify(true,
+                    true,
+                    R.string.kyc_unverified,
+                    resources.getColor(R.color.color_6D7693))
             }
             ProfileActivity.VerifiedType.VERIFYING.value -> {
                 setVerify(false, false, R.string.kyc_unverifing, resources.getColor(R.color.color_6D7693))
