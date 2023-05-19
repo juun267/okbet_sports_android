@@ -115,7 +115,6 @@ class HotMatchView(context: Context, attrs: AttributeSet
             return
         }
         this.fragment = fragment
-        this.gone()
         //初始化api变量监听
         initDataObserve(data,fragment)
         //初始化adapter
