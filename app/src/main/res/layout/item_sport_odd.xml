@@ -17,6 +17,7 @@
         android:id="@+id/lin_match"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
