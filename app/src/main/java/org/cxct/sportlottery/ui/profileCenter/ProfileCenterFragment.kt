@@ -140,6 +140,7 @@ class ProfileCenterFragment :
 //        }
 
     }
+
     private val mSelectMediaListener = object : OnResultCallbackListener<LocalMedia> {
         override fun onResult(result: MutableList<LocalMedia>?) {
             try {
@@ -158,15 +159,12 @@ class ProfileCenterFragment :
                 }
 
                 val file = File(path!!)
-                if (file.exists())
-                    uploadImg(file)
-                else
-                    throw FileNotFoundException()
+                if (file.exists()) uploadImg(file)
+                else throw FileNotFoundException()
             } catch (e: Exception) {
                 e.printStackTrace()
                 ToastUtil.showToastInCenter(
-                    activity,
-                    getString(R.string.error_reading_file)
+                    activity, getString(R.string.error_reading_file)
                 )
             }
         }
@@ -176,6 +174,7 @@ class ProfileCenterFragment :
         }
 
     }
+
     private fun setupEditNickname() {
         rl_head.setOnClickListener {
             fragmentManager?.let { it1 ->
@@ -311,6 +310,7 @@ class ProfileCenterFragment :
                     }
                 }
             }
+
             else -> {
                 lin_help_sub.children.filter { it is TextView }.forEach {
                     (it.layoutParams as LinearLayout.LayoutParams).apply {
@@ -335,12 +335,9 @@ class ProfileCenterFragment :
     // TODO 跳轉Promotion 20220108新增 by Hewie
     private fun toProfileCenter() {
         JumpUtil.toInternalWeb(
-            requireContext(),
-            Constants.getPromotionUrl(
-                viewModel.token,
-                LanguageManager.getSelectLanguage(requireContext())
-            ),
-            getString(R.string.promotion)
+            requireContext(), Constants.getPromotionUrl(
+                viewModel.token, LanguageManager.getSelectLanguage(requireContext())
+            ), getString(R.string.promotion)
         )
     }
 
@@ -351,6 +348,7 @@ class ProfileCenterFragment :
         super.onHiddenChanged(hidden)
         getMoney()
     }
+
     private fun getUserInfo() {
         viewModel.getUserInfo()
     }
@@ -404,16 +402,13 @@ class ProfileCenterFragment :
                         getString(R.string.go_to_setting),
                         true
                     ) {
-                        startActivity(
-                            Intent(
-                                requireActivity(),
-                                SettingPasswordActivity::class.java
-                            ).apply {
-                                putExtra(
-                                    PWD_PAGE,
-                                    SettingPasswordActivity.PwdPage.BANK_PWD
-                                )
-                            })
+                        startActivity(Intent(
+                            requireActivity(), SettingPasswordActivity::class.java
+                        ).apply {
+                            putExtra(
+                                PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD
+                            )
+                        })
                     }
                 } else {
                     viewModel.checkProfileInfoComplete()
@@ -476,7 +471,7 @@ class ProfileCenterFragment :
 
         viewModel.errorMessageDialog.observe(viewLifecycleOwner) {
             val errorMsg = it ?: getString(R.string.unknown_error)
-            CustomAlertDialog(requireContext()).apply {
+            CustomAlertDialog().apply {
                 setMessage(errorMsg)
                 setNegativeButtonText(null)
                 setCanceledOnTouchOutside(false)
@@ -485,8 +480,7 @@ class ProfileCenterFragment :
         }
 
         viewModel.twoFactorSuccess.observe(viewLifecycleOwner) {
-            if (it == true)
-                customSecurityDialog?.dismiss()
+            if (it == true) customSecurityDialog?.dismiss()
         }
 
         viewModel.twoFactorResult.observe(viewLifecycleOwner) {
@@ -575,10 +569,8 @@ class ProfileCenterFragment :
             it.getContentIfNotHandled()?.let { b ->
                 if (b)
                     showKYCVerifyDialog()
-                else {
+                else
                     viewModel.checkWithdrawSystem()
-                }
-
             }
         }
 
@@ -586,11 +578,8 @@ class ProfileCenterFragment :
             it.getContentIfNotHandled()?.let { b ->
                 if (b)
                     showKYCVerifyDialog()
-                else {
-                    loading()
+                else
                     viewModel.checkRechargeSystem()
-                }
-
             }
         }
 
@@ -647,8 +636,10 @@ class ProfileCenterFragment :
     fun setupNoticeButton() {
         iv_user_notice.setOnClickListener {
             startActivity(
-                Intent(requireActivity(), InfoCenterActivity::class.java)
-                    .putExtra(InfoCenterActivity.KEY_READ_PAGE, InfoCenterActivity.YET_READ)
+                Intent(requireActivity(), InfoCenterActivity::class.java).putExtra(
+                        InfoCenterActivity.KEY_READ_PAGE,
+                        InfoCenterActivity.YET_READ
+                    )
             )
         }
     }
@@ -671,6 +662,7 @@ class ProfileCenterFragment :
         iv_circle?.visibility =
             (if (noticeCount ?: 0 > 0 && isGuest == false) View.VISIBLE else View.GONE)
     }
+
     //实名验证
     private fun showKYCVerifyDialog() {
         VerifyIdentityDialog().show(childFragmentManager, null)

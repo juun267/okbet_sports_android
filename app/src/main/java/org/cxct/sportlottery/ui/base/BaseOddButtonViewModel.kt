@@ -16,7 +16,6 @@ import org.cxct.sportlottery.common.enums.SpreadState
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.Odd
-import org.cxct.sportlottery.network.bet.add.BetAddErrorData
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
@@ -47,12 +46,15 @@ import timber.log.Timber
 
 
 abstract class BaseOddButtonViewModel(
-    val androidContext: Application,
+    androidContext: Application,
     loginRepository: LoginRepository,
     userInfoRepository: UserInfoRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-) : BaseWithdrawViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+) : BaseWithdrawViewModel(androidContext,
+    loginRepository,
+    betInfoRepository,
+    infoCenterRepository) {
 
     val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo
 
@@ -336,33 +338,6 @@ abstract class BaseOddButtonViewModel(
         betInfoRepository.notifyBetInfoChanged()
 
     }
-
-    fun updateMatchOdd(betAddErrorDataList: List<BetAddErrorData>, betAddError: BetAddError) {
-        val newList: MutableList<org.cxct.sportlottery.network.odds.Odd> = mutableListOf()
-        betAddErrorDataList.forEach { betAddErrorData ->
-            betAddErrorData.let { data ->
-                data.status?.let { status ->
-                    val newOdd = org.cxct.sportlottery.network.odds.Odd(
-                        extInfoMap = null,
-                        id = data.id,
-                        name = null,
-                        odds = data.odds,
-                        hkOdds = data.hkOdds,
-                        producerId = data.producerId,
-                        spread = data.spread,
-                        status = status,
-                    )
-                    newList.add(newOdd)
-                }
-            }
-        }
-
-        betInfoRepository.betInfoList.value?.peekContent()?.forEach {
-            updateItemForBetAddError(it.matchOdd, newList, betAddError)
-        }
-        betInfoRepository.notifyBetInfoChanged()
-    }
-
 
     /**
      * 新的投注單沒有單一下注, 一次下注一整單, 下注完後不管成功失敗皆清除所有投注單內容

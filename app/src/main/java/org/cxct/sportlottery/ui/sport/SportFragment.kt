@@ -231,7 +231,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
 
         childFragmentManager.beginTransaction()
             .replace(R.id.fl_content, showFragment!!)
-            .commit()
+            .commitAllowingStateLoss()
 
         jumpMatchType = null
         jumpGameType = null

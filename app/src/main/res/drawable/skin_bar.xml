@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:startColor="#3880E5"
+        android:endColor="#759BFF"
+        android:angle="0"
+        android:type="linear" />
+</shape><!--TODO 等UI定稿給色號-->

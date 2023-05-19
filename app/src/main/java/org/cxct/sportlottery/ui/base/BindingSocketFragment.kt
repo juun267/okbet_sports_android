@@ -1,11 +1,9 @@
 package org.cxct.sportlottery.ui.base
 
 import androidx.viewbinding.ViewBinding
-import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.chat.LiveMsgEntity
 
-open class BindingSocketFragment<VM : BaseViewModel, VB: ViewBinding>: org.cxct.sportlottery.ui.base.BindingFragment<VM, VB>() {
+open class BindingSocketFragment<VM : BaseViewModel, VB: ViewBinding>: BindingFragment<VM, VB>() {
 
 
     val receiver by lazy {
@@ -88,6 +86,26 @@ open class BindingSocketFragment<VM : BaseViewModel, VB: ViewBinding>: org.cxct.
             is BaseBottomNavActivity<*> -> thisActivity.getBetListPageVisible()
             else -> false
         }
+    }
+
+    protected fun subscribeChatRoom(roomId: String?) {
+        (activity as BaseSocketActivity<*>).subscribeChatRoom(roomId)
+    }
+
+    protected fun unSubscribeChatRoom(roomId: String?) {
+        (activity as BaseSocketActivity<*>).unSubscribeChatRoom(roomId)
+    }
+
+    protected fun subscribeChatUser(userId: String?) {
+        (activity as BaseSocketActivity<*>).subscribeChatUser(userId)
+    }
+
+    protected fun unSubscribeChatUser(userId: String?) {
+        (activity as BaseSocketActivity<*>).unSubscribeChatUser(userId)
+    }
+
+    protected fun chatSendMessage(liveMsgEntity: LiveMsgEntity?) {
+        (activity as BaseSocketActivity<*>).chatSendMessage(liveMsgEntity)
     }
 
 }

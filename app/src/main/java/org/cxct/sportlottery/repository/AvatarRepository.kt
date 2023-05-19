@@ -3,8 +3,8 @@ package org.cxct.sportlottery.repository
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.uploadImg.UploadImgResult
@@ -65,6 +65,9 @@ class AvatarRepository(private val androidContext: Context) {
         if (response.isSuccessful) {
             response.body()?.let { result ->
                 _editIconUrlResult.postValue(Event(result))
+
+                //後續優化方向, _editIconUrlResult改為 flow 讓 ViewModel 和 View 能各自觀察執行後續業務邏輯
+                UserInfoRepository.getSign()
             }
         }
     }
@@ -96,4 +99,31 @@ class AvatarRepository(private val androidContext: Context) {
         return response
     }
 
+    suspend fun uploadChatImage(uploadImgRequest: UploadImgRequest): Response<UploadImgResult> {
+        val response = OneBoSportApi.uploadImgService.uploadImg(uploadImgRequest.toParts())
+        if (response.isSuccessful) {
+            val result = response.body()
+            when {
+                result == null -> _editIconUrlResult.postValue(
+                    Event(
+                        IconUrlResult(
+                            -1,
+                            androidContext.getString(R.string.unknown_error),
+                            false,
+                            null
+                        )
+                    )
+                )
+                result.success -> {
+                    val path = result.imgData?.path.orEmpty()
+                    //前端content只要传/p/20230317/cx_sports/spnew1/img/1507/jpeg/1679021057892.jpeg的路径过来
+                    //后端收到这个就直接返回
+                    _editIconUrlResult.postValue(
+                        Event(IconUrlResult(result.code, result.msg, true, path))
+                    )
+                }
+            }
+        }
+        return response
+    }
 }

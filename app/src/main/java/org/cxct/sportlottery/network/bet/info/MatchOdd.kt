@@ -1,12 +1,18 @@
 package org.cxct.sportlottery.network.bet.info
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.common.enums.OddState
 import org.cxct.sportlottery.common.enums.SpreadState
-import org.cxct.sportlottery.network.error.BetAddError
 import org.cxct.sportlottery.common.proguards.KeepMembers
+import org.cxct.sportlottery.network.error.BetAddError
+import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.odds.eps.EpsOdd
+import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 
+@Parcelize
 @JsonClass(generateAdapter = true) @KeepMembers
 data class MatchOdd(
     @Json(name = "awayName")
@@ -55,9 +61,16 @@ data class MatchOdd(
     var homeScore: Int,
     @Json(name = "awayScore")
     var awayScore: Int,
-
-    ) {
+    override var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null,
+    override var playCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null,
+    override val matchInfo: org.cxct.sportlottery.network.odds.MatchInfo?,
+    override var oddsMap: MutableMap<String, MutableList<Odd>?>? = null,
+    override val oddsSort: String? = null,
+    override var quickPlayCateList: MutableList<QuickPlayCate>? = null,
+    override val oddsEps: EpsOdd? = null,
+) : Parcelable, org.cxct.sportlottery.network.common.MatchOdd {
     var oddState: Int = OddState.SAME.state
+
     @Transient
     var runnable: Runnable? = null //賠率變更，按鈕顏色變換任務
     var betAddError: BetAddError? = null

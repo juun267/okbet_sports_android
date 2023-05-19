@@ -14,12 +14,13 @@ import androidx.multidex.MultiDex
 import cn.jpush.android.api.JPushInterface
 import com.appsflyer.AppsFlyerLib
 import com.didichuxing.doraemonkit.DoKit
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import me.jessyan.autosize.AutoSize
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.common.loading.Gloading
+import org.cxct.sportlottery.common.loading.LoadingAdapter
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.money.RedEnveLopeModel
@@ -29,6 +30,7 @@ import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.betList.BetListViewModel
 import org.cxct.sportlottery.ui.betRecord.TransactionStatusViewModel
 import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
+import org.cxct.sportlottery.ui.chat.ChatViewModel
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.ui.finance.FinanceViewModel
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterViewModel
@@ -152,9 +154,10 @@ class MultiLanguagesApplication : Application() {
         viewModel { ForgetViewModel(get(), get(), get(), get()) }
         viewModel { BetListViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { AuthViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { BindInfoViewModel(get(), get(), get()) }
+        viewModel { BindInfoViewModel(get(), get(), get(), get()) }
         viewModel { RegisterInfoViewModel(get(), get(), get(), get()) }
         viewModel { OKGamesViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { ChatViewModel(get(), get(), get(), get(), get(), get(), get()) }
     }
 
     private val repoModule = module {
@@ -176,7 +179,7 @@ class MultiLanguagesApplication : Application() {
 
 
     private val serviceModule = module {
-        factory { ServiceBroadcastReceiver(get(), get()) }
+        factory { ServiceBroadcastReceiver() }
     }
 
     override fun attachBaseContext(base: Context) {
@@ -230,6 +233,7 @@ class MultiLanguagesApplication : Application() {
                 .build()
         }
 
+        Gloading.initDefault(LoadingAdapter())
     }
 
     private val localeResources by lazy {
@@ -330,20 +334,31 @@ class MultiLanguagesApplication : Application() {
             this.searchHistory = searchHistory
         }
 
-        var searchHistory: MutableList<String>?
+        var searchHistory: MutableList<String>? = null
             get() {
+                if (field == null) {
+                    field = mutableListOf()
+                    return field
+                }
+
                 val searchHistoryJson = myPref?.getString("search_history", "")
-                val gson = Gson()
-                val type = object : TypeToken<MutableList<String>?>() {}.type
-                var searchHistoryList: MutableList<String>? = gson.fromJson(searchHistoryJson, type)
-                return searchHistoryList
+                if (searchHistoryJson.isEmptyStr()) {
+                    field = mutableListOf()
+                    return field
+                }
+
+                field = JsonUtil.listFrom(searchHistoryJson!!, String::class.java)
+                return field
             }
-            set(searchHistoryList) {
-                val gson = Gson()
-                val searchHistoryJson = gson.toJson(searchHistoryList)
+            set(value) {
                 val editor = myPref?.edit()
-                editor?.putString("search_history", searchHistoryJson)
+                if (value == null) {
+                    editor?.putString("search_history", "")
+                } else {
+                    editor?.putString("search_history", JsonUtil.toJson(value))
+                }
                 editor?.apply()
+                field = value
             }
 
         fun saveNightMode(nightMode: Boolean) {

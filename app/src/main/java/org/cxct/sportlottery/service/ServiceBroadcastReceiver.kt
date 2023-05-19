@@ -54,9 +54,7 @@ import org.json.JSONObject
 import org.json.JSONTokener
 import timber.log.Timber
 
-open class ServiceBroadcastReceiver(
-    val userInfoRepository: UserInfoRepository? = null, val betInfoRepository: BetInfoRepository
-) : BroadcastReceiver() {
+open class ServiceBroadcastReceiver : BroadcastReceiver() {
 
     val globalStop: LiveData<GlobalStopEvent?>
         get() = _globalStop
@@ -161,7 +159,7 @@ open class ServiceBroadcastReceiver(
     override fun onReceive(context: Context?, intent: Intent) {
         val bundle = intent.extras
         receiveConnectStatus(bundle)
-        receiveMessage(bundle)
+        bundle?.let { receiveMessage(it) }
     }
 
     private fun receiveConnectStatus(bundle: Bundle?) {
@@ -171,10 +169,12 @@ open class ServiceBroadcastReceiver(
         }
     }
 
-    private fun receiveMessage(bundle: Bundle?) {
+    private fun receiveMessage(bundle: Bundle) {
+
         CoroutineScope(Dispatchers.IO).launch {
-            val channelStr = bundle?.getString(CHANNEL_KEY, "") ?: ""
-            val messageStr = bundle?.getString(SERVER_MESSAGE_KEY, "") ?: ""
+
+            val channelStr = bundle.getString(CHANNEL_KEY, "") ?: ""
+            val messageStr = bundle.getString(SERVER_MESSAGE_KEY, "") ?: ""
             val decryptMessage = EncryptUtil.uncompress(messageStr)
             try {
                 decryptMessage?.let {
@@ -273,7 +273,7 @@ open class ServiceBroadcastReceiver(
 
                 //query為耗時任務不能在主線程, LiveData需在主線程更新
                 mUserId?.let { userId ->
-                    val discount = userInfoRepository?.getDiscount(userId)
+                    val discount = UserInfoRepository.getDiscount(userId)
                     data?.let {
                         it.setupOddDiscount(discount ?: 1.0F)
                         SocketUpdateUtil.updateMatchOdds(it)
@@ -301,20 +301,20 @@ open class ServiceBroadcastReceiver(
                 val data = ServiceMessage.getMatchOddsChange(jObjStr)
                 //query為耗時任務不能在主線程, LiveData需在主線程更新
                 mUserId?.let { userId ->
-                    val discount = userInfoRepository?.getDiscount(userId)
+                    val discount = UserInfoRepository.getDiscount(userId)
                     data?.let {
                         it.setupOddDiscount(discount ?: 1.0F)
                         it.updateOddsSelectedState()
                     }
                     _matchOddsChange.postValue(Event(data))
                     data?.let { socketEvent ->
-                        betInfoRepository.updateMatchOdd(socketEvent)
+                        BetInfoRepository.updateMatchOdd(socketEvent)
                     }
 
                 } ?: run {
                     _matchOddsChange.postValue(Event(data))
                     data?.let { socketEvent ->
-                        betInfoRepository.updateMatchOdd(socketEvent)
+                        BetInfoRepository.updateMatchOdd(socketEvent)
                     }
                 }
             }
@@ -367,7 +367,7 @@ open class ServiceBroadcastReceiver(
                 it.onChange(socketEvent)
             }
         }
-        betInfoRepository.updateMatchOdd(socketEvent)
+        BetInfoRepository.updateMatchOdd(socketEvent)
     }
 
     private fun OddsChangeEvent.setupOddDiscount(discount: Float): OddsChangeEvent {
@@ -432,7 +432,7 @@ open class ServiceBroadcastReceiver(
             oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
                 oddTypeSocketMapEntry.value?.onEach { odd ->
                     odd?.isSelected =
-                        betInfoRepository.betInfoList.value?.peekContent()?.any { betInfoListData ->
+                        BetInfoRepository.betInfoList.value?.peekContent()?.any { betInfoListData ->
                             betInfoListData.matchOdd?.oddsId == odd?.id
                         }
                 }
@@ -461,7 +461,7 @@ open class ServiceBroadcastReceiver(
             oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
                 oddTypeSocketMapEntry.value.odds?.onEach { odd ->
                     odd?.isSelected =
-                        betInfoRepository.betInfoList.value?.peekContent()?.any { betInfoListData ->
+                        BetInfoRepository.betInfoList.value?.peekContent()?.any { betInfoListData ->
                             betInfoListData.matchOdd.oddsId == odd?.id
                         }
                 }

@@ -27,14 +27,24 @@ object VerifyConstUtil {
      fun isValidChineseWord(inputStr: CharSequence): Boolean {
         return Pattern.matches("[$CHINESE_WORD]{1,50}", inputStr)
     }
+
     //是否為英文文字
     fun isValidEnglishWord(inputStr: CharSequence): Boolean {
         return Pattern.matches("[$ENGLISH_WORD]{1,50}", inputStr)
     }
+
     fun verifyInviteCode(inviteCode: CharSequence): Boolean {
         return Pattern.matches("([_$ENGLISH_WORD$NUMBER]){4,8}$", inviteCode)
     }
 
+    //是否為數字
+    fun isNumeric(text: String): Boolean =
+        try {
+            text.toDouble()
+            true
+        } catch (e: NumberFormatException) {
+            false
+        }
 
     fun verifyPayPwd(pwd: CharSequence): Boolean {
         return Pattern.matches("[$NUMBER]{4}", pwd)

@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.ui.login.foget
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -21,11 +21,11 @@ import org.cxct.sportlottery.util.VerifyConstUtil
 
 
 class ForgetViewModel(
-    private val androidContext: Context,
+    androidContext: Application,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+) : BaseViewModel(androidContext, loginRepository, betInfoRepository, infoCenterRepository) {
     //手机号异常提示
     val phoneMsg: LiveData<Pair<String?, Boolean>>
         get() = _phoneMsg

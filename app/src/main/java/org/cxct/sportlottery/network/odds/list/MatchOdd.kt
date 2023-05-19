@@ -1,10 +1,12 @@
 package org.cxct.sportlottery.network.odds.list
 
 
+import android.os.Parcelable
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.IgnoredOnParcel
+import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.PlayCate
@@ -14,6 +16,7 @@ import org.cxct.sportlottery.network.odds.eps.EpsOdd
 import org.cxct.sportlottery.network.outright.odds.DynamicMarket
 import org.cxct.sportlottery.util.sortOddsMap
 
+@Parcelize
 @JsonClass(generateAdapter = true) @KeepMembers
 data class MatchOdd(
     @Json(name = "betPlayCateNameMap")
@@ -33,8 +36,8 @@ data class MatchOdd(
     @Json(name = "quickPlayCateList")
     override var quickPlayCateList: MutableList<QuickPlayCate>? = null,
     @Json(name = "oddsSort")
-    override var oddsSort: String? = null
-) : MatchOdd, BaseNode() {
+    override var oddsSort: String? = null,
+) : MatchOdd, BaseNode(), Parcelable {
 
     override val childNode: MutableList<BaseNode> = mutableListOf()
 
