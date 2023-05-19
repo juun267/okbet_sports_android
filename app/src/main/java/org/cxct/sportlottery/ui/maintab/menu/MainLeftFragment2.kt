@@ -206,8 +206,11 @@ class MainLeftFragment2 : org.cxct.sportlottery.ui.base.BindingFragment<MainView
             true
         ) { getMainTabActivity().jumpToOKGames() }
 
+        okGamesItem.group.setVisibilityByMarketSwitch()
+
         var index = binding.llMenuRoot.indexOfChild(divider1)
-        promotionItem = addMenu(++index,
+        promotionItem = addMenu(
+            ++index,
             groupParams,
             iconParams,
             R.drawable.ic_main_menu_promo_1,
@@ -216,6 +219,7 @@ class MainLeftFragment2 : org.cxct.sportlottery.ui.base.BindingFragment<MainView
             R.string.B005,
         )
         promotionItem.group.bindPromoClick { close() }
+        promotionItem.group.setVisibilityByMarketSwitch()
 
         affiliateItem = addMenu(++index,
             groupParams,
@@ -231,7 +235,7 @@ class MainLeftFragment2 : org.cxct.sportlottery.ui.base.BindingFragment<MainView
                 resources.getString(R.string.btm_navigation_affiliate)
             )
         }
-
+        affiliateItem.group.setVisibilityByMarketSwitch()
         newsItem = addMenu(++index,
             groupParams,
             iconParams,
@@ -242,6 +246,7 @@ class MainLeftFragment2 : org.cxct.sportlottery.ui.base.BindingFragment<MainView
             hasIndicator = true
         ) {
             getMainTabActivity().jumpToNews()
+            getMainTabActivity().homeBackView(true)
         }
 
         serviceItem = addMenu(++index,
