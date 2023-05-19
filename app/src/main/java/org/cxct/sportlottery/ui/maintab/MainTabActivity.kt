@@ -220,7 +220,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
 
                     when (menuItem.itemId) {
-                        R.id.i_betlist, R.id.i_favorite, R.id.i_user -> {
+                        R.id.i_betlist, R.id.i_user -> {
                             if (viewModel.isLogin.value == false) {
                                 startLogin()
                                 return@OnNavigationItemSelectedListener false
