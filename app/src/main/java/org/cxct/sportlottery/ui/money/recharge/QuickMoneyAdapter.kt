@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.ui.money.recharge
 
+import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.databinding.ItemQuickMoneyBinding
-import org.cxct.sportlottery.ui.common.adapter.BindingAdapter
 
 
 class QuickMoneyAdapter : BindingAdapter<String, ItemQuickMoneyBinding>() {

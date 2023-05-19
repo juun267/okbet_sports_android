@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.login.signIn
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
@@ -21,7 +22,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.crash.FirebaseLog
 import org.cxct.sportlottery.common.event.RegisterInfoEvent
 import org.cxct.sportlottery.common.extentions.isEmptyStr
-import org.cxct.sportlottery.databinding.ActivityLoginOkBinding
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.ActivityLoginOkBinding
 import org.cxct.sportlottery.network.Constants
@@ -34,12 +34,12 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.dialog.SelfLimitFrozeErrorDialog
 import org.cxct.sportlottery.ui.login.VerifyCodeDialog
-import org.cxct.sportlottery.view.checkRegisterListener
 import org.cxct.sportlottery.ui.login.foget.ForgetWaysActivity
 import org.cxct.sportlottery.ui.login.signUp.info.RegisterInfoActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.boundsEditText.SimpleTextChangedWatcher
+import org.cxct.sportlottery.view.checkRegisterListener
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
