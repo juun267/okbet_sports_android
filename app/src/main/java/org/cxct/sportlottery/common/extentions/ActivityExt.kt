@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.MainThread
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
@@ -16,13 +17,13 @@ import java.lang.reflect.ParameterizedType
 import kotlin.reflect.KClass
 
 
-fun Any.getKClass(index: Int) : KClass<*> {
+fun Any.getKClass(index: Int): KClass<*> {
     val parameterizedType = this::class.java.genericSuperclass as ParameterizedType
     val actualTypeArguments = parameterizedType.actualTypeArguments
     return (actualTypeArguments[index] as Class<*>).kotlin
 }
 
-fun <VB: ViewBinding> Any.createVBinding(layoutInflater: LayoutInflater, index: Int = 0): VB {
+fun <VB : ViewBinding> Any.createVBinding(layoutInflater: LayoutInflater, index: Int = 0): VB {
     val parameterizedType = this::class.java.genericSuperclass as ParameterizedType
     val actualTypeArguments = parameterizedType.actualTypeArguments
     val clazz = actualTypeArguments[index] as Class<VB>
@@ -30,7 +31,9 @@ fun <VB: ViewBinding> Any.createVBinding(layoutInflater: LayoutInflater, index: 
     return method.invoke(null, layoutInflater) as VB
 }
 
-fun <VDB: ViewDataBinding> LifecycleOwner.createDataBinding(layoutInflater: LayoutInflater, index: Int = 0): VDB {
+fun <VDB : ViewDataBinding> LifecycleOwner.createDataBinding(
+    layoutInflater: LayoutInflater, index: Int = 0
+): VDB {
     val owner = this
     val parameterizedType = this::class.java.genericSuperclass as ParameterizedType
     val actualTypeArguments = parameterizedType.actualTypeArguments
@@ -76,13 +79,17 @@ fun LifecycleOwner.doOnDestory(block: () -> Unit) {
     doWhenLife(Lifecycle.Event.ON_DESTROY, 0, block, true)
 }
 
-fun LifecycleOwner.doWhenLife(lifeEvent: Lifecycle.Event, interval: Int = 0, block: () -> Unit, once: Boolean) {
+fun LifecycleOwner.doWhenLife(
+    lifeEvent: Lifecycle.Event, interval: Int = 0, block: () -> Unit, once: Boolean
+) {
     lifecycle.addObserver(object : LifecycleEventObserver {
 
         var time = 0L
         override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
             if (event == lifeEvent && System.currentTimeMillis() - time > interval) {
-                if (once) { lifecycle.removeObserver(this) }
+                if (once) {
+                    lifecycle.removeObserver(this)
+                }
                 time = System.currentTimeMillis()
                 block.invoke()
             }
@@ -90,16 +97,16 @@ fun LifecycleOwner.doWhenLife(lifeEvent: Lifecycle.Event, interval: Int = 0, blo
     })
 }
 
-inline fun Activity.finishWithOK() {
+fun Activity.finishWithOK() {
     setResult(Activity.RESULT_OK)
     finish()
 }
 
-inline fun Fragment.startActivity(activity: Class<out Activity>) {
+fun Fragment.startActivity(activity: Class<out Activity>) {
     startActivity(Intent(requireActivity(), activity))
 }
 
-inline fun Activity.startActivity(activity: Class<out Activity>) {
+fun Activity.startActivity(activity: Class<out Activity>) {
     startActivity(Intent(this, activity))
 }
 
@@ -108,6 +115,17 @@ fun Activity.bindFinish(vararg views: View) {
     views.forEach { it.setOnClickListener(finishClick) }
 }
 
-fun toast(str:String){
-    ToastUtil.showToast(MultiLanguagesApplication.appContext,str,Toast.LENGTH_LONG)
+fun toast(str: String) {
+    ToastUtil.showToast(MultiLanguagesApplication.appContext, str, Toast.LENGTH_LONG)
+}
+
+fun AppCompatActivity.addFragment(fragmentId: Int, fragment: Fragment) {
+    supportFragmentManager.beginTransaction().add(
+        fragmentId, fragment
+    ).commitAllowingStateLoss()
+}
+
+fun AppCompatActivity.replaceFragment(fragmentId: Int, fragment: Fragment) {
+    supportFragmentManager.beginTransaction().replace(fragmentId, fragment)
+        .commitAllowingStateLoss()
 }

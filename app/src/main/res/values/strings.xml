@@ -1442,4 +1442,6 @@
     <string name="N922">Chat room has been closed!</string>
     <string name="N991">Welcome %s to chat</string>
     <string name="P038">Google service is not available, please register/ login with your mobile number.</string>
+    <string name="N989">Over max stake</string>
+    <string name="N990">Below min stake</string>
 </resources>

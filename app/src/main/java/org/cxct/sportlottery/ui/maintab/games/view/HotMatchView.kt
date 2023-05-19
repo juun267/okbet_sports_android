@@ -140,17 +140,17 @@ class HotMatchView(context: Context, attrs: AttributeSet
 
             //api获取热门赛事列表
             it.peekContent().let { data ->
-                if (data.isNotEmpty()) {
-                    this.visible()
-                }
-                //如果体育服务关闭
-                if (getSportEnterIsClose()) {
-                    this.gone()
-                    return@observe
-                } else {
-                    this.visible()
-                }
-                unSubscribeChannelHall(fragment)
+                    //如果没数据
+                    if(data.isNotEmpty()){
+                        //隐藏
+                        gone()
+                    }else{
+                        visible()
+                    }
+                    //如果体育服务关闭
+                    this.goneWithSportSwitch()
+
+                    unSubscribeChannelHall(fragment)
                 if (isVisible) {
                     adapter?.data = data
                     recycler_hot_game.post { firstVisibleRange(fragment) }
@@ -362,6 +362,8 @@ class HotMatchView(context: Context, attrs: AttributeSet
     }
 
     fun onResume(fragment: BaseFragment<*>?) {
+        //关闭/显示   热门赛事
+        goneWithSportSwitch()
         if (fragment is BaseSocketFragment) {
             fragment.receiver.oddsChangeListener = mOddsChangeListener
         }

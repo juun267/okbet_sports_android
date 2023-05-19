@@ -11,6 +11,7 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.CONNECT_TIMEOUT
 import org.cxct.sportlottery.network.Constants.READ_TIMEOUT
 import org.cxct.sportlottery.network.Constants.WRITE_TIMEOUT
+import org.cxct.sportlottery.network.interceptor.Http400or500Interceptor
 import org.cxct.sportlottery.network.interceptor.HttpLogInterceptor
 import org.cxct.sportlottery.network.interceptor.HttpStatusInterceptor
 import org.cxct.sportlottery.network.interceptor.MoreBaseUrlInterceptor
@@ -59,13 +60,13 @@ class RequestManager private constructor(private val context: Context) {
         .addInterceptor(HttpStatusInterceptor()) // 处理token过期
         .addInterceptor(MoreBaseUrlInterceptor())
         .addInterceptor(RequestInterceptor(context, ::getApiToken))
+        .addNetworkInterceptor(Http400or500Interceptor()) //处理后端的沙雕行为
         //.addInterceptor(LogInterceptor().setLevel(LogInterceptor.Level.BODY))
 
 
         .apply {
             //debug版本才打印api內容
             if (BuildConfig.DEBUG) {
-//                addInterceptor(logging)
                 addInterceptor(HttpLogInterceptor())
             }
         }

@@ -3,6 +3,7 @@ package org.cxct.sportlottery.util
 import android.content.Context
 import org.cxct.sportlottery.R
 import timber.log.Timber
+import java.math.BigDecimal
 import java.math.RoundingMode
 
 /**
@@ -22,8 +23,7 @@ object TextUtil : DecimalFormatUtil() {
         try {
             var target = any
 
-            if (any !is Number)
-                target = target.toString().toDouble()
+            if (any !is Number) target = target.toString().toDouble()
 
             return doNumberFormat(target, "###,###,###,##0.00")
         } catch (e: Exception) {
@@ -35,12 +35,11 @@ object TextUtil : DecimalFormatUtil() {
     /**
      * numberAfterDot 保留小数点后几位
      */
-    fun  formatMoney(any: Any, numAfterDot: Int = 0): String? {
+    fun formatMoney(any: Any, numAfterDot: Int = 0): String? {
         try {
             var target = any
 
-            if (any !is Double)
-                target = target.toString().toDouble()
+            if (any !is Double) target = target.toString().toDouble()
             var numAfterDotBuilder = StringBuilder()
             if (numAfterDot > 0) {
                 numAfterDotBuilder.append(".")
@@ -48,9 +47,9 @@ object TextUtil : DecimalFormatUtil() {
                     numAfterDotBuilder.append("0")
                 }
             }
-            return doNumberFormatToDouble(target,
-                "###,###,###,##0$numAfterDotBuilder",
-                RoundingMode.DOWN)
+            return doNumberFormatToDouble(
+                target, "###,###,###,##0$numAfterDotBuilder", RoundingMode.DOWN
+            )
         } catch (e: Exception) {
             Timber.e("$e")
         }
@@ -58,7 +57,9 @@ object TextUtil : DecimalFormatUtil() {
     }
 
     fun formatInputMoney(any: Any): String {
-        return doNumberFormat(any, "0.###") { decimalFormat -> decimalFormat.roundingMode = RoundingMode.FLOOR }
+        return doNumberFormat(any, "0.##") { decimalFormat ->
+            decimalFormat.roundingMode = RoundingMode.FLOOR
+        }
     }
 
     fun formatMoney(double: Double): String {
@@ -70,8 +71,9 @@ object TextUtil : DecimalFormatUtil() {
     }
 
     fun formatMoney(int: Int): String {
-        return doNumberFormat(ArithUtil.toMoneyFormat(int.toDouble()).toDouble(),
-            "###,###,###,##0.00")
+        return doNumberFormat(
+            ArithUtil.toMoneyFormat(int.toDouble()).toDouble(), "###,###,###,##0.00"
+        )
     }
 
     fun formatMoneyNoDecimal(int: Int): String {
@@ -83,7 +85,9 @@ object TextUtil : DecimalFormatUtil() {
     }
 
     fun formatForOdd(any: Any): String {
-        return doNumberFormat(any, "###,###,###,##0.00") { decimalFormat -> decimalFormat.roundingMode = RoundingMode.HALF_UP }
+        return doNumberFormat(
+            any, "###,###,###,##0.00"
+        ) { decimalFormat -> decimalFormat.roundingMode = RoundingMode.HALF_UP }
     }
 
     fun formatBetQuota(any: Any): String {
@@ -95,11 +99,15 @@ object TextUtil : DecimalFormatUtil() {
     }
 
     fun formatForVipRebates(any: Any): String {
-        return doNumberFormat(any, "#.# %") { decimalFormat -> decimalFormat.roundingMode = RoundingMode.HALF_UP }
+        return doNumberFormat(any, "#.# %") { decimalFormat ->
+            decimalFormat.roundingMode = RoundingMode.HALF_UP
+        }
     }
 
     fun formatForOddPercentage(any: Any): String {
-        return doNumberFormat(any, "###,###,###,#0.00##%") { decimalFormat -> decimalFormat.roundingMode = RoundingMode.HALF_UP }
+        return doNumberFormat(
+            any, "###,###,###,#0.00##%"
+        ) { decimalFormat -> decimalFormat.roundingMode = RoundingMode.HALF_UP }
     }
 
     fun formatForBetHint(any: Any): String {
@@ -107,11 +115,11 @@ object TextUtil : DecimalFormatUtil() {
     }
 
     //TODO 應以resource代入, 配合多國語
-    fun replaceCByParlay(context:Context, str: String): String {
+    fun replaceCByParlay(context: Context, str: String): String {
         return str.replace(" ${context.getString(R.string.conspire)} ", "C")
     }
 
-    fun getParlayShowName(context:Context, parlayType: String?): String? {
+    fun getParlayShowName(context: Context, parlayType: String?): String? {
         return parlayType?.replace("C", " ${context.getString(R.string.conspire)} ")
     }
 
@@ -125,16 +133,25 @@ object TextUtil : DecimalFormatUtil() {
         return StringBuffer().append(userName.substring(0, 2)).append("***")
             .append(userName.substring(userName.length - 2, userName.length)).toString()
     }
+
     /**
      * 手机密文显示后4位
      */
     fun maskPhoneNum(phone: String): String {
         return StringBuffer().append("******")
-            .append(phone.substring(phone.length-4,phone.length)).toString()
+            .append(phone.substring(phone.length - 4, phone.length)).toString()
     }
 
     fun compareWithGameKey(type: String, value: String): Boolean {
         return type == value || type.contains(value)
+    }
+
+    fun String.strRoundDown2():BigDecimal {
+        return toDouble().toBigDecimal().setScale(2, BigDecimal.ROUND_DOWN)
+    }
+
+    fun Double.dRoundDown2():BigDecimal {
+        return toBigDecimal().setScale(2, BigDecimal.ROUND_DOWN)
     }
 
 }

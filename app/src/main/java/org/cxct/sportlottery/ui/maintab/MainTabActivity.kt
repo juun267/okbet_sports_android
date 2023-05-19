@@ -28,6 +28,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.BetModeChangeEvent
 import org.cxct.sportlottery.common.event.MenuEvent
+import org.cxct.sportlottery.common.event.ShowFavEvent
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding
@@ -125,6 +126,20 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 ////                cl_bet_list_bar.tv_balance.text = TextUtil.formatMoney(money)
 //            }
 //        }
+
+        //设置体育服务监听
+        setupSportStatusChange(receiver,this){
+            //如果维护开启，当前在体育相关fragment， 退回到首页
+            if(checkMainPosition(getCurrentPosition())){
+                //关闭已选中的投注
+                closeBetFragment()
+                //回到首页
+                binding.bottomNavigationView.postDelayed({
+                    backMainHome()
+                },200)
+            }
+
+        }
         viewModel.showBetInfoSingle.observe(this) {
             it.getContentIfNotHandled()?.let {
                 showBetListPage()
@@ -147,6 +162,37 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
     }
 
+    /**
+     * 关闭投注相关的购物车
+     */
+    private fun closeBetFragment(){
+        //投注fragment如果已显示
+        if(getBetListPageVisible()){
+            //关闭
+            betListFragment?.onBackPressed()
+        }
+        //移除选中的投注信息
+        betListFragment?.viewModel?.removeBetInfoAll()
+        //隐藏购物车view
+        parlayFloatWindow?.gone()
+    }
+
+    /**
+     * 检查是否为体育相关的fragment
+     */
+    fun checkSportFragment(position: Int):Boolean{
+        val fragment=fragmentHelper.getFragment(position)
+        if(fragment is SportFragment){
+            return true
+        }
+        if(fragment is FavoriteFragment){
+            return true
+        }
+
+        return false
+    }
+
+
     private fun initBottomFragment(position: Int) {
         binding.llHomeBack.setOnClickListener {
             homeFragment().backMainHome()
@@ -166,21 +212,15 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             }
             onNavigationItemSelectedListener =
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
-
                     val position = getMenuItemPosition(menuItem)
-                    val endIndex = if(isOpenChatRoom()) 2 else 3
-                    // index1,2,3。  体育赛事，注单，收藏赛事      在体育服务维护中时 不能点击
-                    if(position in 1..endIndex){
-                        //体育服务是否关闭
-                        if(getSportEnterIsClose()){
-                            ToastUtil.showToast(context, context.getString(R.string.N969))
-                            return@OnNavigationItemSelectedListener false
-                        }
+                    //=true 体育赛事关闭，不能点击
+                    if(checkMainPosition(position)){
+                        return@OnNavigationItemSelectedListener false
                     }
 
 
                     when (menuItem.itemId) {
-                        R.id.i_betlist, R.id.i_user -> {
+                        R.id.i_betlist, R.id.i_favorite, R.id.i_user -> {
                             if (viewModel.isLogin.value == false) {
                                 startLogin()
                                 return@OnNavigationItemSelectedListener false
