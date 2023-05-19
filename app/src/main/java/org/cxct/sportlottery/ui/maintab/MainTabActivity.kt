@@ -188,6 +188,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         if(fragment is FavoriteFragment){
             return true
         }
+        if(fragment is BetRecordFragment){
+            return true
+        }
 
         return false
     }
