@@ -14,6 +14,7 @@ import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import androidx.annotation.DrawableRes
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
@@ -31,7 +32,6 @@ import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding
-import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
@@ -39,7 +39,7 @@ import org.cxct.sportlottery.network.bet.settledList.Row
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.repository.ConfigRepository
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.betList.BetInfoListData
@@ -47,7 +47,6 @@ import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.ui.betRecord.BetRecordFragment
 import org.cxct.sportlottery.ui.betRecord.accountHistory.next.AccountHistoryNextFragment
 import org.cxct.sportlottery.ui.chat.ChatActivity
-import org.cxct.sportlottery.ui.chat.ChatFragment
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment2
@@ -70,10 +69,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 Pair(HomeFragment::class.java, null),
                 Pair(SportFragment::class.java, null),
                 Pair(BetRecordFragment::class.java, null),
-                if(isOpenChatRoom())
-                  Pair(ChatFragment::class.java, null)
-                else
-                  Pair(FavoriteFragment::class.java, null),
+                Pair(FavoriteFragment::class.java, null),
                 Pair(ProfileCenterFragment::class.java, null),
 
             )
@@ -112,6 +108,23 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         activityInstance = this
         EventBusUtil.targetLifecycle(this)
         LotteryManager.instance.getLotteryInfo()
+        ConfigRepository.onNewConfig(this) {
+            if (isOpenChatRoom()) {
+                changeChatTabStatus(getString(R.string.N984), R.drawable.selector_tab_chat)
+            } else {
+                changeChatTabStatus(getString(R.string.main_tab_favorite), R.drawable.selector_tab_fav)
+            }
+        }
+    }
+
+    private fun changeChatTabStatus(title: String, @DrawableRes icon: Int) {
+        val item = binding.bottomNavigationView.menu.findItem(R.id.i_favorite)
+        if (item.title == title) {
+            return
+        }
+
+        item.title = title
+        item.icon = getDrawable(icon)
     }
 
     override fun onNightModeChanged(mode: Int) {
@@ -158,12 +171,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             setTextSize(10f)
             setIconSize(30f)
             menu.getItem(2).isVisible = !SPUtil.getMarketSwitch()
-            if(isOpenChatRoom()){
-                menu.findItem(R.id.i_favorite).apply {
-                    title = getString(R.string.N984)
-                    icon = getDrawable(R.drawable.selector_tab_fav)
-                }
-            }
             onNavigationItemSelectedListener =
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
 
