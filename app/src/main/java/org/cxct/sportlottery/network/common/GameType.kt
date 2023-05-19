@@ -3,7 +3,9 @@ package org.cxct.sportlottery.network.common
 import android.content.Context
 import androidx.annotation.StringRes
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.proguards.KeepMembers
 
+@KeepMembers
 enum class GameType(val key: String, @StringRes val string: Int) {
     ALL("ALL", R.string.label_all),
     FT("FT", R.string.soccer),
