@@ -1442,4 +1442,6 @@
     <string name="N922">Chat room has been closed!</string>
     <string name="N991">Welcome %s to chat</string>
     <string name="N655">Network Error</string>
+    <string name="N987">Log in to chat and discuss</string>
+    <string name="N988">Please login</string>
 </resources>

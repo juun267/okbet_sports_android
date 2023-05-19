@@ -1,14 +1,26 @@
 package org.cxct.sportlottery.ui.chat
 
 import android.content.Context
+import android.content.Intent
 import android.text.InputFilter
+import android.text.method.LinkMovementMethod
+import android.text.style.UnderlineSpan
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import com.drake.spannable.addSpan
+import com.drake.spannable.setSpan
+import com.drake.spannable.span.ColorSpan
+import com.drake.spannable.span.HighlightSpan
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 
 /**
  * @author kevin
@@ -30,6 +42,23 @@ class ChatActionView @JvmOverloads constructor(
         ivSend = findViewById(R.id.ivSend)
         ivUploadImage = findViewById(R.id.ivUploadImage)
         etInput = findViewById(R.id.etInput)
+        setLoginStatus()
+    }
+
+    private fun setLoginStatus() {
+        if (LoginRepository.isLogined()) {
+            return
+        }
+
+        etInput.gone()
+        val textView = findViewById<TextView>(R.id.tvToLoging)
+        textView.visible()
+        textView.movementMethod = LinkMovementMethod()
+        textView.text = "${resources.getString(R.string.N987)},"
+            .setSpan(ColorSpan(resources.getColor(R.color.color_A7B2C4)))
+            .addSpan(resources.getString(R.string.N988), listOf(UnderlineSpan(), HighlightSpan(resources.getColor(R.color.color_025BE8)) {
+                context.startActivity(Intent(context, LoginOKActivity::class.java))
+            }))
     }
 
     fun setViewStatus(isEnable: Boolean) {
