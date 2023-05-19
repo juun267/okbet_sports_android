@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.core.view.isVisible
 import com.stx.xhb.androidx.XBanner
 import kotlinx.android.synthetic.main.layout_home_top.view.ivPaymaya
 import org.cxct.sportlottery.R
@@ -29,7 +30,7 @@ import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.getSportEnterIsClose
+import org.cxct.sportlottery.util.goneWithSportSwitch
 
 class HomeTopView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
@@ -48,11 +49,7 @@ class HomeTopView @JvmOverloads constructor(
      * 检测体育服务是否关闭
      */
     fun initSportEnterStatus() {
-        if (getSportEnterIsClose()) {
-            binding.tvSportClose.visible()
-        }else{
-            binding.tvSportClose.gone()
-        }
+        binding.tvSportClose.goneWithSportSwitch(false)
     }
 
     private fun initBanner() {

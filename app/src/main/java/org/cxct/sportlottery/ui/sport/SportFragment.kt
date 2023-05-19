@@ -22,6 +22,7 @@ import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.EventBusUtil
+import org.cxct.sportlottery.util.checkMainPosition
 import org.cxct.sportlottery.util.phoneNumCheckDialog
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
@@ -82,6 +83,15 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         ivMenuLeft.setOnClickListener {
             getMainTabActivity().showSportLeftMenu(getCurMatchType(), getCurGameType())
             EventBusUtil.post(MenuEvent(true))
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //从侧边栏返回，检查体育服务是否维护
+        val isClose=(activity as MainTabActivity).checkMainPosition(1)
+        if(isClose){
+            (activity as MainTabActivity).backMainHome()
         }
     }
 
