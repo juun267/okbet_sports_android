@@ -1445,4 +1445,6 @@
     <string name="P038">Google service is not available, please register/ login with your mobile number.</string>
     <string name="N989">Over max stake</string>
     <string name="N990">Below min stake</string>
+    <string name="N987">Log in to chat and discuss</string>
+    <string name="N988">Please login</string>
 </resources>

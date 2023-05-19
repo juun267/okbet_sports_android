@@ -1320,4 +1320,6 @@
     <string name="N922">Phòng trò chuyện đã đóng!</string>
     <string name="N991">Chào mừng %s tham gia trò chuyện</string>
     <string name="N655">Lỗi mạng</string>
+    <string name="N987">Login para makipag-chat</string>
+    <string name="N988">Vui lòng đăng nhập</string>
 </resources>
