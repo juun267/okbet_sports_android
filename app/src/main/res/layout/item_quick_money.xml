@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tv_name"
+    android:layout_width="match_parent"
+    android:layout_height="44dp"
+    android:gravity="center"
+    android:background="@drawable/selector_quick_money"
+    android:textFontWeight="500"
+    android:textSize="@dimen/textSize20sp"
+    android:textColor="@color/color_black_blue"
+    tools:text="1000" />
