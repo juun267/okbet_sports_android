@@ -60,6 +60,8 @@ class ChatViewModel(
     val editIconUrlResult: LiveData<Event<IconUrlResult?>> = avatarRepository.editIconUrlResult
     var tempChatImgUrl: String? = null
 
+    val connStatus = ChatRepository.chatConnStatus
+
     object ChatErrorCode {
         const val NOT_ENOUGH_BET_AND_RECH_MONEY = 10019
         const val PW_ERROR = 10018                  //口令錯誤特殊處理

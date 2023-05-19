@@ -47,9 +47,9 @@ class ChatActivity : BaseSocketActivity<ChatViewModel>(ChatViewModel::class) {
         binding.rvMarquee.adapter = marqueeAdapter
     }
 
-    private fun initObserve() {
+    private fun initObserve() = viewModel.run {
 
-        viewModel.chatEvent.collectWith(lifecycleScope) { chatEvent ->
+        chatEvent.collectWith(lifecycleScope) { chatEvent ->
 
             if (chatEvent is ChatEvent.UpdateMarquee) {
                 marqueeAdapter.setData(chatEvent.marqueeList)
@@ -65,6 +65,19 @@ class ChatActivity : BaseSocketActivity<ChatViewModel>(ChatViewModel::class) {
                     .commit()
             }
 
+        }
+
+        connStatus.collectWith(lifecycleScope) {
+            if (!it) {
+                showPromptDialog(
+                    getString(R.string.prompt),
+                    getString(R.string.N655),
+                    buttonText = null,
+                    { finish() },
+                    isError = true,
+                    hasCancle = false
+                )
+            }
         }
     }
 

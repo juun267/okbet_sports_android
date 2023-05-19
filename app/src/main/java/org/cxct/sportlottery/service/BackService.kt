@@ -91,7 +91,6 @@ class BackService : Service() {
         private var timesTamp: Long = Date(System.currentTimeMillis()).time
     }
 
-    enum class JoinType { APP_INIT, USER_QUEUE, SERVER_MESSAGE, USER_TOPIC, USER_GROUP_TOPIC, SERVER_GROUP_ROOM, SERVER_LIVE_GAME_MESSAGE, USER_LIVE_GAME_TOPIC, OTHER }
 
     private var mToken = ""
     private val mBinder: IBinder = MyBinder()
@@ -261,11 +260,13 @@ class BackService : Service() {
                                     Timber.d("[Chat] Stomp connection opened")
                                     subscribeChatChannel("${URL_CHAT_ROOM}/${ChatRepository.chatRoomID}")
                                     subscribeChatChannel("${URL_CHAT_USER}/${ChatRepository.userId}")
+                                    onChatConnStaus(true)
                                 }
                                 LifecycleEvent.Type.CLOSED -> {
                                     Timber.d("[Chat] ===>\"Stomp connection closed\"")
                                     Timber.d("[Chat] Stomp connection closed")
                                     disconnect()
+                                    onChatConnStaus(false)
                                 }
                                 LifecycleEvent.Type.ERROR -> {
                                     Timber.d("[Chat] ===>\"Stomp connection error\"")
@@ -355,6 +356,10 @@ class BackService : Service() {
 //        val intent = Intent(SERVICE_SEND_DATA)
 //        intent.putExtras(bundle)
 //        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+    }
+
+    private fun onChatConnStaus(enable: Boolean) {
+        ChatMessageDispatcher.onConnectStatusChanged(enable)
     }
 
     private fun sendMessageToActivity(
