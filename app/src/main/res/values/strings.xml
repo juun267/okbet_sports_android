@@ -1441,4 +1441,5 @@
     <string name="write_suggestion">Submission</string>
     <string name="N922">Chat room has been closed!</string>
     <string name="N991">Welcome %s to chat</string>
+    <string name="N655">Network Error</string>
 </resources>

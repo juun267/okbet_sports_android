@@ -39,7 +39,7 @@ open class ApiResult<T>(): java.io.Serializable {
         }
 
         fun <T> netError(): ApiResult<T> {
-            return ApiResult(ERROR_CODE_NET, MultiLanguagesApplication.stringOf(R.string.error), false)
+            return ApiResult(ERROR_CODE_NET, MultiLanguagesApplication.stringOf(R.string.N655), false)
         }
     }
 

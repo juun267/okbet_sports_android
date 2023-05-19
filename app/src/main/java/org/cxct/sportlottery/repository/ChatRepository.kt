@@ -107,8 +107,16 @@ object ChatRepository {
     private val _chatMessage = MutableSharedFlow<ChatReceiveContent<*>?>()
     val chatMessage = _chatMessage.asSharedFlow()
 
+    private val _chatConnStatus = MutableSharedFlow<Boolean>(0)
+    val chatConnStatus = _chatConnStatus.asSharedFlow()
+
+
     suspend fun emitChatMessage(chatMessage: ChatReceiveContent<*>?) {
         _chatMessage.emit(chatMessage)
+    }
+
+    suspend fun emitConnStatus(enable: Boolean) {
+        _chatConnStatus.emit(enable)
     }
 
 }
