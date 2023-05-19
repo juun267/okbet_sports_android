@@ -70,6 +70,9 @@ class HomeTopView @JvmOverloads constructor(
         }
 
         val xbanner = findViewById<XBanner>(bannerId)
+        if (imageType==2){
+            xbanner.setAutoPlayAble(loopEnable)
+        }
         xbanner.setHandLoop(loopEnable)
         xbanner.setOnItemClickListener(this@HomeTopView)
         xbanner.loadImage { _, model, view, _ ->
@@ -78,7 +81,7 @@ class HomeTopView @JvmOverloads constructor(
 
         val host = sConfigData?.resServerHost
         val images = imageList.map {
-            XBannerImage(it.imageText1 + "", host + it.imageName1, it.appUrl)
+            XBannerImage(it.imageText1 + "", host + if (imageType==2) it.imageName1 else it.imageName4, it.appUrl)
         }
 
         //opt1 ->ImageType = 5,为活动轮播图
