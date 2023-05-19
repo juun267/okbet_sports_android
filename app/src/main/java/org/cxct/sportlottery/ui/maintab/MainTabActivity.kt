@@ -150,6 +150,8 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
     }
 
+
+
     /**
      * 关闭投注相关的购物车
      */

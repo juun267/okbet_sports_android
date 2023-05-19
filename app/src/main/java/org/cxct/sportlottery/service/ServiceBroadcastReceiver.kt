@@ -143,7 +143,7 @@ open class ServiceBroadcastReceiver(
     private val _lockMoney = MutableLiveData<Double?>()
     private val _userNotice = MutableLiveData<UserNoticeEvent?>()
     private val _sysMaintenance = MutableLiveData<SysMaintenanceEvent?>()
-    private val _sportMaintenance = MutableLiveData<SportMaintenanceEvent?>()
+    val _sportMaintenance = MutableLiveData<SportMaintenanceEvent?>()
     private val _serviceConnectStatus = MutableLiveData<ServiceConnectStatus>()
     private val _leagueChange = MutableLiveData<LeagueChangeEvent?>()
     private val _matchOddsLock = MutableLiveData<MatchOddsLockEvent?>()

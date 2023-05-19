@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.View
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.JumpInPlayEvent
+import org.cxct.sportlottery.network.service.EventType
+import org.cxct.sportlottery.network.service.sys_maintenance.SportMaintenanceEvent
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
@@ -33,6 +36,13 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
         super.onViewCreated(view, savedInstanceState)
         switchTabByPosition(0)
         EventBusUtil.targetLifecycle(this)
+
+        viewModel.gotConfig.observe(viewLifecycleOwner){
+            sConfigData?.sportMaintainStatus?.let {
+                val event=SportMaintenanceEvent(EventType.SPORT_MAINTAIN_STATUS,it.toInt())
+                receiver._sportMaintenance.postValue(event)
+            }
+        }
     }
 
     private fun switchTabByPosition(position: Int) {
@@ -72,4 +82,9 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
 
     open fun getCurrentFragment() = fragmentHelper.getCurrentFragment()
 
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getConfigData()
+    }
 }
