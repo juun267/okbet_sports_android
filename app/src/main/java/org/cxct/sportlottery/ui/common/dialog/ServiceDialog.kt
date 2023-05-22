@@ -11,10 +11,11 @@ import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialog_service.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.base.BaseDialogFragment
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.JumpUtil
 
-class ServiceDialog : DialogFragment() {
+class ServiceDialog : BaseDialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.dialog_service, container)
     }
