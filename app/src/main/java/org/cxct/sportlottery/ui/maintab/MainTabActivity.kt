@@ -27,6 +27,7 @@ import org.cxct.sportlottery.common.event.BetModeChangeEvent
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.event.ShowFavEvent
 import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -42,6 +43,7 @@ import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.ui.betRecord.BetRecordFragment
 import org.cxct.sportlottery.ui.betRecord.accountHistory.next.AccountHistoryNextFragment
+import org.cxct.sportlottery.ui.favorite.FavoriteActivity
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment2
@@ -156,21 +158,32 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                     // index1,2,3。  体育赛事，注单，收藏赛事      在体育服务维护中时 不能点击
                     if(position in 1..3){
                         //体育服务是否关闭
-                        if(getSportEnterIsClose()){
+                        if (getSportEnterIsClose()) {
                             ToastUtil.showToast(context, context.getString(R.string.N969))
                             return@OnNavigationItemSelectedListener false
                         }
                     }
 
-
                     when (menuItem.itemId) {
-                        R.id.i_betlist, R.id.i_favorite, R.id.i_user -> {
+                        R.id.i_favorite -> {
+                            if (viewModel.isLogin.value == false) {
+                                startLogin()
+                                return@OnNavigationItemSelectedListener false
+                            }
+                            startActivity(FavoriteActivity::class.java)
+                            return@OnNavigationItemSelectedListener false
+
+                        }
+
+                        R.id.i_betlist, R.id.i_user -> {
                             if (viewModel.isLogin.value == false) {
                                 startLogin()
                                 return@OnNavigationItemSelectedListener false
                             }
                         }
                     }
+
+
 
                     fragmentHelper.showFragment(position)
                     if (position == 0) {
@@ -258,9 +271,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             left_menu.layoutParams.width = MetricsUtil.getScreenWidth()
         }
         homeLeftFragment.openWithFragment(contentFragment)
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.left_menu, homeLeftFragment)
-            .commit()
+        supportFragmentManager.beginTransaction().replace(R.id.left_menu, homeLeftFragment).commit()
     }
 
     fun showSportLeftMenu(matchType: MatchType, gameType: GameType?) {
@@ -268,8 +279,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             menuClass = sportLeftFragment::class.java
             left_menu.layoutParams.width = (MetricsUtil.getScreenWidth() * 0.75f).toInt()
         }
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.left_menu, sportLeftFragment)
+        supportFragmentManager.beginTransaction().replace(R.id.left_menu, sportLeftFragment)
             .commit()
         sportLeftFragment.matchType = matchType
         sportLeftFragment.gameType = gameType
@@ -385,14 +395,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             else -> false
         }
 
-        if (betListCount == 0 || !needShowBetBar || BetInfoRepository.currentBetType
-            == BetListFragment.SINGLE
-        ) {
+        if (betListCount == 0 || !needShowBetBar || BetInfoRepository.currentBetType == BetListFragment.SINGLE) {
 //            Timber.d("ParlayFloatWindow隐藏：betListCount:${betListCount} !needShowBetBar:${!needShowBetBar} currentBetMode:${BetInfoRepository.currentBetType}")
             parlayFloatWindow.gone()
         } else {
-            if (BetInfoRepository.currentBetType == BetListFragment.PARLAY
-            ) {
+            if (BetInfoRepository.currentBetType == BetListFragment.PARLAY) {
                 parlayFloatWindow.setBetText(getString(R.string.conspire))
             } else {
                 parlayFloatWindow.setBetText(getString(R.string.bet_slip))
@@ -634,7 +641,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     fun jumpToInplaySport() {
         //检测体育服务是否关闭
-        checkSportStatus(this){
+        checkSportStatus(this) {
             resetBackIcon(1)
             ll_home_back.gone()
             jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)

@@ -485,7 +485,7 @@ open class SportListFragment :
 
                     sportLeagueAdapter.limitRefresh()
                     // TODO 這裡要確認是否有其他地方重複呼叫
-                    Timber.tag("Hewie").d("observe => OddsListGameHallResult")
+//                    Timber.tag("Hewie").d("observe => OddsListGameHallResult")
 
                     resubscribeChannel()
                 } else {
