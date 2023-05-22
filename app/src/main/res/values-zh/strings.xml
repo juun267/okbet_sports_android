@@ -1374,6 +1374,6 @@
     <string name="N922">聊天室已关闭！</string>
     <string name="N991">欢迎%s参加聊天</string>
     <string name="N655">网络错误</string>
-    <string name="N987">登陆后进行聊天讨论</string>
+    <string name="N987">登录后进行聊天讨论</string>
     <string name="N988">请登录</string>
 </resources>

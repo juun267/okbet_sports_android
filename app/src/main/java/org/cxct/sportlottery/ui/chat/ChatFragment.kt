@@ -28,7 +28,6 @@ import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.afterTextChanged
-import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import timber.log.Timber
 import java.io.File
@@ -397,17 +396,18 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
                 onError(chatEvent.message)
             }
 
-            is ChatEvent.ActionInputSendStatusAndMaxLength -> {
+            is ChatEvent.SendMessageStatusEvent -> {
                 binding.vChatAction.apply {
-                    setInputMaxLength(chatEvent.maxLength)
-                    setInputStatus(chatEvent.isEnable)
-                    setSendStatus(chatEvent.isEnable && etInput.text.toString().isNotEmpty())
+                    setInputMaxLength(chatEvent.textMaxLength)
+                    setInputStatus(chatEvent.sendTextEnabled)
+                    setSendStatus(chatEvent.sendTextEnabled && etInput.text.toString().isNotEmpty())
+                    setUploadImageStatus(chatEvent.uploadImgEnable)
+                    if (!chatEvent.sendTextEnabled && !chatEvent.uploadImgEnable) {
+                        showToast(getString(R.string.chat_you_banned))
+                    }
                 }
             }
 
-            is ChatEvent.ActionUploadImageStatus -> {
-                binding.vChatAction.setUploadImageStatus(chatEvent.isEnable)
-            }
 
             is ChatEvent.NoMatchRoom -> {
                 onError(getString(R.string.N922))

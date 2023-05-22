@@ -2,8 +2,10 @@ package org.cxct.sportlottery.network.chat
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.common.proguards.KeepMembers
 
 @JsonClass(generateAdapter = true)
+@KeepMembers
 data class UserLevelConfigVO(
     @Json(name = "name")
     val name: String?, //角色名称

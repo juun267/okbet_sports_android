@@ -551,10 +551,7 @@ class ChatViewModel(
      * 發送是否可發言的event
      */
     private suspend fun emitIsSpeakStatus() {
-        _chatEvent.emit(
-            ChatEvent.ActionInputSendStatusAndMaxLength(checkIsSpeak(), getInputMaxLength())
-        )
-        _chatEvent.emit(ChatEvent.ActionUploadImageStatus(checkIsSendImg()))
+        _chatEvent.emit(ChatEvent.SendMessageStatusEvent(checkIsSpeak(), getInputMaxLength(), checkIsSendImg()))
     }
 
     fun getHistoryMessageList()= launch {

@@ -81,5 +81,15 @@ class ChatActivity : BaseSocketActivity<ChatViewModel>(ChatViewModel::class) {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.rvMarquee.startAuto()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        binding.rvMarquee.stopAuto()
+    }
+
 
 }
