@@ -148,9 +148,22 @@ class OddsDetailListAdapter(
         EPS(R.layout.content_odds_detail_list_eps)
     }
 
+    fun setPreloadItem() {
+        oddsDetailDataList.clear()
+        isPreload = true
+        notifyDataSetChanged()
+    }
+
+    fun removePreloadItem() {
+        oddsDetailDataList = arrayListOf()
+        isPreload=false
+        notifyDataSetChanged()
+    }
+
     override fun getItemViewType(position: Int): Int {
         return when {
-            oddsDetailDataList.isEmpty() -> BaseItemType.NO_DATA.type
+            isPreload -> BaseItemType.PRELOAD_ITEM.type
+            oddsDetailDataList.isNullOrEmpty() -> BaseItemType.NO_DATA.type
             else -> {
                 val playCateCode = oddsDetailDataList[position].gameType
                 PlayCate.getPlayCate(playCateCode).let { playCate ->
@@ -167,6 +180,11 @@ class OddsDetailListAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        when(viewType){
+            BaseItemType.PRELOAD_ITEM.type,BaseItemType.NO_DATA.type->{
+                return initBaseViewHolders(parent,viewType)
+            }
+        }
         val layout: Int = when (sportCode) {
             GameType.FT -> {
                 when (viewType) {
@@ -463,13 +481,14 @@ class OddsDetailListAdapter(
 
                         LayoutType.SCO.layout -> {
                             rvBet?.apply {
-                                addItemDecoration(
-                                    DividerItemDecorator(
-                                        ContextCompat.getDrawable(
-                                            context, R.drawable.divider_color_silverlight_1dp
+                                if (itemDecorationCount == 0)
+                                    addItemDecoration(
+                                        DividerItemDecorator(
+                                            ContextCompat.getDrawable(
+                                                context, R.drawable.divider_color_silverlight_1dp
+                                            )
                                         )
                                     )
-                                )
                             }
                         }
 
@@ -550,7 +569,7 @@ class OddsDetailListAdapter(
 
     }
 
-    override fun getItemCount(): Int = if (oddsDetailDataList.isEmpty()) {
+    override fun getItemCount(): Int = if (oddsDetailDataList.isNullOrEmpty()) {
         1
     } else {
         oddsDetailDataList.size

@@ -23,7 +23,7 @@ class AccountHistoryAdapter(
 ) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     enum class ItemType {
-//        TITLE_BAR, ITEM, FOOTER, NO_DATA
+        //        TITLE_BAR, ITEM, FOOTER, NO_DATA
         ITEM, NO_DATA
     }
 
@@ -34,11 +34,9 @@ class AccountHistoryAdapter(
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
     fun addFooterAndSubmitList(list: MutableList<Row?>, isLastPage: Boolean) {
-        adapterScope.launch {
             mRowList = list
             mIsLastPage = isLastPage
             updateData()
-        }
     }
 
     /**
@@ -64,10 +62,7 @@ class AccountHistoryAdapter(
             mIsLastPage -> reverseList.map { DataItem.Item(it) }
             else -> reverseList.map { DataItem.Item(it) }
         }
-
-        CoroutineScope(Dispatchers.Main).launch {
-            submitList(items)
-        }
+        submitList(items)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -115,7 +110,8 @@ class AccountHistoryAdapter(
         }
     }
 
-    class ItemViewHolder private constructor(val binding: ItemAccountHistoryBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ItemViewHolder private constructor(val binding: ItemAccountHistoryBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(data: Row?, clickListener: ItemClickListener, position: Int, list: List<Row?>) {
             binding.row = data
             binding.textUtil = TextUtil
@@ -174,7 +170,10 @@ class AccountHistoryAdapter(
 
     class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         companion object {
-            fun from(parent: ViewGroup) = NoDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.itemview_game_no_record, parent, false))
+            fun from(parent: ViewGroup) = NoDataViewHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.itemview_game_no_record, parent, false)
+            )
         }
     }
 
@@ -187,11 +186,21 @@ class AccountHistoryAdapter(
 
     class DiffCallback : DiffUtil.ItemCallback<DataItem>() {
         override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
-            return oldItem == newItem
+            return oldItem.rowItem?.statDate == newItem.rowItem?.statDate
         }
 
         override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
-            return oldItem == newItem
+            val oldRow = oldItem.rowItem
+            val newRow = newItem.rowItem
+            return if (oldRow != null && newRow != null) {
+                val opt1 = oldRow.statDate == newRow.statDate
+                val opt2 = oldRow.settledBetMoney == newRow.settledBetMoney
+                val opt3 = oldRow.validBetMoney == newRow.validBetMoney
+                val opt4 = oldRow.vipRewardMoneyWithRebate == newRow.validBetMoney
+                opt1 && opt2 && opt3 && opt4
+            } else {
+                false
+            }
         }
     }
 }

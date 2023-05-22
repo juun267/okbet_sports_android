@@ -639,7 +639,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             .addToBackStack(AccountHistoryNextFragment::class.java.simpleName).commit()
     }
 
-    fun jumpToTheSport(matchType: MatchType, gameType: GameType) {
+    fun jumpToTheSport(matchType: MatchType? = null, gameType: GameType? = null) {
         resetBackIcon(1)
         (fragmentHelper.getFragment(1) as SportFragment).setJumpSport(matchType, gameType)
     }

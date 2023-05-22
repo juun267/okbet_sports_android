@@ -44,6 +44,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         ImmersionBar.with(this).statusBarDarkFont(true).transparentStatusBar()
             .fitsSystemWindows(false).init()
         setContentView(R.layout.activity_splash)
+        loading()
         setupVersion()
         //checkPermissionGranted()
         initObserve()
@@ -198,6 +199,10 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
             }).show()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        hideLoading()
+    }
 
     override fun onBackPressed() {
         super.onBackPressed()

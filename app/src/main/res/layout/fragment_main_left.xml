@@ -417,7 +417,7 @@
                     android:visibility="gone"
                     tools:itemCount="4"
                     tools:listitem="@layout/item_odds_type"
-                    tools:visibility="visible" />
+                    tools:visibility="gone" />
             </LinearLayout>
 
             <LinearLayout
@@ -560,7 +560,7 @@
                     android:visibility="gone"
                     tools:itemCount="3"
                     tools:listitem="@layout/item_language"
-                    tools:visibility="visible" />
+                    tools:visibility="gone" />
             </LinearLayout>
 
             <LinearLayout
@@ -719,6 +719,42 @@
                         android:layout_marginHorizontal="@dimen/margin_12"
                         android:textColor="@color/color_A7B2C4"
                         android:textSize="@dimen/textSize12sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="@dimen/margin_20"
+                    android:background="@color/color_80C9CFD7" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lin_scan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/selector_tran_blue">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="20dp">
+
+                    <ImageView
+                        android:layout_width="@dimen/margin_20"
+                        android:layout_height="@dimen/margin_20"
+                        android:src="@drawable/ic_menu_scan" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_12"
+                        android:layout_weight="1"
+                        android:text="@string/N908"
+                        android:textColor="@color/color_black_white"
+                        android:textSize="@dimen/textSize14sp" />
+
                 </LinearLayout>
 
                 <View

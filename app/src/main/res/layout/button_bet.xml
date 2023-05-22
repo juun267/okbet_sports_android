@@ -47,7 +47,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/button_radius_8_bet_button"
         android:gravity="center"
-        android:text="@string/btn_login_bet"
+        android:text="@string/A006"
         android:textColor="@color/color_FFFFFF_FFFFFF"
         android:textSize="@dimen/textSize16sp"
         android:visibility="visible"

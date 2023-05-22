@@ -58,20 +58,6 @@ class BetDetailsFragment : BaseFragment<BetListViewModel>(BetListViewModel::clas
                 }
             }
         }
-        row?.let {
-            if (it.parlayType == ParlayType.SINGLE.key) {
-                (activity as BetDetailsActivity).setTitleName(getString(R.string.commission_detail))
-                rv_bet_record.isVisible = false
-                include_endscore.isVisible = true
-                setupEndScore(it, it.matchOdds.first())
-            } else {
-                (activity as BetDetailsActivity).setTitleName(getString(R.string.bet_details_title))
-                rv_bet_record.isVisible = true
-                include_endscore.isVisible = false
-                detailAdapter.setupBetList(row)
-                rv_bet_record.adapter = detailAdapter
-            }
-        }
     }
 
     private fun setupEndScore(row: Row, matchOdds: MatchOdd) {

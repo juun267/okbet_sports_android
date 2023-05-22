@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
@@ -57,10 +58,14 @@ class Type6GroupAdapter(
             itemView.findViewById<TextView>(R.id.tv_left_name).text = leftName
             itemView.findViewById<TextView>(R.id.tv_center_name).text = centerName
             itemView.findViewById<TextView>(R.id.tv_right_name).text = rightName
-            itemView.findViewById<ImageView>(R.id.iv_home_logo)
-                .setTeamLogo(oddsDetail.matchInfo?.homeIcon)
-            itemView.findViewById<ImageView>(R.id.iv_away_logo)
-                .setTeamLogo(oddsDetail.matchInfo?.awayIcon)
+            itemView.findViewById<ImageView>(R.id.iv_home_logo).apply {
+                setTeamLogo(oddsDetail.matchInfo?.homeIcon)
+                isVisible = leftName == oddsDetail.matchInfo?.homeName
+            }
+            itemView.findViewById<ImageView>(R.id.iv_away_logo).apply {
+                setTeamLogo(oddsDetail.matchInfo?.homeIcon)
+                isVisible = rightName == oddsDetail.matchInfo?.awayName
+            }
             //順序 前兩項左列 中間兩項中列 後兩項右列
             val homeList: MutableList<Odd?> = mutableListOf()
             val drawList: MutableList<Odd?> = mutableListOf()

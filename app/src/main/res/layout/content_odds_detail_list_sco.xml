@@ -51,8 +51,8 @@
             <View
                 android:id="@+id/divider"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/color_404040_cccccc"
+                android:layout_height="0.5dp"
+                android:background="@color/color_DFE8F2"
                 app:layout_constraintBottom_toBottomOf="parent" />
 
 
@@ -63,7 +63,7 @@
             android:id="@+id/rv_bet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/color_191919_FCFCFC"
+            android:background="@color/color_FFFFFF"
             android:nestedScrollingEnabled="false"
             android:overScrollMode="never"
             android:paddingRight="7dp"

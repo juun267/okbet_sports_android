@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.fragment_self_limit_bet.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.PassVerifyEnum
 import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.common.extentions.toDoubleS
 import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.databinding.FragmentSelfLimitBetBinding
 import org.cxct.sportlottery.repository.sConfigData
@@ -204,7 +205,7 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
         binding.tvPerBetLimit.text = String.format(
             getString(R.string.self_limit_per_bet_limit_user),
             sConfigData?.systemCurrencySign,
-            TextUtil.formatMoney(text.toDouble())
+            TextUtil.formatMoney(text.toDoubleS())
         )
     }
 

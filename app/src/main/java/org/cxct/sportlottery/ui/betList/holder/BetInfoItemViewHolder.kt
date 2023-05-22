@@ -35,7 +35,6 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.betList.listener.OnItemClickListener
-import org.cxct.sportlottery.ui.betList.listener.OnSelectedPositionListener
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BetPlayCateFunction.getNameMap
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -51,14 +50,16 @@ class BetInfoItemViewHolder(
     private var inputWinMinMoney: Double = 0.0
     private var mUserMoney: Double = 0.0
     private var mUserLogin: Boolean = false
+    private val isLogin: Boolean
+        get() = LoginRepository.isLogin.value == true
+
+    private var isTouched: Boolean = false
     fun bind(
         itemData: BetInfoListData,
         currentOddsType: OddsType,
         itemCount: Int,
         onItemClickListener: OnItemClickListener,
         betListSize: Int,
-        mSelectedPosition: Int,
-        onSelectedPositionListener: OnSelectedPositionListener,
         position: Int,
         userMoney: Double,
         userLogin: Boolean,
@@ -107,13 +108,12 @@ class BetInfoItemViewHolder(
             } else {
                 setupContainerUI(isVisible = false, isLock = true, cannotParlay)
             }
+            Timber.d("isOnlyEUType:${itemData.matchOdd.isOnlyEUType}")
             setupBetAmountInput(
                 itemData,
                 if (itemData.matchOdd.isOnlyEUType) OddsType.EU else currentOddsType,
                 onItemClickListener,
                 betListSize,
-                mSelectedPosition,
-                onSelectedPositionListener,
                 position,
                 adapterBetType
             )
@@ -154,19 +154,42 @@ class BetInfoItemViewHolder(
         inputMinMoney = minBet.toDouble()
     }
 
-    var isSingleBetFirstOpenKeyboard = true
-
     @SuppressLint("ClickableViewAccessibility")
     private fun setupBetAmountInput(
         itemData: BetInfoListData,
         currentOddsType: OddsType,
         onItemClickListener: OnItemClickListener,
         betListSize: Int,
-        mSelectedPosition: Int,
-        onSelectedPositionListener: OnSelectedPositionListener,
         position: Int,
         adapterBetType: BetListRefactorAdapter.BetRvType?
     ) = contentView.run {
+
+        fun update() {
+            //更新可贏額
+            var win = itemData.betAmount * getOddsAndSaveRealAmount(
+                itemData, currentOddsType
+            )
+
+            val strTvCanWin =
+                "${root.context.getString(R.string.bet_win)}：${sConfigData?.systemCurrencySign} ${
+                    TextUtil.formatInputMoney(win)
+                }"
+            val canWinSpannable = SpannableString(strTvCanWin)
+            canWinSpannable.setSpan(
+                ForegroundColorSpan(root.context.getColor(R.color.color_E23434)),
+                "${LocalUtils.getString(R.string.bet_win)}：".length,
+                strTvCanWin.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            canWinSpannable.setSpan(
+                StyleSpan(Typeface.BOLD),
+                "${LocalUtils.getString(R.string.bet_win)}：".length,
+                strTvCanWin.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            tvCanWin.text = canWinSpannable
+        }
+
 
         //移除TextChangedListener
         etBet.apply {
@@ -177,9 +200,29 @@ class BetInfoItemViewHolder(
             filters = arrayOf(MoneyInputFilter())
         }
 
+
         //設定editText內容
         etBet.apply {
-            if (itemData.input != null) setText(itemData.inputBetAmountStr) else text.clear()
+            //金额只默认填充一次，输入之后就不在默认填充
+            if (isTouched) {
+                return@apply
+            }
+            if (itemData.input == null) {
+                val minBet = itemData.parlayOdds?.min ?: 0
+                if (isLogin) {
+                    if (minBet > mUserMoney) {
+                        itemData.input = mUserMoney.toString()
+                    } else {
+                        itemData.input = minBet.toString()
+                    }
+                } else {
+                    itemData.input = minBet.toString()
+                }
+            }
+            itemData.inputBetAmountStr = itemData.input
+            itemData.betAmount = itemData.input!!.toDouble()
+            setText(itemData.inputBetAmountStr)
+            update()
             setSelection(text.length)
         }
         checkBetLimit(itemData)
@@ -188,6 +231,7 @@ class BetInfoItemViewHolder(
             itemData, currentOddsType, betListSize, onItemClickListener, adapterBetType
         )
 
+        layoutKeyBoard.setUserMoney(mUserMoney)
         if (itemData.isInputWin) {
             layoutKeyBoard.setupMaxBetMoney(inputWinMaxMoney)
         } else {
@@ -197,6 +241,7 @@ class BetInfoItemViewHolder(
         val tw: TextWatcher?
         tw = object : TextWatcher {
             override fun afterTextChanged(it: Editable?) {
+                isTouched = true
                 Timber.d("textChange:${it.toString()}")
                 if (it.isNullOrEmpty()) {
                     itemData.betAmount = 0.000
@@ -213,7 +258,7 @@ class BetInfoItemViewHolder(
                     itemData.betAmount = quota
                     itemData.inputBetAmountStr = it.toString()
                     itemData.input = it.toString()
-                    val max = inputMaxMoney.coerceAtMost(0.0.coerceAtLeast(userBalance()))
+                    val max = inputMaxMoney.coerceAtMost(quota.coerceAtLeast(userBalance()))
                     if (quota > max) {
                         etBet.apply {
                             setText(TextUtil.formatInputMoney(max))
@@ -221,28 +266,7 @@ class BetInfoItemViewHolder(
                         }
                         return
                     }
-                    val win = itemData.betAmount * getOddsAndSaveRealAmount(
-                        itemData, currentOddsType
-                    )
-                    //更新可贏額
-                    val strTvCanWin =
-                        "${root.context.getString(R.string.bet_win)}：${sConfigData?.systemCurrencySign} ${
-                            TextUtil.formatInputMoney(win)
-                        }"
-                    val canWinSpannable = SpannableString(strTvCanWin)
-                    canWinSpannable.setSpan(
-                        ForegroundColorSpan(root.context.getColor(R.color.color_E23434)),
-                        "${LocalUtils.getString(R.string.bet_win)}：".length,
-                        strTvCanWin.length,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                    canWinSpannable.setSpan(
-                        StyleSpan(Typeface.BOLD),
-                        "${LocalUtils.getString(R.string.bet_win)}：".length,
-                        strTvCanWin.length,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                    tvCanWin.text = canWinSpannable
+                    update()
                 }
                 checkBetLimit(itemData)
                 onItemClickListener.refreshBetInfoTotal()
@@ -269,9 +293,6 @@ class BetInfoItemViewHolder(
                     layoutKeyBoard.setupMaxBetMoney(inputMaxMoney)
                     layoutKeyBoard.showKeyboard(
                         etBet, position
-                    )
-                    onSelectedPositionListener.onSelectChange(
-                        bindingAdapterPosition, BetListRefactorAdapter.BetViewType.SINGLE
                     )
                     onItemClickListener.onShowKeyboard(position)
                 }
@@ -415,6 +436,7 @@ class BetInfoItemViewHolder(
                     ) - 1
                 )
             }
+
             PlayCate.FS_LD_CS.value -> {
                 "@ " + getOdds(
                     itemData.matchOdd,
@@ -422,6 +444,7 @@ class BetInfoItemViewHolder(
                     adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE
                 ).toInt().toString()
             }
+
             else -> {
                 "@ " + TextUtil.formatForOdd(
                     getOdds(
@@ -447,6 +470,7 @@ class BetInfoItemViewHolder(
             }
         }
 
+
         //設定playCateCode為OU時, container背景, 文字大小和顏色
 //            if (itemData.matchOdd.playCode == PlayCate.OU.value) {
 //                oddsContentContainer.setBackgroundResource(R.drawable.transparent)
@@ -456,7 +480,15 @@ class BetInfoItemViewHolder(
         oddsContentContainer.setBackgroundResource(R.color.transparent)
         tvOddsContent.setOUStyle(false)
         tvContent.setOUStyle(false)
-//            }
+
+        if (tvContent.text.isNullOrEmpty()) {
+            tvPlaceHolderLine.gone()
+//            Timber.d("===> 线隐藏")
+        } else {
+            tvPlaceHolderLine.visible()
+//            Timber.d("===> 线显示")
+        }
+
         //玩法名稱 目前詳細玩法裡面是沒有給betPlayCateNameMap，所以顯示邏輯沿用舊版
         val nameOneLine = { inputStr: String ->
             inputStr.replace("\n", "-")
@@ -575,7 +607,7 @@ class BetInfoItemViewHolder(
             pop.showAsDropDown(it, xOff, yOff)
         }
 
-        setOnClickListeners(tvName, tvLeagueName, tvMatchHome, tvMatchAway) {
+        setOnClickListeners(tvName, tvLeagueName, tvMatchHome, tvMatchAway, tvOddsContent) {
             when (it) {
                 tvName -> {
                     showPopAsTop(tvName, tvNameText)
@@ -591,6 +623,10 @@ class BetInfoItemViewHolder(
 
                 tvMatchAway -> {
                     showPopAsTop(tvMatchAway, itemData.matchOdd.awayName)
+                }
+
+                tvOddsContent -> {
+                    showPopAsTop(tvOddsContent, itemData.matchOdd.playName)
                 }
             }
         }
@@ -674,15 +710,16 @@ class BetInfoItemViewHolder(
 //                        itemData.matchOdd,
 //                        currentOddsType
 //                    ) - 1)
-                odds = (tempOdds - 1)
+                odds = tempOdds
             }
+
 
             else -> {
 //                    win = itemData.betAmount * getOdds(
 //                        itemData.matchOdd,
 //                        currentOddsType
 //                    )
-                odds = tempOdds
+                odds = tempOdds + 1
             }
         }
         itemData.realAmount = realAmount
@@ -734,7 +771,7 @@ class BetInfoItemViewHolder(
         contentView.apply {
             val betAmount = itemData.betAmount
             val balanceError: Boolean
-            val amountError: Boolean = if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
+            var amountError: Boolean = if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
                 !itemData.input.isNullOrEmpty()
             } else {
                 if (betAmount > inputMaxMoney) {
@@ -743,6 +780,9 @@ class BetInfoItemViewHolder(
                 } else {
                     betAmount != 0.0 && betAmount < inputMinMoney
                 }
+            }
+            if (itemData.input.isNullOrEmpty()) {
+                amountError = true
             }
 
             Timber.d("用户余额:$mUserMoney")

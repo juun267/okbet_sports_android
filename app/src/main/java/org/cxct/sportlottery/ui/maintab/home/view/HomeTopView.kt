@@ -5,17 +5,14 @@ import android.content.Intent
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
+import androidx.core.view.isInvisible
 import com.stx.xhb.androidx.XBanner
-import kotlinx.android.synthetic.main.layout_home_top.view.ivPaymaya
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.isEmptyStr
-import org.cxct.sportlottery.common.extentions.load
-import org.cxct.sportlottery.common.extentions.setOnClickListeners
-import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.LayoutHomeTopBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.config.ImageData
@@ -31,6 +28,7 @@ import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.goneWithSportSwitch
+import org.cxct.sportlottery.util.*
 
 class HomeTopView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
@@ -72,6 +70,9 @@ class HomeTopView @JvmOverloads constructor(
         }
 
         val xbanner = findViewById<XBanner>(bannerId)
+        if (imageType==2){
+            xbanner.setAutoPlayAble(loopEnable)
+        }
         xbanner.setHandLoop(loopEnable)
         xbanner.setOnItemClickListener(this@HomeTopView)
         xbanner.loadImage { _, model, view, _ ->
@@ -80,7 +81,7 @@ class HomeTopView @JvmOverloads constructor(
 
         val host = sConfigData?.resServerHost
         val images = imageList.map {
-            XBannerImage(it.imageText1 + "", host + it.imageName1, it.appUrl)
+            XBannerImage(it.imageText1 + "", host + if (imageType==2) it.imageName1 else it.imageName4, it.appUrl)
         }
 
         //opt1 ->ImageType = 5,为活动轮播图
@@ -108,7 +109,7 @@ class HomeTopView @JvmOverloads constructor(
 
     private fun initLogin() {
         if (LoginRepository.isLogined()) {
-            binding.depositLayout.visible()
+            binding.depositLayout.setVisibilityByMarketSwitch()
             return
         }
 
@@ -128,7 +129,10 @@ class HomeTopView @JvmOverloads constructor(
 
         ConfigRepository.onNewConfig(fragment) { initBanner() }
         binding.vSports.setOnClickListener { fragment.jumpToInplaySport() }
-        binding.vOkgames.setOnClickListener { fragment.jumpToOKGames() }
+        binding.vOkgames.isInvisible = SPUtil.getMarketSwitch()
+        binding.vOkgames.setOnClickListener {
+            fragment.jumpToOKGames()
+        }
 
         if (!LoginRepository.isLogined()) {
             binding.ivGoogle.setOnClickListener {

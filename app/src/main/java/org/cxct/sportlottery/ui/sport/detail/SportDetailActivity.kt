@@ -84,7 +84,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         ) {
             matchInfo.let {
                 val intent = Intent(context, SportDetailActivity::class.java)
-                intent.putExtra("matchInfo", matchInfo)
+                intent.putExtra("matchInfo", matchInfo.toJson())
                 intent.putExtra(
                     "matchType",
                     matchType
@@ -357,13 +357,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             }
 
         })
-
-        supportFragmentManager.beginTransaction().setCustomAnimations(
-            R.anim.push_bottom_to_top_enter,
-            R.anim.pop_bottom_to_top_exit,
-            R.anim.push_bottom_to_top_enter,
-            R.anim.pop_bottom_to_top_exit
-        ).add(R.id.fl_bet_list, betListFragment!!)
+        supportFragmentManager.beginTransaction().add(R.id.fl_bet_list, betListFragment!!)
             .addToBackStack(BetListFragment::class.java.simpleName).commit()
     }
 
@@ -410,10 +404,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     private fun initData() {
         clickButton()
-        matchInfo = intent.getParcelableExtra("matchInfo")
+        matchInfo = intent.getStringExtra("matchInfo")?.fromJson<MatchInfo>()
         matchType = intent.getSerializableExtra("matchType") as MatchType
         intoLive = intent.getBooleanExtra("intoLive", false)
-
         matchInfo?.let {
             setupMatchInfo(it)
         }
@@ -455,15 +448,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
     private fun initUI() {
-        lin_center.viewTreeObserver.addOnGlobalLayoutListener {
-            val location = IntArray(2)
-            lin_center.getLocationInWindow(location)
-//            chatViewHeight=ScreenUtils.getScreenHeight(this@SportDetailActivity) - location[1]-10.dp
-//            cl_bottom.layoutParams.let {
-//                it.height = chatViewHeight
-//                cl_bottom.layoutParams = it
-//            }
-        }
         iv_detail_bg.setImageResource(
             GameType.getGameTypeDetailBg(
                 GameType.getGameType(matchInfo?.gameType) ?: GameType.FT
@@ -509,7 +493,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             adapter = oddsDetailListAdapter
             layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-
+            oddsDetailListAdapter?.setPreloadItem()
         }
 
         rv_cat.apply {
@@ -587,7 +571,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         }
                         //endregion
 
-                        setupMatchInfo(matchInfo)
+                        setupMatchInfo(matchInfo,true)
                     }
                     setupLiveView(result.oddsDetailData?.matchOdd?.matchInfo?.liveVideo)
                 } else {
@@ -599,6 +583,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         viewModel.oddsDetailList.observe(this) {
             it.peekContent()?.let { list ->
                 if (list.isNotEmpty()) {
+                    oddsDetailListAdapter?.removePreloadItem()
                     oddsDetailListAdapter?.oddsDetailDataList = list
                 }
             }
@@ -747,8 +732,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     /**
      * 配置賽事資訊(隊伍名稱、是否延期、賽制)
+     * fromApi api的状态不携带红黄牌等信息
      */
-    private fun setupMatchInfo(matchInfo: MatchInfo) {
+    private fun setupMatchInfo(matchInfo: MatchInfo,fromApi: Boolean=false) {
         //region 隊伍名稱
         tv_game_title.text = matchInfo.leagueName
         tv_home_name.text = matchInfo.homeName ?: ""
@@ -772,8 +758,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         var isInPlay = TimeUtil.isTimeInPlay(matchInfo.startTime)
         if (isInPlay) {
             lin_bottom.isVisible = true
-            setStatusText(matchInfo)
-            setupMatchScore(matchInfo)
+            if (!fromApi){
+                setStatusText(matchInfo)
+                setupMatchScore(matchInfo)
+            }
         } else {
             var startDate = TimeUtil.timeFormat(matchInfo.startTime, TimeUtil.DM_HM_FORMAT)
             startDate.split(" ").let {
@@ -800,6 +788,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
     private fun initSocketObserver() {
+        unSubscribeChannelHallAll()
+        unSubscribeChannelEventAll()
         receiver.serviceConnectStatus.observe(this) {
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
@@ -815,7 +805,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         //從滾球以外的狀態轉變為滾球時, 重新獲取一次賽事資料, 看是否有新的直播或動畫url
                         if (matchType != MatchType.IN_PLAY) {
                             matchType = MatchType.IN_PLAY
-                            unsubscribeHallChannel(matchId)
+                            unSubscribeChannelEvent(matchId)
                             getData()
                         }
                         matchOdd?.let { matchOdd ->

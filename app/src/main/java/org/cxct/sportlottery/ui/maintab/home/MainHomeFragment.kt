@@ -821,7 +821,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
         //点击滚球跳转
         R.string.home_in_play -> getHomeFragment().jumpToInplaySport()
         //点击体育跳转
-        R.string.home_sports -> getHomeFragment().jumpToEarlySport()
+        R.string.home_sports -> getHomeFragment().jumpToDefaultSport()
         //跳转优惠
         R.string.promo -> JumpUtil.toInternalWeb(
             requireContext(),

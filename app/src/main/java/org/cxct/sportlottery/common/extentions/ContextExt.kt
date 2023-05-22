@@ -28,6 +28,14 @@ inline fun <reified T : Activity> Context.startActivity() {
     startActivity(intent)
 }
 
+
+inline fun <reified T: Activity> Context.startActivity(
+    vararg params: Pair<String?, String?>) {
+    val intent = Intent(this, T::class.java)
+    params.forEach { intent.putExtra(it.first, it.second) }
+    startActivity(intent)
+}
+
 /**实例化 Fragment*/
 inline fun <reified T : Fragment> Context.newInstanceFragment(args: Bundle?): T {
     val className = T::class.java.name;

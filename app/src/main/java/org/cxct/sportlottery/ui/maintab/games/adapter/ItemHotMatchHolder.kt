@@ -45,6 +45,10 @@ class ItemHotMatchHolder(
         //玩法Code
         var oddPlayCateCode = ""
 
+        data.oddsSort?.let {
+            oddPlayCateCode = it
+        }
+
         var oddList = listOf<Odd?>()
 
         val oddsMap = mutableMapOf<String, List<Odd?>?>()
@@ -153,7 +157,10 @@ class ItemHotMatchHolder(
         }
 
         setupOddsButton(currentOddBtn, odd)
-        currentOddBtn.setupOdd4hall(oddPlayCateCode, odd, oddList, oddsType)
+        val hideName =odd?.nameMap?.containsValue(data?.homeName)==true
+           || odd?.nameMap?.containsValue(data?.awayName)==true
+           || odd?.nameMap?.containsValue(binding.root.context.getString(R.string.draw)) ==true
+        currentOddBtn.setupOdd4hall(oddPlayCateCode, odd, oddList, oddsType,hideName = hideName)
         currentOddBtn.setButtonBetClick(
             data = data,
             odd = odd,

@@ -229,21 +229,14 @@ object LanguageManager {
     }
 
     fun makeUseLanguage() : MutableList<Language>{
-        var list = if (isForQA())
-            mutableListOf(
+        val list = mutableListOf(
                 Language.EN,
                 Language.PHI,
                 Language.ZH,
                 Language.VI,
             )
-        else
-            mutableListOf(
-                Language.EN,
-                Language.ZH,
-                Language.VI,
-            )
         if (sConfigData?.supportLanguage?.isNotEmpty() == true) {
-            var sup = sConfigData?.supportLanguage?.split(",")
+            val sup = sConfigData?.supportLanguage?.split(",")
             if (sup?.isNotEmpty() == true) {
                 list.listIterator().let {
                     while (it.hasNext()) {

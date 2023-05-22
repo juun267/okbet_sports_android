@@ -22,6 +22,7 @@ import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.setOnClickListeners
 import org.cxct.sportlottery.common.extentions.setViewVisible
 import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ContentBetInfoItemV3BaseketballEndingCardBinding
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.LoginRepository
@@ -29,11 +30,10 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.betList.listener.OnItemClickListener
-import org.cxct.sportlottery.ui.betList.listener.OnSelectedPositionListener
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.KvUtils.BASKETBALL_DEL_TIP_FLAG
-import org.cxct.sportlottery.util.drawable.DrawableUtils
+import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import org.cxct.sportlottery.view.dialog.BasketballDelBetTipDialog
 import timber.log.Timber
 
@@ -48,16 +48,15 @@ class BasketballEndingCardViewHolder(
     private var inputWinMinMoney: Double = 0.0
     private var mUserMoney: Double = 0.0
     private var mUserLogin: Boolean = false
+    private val isLogin: Boolean
+        get() = LoginRepository.isLogin.value == true
 
     fun bind(
         betList: MutableList<BetInfoListData>?,
         itemData: BetInfoListData,
         currentOddsType: OddsType,
-        itemCount: Int,
         onItemClickListener: OnItemClickListener,
         betListSize: Int,
-        mSelectedPosition: Int,
-        onSelectedPositionListener: OnSelectedPositionListener,
         position: Int,
         userMoney: Double,
         userLogin: Boolean,
@@ -69,14 +68,17 @@ class BasketballEndingCardViewHolder(
         setupInputLimit(itemData)
 
         contentView.apply {
+            layoutKeyBoard.setUserMoney(mUserMoney)
+            layoutKeyBoard.setGameType(itemData.matchOdd.playCode)
+            if (betList != null) {
+                layoutKeyBoard.setBetItemCount(betList.size)
+            }
             setupBetAmountInput(
                 betList,
                 itemData,
                 if (itemData.matchOdd.isOnlyEUType) OddsType.EU else currentOddsType,
                 onItemClickListener,
                 betListSize,
-                mSelectedPosition,
-                onSelectedPositionListener,
                 position,
                 adapterBetType
             )
@@ -93,6 +95,7 @@ class BasketballEndingCardViewHolder(
     }
 
 
+
     @SuppressLint("ClickableViewAccessibility")
     private fun setupBetAmountInput(
         betList: MutableList<BetInfoListData>?,
@@ -100,11 +103,15 @@ class BasketballEndingCardViewHolder(
         currentOddsType: OddsType,
         onItemClickListener: OnItemClickListener,
         betListSize: Int,
-        mSelectedPosition: Int,
-        onSelectedPositionListener: OnSelectedPositionListener,
         position: Int,
         adapterBetType: BetListRefactorAdapter.BetRvType?
     ) = contentView.run {
+        fun showTotalStakeWinAmount( bet: Double){
+            val totalBet = TextUtil.formatMoney(bet * betListSize, 2)
+            val totalCanWin = TextUtil.formatMoney(bet * itemData.matchOdd.odds, 2)
+            tvTotalStakeAmount.text = "${sConfigData?.systemCurrencySign}${totalBet}"
+            tvTotalWinAmount.text = "${sConfigData?.systemCurrencySign}${totalCanWin}"
+        }
         //移除TextChangedListener
         etBet.apply {
             if (tag is TextWatcher) {
@@ -122,10 +129,10 @@ class BasketballEndingCardViewHolder(
             override fun convert(holder: BaseViewHolder, item: BetInfoListData) {
 
                 val tvMatchOdds = holder.getView<TextView>(R.id.tvMatchOdds)
-                tvMatchOdds.background = DrawableUtils.getBasketballBetListButton(root)
+                tvMatchOdds.background = DrawableCreatorUtils.getBasketballBetListButton()
                 holder.setText(R.id.tvMatchOdds, item.matchOdd.playName)
                 val tvHide = holder.getView<TextView>(R.id.tvHide)
-                tvHide.background = DrawableUtils.getBasketballDeleteButton(root)
+                tvHide.background = DrawableCreatorUtils.getBasketballDeleteButton()
 
                 if (item.isClickForBasketball == true) {
                     tvHide.visible()
@@ -138,7 +145,7 @@ class BasketballEndingCardViewHolder(
                     holder.setGone(R.id.tvMatchOdds, true).setVisible(R.id.tvBsMore, true)
                         .setText(R.id.tvBsMore, R.string.N920)
                     val tvBsMore = holder.getView<TextView>(R.id.tvBsMore)
-                    tvBsMore.background = DrawableUtils.getBasketballPlusMore(root)
+                    tvBsMore.background = DrawableCreatorUtils.getBasketballPlusMore()
                     tvBsMore.setOnClickListener {
                         onItemClickListener.addMore()
                     }
@@ -181,9 +188,6 @@ class BasketballEndingCardViewHolder(
         newList.sortBy { it.matchOdd.playName.split("-")[1].toInt() }
         newList.sortBy { it.matchOdd.playName.split("-")[0].toInt() }
         newList.add(newList[0])
-//        newList.forEach {
-//            it.isClickForBasketball = false
-//        }
         rcvBasketballAdapter.setNewInstance(newList)
         rcvBasketballScore.layoutManager = GridLayoutManager(root.context, 5)
         tvBasketBetListCount.text = "X${betList?.size}"
@@ -197,8 +201,26 @@ class BasketballEndingCardViewHolder(
         }
         //設定editText內容
         etBet.apply {
-            if (itemData.input != null) setText(itemData.inputBetAmountStr) else text.clear()
+            if (itemData.input == null) {
+                val minBet = itemData.parlayOdds?.min ?: 0
+                if (isLogin) {
+                    if (minBet > mUserMoney) {
+                        itemData.input = mUserMoney.toString()
+                    } else {
+                        itemData.input = minBet.toString()
+                    }
+                }else{
+                    itemData.input = minBet.toString()
+                }
+            }
+            itemData.inputBetAmountStr = itemData.input
+            itemData.betAmount = itemData.input!!.toDouble()
+            setText(itemData.inputBetAmountStr)
             setSelection(text.length)
+
+            //显示总投注
+            val bet = itemData.inputBetAmountStr!!.toDouble()
+            showTotalStakeWinAmount(bet)
         }
         checkBetLimit(itemData)
 
@@ -224,11 +246,11 @@ class BasketballEndingCardViewHolder(
                     tvTotalStakeAmount.text = ""
                     tvTotalWinAmount.text = ""
                 } else {
-                    val quota = it.toString().toDouble()
+                    val quota = it.toString().toDoubleS()
                     itemData.betAmount = quota
                     itemData.inputBetAmountStr = it.toString()
                     itemData.input = it.toString()
-                    val max = inputMaxMoney.coerceAtMost(0.0.coerceAtLeast(userBalance()))
+                    val max = inputMaxMoney.coerceAtMost(quota.coerceAtLeast(userBalance()))
                     if (quota > max) {
                         etBet.apply {
                             setText(TextUtil.formatInputMoney(max))
@@ -238,12 +260,8 @@ class BasketballEndingCardViewHolder(
                     }
 
                     //总投注
-                    val bet = it.toString().toDouble()
-                    val totalBet = TextUtil.formatMoney(bet * betListSize, 2)
-                    val totalCanWin = TextUtil.formatMoney(bet * itemData.matchOdd.odds, 2)
-                    tvTotalStakeAmount.text = "${sConfigData?.systemCurrencySign}${totalBet}"
-                    tvTotalWinAmount.text = "${sConfigData?.systemCurrencySign}${totalCanWin}"
-
+                    val bet = it.toString().toDoubleS()
+                    showTotalStakeWinAmount(bet)
                 }
                 checkBetLimit(itemData)
                 onItemClickListener.refreshBetInfoTotal()
@@ -266,13 +284,10 @@ class BasketballEndingCardViewHolder(
             if (event.action == MotionEvent.ACTION_UP) {
                 if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) {
                     etBet.isFocusable = true
-                    onItemClickListener.onHideKeyBoard()
+//                    onItemClickListener.onHideKeyBoard()
                     layoutKeyBoard.setupMaxBetMoney(inputMaxMoney)
                     layoutKeyBoard.showKeyboard(
                         etBet, position
-                    )
-                    onSelectedPositionListener.onSelectChange(
-                        bindingAdapterPosition, BetListRefactorAdapter.BetViewType.SINGLE
                     )
                     onItemClickListener.onShowKeyboard(position)
                 }
@@ -331,7 +346,6 @@ class BasketballEndingCardViewHolder(
                     ) - 1
                 )
             }
-
             PlayCate.FS_LD_CS.value -> {
                 "@ " + getOdds(
                     itemData.matchOdd,
@@ -339,7 +353,6 @@ class BasketballEndingCardViewHolder(
                     adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE
                 ).toInt().toString()
             }
-
             else -> {
                 "@ " + TextUtil.formatForOdd(
                     getOdds(
@@ -362,7 +375,7 @@ class BasketballEndingCardViewHolder(
         setViewVisible(tvVs, tvMatchAway, tvLeagueName)
         tvLeagueName.text = itemData.matchOdd.leagueName?.trim()
 
-        btnBasketballDeleteAll.background = DrawableUtils.getBasketballDeleteAllDrawable(root)
+        btnBasketballDeleteAll.background = DrawableCreatorUtils.getBasketballDeleteAllDrawable()
         btnBasketballDeleteAll.setOnClickListener {
             if (!KvUtils.decodeBooleanTure(BASKETBALL_DEL_TIP_FLAG, false)) {
                 val dialog = BasketballDelBetTipDialog(root.context)
@@ -477,7 +490,7 @@ class BasketballEndingCardViewHolder(
         contentView.apply {
             val betAmount = itemData.betAmount
             val balanceError: Boolean
-            val amountError: Boolean = if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
+            var amountError: Boolean = if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
                 !itemData.input.isNullOrEmpty()
             } else {
                 if (betAmount > inputMaxMoney) {
@@ -487,7 +500,9 @@ class BasketballEndingCardViewHolder(
                     betAmount != 0.0 && betAmount < inputMinMoney
                 }
             }
-
+            if(itemData.input.isNullOrEmpty()){
+                amountError = true
+            }
 //            Timber.d("用户余额:$mUserMoney")
             if (betAmount != 0.0 && betAmount > mUserMoney) {
                 balanceError = true
