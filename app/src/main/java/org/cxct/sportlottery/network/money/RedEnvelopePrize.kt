@@ -1,7 +1,9 @@
 package org.cxct.sportlottery.network.money
 
 import com.squareup.moshi.Json
+import org.cxct.sportlottery.common.proguards.KeepMembers
 
+@KeepMembers
 data class RedEnvelopePrize(
     @Json(name = "grabMoney")
     val grabMoney: String?,//抢包金额

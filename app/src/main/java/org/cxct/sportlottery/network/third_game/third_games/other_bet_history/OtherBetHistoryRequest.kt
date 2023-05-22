@@ -1,8 +1,10 @@
 package org.cxct.sportlottery.network.third_game.third_games.other_bet_history
 
+import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.network.common.PagingParams
 import org.cxct.sportlottery.network.common.TimeRangeParams
 
+@KeepMembers
 data class OtherBetHistoryRequest(
     override val page: Int? = null,
     override val pageSize: Int? = null,

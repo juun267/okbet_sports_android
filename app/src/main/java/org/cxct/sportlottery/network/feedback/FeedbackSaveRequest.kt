@@ -1,5 +1,8 @@
 package org.cxct.sportlottery.network.feedback
 
+import org.cxct.sportlottery.common.proguards.KeepMembers
+
+@KeepMembers
 data class FeedbackSaveRequest(
     val content: String,//反馈内容
     val status: Int ?= 0, //状态（0:待反馈，1:已反馈）

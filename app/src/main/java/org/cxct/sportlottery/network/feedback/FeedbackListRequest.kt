@@ -1,7 +1,9 @@
 package org.cxct.sportlottery.network.feedback
 
+import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.network.common.PagingParams
 
+@KeepMembers
 data class FeedbackListRequest(
     override var page: Int? = null,//当前页
     override var pageSize: Int? = null,//每页条数

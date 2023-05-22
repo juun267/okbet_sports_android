@@ -1,9 +1,11 @@
 package org.cxct.sportlottery.network.bet.list
 
+import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.network.common.IdParams
 import org.cxct.sportlottery.network.common.PagingParams
 import org.cxct.sportlottery.network.common.TimeRangeParams
 
+@KeepMembers
 data class BetListRequest(
     val championOnly: Int,
     val statusList: List<Int>? = listOf(),
