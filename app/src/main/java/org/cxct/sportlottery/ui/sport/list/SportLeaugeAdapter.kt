@@ -166,6 +166,7 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
 
     fun removePreloadItem(){
         data = mutableListOf()
+        isPreload = false
         notifyDataSetChanged()
     }
 
