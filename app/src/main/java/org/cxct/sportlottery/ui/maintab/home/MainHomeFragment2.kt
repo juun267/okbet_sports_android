@@ -121,7 +121,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
             viewModel.getSportMenuFilter()
         }
         //体育服务开关监听
-        setupSportStatusChange(receiver,this){
+        setupSportStatusChange(applicationReceiver,this){
             checkToCloseView()
         }
     }

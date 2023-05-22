@@ -25,6 +25,7 @@ import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.money.RedEnveLopeModel
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.service.ApplicationBroadcastReceiver
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.betList.BetListViewModel
 import org.cxct.sportlottery.ui.betRecord.TransactionStatusViewModel
@@ -177,6 +178,7 @@ class MultiLanguagesApplication : Application() {
 
     private val serviceModule = module {
         factory { ServiceBroadcastReceiver(get(), get()) }
+        factory { ApplicationBroadcastReceiver(get(), get()) }
     }
 
     override fun attachBaseContext(base: Context) {

@@ -10,6 +10,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.service.ApplicationBroadcastReceiver
 import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
@@ -26,6 +27,7 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
     }
 
     val receiver: ServiceBroadcastReceiver by inject()
+    val applicationReceiver: ApplicationBroadcastReceiver by inject()
 
     private var backService: BackService? = null
     private var isServiceBound = false
@@ -275,6 +277,7 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         }
 
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter)
+        LocalBroadcastManager.getInstance(this).registerReceiver(applicationReceiver, filter)
     }
 
     private fun removeBroadCastReceiver() {
