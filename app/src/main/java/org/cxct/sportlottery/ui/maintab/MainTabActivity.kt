@@ -246,10 +246,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                             }else{
                                 if (viewModel.isLogin.value == false) {
                                     startLogin()
-                                    return@OnNavigationItemSelectedListener false
                                 }else{
                                     startActivity(FavoriteActivity::class.java)
                                 }
+                                return@OnNavigationItemSelectedListener false
                             }
                         }
                     }
