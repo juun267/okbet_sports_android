@@ -191,7 +191,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
             loadingView?.rl_loading?.visibility = View.VISIBLE
             loadingView?.rl_loading?.isClickable = true
         }
-        loadingView?.ivLoading?.setBackgroundResource(R.drawable.anim_loading)
+
         val animationDrawable = loadingView?.ivLoading?.background as AnimationDrawable
         animationDrawable.start()
 //        loadingView?.pb_message?.text = message ?: getString(R.string.loading)
