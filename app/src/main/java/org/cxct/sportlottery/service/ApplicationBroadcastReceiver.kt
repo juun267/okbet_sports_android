@@ -36,6 +36,7 @@ import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.PlayRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.EncryptUtil
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
@@ -220,6 +221,7 @@ class ApplicationBroadcastReceiver (val userInfoRepository: UserInfoRepository? 
             //体育服务开关
             EventType.SPORT_MAINTAIN_STATUS -> {
                 val data = ServiceMessage.getSportMaintenance(jObjStr)
+                sConfigData?.sportMaintainStatus="${data?.status}"
                 _sportMaintenance.postValue(data)
             }
             //公共频道
