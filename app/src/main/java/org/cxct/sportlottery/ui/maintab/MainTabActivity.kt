@@ -31,6 +31,7 @@ import org.cxct.sportlottery.common.event.BetModeChangeEvent
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.event.ShowFavEvent
 import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -47,6 +48,7 @@ import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.ui.betRecord.BetRecordFragment
 import org.cxct.sportlottery.ui.betRecord.accountHistory.next.AccountHistoryNextFragment
+import org.cxct.sportlottery.ui.favorite.FavoriteActivity
 import org.cxct.sportlottery.ui.chat.ChatActivity
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
@@ -230,7 +232,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                         return@OnNavigationItemSelectedListener false
                     }
 
-
                     when (menuItem.itemId) {
                         R.id.i_betlist, R.id.i_user -> {
                             if (viewModel.isLogin.value == false) {
@@ -246,6 +247,8 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                                 if (viewModel.isLogin.value == false) {
                                     startLogin()
                                     return@OnNavigationItemSelectedListener false
+                                }else{
+                                    startActivity(FavoriteActivity::class.java)
                                 }
                             }
                         }

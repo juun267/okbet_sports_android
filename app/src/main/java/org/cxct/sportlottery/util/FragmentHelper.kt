@@ -12,7 +12,8 @@ class FragmentHelper(
 ) {
 
     private var curPos = -1
-    private val fragments: Array<WeakReference<out Fragment>?> = Array(fragmentClasses.size) { null }
+    private val fragments: Array<WeakReference<out Fragment>?> =
+        Array(fragmentClasses.size) { null }
 
     fun getFragment(index: Int): Fragment {
         var fragment = fragments[index]?.get()
@@ -52,6 +53,11 @@ class FragmentHelper(
                 transaction.hide(from).show(to).commitAllowingStateLoss()
             }
         }
+    }
+
+    fun getCurrentFragmentByPos(curPos: Int): Fragment {
+        this.curPos = curPos
+        return getFragment(curPos)
     }
 
     fun getFragmentList(): Array<Fragment?> {
