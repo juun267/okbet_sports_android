@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.money.recharge
 
+
 import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.appsflyer.AppsFlyerLib
 import com.bigkoo.pickerview.builder.TimePickerBuilder
@@ -22,16 +24,14 @@ import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.crypto_pay_fragment.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_icon_and_tick.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
+import kotlinx.android.synthetic.main.include_quick_money.*
 import kotlinx.android.synthetic.main.transfer_pay_fragment.*
 import kotlinx.android.synthetic.main.transfer_pay_fragment.btn_submit
 import kotlinx.android.synthetic.main.transfer_pay_fragment.cv_recharge_time
 import kotlinx.android.synthetic.main.transfer_pay_fragment.et_recharge_amount
 import kotlinx.android.synthetic.main.transfer_pay_fragment.ll_qr
-
-
 import kotlinx.android.synthetic.main.transfer_pay_fragment.tv_fee_amount
 import kotlinx.android.synthetic.main.transfer_pay_fragment.tv_fee_rate
-
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.common.RechType
@@ -44,6 +44,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.ui.profileCenter.profile.RechargePicSelectorDialog
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.MoneyManager.getBankAccountIcon
 import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
 import timber.log.Timber
@@ -167,6 +168,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         getBankType(0)
         refreshFieldTitle()
         tv_currency_type.text = sConfigData?.systemCurrencySign
+        setupQuickMoney()
 
     }
 
@@ -811,5 +813,32 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         val uploadImgRequest =
             UploadImgRequest(userId, file, UploadImgRequest.PlatformCodeType.VOUCHER)
         viewModel.uploadImage(uploadImgRequest)
+    }
+
+    /**
+     * 设置快捷金额
+     */
+    private fun setupQuickMoney() {
+        includeQuickMoney.isVisible = true
+        if (rv_quick_money.adapter == null) {
+            rv_quick_money.layoutManager = GridLayoutManager(requireContext(), 3)
+            rv_quick_money.addItemDecoration(GridItemDecoration(10.dp,
+                12.dp,
+                requireContext().getColor(R.color.color_FFFFFF),
+                false))
+            rv_quick_money.adapter = QuickMoneyAdapter().apply {
+                setList(listOf("500", "1000", "5000", "10000", "50000", "100000"))
+                setOnItemClickListener { adapter, view, position ->
+                    (adapter as QuickMoneyAdapter).selectItem(position)
+                }
+            }
+        } else {
+            (rv_quick_money.adapter as QuickMoneyAdapter).setList(listOf("500",
+                "1000",
+                "5000",
+                "10000",
+                "50000",
+                "100000"))
+        }
     }
 }

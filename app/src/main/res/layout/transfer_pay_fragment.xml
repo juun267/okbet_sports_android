@@ -19,7 +19,7 @@
             android:id="@+id/cv_bank"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/color_191919_FCFCFC"
+            app:cardBackgroundColor="@color/color_FFFFFF"
             app:cardCornerRadius="5dp"
             app:cardElevation="0dp">
 
@@ -82,7 +82,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            app:cardBackgroundColor="@color/color_191919_FCFCFC"
+            app:cardBackgroundColor="@color/color_FFFFFF"
             app:cardCornerRadius="5dp"
             app:cardElevation="0dp">
 
@@ -365,12 +365,19 @@
             android:id="@+id/et_recharge_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_FFFFFF"
             android:paddingLeft="4dp"
             app:cvHint="@string/edt_hint_deposit_money"
             app:cvInputType="number"
             app:cvTextColor="@color/color_9BB3D9_535D76"
             app:cvTitleTextStyle="normal"
+            app:cvBottomLine="false"
             app:cvTitle="@string/title_deposit_money" />
+
+        <include
+            android:id="@+id/includeQuickMoney"
+            layout="@layout/include_quick_money"
+            android:visibility="gone" />
 
         <!-- 微信 -->
         <org.cxct.sportlottery.ui.login.LoginEditText
@@ -426,17 +433,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardElevation="0dp"
-            app:cardBackgroundColor="@color/color_191919_FCFCFC">
+            app:cardBackgroundColor="@color/color_FFFFFF">
 
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:gravity="center"
-                    android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="14dp"
                         android:gravity="center_vertical"
@@ -567,12 +574,14 @@
 -->
 
         </androidx.cardview.widget.CardView>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cv_recharge_upload_evidence"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_10"
-            android:background="@color/color_191919_FCFCFC">
+            android:background="@color/color_FFFFFF">
+
             <TextView
                 android:id="@+id/tv_upload_evidence"
                 android:text="@string/update_voucher"
@@ -643,7 +652,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/color_191919_FCFCFC"
+            app:cardBackgroundColor="@color/color_FFFFFF"
             app:cardCornerRadius="5dp"
             app:cardElevation="0dp">
 

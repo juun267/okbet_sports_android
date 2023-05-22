@@ -6,6 +6,7 @@
     android:layout_height="44dp"
     android:gravity="center"
     android:background="@drawable/selector_quick_money"
+    android:fontFamily="@font/din_regular"
     android:textFontWeight="500"
     android:textSize="@dimen/textSize20sp"
     android:textColor="@color/color_black_blue"
