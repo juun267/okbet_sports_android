@@ -86,7 +86,7 @@ open class SportListFragment :
                 }
                 notifyDataSetChanged()
                 viewModel.cleanGameHallResult()
-                sportLeagueAdapter.removePreloadItem()
+                sportLeagueAdapter.setPreloadItem()
                 (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(sport_type_list,
                     RecyclerView.State(),
                     dataSport.indexOfFirst { it.isSelected })
