@@ -1,5 +1,8 @@
 package org.cxct.sportlottery.network.index.forgetPassword
 
+import org.cxct.sportlottery.common.proguards.KeepMembers
+
+@KeepMembers
 data class SendSmsRequest(
     val phone: String ,//手机号码
     val validCodeIdentity: String,

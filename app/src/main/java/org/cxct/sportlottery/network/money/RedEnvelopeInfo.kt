@@ -1,8 +1,9 @@
 package org.cxct.sportlottery.network.money
 
 import com.squareup.moshi.Json
+import org.cxct.sportlottery.common.proguards.KeepMembers
 
-
+@KeepMembers
 data class RedEnvelopeInfo(
     @Json(name = "redenpId")
     val redenpId: Int,//主键 红包id

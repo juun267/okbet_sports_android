@@ -1,7 +1,9 @@
 package org.cxct.sportlottery.network.withdraw.uwcheck
 
 import com.squareup.moshi.Json
+import org.cxct.sportlottery.common.proguards.KeepMembers
 
+@KeepMembers
 class CheckList(
     @Json(name = "addTime")
     val addTime: String?,

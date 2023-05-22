@@ -11,7 +11,6 @@ import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.net.chat.api.SignService
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.chat.getSign.GetSignResult
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.user.info.UserInfoData
 import org.cxct.sportlottery.network.user.info.UserInfoResult

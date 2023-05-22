@@ -1,5 +1,8 @@
 package org.cxct.sportlottery.network.league
 
+import org.cxct.sportlottery.common.proguards.KeepMembers
+
+@KeepMembers
 data class LeagueListRequest(
     val gameType: String,
     val matchType: String,

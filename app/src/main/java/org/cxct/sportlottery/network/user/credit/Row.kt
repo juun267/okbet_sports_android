@@ -2,7 +2,9 @@ package org.cxct.sportlottery.network.user.credit
 
 
 import com.squareup.moshi.Json
+import org.cxct.sportlottery.common.proguards.KeepMembers
 
+@KeepMembers
 data class Row(
     @Json(name = "balance")
     val balance: Double?,

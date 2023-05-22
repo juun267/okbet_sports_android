@@ -1,5 +1,8 @@
 package org.cxct.sportlottery.network.withdraw.add
 
+import org.cxct.sportlottery.common.proguards.KeepMembers
+
+@KeepMembers
 data class WithdrawAddRequest(
     val applyMoney: Double,
     val withdrawPwd: String,

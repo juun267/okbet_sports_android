@@ -1,6 +1,9 @@
 package org.cxct.sportlottery.network.index.login
 
+import org.cxct.sportlottery.common.proguards.KeepMembers
 
+
+@KeepMembers
 data class LoginRequest(
     var account: String,
     var password: String? = null, //MD5 加密
