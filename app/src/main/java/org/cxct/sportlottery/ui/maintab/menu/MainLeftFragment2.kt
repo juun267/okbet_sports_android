@@ -14,6 +14,7 @@ import android.widget.LinearLayout.LayoutParams
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import com.budiyev.android.codescanner.BarcodeUtils
@@ -30,6 +31,7 @@ import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
@@ -44,7 +46,7 @@ import org.cxct.sportlottery.view.dialog.ScanErrorDialog
 import org.cxct.sportlottery.view.dialog.ScanPhotoDialog
 import timber.log.Timber
 
-class MainLeftFragment2 : org.cxct.sportlottery.ui.base.BindingFragment<MainViewModel, FragmentMainLeft2Binding>() {
+class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Binding>() {
 
 
     private inner class MenuItem(val group: View,
@@ -83,9 +85,7 @@ class MainLeftFragment2 : org.cxct.sportlottery.ui.base.BindingFragment<MainView
             icon.isSelected = false
             ivIndicator?.gone()
             tvName.typeface = Typeface.DEFAULT
-            tvName.setTextColor(icon.context.resources.getColor(R.color.color_6D7693))
-
-
+            tvName.setTextColor(ContextCompat.getColor(icon.context, R.color.color_6D7693))
         }
 
         fun setSelected() {
@@ -142,6 +142,7 @@ class MainLeftFragment2 : org.cxct.sportlottery.ui.base.BindingFragment<MainView
         val textView = AppCompatTextView(linearLayout.context)
         textView.textSize = 14f
         textView.setText(text)
+        textView.setTextColor(ContextCompat.getColor(icon.context, R.color.color_6D7693))
         linearLayout.addView(textView, textParams)
 
         var imageView: ImageView? = null
