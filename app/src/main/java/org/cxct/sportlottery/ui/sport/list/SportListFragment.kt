@@ -86,7 +86,7 @@ open class SportListFragment :
                 }
                 notifyDataSetChanged()
                 viewModel.cleanGameHallResult()
-                sportLeagueAdapter.removePreloadItem()
+                sportLeagueAdapter.setPreloadItem()
                 (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(sport_type_list,
                     RecyclerView.State(),
                     dataSport.indexOfFirst { it.isSelected })
@@ -485,7 +485,7 @@ open class SportListFragment :
 
                     sportLeagueAdapter.limitRefresh()
                     // TODO 這裡要確認是否有其他地方重複呼叫
-                    Timber.tag("Hewie").d("observe => OddsListGameHallResult")
+//                    Timber.tag("Hewie").d("observe => OddsListGameHallResult")
 
                     resubscribeChannel()
                 } else {

@@ -1441,7 +1441,10 @@
     <string name="write_suggestion">Submission</string>
     <string name="N922">Chat room has been closed!</string>
     <string name="N991">Welcome %s to chat</string>
+    <string name="N655">Network Error</string>
     <string name="P038">Google service is not available, please register/ login with your mobile number.</string>
     <string name="N989">Over max stake</string>
     <string name="N990">Below min stake</string>
+    <string name="N987">Log in to chat and discuss</string>
+    <string name="N988">Please login</string>
 </resources>

@@ -64,6 +64,10 @@ object ChatMessageDispatcher {
         }
     }
 
+    fun onConnectStatusChanged(connected: Boolean) = GlobalScope.launch(Dispatchers.IO) {
+        ChatRepository.emitConnStatus(connected)
+    }
+
     private fun pringLog(type: Int, msg: String) {
         if (BuildConfig.DEBUG) {
             Log.e("ChatMessage", "=====>>> recived message type: $type  msg: $msg")

@@ -58,7 +58,7 @@ class GlobalLoadingView @JvmOverloads constructor(
             Gloading.STATUS_LOAD_FAILED -> {
                 val networkConn = isNetworkConnected(context)
                 if (!networkConn) {
-                    str = resources.getString(R.string.chat_connection_error)
+                    str = resources.getString(R.string.N655)
                     image = errorRes
                 } else {
                     str = errorText

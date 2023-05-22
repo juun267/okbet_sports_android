@@ -158,7 +158,7 @@ class FavoriteAdapter(private val matchType: MatchType) :
     // 限制全列表更新頻率
     fun limitRefresh() {
         if (isLock) {
-            Log.d("Hewie", "UpdateAll...")
+//            Log.d("Hewie", "UpdateAll...")
             isLock = false
             notifyDataSetChanged()
             mTimer.schedule(object : TimerTask() {

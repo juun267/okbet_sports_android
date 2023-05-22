@@ -148,7 +148,7 @@ class OddButtonPagerAdapter(val context: Context
 
     private var data: List<List<Pair<String, List<Odd?>?>>> = listOf()
         set(value) {
-            Log.d("Hewie10", "${value}")
+//            Log.d("Hewie10", "${value}")
             field = value
             notifyDataSetChanged()
         }
@@ -176,7 +176,7 @@ class OddButtonPagerAdapter(val context: Context
 
 
     override fun onBindViewHolder(holder: OddButtonPagerViewHolder, position: Int) {
-        Log.d("Hewie", "綁定(${matchInfo?.homeName})：賠率表($position)")
+//        Log.d("Hewie", "綁定(${matchInfo?.homeName})：賠率表($position)")
         val item = data[position].getOrNull(0)
         holder.setupOddsButton2(
             position,

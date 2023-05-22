@@ -9,6 +9,7 @@ import android.view.View.OnClickListener
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
+import androidx.core.view.isInvisible
 import com.stx.xhb.androidx.XBanner
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
@@ -27,6 +28,7 @@ import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.goneWithSportSwitch
+import org.cxct.sportlottery.util.*
 
 class HomeTopView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
@@ -107,7 +109,7 @@ class HomeTopView @JvmOverloads constructor(
 
     private fun initLogin() {
         if (LoginRepository.isLogined()) {
-            binding.depositLayout.visible()
+            binding.depositLayout.setVisibilityByMarketSwitch()
             return
         }
 
@@ -127,7 +129,10 @@ class HomeTopView @JvmOverloads constructor(
 
         ConfigRepository.onNewConfig(fragment) { initBanner() }
         binding.vSports.setOnClickListener { fragment.jumpToInplaySport() }
-        binding.vOkgames.setOnClickListener { fragment.jumpToOKGames() }
+        binding.vOkgames.isInvisible = SPUtil.getMarketSwitch()
+        binding.vOkgames.setOnClickListener {
+            fragment.jumpToOKGames()
+        }
 
         if (!LoginRepository.isLogined()) {
             binding.ivGoogle.setOnClickListener {

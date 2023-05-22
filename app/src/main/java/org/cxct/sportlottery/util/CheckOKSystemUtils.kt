@@ -6,6 +6,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.service.ApplicationBroadcastReceiver
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 
@@ -44,7 +45,7 @@ private fun updateSportStatus(status:Int?){
 /**
  * 监听体育服务广播
  */
-fun setupSportStatusChange(receiver: ServiceBroadcastReceiver,lifecycleOwner: LifecycleOwner,block: () -> Unit){
+fun setupSportStatusChange(receiver: ApplicationBroadcastReceiver, lifecycleOwner: LifecycleOwner, block: () -> Unit){
     receiver.sportMaintenance.observe(lifecycleOwner){
         it?.let {
             //更新体育开关字段

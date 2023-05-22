@@ -36,10 +36,7 @@ import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.PlayRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
-import org.cxct.sportlottery.service.BackService.Companion.CHANNEL_KEY
-import org.cxct.sportlottery.service.BackService.Companion.CONNECT_STATUS
-import org.cxct.sportlottery.service.BackService.Companion.SERVER_MESSAGE_KEY
-import org.cxct.sportlottery.service.BackService.Companion.mUserId
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.EncryptUtil
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
@@ -54,7 +51,8 @@ import org.json.JSONObject
 import org.json.JSONTokener
 import timber.log.Timber
 
-open class ServiceBroadcastReceiver : BroadcastReceiver() {
+class ApplicationBroadcastReceiver (val userInfoRepository: UserInfoRepository? = null, val betInfoRepository: BetInfoRepository)
+    : BroadcastReceiver() {
 
     val globalStop: LiveData<GlobalStopEvent?>
         get() = _globalStop
@@ -159,22 +157,20 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent) {
         val bundle = intent.extras
         receiveConnectStatus(bundle)
-        bundle?.let { receiveMessage(it) }
+        receiveMessage(bundle)
     }
 
     private fun receiveConnectStatus(bundle: Bundle?) {
-        val connectStatus = bundle?.get(CONNECT_STATUS) as ServiceConnectStatus?
+        val connectStatus = bundle?.get(BackService.CONNECT_STATUS) as ServiceConnectStatus?
         connectStatus?.let { status ->
             _serviceConnectStatus.postValue(status)
         }
     }
 
-    private fun receiveMessage(bundle: Bundle) {
-
+    private fun receiveMessage(bundle: Bundle?) {
         CoroutineScope(Dispatchers.IO).launch {
-
-            val channelStr = bundle.getString(CHANNEL_KEY, "") ?: ""
-            val messageStr = bundle.getString(SERVER_MESSAGE_KEY, "") ?: ""
+            val channelStr = bundle?.getString(BackService.CHANNEL_KEY, "") ?: ""
+            val messageStr = bundle?.getString(BackService.SERVER_MESSAGE_KEY, "") ?: ""
             val decryptMessage = EncryptUtil.uncompress(messageStr)
             try {
                 decryptMessage?.let {
@@ -225,6 +221,7 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
             //体育服务开关
             EventType.SPORT_MAINTAIN_STATUS -> {
                 val data = ServiceMessage.getSportMaintenance(jObjStr)
+                sConfigData?.sportMaintainStatus="${data?.status}"
                 _sportMaintenance.postValue(data)
             }
             //公共频道
@@ -272,8 +269,8 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                 }
 
                 //query為耗時任務不能在主線程, LiveData需在主線程更新
-                mUserId?.let { userId ->
-                    val discount = UserInfoRepository.getDiscount(userId)
+                BackService.mUserId?.let { userId ->
+                    val discount = userInfoRepository?.getDiscount(userId)
                     data?.let {
                         it.setupOddDiscount(discount ?: 1.0F)
                         SocketUpdateUtil.updateMatchOdds(it)
@@ -300,21 +297,21 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
             EventType.MATCH_ODDS_CHANGE -> {
                 val data = ServiceMessage.getMatchOddsChange(jObjStr)
                 //query為耗時任務不能在主線程, LiveData需在主線程更新
-                mUserId?.let { userId ->
-                    val discount = UserInfoRepository.getDiscount(userId)
+                BackService.mUserId?.let { userId ->
+                    val discount = userInfoRepository?.getDiscount(userId)
                     data?.let {
                         it.setupOddDiscount(discount ?: 1.0F)
                         it.updateOddsSelectedState()
                     }
                     _matchOddsChange.postValue(Event(data))
                     data?.let { socketEvent ->
-                        BetInfoRepository.updateMatchOdd(socketEvent)
+                        betInfoRepository.updateMatchOdd(socketEvent)
                     }
 
                 } ?: run {
                     _matchOddsChange.postValue(Event(data))
                     data?.let { socketEvent ->
-                        BetInfoRepository.updateMatchOdd(socketEvent)
+                        betInfoRepository.updateMatchOdd(socketEvent)
                     }
                 }
             }
@@ -367,7 +364,7 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                 it.onChange(socketEvent)
             }
         }
-        BetInfoRepository.updateMatchOdd(socketEvent)
+        betInfoRepository.updateMatchOdd(socketEvent)
     }
 
     private fun OddsChangeEvent.setupOddDiscount(discount: Float): OddsChangeEvent {
@@ -432,7 +429,7 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
             oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
                 oddTypeSocketMapEntry.value?.onEach { odd ->
                     odd?.isSelected =
-                        BetInfoRepository.betInfoList.value?.peekContent()?.any { betInfoListData ->
+                        betInfoRepository.betInfoList.value?.peekContent()?.any { betInfoListData ->
                             betInfoListData.matchOdd?.oddsId == odd?.id
                         }
                 }
@@ -461,7 +458,7 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
             oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
                 oddTypeSocketMapEntry.value.odds?.onEach { odd ->
                     odd?.isSelected =
-                        BetInfoRepository.betInfoList.value?.peekContent()?.any { betInfoListData ->
+                        betInfoRepository.betInfoList.value?.peekContent()?.any { betInfoListData ->
                             betInfoListData.matchOdd.oddsId == odd?.id
                         }
                 }
