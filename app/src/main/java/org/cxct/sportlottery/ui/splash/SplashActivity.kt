@@ -17,6 +17,7 @@ import org.cxct.sportlottery.repository.NAME_LOGIN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
@@ -30,7 +31,7 @@ import kotlin.system.exitProcess
 /**
  * @app_destination 啟動頁
  */
-class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
+class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::class) {
 
     private val mVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
     private val sharedPref: SharedPreferences? by lazy {
