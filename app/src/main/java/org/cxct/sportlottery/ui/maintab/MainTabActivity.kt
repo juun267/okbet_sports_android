@@ -202,7 +202,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         if(fragment is SportFragment){
             return true
         }
-        if(fragment is FavoriteFragment){
+        if(fragment is FavoriteFragment&&!isOpenChatRoom()){
             return true
         }
         if(fragment is BetRecordFragment){
