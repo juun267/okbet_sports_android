@@ -24,6 +24,7 @@ import org.cxct.sportlottery.databinding.FragmentChatBinding
 import org.cxct.sportlottery.net.chat.data.UnPacketRow
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.repository.ChatRepository
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -376,7 +377,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
                     setInputStatus(chatEvent.sendTextEnabled)
                     setSendStatus(chatEvent.sendTextEnabled && etInput.text.toString().isNotEmpty())
                     setUploadImageStatus(chatEvent.uploadImgEnable)
-                    if (!chatEvent.sendTextEnabled && !chatEvent.uploadImgEnable) {
+                    if (LoginRepository.isLogined() && !chatEvent.sendTextEnabled && !chatEvent.uploadImgEnable) {
                         showToast(getString(R.string.chat_you_banned))
                     }
                 }
@@ -406,7 +407,9 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
             }
 
             is ChatEvent.Silence -> {
-                showToast(getString(R.string.chat_you_banned))
+                if (LoginRepository.isLogined()) {
+                    showToast(getString(R.string.chat_you_banned))
+                }
             }
 
             is ChatEvent.UnSilence -> {
