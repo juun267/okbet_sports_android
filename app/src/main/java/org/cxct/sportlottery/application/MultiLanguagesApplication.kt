@@ -233,24 +233,19 @@ class MultiLanguagesApplication : Application() {
                 .build()
         }
 
-
-        ApplicationBroadcastReceiver.mSystemStatusListener=object:
-            ApplicationBroadcastReceiver.SystemStatusListener{
-            override fun onSystemStatusChange(status: Int?) {
-                if ((status ?: 0) == MaintenanceActivity.MaintainType.FIXING.value) {
-                    when (AppManager.currentActivity()) {
-                        !is MaintenanceActivity -> startActivity(
-                            Intent(
-                                instance,
-                                MaintenanceActivity::class.java
-                            ).apply {
-                                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            })
-                    }
+        ApplicationBroadcastReceiver.onSystemStatusChange = { status ->
+            if ((status ?: 0) == MaintenanceActivity.MaintainType.FIXING.value) {
+                when (AppManager.currentActivity()) {
+                    !is MaintenanceActivity -> startActivity(
+                        Intent(
+                            instance,
+                            MaintenanceActivity::class.java
+                        ).apply {
+                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        })
                 }
             }
-
         }
     }
 
