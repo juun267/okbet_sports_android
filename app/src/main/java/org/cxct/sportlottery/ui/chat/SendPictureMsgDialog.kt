@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.dialog_send_picture_msg.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.base.BaseDialogFragment
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ScreenUtil
 
@@ -22,11 +23,12 @@ import org.cxct.sportlottery.util.ScreenUtil
  * @create 202/4/13
  * @description 傳送圖片訊息彈窗
  */
-class SendPictureMsgDialog : DialogFragment() {
+class SendPictureMsgDialog : BaseDialogFragment() {
+
+    private val IMAGE_PATH = "IMAGE_PATH"
+    var sendMsgListener: SendMsgListener? = null
 
     companion object {
-        const val IMAGE_PATH = "IMAGE_PATH"
-        var sendMsgListener: SendMsgListener? = null
 
         @JvmStatic
         fun newInstance(pictureUrl: String, sendListener: SendMsgListener) =
