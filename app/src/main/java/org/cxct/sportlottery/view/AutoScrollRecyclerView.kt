@@ -94,4 +94,9 @@ class AutoScrollRecyclerView @JvmOverloads constructor(context: Context, attrs: 
         mTimer = null
     }
 
+    override fun onDetachedFromWindow() {
+        stopAuto()
+        super.onDetachedFromWindow()
+    }
+
 }

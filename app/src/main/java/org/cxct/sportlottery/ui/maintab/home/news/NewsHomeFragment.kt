@@ -77,6 +77,7 @@ class NewsHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentNewsHo
         binding.tvShowMore.setOnClickListener {
             viewModel.getPageNews(currentPage + 1, PAGE_SIZE, categoryId)
         }
+        binding.homeBottumView.bindServiceClick(childFragmentManager)
     }
 
     private fun setupNews(pageNum: Int, newsList: List<NewsItem>) {
