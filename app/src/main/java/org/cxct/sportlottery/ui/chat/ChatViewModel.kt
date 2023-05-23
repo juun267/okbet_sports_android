@@ -18,6 +18,7 @@ import org.cxct.sportlottery.repository.ChatRepository.chatToken
 import org.cxct.sportlottery.repository.ChatRepository.userCurrency
 import org.cxct.sportlottery.repository.ChatRepository.userId
 import org.cxct.sportlottery.repository.ChatRepository.userLevelConfigVO
+import org.cxct.sportlottery.service.ChatService
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.chat.bean.*
 import org.cxct.sportlottery.util.*
@@ -58,7 +59,6 @@ class ChatViewModel(
     val chatEvent = _chatEvent.asSharedFlow()
 
     val editIconUrlResult: LiveData<Event<IconUrlResult?>> = avatarRepository.editIconUrlResult
-    var tempChatImgUrl: String? = null
 
     val connStatus = ChatRepository.chatConnStatus
 
@@ -68,6 +68,27 @@ class ChatViewModel(
         const val BET_NOT_ENOUGH_ERROR = 10019      //打碼量不足
         const val GOT_ALREADY = 10010
         const val NET_ERROR = 2008
+    }
+
+
+    fun subscribeChatRoom(roomId: String) {
+        ChatService.subscribeChatRoom(roomId)
+    }
+
+    fun unSubscribeChatRoom(roomId: String) {
+        ChatService.unSubscribeChatRoom(roomId)
+    }
+
+    fun subscribeChatUser(userId: String) {
+        ChatService.subscribeChatUser(userId)
+    }
+
+    fun unSubscribeChatUser(userId: String) {
+        ChatService.unSubscribeChatUser(userId)
+    }
+
+    fun chatSendMessage(liveMsgEntity: LiveMsgEntity) {
+        ChatService.sendMessage(liveMsgEntity)
     }
 
     private inline fun convertRoomMsg(roomMsg: ChatMessageResult): ChatRoomMsg<*, *> {
@@ -411,6 +432,7 @@ class ChatViewModel(
             return@launch
         }
 
+        ChatService.connect() // 链接聊天室
         _chatEvent.emit(ChatEvent.IsAdminType(checkIsAdminType()))
         if (ChatRepository.chatRoomID != chatRoom.id) {
             //背景返回之後，比較既有roomId，如果不同才重新joinRoom
@@ -551,10 +573,7 @@ class ChatViewModel(
      * 發送是否可發言的event
      */
     private suspend fun emitIsSpeakStatus() {
-        _chatEvent.emit(
-            ChatEvent.ActionInputSendStatusAndMaxLength(checkIsSpeak(), getInputMaxLength())
-        )
-        _chatEvent.emit(ChatEvent.ActionUploadImageStatus(checkIsSendImg()))
+        _chatEvent.emit(ChatEvent.SendMessageStatusEvent(checkIsSpeak(), getInputMaxLength(), checkIsSendImg()))
     }
 
     fun getHistoryMessageList()= launch {
@@ -570,23 +589,28 @@ class ChatViewModel(
         _chatEvent.emit(ChatEvent.ShowPhoto(url))
     }
 
-    fun attchLifecycleOwner(owner: LifecycleOwner) = owner.lifecycle.addObserver(object : LifecycleEventObserver {
+    fun initChatClient(owner: LifecycleOwner) {
 
-        override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+        owner.lifecycle.addObserver(object : LifecycleEventObserver {
 
-            when (event) {
-                Lifecycle.Event.ON_START -> startCheckToken() //
-                Lifecycle.Event.ON_RESUME -> checkLoginStatus() //背景返回必須重走checkLoginStatus
-                Lifecycle.Event.ON_STOP -> stopTimer() //
-                Lifecycle.Event.ON_DESTROY -> leaveRoom() // 退出房间
-                else -> {
+            override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+
+                when (event) {
+                    Lifecycle.Event.ON_START -> startCheckToken() //
+                    Lifecycle.Event.ON_RESUME -> checkLoginStatus() //背景返回必須重走checkLoginStatus
+                    Lifecycle.Event.ON_STOP -> stopTimer() //
+                    Lifecycle.Event.ON_DESTROY -> {  // 退出房间
+                        ChatService.stop()
+                        leaveRoom()
+                    }
+                    else -> {
+
+                    }
 
                 }
-
             }
-        }
-
-    })
+        })
+    }
 
     private var chatTimer: Timer? = null
 

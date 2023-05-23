@@ -10,25 +10,19 @@ import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.databinding.ActivityChatBinding
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.util.setTextTypeFace
 
-class ChatActivity : BaseSocketActivity<ChatViewModel>(ChatViewModel::class) {
+class ChatActivity : BindingActivity<ChatViewModel, ActivityChatBinding>() {
 
-    private lateinit var binding: ActivityChatBinding
+    private val marqueeAdapter by lazy { ChatMarqueeAdapter() }
 
+    override fun onInitView() {
 
-    private val marqueeAdapter by lazy {
-        ChatMarqueeAdapter()
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityChatBinding.inflate(layoutInflater)
-        setContentView(binding.root)
         initToolbar()
         initMarquee()
         initObserve()
-        viewModel.attchLifecycleOwner(this)
+        viewModel.initChatClient(this)
     }
 
     fun initToolbar() {
@@ -79,6 +73,16 @@ class ChatActivity : BaseSocketActivity<ChatViewModel>(ChatViewModel::class) {
                 )
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.rvMarquee.startAuto()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        binding.rvMarquee.stopAuto()
     }
 
 

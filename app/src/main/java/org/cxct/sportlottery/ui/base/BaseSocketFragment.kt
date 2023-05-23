@@ -37,26 +37,6 @@ abstract class BaseSocketFragment<T : BaseSocketViewModel>(clazz: KClass<T>) :
         (activity as BaseSocketActivity<*>).unSubscribeChannelHall(gameType, eventId)
     }
 
-    protected fun subscribeChatRoom(roomId: String?) {
-        (activity as BaseSocketActivity<*>).subscribeChatRoom(roomId)
-    }
-
-    protected fun unSubscribeChatRoom(roomId: String?) {
-        (activity as BaseSocketActivity<*>).unSubscribeChatRoom(roomId)
-    }
-
-    protected fun subscribeChatUser(userId: String?) {
-        (activity as BaseSocketActivity<*>).subscribeChatUser(userId)
-    }
-
-    protected fun unSubscribeChatUser(userId: String?) {
-        (activity as BaseSocketActivity<*>).unSubscribeChatUser(userId)
-    }
-
-    protected fun chatSendMessage(liveMsgEntity: LiveMsgEntity?) {
-        (activity as BaseSocketActivity<*>).chatSendMessage(liveMsgEntity)
-    }
-
     protected fun unSubscribeChannelEvent(eventId: String?) {
         (activity as BaseSocketActivity<*>).unSubscribeChannelEvent(eventId)
     }
