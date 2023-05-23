@@ -44,7 +44,7 @@ class BetDetailsActivity : BaseSocketActivity<BetListViewModel>(BetListViewModel
         betDetailsFragment.arguments = bundle
 
         //体育服务关闭  需要退出页面
-        setupSportStatusChange(applicationReceiver,this){
+        setupSportStatusChange(this){
             finish()
         }
 

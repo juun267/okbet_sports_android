@@ -273,6 +273,7 @@ class BackService : Service() {
         bundle.putBoolean(USE_SUBSCRIBE_DATA, isSubscribeData)
         val intent = Intent(SERVICE_SEND_DATA)
         intent.putExtras(bundle)
+        ApplicationBroadcastReceiver.receiveMessage(bundle)
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
 
@@ -335,6 +336,7 @@ class BackService : Service() {
                         matchType,
                         useSubscribeData)
                     useSubscribeData = false //第一筆過後將flag設為false
+
                 }, { throwable ->
                     Timber.e("[$url] 訂閱通道失敗: $throwable")
                 })

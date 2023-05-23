@@ -11,6 +11,8 @@ object KvUtils {
 
     //篮球删除投注信息提示弹窗  不再提示标记
     const val BASKETBALL_DEL_TIP_FLAG = "basketball_del_tip_flag"
+    //是否已经展示过新手引导
+    const val BASKETBALL_GUIDE_TIP_FLAG = "basketball_guide_tip_flag"
 
     private val mv: MMKV by lazy {
         MMKV.initialize(MultiLanguagesApplication.appContext)

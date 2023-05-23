@@ -143,7 +143,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 //        }
 
         //设置体育服务监听
-        setupSportStatusChange(applicationReceiver,this){
+        setupSportStatusChange(this){
             //如果维护开启，当前在体育相关fragment， 退回到首页
             if(checkMainPosition(getCurrentPosition())){
                 //关闭已选中的投注
@@ -202,7 +202,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         if(fragment is SportFragment){
             return true
         }
-        if(fragment is FavoriteFragment){
+        if(fragment is FavoriteFragment&&!isOpenChatRoom()){
             return true
         }
         if(fragment is BetRecordFragment){
@@ -246,10 +246,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                             }else{
                                 if (viewModel.isLogin.value == false) {
                                     startLogin()
-                                    return@OnNavigationItemSelectedListener false
                                 }else{
                                     startActivity(FavoriteActivity::class.java)
                                 }
+                                return@OnNavigationItemSelectedListener false
                             }
                         }
                     }
