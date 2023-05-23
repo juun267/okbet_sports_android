@@ -1294,6 +1294,8 @@
     <string name="N984">Chat room</string>
     <string name="N922">Sarado ang chat room!</string>
     <string name="N991">Welcome %s sa chat</string>
-    <string name="N987">Đăng nhập trò chuyện</string>
+    <string name="N987">Login para makipag-chat</string>
     <string name="N988">Mag-login</string>
+    <string name="system_notify">notification ng system</string>
+    <string name="C016">Ngayon</string>
 </resources>

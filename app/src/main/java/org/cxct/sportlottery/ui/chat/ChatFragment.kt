@@ -475,7 +475,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
     }
 
     private fun onError(errorMsg: String, block: (() -> Unit)? = null) {
-        showErrorPromptDialog(getString(R.string.error), errorMsg) {
+        showErrorPromptDialog(getString(R.string.prompt), errorMsg) {
             if (block != null) {
                 block.invoke()
             } else {
