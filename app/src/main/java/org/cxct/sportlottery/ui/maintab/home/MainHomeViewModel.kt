@@ -179,7 +179,7 @@ open class MainHomeViewModel(
                 )
             }
             resultRecommend?.let { result ->
-                if (result.success) {
+                if (result.success&&result.result!=null) {
                     result.result.recommendList.filter {
                         !it.menuList.isNullOrEmpty()
                     }.forEach { recommend ->
