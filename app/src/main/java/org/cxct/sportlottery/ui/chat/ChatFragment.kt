@@ -87,7 +87,6 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
     override fun onBindViewStatus(view: View) {
         initObserve()
         chatWelcomeAdapter.activity = activity as ChatActivity?
-        viewModel.getHistoryMessageList()
         loadingHolder.showLoading()
     }
 
@@ -101,9 +100,10 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
         binding.vChatAction.ivSend.setOnClickListener(this)
         binding.ivDownBtn.setOnClickListener(this)
         binding.rvWelcome.layoutManager = SmoothLinearLayoutManager(context)
+        binding.rvWelcome.setLinearLayoutManager()
         binding.rvWelcome.addItemDecoration(SpaceItemDecoration(requireContext(), R.dimen.recyclerview_chat_welcome_item_dec_spec))
         binding.rvWelcome.adapter = chatWelcomeAdapter
-        binding.rvChatMessage.setLinearLayoutManager()
+        binding.rvChatMessage.setLinearLayoutManager().stackFromEnd = true
         binding.rvChatMessage.adapter = chatMessageListAdapter
         chatMessageListAdapter.setEmptyView(getChatEmptyView(binding.root.context))
 
@@ -327,7 +327,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
                     binding.rvChatMessage.removeItemDecoration(headerItemDecoration)
                     binding.rvChatMessage.addItemDecoration(headerItemDecoration)
                 }
-
+                chatListScrollToBottom(false)
             }
 
             is ChatEvent.ChatMessage -> {
@@ -475,7 +475,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
     }
 
     private fun onError(errorMsg: String, block: (() -> Unit)? = null) {
-        showErrorPromptDialog(getString(R.string.error), errorMsg) {
+        showErrorPromptDialog(getString(R.string.prompt), errorMsg) {
             if (block != null) {
                 block.invoke()
             } else {
@@ -648,10 +648,14 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
     }
 
     private fun chatListScrollToBottom(isSmooth: Boolean) {
-        binding.rvChatMessage.postDelayed( {
+        binding.rvChatMessage.postDelayed({
             val position = chatMessageListAdapter.itemCount - 1
-            if (isSmooth) binding.rvChatMessage.smoothScrollToPosition(position)
-            else binding.rvChatMessage.scrollToPosition(position)
+            if (isSmooth) {
+                binding.rvChatMessage.smoothScrollToPosition(position)
+            } else {
+                val layoutManager = binding.rvChatMessage.layoutManager as LinearLayoutManager
+                layoutManager.scrollToPositionWithOffset(position, Integer.MIN_VALUE)
+            }
         }, 200)
     }
 

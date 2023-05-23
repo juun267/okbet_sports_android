@@ -17,6 +17,7 @@ import androidx.core.view.isVisible
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatMessageResult
 import org.cxct.sportlottery.repository.sConfigData
@@ -240,9 +241,13 @@ class ChatMessageListAdapter3(private val onPhotoClick: (String) -> Unit,
     fun setChatList(chatMessageList: MutableList<ChatRoomMsg<*, *>>) {
 
         val groupMessage = chatMessageList.groupBy { it.dateTips }
-        val today = TimeUtil.timeStampToDateString(System.currentTimeMillis(), TimeUtil.D_NARROW_MONTH, Locale.US)
+        val today = TimeUtil.timeStampToDateString(System.currentTimeMillis(), TimeUtil.DAY_MONTH_YEAR, Locale.US)
         groupMessage.keys.forEach { groupDate ->
-            val messageDateContent = if (groupDate == today) "Today" else "$groupDate"
+            val messageDateContent = if (groupDate == today) {
+                MultiLanguagesApplication.appContext.getString(R.string.C016)
+            } else  {
+                "$groupDate"
+            }
             val firstDateMessageIndex = chatMessageList.indexOfFirst { it.dateTips == groupDate }
             chatMessageList.add(firstDateMessageIndex, ChatDateMsg(messageDateContent))
         }

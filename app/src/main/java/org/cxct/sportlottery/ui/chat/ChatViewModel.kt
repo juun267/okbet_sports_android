@@ -115,7 +115,6 @@ class ChatViewModel(
 
             _chatEvent.emit(ChatEvent.UpdateList(chatMessageList))
             if (isFirstInit) {
-                _chatEvent.emit(ChatEvent.ScrollToBottom)
                 isFirstInit = false
             }
             emitChatRoomIsReady(true)

@@ -74,14 +74,8 @@ object ChatService {
             Timber.i("[Chat] >>>, url = ${URL_CHAT_SOCKET_HOST}")
             resetSubscriptions()
 
-            val httpClient = HTTPsUtil.trustAllSslClient(okHttpClient)
-                .newBuilder()
-                .pingInterval(40, TimeUnit.SECONDS)
-                .retryOnConnectionFailure(true)
-                .build()
-
             val url = "${URL_CHAT_SOCKET_HOST}ws/chat/app"
-            mChatStompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, url, null, httpClient)
+            mChatStompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, url, null, okHttpClient)
             mChatStompClient?.let { chatStompClient ->
 
                 chatStompClient.withClientHeartbeat(10 * 1000).withServerHeartbeat(10 * 1000)

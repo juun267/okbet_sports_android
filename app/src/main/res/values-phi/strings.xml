@@ -1297,7 +1297,7 @@
     <string name="N922">Sarado ang chat room!</string>
     <string name="N991">Welcome %s sa chat</string>
     <string name="P038">Google service ay hindi available, mangyaring magrehistro/mag-login gamit ang iyong mobile #.</string>
-    <string name="N987">Đăng nhập trò chuyện</string>
+    <string name="N987">Login para makipag-chat</string>
     <string name="N988">Mag-login</string>
     <string name="P001">Mga panuntunan sa Basketball Ending Game</string>
     <string name="P002">Ang Basketball Ending Game ay isang uri ng taya na binubuo ng 100 number combination entries, hindi nito nililimitahan ang mga manlalaro na maglagay ng taya sa mga numero ng kumbinasyon, ang miyembro ay pinapayagang maglagay ng taya sa lahat ng 100 slot. Dahil ito ay tinatawag na ending game, ang ending scored ay tutukuyin ang iyong suwerte.</string>
@@ -1314,4 +1314,6 @@
     <string name="P013">Next step</string>
     <string name="P016">I-click ang button na ito para isara ang betting window. pumili ng higit pang iskor</string>
     <string name="N102">Pagtaya</string>
+    <string name="system_notify">notification ng system</string>
+    <string name="C016">Ngayon</string>
 </resources>
