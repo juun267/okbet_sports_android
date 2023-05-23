@@ -140,7 +140,7 @@ class HotMatchView(context: Context, attrs: AttributeSet
             //api获取热门赛事列表
             it.peekContent().let { data ->
                     //如果没数据
-                    if(data.isNotEmpty()){
+                    if(data.isEmpty()){
                         //隐藏
                         gone()
                     }else{
