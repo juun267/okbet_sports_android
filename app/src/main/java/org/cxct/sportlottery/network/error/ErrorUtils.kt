@@ -62,6 +62,7 @@ import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
 import org.cxct.sportlottery.network.Constants.RESET_FORGET_PASSWORD
 import org.cxct.sportlottery.network.Constants.SEND_TWO_FACTOR
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
+import org.cxct.sportlottery.network.Constants.SPORT_PUBLICITY_RECOMMEND
 import org.cxct.sportlottery.network.Constants.SPORT_QUERY
 import org.cxct.sportlottery.network.Constants.THIRD_ALL_TRANSFER_OUT
 import org.cxct.sportlottery.network.Constants.THIRD_AUTO_TRANSFER
@@ -132,6 +133,7 @@ import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightLeagueListResult
 import org.cxct.sportlottery.network.sport.SportMenuFilterResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
+import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendResult
 import org.cxct.sportlottery.network.sport.query.SportQueryResult
 import org.cxct.sportlottery.network.third_game.money_transfer.GetAllBalanceResult
 import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersResult
@@ -151,7 +153,6 @@ import org.cxct.sportlottery.network.user.setWithdrawInfo.WithdrawInfoResult
 import org.cxct.sportlottery.network.vip.growth.LevelGrowthResult
 import org.cxct.sportlottery.network.vip.thirdRebates.ThirdRebatesResult
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
-import org.cxct.sportlottery.network.withdraw.list.WithdrawListResult
 import retrofit2.Converter
 import retrofit2.Response
 import timber.log.Timber
@@ -614,6 +615,10 @@ object ErrorUtils {
                     (url.contains(MATCH_BET_REMARK_BET)) ->{
                         @Suppress("UNCHECKED_CAST")
                         return RemarkBetResult(it.code,it.msg,it.success,null) as T
+                    }
+                    (url.contains(SPORT_PUBLICITY_RECOMMEND)) ->{
+                        @Suppress("UNCHECKED_CAST")
+                        return PublicityRecommendResult(it.code,it.msg,it.success,null) as T
                     }
 
                 }

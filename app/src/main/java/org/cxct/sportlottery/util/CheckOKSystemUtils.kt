@@ -45,14 +45,15 @@ private fun updateSportStatus(status:Int?){
 /**
  * 监听体育服务广播
  */
-fun setupSportStatusChange(receiver: ApplicationBroadcastReceiver, lifecycleOwner: LifecycleOwner, block: () -> Unit){
-    receiver.sportMaintenance.observe(lifecycleOwner){
+fun setupSportStatusChange(lifecycleOwner: LifecycleOwner, block: () -> Unit){
+    ApplicationBroadcastReceiver.sportMaintenance.observe(lifecycleOwner){
         it?.let {
             //更新体育开关字段
             updateSportStatus(it.status)
             block()
         }
     }
+
 }
 /**
  * 如果mainActivity在体育相关页面，需要回退到首页

@@ -10,9 +10,6 @@ open class BindingSocketFragment<VM : BaseViewModel, VB: ViewBinding>: BindingFr
         (activity as BaseSocketActivity<*>).receiver
     }
 
-    val applicationReceiver by lazy {
-        (activity as BaseSocketActivity<*>).applicationReceiver
-    }
     protected fun subscribeSportChannelHall() {
         (activity as BaseSocketActivity<*>).subscribeSportChannelHall()
     }
