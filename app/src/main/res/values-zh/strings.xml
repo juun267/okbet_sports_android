@@ -1306,4 +1306,18 @@
     <string name="N700">敬请期待</string>
     <string name="N704">推荐棋牌游戏</string>
     <string name="N986">方位</string>
+    <string name="P001">篮球末位比分规则</string>
+    <string name="P002">篮球末位比分游戏是一种由100个号码组合组成的投注类型，不限制玩家对组合的号码进行投注，会员可以对所有100个号码进行投注。 由于这称为末位比分游戏，因此得分将决定您的运气。</string>
+    <string name="P003">是否跳过篮球末位比分玩法说明</string>
+    <string name="P004">在此处选择您想要购买的比分，可以选择多个</string>
+    <string name="P005">再次点击可以取消选择</string>
+    <string name="P006">在此处查看已经选择的比分，</string>
+    <string name="P007">鼠标移动到比分上方可以选择删除</string>
+    <string name="P008">在此处输入金额</string>
+    <string name="P009">如果投注多个比分，则总投注=投注数量*投注金额</string>
+    <string name="P010">在此处查看预计赢利金额</string>
+    <string name="P011">在此处关闭购物车</string>
+    <string name="P012">上一步</string>
+    <string name="P013">下一步</string>
+    <string name="P016">点击此按钮，可以收起下注窗口。选择更多比分</string>
 </resources>

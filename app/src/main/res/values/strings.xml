@@ -1357,4 +1357,18 @@
     <string name="N952">Camera scan</string>
     <string name="N956">Can\'t recognize this QR code</string>
     <string name="N980">Denied camera permission</string>
+    <string name="P001">Basketball ending game rules</string>
+    <string name="P002">Basketball Ending Game is a bet type that consists of a 100 number combination entries, it does not limit players to place bet on the numbers of combination, member is allowed to place bet on all the 100 slots. Since this is called ending game, the ending scored will defined your luck.</string>
+    <string name="P003">Instructions on whether to skip basketball at the end of the score</string>
+    <string name="P004">Select the score you want to buy here, you can choose more than one</string>
+    <string name="P005">Click again to cancel selection</string>
+    <string name="P006">Check out the selected scores here,</string>
+    <string name="P007">Move the mouse over the score to choose delete</string>
+    <string name="P008">Enter amount here</string>
+    <string name="P009">If you bet on multiple scores, the total bet = bet quantity * bet amount</string>
+    <string name="P010">Check the estimated winning amount here</string>
+    <string name="P011">close cart here</string>
+    <string name="P012">Previous step</string>
+    <string name="P013">Next step</string>
+    <string name="P016">Click this button to close betting window. Choose more scores</string>
 </resources>

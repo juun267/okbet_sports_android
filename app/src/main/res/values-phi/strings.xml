@@ -1234,4 +1234,18 @@
     <string name="N700">Malapit na</string>
     <string name="N704">Patok na OKGame</string>
     <string name="N986">Direksyon</string>
+    <string name="P001">Mga panuntunan sa Basketball Ending Game</string>
+    <string name="P002">Ang Basketball Ending Game ay isang uri ng taya na binubuo ng 100 number combination entries, hindi nito nililimitahan ang mga manlalaro na maglagay ng taya sa mga numero ng kumbinasyon, ang miyembro ay pinapayagang maglagay ng taya sa lahat ng 100 slot. Dahil ito ay tinatawag na ending game, ang ending scored ay tutukuyin ang iyong suwerte.</string>
+    <string name="P003">Mga instruksyon kung laktawan ang basketball sa dulo ng iskor</string>
+    <string name="P004">Piliin ang iskor na gustong bilhin dito, maaari kang pumili ng higit sa isa</string>
+    <string name="P005">I-click muli para kanselahin ang pagpili</string>
+    <string name="P006">I-check ang mga napiling iskor dito,</string>
+    <string name="P007">Ilipat ang mouse sa ibabaw ng iskor upang mapili ang tanggalin</string>
+    <string name="P008">Maglagay ng halaga dito</string>
+    <string name="P009">Kung tumaya ka sa maraming iskor, ang kabuuang taya = dami ng taya * halaga ng taya</string>
+    <string name="P010">Tingnan ang tinantyang halaga na mapanalo dito</string>
+    <string name="P011">isara ang cart dito</string>
+    <string name="P012">Previous step</string>
+    <string name="P013">Next step</string>
+    <string name="P016">I-click ang button na ito para isara ang betting window. pumili ng higit pang iskor</string>
 </resources>
