@@ -1457,7 +1457,7 @@
     <string name="P008">Enter amount here</string>
     <string name="P009">If you bet on multiple scores, the total bet = bet quantity * bet amount</string>
     <string name="P010">Check the estimated winning amount here</string>
-    <string name="P011">close cart here</string>
+    <string name="P011">Close cart here</string>
     <string name="P012">Previous step</string>
     <string name="P013">Next step</string>
     <string name="P016">Click this button to close betting window. Choose more scores</string>
