@@ -232,7 +232,7 @@ class MultiLanguagesApplication : Application() {
             DoKit.Builder(this) //性能监控模块
                 .build()
         }
-
+        setupSystemStatusChange()
     }
 
     private val localeResources by lazy {
