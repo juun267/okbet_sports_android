@@ -45,12 +45,12 @@ private fun updateSportStatus(status:Int?){
 /**
  * 监听体育服务广播
  */
-fun setupSportStatusChange(lifecycleOwner: LifecycleOwner, block: () -> Unit){
+fun setupSportStatusChange(lifecycleOwner: LifecycleOwner, block: (isOpen:Boolean) -> Unit){
     ApplicationBroadcastReceiver.sportMaintenance.observe(lifecycleOwner){
         it?.let {
             //更新体育开关字段
             updateSportStatus(it.status)
-            block()
+            block(getSportEnterIsClose())
         }
     }
 
