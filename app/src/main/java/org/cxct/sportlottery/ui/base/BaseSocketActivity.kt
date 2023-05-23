@@ -27,7 +27,6 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
     }
 
     val receiver: ServiceBroadcastReceiver by inject()
-    val applicationReceiver: ApplicationBroadcastReceiver by inject()
 
     private var backService: BackService? = null
     private var isServiceBound = false
@@ -275,9 +274,7 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         val filter = IntentFilter().apply {
             addAction(BackService.SERVICE_SEND_DATA)
         }
-
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter)
-        LocalBroadcastManager.getInstance(this).registerReceiver(applicationReceiver, filter)
     }
 
     private fun removeBroadCastReceiver() {
