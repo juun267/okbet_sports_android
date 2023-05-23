@@ -35,6 +35,7 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.favorite.FavoriteActivity
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.common.LeagueOddListener
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
@@ -303,6 +304,15 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
 
     private val leagueOddMap = HashMap<String, LeagueOdd>()
     private fun initSocketObserver() {
+        //监听体育服务
+        setupSportStatusChange(this){
+            //如果首页不做处理
+            if(activity is MainTabActivity){
+                //体育服务分支没有 FavoriteActivity ， 只好判断非MainTabActivity
+            }else{
+                activity?.finish()
+            }
+        }
         receiver.serviceConnectStatus.observe(this.viewLifecycleOwner) {
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {

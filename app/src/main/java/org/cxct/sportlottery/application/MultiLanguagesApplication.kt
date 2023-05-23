@@ -235,7 +235,6 @@ class MultiLanguagesApplication : Application() {
             DoKit.Builder(this) //性能监控模块
                 .build()
         }
-
         Gloading.initDefault(LoadingAdapter())
         setupSystemStatusChange()
     }
