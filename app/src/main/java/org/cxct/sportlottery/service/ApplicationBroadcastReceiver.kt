@@ -101,7 +101,8 @@ object ApplicationBroadcastReceiver {
             //公共频道(这个通道会通知主站平台维护)
             EventType.SYS_MAINTENANCE -> {
                 val data = ServiceMessage.getSysMaintenance(jObjStr)
-                _sysMaintenance.postValue(data)
+//                _sysMaintenance.postValue(data)
+                mSystemStatusListener?.onSystemStatusChange(data?.status)
             }
             //体育服务开关
             EventType.SPORT_MAINTAIN_STATUS -> {
@@ -115,5 +116,9 @@ object ApplicationBroadcastReceiver {
 
     }
 
+    var mSystemStatusListener:SystemStatusListener?=null
 
+    interface SystemStatusListener{
+        fun onSystemStatusChange(status:Int?)
+    }
 }
