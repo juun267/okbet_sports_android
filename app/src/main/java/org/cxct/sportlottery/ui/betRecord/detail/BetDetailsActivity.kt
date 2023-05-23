@@ -45,7 +45,9 @@ class BetDetailsActivity : BaseSocketActivity<BetListViewModel>(BetListViewModel
 
         //体育服务关闭  需要退出页面
         setupSportStatusChange(this){
-            finish()
+            if(it){
+                finish()
+            }
         }
 
     }

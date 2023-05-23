@@ -142,7 +142,9 @@ class ResultsSettlementActivity :
     private fun observeData() {
         //监听体育服务关闭
         setupSportStatusChange(this){
-            finish()
+            if(it){
+                finish()
+            }
         }
         viewModel.apply {
             sportCodeList.observe(this@ResultsSettlementActivity) {
