@@ -90,8 +90,17 @@ class DetailSportGuideTipsView : LinearLayout {
         mTypedArray.recycle()
     }
 
-    fun setContent(content : String){
+    fun setContent(content: String) {
         tvContent.text = content
+    }
+
+    fun setNextStepStr(str: String) {
+        tvNext.text = str
+    }
+
+    fun setPreviousEnable(flag: Boolean) {
+        tvPrevious.isEnabled = flag
+        tvPrevious.alpha = 0.4f
     }
 
     fun setOnPreviousOrNextClickListener(listener: OnDSGTipsClickListener) {
