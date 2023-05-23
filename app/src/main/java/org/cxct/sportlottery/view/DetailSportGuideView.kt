@@ -71,6 +71,8 @@ class DetailSportGuideView : LinearLayout {
         dsgt6 = findViewById(R.id.dsgt6)
         dsgt7 = findViewById(R.id.dsgt7)
         dsgt8 = findViewById(R.id.dsgt8)
+        dsgt1.setPreviousEnable(false)
+        dsgt8.setNextStepStr(resources.getString(R.string.N102))
         dsgt3.setContent(resources.getString(R.string.P006) + "\n" + resources.getString(R.string.P007))
         var dsgtList = mutableListOf<DetailSportGuideTipsView>()
         dsgtList.add(dsgt1)

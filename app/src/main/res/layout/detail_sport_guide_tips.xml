@@ -81,7 +81,7 @@
             android:gravity="center"
             android:textSize="14sp"
             android:background="@drawable/bg_border_blue"
-            android:text="Previous"
+            android:text="@string/P012"
             android:layout_weight="1"/>
 
         <View
@@ -95,7 +95,7 @@
             android:gravity="center"
             android:textSize="14sp"
             android:background="@drawable/bg_solid_blue"
-            android:text="Next"
+            android:text="@string/P013"
             android:layout_weight="1"/>
     </LinearLayout>
 
