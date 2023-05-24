@@ -8,6 +8,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.PathMeasure
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
@@ -29,7 +30,8 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.BetModeChangeEvent
 import org.cxct.sportlottery.common.event.MenuEvent
-import org.cxct.sportlottery.common.event.ShowFavEvent
+import org.cxct.sportlottery.common.event.NetWorkEvent
+import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
@@ -154,6 +156,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 },200)
             }
 
+            EventBusUtil.post(SportStatusEvent(it))
         }
         viewModel.showBetInfoSingle.observe(this) {
             it.getContentIfNotHandled()?.let {
@@ -223,7 +226,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             setTextVisibility(true)
             setTextSize(10f)
             setIconSize(30f)
-            menu.getItem(2).isVisible = !SPUtil.getMarketSwitch()
+            menu.getItem(2).isVisible = !getMarketSwitch()
             onNavigationItemSelectedListener =
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
                     val position = getMenuItemPosition(menuItem)
@@ -383,6 +386,18 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             drawerLayout.openDrawer(Gravity.LEFT)
         } else {
             drawerLayout.closeDrawer(Gravity.LEFT)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onNetValidEvent(event:NetWorkEvent){
+        //网络恢复
+        if(event.isValid){
+            val fragment=fragmentHelper.getFragment(0)
+            if(fragment is HomeFragment){
+                //更新config   刷新体育服务开关
+                fragment.viewModel.getConfigData()
+            }
         }
     }
 
@@ -732,7 +747,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     fun jumpToBetInfo(tabPosition: Int) {
-        if (SPUtil.getMarketSwitch()) {
+        if (getMarketSwitch()) {
             return
         }
         if (bottom_navigation_view.currentItem != 2) {

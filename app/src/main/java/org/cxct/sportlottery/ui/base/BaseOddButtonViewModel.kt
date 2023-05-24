@@ -117,7 +117,7 @@ abstract class BaseOddButtonViewModel(
     fun updateMatchBetListData(data: FastBetDataBean) {
         val oddId = data.odd.id
 //        Timber.e("oddId: $oddId")
-        if (SPUtil.getMarketSwitch()) return
+        if (getMarketSwitch()) return
         if (savedOddId == oddId) return
         savedOddId = oddId.orEmpty()
         if (data.matchType == MatchType.OUTRIGHT) {

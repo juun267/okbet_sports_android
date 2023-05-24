@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.util
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
