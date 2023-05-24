@@ -1314,6 +1314,6 @@
     <string name="P013">Next step</string>
     <string name="P016">I-click ang button na ito para isara ang betting window. pumili ng higit pang iskor</string>
     <string name="N102">Pagtaya</string>
-    <string name="system_notify">notification ng system</string>
     <string name="C016">Ngayon</string>
+    <string name="system_notify">Notification ng System</string>
 </resources>
