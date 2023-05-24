@@ -8,6 +8,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.PathMeasure
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
@@ -25,6 +26,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.BetModeChangeEvent
 import org.cxct.sportlottery.common.event.MenuEvent
+import org.cxct.sportlottery.common.event.NetWorkEvent
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
@@ -340,6 +342,17 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             drawerLayout.openDrawer(Gravity.LEFT)
         } else {
             drawerLayout.closeDrawer(Gravity.LEFT)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onNetValidEvent(event:NetWorkEvent){
+        if(event.isValid){
+            val fragment=fragmentHelper.getFragment(0)
+            if(fragment is HomeFragment){
+                Log.e("dachang","getConfigData")
+                fragment.viewModel.getConfigData()
+            }
         }
     }
 
