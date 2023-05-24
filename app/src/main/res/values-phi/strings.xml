@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="loading">Naglo-load...</string>
     <string name="connect_first">Mangyaring kumonekta sa Internet muna</string>
     <string name="error_url_fail">Error sa jump address</string>
@@ -1298,4 +1298,5 @@
     <string name="N988">Mag-login</string>
     <string name="system_notify">Notification ng System</string>
     <string name="C016">Ngayon</string>
+    <string name="picture_camera_roll" tools:ignore="ExtraTranslation">CameraRoll</string> // 图片选择库中菲语这个会莫名变为中文
 </resources>
