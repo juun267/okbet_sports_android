@@ -146,16 +146,16 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             setTextVisibility(true)
             setTextSize(10f)
             setIconSize(30f)
-            menu.getItem(2).isVisible = !SPUtil.getMarketSwitch()
+            menu.getItem(2).isVisible = !getMarketSwitch()
             onNavigationItemSelectedListener =
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
 
                     val position = getMenuItemPosition(menuItem)
 
                     // index1,2,3。  体育赛事，注单，收藏赛事      在体育服务维护中时 不能点击
-                    if(position in 1..3){
+                    if (position in 1..3) {
                         //体育服务是否关闭
-                        if(getSportEnterIsClose()){
+                        if (getSportEnterIsClose()) {
                             ToastUtil.showToast(context, context.getString(R.string.N969))
                             return@OnNavigationItemSelectedListener false
                         }
@@ -643,7 +643,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     fun jumpToBetInfo(tabPosition: Int) {
-        if (SPUtil.getMarketSwitch()) {
+        if (getMarketSwitch()) {
             return
         }
         if (bottom_navigation_view.currentItem != 2) {

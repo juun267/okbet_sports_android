@@ -129,7 +129,7 @@ class HomeTopView @JvmOverloads constructor(
 
         ConfigRepository.onNewConfig(fragment) { initBanner() }
         binding.vSports.setOnClickListener { fragment.jumpToInplaySport() }
-        binding.vOkgames.isInvisible = SPUtil.getMarketSwitch()
+        binding.vOkgames.isInvisible = getMarketSwitch()
         binding.vOkgames.setOnClickListener {
             fragment.jumpToOKGames()
         }
