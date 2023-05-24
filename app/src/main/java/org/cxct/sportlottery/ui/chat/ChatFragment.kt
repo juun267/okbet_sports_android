@@ -139,7 +139,6 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 //region 處理聊天訊息中日期提示隱藏及顯示. 實際上懸浮的日期提示為RecyclerView的ItemDecoration所繪製的, 故需要在頂部顯示該日期時隱藏列表中對應的Item, 離開頂部時才顯示.
                 //可視範圍的第一個Item 若為日期提示則隱藏
-                postDownBtnRunable()
 
                 val layoutManager = (recyclerView.layoutManager as LinearLayoutManager)
                 val firstPosition = layoutManager.findFirstVisibleItemPosition()
@@ -161,6 +160,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                    smothToBottom = false
                     //一滾動就顯示懸浮日期提示
                     if (!viewModel.isFirstInit) {
                         headerItemDecoration.setHeaderVisibility(true)
@@ -172,6 +172,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     //滾動靜止一秒鐘後隱藏懸浮日期提示
                     postDateFloatingTipsRunnable()
+                    postDownBtnRunable()
                 }
             }
         })
@@ -179,7 +180,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
     }
 
     private fun setDownBtnEnable(enable: Boolean) = binding.ivDownBtn.run {
-        if (tag != null || isShowScrollBottom == enable) {
+        if (tag != null && isShowScrollBottom == enable) {
             return@run
         }
 
@@ -213,6 +214,9 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
     private fun postDownBtnRunable() {
         clearDownBtnRunable()
         binding.root.postDelayed(changeDownBtnRunable, 150)
+        if (smothToBottom) { // 如果是手动点击滚动到底部，有可能滚动到底部不彻底则再触发一次强制滚动到底部
+            chatListScrollToBottom(false)
+        }
     }
 
     private val hideDateFloatingTipsRunnable by lazy {
@@ -650,7 +654,10 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
         chatWelcomeAdapter.stop()
     }
 
+    private var smothToBottom = false
+
     private fun chatListScrollToBottom(isSmooth: Boolean) {
+        smothToBottom = isSmooth
         binding.rvChatMessage.postDelayed({
             val position = chatMessageListAdapter.itemCount - 1
             if (isSmooth) {
