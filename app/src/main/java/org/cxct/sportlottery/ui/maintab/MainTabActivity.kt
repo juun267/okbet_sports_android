@@ -29,7 +29,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.BetModeChangeEvent
 import org.cxct.sportlottery.common.event.MenuEvent
-import org.cxct.sportlottery.common.event.ShowFavEvent
+import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
@@ -154,6 +154,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 },200)
             }
 
+            EventBusUtil.post(SportStatusEvent(it))
         }
         viewModel.showBetInfoSingle.observe(this) {
             it.getContentIfNotHandled()?.let {
