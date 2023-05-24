@@ -23,14 +23,14 @@ class MaintenanceActivity : BaseSocketActivity<MaintenanceViewModel>(Maintenance
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
         setContentView(R.layout.activity_maintenance)
 
-        viewModel.getConfig()
         initObserver()
         initSocketObserver()
         initServiceButton(sConfigData)
+        viewModel.getConfig()
     }
 
     private fun initObserver() {
-        viewModel.configResult.observe(this) {
+        viewModel.configResult.observe(this){
             //確認當前平台是否維護中
             it?.configData?.let { initServiceButton(it) }
             when (it?.configData?.maintainStatus) {
@@ -42,6 +42,7 @@ class MaintenanceActivity : BaseSocketActivity<MaintenanceViewModel>(Maintenance
 //                    if (sConfigData?.thirdOpen == FLAG_OPEN)
 //                        MainActivity.reStart(this)
 //                    else
+
                     MainTabActivity.reStart(this)
                     finish()
                 }
