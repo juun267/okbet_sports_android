@@ -48,7 +48,6 @@ private fun updateSportStatus(status:Int?){
  */
 fun setupSportStatusChange(lifecycleOwner: LifecycleOwner, block: (isOpen:Boolean) -> Unit){
     ApplicationBroadcastReceiver.sportMaintenance.observe(lifecycleOwner){
-        Log.e("dachang","sportMaintenance:${it?.status}")
         it?.let {
             //更新体育开关字段
             updateSportStatus(it.status)

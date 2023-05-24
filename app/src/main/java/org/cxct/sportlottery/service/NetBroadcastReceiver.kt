@@ -25,6 +25,7 @@ class NetBroadcastReceiver: BroadcastReceiver() {
                     val nowTime=System.currentTimeMillis()
                     if(nowTime-lastTime>1000){
                         lastTime=nowTime
+                        //恢复网络event
                         EventBusUtil.post(NetWorkEvent(true))
                     }
                 }

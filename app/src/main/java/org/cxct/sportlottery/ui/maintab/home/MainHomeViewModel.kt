@@ -320,6 +320,8 @@ open class MainHomeViewModel(
                     ConfigRepository.config.postValue(configResult)
                     setupDefaultHandicapType()
                     _gotConfig.postValue(Event(true))
+
+                    //发送更新给体育服务
                     ApplicationBroadcastReceiver._sportMaintenance.postValue(SportMaintenanceEvent(
                         EventType.SPORT_MAINTAIN_STATUS,sConfigData?.sportMaintainStatus?.toInt()) )
                 }

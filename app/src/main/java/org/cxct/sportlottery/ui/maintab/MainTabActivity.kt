@@ -347,10 +347,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onNetValidEvent(event:NetWorkEvent){
+        //网络恢复
         if(event.isValid){
             val fragment=fragmentHelper.getFragment(0)
             if(fragment is HomeFragment){
-                Log.e("dachang","getConfigData")
+                //更新config   刷新体育服务开关
                 fragment.viewModel.getConfigData()
             }
         }
