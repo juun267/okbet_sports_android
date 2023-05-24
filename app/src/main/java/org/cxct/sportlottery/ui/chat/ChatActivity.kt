@@ -1,15 +1,14 @@
 package org.cxct.sportlottery.ui.chat
 
 import android.graphics.Typeface
-import android.os.Bundle
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.lifecycle.lifecycleScope
 import com.gyf.immersionbar.ImmersionBar
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.databinding.ActivityChatBinding
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.util.setTextTypeFace
 
@@ -29,8 +28,16 @@ class ChatActivity : BindingActivity<ChatViewModel, ActivityChatBinding>() {
         binding.bvToolBar.setupWith(window?.decorView?.rootView as ViewGroup)
             .setFrameClearDrawable(window?.decorView?.background)
             .setBlurRadius(2f)
+        binding.bvToolBar.apply {
+            layoutParams.height = ImmersionBar.getStatusBarHeight(this@ChatActivity)+resources.getDimensionPixelOffset(R.dimen.tool_bar_height)
+            this.layoutParams = layoutParams
+        }
         binding.ivBack.setOnClickListener {onBackPressed() }
         binding.tvTitle.setTextTypeFace(Typeface.BOLD)
+        binding.rlToolbar.apply {
+            (layoutParams as FrameLayout.LayoutParams).topMargin = ImmersionBar.getStatusBarHeight(this@ChatActivity)
+            this.layoutParams = layoutParams
+        }
         ImmersionBar.with(this)
             .statusBarDarkFont(!MultiLanguagesApplication.isNightMode)
             .fitsSystemWindows(false)
