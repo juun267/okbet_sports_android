@@ -286,7 +286,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
 
             //棋牌
             val mHotChessList = gameList.filter { it.gameType?.equals("1") == true }
-            if (mHotChessList.isNullOrEmpty() || SPUtil.getMarketSwitch()) {
+            if (mHotChessList.isNullOrEmpty() || getMarketSwitch()) {
                 setViewGone(view1, hot_card_game_include)
             } else {
                 setViewVisible(view1, hot_card_game_include)
@@ -296,7 +296,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
 
             //电子
             val mHotelList = gameList.filter { it.gameType?.equals("2") == true }
-            if (mHotelList.isNullOrEmpty() || SPUtil.getMarketSwitch()) {
+            if (mHotelList.isNullOrEmpty() || getMarketSwitch()) {
                 setViewGone(view2, hot_gaming_include)
             } else {
                 setViewVisible(view2, hot_gaming_include)
@@ -771,13 +771,13 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
     }
 
     private fun initListView(){
-        hot_gaming_include.isGone = SPUtil.getMarketSwitch()
+        hot_gaming_include.isGone = getMarketSwitch()
         //热门电子游戏
         rv_egame.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         rv_egame.adapter = hotElectronicAdapter
         hotElectronicAdapter.setOnItemClickListener{ _, _, position ->
             //谷歌市场屏蔽点击
-            if (SPUtil.getMarketSwitch())
+            if (getMarketSwitch())
                 return@setOnItemClickListener
             //点击跳转到哪里
             if (viewModel.isLogin.value != true) {
@@ -788,14 +788,14 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
             }
         }
 
-        hot_card_game_include.isGone = SPUtil.getMarketSwitch()
+        hot_card_game_include.isGone = getMarketSwitch()
         //棋牌
         rv_chess.layoutManager = LinearLayoutManager(rv_chess.context, LinearLayoutManager.HORIZONTAL, false)
         rv_chess.addItemDecoration(SpaceItemDecoration(rv_chess.context, R.dimen.recyclerview_news_item_dec_spec))
         rv_chess.adapter = homeChessAdapter
         homeChessAdapter.setOnItemClickListener { _, _, position ->
             //谷歌市场屏蔽点击
-            if (SPUtil.getMarketSwitch())
+            if (getMarketSwitch())
                 return@setOnItemClickListener
             //点击跳转到哪里
             if (viewModel.isLogin.value != true) {

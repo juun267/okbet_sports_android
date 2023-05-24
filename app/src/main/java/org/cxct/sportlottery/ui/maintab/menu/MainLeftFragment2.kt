@@ -406,12 +406,12 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
     }
 
     private fun bindVerifyStatus(userInfo: UserInfo?) = binding.run {
-        if (SPUtil.getMarketSwitch()) {
+        if (getMarketSwitch()) {
             llVerify.setVisibilityByMarketSwitch()
             return@run
         }
         llVerify.isVisible = sConfigData?.realNameWithdrawVerified.isStatusOpen()
-                || sConfigData?.realNameRechargeVerified.isStatusOpen() || !SPUtil.getMarketSwitch()
+                || sConfigData?.realNameRechargeVerified.isStatusOpen() || !getMarketSwitch()
 
         when (userInfo?.verified) {
             ProfileActivity.VerifiedType.PASSED.value -> {
