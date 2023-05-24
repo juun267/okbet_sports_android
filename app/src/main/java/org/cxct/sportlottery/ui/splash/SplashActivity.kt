@@ -26,7 +26,10 @@ import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.KvUtils
+import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.isGooglePlayVersion
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.system.exitProcess
@@ -130,7 +133,8 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
                 viewModel.getConfig()
                 return@observe
             }
-            SPUtil.saveMarketSwitch(isGooglePlayVersion() && BuildConfig.VERSION_NAME == it?.configData?.reviewedVersionUrl)
+            KvUtils.put(KvUtils.MARKET_SWITCH,
+                isGooglePlayVersion() && BuildConfig.VERSION_NAME == it?.configData?.reviewedVersionUrl)
             when {
                 it?.configData?.maintainStatus == FLAG_OPEN -> {
                     goMaintenancePage()

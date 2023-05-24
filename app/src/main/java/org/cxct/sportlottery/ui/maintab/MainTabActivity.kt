@@ -226,7 +226,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             setTextVisibility(true)
             setTextSize(10f)
             setIconSize(30f)
-            menu.getItem(2).isVisible = !SPUtil.getMarketSwitch()
+            menu.getItem(2).isVisible = !getMarketSwitch()
             onNavigationItemSelectedListener =
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
                     val position = getMenuItemPosition(menuItem)
@@ -747,7 +747,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     fun jumpToBetInfo(tabPosition: Int) {
-        if (SPUtil.getMarketSwitch()) {
+        if (getMarketSwitch()) {
             return
         }
         if (bottom_navigation_view.currentItem != 2) {
