@@ -54,7 +54,7 @@ class ChatActionView @JvmOverloads constructor(
         val textView = findViewById<TextView>(R.id.tvToLoging)
         textView.visible()
         textView.movementMethod = LinkMovementMethod()
-        textView.text = "${resources.getString(R.string.N987)},"
+        textView.text = "${resources.getString(R.string.N987)}, "
             .setSpan(ColorSpan(resources.getColor(R.color.color_A7B2C4)))
             .addSpan(resources.getString(R.string.N988), listOf(UnderlineSpan(), HighlightSpan(resources.getColor(R.color.color_025BE8)) {
                 context.startActivity(Intent(context, LoginOKActivity::class.java))
