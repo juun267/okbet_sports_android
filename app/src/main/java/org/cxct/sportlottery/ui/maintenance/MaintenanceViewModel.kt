@@ -32,7 +32,8 @@ class MaintenanceViewModel(
 
 
     val configResult: LiveData<ConfigResult?>
-        get() = ConfigRepository.config
+        get() = _configResult
+    var _configResult = MutableLiveData<ConfigResult?>()
 
     //获取配置文件
     fun getConfig() {
@@ -56,6 +57,7 @@ class MaintenanceViewModel(
         sConfigData = result?.configData
         setupDefaultHandicapType()
         ConfigRepository.config.postValue(result)
+        _configResult.postValue(result)
     }
 
 }

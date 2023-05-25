@@ -474,7 +474,7 @@ fun View.setVisibilityByCreditSystem() {
 }
 
 fun View.setVisibilityByMarketSwitch() {
-    visibility = if (SPUtil.getMarketSwitch()) View.GONE else View.VISIBLE
+    visibility = if (getMarketSwitch()) View.GONE else View.VISIBLE
 }
 
 /**
@@ -936,11 +936,14 @@ fun isForQA(): Boolean = BuildConfig.FLAVOR == "forqa"
 /**
  * 判斷當前是否為OKBET平台
  */
-fun isOKPlat(): Boolean = MultiLanguagesApplication.stringOf(R.string.app_name).equals("OKBET", true)
+fun isOKPlat(): Boolean =
+    MultiLanguagesApplication.stringOf(R.string.app_name).equals("OKBET", true)
 
 fun isUAT(): Boolean = BuildConfig.FLAVOR == "phuat"
 
 fun isGooglePlayVersion() = BuildConfig.FLAVOR == "google"
+
+fun getMarketSwitch() = KvUtils.decodeBoolean(KvUtils.MARKET_SWITCH)
 
 fun ImageView.setTeamLogo(icon: String?) {
     if (icon.isNullOrEmpty()) {

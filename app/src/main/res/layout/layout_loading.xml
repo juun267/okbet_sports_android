@@ -29,7 +29,7 @@
                 android:layout_width="68dp"
                 android:layout_height="68dp"
                 android:layout_gravity="center"
-                tools:src="@drawable/anim_loading" />
+                android:background="@drawable/anim_loading" />
 
             <TextView
                 android:id="@+id/pb_message"
