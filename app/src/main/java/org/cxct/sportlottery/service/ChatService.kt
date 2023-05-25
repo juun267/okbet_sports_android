@@ -26,6 +26,7 @@ import java.net.ConnectException
 import java.net.NoRouteToHostException
 import java.net.SocketTimeoutException
 import java.util.*
+import java.util.concurrent.CopyOnWriteArraySet
 import java.util.concurrent.TimeUnit
 
 /**
@@ -46,8 +47,11 @@ object ChatService {
     private var mChatStompClient: StompClient? = null
     private var mCompositeDisposable: CompositeDisposable? = null
     private val mSubscribedMap = mutableMapOf<String, Disposable?>()
-    private val mOriginalSubscribedMap = mutableMapOf<String, Disposable?>() //投注單頁面邏輯, 紀錄進入投注單前以訂閱的頻道, 離開投注單頁面時, 解除訂閱不解除此map中的頻道
     private val mSubscribeChannelPending = mutableListOf<String>()
+
+    private const val RECONNECT_LIMIT = 3 //斷線後重連次數限制
+    private var errorFlag = false // Stomp connect錯誤
+    private var reconnectionNum = 0//重新連接次數
 
     private var chatRoomID: Int = -99
     private var userID: Int = -99
@@ -100,11 +104,18 @@ object ChatService {
                                 }
                                 LifecycleEvent.Type.CLOSED -> {
                                     Timber.d("[Chat] ===>\"Stomp connection closed\"")
-                                    Timber.d("[Chat] Stomp connection closed")
-                                    disconnect()
-                                    onChatConnStaus(false)
+                                    Timber.d("[Chat] Stomp connection closed ")
+                                    reconnectionNum++
+                                    if (errorFlag && reconnectionNum < RECONNECT_LIMIT) {
+                                        Timber.e("[Chat] Stomp connection closed, start reconnect: $reconnectionNum  ")
+                                        reconnectChat()
+                                    } else {
+                                        disconnect()
+                                        onChatConnStaus(false)
+                                    }
                                 }
                                 LifecycleEvent.Type.ERROR -> {
+                                    errorFlag = true
                                     Timber.d("[Chat] ===>\"Stomp connection error\"")
                                     Timber.d("[Chat] Stomp connection error ==> ${it.exception}")
 //                                    doChatStep(ChatStateEvent.ChatStep.CHAT_RECONNECT)
@@ -150,11 +161,9 @@ object ChatService {
 
     private fun unsubscribeChannel(url: String) {
         val disposable = mSubscribedMap[url] ?: return
-        if (!mOriginalSubscribedMap.containsValue(disposable)) {
-            Timber.i("<<< unsubscribe channel: $url")
-            mCompositeDisposable?.remove(disposable)
-            mSubscribedMap.remove(url)
-        }
+        Timber.i("<<< unsubscribe channel: $url")
+        mCompositeDisposable?.remove(disposable)
+        mSubscribedMap.remove(url)
     }
 
     //Chat聊天室
@@ -253,6 +262,12 @@ object ChatService {
         ChatMessageDispatcher.onConnectStatusChanged(enable)
     }
 
+    private fun doReconnectChat() {
+        errorFlag = false
+        reconnectionNum = 0
+        reconnectChat()
+    }
+
     private fun reconnectChat() {
         disconnect()
         connectChat()
@@ -309,7 +324,7 @@ object ChatService {
 
             chatRoomID = ChatRepository.chatRoomID
             userID = ChatRepository.userId ?: -99
-            reconnectChat()
+            doReconnectChat()
             return
         }
 
@@ -320,6 +335,7 @@ object ChatService {
         stoped = true
         chatRoomID = -99
         userID = -99
+        reconnectionNum = 0
         disconnect()
     }
 
