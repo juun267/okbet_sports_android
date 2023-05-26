@@ -383,7 +383,7 @@ fun View.setBackColorWithColorMode(lightModeColor: Int, darkModeColor: Int) {
 }
 
 /**
- * 进入三方游戏，是否可以试玩检测
+ * 进入三方游戏，试玩检测
  */
 fun BaseFragment<out MainHomeViewModel>.setTrialPlayGameDataObserve(){
     viewModel.enterTrialPlayGameResult.observe(viewLifecycleOwner){
