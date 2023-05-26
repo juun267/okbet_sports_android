@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import kotlinx.coroutines.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.common.loading.Gloading
@@ -203,7 +202,13 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
     private val changeDownBtnRunable by lazy {
         java.lang.Runnable {
             val lm = (binding.rvChatMessage.layoutManager as LinearLayoutManager)
-            setDownBtnEnable(lm.findLastCompletelyVisibleItemPosition() < chatMessageListAdapter.dataCount() - 3)
+            val last = lm.findLastCompletelyVisibleItemPosition()
+            val count = chatMessageListAdapter.dataCount()
+            if (last == -1) {
+                setDownBtnEnable(false)
+            } else {
+                setDownBtnEnable(last < count - 2)
+            }
         }
     }
 
