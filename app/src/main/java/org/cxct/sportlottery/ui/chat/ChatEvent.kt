@@ -17,10 +17,10 @@ sealed class ChatEvent {
     data class SubscribeChatUser(val userId: Int) : ChatEvent()
     data class UnSubscribeChatUser(val userId: Int) : ChatEvent()
     data class InitFail(val message: String) : ChatEvent()
-    data class ActionInputSendStatusAndMaxLength(val isEnable: Boolean, val maxLength: Int) :
-        ChatEvent()
 
-    data class ActionUploadImageStatus(val isEnable: Boolean) : ChatEvent()
+    data class SendMessageStatusEvent(val sendTextEnabled: Boolean,
+                                      val textMaxLength: Int,
+                                      val uploadImgEnable: Boolean): ChatEvent()
     data class UpdateMarquee(val marqueeList: MutableList<String>) : ChatEvent()
     data class GetLuckyBagResult(val luckyBagResult: ApiResult<String>) : ChatEvent()
     data class InsertMessage(val isMe: Boolean) : ChatEvent()

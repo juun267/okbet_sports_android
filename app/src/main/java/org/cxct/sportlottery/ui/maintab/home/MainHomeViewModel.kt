@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab.home
 
 import android.app.Application
 import android.text.TextUtils
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -24,7 +25,9 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.match.MatchRound
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.list.MatchLiveData
+import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
+import org.cxct.sportlottery.network.service.sys_maintenance.SportMaintenanceEvent
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuFilter
 import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendRequest
@@ -35,6 +38,7 @@ import org.cxct.sportlottery.network.third_game.third_games.TotalRewardAmountDat
 import org.cxct.sportlottery.network.third_game.third_games.hot.HandicapData
 import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchLiveData
 import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.service.ApplicationBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
@@ -81,6 +85,12 @@ open class MainHomeViewModel(
     val _enterThirdGameResult = MutableLiveData<Pair<String, EnterThirdGameResult>>()
     val enterThirdGameResult: LiveData<Pair<String, EnterThirdGameResult>>
         get() = _enterThirdGameResult
+
+    //试玩线路
+    private val _enterTrialPlayGameResult = MutableLiveData<Pair<String, EnterThirdGameResult>?>()
+    val enterTrialPlayGameResult: LiveData<Pair<String, EnterThirdGameResult>?>
+        get() = _enterTrialPlayGameResult
+
     private val _errorPromptMessage = MutableLiveData<Event<String>>()
     val token = loginRepository.token
 
@@ -317,6 +327,10 @@ open class MainHomeViewModel(
                     ConfigRepository.config.postValue(configResult)
                     setupDefaultHandicapType()
                     _gotConfig.postValue(Event(true))
+
+                    //发送更新给体育服务
+                    ApplicationBroadcastReceiver._sportMaintenance.postValue(SportMaintenanceEvent(
+                        EventType.SPORT_MAINTAIN_STATUS,sConfigData?.sportMaintainStatus?.toInt()) )
                 }
             }
         }
@@ -398,6 +412,37 @@ open class MainHomeViewModel(
         requestEnterThirdGame("${gameData.firmType}", "${gameData.gameCode}", "${gameData.gameCategory}", baseFragment)
     }
 
+    /**
+     * 未登录试玩
+     */
+    fun requestEnterThirdGameNoLogin(  firmType: String?, gameCode: String?,gameCategory: String?){
+        if(firmType==null){
+            //不支持试玩
+            _enterTrialPlayGameResult.postValue(null)
+            return
+        }
+
+        viewModelScope.launch {
+            //请求试玩线路
+            val result= doNetwork(androidContext) {
+               OneBoSportApi.thirdGameService.thirdNoLogin(firmType, gameCode)
+            }
+            if(result==null){
+                //不支持试玩
+                _enterTrialPlayGameResult.postValue(null)
+            }else{
+                if(result.success&&result.msg.isNotEmpty()){
+                    //获得了试玩路径
+                    val thirdGameResult = EnterThirdGameResult(EnterThirdGameResult.ResultType.SUCCESS, result.msg, gameCategory)
+                    _enterTrialPlayGameResult.postValue(Pair(firmType, thirdGameResult))
+                }else{
+                    //不支持试玩
+                    _enterTrialPlayGameResult.postValue(null)
+                }
+            }
+        }
+    }
+
     //避免多次请求游戏
     var jumpingGame = false
     fun requestEnterThirdGame(
@@ -458,6 +503,15 @@ open class MainHomeViewModel(
     private suspend fun thirdGameLogin(firmType: String, gameCode: String): NetResult? {
         return doNetwork(androidContext) {
             OneBoSportApi.thirdGameService.thirdLogin(firmType, gameCode)
+        }
+    }
+
+    /**
+     * 未登录试玩
+     */
+    private suspend fun thirdGameNoLogin(firmType: String, gameCode: String): NetResult? {
+        return doNetwork(androidContext) {
+            OneBoSportApi.thirdGameService.thirdNoLogin(firmType, gameCode)
         }
     }
 

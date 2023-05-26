@@ -15,7 +15,7 @@ abstract class ChatRoomMsg<T, VH: BaseViewHolder> (
 
     // 时间标签
     val dateTips by lazy {
-        "${TimeUtil.timeStampToDateString(time, TimeUtil.D_NARROW_MONTH, Locale.US)}"
+        "${TimeUtil.timeStampToDateString(time, TimeUtil.DAY_MONTH_YEAR, Locale.US)}"
     }
 
     companion object {

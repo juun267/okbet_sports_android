@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import kotlinx.coroutines.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.common.loading.Gloading
@@ -24,11 +23,11 @@ import org.cxct.sportlottery.databinding.FragmentChatBinding
 import org.cxct.sportlottery.net.chat.data.UnPacketRow
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.repository.ChatRepository
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.afterTextChanged
-import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import timber.log.Timber
 import java.io.File
@@ -59,8 +58,6 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
     private val chatWelcomeAdapter by lazy { ChatWelcomeAdapter(viewLifecycleOwner) }
     private var redPacketDialog: RedPacketDialog? = null
     private var redEnvelopeListDialog: RedEnvelopeListDialog? = null
-    private var sendPictureMsgDialog: SendPictureMsgDialog? = null
-
 
     //訊息列表用日期提示ItemDecoration
     private val headerItemDecoration by lazy {
@@ -90,7 +87,6 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
     override fun onBindViewStatus(view: View) {
         initObserve()
         chatWelcomeAdapter.activity = activity as ChatActivity?
-        viewModel.getHistoryMessageList()
         loadingHolder.showLoading()
     }
 
@@ -104,9 +100,10 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
         binding.vChatAction.ivSend.setOnClickListener(this)
         binding.ivDownBtn.setOnClickListener(this)
         binding.rvWelcome.layoutManager = SmoothLinearLayoutManager(context)
+        binding.rvWelcome.setLinearLayoutManager()
         binding.rvWelcome.addItemDecoration(SpaceItemDecoration(requireContext(), R.dimen.recyclerview_chat_welcome_item_dec_spec))
         binding.rvWelcome.adapter = chatWelcomeAdapter
-        binding.rvChatMessage.setLinearLayoutManager()
+        binding.rvChatMessage.setLinearLayoutManager().stackFromEnd = true
         binding.rvChatMessage.adapter = chatMessageListAdapter
         chatMessageListAdapter.setEmptyView(getChatEmptyView(binding.root.context))
 
@@ -141,7 +138,6 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 //region 處理聊天訊息中日期提示隱藏及顯示. 實際上懸浮的日期提示為RecyclerView的ItemDecoration所繪製的, 故需要在頂部顯示該日期時隱藏列表中對應的Item, 離開頂部時才顯示.
                 //可視範圍的第一個Item 若為日期提示則隱藏
-                postDownBtnRunable()
 
                 val layoutManager = (recyclerView.layoutManager as LinearLayoutManager)
                 val firstPosition = layoutManager.findFirstVisibleItemPosition()
@@ -163,6 +159,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                    smothToBottom = false
                     //一滾動就顯示懸浮日期提示
                     if (!viewModel.isFirstInit) {
                         headerItemDecoration.setHeaderVisibility(true)
@@ -174,6 +171,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     //滾動靜止一秒鐘後隱藏懸浮日期提示
                     postDateFloatingTipsRunnable()
+                    postDownBtnRunable()
                 }
             }
         })
@@ -181,7 +179,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
     }
 
     private fun setDownBtnEnable(enable: Boolean) = binding.ivDownBtn.run {
-        if (tag != null || isShowScrollBottom == enable) {
+        if (tag != null && isShowScrollBottom == enable) {
             return@run
         }
 
@@ -204,7 +202,13 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
     private val changeDownBtnRunable by lazy {
         java.lang.Runnable {
             val lm = (binding.rvChatMessage.layoutManager as LinearLayoutManager)
-            setDownBtnEnable(lm.findLastCompletelyVisibleItemPosition() < chatMessageListAdapter.dataCount() - 3)
+            val last = lm.findLastCompletelyVisibleItemPosition()
+            val count = chatMessageListAdapter.dataCount()
+            if (last == -1) {
+                setDownBtnEnable(false)
+            } else {
+                setDownBtnEnable(last < count - 2)
+            }
         }
     }
 
@@ -215,6 +219,9 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
     private fun postDownBtnRunable() {
         clearDownBtnRunable()
         binding.root.postDelayed(changeDownBtnRunable, 150)
+        if (smothToBottom) { // 如果是手动点击滚动到底部，有可能滚动到底部不彻底则再触发一次强制滚动到底部
+            chatListScrollToBottom(false)
+        }
     }
 
     private val hideDateFloatingTipsRunnable by lazy {
@@ -269,29 +276,6 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
         text?.let { setSelection(it.length) }
     }
 
-    private suspend fun onChatRoomReady(chatEvent: ChatEvent.ChatRoomIsReady) {
-        //region 選擇照片會離開聊天室頁面，返回後需等重新訂閱，聊天室就緒後才能發送圖片訊息
-        if (viewModel.tempChatImgUrl.isNullOrEmpty() || !chatEvent.isReady) {
-            return
-        }
-
-        delay(200)
-        sendPictureMsgDialog = SendPictureMsgDialog.newInstance(viewModel.tempChatImgUrl!!,
-            object : SendPictureMsgDialog.SendMsgListener {
-                override fun onSend(msg: String, chatType: ChatType) {
-                    chatSendMessage(LiveMsgEntity().apply {
-                            content = msg
-                            type = chatType.code.toString()
-                        }
-                    )
-                    viewModel.tempChatImgUrl = null
-                }
-            })
-
-        sendPictureMsgDialog?.showAllowingStateLoss(childFragmentManager, "SendPictureMsgDialog")
-
-    }
-
     private fun onLuckyBagResultEvent(chatEvent: ChatEvent.GetLuckyBagResult) {
         if (chatEvent.luckyBagResult.succeeded()) {            //TODO Bill 更新聊天室列表的紅包狀態
             redPacketDialog?.showRedPacketOpenDialog(chatEvent.luckyBagResult.getData().toDoubleS())
@@ -344,7 +328,6 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
         when (chatEvent) {
             is ChatEvent.ChatRoomIsReady -> { //已訂閱roomId且已更新歷史訊息
                 setChatMsgScrollListener(chatEvent.isReady)
-                onChatRoomReady(chatEvent)
                 loadingHolder.showLoadSuccess()
             }
 
@@ -354,7 +337,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
                     binding.rvChatMessage.removeItemDecoration(headerItemDecoration)
                     binding.rvChatMessage.addItemDecoration(headerItemDecoration)
                 }
-
+                chatListScrollToBottom(false)
             }
 
             is ChatEvent.ChatMessage -> {
@@ -375,39 +358,40 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
 
             is ChatEvent.SubscribeRoom -> {
                 Timber.i("[Chat] 訂閱 roomId -> ${chatEvent.roomId}")
-                subscribeChatRoom(chatEvent.roomId.toString()) //需要修改socket token
+                viewModel.subscribeChatRoom(chatEvent.roomId.toString()) //需要修改socket token
             }
 
             is ChatEvent.UnSubscribeRoom -> {
                 Timber.i("[Chat] 解除訂閱 roomId -> ${chatEvent.roomId}")
-                unSubscribeChatRoom(chatEvent.roomId.toString()) //需要修改socket token
+                viewModel.unSubscribeChatRoom(chatEvent.roomId.toString()) //需要修改socket token
             }
 
             is ChatEvent.SubscribeChatUser -> {
                 Timber.i("[Chat] 訂閱 userId -> ${chatEvent.userId}")
-                subscribeChatUser(chatEvent.userId.toString())
+                viewModel.subscribeChatUser(chatEvent.userId.toString())
             }
 
             is ChatEvent.UnSubscribeChatUser -> {
                 Timber.i("[Chat] 解除訂閱 userId -> ${chatEvent.userId}")
-                unSubscribeChatUser(chatEvent.userId.toString())
+                viewModel.unSubscribeChatUser(chatEvent.userId.toString())
             }
 
             is ChatEvent.InitFail -> {
                 onError(chatEvent.message)
             }
 
-            is ChatEvent.ActionInputSendStatusAndMaxLength -> {
+            is ChatEvent.SendMessageStatusEvent -> {
                 binding.vChatAction.apply {
-                    setInputMaxLength(chatEvent.maxLength)
-                    setInputStatus(chatEvent.isEnable)
-                    setSendStatus(chatEvent.isEnable && etInput.text.toString().isNotEmpty())
+                    setInputMaxLength(chatEvent.textMaxLength)
+                    setInputStatus(chatEvent.sendTextEnabled)
+                    setSendStatus(chatEvent.sendTextEnabled && etInput.text.toString().isNotEmpty())
+                    setUploadImageStatus(chatEvent.uploadImgEnable)
+                    if (LoginRepository.isLogined() && !chatEvent.sendTextEnabled && !chatEvent.uploadImgEnable) {
+                        showToast(getString(R.string.chat_you_banned))
+                    }
                 }
             }
 
-            is ChatEvent.ActionUploadImageStatus -> {
-                binding.vChatAction.setUploadImageStatus(chatEvent.isEnable)
-            }
 
             is ChatEvent.NoMatchRoom -> {
                 onError(getString(R.string.N922))
@@ -432,7 +416,9 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
             }
 
             is ChatEvent.Silence -> {
-                showToast(getString(R.string.chat_you_banned))
+                if (LoginRepository.isLogined()) {
+                    showToast(getString(R.string.chat_you_banned))
+                }
             }
 
             is ChatEvent.UnSilence -> {
@@ -501,7 +487,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
     }
 
     private fun onError(errorMsg: String, block: (() -> Unit)? = null) {
-        showErrorPromptDialog(getString(R.string.error), errorMsg) {
+        showErrorPromptDialog(getString(R.string.prompt), errorMsg) {
             if (block != null) {
                 block.invoke()
             } else {
@@ -516,17 +502,34 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
 
         //上傳圖片server的result
         viewModel.editIconUrlResult.observe(viewLifecycleOwner) {
+
             val iconUrlResult = it.getContentIfNotHandled() ?: return@observe
             if (iconUrlResult.success) {
-                viewModel.tempChatImgUrl = iconUrlResult.t
+                val chatImgUrl = iconUrlResult.t
+
+                //region 選擇照片會離開聊天室頁面，返回後需等重新訂閱，聊天室就緒後才能發送圖片訊息
+                if (chatImgUrl.isNullOrEmpty()) {
+                    return@observe
+                }
+                val sendPictureMsgDialog = SendPictureMsgDialog.newInstance(chatImgUrl,
+                    object : SendPictureMsgDialog.SendMsgListener {
+                        override fun onSend(msg: String, chatType: ChatType) {
+                            val msgEvent = LiveMsgEntity()
+                            msgEvent.content = msg
+                            msgEvent.type = chatType.code.toString()
+                            viewModel.chatSendMessage(msgEvent)
+                        }
+                    })
+
+                sendPictureMsgDialog.showAllowingStateLoss(childFragmentManager, "SendPictureMsgDialog")
                 return@observe
             }
+
             onError(iconUrlResult.msg) { }
         }
     }
 
     private fun insertItem(isMe: Boolean = false) {
-//        chatMessageListAdapter.insertItem()
         if (isMe) {
             chatListScrollToBottom(isSmooth = false) //發送自己的訊息後，需快速至聊天室底部
         } else if (!isShowScrollBottom) {
@@ -581,7 +584,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
             val liveMsgEntity = LiveMsgEntity()
             liveMsgEntity.content = sendMessage
             liveMsgEntity.type = ChatType.CHAT_SEND_TEXT_MSG.code.toString()
-            chatSendMessage(liveMsgEntity)
+            viewModel.chatSendMessage(liveMsgEntity)
             binding.vChatAction.etInput.setText("")
             viewModel.tagPairList.clear()
             hideKeyboard()
@@ -656,11 +659,18 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
         chatWelcomeAdapter.stop()
     }
 
+    private var smothToBottom = false
+
     private fun chatListScrollToBottom(isSmooth: Boolean) {
-        binding.rvChatMessage.postDelayed( {
+        smothToBottom = isSmooth
+        binding.rvChatMessage.postDelayed({
             val position = chatMessageListAdapter.itemCount - 1
-            if (isSmooth) binding.rvChatMessage.smoothScrollToPosition(position)
-            else binding.rvChatMessage.scrollToPosition(position)
+            if (isSmooth) {
+                binding.rvChatMessage.smoothScrollToPosition(position)
+            } else {
+                val layoutManager = binding.rvChatMessage.layoutManager as LinearLayoutManager
+                layoutManager.scrollToPositionWithOffset(position, Integer.MIN_VALUE)
+            }
         }, 200)
     }
 

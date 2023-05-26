@@ -1320,8 +1320,6 @@
     <string name="N922">Phòng trò chuyện đã đóng!</string>
     <string name="N991">Chào mừng %s tham gia trò chuyện</string>
     <string name="N655">Lỗi mạng</string>
-    <string name="N987">Login para makipag-chat</string>
-    <string name="N988">Vui lòng đăng nhập</string>
     <string name="P001">Luật chơi tỷ số bóng rổ</string>
     <string name="P002">Trò chơi tỷ số bóng rổ là loại cược bao gồm 100 tổ hợp số, không giới hạn người chơi đặt cược các tổ hợp trên, hội viên được phép đặt cược vào toàn bộ 100 ô. Tỷ số kết thúc trận sẽ xác định vận may của bạn.</string>
     <string name="P003">Hướng dẫn có nên bỏ qua tỷ số kết thúc bóng rổ</string>
@@ -1336,4 +1334,12 @@
     <string name="P012">Trước</string>
     <string name="P013">Bước tiếp theo</string>
     <string name="P016">Nhấp vào nút này để đóng cửa sổ cược. chọn thêm tỷ số</string>
+    <string name="N102">Đặt cược</string>
+    <string name="N987">Đăng nhập tài khoản</string>
+    <string name="N988">Đăng nhập ngay</string>
+    <string name="C016">HÔM NAY</string>
+
+    <string name="F025">Đăng nhập</string>
+    <string name="N993">Chơi giải trí</string>
+    <string name="N994">Miễn phí chơi thử. Tiền thắng không phải là tiền thật.</string>
 </resources>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="loading">Naglo-load...</string>
     <string name="connect_first">Mangyaring kumonekta sa Internet muna</string>
     <string name="error_url_fail">Error sa jump address</string>
@@ -1297,7 +1297,7 @@
     <string name="N922">Sarado ang chat room!</string>
     <string name="N991">Welcome %s sa chat</string>
     <string name="P038">Google service ay hindi available, mangyaring magrehistro/mag-login gamit ang iyong mobile #.</string>
-    <string name="N987">Đăng nhập trò chuyện</string>
+    <string name="N987">Login para makipag-chat</string>
     <string name="N988">Mag-login</string>
     <string name="P001">Mga panuntunan sa Basketball Ending Game</string>
     <string name="P002">Ang Basketball Ending Game ay isang uri ng taya na binubuo ng 100 number combination entries, hindi nito nililimitahan ang mga manlalaro na maglagay ng taya sa mga numero ng kumbinasyon, ang miyembro ay pinapayagang maglagay ng taya sa lahat ng 100 slot. Dahil ito ay tinatawag na ending game, ang ending scored ay tutukuyin ang iyong suwerte.</string>
@@ -1309,8 +1309,16 @@
     <string name="P008">Maglagay ng halaga dito</string>
     <string name="P009">Kung tumaya ka sa maraming iskor, ang kabuuang taya = dami ng taya * halaga ng taya</string>
     <string name="P010">Tingnan ang tinantyang halaga na mapanalo dito</string>
-    <string name="P011">isara ang cart dito</string>
+    <string name="P011">Isara ang cart dito</string>
     <string name="P012">Previous step</string>
     <string name="P013">Next step</string>
     <string name="P016">I-click ang button na ito para isara ang betting window. pumili ng higit pang iskor</string>
+    <string name="N102">Pagtaya</string>
+    <string name="system_notify">Notification ng System</string>
+    <string name="C016">Ngayon</string>
+    <string name="picture_camera_roll" tools:ignore="ExtraTranslation">CameraRoll</string> // 图片选择库中菲语这个会莫名变为中文
+
+    <string name="F025">Log in agad</string>
+    <string name="N993">Libreng laro</string>
+    <string name="N994">Subukan ang aming mga laro nang libre at masaya. Anumang mga panalo ay hindi tunay na pera.</string>
 </resources>

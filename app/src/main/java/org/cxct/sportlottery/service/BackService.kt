@@ -6,7 +6,6 @@ import android.os.Binder
 import android.os.Bundle
 import android.os.IBinder
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import io.reactivex.CompletableTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -17,19 +16,13 @@ import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
-import org.cxct.sportlottery.repository.ChatRepository
-import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.chat.LiveMsgEntity
 import org.cxct.sportlottery.util.EncryptUtil
 import org.cxct.sportlottery.util.HTTPsUtil
-import org.cxct.sportlottery.util.LanguageManager
 import timber.log.Timber
 import ua.naiksoftware.stomp.Stomp
 import ua.naiksoftware.stomp.StompClient
 import ua.naiksoftware.stomp.dto.LifecycleEvent
-import ua.naiksoftware.stomp.dto.StompCommand
 import ua.naiksoftware.stomp.dto.StompHeader
-import ua.naiksoftware.stomp.dto.StompMessage
 import java.net.ConnectException
 import java.net.NoRouteToHostException
 import java.net.SocketTimeoutException
@@ -40,7 +33,6 @@ import java.util.concurrent.TimeUnit
 class BackService : Service() {
     companion object {
 
-        const val MESSAGE_CATE = "message_cate"
 
         const val CUSTOM_DATA_MATCH_ODD = "CUSTOM_DATA_MATCH_ODD"
         const val CUSTOM_DATA_MATCH_TYPE = "CUSTOM_DATA_MATCH_TYPE"
@@ -56,11 +48,7 @@ class BackService : Service() {
         const val WS_END_TYPE = "encrypted"
 
         private val URL_SOCKET_HOST_AND_PORT: String get() = "${Constants.getSocketUrl()}/api/ws/app/im" //app连接端点,无sockjs
-        private val URL_CHAT_SOCKET_HOST: String
-            get() = "${
-                sConfigData?.chatHost?.replace("https",
-                    "wss")
-            }"
+
         const val URL_ALL = "/ws/notify/all/$WS_END_TYPE" //全体公共频道
         //const val URL_ALL = "/ws/notify/all" //全体公共频道
 
@@ -88,14 +76,12 @@ class BackService : Service() {
         private const val HEART_BEAT_RATE = 10 * 1000 //每隔10秒進行一次對長連線的心跳檢測
         private const val RECONNECT_LIMIT = 10 //斷線後重連次數限制
         private const val LOADING_TIME_INTERVAL: Long = 500
-        private var timesTamp: Long = Date(System.currentTimeMillis()).time
     }
 
 
     private var mToken = ""
     private val mBinder: IBinder = MyBinder()
     private var mStompClient: StompClient? = null
-    private var mChatStompClient: StompClient? = null
     private var mCompositeDisposable: CompositeDisposable? = null //訊息接收通道 數組
     private val mHeader: List<StompHeader> get() = listOf(StompHeader("token", mToken))
     private val mSubscribedMap = mutableMapOf<String, Disposable?>() //Map<url, channel>
@@ -227,99 +213,10 @@ class BackService : Service() {
         }
     }
 
-    private fun connectChat() {
-        try {
-            Timber.i("[Chat] >>>token = ${mToken}, url = $URL_CHAT_SOCKET_HOST")
-            resetSubscriptions()
-
-            val httpClient = HTTPsUtil.trustAllSslClient(OkHttpClient())
-                .newBuilder()
-                .pingInterval(40, TimeUnit.SECONDS)
-                .retryOnConnectionFailure(true)
-                .build()
-            val url = "${URL_CHAT_SOCKET_HOST}ws/chat/app"
-            mChatStompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, url, null, httpClient)
-            mChatStompClient?.let { chatStompClient ->
-                chatStompClient.withClientHeartbeat(10 * 1000).withServerHeartbeat(10 * 1000)
-
-                val disposable =
-                    chatStompClient.lifecycle()
-                        .doOnError { throwable ->
-                            Timber.d("[Chat] connect doOnError: ${throwable.message}")
-                        }
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe {
-                            Timber.d("[Chat] connect: type: ${it.type}")
-                            Timber.d("[Chat] connect: message: ${it.message}")
-                            Timber.d("[Chat] connect: exception: ${it.exception}")
-                            Timber.d("[Chat] connect: handshakeResponseHeaders: ${it.handshakeResponseHeaders}")
-                            when (it.type) {
-                                LifecycleEvent.Type.OPENED -> {
-                                    Timber.d("[Chat] ===>\"Stomp connection opened\"")
-                                    Timber.d("[Chat] Stomp connection opened")
-                                    subscribeChatChannel("${URL_CHAT_ROOM}/${ChatRepository.chatRoomID}")
-                                    subscribeChatChannel("${URL_CHAT_USER}/${ChatRepository.userId}")
-                                    onChatConnStaus(true)
-                                }
-                                LifecycleEvent.Type.CLOSED -> {
-                                    Timber.d("[Chat] ===>\"Stomp connection closed\"")
-                                    Timber.d("[Chat] Stomp connection closed")
-                                    disconnect()
-                                    onChatConnStaus(false)
-                                }
-                                LifecycleEvent.Type.ERROR -> {
-                                    Timber.d("[Chat] ===>\"Stomp connection error\"")
-                                    Timber.d("[Chat] Stomp connection error ==> ${it.exception}")
-//                                    doChatStep(ChatStateEvent.ChatStep.CHAT_RECONNECT)
-                                }
-                                null -> {
-                                    Timber.d("[Chat] ===>\"Stomp connection failed\"")
-                                    Timber.d("[Chat] Stomp connection failed")
-                                    disconnect()
-                                }
-                                else -> {}
-                            }
-                        }
-
-                mCompositeDisposable?.add(disposable)
-
-                //建立連線
-                val header = getDefaultChatHeader()
-                chatStompClient.connect(header)
-            }
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-            when (e) {
-                is SocketTimeoutException -> {
-                    Timber.e("[Chat] 連線超時，正在重連")
-                    reconnectChat()
-                }
-                is NoRouteToHostException -> {
-                    Timber.e("[Chat] 該地址不存在，請檢查")
-                    stopSelf()
-                }
-                is ConnectException -> {
-                    Timber.e("[Chat] 連線異常或被拒絕，請檢查")
-                    stopSelf()
-                }
-                else -> {
-                    e.printStackTrace()
-                    stopSelf()
-                }
-            }
-        }
-    }
 
     private fun reconnect() {
         disconnect()
         connect()
-    }
-
-    private fun reconnectChat() {
-        disconnect()
-        connectChat()
     }
 
     fun doReconnect() {
@@ -329,12 +226,6 @@ class BackService : Service() {
         reconnect()
     }
 
-    fun doReconnectChat() {
-        delay = true
-        errorFlag = false
-        reconnectionNum = 0
-        reconnectChat()
-    }
 
     //關閉所有連線通道，釋放資源
     private fun disconnect() {
@@ -344,22 +235,6 @@ class BackService : Service() {
 
         mStompClient?.disconnect()
         mStompClient = null
-        mChatStompClient?.disconnect()
-        mChatStompClient = null
-    }
-
-    private fun sendChatMessageToViewModule(message: String) {
-        ChatMessageDispatcher.onChatMessage(message)
-//        val bundle = Bundle()
-//        bundle.putString(MESSAGE_CATE, MessageCate.Chat.cate)
-//        bundle.putString(SERVER_MESSAGE_KEY, message)
-//        val intent = Intent(SERVICE_SEND_DATA)
-//        intent.putExtras(bundle)
-//        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
-    }
-
-    private fun onChatConnStaus(enable: Boolean) {
-        ChatMessageDispatcher.onConnectStatusChanged(enable)
     }
 
     private fun sendMessageToActivity(
@@ -488,56 +363,6 @@ class BackService : Service() {
         }
     }
 
-    private fun subscribeChatChannel(url: String) {
-        if (url.isEmpty()) {
-            Timber.d("[Chat] subscribeChannel: url isEmpty")
-            return
-        }
-
-        if (mSubscribedMap.containsKey(url)) return
-
-        Timber.d("[Chat] subscribeChannel: isConnected ${mStompClient?.isConnected}")
-
-        if (mChatStompClient?.isConnected != true) {
-            if (!mSubscribeChannelPending.contains(url)) {
-                mSubscribeChannelPending.add(url)
-            }
-        }
-
-        Timber.d("[Chat] >> subscribe channel: $url")
-
-        val header = getDefaultChatHeader()
-        header.add(StompHeader(StompHeader.ID, "sub-$timesTamp"))
-        header.add(StompHeader(StompHeader.DESTINATION, url))
-        header.add(StompHeader("lang", LanguageManager.getSelectLanguage(applicationContext).key))
-        header.add(StompHeader("roomId", ChatRepository.chatRoomID.toString()))
-        header.add(StompHeader("userId", ChatRepository.userId.toString()))
-
-        Timber.d("[Chat] subscribeChannel: timesTamp: $timesTamp")
-
-        mChatStompClient?.run {
-            this.topic(url, header)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ topicMessage ->
-                    Timber.d("[Chat] ===>\"[$url] 訂閱接收訊息: ${topicMessage.payload}\"")
-                    sendChatMessageToViewModule(topicMessage.payload)
-//                    getSocketMsg(type, topicMessage.payload)
-                }, { throwable ->
-                    Timber.e("[Chat] ===>\"[$url] 訂閱通道失敗: $throwable")
-                })
-                .let { newDisposable ->
-                    mCompositeDisposable?.add(newDisposable)
-                    mSubscribedMap[url] = newDisposable
-
-                    //訂閱完成後檢查是否有訂閱失敗的頻道
-                    mSubscribeChannelPending.remove(url)
-                    if (mSubscribeChannelPending.isNotEmpty()) {
-//                        subscribeChannel(mSubscribeChannelPending.first(), JoinType.OTHER)
-                    }
-                }
-        } ?: reconnectChat()//背景中喚醒APP會有mStompClient=null的情況 導致停止訂閱賽事
-    }
 
     /**
      * 為了避免投注單關閉時解除訂閱到當前頁面的頻道, 所以先將當前的訂閱記錄起來
@@ -591,35 +416,6 @@ class BackService : Service() {
         val url = "$URL_EVENT/$mPlatformId/$eventId/$WS_END_TYPE"
         //val url = "$URL_EVENT/$mPlatformId/$eventId"
         unsubscribeChannel(url)
-    }
-
-
-    fun subscribeChatRoom(roomId: String?) {
-        if (roomId == null) return
-        val url = "$URL_CHAT_ROOM/$roomId"
-        subscribeChatChannel(url)
-    }
-
-    fun unSubscribeChatRoom(roomId: String?) {
-        if (roomId == null) return
-        val url = "$URL_CHAT_ROOM/$roomId"
-        unsubscribeChannel(url)
-    }
-
-    fun subscribeChatUser(userId: String?) {
-        if (userId == null) return
-        val url = "$URL_CHAT_USER/$userId"
-        subscribeChatChannel(url)
-    }
-
-    fun unSubscribeChatUser(userId: String?) {
-        if (userId == null) return
-        val url = "$URL_CHAT_USER/$userId"
-        unsubscribeChannel(url)
-    }
-
-    fun sendMessage(liveMsgEntity: LiveMsgEntity?) {
-        chatSendMessage(liveMsgEntity)
     }
 
     fun unsubscribeAllEventChannel() {
@@ -699,55 +495,5 @@ class BackService : Service() {
         }
     }
 
-    //Chat聊天室
-    /**
-     * 傳送聊天室訊息
-     */
-    private fun chatSendMessage(
-        liveMsgEntity: LiveMsgEntity?,
-    ) {
-        liveMsgEntity?.let {
-            val header = getDefaultChatHeader()
-            header.add(
-                StompHeader(
-                    StompHeader.DESTINATION,
-                    "/ws/notify/room/${ChatRepository.chatRoomID}/sendMessage"
-                )
-            )
-            header.add(StompHeader("lang",
-                LanguageManager.getSelectLanguage(applicationContext).key))
-            header.add(StompHeader("roomId", ChatRepository.chatRoomID.toString()))
-
-            mChatStompClient?.send(
-                StompMessage(
-                    StompCommand.SEND,
-                    header,
-                    liveMsgEntity.toJSONString()
-                )
-            )
-                ?.compose(applySchedulers())
-                ?.subscribe({
-                    Timber.d("[Chat] 傳送聊天室訊息 傳送成功!!!! JSONString: ${liveMsgEntity.toJSONString()}")
-                }, { throwable ->
-                    Timber.e(throwable, "[Chat] 傳送聊天室訊息 傳送失敗 : ")
-                })
-        }
-    }
-
-    private fun applySchedulers(): CompletableTransformer {
-        return CompletableTransformer { upstream ->
-            upstream.unsubscribeOn(Schedulers.newThread())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-        }
-    }
-
-    private fun getDefaultChatHeader(): MutableList<StompHeader> {
-        val header: MutableList<StompHeader> = mutableListOf()
-        header.add(StompHeader("Content-Type", "application/json")) //加上Content-Type，JSON才能正確解析
-        header.add(StompHeader("x-session-token", ChatRepository.chatToken))
-        header.add(StompHeader("device", "2")) //WEB (0), MOBILE_BROWSER(1), ANDROID(2), IOS(3)
-        return header
-    }
 }
 

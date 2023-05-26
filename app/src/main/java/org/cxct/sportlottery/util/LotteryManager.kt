@@ -63,7 +63,7 @@ class LotteryManager {
      * 限定指定页面不能显示
      */
     private fun allowdShow(): Boolean =
-        if (SPUtil.getMarketSwitch())
+        if (getMarketSwitch())
             false
         else
             when (activity!!::class) {
@@ -72,7 +72,8 @@ class LotteryManager {
                 MaintenanceActivity::class,
                 ThirdGameActivity::class,
                 LotteryActivity::class,
-                ScannerActivity::class -> false
+                ScannerActivity::class,
+                -> false
                 else -> true
             }
 

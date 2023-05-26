@@ -1378,7 +1378,7 @@
     <string name="N922">聊天室已关闭！</string>
     <string name="N991">欢迎%s参加聊天</string>
     <string name="N655">网络错误</string>
-    <string name="N987">登陆后进行聊天讨论</string>
+    <string name="N987">登录后进行聊天讨论</string>
     <string name="N988">请登录</string>
     <string name="P001">篮球末位比分规则</string>
     <string name="P002">篮球末位比分游戏是一种由100个号码组合组成的投注类型，不限制玩家对组合的号码进行投注，会员可以对所有100个号码进行投注。 由于这称为末位比分游戏，因此得分将决定您的运气。</string>
@@ -1394,4 +1394,10 @@
     <string name="P012">上一步</string>
     <string name="P013">下一步</string>
     <string name="P016">点击此按钮，可以收起下注窗口。选择更多比分</string>
+    <string name="N102">投注</string>
+    <string name="C016">今日</string>
+
+    <string name="F025">立即登录</string>
+    <string name="N993">玩得开心</string>
+    <string name="N994">免费试用我们的游戏。 任何奖金都不是真钱。</string>
 </resources>
