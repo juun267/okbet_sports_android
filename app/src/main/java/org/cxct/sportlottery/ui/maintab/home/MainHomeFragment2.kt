@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab.home
 
 
+import android.content.Intent
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +20,8 @@ import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.news.HomeNewsAdapter
 import org.cxct.sportlottery.ui.maintab.home.news.NewsDetailActivity
+import org.cxct.sportlottery.ui.maintab.publicity.MarqueeAdapter
+import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.JumpUtil
@@ -50,6 +53,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         viewModel.getBettingStationList()
         //刷新config
         viewModel.getConfigData()
+        viewModel.getAnnouncement()
     }
 
 
@@ -121,6 +125,19 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
 //                binding.homeTopView.initSportEnterStatus()
 //            }
 //        }
+        //新版宣傳頁
+        viewModel.messageListResult.observe(viewLifecycleOwner) {
+
+            val messageListResult = it.getContentIfNotHandled() ?: return@observe
+
+            val titleList: MutableList<String> = mutableListOf()
+            messageListResult.rows?.forEach { data ->
+                if (data.type.toInt() == 1)  {
+                    titleList.add(data.title + " - " + data.message)
+                }
+            }
+            setupAnnouncement(titleList)
+        }
     }
     //hot match
     private fun refreshHotMatch(){
@@ -189,6 +206,25 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
             } else {
                 (rvBettingStation.adapter as HomeBettingStationAdapter).setList(newsList)
             }
+        }
+    }
+
+    private fun setupAnnouncement(titleList: List<String>) {
+        var marqueeAdapter = MarqueeAdapter()
+        lin_announcement.setOnClickListener {
+            startActivity(Intent(requireActivity(), NewsActivity::class.java))
+        }
+        rv_marquee.apply {
+            layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = marqueeAdapter
+        }
+
+        marqueeAdapter.setData(titleList.toMutableList())
+        if (titleList.isNotEmpty()) {
+            rv_marquee.startAuto(false) //啟動跑馬燈
+        } else {
+            rv_marquee.stopAuto(true) //停止跑馬燈
         }
     }
 
