@@ -11,7 +11,7 @@
         app:pointSelect="@drawable/indicator_30_blue"
         app:pointNormal="@drawable/dot_4_4c326bff"
         app:pageChangeDuration="800"
-        app:pointTopBottomPadding="24dp"
+        app:pointTopBottomPadding="2dp"
         app:pointLeftRightPadding="1dp"/>
 
     <LinearLayout
