@@ -59,6 +59,7 @@ import org.cxct.sportlottery.util.DisplayUtil.dpToPx
 import org.cxct.sportlottery.util.SvgUtil.setSvgIcon
 import org.cxct.sportlottery.view.boundsEditText.TextFieldBoxes
 import org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+import org.cxct.sportlottery.view.dialog.TrialGameDialog
 import org.cxct.sportlottery.view.statusSelector.StatusSpinnerAdapter
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
@@ -384,25 +385,25 @@ fun View.setBackColorWithColorMode(lightModeColor: Int, darkModeColor: Int) {
 /**
  * 进入三方游戏，是否可以试玩检测
  */
-fun runWithTrialPlay(block: ()-> Unit){
-    //已登录
-    if (LoginRepository.isLogined()) {
-        //调用老逻辑 loginRun进入游戏
-        block()
-        return
+fun BaseFragment<out MainHomeViewModel>.setTrialPlayGameDataObserve(){
+    viewModel.enterTrialPlayGameResult.observe(viewLifecycleOwner){
+        hideLoading()
+        if(it==null){
+            //不支持试玩
+            loginedRun(requireContext()){}
+        }else{
+            //试玩弹框
+            val trialDialog= TrialGameDialog(requireContext())
+            if (isVisible){
+                //点击进入游戏
+                trialDialog.setEnterGameClick {
+                    enterThirdGame(it.second, it.first)
+                }
+                trialDialog.show()
+            }
+        }
     }
 
-    //未登录 请求试玩
-    //do network
-    // val switch=是否试玩
-    val switch=false
-    if(switch){
-        //试玩开启，试玩弹框
-    }else{
-        //试玩关闭，老逻辑loginRun进入游戏，提示去登录
-        block()
-    }
-    //block()中判断游戏url是否为空，为空提示 “游戏暂不支持试玩！”
 }
 
 

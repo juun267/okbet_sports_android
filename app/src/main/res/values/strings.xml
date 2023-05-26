@@ -1357,4 +1357,8 @@
     <string name="N952">Camera scan</string>
     <string name="N956">Can\'t recognize this QR code</string>
     <string name="N980">Denied camera permission</string>
+
+    <string name="F025">Login</string>
+    <string name="N993">Play for fun</string>
+    <string name="N994">Try our games for free and fun. Any winnings are not real money.</string>
 </resources>

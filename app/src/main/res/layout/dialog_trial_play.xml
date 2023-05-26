@@ -13,8 +13,7 @@
 
     <TextView
         android:id="@+id/tvContent"
-        android:text="Try our games for free and fun.
-Any winnings are not real money.xxxxxxxxxxxxxxxxxxxxx real money.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        android:text="@string/N994"
         android:textSize="@dimen/textSize14sp"
         android:layout_marginTop="120dp"
         android:textColor="@color/color_000000"
@@ -30,7 +29,7 @@ Any winnings are not real money.xxxxxxxxxxxxxxxxxxxxx real money.xxxxxxxxxxxxxxx
 
     <TextView
         android:id="@+id/tvLogin"
-        android:text="Log in"
+        android:text="@string/F025"
         android:background="@drawable/bg_gray_radius100"
         android:layout_width="116dp"
         android:gravity="center"
@@ -50,11 +49,13 @@ Any winnings are not real money.xxxxxxxxxxxxxxxxxxxxx real money.xxxxxxxxxxxxxxx
 
     <TextView
         android:id="@+id/tvForward"
-        android:text="Play for Fun"
+        android:text="@string/N993"
         android:background="@drawable/bg_blue_radius100"
         android:layout_width="116dp"
         android:layout_toRightOf="@+id/tv_line"
         android:layout_marginLeft="6dp"
+        android:singleLine="true"
+        android:ellipsize="end"
         android:gravity="center"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="35dp"
