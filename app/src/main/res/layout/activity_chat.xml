@@ -29,6 +29,7 @@
             android:background="@drawable/bg_chat_toolbar_background" />
 
         <RelativeLayout
+            android:id="@+id/rlToolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="25dp">
@@ -38,6 +39,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/tool_bar_height"
                 android:gravity="center"
+                android:singleLine="true"
+                android:layout_marginHorizontal="50dp"
                 android:text="@string/LT003"
                 android:textColor="@color/color_chat_toolbar_title"
                 android:textSize="@dimen/textSize18sp" />
@@ -46,7 +49,7 @@
                 android:id="@+id/iv_back"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="start"
+                android:layout_centerVertical="true"
                 android:paddingHorizontal="20dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_union" />
