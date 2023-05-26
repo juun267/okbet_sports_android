@@ -8,8 +8,9 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.core.view.isVisible
-import androidx.core.view.isInvisible
+import androidx.recyclerview.widget.PagerSnapHelper
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.stx.xhb.androidx.XBanner
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
@@ -53,7 +54,7 @@ class HomeTopView @JvmOverloads constructor(
     private fun initBanner() {
         val lang = LanguageManager.getSelectLanguage(context).key
         setUpBanner(lang, 2, R.id.topBanner)
-        setUpBanner(lang, 5, R.id.promotionsBanner)
+//        setUpBanner(lang, 5, R.id.promotionsBanner)
     }
 
     private fun setUpBanner(
@@ -63,6 +64,7 @@ class HomeTopView @JvmOverloads constructor(
             it.imageType == imageType && it.lang == lang && !it.imageName1.isNullOrEmpty()
         }
             ?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
+
 
         val loopEnable = (imageList?.size ?: 0) > 1
         if (imageList.isNullOrEmpty()) {
@@ -83,6 +85,7 @@ class HomeTopView @JvmOverloads constructor(
         val images = imageList.map {
             XBannerImage(it.imageText1 + "", host + if (imageType==2) it.imageName1 else it.imageName4, it.appUrl)
         }
+        setUpPromoteView(images)
 
         //opt1 ->ImageType = 5,为活动轮播图
         //opt2 -> 后台有配置
@@ -91,6 +94,25 @@ class HomeTopView @JvmOverloads constructor(
             xbanner.visible()
         }
         xbanner.setBannerData(images.toMutableList())
+    }
+
+    private fun setUpPromoteView(imageList: List<XBannerImage>) {
+        val promoteAdapter =
+            object : BaseQuickAdapter<XBannerImage, BaseViewHolder>(R.layout.item_promote_view) {
+                override fun convert(holder: BaseViewHolder, item: XBannerImage) {
+                    val view = holder.getView<ImageView>(R.id.ivItemPromote)
+                    view.load(item.imgUrl, R.drawable.img_banner01)
+                }
+
+            }
+        promoteAdapter.setNewInstance(imageList.toMutableList())
+        binding.rcvPromote.apply {
+            adapter = promoteAdapter
+            if (onFlingListener == null) {
+                PagerSnapHelper().attachToRecyclerView(binding.rcvPromote)
+            }
+        }
+
     }
 
     override fun onItemClick(banner: XBanner, model: Any, view: View, position: Int) {
