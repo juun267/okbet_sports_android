@@ -27,8 +27,8 @@ import org.cxct.sportlottery.util.setupBackTop
 
 class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainHome2Binding>() {
 
-    private inline fun getMainTabActivity() = activity as MainTabActivity
-    private inline fun getHomeFragment() = parentFragment as HomeFragment
+    private fun getMainTabActivity() = activity as MainTabActivity
+    private fun getHomeFragment() = parentFragment as HomeFragment
 
     fun jumpToInplaySport() = getMainTabActivity().jumpToInplaySport()
     fun jumpToOKGames() = getMainTabActivity().jumpToOKGames()
@@ -55,16 +55,30 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
 
     override fun onBindViewStatus(view: View) = binding.run {
         homeTopView.setup(this@MainHomeFragment2)
-        hotMatchView.onCreate(viewModel.publicityRecommend,this@MainHomeFragment2)
+        hotMatchView.onCreate(viewModel.publicityRecommend, this@MainHomeFragment2)
         okGamesView.setOkGamesData(this@MainHomeFragment2)
         initBetWinsRecodeLayout()
         initObservable()
     }
 
     private fun initBetWinsRecodeLayout() {
-        binding.winsRankView.setUp(viewLifecycleOwner, { viewModel.getRecordNew() }, { viewModel.getRecordResult() })
-        receiver.recordBetNew.observe(viewLifecycleOwner) { it?.let { binding.winsRankView.onNewWSBetData(it) } }
-        receiver.recordWinsResult.observe(viewLifecycleOwner) { it?.let { binding.winsRankView.onNewWSWinsData(it) } }//最新大奖
+        binding.winsRankView.setUp(viewLifecycleOwner,
+            { viewModel.getRecordNew() },
+            { viewModel.getRecordResult() })
+        receiver.recordBetNew.observe(viewLifecycleOwner) {
+            it?.let {
+                binding.winsRankView.onNewWSBetData(
+                    it
+                )
+            }
+        }
+        receiver.recordWinsResult.observe(viewLifecycleOwner) {
+            it?.let {
+                binding.winsRankView.onNewWSWinsData(
+                    it
+                )
+            }
+        }//最新大奖
         viewModel.recordBetNewHttp.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) {
                 binding.winsRankView.onNewHttpBetData(it.reversed())
@@ -92,6 +106,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
             refreshHotMatch()
         }
     }
+
     override fun onHiddenChanged(hidden: Boolean) {
         if (hidden) {
             //隐藏时取消赛事监听
@@ -122,21 +137,24 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
 //            }
 //        }
     }
+
     //hot match
-    private fun refreshHotMatch(){
+    private fun refreshHotMatch() {
         //重新设置赔率监听
         binding.hotMatchView.postDelayed({
             binding.hotMatchView.onResume(this@MainHomeFragment2)
             viewModel.getRecommend()
-        },500)
+        }, 500)
 
     }
+
     //hot match end
     private fun initNews() {
         binding.includeNews.apply {
             tabNews.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
-                    val categoryId = if (tab?.position == 0) NewsRepository.NEWS_OKBET_ID else NewsRepository.NEWS_SPORT_ID
+                    val categoryId =
+                        if (tab?.position == 0) NewsRepository.NEWS_OKBET_ID else NewsRepository.NEWS_SPORT_ID
                     viewModel.getHomeNews(1, 5, listOf(categoryId))
                 }
 
@@ -159,7 +177,9 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
                 rvNews.adapter = HomeNewsAdapter().apply {
                     setList(newsList)
                     setOnItemClickListener(listener = OnItemClickListener { adapter, view, position ->
-                        NewsDetailActivity.start(requireContext(),(adapter.data[position] as NewsItem))
+                        NewsDetailActivity.start(
+                            requireContext(), (adapter.data[position] as NewsItem)
+                        )
                     })
                 }
             } else {
@@ -173,8 +193,11 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
             if (rvBettingStation.adapter == null) {
                 rvBettingStation.layoutManager =
                     LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-                rvBettingStation.addItemDecoration(SpaceItemDecoration(requireContext(),
-                    R.dimen.margin_10))
+                rvBettingStation.addItemDecoration(
+                    SpaceItemDecoration(
+                        requireContext(), R.dimen.margin_10
+                    )
+                )
                 PagerSnapHelper().attachToRecyclerView(rvBettingStation)
                 rvBettingStation.adapter = HomeBettingStationAdapter().apply {
                     setList(newsList)

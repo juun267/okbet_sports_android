@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.recyclerview.widget.PagerSnapHelper
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.stx.xhb.androidx.XBanner
-import kotlinx.android.synthetic.main.layout_home_top.view.ivPaymaya
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.isEmptyStr
@@ -30,6 +32,7 @@ import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.getSportEnterIsClose
+import timber.log.Timber
 
 class HomeTopView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
@@ -50,7 +53,7 @@ class HomeTopView @JvmOverloads constructor(
     fun initSportEnterStatus() {
         if (getSportEnterIsClose()) {
             binding.tvSportClose.visible()
-        }else{
+        } else {
             binding.tvSportClose.gone()
         }
     }
@@ -58,7 +61,7 @@ class HomeTopView @JvmOverloads constructor(
     private fun initBanner() {
         val lang = LanguageManager.getSelectLanguage(context).key
         setUpBanner(lang, 2, R.id.topBanner)
-        setUpBanner(lang, 5, R.id.promotionsBanner)
+//        setUpBanner(lang, 5, R.id.promotionsBanner)
     }
 
     private fun setUpBanner(
@@ -68,6 +71,7 @@ class HomeTopView @JvmOverloads constructor(
             it.imageType == imageType && it.lang == lang && !it.imageName1.isNullOrEmpty()
         }
             ?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
+
 
         val loopEnable = (imageList?.size ?: 0) > 1
         if (imageList.isNullOrEmpty()) {
@@ -85,6 +89,7 @@ class HomeTopView @JvmOverloads constructor(
         val images = imageList.map {
             XBannerImage(it.imageText1 + "", host + it.imageName1, it.appUrl)
         }
+        setUpPromoteView(images)
 
         //opt1 ->ImageType = 5,为活动轮播图
         //opt2 -> 后台有配置
@@ -93,6 +98,25 @@ class HomeTopView @JvmOverloads constructor(
             xbanner.visible()
         }
         xbanner.setBannerData(images.toMutableList())
+    }
+
+    private fun setUpPromoteView(imageList: List<XBannerImage>) {
+        val promoteAdapter =
+            object : BaseQuickAdapter<XBannerImage, BaseViewHolder>(R.layout.item_promote_view) {
+                override fun convert(holder: BaseViewHolder, item: XBannerImage) {
+                    val view = holder.getView<ImageView>(R.id.ivItemPromote)
+                    view.load(item.imgUrl, R.drawable.img_banner01)
+                }
+
+            }
+        promoteAdapter.setNewInstance(imageList.toMutableList())
+        binding.rcvPromote.apply {
+            adapter = promoteAdapter
+            if (onFlingListener == null) {
+                PagerSnapHelper().attachToRecyclerView(binding.rcvPromote)
+            }
+        }
+
     }
 
     override fun onItemClick(banner: XBanner, model: Any, view: View, position: Int) {
