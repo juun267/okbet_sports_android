@@ -22,16 +22,15 @@ import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
-import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.RCVDecoration
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.goneWithSportSwitch
 import org.cxct.sportlottery.util.setupSportStatusChange
+import org.cxct.sportlottery.util.setTrialPlayGameDataObserve
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 
 // OkGames所有分类
@@ -185,6 +184,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 setItemMoreVisiable(binding.includeGamesAll.inclueRecent, adapter.dataCount() > 3)
             }
         }
+
     }
 
     private fun onBindGamesView() = binding.includeGamesAll.run {
@@ -298,6 +298,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 )
             }
         }
+        //设置监听游戏试玩
+        setTrialPlayGameDataObserve()
     }
 
     private fun onBindPart5View() {
@@ -334,7 +336,14 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         }
 
     private inline fun enterGame(okGameBean: OKGameBean) {
-        okGamesFragment().enterGame(okGameBean)
+        if(LoginRepository.isLogined()){
+            //已登录
+            okGamesFragment().enterGame(okGameBean)
+        }else{
+            //请求试玩路线
+            loading()
+            viewModel.requestEnterThirdGameNoLogin(okGameBean.firmType,okGameBean.gameCode,okGameBean.thirdGameCategory)
+        }
     }
 
     /**

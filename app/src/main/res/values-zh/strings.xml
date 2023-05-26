@@ -1396,4 +1396,8 @@
     <string name="P016">点击此按钮，可以收起下注窗口。选择更多比分</string>
     <string name="N102">投注</string>
     <string name="C016">今日</string>
+
+    <string name="F025">立即登录</string>
+    <string name="N993">玩得开心</string>
+    <string name="N994">免费试用我们的游戏。 任何奖金都不是真钱。</string>
 </resources>

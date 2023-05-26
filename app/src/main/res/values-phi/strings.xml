@@ -1317,4 +1317,8 @@
     <string name="system_notify">Notification ng System</string>
     <string name="C016">Ngayon</string>
     <string name="picture_camera_roll" tools:ignore="ExtraTranslation">CameraRoll</string> // 图片选择库中菲语这个会莫名变为中文
+
+    <string name="F025">Log in agad</string>
+    <string name="N993">Libreng laro</string>
+    <string name="N994">Subukan ang aming mga laro nang libre at masaya. Anumang mga panalo ay hindi tunay na pera.</string>
 </resources>

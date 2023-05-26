@@ -2,6 +2,7 @@ package org.cxct.sportlottery.network.third_game
 
 import org.cxct.sportlottery.network.Constants.HOT_HANDICAP_LIST
 import org.cxct.sportlottery.network.Constants.HOT_LIVE_LIST
+import org.cxct.sportlottery.network.Constants.NON_THIRD_LOGIN
 import org.cxct.sportlottery.network.Constants.QUERY_FIRST_ORDERS
 import org.cxct.sportlottery.network.Constants.QUERY_GAME_ENTRY_CONFIG
 import org.cxct.sportlottery.network.Constants.QUERY_SECOND_ORDERS
@@ -64,6 +65,15 @@ interface ThirdGameService {
         @Path("firmType") firmType: String?,
         @Query("gameCode") gameCode: String?,
         @Query("loginSrc") loginSrc: Int = 2, //登录来源（0：WEB, 1：MOBILE_BROWSER, 2：ANDROID, 3：IOS）
+    ): Response<NetResult>
+
+    /**
+     * 未登录试玩
+     */
+    @GET(NON_THIRD_LOGIN)
+    suspend fun thirdNoLogin(
+        @Path("firmType") firmType: String?,
+        @Query("gameCode") gameCode: String?,
     ): Response<NetResult>
 
     @POST(QUERY_FIRST_ORDERS)

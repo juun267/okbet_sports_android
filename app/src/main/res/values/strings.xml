@@ -1463,4 +1463,7 @@
     <string name="P016">Click this button to close betting window. Choose more scores</string>
     <string name="N102">Betting</string>
     <string name="C016">TODAY</string>
+    <string name="F025">Login</string>
+    <string name="N993">Play for fun</string>
+    <string name="N994">Try our games for free and fun. Any winnings are not real money.</string>
 </resources>
