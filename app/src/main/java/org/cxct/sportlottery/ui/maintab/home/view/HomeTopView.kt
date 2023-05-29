@@ -55,49 +55,45 @@ class HomeTopView @JvmOverloads constructor(
 
     private fun initBanner() {
         val lang = LanguageManager.getSelectLanguage(context).key
-        setUpBanner(lang, 2, R.id.topBanner)
-//        setUpBanner(lang, 5, R.id.promotionsBanner)
+        setUpBanner(lang, 2)
+        setUpBanner(lang, 5)
     }
 
-    private fun setUpBanner(
-        lang: String, imageType: Int, bannerId: Int
-    ) {
+    private fun setUpBanner(lang: String, imageType: Int) {
         val imageList = sConfigData?.imageList?.filter {
             it.imageType == imageType && it.lang == lang && !it.imageName1.isNullOrEmpty()
-        }
-            ?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
-
-
+        }?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
         val loopEnable = (imageList?.size ?: 0) > 1
         if (imageList.isNullOrEmpty()) {
             return
         }
-
-        val xbanner = findViewById<XBanner>(bannerId)
-        if (imageType==2){
-            xbanner.setAutoPlayAble(loopEnable)
+        if (imageType == 2) {
+            val xbanner = findViewById<XBanner>(R.id.topBanner)
+            xbanner.setHandLoop(loopEnable)
+            xbanner.setOnItemClickListener(this@HomeTopView)
+            xbanner.loadImage { _, model, view, _ ->
+                (view as ImageView).load((model as XBannerImage).imgUrl, R.drawable.img_banner01)
+            }
+            val host = sConfigData?.resServerHost
+            val images = imageList.map {
+                Timber.d("host:$host url1:${host + it.imageName1}")
+                XBannerImage(it.imageText1 + "", host + it.imageName1, it.appUrl)
+            }
+            //opt1 ->ImageType = 5,为活动轮播图
+            //opt2 ->后台有配置
+            //满足以上两点 -> 显示活动轮播图r
+            if (images.isNotEmpty()) {
+                xbanner.visible()
+            }
+            xbanner.setBannerData(images.toMutableList())
+        } else {
+            val host = sConfigData?.resServerHost
+            val promoteImages = imageList.map {
+                Timber.d("host:$host url4:${host + it.imageName4}")
+                XBannerImage(it.imageText1 + "", host + it.imageName4, it.appUrl)
+            }
+            setUpPromoteView(promoteImages)
         }
-        xbanner.setHandLoop(loopEnable)
-        xbanner.setOnItemClickListener(this@HomeTopView)
-        xbanner.loadImage { _, model, view, _ ->
-            (view as ImageView).load((model as XBannerImage).imgUrl, R.drawable.img_banner01)
-        }
-
-        val host = sConfigData?.resServerHost
-        val images = imageList.map {
-            XBannerImage(it.imageText1 + "",
-                host + if (imageType == 2) it.imageName1 else it.imageName4,
-                it.appUrl)
-        }
-        setUpPromoteView(images)
-
-        //opt1 ->ImageType = 5,为活动轮播图
-        //opt2 -> 后台有配置
-        //满足以上两点 -> 显示活动轮播图r
-        if (imageType == 5 && images.isNotEmpty()) {
-            xbanner.visible()
-        }
-        xbanner.setBannerData(images.toMutableList())
     }
 
     private fun setUpPromoteView(imageList: List<XBannerImage>) {

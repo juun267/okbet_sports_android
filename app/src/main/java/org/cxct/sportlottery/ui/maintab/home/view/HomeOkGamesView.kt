@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.drake.spannable.addSpan
 import com.drake.spannable.setSpan
 import com.drake.spannable.span.ColorSpan
+import kotlinx.android.synthetic.main.activity_register.view.view
 import kotlinx.android.synthetic.main.view_home_okgame.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.net.games.data.OKGameBean
@@ -40,7 +41,7 @@ class HomeOkGamesView(context: Context, attrs: AttributeSet) : RelativeLayout(co
 
 
     @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
-    fun <T : MainHomeViewModel> setOkGamesData(fragment: org.cxct.sportlottery.ui.base.BindingSocketFragment<T, *>?) {
+    fun <T : MainHomeViewModel> setOkGamesData(fragment: BindingSocketFragment<T, *>?) {
         if (fragment == null) {
             return
         }
@@ -49,10 +50,13 @@ class HomeOkGamesView(context: Context, attrs: AttributeSet) : RelativeLayout(co
         fragment.viewModel.homeGamesList.observe(fragment.viewLifecycleOwner) {
             fragment.hideLoading()
             //缓存这一页数据到map
-            totalGameMap[fragment.viewModel.pageIndex] = it
+            totalGameMap[fragment.viewModel.pageIndexLiveData.value ?: 1] = it
             gameAdapter.setList(it)
             //设置当前条目数量 / 总条目数量
-            setIndexCount(fragment.viewModel.pageIndex, fragment.viewModel.totalCount)
+            setIndexCount(
+                fragment.viewModel.pageIndexLiveData.value ?: 1,
+                fragment.viewModel.totalCountLiveData.value ?: 1
+            )
         }
 
         //监听进入游戏
@@ -60,19 +64,19 @@ class HomeOkGamesView(context: Context, attrs: AttributeSet) : RelativeLayout(co
 
         //上一页
         ivBackPage.onClick {
-            if(fragment.viewModel.pageIndex==1){
+            if (fragment.viewModel.pageIndexLiveData.value == 1) {
                 return@onClick
             }
 
-            changePageData(true,fragment)
+            changePageData(true, fragment)
         }
 
         //下一页
         ivForwardPage.onClick {
-            if(fragment.viewModel.totalPage==fragment.viewModel.pageIndex){
+            if (fragment.viewModel.totalPageLiveData.value == fragment.viewModel.pageIndexLiveData.value) {
                 return@onClick
             }
-            changePageData(false,fragment)
+            changePageData(false, fragment)
         }
 
         tvMore.onClick {
@@ -102,32 +106,55 @@ class HomeOkGamesView(context: Context, attrs: AttributeSet) : RelativeLayout(co
     /**
      * 更换页码
      */
-    private fun<T : MainHomeViewModel> changePageData(isBackPage:Boolean, fragment: org.cxct.sportlottery.ui.base.BindingSocketFragment<T, *>){
-        if(isBackPage){
-            fragment.viewModel.pageIndex--
-        }else{
-            fragment.viewModel.pageIndex++
+    private fun <T : MainHomeViewModel> changePageData(
+        isBackPage: Boolean, fragment: BindingSocketFragment<T, *>
+    ) {
+
+        val viewModel = fragment.viewModel
+        viewModel.pageIndexLiveData.observe(fragment.viewLifecycleOwner) {
+            when (it) {
+                1 -> {
+                    ivBackPage.alpha = 0.5f
+                }
+
+                viewModel.totalPageLiveData.value -> {
+                    ivBackPage.alpha = 1f
+                    ivForwardPage.alpha = 0.5f
+                }
+
+                else -> {
+                    ivBackPage.alpha = 1f
+                    ivForwardPage.alpha = 1f
+                }
+            }
+        }
+
+        if (isBackPage) {
+            viewModel.pageIndexLiveData.value = (viewModel.pageIndexLiveData.value ?: 1) - 1
+        } else {
+            viewModel.pageIndexLiveData.value = (viewModel.pageIndexLiveData.value ?: 1) + 1
         }
         //如果缓存在map
-        if(totalGameMap.containsKey(fragment.viewModel.pageIndex)){
+        if (totalGameMap.containsKey(viewModel.pageIndexLiveData.value)) {
             //设置当前条目数量
-            setIndexCount(fragment.viewModel.pageIndex, fragment.viewModel.totalCount)
-            gameAdapter.setList(totalGameMap[fragment.viewModel.pageIndex])
-        }else{
+            setIndexCount(
+                viewModel.pageIndexLiveData.value ?: 1, viewModel.totalCountLiveData.value ?: 0
+            )
+            gameAdapter.setList(totalGameMap[viewModel.pageIndexLiveData.value ?: 1])
+        } else {
             //请求该页数据
             fragment.loading()
-            fragment.viewModel.getHomeOKGamesList()
+            viewModel.getHomeOKGamesList()
         }
     }
 
-    private fun<T : MainHomeViewModel> initEnterGame(fragment: org.cxct.sportlottery.ui.base.BindingSocketFragment<T, *>){
+    private fun <T : MainHomeViewModel> initEnterGame(fragment: BindingSocketFragment<T, *>) {
         fragment.viewModel.enterThirdGameResult.observe(fragment.viewLifecycleOwner) {
-            if (fragment.isVisible)
-                fragment.enterThirdGame(it.second, it.first)
+            if (fragment.isVisible) fragment.enterThirdGame(it.second, it.first)
         }
         fragment.viewModel.gameBalanceResult.observe(fragment.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { event ->
-                TransformInDialog(event.first, event.second, event.third) {enterResult->
+                TransformInDialog(event.first, event.second, event.third) { enterResult ->
                     fragment.enterThirdGame(enterResult, event.first)
                 }.show(fragment.childFragmentManager, null)
             }
@@ -135,11 +162,10 @@ class HomeOkGamesView(context: Context, attrs: AttributeSet) : RelativeLayout(co
     }
 
 
-
     //设置当前页条目数量
     @SuppressLint("SetTextI18n")
-    private fun setIndexCount(currentPage:Int, total: Int){
-        if (totalGameMap.size - currentPage <- 1) {
+    private fun setIndexCount(currentPage: Int, total: Int) {
+        if (totalGameMap.size - currentPage < -1) {
             return
         }
 

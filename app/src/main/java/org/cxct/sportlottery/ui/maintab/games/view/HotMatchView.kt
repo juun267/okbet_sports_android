@@ -101,6 +101,8 @@ class HotMatchView(
                     if (position == -1) {
                         iv_left.visible()
                         iv_right.visible()
+                        ivBackPage.alpha = 1.0f
+                        ivForwardPage.alpha = 1.0f
                     } else {
                         //检测是否需要隐藏 前进/后退 imageView
                         scrollImageStatus(position)
@@ -454,14 +456,18 @@ class HotMatchView(
     private fun scrollImageStatus(position: Int) {
         if (position == 0) {
             iv_left.gone()
+            ivBackPage.alpha = 0.5f
         } else {
             iv_left.visible()
+            ivBackPage.alpha = 1f
         }
         adapter?.let {
             if (position == it.data.size - 1) {
                 iv_right.gone()
+                ivForwardPage.alpha = 0.5f
             } else {
                 iv_right.visible()
+                ivForwardPage.alpha = 1f
             }
         }
     }
