@@ -8,6 +8,7 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
