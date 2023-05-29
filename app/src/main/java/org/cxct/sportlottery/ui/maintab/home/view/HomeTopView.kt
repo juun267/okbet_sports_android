@@ -31,9 +31,6 @@ import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.goneWithSportSwitch
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.getSportEnterIsClose
 import org.cxct.sportlottery.util.setVisibilityByMarketSwitch
 
 class HomeTopView @JvmOverloads constructor(
