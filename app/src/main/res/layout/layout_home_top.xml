@@ -65,44 +65,44 @@
             android:id="@+id/tvLogin"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
-            android:layout_marginRight="8dp"
-            android:background="@drawable/bg_blue_radius_15"
-            android:gravity="center"
             android:minWidth="74dp"
             android:paddingHorizontal="10dp"
             android:paddingVertical="6dp"
-            android:text="@string/J134"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/bg_blue_radius_15"
             android:textColor="@android:color/white"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:gravity="center"
+            android:text="@string/J134"/>
 
         <Button
             android:id="@+id/tvRegist"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
-            android:background="@drawable/bg_orange_radius_15"
-            android:gravity="center"
             android:minWidth="74dp"
             android:paddingHorizontal="10dp"
             android:paddingVertical="6dp"
-            android:text="@string/J151"
+            android:background="@drawable/bg_orange_radius_15"
             android:textColor="@android:color/white"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:gravity="center"
+            android:text="@string/J151"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:fontFamily="@font/din_pro_medium"
-            android:text="OR"
             android:textColor="@color/color_414655"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:text="OR"/>
 
         <ImageView
             android:id="@+id/ivGoogle"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginRight="8dp"
-            android:src="@drawable/ic_circle_google" />
+            android:src="@drawable/ic_circle_google"/>
 
     </LinearLayout>
 
@@ -118,50 +118,50 @@
             android:id="@+id/tvDeposit"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
-            android:background="@drawable/bg_blue_radius_15"
-            android:gravity="center"
             android:minWidth="74dp"
             android:paddingHorizontal="10dp"
-            android:text="@string/J285"
+            android:background="@drawable/bg_blue_radius_15"
             android:textColor="@android:color/white"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:gravity="center"
+            android:text="@string/J285"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:fontFamily="@font/din_pro_medium"
-            android:text="With"
+            android:textSize="14sp"
             android:textColor="@color/color_333333"
-            android:textSize="14sp" />
+            android:text="With"/>
 
         <ImageView
             android:id="@+id/ivGLive"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginRight="8dp"
-            android:src="@drawable/ic_circle_glive" />
+            android:src="@drawable/ic_circle_glive"/>
 
         <ImageView
             android:id="@+id/ivPaymaya"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginRight="8dp"
-            android:src="@drawable/ic_circle_paymaya" />
+            android:src="@drawable/ic_circle_paymaya"/>
 
         <ImageView
             android:id="@+id/ivPayX"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginRight="8dp"
-            android:src="@drawable/ic_circle_pay_x" />
+            android:src="@drawable/ic_circle_pay_x"/>
 
         <ImageView
             android:id="@+id/ivFortunepay"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginRight="8dp"
-            android:src="@drawable/ic_circle_fortunepay" />
+            android:src="@drawable/ic_circle_fortunepay"/>
 
     </LinearLayout>
 
@@ -203,8 +203,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="24dp"
-        android:layout_marginHorizontal="12dp"
         android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="12dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -218,37 +218,37 @@
             android:id="@+id/tv_name"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="4dp"
             android:layout_weight="1"
+            android:layout_marginHorizontal="4dp"
             android:gravity="center_vertical"
-            android:text="@string/N703"
             android:textColor="@color/color_14366B"
+            android:textStyle="bold"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:text="@string/N703" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:orientation="horizontal"
         android:layout_marginHorizontal="12dp"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal">
+        android:layout_marginTop="8dp">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/vSports"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:foreground="@drawable/fg_ripple"
+            android:layout_marginRight="5dp"
             app:cardCornerRadius="12dp"
-            app:cardElevation="0dp">
+            app:cardElevation="0dp"
+            android:foreground="@drawable/fg_ripple">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/img_sports" />
+                android:src="@drawable/img_sports"
+                android:scaleType="centerCrop"/>
 
             <TextView
                 android:id="@+id/tvSportClose"
@@ -256,28 +256,28 @@
                 android:layout_height="match_parent"
                 android:background="#90000000"
                 android:gravity="center"
-                android:text="@string/N257"
-                android:textColor="@color/color_FFFFFF"
                 android:textSize="14sp"
+                android:visibility="gone"
+                android:textColor="@color/color_FFFFFF"
                 android:textStyle="bold"
-                android:visibility="gone" />
+                android:text="@string/N257"/>
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/vOkgames"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
             android:layout_weight="1"
-            android:foreground="@drawable/fg_ripple"
+            android:layout_marginLeft="5dp"
             app:cardCornerRadius="12dp"
-            app:cardElevation="0dp">
+            app:cardElevation="0dp"
+            android:foreground="@drawable/fg_ripple">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/img_okgames" />
+                android:src="@drawable/img_okgames"
+                android:scaleType="centerCrop"/>
 
         </androidx.cardview.widget.CardView>
 
@@ -286,35 +286,35 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:orientation="horizontal"
         android:layout_marginHorizontal="12dp"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal">
+        android:layout_marginTop="8dp">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/vBingo"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:foreground="@drawable/fg_ripple"
+            android:layout_marginRight="5dp"
             app:cardCornerRadius="12dp"
-            app:cardElevation="0dp">
+            app:cardElevation="0dp"
+            android:foreground="@drawable/fg_ripple">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/img_okbingo" />
+                android:src="@drawable/img_okbingo"
+                android:scaleType="centerCrop"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#90000000"
                 android:gravity="center"
-                android:text="@string/N700"
-                android:textColor="@color/color_FFFFFF"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textColor="@color/color_FFFFFF"
+                android:textStyle="bold"
+                android:text="@string/N700"/>
 
         </androidx.cardview.widget.CardView>
 
@@ -322,27 +322,27 @@
             android:id="@+id/vOklive"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
             android:layout_weight="1"
-            android:foreground="@drawable/fg_ripple"
+            android:layout_marginLeft="5dp"
             app:cardCornerRadius="12dp"
-            app:cardElevation="0dp">
+            app:cardElevation="0dp"
+            android:foreground="@drawable/fg_ripple">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/img_oklive" />
+                android:src="@drawable/img_oklive"
+                android:scaleType="centerCrop"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#90000000"
                 android:gravity="center"
-                android:text="@string/N700"
-                android:textColor="@color/color_FFFFFF"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textColor="@color/color_FFFFFF"
+                android:textStyle="bold"
+                android:text="@string/N700"/>
 
         </androidx.cardview.widget.CardView>
 
