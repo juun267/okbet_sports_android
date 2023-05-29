@@ -160,9 +160,10 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         viewModel.messageListResult.observe(viewLifecycleOwner) {
 
             val messageListResult = it.getContentIfNotHandled() ?: return@observe
-            messageListResult.rows?.sortedWith(compareByDescending<Row> { it.sort }.thenByDescending { it.addTime })
+            val sortMsgList =
+                messageListResult.rows?.sortedWith(compareByDescending<Row> { it.sort }.thenByDescending { it.addTime })
             val titleList: MutableList<String> = mutableListOf()
-            messageListResult.rows?.forEach { data ->
+            sortMsgList?.forEach { data ->
                 if (data.type.toInt() == 1) {
                     titleList.add(data.title + " - " + data.message)
                 }
