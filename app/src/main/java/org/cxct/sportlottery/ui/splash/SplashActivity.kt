@@ -1,8 +1,6 @@
 package org.cxct.sportlottery.ui.splash
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import com.gyf.immersionbar.ImmersionBar
@@ -13,7 +11,6 @@ import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.repository.FLAG_OPEN
-import org.cxct.sportlottery.repository.NAME_LOGIN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
@@ -32,13 +29,8 @@ import kotlin.system.exitProcess
 class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
     private val mVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
-    private val sharedPref: SharedPreferences? by lazy {
-        getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
-    }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         ImmersionBar.with(this).statusBarDarkFont(true).transparentStatusBar()
             .fitsSystemWindows(false).init()
@@ -131,10 +123,10 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         }
 
         mVersionUpdateViewModel.appMinVersionState.observe(this) {
-            if (it.isForceUpdate || it.isShowUpdateDialog) showAppDownloadDialog(
-                it.isForceUpdate, it.version, it.checkAppVersionResult
-            )
-            else viewModel.goNextPage()
+            if (it.isForceUpdate || it.isShowUpdateDialog)
+                showAppDownloadDialog(it.isForceUpdate, it.version, it.checkAppVersionResult)
+            else
+                viewModel.goNextPage()
         }
 
         viewModel.skipHomePage.observe(this) {
@@ -201,10 +193,10 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         super.onDestroy()
         hideLoading()
     }
-
     override fun onBackPressed() {
         super.onBackPressed()
         finish()
         exitProcess(0)
     }
+
 }
