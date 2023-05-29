@@ -1357,4 +1357,7 @@
     <string name="N952">Camera scan</string>
     <string name="N956">Can\'t recognize this QR code</string>
     <string name="N980">Denied camera permission</string>
+
+
+    <string name="N902">Follow us</string>
 </resources>
