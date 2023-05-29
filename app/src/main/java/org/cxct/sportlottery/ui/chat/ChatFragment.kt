@@ -572,7 +572,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
         }
 
         if(v == binding.vChatAction.ivSend) {
-            val input = binding.vChatAction.etInput.text
+            val input = binding.vChatAction.etInput.text.toString().replace("\n", "")
             if (input.isNullOrEmpty()) return
             if (!mIsEnabled) {
                 context?.let { showToast(getString(R.string.chat_speaking_too_often)) }
