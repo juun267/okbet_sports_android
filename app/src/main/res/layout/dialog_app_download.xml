@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/margin_30"
-    android:layout_gravity="center"
-    tools:context=".ui2.splash.AppDownloadDialog">
+    android:layout_gravity="center">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_30"
         android:paddingHorizontal="@dimen/margin_20"
+        android:paddingBottom="@dimen/margin_20"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:gravity="center"
@@ -24,6 +24,7 @@
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/find_new_version"
             android:textColor="@color/color_0D2245"
             android:textSize="@dimen/textSize24sp"
@@ -85,7 +86,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_5"
-            android:layout_marginVertical="20dp"
+            android:layout_marginTop="20dp"
+            android:visibility="visible"
             android:gravity="center"
             android:orientation="horizontal">
 
