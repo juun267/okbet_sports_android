@@ -32,7 +32,7 @@ data class LeagueOdd(
 
     @IgnoredOnParcel
     private val _childNode by lazy {
-        matchOdds?.forEach {
+        matchOdds.forEach {
             it.matchInfo?.let { matchInfo ->
                 if (matchInfo.leagueName.isEmptyStr()) {
                     matchInfo.leagueName = league.name

@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.sport.favorite
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.text.TextUtils
@@ -11,7 +12,10 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.FrameLayout
 import android.widget.ListPopupWindow
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.distinctUntilChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -40,6 +44,7 @@ import org.cxct.sportlottery.ui.sport.common.LeagueOddListener
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
+import timber.log.Timber
 
 /**
  * @app_destination 我的賽事
@@ -504,6 +509,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun initObserver() {
         viewModel.userInfo.observe(this.viewLifecycleOwner) {
             favoriteAdapter.discount = it?.discount ?: 1.0F
@@ -531,6 +537,19 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
                         showFavoriteMatchViewState()
                     }
                 }
+
+
+//                val newList = mutableListOf<LeagueOdd>()
+//                leagueOddList.forEachIndexed { index, lol ->
+//                    if (newList.any { nl -> nl.gameType == lol.gameType }) {
+//                        val index1 =
+//                            newList.indexOf(newList.find { nl -> nl.gameType == lol.gameType })
+//                        newList[index1].matchOdds.addAll(lol.matchOdds)
+//                    } else {
+//                        newList.add(lol)
+//                    }
+//                }
+
                 favoriteAdapter.data = leagueOddList
                 try {/*目前流程 需要先解除再綁定 socket流程下才會回傳內容*/
                     favoriteAdapter.data.forEach { leagueOdd ->

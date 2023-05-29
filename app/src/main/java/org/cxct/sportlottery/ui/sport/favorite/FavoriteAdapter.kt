@@ -30,32 +30,68 @@ import java.util.*
 class FavoriteAdapter(private val matchType: MatchType) :
     BaseGameAdapter() {
 
-    //缓存最新更新的赔率列表，用来比较判断是否需要更新
-    var lastOddIds = mutableListOf<String>()
+    private fun refreshByBetInfo() {
+        data.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                matchOdd.oddsMap?.values?.forEach { oddList ->
+                    oddList?.forEach { odd ->
+                        odd?.isSelected = betInfoList.any { betInfoListData ->
+                            betInfoListData.matchOdd.oddsId == odd?.id
+                        }
+                    }
+                }
+                matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+                    quickPlayCate.quickOdds.forEach { map ->
+                        map.value?.forEach { odd ->
+                            odd?.isSelected = betInfoList.any { betInfoListData ->
+                                betInfoListData.matchOdd.oddsId == odd?.id
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        data.forEachIndexed { index, leagueOdd -> updateLeague(index, leagueOdd) }
+    }
+
     var betInfoList: MutableList<BetInfoListData> = mutableListOf()
         set(value) {
-            var newOddsIds = value.map { it.matchOdd.oddsId }.toMutableList()
-            var needUpdate = lastOddIds != newOddsIds
-            if (needUpdate) {
-                field = value
-                lastOddIds = newOddsIds
-                data.forEachIndexed { index, leagueOdd ->
-                    leagueOdd.matchOdds.forEach { matchOdd ->
-                        var needUpdateMatch = false
-                        matchOdd.oddsMap?.values?.forEach { odds ->
-                            odds?.forEach { odd ->
-                                val betInfoSelected = betInfoList.any { betInfoListData ->
+            field = value
+            if (leagueOddListener?.clickOdd == null) {
+                refreshByBetInfo()
+                return
+            }
+
+            var isInMatch = false
+            var isInQuick = false
+            data.forEachIndexed { index, leagueOdd ->
+                leagueOdd.matchOdds.forEach { matchOdd ->
+                    matchOdd.oddsMap?.values?.forEach { oddList ->
+                        oddList?.forEach { odd ->
+                            odd?.isSelected = field.any { betInfoListData ->
+                                betInfoListData.matchOdd.oddsId == odd?.id
+                            }
+                            if (leagueOddListener?.clickOdd?.id == odd?.id) {
+                                isInMatch = true
+                            }
+                        }
+                    }
+                    matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+                        quickPlayCate.quickOdds.forEach { map ->
+                            map.value?.forEach { odd ->
+                                odd?.isSelected = field.any { betInfoListData ->
                                     betInfoListData.matchOdd.oddsId == odd?.id
                                 }
-                                if (odd?.isSelected != betInfoSelected) {
-                                    odd?.isSelected = betInfoSelected
-                                    needUpdateMatch = true
+                                if (leagueOddListener?.clickOdd?.id == odd?.id) {
+                                    isInQuick = true
                                 }
                             }
                         }
-                        if (needUpdateMatch) {
-                            updateMatch(index, matchOdd)
-                        }
+                    }
+                    if (isInMatch || isInQuick) {
+                        updateLeagueByBetInfo(index)
+                        isInMatch = false
+                        isInQuick = false
                     }
                 }
             }
@@ -137,10 +173,6 @@ class FavoriteAdapter(private val matchType: MatchType) :
         notifyItemChanged(position, payload)
     }
 
-    fun updateMatch(position: Int, payload: MatchOdd) {
-        notifyItemChanged(position, payload)
-    }
-
     private fun updateLeagueByBetInfo(position: Int) {
         notifyItemChanged(position, PayLoadEnum.PAYLOAD_BET_INFO)
     }
@@ -158,7 +190,7 @@ class FavoriteAdapter(private val matchType: MatchType) :
     // 限制全列表更新頻率
     fun limitRefresh() {
         if (isLock) {
-//            Log.d("Hewie", "UpdateAll...")
+            Log.d("Hewie", "UpdateAll...")
             isLock = false
             notifyDataSetChanged()
             mTimer.schedule(object : TimerTask() {
@@ -177,40 +209,36 @@ class FavoriteAdapter(private val matchType: MatchType) :
         if (payloads.isNullOrEmpty()) {
             onBindViewHolder(holder, position)
             //if(holder is ItemViewHolder) holder.update(data[position], matchType, oddsType)
-            return
-        }
+        } else {
+            // Update with payload
+            payloads.forEach {
+                when (it) {
+                    is LeagueOdd -> {
+                        val leagueOdd = payloads.first() as LeagueOdd
+                        (holder as FavoriteAdapter.ItemViewHolder).update(leagueOdd,
+                            matchType,
+                            oddsType)
+                    }
 
-        // Update with payload
-        payloads.forEach {
-            when (it) {
-                is LeagueOdd -> {
-                    (holder as FavoriteAdapter.ItemViewHolder).updateLeagueOdd(it,
-                        matchType,
-                        oddsType)
-                }
-                is MatchOdd -> {
-                    (holder as FavoriteAdapter.ItemViewHolder).updateMatchOdd(it,
-                        matchType,
-                        oddsType)
-                }
-                is PayLoadEnum -> {
-                    when (it) {
-                        PayLoadEnum.PAYLOAD_BET_INFO -> {
-                            (holder as FavoriteAdapter.ItemViewHolder).updateByBetInfo()
-                        }
-                        PayLoadEnum.PAYLOAD_PLAYCATE -> {
-                            (holder as FavoriteAdapter.ItemViewHolder).updateByPlayCate()
-                        }
-                        PayLoadEnum.EXPAND -> {
-                            (holder as FavoriteAdapter.ItemViewHolder).updateLeagueExpand(
-                                data[position],
-                                matchType)
+                    is PayLoadEnum -> {
+                        when (it) {
+                            PayLoadEnum.PAYLOAD_BET_INFO -> {
+                                (holder as FavoriteAdapter.ItemViewHolder).updateByBetInfo()
+                            }
+                            PayLoadEnum.PAYLOAD_PLAYCATE -> {
+                                (holder as FavoriteAdapter.ItemViewHolder).updateByPlayCate()
+                            }
+                            PayLoadEnum.EXPAND -> {
+                                (holder as FavoriteAdapter.ItemViewHolder).updateLeagueExpand(
+                                    data[position],
+                                    matchType)
+                            }
                         }
                     }
-                }
-                // 作用於賠率刷新、波坦tab切換
-                is MatchOdd -> {
-                    (holder as FavoriteAdapter.ItemViewHolder).updateByMatchIdForOdds(it)
+                    // 作用於賠率刷新、波坦tab切換
+                    is MatchOdd -> {
+                        (holder as FavoriteAdapter.ItemViewHolder).updateByMatchIdForOdds(it)
+                    }
                 }
             }
         }
@@ -218,22 +246,29 @@ class FavoriteAdapter(private val matchType: MatchType) :
     // endregion
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if(holder is ItemViewHolder) {
-            holder.bind(
-                data[position],
-                matchType,
-                leagueListener,
-                leagueOddListener,
-                oddsType
-            )
+        when (holder) {
+            is ItemViewHolder -> {
+                val item = data[position]
+                holder.bind(
+                    item,
+                    matchType,
+                    leagueListener,
+                    leagueOddListener,
+                    oddsType
+                )
+            }
         }
     }
 
     override fun getItemCount(): Int = data.size
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
-        if (holder is ItemViewHolder) {
-            holder.itemView.rv_league.adapter = null
+        super.onViewRecycled(holder)
+
+        when (holder) {
+            is ItemViewHolder -> {
+                holder.itemView.rv_league.adapter = null
+            }
         }
     }
 
@@ -263,13 +298,13 @@ class FavoriteAdapter(private val matchType: MatchType) :
                 GameType.getGameTypeString(itemView.context, gameType)
             itemView.iv_sport.setImageResource(GameType.getGameTypeMenuIcon(gameType))
             itemView.iv_sport.isSelected = true
-            itemView.iv_arrow.isSelected = item.unfoldStatus != FoldState.FOLD.code
+            itemView.iv_arrow.isSelected = item.unfold == FoldState.FOLD.code
             setupLeagueOddList(item, leagueOddListener, oddsType)
             setupLeagueOddExpand(item, matchType, leagueListener)
         }
 
         // region update functions
-        fun updateLeagueOdd(item: LeagueOdd, matchType: MatchType, oddsType: OddsType) {
+        fun update(item: LeagueOdd, matchType: MatchType, oddsType: OddsType) {
             var gameType =
                 if (item.gameType != null) item.gameType!!.key else item.matchOdds[0].matchInfo?.gameType!!
             val position = data.indexOf(item)
@@ -279,20 +314,9 @@ class FavoriteAdapter(private val matchType: MatchType) :
                 GameType.getGameTypeString(itemView.context, gameType)
             itemView.iv_sport.setImageResource(GameType.getGameTypeMenuIcon(gameType))
             itemView.iv_sport.isSelected = true
-            itemView.iv_arrow.isSelected = item.unfoldStatus != FoldState.FOLD.code
+            itemView.iv_arrow.isSelected = item.unfold == FoldState.FOLD.code
             updateLeagueOddList(item, oddsType)
             updateTimer(matchType, item.gameType)
-        }
-
-        fun updateMatchOdd(item: MatchOdd, matchType: MatchType, oddsType: OddsType) {
-            sportFavoriteAdapter.oddsType = oddsType
-            sportFavoriteAdapter.data.forEachIndexed { index, matchOdd ->
-                if (item.matchInfo?.id == matchOdd.matchInfo?.id) {
-                    if (itemView.league_odd_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !itemView.league_odd_list.isComputingLayout) {
-                        sportFavoriteAdapter.notifyItemChanged(index, item)
-                    }
-                }
-            }
         }
 
         fun updateByBetInfo() {
@@ -328,12 +352,12 @@ class FavoriteAdapter(private val matchType: MatchType) :
         fun updateLeagueExpand(item: LeagueOdd, matchType: MatchType) {
             expandCheckList[data[adapterPosition].league.id].apply {
                 if (this != null) {
-                    data[adapterPosition].unfoldStatus =
+                    data[adapterPosition].unfold =
                         if (this == true) FoldState.UNFOLD.code else FoldState.FOLD.code
                 }
             }
             itemView.rv_league.visibility =
-                if (data[adapterPosition].unfoldStatus == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
+                if (data[adapterPosition].unfold == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
             updateTimer(matchType, item.gameType)
         }
 
@@ -366,19 +390,19 @@ class FavoriteAdapter(private val matchType: MatchType) :
         ) {
             expandCheckList[data[adapterPosition].league.id].apply {
                 if (this != null) {
-                    data[adapterPosition].unfoldStatus =
+                    data[adapterPosition].unfold =
                         if (this == true) FoldState.UNFOLD.code else FoldState.FOLD.code
                 }
             }
 
             itemView.rv_league.visibility =
-                if (data[adapterPosition].unfoldStatus == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
+                if (data[adapterPosition].unfold == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
             updateTimer(matchType, item.gameType)
 
             itemView.setOnClickListener {
                 if (adapterPosition > data.size - 1) return@setOnClickListener
-                data[adapterPosition].unfoldStatus =
-                    if (data[adapterPosition].unfoldStatus == FoldState.UNFOLD.code) {
+                data[adapterPosition].unfold =
+                    if (data[adapterPosition].unfold == FoldState.UNFOLD.code) {
                         expandCheckList[data[adapterPosition].league.id] = false
                         FoldState.FOLD.code
                     } else {
@@ -386,11 +410,11 @@ class FavoriteAdapter(private val matchType: MatchType) :
                         FoldState.UNFOLD.code
                     } // TODO IndexOutOfBoundsException: Index: 10, Size: 5
 
-                itemView.iv_arrow.isSelected = item.unfoldStatus != FoldState.FOLD.code
+                itemView.iv_arrow.isSelected = item.unfold == FoldState.FOLD.code
                 updateTimer(matchType, item.gameType)
                 data.forEachIndexed { index, leagueOdd ->
                     if (leagueOdd.gameType == data[adapterPosition].gameType) {
-                        leagueOdd.unfoldStatus = data[adapterPosition].unfoldStatus
+                        leagueOdd.unfold = data[adapterPosition].unfold
                     }
                     updateLeagueByExpand(index)
                 }
