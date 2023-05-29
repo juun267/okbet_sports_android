@@ -44,20 +44,20 @@
             android:layout_marginEnd="3dp"
             android:background="@drawable/bg_more"
             android:gravity="center"
-            android:paddingVertical="3dp"
             android:paddingHorizontal="8dp"
+            android:paddingVertical="3dp"
             android:text="@string/N702"
             android:textColor="@color/color_6D7693"
             android:textSize="@dimen/textSize12sp" />
 
-        <ImageView
+        <androidx.constraintlayout.utils.widget.ImageFilterView
             android:id="@+id/ivBackPage"
             android:layout_width="34dp"
             android:layout_height="34dp"
             android:padding="5dp"
             android:src="@drawable/ic_home_okgames_left" />
 
-        <ImageView
+        <androidx.constraintlayout.utils.widget.ImageFilterView
             android:id="@+id/ivForwardPage"
             android:layout_width="34dp"
             android:layout_height="34dp"
