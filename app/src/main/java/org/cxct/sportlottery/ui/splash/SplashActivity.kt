@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.splash
 
-import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.SharedPreferences
@@ -16,7 +15,6 @@ import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.repository.FLAG_OPEN
-import org.cxct.sportlottery.repository.NAME_LOGIN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.service.NetBroadcastReceiver
@@ -41,13 +39,8 @@ import kotlin.system.exitProcess
 class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::class) {
 
     private val mVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
-    private val sharedPref: SharedPreferences? by lazy {
-        getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
-    }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         ImmersionBar.with(this).statusBarDarkFont(true).transparentStatusBar()
             .fitsSystemWindows(false).init()
@@ -149,10 +142,10 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
         }
 
         mVersionUpdateViewModel.appMinVersionState.observe(this) {
-            if (it.isForceUpdate || it.isShowUpdateDialog) showAppDownloadDialog(
-                it.isForceUpdate, it.version, it.checkAppVersionResult
-            )
-            else viewModel.goNextPage()
+            if (it.isForceUpdate || it.isShowUpdateDialog)
+                showAppDownloadDialog(it.isForceUpdate, it.version, it.checkAppVersionResult)
+            else
+                viewModel.goNextPage()
         }
 
         viewModel.skipHomePage.observe(this) {
@@ -219,10 +212,10 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
         super.onDestroy()
         hideLoading()
     }
-
     override fun onBackPressed() {
         super.onBackPressed()
         finish()
         exitProcess(0)
     }
+
 }

@@ -1,11 +1,14 @@
 package org.cxct.sportlottery.network.appUpdate
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.common.proguards.KeepMembers
 
 @JsonClass(generateAdapter = true)
 @KeepMembers
+@Parcelize
 data class CheckAppVersionResult(
     @Json(name = "version")
     val version: String?,
@@ -23,4 +26,4 @@ data class CheckAppVersionResult(
     val storeURL1: String?,
     @Json(name = "control_version")
     val controlVersion: String?,
-)
+) : Parcelable
