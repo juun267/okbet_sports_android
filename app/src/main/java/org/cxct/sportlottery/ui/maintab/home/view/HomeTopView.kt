@@ -32,6 +32,7 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.goneWithSportSwitch
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.setVisibilityByMarketSwitch
+import timber.log.Timber
 
 class HomeTopView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
@@ -76,7 +77,7 @@ class HomeTopView @JvmOverloads constructor(
             }
             val host = sConfigData?.resServerHost
             val images = imageList.map {
-                Timber.d("host:$host url1:${host + it.imageName1}")
+//                Timber.d("host:$host url1:${host + it.imageName1}")
                 XBannerImage(it.imageText1 + "", host + it.imageName1, it.appUrl)
             }
             //opt1 ->ImageType = 5,为活动轮播图
@@ -89,7 +90,7 @@ class HomeTopView @JvmOverloads constructor(
         } else {
             val host = sConfigData?.resServerHost
             val promoteImages = imageList.map {
-                Timber.d("host:$host url4:${host + it.imageName4}")
+//                Timber.d("host:$host url4:${host + it.imageName4}")
                 XBannerImage(it.imageText1 + "", host + it.imageName4, it.appUrl)
             }
             setUpPromoteView(promoteImages)
