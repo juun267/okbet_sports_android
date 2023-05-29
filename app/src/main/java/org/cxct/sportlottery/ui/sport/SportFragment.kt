@@ -9,7 +9,6 @@ import kotlinx.android.synthetic.main.fragment_sport.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
-import org.cxct.sportlottery.common.extentions.newInstanceFragment
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
@@ -23,7 +22,6 @@ import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.phoneNumCheckDialog
-import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.view.tablayout.TabSelectedAdapter
 
@@ -288,17 +286,17 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         }
     }
 
-    fun showBKEndDialog() {
-        requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
-            putInt(PopImageDialog.DrawableResID, R.drawable.img_bk_end)
-        }).apply {
-            onClick = {
-                this@SportFragment.viewModel.setCurMatchType(MatchType.END_SCORE)
-                navGameFragment(MatchType.END_SCORE)
-            }
-            onDismiss = {
-            }
-        }.show(childFragmentManager, PopImageDialog::class.simpleName)
-    }
+//    fun showBKEndDialog() {
+//        requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
+//            putInt(PopImageDialog.DrawableResID, R.drawable.img_bk_end)
+//        }).apply {
+//            onClick = {
+//                this@SportFragment.viewModel.setCurMatchType(MatchType.END_SCORE)
+//                navGameFragment(MatchType.END_SCORE)
+//            }
+//            onDismiss = {
+//            }
+//        }.show(childFragmentManager, PopImageDialog::class.simpleName)
+//    }
 
 }
