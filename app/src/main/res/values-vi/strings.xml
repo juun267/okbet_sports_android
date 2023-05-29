@@ -844,7 +844,7 @@
     <!--region 最新消息-->
     <string name="news_tab_game">Trò chơi</string>
     <string name="news_tab_system">Hệ thống</string>
-    <string name="news_tab_plat">Nền tảng</string>
+    <string name="news_tab_plat">Trang</string>
     <string name="news_detail">Chi tiết</string>
     <!--endregion 最新消息-->
 
