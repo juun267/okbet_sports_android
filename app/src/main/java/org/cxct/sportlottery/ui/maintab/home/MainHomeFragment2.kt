@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab.home
 
 
+import android.os.Bundle
 import android.content.Intent
 import android.view.View
 import androidx.core.view.isVisible
@@ -14,6 +15,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.event.RegisterInfoEvent
 import org.cxct.sportlottery.common.event.SportStatusEvent
+import org.cxct.sportlottery.common.extentions.newInstanceFragment
 import org.cxct.sportlottery.databinding.FragmentMainHome2Binding
 import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsItem
@@ -35,6 +37,7 @@ import org.cxct.sportlottery.util.setupBackTop
 import org.cxct.sportlottery.util.setupSportStatusChange
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.cxct.sportlottery.view.dialog.PopImageDialog
 
 class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainHome2Binding>() {
 
@@ -154,6 +157,12 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         }
         viewModel.gotConfig.observe(viewLifecycleOwner) { event ->
             viewModel.getSportMenuFilter()
+            if (!PopImageDialog.firstShow || !PopImageDialog.checkImageTypeAvailable(7)) {
+                return@observe
+            }
+            requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
+                putInt(PopImageDialog.IMAGE_TYPE, 7)
+            }).show(childFragmentManager, PopImageDialog::class.simpleName)
         }
 
         //新版宣傳頁
