@@ -2,16 +2,17 @@ package org.cxct.sportlottery.ui.splash
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AlertDialog
+import android.widget.FrameLayout.LayoutParams
 import androidx.fragment.app.FragmentActivity
 import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.dialog_app_download.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.DialogAppDownloadBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
+import org.cxct.sportlottery.ui.base.BaseBindingDialog
 import org.cxct.sportlottery.util.AppUpdateManager
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.ToastUtil
@@ -23,26 +24,19 @@ class AppDownloadDialog(
     private val mLastVersion: String,
     private val checkAppVersionResult: CheckAppVersionResult?,
     private val mOnDownloadCallBack: OnDownloadCallBack,
-) : AlertDialog(activity) {
+) : BaseBindingDialog<DialogAppDownloadBinding>(activity, DialogAppDownloadBinding::inflate) {
 
     private val mRxPermissions = RxPermissions(activity)
     private var mFileUrl: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.dialog_app_download)
-        window?.setBackgroundDrawableResource(android.R.color.transparent)
-        setCanceledOnTouchOutside(false) //設置無法點擊外部關閉
-        setCancelable(false) //設置無法點擊 Back 關閉
-        initView()
-    }
 
     override fun dismiss() {
         super.dismiss()
         AppUpdateManager.cancel()
     }
 
-    private fun initView() {
+    override fun initView() {
+        setCanceledOnTouchOutside(false) //設置無法點擊外部關閉
+        setCancelable(false) //設置無法點擊 Back 關閉
         btn_cancel.visibility = if (mIsForce) View.GONE else View.VISIBLE
         btn_cancel.setOnClickListener {
             mOnDownloadCallBack.goHomeActivity()
@@ -128,4 +122,8 @@ class AppDownloadDialog(
         fun onDownloadError()
         fun goHomeActivity()
     }
+
+    override fun initHeightParams() = LayoutParams.WRAP_CONTENT
+
+    override fun initWidthParams() = LayoutParams.MATCH_PARENT
 }

@@ -21,7 +21,7 @@
     <string name="btn_retry">Try again</string>
     <string name="error_config_title">Bad line</string>
     <string name="find_new_version">Discover new version</string>
-    <string name="version_name">Version %1$s</string>
+    <string name="version_name">Version %s</string>
     <string name="btn_pass">Skip</string>
     <string name="login_account">Account</string>
     <string name="please_input_account">Enter account</string>
