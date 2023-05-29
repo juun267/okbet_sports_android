@@ -18,6 +18,7 @@ import org.cxct.sportlottery.databinding.FragmentMainHome2Binding
 import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.network.bettingStation.BettingStation
+import org.cxct.sportlottery.network.message.Row
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.news.HomeNewsAdapter
@@ -159,7 +160,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         viewModel.messageListResult.observe(viewLifecycleOwner) {
 
             val messageListResult = it.getContentIfNotHandled() ?: return@observe
-
+            messageListResult.rows?.sortedWith(compareByDescending<Row> { it.sort }.thenByDescending { it.addTime })
             val titleList: MutableList<String> = mutableListOf()
             messageListResult.rows?.forEach { data ->
                 if (data.type.toInt() == 1) {
