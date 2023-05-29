@@ -31,6 +31,7 @@ import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.goneWithSportSwitch
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.setVisibilityByMarketSwitch
 
 class HomeTopView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
@@ -84,7 +85,9 @@ class HomeTopView @JvmOverloads constructor(
 
         val host = sConfigData?.resServerHost
         val images = imageList.map {
-            XBannerImage(it.imageText1 + "", host + if (imageType==2) it.imageName1 else it.imageName4, it.appUrl)
+            XBannerImage(it.imageText1 + "",
+                host + if (imageType == 2) it.imageName1 else it.imageName4,
+                it.appUrl)
         }
         setUpPromoteView(images)
 
