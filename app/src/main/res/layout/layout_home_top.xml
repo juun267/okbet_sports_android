@@ -17,7 +17,7 @@
             app:pointNormal="@drawable/dot_4_4c326bff"
             app:pageChangeDuration="800"
             app:pointTopBottomPadding="24dp"
-            app:pointLeftRightPadding="1dp"/>
+            app:pointLeftRightPadding="1dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
@@ -128,7 +128,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginRight="8dp"
-            android:src="@drawable/ic_circle_fortunepay"/>
+            android:src="@drawable/ic_circle_fortunepay" />
 
     </LinearLayout>
 
@@ -148,7 +148,7 @@
             app:pointSelect="@drawable/indicator_12_blue"
             app:pointNormal="@drawable/dot_4_4c326bff"
             app:pointTopBottomPadding="7dp"
-            app:pointLeftRightPadding="1dp"/>
+            app:pointLeftRightPadding="1dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout

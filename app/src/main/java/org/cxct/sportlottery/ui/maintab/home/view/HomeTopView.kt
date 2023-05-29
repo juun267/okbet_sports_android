@@ -25,6 +25,10 @@ import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment2
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.getSportEnterIsClose
+import org.cxct.sportlottery.util.setVisibilityByMarketSwitch
 
 class HomeTopView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
@@ -81,7 +85,9 @@ class HomeTopView @JvmOverloads constructor(
 
         val host = sConfigData?.resServerHost
         val images = imageList.map {
-            XBannerImage(it.imageText1 + "", host + if (imageType==2) it.imageName1 else it.imageName4, it.appUrl)
+            XBannerImage(it.imageText1 + "",
+                host + if (imageType == 2) it.imageName1 else it.imageName4,
+                it.appUrl)
         }
 
         //opt1 ->ImageType = 5,为活动轮播图
