@@ -82,7 +82,7 @@ class SendPictureMsgDialog : BaseDialogFragment() {
                 //content:[img:{imagePath}]{message}
                 //  ex:
                 //     content:[img:/p/20230409/cx_sports/1/img/469/jpg/1681007650426.jpg]你好
-                val message = etInput.text.toString()
+                val message = etInput.text.toString().replace("\n", "")
                 val content = "[img:$imagePath]$message"
                 sendMsgListener?.onSend(content, ChatType.CHAT_SEND_PIC_AND_TEXT_MSG)
             }
