@@ -15,8 +15,6 @@ import androidx.multidex.MultiDex
 import cn.jpush.android.api.JPushInterface
 import com.appsflyer.AppsFlyerLib
 import com.didichuxing.doraemonkit.DoKit
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.xuexiang.xupdate.XUpdate
 import com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION
 import com.xuexiang.xupdate.utils.UpdateUtils
@@ -32,7 +30,6 @@ import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.money.RedEnveLopeModel
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.service.ApplicationBroadcastReceiver
 import org.cxct.sportlottery.service.ApplicationBroadcastReceiver
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.betList.BetListViewModel
