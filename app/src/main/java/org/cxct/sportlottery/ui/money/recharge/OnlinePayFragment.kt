@@ -216,20 +216,24 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         viewModel.apply {
             //充值金額
             et_recharge_online_amount.afterTextChanged {
-                if(it.startsWith("0") && it.length > 1){
-                    et_recharge_online_amount.setText(et_recharge_online_amount.getText().replace("0",""))
+                if (it.startsWith("0") && it.length > 1) {
+                    et_recharge_online_amount.setText(et_recharge_online_amount.getText()
+                        .replace("0", ""))
                     et_recharge_online_amount.setCursor()
                     return@afterTextChanged
                 }
 
-                if(et_recharge_online_amount.getText().length > 6){
-                    et_recharge_online_amount.setText(et_recharge_online_amount.getText().substring(0,6))
+                if (et_recharge_online_amount.getText().length > 9) {
+                    et_recharge_online_amount.setText(et_recharge_online_amount.getText()
+                        .substring(0, 9))
                     et_recharge_online_amount.setCursor()
                     return@afterTextChanged
                 }
 
                 checkRcgOnlineAmount(it, mSelectRechCfgs)
                 if (it.isEmpty() || it.isBlank()) {
+                    if (includeQuickMoney.isVisible) (rv_quick_money.adapter as QuickMoneyAdapter).selectItem(
+                        -1)
                     tv_fee_amount.text = ArithUtil.toMoneyFormat(0.0)
                 } else {
                     tv_fee_amount.text = TextUtil.formatMoney(
@@ -250,6 +254,9 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         et_recharge_online_amount.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
             if (!hasFocus)
                 viewModel.checkRcgOnlineAmount(et_recharge_online_amount.getText(), mSelectRechCfgs)
+            else if (includeQuickMoney.isVisible) {
+                (rv_quick_money.adapter as QuickMoneyAdapter).selectItem(-1)
+            }
         }
         et_recharge_online_payer.setEditTextOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus)
@@ -453,8 +460,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                         (adapter as QuickMoneyAdapter).selectItem(position)
                         adapter.data[position].toString().let {
                             et_recharge_online_amount.setText(it)
-                            et_recharge_online_amount.et_input.setSelection(
-                                et_recharge_online_amount.getText().length)
+                            et_recharge_online_amount.et_input.clearFocus()
                         }
                     }
                 }

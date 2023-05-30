@@ -34,7 +34,6 @@ class PopImageDialog :
     }
 
     companion object {
-        var firstShow = true
         const val IMAGE_TYPE = "imageType"
         fun checkImageTypeAvailable(imageType: Int) = sConfigData?.imageList?.filter {
             it.imageType == imageType && it.lang == LanguageManager.getSelectLanguage(
@@ -57,7 +56,6 @@ class PopImageDialog :
         super.onViewCreated(view, savedInstanceState)
         setupClose()
         setUpBanner()
-        firstShow = false
     }
 
     private fun setupClose() {
@@ -113,6 +111,7 @@ class PopImageDialog :
         } else {
             JumpUtil.toInternalWeb(requireActivity(), jumpUrl, "")
         }
+          dismissAllowingStateLoss()
     }
 
 

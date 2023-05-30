@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.chat
+package org.cxct.sportlottery.ui.chat.adapter
 
 import android.content.Context
 import android.text.SpannableString
@@ -22,7 +22,9 @@ import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatMessageResult
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatRoomMsg
+import org.cxct.sportlottery.ui.chat.ChatMsgReceiveType
 import org.cxct.sportlottery.ui.chat.bean.ChatDateMsg
+import org.cxct.sportlottery.ui.chat.bean.EmptyMsg
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.view.MixFontTextView
 import java.util.*
@@ -101,7 +103,8 @@ class ChatMessageListAdapter3(private val onPhotoClick: (String) -> Unit,
     ) {
         val content = data.content
         if (data.type != ChatMsgReceiveType.CHAT_SEND_PIC
-            && data.type != ChatMsgReceiveType.CHAT_SEND_PIC_AND_TEXT) {
+            && data.type != ChatMsgReceiveType.CHAT_SEND_PIC_AND_TEXT
+        ) {
 
             imageView.isVisible = false
             textView.isVisible = true
@@ -252,6 +255,8 @@ class ChatMessageListAdapter3(private val onPhotoClick: (String) -> Unit,
             chatMessageList.add(firstDateMessageIndex, ChatDateMsg(messageDateContent))
         }
 
+        // 在头部增加一条数据，避免以ItemDecoration方式实现的日期分类标签显示不出来的问题
+        chatMessageList.add(0, EmptyMsg())
         setList(chatMessageList as MutableList<ChatRoomMsg<*, BaseViewHolder>>)
     }
 

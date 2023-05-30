@@ -30,7 +30,6 @@ object UserInfoRepository {
         MultiLanguagesApplication.appContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
 
-    var chatSign: JsonElement? = null
 
     var checkedUserInfo = false //紀錄checkToken後是否獲取過UserInfo
 
@@ -230,12 +229,6 @@ object UserInfoRepository {
             vipType = userInfoData.vipType,
         )
 
-    suspend fun getSign(): ApiResult<JsonElement> = safeApi {
-        signService.getSign().apply {
-            if (succeeded()) {
-                getData()?.let { chatSign = it }
-            }
-        }
-    }
+    suspend fun getSign(): ApiResult<JsonElement> = safeApi { signService.getSign() }
 
 }

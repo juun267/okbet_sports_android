@@ -8,7 +8,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.hide
 import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.databinding.ItemChatMessageRedEnvelopeBinding as ICMREB
-import org.cxct.sportlottery.ui.chat.ChatMessageListAdapter3
+import org.cxct.sportlottery.ui.chat.adapter.ChatMessageListAdapter3
 import org.cxct.sportlottery.ui.chat.bean.ChatRedEnvelopeMsg
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TimeUtil

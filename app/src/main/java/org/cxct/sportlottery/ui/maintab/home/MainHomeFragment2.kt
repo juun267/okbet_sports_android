@@ -12,6 +12,7 @@ import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_main_home.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.event.RegisterInfoEvent
 import org.cxct.sportlottery.common.event.SportStatusEvent
@@ -157,12 +158,15 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         }
         viewModel.gotConfig.observe(viewLifecycleOwner) { event ->
             viewModel.getSportMenuFilter()
-            if (!PopImageDialog.firstShow || !PopImageDialog.checkImageTypeAvailable(7)) {
-                return@observe
+            if (MultiLanguagesApplication.showHomeDialog) {
+                MultiLanguagesApplication.showHomeDialog = false
+                MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
+                if (PopImageDialog.checkImageTypeAvailable(7)) {
+                    requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
+                        putInt(PopImageDialog.IMAGE_TYPE, 7)
+                    }).show(childFragmentManager, PopImageDialog::class.simpleName)
+                }
             }
-            requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
-                putInt(PopImageDialog.IMAGE_TYPE, 7)
-            }).show(childFragmentManager, PopImageDialog::class.simpleName)
         }
 
         //新版宣傳頁

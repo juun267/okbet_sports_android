@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.chat
 
 import android.app.Application
 import androidx.lifecycle.*
+import com.google.gson.JsonElement
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import org.cxct.sportlottery.R
@@ -61,6 +62,8 @@ class ChatViewModel(
     val editIconUrlResult: LiveData<Event<IconUrlResult?>> = avatarRepository.editIconUrlResult
 
     val connStatus = ChatRepository.chatConnStatus
+
+    private var chatSign: JsonElement? = null
 
     object ChatErrorCode {
         const val NOT_ENOUGH_BET_AND_RECH_MONEY = 10019
@@ -330,7 +333,7 @@ class ChatViewModel(
     }
 
     private fun updateUserLevelConfigFromMemberChange() {
-        val sign = userInfoRepository.chatSign ?: return
+        val sign = chatSign ?: return
         launch {
             ChatRepository.chatInit(sign).let {
                 if (it.succeeded()) {
@@ -363,7 +366,8 @@ class ChatViewModel(
     /* 游客、一般用户 */
     private fun chatInit() = launch {
 
-        var sign = userInfoRepository.chatSign
+
+        var sign = chatSign
 
         repeat(maxInitRetry) {
             Timber.i("[Chat] init, 次數 -> $it")
@@ -382,6 +386,7 @@ class ChatViewModel(
                 val result = ChatRepository.chatInit(sign!!)
                 errorMsg = result.msg
                 if (result.succeeded()) {
+                    chatSign = sign
                     Timber.i("[Chat] 初始化成功 用戶遊客獲取房間列表")
                     userIsSpeak = result?.getData()?.state == 0 //state（0正常、1禁言、2禁止登录)
                     queryList()
@@ -523,10 +528,11 @@ class ChatViewModel(
 
     private fun leaveRoom() = launch {
         clearRemoveRedEnvelope()
+        ChatRepository.chatRoomID = -1
+        ChatRepository.userId = null
         val result = ChatRepository.leaveRoom(ChatRepository.chatRoomID)
         if (result.succeeded()) {
             Timber.i("[Chat] 離開房間 id -> ${ChatRepository.chatRoomID}")
-            ChatRepository.chatRoomID = -1
             unSubscribeChatRoomAndUser()
         }
     }

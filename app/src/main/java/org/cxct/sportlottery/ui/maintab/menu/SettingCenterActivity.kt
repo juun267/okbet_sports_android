@@ -160,7 +160,7 @@ class SettingCenterActivity : BaseActivity<MainViewModel>(MainViewModel::class) 
         if (LanguageManager.getSelectLanguageName() != select.key) {
             this?.let {
                 LanguageManager.saveSelectLanguage(it, select)
-                MainTabActivity.reStart(it)
+                MainTabActivity.reStart(it, true)
             }
         }
     }
