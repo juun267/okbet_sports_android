@@ -20,11 +20,15 @@ class TrialGameDialog(mContext: Context) : Dialog(mContext)  {
         window?.setBackgroundDrawableResource(android.R.color.transparent)
         setCanceledOnTouchOutside(true)
 
+        val tvLogin=findViewById<TextView>(R.id.tvLogin)
         //去登录
-        findViewById<TextView>(R.id.tvLogin).onClick {
+        tvLogin.onClick {
             dismiss()
             context.startActivity(Intent(context, LoginOKActivity::class.java))
         }
+        tvLogin.text=context.resources.getString(R.string.F025)
+        findViewById<TextView>(R.id.tvContent).text=context.resources.getString(R.string.N994)
+        findViewById<TextView>(R.id.tvForward).text=context.resources.getString(R.string.N993)
     }
 
 
