@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_maintenance"
     tools:context=".ui.maintenance.MaintenanceActivity"
-    tools:ignore="SpUsage">
+    tools:ignore="SpUsage"
+    android:id="@+id/root">
 
     <ImageView
         android:id="@+id/iv_logo"
