@@ -6,6 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <com.stx.xhb.androidx.XBanner
             android:id="@+id/topBanner"
             android:layout_width="match_parent"
@@ -161,7 +162,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginRight="8dp"
-            android:src="@drawable/ic_circle_fortunepay"/>
+            android:src="@drawable/ic_circle_fortunepay" />
 
     </LinearLayout>
 
@@ -194,7 +195,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingLeft="10dp"
+            android:paddingLeft="6dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="2"
             tools:listitem="@layout/item_promote_view" />

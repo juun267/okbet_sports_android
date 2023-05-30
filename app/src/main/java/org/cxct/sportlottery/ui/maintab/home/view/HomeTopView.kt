@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.stx.xhb.androidx.XBanner
 import org.cxct.sportlottery.R
@@ -63,7 +64,8 @@ class HomeTopView @JvmOverloads constructor(
     private fun setUpBanner(lang: String, imageType: Int) {
         val imageList = sConfigData?.imageList?.filter {
             it.imageType == imageType && it.lang == lang && !it.imageName1.isNullOrEmpty()
-        }?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
+        }
+            ?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
         val loopEnable = (imageList?.size ?: 0) > 1
         if (imageList.isNullOrEmpty()) {
             return
@@ -88,10 +90,11 @@ class HomeTopView @JvmOverloads constructor(
             }
             xbanner.setBannerData(images.toMutableList())
         } else {
+            //优惠活动
             val host = sConfigData?.resServerHost
             val promoteImages = imageList.map {
-//                Timber.d("host:$host url4:${host + it.imageName4}")
-                XBannerImage(it.imageText1 + "", host + it.imageName4, it.appUrl)
+                Timber.d("host:$host url4:${host + it.imageName4}")
+                XBannerImage(it.imageText1 + "", host + it.imageName4, it.imageLink)
             }
             setUpPromoteView(promoteImages)
         }
@@ -107,6 +110,11 @@ class HomeTopView @JvmOverloads constructor(
 
             }
         promoteAdapter.setNewInstance(imageList.toMutableList())
+        promoteAdapter.setOnItemClickListener { adapter, view, position ->
+            jumpToOthers(
+                promoteAdapter.getItem(position)
+            )
+        }
         binding.rcvPromote.apply {
             adapter = promoteAdapter
             if (onFlingListener == null) {
@@ -117,6 +125,11 @@ class HomeTopView @JvmOverloads constructor(
     }
 
     override fun onItemClick(banner: XBanner, model: Any, view: View, position: Int) {
+        jumpToOthers(model)
+
+    }
+
+    private fun jumpToOthers(model: Any) {
         val jumpUrl = (model as XBannerImage).jumpUrl
         if (jumpUrl.isEmptyStr()) {
             return
@@ -127,7 +140,6 @@ class HomeTopView @JvmOverloads constructor(
         } else {
             JumpUtil.toInternalWeb(context, jumpUrl, "")
         }
-
     }
 
     private fun initLogin() {
