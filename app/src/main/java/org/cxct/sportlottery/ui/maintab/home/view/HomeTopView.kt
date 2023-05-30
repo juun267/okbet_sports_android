@@ -9,9 +9,6 @@ import android.view.View.OnClickListener
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.view.isInvisible
-import androidx.recyclerview.widget.PagerSnapHelper
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.stx.xhb.androidx.XBanner
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
@@ -32,7 +29,6 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.goneWithSportSwitch
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.setVisibilityByMarketSwitch
-import timber.log.Timber
 
 class HomeTopView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
