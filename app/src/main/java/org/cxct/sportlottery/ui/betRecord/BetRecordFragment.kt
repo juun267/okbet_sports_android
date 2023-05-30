@@ -75,7 +75,11 @@ class BetRecordFragment: BaseFragment<AccountHistoryViewModel>(AccountHistoryVie
         setAdapter(SportTypeTextAdapter(dataSport))
         anchorView = cl_bet_all_sports //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
         isModal = true //设置是否是模式
-        setOnDismissListener { cl_bet_all_sports.isSelected = false }
+        setOnDismissListener {
+            if (cl_bet_all_sports != null) {
+                cl_bet_all_sports.isSelected = false
+            }
+        }
         setOnItemClickListener { _, _, position, _ ->
             dismiss()
             val sportItem = dataSport[position]

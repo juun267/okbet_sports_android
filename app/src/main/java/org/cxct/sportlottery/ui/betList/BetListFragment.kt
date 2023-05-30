@@ -1073,8 +1073,20 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 if (clearCarts) {
                     clearCarts()
                 }
-                val fm = activity?.supportFragmentManager
-                fm?.popBackStackImmediate()
+                val fm = activity?.supportFragmentManager ?: return@startTranslationY
+                if (fm.isDestroyed) {
+                    return@startTranslationY
+                }
+
+                if (fm.isStateSaved) {
+                    runWithCatch {
+                        val beginTransaction = fm.beginTransaction()
+                        beginTransaction.remove(this)
+                        beginTransaction.commitAllowingStateLoss()
+                    }
+                }
+
+                fm.popBackStackImmediate()
             })
     }
 }
