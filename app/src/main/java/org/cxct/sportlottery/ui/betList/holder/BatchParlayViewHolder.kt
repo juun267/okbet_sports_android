@@ -121,12 +121,15 @@ abstract class BatchParlayViewHolder(
             Timber.d("1 进来了- - - -- - - - - - - :isTouched:${false}")
             etBetParlay.requestFocus()
             data.isInputBet = true
+            keyboardView.setupMaxBetMoney(inputMaxMoney)
+            keyboardView.setUserMoney(mUserMoney)
             keyboardView.showKeyboard(etBetParlay, 0)
         }
 
         itemView.onFocusChangeListener = null
         refreshSingleWinAmount(data)
         checkBetLimitParlay(data)
+        etBetParlay.filters = arrayOf(MoneyInputFilter())
         val tw = EditTextWatcher {
             isTouched = true
             if (it.isNullOrEmpty()) {
@@ -140,8 +143,8 @@ abstract class BatchParlayViewHolder(
                 data.inputBetAmountStr = it
                 data.input = it
 
-                if (quota > inputMaxMoney) {
-                    etBetParlay.setText(TextUtil.formatInputMoney(inputMaxMoney))
+                if (quota > MAX_BET_VALUE) {
+                    etBetParlay.setText(TextUtil.formatInputMoney(MAX_BET_VALUE))
                     return@EditTextWatcher
                 }
             }
@@ -160,6 +163,7 @@ abstract class BatchParlayViewHolder(
             if (event.action == MotionEvent.ACTION_UP) {
 //                    et_bet_parlay.isFocusable = true
                 etBetParlay.requestFocus()
+                keyboardView.setUserMoney(mUserMoney)
                 keyboardView.setupMaxBetMoney(inputMaxMoney)
                 keyboardView.showKeyboard(
                     etBetParlay, position, isParlay = true
@@ -238,21 +242,6 @@ abstract class BatchParlayViewHolder(
 //            val balanceError: Boolean = betAmount != 0.0 && betAmount > mUserMoney
 //            itemData.amountError = if (balanceError) true else amountError
 //        }
-
-        val amountError: Boolean = if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
-            //請輸入正確投注額
-            !itemData.input.isNullOrEmpty()
-        } else {
-            if (betAmount > inputMaxMoney) {
-                //超過最大限額
-                true
-            } else {
-                betAmount != 0.0 && betAmount < inputMinMoney
-            }
-        }
-        val balanceError: Boolean = betAmount != 0.0 && betAmount > mUserMoney
-        itemData.amountError = if (balanceError) true else amountError
-
         setEtBetParlayBackground(itemData)
     }
 
