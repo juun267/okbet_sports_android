@@ -62,7 +62,7 @@ class AppDownloadDialog(
                 if (mFileUrl.isNullOrEmpty())
                     doInternalDownload()
                 else
-                    checkInstall()
+                    installApk()
             } else {
                 checkAppVersionResult?.let {
                     try {
@@ -129,24 +129,6 @@ class AppDownloadDialog(
                     mOnDownloadCallBack.onDownloadError()
                 }
             }
-    }
-
-    private fun checkInstall() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val hasInstallPermission: Boolean =
-                activity.packageManager.canRequestPackageInstalls()
-            if (!hasInstallPermission) {
-                startInstallPermissionSettingActivity()
-            } else {
-                //再次执行安装流程，包含权限判等
-                if (mFileUrl?.isNotEmpty() == true) {
-                    //再次启动安装流程
-                    installApk()
-                }
-            }
-        } else {
-            installApk()
-        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
