@@ -575,8 +575,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     return@afterTextChanged
                 }
 
-                if (et_recharge_amount.getText().length > 6) {
-                    et_recharge_amount.setText(et_recharge_amount.getText().substring(0, 6))
+                if (et_recharge_amount.getText().length > 9) {
+                    et_recharge_amount.setText(et_recharge_amount.getText().substring(0, 9))
                     et_recharge_amount.setCursor()
                     return@afterTextChanged
                 }
@@ -644,6 +644,11 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         customEditText.setEditTextOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus)
                 event.invoke(customEditText.et_input.text.toString())
+            else if (customEditText == et_recharge_amount) {
+                if (includeQuickMoney.isVisible) {
+                    (rv_quick_money.adapter as QuickMoneyAdapter).selectItem(-1)
+                }
+            }
         }
     }
 
@@ -850,7 +855,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                         (adapter as QuickMoneyAdapter).selectItem(position)
                         adapter.data[position].toString().let {
                             et_recharge_amount.setText(it)
-                            et_recharge_amount.et_input.setSelection(et_recharge_amount.getText().length)
+                            et_recharge_amount.et_input.clearFocus()
                         }
                     }
                 }
