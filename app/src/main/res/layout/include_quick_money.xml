@@ -18,6 +18,7 @@
         android:id="@+id/rv_quick_money"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="false"
         android:layout_marginHorizontal="@dimen/margin_15"
         android:layout_marginVertical="@dimen/margin_10"
         tools:listitem="@layout/item_quick_money"
