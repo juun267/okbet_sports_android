@@ -158,17 +158,15 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         }
         viewModel.gotConfig.observe(viewLifecycleOwner) { event ->
             viewModel.getSportMenuFilter()
-            if (!PopImageDialog.firstShow || !PopImageDialog.checkImageTypeAvailable(7)) {
+            if (MultiLanguagesApplication.showHomeDialog) {
+                MultiLanguagesApplication.showHomeDialog = false
                 MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
-                return@observe
-            }
-            requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
-                putInt(PopImageDialog.IMAGE_TYPE, 7)
-            }).apply {
-                onDismiss = {
-                    MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
+                if (PopImageDialog.checkImageTypeAvailable(7)) {
+                    requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
+                        putInt(PopImageDialog.IMAGE_TYPE, 7)
+                    }).show(childFragmentManager, PopImageDialog::class.simpleName)
                 }
-            }.show(childFragmentManager, PopImageDialog::class.simpleName)
+            }
         }
 
         //新版宣傳頁

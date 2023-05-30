@@ -310,7 +310,7 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         if (LanguageManager.getSelectLanguageName() != select.key) {
             context?.let {
                 LanguageManager.saveSelectLanguage(it, select)
-                MainTabActivity.reStart(it)
+                MainTabActivity.reStart(it, true)
             }
         }
     }
