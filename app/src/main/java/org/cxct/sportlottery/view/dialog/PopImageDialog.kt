@@ -22,7 +22,6 @@ import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.LogUtil
 
 /**
  * 顯示棋牌彈窗
@@ -85,6 +84,7 @@ class PopImageDialog :
         }
 
         xbanner.setHandLoop(loopEnable)
+        xbanner.setAutoPlayAble(loopEnable)
         xbanner.setOnItemClickListener(this@PopImageDialog)
         xbanner.loadImage { _, model, view, _ ->
             (view as ImageView).load((model as XBannerImage).imgUrl, R.drawable.img_banner01)
@@ -98,7 +98,6 @@ class PopImageDialog :
         if (imageType == 7 && images.isNotEmpty()) {
             xbanner.visible()
         }
-        LogUtil.toJson(imageList)
         xbanner.setBannerData(images.toMutableList())
     }
 
