@@ -23,6 +23,7 @@ import org.cxct.sportlottery.util.KeyboardView
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getMultipleOdds
+import org.cxct.sportlottery.view.boundsEditText.EditTextWatcher
 import timber.log.Timber
 
 abstract class BatchParlayViewHolder(
@@ -91,174 +92,151 @@ abstract class BatchParlayViewHolder(
         onItemClickListener: OnItemClickListener,
         position: Int
     ) {
-        itemView.apply {
 
-            if (position == 0 && et_bet_parlay.text.isNullOrEmpty() && !isTouched) {
-                if (mUserMoney < inputMinMoney) {
-                    et_bet_parlay.setText(TextUtil.formatInputMoney(mUserMoney))
-                } else {
-                    et_bet_parlay.setText(TextUtil.formatInputMoney(inputMinMoney))
-                }
-            }
+        val etBetParlay = itemView.et_bet_parlay
 
-            et_bet_parlay.apply {
-                //第1步：為了避免TextWatcher在第2步被調用，提前移除
-                if (tag is TextWatcher) {
-                    removeTextChangedListener(tag as TextWatcher)
-                }
-                //第2步：移除TextWatcher之後，設置EditText的value
-                if (data.input != null) {
-                    setText(data.inputBetAmountStr)
-                } else {
-                    text.clear()
-                }
-                setSelection(text.length)
-            }
+        //第1步：為了避免TextWatcher在第2步被調用，提前移除
+        if (etBetParlay.tag is TextWatcher) {
+            etBetParlay.removeTextChangedListener(etBetParlay.tag as TextWatcher)
+        }
 
-            if (!BetInfoRepository.isTouched && position == 0) {
-                Timber.d("1 进来了- - - -- - - - - - - :isTouched:${false}")
-                et_bet_parlay.requestFocus()
-                data.isInputBet = true
-                keyboardView.showKeyboard(et_bet_parlay, 0)
-            }
-
-            onFocusChangeListener = null
-            refreshSingleWinAmount(data)
-            checkBetLimitParlay(data)
-            et_bet_parlay.apply {
-                val tw: TextWatcher?
-                tw = object : TextWatcher {
-                    override fun afterTextChanged(it: Editable?) {
-                        isTouched = true
-                        if (it.isNullOrEmpty()) {
-                            data.betAmount = 0.000
-                            data.inputBetAmountStr = ""
-                            data.input = null
-                            refreshSingleWinAmount(null)
-                        } else {
-                            val quota = it.toString().toDoubleS()
-                            data.betAmount = quota
-                            data.inputBetAmountStr = it.toString()
-                            data.input = it.toString()
-
-                            inputMaxMoney.let { max ->
-                                if (quota > max) {
-                                    et_bet_parlay.apply {
-                                        setText(TextUtil.formatInputMoney(max))
-//                                        setSelection(text.length)
-                                    }
-                                    return@afterTextChanged
-                                }
-                            }
-                        }
-                        checkBetLimitParlay(data)
-                        onItemClickListener.refreshBetInfoTotal()
-                        refreshSingleWinAmount(data)
-                    }
-
-                    override fun beforeTextChanged(
-                        s: CharSequence?, start: Int, count: Int, after: Int
-                    ) {
-                    }
-
-                    override fun onTextChanged(
-                        s: CharSequence?, start: Int, before: Int, count: Int
-                    ) {
-                    }
-                }
-                removeTextChangedListener(tw)
-                addTextChangedListener(tw)
-                tag = tw
-            }
-
-            et_bet_parlay.setOnTouchListener { view, event ->
-                BetInfoRepository.isTouched = true
-                Timber.d("2 进来了- - - -- - - - - - - :isTouched:${BetInfoRepository.isTouched}")
-                if (event.action == MotionEvent.ACTION_UP) {
-//                    et_bet_parlay.isFocusable = true
-                    et_bet_parlay.requestFocus()
-                    keyboardView.setupMaxBetMoney(inputMaxMoney)
-                    keyboardView.showKeyboard(
-                        et_bet_parlay, position, isParlay = true
-                    )
-                }
-                false
-            }
-
-            Timber.d("position:${position}")
-
-            et_bet_parlay.setOnFocusChangeListener { _, hasFocus ->
-//                if (!hasFocus) keyboardView.hideKeyboard()
-                data.isInputBet = hasFocus
-                if (hasFocus) {
-                    et_bet_parlay.setSelection(et_bet_parlay.text.length)
-                }
-                setEtBetParlayBackground(data)
-            }
-
-            ll_control_connect.setOnClickListener {
-                clearFocus()
+        if (position == 0 && etBetParlay.text.isNullOrEmpty() && !isTouched) {
+            if (mUserMoney < inputMinMoney) {
+                etBetParlay.setText(TextUtil.formatInputMoney(mUserMoney))
+            } else {
+                etBetParlay.setText(TextUtil.formatInputMoney(inputMinMoney))
             }
         }
+
+        //第2步：移除TextWatcher之後，設置EditText的value
+        if (data.input != null) {
+            etBetParlay.setText(data.inputBetAmountStr)
+        } else {
+            etBetParlay.text.clear()
+        }
+        etBetParlay.setSelection(etBetParlay.text.length)
+
+        if (!BetInfoRepository.isTouched && position == 0) {
+            Timber.d("1 进来了- - - -- - - - - - - :isTouched:${false}")
+            etBetParlay.requestFocus()
+            data.isInputBet = true
+            keyboardView.showKeyboard(etBetParlay, 0)
+        }
+
+        itemView.onFocusChangeListener = null
+        refreshSingleWinAmount(data)
+        checkBetLimitParlay(data)
+        val tw = EditTextWatcher {
+            isTouched = true
+            if (it.isNullOrEmpty()) {
+                data.betAmount = 0.000
+                data.inputBetAmountStr = ""
+                data.input = null
+                refreshSingleWinAmount(null)
+            } else {
+                val quota = it.toDoubleS()
+                data.betAmount = quota
+                data.inputBetAmountStr = it
+                data.input = it
+
+                if (quota > inputMaxMoney) {
+                    etBetParlay.setText(TextUtil.formatInputMoney(inputMaxMoney))
+                    return@EditTextWatcher
+                }
+            }
+            checkBetLimitParlay(data)
+            onItemClickListener.refreshBetInfoTotal()
+            refreshSingleWinAmount(data)
+        }
+
+        etBetParlay.removeTextChangedListener(tw)
+        etBetParlay.addTextChangedListener(tw)
+        etBetParlay.tag = tw
+
+        etBetParlay.setOnTouchListener { _, event ->
+            BetInfoRepository.isTouched = true
+            Timber.d("2 进来了- - - -- - - - - - - :isTouched:${BetInfoRepository.isTouched}")
+            if (event.action == MotionEvent.ACTION_UP) {
+//                    et_bet_parlay.isFocusable = true
+                etBetParlay.requestFocus()
+                keyboardView.setupMaxBetMoney(inputMaxMoney)
+                keyboardView.showKeyboard(
+                    etBetParlay, position, isParlay = true
+                )
+            }
+            false
+        }
+
+        Timber.d("position:${position}")
+
+        etBetParlay.setOnFocusChangeListener { _, hasFocus ->
+//                if (!hasFocus) keyboardView.hideKeyboard()
+            data.isInputBet = hasFocus
+            if (hasFocus) {
+                etBetParlay.setSelection(etBetParlay.text.length)
+            }
+            setEtBetParlayBackground(data)
+        }
+
+        itemView.ll_control_connect.setOnClickListener { itemView.clearFocus()  }
     }
 
-    private fun setEtBetParlayBackground(itemData: ParlayOdd) {
-        itemView.apply {
-            if (mHasBetClosed) {
+    private fun setEtBetParlayBackground(itemData: ParlayOdd) = itemView.run {
+        if (mHasBetClosed) {
+            et_bet_parlay.setBackgroundResource(R.drawable.bg_radius_2_edittext_unfocus)
+            et_bet_parlay.isEnabled = false
+            tv_hint_parlay_default.text = LocalUtils.getString(R.string.str_market_is_closed)
+        } else {
+            et_bet_parlay.isEnabled = true
+            if (itemData.amountError) {
+                et_bet_parlay.setBackgroundResource(R.drawable.bg_radius_2_edittext_error)
+            } else if (itemData.isInputBet) {
+                et_bet_parlay.setBackgroundResource(R.drawable.bg_radius_2_edittext_focus)
+            } else {
                 et_bet_parlay.setBackgroundResource(R.drawable.bg_radius_2_edittext_unfocus)
-                et_bet_parlay.isEnabled = false
-                tv_hint_parlay_default.text = LocalUtils.getString(R.string.str_market_is_closed)
-            } else {
-                et_bet_parlay.isEnabled = true
-                if (itemData.amountError) {
-                    et_bet_parlay.setBackgroundResource(R.drawable.bg_radius_2_edittext_error)
-                } else if (itemData.isInputBet) {
-                    et_bet_parlay.setBackgroundResource(R.drawable.bg_radius_2_edittext_focus)
-                } else {
-                    et_bet_parlay.setBackgroundResource(R.drawable.bg_radius_2_edittext_unfocus)
-                }
             }
+        }
 
-            val betHint = context.getString(
-                R.string.hint_bet_limit_range,
-                inputMinMoney.toLong().toString(),
-                inputMaxMoney.toLong().toString()
-            )
-            if (LoginRepository.isLogin.value == true) {
-                val etBetHasInput = !et_bet_parlay.text.isNullOrEmpty()
-                tv_hint_parlay_default.isVisible = !etBetHasInput //僅輸入金額以後隱藏
-                if (mHasBetClosed) {
-                    tv_hint_parlay_default.text =
-                        LocalUtils.getString(R.string.str_market_is_closed)
+        val betHint = context.getString(
+            R.string.hint_bet_limit_range,
+            inputMinMoney.toLong().toString(),
+            inputMaxMoney.toLong().toString()
+        )
+        if (LoginRepository.isLogin.value == true) {
+            val etBetHasInput = !et_bet_parlay.text.isNullOrEmpty()
+            tv_hint_parlay_default.isVisible = !etBetHasInput //僅輸入金額以後隱藏
+            if (mHasBetClosed) {
+                tv_hint_parlay_default.text = LocalUtils.getString(R.string.str_market_is_closed)
+                if (etBetHasInput) {
                     et_bet_parlay.setText("")
-                } else {
-                    //限額用整數提示
-                    tv_hint_parlay_default.text = betHint
                 }
             } else {
-                tv_hint_parlay_default.isVisible = false
+                //限額用整數提示
+                tv_hint_parlay_default.text = betHint
             }
+        } else {
+            tv_hint_parlay_default.isVisible = false
         }
     }
 
     private fun checkBetLimitParlay(
         itemData: ParlayOdd, betAmount: Double = itemData.betAmount
     ) {
-        itemView.apply {
-            val amountError: Boolean = if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
-                //請輸入正確投注額
-                !itemData.input.isNullOrEmpty()
+
+        val amountError: Boolean = if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
+            //請輸入正確投注額
+            !itemData.input.isNullOrEmpty()
+        } else {
+            if (betAmount > inputMaxMoney) {
+                //超過最大限額
+                true
             } else {
-                if (betAmount > inputMaxMoney) {
-                    //超過最大限額
-                    true
-                } else {
-                    betAmount != 0.0 && betAmount < inputMinMoney
-                }
+                betAmount != 0.0 && betAmount < inputMinMoney
             }
-            val balanceError: Boolean = betAmount != 0.0 && betAmount > mUserMoney
-            itemData.amountError = if (balanceError) true else amountError
         }
+        val balanceError: Boolean = betAmount != 0.0 && betAmount > mUserMoney
+        itemData.amountError = if (balanceError) true else amountError
+
         setEtBetParlayBackground(itemData)
     }
 
