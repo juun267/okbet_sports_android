@@ -22,6 +22,7 @@ import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.LogUtil
 
 /**
  * 顯示棋牌彈窗
@@ -91,12 +92,13 @@ class PopImageDialog :
 
         val host = sConfigData?.resServerHost
         val images = imageList.map {
-            XBannerImage(it.imageText1 + "", host + it.imageName1, it.appUrl)
+            XBannerImage(it.imageText1 + "", host + it.imageName1, it.imageLink)
         }
 
         if (imageType == 7 && images.isNotEmpty()) {
             xbanner.visible()
         }
+        LogUtil.toJson(imageList)
         xbanner.setBannerData(images.toMutableList())
     }
 
