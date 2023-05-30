@@ -108,6 +108,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         initButton()
         initObserve()
         setPayBankBottomSheet()
+        setupQuickMoney()
     }
 
     private fun initButton() {
@@ -179,8 +180,6 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         getBankType(0)
         refreshFieldTitle()
         tv_currency_type.text = sConfigData?.systemCurrencySign
-        setupQuickMoney()
-
     }
 
     private fun refreshFieldTitle() {
@@ -583,6 +582,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
                 checkRechargeAmount(it, mSelectRechCfgs)
                 if (it.isEmpty() || it.isBlank()) {
+                    if (includeQuickMoney.isVisible) (rv_quick_money.adapter as QuickMoneyAdapter).selectItem(
+                        -1)
                     tv_fee_amount.text = ArithUtil.toMoneyFormat(0.0)
                 } else {
                     tv_fee_amount.text = ArithUtil.toMoneyFormat(
@@ -642,12 +643,10 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
     private fun setupEditTextFocusEvent(customEditText: LoginEditText, event: (String) -> Unit) {
         customEditText.setEditTextOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus)
+            if (!hasFocus) {
                 event.invoke(customEditText.et_input.text.toString())
-            else if (customEditText == et_recharge_amount) {
-                if (includeQuickMoney.isVisible) {
-                    (rv_quick_money.adapter as QuickMoneyAdapter).selectItem(-1)
-                }
+            } else if (customEditText == et_recharge_amount && includeQuickMoney.isVisible) {
+                (rv_quick_money.adapter as QuickMoneyAdapter).selectItem(-1)
             }
         }
     }
@@ -850,7 +849,6 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     requireContext().getColor(R.color.color_FFFFFF),
                     false))
                 rv_quick_money.adapter = QuickMoneyAdapter().apply {
-                    setList(sConfigData?.selectedDepositAmountSettingList)
                     setOnItemClickListener { adapter, view, position ->
                         (adapter as QuickMoneyAdapter).selectItem(position)
                         adapter.data[position].toString().let {
@@ -858,6 +856,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                             et_recharge_amount.et_input.clearFocus()
                         }
                     }
+                    setList(sConfigData?.selectedDepositAmountSettingList)
                 }
             } else {
                 (rv_quick_money.adapter as QuickMoneyAdapter).setList(sConfigData?.selectedDepositAmountSettingList)
