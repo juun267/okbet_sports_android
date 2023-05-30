@@ -388,7 +388,7 @@ class MainLeftFragment2 : org.cxct.sportlottery.ui.base.BindingFragment<MainView
         if (LanguageManager.getSelectLanguageName() != select.key) {
             context?.let {
                 LanguageManager.saveSelectLanguage(it, select)
-                MainTabActivity.reStart(it)
+                MainTabActivity.reStart(it, true)
             }
         }
     }
