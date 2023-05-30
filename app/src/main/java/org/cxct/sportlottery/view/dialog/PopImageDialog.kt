@@ -84,6 +84,7 @@ class PopImageDialog :
         }
 
         xbanner.setHandLoop(loopEnable)
+        xbanner.setAutoPlayAble(loopEnable)
         xbanner.setOnItemClickListener(this@PopImageDialog)
         xbanner.loadImage { _, model, view, _ ->
             (view as ImageView).load((model as XBannerImage).imgUrl, R.drawable.img_banner01)
@@ -91,7 +92,7 @@ class PopImageDialog :
 
         val host = sConfigData?.resServerHost
         val images = imageList.map {
-            XBannerImage(it.imageText1 + "", host + it.imageName1, it.appUrl)
+            XBannerImage(it.imageText1 + "", host + it.imageName1, it.imageLink)
         }
 
         if (imageType == 7 && images.isNotEmpty()) {
