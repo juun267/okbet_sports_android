@@ -30,6 +30,7 @@ import kotlinx.android.synthetic.main.content_odds_detail_list_team.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.network.common.ComparePlayCate
 import org.cxct.sportlottery.network.common.GameType
@@ -1500,7 +1501,7 @@ class OddsDetailListAdapter(
                                 oddsDetail.oddArrayList.indexOf(oddsDetail.oddArrayList.find { it?.id == payloadItem })
 //                            Timber.d("===洗刷刷3 index:${index} payloads:${payloads.size}")
                             ((it1.adapter) as TypeSingleAdapter).setOddsDetailData(oddsDetail)
-                            it1.adapter?.notifyItemChanged(index)
+                            runWithCatch { it1.adapter?.notifyItemChanged(index) }
                         }
                     }
                 }
