@@ -354,7 +354,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     }
 
     private fun setItemMoreVisiable(binding: ItemGameCategroyBinding, visisable: Boolean) {
-        binding.ivMore.isVisible = visisable
+//        binding.ivMore.isVisible = visisable
         binding.tvMore.isVisible = visisable
     }
 

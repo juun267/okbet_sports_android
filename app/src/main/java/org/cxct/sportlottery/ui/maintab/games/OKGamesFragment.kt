@@ -31,9 +31,9 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
 
     private lateinit var binding: FragmentOkgamesBinding
     private val fragmentHelper by lazy {
-        FragmentHelper(childFragmentManager, R.id.fragmentContainer, arrayOf(
-                Pair(AllGamesFragment::class.java, null),
-                Pair(PartGamesFragment::class.java, null)
+        FragmentHelper(
+            childFragmentManager, R.id.fragmentContainer, arrayOf(
+                Pair(AllGamesFragment::class.java, null), Pair(PartGamesFragment::class.java, null)
             )
         )
     }
@@ -46,7 +46,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
             if (!isAllTba()) {
                 backGameAll()
             }
-            binding.scrollView.smoothScrollTo(0,0)
+            binding.scrollView.smoothScrollTo(0, 0)
         }
         fragmentHelper.getCurrentFragment().onHiddenChanged(hidden)
     }
@@ -54,9 +54,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
     private inline fun mainTabActivity() = activity as MainTabActivity
 
     override fun createRootView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         return FragmentOkgamesBinding.inflate(layoutInflater).apply { binding = this }.root
     }
@@ -82,6 +80,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
             mainTabActivity().showMainLeftMenu(this@OKGamesFragment.javaClass)
         }
     }
+
     private fun initObservable() = viewModel.run {
         gameHall.observe(viewLifecycleOwner) {
             binding.topView.setTabsData(it?.categoryList?.toMutableList())
@@ -94,8 +93,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         }
 
         enterThirdGameResult.observe(viewLifecycleOwner) {
-            if (isVisible)
-                enterThirdGame(it.second, it.first)
+            if (isVisible) enterThirdGame(it.second, it.first)
         }
 
         gameBalanceResult.observe(viewLifecycleOwner) {
@@ -115,9 +113,11 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
             hideKeyboard()
             if (!searchKey.isEmptyStr()) {
                 changePartGamesLabel(GameTab.TAB_SEARCH, searchKey)
-                startLoad{ viewModel.searchGames(retagRequest(), searchKey, it,
-                    PartGamesFragment.pageSize
-                ) }
+                startLoad {
+                    viewModel.searchGames(
+                        retagRequest(), searchKey, it, PartGamesFragment.pageSize
+                    )
+                }
             }
         }
     }
@@ -185,22 +185,26 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
     fun changePartGames(okgamesFirm: OKGamesFirm) {
         changePartGamesLabel(okgamesFirm)
         val firmId = okgamesFirm.getKey().toString()
-        startLoad{ viewModel.getOKGamesList(retagRequest(), null, firmId, it,
-            PartGamesFragment.pageSize
-        ) }
+        startLoad {
+            viewModel.getOKGamesList(
+                retagRequest(), null, firmId, it, PartGamesFragment.pageSize
+            )
+        }
     }
 
     private fun loadFavorite(tab: OKGameTab) {
         changePartGamesLabel(tab)
-        startLoad{ viewModel.getFavoriteOKGames(retagRequest(), it, PartGamesFragment.pageSize) }
+        startLoad { viewModel.getFavoriteOKGames(retagRequest(), it, PartGamesFragment.pageSize) }
     }
 
     private fun reloadPartGames(tab: OKGameTab) {
         changePartGamesLabel(tab)
         val categoryId = tab.getKey().toString()
-        startLoad{ viewModel.getOKGamesList(retagRequest(), categoryId, null, it,
-            PartGamesFragment.pageSize
-        ) }
+        startLoad {
+            viewModel.getOKGamesList(
+                retagRequest(), categoryId, null, it, PartGamesFragment.pageSize
+            )
+        }
     }
 
     private fun startLoad(request: (Int) -> Unit) {
@@ -208,7 +212,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         request.invoke(1)
     }
 
-    private fun changePartGamesLabel(tab: OKGameLabel, labelName: String ?= null) {
+    private fun changePartGamesLabel(tab: OKGameLabel, labelName: String? = null) {
         showPartGameFragment().changeLabel(tab, labelName)
     }
 
