@@ -13,7 +13,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.databinding.ItemChatMessageUserBinding as ICMUB
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatMessageResult
-import org.cxct.sportlottery.ui.chat.ChatMessageListAdapter3
+import org.cxct.sportlottery.ui.chat.adapter.ChatMessageListAdapter3
 import org.cxct.sportlottery.ui.chat.bean.UserMessageStyle
 import org.cxct.sportlottery.util.TimeUtil
 

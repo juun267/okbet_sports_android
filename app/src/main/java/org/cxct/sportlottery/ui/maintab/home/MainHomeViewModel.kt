@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.callApi
@@ -186,27 +187,39 @@ open class MainHomeViewModel(
                         currentTimeMillis.toString(), startTimeStamp.toString()
                     )
                 )
+            } ?: return@launch
+
+            if (!resultRecommend.success && resultRecommend.result == null) {
+                return@launch
             }
-            resultRecommend?.let { result ->
-                if (result.success&&result.result!=null) {
-                    result.result.recommendList.filter {
-                        !it.menuList.isNullOrEmpty()
-                    }.forEach { recommend ->
-                        recommend.oddsMap = recommend.odds
-                        with(recommend) {
-//                            setupOddsSort()
-                            sortOddsByMenu()
-                            setupMatchType()
-                            setupMatchTime()
-                            setupPlayCateNum()
-                            setupLeagueName()
-                            setupSocketMatchStatus()
+
+            launch(Dispatchers.IO) {
+                resultRecommend.result!!.recommendList.filter {
+                    !it.menuList.isNullOrEmpty()
+                }.forEach { recommend ->
+                    recommend.oddsMap = recommend.odds
+
+                    // 过滤掉赔率为空掉对象
+                    recommend.oddsMap?.let { oddsMap ->
+                        oddsMap.forEach {
+                            oddsMap[it.key] =
+                                it.value?.filter { null != it }?.toMutableList() ?: mutableListOf()
                         }
                     }
-                    _publicityRecommend.postValue(Event(result.result.recommendList))
 
-                    notifyFavorite(FavoriteType.MATCH)
+                    with(recommend) {
+//                            setupOddsSort()
+                        sortOddsByMenu()
+                        setupMatchType()
+                        setupMatchTime()
+                        setupPlayCateNum()
+                        setupLeagueName()
+                        setupSocketMatchStatus()
+                    }
                 }
+                _publicityRecommend.postValue(Event(resultRecommend.result.recommendList))
+
+                notifyFavorite(FavoriteType.MATCH)
             }
         }
     }
@@ -497,8 +510,11 @@ open class MainHomeViewModel(
             if (!thirdLoginResult.success) {
                 _enterThirdGameResult.postValue(
                     Pair(
-                        firmType, EnterThirdGameResult(
-                            EnterThirdGameResult.ResultType.FAIL, null, thirdLoginResult?.msg
+                        firmType,
+                        EnterThirdGameResult(
+                            EnterThirdGameResult.ResultType.FAIL,
+                            null,
+                            thirdLoginResult?.msg
                         )
                     )
                 )
@@ -507,7 +523,9 @@ open class MainHomeViewModel(
             }
 
             val thirdGameResult = EnterThirdGameResult(
-                EnterThirdGameResult.ResultType.SUCCESS, thirdLoginResult.msg, gameCategory
+                EnterThirdGameResult.ResultType.SUCCESS,
+                thirdLoginResult.msg,
+                gameCategory
             )
             if (autoTransfer(firmType)) { //第三方自動轉換
                 _enterThirdGameResult.postValue(Pair(firmType, thirdGameResult))
@@ -524,7 +542,9 @@ open class MainHomeViewModel(
         _enterThirdGameResult.postValue(
             Pair(
                 "", EnterThirdGameResult(
-                    resultType = EnterThirdGameResult.ResultType.NONE, url = null, errorMsg = null
+                    resultType = EnterThirdGameResult.ResultType.NONE,
+                    url = null,
+                    errorMsg = null
                 )
             )
         )
@@ -791,7 +811,10 @@ open class MainHomeViewModel(
         viewModelScope.launch {
             callApi({
                 NewsRepository.getHomeNews(
-                    pageNum, pageSize, NewsRepository.SORT_CREATE_TIME, categoryIds
+                    pageNum,
+                    pageSize,
+                    NewsRepository.SORT_CREATE_TIME,
+                    categoryIds
                 )
             }) {
                 if (it.succeeded()) {
@@ -810,7 +833,10 @@ open class MainHomeViewModel(
         viewModelScope.launch {
             callApi({
                 NewsRepository.getPageNews(
-                    pageNum, pageSize, NewsRepository.SORT_CREATE_TIME, categoryId
+                    pageNum,
+                    pageSize,
+                    NewsRepository.SORT_CREATE_TIME,
+                    categoryId
                 )
             }) {
                 if (it.succeeded()) {
