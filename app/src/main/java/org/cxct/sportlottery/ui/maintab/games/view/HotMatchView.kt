@@ -413,8 +413,10 @@ class HotMatchView(
 
     private fun Recommend.sortOddsMap() {
         this.oddsMap?.forEach { (_, value) ->
-            if ((value?.size
-                    ?: 0) > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)
+            if ((value?.size ?: 0) > 3
+                && value?.first()?.marketSort != null
+                && value?.first()?.marketSort != 0
+                && (value?.first()?.odds != value?.first()?.malayOdds)
             ) {
                 value?.sortBy { it.marketSort }
             }
