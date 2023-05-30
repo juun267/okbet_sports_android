@@ -113,6 +113,7 @@ class PopImageDialog :
         } else {
             JumpUtil.toInternalWeb(requireActivity(), jumpUrl, "")
         }
+          dismissAllowingStateLoss()
     }
 
 
