@@ -2,9 +2,12 @@ package org.cxct.sportlottery.ui.maintenance
 
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.View
 import androidx.core.view.isVisible
+import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_maintenance.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.fitsSystemStatus
 import org.cxct.sportlottery.network.index.config.ConfigData
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
@@ -20,8 +23,13 @@ class MaintenanceActivity : BaseSocketActivity<MaintenanceViewModel>(Maintenance
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStatusbar(R.color.color_232C4F_FFFFFF, true)
+        ImmersionBar.with(this)
+            .statusBarDarkFont(true)
+            .transparentStatusBar()
+            .fitsSystemWindows(false)
+            .init()
         setContentView(R.layout.activity_maintenance)
+        findViewById<View>(R.id.root).fitsSystemStatus()
 
         initObserver()
         initSocketObserver()
