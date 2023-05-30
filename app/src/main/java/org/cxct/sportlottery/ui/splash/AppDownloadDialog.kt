@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.splash
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -11,14 +12,19 @@ import android.widget.FrameLayout.LayoutParams
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentActivity
 import com.tbruyelle.rxpermissions2.RxPermissions
+import com.xuexiang.xupdate.XUpdate
+import com.xuexiang.xupdate._XUpdate
+import com.xuexiang.xupdate.service.OnFileDownloadListener
 import kotlinx.android.synthetic.main.dialog_app_download.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.databinding.DialogAppDownloadBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
 import org.cxct.sportlottery.ui.base.BaseBindingDialog
 import org.cxct.sportlottery.util.*
+import java.io.File
 
 
 class AppDownloadDialog(
@@ -37,7 +43,7 @@ class AppDownloadDialog(
 
     override fun dismiss() {
         super.dismiss()
-        AppUpdateManager.cancel()
+
     }
 
     override fun initView() {
@@ -60,7 +66,7 @@ class AppDownloadDialog(
             } else {
                 checkAppVersionResult?.let {
                     try {
-                        AppUpdateManager.jumpMarketApp(context, it.storeURL ?: "")
+                        jumpMarketApp(context, it.storeURL ?: "")
                     } catch (e: Exception) {
                         e.printStackTrace()
                         JumpUtil.toExternalWeb(context, it.storeURL1 ?: "")
@@ -87,27 +93,36 @@ class AppDownloadDialog(
                 if (aBoolean) {
                     block_bottom_bar.visibility = View.GONE
                     block_progress_bar.visibility = View.VISIBLE
-                    AppUpdateManager.downloadApk(block_progress_bar.context, Constants.getAppDownloadUrl(), object : AppUpdateManager.OnDownloadListener {
-                        override fun onProgress(downloadBytes: Int, totalBytes: Int) {
-                            pb_download.progress = (downloadBytes * 1.0f / totalBytes * 100).toInt()
-                        }
+                    XUpdate.newBuild(context)
+                        .apkCacheDir(context.cacheDir.absolutePath) //设置下载缓存的根目录
+                        .build()
+                        .download(Constants.getAppDownloadUrl(), object : OnFileDownloadListener {
+                            //设置下载的地址和下载的监听
+                            override fun onStart() {
 
-                        override fun onFinish(fileUrl: String) {
-                            btn_download.isEnabled = true
-                            btn_download.setText(R.string.install)
-                            block_bottom_bar.visibility = View.VISIBLE
-                            mFileUrl = fileUrl
-                        }
+                            }
 
-                        override fun onError() {
-                            btn_download.isEnabled = true
-                            btn_download.setText(R.string.update)
-                            block_bottom_bar.visibility = View.VISIBLE
-                            block_progress_bar.visibility = View.GONE
-                            ToastUtil.showToastInCenter(context,
-                                context.getString(R.string.download_fail))
-                        }
-                    })
+                            override fun onProgress(progress: Float, total: Long) {
+                                pb_download.progress = (progress * 100).toInt()
+                            }
+
+                            override fun onCompleted(file: File): Boolean {
+                                btn_download.isEnabled = true
+                                btn_download.setText(R.string.install)
+                                block_bottom_bar.visibility = View.VISIBLE
+                                mFileUrl = file.absolutePath
+                                return false
+                            }
+
+                            override fun onError(throwable: Throwable) {
+                                btn_download.isEnabled = true
+                                btn_download.setText(R.string.update)
+                                block_bottom_bar.visibility = View.VISIBLE
+                                block_progress_bar.visibility = View.GONE
+                                ToastUtil.showToastInCenter(context,
+                                    context.getString(R.string.download_fail))
+                            }
+                        })
                 } else {
                     ToastUtil.showToastInCenter(context,
                         context.getString(R.string.denied_read_memory_card))
@@ -144,14 +159,38 @@ class AppDownloadDialog(
 
     //安裝更新
     private fun installApk() {
-        try {
-            AppUpdateManager.install(context, mFileUrl)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            ToastUtil.showToastInCenter(context, context.getString(R.string.error_file))
-            mOnDownloadCallBack?.onDownloadError()
-        }
+        _XUpdate.startInstallApk(context, File(mFileUrl))//填写文件所在的路径
     }
+
+    fun jumpMarketApp(context: Context, url: String) {
+        when (BuildConfig.FLAVOR) {
+            "google" -> {
+                runWithCatch {
+                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                        data = Uri.parse(url)
+                        setPackage("com.android.vending")
+                    }
+                    context.startActivity(intent)
+                }
+            }
+            "huawei" -> {
+                val intent = Intent("com.huawei.appmarket.intent.action.AppDetail")
+                intent.setPackage("com.huawei.appmarket")
+                intent.putExtra("APP_PACKAGENAME", context.packageName)
+                context.startActivity(intent)
+            }
+            else -> {
+                runWithCatch {
+                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                        data = Uri.parse(url)
+                    }
+                    context.startActivity(intent)
+                }
+            }
+        }
+
+    }
+
     interface OnDownloadCallBack {
         fun onDownloadError()
         fun goHomeActivity()

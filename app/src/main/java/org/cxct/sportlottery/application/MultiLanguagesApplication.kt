@@ -15,6 +15,11 @@ import androidx.multidex.MultiDex
 import cn.jpush.android.api.JPushInterface
 import com.appsflyer.AppsFlyerLib
 import com.didichuxing.doraemonkit.DoKit
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.xuexiang.xupdate.XUpdate
+import com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION
+import com.xuexiang.xupdate.utils.UpdateUtils
 import me.jessyan.autosize.AutoSize
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
@@ -27,6 +32,7 @@ import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.money.RedEnveLopeModel
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.service.ApplicationBroadcastReceiver
 import org.cxct.sportlottery.service.ApplicationBroadcastReceiver
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.betList.BetListViewModel
@@ -229,6 +235,7 @@ class MultiLanguagesApplication : Application() {
         setupDeviceCode()
         initAppsFlyerSDK()
         initJpush()
+        initXUpdate()
 
         if (BuildConfig.DEBUG) {
             CrashHandler.setup(this) //错误日志收集
@@ -315,6 +322,26 @@ class MultiLanguagesApplication : Application() {
             OddsType.MYS.code -> mInstance.mOddsType.postValue(OddsType.MYS)
             OddsType.IDN.code -> mInstance.mOddsType.postValue(OddsType.IDN)
         }
+    }
+
+    fun initXUpdate() {
+        XUpdate.get()
+            .debug(BuildConfig.DEBUG)
+            .isWifiOnly(true) //默认设置只在wifi下检查版本更新
+            .isGet(true) //默认设置使用get请求检查版本
+            .isAutoMode(false) //默认设置非自动模式，可根据具体使用配置
+            .param("versionCode", UpdateUtils.getVersionCode(this)) //设置默认公共请求参数
+            .param("appKey", packageName)
+            .setOnUpdateFailureListener { error ->
+
+                //设置版本更新出错的监听
+                if (error.code != CHECK_NO_NEW_VERSION) {          //对不同错误进行处理
+                    ToastUtil.showToast(instance, error.toString())
+                }
+            }
+            .supportSilentInstall(true) //设置是否支持静默安装，默认是true
+            .setIUpdateHttpService(OKHttpUpdateHttpService()) //这个必须设置！实现网络请求功能。
+            .init(this)
     }
 
     companion object {
