@@ -2,13 +2,14 @@ package org.cxct.sportlottery.ui.money.recharge
 
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.databinding.ItemQuickMoneyBinding
+import org.cxct.sportlottery.util.TextUtil
 
 
-class QuickMoneyAdapter : BindingAdapter<String, ItemQuickMoneyBinding>() {
-    var selectPos: Int? = null
-    override fun onBinding(position: Int, binding: ItemQuickMoneyBinding, item: String) {
+class QuickMoneyAdapter : BindingAdapter<Int, ItemQuickMoneyBinding>() {
+    private var selectPos: Int? = null
+    override fun onBinding(position: Int, binding: ItemQuickMoneyBinding, item: Int) {
         binding.tvName.apply {
-            text = item
+            text = TextUtil.formatBetQuota(item)
             isSelected = (selectPos == position)
         }
     }
