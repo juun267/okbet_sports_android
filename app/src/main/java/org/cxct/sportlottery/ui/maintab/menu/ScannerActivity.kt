@@ -23,7 +23,7 @@ import org.cxct.sportlottery.view.dialog.ScanErrorDialog
 class ScannerActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private lateinit var codeScanner: CodeScanner
-    private lateinit var animator: ValueAnimator
+    private var animator: ValueAnimator? = null
 
     private val binding by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
         ActivityScannerBinding.inflate(layoutInflater)
@@ -107,7 +107,7 @@ class ScannerActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private fun stopScanAnim() {
         ivScanFrame.gone()
-        animator.cancel()
+        animator?.cancel()
     }
 
     override fun onResume() {
