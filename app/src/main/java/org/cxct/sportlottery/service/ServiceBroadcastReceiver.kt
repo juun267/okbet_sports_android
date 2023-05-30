@@ -269,6 +269,17 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
             EventType.ODDS_CHANGE -> {
                 val data = ServiceMessage.getOddsChange(jObjStr)?.apply {
                     channel = channelStr
+
+                    oddsList.forEach { // 过滤掉空odd(2023.05.30)
+                        if (it.oddsList != null) {
+                            val iterator = it.oddsList?.iterator()
+                            while (iterator.hasNext()) {
+                                if (iterator.next() == null) {
+                                    iterator.remove()
+                                }
+                            }
+                        }
+                    }
                 }
 
                 //query為耗時任務不能在主線程, LiveData需在主線程更新
