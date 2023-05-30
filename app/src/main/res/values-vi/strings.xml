@@ -20,7 +20,7 @@
     <string name="btn_cancel">Hủy</string>
     <string name="btn_retry">Vui lòng thử lại</string>
     <string name="error_config_title">mạng không ổn định</string>
-    <string name="find_new_version">Phát hiện phiên bản mới</string>
+    <string name="find_new_version">Phiên bản mới</string>
     <string name="version_name">Phiên bản %s</string>
     <string name="btn_pass">Bỏ qua</string>
     <string name="login_account">Đăng nhập tài khoản</string>
