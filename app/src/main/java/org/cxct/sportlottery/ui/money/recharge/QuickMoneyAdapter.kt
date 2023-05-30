@@ -5,11 +5,11 @@ import org.cxct.sportlottery.ui.common.adapter.BindingAdapter
 import org.cxct.sportlottery.util.TextUtil
 
 
-class QuickMoneyAdapter : BindingAdapter<String, ItemQuickMoneyBinding>() {
+class QuickMoneyAdapter : BindingAdapter<Int, ItemQuickMoneyBinding>() {
     private var selectPos: Int? = null
-    override fun onBinding(position: Int, binding: ItemQuickMoneyBinding, item: String) {
+    override fun onBinding(position: Int, binding: ItemQuickMoneyBinding, item: Int) {
         binding.tvName.apply {
-            text = TextUtil.formatMoney(item)
+            text = TextUtil.formatBetQuota(item)
             isSelected = (selectPos == position)
         }
     }

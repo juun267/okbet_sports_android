@@ -25,13 +25,24 @@ import kotlinx.android.synthetic.main.crypto_pay_fragment.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_icon_and_tick.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.include_quick_money.*
+import kotlinx.android.synthetic.main.online_pay_fragment.*
 import kotlinx.android.synthetic.main.transfer_pay_fragment.*
 import kotlinx.android.synthetic.main.transfer_pay_fragment.btn_submit
 import kotlinx.android.synthetic.main.transfer_pay_fragment.cv_recharge_time
 import kotlinx.android.synthetic.main.transfer_pay_fragment.et_recharge_amount
+import kotlinx.android.synthetic.main.transfer_pay_fragment.includeQuickMoney
+import kotlinx.android.synthetic.main.transfer_pay_fragment.iv_bank_icon
+import kotlinx.android.synthetic.main.transfer_pay_fragment.ll_fee_amount
+import kotlinx.android.synthetic.main.transfer_pay_fragment.ll_fee_rate
 import kotlinx.android.synthetic.main.transfer_pay_fragment.ll_qr
+import kotlinx.android.synthetic.main.transfer_pay_fragment.ll_remark
+import kotlinx.android.synthetic.main.transfer_pay_fragment.title_fee_amount
+import kotlinx.android.synthetic.main.transfer_pay_fragment.title_fee_rate
+import kotlinx.android.synthetic.main.transfer_pay_fragment.tv_currency_type
 import kotlinx.android.synthetic.main.transfer_pay_fragment.tv_fee_amount
 import kotlinx.android.synthetic.main.transfer_pay_fragment.tv_fee_rate
+import kotlinx.android.synthetic.main.transfer_pay_fragment.tv_remark
+import kotlinx.android.synthetic.main.transfer_pay_fragment.txv_pay_bank
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.common.RechType
@@ -819,26 +830,33 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
      * 设置快捷金额
      */
     private fun setupQuickMoney() {
-        includeQuickMoney.isVisible = true
-        if (rv_quick_money.adapter == null) {
-            rv_quick_money.layoutManager = GridLayoutManager(requireContext(), 3)
-            rv_quick_money.addItemDecoration(GridItemDecoration(10.dp,
-                12.dp,
-                requireContext().getColor(R.color.color_FFFFFF),
-                false))
-            rv_quick_money.adapter = QuickMoneyAdapter().apply {
-                setList(listOf("500", "1000", "5000", "10000", "50000", "100000"))
-                setOnItemClickListener { adapter, view, position ->
-                    (adapter as QuickMoneyAdapter).selectItem(position)
-                }
-            }
+        if (sConfigData?.selectedDepositAmountSettingList.isNullOrEmpty()) {
+            includeQuickMoney.isVisible = false
+            et_recharge_amount.showLine(true)
+            et_recharge_amount.setMarginBottom(10.dp)
         } else {
-            (rv_quick_money.adapter as QuickMoneyAdapter).setList(listOf("500",
-                "1000",
-                "5000",
-                "10000",
-                "50000",
-                "100000"))
+            includeQuickMoney.isVisible = true
+            et_recharge_amount.showLine(false)
+            et_recharge_amount.setMarginBottom(0.dp)
+            if (rv_quick_money.adapter == null) {
+                rv_quick_money.layoutManager = GridLayoutManager(requireContext(), 3)
+                rv_quick_money.addItemDecoration(GridItemDecoration(10.dp,
+                    12.dp,
+                    requireContext().getColor(R.color.color_FFFFFF),
+                    false))
+                rv_quick_money.adapter = QuickMoneyAdapter().apply {
+                    setList(sConfigData?.selectedDepositAmountSettingList)
+                    setOnItemClickListener { adapter, view, position ->
+                        (adapter as QuickMoneyAdapter).selectItem(position)
+                        adapter.data[position].toString().let {
+                            et_recharge_amount.setText(it)
+                            et_recharge_amount.et_input.setSelection(et_recharge_amount.getText().length)
+                        }
+                    }
+                }
+            } else {
+                (rv_quick_money.adapter as QuickMoneyAdapter).setList(sConfigData?.selectedDepositAmountSettingList)
+            }
         }
     }
 }

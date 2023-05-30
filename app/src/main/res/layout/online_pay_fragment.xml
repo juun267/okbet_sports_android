@@ -37,11 +37,17 @@
             android:id="@+id/et_recharge_online_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_FFFFFF"
             app:cvTextColor="@color/color_9BB3D9_535D76"
             app:cvTitleTextStyle="normal"
             app:cvHint="@string/edt_hint_deposit_money"
             app:cvInputType="number"
             app:cvTitle="@string/title_deposit_money" />
+
+        <include
+            android:id="@+id/includeQuickMoney"
+            layout="@layout/include_quick_money"
+            android:visibility="gone" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

@@ -371,7 +371,6 @@
             app:cvInputType="number"
             app:cvTextColor="@color/color_9BB3D9_535D76"
             app:cvTitleTextStyle="normal"
-            app:cvBottomLine="false"
             app:cvTitle="@string/title_deposit_money" />
 
         <include
