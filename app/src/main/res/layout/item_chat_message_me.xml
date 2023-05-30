@@ -69,6 +69,7 @@
                 android:paddingTop="4dp"
                 android:paddingBottom="14dp"
                 android:textSize="@dimen/textSize12sp"
+                android:textColor="@color/white"
                 tools:text="N"
                 tools:visibility="visible" />
 

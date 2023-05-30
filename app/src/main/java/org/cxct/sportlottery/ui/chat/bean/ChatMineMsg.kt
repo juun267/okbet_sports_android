@@ -3,7 +3,7 @@ package org.cxct.sportlottery.ui.chat.bean
 import android.view.ViewGroup
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatMessageResult
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatRoomMsg
-import org.cxct.sportlottery.ui.chat.ChatMessageListAdapter3
+import org.cxct.sportlottery.ui.chat.adapter.ChatMessageListAdapter3
 import org.cxct.sportlottery.ui.chat.adapter.vh.MeVH
 
 // 聊天列表我自己发的消息

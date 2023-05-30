@@ -2,7 +2,7 @@ package org.cxct.sportlottery.ui.chat.bean
 
 import android.view.ViewGroup
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.*
-import org.cxct.sportlottery.ui.chat.ChatMessageListAdapter3
+import org.cxct.sportlottery.ui.chat.adapter.ChatMessageListAdapter3
 import org.cxct.sportlottery.ui.chat.adapter.vh.MessageRedEnvelopeVH
 
 sealed class ChatRedEnvelopeMsg<T>(data: ChatReceiveContent<T>)
