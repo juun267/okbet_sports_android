@@ -851,7 +851,6 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     false))
                 rv_quick_money.adapter = QuickMoneyAdapter().apply {
                     setList(sConfigData?.selectedDepositAmountSettingList)
-                    LogUtil.toJson(sConfigData?.selectedDepositAmountSettingList)
                     setOnItemClickListener { adapter, view, position ->
                         (adapter as QuickMoneyAdapter).selectItem(position)
                         adapter.data[position].toString().let {
