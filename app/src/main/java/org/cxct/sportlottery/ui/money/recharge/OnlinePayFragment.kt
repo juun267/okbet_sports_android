@@ -232,6 +232,8 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
                 checkRcgOnlineAmount(it, mSelectRechCfgs)
                 if (it.isEmpty() || it.isBlank()) {
+                    if (includeQuickMoney.isVisible) (rv_quick_money.adapter as QuickMoneyAdapter).selectItem(
+                        -1)
                     tv_fee_amount.text = ArithUtil.toMoneyFormat(0.0)
                 } else {
                     tv_fee_amount.text = TextUtil.formatMoney(
@@ -252,10 +254,9 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         et_recharge_online_amount.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
             if (!hasFocus)
                 viewModel.checkRcgOnlineAmount(et_recharge_online_amount.getText(), mSelectRechCfgs)
-            else
-                if (includeQuickMoney.isVisible) {
-                    (rv_quick_money.adapter as QuickMoneyAdapter).selectItem(-1)
-                }
+            else if (includeQuickMoney.isVisible) {
+                (rv_quick_money.adapter as QuickMoneyAdapter).selectItem(-1)
+            }
         }
         et_recharge_online_payer.setEditTextOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus)

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -654,9 +654,9 @@
                 android:layout_height="wrap_content"
                 android:text="@string/btn_service"
                 android:textColor="@color/color_025BE8"
-                android:textSize="@dimen/textSize14sp"/>
+                android:textSize="@dimen/textSize14sp" />
 
         </LinearLayout>
     </LinearLayout>
 
-</ScrollView>
+</androidx.core.widget.NestedScrollView>
