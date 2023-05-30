@@ -8,11 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.DialogFragment
-import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.dialog_send_picture_msg.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialogFragment
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -69,11 +67,7 @@ class SendPictureMsgDialog : BaseDialogFragment() {
 
         val resServerHost: String = sConfigData?.resServerHost.orEmpty()
         val url = if (imagePath.startsWith("http")) imagePath else "$resServerHost/$imagePath"
-        Glide.with(ivImg.context)
-            .load(url)
-            .placeholder(ContextCompat.getDrawable(ivImg.context, R.drawable.ic_image_load))
-            .error(ContextCompat.getDrawable(ivImg.context, R.drawable.ic_image_load))
-            .into(ivImg)
+        ivImg.load(url, R.drawable.ic_image_load)
 
         ivSend.setOnClickListener {
             if (etInput.text.isNullOrEmpty()) {
