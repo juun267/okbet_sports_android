@@ -90,10 +90,11 @@ class HomeTopView @JvmOverloads constructor(
             }
             xbanner.setBannerData(images.toMutableList())
         } else {
+            //优惠活动
             val host = sConfigData?.resServerHost
             val promoteImages = imageList.map {
-//                Timber.d("host:$host url4:${host + it.imageName4}")
-                XBannerImage(it.imageText1 + "", host + it.imageName4, it.appUrl)
+                Timber.d("host:$host url4:${host + it.imageName4}")
+                XBannerImage(it.imageText1 + "", host + it.imageName4, it.imageLink)
             }
             setUpPromoteView(promoteImages)
         }
