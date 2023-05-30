@@ -9,6 +9,10 @@ import android.view.View.OnClickListener
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.view.isInvisible
+import androidx.recyclerview.widget.PagerSnapHelper
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemClickListener
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.stx.xhb.androidx.XBanner
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
@@ -29,6 +33,7 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.goneWithSportSwitch
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.setVisibilityByMarketSwitch
+import timber.log.Timber
 
 class HomeTopView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
@@ -59,7 +64,8 @@ class HomeTopView @JvmOverloads constructor(
     private fun setUpBanner(lang: String, imageType: Int) {
         val imageList = sConfigData?.imageList?.filter {
             it.imageType == imageType && it.lang == lang && !it.imageName1.isNullOrEmpty()
-        }?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
+        }
+            ?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
         val loopEnable = (imageList?.size ?: 0) > 1
         if (imageList.isNullOrEmpty()) {
             return
@@ -103,6 +109,11 @@ class HomeTopView @JvmOverloads constructor(
 
             }
         promoteAdapter.setNewInstance(imageList.toMutableList())
+        promoteAdapter.setOnItemClickListener { adapter, view, position ->
+            jumpToOthers(
+                promoteAdapter.getItem(position)
+            )
+        }
         binding.rcvPromote.apply {
             adapter = promoteAdapter
             if (onFlingListener == null) {
@@ -113,6 +124,11 @@ class HomeTopView @JvmOverloads constructor(
     }
 
     override fun onItemClick(banner: XBanner, model: Any, view: View, position: Int) {
+        jumpToOthers(model)
+
+    }
+
+    private fun jumpToOthers(model: Any) {
         val jumpUrl = (model as XBannerImage).jumpUrl
         if (jumpUrl.isEmptyStr()) {
             return
@@ -123,7 +139,6 @@ class HomeTopView @JvmOverloads constructor(
         } else {
             JumpUtil.toInternalWeb(context, jumpUrl, "")
         }
-
     }
 
     private fun initLogin() {
