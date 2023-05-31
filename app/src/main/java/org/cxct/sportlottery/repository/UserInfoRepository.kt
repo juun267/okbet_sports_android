@@ -19,12 +19,14 @@ object UserInfoRepository {
         MultiLanguagesApplication.appContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
 
-    var checkedUserInfo = false //紀錄checkToken後是否獲取過UserInfo
+    // 拉取userInfo时间戳的记录
+    var lastRequestUserInfoTime = 0L
 
     val userInfo: LiveData<UserInfo?>
         get() = MultiLanguagesApplication.mInstance.userInfo
 
     suspend fun getUserInfo(): Response<UserInfoResult> {
+        lastRequestUserInfoTime = System.currentTimeMillis()
         val userInfoResponse = OneBoSportApi.userService.getUserInfo()
 
         if (userInfoResponse.isSuccessful) {
@@ -32,33 +34,34 @@ object UserInfoRepository {
                 if (it.success)
                     updateUserInfo(it.userInfoData)
             }
-            if (!checkedUserInfo)
-                checkedUserInfo = true
         }
         return userInfoResponse
     }
 
     @WorkerThread
     suspend fun updateUserInfo(userInfoData: UserInfoData?) {
-        userInfoData?.let {
-            val userInfo = transform(it)
-//            OLD_DISCOUNT = it.discount ?: 1f
-                //userInfoDao.upsert(userInfo)
-            MultiLanguagesApplication.getInstance()?.saveUserInfo(userInfo)
-
-            GameConfigManager.maxBetMoney = userInfoData.maxBetMoney ?: 9999999
-                GameConfigManager.maxCpBetMoney = userInfoData.maxCpBetMoney ?: 9999
-                GameConfigManager.maxParlayBetMoney = userInfoData.maxParlayBetMoney ?: 9999
-
-                with(sharedPref.edit()){
-                    putInt(KEY_USER_LEVEL_ID, userInfoData.userLevelId)
-                    userInfoData?.liveSyncUserInfoVO?.let {
-                        putString(KEY_LIVE_USER_INFO, it.toJson())
-                    }
-                    apply()
-                }
-            
+        if (userInfoData == null) {
+            lastRequestUserInfoTime = 0
+            return
         }
+
+        val userInfo = transform(userInfoData)
+//            OLD_DISCOUNT = it.discount ?: 1f
+            //userInfoDao.upsert(userInfo)
+        MultiLanguagesApplication.getInstance()?.saveUserInfo(userInfo)
+
+        GameConfigManager.maxBetMoney = userInfoData.maxBetMoney ?: 9999999
+        GameConfigManager.maxCpBetMoney = userInfoData.maxCpBetMoney ?: 9999
+        GameConfigManager.maxParlayBetMoney = userInfoData.maxParlayBetMoney ?: 9999
+
+        with(sharedPref.edit()){
+            putInt(KEY_USER_LEVEL_ID, userInfoData.userLevelId)
+            userInfoData?.liveSyncUserInfoVO?.let {
+                putString(KEY_LIVE_USER_INFO, it.toJson())
+            }
+            apply()
+        }
+            
     }
 
     suspend fun getDiscount(userId: Long): Float {

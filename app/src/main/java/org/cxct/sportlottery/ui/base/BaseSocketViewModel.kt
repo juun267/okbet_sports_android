@@ -23,16 +23,18 @@ abstract class BaseSocketViewModel(
     favoriteRepository
 ) {
 
+    companion object {
+
+
+
+    }
+
     init {
         /* gotConfigData 判斷：避免進 WebViewActivity crash */
-        if (!loginRepository.isCheckToken && gotConfigData) {
+        if (loginRepository.isLogined() && UserInfoRepository.lastRequestUserInfoTime - System.currentTimeMillis() > 20_000) {
             viewModelScope.launch {
-                loginRepository.checkToken()
-
-                if (!userInfoRepository.checkedUserInfo && isLogin.value == true) {
-                    doNetwork(androidContext, exceptionHandle = false) {
-                        userInfoRepository.getUserInfo()
-                    }
+                doNetwork(androidContext, exceptionHandle = false) {
+                    userInfoRepository.getUserInfo()
                 }
             }
         }

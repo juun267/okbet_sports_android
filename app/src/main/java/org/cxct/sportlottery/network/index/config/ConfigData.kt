@@ -1,10 +1,10 @@
 package org.cxct.sportlottery.network.index.config
 
+import androidx.annotation.Keep
 import com.squareup.moshi.JsonClass
-import org.cxct.sportlottery.common.proguards.KeepMembers
 
 @JsonClass(generateAdapter = true)
-@KeepMembers
+@Keep
 data class ConfigData(
     val platformId: Long?,
     val agentMode: String?, //代理模式：ulimit 无限级，fixed 固定级
