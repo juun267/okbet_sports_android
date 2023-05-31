@@ -138,21 +138,19 @@ class SplashViewModel(
         }
     }
 
-    fun goNextPage() {
-//        if (sConfigData?.thirdOpen != FLAG_OPEN) {
-        viewModelScope.launch {
-            loginRepository.checkToken()
+    fun goNextPage() = viewModelScope.launch {
 
-            if (!userInfoRepository.checkedUserInfo && isLogin.value == true) {
-                runWithCatch { userInfoRepository.getUserInfo() }
-                _skipHomePage.postValue(true)
-            } else {
-                _skipHomePage.postValue(true)
+        if (LoginRepository.hasToken()) {
+            val checkTokenResponse = kotlin.runCatching { OneBoSportApi.indexService.checkToken() }.getOrNull()
+            if (checkTokenResponse?.isSuccessful == false) {
+                LoginRepository.clear()
             }
         }
-//        } else {
-//            _skipHomePage.postValue(false)
-//        }
+
+        if (LoginRepository.isLogined()) {
+            runWithCatch { userInfoRepository.getUserInfo() }
+        }
+        _skipHomePage.postValue(true)
     }
 
     private suspend fun sendGetHostRequest(index: Int) {

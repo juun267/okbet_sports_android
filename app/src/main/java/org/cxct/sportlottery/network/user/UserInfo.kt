@@ -1,7 +1,9 @@
 package org.cxct.sportlottery.network.user
 
+import androidx.annotation.Keep
 import org.cxct.sportlottery.network.common.UserRebate
 
+@Keep
 data class UserInfo(
     var userId: Long,
     var fullName: String? = null,

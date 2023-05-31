@@ -8,7 +8,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.PathMeasure
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
@@ -18,14 +17,12 @@ import android.widget.RelativeLayout
 import androidx.annotation.DrawableRes
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.core.view.postDelayed
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.android.synthetic.main.activity_main_tab.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.OddsType
@@ -235,6 +232,8 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             menu.getItem(2).isVisible = !getMarketSwitch()
             onNavigationItemSelectedListener =
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
+                    if (mIsEnabled) {
+                        avoidFastDoubleClick()
                     val position = getMenuItemPosition(menuItem)
                     //=true 体育赛事关闭，不能点击
                     if(checkMainPosition(position)){
@@ -263,20 +262,21 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                         }
                     }
 
-                    fragmentHelper.showFragment(position)
-                    if (position == 0) {
-                        homeFragment().backMainHome()
-                    } else {
-                        binding.llHomeBack.gone()
-                        if (position == 1) {
-                            GlobalScope.launch {
-                                delay(500)
-                                jumpToTheSport()
+                        fragmentHelper.showFragment(position)
+                        if (position == 0) {
+                            homeFragment().backMainHome()
+                        } else {
+                            binding.llHomeBack.gone()
+                            if (position == 1) {
+                                binding.bottomNavigationView.postDelayed({
+                                    jumpToTheSport()
+                                }, 300)
                             }
                         }
+                        setupBetBarVisiblity(position)
+                        return@OnNavigationItemSelectedListener true
                     }
-                    setupBetBarVisiblity(position)
-                    return@OnNavigationItemSelectedListener true
+                    return@OnNavigationItemSelectedListener false
                 }
 
 
@@ -790,5 +790,4 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     open fun getCurrentPosition(): Int = fragmentHelper.getCurrentPosition()
-
 }
