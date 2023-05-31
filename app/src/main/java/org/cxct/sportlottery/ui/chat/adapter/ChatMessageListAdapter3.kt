@@ -226,12 +226,12 @@ class ChatMessageListAdapter3(private val onPhotoClick: (String) -> Unit,
     private fun checkCount() {
         val count = dataCount()
         if (count > MAX_MSG_SIZE) {
-            val deleteList = data.subList(0, REMOVE_COUNT)
+            val deleteList = data.subList(1, REMOVE_COUNT - 1)
             data.removeAll(deleteList)
-            notifyItemRangeRemoved(0, REMOVE_COUNT)
-            val first = data.first()
+            notifyItemRangeRemoved(1, deleteList.size)
+            val first = data.getOrNull(1) ?: return
             if (!isDateItem(first)) {
-                addData(ChatDateMsg(first.dateTips) as ChatRoomMsg<*, BaseViewHolder>)
+                addData(1, ChatDateMsg(first.dateTips) as ChatRoomMsg<*, BaseViewHolder>)
             }
         }
     }
