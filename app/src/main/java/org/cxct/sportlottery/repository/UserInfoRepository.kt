@@ -229,4 +229,6 @@ object UserInfoRepository {
             vipType = userInfoData.vipType,
         )
 
+    suspend fun getSign(): ApiResult<JsonElement> = safeApi { signService.getSign() }
+
 }

@@ -4,6 +4,7 @@ package org.cxct.sportlottery.ui.maintab.home
 import android.os.Bundle
 import android.content.Intent
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
@@ -157,10 +158,11 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
             setupBettingStation(it)
         }
         viewModel.gotConfig.observe(viewLifecycleOwner) { event ->
+            val act = activity ?: return@observe
             viewModel.getSportMenuFilter()
             if (MultiLanguagesApplication.showHomeDialog) {
                 MultiLanguagesApplication.showHomeDialog = false
-                MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
+                MultiLanguagesApplication.showPromotionPopupDialog(act as AppCompatActivity)
                 if (PopImageDialog.checkImageTypeAvailable(7)) {
                     requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
                         putInt(PopImageDialog.IMAGE_TYPE, 7)
