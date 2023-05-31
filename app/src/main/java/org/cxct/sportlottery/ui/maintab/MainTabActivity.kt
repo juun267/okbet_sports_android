@@ -16,6 +16,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.core.view.postDelayed
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gyf.immersionbar.ImmersionBar
@@ -149,36 +150,44 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             menu.getItem(2).isVisible = !getMarketSwitch()
             onNavigationItemSelectedListener =
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
+                    if (mIsEnabled) {
+                        avoidFastDoubleClick()
+                        val position = getMenuItemPosition(menuItem)
 
-                    val position = getMenuItemPosition(menuItem)
-
-                    // index1,2,3。  体育赛事，注单，收藏赛事      在体育服务维护中时 不能点击
-                    if (position in 1..3) {
-                        //体育服务是否关闭
-                        if (getSportEnterIsClose()) {
-                            ToastUtil.showToast(context, context.getString(R.string.N969))
-                            return@OnNavigationItemSelectedListener false
-                        }
-                    }
-
-
-                    when (menuItem.itemId) {
-                        R.id.i_betlist, R.id.i_favorite, R.id.i_user -> {
-                            if (viewModel.isLogin.value == false) {
-                                startLogin()
+                        // index1,2,3。  体育赛事，注单，收藏赛事      在体育服务维护中时 不能点击
+                        if (position in 1..3) {
+                            //体育服务是否关闭
+                            if (getSportEnterIsClose()) {
+                                ToastUtil.showToast(context, context.getString(R.string.N969))
                                 return@OnNavigationItemSelectedListener false
                             }
                         }
-                    }
 
-                    fragmentHelper.showFragment(position)
-                    if (position == 0) {
-                        homeFragment().backMainHome()
-                    } else {
-                        binding.llHomeBack.gone()
+
+                        when (menuItem.itemId) {
+                            R.id.i_betlist, R.id.i_favorite, R.id.i_user -> {
+                                if (viewModel.isLogin.value == false) {
+                                    startLogin()
+                                    return@OnNavigationItemSelectedListener false
+                                }
+                            }
+                        }
+
+                        fragmentHelper.showFragment(position)
+                        if (position == 0) {
+                            homeFragment().backMainHome()
+                        } else {
+                            binding.llHomeBack.gone()
+                            if (position == 1) {
+                                binding.bottomNavigationView.postDelayed({
+                                    jumpToTheSport()
+                                }, 300)
+                            }
+                        }
+                        setupBetBarVisiblity(position)
+                        return@OnNavigationItemSelectedListener true
                     }
-                    setupBetBarVisiblity(position)
-                    return@OnNavigationItemSelectedListener true
+                    return@OnNavigationItemSelectedListener false
                 }
 
 
@@ -629,7 +638,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     fun jumpToInplaySport() {
         //检测体育服务是否关闭
-        checkSportStatus(this){
+        checkSportStatus(this) {
             resetBackIcon(1)
             ll_home_back.gone()
             jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)
