@@ -429,7 +429,6 @@ object LoginRepository {
     private suspend fun clearUserInfo() {
         withContext(Dispatchers.IO) {
             MultiLanguagesApplication.getInstance()?.saveUserInfo(null)
-            UserInfoRepository.lastRequestUserInfoTime = 0L
             GameConfigManager.maxBetMoney = 9999999
             GameConfigManager.maxCpBetMoney = 9999
             GameConfigManager.maxParlayBetMoney = 9999

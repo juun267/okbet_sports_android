@@ -19,14 +19,11 @@ object UserInfoRepository {
         MultiLanguagesApplication.appContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
 
-    // 拉取userInfo时间戳的记录
-    var lastRequestUserInfoTime = 0L
 
     val userInfo: LiveData<UserInfo?>
         get() = MultiLanguagesApplication.mInstance.userInfo
 
     suspend fun getUserInfo(): Response<UserInfoResult> {
-        lastRequestUserInfoTime = System.currentTimeMillis()
         val userInfoResponse = OneBoSportApi.userService.getUserInfo()
 
         if (userInfoResponse.isSuccessful) {
@@ -41,7 +38,6 @@ object UserInfoRepository {
     @WorkerThread
     suspend fun updateUserInfo(userInfoData: UserInfoData?) {
         if (userInfoData == null) {
-            lastRequestUserInfoTime = 0
             return
         }
 

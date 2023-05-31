@@ -23,23 +23,6 @@ abstract class BaseSocketViewModel(
     favoriteRepository
 ) {
 
-    companion object {
-
-
-
-    }
-
-    init {
-        /* gotConfigData 判斷：避免進 WebViewActivity crash */
-        if (loginRepository.isLogined() && UserInfoRepository.lastRequestUserInfoTime - System.currentTimeMillis() > 20_000) {
-            viewModelScope.launch {
-                doNetwork(androidContext, exceptionHandle = false) {
-                    userInfoRepository.getUserInfo()
-                }
-            }
-        }
-    }
-
     fun updateMoney(money: Double?) {
         LoginRepository.updateMoney(money)
     }
