@@ -82,7 +82,9 @@ class RegisterInfoViewModel(
             doNetwork(androidContext) {
                 OneBoSportApi.bettingStationService.getAreaUniversal()
             }?.let {
-                _areaAllList.postValue(it.areaAll)
+                it.let {
+                    _areaAllList.postValue(it.areaAll)
+                }
             }
         }
     }
@@ -97,10 +99,12 @@ class RegisterInfoViewModel(
             }
             result?.let {
                 salaryStringList.clear()
-                result.rows?.forEach { salary ->
-                    salaryStringList.add(salary.name)
+                result.rows?.let {
+                    result.rows.forEach { salary ->
+                        salaryStringList.add(salary.name)
+                    }
+                    _salaryList.postValue(it)
                 }
-                _salaryList.postValue(result.rows)
             }
         }
     }
@@ -300,6 +304,9 @@ class RegisterInfoViewModel(
 
     fun setProvinceData(provincePosition: Int) {
         val provinceList = getProvinceStringList()
+        if(provincePosition>provinceList.size-1){
+            return
+        }
         provinceInput = provinceList[provincePosition]
     }
 
