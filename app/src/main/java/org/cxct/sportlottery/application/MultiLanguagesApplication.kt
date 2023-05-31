@@ -7,10 +7,10 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.*
 import androidx.multidex.MultiDex
 import cn.jpush.android.api.JPushInterface
 import com.appsflyer.AppsFlyerLib
@@ -433,7 +433,7 @@ class MultiLanguagesApplication : Application() {
         }
 
         //確認年齡彈窗
-        fun showAgeVerifyDialog(activity: FragmentActivity) {
+        fun showAgeVerifyDialog(activity: AppCompatActivity) {
             if (isCreditSystem()) return //信用盤不顯示彈窗
             if (getInstance()?.isAgeVerifyNeedShow() == false) return
             AgeVerifyDialog(activity, object : AgeVerifyDialog.OnAgeVerifyCallBack {
@@ -451,18 +451,19 @@ class MultiLanguagesApplication : Application() {
             }).show()
         }
 
-        open fun showPromotionPopupDialog(activity: FragmentActivity) {
-            val token = loginSharedPref.getString(KEY_TOKEN, "")
+        open fun showPromotionPopupDialog(activity: AppCompatActivity) {
+            if (activity.isDestroyed
+                || isCreditSystem()
+                || sConfigData?.imageList?.any { it.imageType == ImageType.PROMOTION.code && !it.imageName3.isNullOrEmpty() && !(isGooglePlayVersion() && it.isHidden) } != true) {
+                return
+            }
 
-            if (!isCreditSystem() && sConfigData?.imageList?.any { it.imageType == ImageType.PROMOTION.code && !it.imageName3.isNullOrEmpty() && !(isGooglePlayVersion() && it.isHidden) } == true) PromotionPopupDialog(
-                activity, PromotionPopupDialog.PromotionPopupListener(onClickImageListener = {
-                    JumpUtil.toInternalWeb(
-                        activity, Constants.getPromotionUrl(
-                            token, LanguageManager.getSelectLanguage(activity)
-                        ), LocalUtils.getString(R.string.promotion)
-                    )
-                })
-            ).show()
+            PromotionPopupDialog(activity) {
+                val token = loginSharedPref.getString(KEY_TOKEN, "")
+                JumpUtil.toInternalWeb(activity,
+                    Constants.getPromotionUrl(token, LanguageManager.getSelectLanguage(activity)),
+                    activity.getString(R.string.promotion))
+            }.show()
         }
 
         fun saveOddsType(oddsType: OddsType) {

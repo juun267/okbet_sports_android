@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.Gravity
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentActivity
 import com.youth.banner.indicator.CircleIndicator
@@ -14,16 +15,13 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ScreenUtil
 import org.cxct.sportlottery.util.isGooglePlayVersion
 
-class PromotionPopupDialog(val activity: FragmentActivity, private val promotionPopupListener: PromotionPopupListener) :
+class PromotionPopupDialog(val activity: AppCompatActivity, private val promotionPopupListener: () -> Unit) :
     AlertDialog(activity) {
     private var _binding: DialogPromotionPopupBinding? = null
     private val binding get() = _binding!!
 
-    open class PromotionPopupListener(private val onClickImageListener: () -> Unit) {
-        fun onClickImageListener() = onClickImageListener.invoke()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         _binding = DialogPromotionPopupBinding.inflate(activity.layoutInflater)
         setContentView(binding.root)
         window?.setLayout(
@@ -69,7 +67,7 @@ class PromotionPopupDialog(val activity: FragmentActivity, private val promotion
             }
 
             setOnBannerListener { _, _ -> //data, position
-                promotionPopupListener.onClickImageListener()
+                promotionPopupListener.invoke()
                 dismiss()
             }
         }
