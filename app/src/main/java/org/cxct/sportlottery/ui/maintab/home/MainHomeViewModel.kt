@@ -157,9 +157,9 @@ open class MainHomeViewModel(
 
 
     //okgames游戏列表
-    val homeGamesList: LiveData<List<OKGameBean>>
+    val homeGamesList: LiveData< List<OKGameBean>>
         get() = _homeGamesList
-    private val _homeGamesList = MutableLiveData<List<OKGameBean>>()
+    private val _homeGamesList = MutableLiveData< List<OKGameBean>>()
 
 
     private val _recordBetNewHttp = MutableLiveData<List<RecordNewEvent>>()
@@ -243,24 +243,36 @@ open class MainHomeViewModel(
     /**
      * 获取首页okgames列表
      */
-    var pageIndex = 1
-    val pageSize = 6
-    var totalCount = 0
-    var totalPage = 0
+//    var pageIndex = 1
+//    val pageSize = 6
+//    var totalCount = 0
+//    var totalPage = 0
+
+     val pageIndexLiveData = MutableLiveData(1)
+     val pageSizeLiveData = MutableLiveData(6)
+     val totalCountLiveData = MutableLiveData(0)
+     val totalPageLiveData = MutableLiveData(0)
+
     fun getHomeOKGamesList(
-    ) = callApi({ OKGamesRepository.getHomeOKGamesList(pageIndex, pageSize) }) {
+    ) = callApi({
+        OKGamesRepository.getHomeOKGamesList(
+            pageIndexLiveData.value ?: 1, pageSizeLiveData.value ?: 1
+        )
+    }) {
         if (it.getData() == null) {
             //hide loading
             _homeGamesList.value = arrayListOf()
         } else {
-            totalCount = it.total
-            if (totalPage == 0) {
-                totalPage = totalCount / pageSize
+            totalCountLiveData.value = it.total
+            val totalCount = totalCountLiveData.value ?: 0
+            val pageSize = pageSizeLiveData.value ?: 0
+            if (totalPageLiveData.value == 0) {
+                totalPageLiveData.value = totalCount / pageSize
                 if (totalCount % pageSize != 0) {
-                    totalPage++
+                    totalPageLiveData.value = (totalPageLiveData.value ?: 0) + 1
                 }
             }
-            _homeGamesList.value = it.getData()
+            _homeGamesList.value=it.getData()
         }
     }
 
@@ -282,10 +294,7 @@ open class MainHomeViewModel(
             return
         }
         requestEnterThirdGame(
-            "${gameData.firmType}",
-            "${gameData.gameCode}",
-            "${gameData.gameCode}",
-            baseFragment
+            "${gameData.firmType}", "${gameData.gameCode}", "${gameData.gameCode}", baseFragment
         )
     }
 
@@ -429,42 +438,8 @@ open class MainHomeViewModel(
         }
 
         requestEnterThirdGame(
-            "${gameData.firmType}",
-            "${gameData.gameCode}",
-            "${gameData.gameCategory}",
-            baseFragment
+            "${gameData.firmType}", "${gameData.gameCode}", "${gameData.gameCategory}", baseFragment
         )
-    }
-
-    /**
-     * 未登录试玩
-     */
-    fun requestEnterThirdGameNoLogin(  firmType: String?, gameCode: String?,gameCategory: String?){
-        if(firmType==null){
-            //不支持试玩
-            _enterTrialPlayGameResult.postValue(null)
-            return
-        }
-
-        viewModelScope.launch {
-            //请求试玩线路
-            val result= doNetwork(androidContext) {
-               OneBoSportApi.thirdGameService.thirdNoLogin(firmType, gameCode)
-            }
-            if(result==null){
-                //不支持试玩
-                _enterTrialPlayGameResult.postValue(null)
-            }else{
-                if(result.success&&result.msg.isNotEmpty()){
-                    //获得了试玩路径
-                    val thirdGameResult = EnterThirdGameResult(EnterThirdGameResult.ResultType.SUCCESS, result.msg, gameCategory)
-                    _enterTrialPlayGameResult.postValue(Pair(firmType, thirdGameResult))
-                }else{
-                    //不支持试玩
-                    _enterTrialPlayGameResult.postValue(null)
-                }
-            }
-        }
     }
 
     //避免多次请求游戏
@@ -505,11 +480,8 @@ open class MainHomeViewModel(
             if (!thirdLoginResult.success) {
                 _enterThirdGameResult.postValue(
                     Pair(
-                        firmType,
-                        EnterThirdGameResult(
-                            EnterThirdGameResult.ResultType.FAIL,
-                            null,
-                            thirdLoginResult?.msg
+                        firmType, EnterThirdGameResult(
+                            EnterThirdGameResult.ResultType.FAIL, null, thirdLoginResult?.msg
                         )
                     )
                 )
@@ -518,9 +490,7 @@ open class MainHomeViewModel(
             }
 
             val thirdGameResult = EnterThirdGameResult(
-                EnterThirdGameResult.ResultType.SUCCESS,
-                thirdLoginResult.msg,
-                gameCategory
+                EnterThirdGameResult.ResultType.SUCCESS, thirdLoginResult.msg, gameCategory
             )
             if (autoTransfer(firmType)) { //第三方自動轉換
                 _enterThirdGameResult.postValue(Pair(firmType, thirdGameResult))
@@ -537,9 +507,7 @@ open class MainHomeViewModel(
         _enterThirdGameResult.postValue(
             Pair(
                 "", EnterThirdGameResult(
-                    resultType = EnterThirdGameResult.ResultType.NONE,
-                    url = null,
-                    errorMsg = null
+                    resultType = EnterThirdGameResult.ResultType.NONE, url = null, errorMsg = null
                 )
             )
         )
@@ -577,8 +545,7 @@ open class MainHomeViewModel(
         _errorPromptMessage.postValue(
             Event(
                 String.format(
-                    androidContext.getString(R.string.message_no_sport_game),
-                    sport
+                    androidContext.getString(R.string.message_no_sport_game), sport
                 )
             )
         )
@@ -807,14 +774,7 @@ open class MainHomeViewModel(
      */
     fun getHomeNews(pageNum: Int, pageSize: Int, categoryIds: List<Int>) {
         viewModelScope.launch {
-            callApi({
-                NewsRepository.getHomeNews(
-                    pageNum,
-                    pageSize,
-                    NewsRepository.SORT_CREATE_TIME,
-                    categoryIds
-                )
-            }) {
+            callApi({ NewsRepository.getHomeNews(pageNum, pageSize, NewsRepository.SORT_CREATE_TIME,categoryIds) }) {
                 if (it.succeeded()) {
                     _homeNewsList.postValue(it.getData()?.firstOrNull()?.detailList ?: listOf())
                 } else {
@@ -829,14 +789,7 @@ open class MainHomeViewModel(
      */
     fun getPageNews(pageNum: Int, pageSize: Int, categoryId: Int) {
         viewModelScope.launch {
-            callApi({
-                NewsRepository.getPageNews(
-                    pageNum,
-                    pageSize,
-                    NewsRepository.SORT_CREATE_TIME,
-                    categoryId
-                )
-            }) {
+            callApi({ NewsRepository.getPageNews(pageNum, pageSize, NewsRepository.SORT_CREATE_TIME,categoryId) }) {
                 if (it.succeeded()) {
                     it.getData()?.let {
                         _pageNewsList.postValue(it)

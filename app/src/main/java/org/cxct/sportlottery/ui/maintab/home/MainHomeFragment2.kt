@@ -42,8 +42,8 @@ import org.greenrobot.eventbus.ThreadMode
 
 class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainHome2Binding>() {
 
-    private inline fun getMainTabActivity() = activity as MainTabActivity
-    private inline fun getHomeFragment() = parentFragment as HomeFragment
+    private fun getMainTabActivity() = activity as MainTabActivity
+    private fun getHomeFragment() = parentFragment as HomeFragment
 
     fun jumpToInplaySport() = getMainTabActivity().jumpToInplaySport()
     fun jumpToOKGames() = getMainTabActivity().jumpToOKGames()
