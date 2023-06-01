@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:layout_marginHorizontal="40dp"
+    android:paddingBottom="16dp"
+    android:background="@drawable/bg_white_radius_10"
+    android:minHeight="194dp"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_tips_index"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_gray_round_90"
+            android:gravity="center"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="5dp"
+            android:textSize="@dimen/textSize16sp"
+            android:textStyle="bold"
+            tools:text="1/1" />
+
+        <ImageView
+            android:id="@+id/iv_tips_close"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:padding="14dp"
+            android:src="@drawable/ic_sport_guide_tips_close" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="20dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="12dp">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:textColor="#0D2245"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="Basketball ending game rules" />
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minHeight="50dp"
+            android:textColor="#6D7693"
+            android:textSize="14sp"
+            tools:text="Basketball Ending Game is a bet type that" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_marginHorizontal="12dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_previous"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textColor="#025BE8"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:background="@drawable/bg_border_blue"
+            android:text="@string/P012"
+            android:layout_weight="1"/>
+
+        <View
+            android:layout_width="8dp"
+            android:layout_height="0dp" />
+        <TextView
+            android:id="@+id/tv_next"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textColor="#ffffff"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:background="@drawable/bg_solid_blue"
+            android:text="@string/P013"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+</LinearLayout>
