@@ -6,7 +6,7 @@ import org.cxct.sportlottery.common.extentions.createVBinding
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
-open abstract class BindingActivity<VM : BaseViewModel, VB: ViewBinding>: BaseActivity<VM>() {
+abstract class BindingActivity<VM : BaseViewModel, VB : ViewBinding> : BaseActivity<VM>() {
 
     protected val binding: VB by lazy { createVBinding(layoutInflater, 1) }
 

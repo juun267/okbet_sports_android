@@ -20,6 +20,7 @@ import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
+import org.cxct.sportlottery.util.SingleLiveEvent
 import org.cxct.sportlottery.util.TimeUtil
 
 
@@ -38,9 +39,9 @@ abstract class BaseFavoriteViewModel(
     infoCenterRepository
 ) {
     //TODO add notify login ui to activity/fragment
-    val notifyLogin: LiveData<Boolean>
+    val notifyLogin: SingleLiveEvent<Boolean>
         get() = mNotifyLogin
-    protected val mNotifyLogin = MutableLiveData<Boolean>()
+    private val mNotifyLogin = SingleLiveEvent<Boolean>()
 
     val leftNotifyLogin: LiveData<Event<Boolean>>
         get() = _leftNotifyLogin

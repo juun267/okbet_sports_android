@@ -34,7 +34,9 @@ import org.cxct.sportlottery.common.event.BetModeChangeEvent
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.event.NetWorkEvent
 import org.cxct.sportlottery.common.event.SportStatusEvent
+import org.cxct.sportlottery.common.event.ShowFavEvent
 import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -51,6 +53,7 @@ import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.ui.betRecord.BetRecordFragment
 import org.cxct.sportlottery.ui.betRecord.accountHistory.next.AccountHistoryNextFragment
+import org.cxct.sportlottery.ui.favorite.FavoriteActivity
 import org.cxct.sportlottery.ui.chat.ChatActivity
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
@@ -354,9 +357,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             left_menu.layoutParams.width = MetricsUtil.getScreenWidth()
         }
         homeLeftFragment.openWithFragment(contentFragment)
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.left_menu, homeLeftFragment)
-            .commit()
+        supportFragmentManager.beginTransaction().replace(R.id.left_menu, homeLeftFragment).commit()
     }
 
     fun showSportLeftMenu(matchType: MatchType, gameType: GameType?) {
@@ -364,8 +365,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             menuClass = sportLeftFragment::class.java
             left_menu.layoutParams.width = (MetricsUtil.getScreenWidth() * 0.75f).toInt()
         }
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.left_menu, sportLeftFragment)
+        supportFragmentManager.beginTransaction().replace(R.id.left_menu, sportLeftFragment)
             .commit()
         sportLeftFragment.matchType = matchType
         sportLeftFragment.gameType = gameType
@@ -406,6 +406,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
     }
 
+    @Subscribe
+    fun onShowFavEvent(event: ShowFavEvent) {
+        showLoginNotify()
+    }
 
     @Subscribe
     fun onBetModeChangeEvent(event: BetModeChangeEvent) {
@@ -429,7 +433,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     //系统方法
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-
             if (drawerLayout?.isOpen == true) {
                 drawerLayout?.close()
                 return false
