@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.JumpInPlayEvent
+import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.sys_maintenance.SportMaintenanceEvent
 import org.cxct.sportlottery.repository.sConfigData
@@ -39,7 +40,7 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
 
         viewModel.gotConfig.observe(viewLifecycleOwner){
             sConfigData?.sportMaintainStatus?.let {
-                val event=SportMaintenanceEvent(EventType.SPORT_MAINTAIN_STATUS,it.toInt())
+                val event=SportMaintenanceEvent(EventType.SPORT_MAINTAIN_STATUS,it.toIntS(0))
                 receiver._sportMaintenance.postValue(event)
             }
         }
