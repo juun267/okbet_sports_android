@@ -8,6 +8,7 @@ import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.os.Process;
 
+import androidx.activity.ComponentActivity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.cxct.sportlottery.application.MultiLanguagesApplication;
@@ -226,7 +227,9 @@ public class AppManager {
 
         public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
             AppManager.addActivity(activity);
-            MultiLanguagesApplication.mInstance.setupSystemStatusChange((AppCompatActivity) activity);
+            if (activity instanceof ComponentActivity) {
+                MultiLanguagesApplication.mInstance.setupSystemStatusChange((ComponentActivity) activity);
+            }
         }
 
         public void onActivityStarted(Activity activity) {
