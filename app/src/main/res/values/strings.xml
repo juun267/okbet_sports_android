@@ -1465,4 +1465,6 @@
     <string name="N987">Log in to chat and discuss</string>
     <string name="N988">Please login</string>
     <string name="C016">TODAY</string>
+    <string name="N989">Over max stake</string>
+    <string name="N990">Below min stake</string>
 </resources>

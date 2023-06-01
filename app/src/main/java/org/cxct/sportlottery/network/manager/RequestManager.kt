@@ -11,6 +11,7 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.CONNECT_TIMEOUT
 import org.cxct.sportlottery.network.Constants.READ_TIMEOUT
 import org.cxct.sportlottery.network.Constants.WRITE_TIMEOUT
+import org.cxct.sportlottery.network.interceptor.Http400or500Interceptor
 import org.cxct.sportlottery.network.interceptor.HttpLogInterceptor
 import org.cxct.sportlottery.network.interceptor.HttpStatusInterceptor
 import org.cxct.sportlottery.network.interceptor.MoreBaseUrlInterceptor
@@ -51,13 +52,13 @@ class RequestManager private constructor(private val context: Context) {
 
     var retrofit: Retrofit
 
-
     private val mOkHttpClientBuilder: OkHttpClient.Builder = getUnsafeOkHttpClient()
         .connectTimeout(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
         .writeTimeout(WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
         .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
         .addInterceptor(HttpStatusInterceptor()) // 处理token过期
         .addInterceptor(MoreBaseUrlInterceptor())
+        .addNetworkInterceptor(Http400or500Interceptor()) //处理后端的沙雕行为
         .addInterceptor(RequestInterceptor(context, ::getApiToken))
         //.addInterceptor(LogInterceptor().setLevel(LogInterceptor.Level.BODY))
 
@@ -69,6 +70,7 @@ class RequestManager private constructor(private val context: Context) {
                 addInterceptor(HttpLogInterceptor())
             }
         }
+
 
     private val mMoshi: Moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
