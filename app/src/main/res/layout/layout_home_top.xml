@@ -47,11 +47,6 @@
             tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     </LinearLayout>
-        app:pageChangeDuration="800"
-        app:pointLeftRightPadding="1dp"
-        app:pointNormal="@drawable/dot_4_4c326bff"
-        app:pointSelect="@drawable/indicator_30_blue"
-        app:pointTopBottomPadding="2dp" />
 
     <LinearLayout
         android:id="@+id/loginLayout"
@@ -65,44 +60,44 @@
             android:id="@+id/tvLogin"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
-            android:layout_marginRight="8dp"
-            android:background="@drawable/bg_blue_radius_15"
-            android:gravity="center"
             android:minWidth="74dp"
             android:paddingHorizontal="10dp"
             android:paddingVertical="6dp"
-            android:text="@string/J134"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/bg_blue_radius_15"
             android:textColor="@android:color/white"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:gravity="center"
+            android:text="@string/J134"/>
 
         <Button
             android:id="@+id/tvRegist"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
-            android:background="@drawable/bg_orange_radius_15"
-            android:gravity="center"
             android:minWidth="74dp"
             android:paddingHorizontal="10dp"
             android:paddingVertical="6dp"
-            android:text="@string/J151"
+            android:background="@drawable/bg_orange_radius_15"
             android:textColor="@android:color/white"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:gravity="center"
+            android:text="@string/J151"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:fontFamily="@font/din_pro_medium"
-            android:text="OR"
             android:textColor="@color/color_414655"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:text="OR"/>
 
         <ImageView
             android:id="@+id/ivGoogle"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginRight="8dp"
-            android:src="@drawable/ic_circle_google" />
+            android:src="@drawable/ic_circle_google"/>
 
     </LinearLayout>
 
@@ -118,36 +113,36 @@
             android:id="@+id/tvDeposit"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
-            android:background="@drawable/bg_blue_radius_15"
-            android:gravity="center"
             android:minWidth="74dp"
             android:paddingHorizontal="10dp"
-            android:text="@string/J285"
+            android:background="@drawable/bg_blue_radius_15"
             android:textColor="@android:color/white"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:gravity="center"
+            android:text="@string/J285"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:fontFamily="@font/din_pro_medium"
-            android:text="With"
+            android:textSize="14sp"
             android:textColor="@color/color_333333"
-            android:textSize="14sp" />
+            android:text="With"/>
 
         <ImageView
             android:id="@+id/ivGLive"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginRight="8dp"
-            android:src="@drawable/ic_circle_glive" />
+            android:src="@drawable/ic_circle_glive"/>
 
         <ImageView
             android:id="@+id/ivPaymaya"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginRight="8dp"
-            android:src="@drawable/ic_circle_paymaya" />
+            android:src="@drawable/ic_circle_paymaya"/>
 
         <ImageView
             android:id="@+id/ivPayX"
