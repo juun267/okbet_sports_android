@@ -26,6 +26,7 @@ import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.goneWithSportSwitch
+import org.cxct.sportlottery.util.setTrialPlayGameDataObserve
 import org.cxct.sportlottery.util.setupBackTop
 import org.cxct.sportlottery.util.setupSportStatusChange
 import org.greenrobot.eventbus.Subscribe
@@ -57,6 +58,9 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         viewModel.getBettingStationList()
         //刷新config
         viewModel.getConfigData()
+
+        //设置监听游戏试玩
+        setTrialPlayGameDataObserve()
     }
 
 

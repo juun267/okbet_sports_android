@@ -150,7 +150,7 @@
             app:pointSelect="@drawable/indicator_12_blue"
             app:pointNormal="@drawable/dot_4_4c326bff"
             app:pointTopBottomPadding="7dp"
-            app:pointLeftRightPadding="1dp" />
+            app:pointLeftRightPadding="1dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout

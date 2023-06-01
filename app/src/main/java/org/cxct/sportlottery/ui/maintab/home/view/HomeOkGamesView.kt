@@ -12,6 +12,7 @@ import com.drake.spannable.span.ColorSpan
 import kotlinx.android.synthetic.main.view_home_okgame.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.net.games.data.OKGameBean
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -75,12 +76,20 @@ class HomeOkGamesView(context: Context, attrs: AttributeSet) : RelativeLayout(co
 
         //item点击 进入游戏
         gameAdapter.setOnItemClickListener{ _, _, position ->
-            loginedRun(fragment.requireContext()) {
-                gameAdapter.data[position].let {okGameBean->
-                    fragment.viewModel.homeOkGamesEnterThirdGame(okGameBean, fragment)
-                    fragment.viewModel.homeOkGameAddRecentPlay(okGameBean)
+            val okGameBean=gameAdapter.data[position]
+            if(LoginRepository.isLogined()){
+                loginedRun(fragment.requireContext()) {
+                    okGameBean.let {okGameBean->
+                        fragment.viewModel.homeOkGamesEnterThirdGame(okGameBean, fragment)
+                        fragment.viewModel.homeOkGameAddRecentPlay(okGameBean)
+                    }
                 }
+            }else{
+                //请求试玩路线
+                fragment.loading()
+                fragment.viewModel.requestEnterThirdGameNoLogin(okGameBean.firmType,okGameBean.gameCode,okGameBean.thirdGameCategory)
             }
+
         }
     }
 

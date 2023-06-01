@@ -59,6 +59,7 @@ import org.cxct.sportlottery.util.DisplayUtil.dpToPx
 import org.cxct.sportlottery.util.SvgUtil.setSvgIcon
 import org.cxct.sportlottery.view.boundsEditText.TextFieldBoxes
 import org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+import org.cxct.sportlottery.view.dialog.TrialGameDialog
 import org.cxct.sportlottery.view.statusSelector.StatusSpinnerAdapter
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
@@ -380,6 +381,31 @@ fun View.setBackColorWithColorMode(lightModeColor: Int, darkModeColor: Int) {
         )
     )
 }
+
+/**
+ * 进入三方游戏，试玩检测
+ */
+fun BaseFragment<out MainHomeViewModel>.setTrialPlayGameDataObserve(){
+    viewModel.enterTrialPlayGameResult.observe(viewLifecycleOwner){
+        hideLoading()
+        if(it==null){
+            //不支持试玩
+            loginedRun(requireContext()){}
+        }else{
+            //试玩弹框
+            val trialDialog= TrialGameDialog(requireContext())
+            if (isVisible){
+                //点击进入游戏
+                trialDialog.setEnterGameClick {
+                    enterThirdGame(it.second, it.first)
+                }
+                trialDialog.show()
+            }
+        }
+    }
+
+}
+
 
 fun loginedRun(context: Context, block: ()-> Unit): Boolean {
     if (LoginRepository.isLogined()) {

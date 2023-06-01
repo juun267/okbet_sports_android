@@ -25,8 +25,10 @@ import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment2
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.getSportEnterIsClose
 import org.cxct.sportlottery.util.goneWithSportSwitch
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.setVisibilityByMarketSwitch

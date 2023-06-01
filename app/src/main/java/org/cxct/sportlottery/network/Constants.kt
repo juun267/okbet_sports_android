@@ -501,6 +501,7 @@ object Constants {
     const val THIRD_AUTO_TRANSFER =
         "/api/front/thirdapi/{inPlat}/autoTransfer" //自动转入、转出（先将第三方都转至彩票，再将彩票的余额转至第三方）
     const val THIRD_LOGIN = "/api/front/thirdapi/{firmType}/login" //登录
+    const val NON_THIRD_LOGIN = "/api/front/thirdapi/nonLoginTrial/{firmType}" //未登录试玩
 
     const val QUERY_FIRST_ORDERS = "/api/front/thirdapi/queryFirstOrders"
     const val QUERY_SECOND_ORDERS = "/api/front/thirdapi/querySecondOrders"
