@@ -84,11 +84,14 @@ class HomeOkGamesView(context: Context, attrs: AttributeSet) : RelativeLayout(co
         }
 
         //item点击 进入游戏
-        gameAdapter.setOnItemClickListener { _, _, position ->
-            loginedRun(fragment.requireContext()) {
-                gameAdapter.data[position].let { okGameBean ->
-                    fragment.viewModel.homeOkGamesEnterThirdGame(okGameBean, fragment)
-                    fragment.viewModel.homeOkGameAddRecentPlay(okGameBean)
+        gameAdapter.setOnItemClickListener{ _, _, position ->
+            val okGameBean=gameAdapter.data[position]
+            if(LoginRepository.isLogined()){
+                loginedRun(fragment.requireContext()) {
+                    okGameBean.let {okGameBean->
+                        fragment.viewModel.homeOkGamesEnterThirdGame(okGameBean, fragment)
+                        fragment.viewModel.homeOkGameAddRecentPlay(okGameBean)
+                    }
                 }
             }else{
                 //请求试玩路线

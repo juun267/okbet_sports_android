@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.login.signIn
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings

@@ -9,11 +9,11 @@
         android:layout_height="274dp"
         android:background="@android:color/white"
         app:AutoPlayTime="3500"
-        app:pageChangeDuration="800"
-        app:pointLeftRightPadding="1dp"
-        app:pointNormal="@drawable/dot_4_4c326bff"
         app:pointSelect="@drawable/indicator_30_blue"
-        app:pointTopBottomPadding="24dp" />
+        app:pointNormal="@drawable/dot_4_4c326bff"
+        app:pageChangeDuration="800"
+        app:pointTopBottomPadding="2dp"
+        app:pointLeftRightPadding="1dp"/>
 
 
     <LinearLayout

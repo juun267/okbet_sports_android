@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.splash
 
+import android.app.Application
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -29,8 +30,6 @@ class SplashViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     favoriteRepository: MyFavoriteRepository,
-    private val userInfoRepository: UserInfoRepository,
-    private val playQuotaComRepository: PlayQuotaComRepository,
 ) : BaseSocketViewModel(androidContext,userInfoRepository,loginRepository, betInfoRepository, infoCenterRepository,favoriteRepository) {
 
     //當獲取 host 失敗時，就使用下一順位的 serverUrl，重新 request，直到遍歷 ServerUrlList，或成功獲取 host 即停止
@@ -152,7 +151,6 @@ class SplashViewModel(
 //        } else {
 //            _skipHomePage.postValue(false)
 //        }
-    }
 
     private suspend fun sendGetHostRequest(index: Int) {
         try {
