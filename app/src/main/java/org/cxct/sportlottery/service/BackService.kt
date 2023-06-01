@@ -336,8 +336,6 @@ class BackService : Service() {
                         matchType,
                         useSubscribeData)
                     useSubscribeData = false //第一筆過後將flag設為false
-
-                    sendMessageToActivity(url, topicMessage.payload)
                 }, { throwable ->
                     Timber.e("[$url] 訂閱通道失敗: $throwable")
                 })
