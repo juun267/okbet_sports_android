@@ -5,6 +5,7 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.view.LayoutInflater
@@ -117,7 +118,7 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>? = null) : Fragment(
         }
     }
 
-    fun showErrorPromptDialog(title: String, message: String, hasCancel:Boolean = true,positiveClickListener: () -> Unit) {
+    fun showErrorPromptDialog(title: String, message: String, hasCancel:Boolean = true, positiveClickListener: () -> Unit) {
         if (activity is BaseActivity<*>) {
             (activity as BaseActivity<*>).showErrorPromptDialog(
                 title,
@@ -256,8 +257,15 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>? = null) : Fragment(
         findNavController().navigateUp()
     }
 
-    fun avoidFastDoubleClick(){
+    fun avoidFastDoubleClick(delayMills: Long? = 300) {
         mIsEnabled = false
-        Handler().postDelayed({ mIsEnabled = true }, 300)
+        Handler(Looper.getMainLooper()).postDelayed({ mIsEnabled = true }, delayMills ?: 300)
+    }
+
+    open fun isGuest(hasBottomNavigation: Boolean = true): Boolean {
+        return if (activity is BaseBottomNavActivity<*>)
+            (activity as BaseBottomNavActivity<*>).isGuest(hasBottomNavigation)
+        else
+            false
     }
 }

@@ -55,6 +55,16 @@
     public static * inflate(android.view.LayoutInflater);
 }
 
+-keepclassmembers public class androidx.lifecycle.LiveData {
+    private int mVersion;
+}
+
+-keepclassmembers public class androidx.lifecycle.ViewModel {
+    private volatile boolean mCleared;
+    final void clear();
+}
+
+
 #====== GSYVideoPlayer ============ start
 -keep class com.shuyu.gsyvideoplayer.video.** { *; }
 -dontwarn com.shuyu.gsyvideoplayer.video.**
@@ -95,8 +105,10 @@
 -keepclassmembers class org.cxct.sportlottery.net.ApiResult { <fields>;}
 -keepclassmembers class * extends org.cxct.sportlottery.net.ApiResult { <fields>;}
 
+-keepclassmembers class * extends org.cxct.sportlottery.ui.chat.BaseEntity { <fields>;}
+
 #kotlin  与Moshi反序列化有关（@kotlin.Metadata涉及太广，应尽量降低keep范围）
--keepclasseswithmembers @kotlin.Metadata class org.cxct.sportlottery.network.** { *; }
+#-keepclasseswithmembers @kotlin.Metadata class org.cxct.sportlottery.network.** { *; }
 #-keepclasseswithmembers @kotlin.Metadata class org.cxct.sportlottery.ui.** { *; }
 
 #====== fastjson ============ start

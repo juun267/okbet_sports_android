@@ -341,6 +341,19 @@ dependencies {
     implementation 'com.github.yuriy-budiyev:code-scanner:2.3.2'
     implementation 'com.github.xuexiangjys:XUpdate:2.1.4'
     implementation 'com.zhy:okhttputils:2.6.2'
+
+//    //SVG rendering library
+//    implementation 'com.caverock:androidsvg-aar:1.4'
+//    //簡易封裝的Adapter
+//    implementation 'com.zhy:base-rvadapter:3.0.3'
+//
+//    //CircleIndicator
+//    implementation 'me.relex:circleindicator:2.1.6'
+//
+//    //LoopingSnapHelper
+//    implementation 'com.github.beksomega:loopinglayout:0.4.1'
+    //模糊
+    implementation 'com.github.Dimezis:BlurView:version-2.0.3'
     //compose
 //    implementation 'androidx.activity:activity-compose:1.6.1'
 //    implementation "androidx.compose.ui:ui:$compose_version"
@@ -351,6 +364,7 @@ dependencies {
 //    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 
 //    implementation 'io.github.yidun:captcha:3.4.3' // 网易图形验证
+
 }
 repositories {
     mavenCentral()

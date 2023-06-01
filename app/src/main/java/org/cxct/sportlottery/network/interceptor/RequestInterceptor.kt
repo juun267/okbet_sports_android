@@ -1,24 +1,16 @@
 package org.cxct.sportlottery.network.interceptor
 
 import android.content.Context
-import android.content.SharedPreferences
 import okhttp3.Interceptor
 import okhttp3.Response
-import org.cxct.sportlottery.repository.KEY_TOKEN
-import org.cxct.sportlottery.repository.NAME_LOGIN
 import org.cxct.sportlottery.util.LanguageManager
 import java.io.IOException
 
-class RequestInterceptor(private val context: Context?) : Interceptor {
-    private val sharedPref: SharedPreferences? by lazy {
-        context?.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
-    }
+class RequestInterceptor(val context: Context, val token: () -> String?) : Interceptor {
+
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
-        if (context == null) {
-            throw NullPointerException("Please call RequestManager.getInstance().init(context) first")
-        }
         val request = chain.request()
         val builder = request.newBuilder()
         val urlBuilder = request.url.newBuilder()
@@ -35,9 +27,7 @@ class RequestInterceptor(private val context: Context?) : Interceptor {
         builder.addHeader("x-lang", LanguageManager.getSelectLanguage(context).key)
 //        builder.addHeader("x-session-platform-code", "spplat1")
 
-        sharedPref?.getString(KEY_TOKEN, null)?.let {
-            builder.addHeader("x-session-token", it)
-        }
+        token.invoke()?.let { builder.addHeader("x-session-token", it) }
 
         val httpUrl = urlBuilder.build()
         val newRequest = builder.url(httpUrl).build()

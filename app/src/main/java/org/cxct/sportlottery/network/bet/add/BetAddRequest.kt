@@ -1,8 +1,10 @@
 package org.cxct.sportlottery.network.bet.add
 
+import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.network.common.IdParams
 import org.cxct.sportlottery.network.bet.Odd
 
+@KeepMembers
 data class BetAddRequest(
     val oddsList: List<Odd>,
     val stakeList: List<Stake>,

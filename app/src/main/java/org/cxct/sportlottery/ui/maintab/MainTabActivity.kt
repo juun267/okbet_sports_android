@@ -15,6 +15,7 @@ import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import androidx.annotation.DrawableRes
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
@@ -23,6 +24,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.android.synthetic.main.activity_main_tab.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.OddsType
@@ -40,12 +44,14 @@ import org.cxct.sportlottery.network.bet.settledList.Row
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.repository.ConfigRepository
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.ui.betRecord.BetRecordFragment
 import org.cxct.sportlottery.ui.betRecord.accountHistory.next.AccountHistoryNextFragment
+import org.cxct.sportlottery.ui.chat.ChatActivity
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment2
@@ -69,7 +75,8 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 Pair(SportFragment::class.java, null),
                 Pair(BetRecordFragment::class.java, null),
                 Pair(FavoriteFragment::class.java, null),
-                Pair(ProfileCenterFragment::class.java, null)
+                Pair(ProfileCenterFragment::class.java, null),
+
             )
         )
     }
@@ -110,6 +117,23 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         activityInstance = this
         EventBusUtil.targetLifecycle(this)
         LotteryManager.instance.getLotteryInfo()
+        ConfigRepository.onNewConfig(this) {
+            if (isOpenChatRoom()) {
+                changeChatTabStatus(getString(R.string.N984), R.drawable.selector_tab_chat)
+            } else {
+                changeChatTabStatus(getString(R.string.main_tab_favorite), R.drawable.selector_tab_fav)
+            }
+        }
+    }
+
+    private fun changeChatTabStatus(title: String, @DrawableRes icon: Int) {
+        val item = binding.bottomNavigationView.menu.findItem(R.id.i_favorite)
+        if (item.title == title) {
+            return
+        }
+
+        item.title = title
+        item.icon = getDrawable(icon)
     }
 
     override fun onNightModeChanged(mode: Int) {
@@ -218,10 +242,21 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
 
                     when (menuItem.itemId) {
-                        R.id.i_betlist, R.id.i_favorite, R.id.i_user -> {
+                        R.id.i_betlist, R.id.i_user -> {
                             if (viewModel.isLogin.value == false) {
                                 startLogin()
                                 return@OnNavigationItemSelectedListener false
+                            }
+                        }
+                        R.id.i_favorite -> {
+                            if(isOpenChatRoom()){
+                                startActivity(Intent(this@MainTabActivity, ChatActivity::class.java))
+                                return@OnNavigationItemSelectedListener false
+                            }else{
+                                if (viewModel.isLogin.value == false) {
+                                    startLogin()
+                                    return@OnNavigationItemSelectedListener false
+                                }
                             }
                         }
                     }
@@ -750,4 +785,5 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     open fun getCurrentPosition(): Int = fragmentHelper.getCurrentPosition()
+
 }

@@ -72,6 +72,6 @@ public class LogUtil {
     }
 
     public static void toJson(Object object) {
-        Logger.json(new Gson().toJson(object));
+        Logger.json(JsonUtil.INSTANCE.toJson(object));
     }
 }

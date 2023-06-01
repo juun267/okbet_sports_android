@@ -6,7 +6,8 @@ import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguard
 import org.cxct.sportlottery.network.bet.add.StatusNameI18n
 import org.cxct.sportlottery.network.bet.list.EndScoreInfo
 
-@JsonClass(generateAdapter = true) @KeepMembers
+@JsonClass(generateAdapter = true)
+@KeepMembers
 data class MatchOdd(
     @Json(name = "awayId")
     val awayId: String,

@@ -23,6 +23,15 @@ object JsonUtil {
         }
     }
 
+    fun <T, P> fromJson(jsonString: String, clazz: Class<T>, parameterClazz: Class<P>): T? {
+        return try {
+            GSON.fromJson(jsonString, getType(clazz, parameterClazz))
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
     fun <T> listFrom(jsonString: String, value: Class<T>): ArrayList<T>? {
         return try {
             GSON.fromJson(jsonString, getType(ArrayList::class.java, value))

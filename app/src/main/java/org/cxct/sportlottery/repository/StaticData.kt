@@ -2,6 +2,7 @@ package org.cxct.sportlottery.repository
 
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.network.index.config.ConfigData
 import org.cxct.sportlottery.repository.HandicapType.NULL
 import org.cxct.sportlottery.repository.ImageType.PROMOTION
@@ -44,6 +45,7 @@ var sConfigData: ConfigData? = null
     set(value) {
         KvUtils.putObject(ConfigData::class.java.name, value)
         field = value
+        value?.chatHost?.let { RetrofitHolder.changeChatHost(it) }
     }
     get() {
         if (field == null) {

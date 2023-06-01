@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
+    android:layout_width="310dp"
+    android:layout_height="320dp"
+    android:layout_gravity="center"
+    android:layout_margin="16dp"
+    android:background="@drawable/img_bg_pop_redenvelope_event"
+    tools:ignore="SpUsage, ContentDescription">
+
+    <ImageView
+        android:id="@+id/ivClose"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginHorizontal="18dp"
+        android:layout_marginTop="18dp"
+        android:src="@drawable/dialog_close" />
+
+    <org.cxct.sportlottery.view.MixFontTextView
+        android:id="@+id/txv_first_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/txv_second_title"
+        android:layout_alignStart="@+id/rvList"
+        android:layout_alignEnd="@+id/rvList"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:shadowColor="#8097352F"
+        android:shadowDx="0"
+        android:shadowDy="4"
+        android:shadowRadius="4"
+        android:textStyle="bold"
+        android:textColor="@color/redPacketEditTextYellow"
+        android:textSize="@dimen/textSize18sp"
+        app:mix_font_text="@string/chat_get_the_red_packet_now"
+        tools:text="@string/chat_try_your_luck" />
+
+    <org.cxct.sportlottery.view.MixFontTextView
+        android:id="@+id/txv_second_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/rvList"
+        android:layout_alignStart="@+id/rvList"
+        android:layout_alignEnd="@+id/rvList"
+        android:layout_marginBottom="36dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textColor="@color/redPacketEditTextYellow"
+        android:textSize="@dimen/textSize12sp"
+        app:mix_font_text="@string/chat_try_your_luck"
+        tools:text="@string/chat_try_your_luck" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvList"
+        android:layout_width="match_parent"
+        android:layout_height="107dp"
+        android:layout_above="@+id/btnConfirm"
+        android:layout_marginBottom="20dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="10dp"
+        android:layout_marginEnd="10dp"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbarStyle="outsideInset"
+        android:scrollbarThumbVertical="@drawable/bg_red_envelope_scrollbar_thumb"
+        android:scrollbarTrackVertical="@drawable/ic_red_envelope_scrollbar_track"
+        android:scrollbars="vertical"
+        tools:listitem="@layout/item_chat_red_envelope" />
+
+    <Button
+        android:id="@+id/btnConfirm"
+        android:layout_width="163dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/ic_chat_yellow_btn"
+        android:text="@string/btn_confirm"
+        android:textAllCaps="false"
+        android:fontFamily="@font/din_bold"
+        android:textStyle="bold"
+        android:textColor="@color/redPacketButtonYellowText"
+        android:textSize="@dimen/textSize14sp" />
+
+</RelativeLayout>

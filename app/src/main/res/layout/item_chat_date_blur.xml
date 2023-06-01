@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    app:cardBackgroundColor="@color/transparent"
+    app:cardCornerRadius="60dp"
+    app:cardElevation="0dp"
+    tools:ignore="PrivateResource, SpUsage">
+
+    <!--<eightbitlab.com.blurview.BlurView
+        android:id="@+id/blurBlock"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">-->
+
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/bg_chat_message_date_blur"
+        android:gravity="center"
+        android:paddingStart="29dp"
+        android:paddingEnd="29dp"
+        android:textColor="@color/color_chat_message_date_blur_text"
+        android:textSize="10dp"
+        tools:text="03/Mar" />
+    <!--    </eightbitlab.com.blurview.BlurView>-->
+
+
+</androidx.cardview.widget.CardView>

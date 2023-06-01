@@ -1,5 +1,8 @@
 package org.cxct.sportlottery.network.bank.add
 
+import org.cxct.sportlottery.common.proguards.KeepMembers
+
+@KeepMembers
 data class BankAddRequest(
     val bankName: String,
     val subAddress: String? = null,

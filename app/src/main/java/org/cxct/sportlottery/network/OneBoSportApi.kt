@@ -195,4 +195,5 @@ object OneBoSportApi {
         get() = RequestManager.instance
             .retrofit
             .create(LotteryService::class.java)
+
 }

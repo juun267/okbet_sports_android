@@ -18,10 +18,13 @@ import android.webkit.WebView
 import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_sport_list.*
@@ -932,6 +935,13 @@ fun isMultipleSitePlat(): Boolean {
     return appName == "ONbet" || appName == "BET88" || appName == "OKbet9"
 }
 
+/**
+ * 判斷是否為遊客(試玩帳號)
+ */
+fun isGuest(): Boolean {
+    return MultiLanguagesApplication.mInstance.userInfo()?.testFlag == TestFlag.GUEST.index
+}
+
 fun isForQA(): Boolean = BuildConfig.FLAVOR == "forqa"
 
 /**
@@ -1021,6 +1031,10 @@ fun Activity.startRegister() {
 //    )
 }
 
+fun DialogFragment.showAllowingStateLoss(fragmentManager: FragmentManager, tag: String? = null) {
+    fragmentManager.beginTransaction().add(this, tag).commitAllowingStateLoss()
+}
+
 fun Activity.startLogin() {
     this.startActivity(Intent(this, LoginOKActivity::class.java))
 }
@@ -1063,7 +1077,7 @@ fun View.setBtnEnable(enable: Boolean) {
 }
 
 fun BaseFragment<SportListViewModel>.showErrorMsgDialog(msg: String) {
-    val dialog = CustomAlertDialog(requireContext())
+    val dialog = CustomAlertDialog()
     dialog.setTitle(resources.getString(R.string.prompt))
     dialog.setMessage(msg)
     dialog.setTextColor(R.color.color_E44438_e44438)

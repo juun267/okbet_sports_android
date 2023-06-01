@@ -34,6 +34,8 @@ object TimeUtil {
     private const val YMDE_FORMAT = "yyyy-MM-dd"
     private const val YMDE_HMS_FORMAT = "yyyy-MM-dd HH:mm:ss"
     const val YMDE_FORMAT_1 = "yyyy-MM/dd-EEE"
+    const val D_NARROW_MONTH = "dd/MMM"
+    const val DAY_MONTH_YEAR= "dd.MM.yyyy"
 
     //Feb 12, 2023 10:16AM 新闻时间格式
     const val NEWS_TIME_FORMAT = "MMM dd, yyyy h:mma"
@@ -791,13 +793,34 @@ object TimeUtil {
         }
         try {
             if (date == null) return null
-           val newDateFormatPattern: String = HM_FORMAT_SS
+            val newDateFormatPattern: String = HM_FORMAT_SS
             val newFormatter = SimpleDateFormat(newDateFormatPattern, Locale.getDefault())
-            return newFormatter.format(date)+" (GMT$timeZoneGTM)"
+            return newFormatter.format(date) + " (GMT$timeZoneGTM)"
         } catch (e: Exception) {
             e.printStackTrace()
         }
         return null
     }
 
+    fun timeStampToDateString(
+        date: Long?,
+        newDateFormatPattern: String,
+        locale: Locale = Locale.getDefault(),
+    ): String? {
+        try {
+            if (date == null) return null
+            val newFormatter = SimpleDateFormat(newDateFormatPattern, locale)
+            return newFormatter.format(date)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
+    /**
+     * 將日期使用的分隔符號從"-"改為"/"
+     */
+    fun String.formatDateDelimiter(): String {
+        return this.replace("-", "/")
+    }
 }

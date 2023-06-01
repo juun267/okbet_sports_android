@@ -11,6 +11,8 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.service.ApplicationBroadcastReceiver
+import org.cxct.sportlottery.repository.KEY_USER_LEVEL_ID
+import org.cxct.sportlottery.repository.NAME_LOGIN
 import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
@@ -179,13 +181,13 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
     fun unSubscribeChannelHall(
         gameType: String?,
-        eventId: String?
+        eventId: String?,
     ) {
         backService?.unsubscribeHallChannel(gameType, eventId)
     }
 
     fun unSubscribeChannelHall(
-        eventId: String?
+        eventId: String?,
     ) {
         backService?.unsubscribeHallChannel(eventId)
     }

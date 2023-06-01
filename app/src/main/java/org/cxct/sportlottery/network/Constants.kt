@@ -28,7 +28,10 @@ object Constants {
             if (!field.isEmpty()) KvUtils.put("host", value)
         }
         get() {
-            return if (field.isEmpty()) KvUtils.decodeString("host") else field
+            if (field.isEmpty()) {
+                field = KvUtils.decodeString("host")
+            }
+            return field
         }
     private var mSocketUrl = ""
         set(value) {
@@ -608,5 +611,27 @@ object Constants {
 
     // 安卓送审版本号
     const val GET_CONFIG_BY_NAME = "/api/agent/game/config/getConfigByName/{name}"
+
+    //chat
+    const val ROOM_QUERY_LIST =
+        "/api/chat/front/room/queryList" //------------------------------- 查询所有开放的房间
+    const val PACKET_LUCKY_BAG =
+        "/api/chat/front/packet/luckyBag" //----------------------------- 抢红包
+    const val PACKET_GET_UNPACKET =
+        "/api/chat/front/packet/{roomId}/getUnPacket" //-------------- 获得未抢红包列表
+    const val CHAT_INIT =
+        "/api/chat/front/chat/init" //------------------------------------------ 初始化聊天室用户(游客,一般用户)
+    const val CHAT_GUEST_INIT =
+        "/api/chat/front/chat/guest/init" //------------------------------ 初始化聊天室用户(访客)
+    const val CHAT_JOIN_ROOM =
+        "/api/chat/front/chat/{roomId}/joinRoom" //------------------------ 用户进入聊天室
+    const val CHAT_LEAVE_ROOM =
+        "/api/chat/front/chat/{roomId}/leaveRoom" //---------------------- 用户离开聊天室
+    const val CHAT_REMOVE_MESSAGE =
+        "/api/chat/front/chat/{roomId}/removeMessage/{messageId}" //-- 删除讯息
+    const val CHAT_GET_SIGN =
+        "/api/front/chat/getSign" //---------------------------------------- 获取平台用户信息和签名信息
+    const val CHAT_CHECK_TOKEN =
+        "/api/chat/front/user/checktoken" //----------------------------- 验证token 是否过期。如果不过期返回token信息，过期返回success: false
 
 }

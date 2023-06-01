@@ -4,7 +4,8 @@ package org.cxct.sportlottery.network.bet.add.betReceipt
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguards.KeepMembers
 
-@JsonClass(generateAdapter = true) @KeepMembers
+@JsonClass(generateAdapter = true)
+@KeepMembers
 data class Receipt(
     @Json(name = "parlayBets")
     val parlayBets: List<BetResult>?,

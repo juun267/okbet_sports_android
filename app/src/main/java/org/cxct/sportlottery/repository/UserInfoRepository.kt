@@ -4,8 +4,14 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
+import com.google.gson.JsonElement
 import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.common.extentions.safeApi
+import org.cxct.sportlottery.net.ApiResult
+import org.cxct.sportlottery.net.RetrofitHolder
+import org.cxct.sportlottery.net.chat.api.SignService
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.chat.getSign.GetSignResult
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.user.info.UserInfoData
 import org.cxct.sportlottery.network.user.info.UserInfoResult
@@ -13,12 +19,19 @@ import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.toJson
 import retrofit2.Response
 
+const val KEY_CHAT_SIGN = "chat_sign"
+
 object UserInfoRepository {
+
+    private val signService by lazy {
+        RetrofitHolder.createSignApiService(SignService::class.java)
+    }
 
     val sharedPref: SharedPreferences by lazy {
         MultiLanguagesApplication.appContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
 
+    var checkedUserInfo = false //紀錄checkToken後是否獲取過UserInfo
 
     val userInfo: LiveData<UserInfo?>
         get() = MultiLanguagesApplication.mInstance.userInfo
@@ -57,7 +70,7 @@ object UserInfoRepository {
             }
             apply()
         }
-            
+
     }
 
     suspend fun getDiscount(userId: Long): Float {
@@ -215,5 +228,7 @@ object UserInfoRepository {
             passwordSet = userInfoData.passwordSet,
             vipType = userInfoData.vipType,
         )
+
+    suspend fun getSign(): ApiResult<JsonElement> = safeApi { signService.getSign() }
 
 }
