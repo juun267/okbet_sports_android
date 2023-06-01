@@ -20,9 +20,9 @@
     <string name="btn_cancel">Hủy</string>
     <string name="btn_retry">Vui lòng thử lại</string>
     <string name="error_config_title">mạng không ổn định</string>
-    <string name="find_new_version">phát hiện phiên bản mới</string>
-    <string name="version_name">phiên bản</string>
-    <string name="btn_pass">bỏ qua</string>
+    <string name="find_new_version">Phiên bản mới</string>
+    <string name="version_name">Phiên bản %s</string>
+    <string name="btn_pass">Bỏ qua</string>
     <string name="login_account">Đăng nhập tài khoản</string>
     <string name="please_input_account">Vui lòng nhập tài khoản hội viên của bạn</string>
     <string name="login_password">Mật khẩu</string>
@@ -227,12 +227,12 @@
     <string name="hint_withdrawal_new_password">Mật khẩu gồm 4 chữ số</string>
     <string name="error_password_cannot_be_same">Mật khẩu mới không đặt trùng với mật khẩu cũ</string>
     <string name="update_withdrawal_pwd">Mật khẩu rút tiền thay đổi thành công</string>
-    <string name="download_fail">tải thất bại</string>
+    <string name="download_fail">Tải thất bại</string>
     <string name="error_file">Lỗi tập tin</string>
     <string name="updatable">Có thể cập nhật</string>
     <string name="denied_read_memory_card">Quyền đọc thẻ nhớ bị từ chối</string>
     <string name="update">Cập nhật</string>
-    <string name="install">cài đặt</string>
+    <string name="install">Cài đặt</string>
     <string name="inbox">Hộp thư đến (%1$d)</string>
     <string name="unread_letters">Thư chưa đọc (%1$d)</string>
     <string name="title">Tiêu đề</string>

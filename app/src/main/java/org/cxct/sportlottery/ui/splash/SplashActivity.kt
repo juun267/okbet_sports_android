@@ -41,13 +41,8 @@ import kotlin.system.exitProcess
 class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::class) {
 
     private val mVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
-    private val sharedPref: SharedPreferences? by lazy {
-        getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
-    }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         ImmersionBar.with(this).statusBarDarkFont(true).transparentStatusBar()
             .fitsSystemWindows(false).init()
@@ -149,10 +144,10 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
         }
 
         mVersionUpdateViewModel.appMinVersionState.observe(this) {
-            if (it.isForceUpdate || it.isShowUpdateDialog) showAppDownloadDialog(
-                it.isForceUpdate, it.version, it.checkAppVersionResult
-            )
-            else viewModel.goNextPage()
+            if (it.isForceUpdate || it.isShowUpdateDialog)
+                showAppDownloadDialog(it.isForceUpdate, it.version, it.checkAppVersionResult)
+            else
+                viewModel.goNextPage()
         }
 
         viewModel.skipHomePage.observe(this) {
@@ -219,7 +214,6 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
         super.onDestroy()
         hideLoading()
     }
-
     override fun onBackPressed() {
         super.onBackPressed()
         finish()
