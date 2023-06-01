@@ -40,6 +40,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
             }
         }
         homeBottumView.bindServiceClick(childFragmentManager)
+        homeBottumView.showFollowView()
         binding.winsRankView.setTipsIcon(R.drawable.ic_okgame_p2)
         initToolBar()
         initNews()

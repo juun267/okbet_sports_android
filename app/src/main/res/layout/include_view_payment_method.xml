@@ -92,6 +92,7 @@
 
     <org.cxct.sportlottery.ui.maintab.games.view.HomeFollowView
         android:id="@+id/homeFollowView"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/rcvPayment" />

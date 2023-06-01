@@ -135,6 +135,11 @@ data class ConfigData(
     var carouselInterval: String?,//自动轮播的间隔秒数
     var cmsUrl: String?,//新闻域名
     var reviewedVersionUrl: String?,//送审中的版本号
+    var facebookLinkConfig:String?,//fb连接配置
+    var instagramLinkConfig:String?,//ins连接配置
+    var youtubeLinkConfig:String?,//youtube连接配置
+    var twitterLinkConfig:String?,//twitter连接配置
+    var tiktokLinkConfig:String?//tiktok连接配置
 ) {
     var enterCertified: Int? = -1 //ProfileCenterViewModel.SecurityEnter
     var hasGetTwoFactorResult: Boolean? = false //判斷是不是已經成功發送過簡訊認證碼 (關掉彈窗要重新設置為false)

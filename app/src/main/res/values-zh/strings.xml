@@ -1308,4 +1308,9 @@
     <string name="N986">方位</string>
 
     <string name="N902">关注我们</string>
+    <string name="facebookFollow">Facebook</string>
+    <string name="instagramFollow">Instagram</string>
+    <string name="youtubeFollow">YouTube</string>
+    <string name="twitterFollow">Twitter</string>
+    <string name="tiktokFollow">Tiktok</string>
 </resources>

@@ -1236,4 +1236,9 @@
     <string name="N986">Direksyon</string>
 
     <string name="N902">Follow us</string>
+    <string name="facebookFollow">Facebook</string>
+    <string name="instagramFollow">Instagram</string>
+    <string name="youtubeFollow">YouTube</string>
+    <string name="twitterFollow">Twitter</string>
+    <string name="tiktokFollow">Tiktok</string>
 </resources>
