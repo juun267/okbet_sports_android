@@ -343,6 +343,7 @@ class MultiLanguagesApplication : Application() {
         const val UUID = "uuid"
         private var instance: MultiLanguagesApplication? = null
         lateinit var mInstance: MultiLanguagesApplication
+        var showHomeDialog = true
 
         fun stringOf(@StringRes strId: Int): String {
             return mInstance.getString(strId)

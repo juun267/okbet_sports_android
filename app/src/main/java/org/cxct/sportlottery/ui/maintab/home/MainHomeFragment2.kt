@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab.home
 
 
+import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,9 +11,11 @@ import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_main_home.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.event.RegisterInfoEvent
 import org.cxct.sportlottery.common.event.SportStatusEvent
+import org.cxct.sportlottery.common.extentions.newInstanceFragment
 import org.cxct.sportlottery.databinding.FragmentMainHome2Binding
 import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsItem
@@ -28,6 +31,7 @@ import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.goneWithSportSwitch
 import org.cxct.sportlottery.util.setTrialPlayGameDataObserve
 import org.cxct.sportlottery.util.setupBackTop
+import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.util.setupSportStatusChange
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -133,6 +137,15 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         }
         viewModel.gotConfig.observe(viewLifecycleOwner) { event ->
             viewModel.getSportMenuFilter()
+            if (MultiLanguagesApplication.showHomeDialog) {
+                MultiLanguagesApplication.showHomeDialog = false
+                MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
+                if (PopImageDialog.checkImageTypeAvailable(7)) {
+                    requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
+                        putInt(PopImageDialog.IMAGE_TYPE, 7)
+                    }).show(childFragmentManager, PopImageDialog::class.simpleName)
+                }
+            }
         }
 
     }
