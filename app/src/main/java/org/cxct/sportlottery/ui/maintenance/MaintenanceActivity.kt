@@ -7,12 +7,10 @@ import androidx.core.view.isVisible
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_maintenance.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.fitsSystemStatus
 import org.cxct.sportlottery.network.index.config.ConfigData
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.service.ApplicationBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.JumpUtil
@@ -32,9 +30,7 @@ class MaintenanceActivity : BaseSocketActivity<MaintenanceViewModel>(Maintenance
             .init()
         setContentView(R.layout.activity_maintenance)
         findViewById<View>(R.id.root).fitsSystemStatus()
-
         initObserver()
-        initSocketObserver()
         initServiceButton(sConfigData)
     }
 
@@ -56,7 +52,6 @@ class MaintenanceActivity : BaseSocketActivity<MaintenanceViewModel>(Maintenance
 //                    if (sConfigData?.thirdOpen == FLAG_OPEN)
 //                        MainActivity.reStart(this)
 //                    else
-                    MultiLanguagesApplication.mInstance.setupSystemStatusChange()
                     MainTabActivity.reStart(this)
                     finish()
                 }
@@ -90,11 +85,5 @@ class MaintenanceActivity : BaseSocketActivity<MaintenanceViewModel>(Maintenance
         }
     }
 
-    private fun initSocketObserver() {
-        ApplicationBroadcastReceiver.onSystemStatusChange = {
-            //接收到系統維護狀態變化時, 請求config確認當前平台是否維護中
-            viewModel.getConfig()
-        }
-    }
 
 }

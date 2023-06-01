@@ -10,7 +10,10 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.*
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.observe
 import androidx.multidex.MultiDex
 import cn.jpush.android.api.JPushInterface
 import com.appsflyer.AppsFlyerLib
@@ -44,6 +47,7 @@ import org.cxct.sportlottery.ui.login.foget.ForgetViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
 import org.cxct.sportlottery.ui.login.signUp.RegisterViewModel
 import org.cxct.sportlottery.ui.login.signUp.info.RegisterInfoViewModel
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.MainTabViewModel
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
@@ -239,7 +243,6 @@ class MultiLanguagesApplication : Application() {
                 .build()
         }
         Gloading.initDefault(LoadingAdapter())
-        setupSystemStatusChange()
     }
 
     private val localeResources by lazy {
@@ -475,18 +478,18 @@ class MultiLanguagesApplication : Application() {
         }
     }
 
-    fun setupSystemStatusChange() {
-        ApplicationBroadcastReceiver.onSystemStatusChange = { status ->
-            if ((status ?: 0) == MaintenanceActivity.MaintainType.FIXING.value) {
-                when (AppManager.currentActivity()) {
-                    !is MaintenanceActivity -> startActivity(
-                        Intent(
-                            instance,
-                            MaintenanceActivity::class.java
-                        ).apply {
-                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        })
+    open fun setupSystemStatusChange(owner: LifecycleOwner) {
+        ApplicationBroadcastReceiver.onSystemStatusChange.observe(owner) {
+            if (it) {
+                if (AppManager.currentActivity() !is MaintenanceActivity) {
+                    startActivity(Intent(this, MaintenanceActivity::class.java).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    })
+                }
+            } else {
+                if (AppManager.currentActivity() !is MainTabActivity) {
+                    MainTabActivity.reStart(this)
                 }
             }
         }

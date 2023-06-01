@@ -12,6 +12,7 @@ import org.cxct.sportlottery.network.service.sys_maintenance.SportMaintenanceEve
 import org.cxct.sportlottery.network.service.sys_maintenance.SysMaintenanceEvent
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.EncryptUtil
+import org.cxct.sportlottery.util.SingleLiveEvent
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -68,7 +69,7 @@ object ApplicationBroadcastReceiver {
             EventType.SYS_MAINTENANCE -> {
                 val data = ServiceMessage.getSysMaintenance(jObjStr)
 //                _sysMaintenance.postValue(data)
-                onSystemStatusChange?.invoke(data?.status)
+                onSystemStatusChange.postValue(data?.status == 1)
             }
             //体育服务开关
             EventType.SPORT_MAINTAIN_STATUS -> {
@@ -82,6 +83,6 @@ object ApplicationBroadcastReceiver {
 
     }
 
-    var onSystemStatusChange: ((status: Int?) -> Unit)? = null
+    var onSystemStatusChange: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
 }
