@@ -39,7 +39,6 @@ import org.cxct.sportlottery.network.third_game.third_games.TotalRewardAmountDat
 import org.cxct.sportlottery.network.third_game.third_games.hot.HandicapData
 import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchLiveData
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.service.ApplicationBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult

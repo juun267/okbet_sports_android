@@ -8,6 +8,10 @@ import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.os.Process;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import org.cxct.sportlottery.application.MultiLanguagesApplication;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -222,7 +226,7 @@ public class AppManager {
 
         public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
             AppManager.addActivity(activity);
-
+            MultiLanguagesApplication.mInstance.setupSystemStatusChange((AppCompatActivity) activity);
         }
 
         public void onActivityStarted(Activity activity) {
