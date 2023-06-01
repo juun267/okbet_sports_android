@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.login.signIn
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
@@ -474,7 +473,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 }
             } else {
                 hideLoading()
-                showErrorDialog(msg)
+                showErrorDialog(getString(R.string.P038))
             }
         }
     }
