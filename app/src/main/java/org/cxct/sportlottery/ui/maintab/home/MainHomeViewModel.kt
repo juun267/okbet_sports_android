@@ -25,7 +25,9 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.match.MatchRound
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.list.MatchLiveData
+import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
+import org.cxct.sportlottery.network.service.sys_maintenance.SportMaintenanceEvent
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuFilter
 import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendRequest
@@ -36,6 +38,7 @@ import org.cxct.sportlottery.network.third_game.third_games.TotalRewardAmountDat
 import org.cxct.sportlottery.network.third_game.third_games.hot.HandicapData
 import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchLiveData
 import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.service.ApplicationBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
@@ -334,6 +337,10 @@ open class MainHomeViewModel(
                     ConfigRepository.config.postValue(configResult)
                     setupDefaultHandicapType()
                     _gotConfig.postValue(Event(true))
+
+                    //发送更新给体育服务
+                    ApplicationBroadcastReceiver._sportMaintenance.postValue(SportMaintenanceEvent(
+                        EventType.SPORT_MAINTAIN_STATUS,sConfigData?.sportMaintainStatus?.toInt()) )
                 }
             }
         }

@@ -2,6 +2,7 @@ package org.cxct.sportlottery.application
 
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
@@ -25,6 +26,7 @@ import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.money.RedEnveLopeModel
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.service.ApplicationBroadcastReceiver
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.betList.BetListViewModel
 import org.cxct.sportlottery.ui.betRecord.TransactionStatusViewModel
@@ -41,6 +43,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabViewModel
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
+import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceViewModel
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechViewModel
 import org.cxct.sportlottery.ui.money.withdraw.WithdrawViewModel
@@ -228,7 +231,7 @@ class MultiLanguagesApplication : Application() {
             DoKit.Builder(this) //性能监控模块
                 .build()
         }
-
+        setupSystemStatusChange()
     }
 
     private val localeResources by lazy {
@@ -432,4 +435,20 @@ class MultiLanguagesApplication : Application() {
         }
     }
 
+    fun setupSystemStatusChange() {
+        ApplicationBroadcastReceiver.onSystemStatusChange = { status ->
+            if ((status ?: 0) == MaintenanceActivity.MaintainType.FIXING.value) {
+                when (AppManager.currentActivity()) {
+                    !is MaintenanceActivity -> startActivity(
+                        Intent(
+                            instance,
+                            MaintenanceActivity::class.java
+                        ).apply {
+                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        })
+                }
+            }
+        }
+    }
 }

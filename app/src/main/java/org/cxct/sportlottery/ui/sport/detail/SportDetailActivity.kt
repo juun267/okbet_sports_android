@@ -790,6 +790,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private fun initSocketObserver() {
         unSubscribeChannelHallAll()
         unSubscribeChannelEventAll()
+        setupSportStatusChange(this){
+            if(it){
+                finish()
+            }
+        }
         receiver.serviceConnectStatus.observe(this) {
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {

@@ -6,12 +6,14 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityBetDetailsBinding
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.betList.BetListViewModel
+import org.cxct.sportlottery.util.setupSportStatusChange
 
 /**
  * 串关组合详情
  */
-class BetDetailsActivity : BaseActivity<BetListViewModel>(BetListViewModel::class){
+class BetDetailsActivity : BaseSocketActivity<BetListViewModel>(BetListViewModel::class){
 
     private lateinit var binding: ActivityBetDetailsBinding
 
@@ -40,6 +42,14 @@ class BetDetailsActivity : BaseActivity<BetListViewModel>(BetListViewModel::clas
             bundle.putParcelable("data", data)
         }
         betDetailsFragment.arguments = bundle
+
+        //体育服务关闭  需要退出页面
+        setupSportStatusChange(this){
+            if(it){
+                finish()
+            }
+        }
+
     }
 
 

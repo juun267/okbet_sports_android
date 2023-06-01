@@ -322,6 +322,17 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
 
     private val leagueOddMap = HashMap<String, LeagueOdd>()
     private fun initSocketObserver() {
+        //监听体育服务
+        setupSportStatusChange(this){
+            if(it){
+                //如果首页不做处理
+                if(activity is MainTabActivity){
+                    //体育服务分支没有 FavoriteActivity ， 只好判断非MainTabActivity
+                }else{
+                    activity?.finish()
+                }
+            }
+        }
         receiver.serviceConnectStatus.observe(this.viewLifecycleOwner) {
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {

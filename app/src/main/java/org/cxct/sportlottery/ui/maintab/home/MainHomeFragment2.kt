@@ -11,6 +11,8 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_main_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
+import org.cxct.sportlottery.common.event.RegisterInfoEvent
+import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.databinding.FragmentMainHome2Binding
 import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsItem
@@ -23,7 +25,11 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
+import org.cxct.sportlottery.util.goneWithSportSwitch
 import org.cxct.sportlottery.util.setupBackTop
+import org.cxct.sportlottery.util.setupSportStatusChange
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainHome2Binding>() {
 
@@ -43,6 +49,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         binding.winsRankView.setTipsIcon(R.drawable.ic_okgame_p2)
         initToolBar()
         initNews()
+        EventBusUtil.targetLifecycle(this@MainHomeFragment2)
     }
 
     override fun onInitData() {
@@ -52,6 +59,11 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         viewModel.getConfigData()
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSportStatusChange(event: SportStatusEvent) {
+        checkToCloseView()
+    }
 
     override fun onBindViewStatus(view: View) = binding.run {
         homeTopView.setup(this@MainHomeFragment2)
@@ -88,6 +100,8 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
 
     override fun onResume() {
         super.onResume()
+        //返回页面时，刷新体育相关view状态
+        checkToCloseView()
         if (getMainTabActivity().getCurrentPosition() == 0 && getHomeFragment().getCurrentFragment() == this) {
             refreshHotMatch()
         }
@@ -99,6 +113,8 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         } else {
             homeToolbar.onRefreshMoney()
             refreshHotMatch()
+            //返回页面时，刷新体育相关view状态
+            checkToCloseView()
         }
 
     }
@@ -114,22 +130,31 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         viewModel.gotConfig.observe(viewLifecycleOwner) { event ->
             viewModel.getSportMenuFilter()
         }
-        //体育服务开关监听
-//        receiver.sportMaintenance.observe(this){
-//            it?.let {
-//                sConfigData?.sportMaintainStatus="${it.status}"
-//                binding.homeTopView.initSportEnterStatus()
-//            }
-//        }
+
     }
     //hot match
     private fun refreshHotMatch(){
+
         //重新设置赔率监听
         binding.hotMatchView.postDelayed({
             binding.hotMatchView.onResume(this@MainHomeFragment2)
             viewModel.getRecommend()
         },500)
+    }
 
+    /**
+     * 检查体育服务状态
+     */
+    private fun checkToCloseView(){
+        context?.let {
+            //关闭/显示 sports入口
+            binding.homeTopView.initSportEnterStatus()
+            //关闭/显示   热门赛事
+            binding.hotMatchView.goneWithSportSwitch()
+            if(binding.hotMatchView.isVisible){
+                viewModel.getRecommend()
+            }
+        }
     }
     //hot match end
     private fun initNews() {

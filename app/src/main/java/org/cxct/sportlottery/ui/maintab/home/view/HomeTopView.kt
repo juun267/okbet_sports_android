@@ -8,6 +8,7 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.core.view.isVisible
 import androidx.core.view.isInvisible
 import com.stx.xhb.androidx.XBanner
 import org.cxct.sportlottery.R
@@ -26,6 +27,9 @@ import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.goneWithSportSwitch
+import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.setVisibilityByMarketSwitch
 import org.cxct.sportlottery.util.SPUtil.getMarketSwitch
 import org.cxct.sportlottery.util.getSportEnterIsClose
 import org.cxct.sportlottery.util.setVisibilityByMarketSwitch
@@ -47,11 +51,7 @@ class HomeTopView @JvmOverloads constructor(
      * 检测体育服务是否关闭
      */
     fun initSportEnterStatus() {
-        if (getSportEnterIsClose()) {
-            binding.tvSportClose.visible()
-        }else{
-            binding.tvSportClose.gone()
-        }
+        binding.tvSportClose.goneWithSportSwitch(false)
     }
 
     private fun initBanner() {
@@ -74,7 +74,7 @@ class HomeTopView @JvmOverloads constructor(
         }
 
         val xbanner = findViewById<XBanner>(bannerId)
-        if (imageType == 2) {
+        if (imageType==2){
             xbanner.setAutoPlayAble(loopEnable)
         }
         xbanner.setHandLoop(loopEnable)

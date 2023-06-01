@@ -916,6 +916,8 @@ fun isOKPlat(): Boolean =
 
 fun isUAT(): Boolean = BuildConfig.FLAVOR == "phuat"
 
+fun isOpenChatRoom(): Boolean = sConfigData?.chatOpen.isStatusOpen()
+
 fun isGooglePlayVersion() = BuildConfig.FLAVOR == "google"
 
 fun getMarketSwitch() = KvUtils.decodeBoolean(KvUtils.MARKET_SWITCH)

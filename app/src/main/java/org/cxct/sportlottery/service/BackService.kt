@@ -221,6 +221,7 @@ class BackService : Service() {
         bundle.putString(SERVER_MESSAGE_KEY, setJObjToJArray(message))
         val intent = Intent(SERVICE_SEND_DATA)
         intent.putExtras(bundle)
+        ApplicationBroadcastReceiver.receiveMessage(bundle)
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
 
@@ -268,6 +269,7 @@ class BackService : Service() {
                 .subscribeOn(Schedulers.io())
                 .subscribe({ topicMessage ->
                     Timber.v("[$url] 訂閱接收訊息: ${EncryptUtil.uncompress(topicMessage.payload)}")
+
                     sendMessageToActivity(url, topicMessage.payload)
                 }, { throwable ->
                     Timber.e("[$url] 訂閱通道失敗: $throwable")

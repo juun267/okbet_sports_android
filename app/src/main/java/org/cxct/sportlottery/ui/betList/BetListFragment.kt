@@ -203,7 +203,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
     }
 
 
-    private fun onBackPressed() {
+    fun onBackPressed() {
         if (BetInfoRepository.currentState == SINGLE) {
             exitAnimation(true)
         } else {
