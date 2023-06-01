@@ -93,8 +93,7 @@ class MultiLanguagesApplication : Application() {
         getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
     private val _userInfo by lazy {
-        val value = KvUtils.getObject(UserInfo::class.java)
-        return@lazy if (value == null) MutableLiveData<UserInfo?>() else MutableLiveData<UserInfo?>(value)
+        return@lazy MutableLiveData<UserInfo?>(KvUtils.getObject(UserInfo::class.java))
     }
     val userInfo: LiveData<UserInfo?>
         get() = _userInfo
