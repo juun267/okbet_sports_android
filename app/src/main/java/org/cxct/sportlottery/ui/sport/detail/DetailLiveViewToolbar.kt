@@ -25,6 +25,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.setViewGone
 import org.cxct.sportlottery.common.extentions.setViewVisible
 import org.cxct.sportlottery.databinding.ViewToolbarDetailLiveBinding
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.OKVideoPlayer
 import org.cxct.sportlottery.view.webView.OkWebChromeClient
@@ -108,17 +109,29 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     @SuppressLint("ClickableViewAccessibility")
     private fun initOnclick() {
         iv_live.setOnClickListener {
+            if (sConfigData?.noLoginWitchVideoOrAnimation==1){
+                AppManager.currentActivity().startLogin()
+                return@setOnClickListener
+            }
             liveUrl?.let {
                 showLive()
             }
         }
         iv_video.setOnClickListener {
+            if (sConfigData?.noLoginWitchVideoOrAnimation==1){
+                AppManager.currentActivity().startLogin()
+                return@setOnClickListener
+            }
             videoUrl?.let {
                 showVideo()
             }
         }
 
         iv_animation.setOnClickListener {
+            if (sConfigData?.noLoginWitchVideoOrAnimation==1){
+                AppManager.currentActivity().startLogin()
+                return@setOnClickListener
+            }
             animeUrl?.let {
                 showAnime()
             }

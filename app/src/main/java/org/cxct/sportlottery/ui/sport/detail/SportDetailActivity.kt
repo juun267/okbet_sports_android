@@ -1029,6 +1029,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 !(matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
                     ?.getGameDetailAnimationNeedShow() == true
             lin_live.setOnClickListener {
+                if (sConfigData?.noLoginWitchVideoOrAnimation==1){
+                    AppManager.currentActivity().startLogin()
+                    return@setOnClickListener
+                }
                 showLive()
             }
 
@@ -1045,6 +1049,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 }
             }
             lin_video.setOnClickListener {
+                if (sConfigData?.noLoginWitchVideoOrAnimation==1){
+                    AppManager.currentActivity().startLogin()
+                    return@setOnClickListener
+                }
                 live_view_tool_bar.videoUrl?.let {
                     toolBar.isVisible = false
                     live_view_tool_bar.isVisible = true
@@ -1056,6 +1064,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 }
             }
             lin_anime.setOnClickListener {
+                if (sConfigData?.noLoginWitchVideoOrAnimation==1){
+                    AppManager.currentActivity().startLogin()
+                    return@setOnClickListener
+                }
                 live_view_tool_bar.animeUrl?.let {
                     toolBar.isVisible = false
                     live_view_tool_bar.isVisible = true
