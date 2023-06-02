@@ -63,17 +63,34 @@
         android:layout_height="wrap_content"/>
 
     <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
         app:layout_constraintTop_toBottomOf="@+id/ivTopCover"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_width="match_parent"
-        app:tabTextAppearance="@style/NoCaseTab"
-        app:tabIndicator="@drawable/custom_tab_indicator"
+        app:tabTextAppearance="@style/NoCaseTab2"
+        app:tabIndicator="@drawable/custom_tab_indicator2"
         app:tabIndicatorFullWidth="false"
         app:tabMode="fixed"
         app:tabPaddingEnd="0dp"
         app:tabPaddingStart="0dp"
         app:tabRippleColor="@null"
-        app:tabSelectedTextColor="@color/color_D2E4FF_414655"
-        app:tabTextColor="@color/color_6C7BA8_A7B2C4"
-        android:layout_height="41dp"/>
+        app:tabSelectedTextColor="@color/color_025BE8"
+        app:tabTextColor="@color/color_6D7693"
+        android:layout_height="41dp">
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sports Betting"/>
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="In-Play"/>
+
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Others"/>
+    </com.google.android.material.tabs.TabLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
