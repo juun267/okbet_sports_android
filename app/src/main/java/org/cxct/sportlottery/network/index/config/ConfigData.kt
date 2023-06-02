@@ -135,6 +135,11 @@ data class ConfigData(
     var carouselInterval: String?,//自动轮播的间隔秒数
     var cmsUrl: String?,//新闻域名
     var reviewedVersionUrl: String?,//送审中的版本号
+    var facebookLinkConfig:String?,//fb连接配置
+    var instagramLinkConfig:String?,//ins连接配置
+    var youtubeLinkConfig:String?,//youtube连接配置
+    var twitterLinkConfig:String?,//twitter连接配置
+    var tiktokLinkConfig:String?,//tiktok连接配置
     var selectedDepositAmountSettingList: List<Int>? = null, //存款快捷金额
     var noLoginWitchVideoOrAnimation: Int? //未登陆观看视频/动画 0-关闭 1-启用
 ) {
