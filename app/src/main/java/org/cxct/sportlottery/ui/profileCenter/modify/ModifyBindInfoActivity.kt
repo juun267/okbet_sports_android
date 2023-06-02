@@ -131,7 +131,11 @@ class ModifyBindInfoActivity: BaseActivity<BindInfoViewModel>(BindInfoViewModel:
         tvTwoText.setTextColor(black)
         tvThreeText.setTextColor(black)
 
-        tvStatusText.text = "${getTitleText()}\n${getString(R.string.recharge_state_success)}!"
+        tvStatusText.text = if (isReset()) {
+            getString(if (isModifyPhone()) R.string.N866_1 else R.string.N867_1)
+        } else {
+            getString(if (isModifyPhone()) R.string.N866 else R.string.N867)
+        }
 
         setViewGone(inputForm, blockSmsValidCode, clLiveChat)
         setViewVisible(tvStatusText, tvBackText)

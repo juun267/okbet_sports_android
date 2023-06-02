@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.money.recharge
 
+
 import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.appsflyer.AppsFlyerLib
 import com.bigkoo.pickerview.builder.TimePickerBuilder
@@ -22,16 +24,25 @@ import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.crypto_pay_fragment.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_icon_and_tick.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
+import kotlinx.android.synthetic.main.include_quick_money.*
+import kotlinx.android.synthetic.main.online_pay_fragment.*
 import kotlinx.android.synthetic.main.transfer_pay_fragment.*
 import kotlinx.android.synthetic.main.transfer_pay_fragment.btn_submit
 import kotlinx.android.synthetic.main.transfer_pay_fragment.cv_recharge_time
 import kotlinx.android.synthetic.main.transfer_pay_fragment.et_recharge_amount
+import kotlinx.android.synthetic.main.transfer_pay_fragment.includeQuickMoney
+import kotlinx.android.synthetic.main.transfer_pay_fragment.iv_bank_icon
+import kotlinx.android.synthetic.main.transfer_pay_fragment.ll_fee_amount
+import kotlinx.android.synthetic.main.transfer_pay_fragment.ll_fee_rate
 import kotlinx.android.synthetic.main.transfer_pay_fragment.ll_qr
-
-
+import kotlinx.android.synthetic.main.transfer_pay_fragment.ll_remark
+import kotlinx.android.synthetic.main.transfer_pay_fragment.title_fee_amount
+import kotlinx.android.synthetic.main.transfer_pay_fragment.title_fee_rate
+import kotlinx.android.synthetic.main.transfer_pay_fragment.tv_currency_type
 import kotlinx.android.synthetic.main.transfer_pay_fragment.tv_fee_amount
 import kotlinx.android.synthetic.main.transfer_pay_fragment.tv_fee_rate
-
+import kotlinx.android.synthetic.main.transfer_pay_fragment.tv_remark
+import kotlinx.android.synthetic.main.transfer_pay_fragment.txv_pay_bank
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.common.RechType
@@ -44,6 +55,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.view.LoginEditText
 import org.cxct.sportlottery.ui.profileCenter.profile.RechargePicSelectorDialog
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.MoneyManager.getBankAccountIcon
 import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
 import timber.log.Timber
@@ -96,6 +108,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         initButton()
         initObserve()
         setPayBankBottomSheet()
+        setupQuickMoney()
     }
 
     private fun initButton() {
@@ -167,7 +180,6 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         getBankType(0)
         refreshFieldTitle()
         tv_currency_type.text = sConfigData?.systemCurrencySign
-
     }
 
     private fun refreshFieldTitle() {
@@ -562,14 +574,16 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     return@afterTextChanged
                 }
 
-                if (et_recharge_amount.getText().length > 6) {
-                    et_recharge_amount.setText(et_recharge_amount.getText().substring(0, 6))
+                if (et_recharge_amount.getText().length > 9) {
+                    et_recharge_amount.setText(et_recharge_amount.getText().substring(0, 9))
                     et_recharge_amount.setCursor()
                     return@afterTextChanged
                 }
 
                 checkRechargeAmount(it, mSelectRechCfgs)
                 if (it.isEmpty() || it.isBlank()) {
+                    if (includeQuickMoney.isVisible) (rv_quick_money.adapter as QuickMoneyAdapter).selectItem(
+                        -1)
                     tv_fee_amount.text = ArithUtil.toMoneyFormat(0.0)
                 } else {
                     tv_fee_amount.text = ArithUtil.toMoneyFormat(
@@ -629,8 +643,11 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
     private fun setupEditTextFocusEvent(customEditText: LoginEditText, event: (String) -> Unit) {
         customEditText.setEditTextOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus)
+            if (!hasFocus) {
                 event.invoke(customEditText.et_input.text.toString())
+            } else if (customEditText == et_recharge_amount && includeQuickMoney.isVisible) {
+                (rv_quick_money.adapter as QuickMoneyAdapter).selectItem(-1)
+            }
         }
     }
 
@@ -811,5 +828,39 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         val uploadImgRequest =
             UploadImgRequest(userId, file, UploadImgRequest.PlatformCodeType.VOUCHER)
         viewModel.uploadImage(uploadImgRequest)
+    }
+
+    /**
+     * 设置快捷金额
+     */
+    private fun setupQuickMoney() {
+        if (sConfigData?.selectedDepositAmountSettingList.isNullOrEmpty()) {
+            includeQuickMoney.isVisible = false
+            et_recharge_amount.showLine(true)
+            et_recharge_amount.setMarginBottom(10.dp)
+        } else {
+            includeQuickMoney.isVisible = true
+            et_recharge_amount.showLine(false)
+            et_recharge_amount.setMarginBottom(0.dp)
+            if (rv_quick_money.adapter == null) {
+                rv_quick_money.layoutManager = GridLayoutManager(requireContext(), 3)
+                rv_quick_money.addItemDecoration(GridItemDecoration(10.dp,
+                    12.dp,
+                    requireContext().getColor(R.color.color_FFFFFF),
+                    false))
+                rv_quick_money.adapter = QuickMoneyAdapter().apply {
+                    setOnItemClickListener { adapter, view, position ->
+                        (adapter as QuickMoneyAdapter).selectItem(position)
+                        adapter.data[position].toString().let {
+                            et_recharge_amount.setText(it)
+                            et_recharge_amount.et_input.clearFocus()
+                        }
+                    }
+                    setList(sConfigData?.selectedDepositAmountSettingList)
+                }
+            } else {
+                (rv_quick_money.adapter as QuickMoneyAdapter).setList(sConfigData?.selectedDepositAmountSettingList)
+            }
+        }
     }
 }

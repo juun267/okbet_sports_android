@@ -9,7 +9,6 @@ import kotlinx.android.synthetic.main.fragment_sport.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
-import org.cxct.sportlottery.common.extentions.newInstanceFragment
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
@@ -22,8 +21,8 @@ import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.EventBusUtil
+import org.cxct.sportlottery.util.checkMainPosition
 import org.cxct.sportlottery.util.phoneNumCheckDialog
-import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.view.tablayout.TabSelectedAdapter
 
@@ -82,6 +81,15 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         ivMenuLeft.setOnClickListener {
             getMainTabActivity().showSportLeftMenu(getCurMatchType(), getCurGameType())
             EventBusUtil.post(MenuEvent(true))
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //从侧边栏返回，检查体育服务是否维护
+        val isClose=(activity as MainTabActivity).checkMainPosition(1)
+        if(isClose){
+            (activity as MainTabActivity).backMainHome()
         }
     }
 
@@ -231,7 +239,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
 
         childFragmentManager.beginTransaction()
             .replace(R.id.fl_content, showFragment!!)
-            .commit()
+            .commitAllowingStateLoss()
 
         jumpMatchType = null
         jumpGameType = null
@@ -288,17 +296,17 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         }
     }
 
-    fun showBKEndDialog() {
-        requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
-            putInt(PopImageDialog.DrawableResID, R.drawable.img_bk_end)
-        }).apply {
-            onClick = {
-                this@SportFragment.viewModel.setCurMatchType(MatchType.END_SCORE)
-                navGameFragment(MatchType.END_SCORE)
-            }
-            onDismiss = {
-            }
-        }.show(childFragmentManager, PopImageDialog::class.simpleName)
-    }
+//    fun showBKEndDialog() {
+//        requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
+//            putInt(PopImageDialog.DrawableResID, R.drawable.img_bk_end)
+//        }).apply {
+//            onClick = {
+//                this@SportFragment.viewModel.setCurMatchType(MatchType.END_SCORE)
+//                navGameFragment(MatchType.END_SCORE)
+//            }
+//            onDismiss = {
+//            }
+//        }.show(childFragmentManager, PopImageDialog::class.simpleName)
+//    }
 
 }

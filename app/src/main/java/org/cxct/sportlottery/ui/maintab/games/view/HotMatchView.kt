@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_sport_list.*
 import kotlinx.android.synthetic.main.fragment_sport_list.view.*
@@ -35,19 +36,21 @@ import org.cxct.sportlottery.view.DividerItemDecorator
 import org.cxct.sportlottery.view.onClick
 
 @Suppress("NAME_SHADOWING")
-class HotMatchView(context: Context, attrs: AttributeSet
+class HotMatchView(
+    context: Context, attrs: AttributeSet
 ) : LinearLayout(context, attrs) {
     private var adapter: HotMatchAdapter? = null
     private var fragment: BaseFragment<*>? = null
+
     init {
-        orientation=VERTICAL
+        orientation = VERTICAL
         initView()
     }
 
 
-    private fun initView(){
+    private fun initView() {
         LayoutInflater.from(context).inflate(R.layout.view_hot_game, this, true)
-        val manager=LinearLayoutManager(context)
+        val manager = LinearLayoutManager(context)
         initRecyclerView(manager)
         //右滑动
         iv_right.onClick {
@@ -57,26 +60,40 @@ class HotMatchView(context: Context, attrs: AttributeSet
         iv_left.onClick {
             scrollRecycler(manager, false)
         }
+
+        ivBackPage.onClick {
+            scrollRecycler(manager, false)
+        }
+        ivForwardPage.onClick {
+            scrollRecycler(manager, true)
+        }
+
         //查看更多
         tvHotMore.onClick {
             EventBusUtil.post(JumpInPlayEvent())
         }
-        ivHotMore.onClick {
-            EventBusUtil.post(JumpInPlayEvent())
-        }
+//        ivHotMore.onClick {
+//            EventBusUtil.post(JumpInPlayEvent())
+//        }
 
     }
 
-    private fun initRecyclerView(manager:LinearLayoutManager){
+    private fun initRecyclerView(manager: LinearLayoutManager) {
         recycler_hot_game.let {
-            manager.orientation=LinearLayoutManager.HORIZONTAL
+            manager.orientation = LinearLayoutManager.HORIZONTAL
             it.layoutManager = manager
-            it.addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context,
-                R.drawable.divider_trans)))
-            it.itemAnimator?.changeDuration=0
+            it.addItemDecoration(
+                DividerItemDecorator(
+                    ContextCompat.getDrawable(
+                        context, R.drawable.divider_trans
+                    )
+                )
+            )
+            it.itemAnimator?.changeDuration = 0
+            PagerSnapHelper().attachToRecyclerView(it)
 
             //滚动监听   显示/隐藏 左右两个滑动按钮
-            it.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            it.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
                     val position = manager.findFirstCompletelyVisibleItemPosition()
@@ -84,6 +101,8 @@ class HotMatchView(context: Context, attrs: AttributeSet
                     if (position == -1) {
                         iv_left.visible()
                         iv_right.visible()
+                        ivBackPage.alpha = 1.0f
+                        ivForwardPage.alpha = 1.0f
                     } else {
                         //检测是否需要隐藏 前进/后退 imageView
                         scrollImageStatus(position)
@@ -110,24 +129,23 @@ class HotMatchView(context: Context, attrs: AttributeSet
     /**
      * 初始化热门赛事控件
      */
-    fun onCreate(data:LiveData<Event<List<Recommend>>>, fragment: BaseFragment<*>?){
-        if(fragment==null){
+    fun onCreate(data: LiveData<Event<List<Recommend>>>, fragment: BaseFragment<*>?) {
+        if (fragment == null) {
             return
         }
         this.fragment = fragment
-        this.gone()
         //初始化api变量监听
-        initDataObserve(data,fragment)
+        initDataObserve(data, fragment)
         //初始化adapter
         initAdapter(fragment)
 
         //初始化ws广播监听
-        if(fragment is BaseSocketFragment){
-            initSocketObservers(fragment.receiver,fragment.getViewLifecycleOwner(),fragment)
+        if (fragment is BaseSocketFragment) {
+            initSocketObservers(fragment.receiver, fragment.getViewLifecycleOwner(), fragment)
         }
         //初始化ws广播监听
-        if(fragment is org.cxct.sportlottery.ui.base.BindingSocketFragment<*, *>){
-            initSocketObservers(fragment.receiver,fragment.getViewLifecycleOwner(),fragment)
+        if (fragment is org.cxct.sportlottery.ui.base.BindingSocketFragment<*, *>) {
+            initSocketObservers(fragment.receiver, fragment.getViewLifecycleOwner(), fragment)
         }
 
     }
@@ -135,22 +153,22 @@ class HotMatchView(context: Context, attrs: AttributeSet
     /**
      * 数据变量监听
      */
-    private fun initDataObserve(data:LiveData<Event<List<Recommend>>>, fragment: BaseFragment<*>){
-        data.observe(fragment.viewLifecycleOwner){
+    private fun initDataObserve(data: LiveData<Event<List<Recommend>>>, fragment: BaseFragment<*>) {
+        data.observe(fragment.viewLifecycleOwner) {
 
             //api获取热门赛事列表
             it.peekContent().let { data ->
-                if (data.isNotEmpty()) {
-                    this.visible()
-                }
-                //如果体育服务关闭
-                if (getSportEnterIsClose()) {
-                    this.gone()
-                    return@observe
-                } else {
-                    this.visible()
-                }
-                unSubscribeChannelHall(fragment)
+                    //如果没数据
+                    if(data.isEmpty()){
+                        //隐藏
+                        gone()
+                    }else{
+                        visible()
+                    }
+                    //如果体育服务关闭
+                    this.goneWithSportSwitch()
+
+                    unSubscribeChannelHall(fragment)
                 if (isVisible) {
                     adapter?.data = data
                     recycler_hot_game.post { firstVisibleRange(fragment) }
@@ -162,128 +180,122 @@ class HotMatchView(context: Context, attrs: AttributeSet
     /**
      * ws订阅监听
      */
-    private fun initSocketObservers(receiver:ServiceBroadcastReceiver,
-                                                            viewLifecycleOwner: LifecycleOwner,fragment:BaseFragment<*>){
+    private fun initSocketObservers(
+        receiver: ServiceBroadcastReceiver,
+        viewLifecycleOwner: LifecycleOwner,
+        fragment: BaseFragment<*>
+    ) {
 
-            //观察比赛状态改变
-            receiver.matchStatusChange.observe(viewLifecycleOwner) { matchStatusChangeEvent ->
-                if (matchStatusChangeEvent == null) {
-                    return@observe
+        //观察比赛状态改变
+        receiver.matchStatusChange.observe(viewLifecycleOwner) { matchStatusChangeEvent ->
+            if (matchStatusChangeEvent == null) {
+                return@observe
+            }
+
+            if (adapter == null || adapter!!.data.isEmpty()) {
+                return@observe
+            }
+            val adapterData = adapter?.data
+            adapterData?.forEachIndexed { index, recommend ->
+
+                //丢进去判断是否要更新
+                if (SocketUpdateUtil.updateMatchStatus(
+                        recommend.matchInfo?.gameType, recommend, matchStatusChangeEvent, context
+                    )
+                ) {
+                    adapter?.notifyItemChanged(index, recommend)
                 }
+            }
+        }
 
-                if (adapter == null || adapter!!.data.isEmpty()) {
-                    return@observe
-                }
-                val adapterData = adapter?.data
-                adapterData?.forEachIndexed { index, recommend ->
 
-                    //丢进去判断是否要更新
-                    if (SocketUpdateUtil.updateMatchStatus(
-                            recommend.matchInfo?.gameType,
-                            recommend,
-                            matchStatusChangeEvent,
-                            context
+        receiver.matchClock.observe(viewLifecycleOwner) {
+            it?.let { matchClockEvent ->
+                val targetList = adapter?.data
+                targetList?.forEachIndexed { index, recommend ->
+                    if (SocketUpdateUtil.updateMatchClock(
+                            recommend, matchClockEvent
                         )
                     ) {
-                        adapter?.notifyItemChanged(index,recommend)
+                        adapter?.notifyItemChanged(index, recommend)
                     }
                 }
             }
+        }
+
+        receiver.matchClock.observe(viewLifecycleOwner) {
+            it?.let { matchClockEvent ->
+                val targetList = adapter?.data
+                targetList?.forEachIndexed { index, recommend ->
+                    if (SocketUpdateUtil.updateMatchClock(
+                            recommend, matchClockEvent
+                        )
+                    ) {
+                        adapter?.notifyItemChanged(index, recommend)
+                    }
+                }
+
+            }
+        }
+        receiver.oddsChangeListener = mOddsChangeListener
+
+        receiver.matchOddsLock.observe(viewLifecycleOwner) {
+            it?.let { matchOddsLockEvent ->
+                val targetList = adapter?.data
+
+                targetList?.forEachIndexed { index, recommend ->
+                    if (SocketUpdateUtil.updateOddStatus(recommend, matchOddsLockEvent)) {
+                        adapter?.notifyItemChanged(index, recommend)
+                    }
+                }
+
+            }
+        }
 
 
-            receiver.matchClock.observe(viewLifecycleOwner) {
-                it?.let { matchClockEvent ->
-                    val targetList = adapter?.data
-                    targetList?.forEachIndexed { index, recommend ->
-                        if (
-                            SocketUpdateUtil.updateMatchClock(
-                                recommend,
-                                matchClockEvent
-                            )
-                        ) {
-                            adapter?.notifyItemChanged(index,recommend)
-                        }
+        receiver.globalStop.observe(viewLifecycleOwner) {
+            it?.let { globalStopEvent ->
+                adapter?.data?.forEachIndexed { index, recommend ->
+                    if (SocketUpdateUtil.updateOddStatus(
+                            recommend, globalStopEvent
+                        )
+                    ) {
+                        adapter?.notifyItemChanged(index, recommend)
                     }
                 }
             }
+        }
 
-            receiver.matchClock.observe(viewLifecycleOwner) {
-                it?.let { matchClockEvent ->
-                    val targetList = adapter?.data
-                    targetList?.forEachIndexed { index, recommend ->
-                        if (
-                            SocketUpdateUtil.updateMatchClock(
-                                recommend,
-                                matchClockEvent
-                            )
-                        ) {
-                            adapter?.notifyItemChanged(index,recommend)
-                        }
-                    }
-
-                }
+        receiver.producerUp.observe(viewLifecycleOwner) {
+            it?.let {
+                //先解除全部賽事訂閱
+                unSubscribeChannelHall(fragment)
+                firstVisibleRange(fragment)
             }
-            receiver.oddsChangeListener = mOddsChangeListener
+        }
 
-            receiver.matchOddsLock.observe(viewLifecycleOwner) {
-                it?.let { matchOddsLockEvent ->
-                    val targetList = adapter?.data
-
-                    targetList?.forEachIndexed { index, recommend ->
-                        if (SocketUpdateUtil.updateOddStatus(recommend, matchOddsLockEvent)
-                        ) {
-                            adapter?.notifyItemChanged(index,recommend)
-                        }
-                    }
-
-                }
-            }
-
-
-            receiver.globalStop.observe(viewLifecycleOwner) {
-                it?.let { globalStopEvent ->
-                    adapter?.data?.forEachIndexed { index, recommend ->
-                        if (SocketUpdateUtil.updateOddStatus(
-                                recommend,
-                                globalStopEvent
-                            )
-                        ) {
-                            adapter?.notifyItemChanged(index,recommend)
-                        }
-                    }
-                }
-            }
-
-            receiver.producerUp.observe(viewLifecycleOwner) {
-                it?.let {
-                    //先解除全部賽事訂閱
-                    unSubscribeChannelHall(fragment)
-                    firstVisibleRange(fragment)
-                }
-            }
-
-            receiver.closePlayCate.observe(viewLifecycleOwner) { event ->
-                val it = event?.getContentIfNotHandled() ?: return@observe
-                adapter?.data?.forEachIndexed {index, recommend ->
-                    if (recommend.gameType == it.gameType) {
-                        recommend.oddsMap?.forEach { map ->
-                            if (map.key == it.playCateCode) {
-                                map.value?.forEach { odd ->
-                                    odd.status = BetStatus.DEACTIVATED.code
-                                }
-                                adapter?.notifyItemChanged(index,recommend)
+        receiver.closePlayCate.observe(viewLifecycleOwner) { event ->
+            val it = event?.getContentIfNotHandled() ?: return@observe
+            adapter?.data?.forEachIndexed { index, recommend ->
+                if (recommend.gameType == it.gameType) {
+                    recommend.oddsMap?.forEach { map ->
+                        if (map.key == it.playCateCode) {
+                            map.value?.forEach { odd ->
+                                odd.status = BetStatus.DEACTIVATED.code
                             }
+                            adapter?.notifyItemChanged(index, recommend)
                         }
                     }
                 }
-
             }
+
+        }
     }
 
 
-    private fun initAdapter(fragment:BaseFragment<*>){
-        setUpAdapter(fragment.viewLifecycleOwner, HomeRecommendListener(
-            onItemClickListener = { matchInfo ->
+    private fun initAdapter(fragment: BaseFragment<*>) {
+        setUpAdapter(fragment.viewLifecycleOwner,
+            HomeRecommendListener(onItemClickListener = { matchInfo ->
                 if (isCreditSystem() && fragment.viewModel.isLogin.value != true) {
                     (fragment.requireActivity() as MainTabActivity).showLoginNotify()
                 } else {
@@ -293,49 +305,48 @@ class HotMatchView(context: Context, attrs: AttributeSet
                 }
             },
 
-            onClickBetListener = { gameTypeCode, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
-                if (!fragment.mIsEnabled) {
-                    return@HomeRecommendListener
-                }
-                fragment.avoidFastDoubleClick()
-                if (isCreditSystem() && fragment.viewModel.isLogin.value != true) {
-                    (fragment.requireActivity() as MainTabActivity).showLoginNotify()
-                    return@HomeRecommendListener
-                }
-                val gameType = GameType.getGameType(gameTypeCode)
-                if (gameType == null || matchInfo == null || fragment.requireActivity() !is MainTabActivity) {
-                    return@HomeRecommendListener
-                }
-                val fastBetDataBean = FastBetDataBean(
-                    matchType = matchType,
-                    gameType = gameType,
-                    playCateCode = playCateCode,
-                    playCateName = playCateName,
-                    matchInfo = matchInfo,
-                    matchOdd = null,
-                    odd = odd,
-                    subscribeChannelType = ChannelType.HALL,
-                    betPlayCateNameMap = betPlayCateNameMap,
-                    playCateMenuCode
-                )
+                onClickBetListener = { gameTypeCode, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
+                    if (!fragment.mIsEnabled) {
+                        return@HomeRecommendListener
+                    }
+                    fragment.avoidFastDoubleClick()
+                    if (isCreditSystem() && fragment.viewModel.isLogin.value != true) {
+                        (fragment.requireActivity() as MainTabActivity).showLoginNotify()
+                        return@HomeRecommendListener
+                    }
+                    val gameType = GameType.getGameType(gameTypeCode)
+                    if (gameType == null || matchInfo == null || fragment.requireActivity() !is MainTabActivity) {
+                        return@HomeRecommendListener
+                    }
+                    val fastBetDataBean = FastBetDataBean(
+                        matchType = matchType,
+                        gameType = gameType,
+                        playCateCode = playCateCode,
+                        playCateName = playCateName,
+                        matchInfo = matchInfo,
+                        matchOdd = null,
+                        odd = odd,
+                        subscribeChannelType = ChannelType.HALL,
+                        betPlayCateNameMap = betPlayCateNameMap,
+                        playCateMenuCode
+                    )
 
-                fragment.requireActivity().doOnStop(true) { // 延时加入注单，不然当前页面会弹出来注单列表
-                    val viewModel=fragment.viewModel as BaseSocketViewModel
-                    viewModel.updateMatchBetListData(fastBetDataBean)
-                }
-                SportDetailActivity.startActivity(
-                    fragment.requireContext(),
-                    matchInfo,
-                    matchType,
-                    false
-                )
-            }, onClickPlayTypeListener = { _, _, _, _ ->
+                    fragment.requireActivity().doOnStop(true) { // 延时加入注单，不然当前页面会弹出来注单列表
+                        val viewModel = fragment.viewModel as BaseSocketViewModel
+                        viewModel.updateMatchBetListData(fastBetDataBean)
+                    }
+                    SportDetailActivity.startActivity(
+                        fragment.requireContext(), matchInfo, matchType, false
+                    )
+                }, onClickPlayTypeListener = { _, _, _, _ ->
 
-            }
-        ))
+                })
+        )
     }
 
-    private fun setUpAdapter(lifecycleOwner: LifecycleOwner, homeRecommendListener: HomeRecommendListener) {
+    private fun setUpAdapter(
+        lifecycleOwner: LifecycleOwner, homeRecommendListener: HomeRecommendListener
+    ) {
         adapter = HotMatchAdapter(lifecycleOwner, homeRecommendListener)
         recycler_hot_game.adapter = adapter
         scrollImageStatus(0)
@@ -343,12 +354,14 @@ class HotMatchView(context: Context, attrs: AttributeSet
 
     private fun subscribeChannelHall(recommend: Recommend, fragment: BaseFragment<*>) {
         if (fragment is BaseSocketFragment) {
-            fragment.subscribeChannel2HotMatch(recommend.matchInfo?.gameType,
-                recommend.matchInfo?.id)
+            fragment.subscribeChannel2HotMatch(
+                recommend.matchInfo?.gameType, recommend.matchInfo?.id
+            )
         }
         if (fragment is org.cxct.sportlottery.ui.base.BindingSocketFragment<*, *>) {
-            fragment.subscribeChannel2HotMatch(recommend.matchInfo?.gameType,
-                recommend.matchInfo?.id)
+            fragment.subscribeChannel2HotMatch(
+                recommend.matchInfo?.gameType, recommend.matchInfo?.id
+            )
         }
     }
 
@@ -362,6 +375,8 @@ class HotMatchView(context: Context, attrs: AttributeSet
     }
 
     fun onResume(fragment: BaseFragment<*>?) {
+        //关闭/显示   热门赛事
+        goneWithSportSwitch()
         if (fragment is BaseSocketFragment) {
             fragment.receiver.oddsChangeListener = mOddsChangeListener
         }
@@ -386,9 +401,7 @@ class HotMatchView(context: Context, attrs: AttributeSet
                     }
                     //endregion
                     if (SocketUpdateUtil.updateMatchOdds(
-                            context,
-                            recommend,
-                            oddsChangeEvent
+                            context, recommend, oddsChangeEvent
                         )
                     ) {
                         adapter?.notifyItemChanged(index, recommend)
@@ -401,6 +414,7 @@ class HotMatchView(context: Context, attrs: AttributeSet
     private fun Recommend.sortOddsMap() {
         this.oddsMap?.forEach { (_, value) ->
             if ((value?.size ?: 0) > 3
+                && value?.first()?.marketSort != null
                 && value?.first()?.marketSort != 0
                 && (value?.first()?.odds != value?.first()?.malayOdds)
             ) {
@@ -413,22 +427,22 @@ class HotMatchView(context: Context, attrs: AttributeSet
     /**
      * 前后滚动recycler
      */
-    private fun scrollRecycler(manager: LinearLayoutManager,isNext:Boolean){
+    private fun scrollRecycler(manager: LinearLayoutManager, isNext: Boolean) {
         //第一个完全显示的item
-        val visiblePosition=manager.findFirstCompletelyVisibleItemPosition()
+        val visiblePosition = manager.findFirstCompletelyVisibleItemPosition()
         //第一个显示的item
-        val visiblePosition2=manager.findFirstVisibleItemPosition()
-        var position = if(visiblePosition==-1){
-            if(isNext){
-                visiblePosition2+1
-            }else{
-                visiblePosition2-1
+        val visiblePosition2 = manager.findFirstVisibleItemPosition()
+        var position = if (visiblePosition == -1) {
+            if (isNext) {
+                visiblePosition2 + 1
+            } else {
+                visiblePosition2 - 1
             }
-        }else{
-            if(isNext){
-                visiblePosition+1
-            }else{
-                visiblePosition-1
+        } else {
+            if (isNext) {
+                visiblePosition + 1
+            } else {
+                visiblePosition - 1
             }
         }
         if (position > manager.itemCount - 1) {
@@ -441,17 +455,21 @@ class HotMatchView(context: Context, attrs: AttributeSet
     }
 
 
-    private fun scrollImageStatus(position:Int){
-        if(position==0){
+    private fun scrollImageStatus(position: Int) {
+        if (position == 0) {
             iv_left.gone()
-        }else{
+            ivBackPage.alpha = 0.5f
+        } else {
             iv_left.visible()
+            ivBackPage.alpha = 1f
         }
         adapter?.let {
             if (position == it.data.size - 1) {
                 iv_right.gone()
+                ivForwardPage.alpha = 0.5f
             } else {
                 iv_right.visible()
+                ivForwardPage.alpha = 1f
             }
         }
     }

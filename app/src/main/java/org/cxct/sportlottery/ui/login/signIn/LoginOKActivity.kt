@@ -474,7 +474,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 }
             } else {
                 hideLoading()
-                showErrorDialog(msg)
+                showErrorDialog(getString(R.string.P038))
             }
         }
     }

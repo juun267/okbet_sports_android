@@ -2,9 +2,13 @@ package org.cxct.sportlottery.ui.maintenance
 
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.View
 import androidx.core.view.isVisible
+import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_maintenance.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.fitsSystemStatus
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.network.index.config.ConfigData
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
@@ -20,17 +24,24 @@ class MaintenanceActivity : BaseSocketActivity<MaintenanceViewModel>(Maintenance
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStatusbar(R.color.color_232C4F_FFFFFF, true)
+        ImmersionBar.with(this)
+            .statusBarDarkFont(true)
+            .transparentStatusBar()
+            .fitsSystemWindows(false)
+            .init()
         setContentView(R.layout.activity_maintenance)
-
+        findViewById<View>(R.id.root).fitsSystemStatus()
         initObserver()
-        initSocketObserver()
         initServiceButton(sConfigData)
+    }
+
+    override fun onResume() {
+        super.onResume()
         viewModel.getConfig()
     }
 
     private fun initObserver() {
-        viewModel.configResult.observe(this){
+        viewModel.configResult.observe(this) {
             //確認當前平台是否維護中
             it?.configData?.let { initServiceButton(it) }
             when (it?.configData?.maintainStatus) {
@@ -42,7 +53,6 @@ class MaintenanceActivity : BaseSocketActivity<MaintenanceViewModel>(Maintenance
 //                    if (sConfigData?.thirdOpen == FLAG_OPEN)
 //                        MainActivity.reStart(this)
 //                    else
-
                     MainTabActivity.reStart(this)
                     finish()
                 }
@@ -76,11 +86,5 @@ class MaintenanceActivity : BaseSocketActivity<MaintenanceViewModel>(Maintenance
         }
     }
 
-    private fun initSocketObserver() {
-        receiver.sysMaintenance.observe(this) {
-            //接收到系統維護狀態變化時, 請求config確認當前平台是否維護中
-            viewModel.getConfig()
-        }
-    }
 
 }

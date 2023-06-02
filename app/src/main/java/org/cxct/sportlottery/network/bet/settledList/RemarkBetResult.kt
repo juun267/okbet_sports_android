@@ -15,6 +15,7 @@ data class RemarkBetResult(
     val remarkBetResult: RemarkBetResultList?
 ) : BaseResult()
 
+@KeepMembers
 data class RemarkBetResultList(
     val addTime: Long?,
     val betConfirmTime: Long?,

@@ -68,7 +68,7 @@ class NewsHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentNewsHo
         binding.includeNews.apply {
             tvCateName.text = getString(R.string.N912)
             tvMore.gone()
-            ivMore.gone()
+//            ivMore.gone()
             tabNews.addOnTabSelectedListener(TabSelectedAdapter {
                 categoryId = if (it.position == 0) NewsRepository.NEWS_OKBET_ID else NewsRepository.NEWS_SPORT_ID
                 viewModel.getPageNews(1, PAGE_SIZE, categoryId)

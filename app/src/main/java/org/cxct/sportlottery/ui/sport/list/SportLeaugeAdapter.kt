@@ -208,7 +208,7 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
         val time = System.currentTimeMillis()
         if (time - refreshTime > 1000) {
             refreshTime = time
-            Log.d("Hewie", "UpdateAll...")
+//            Log.d("Hewie", "UpdateAll...")
             notifyDataSetChanged()
         }
     }

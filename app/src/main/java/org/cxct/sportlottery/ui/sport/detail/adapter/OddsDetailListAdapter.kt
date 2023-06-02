@@ -30,6 +30,7 @@ import kotlinx.android.synthetic.main.content_odds_detail_list_team.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.network.common.ComparePlayCate
 import org.cxct.sportlottery.network.common.GameType
@@ -1500,7 +1501,7 @@ class OddsDetailListAdapter(
                                 oddsDetail.oddArrayList.indexOf(oddsDetail.oddArrayList.find { it?.id == payloadItem })
 //                            Timber.d("===洗刷刷3 index:${index} payloads:${payloads.size}")
                             ((it1.adapter) as TypeSingleAdapter).setOddsDetailData(oddsDetail)
-                            it1.adapter?.notifyItemChanged(index)
+                            runWithCatch { it1.adapter?.notifyItemChanged(index) }
                         }
                     }
                 }
@@ -1657,15 +1658,17 @@ class OddsDetailListAdapter(
         private fun forSCO(oddsDetail: OddsDetailListData, position: Int) {
             val teamNameList = oddsDetail.teamNameList
 
-            tvHomeName?.text = teamNameList.firstOrNull()
-            tvAwayName?.text = teamNameList.getOrNull(1)
+            val homeName = teamNameList.firstOrNull() ?: ""
+            val awayName = teamNameList.getOrNull(1) ?: ""
+            tvHomeName?.text = homeName
+            tvAwayName?.text = awayName
 
             itemView.findViewById<ConstraintLayout>(R.id.cl_tab).visibility =
                 if (oddsDetail.isExpand) View.VISIBLE else View.GONE
 
             rvBet?.apply {
                 adapter = TypeSCOAdapter(selectSCO(
-                    oddsDetail, oddsDetail.gameTypeSCOSelect ?: teamNameList[0], teamNameList
+                    oddsDetail, oddsDetail.gameTypeSCOSelect ?: homeName, homeName
                 ), onOddClickListener, oddsType, object : TypeSCOAdapter.OnMoreClickListener {
                     override fun click() {
                         oddsDetail.isMoreExpand = !oddsDetail.isMoreExpand
@@ -1676,30 +1679,30 @@ class OddsDetailListAdapter(
             }
 
             tvHomeName?.apply {
-                isSelected = oddsDetail.gameTypeSCOSelect == teamNameList[0]
+                isSelected = oddsDetail.gameTypeSCOSelect == homeName
                 setOnClickListener {
                     (rvBet?.adapter as TypeSCOAdapter).mOddsDetail = selectSCO(
                         oddsDetail = oddsDetail.apply {
-                            gameTypeSCOSelect = teamNameList[0]
+                            gameTypeSCOSelect = homeName
                             isMoreExpand = false
                         },
-                        teamName = oddsDetail.gameTypeSCOSelect ?: teamNameList[0],
-                        teamNameList = teamNameList
+                        teamName = oddsDetail.gameTypeSCOSelect ?: homeName,
+                        homeName
                     )
                     this@OddsDetailListAdapter.notifyItemChanged(position)
                 }
             }
 
             tvAwayName?.apply {
-                isSelected = oddsDetail.gameTypeSCOSelect == teamNameList[1]
+                isSelected = oddsDetail.gameTypeSCOSelect == awayName
                 setOnClickListener {
                     (rvBet?.adapter as TypeSCOAdapter).mOddsDetail = selectSCO(
                         oddsDetail = oddsDetail.apply {
-                            gameTypeSCOSelect = teamNameList[1]
+                            gameTypeSCOSelect = awayName
                             isMoreExpand = false
                         },
-                        teamName = oddsDetail.gameTypeSCOSelect ?: teamNameList[1],
-                        teamNameList = teamNameList
+                        teamName = oddsDetail.gameTypeSCOSelect ?: awayName,
+                        homeName
                     )
                     this@OddsDetailListAdapter.notifyItemChanged(position)
                 }
@@ -1709,10 +1712,10 @@ class OddsDetailListAdapter(
         private fun selectSCO(
             oddsDetail: OddsDetailListData,
             teamName: String,
-            teamNameList: MutableList<String>,
+            homeName: String
         ): OddsDetailListData {
-            tvHomeName?.isSelected = teamName == teamNameList[0]
-            tvAwayName?.isSelected = teamName != teamNameList[0]
+            tvHomeName?.isSelected = teamName == homeName
+            tvAwayName?.isSelected = teamName != homeName
             return oddsDetail.apply {
                 gameTypeSCOSelect = teamName
                 scoItem =

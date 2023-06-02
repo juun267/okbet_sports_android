@@ -2,9 +2,11 @@ package org.cxct.sportlottery.ui.maintab.home
 
 import android.app.Application
 import android.text.TextUtils
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.callApi
@@ -24,7 +26,9 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.match.MatchRound
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.list.MatchLiveData
+import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
+import org.cxct.sportlottery.network.service.sys_maintenance.SportMaintenanceEvent
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuFilter
 import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendRequest
@@ -81,6 +85,12 @@ open class MainHomeViewModel(
     val _enterThirdGameResult = MutableLiveData<Pair<String, EnterThirdGameResult>>()
     val enterThirdGameResult: LiveData<Pair<String, EnterThirdGameResult>>
         get() = _enterThirdGameResult
+
+    //试玩线路
+    private val _enterTrialPlayGameResult = MutableLiveData<Pair<String, EnterThirdGameResult>?>()
+    val enterTrialPlayGameResult: LiveData<Pair<String, EnterThirdGameResult>?>
+        get() = _enterTrialPlayGameResult
+
     private val _errorPromptMessage = MutableLiveData<Event<String>>()
     val token = loginRepository.token
 
@@ -177,30 +187,43 @@ open class MainHomeViewModel(
                         startTimeStamp.toString()
                     )
                 )
+            } ?: return@launch
+
+            if (!resultRecommend.success && resultRecommend.result == null) {
+                return@launch
             }
-            resultRecommend?.let { result ->
-                if (result.success&&result.result!=null) {
-                    result.result.recommendList.filter {
-                        !it.menuList.isNullOrEmpty()
-                    }.forEach { recommend ->
-                        recommend.oddsMap=recommend.odds
-                        with(recommend) {
-//                            setupOddsSort()
-                            sortOddsByMenu()
-                            setupMatchType()
-                            setupMatchTime()
-                            setupPlayCateNum()
-                            setupLeagueName()
-                            setupSocketMatchStatus()
+
+            launch(Dispatchers.IO) {
+                resultRecommend.result!!.recommendList.filter {
+                    !it.menuList.isNullOrEmpty()
+                }.forEach { recommend ->
+                    recommend.oddsMap = recommend.odds
+
+                    // 过滤掉赔率为空掉对象
+                    recommend.oddsMap?.let { oddsMap ->
+                        oddsMap.forEach {
+                            oddsMap[it.key] =
+                                it.value?.filter { null != it }?.toMutableList() ?: mutableListOf()
                         }
                     }
-                    _publicityRecommend.postValue(Event(result.result.recommendList))
 
-                    notifyFavorite(FavoriteType.MATCH)
+                    with(recommend) {
+//                            setupOddsSort()
+                        sortOddsByMenu()
+                        setupMatchType()
+                        setupMatchTime()
+                        setupPlayCateNum()
+                        setupLeagueName()
+                        setupSocketMatchStatus()
+                    }
                 }
+                _publicityRecommend.postValue(Event(resultRecommend.result.recommendList))
+
+                notifyFavorite(FavoriteType.MATCH)
             }
         }
     }
+
     //獲取體育篩選菜單
     fun getSportMenuFilter() {
         viewModelScope.launch {
@@ -219,21 +242,33 @@ open class MainHomeViewModel(
     /**
      * 获取首页okgames列表
      */
-    var pageIndex=1
-    val pageSize=6
-    var totalCount=0
-    var totalPage=0
+//    var pageIndex = 1
+//    val pageSize = 6
+//    var totalCount = 0
+//    var totalPage = 0
+
+     val pageIndexLiveData = MutableLiveData(1)
+     val pageSizeLiveData = MutableLiveData(6)
+     val totalCountLiveData = MutableLiveData(0)
+     val totalPageLiveData = MutableLiveData(0)
+
     fun getHomeOKGamesList(
-    ) = callApi({ OKGamesRepository.getHomeOKGamesList(pageIndex, pageSize) }) {
-        if(it.getData()==null){
+    ) = callApi({
+        OKGamesRepository.getHomeOKGamesList(
+            pageIndexLiveData.value ?: 1, pageSizeLiveData.value ?: 1
+        )
+    }) {
+        if (it.getData() == null) {
             //hide loading
-            _homeGamesList.value= arrayListOf()
-        }else{
-            totalCount=it.total
-            if(totalPage==0){
-                totalPage=totalCount/pageSize
-                if(totalCount%pageSize!=0){
-                    totalPage++
+            _homeGamesList.value = arrayListOf()
+        } else {
+            totalCountLiveData.value = it.total
+            val totalCount = totalCountLiveData.value ?: 0
+            val pageSize = pageSizeLiveData.value ?: 0
+            if (totalPageLiveData.value == 0) {
+                totalPageLiveData.value = totalCount / pageSize
+                if (totalCount % pageSize != 0) {
+                    totalPageLiveData.value = (totalPageLiveData.value ?: 0) + 1
                 }
             }
             _homeGamesList.value=it.getData()
@@ -398,6 +433,37 @@ open class MainHomeViewModel(
         requestEnterThirdGame("${gameData.firmType}", "${gameData.gameCode}", "${gameData.gameCategory}", baseFragment)
     }
 
+    /**
+     * 未登录试玩
+     */
+    fun requestEnterThirdGameNoLogin(  firmType: String?, gameCode: String?,gameCategory: String?){
+        if(firmType==null){
+            //不支持试玩
+            _enterTrialPlayGameResult.postValue(null)
+            return
+        }
+
+        viewModelScope.launch {
+            //请求试玩线路
+            val result= doNetwork(androidContext) {
+               OneBoSportApi.thirdGameService.thirdNoLogin(firmType, gameCode)
+            }
+            if(result==null){
+                //不支持试玩
+                _enterTrialPlayGameResult.postValue(null)
+            }else{
+                if(result.success&&result.msg.isNotEmpty()){
+                    //获得了试玩路径
+                    val thirdGameResult = EnterThirdGameResult(EnterThirdGameResult.ResultType.SUCCESS, result.msg, gameCategory)
+                    _enterTrialPlayGameResult.postValue(Pair(firmType, thirdGameResult))
+                }else{
+                    //不支持试玩
+                    _enterTrialPlayGameResult.postValue(null)
+                }
+            }
+        }
+    }
+
     //避免多次请求游戏
     var jumpingGame = false
     fun requestEnterThirdGame(
@@ -458,6 +524,15 @@ open class MainHomeViewModel(
     private suspend fun thirdGameLogin(firmType: String, gameCode: String): NetResult? {
         return doNetwork(androidContext) {
             OneBoSportApi.thirdGameService.thirdLogin(firmType, gameCode)
+        }
+    }
+
+    /**
+     * 未登录试玩
+     */
+    private suspend fun thirdGameNoLogin(firmType: String, gameCode: String): NetResult? {
+        return doNetwork(androidContext) {
+            OneBoSportApi.thirdGameService.thirdNoLogin(firmType, gameCode)
         }
     }
 

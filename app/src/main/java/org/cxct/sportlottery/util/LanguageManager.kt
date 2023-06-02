@@ -114,6 +114,16 @@ object LanguageManager {
         }
     }
 
+    fun getLanguageString2(context: Context?): String {
+        return when (getSelectLanguage(context)) {
+            Language.ZH -> "zh"
+            Language.VI -> "vi"
+            Language.TH -> "th"
+            Language.PHI -> "ph"
+            else -> "en"
+        }
+    }
+
     fun getLanguageString(context: Context?): String {
         return when (getSelectLanguage(context)) {
             Language.ZH -> "zh"

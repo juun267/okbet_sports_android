@@ -1,21 +1,20 @@
 package org.cxct.sportlottery.ui.base
 
-import android.annotation.SuppressLint
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
-import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository.userInfo
 import org.cxct.sportlottery.repository.WithdrawRepository
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
+import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.isKYCVerifyRechargeOpen
 import org.cxct.sportlottery.util.isKYCVerifyWithdrawOpen
 
@@ -25,13 +24,11 @@ import org.cxct.sportlottery.util.isKYCVerifyWithdrawOpen
  * @description
  */
 abstract class BaseWithdrawViewModel(
+    androidContext: Application,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
-
-    @SuppressLint("StaticFieldLeak")
-    private val androidContext = MultiLanguagesApplication.appContext
+) : BaseViewModel(androidContext, loginRepository, betInfoRepository, infoCenterRepository) {
 
     val withdrawRepository = WithdrawRepository
 

@@ -245,4 +245,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:visibility="gone" />
 
+    <org.cxct.sportlottery.view.DetailSportGuideView
+        android:id="@+id/dsgView"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

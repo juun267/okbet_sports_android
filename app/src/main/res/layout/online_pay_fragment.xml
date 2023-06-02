@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_F0F5FA"
-    android:overScrollMode="never"
-    android:fillViewport="true"
     tools:context=".ui.money.recharge.OnlinePayFragment">
 
     <LinearLayout
@@ -37,11 +35,18 @@
             android:id="@+id/et_recharge_online_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
+            android:background="@color/color_FFFFFF"
             app:cvTextColor="@color/color_9BB3D9_535D76"
             app:cvTitleTextStyle="normal"
             app:cvHint="@string/edt_hint_deposit_money"
             app:cvInputType="number"
             app:cvTitle="@string/title_deposit_money" />
+
+        <include
+            android:id="@+id/includeQuickMoney"
+            layout="@layout/include_quick_money"
+            android:visibility="gone" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -312,4 +317,4 @@
             android:layout_marginEnd="@dimen/margin_14"
             android:layout_marginBottom="55dp" />
     </LinearLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

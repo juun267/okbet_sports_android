@@ -40,7 +40,7 @@ class PromotionAdapter(private val promotionList: List<PromotionData>) :
     inner class PromotionViewHolder(val binding: ItemPromotionBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(itemData: PromotionData) {
             binding.tvTitle.text = itemData.title
-            Glide.with(binding.ivImage)
+            Glide.with(binding.root.context)
                 .load(itemData.imgUrl)
                 .apply(requestOptions)
                 .into(binding.ivImage)

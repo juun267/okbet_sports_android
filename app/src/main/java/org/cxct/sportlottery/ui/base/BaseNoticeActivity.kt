@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import kotlin.reflect.KClass
 
@@ -105,4 +106,7 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
             (if (noticeCount ?: 0 > 0 && isGuest == false) View.VISIBLE else View.GONE)
     }
 
+    fun isGuest(hasBottomNavigation: Boolean = true): Boolean {
+        return viewModel.userInfo.value?.testFlag == TestFlag.GUEST.index
+    }
 }

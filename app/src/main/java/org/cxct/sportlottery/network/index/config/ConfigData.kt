@@ -1,10 +1,10 @@
 package org.cxct.sportlottery.network.index.config
 
+import androidx.annotation.Keep
 import com.squareup.moshi.JsonClass
-import org.cxct.sportlottery.common.proguards.KeepMembers
 
 @JsonClass(generateAdapter = true)
-@KeepMembers
+@Keep
 data class ConfigData(
     val platformId: Long?,
     val agentMode: String?, //代理模式：ulimit 无限级，fixed 固定级
@@ -135,11 +135,15 @@ data class ConfigData(
     var carouselInterval: String?,//自动轮播的间隔秒数
     var cmsUrl: String?,//新闻域名
     var reviewedVersionUrl: String?,//送审中的版本号
+<<<<<<< HEAD
     var facebookLinkConfig:String?,//fb连接配置
     var instagramLinkConfig:String?,//ins连接配置
     var youtubeLinkConfig:String?,//youtube连接配置
     var twitterLinkConfig:String?,//twitter连接配置
     var tiktokLinkConfig:String?//tiktok连接配置
+=======
+    var selectedDepositAmountSettingList: List<Int>? = null, //存款快捷金额
+>>>>>>> dev2
 ) {
     var enterCertified: Int? = -1 //ProfileCenterViewModel.SecurityEnter
     var hasGetTwoFactorResult: Boolean? = false //判斷是不是已經成功發送過簡訊認證碼 (關掉彈窗要重新設置為false)

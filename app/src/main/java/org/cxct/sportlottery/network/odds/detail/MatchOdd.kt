@@ -1,25 +1,38 @@
 package org.cxct.sportlottery.network.odds.detail
 
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguards.KeepMembers
+import com.squareup.moshi.JsonClass
+import kotlinx.android.parcel.Parcelize
+import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.network.odds.MatchInfo
+import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.odds.eps.EpsOdd
+import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.util.sortOddsMapByDetail
 
-@JsonClass(generateAdapter = true) @KeepMembers
+@Parcelize
+@JsonClass(generateAdapter = true)
+@KeepMembers
 data class MatchOdd(
     @Json(name = "betPlayCateNameMap")
-    var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null,
+    override var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null,
     @Json(name = "playCateNameMap")
-    var playCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null,
+    override var playCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null,
     @Json(name = "matchInfo")
-    val matchInfo: MatchInfo,
+    override val matchInfo: MatchInfo,
     @Json(name = "playCateTypeList")
     val playCateTypeList: List<PlayCateType>,
     @Json(name = "odds")
-    var odds: MutableMap<String, CateDetailData>
-){
+    var odds: MutableMap<String, CateDetailData>,
+) : Parcelable, org.cxct.sportlottery.network.common.MatchOdd {
     fun sortOddsMap() {
         this.odds.sortOddsMapByDetail()
     }
+
+    override var oddsMap: MutableMap<String, MutableList<Odd>?>? = null
+    override val oddsSort: String? = null
+    override var quickPlayCateList: MutableList<QuickPlayCate>? = null
+    override val oddsEps: EpsOdd? = null
 }

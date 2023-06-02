@@ -1,14 +1,13 @@
 package org.cxct.sportlottery.ui.base
 
+import android.app.Application
 import android.content.Context
-import android.util.Log
 import androidx.annotation.Nullable
 import androidx.lifecycle.*
 import kotlinx.coroutines.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.exception.DoNoConnectException
-import org.cxct.sportlottery.common.extentions.clean
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.httpFormat
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -27,6 +26,7 @@ import timber.log.Timber
 
 
 abstract class BaseViewModel(
+    val androidContext: Application,
     val loginRepository: LoginRepository,
     val betInfoRepository: BetInfoRepository,
     val infoCenterRepository: InfoCenterRepository
@@ -89,7 +89,9 @@ abstract class BaseViewModel(
     //20210526 新增 exceptionHandle 參數，還判斷要不要在 BaseActivity 顯示，exception 錯誤訊息
     @Nullable
     suspend fun <T : BaseResult> doNetwork(
-        context: Context, exceptionHandle: Boolean = true, apiFun: suspend () -> Response<T>
+        context: Context = androidContext,
+        exceptionHandle: Boolean = true,
+        apiFun: suspend () -> Response<T>,
     ): T? {
         return try {
             if (!NetworkUtil.isAvailable(context)) throw DoNoConnectException()

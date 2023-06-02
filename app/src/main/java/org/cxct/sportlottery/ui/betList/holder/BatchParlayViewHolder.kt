@@ -21,8 +21,10 @@ import org.cxct.sportlottery.ui.betList.listener.OnItemClickListener
 import org.cxct.sportlottery.ui.betRecord.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.KeyboardView
 import org.cxct.sportlottery.util.LocalUtils
+import org.cxct.sportlottery.util.MoneyInputFilter
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getMultipleOdds
+import org.cxct.sportlottery.view.boundsEditText.EditTextWatcher
 import timber.log.Timber
 
 abstract class BatchParlayViewHolder(
@@ -119,6 +121,8 @@ abstract class BatchParlayViewHolder(
                 Timber.d("1 进来了- - - -- - - - - - - :isTouched:${false}")
                 et_bet_parlay.requestFocus()
                 data.isInputBet = true
+                keyboardView.setupMaxBetMoney(inputMaxMoney)
+                keyboardView.setUserMoney(mUserMoney)
                 keyboardView.showKeyboard(et_bet_parlay, 0)
             }
 
@@ -126,12 +130,13 @@ abstract class BatchParlayViewHolder(
             refreshSingleWinAmount(data)
             checkBetLimitParlay(data)
             et_bet_parlay.apply {
+                filters = arrayOf(MoneyInputFilter())
                 val tw: TextWatcher?
                 tw = object : TextWatcher {
                     override fun afterTextChanged(it: Editable?) {
                         isTouched = true
                         if (it.isNullOrEmpty()) {
-                            data.betAmount = 0.000
+                            data.betAmount = 0.00
                             data.inputBetAmountStr = ""
                             data.input = null
                             refreshSingleWinAmount(null)
@@ -141,7 +146,7 @@ abstract class BatchParlayViewHolder(
                             data.inputBetAmountStr = it.toString()
                             data.input = it.toString()
 
-                            inputMaxMoney.let { max ->
+                            MAX_BET_VALUE.let { max ->
                                 if (quota > max) {
                                     et_bet_parlay.apply {
                                         setText(TextUtil.formatInputMoney(max))
@@ -177,6 +182,7 @@ abstract class BatchParlayViewHolder(
                 if (event.action == MotionEvent.ACTION_UP) {
 //                    et_bet_parlay.isFocusable = true
                     et_bet_parlay.requestFocus()
+                    keyboardView.setUserMoney(mUserMoney)
                     keyboardView.setupMaxBetMoney(inputMaxMoney)
                     keyboardView.showKeyboard(
                         et_bet_parlay, position, isParlay = true
@@ -230,7 +236,9 @@ abstract class BatchParlayViewHolder(
                 if (mHasBetClosed) {
                     tv_hint_parlay_default.text =
                         LocalUtils.getString(R.string.str_market_is_closed)
-                    et_bet_parlay.setText("")
+                    if (etBetHasInput) {
+                        et_bet_parlay.setText("")
+                    }
                 } else {
                     //限額用整數提示
                     tv_hint_parlay_default.text = betHint
@@ -244,21 +252,21 @@ abstract class BatchParlayViewHolder(
     private fun checkBetLimitParlay(
         itemData: ParlayOdd, betAmount: Double = itemData.betAmount
     ) {
-        itemView.apply {
-            val amountError: Boolean = if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
-                //請輸入正確投注額
-                !itemData.input.isNullOrEmpty()
-            } else {
-                if (betAmount > inputMaxMoney) {
-                    //超過最大限額
-                    true
-                } else {
-                    betAmount != 0.0 && betAmount < inputMinMoney
-                }
-            }
-            val balanceError: Boolean = betAmount != 0.0 && betAmount > mUserMoney
-            itemData.amountError = if (balanceError) true else amountError
-        }
+//        itemView.apply {
+//            val amountError: Boolean = if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
+//                //請輸入正確投注額
+//                !itemData.input.isNullOrEmpty()
+//            } else {
+//                if (betAmount > inputMaxMoney) {
+//                    //超過最大限額
+//                    true
+//                } else {
+//                    betAmount != 0.0 && betAmount < inputMinMoney
+//                }
+//            }
+//            val balanceError: Boolean = betAmount != 0.0 && betAmount > mUserMoney
+//            itemData.amountError = if (balanceError) true else amountError
+//        }
         setEtBetParlayBackground(itemData)
     }
 

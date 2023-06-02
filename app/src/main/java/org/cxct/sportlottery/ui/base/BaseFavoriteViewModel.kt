@@ -3,10 +3,6 @@ package org.cxct.sportlottery.ui.base
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.FavoriteType
@@ -24,6 +20,7 @@ import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
+import org.cxct.sportlottery.util.SingleLiveEvent
 import org.cxct.sportlottery.util.TimeUtil
 
 
@@ -42,9 +39,9 @@ abstract class BaseFavoriteViewModel(
     infoCenterRepository
 ) {
     //TODO add notify login ui to activity/fragment
-    val notifyLogin: LiveData<Boolean>
+    val notifyLogin: SingleLiveEvent<Boolean>
         get() = mNotifyLogin
-    protected val mNotifyLogin = MutableLiveData<Boolean>()
+    private val mNotifyLogin = SingleLiveEvent<Boolean>()
 
     val leftNotifyLogin: LiveData<Event<Boolean>>
         get() = _leftNotifyLogin
@@ -78,16 +75,16 @@ abstract class BaseFavoriteViewModel(
         get() = _sportCodeSpinnerList
 
     fun navFavoritePage(isFromLeftMenu: Boolean = false) {
-        if (isLogin.value != true) {
-            if (isFromLeftMenu) {
-                _leftNotifyLogin.postValue(Event(true))
-            } else {
-                mNotifyLogin.postValue(true)
-            }
+        if (isLogin.value == true) {
+            _intoFavoritePage.value = Event(true)
             return
         }
 
-        _intoFavoritePage.value = Event(true)
+        if (isFromLeftMenu) {
+            _leftNotifyLogin.postValue(Event(true))
+        } else {
+            mNotifyLogin.postValue(true)
+        }
     }
 
     fun getFavorite() {
@@ -96,11 +93,7 @@ abstract class BaseFavoriteViewModel(
             return
         }
 
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                myFavoriteRepository.getFavorite()
-            }
-        }
+        doRequest(androidContext, { myFavoriteRepository.getFavorite() }) { }
     }
 
     fun getFavoriteMatch(
@@ -112,168 +105,159 @@ abstract class BaseFavoriteViewModel(
             mNotifyLogin.postValue(true)
             return
         }
+
         if (gameType.isNullOrEmpty()) {
-            getMyFavoriteAllMatch(
-                playCateMenu ?: MenuCode.MAIN.code,
-                playCateCode)
-
+            getMyFavoriteAllMatch(playCateMenu ?: MenuCode.MAIN.code, playCateCode)
         } else {
-            getMyFavoriteMatch(gameType,
-                playCateMenu ?: MenuCode.MAIN.code,
-                playCateCode)
+            getMyFavoriteMatch(gameType,playCateMenu ?: MenuCode.MAIN.code, playCateCode)
         }
-
     }
 
     private fun getMyFavoriteMatch(
         gameType: String,
         playCateMenu: String,
         playCateCode: String?,
-    ) {
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.favoriteService.getMyFavoriteMatch(
-                    MyFavoriteMatchRequest(gameType, playCateMenu)
-                )
+    ) = doRequest(androidContext, { OneBoSportApi.favoriteService.getMyFavoriteMatch(
+        MyFavoriteMatchRequest(gameType, playCateMenu)
+    ) }) { result->
+
+        val rows = result?.rows ?: return@doRequest
+
+        rows.sortOdds()
+
+        rows.getPlayCateNameMap()
+        rows.forEach { leagueOdd ->
+
+            leagueOdd.gameType = GameType.getGameType(gameType)
+            if (leagueOdd.gameType == null) {
+                leagueOdd.gameType = GameType.getGameType(leagueOdd.matchOdds[0].matchInfo?.gameType!!)
             }
 
-            result?.rows?.sortOdds()
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                matchOdd.matchInfo?.isFavorite = true
+                matchOdd.oddsSort = PlayCateMenuFilterUtils.filterOddsSort(
+                    matchOdd.matchInfo?.gameType,
+                    MenuCode.MAIN.code
+                )
 
-            result?.rows?.let {
-                it.getPlayCateNameMap()
-                it.forEach { leagueOdd ->
-                    leagueOdd.apply {
-                        this.gameType = GameType.getGameType(gameType)
-                        if (this.gameType == null) {
-                            this.gameType = GameType.getGameType(matchOdds[0].matchInfo?.gameType!!)
-                        }
-                        this.matchOdds.forEach { matchOdd ->
-                            matchOdd.matchInfo?.isFavorite = true
-                            matchOdd.oddsSort =
-                                PlayCateMenuFilterUtils.filterOddsSort(matchOdd.matchInfo?.gameType,
-                                    MenuCode.MAIN.code)
-                            playCateCode?.let {
-                                val oddsMap = matchOdd.oddsMap
-                                    ?.filter { odds -> odds.key == it }
-                                    ?.toMutableFormat()
+                playCateCode?.let {
+                    val oddsMap = matchOdd.oddsMap
+                        ?.filter { odds -> odds.key == it }
+                        ?.toMutableFormat()
 
-                                matchOdd.oddsMap?.clear()
-                                if (oddsMap != null) {
-                                    matchOdd.oddsMap?.putAll(oddsMap)
-                                }
-                            }
-                        }
-                    }
-
-                    leagueOdd.matchOdds.forEach { matchOdd ->
-                        matchOdd.setupOddDiscount()
-                        matchOdd.matchInfo?.let { matchInfo ->
-                            matchInfo.startDateDisplay =
-                                TimeUtil.timeFormat(matchInfo.startTime, "MM/dd")
-
-                            matchInfo.startTimeDisplay =
-                                TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
-
-                            matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
-
-                            /* #1 將賽事狀態(先前socket回傳取得)放入當前取得的賽事 */
-                            val mInfo = mFavorMatchOddList.value?.peekContent()?.find { lo ->
-                                lo.league.id == leagueOdd.league.id
-                            }?.matchOdds?.find { mo ->
-                                mo.matchInfo?.id == matchInfo.id
-                            }?.matchInfo
-
-                            matchInfo.socketMatchStatus = mInfo?.socketMatchStatus
-                            matchInfo.statusName18n = mInfo?.statusName18n
-                            matchInfo.homeScore = mInfo?.homeScore
-                            matchInfo.awayScore = mInfo?.awayScore
-                        }
+                    matchOdd.oddsMap?.clear()
+                    if (oddsMap != null) {
+                        matchOdd.oddsMap?.putAll(oddsMap)
                     }
                 }
-                mFavorMatchOddList.postValue(Event(it.updateMatchType()))
+            }
+
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                matchOdd.setupOddDiscount()
+                matchOdd.matchInfo?.let { matchInfo ->
+
+                    matchInfo.startDateDisplay = TimeUtil.timeFormat(matchInfo.startTime, "MM/dd")
+                    matchInfo.startTimeDisplay = TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
+                    matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
+
+                    /* #1 將賽事狀態(先前socket回傳取得)放入當前取得的賽事 */
+                    val mInfo = mFavorMatchOddList.value?.peekContent()?.find { lo ->
+                        lo.league.id == leagueOdd.league.id
+                    }?.matchOdds?.find { mo ->
+                        mo.matchInfo?.id == matchInfo.id
+                    }?.matchInfo
+
+                    matchInfo.socketMatchStatus = mInfo?.socketMatchStatus
+                    matchInfo.statusName18n = mInfo?.statusName18n
+                    matchInfo.homeScore = mInfo?.homeScore
+                    matchInfo.awayScore = mInfo?.awayScore
+                }
+
+                // 过滤掉赔率为空掉对象
+                matchOdd.oddsMap?.let { oddsMap ->
+                    oddsMap.forEach {
+                        oddsMap[it.key] = it.value?.filter { null != it }?.toMutableList() ?: mutableListOf()
+                    }
+                }
             }
         }
+
+        mFavorMatchOddList.postValue(Event(rows.updateMatchType()))
     }
 
     private fun getMyFavoriteAllMatch(
         playCateMenu: String,
         playCateCode: String?,
-    ) {
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.favoriteService.getMyFavoriteQueryAll(
-                    MyFavoriteMatchRequest(null, playCateMenu)
+    ) = doRequest(androidContext, {
+        OneBoSportApi.favoriteService.getMyFavoriteQueryAll(
+            MyFavoriteMatchRequest(null, playCateMenu)
+        )
+    }) { result  ->
+
+        var leagueOddList = mutableListOf<LeagueOdd>()
+        val sportCodeList = mutableListOf<StatusSheetData>()
+        //第一項為全部球種
+        sportCodeList.add(StatusSheetData("", LocalUtils.getString(R.string.all_sport)))
+        //根據api回傳的球類添加進當前啟用球種篩選清單
+        result?.rows?.forEach {
+            leagueOddList.addAll(it.leagueOddsList)
+            sportCodeList.add(StatusSheetData(
+                    it.gameType,
+                    GameType.getGameTypeString(LocalUtils.getLocalizedContext(), it.gameType)
                 )
-            }
-            var leagueOddList = mutableListOf<LeagueOdd>()
-            val sportCodeList = mutableListOf<StatusSheetData>()
-            //第一項為全部球種
-            sportCodeList.add(StatusSheetData("", LocalUtils.getString(R.string.all_sport)))
-            //根據api回傳的球類添加進當前啟用球種篩選清單
-            result?.rows?.forEach {
-                leagueOddList.addAll(it.leagueOddsList)
-                sportCodeList.add(
-                    StatusSheetData(
-                        it.gameType,
-                        GameType.getGameTypeString(
-                            LocalUtils.getLocalizedContext(),
-                            it.gameType
-                        )
-                    )
-                )
-            }
-            withContext(Dispatchers.Main) {
-                _sportCodeSpinnerList.value = sportCodeList
-            }
-            leagueOddList.sortOdds()
-            leagueOddList.let {
-                it.getPlayCateNameMap()
-                it.forEach { leagueOdd ->
-                    leagueOdd.apply {
-                        this.gameType = GameType.getGameType(matchOdds[0].matchInfo?.gameType!!)
-                        this.matchOdds.forEach { matchOdd ->
-                            matchOdd.matchInfo?.isFavorite = true
-                            playCateCode?.let {
-                                val oddsMap = matchOdd.oddsMap
-                                    ?.filter { odds -> odds.key == it }
-                                    ?.toMutableFormat()
+            )
+        }
 
-                                matchOdd.oddsMap?.clear()
-                                if (oddsMap != null) {
-                                    matchOdd.oddsMap?.putAll(oddsMap)
-                                }
-                            }
-                        }
-                    }
+        _sportCodeSpinnerList.postValue(sportCodeList)
+        leagueOddList.sortOdds()
+        leagueOddList.getPlayCateNameMap()
+        leagueOddList.forEach { leagueOdd ->
+            leagueOdd.gameType = GameType.getGameType(leagueOdd.matchOdds[0].matchInfo?.gameType!!)
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                matchOdd.matchInfo?.isFavorite = true
+                playCateCode?.let {
+                    val oddsMap = matchOdd.oddsMap
+                        ?.filter { odds -> odds.key == it }
+                        ?.toMutableFormat()
 
-                    leagueOdd.matchOdds.forEach { matchOdd ->
-                        matchOdd.setupOddDiscountFixed()
-                        matchOdd.matchInfo?.let { matchInfo ->
-                            matchInfo.startDateDisplay =
-                                TimeUtil.timeFormat(matchInfo.startTime, "MM/dd")
-
-                            matchInfo.startTimeDisplay =
-                                TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
-
-                            matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
-
-                            /* #1 將賽事狀態(先前socket回傳取得)放入當前取得的賽事 */
-                            val mInfo = mFavorMatchOddList.value?.peekContent()?.find { lo ->
-                                lo.league.id == leagueOdd.league.id
-                            }?.matchOdds?.find { mo ->
-                                mo.matchInfo?.id == matchInfo.id
-                            }?.matchInfo
-
-                            matchInfo.socketMatchStatus = mInfo?.socketMatchStatus
-                            matchInfo.statusName18n = mInfo?.statusName18n
-                            matchInfo.homeScore = mInfo?.homeScore
-                            matchInfo.awayScore = mInfo?.awayScore
-                        }
+                    matchOdd.oddsMap?.clear()
+                    if (oddsMap != null) {
+                        matchOdd.oddsMap?.putAll(oddsMap)
                     }
                 }
-                mFavorMatchOddList.postValue(Event(it.updateMatchType()))
+            }
+
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                matchOdd.setupOddDiscountFixed()
+                matchOdd.matchInfo?.let { matchInfo ->
+
+                    matchInfo.startDateDisplay = TimeUtil.timeFormat(matchInfo.startTime, "MM/dd")
+                    matchInfo.startTimeDisplay = TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
+                    matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
+
+                    /* #1 將賽事狀態(先前socket回傳取得)放入當前取得的賽事 */
+                    val mInfo = mFavorMatchOddList.value?.peekContent()?.find { lo ->
+                        lo.league.id == leagueOdd.league.id
+                    }?.matchOdds?.find { mo ->
+                        mo.matchInfo?.id == matchInfo.id
+                    }?.matchInfo
+
+                    matchInfo.socketMatchStatus = mInfo?.socketMatchStatus
+                    matchInfo.statusName18n = mInfo?.statusName18n
+                    matchInfo.homeScore = mInfo?.homeScore
+                    matchInfo.awayScore = mInfo?.awayScore
+                }
+
+                // 过滤掉赔率为空掉对象
+                matchOdd.oddsMap?.let { oddsMap ->
+                    oddsMap.forEach {
+                        oddsMap[it.key] = it.value?.filter { null != it }?.toMutableList() ?: mutableListOf()
+                    }
+                }
             }
         }
+
+        mFavorMatchOddList.postValue(Event(leagueOddList.updateMatchType()))
     }
 
     private fun MatchOdd.setupOddDiscountFixed() {
@@ -301,8 +285,7 @@ abstract class BaseFavoriteViewModel(
 
         val discount = userInfo.value?.discount ?: 1.0F
 
-
-        this.oddsMap?.forEach { (key, value) ->
+        oddsMap?.forEach { (key, value) ->
             value?.forEach { odd ->
                 if (key == PlayCate.EPS.value)
                     odd?.setupEPSDiscount(discount)
@@ -346,23 +329,18 @@ abstract class BaseFavoriteViewModel(
             return
         }
 
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                myFavoriteRepository.pinFavorite(type, content, gameType)
-            }
-            result?.t?.let {
-                if (content == null) return@let
-                when (type) {
-                    FavoriteType.MATCH -> {
-                        val list = mFavorMatchOddList.value?.peekContent()?.removeFavorMatchOdd(content)?.removeFavorLeague()
-                        mFavorMatchOddList.postValue(Event(list ?: listOf()))
-                    }
+        doRequest(androidContext, { myFavoriteRepository.pinFavorite(type, content, gameType) }) { result->
 
-                    else -> {
-                    }
-                }
+            if (content == null || result?.t == null) {
+                return@doRequest
+            }
+
+            if (type == FavoriteType.MATCH) {
+                val list = mFavorMatchOddList.value?.peekContent()?.removeFavorMatchOdd(content)?.removeFavorLeague()
+                mFavorMatchOddList.postValue(Event(list ?: listOf()))
             }
         }
+
     }
 
     fun leftPinFavorite(gameType: String?, addOrRemove: Int?) {
@@ -371,11 +349,7 @@ abstract class BaseFavoriteViewModel(
             return
         }
 
-        pinFavorite(
-            FavoriteType.SPORT,
-            gameType
-        )
-
+        pinFavorite(FavoriteType.SPORT, gameType)
         _leftNotifyFavorite.postValue(Event(addOrRemove))
     }
 
@@ -393,11 +367,7 @@ abstract class BaseFavoriteViewModel(
 
     private fun List<LeagueOdd>.removeFavorLeague(): List<LeagueOdd> {
         val list = this.toMutableList()
-
-        list.remove(list.find {
-            it.matchOdds.isNullOrEmpty()
-        })
-
+        list.remove(list.find { it.matchOdds.isNullOrEmpty() })
         return list.toList()
     }
 
@@ -409,8 +379,7 @@ abstract class BaseFavoriteViewModel(
             leagueOdd.matchOdds.forEach { matchOdd ->
                 val sortOrder = matchOdd.oddsSort?.split(",")
                 val oddsMap = matchOdd.oddsMap?.toSortedMap(compareBy<String> {
-                    val oddsIndex = sortOrder?.indexOf(it)
-                    oddsIndex
+                    sortOrder?.indexOf(it)
                 }.thenBy { it })
 
                 matchOdd.oddsMap?.clear()
@@ -424,12 +393,8 @@ abstract class BaseFavoriteViewModel(
     private fun List<LeagueOdd>.updateMatchType(): List<LeagueOdd> {
         this.forEach { leagueOdd ->
             leagueOdd.matchOdds.forEach { matchOdd ->
-
-                matchOdd.matchInfo?.isInPlay =
-                    System.currentTimeMillis() > matchOdd.matchInfo?.startTime ?: 0
-
-                matchOdd.matchInfo?.isAtStart =
-                    TimeUtil.isTimeAtStart(matchOdd.matchInfo?.startTime)
+                matchOdd.matchInfo?.isInPlay = System.currentTimeMillis() > matchOdd.matchInfo?.startTime ?: 0
+                matchOdd.matchInfo?.isAtStart = TimeUtil.isTimeAtStart(matchOdd.matchInfo?.startTime)
             }
         }
         return this
@@ -439,7 +404,7 @@ abstract class BaseFavoriteViewModel(
      * 檢查當前登入狀態, 若未登入則跳請登入提示
      * @return true: 已登入, false: 未登入
      */
-    fun checkLoginStatus(): Boolean {
+    open fun checkLoginStatus(): Boolean {
         return if (isLogin.value != true) {
             mNotifyLogin.postValue(true)
             false

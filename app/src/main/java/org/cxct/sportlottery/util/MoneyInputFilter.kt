@@ -24,7 +24,7 @@ class MoneyInputFilter : InputFilter {
 
         //限制小數點後面只能有兩位小數
         val index = target.indexOf(".")
-        if (index >= 0 && index + POINT_LENGTH + 2 <= target.length) {
+        if (index >= 0 && index + POINT_LENGTH + 1 <= target.length) {
             return backup
         }
 

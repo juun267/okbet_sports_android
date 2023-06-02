@@ -1,5 +1,8 @@
 package org.cxct.sportlottery.network.common
 
+import org.cxct.sportlottery.common.proguards.KeepMembers
+
+@KeepMembers
 enum class PlayCate(val value: String) {
 
     UNCHECK("UNCHECK"),//未確定

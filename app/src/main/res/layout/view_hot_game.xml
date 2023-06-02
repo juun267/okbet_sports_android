@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/llayout_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        android:paddingBottom="8dp"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingLeft="12dp"
+        android:paddingTop="16dp"
+        android:paddingRight="12dp"
+        android:paddingBottom="8dp">
 
         <ImageView
             android:layout_width="24dp"
@@ -24,33 +25,55 @@
 
         <TextView
             android:id="@+id/tvHotTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/N881"
-            android:paddingLeft="4dp"
-            android:textColor="@color/color_0D2245"
-            android:layout_weight="1"
             android:layout_gravity="center_vertical"
+<<<<<<< HEAD
             android:textSize="16sp"
+=======
+            android:layout_weight="1"
+            android:paddingLeft="4dp"
+            android:text="@string/N881"
+            android:textColor="@color/color_0D2245"
+            android:textSize="@dimen/textSize16sp"
+>>>>>>> dev2
             android:textStyle="bold" />
-
 
 
         <TextView
             android:id="@+id/tvHotMore"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="3dp"
+            android:background="@drawable/bg_more"
+            android:gravity="center"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="3dp"
+            android:text="@string/N702"
             android:textColor="@color/color_6D7693"
-            android:layout_gravity="center_vertical"
-            android:textSize="@dimen/textSize14sp"
-            android:text="@string/N702" />
+            android:textSize="@dimen/textSize12sp" />
 
-        <ImageView
-            android:id="@+id/ivHotMore"
-            android:layout_width="@dimen/margin_16"
-            android:layout_height="@dimen/margin_16"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_game_gray_arrow_right" />
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/ivBackPage"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:padding="5dp"
+            android:src="@drawable/ic_home_okgames_left" />
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/ivForwardPage"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:padding="5dp"
+            android:src="@drawable/ic_home_okgames_right" />
+
+        <!--        <ImageView-->
+        <!--            android:id="@+id/ivHotMore"-->
+        <!--            android:layout_width="@dimen/margin_16"-->
+        <!--            android:layout_height="@dimen/margin_16"-->
+        <!--            android:layout_gravity="center_vertical"-->
+        <!--            android:src="@drawable/ic_game_gray_arrow_right" />-->
     </LinearLayout>
 
     <RelativeLayout
@@ -58,44 +81,44 @@
         android:layout_height="wrap_content">
 
         <androidx.cardview.widget.CardView
-            app:cardCornerRadius="10dp"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginRight="12dp"
             app:cardBackgroundColor="@color/transparent"
-            app:cardElevation="0dp"
-            android:layout_height="wrap_content">
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp">
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_hot_game"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
                 android:minHeight="200dp"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="3"
-                tools:listitem="@layout/item_hot_game_view"
-                android:orientation="horizontal" />
+                tools:listitem="@layout/item_hot_game_view" />
         </androidx.cardview.widget.CardView>
-
 
 
         <ImageView
             android:id="@+id/iv_left"
-            android:layout_marginStart="@dimen/margin_8"
-            android:src="@drawable/icon_arrow_b"
-            android:layout_centerVertical="true"
             android:layout_width="24dp"
-            android:layout_height="24dp"/>
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/margin_8"
+            android:src="@drawable/icon_arrow_b" />
 
         <ImageView
             android:id="@+id/iv_right"
-            android:layout_marginEnd="@dimen/margin_8"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/icon_arrow_a"
+            android:layout_marginEnd="@dimen/margin_8"
             android:padding="5dp"
-            android:layout_width="34dp"
-            android:layout_height="34dp"/>
+            android:src="@drawable/icon_arrow_a" />
 
     </RelativeLayout>
 
-</merge>
+</androidx.appcompat.widget.LinearLayoutCompat>

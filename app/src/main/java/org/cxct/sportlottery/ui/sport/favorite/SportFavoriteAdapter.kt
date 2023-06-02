@@ -93,7 +93,7 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = data[position]
-        Log.d("Hewie", "綁定：賽事($position)")
+//        Log.d("Hewie", "綁定：賽事($position)")
         val matchInfoList = data.mapNotNull {
             it.matchInfo
         }
@@ -123,7 +123,7 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
             onBindViewHolder(holder, position)
             //(holder as ViewHolderHdpOu).update(matchType, data[position], leagueOddListener, isTimerEnable, oddsType, playSelectedCodeSelectionType)
         } else {
-            Log.d("Hewie", "更新：賽事($position)")
+//            Log.d("Hewie", "更新：賽事($position)")
 
             payloads.forEach { payload ->
                 when (payload) {

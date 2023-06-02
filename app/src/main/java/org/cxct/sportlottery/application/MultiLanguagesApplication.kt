@@ -2,33 +2,43 @@ package org.cxct.sportlottery.application
 
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.observe
 import androidx.multidex.MultiDex
 import cn.jpush.android.api.JPushInterface
 import com.appsflyer.AppsFlyerLib
 import com.didichuxing.doraemonkit.DoKit
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.xuexiang.xupdate.XUpdate
+import com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION
+import com.xuexiang.xupdate.utils.UpdateUtils
 import me.jessyan.autosize.AutoSize
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.common.loading.Gloading
+import org.cxct.sportlottery.common.loading.LoadingAdapter
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.money.RedEnveLopeModel
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.service.ApplicationBroadcastReceiver
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.betList.BetListViewModel
 import org.cxct.sportlottery.ui.betRecord.TransactionStatusViewModel
 import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
+import org.cxct.sportlottery.ui.chat.ChatViewModel
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.ui.finance.FinanceViewModel
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterViewModel
@@ -37,10 +47,12 @@ import org.cxct.sportlottery.ui.login.foget.ForgetViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
 import org.cxct.sportlottery.ui.login.signUp.RegisterViewModel
 import org.cxct.sportlottery.ui.login.signUp.info.RegisterInfoViewModel
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.MainTabViewModel
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
+import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceViewModel
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechViewModel
 import org.cxct.sportlottery.ui.money.withdraw.WithdrawViewModel
@@ -85,8 +97,7 @@ class MultiLanguagesApplication : Application() {
         getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
     private val _userInfo by lazy {
-        val value = KvUtils.getObject(UserInfo::class.java)
-        return@lazy if (value == null) MutableLiveData<UserInfo?>() else MutableLiveData<UserInfo?>(value)
+        return@lazy MutableLiveData<UserInfo?>(KvUtils.getObject(UserInfo::class.java))
     }
     val userInfo: LiveData<UserInfo?>
         get() = _userInfo
@@ -152,9 +163,10 @@ class MultiLanguagesApplication : Application() {
         viewModel { ForgetViewModel(get(), get(), get(), get()) }
         viewModel { BetListViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { AuthViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { BindInfoViewModel(get(), get(), get()) }
+        viewModel { BindInfoViewModel(get(), get(), get(), get()) }
         viewModel { RegisterInfoViewModel(get(), get(), get(), get()) }
         viewModel { OKGamesViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { ChatViewModel(get(), get(), get(), get(), get(), get(), get()) }
     }
 
     private val repoModule = module {
@@ -176,7 +188,7 @@ class MultiLanguagesApplication : Application() {
 
 
     private val serviceModule = module {
-        factory { ServiceBroadcastReceiver(get(), get()) }
+        factory { ServiceBroadcastReceiver() }
     }
 
     override fun attachBaseContext(base: Context) {
@@ -223,13 +235,14 @@ class MultiLanguagesApplication : Application() {
         setupDeviceCode()
         initAppsFlyerSDK()
         initJpush()
+        initXUpdate()
 
         if (BuildConfig.DEBUG) {
             CrashHandler.setup(this) //错误日志收集
             DoKit.Builder(this) //性能监控模块
                 .build()
         }
-
+        Gloading.initDefault(LoadingAdapter())
     }
 
     private val localeResources by lazy {
@@ -310,6 +323,26 @@ class MultiLanguagesApplication : Application() {
         }
     }
 
+    fun initXUpdate() {
+        XUpdate.get()
+            .debug(BuildConfig.DEBUG)
+            .isWifiOnly(true) //默认设置只在wifi下检查版本更新
+            .isGet(true) //默认设置使用get请求检查版本
+            .isAutoMode(false) //默认设置非自动模式，可根据具体使用配置
+            .param("versionCode", UpdateUtils.getVersionCode(this)) //设置默认公共请求参数
+            .param("appKey", packageName)
+            .setOnUpdateFailureListener { error ->
+
+                //设置版本更新出错的监听
+                if (error.code != CHECK_NO_NEW_VERSION) {          //对不同错误进行处理
+                    ToastUtil.showToast(instance, error.toString())
+                }
+            }
+            .supportSilentInstall(true) //设置是否支持静默安装，默认是true
+            .setIUpdateHttpService(OKHttpUpdateHttpService()) //这个必须设置！实现网络请求功能。
+            .init(this)
+    }
+
     companion object {
         var myPref: SharedPreferences? = null
         lateinit var appContext: Context
@@ -317,6 +350,7 @@ class MultiLanguagesApplication : Application() {
         const val UUID = "uuid"
         private var instance: MultiLanguagesApplication? = null
         lateinit var mInstance: MultiLanguagesApplication
+        var showHomeDialog = true
 
         fun stringOf(@StringRes strId: Int): String {
             return mInstance.getString(strId)
@@ -330,20 +364,31 @@ class MultiLanguagesApplication : Application() {
             this.searchHistory = searchHistory
         }
 
-        var searchHistory: MutableList<String>?
+        var searchHistory: MutableList<String>? = null
             get() {
+                if (field == null) {
+                    field = mutableListOf()
+                    return field
+                }
+
                 val searchHistoryJson = myPref?.getString("search_history", "")
-                val gson = Gson()
-                val type = object : TypeToken<MutableList<String>?>() {}.type
-                var searchHistoryList: MutableList<String>? = gson.fromJson(searchHistoryJson, type)
-                return searchHistoryList
+                if (searchHistoryJson.isEmptyStr()) {
+                    field = mutableListOf()
+                    return field
+                }
+
+                field = JsonUtil.listFrom(searchHistoryJson!!, String::class.java)
+                return field
             }
-            set(searchHistoryList) {
-                val gson = Gson()
-                val searchHistoryJson = gson.toJson(searchHistoryList)
+            set(value) {
                 val editor = myPref?.edit()
-                editor?.putString("search_history", searchHistoryJson)
+                if (value == null) {
+                    editor?.putString("search_history", "")
+                } else {
+                    editor?.putString("search_history", JsonUtil.toJson(value))
+                }
                 editor?.apply()
+                field = value
             }
 
         fun saveNightMode(nightMode: Boolean) {
@@ -390,7 +435,7 @@ class MultiLanguagesApplication : Application() {
         }
 
         //確認年齡彈窗
-        fun showAgeVerifyDialog(activity: FragmentActivity) {
+        fun showAgeVerifyDialog(activity: AppCompatActivity) {
             if (isCreditSystem()) return //信用盤不顯示彈窗
             if (getInstance()?.isAgeVerifyNeedShow() == false) return
             AgeVerifyDialog(activity, object : AgeVerifyDialog.OnAgeVerifyCallBack {
@@ -408,18 +453,19 @@ class MultiLanguagesApplication : Application() {
             }).show()
         }
 
-        open fun showPromotionPopupDialog(activity: FragmentActivity) {
-            val token = loginSharedPref.getString(KEY_TOKEN, "")
+        open fun showPromotionPopupDialog(activity: AppCompatActivity) {
+            if (activity.isDestroyed
+                || isCreditSystem()
+                || sConfigData?.imageList?.any { it.imageType == ImageType.PROMOTION.code && !it.imageName3.isNullOrEmpty() && !(isGooglePlayVersion() && it.isHidden) } != true) {
+                return
+            }
 
-            if (!isCreditSystem() && sConfigData?.imageList?.any { it.imageType == ImageType.PROMOTION.code && !it.imageName3.isNullOrEmpty() && !(isGooglePlayVersion() && it.isHidden) } == true) PromotionPopupDialog(
-                activity, PromotionPopupDialog.PromotionPopupListener(onClickImageListener = {
-                    JumpUtil.toInternalWeb(
-                        activity, Constants.getPromotionUrl(
-                            token, LanguageManager.getSelectLanguage(activity)
-                        ), LocalUtils.getString(R.string.promotion)
-                    )
-                })
-            ).show()
+            PromotionPopupDialog(activity) {
+                val token = loginSharedPref.getString(KEY_TOKEN, "")
+                JumpUtil.toInternalWeb(activity,
+                    Constants.getPromotionUrl(token, LanguageManager.getSelectLanguage(activity)),
+                    activity.getString(R.string.promotion))
+            }.show()
         }
 
         fun saveOddsType(oddsType: OddsType) {
@@ -432,4 +478,20 @@ class MultiLanguagesApplication : Application() {
         }
     }
 
+    open fun setupSystemStatusChange(owner: LifecycleOwner) {
+        ApplicationBroadcastReceiver.onSystemStatusChange.observe(owner) {
+            if (it) {
+                if (AppManager.currentActivity() !is MaintenanceActivity) {
+                    startActivity(Intent(this, MaintenanceActivity::class.java).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    })
+                }
+            } else {
+                if (AppManager.currentActivity() !is MainTabActivity) {
+                    MainTabActivity.reStart(this)
+                }
+            }
+        }
+    }
 }

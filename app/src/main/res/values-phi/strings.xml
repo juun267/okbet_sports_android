@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="loading">Naglo-load...</string>
     <string name="connect_first">Mangyaring kumonekta sa Internet muna</string>
     <string name="error_url_fail">Error sa jump address</string>
@@ -168,7 +168,7 @@
     <string name="label_version">Bersyon</string>
     <string name="select_plat">Pumili ng platform</string>
     <string name="game_rule">Alituntunin ng Laro</string>
-    <string name="news">Pinaka bagong balita</string>
+    <string name="news">Balita</string>
     <string name="select_all_league">Piliin lahat</string>
     <string name="select_cancel">Kanselahin ang pagpili</string>
     <string name="search">Hanapin</string>
@@ -1162,6 +1162,7 @@
     <string name="N867">Matagumpay na nai-set up ang mailbox</string>
     <string name="N866_1">Nabago na ang mobile!</string>
     <string name="N867_1">"Nabago na ang email! "</string>
+
     <string name="N890">Print</string>
     <string name="N891">Paki-type ang pangalan</string>
     <string name="J033">Pangalan</string>
@@ -1221,6 +1222,8 @@
     <string name="N952">Camera scan</string>
     <string name="N956">Hindi mabasa ang QR code</string>
     <string name="N980">Tinanggihan ang permiso sa camera</string>
+    <string name="N989">Lampas sa maximum halaga ang taya</string>
+    <string name="N990">Mas mababa sa minimum na halaga</string>
 
     <string name="N969">Pansamantalang nasa ilalim ng maintenance ang serbisyo ng sports betting!</string>
     <string name="N257">Nag maintenance</string>
@@ -1241,4 +1244,87 @@
     <string name="youtubeFollow">YouTube</string>
     <string name="twitterFollow">Twitter</string>
     <string name="tiktokFollow">Tiktok</string>
+    <string name="F025">Log in agad</string>
+    <string name="N993">Libreng laro</string>
+    <string name="N994">Subukan ang aming mga laro nang libre at masaya. Anumang mga panalo ay hindi tunay na pera.</string>
+    <string name="P038">Google service ay hindi available, mangyaring magrehistro/mag-login gamit ang iyong mobile #.</string>
+    <string name="P001">Mga panuntunan sa Basketball Ending Game</string>
+    <string name="P002">Ang Basketball Ending Game ay isang uri ng taya na binubuo ng 100 number combination entries, hindi nito nililimitahan ang mga manlalaro na maglagay ng taya sa mga numero ng kumbinasyon, ang miyembro ay pinapayagang maglagay ng taya sa lahat ng 100 slot. Dahil ito ay tinatawag na ending game, ang ending scored ay tutukuyin ang iyong suwerte.</string>
+    <string name="P003">Mga instruksyon kung laktawan ang basketball sa dulo ng iskor</string>
+    <string name="P004">Piliin ang iskor na gustong bilhin dito, maaari kang pumili ng higit sa isa</string>
+    <string name="P005">I-click muli para kanselahin ang pagpili</string>
+    <string name="P006">I-check ang mga napiling iskor dito,</string>
+    <string name="P007">Ilipat ang mouse sa ibabaw ng iskor upang mapili ang tanggalin</string>
+    <string name="P008">Maglagay ng halaga dito</string>
+    <string name="P009">Kung tumaya ka sa maraming iskor, ang kabuuang taya = dami ng taya * halaga ng taya</string>
+    <string name="P010">Tingnan ang tinantyang halaga na mapanalo dito</string>
+    <string name="P011">Isara ang cart dito</string>
+    <string name="P012">Previous step</string>
+    <string name="P013">Next step</string>
+    <string name="P016">I-click ang button na ito para isara ang betting window. pumili ng higit pang iskor</string>
+    <string name="N102">Pagtaya</string>
+    <string name="write_suggestion">Pagsusumite</string>
+    <string name="LT054">Anunsyo:</string>
+    <string name="LT058">Pansamantalang sarado ang chat</string>
+    <string name="LT003">Chat room lobby</string>
+    <string name="chat_chat">Chat</string>
+    <string name="chat_return">Bumalik</string>
+    <string name="chat_speaking_too_often">Masyadong madalas magsalita</string>
+    <string name="chat_speaking_conditions">Mga kondisyon sa pagsalita (Huling 2 araw):</string>
+    <string name="chat_deposit_less">Hindi bababa sa ang kabuuang halaga ng deposito</string>
+    <string name="chat_bets_less">Hindi bababa sa ang kabuuang halaga ng taya</string>
+    <string name="chat_ban_speak">Mute</string>
+    <string name="chat_unmute">I-unmute</string>
+    <string name="chat_delete_message">Burahin ang mensahe</string>
+    <string name="chat_kick_out">Kick out</string>
+    <string name="chat_member_banned">Na-ban ang miyembrong ito</string>
+    <string name="chat_member_unbanned">Na-unban ang miyembro na ito</string>
+    <string name="chat_member_kicked_out">Ang miyembrong ito ay pinaalis sa chat room</string>
+    <string name="chat_you_banned">Bawal kang makipag-chat</string>
+    <string name="chat_you_can_chatting">Maaari kang magsimulang makipag-chat</string>
+    <string name="chat_you_kicked_out">Ikaw ay pinaalis sa chat room</string>
+    <string name="chat_want_to_delete_message">Gusto mo bang i-delete ang mensaheng ito</string>
+    <string name="chat_view_member_information">Tingnan ang impormasyon ng miyembro</string>
+    <string name="chat_member_id">ID ng miyembro:</string>
+    <string name="chat_member_account">Account ng miyembro:</string>
+    <string name="chat_system_closed_chat">Kasalukuyang nakasara ang chat ng system</string>
+    <string name="chat_system_open_chatting">Kasalukuyang bukas ang sistema para sa pakikipag-chat</string>
+    <string name="system_red_packet">Pulang sobre ng sistema</string>
+    <string name="chat_room_member">Miyembro ng chat room</string>
+    <string name="chat_send_red_packets">Magpadala ng pulang sobre!</string>
+    <string name="chat_open">Buksan</string>
+    <string name="chat_gong_xi_fa_cai">Kong Hei Fat Choi</string>
+    <string name="chat_good_luck">Good luck</string>
+    <string name="chat_enter_password">Ilagay ang password</string>
+    <string name="chat_error_input">Error sa pag-input</string>
+    <string name="chat_confirm">kumpirmahin</string>
+    <string name="chat_automatically_added_red_packet">Ang pulang sobre ay awtomatikong idaragdag sa balanse ng account</string>
+    <string name="chat_get_the_red_packet_now">Kunin mo na ngayon ang pulang sobre</string>
+    <string name="chat_try_your_luck">Subukan mo ang swerte mo</string>
+    <string name="chat_big_red_packet">Malaking pulang sobre</string>
+    <string name="chat_failed">Hindi nakuha ang pulang sobre</string>
+    <string name="chat_has_been_received">Nakuha na ang pulang sobre na ito</string>
+    <string name="chat_participate">Makilahok sa mga kondisyon ng pulang sobre</string>
+    <string name="chat_deposit_amount">Halaga ng deposito</string>
+    <string name="chat_bet_amount">Halaga ng taya</string>
+    <string name="chat_hint">Pahiwatig</string>
+    <string name="chat_connection_error">Error sa koneksyon sa network, pakisubukang muli mamaya</string>
+    <string name="chat_win">Panalo</string>
+    <string name="chat_only_after_logging_in">Pagkatapos lamang mag-log in maaari mong matanggap ang pulang sobre!</string>
+    <string name="chat_enter_chat_content">Ipasok ang nilalaman ng chat</string>
+    <string name="chat_message_removed">Inalis na ang mensaheng ito</string>
+    <string name="chat_customer_service">Customer service</string>
+    <string name="chat_administrator">Administrator</string>
+    <string name="chat_currently_ban_to_speak">Kasalukuyang naka-mute</string>
+    <string name="chat_welcome">Maligayang pagdating</string>
+    <string name="chat_photo_download_done">Saved</string>
+    <string name="J871">Failed to load</string>
+    <string name="N984">Chat room</string>
+    <string name="N922">Sarado ang chat room!</string>
+    <string name="N991">Welcome %s sa chat</string>
+    <string name="N987">Login para makipag-chat</string>
+    <string name="N988">Mag-login</string>
+    <string name="system_notify">Notification ng System</string>
+    <string name="C016">Ngayon</string>
+    <string name="picture_camera_roll" tools:ignore="ExtraTranslation">CameraRoll</string> // 图片选择库中菲语这个会莫名变为中文
 </resources>

@@ -4,15 +4,15 @@ import android.animation.*
 import android.text.InputFilter
 import android.view.View
 import android.view.animation.BounceInterpolator
-import androidx.annotation.LayoutRes
-import com.chad.library.adapter.base.BaseQuickAdapter
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import androidx.annotation.LayoutRes
 import androidx.core.view.ViewCompat
 import androidx.core.view.ViewPropertyAnimatorListenerAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.BaseQuickAdapter
 import org.cxct.sportlottery.util.BreatheInterpolator
 import org.cxct.sportlottery.util.ScreenUtil
 import java.util.regex.Pattern
@@ -20,6 +20,13 @@ import java.util.regex.Pattern
 /**
  * 关于View的一些扩展函数
  */
+fun View.show() {
+    this.visibility = View.VISIBLE
+}
+
+fun View.hide() {
+    this.visibility = View.GONE
+}
 
 fun View.visible() {
     this.visibility = View.VISIBLE
