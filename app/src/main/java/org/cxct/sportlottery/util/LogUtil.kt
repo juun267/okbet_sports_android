@@ -1,77 +1,76 @@
-package org.cxct.sportlottery.util;
+package org.cxct.sportlottery.util
 
-import com.google.gson.Gson;
-import com.orhanobut.logger.AndroidLogAdapter;
-import com.orhanobut.logger.FormatStrategy;
-import com.orhanobut.logger.Logger;
-import com.orhanobut.logger.PrettyFormatStrategy;
+import com.orhanobut.logger.AndroidLogAdapter
+import com.orhanobut.logger.FormatStrategy
+import com.orhanobut.logger.Logger
+import com.orhanobut.logger.PrettyFormatStrategy
+import org.cxct.sportlottery.BuildConfig
 
-import org.cxct.sportlottery.BuildConfig;
-
-
-public class LogUtil {
-    static {
-        FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
-                .tag("oklog")
-                .build();
-        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy) {
-            @Override
-            public boolean isLoggable(int priority, String tag) {
-                return BuildConfig.DEBUG;
+object LogUtil {
+    init {
+        val formatStrategy: FormatStrategy = PrettyFormatStrategy.newBuilder()
+            .tag("oklog")
+            .build()
+        Logger.addLogAdapter(object : AndroidLogAdapter(formatStrategy) {
+            override fun isLoggable(priority: Int, tag: String?): Boolean {
+                return BuildConfig.DEBUG
             }
-        });
+        })
     }
 
-
-    public static void d(String msg) {
-        Logger.d(msg);
+    fun d(msg: String) {
+        Logger.d(msg)
     }
 
-    public static void d(String msg, Throwable t) {
-        Logger.d(msg, t);
+    fun d(msg: String, t: Throwable?) {
+        Logger.d(msg, t)
     }
 
-    public static void e(String msg) {
-        Logger.e(msg);
+    fun e(msg: String) {
+        Logger.e(msg)
     }
 
-    public static void e(String msg, Throwable t) {
-        Logger.e(msg, t);
+    fun e(msg: String, t: Throwable?) {
+        Logger.e(msg, t)
     }
 
-    public static void i(String msg) {
-        Logger.i(msg);
+    fun i(msg: String) {
+        Logger.i(msg)
     }
 
-    public static void i(String msg, Throwable t) {
-        Logger.i(msg, t);
+    fun i(msg: String, t: Throwable?) {
+        Logger.i(msg, t)
     }
 
-    public static void v(String msg) {
-        Logger.v(msg);
+    fun v(msg: String) {
+        Logger.v(msg)
     }
 
-    public static void v(String msg, Throwable t) {
-        Logger.v(msg, t);
+    fun v(msg: String, t: Throwable?) {
+        Logger.v(msg, t)
     }
 
-    public static void w(String msg) {
-        Logger.w(msg);
+    fun w(msg: String) {
+        Logger.w(msg)
     }
 
-    public static void w(String msg, Throwable t) {
-        Logger.w(msg, t);
+    fun w(msg: String, t: Throwable?) {
+        Logger.w(msg, t)
     }
 
-    public static void json(String json) {
-        Logger.json(json);
+    fun json(json: String?) {
+        Logger.json(json)
     }
 
-    public static void xml(String xml) {
-        Logger.xml(xml);
+    fun xml(xml: String?) {
+        Logger.xml(xml)
     }
 
-    public static void toJson(Object object) {
-        Logger.json(JsonUtil.INSTANCE.toJson(object));
+    fun toJson(obj: Any?) {
+        if (obj == null) {
+            Logger.json("null")
+        } else {
+            Logger.json(JsonUtil.toJson(obj))
+        }
     }
 }
