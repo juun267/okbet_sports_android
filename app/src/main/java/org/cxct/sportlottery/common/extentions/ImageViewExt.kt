@@ -19,6 +19,10 @@ fun ImageView.load(url: String?, @DrawableRes placeHolder: Int = 0) {
     }
 }
 
+fun ImageView.load(url: Int?) {
+    runWithCatch { Glide.with(context).load(url).into(this) }
+}
+
 fun ImageView.circleOf(url: String?, @DrawableRes placeHolder: Int = 0) {
     val requestOptions = RequestOptions().optionalCircleCrop()
     if (placeHolder != 0) {

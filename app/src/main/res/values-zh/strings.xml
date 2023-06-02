@@ -1313,6 +1313,12 @@
     <string name="N704">推荐棋牌游戏</string>
     <string name="N986">方位</string>
 
+    <string name="N902">关注我们</string>
+    <string name="facebookFollow">Facebook</string>
+    <string name="instagramFollow">Instagram</string>
+    <string name="youtubeFollow">YouTube</string>
+    <string name="twitterFollow">Twitter</string>
+    <string name="tiktokFollow">Tiktok</string>
     <string name="F025">立即登录</string>
     <string name="N993">立即试玩</string>
     <string name="N994">免费试用我们的游戏。 任何奖金都不是真钱。</string>
