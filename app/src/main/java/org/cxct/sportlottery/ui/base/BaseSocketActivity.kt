@@ -9,13 +9,13 @@ import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
+import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.service.ApplicationBroadcastReceiver
 import org.cxct.sportlottery.repository.KEY_USER_LEVEL_ID
 import org.cxct.sportlottery.repository.NAME_LOGIN
-import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.service.ApplicationBroadcastReceiver
 import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
-import org.cxct.sportlottery.ui.chat.LiveMsgEntity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.util.GameConfigManager
 import org.koin.android.ext.android.inject

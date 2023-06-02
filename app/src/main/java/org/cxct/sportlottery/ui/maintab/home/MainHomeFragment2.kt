@@ -36,6 +36,7 @@ import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.goneWithSportSwitch
 import org.cxct.sportlottery.util.setTrialPlayGameDataObserve
 import org.cxct.sportlottery.util.setupBackTop
+import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.util.setupSportStatusChange
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -67,10 +68,10 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         viewModel.getBettingStationList()
         //刷新config
         viewModel.getConfigData()
-        viewModel.getAnnouncement()
 
         //设置监听游戏试玩
         setTrialPlayGameDataObserve()
+        viewModel.getAnnouncement()
     }
 
 
@@ -158,11 +159,10 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
             setupBettingStation(it)
         }
         viewModel.gotConfig.observe(viewLifecycleOwner) { event ->
-            val act = activity ?: return@observe
             viewModel.getSportMenuFilter()
             if (MultiLanguagesApplication.showHomeDialog) {
                 MultiLanguagesApplication.showHomeDialog = false
-                MultiLanguagesApplication.showPromotionPopupDialog(act as AppCompatActivity)
+                MultiLanguagesApplication.showPromotionPopupDialog(requireActivity() as AppCompatActivity)
                 if (PopImageDialog.checkImageTypeAvailable(7)) {
                     requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
                         putInt(PopImageDialog.IMAGE_TYPE, 7)
@@ -170,7 +170,13 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
                 }
             }
         }
-
+        //体育服务开关监听
+//        receiver.sportMaintenance.observe(this){
+//            it?.let {
+//                sConfigData?.sportMaintainStatus="${it.status}"
+//                binding.homeTopView.initSportEnterStatus()
+//            }
+//        }
         //新版宣傳頁
         viewModel.messageListResult.observe(viewLifecycleOwner) {
 
@@ -185,15 +191,17 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
             }
             setupAnnouncement(titleList)
         }
+
     }
+
     //hot match
-    private fun refreshHotMatch(){
+    private fun refreshHotMatch() {
 
         //重新设置赔率监听
         binding.hotMatchView.postDelayed({
             binding.hotMatchView.onResume(this@MainHomeFragment2)
             viewModel.getRecommend()
-        },500)
+        }, 500)
     }
 
     /**
@@ -210,6 +218,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
             }
         }
     }
+
     //hot match end
     private fun initNews() {
         binding.includeNews.apply {

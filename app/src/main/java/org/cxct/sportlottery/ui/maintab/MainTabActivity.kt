@@ -8,6 +8,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.PathMeasure
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
@@ -23,12 +24,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.android.synthetic.main.activity_main_tab.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.BetModeChangeEvent
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.event.NetWorkEvent
+import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.event.ShowFavEvent
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.extentions.gone
@@ -232,6 +237,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             menu.getItem(2).isVisible = !getMarketSwitch()
             onNavigationItemSelectedListener =
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
+
                     if (mIsEnabled) {
                         avoidFastDoubleClick()
                     val position = getMenuItemPosition(menuItem)
@@ -251,9 +257,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                             if(isOpenChatRoom()){
                                 startActivity(Intent(this@MainTabActivity, ChatActivity::class.java))
                                 return@OnNavigationItemSelectedListener false
-                            }else{
-                                if (viewModel.isLogin.value == false) {
-                                    startLogin()
                                 }else{
                                     startActivity(FavoriteActivity::class.java)
                                 }
@@ -355,9 +358,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             left_menu.layoutParams.width = MetricsUtil.getScreenWidth()
         }
         homeLeftFragment.openWithFragment(contentFragment)
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.left_menu, homeLeftFragment)
-            .commit()
+        supportFragmentManager.beginTransaction().replace(R.id.left_menu, homeLeftFragment).commit()
     }
 
     fun showSportLeftMenu(matchType: MatchType, gameType: GameType?) {
@@ -365,8 +366,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             menuClass = sportLeftFragment::class.java
             left_menu.layoutParams.width = (MetricsUtil.getScreenWidth() * 0.75f).toInt()
         }
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.left_menu, sportLeftFragment)
+        supportFragmentManager.beginTransaction().replace(R.id.left_menu, sportLeftFragment)
             .commit()
         sportLeftFragment.matchType = matchType
         sportLeftFragment.gameType = gameType
@@ -412,6 +412,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
     }
 
+    @Subscribe
+    fun onShowFavEvent(event: ShowFavEvent) {
+        showLoginNotify()
+    }
 
     @Subscribe
     fun onBetModeChangeEvent(event: BetModeChangeEvent) {
@@ -744,7 +748,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     fun jumpToInplaySport() {
         //检测体育服务是否关闭
-        checkSportStatus(this){
+        checkSportStatus(this) {
             resetBackIcon(1)
             ll_home_back.gone()
             jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)
@@ -790,4 +794,5 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     open fun getCurrentPosition(): Int = fragmentHelper.getCurrentPosition()
+
 }

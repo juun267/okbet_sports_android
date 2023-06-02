@@ -5,17 +5,20 @@ import android.content.Intent
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnClickListener
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.stx.xhb.androidx.XBanner
+import kotlinx.android.synthetic.main.layout_home_top.view.ivPaymaya
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.*
+import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.common.extentions.load
+import org.cxct.sportlottery.common.extentions.setOnClickListeners
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.LayoutHomeTopBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.config.ImageData
@@ -30,8 +33,8 @@ import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.getMarketSwitch
 import org.cxct.sportlottery.util.goneWithSportSwitch
-import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.setVisibilityByMarketSwitch
 import timber.log.Timber
 
@@ -140,6 +143,7 @@ class HomeTopView @JvmOverloads constructor(
         } else {
             JumpUtil.toInternalWeb(context, jumpUrl, "")
         }
+
     }
 
     private fun initLogin() {

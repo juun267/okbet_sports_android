@@ -8,6 +8,7 @@ import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_maintenance.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.fitsSystemStatus
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.network.index.config.ConfigData
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData

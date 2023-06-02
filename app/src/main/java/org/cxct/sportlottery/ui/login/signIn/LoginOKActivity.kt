@@ -22,8 +22,8 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.crash.FirebaseLog
 import org.cxct.sportlottery.common.event.RegisterInfoEvent
 import org.cxct.sportlottery.common.extentions.isEmptyStr
-import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.ActivityLoginOkBinding
+import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.login.LoginCodeRequest
 import org.cxct.sportlottery.network.index.login.LoginRequest

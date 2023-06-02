@@ -52,13 +52,13 @@ class RequestManager private constructor(private val context: Context) {
 
     var retrofit: Retrofit
 
-
     private val mOkHttpClientBuilder: OkHttpClient.Builder = getUnsafeOkHttpClient()
         .connectTimeout(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
         .writeTimeout(WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
         .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
         .addInterceptor(HttpStatusInterceptor()) // 处理token过期
         .addInterceptor(MoreBaseUrlInterceptor())
+        .addNetworkInterceptor(Http400or500Interceptor()) //处理后端的沙雕行为
         .addInterceptor(RequestInterceptor(context, ::getApiToken))
         .addNetworkInterceptor(Http400or500Interceptor()) //处理后端的沙雕行为
         //.addInterceptor(LogInterceptor().setLevel(LogInterceptor.Level.BODY))
@@ -67,9 +67,11 @@ class RequestManager private constructor(private val context: Context) {
         .apply {
             //debug版本才打印api內容
             if (BuildConfig.DEBUG) {
+//                addInterceptor(logging)
                 addInterceptor(HttpLogInterceptor())
             }
         }
+
 
     private val mMoshi: Moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())

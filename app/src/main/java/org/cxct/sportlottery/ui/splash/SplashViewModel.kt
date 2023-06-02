@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.splash
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -28,7 +29,7 @@ class SplashViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-    favoriteRepository: MyFavoriteRepository
+    favoriteRepository: MyFavoriteRepository,
 ) : BaseSocketViewModel(androidContext,userInfoRepository,loginRepository, betInfoRepository, infoCenterRepository,favoriteRepository) {
 
     //當獲取 host 失敗時，就使用下一順位的 serverUrl，重新 request，直到遍歷 ServerUrlList，或成功獲取 host 即停止
@@ -140,18 +141,16 @@ class SplashViewModel(
 
     fun goNextPage() = viewModelScope.launch {
 
-        if (LoginRepository.hasToken()) {
-            val checkTokenResponse = kotlin.runCatching { OneBoSportApi.indexService.checkToken() }.getOrNull()
-            if (checkTokenResponse?.isSuccessful == false) {
-                LoginRepository.clear()
+            if (!userInfoRepository.checkedUserInfo && isLogin.value == true) {
+                runWithCatch { userInfoRepository.getUserInfo() }
+                _skipHomePage.postValue(true)
+            } else {
+                _skipHomePage.postValue(true)
             }
         }
-
-        if (LoginRepository.isLogined()) {
-            runWithCatch { userInfoRepository.getUserInfo() }
-        }
-        _skipHomePage.postValue(true)
-    }
+//        } else {
+//            _skipHomePage.postValue(false)
+//        }
 
     private suspend fun sendGetHostRequest(index: Int) {
         try {

@@ -253,7 +253,7 @@ class BetInfoItemViewHolder(
                     tvCanWin.text = "${root.context.getString(R.string.bet_win)}: --"
 //                    }
                 } else {
-                    val quota = it.toString().toDoubleS()
+                    val quota = it.toString().trim().toDoubleS()
                     itemData.betAmount = quota
                     itemData.inputBetAmountStr = it.toString()
                     itemData.input = it.toString()

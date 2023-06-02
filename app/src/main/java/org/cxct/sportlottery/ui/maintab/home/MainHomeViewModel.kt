@@ -39,7 +39,6 @@ import org.cxct.sportlottery.network.third_game.third_games.TotalRewardAmountDat
 import org.cxct.sportlottery.network.third_game.third_games.hot.HandicapData
 import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchLiveData
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.service.ApplicationBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
@@ -157,9 +156,9 @@ open class MainHomeViewModel(
 
 
     //okgames游戏列表
-    val homeGamesList: LiveData<List<OKGameBean>>
+    val homeGamesList: LiveData< List<OKGameBean>>
         get() = _homeGamesList
-    private val _homeGamesList = MutableLiveData<List<OKGameBean>>()
+    private val _homeGamesList = MutableLiveData< List<OKGameBean>>()
 
 
     private val _recordBetNewHttp = MutableLiveData<List<RecordNewEvent>>()
@@ -184,7 +183,8 @@ open class MainHomeViewModel(
 
                 OneBoSportApi.sportService.getPublicityRecommend(
                     PublicityRecommendRequest(
-                        currentTimeMillis.toString(), startTimeStamp.toString()
+                        currentTimeMillis.toString(),
+                        startTimeStamp.toString()
                     )
                 )
             } ?: return@launch
@@ -271,7 +271,7 @@ open class MainHomeViewModel(
                     totalPageLiveData.value = (totalPageLiveData.value ?: 0) + 1
                 }
             }
-            _homeGamesList.value = it.getData()
+            _homeGamesList.value=it.getData()
         }
     }
 
@@ -293,7 +293,10 @@ open class MainHomeViewModel(
             return
         }
         requestEnterThirdGame(
-            "${gameData.firmType}", "${gameData.gameCode}", "${gameData.gameCode}", baseFragment
+            "${gameData.firmType}",
+            "${gameData.gameCode}",
+            "${gameData.gameCode}",
+            baseFragment
         )
     }
 
@@ -301,7 +304,7 @@ open class MainHomeViewModel(
      * 记录最近游戏
      */
     fun homeOkGameAddRecentPlay(okGameBean: OKGameBean) {
-        LoginRepository.addRecentPlayGame(okGameBean.id.toString())
+         LoginRepository.addRecentPlayGame(okGameBean.id.toString())
     }
 
     //region 宣傳頁推薦賽事資料處理
@@ -314,18 +317,15 @@ open class MainHomeViewModel(
                 matchInfo?.isInPlay = true
                 MatchType.IN_PLAY
             }
-
             else -> {
                 when {
                     TimeUtil.isTimeAtStart(startTime) -> {
                         matchInfo?.isAtStart = true
                         MatchType.AT_START
                     }
-
                     TimeUtil.isTimeToday(startTime) -> {
                         MatchType.TODAY
                     }
-
                     else -> {
                         MatchType.EARLY
                     }
@@ -352,10 +352,6 @@ open class MainHomeViewModel(
                     ConfigRepository.config.postValue(configResult)
                     setupDefaultHandicapType()
                     _gotConfig.postValue(Event(true))
-
-                    //发送更新给体育服务
-                    ApplicationBroadcastReceiver._sportMaintenance.postValue(SportMaintenanceEvent(
-                        EventType.SPORT_MAINTAIN_STATUS,sConfigData?.sportMaintainStatus?.toInt()) )
                 }
             }
         }
@@ -425,13 +421,11 @@ open class MainHomeViewModel(
     fun requestEnterThirdGame(gameData: QueryGameEntryData, baseFragment: BaseFragment<*>) {
         if (gameData == null) {
             _enterThirdGameResult.postValue(
-                Pair(
-                    "${gameData.firmCode}", EnterThirdGameResult(
-                        resultType = EnterThirdGameResult.ResultType.FAIL,
-                        url = null,
-                        errorMsg = androidContext.getString(R.string.hint_game_maintenance)
-                    )
-                )
+                Pair("${gameData.firmCode}", EnterThirdGameResult(
+                    resultType = EnterThirdGameResult.ResultType.FAIL,
+                    url = null,
+                    errorMsg = androidContext.getString(R.string.hint_game_maintenance)
+                ))
             )
             return
         }
@@ -482,12 +476,8 @@ open class MainHomeViewModel(
     ) {
 //        Timber.e("gameData: $gameData")
         if (loginRepository.isLogin.value != true) {
-            _enterThirdGameResult.postValue(
-                Pair(
-                    firmType,
-                    EnterThirdGameResult(EnterThirdGameResult.ResultType.NEED_REGISTER, null)
-                )
-            )
+            _enterThirdGameResult.postValue(Pair(firmType,
+                EnterThirdGameResult(EnterThirdGameResult.ResultType.NEED_REGISTER, null)))
             return
         }
 
@@ -582,7 +572,8 @@ open class MainHomeViewModel(
         _errorPromptMessage.postValue(
             Event(
                 String.format(
-                    androidContext.getString(R.string.message_no_sport_game), sport
+                    androidContext.getString(R.string.message_no_sport_game),
+                    sport
                 )
             )
         )
@@ -687,13 +678,13 @@ open class MainHomeViewModel(
                 )
             }
             result?.rows.let {
-                if (position == 2) {
+                if (position==2) {
                     if (gameType == 1) {
                         _slotGameData.postValue(it)
                     } else {
                         _elecGameData.postValue(it)
                     }
-                } else {
+                }else{
                     _homeGameData.postValue(it)
                 }
             }
@@ -735,21 +726,19 @@ open class MainHomeViewModel(
             }
         }
     }
-
     /**
      * 热门直播
      */
 
-    fun getHotLiveList() {
+    fun getHotLiveList(){
         viewModelScope.launch {
-            doNetwork(androidContext) {
+          doNetwork(androidContext) {
                 OneBoSportApi.thirdGameService.getLiveList()
-            }?.let { result ->
+            }?.let { result->
                 _hotLiveData.postValue(result.MatchLiveList)
             }
         }
     }
-
     fun getLiveRoundHall() {
         viewModelScope.launch {
             var result = doNetwork(androidContext) {
@@ -778,7 +767,6 @@ open class MainHomeViewModel(
             }
         }
     }
-
     //直播数量
     fun getLiveRoundCount() {
         viewModelScope.launch {
@@ -854,15 +842,14 @@ open class MainHomeViewModel(
     /**
      * 获取新闻资讯列表
      */
-    fun getNewsDetail(id: Int) =
-        callApi({ NewsRepository.getNewsDetail(id, NewsRepository.SORT_CREATE_TIME) }) {
-            if (it.succeeded()) {
-                _newsDetail.postValue(Pair(id, it.getData()))
-            } else {
-                _newsDetail.postValue(Pair(id, null))
-                toast(it.msg)
-            }
+    fun getNewsDetail(id: Int) = callApi({ NewsRepository.getNewsDetail(id,NewsRepository.SORT_CREATE_TIME) }) {
+        if (it.succeeded()) {
+            _newsDetail.postValue(Pair(id, it.getData()))
+        } else {
+            _newsDetail.postValue(Pair(id, null))
+            toast(it.msg)
         }
+    }
 
 
     fun getRecordNew() = callApi({ OKGamesRepository.getRecordNew() }) {

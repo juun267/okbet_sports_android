@@ -3,24 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.stx.xhb.androidx.XBanner
+        android:id="@+id/topBanner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.stx.xhb.androidx.XBanner
-            android:id="@+id/topBanner"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintDimensionRatio="390:274"
-            android:background="@android:color/white"
-            app:AutoPlayTime="3500"
-            app:pointSelect="@drawable/indicator_30_blue"
-            app:pointNormal="@drawable/dot_4_4c326bff"
-            app:pageChangeDuration="800"
-            app:pointTopBottomPadding="2dp"
-            app:pointLeftRightPadding="1dp"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="274dp"
+        android:background="@android:color/white"
+        app:AutoPlayTime="3500"
+        app:pointSelect="@drawable/indicator_30_blue"
+        app:pointNormal="@drawable/dot_4_4c326bff"
+        app:pageChangeDuration="800"
+        app:pointTopBottomPadding="2dp"
+        app:pointLeftRightPadding="1dp"/>
 
     <LinearLayout
         android:id="@+id/lin_announcement"
@@ -155,7 +148,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginRight="8dp"
-            android:src="@drawable/ic_circle_pay_x"/>
+            android:src="@drawable/ic_circle_pay_x" />
 
         <ImageView
             android:id="@+id/ivFortunepay"
@@ -204,8 +197,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="24dp"
-        android:layout_marginTop="16dp"
         android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="16dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -219,37 +212,37 @@
             android:id="@+id/tv_name"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:layout_marginHorizontal="4dp"
+            android:layout_weight="1"
             android:gravity="center_vertical"
+            android:text="@string/N703"
             android:textColor="@color/color_14366B"
-            android:textStyle="bold"
             android:textSize="16sp"
-            android:text="@string/N703" />
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:orientation="horizontal"
         android:layout_marginHorizontal="12dp"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/vSports"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:foreground="@drawable/fg_ripple"
             app:cardCornerRadius="12dp"
-            app:cardElevation="0dp"
-            android:foreground="@drawable/fg_ripple">
+            app:cardElevation="0dp">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/img_sports"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_sports" />
 
             <TextView
                 android:id="@+id/tvSportClose"
@@ -257,11 +250,11 @@
                 android:layout_height="match_parent"
                 android:background="#90000000"
                 android:gravity="center"
-                android:textSize="14sp"
-                android:visibility="gone"
+                android:text="@string/N257"
                 android:textColor="@color/color_FFFFFF"
+                android:textSize="14sp"
                 android:textStyle="bold"
-                android:text="@string/N257"/>
+                android:visibility="gone" />
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
@@ -332,18 +325,18 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/img_oklive"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_oklive" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#90000000"
                 android:gravity="center"
-                android:textSize="14sp"
+                android:text="@string/N700"
                 android:textColor="@color/color_FFFFFF"
-                android:textStyle="bold"
-                android:text="@string/N700"/>
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
         </androidx.cardview.widget.CardView>
 

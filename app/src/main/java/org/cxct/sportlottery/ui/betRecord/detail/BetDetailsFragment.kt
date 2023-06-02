@@ -26,7 +26,7 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 class BetDetailsFragment : BaseFragment<BetListViewModel>(BetListViewModel::class) {
     //复制的注单列表的适配器
     private val detailAdapter by lazy { TransactionRecordDetailAdapter() }
-    override fun layoutId()= R.layout.fragment_bet_details
+    override fun layoutId() = R.layout.fragment_bet_details
 
     override fun onBindView(view: View) {
         super.onBindView(view)
@@ -49,6 +49,7 @@ class BetDetailsFragment : BaseFragment<BetListViewModel>(BetListViewModel::clas
                     rv_bet_record.adapter = detailAdapter
                 }
             }
+
             detailRow != null -> {
                 (activity as BetDetailsActivity).setTitleName(getString(R.string.commission_detail))
                 rv_bet_record.isVisible = false
@@ -85,8 +86,7 @@ class BetDetailsFragment : BaseFragment<BetListViewModel>(BetListViewModel::clas
                 matchOdds.odds.toInt().toString()
             )
 
-            match_play_time.text =
-                TimeUtil.timeFormat(matchOdds.startTime, TimeUtil.DM_HM_FORMAT)
+            match_play_time.text = TimeUtil.timeFormat(matchOdds.startTime, TimeUtil.DM_HM_FORMAT)
             if (row.betConfirmTime?.toInt() != 0 && System.currentTimeMillis() < (row.betConfirmTime
                     ?: 0L)
             ) {
@@ -174,15 +174,13 @@ class BetDetailsFragment : BaseFragment<BetListViewModel>(BetListViewModel::clas
                     matchOdds.odds - 1
                 ) else TextUtil.formatForOdd(matchOdds.odds)
             val playName =
-                if (matchOdds.playCateCode == PlayCate.FS_LD_CS.value)
-                    context.getString(R.string.N903)
+                if (matchOdds.playCateCode == PlayCate.FS_LD_CS.value) context.getString(R.string.N903)
                 else matchOdds.playName
             play_content.setPlayContent(
                 playName, matchOdds.spread, formatForOdd
             )
 
-            match_play_time.text =
-                TimeUtil.timeFormat(matchOdds.startTime, TimeUtil.DM_HM_FORMAT)
+            match_play_time.text = TimeUtil.timeFormat(matchOdds.startTime, TimeUtil.DM_HM_FORMAT)
             if (row.betConfirmTime?.toInt() != 0 && System.currentTimeMillis() < (row.betConfirmTime
                     ?: 0L)
             ) {
@@ -278,8 +276,7 @@ class BetDetailsFragment : BaseFragment<BetListViewModel>(BetListViewModel::clas
                 matchOdds.odds?.toInt().toString()
             )
 
-            match_play_time.text =
-                TimeUtil.timeFormat(matchOdds.startTime, TimeUtil.DM_HM_FORMAT)
+            match_play_time.text = TimeUtil.timeFormat(matchOdds.startTime, TimeUtil.DM_HM_FORMAT)
             tv_bet_result.setBetReceiptStatus(row.status)
 //            tvPrint.visible()
             content_bet_amount.text = TextUtil.format(row.totalAmount ?: 0)

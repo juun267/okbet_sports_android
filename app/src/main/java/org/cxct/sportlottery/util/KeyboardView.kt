@@ -13,6 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.item_number_keyboard_layout2.view.*
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.toDoubleS
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
@@ -120,7 +121,7 @@ class KeyboardView @JvmOverloads constructor(
                 finalBetMoney = if (isLogin) {
                     Timber.d("betMoney:$betMoney maxItemMoney:$maxItemMoney mUserMoney:$mUserMoney maxBetMoney:$maxBetMoney")
                     if (maxItemMoney.toDouble() > betMoney.toDouble()) {
-                        TextUtil.formatMoney(betMoney, 2).toString()
+                        ArithUtil.toMoneyFormat(betMoney.toString().toDoubleS())
                     } else {
                         maxItemMoney.toString()
                     }
@@ -129,8 +130,15 @@ class KeyboardView @JvmOverloads constructor(
                 }
             } else {
                 finalBetMoney = if (isLogin) {
+                    Timber.d(
+                        "mUserMoney:$mUserMoney   TextUtil.formatMoney(mUserMoney, 2).toString():${
+                            TextUtil.formatMoney(
+                                mUserMoney, 2
+                            ).toString()
+                        }"
+                    )
                     if (maxBetMoney.toDouble() > mUserMoney) {
-                        TextUtil.formatMoney(mUserMoney, 2).toString()
+                        ArithUtil.toMoneyFormat(mUserMoney)
                     } else {
                         maxBetMoney
                     }
