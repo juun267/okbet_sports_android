@@ -30,14 +30,15 @@ class HomeFollowView(context: Context, attrs: AttributeSet
         val manager=GridLayoutManager(context,5)
         mRecyclerMenu?.layoutManager=manager
         mRecyclerMenu?.adapter=mAdapter
+        initHomeFollowData()
     }
 
     /**
      * 底部是否显示社交view   只有首页需要
      */
-    fun showFollowView(){
-        initHomeFollowData()
-    }
+//    fun showFollowView(){
+//        initHomeFollowData()
+//    }
 
 
     /**
