@@ -227,11 +227,11 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             val firmList = resultData?.firmList ?: return@observe
 
             providersAdapter.setNewInstance(firmList.toMutableList())
-//            if (firmList.isNotEmpty()) {
-//                binding.run { setViewVisible(rvOkgameProviders, okgameP3LayoutProivder) }
-//            } else {
+            if (firmList.isNotEmpty()) {
+                binding.run { setViewVisible(rvOkgameProviders, okgameP3LayoutProivder) }
+            } else {
                 binding.run { setViewGone(rvOkgameProviders, okgameP3LayoutProivder) }
-//            }
+            }
 
             if (firmList.size > 3) {
                 binding.run { setViewVisible(ivProvidersLeft, ivProvidersRight) }
