@@ -35,7 +35,6 @@ import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.event.NetWorkEvent
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.event.ShowFavEvent
-import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
@@ -237,14 +236,13 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             menu.getItem(2).isVisible = !getMarketSwitch()
             onNavigationItemSelectedListener =
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
-
                     if (mIsEnabled) {
                         avoidFastDoubleClick()
-                    val position = getMenuItemPosition(menuItem)
-                    //=true 体育赛事关闭，不能点击
-                    if(checkMainPosition(position)){
-                        return@OnNavigationItemSelectedListener false
-                    }
+                        val position = getMenuItemPosition(menuItem)
+                        if(checkMainPosition(position)){
+                            return@OnNavigationItemSelectedListener false
+                        }
+
 
                     when (menuItem.itemId) {
                         R.id.i_betlist, R.id.i_user -> {
@@ -257,10 +255,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                             if(isOpenChatRoom()){
                                 startActivity(Intent(this@MainTabActivity, ChatActivity::class.java))
                                 return@OnNavigationItemSelectedListener false
-                                }else{
-                                    startActivity(FavoriteActivity::class.java)
+                            }else{
+                                if (viewModel.isLogin.value == false) {
+                                    startLogin()
+                                    return@OnNavigationItemSelectedListener false
                                 }
-                                return@OnNavigationItemSelectedListener false
                             }
                         }
                     }
@@ -411,12 +410,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             }
         }
     }
-
-    @Subscribe
-    fun onShowFavEvent(event: ShowFavEvent) {
-        showLoginNotify()
-    }
-
     @Subscribe
     fun onBetModeChangeEvent(event: BetModeChangeEvent) {
         if (event.currentMode == BetListFragment.SINGLE) {

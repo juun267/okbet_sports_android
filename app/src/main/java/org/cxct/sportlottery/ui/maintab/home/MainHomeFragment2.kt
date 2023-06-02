@@ -37,10 +37,8 @@ import org.cxct.sportlottery.util.goneWithSportSwitch
 import org.cxct.sportlottery.util.setTrialPlayGameDataObserve
 import org.cxct.sportlottery.util.setupBackTop
 import org.cxct.sportlottery.view.dialog.PopImageDialog
-import org.cxct.sportlottery.util.setupSportStatusChange
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import org.cxct.sportlottery.view.dialog.PopImageDialog
 
 class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainHome2Binding>() {
 

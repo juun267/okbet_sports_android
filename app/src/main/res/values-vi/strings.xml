@@ -1058,7 +1058,6 @@
     <string name="error_new_password">Mật khẩu từ 6-20 ký tự bao gồm cả chữ và số</string>
     <string name="error_verification_code_forget">Mã xác nhận sai</string>
     <string name="str_total_stake">Tổng tiền cược：</string>
-    <string name="pay_maya">Paymaya</string>
     <string name="format_error">Định dạng không phù hợp</string>
     <string name="over_size">Tệp quá lớn</string>
     <string name="optional_tips">Tùy chọn: Chỉ hỗ trợ tệp định dạng PNG hoặc JPG và dưới 2MB</string>
@@ -1276,7 +1275,6 @@
     <string name="P013">Bước tiếp theo</string>
     <string name="P016">Nhấp vào nút này để đóng cửa sổ cược. chọn thêm tỷ số</string>
     <string name="N102">Đặt cược</string>
-    <string name="P038">Đăng nhập Google tạm thời không khả dụng, vui lòng sử dụng SĐT của bạn để đăng ký/đăng nhập</string>
 
     <!--聊天室LT001~LT052-->
     <string name="chat_chat">Chat</string>
@@ -1340,26 +1338,7 @@
     <string name="N922">Phòng trò chuyện đã đóng!</string>
     <string name="N991">Chào mừng %s tham gia trò chuyện</string>
     <string name="N655">Lỗi mạng</string>
-    <string name="P001">Luật chơi tỷ số bóng rổ</string>
-    <string name="P002">Trò chơi tỷ số bóng rổ là loại cược bao gồm 100 tổ hợp số, không giới hạn người chơi đặt cược các tổ hợp trên, hội viên được phép đặt cược vào toàn bộ 100 ô. Tỷ số kết thúc trận sẽ xác định vận may của bạn.</string>
-    <string name="P003">Hướng dẫn có nên bỏ qua tỷ số kết thúc bóng rổ</string>
-    <string name="P004">Chọn tỷ số muốn mua tại đây, có thể chọn nhiều số</string>
-    <string name="P005">Bấm lần nữa để bỏ chọn</string>
-    <string name="P006">Kiểm tra các tỷ số đã chọn ở đây,</string>
-    <string name="P007">Di chuyển chuột vào trên tỷ số để chọn xóa</string>
-    <string name="P008">Nhập số tiền ở đây</string>
-    <string name="P009">Nếu cược nhiều tỷ số thì tổng cược = số tiền cược * số tiền cược</string>
-    <string name="P010">Xem số tiền ước thắng tại đây</string>
-    <string name="P011">Đóng giỏ hàng tại đây</string>
-    <string name="P012">Trước</string>
-    <string name="P013">Bước tiếp theo</string>
-    <string name="P016">Nhấp vào nút này để đóng cửa sổ cược. chọn thêm tỷ số</string>
-    <string name="N102">Đặt cược</string>
     <string name="N987">Đăng nhập tài khoản</string>
     <string name="N988">Đăng nhập ngay</string>
     <string name="C016">HÔM NAY</string>
-
-    <string name="F025">Đăng nhập</string>
-    <string name="N993">Chơi giải trí</string>
-    <string name="N994">Miễn phí chơi thử. Tiền thắng không phải là tiền thật.</string>
 </resources>
