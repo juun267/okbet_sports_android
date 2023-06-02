@@ -11,11 +11,19 @@ fun ImageView.load(@DrawableRes res: Int = 0) {
     runWithCatch { Glide.with(context).load(res).into(this) }
 }
 
-fun ImageView.load(url: String?, @DrawableRes placeHolder: Int = 0) {
-    if (placeHolder == 0) {
-        runWithCatch { Glide.with(context).load("$url").into(this) }
-    } else {
-        runWithCatch { Glide.with(context).load("$url").placeholder(placeHolder).into(this) }
+fun ImageView.load(url: String?, @DrawableRes placeHolder: Int = 0,  @DrawableRes error: Int = 0) {
+    runWithCatch {
+        Glide.with(context)
+            .load("$url")
+            .apply {
+                if (placeHolder != 0) {
+                    placeholder(placeHolder)
+                }
+            }.apply {
+                if (error != 0) {
+                    error(error)
+                }
+            }.into(this)
     }
 }
 
