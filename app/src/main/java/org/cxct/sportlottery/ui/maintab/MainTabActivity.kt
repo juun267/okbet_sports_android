@@ -8,7 +8,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.PathMeasure
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
@@ -18,15 +17,11 @@ import android.widget.RelativeLayout
 import androidx.annotation.DrawableRes
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.core.view.postDelayed
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.android.synthetic.main.activity_main_tab.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.OddsType
@@ -36,7 +31,6 @@ import org.cxct.sportlottery.common.event.NetWorkEvent
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.event.ShowFavEvent
 import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -53,12 +47,11 @@ import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.ui.betRecord.BetRecordFragment
 import org.cxct.sportlottery.ui.betRecord.accountHistory.next.AccountHistoryNextFragment
-import org.cxct.sportlottery.ui.favorite.FavoriteActivity
 import org.cxct.sportlottery.ui.chat.ChatActivity
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment2
-import org.cxct.sportlottery.ui.maintab.menu.SportLeftFragment
+import org.cxct.sportlottery.ui.maintab.menu.SportLeftMenuFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.ui.sport.SportFragment
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment
@@ -86,7 +79,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     private var betListFragment: BetListFragment? = null
     private val homeLeftFragment by lazy { MainLeftFragment2() }
-    private val sportLeftFragment by lazy { SportLeftFragment() }
+    private val sportLeftFragment by lazy { SportLeftMenuFragment() }
     private var exitTime: Long = 0
 
     companion object {
@@ -363,12 +356,12 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     fun showSportLeftMenu(matchType: MatchType, gameType: GameType?) {
         if (menuClass != sportLeftFragment::class.java) {
             menuClass = sportLeftFragment::class.java
-            left_menu.layoutParams.width = (MetricsUtil.getScreenWidth() * 0.75f).toInt()
+            left_menu.layoutParams.width = (MetricsUtil.getScreenWidth() * 1f).toInt()
         }
         supportFragmentManager.beginTransaction().replace(R.id.left_menu, sportLeftFragment)
             .commit()
-        sportLeftFragment.matchType = matchType
-        sportLeftFragment.gameType = gameType
+//        sportLeftFragment.matchType = matchType
+//        sportLeftFragment.gameType = gameType
     }
 
 

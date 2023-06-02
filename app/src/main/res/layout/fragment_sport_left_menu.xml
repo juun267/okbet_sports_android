@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_FFFFFF"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/ivTopCover"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_width="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg_sport_left2_top"
+        android:layout_height="138dp"/>
+
+    <ImageView
+        android:id="@+id/ivClose"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:src="@drawable/ic_sport_left_close"
+        android:layout_marginRight="13dp"
+        android:layout_marginTop="54dp"
+        android:layout_width="46dp"
+        android:layout_height="46dp"/>
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/ivUserCover"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="62dp"
+        android:layout_marginStart="12dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_person_avatar"
+        app:riv_oval="true" />
+
+
+    <TextView
+        app:layout_constraintLeft_toRightOf="@+id/ivUserCover"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingTop="70dp"
+        android:paddingLeft="10dp"
+        android:text="User_324212"
+        android:textSize="14sp"
+        android:textColor="@color/color_BEC7DC"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+    <TextView
+        app:layout_constraintLeft_toRightOf="@+id/ivUserCover"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingTop="96dp"
+        android:paddingLeft="10dp"
+        android:text="₱ 95,5455,21"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="@color/color_FFFFFF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.tabs.TabLayout
+        app:layout_constraintTop_toBottomOf="@+id/ivTopCover"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_width="match_parent"
+        app:tabTextAppearance="@style/NoCaseTab"
+        app:tabIndicator="@drawable/custom_tab_indicator"
+        app:tabIndicatorFullWidth="false"
+        app:tabMode="fixed"
+        app:tabPaddingEnd="0dp"
+        app:tabPaddingStart="0dp"
+        app:tabRippleColor="@null"
+        app:tabSelectedTextColor="@color/color_D2E4FF_414655"
+        app:tabTextColor="@color/color_6C7BA8_A7B2C4"
+        android:layout_height="41dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
