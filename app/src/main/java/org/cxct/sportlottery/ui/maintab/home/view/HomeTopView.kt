@@ -31,10 +31,8 @@ import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment2
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
-import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.setVisibilityByMarketSwitch
 import org.cxct.sportlottery.util.getMarketSwitch
 import org.cxct.sportlottery.util.goneWithSportSwitch
 import org.cxct.sportlottery.util.setVisibilityByMarketSwitch
@@ -75,12 +73,6 @@ class HomeTopView @JvmOverloads constructor(
         if (imageList.isNullOrEmpty()) {
             return
         }
-<<<<<<< HEAD
-
-        val xbanner = findViewById<XBanner>(bannerId)
-        if (imageType==2){
-            xbanner.setAutoPlayAble(loopEnable)
-=======
         if (imageType == 2) {
             val xbanner = findViewById<XBanner>(R.id.topBanner)
             xbanner.setHandLoop(loopEnable)
@@ -108,7 +100,6 @@ class HomeTopView @JvmOverloads constructor(
                 XBannerImage(it.imageText1 + "", host + it.imageName4, it.imageLink)
             }
             setUpPromoteView(promoteImages)
->>>>>>> dev2
         }
     }
 
@@ -134,23 +125,6 @@ class HomeTopView @JvmOverloads constructor(
             }
         }
 
-<<<<<<< HEAD
-        val host = sConfigData?.resServerHost
-        val images = imageList.map {
-            XBannerImage(it.imageText1 + "",
-                host + if (imageType == 2) it.imageName1 else it.imageName4,
-                it.appUrl)
-        }
-
-        //opt1 ->ImageType = 5,为活动轮播图
-        //opt2 -> 后台有配置
-        //满足以上两点 -> 显示活动轮播图r
-        if (imageType == 5 && images.isNotEmpty()) {
-            xbanner.visible()
-        }
-        xbanner.setBannerData(images.toMutableList())
-=======
->>>>>>> dev2
     }
 
     override fun onItemClick(banner: XBanner, model: Any, view: View, position: Int) {
