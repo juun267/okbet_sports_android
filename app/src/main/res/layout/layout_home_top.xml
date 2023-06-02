@@ -6,23 +6,6 @@
     <com.stx.xhb.androidx.XBanner
         android:id="@+id/topBanner"
         android:layout_width="match_parent"
-<<<<<<< HEAD
-        android:layout_height="wrap_content">
-        <com.stx.xhb.androidx.XBanner
-            android:id="@+id/topBanner"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintDimensionRatio="390:274"
-            android:background="@android:color/white"
-            app:AutoPlayTime="3500"
-            app:pointSelect="@drawable/indicator_30_blue"
-            app:pointNormal="@drawable/dot_4_4c326bff"
-            app:pageChangeDuration="800"
-            app:pointTopBottomPadding="24dp"
-            app:pointLeftRightPadding="1dp" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-=======
         android:layout_height="274dp"
         android:background="@android:color/white"
         app:AutoPlayTime="3500"
@@ -64,7 +47,6 @@
             tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     </LinearLayout>
->>>>>>> dev2
 
     <LinearLayout
         android:id="@+id/loginLayout"
@@ -178,26 +160,6 @@
 
     </LinearLayout>
 
-<<<<<<< HEAD
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <com.stx.xhb.androidx.XBanner
-            android:id="@+id/promotionsBanner"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintDimensionRatio="366:125"
-            android:layout_marginHorizontal="12dp"
-            android:layout_marginTop="16dp"
-            app:isAutoPlay="false"
-            android:visibility="gone"
-            app:pointSelect="@drawable/indicator_12_blue"
-            app:pointNormal="@drawable/dot_4_4c326bff"
-            app:pointTopBottomPadding="7dp"
-            app:pointLeftRightPadding="1dp" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-=======
 
     <!--    <com.stx.xhb.androidx.XBanner-->
     <!--        android:id="@+id/promotionsBanner"-->
@@ -232,7 +194,6 @@
             tools:itemCount="2"
             tools:listitem="@layout/item_promote_view" />
     </androidx.cardview.widget.CardView>
->>>>>>> dev2
 
     <LinearLayout
         android:layout_width="match_parent"

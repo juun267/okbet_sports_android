@@ -27,12 +27,7 @@
             android:paddingLeft="4dp"
             android:text="@string/N704"
             android:textColor="@color/color_0D2245"
-<<<<<<< HEAD
-            android:layout_gravity="center_vertical"
             android:textSize="16sp"
-=======
-            android:textSize="@dimen/textSize16sp"
->>>>>>> dev2
             android:textStyle="bold" />
 
         <TextView
