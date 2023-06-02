@@ -22,4 +22,5 @@ data class ImageData(
     val startType: Int?, //0:首次启动 1:日常启动
     val createdAt: Long?,
     val isHidden: Boolean, //送审版本是否隐藏banner 1:是，0：否
+    val frontPageShow: Int?, //首页是否显示 0:否 1：是
 )

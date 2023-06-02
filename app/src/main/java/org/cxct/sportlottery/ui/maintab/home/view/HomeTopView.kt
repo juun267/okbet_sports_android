@@ -67,8 +67,12 @@ class HomeTopView @JvmOverloads constructor(
     private fun setUpBanner(lang: String, imageType: Int) {
         val imageList = sConfigData?.imageList?.filter {
             it.imageType == imageType && it.lang == lang && !it.imageName1.isNullOrEmpty()
-        }
-            ?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
+        }.apply {
+            //优惠banne让判断是否首页显示
+            if (imageType==5){
+                this?.filter {  it.frontPageShow==1}
+            }
+        }?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
         val loopEnable = (imageList?.size ?: 0) > 1
         if (imageList.isNullOrEmpty()) {
             return
