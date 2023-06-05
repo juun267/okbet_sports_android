@@ -106,8 +106,8 @@ class BasketballEndingCardViewHolder(
         adapterBetType: BetListRefactorAdapter.BetRvType?
     ) = contentView.run {
         fun showTotalStakeWinAmount(bet: Double) {
-            val totalBet = TextUtil.formatMoney(bet * betListSize, 2)
-            val totalCanWin = TextUtil.formatMoney(bet * itemData.matchOdd.odds, 2)
+            val totalBet = ArithUtil.toMoneyFormatFloor(bet * betListSize)
+            val totalCanWin = ArithUtil.toMoneyFormatFloor(bet * itemData.matchOdd.odds)
             tvTotalStakeAmount.text = "${sConfigData?.systemCurrencySign}${totalBet}"
             tvTotalWinAmount.text = "${sConfigData?.systemCurrencySign}${totalCanWin}"
         }

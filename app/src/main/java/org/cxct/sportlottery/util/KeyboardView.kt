@@ -116,10 +116,12 @@ class KeyboardView @JvmOverloads constructor(
         tvMax.setOnClickListener {
             val finalBetMoney: String
             if (gameType != null && PlayCate.FS_LD_CS.value == gameType) {
-                val betMoney = mUserMoney.dRoundDown2().div(betItemCount.toBigDecimal())
-                val maxItemMoney = maxBetMoney.strRoundDown2().div(betItemCount.toBigDecimal())
+                val userMoneyRd = mUserMoney.dRoundDown2()
+                val maxItemMoneyRd = maxBetMoney.strRoundDown2()
+                val betMoney = ArithUtil.toMoneyFormatFloor(userMoneyRd.toDouble() / betItemCount)
+                val maxItemMoney = ArithUtil.toMoneyFormatFloor(maxItemMoneyRd.toDouble() / betItemCount)
                 finalBetMoney = if (isLogin) {
-                    Timber.d("betMoney:$betMoney maxItemMoney:$maxItemMoney mUserMoney:$mUserMoney maxBetMoney:$maxBetMoney")
+//                    Timber.d("betMoney:$betMoney maxItemMoney:$maxItemMoney mUserMoney:$mUserMoney maxBetMoney:$maxBetMoney")
                     if (maxItemMoney.toDouble() > betMoney.toDouble()) {
                         ArithUtil.toMoneyFormatFloor(betMoney.toString().toDoubleS())
                     } else {
@@ -137,7 +139,7 @@ class KeyboardView @JvmOverloads constructor(
                             ).toString()
                         }"
                     )
-                    if (maxBetMoney.toDouble() > mUserMoney) {
+                    if (maxBetMoney.toDoubleS() > mUserMoney) {
                         ArithUtil.toMoneyFormatFloor(mUserMoney)
                     } else {
                         maxBetMoney
