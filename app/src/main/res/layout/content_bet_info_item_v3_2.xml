@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+
         <LinearLayout
             android:id="@+id/odds_content_container"
             android:layout_width="0dp"
@@ -35,6 +36,8 @@
                 android:textColor="@color/color_FFFFFF"
                 android:textSize="10sp"
                 tools:text="滚球" />
+
+
 
             <TextView
                 android:id="@+id/tv_odds_content"
@@ -118,6 +121,14 @@
             android:paddingEnd="14dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_name_type">
+            <ImageView
+                android:id="@+id/ivOddsArrow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="2dp"
+                android:visibility="gone"
+                tools:src="@drawable/icon_odds_down"
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/tvOdds"
@@ -129,14 +140,7 @@
                 android:textStyle="bold"
                 tools:text="\@ 0.89" />
 
-            <ImageView
-                android:id="@+id/ivOddsArrow"
-                android:layout_width="8dp"
-                android:layout_height="8dp"
-                android:layout_marginEnd="2dp"
-                android:visibility="gone"
-                tools:src="@drawable/ic_arrow_odd_up"
-                tools:visibility="visible" />
+
 
         </LinearLayout>
 
@@ -310,16 +314,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/bg_radius_12_f8f8f8"
                 android:orientation="vertical"
                 android:visibility="visible">
+                <View
+                    android:layout_marginHorizontal="20dp"
+                    android:background="@color/color_dbdfea"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_editText_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/bg_radius_12_f8f8f8"
                     android:paddingHorizontal="@dimen/margin_14"
-                    android:paddingTop="10dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
                     android:visibility="visible"
                     app:layout_constraintBottom_toTopOf="@id/llKeyboardContainer"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -330,13 +340,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_begin="186dp" />
+                        app:layout_constraintGuide_begin="176dp" />
 
                     <TextView
                         android:id="@+id/tv_bet"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:maxWidth="60dp"
+                        android:visibility="gone"
                         android:text="@string/bet_stake"
                         android:textColor="@color/color_9BB3D9_535D76"
                         android:textSize="@dimen/textSize12sp"
@@ -347,7 +358,7 @@
                     <EditText
                         android:id="@+id/et_bet"
                         android:layout_width="0dp"
-                        android:layout_height="40dp"
+                        android:layout_height="36dp"
                         android:layout_marginStart="5dp"
                         android:background="@drawable/bg_radius_2_edittext_unfocus"
                         android:fontFamily="@font/din_regular"
@@ -356,7 +367,7 @@
                         android:inputType="numberDecimal"
                         android:letterSpacing="0.05"
                         android:maxLength="14"
-                        android:paddingHorizontal="10dp"
+                        android:paddingHorizontal="13dp"
                         android:textColor="@color/color_025BE8"
                         android:textColorHint="@color/color_455074_C9CFD7"
                         android:textSize="@dimen/textSize16sp"
@@ -366,16 +377,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/tv_bet"
                         app:layout_constraintTop_toTopOf="parent" />
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/textView"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="@string/bet_single"-->
-<!--                        android:textColor="@color/color_00181E"-->
-<!--                        android:textSize="12sp"-->
-<!--                        app:layout_constraintStart_toStartOf="parent"-->
-<!--                        app:layout_constraintTop_toTopOf="parent" />-->
 
                     <TextView
                         android:id="@+id/tvCanWin"
@@ -388,7 +389,24 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/et_bet" />
 
+                    <TextView
+                        android:id="@+id/tvSymbol"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="PHP"
+                        android:layout_marginStart="10dp"
+                        android:textColor="@color/color_000000"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@+id/et_bet"
+                        app:layout_constraintStart_toStartOf="@+id/et_bet"
+                        app:layout_constraintTop_toTopOf="@+id/et_bet" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:background="@color/color_dbdfea"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"/>
 
                 <org.cxct.sportlottery.util.KeyboardView
                     android:id="@+id/layoutKeyBoard"

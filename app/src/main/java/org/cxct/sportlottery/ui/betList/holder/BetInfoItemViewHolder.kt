@@ -164,7 +164,7 @@ class BetInfoItemViewHolder(
         adapterBetType: BetListRefactorAdapter.BetRvType?
     ) = contentView.run {
 
-       val update =  {
+        val update = {
             //更新可贏額
             var win = itemData.betAmount * getOddsAndSaveRealAmount(
                 itemData, currentOddsType
@@ -334,7 +334,12 @@ class BetInfoItemViewHolder(
     private val delayResetTime = totalAnimationDuration - animationDuration * 2
 
     var repeatCount = 0
-    private fun setAnimation(ivArrow: ImageView, tvOdds: TextView, isUp: Boolean) {
+    private fun setAnimation(
+        ivArrow: ImageView,
+        tvOdds: TextView,
+        isUp: Boolean,
+        onItemClickListener: OnItemClickListener
+    ) {
         if (repeatCount == 0) {
             handler.removeCallbacksAndMessages(null)
             resetOddsUI()
@@ -344,18 +349,19 @@ class BetInfoItemViewHolder(
         animation.duration = animationDuration
         animation.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {
+                onItemClickListener.onOddChangeStartListener(isUp)
                 if (isUp) {
-                    ivArrow.setImageResource(R.drawable.ic_arrow_odd_up)
+                    ivArrow.setImageResource(R.drawable.icon_odds_up)
                     tvOdds.setTextColor(
                         ContextCompat.getColor(
-                            tvOdds.context, R.color.color_34CB8A_1D9F51
+                            tvOdds.context, R.color.color_00cc33
                         )
                     )
                 } else {
-                    ivArrow.setImageResource(R.drawable.ic_arrow_odd_down)
+                    ivArrow.setImageResource(R.drawable.icon_odds_down)
                     tvOdds.setTextColor(
                         ContextCompat.getColor(
-                            tvOdds.context, R.color.color_D35555_D35555
+                            tvOdds.context, R.color.color_ff251e
                         )
                     )
                 }
@@ -367,10 +373,11 @@ class BetInfoItemViewHolder(
                 if (repeatCount == 2) {
                     repeatCount = 0
                     handler.postDelayed({
+                        onItemClickListener.onOddChangeEndListener()
                         resetOddsUI()
                     }, delayResetTime)
                 } else {
-                    setAnimation(ivArrow, tvOdds, isUp)
+                    setAnimation(ivArrow, tvOdds, isUp, onItemClickListener)
                 }
             }
 
@@ -403,9 +410,9 @@ class BetInfoItemViewHolder(
             //賠率變動更新箭頭和文字色碼
             repeatCount = 0
             if (itemData.matchOdd.oddState == OddState.LARGER.state) {
-                setAnimation(ivOddsArrow, tvOdds, true)
+                setAnimation(ivOddsArrow, tvOdds, true, onItemClickListener)
             } else if (itemData.matchOdd.oddState == OddState.SMALLER.state) {
-                setAnimation(ivOddsArrow, tvOdds, false)
+                setAnimation(ivOddsArrow, tvOdds, false, onItemClickListener)
             }
 
 //            handler.postDelayed({

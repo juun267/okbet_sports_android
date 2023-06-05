@@ -60,6 +60,7 @@
                 tools:ignore="SpUsage" />
 
             <View
+                android:id="@+id/viewBall"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:background="@drawable/bg_circle_317fff_0760d4"
