@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogVerificationTipBinding
 
 /**
@@ -25,6 +26,8 @@ class VerificationTipDialog(context: Context) : Dialog(context) {
         binding.btnSubmit.setOnClickListener {
             dismiss()
         }
+        binding.btnSubmit.text=context.getString(R.string.btn_sure)
+        binding.tvVerificationTitle.text=context.getString(R.string.P066)
 
     }
 
