@@ -123,22 +123,22 @@ class KeyboardView @JvmOverloads constructor(
                 finalBetMoney = if (isLogin) {
 //                    Timber.d("betMoney:$betMoney maxItemMoney:$maxItemMoney mUserMoney:$mUserMoney maxBetMoney:$maxBetMoney")
                     if (maxItemMoney.toDouble() > betMoney.toDouble()) {
-                        ArithUtil.toMoneyFormatFloor(betMoney.toString().toDoubleS())
+                        ArithUtil.toMoneyFormatFloor(betMoney.toDoubleS())
                     } else {
-                        maxItemMoney.toString()
+                        maxItemMoney
                     }
                 } else {
-                    maxItemMoney.toString()
+                    maxItemMoney
                 }
             } else {
                 finalBetMoney = if (isLogin) {
-                    Timber.d(
-                        "mUserMoney:$mUserMoney   TextUtil.formatMoney(mUserMoney, 2).toString():${
-                            TextUtil.formatMoney(
-                                mUserMoney, 2
-                            ).toString()
-                        }"
-                    )
+//                    Timber.d(
+//                        "mUserMoney:$mUserMoney   TextUtil.formatMoney(mUserMoney, 2).toString():${
+//                            TextUtil.formatMoney(
+//                                mUserMoney, 2
+//                            ).toString()
+//                        }"
+//                    )
                     if (maxBetMoney.toDoubleS() > mUserMoney) {
                         ArithUtil.toMoneyFormatFloor(mUserMoney)
                     } else {
