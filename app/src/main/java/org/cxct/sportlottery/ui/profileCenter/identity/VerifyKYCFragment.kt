@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter.identity
 
+import android.graphics.Paint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,6 +15,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.content_verify_identity_kyc.view.*
+import kotlinx.android.synthetic.main.content_verify_identity_kyc_head.*
 import kotlinx.android.synthetic.main.fragment_verify_identity_kyc.*
 import kotlinx.android.synthetic.main.view_status_spinner.view.*
 import org.cxct.sportlottery.R
@@ -23,6 +25,7 @@ import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.view.dialog.VerificationTipDialog
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
@@ -30,6 +33,7 @@ import java.io.FileNotFoundException
 class VerifyKYCFragment :
     BaseSocketFragment<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
     private var firstFile: File? = null
+    private var headIdFile: File? = null
     private var secondFile: File? = null
     private var dataList = mutableListOf<StatusSheetData>()
     private val mNavController by lazy {
@@ -110,6 +114,42 @@ class VerifyKYCFragment :
         }
     }
 
+    private val mHeadIdListener = object : OnResultCallbackListener<LocalMedia> {
+        override fun onResult(result: MutableList<LocalMedia>?) {
+            if (activity == null) {
+                return
+            }
+            try {
+                // 图片选择结果回调
+                // LocalMedia 里面返回三种path
+                // 1.media.getPath(); 为原图path
+                // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true
+                // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
+                // 如果裁剪并压缩了，已取压缩路径为准，因为是先裁剪后压缩的
+                val media = result?.firstOrNull() //這裡應當只會有一張圖片
+                val path = when {
+                    media?.isCompressed == true -> media.compressPath
+                    media?.isCut == true -> media.cutPath
+                    else -> media?.path
+                }
+
+                val compressFile = getCompressFile(path)
+                if (compressFile?.exists() == true)
+                    selectedHeadPhotoImg(compressFile)
+                else
+                    throw FileNotFoundException()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                ToastUtil.showToastInCenter(activity, getString(R.string.error_reading_file))
+            }
+        }
+
+        override fun onCancel() {
+            Timber.i("PictureSelector Cancel")
+        }
+
+    }
+
     private fun selectedDocImg(file: File) {
         firstFile = file
         setupDocFile()
@@ -119,6 +159,19 @@ class VerifyKYCFragment :
     private fun selectedPhotoImg(file: File) {
         secondFile = file
         setupPhotoFile()
+        checkSubmitStatus()
+    }
+
+    private fun selectedHeadPhotoImg(file: File) {
+        headIdFile = file
+        headIdFile?.let {
+            tvUploadHeadPhoto.isVisible = true
+            tvUploadHeadPhoto.text = LocalUtils.getString(R.string.change_other_ID_photos)
+            Glide.with(imgPicWithHeadPhoto.context).load(file.absolutePath)
+                .apply(RequestOptions().placeholder(R.drawable.img_avatar_default))
+                .into(imgPicWithHeadPhoto)
+            imgTriWithHeadPhoto.isVisible = true
+        }
         checkSubmitStatus()
     }
 
@@ -145,6 +198,12 @@ class VerifyKYCFragment :
         //2023年04月06日11:57:52 【OKBET-历史遗留问题-安卓】后台配置KYC认证数量最大是2个，安卓与其他端支持认证数量不一致（ftt103/Aa123456）
         val isShow2nd = sConfigData?.idUploadNumber.equals("2")
         identity_2nd.isVisible = isShow2nd
+        tvSamplePhotoWithHead.paint.flags = Paint.UNDERLINE_TEXT_FLAG; //下划线
+        tvSamplePhotoWithHead.paint.isAntiAlias = true;//抗锯齿
+        tvSamplePhotoWithHead.setOnClickListener {
+            context?.let { it1 -> VerificationTipDialog(it1).show() }
+        }
+
     }
 
     override fun onStart() {
@@ -163,11 +222,13 @@ class VerifyKYCFragment :
         val constraintSet = ConstraintSet()
         constraintSet.clone(constraintLayout)
         constraintSet.clear(R.id.tv_name, ConstraintSet.END)
-        constraintSet.connect(R.id.tv_name,
+        constraintSet.connect(
+            R.id.tv_name,
             ConstraintSet.START,
             R.id.cl_root,
             ConstraintSet.START,
-            14)
+            14
+        )
         constraintSet.clear(R.id.iv_arrow, ConstraintSet.START)
         constraintSet.connect(R.id.iv_arrow, ConstraintSet.END, R.id.cl_root, ConstraintSet.END, 14)
         constraintSet.applyTo(constraintLayout)
@@ -179,17 +240,21 @@ class VerifyKYCFragment :
         val constraintSet2 = ConstraintSet()
         constraintSet2.clone(constraintLayout2)
         constraintSet2.clear(R.id.tv_name, ConstraintSet.END)
-        constraintSet2.connect(R.id.tv_name,
+        constraintSet2.connect(
+            R.id.tv_name,
             ConstraintSet.START,
             R.id.cl_root,
             ConstraintSet.START,
-            14)
+            14
+        )
         constraintSet2.clear(R.id.iv_arrow, ConstraintSet.START)
-        constraintSet2.connect(R.id.iv_arrow,
+        constraintSet2.connect(
+            R.id.iv_arrow,
             ConstraintSet.END,
             R.id.cl_root,
             ConstraintSet.END,
-            14)
+            14
+        )
         constraintSet2.applyTo(constraintLayout2)
     }
 
@@ -250,25 +315,29 @@ class VerifyKYCFragment :
                         getString(R.string.upload_fail)
                     ) {}
                 }
+
                 secondFile == null && identity_2nd.isVisible -> {
                     showErrorPromptDialog(
                         getString(R.string.prompt),
                         getString(R.string.upload_fail)
                     ) {}
                 }
+
                 else -> {
                     loading()
                     if (identity_2nd.isVisible)
                         viewModel.uploadVerifyPhoto(
+                            headIdFile!!,
                             firstFile!!,
                             identity_1st.selector_type.selectedCode?.toInt(),
                             identity_1st.ed_num.text.toString(),
                             secondFile!!,
                             identity_2nd.selector_type.selectedCode?.toInt(),
-                            identity_2nd.ed_num.text.toString()
+                            identity_2nd.ed_num.text.toString(),
                         )
                     else
                         viewModel.uploadVerifyPhoto(
+                            headIdFile!!,
                             firstFile!!,
                             identity_1st.selector_type.selectedCode?.toInt(),
                             identity_1st.ed_num.text.toString()
@@ -303,6 +372,11 @@ class VerifyKYCFragment :
                     dialog.mSelectListener = mSecondSelectPhotoMediaListener
                     dialog.show(parentFragmentManager, VerifyKYCFragment::class.java.simpleName)
                 }
+            }
+            layoutUploadIdWithHead.setOnClickListener {
+                val dialog = PicSelectorDialog()
+                dialog.mSelectListener = mHeadIdListener
+                dialog.show(parentFragmentManager, VerifyKYCFragment::class.java.simpleName)
             }
         }
 
