@@ -46,7 +46,7 @@ class VerifyStatusFragment :
                     }
                     else -> {
                         img_status.setImageResource(R.drawable.ic_waiting_time)
-                        txv_status.text = "Thank you for verifying with us, please kindly wait up to 24 hours for us to process your request."
+                        txv_status.text = "\t\tThank you for verifying with us, please kindly wait up to 24 hours for us to process your request."
                     }
                 }
             }
