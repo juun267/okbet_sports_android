@@ -200,7 +200,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
             LiveType.LIVE -> {
                 setViewVisible(player_view, iv_live_sound)
                 setViewGone(viewBinding.webView, iv_live_status, tvStatus, iv_live)
-                LogUtil.d(liveUrl)
+                liveUrl?.let { LogUtil.d(it) }
                 iv_live_status.setImageResource(R.drawable.bg_no_play)
                 iv_video.isVisible = !TextUtils.isEmpty(videoUrl)
                 iv_animation.isVisible = !TextUtils.isEmpty(animeUrl)

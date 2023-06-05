@@ -3,6 +3,8 @@ package org.cxct.sportlottery.repository
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -47,7 +49,13 @@ object LoginRepository {
 
     val isLogin: LiveData<Boolean> by lazy {
         val mutableLiveData = MutableLiveData<Boolean>()
-        MultiLanguagesApplication.mInstance.userInfo.observeForever { mutableLiveData.value = it != null }
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            MultiLanguagesApplication.mInstance.userInfo.observeForever { mutableLiveData.value = it != null }
+        } else {
+            Handler(Looper.getMainLooper()).post {
+                MultiLanguagesApplication.mInstance.userInfo.observeForever { mutableLiveData.value = it != null }
+            }
+        }
         mutableLiveData
     }
 

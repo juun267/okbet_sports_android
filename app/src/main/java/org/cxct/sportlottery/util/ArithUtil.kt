@@ -43,6 +43,12 @@ object ArithUtil : DecimalFormatUtil() {
         return round(value ?: 0.0, 2, RoundingMode.HALF_UP)
     }
 
+
+    fun toMoneyFormatFloor(value: Double?, scale: Int = 2): String {
+        return round(value ?: 0.0, scale, RoundingMode.FLOOR)
+    }
+
+
     /**
      * 20210220 輸入欄位內提示之金額不顯示小數點
      */
@@ -85,7 +91,7 @@ object ArithUtil : DecimalFormatUtil() {
      * @param v2 加數
      * @return 兩個參數的和
      */
-    fun add(v1: Double, v2: Double): Double{
+    fun add(v1: Double, v2: Double): Double {
         val b1 = v1.toBigDecimal()
         val b2 = v2.toBigDecimal()
         return b1.add(b2).toDouble()
@@ -112,7 +118,9 @@ object ArithUtil : DecimalFormatUtil() {
      * @param scale 表示表示需要精确到小数点以后几位。
      * @return 两个参数的商
      */
-    fun div(v1: Double, v2: Double, scale: Int, roundMode: RoundingMode? = RoundingMode.HALF_UP): Double {
+    fun div(
+        v1: Double, v2: Double, scale: Int, roundMode: RoundingMode? = RoundingMode.HALF_UP
+    ): Double {
         require(scale >= 0) { "保留的小数位数必须大于零" }
         val b1 = v1.toBigDecimal()
         val b2 = v2.toBigDecimal()
@@ -120,7 +128,9 @@ object ArithUtil : DecimalFormatUtil() {
         return b1.divide(divisor, scale, roundMode).toDouble()
     }
 
-    fun div(b1: BigDecimal, b2: BigDecimal, scale: Int, roundMode: RoundingMode? = RoundingMode.HALF_UP): BigDecimal {
+    fun div(
+        b1: BigDecimal, b2: BigDecimal, scale: Int, roundMode: RoundingMode? = RoundingMode.HALF_UP
+    ): BigDecimal {
         require(scale >= 0) { "保留的小数位数必须大于零" }
         val divisor = if (b2.toDouble() == 0.0) BigDecimal(1.0) else b2
         return b1.divide(divisor, scale, roundMode)
@@ -138,7 +148,7 @@ object ArithUtil : DecimalFormatUtil() {
     /**
      * 提供(相對)精確的除法運算，當發生除不盡的情況時，精確到小數點以後10位，以後的數字四捨五入
      */
-    fun div(v1: Double, v2: Double):Double {
+    fun div(v1: Double, v2: Double): Double {
         val b1 = v1.toBigDecimal()
         val b2 = v2.toBigDecimal()
         return b1.divide(b2, BigDecimal.ROUND_HALF_UP).toDouble()

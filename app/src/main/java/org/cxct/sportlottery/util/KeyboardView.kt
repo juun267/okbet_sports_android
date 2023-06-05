@@ -121,7 +121,7 @@ class KeyboardView @JvmOverloads constructor(
                 finalBetMoney = if (isLogin) {
                     Timber.d("betMoney:$betMoney maxItemMoney:$maxItemMoney mUserMoney:$mUserMoney maxBetMoney:$maxBetMoney")
                     if (maxItemMoney.toDouble() > betMoney.toDouble()) {
-                        ArithUtil.toMoneyFormat(betMoney.toString().toDoubleS())
+                        ArithUtil.toMoneyFormatFloor(betMoney.toString().toDoubleS())
                     } else {
                         maxItemMoney.toString()
                     }
@@ -138,7 +138,7 @@ class KeyboardView @JvmOverloads constructor(
                         }"
                     )
                     if (maxBetMoney.toDouble() > mUserMoney) {
-                        ArithUtil.toMoneyFormat(mUserMoney)
+                        ArithUtil.toMoneyFormatFloor(mUserMoney)
                     } else {
                         maxBetMoney
                     }
