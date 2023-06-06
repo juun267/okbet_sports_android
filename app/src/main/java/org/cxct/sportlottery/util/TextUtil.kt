@@ -147,11 +147,11 @@ object TextUtil : DecimalFormatUtil() {
     }
 
     fun String.strRoundDown2():BigDecimal {
-        return toDouble().toBigDecimal().setScale(2, BigDecimal.ROUND_DOWN)
+        return toDouble().toBigDecimal().setScale(2, BigDecimal.ROUND_FLOOR)
     }
 
     fun Double.dRoundDown2():BigDecimal {
-        return toBigDecimal().setScale(2, BigDecimal.ROUND_DOWN)
+        return toBigDecimal().setScale(2, BigDecimal.ROUND_FLOOR)
     }
 
 }

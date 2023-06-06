@@ -909,8 +909,8 @@
     <string name="kyc_num2">ID number 2</string>
     <string name="kyc_pick_upload_id">Mangyaring piliin ang pag-upload ng dokumento ng pagkakakilanlan</string>
     <string name="kyc_size_2_mb">Ang laki ng file ay hindi dapat lumampas sa 2MB</string>
-    <string name="kyc_contact_service">Nagkaroon ng problema? Mangyaring makipag-ugnayan sa Customer Service</string>
-    <string name="kyc_contact_service_hilight">Online na serbisyo</string>
+    <string name="kyc_contact_service">Kung may katanungan, makipag ugnayan sa CS</string>
+    <string name="kyc_contact_service_hilight">CS</string>
     <string name="kyc_verify_first">Mangyaring gawin muna ang tunay na pangalan na pag-verify.</string>
     <string name="kyc_go_verify">Pumunta sa certification ngayon</string>
     <string name="kyc_you_wait">Mangyaring pindutin ang \"Online na serbisyo\" button upang gumawa ng isang video call para makumpleto ang proseso</string>
@@ -1326,5 +1326,8 @@
     <string name="N988">Mag-login</string>
     <string name="system_notify">Notification ng System</string>
     <string name="C016">Ngayon</string>
-    <string name="picture_camera_roll" tools:ignore="ExtraTranslation">CameraRoll</string> // 图片选择库中菲语这个会莫名变为中文
+    <string name="picture_camera_roll" tools:ignore="ExtraTranslation">CameraRoll</string>
+    <string name="P066">Halimbawa</string>
+    <string name="P068">Mag-upload ng selfie photo na may hawak na valid ID</string>
+    // 图片选择库中菲语这个会莫名变为中文
 </resources>

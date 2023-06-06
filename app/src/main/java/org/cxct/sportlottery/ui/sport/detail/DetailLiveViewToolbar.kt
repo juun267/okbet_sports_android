@@ -3,18 +3,14 @@ package org.cxct.sportlottery.ui.sport.detail
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import com.shuyu.gsyvideoplayer.GSYVideoManager
@@ -25,11 +21,9 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.setViewGone
 import org.cxct.sportlottery.common.extentions.setViewVisible
 import org.cxct.sportlottery.databinding.ViewToolbarDetailLiveBinding
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.OKVideoPlayer
 import org.cxct.sportlottery.view.webView.OkWebChromeClient
-import org.cxct.sportlottery.view.webView.OkWebView
 import org.cxct.sportlottery.view.webView.OkWebViewClient
 import org.cxct.sportlottery.view.webView.WebViewCallBack
 
@@ -109,29 +103,17 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     @SuppressLint("ClickableViewAccessibility")
     private fun initOnclick() {
         iv_live.setOnClickListener {
-            if (sConfigData?.noLoginWitchVideoOrAnimation==1){
-                AppManager.currentActivity().startLogin()
-                return@setOnClickListener
-            }
             liveUrl?.let {
                 showLive()
             }
         }
         iv_video.setOnClickListener {
-            if (sConfigData?.noLoginWitchVideoOrAnimation==1){
-                AppManager.currentActivity().startLogin()
-                return@setOnClickListener
-            }
             videoUrl?.let {
                 showVideo()
             }
         }
 
         iv_animation.setOnClickListener {
-            if (sConfigData?.noLoginWitchVideoOrAnimation==1){
-                AppManager.currentActivity().startLogin()
-                return@setOnClickListener
-            }
             animeUrl?.let {
                 showAnime()
             }
@@ -218,7 +200,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
             LiveType.LIVE -> {
                 setViewVisible(player_view, iv_live_sound)
                 setViewGone(viewBinding.webView, iv_live_status, tvStatus, iv_live)
-                LogUtil.d(liveUrl)
+                liveUrl?.let { LogUtil.d(it) }
                 iv_live_status.setImageResource(R.drawable.bg_no_play)
                 iv_video.isVisible = !TextUtils.isEmpty(videoUrl)
                 iv_animation.isVisible = !TextUtils.isEmpty(animeUrl)

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.fragment_verify_status.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
@@ -37,9 +36,6 @@ class VerifyStatusFragment :
         viewModel.userVerifiedType.observe(viewLifecycleOwner) {
             hideLoading()
             it.getContentIfNotHandled()?.let { verified ->
-                img_status.isVisible = true
-                txv_status.isVisible = true
-
                 when (verified) {
                     ProfileActivity.VerifiedType.PASSED.value -> {
                         img_status.setImageResource(R.drawable.ic_done)
@@ -47,17 +43,18 @@ class VerifyStatusFragment :
                         btn_kyc_verify.setOnClickListener {
                             openService()
                         }
+                        tvContactUs.text =
+                            LocalUtils.getString(R.string.kyc_contact_service_hilight)
+                        tvCustomer.text = LocalUtils.getString(R.string.kyc_contact_service)
+                        layout_verify_progress.visibility = View.GONE
+                        layout_verify_success.visibility = View.VISIBLE
                     }
                     else -> {
-                        img_status.setImageResource(R.drawable.ic_waiting_time)
-                        txv_status.text = LocalUtils.getString(R.string.kyc_you_wait)
-                        btn_kyc_verify.setOnClickListener {
-                            openService()
-                        }
+                        layout_verify_success.visibility = View.GONE
+                        layout_verify_progress.visibility = View.VISIBLE
                     }
                 }
-                tvContactUs.text = LocalUtils.getString(R.string.kyc_contact_service_hilight)
-                tvCustomer.text = LocalUtils.getString(R.string.kyc_contact_service)
+
             }
         }
     }

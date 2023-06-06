@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="40dp"
+    app:cardBackgroundColor="@color/color_191919_FCFCFC"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvVerificationTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="15dp"
+            android:text="@string/P066"
+            android:textColor="@color/color_414655"
+            android:textSize="@dimen/textSize18sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="274dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/bg_verification" />
+
+
+        <TextView
+            android:id="@+id/btnSubmit"
+            android:layout_width="182dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/selector_button_default"
+            android:gravity="center"
+            android:text="@string/btn_sure"
+            android:textColor="@color/color_FFFFFF_FFFFFF"
+            android:textSize="@dimen/textSize16sp" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

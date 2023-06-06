@@ -6,9 +6,9 @@ import android.view.Gravity
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.FragmentActivity
 import com.youth.banner.indicator.CircleIndicator
 import org.cxct.sportlottery.databinding.DialogPromotionPopupBinding
+import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -37,7 +37,7 @@ class PromotionPopupDialog(val activity: AppCompatActivity, private val promotio
     private fun initView() {
         binding.ivClose.setOnClickListener { dismiss() }
         val promotionList = mutableListOf<PromotionData>()
-        sConfigData?.imageList?.map { imageData ->
+        sConfigData?.imageList?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })?.map { imageData ->
             //最多顯示9筆
             if (promotionList.size < 9 && imageData.imageType == ImageType.PROMOTION.code && !imageData.imageName3.isNullOrEmpty() && !(isGooglePlayVersion() && imageData.isHidden)) {
                 promotionList.add(

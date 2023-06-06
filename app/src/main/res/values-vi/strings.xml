@@ -2,7 +2,7 @@
 <resources>
     <string name="loading">Loading...</string>
     <string name="connect_first">vui lòng kết nối mạng</string>
-    <string name="error_url_fail">chuyển đổi địa chỉ bị lỗi</string>
+    <string name="error_url_fail">Chuyển đổi địa chỉ bị lỗi</string>
     <string name="unknown_error">Lỗi chưa biết</string>
     <string name="error_reading_file">Lỗi đọc tệp</string>
     <string name="message_guest_no_permission">tài khoản demo không có chức năng hỗ trợ tư vấn, vui lòng đăng ký tài khoản</string>
@@ -935,12 +935,12 @@
     <string name="kyc_num2">Số giấy tờ2</string>
     <string name="kyc_pick_upload_id">Mời chọn giấy tờ nhận dạng để tải lên</string>
     <string name="kyc_size_2_mb">Tập tin không lớn hơn 2MB</string>
-    <string name="kyc_contact_service">Nếu có bất kỳ vấn đề nào, hãy liên hệ với CSKH online</string>
-    <string name="kyc_contact_service_hilight">CSKH online</string>
+    <string name="kyc_contact_service">Nếu bạn có bất kỳ câu hỏi nào, xin vui lòng liên hệ.</string>
+    <string name="kyc_contact_service_hilight">Live chat</string>
     <string name="kyc_verify_first">Mời xác minh danh tính trước</string>
     <string name="kyc_go_verify">Xác minh ngay</string>
     <string name="kyc_you_wait">"Tài liệu xác minh danh tính của quý khách đã gửi đi,hãy đợi xét duyệt trong chốc lát"</string>
-    <string name="kyc_verify_successful">Bạn đã xác minh danh tính</string>
+    <string name="kyc_verify_successful">xác minh thành công</string>
     <string name="kyc_unverified">Chưa xác minh</string>
     <string name="kyc_passed">Đã thông qua</string>
     <string name="kyc_enter_id_num">Mời nhập mã số giấy tờ</string>
@@ -1347,4 +1347,6 @@
     <string name="N987">Đăng nhập tài khoản</string>
     <string name="N988">Đăng nhập ngay</string>
     <string name="C016">HÔM NAY</string>
+    <string name="P066">Ví dụ</string>
+    <string name="P068">Tải lên ảnh Selfie cùng Căn cước</string>
 </resources>
