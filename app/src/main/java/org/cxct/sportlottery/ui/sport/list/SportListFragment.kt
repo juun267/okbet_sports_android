@@ -17,10 +17,10 @@ import kotlinx.android.synthetic.main.fragment_sport_list.view.*
 import kotlinx.android.synthetic.main.item_league.view.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.event.TimeRangeEvent
 import org.cxct.sportlottery.common.extentions.rotationAnimation
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
-import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
@@ -42,8 +42,9 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 import org.greenrobot.eventbus.Subscribe
-import timber.log.Timber
 import java.util.*
+import java.util.Date
+import kotlin.collections.ArrayList
 
 /**
  * @app_destination 滾球、即將、今日、早盤、冠軍、串關
@@ -61,13 +62,10 @@ open class SportListFragment :
     private var gameType: String? = null
         set(value) {
             if (!Objects.equals(value, field)) { // 清除赛选条件
-                leagueIdList.clear()
-                viewModel.filterLeague(mutableListOf())
+                viewModel.selectMatchIdList = arrayListOf()
             }
             field = value
         }
-    private var mCalendarSelected = false //紀錄日期圖示選中狀態
-    var leagueIdList = mutableListOf<String>()
 
     private val gameTypeAdapter by lazy {
         GameTypeAdapter().apply {
@@ -77,8 +75,6 @@ open class SportListFragment :
                 if (!it.isSelected) {
                     //切換球種，清除日期記憶
                     viewModel.tempDatePosition = 0
-                    //日期圖示選取狀態下，切換球種要重置UI狀態
-                    if (iv_calendar.isSelected) iv_calendar.performClick()
                 }
                 gameType = it.code
                 dataSport.forEach { item ->
@@ -102,15 +98,6 @@ open class SportListFragment :
 
             thirdGameListener = ThirdGameListener {
                 navThirdGame(it)
-            }
-        }
-    }
-
-    private val dateAdapter by lazy {
-        DateAdapter().apply {
-            dateListener = DateListener {
-                viewModel.switchMatchDate(matchType, it)
-                loading()
             }
         }
     }
@@ -206,7 +193,6 @@ open class SportListFragment :
         }
         setupSportTypeList()
         setupToolbar()
-        setupGameRow()
         setupGameListView()
 
         initObserve()
@@ -259,41 +245,13 @@ open class SportListFragment :
             )
         })
 
-        iv_calendar.apply {
-            visibility = when (matchType) {
-                MatchType.EARLY, MatchType.CS -> View.VISIBLE
-                else -> View.GONE
-            }
-
-            setOnClickListener {
-                val newSelectedStatus = !isSelected
-                mCalendarSelected = newSelectedStatus
-                isSelected = newSelectedStatus
-
-                view?.game_filter_type_list?.isVisible = iv_calendar.isSelected
-            }
-        }
-
         lin_filter.setOnClickListener {
             if (TextUtils.isEmpty(gameType)) {
                 return@setOnClickListener
             }
 
-            if (matchType == MatchType.EARLY || matchType == MatchType.CS || matchType == MatchType.PARLAY) {
-                val timeRangeParams = viewModel.getCurrentTimeRangeParams()
-                LeagueSelectActivity.start(
-                    requireContext(),
-                    gameType!!,
-                    matchType,
-                    timeRangeParams?.startTime,
-                    timeRangeParams?.endTime,
-                    leagueIdList
-                )
-                return@setOnClickListener
-            }
-
             LeagueSelectActivity.start(
-                requireContext(), gameType!!, matchType, null, null, leagueIdList
+                requireContext(), gameType!!, matchType,  viewModel.selectTimeRangeParams, viewModel.selectMatchIdList
             )
         }
         iv_arrow.isSelected = false
@@ -313,34 +271,6 @@ open class SportListFragment :
         }
     }
 
-
-    private fun setupGameRow() {
-        game_filter_type_list.apply {
-            this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
-
-            this.adapter = dateAdapter
-            removeItemDecorations()
-            addItemDecoration(
-                SpaceItemDecoration(
-                    context, R.dimen.recyclerview_item_dec_spec_date
-                )
-            )
-        }
-        when (matchType) {
-            MatchType.EARLY, MatchType.CS -> {
-                mCalendarSelected = false
-                iv_calendar.isVisible = true
-                game_filter_type_list.isVisible = false
-            }
-
-            else -> {
-                mCalendarSelected = false
-                iv_calendar.isVisible = false
-                game_filter_type_list?.isVisible = iv_calendar.isSelected
-            }
-        }
-    }
 
     private fun setupGameListView() = game_list.run {
         if (this.layoutManager != null) {
@@ -436,13 +366,6 @@ open class SportListFragment :
             it?.let { (parentFragment as SportFragment).updateSportMenuResult(it) }
         }
 
-        viewModel.curDate.observe(this.viewLifecycleOwner) { dateAdapter.data = it }
-
-        viewModel.curDatePosition.observe(this.viewLifecycleOwner) {
-            var position = viewModel.tempDatePosition
-            position = if (position != 0) position else it
-        }
-
         viewModel.userInfo.observe(this.viewLifecycleOwner) { userInfo ->
             if (game_list.adapter is SportLeagueAdapter) {
                 sportLeagueAdapter.discount = userInfo?.discount ?: 1.0F
@@ -503,8 +426,6 @@ open class SportListFragment :
 //            sport_type_list.isVisible = !it && matchType != MatchType.CS
             //无赛事或者为波胆的时候不显示
             ll_sport_type.isVisible = !(it || matchType == MatchType.CS)
-            iv_calendar.isVisible =
-                (matchType == MatchType.EARLY || matchType == MatchType.CS) && !it
             if (it) {
                 sportLeagueAdapter.removePreloadItem()
             }
@@ -761,7 +682,6 @@ open class SportListFragment :
 
         if (gameTypeList.isEmpty()) {
             sport_type_list.isVisible = matchType != MatchType.CS
-            iv_calendar.isVisible = matchType == MatchType.EARLY || matchType == MatchType.CS
             sportLeagueAdapter.removePreloadItem()
             hideLoading()
             return
@@ -796,18 +716,8 @@ open class SportListFragment :
         sport_type_list?.post {
             if (gameTypeList.isEmpty()) {
                 sport_type_list?.isVisible = false
-                iv_calendar?.isVisible = false
-                game_filter_type_list?.isVisible = false
             } else {
                 sport_type_list?.isVisible = matchType != MatchType.CS
-                iv_calendar?.apply {
-                    visibility = when (matchType) {
-                        MatchType.EARLY, MatchType.CS -> View.VISIBLE
-                        else -> View.GONE
-                    }
-                    isSelected = mCalendarSelected
-                }
-                game_filter_type_list?.isVisible = iv_calendar.isSelected
             }
         }
     }
@@ -885,17 +795,18 @@ open class SportListFragment :
     }
 
     @Subscribe
-    fun onSelectLeague(leagueList: List<League>) {
-        viewModel.filterLeague(leagueList)
-        leagueIdList.clear()
-        leagueList.forEach { leagueIdList.add(it.id) }
-        viewModel.getGameHallList(
-            matchType,
-            isReloadDate = true,
-            isReloadPlayCate = false,
-            isLastSportType = true,
-            leagueIdList = leagueIdList
-        )
+    fun onSelectMatch(matchIdList: ArrayList<String>) {
+        viewModel.selectMatchIdList = matchIdList
+    }
+
+    @Subscribe
+    fun onSelectDate(timeRangeEvent: TimeRangeEvent) {
+        viewModel.selectTimeRangeParams = object : TimeRangeParams {
+            override val startTime: String
+                get() = timeRangeEvent.startTime
+            override val endTime: String
+                get() = timeRangeEvent.endTime
+        }
     }
 
     open fun getCurGameType(): GameType {

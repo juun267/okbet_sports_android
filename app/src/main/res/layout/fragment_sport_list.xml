@@ -89,17 +89,6 @@
                         android:layout_weight="1" />
 
                     <ImageView
-                        android:id="@+id/iv_calendar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="@dimen/margin_5"
-                        android:padding="5dp"
-                        android:adjustViewBounds="true"
-                        android:src="@drawable/ic_calendar"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
-
-                    <ImageView
                         android:id="@+id/iv_arrow"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -109,19 +98,6 @@
                         android:src="@drawable/ic_arrow_up_double" />
 
                 </LinearLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/game_filter_type_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
-                    android:overScrollMode="never"
-                    android:padding="16dp"
-                    android:visibility="gone"
-                    app:layout_constraintTop_toBottomOf="@id/lin_opt"
-                    tools:itemCount="1"
-                    tools:listitem="@layout/itemview_date_v4"
-                    tools:visibility="visible" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.CollapsingToolbarLayout>

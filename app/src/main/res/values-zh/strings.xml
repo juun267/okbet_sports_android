@@ -1400,4 +1400,7 @@
     <string name="N987">登录后进行聊天讨论</string>
     <string name="N988">请登录</string>
     <string name="C016">今日</string>
+    <string name="N930">明日</string>
+    <string name="N931">后日</string>
+    <string name="N932">后日</string>
 </resources>

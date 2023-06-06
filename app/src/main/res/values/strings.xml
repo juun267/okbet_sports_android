@@ -271,7 +271,7 @@
     <string name="bet_detail">Bet Slip details</string>
     <string name="bet_time2">Betting time</string>
     <string name="at_start_remain_minute">%1$s Minute</string>
-    <string name="date_row_all">ALL DATES</string>
+    <string name="date_row_all">All Dates</string>
     <string name="date_row_today">Matches today</string>
     <string name="ou_hdp_1x2_title">Single</string>
     <string name="odd_button_ou_o">Over</string>
@@ -1467,4 +1467,7 @@
     <string name="C016">TODAY</string>
     <string name="N989">Over max stake</string>
     <string name="N990">Below min stake</string>
+    <string name="N930">Tomorrow</string>
+    <string name="N931">The day after</string>
+    <string name="N932">After</string>
 </resources>

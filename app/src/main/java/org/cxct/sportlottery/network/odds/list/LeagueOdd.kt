@@ -25,25 +25,25 @@ data class LeagueOdd(
     @Json(name = "playCateNameMap")
     var playCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null,
 ): BaseExpandNode() {
-
+    init {
+        matchOdds.forEach { it.parentNode = this }
+    }
     var unfoldStatus: Int = FoldState.UNFOLD.code
     var searchMatchOdds = listOf<MatchOdd>()
     var gameType: GameType? = null
 
-    @IgnoredOnParcel
-    private val _childNode by lazy {
-        matchOdds.forEach {
-            it.matchInfo?.let { matchInfo ->
-                if (matchInfo.leagueName.isEmptyStr()) {
-                    matchInfo.leagueName = league.name
-                }
-            }
-        }
-        matchOdds as MutableList<BaseNode>?
-    }
-
     @Transient
     @IgnoredOnParcel
-    override val childNode: MutableList<BaseNode>? = _childNode
+    override var childNode: MutableList<BaseNode>?=null
+      get() {
+          matchOdds.forEach {
+              it.matchInfo?.let { matchInfo ->
+                  if (matchInfo.leagueName.isEmptyStr()) {
+                      matchInfo.leagueName = league.name
+                  }
+              }
+          }
+         return matchOdds as MutableList<BaseNode>?
+      }
 
 }
