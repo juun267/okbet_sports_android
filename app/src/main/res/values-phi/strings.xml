@@ -909,7 +909,7 @@
     <string name="kyc_num2">ID number 2</string>
     <string name="kyc_pick_upload_id">Mangyaring piliin ang pag-upload ng dokumento ng pagkakakilanlan</string>
     <string name="kyc_size_2_mb">Ang laki ng file ay hindi dapat lumampas sa 2MB</string>
-    <string name="kyc_contact_service">Nagkaroon ng problema? Mangyaring makipag-ugnayan sa Customer Service</string>
+    <string name="kyc_contact_service">Kung may katanungan, makipag ugnayan sa CS</string>
     <string name="kyc_contact_service_hilight">Online na serbisyo</string>
     <string name="kyc_verify_first">Mangyaring gawin muna ang tunay na pangalan na pag-verify.</string>
     <string name="kyc_go_verify">Pumunta sa certification ngayon</string>
