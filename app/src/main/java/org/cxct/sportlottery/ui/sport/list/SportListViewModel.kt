@@ -8,6 +8,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.callApi
+import org.cxct.sportlottery.common.extentions.clean
+import org.cxct.sportlottery.net.sport.SportRepository
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.common.MatchOdd
@@ -76,7 +79,6 @@ class SportListViewModel(
         get() = _sportMenuResult
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
 
-    private var sportMenuData: SportMenuData? = null //球種菜單資
     var tempDatePosition: Int = 0 //早盤的日期選擇切頁後要記憶的問題，切換球種要清除記憶
 
     fun getSportSelectedCode(matchType: MatchType): String? = when (matchType) {
@@ -118,6 +120,7 @@ class SportListViewModel(
         leagueIdList: List<String>? = null,
         isReloadPlayCate: Boolean = false,
         isLastSportType: Boolean = false,
+        tag: Any? = null
     ) {
         var reloadedDateRow: List<Date>? = null
 
@@ -136,7 +139,8 @@ class SportListViewModel(
                 getOddsList(
                     gameType = gameType,
                     matchType.postValue,
-                    leagueIdList = leagueIdList
+                    leagueIdList = leagueIdList,
+                    tag = tag
                 )
             }
             MatchType.AT_START -> {
@@ -145,6 +149,7 @@ class SportListViewModel(
                     matchType.postValue,
                     TimeUtil.getAtStartTimeRangeParams(),
                     leagueIdList = leagueIdList,
+                    tag = tag
                 )
             }
             MatchType.TODAY -> {
@@ -152,7 +157,8 @@ class SportListViewModel(
                     gameType = gameType,
                     matchType.postValue,
                     requestTimeRangeParams,
-                    leagueIdList = leagueIdList
+                    leagueIdList = leagueIdList,
+                    tag = tag
                 )
             }
             MatchType.EARLY -> {
@@ -161,6 +167,7 @@ class SportListViewModel(
                     matchType.postValue,
                     requestTimeRangeParams,
                     leagueIdList = leagueIdList,
+                    tag = tag
                 )
             }
             MatchType.CS -> {
@@ -169,6 +176,7 @@ class SportListViewModel(
                     matchType.postValue,
                     requestTimeRangeParams,
                     leagueIdList = leagueIdList,
+                    tag = tag
                 )
             }
             MatchType.PARLAY -> {
@@ -177,6 +185,7 @@ class SportListViewModel(
                     matchType.postValue,
                     requestTimeRangeParams,
                     leagueIdList = leagueIdList,
+                    tag = tag
                 )
 
             }
@@ -187,6 +196,7 @@ class SportListViewModel(
                     matchType.postValue,
                     requestTimeRangeParams,
                     leagueIdList = leagueIdList,
+                    tag = tag
                 )
 
             }
@@ -233,7 +243,7 @@ class SportListViewModel(
         }
     }
 
-    fun switchGameType(matchType: MatchType, item: Item) {
+    fun switchGameType(matchType: MatchType, item: Item, tag: Any? = null) {
         gameType = item.code
         if (jobSwitchGameType?.isActive == true) {
             jobSwitchGameType?.cancel()
@@ -241,12 +251,12 @@ class SportListViewModel(
         //視覺上需要優先跳轉 tab
         _sportMenuResult.value?.updateSportSelectState(matchType, item.code)
         jobSwitchGameType = viewModelScope.launch {
-            getGameHallList(matchType, true, isReloadPlayCate = true)
+            getGameHallList(matchType, true, isReloadPlayCate = true, tag = tag)
         }
     }
 
     fun cleanGameHallResult() {
-        _oddsListGameHallResult.postValue(Event(null, gameType))
+        _oddsListGameHallResult.clean()
     }
 
     fun getEndScoreOddsList(gameType: String,
@@ -274,6 +284,7 @@ class SportListViewModel(
         timeRangeParams: TimeRangeParams? = null,
         leagueIdList: List<String>? = null,
         matchIdList: List<String>? = null,
+        tag: Any? = null
     ) {
         var currentTimeRangeParams: TimeRangeParams? = null
         when (matchType) {
@@ -409,10 +420,10 @@ class SportListViewModel(
                                     ?.contains(it.league.id) ?: false
                             }
                     }
-                    _oddsListGameHallResult.postValue(Event(result, gameType))
+                    _oddsListGameHallResult.postValue(Event(result, tag ?: gameType))
                 }
                 else -> {
-                    _oddsListGameHallResult.postValue(Event(result, gameType))
+                    _oddsListGameHallResult.postValue(Event(result, tag ?: gameType))
                 }
             }
 
@@ -720,27 +731,32 @@ class SportListViewModel(
             ).apply {
                 if (isSuccessful && body()?.success == true) {
                     // 每次執行必做
-                    body()?.sportMenuData?.sortSport().apply { sportMenuData = this }
+                    body()?.sportMenuData?.sortSport()
                 }
             }
         }
     }
 
+    private val sportMenuData by lazy { SingleLiveEvent<SportMenuData>() }
+    fun loadMatchType(matchType: MatchType) {
+        callApi({ SportRepository.getSportMenu(TimeUtil.getNowTimeStamp().toString(), TimeUtil.getTodayStartTimeStamp().toString()) }) {
+            val data = it.getData()?.sortSport() ?: return@callApi
+            sportMenuData.postValue(data)
+        }
+    }
+
     fun switchMatchType(matchType: MatchType) {
+
         viewModelScope.launch {
             val sportMenuResult = getSportMenuAll()
             sportMenuResult?.let {
                 if (it.success) {
                     _sportMenuResult.postValue(it)     // 更新大廳上方球種數量、各MatchType下球種和數量
-                } else {
-                    return@launch
                 }
             }
         }
         if (_sportMenuResult.value != null) {
-            viewModelScope.launch {
-                updateSportInfo(matchType)
-            }
+            updateSportInfo(matchType)
         }
     }
 
