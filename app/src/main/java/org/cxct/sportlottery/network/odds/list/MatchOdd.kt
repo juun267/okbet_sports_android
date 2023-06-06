@@ -45,6 +45,8 @@ data class MatchOdd(
 
     var isExpand = false
 
+    var isSelected = true
+
     var quickPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null //足球快捷玩法的翻譯
 
     fun sortOddsMap() {
@@ -56,6 +58,10 @@ data class MatchOdd(
     @Transient
     @IgnoredOnParcel
     var oddIdsMap: MutableMap<String, MutableMap<String, Odd>> = mutableMapOf()  //用于本地计算
+
+    // 列表的父节点
+    @Transient
+    lateinit var parentNode: BaseNode
 }
 
 enum class TimeCounting(val value: Int) {

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="@dimen/margin_12"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="@color/color_F9FAFD"
+    xmlns:tools="http://schemas.android.com/tools">
+    <TextView
+        android:id="@+id/tvMatchName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:maxLines="2"
+        android:layout_marginLeft="@dimen/margin_40"
+        android:textSize="@dimen/textSize14sp"
+        android:textColor="@color/color_6D7693"
+        tools:text="Shijiazhuang  VS  Bundesliga"/>
+    <ImageView
+        android:id="@+id/ivCheck"
+        android:layout_width="@dimen/margin_24"
+        android:layout_height="@dimen/margin_24"
+        android:layout_marginLeft="@dimen/margin_10"
+        android:layout_marginRight="@dimen/margin_30"
+        android:padding="@dimen/margin_4"
+        android:src="@drawable/selector_filter_check" />
+</LinearLayout>

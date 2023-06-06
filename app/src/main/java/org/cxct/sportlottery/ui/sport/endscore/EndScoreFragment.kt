@@ -13,16 +13,13 @@ import com.chad.library.adapter.base.entity.node.BaseNode
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_sport_list.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.event.TimeRangeEvent
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.setViewGone
 import org.cxct.sportlottery.common.extentions.showEmpty
 import org.cxct.sportlottery.common.extentions.showLoading
 import org.cxct.sportlottery.network.bet.FastBetDataBean
-import org.cxct.sportlottery.network.common.FavoriteType
-import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.network.league.League
+import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
@@ -49,7 +46,6 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
     private val playCate = PlayCate.FS_LD_CS.value
     private val matchType = MatchType.END_SCORE
     private var gameType: String = GameType.BK.key
-    private var leagueIdList = mutableListOf<String>()
 
     override fun layoutId() = R.layout.fragment_sport_list
     fun getCurGameType() = GameType.BK
@@ -120,7 +116,7 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
 
     private fun loadData() {
         endScoreAdapter.showLoading(R.layout.view_list_loading)
-        viewModel.getGameHallList(matchType, true)
+        viewModel.getGameHallList(matchType)
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -144,15 +140,13 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
     }
 
     private fun setupGameRow() {
-        setViewGone(iv_calendar, game_filter_type_list)
         lin_filter.setOnClickListener {
             LeagueSelectActivity.start(
                 it.context,
                 gameType!!,
                 matchType,
                 null,
-                null,
-                leagueIdList
+                viewModel.selectMatchIdList
             )
         }
     }
@@ -305,17 +299,16 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
     }
 
     @Subscribe
-    fun onSelectLeague(leagueList: List<League>) {
-        viewModel.filterLeague(leagueList)
-        leagueIdList.clear()
-        leagueList.forEach { leagueIdList.add(it.id) }
-        viewModel.getGameHallList(
-            matchType,
-            isReloadDate = true,
-            isReloadPlayCate = false,
-            isLastSportType = true,
-            leagueIdList = leagueIdList
-        )
+    fun onSelectMatch(matchIdList: ArrayList<String>?) {
+        viewModel.selectMatchIdList = matchIdList
     }
-
+    @Subscribe
+    fun onSelectDate(timeRangeEvent: TimeRangeEvent) {
+        viewModel.selectTimeRangeParams = object : TimeRangeParams {
+            override val startTime: String
+                get() = timeRangeEvent.startTime
+            override val endTime: String
+                get() = timeRangeEvent.endTime
+        }
+    }
 }

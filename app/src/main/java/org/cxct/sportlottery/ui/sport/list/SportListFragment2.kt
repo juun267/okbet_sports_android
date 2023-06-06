@@ -14,6 +14,7 @@ import com.chad.library.adapter.base.entity.node.BaseNode
 import com.google.android.material.appbar.AppBarLayout
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.event.TimeRangeEvent
 import org.cxct.sportlottery.common.extentions.clean
 import org.cxct.sportlottery.common.extentions.rotationAnimation
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
@@ -51,13 +52,10 @@ class SportListFragment2
     private var gameType: String? = null
         set(value) {
             if (!Objects.equals(value, field)) { // 清除赛选条件
-                leagueIdList.clear()
-                viewModel.filterLeague(mutableListOf())
+                viewModel.selectMatchIdList = arrayListOf()
             }
             field = value
         }
-    private var mCalendarSelected = false //紀錄日期圖示選中狀態
-    var leagueIdList = mutableListOf<String>()
 
     private val gameTypeAdapter by lazy { GameTypeAdapter2(::onGameTypeChanged) }
 
@@ -154,10 +152,8 @@ class SportListFragment2
         matchType = (arguments?.getSerializable("matchType") as MatchType?) ?: MatchType.IN_PLAY
         gameType = arguments?.getString("gameType")
         viewModel.gameType = gameType ?: GameType.FT.key
-        mCalendarSelected = false
-        leagueIdList.clear()
         viewModel.sportMenuResult.clean()
-        viewModel.filterLeague(mutableListOf())
+        viewModel.selectMatchIdList = arrayListOf()
         gameTypeAdapter.setNewInstance(null)
         sportLeagueAdapter2.setNewInstance(null)
         setMatchInfo("", "")
@@ -224,22 +220,12 @@ class SportListFragment2
             if (TextUtils.isEmpty(gameType)) {
                 return@setOnClickListener
             }
-
-            if (matchType == MatchType.EARLY || matchType == MatchType.CS || matchType == MatchType.PARLAY) {
-                val timeRangeParams = viewModel.getCurrentTimeRangeParams()
-                LeagueSelectActivity.start(
-                    requireContext(),
-                    gameType!!,
-                    matchType,
-                    timeRangeParams?.startTime,
-                    timeRangeParams?.endTime,
-                    leagueIdList
-                )
-                return@setOnClickListener
-            }
-
             LeagueSelectActivity.start(
-                requireContext(), gameType!!, matchType, null, null, leagueIdList
+                requireContext(),
+                gameType!!,
+                matchType,
+                viewModel.selectTimeRangeParams,
+                viewModel.selectMatchIdList
             )
         }
 
@@ -279,7 +265,6 @@ class SportListFragment2
     private fun setupToolbarStatus() = binding.run {
         ivArrow.isSelected = false
         ivArrow.rotationAnimation(0f, 0)
-        mCalendarSelected = false
     }
 
     private fun initObserve() = viewModel.run {
@@ -617,17 +602,18 @@ class SportListFragment2
     }
 
     @Subscribe
-    fun onSelectLeague(leagueList: List<League>) {
-        viewModel.filterLeague(leagueList)
-        leagueIdList.clear()
-        leagueList.forEach { leagueIdList.add(it.id) }
-        viewModel.getGameHallList(
-            matchType,
-            isReloadDate = true,
-            isReloadPlayCate = false,
-            isLastSportType = true,
-            leagueIdList = leagueIdList
-        )
+    fun onSelectMatch(matchIdList: ArrayList<String>) {
+        viewModel.selectMatchIdList = matchIdList
+    }
+
+    @Subscribe
+    fun onSelectDate(timeRangeEvent: TimeRangeEvent) {
+        viewModel.selectTimeRangeParams = object : TimeRangeParams {
+            override val startTime: String
+                get() = timeRangeEvent.startTime
+            override val endTime: String
+                get() = timeRangeEvent.endTime
+        }
     }
 
     open fun getCurGameType(): GameType {

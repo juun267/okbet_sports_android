@@ -1,141 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@color/color_FFFFFF"
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical"
     tools:ignore="SpUsage,RtlSymmetry">
-
-
-    <org.cxct.sportlottery.view.CustomTopToolbar
-        android:id="@+id/custom_tool_bar"
+    <LinearLayout
+        android:id="@+id/linDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:topTitleText="@string/league_filter" />
-
-    <FrameLayout
+        android:layout_marginTop="@dimen/margin_12"
+        android:padding="@dimen/margin_12"
+        android:orientation="vertical">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/color_14366B"
+        android:layout_marginBottom="@dimen/margin_10"
+        android:textSize="@dimen/textSize16sp"
+        android:textStyle="bold"
+        android:text="@string/select_date"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvDate"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_league"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingTop="@dimen/margin_10"
-            android:layout_marginRight="@dimen/margin_36"
-            android:layout_weight="1"
-            android:clipToPadding="false"
-            tools:listitem="@layout/item_league_select"
-            tools:itemCount="3" />
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cv_index"
-            android:layout_width="20dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|right"
-            android:layout_marginRight="@dimen/margin_10"
-            app:cardElevation="1dp"
-            app:cardCornerRadius="@dimen/margin_10"
-            app:cardBackgroundColor="@color/color_bbbbbb_ffffff">
-
-            <org.cxct.sportlottery.view.IndexBar
-                android:id="@+id/indexBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="15dp"
-                app:text_color_normal="@color/color_535D76"
-                app:text_color_pressed="@color/color_FFFFFF"
-                app:text_size_normal="@dimen/textSize10sp"
-                app:text_size_pressed="@dimen/textSize12sp"
-                app:text_bg_radius="10dp"
-                app:text_bg_normal="@color/color_FFFFFF"
-                app:text_bg_pressed="@color/color_025BE8" />
-        </androidx.cardview.widget.CardView>
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        tools:itemCount="5"
+        tools:listitem="@layout/item_select_date"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginTop="@dimen/margin_12"
+        android:padding="@dimen/margin_12"
+        android:background="@color/color_FFFFFF">
 
         <TextView
-            android:id="@+id/iv_union"
-            android:layout_width="60dp"
-            android:layout_height="50dp"
-            android:layout_marginRight="30dp"
-            android:layout_gravity="right"
-            android:background="@drawable/bg_index_union"
-            android:gravity="center"
-            android:paddingRight="10dp"
-            tools:text="A"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_14366B"
+            android:textSize="@dimen/textSize16sp"
+            android:textStyle="bold"
+            android:text="@string/league_filter"/>
+        <androidx.legacy.widget.Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+        <Button
+            android:id="@+id/btnReverseSelect"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/margin_36"
+            android:background="@drawable/bg_gray_radius_8"
+            android:textSize="@dimen/textSize14sp"
+            android:textColor="@color/color_6D7693"
+            android:text="@string/reverse_select" />
+        <Button
+            android:id="@+id/btnAllSelect"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/margin_36"
+            android:background="@drawable/bg_blue_radius_8"
+            android:layout_marginLeft="@dimen/margin_8"
+            android:textSize="@dimen/textSize14sp"
             android:textColor="@color/color_FFFFFF"
-            android:textSize="28sp"
-            android:visibility="gone" />
-    </FrameLayout>
-
-    <View
+            android:text="@string/select_all" />
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_league"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/color_E9EAEB" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_filter_league"
+        tools:itemCount="3"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:gravity="center_vertical"
-        android:background="@color/color_bbbbbb_ffffff">
-
-        <TextView
-            android:id="@+id/tv_all_select"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_20"
-            android:textSize="@dimen/textSize14sp"
-            android:textColor="@color/color_025BE8"
-            android:text="@string/select_all" />
-
-        <TextView
-            android:id="@+id/tv_reverse_select"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_20"
-            android:layout_marginRight="@dimen/margin_20"
-            android:textSize="@dimen/textSize14sp"
-            android:textColor="@color/color_025BE8"
-            android:text="@string/reverse_select" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="17dp"
-            android:background="@color/color_E2E2E2" />
-
-        <TextView
-            android:id="@+id/tv_sum"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:maxLines="1"
-            android:layout_marginLeft="@dimen/margin_20"
-            android:layout_marginRight="@dimen/margin_10"
-            android:textSize="@dimen/textSize14sp"
-            android:textColor="@color/color_414655"
-            android:autoSizeMaxTextSize="@dimen/textSize14sp"
-            android:autoSizeMinTextSize="@dimen/textSize8sp"
-            android:autoSizeTextType="uniform"
-            tools:text="联赛: 109 个" />
-
-
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/margin_12"
+        android:paddingVertical="@dimen/margin_15"
+        android:elevation="3dp">
         <Button
-            android:id="@+id/btn_sure"
+            android:id="@+id/btnCancel"
             style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="73dp"
-            android:layout_height="32dp"
-            android:layout_marginRight="@dimen/margin_14"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_40"
+            android:minWidth="80dp"
+            android:paddingHorizontal="@dimen/margin_10"
             android:textAllCaps="false"
-            android:background="@drawable/bg_theme_radius_22"
+            android:background="@drawable/bg_gray_radius_8"
+            android:textColor="@color/color_6D7693"
+            android:textSize="@dimen/margin_14"
+            android:text="@string/cancel" />
+        <Button
+            android:id="@+id/btnRest"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_40"
+            android:minWidth="80dp"
+            android:paddingHorizontal="@dimen/margin_10"
+            android:layout_marginLeft="@dimen/margin_8"
+            android:textAllCaps="false"
+            android:background="@drawable/bg_blue_radius_8_stroke"
+            android:textColor="@color/color_025BE8"
+            android:textSize="@dimen/margin_14"
+            android:text="@string/dk_reset" />
+        <androidx.legacy.widget.Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+        <Button
+            android:id="@+id/btnConfirm"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_40"
+            android:minWidth="150dp"
+            android:paddingHorizontal="@dimen/margin_10"
+            android:textAllCaps="false"
+            android:background="@drawable/bg_blue_radius_8"
             android:textColor="@color/color_FFFFFF"
-            android:textSize="@dimen/margin_12"
-            android:text="@string/btn_sure" />
-
+            android:textSize="@dimen/margin_14"
+            android:text="@string/btn_confirm" />
     </LinearLayout>
-
-
 </LinearLayout>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_index"
+        android:layout_width="16dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|right"
+        android:layout_marginRight="@dimen/margin_4"
+        app:cardElevation="1dp"
+        app:cardCornerRadius="@dimen/margin_10"
+        app:cardBackgroundColor="@color/color_E5EBF6">
+
+        <org.cxct.sportlottery.view.IndexBar
+            android:id="@+id/indexBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="15dp"
+            app:text_color_normal="@color/color_000000"
+            app:text_color_pressed="@color/color_FFFFFF"
+            app:text_size_normal="@dimen/textSize12sp"
+            app:text_size_pressed="@dimen/textSize12sp"
+            app:text_bg_radius="8dp"
+            app:text_bg_normal="@color/color_FFFFFF"
+            app:text_bg_pressed="@color/color_FF2E00" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/iv_union"
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:layout_marginRight="20dp"
+        android:layout_gravity="right"
+        android:background="@drawable/bg_index_union"
+        android:gravity="center"
+        android:paddingRight="10dp"
+        tools:text="A"
+        android:textColor="@color/color_FFFFFF"
+        android:textSize="28sp"
+        android:visibility="gone" />
+</FrameLayout>

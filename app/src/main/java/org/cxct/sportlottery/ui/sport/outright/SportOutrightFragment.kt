@@ -13,6 +13,7 @@ import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_sport_list.*
 import kotlinx.android.synthetic.main.fragment_sport_list.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.event.TimeRangeEvent
 import org.cxct.sportlottery.common.extentions.setViewGone
 import org.cxct.sportlottery.common.extentions.setViewVisible
 import org.cxct.sportlottery.common.extentions.showLoading
@@ -20,6 +21,7 @@ import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.outright.odds.CategoryOdds
@@ -47,8 +49,6 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
     private val matchType = MatchType.OUTRIGHT
     private var gameType: String = GameType.BK.key
     private var mLeagueIsFiltered = false // 是否套用聯賽過濾
-    private var mCalendarSelected = false //紀錄日期圖示選中狀態
-    var leagueIdList = mutableListOf<String>() // 赛选的联赛id
 
     private val gameTypeAdapter by lazy {
         GameTypeAdapter().apply {
@@ -57,10 +57,6 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
                 if (!it.isSelected) {
                     //切換球種，清除日期記憶
                     viewModel.tempDatePosition = 0
-                    //日期圖示選取狀態下，切換球種要重置UI狀態
-                    if (iv_calendar.isSelected) {
-                        iv_calendar.performClick()
-                    }
                 }
                 gameType = it.code
                 dataSport.forEach { it.isSelected = (it.code == gameType) }
@@ -96,15 +92,6 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
 
     private fun setupOddsChangeListener() {
         receiver.oddsChangeListener = mOddsChangeListener
-    }
-
-    private val dateAdapter by lazy {
-        DateAdapter().apply {
-            dateListener = DateListener {
-                viewModel.switchMatchDate(matchType, it)
-                loading()
-            }
-        }
     }
 
     override fun loading() {
@@ -144,7 +131,6 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
         gameType?.let { viewModel.gameType = it  }
         setupSportTypeList()
         setupToolbar()
-        setupGameRow()
         setupGameListView()
         initObserve()
         initSocketObserver()
@@ -177,15 +163,6 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
             offsetScrollListener?.invoke((-verticalOffset) / Math.max(1.0, appbar_layout.measuredHeight.toDouble()))
         })
 
-        iv_calendar.apply {
-            isVisible = matchType == MatchType.EARLY
-            setOnClickListener {
-                val newSelectedStatus = !isSelected
-                mCalendarSelected = newSelectedStatus
-                isSelected = newSelectedStatus
-                view?.game_filter_type_list?.isVisible = iv_calendar.isSelected
-            }
-        }
         //冠军不需要筛选
         lin_filter.isVisible = false
         lin_filter.setOnClickListener {
@@ -194,32 +171,12 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
                     it,
                     matchType,
                     null,
-                    null,
-                    leagueIdList)
+                    viewModel.selectMatchIdList)
             }
         }
 
         iv_arrow.bindExpanedAdapter(sportOutrightAdapter2) { setOutrightLeagueAdapter(120) }
     }
-
-    private fun setupGameRow() {
-        game_filter_type_list.run {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
-            adapter = dateAdapter
-            removeItemDecorations()
-            addItemDecoration(SpaceItemDecoration(context, R.dimen.recyclerview_item_dec_spec_date))
-        }
-
-        if (matchType == MatchType.EARLY) {
-            mCalendarSelected = true
-            setViewVisible(iv_calendar, game_filter_type_list)
-        } else {
-            mCalendarSelected = false
-            setViewGone(iv_calendar, game_filter_type_list)
-        }
-    }
-
     private fun setupGameListView() {
         game_list.apply {
 //            layoutManager = GridLayoutManager(context, 2)
@@ -308,8 +265,6 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
                 }
             }
         }
-
-        curDate.observe(viewLifecycleOwner) { dateAdapter.data = it }
         outrightList.observe(viewLifecycleOwner) {
             if (gameType != it.tag) {
                 return@observe
@@ -340,11 +295,6 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
 
         oddsType.observe(viewLifecycleOwner) { sportOutrightAdapter2.oddsType = it }
 
-        leagueFilterList.observe(viewLifecycleOwner) { leagueList ->
-            mLeagueIsFiltered = leagueList.isNotEmpty()
-            sport_type_list.visibility = if (mLeagueIsFiltered) View.GONE else View.VISIBLE
-        }
-
     }
 
     private fun initSocketObserver() = receiver.run {
@@ -369,7 +319,6 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
     private fun updateSportType(gameTypeList: List<Item>) {
         if (gameTypeList.isEmpty()) {
             sport_type_list.isVisible = true
-            iv_calendar.isVisible = matchType == MatchType.EARLY
             hideLoading()
             return
         }
@@ -400,17 +349,9 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
             //球種如果選過，下次回來也需要滑動置中
             if (gameTypeList.isEmpty()) {
                 sport_type_list?.visibility = View.GONE
-                iv_calendar?.visibility = View.GONE
-                game_filter_type_list?.visibility = View.GONE
+
             } else {
                 sport_type_list?.visibility = if (mLeagueIsFiltered) View.GONE else View.VISIBLE
-                iv_calendar?.apply {
-                    visibility = when (matchType) {
-                        MatchType.EARLY -> View.VISIBLE
-                        else -> View.GONE
-                    }
-                    isSelected = mCalendarSelected
-                }
             }
         }
     }
@@ -482,19 +423,18 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
 
     // 赛选联赛
     @Subscribe
-    fun onSelectLeague(leagueList: List<League>) {
-        viewModel.filterLeague(leagueList)
-        leagueIdList.clear()
-        leagueList.forEach { leagueIdList.add(it.id) }
-        viewModel.getGameHallList(
-            matchType,
-            isReloadDate = true,
-            isReloadPlayCate = false,
-            isLastSportType = true,
-            leagueIdList = leagueIdList
-        )
+    fun onSelectMatch(matchIdList: ArrayList<String>) {
+        viewModel.selectMatchIdList = matchIdList
     }
-
+    @Subscribe
+    fun onSelectDate(timeRangeEvent: TimeRangeEvent) {
+        viewModel.selectTimeRangeParams = object : TimeRangeParams {
+            override val startTime: String
+                get() = timeRangeEvent.startTime
+            override val endTime: String
+                get() = timeRangeEvent.endTime
+        }
+    }
     open fun getCurGameType(): GameType {
         return GameType.getGameType(gameType) ?: GameType.ALL
     }
