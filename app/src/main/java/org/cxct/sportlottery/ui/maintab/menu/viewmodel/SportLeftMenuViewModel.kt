@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.ui.maintab.menu.viewmodel
 
 import android.app.Application
+import androidx.lifecycle.LiveData
+import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
@@ -19,6 +21,7 @@ class SportLeftMenuViewModel(
     private val sportMenuRepository: SportMenuRepository, )
     : BaseSocketViewModel(androidContext, userInfoRepository, loginRepository, betInfoRepository, infoCenterRepository, favoriteRepository) {
 
+    val userLoginInfo: LiveData<UserInfo?> = userInfoRepository.userInfo
 
 
 

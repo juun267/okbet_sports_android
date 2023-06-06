@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.ui.maintab.menu
 
+import android.annotation.SuppressLint
 import android.graphics.Typeface
-import android.util.Log
 import android.view.View
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
@@ -17,7 +17,7 @@ import org.cxct.sportlottery.view.setColors
 
 
 class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, FragmentSportLeftMenuBinding> (){
-    private inline fun getMainTabActivity() = activity as MainTabActivity
+    private fun getMainTabActivity() = activity as MainTabActivity
 
     private val sportBettingFragment=LeftSportBetFragment()
     private val inPlayFragment by lazy { LeftInPlayFragment() }
@@ -43,26 +43,46 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
         }
         tvLogin.onClick {
             LoginOKActivity.startRegist(requireContext())
+            close()
         }
 
-        if(viewModel.isLogin()){
-            tvUserName.visible()
-            tvUserBalance.visible()
-            tvLogin.gone()
-        }else{
-            tvLogin.visible()
-            tvUserName.gone()
-            tvUserBalance.gone()
-        }
+
 
     }
 
     override fun onInitData() {
         super.onInitData()
        binding.linearBetting.performClick()
-        Log.e("dachang","onInitData:")
+        reloadData()
     }
 
+    fun reloadData(){
+        initLoginData()
+    }
+
+
+    @SuppressLint("SetTextI18n")
+    private fun initLoginData(){
+        binding.apply {
+            if(viewModel.isLogin()){
+                tvUserName.visible()
+                tvUserBalance.visible()
+                tvLogin.gone()
+            }else{
+                tvLogin.visible()
+                tvUserName.gone()
+                tvUserBalance.gone()
+            }
+
+            viewModel.userInfo.value?.let {
+                tvUserName.text=it.userName
+            }
+            viewModel.userMoney.value?.let {
+                tvUserBalance.text="₱ $it"
+            }
+        }
+
+    }
 
     private fun replaceTab(index:Int){
         clearTabStyle(index)

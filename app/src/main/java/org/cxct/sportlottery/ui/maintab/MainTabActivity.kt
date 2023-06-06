@@ -51,6 +51,7 @@ import org.cxct.sportlottery.ui.chat.ChatActivity
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment2
+import org.cxct.sportlottery.ui.maintab.menu.SportLeftFragment
 import org.cxct.sportlottery.ui.maintab.menu.SportLeftMenuFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.ui.sport.SportFragment
@@ -74,13 +75,14 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 Pair(FavoriteFragment::class.java, null),
                 Pair(ProfileCenterFragment::class.java, null),
 
-            )
+                )
         )
     }
 
     private var betListFragment: BetListFragment? = null
-    private val homeLeftFragment by lazy { MainLeftFragment2() }
-    private val sportLeftFragment by lazy { SportLeftMenuFragment() }
+
+    //    private val homeLeftFragment by lazy { MainLeftFragment2() }
+//    private val sportLeftFragment by lazy { SportLeftMenuFragment() }
     private var exitTime: Long = 0
 
     companion object {
@@ -118,7 +120,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             if (isOpenChatRoom()) {
                 changeChatTabStatus(getString(R.string.N984), R.drawable.selector_tab_chat)
             } else {
-                changeChatTabStatus(getString(R.string.main_tab_favorite), R.drawable.selector_tab_fav)
+                changeChatTabStatus(
+                    getString(R.string.main_tab_favorite),
+                    R.drawable.selector_tab_fav
+                )
             }
         }
     }
@@ -146,15 +151,15 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 //        }
 
         //设置体育服务监听
-        setupSportStatusChange(this){
+        setupSportStatusChange(this) {
             //如果维护开启，当前在体育相关fragment， 退回到首页
-            if(checkMainPosition(getCurrentPosition())){
+            if (checkMainPosition(getCurrentPosition())) {
                 //关闭已选中的投注
                 closeBetFragment()
                 //回到首页
                 binding.bottomNavigationView.postDelayed({
                     backMainHome()
-                },200)
+                }, 200)
             }
 
             EventBusUtil.post(SportStatusEvent(it))
@@ -182,13 +187,12 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
 
-
     /**
      * 关闭投注相关的购物车
      */
-    private fun closeBetFragment(){
+    private fun closeBetFragment() {
         //投注fragment如果已显示
-        if(getBetListPageVisible()){
+        if (getBetListPageVisible()) {
             //关闭
             betListFragment?.onBackPressed()
         }
@@ -201,15 +205,15 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     /**
      * 检查是否为体育相关的fragment
      */
-    fun checkSportFragment(position: Int):Boolean{
-        val fragment=fragmentHelper.getFragment(position)
-        if(fragment is SportFragment){
+    fun checkSportFragment(position: Int): Boolean {
+        val fragment = fragmentHelper.getFragment(position)
+        if (fragment is SportFragment) {
             return true
         }
-        if(fragment is FavoriteFragment&&!isOpenChatRoom()){
+        if (fragment is FavoriteFragment && !isOpenChatRoom()) {
             return true
         }
-        if(fragment is BetRecordFragment){
+        if (fragment is BetRecordFragment) {
             return true
         }
 
@@ -233,30 +237,36 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                     if (mIsEnabled) {
                         avoidFastDoubleClick()
                         val position = getMenuItemPosition(menuItem)
-                        if(checkMainPosition(position)){
+                        if (checkMainPosition(position)) {
                             return@OnNavigationItemSelectedListener false
                         }
 
 
-                    when (menuItem.itemId) {
-                        R.id.i_betlist, R.id.i_user -> {
-                            if (viewModel.isLogin.value == false) {
-                                startLogin()
-                                return@OnNavigationItemSelectedListener false
-                            }
-                        }
-                        R.id.i_favorite -> {
-                            if(isOpenChatRoom()){
-                                startActivity(Intent(this@MainTabActivity, ChatActivity::class.java))
-                                return@OnNavigationItemSelectedListener false
-                            }else{
+                        when (menuItem.itemId) {
+                            R.id.i_betlist, R.id.i_user -> {
                                 if (viewModel.isLogin.value == false) {
                                     startLogin()
                                     return@OnNavigationItemSelectedListener false
                                 }
                             }
+
+                            R.id.i_favorite -> {
+                                if (isOpenChatRoom()) {
+                                    startActivity(
+                                        Intent(
+                                            this@MainTabActivity,
+                                            ChatActivity::class.java
+                                        )
+                                    )
+                                    return@OnNavigationItemSelectedListener false
+                                } else {
+                                    if (viewModel.isLogin.value == false) {
+                                        startLogin()
+                                        return@OnNavigationItemSelectedListener false
+                                    }
+                                }
+                            }
                         }
-                    }
 
                         fragmentHelper.showFragment(position)
                         if (position == 0) {
@@ -306,6 +316,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             }
 
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+
 //                val mContent: View = drawerLayout.getChildAt(0)
 //                //设置1.1，让主界面更缩小
 //                val scale = 1 - slideOffset
@@ -343,25 +354,24 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         })
     }
 
-    var menuClass: Class<*>? = null
 
     fun showMainLeftMenu(contentFragment: Class<BaseFragment<*>>?) {
-        if (menuClass != homeLeftFragment::class.java) {
-            menuClass = homeLeftFragment::class.java
-            left_menu.layoutParams.width = MetricsUtil.getScreenWidth()
+        fragmentHelper2.show(MainLeftFragment2::class.java, Bundle()) { fragment, _ ->
+            fragment.openWithFragment(contentFragment)
         }
-        homeLeftFragment.openWithFragment(contentFragment)
-        supportFragmentManager.beginTransaction().replace(R.id.left_menu, homeLeftFragment).commit()
+
     }
 
+    private val fragmentHelper2 by lazy { FragmentHelper2(supportFragmentManager, R.id.left_menu) }
     fun showSportLeftMenu(matchType: MatchType, gameType: GameType?) {
-        if (menuClass != sportLeftFragment::class.java) {
-            menuClass = sportLeftFragment::class.java
-            left_menu.layoutParams.width = (MetricsUtil.getScreenWidth() * 1f).toInt()
+        fragmentHelper2.show(SportLeftMenuFragment::class.java, Bundle()) { fragment, instance ->
+            if(!instance){
+                fragment.reloadData()
+            }
         }
-        
-        supportFragmentManager.beginTransaction().replace(R.id.left_menu, sportLeftFragment)
-            .commit()
+
+//        supportFragmentManager.beginTransaction().replace(R.id.left_menu, sportLeftFragment)
+//            .commit()
 
 //        sportLeftFragment.matchType = matchType
 //        sportLeftFragment.gameType = gameType
@@ -391,11 +401,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onNetValidEvent(event:NetWorkEvent){
+    fun onNetValidEvent(event: NetWorkEvent) {
         //网络恢复
-        if(event.isValid){
-            val fragment=fragmentHelper.getFragment(0)
-            if(fragment is HomeFragment){
+        if (event.isValid) {
+            val fragment = fragmentHelper.getFragment(0)
+            if (fragment is HomeFragment) {
                 //更新config   刷新体育服务开关
                 fragment.viewModel.getConfigData()
             }

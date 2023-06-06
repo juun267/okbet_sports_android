@@ -590,7 +590,7 @@ class SportListFragment2
 
     private var requestTag: Any? = null
     private fun load(item: Item) {
-        requestTag = Any().apply { viewModel.switchGameType(matchType, item, this) }
+        requestTag = Any().apply { viewModel.switchGameType(matchType, item) }
     }
 
     private fun updateSportType(gameTypeList: List<Item>) {
