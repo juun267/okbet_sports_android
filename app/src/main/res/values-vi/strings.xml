@@ -1058,7 +1058,7 @@
     <string name="error_new_password">Mật khẩu từ 6-20 ký tự bao gồm cả chữ và số</string>
     <string name="error_verification_code_forget">Mã xác nhận sai</string>
     <string name="str_total_stake">Tổng tiền cược：</string>
-    <string name="pay_maya">Paymaya</string>
+    <string name="D037">Hủy</string>
     <string name="format_error">Định dạng không phù hợp</string>
     <string name="over_size">Tệp quá lớn</string>
     <string name="optional_tips">Tùy chọn: Chỉ hỗ trợ tệp định dạng PNG hoặc JPG và dưới 2MB</string>
@@ -1342,4 +1342,9 @@
     <string name="N987">Đăng nhập tài khoản</string>
     <string name="N988">Đăng nhập ngay</string>
     <string name="C016">HÔM NAY</string>
+    <string name="N935">Tìm tên đội của giải đấu</string>
+    <string name="C001">Tìm kiếm</string>
+    <string name="N930">Ngày mai</string>
+    <string name="N931">Ngày kia</string>
+    <string name="N932">Sau đó</string>
 </resources>

@@ -1320,5 +1320,11 @@
     <string name="N988">Mag-login</string>
     <string name="system_notify">Notification ng System</string>
     <string name="C016">Ngayon</string>
-    <string name="picture_camera_roll" tools:ignore="ExtraTranslation">CameraRoll</string> // 图片选择库中菲语这个会莫名变为中文
+    <string name="D037">Kanselahin</string>
+    <string name="picture_camera_roll" tools:ignore="ExtraTranslation">CameraRoll</string>
+    <string name="N935">Hanapin ang mga pangalan ng team sa liga</string>
+    <string name="C001">Paghahanap</string>
+    <string name="N930">Bukas</string>
+    <string name="N931">Sa makalawa</string>
+    <string name="N932">Pagkatapos</string>
 </resources>

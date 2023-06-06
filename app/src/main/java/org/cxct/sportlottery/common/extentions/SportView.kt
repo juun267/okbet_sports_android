@@ -312,7 +312,7 @@ fun setMatchTimeAndStatus(
                         isTimerEnable,
                         isTimerPause,
                         matchInfo.leagueTime ?: 0,
-                        (matchInfo.gameType == GameType.BK.key ||
+                        isDecrease = (matchInfo.gameType == GameType.BK.key ||
                                 matchInfo.gameType == GameType.RB.key ||
                                 matchInfo.gameType == GameType.AFT.key)
                     )
