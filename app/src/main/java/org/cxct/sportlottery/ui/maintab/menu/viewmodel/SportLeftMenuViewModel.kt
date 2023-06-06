@@ -10,6 +10,7 @@ import org.cxct.sportlottery.repository.MyFavoriteRepository
 import org.cxct.sportlottery.repository.SportMenuRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
+import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 
 class SportLeftMenuViewModel(
     androidContext: Application,
@@ -19,7 +20,7 @@ class SportLeftMenuViewModel(
     infoCenterRepository: InfoCenterRepository,
     favoriteRepository: MyFavoriteRepository,
     private val sportMenuRepository: SportMenuRepository, )
-    : BaseSocketViewModel(androidContext, userInfoRepository, loginRepository, betInfoRepository, infoCenterRepository, favoriteRepository) {
+    : MainHomeViewModel(androidContext, userInfoRepository, loginRepository, betInfoRepository, infoCenterRepository, favoriteRepository,sportMenuRepository) {
 
     val userLoginInfo: LiveData<UserInfo?> = userInfoRepository.userInfo
 

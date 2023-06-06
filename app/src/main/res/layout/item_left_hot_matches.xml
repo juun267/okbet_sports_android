@@ -14,6 +14,7 @@
         android:layout_height="20dp"/>
 
     <TextView
+        android:id="@+id/tvLeagueName"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ivLeagueCover"

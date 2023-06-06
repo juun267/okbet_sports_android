@@ -29,15 +29,15 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
             close()
         }
 
-        //Sport betting
+        //click Sport betting
         linearBetting.onClick {
             replaceTab(0)
         }
-        //In play
+        //click In play
         tvTabInPlay.onClick {
             replaceTab(1)
         }
-        //others
+        //click others
         linearOthers.onClick {
             replaceTab(2)
         }
@@ -45,9 +45,6 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
             LoginOKActivity.startRegist(requireContext())
             close()
         }
-
-
-
     }
 
     override fun onInitData() {
@@ -57,6 +54,7 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
     }
 
     fun reloadData(){
+        //初始化顶部登录状态
         initLoginData()
     }
 
@@ -64,26 +62,33 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
     @SuppressLint("SetTextI18n")
     private fun initLoginData(){
         binding.apply {
+            //已登录
             if(viewModel.isLogin()){
                 tvUserName.visible()
                 tvUserBalance.visible()
                 tvLogin.gone()
             }else{
+                //未登录
                 tvLogin.visible()
                 tvUserName.gone()
                 tvUserBalance.gone()
             }
 
             viewModel.userInfo.value?.let {
+                //用户名
                 tvUserName.text=it.userName
             }
             viewModel.userMoney.value?.let {
+                //余额
                 tvUserBalance.text="₱ $it"
             }
         }
 
     }
 
+    /**
+     * 切换tab
+     */
     private fun replaceTab(index:Int){
         clearTabStyle(index)
         val transaction=childFragmentManager.beginTransaction()
