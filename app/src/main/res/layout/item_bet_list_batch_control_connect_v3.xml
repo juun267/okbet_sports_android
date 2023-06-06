@@ -18,6 +18,7 @@
     </data>
 
     <FrameLayout
+        android:background="@color/color_F8F9FD"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -35,7 +36,7 @@
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
-
+jj
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline_start"
                     android:layout_width="wrap_content"
