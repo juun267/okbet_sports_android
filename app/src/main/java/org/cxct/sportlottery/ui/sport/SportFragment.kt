@@ -10,8 +10,10 @@ import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.startActivity
+import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -32,7 +34,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
 
     companion object {
 
-        val matchTypeTabPositionMap = mapOf(
+        private val matchTypeTabPositionMap = mapOf(
             MatchType.END_SCORE to 0,
             MatchType.IN_PLAY to 1,
             MatchType.AT_START to 2,
@@ -114,9 +116,9 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         OverScrollDecoratorHelper.setUpOverScroll(tabLayout)
     }
 
-    private fun refreshTabLayout(sportMenuResult: SportMenuResult) {
+    private fun refreshTabLayout(sportMenuResult: ApiResult<SportMenuData>) {
 
-        val sportMenuData = sportMenuResult.sportMenuData
+        val sportMenuData = sportMenuResult.getData()
         val countInPlay = sportMenuData?.menu?.inPlay?.items?.sumOf { it.num } ?: 0
         val countAtStart = sportMenuData?.atStart?.items?.sumOf { it.num } ?: 0
         val countToday = sportMenuData?.menu?.today?.items?.sumOf { it.num } ?: 0
@@ -190,8 +192,8 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         }
     }
 
-    private fun updateUiWithResult(sportMenuResult: SportMenuResult?) {
-        if (sportMenuResult?.success == true) {
+    private fun updateUiWithResult(sportMenuResult: ApiResult<SportMenuData>) {
+        if (sportMenuResult.succeeded()) {
             val isFirstSwitch = defaultMatchType == null
             refreshTabLayout(sportMenuResult)
             EventBusUtil.post(sportMenuResult)
@@ -267,7 +269,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         }
     }
     fun updateSportMenuResult(sportMenuResult: SportMenuResult) {
-        viewModel.setSportMenuResult(sportMenuResult)
+//        viewModel.setSportMenuResult(sportMenuResult)
     }
 
     fun getCurMatchType(): MatchType {

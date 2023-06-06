@@ -196,7 +196,14 @@ class BetReceiptFragment :
         }
 
         //顯示注單收據的數量
-        tv_bet_list_count.text = totalCount.toString()
+        if (BetInfoRepository.currentBetType == 0 ){
+            viewBall.gone()
+            tv_bet_list_count.gone()
+        }else{
+            viewBall.visible()
+            tv_bet_list_count.visible()
+            tv_bet_list_count.text = totalCount.toString()
+        }
     }
 
     private fun initButton() {

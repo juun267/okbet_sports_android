@@ -4,6 +4,7 @@ package org.cxct.sportlottery.ui.betList
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.button_bet.view.*
 import org.cxct.sportlottery.R
@@ -89,12 +90,24 @@ class BetButton @JvmOverloads constructor(
 //        val opt2 = amountCanBet == false
         val opt3 = betCounts == 0
         val opt4 = isParlay && currentBetListCounts == 1
-        val betClickable = !(opt1  || opt3 || opt4)
+        val betClickable = !(opt1 || opt3 || opt4)
         Timber.d("setupBetClickable: betClickable:${betClickable} opt1:${opt1} op2:${true} opt3:${opt3} opt4:${opt4}")
         cl_bet.apply {
             isSelected = betClickable
             isClickable = betClickable
         }
+    }
+
+    fun setOddsButtonChangeStyle() {
+        cl_bet.background = AppCompatResources.getDrawable(
+            context, R.drawable.selector_button_radius_5_betting_change
+        )
+    }
+
+    fun resetButtonStyle(){
+        cl_bet.background = AppCompatResources.getDrawable(
+            context,R.drawable.selector_button_radius_5_bet
+        )
     }
 
 }

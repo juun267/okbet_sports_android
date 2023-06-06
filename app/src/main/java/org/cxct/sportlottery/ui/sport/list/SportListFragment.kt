@@ -363,7 +363,7 @@ open class SportListFragment :
                 }
             }
 
-            it?.let { (parentFragment as SportFragment).updateSportMenuResult(it) }
+//            it?.let { (parentFragment as SportFragment).updateSportMenuResult(it) }
         }
 
         viewModel.userInfo.observe(this.viewLifecycleOwner) { userInfo ->

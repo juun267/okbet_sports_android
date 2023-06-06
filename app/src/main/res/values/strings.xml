@@ -1467,6 +1467,9 @@
     <string name="C016">TODAY</string>
     <string name="N989">Over max stake</string>
     <string name="N990">Below min stake</string>
+    <string name="N935">Search for league team names</string>
+    <string name="C001">Search</string>
+    <string name="D037">Cancel</string>
     <string name="N930">Tomorrow</string>
     <string name="N931">The day after</string>
     <string name="N932">After</string>

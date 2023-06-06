@@ -17,6 +17,7 @@
     <color name="color_cb7c2e">#cb7c2e</color>
     <color name="color_08dc6e">#08dc6e</color>
     <color name="color_34CB8A">#34CB8A</color>
+    <color name="color_00cc33">#00cc33</color>
     <color name="color_E44438">#E44438</color>
     <color name="color_ce3636">#ce3636</color>
     <color name="color_F75452">#F75452</color>
@@ -94,7 +95,6 @@
     <color name="color_4C326BFF">#4c326BFF</color>
 
     <color name="color_FFF27C">#FFF27C</color>
-
     <!--以下部分，是系统中的白天的色值 -->
     <!--命名規則，color_[夜間色碼]_[白天色碼] -->
 
@@ -314,6 +314,7 @@
     <color name="color_F3F9FF">#F3F9FF</color>
     <color name="color_F6FBFF">#F6FBFF</color>
     <color name="color_D35555">#D35555</color>
+    <color name="color_ff251e">#ff251e</color>
     <color name="color_E9EAEB">#E9EAEB</color>
     <color name="color_99FFFFFF">#99FFFFFF</color>
     <color name="color_DFE8F2">#DFE8F2</color>
@@ -532,4 +533,8 @@
     <color name="color_main_toast_text">#C22A22</color>
     <color name="color_main_toast_stroke">#CCFFFFFF</color>
     <color name="color_main_toast_blur_background">#CFC7C7C7</color>
+    <color name="color_D8E7FF">#D8E7FF</color>
+    <color name="color_ff0000">#FF0000</color>
+    <color name="color_F9FAFD">#F9FAFD</color>
+    <color name="color_dbdfea">#dbdfea</color>
 </resources>
