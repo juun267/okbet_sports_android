@@ -21,4 +21,9 @@ class SportLeftMenuViewModel(
 
 
 
+
+        fun isLogin():Boolean{
+            return loginRepository.isLogined()
+        }
+
 }

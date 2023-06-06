@@ -358,8 +358,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             menuClass = sportLeftFragment::class.java
             left_menu.layoutParams.width = (MetricsUtil.getScreenWidth() * 1f).toInt()
         }
+        
         supportFragmentManager.beginTransaction().replace(R.id.left_menu, sportLeftFragment)
             .commit()
+
 //        sportLeftFragment.matchType = matchType
 //        sportLeftFragment.gameType = gameType
     }

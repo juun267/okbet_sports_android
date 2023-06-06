@@ -39,6 +39,7 @@
 
 
     <TextView
+        android:id="@+id/tvUserName"
         app:layout_constraintLeft_toRightOf="@+id/ivUserCover"
         app:layout_constraintTop_toTopOf="parent"
         android:paddingTop="70dp"
@@ -49,8 +50,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
+    .
+    <TextView
+        android:id="@+id/tvLogin"
+        app:layout_constraintLeft_toRightOf="@+id/ivUserCover"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingTop="81dp"
+        android:paddingLeft="10dp"
+        android:text="Login/Register"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:textSize="16sp"
+        android:textColor="@color/color_FFFFFF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <TextView
+        android:id="@+id/tvUserBalance"
         app:layout_constraintLeft_toRightOf="@+id/ivUserCover"
         app:layout_constraintTop_toTopOf="parent"
         android:paddingTop="96dp"
@@ -62,35 +78,116 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
-        app:layout_constraintTop_toBottomOf="@+id/ivTopCover"
+
+    <LinearLayout
+        android:id="@+id/llayoutTab"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="138dp"
+        android:paddingLeft="31dp"
+        android:paddingRight="31dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/linearBetting"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:paddingLeft="10dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tvTabBetting"
+                android:text="Sports Betting"
+                android:layout_width="wrap_content"
+                android:textColor="@color/color_025BE8"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:id="@+id/ivTabBetting"
+                android:src="@drawable/ic_tab_indicator"
+                android:layout_width="26dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tvTabInPlay"
+                android:text="In-Play"
+                android:layout_width="wrap_content"
+                android:paddingTop="16dp"
+                android:textColor="@color/color_6D7693"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textStyle="normal"
+                android:paddingBottom="8dp"
+                android:textSize="14dp"
+                android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:id="@+id/ivTabInPlay"
+                android:src="@drawable/ic_tab_indicator"
+                android:layout_width="26dp"
+                android:visibility="invisible"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="5dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearOthers"
+            android:orientation="vertical"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tvTabOthers"
+                android:text="Others"
+                android:layout_width="wrap_content"
+                android:paddingTop="16dp"
+                android:textColor="@color/color_6D7693"
+                android:paddingBottom="8dp"
+                android:textStyle="normal"
+                android:textSize="14dp"
+                android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:id="@+id/ivTabOthers"
+                android:src="@drawable/ic_tab_indicator"
+                android:layout_width="26dp"
+                android:visibility="invisible"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="5dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvLine"
+        app:layout_constraintTop_toBottomOf="@+id/llayoutTab"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_width="match_parent"
-        app:tabTextAppearance="@style/NoCaseTab2"
-        app:tabIndicator="@drawable/custom_tab_indicator2"
-        app:tabIndicatorFullWidth="false"
-        app:tabMode="fixed"
-        app:tabPaddingEnd="0dp"
-        app:tabPaddingStart="0dp"
-        app:tabRippleColor="@null"
-        app:tabSelectedTextColor="@color/color_025BE8"
-        app:tabTextColor="@color/color_6D7693"
-        android:layout_height="41dp">
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sports Betting"/>
+        android:background="@color/color_EEF3FC"
+        android:layout_marginTop="3dp"
+        android:layout_marginHorizontal="12dp"
+        android:layout_height="0.5dp"/>
 
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="In-Play"/>
+    <FrameLayout
+        android:id="@+id/frameContent"
+        app:layout_constraintTop_toTopOf="@+id/tvLine"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="188dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Others"/>
-    </com.google.android.material.tabs.TabLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
