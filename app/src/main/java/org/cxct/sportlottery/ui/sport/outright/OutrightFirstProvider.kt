@@ -26,7 +26,7 @@ class OutrightFirstProvider(val adapter: SportOutrightAdapter2,
         setArrowSpin(ivArrow, matchOdd, false)
         ivArrow.setOnClickListener {
             val position = adapter.getItemPosition(item)
-            adapter.expandOrCollapse(item)
+            adapter.expandOrCollapse(item, parentPayload = item)
             setArrowSpin(ivArrow, matchOdd, true)
             onItemClick.invoke(position, it, matchOdd)
         }

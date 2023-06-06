@@ -38,7 +38,7 @@ class EndScoreFirstProvider(val adapter: EndScoreAdapter,
 
     override fun onClick(helper: BaseViewHolder, view: View, item: BaseNode, position: Int) {
         val position = adapter.getItemPosition(item)
-        adapter.expandOrCollapse(item)
+        adapter.expandOrCollapse(item, parentPayload = position)
         val league = item as LeagueOdd
         setArrowSpin(helper.getView(R.id.iv_league_arrow), league, true)
         onItemClick.invoke(position, view, league)

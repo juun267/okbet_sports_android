@@ -804,7 +804,7 @@ object SocketUpdateUtil {
                 .toMutableMap()
     }
 
-    private fun updateMatchOdds(
+    fun updateMatchOdds(
         oddsMap: MutableMap<String, MutableList<Odd?>?>,
         oddsMapSocket: Map<String, List<Odd?>?>?,
     ): Boolean {
@@ -941,7 +941,7 @@ object SocketUpdateUtil {
         }
     }
 
-    private fun updateBetPlayCateNameMap(
+    fun updateBetPlayCateNameMap(
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
         betPlayCateNameMapSocket: Map<String?, Map<String?, String?>?>?,
     ) {
@@ -950,7 +950,7 @@ object SocketUpdateUtil {
         }
     }
 
-    private fun updatePlayCateNameMap(
+    fun updatePlayCateNameMap(
         playCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
         playCateNameMapSocket: Map<String?, Map<String?, String?>?>?
     ) {
@@ -1330,7 +1330,7 @@ object SocketUpdateUtil {
         }.toMutableMap()
     }
 
-    private fun Map<String, List<Odd?>?>.toMutableFormat_1(): MutableMap<String, MutableList<Odd?>?> {
+    fun Map<String, List<Odd?>?>.toMutableFormat_1(): MutableMap<String, MutableList<Odd?>?> {
         return this.mapValues { map ->
             map.value?.toMutableList() ?: mutableListOf()
         }.toMutableMap()

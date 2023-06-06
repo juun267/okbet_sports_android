@@ -539,6 +539,7 @@
                         android:padding="2dp"
                         android:textColor="@color/color_025BE8"
                         android:textSize="@dimen/textSize10sp"
+                        android:text="AAAAAAAA"
                         tools:text="120+>" />
 
                     <androidx.legacy.widget.Space

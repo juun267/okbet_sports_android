@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.sport
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -28,6 +29,11 @@ class SportTabViewModel(
     infoCenterRepository,
     myFavoriteRepository,
 ) {
+
+    init {
+        Log.e("For Test", "======>>> SportTabViewModel ${this}")
+    }
+
     val sportMenuResult: LiveData<SportMenuResult?>
         get() = _sportMenuResult
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()

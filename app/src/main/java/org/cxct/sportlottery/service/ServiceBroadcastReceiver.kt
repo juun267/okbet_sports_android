@@ -375,7 +375,7 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
     private suspend fun onOddsEvent(socketEvent: OddsChangeEvent) {
         oddsChangeListener?.let {
             withContext(Dispatchers.Main) {
-                it.onChange(socketEvent)
+                it.onOddsChangeListener(socketEvent)
             }
         }
         BetInfoRepository.updateMatchOdd(socketEvent)
@@ -484,9 +484,5 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
 
     var oddsChangeListener: OddsChangeListener? = null
 
-    class OddsChangeListener(
-        val onOddsChangeListener: (oddsChangeEvent: OddsChangeEvent) -> Unit
-    ) {
-        fun onChange(oddsChangeEvent: OddsChangeEvent) = onOddsChangeListener(oddsChangeEvent)
-    }
+    class OddsChangeListener(val onOddsChangeListener: (oddsChangeEvent: OddsChangeEvent) -> Unit)
 }

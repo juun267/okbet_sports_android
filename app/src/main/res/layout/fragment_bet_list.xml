@@ -39,7 +39,7 @@
                 android:layout_above="@+id/line_shadow">
 
                 <include
-                    android:id="@+id/cl_title"
+                    android:id="@+id/clTitle"
                     layout="@layout/bet_bar_layout"
                     android:layout_width="match_parent"
                     android:layout_height="44dp" />
@@ -269,15 +269,14 @@
                     android:background="@drawable/bg_radius_8_bet_parlay"
                     android:gravity="center"
                     android:text="@string/bet_parlay"
-
                     android:textColor="@color/color_25BF63"
                     android:textSize="@dimen/textSize16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/btn_bet"
+                    app:layout_constraintEnd_toStartOf="@+id/btnBet"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <org.cxct.sportlottery.ui.betList.BetButton
-                    android:id="@+id/btn_bet"
+                    android:id="@+id/btnBet"
                     android:layout_width="140dp"
                     android:layout_height="@dimen/bet_button_height"
                     android:layout_weight="1"
@@ -292,10 +291,10 @@
                     android:layout_height="0dp"
                     android:background="@drawable/button_radius_8_bet_button"
                     android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="@+id/btn_bet"
-                    app:layout_constraintEnd_toEndOf="@+id/btn_bet"
-                    app:layout_constraintStart_toStartOf="@+id/btn_bet"
-                    app:layout_constraintTop_toTopOf="@+id/btn_bet"
+                    app:layout_constraintBottom_toBottomOf="@+id/btnBet"
+                    app:layout_constraintEnd_toEndOf="@+id/btnBet"
+                    app:layout_constraintStart_toStartOf="@+id/btnBet"
+                    app:layout_constraintTop_toTopOf="@+id/btnBet"
                     tools:visibility="gone">
 
                     <LinearLayout

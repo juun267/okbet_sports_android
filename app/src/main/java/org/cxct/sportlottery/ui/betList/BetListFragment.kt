@@ -25,6 +25,8 @@ import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.BetModeChangeEvent
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.runWithCatch
+import org.cxct.sportlottery.common.extentions.setOnClickListeners
+import org.cxct.sportlottery.common.extentions.setViewGone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentBetListBinding
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
@@ -190,8 +192,10 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         //設定本金, 可贏的systemCurrencySign
         binding.apply {
             tvBalance.text = "${sConfigData?.systemCurrencySign}${TextUtil.formatMoney(0.0)}"
-            clTitle.ivArrow.rotation = 180f //注單開啟後，箭頭朝下
-            titleAllBet.text = getString(R.string.total_bet_money_colon, sConfigData?.systemCurrencySign)
+
+//            clTitle.ivArrow.rotation = 180f //注單開啟後，箭頭朝下
+            titleAllBet.text =
+                getString(R.string.total_bet_money_colon, sConfigData?.systemCurrencySign)
             titleWinnableAmount.text = getString(R.string.total_all_win_amount)
         }
     }
@@ -296,7 +300,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.SINGLE
                 binding.apply {
                     clParlayList.visibility = View.GONE
-                    clTitle.ivArrow.setImageResource(R.drawable.ic_single_bet_delete)
+//                    clTitle.ivArrow.setImageResource(R.drawable.ic_single_bet_delete)
                 }
                 binding.lineShadow.gone()
             }
@@ -306,9 +310,9 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 betListRefactorAdapter?.adapterBetType =
                     BetListRefactorAdapter.BetRvType.PARLAY_SINGLE
                 refreshLlMoreOption()
-                binding.clTitle.ivArrow.setImageResource(
-                    R.drawable.ic_arrow_up_double
-                )
+//                binding.clTitle.ivArrow.setImageResource(
+//                    R.drawable.ic_arrow_up_double
+//                )
                 binding.lineShadow.visible()
             }
 
@@ -362,13 +366,21 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         val currentOddsChangeOp = userInfo?.oddsChangeOption ?: 0
         currentBetOption = currentOddsChangeOp
 
-        binding.tvDeleteAll.setOnClickListener {
+
+        setOnClickListeners(binding.clTitle.tvClearAll, binding.tvDeleteAll) {
             exitAnimation(true)
         }
+
+        binding.clTitle.tvClose.setOnClickListener {
+            onBackPressed()
+        }
+
 
         binding.btnParlaySingle.setOnClickListener {
             switchCurrentBetMode()
         }
+
+
     }
 
 
@@ -380,13 +392,22 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             }
         }
 
-        binding.clTitle.ivArrow.setOnClickListener {
-            onBackPressed()
-        }
+//        binding.clTitle.ivArrow.setOnClickListener {
+//            onBackPressed()
+//        }
     }
 
     private fun initAdapter() {
         val adapterItemClickListener = object : OnItemClickListener {
+
+            override fun onOddChangeEndListener() {
+                binding.btnBet.resetButtonStyle()
+            }
+
+            override fun onOddChangeStartListener(isUp: Boolean) {
+                binding.btnBet.setOddsButtonChangeStyle()
+            }
+
             override fun onDeleteClick(oddsId: String, currentItemCount: Int) {
                 viewModel.removeBetInfoItem(oddsId)
             }
@@ -648,10 +669,10 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 //單項投注
                 SINGLE -> {
                     betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.SINGLE
-                    binding.clParlayList.gone()
-                    binding.clTitle.ivArrow.setImageResource(
-                        R.drawable.ic_single_bet_delete
-                    )
+//                    binding.clTitle.ivArrow.setImageResource(
+//                        R.drawable.ic_single_bet_delete
+//                    )
+                    setViewGone(binding.clParlayList, binding.clTitle.tvClearAll)
                     BetInfoRepository.switchSingleMode()
                     EventBusUtil.post(BetModeChangeEvent(SINGLE))
                     BetInfoRepository.isTouched = false
@@ -660,9 +681,10 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 PARLAY -> {
                     betListRefactorAdapter?.adapterBetType =
                         BetListRefactorAdapter.BetRvType.PARLAY_SINGLE
-                    binding.clTitle.ivArrow.setImageResource(
-                        R.drawable.ic_single_bet_delete
-                    )
+//                    binding.clTitle.ivArrow.setImageResource(
+//                        R.drawable.ic_single_bet_delete
+//                    )
+                    binding.clTitle.tvClearAll.visible()
                     refreshLlMoreOption()
                     BetInfoRepository.switchParlayMode()
                     //从单关切换成串关会收起购物车，反之不会
@@ -737,7 +759,14 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                     activity?.supportFragmentManager?.popBackStack()
                     return@observe
                 }
-                binding.clTitle.tvBetListCount.text = list.size.toString()
+                if (list.size == 1) {
+                    binding.clTitle.view3.gone()
+                    binding.clTitle.tvBetListCount.gone()
+                } else {
+                    binding.clTitle.view3.visible()
+                    binding.clTitle.tvBetListCount.visible()
+                    binding.clTitle.tvBetListCount.text = list.size.toString()
+                }
                 betListRefactorAdapter?.betList = list
                 betParlayListRefactorAdapter?.betList = list
                 subscribeChannel(list)
