@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_white_radius_8"
+    android:orientation="horizontal"
+    android:paddingHorizontal="10dp"
+    android:clickable="true"
+    android:paddingVertical="8dp">
+
+    <TextView
+        android:id="@+id/sportSearchHistoryName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_6D7693"
+        android:textSize="14sp"
+        tools:text="nbv" />
+
+    <ImageView
+        android:id="@+id/sportSearchHistoryDelete"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/ic_sport_search_history_del" />
+
+</LinearLayout>
