@@ -29,6 +29,7 @@ import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.sport.SportFragment2
 import org.cxct.sportlottery.ui.sport.common.*
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
@@ -67,7 +68,6 @@ class SportListFragment2
 
     private fun onGameTypeChanged(item: Item, position: Int) {
 
-        Log.e("For Test", "======>>> SportTabViewModel onGameTypeChanged ${item.name}")
         //切換球種，清除日期記憶
         viewModel.tempDatePosition = 0
         //日期圖示選取狀態下，切換球種要重置UI狀態
@@ -187,7 +187,6 @@ class SportListFragment2
 
     override fun onBindViewStatus(view: View) {
 
-        Log.e("For Test", "======>>> SportTabViewModel SportListFragment ${viewModel}")
         reset()
         setupOddsChangeListener()
         EventBusUtil.targetLifecycle(this)
@@ -352,18 +351,12 @@ class SportListFragment2
 
 
         viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner) {
-            Log.e("For Test", "=========>>> oddsListGameHallResult 111 ${requestTag} ${it.tag}")
-            if (requestTag != it.tag) {
-                return@observe
-            }
-            Log.e("For Test", "=========>>> oddsListGameHallResult 2222 ${requestTag} ${it.tag}")
+
             val oddsListData = it.getContentIfNotHandled()?.oddsListData ?: return@observe
-            Log.e("For Test", "=========>>> oddsListGameHallResult 33333 ${requestTag} ${it.tag}")
             val leagueOdds: List<LeagueOdd>? = oddsListData.leagueOdds
             if (leagueOdds.isNullOrEmpty()) {
                 return@observe
             }
-            Log.e("For Test", "=========>>> oddsListGameHallResult 44444 ${requestTag} ${it.tag}")
             val mLeagueOddList = (oddsListData.leagueOddsFilter ?: leagueOdds).toMutableList()
             sportLeagueAdapter2.setNewInstance(mLeagueOddList as MutableList<BaseNode> )
             resubscribeChannel(80)
@@ -416,7 +409,6 @@ class SportListFragment2
             }
 
             if (it == ServiceConnectStatus.CONNECTED) {
-                Log.e("For Test", "=======>>> initSocketObserver 1111")
                 viewModel.switchMatchType(matchType = matchType)
                 subscribeSportChannelHall()
             }
@@ -587,9 +579,8 @@ class SportListFragment2
 //        }
     }
 
-    private var requestTag: Any? = null
     private fun load(item: Item) {
-        requestTag = Any().apply { viewModel.switchGameType(matchType, item, this) }
+        viewModel.switchGameType(matchType, item, Any())
     }
 
     private fun updateSportType(gameTypeList: List<Item>) {

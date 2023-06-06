@@ -370,11 +370,9 @@ class SportListViewModel(
                 }
             }
 
-            Log.e("For Test", "======>>> SportTabViewModel load 1111 ${gameType}")
             if (requestTag != tag) {
                 return@launch
             }
-            Log.e("For Test", "======>>> SportTabViewModel load 2222 ${gameType}")
             result?.updateMatchType()
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
