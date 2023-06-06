@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/etBetParlay"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="6"
+        android:background="@drawable/bg_radius_2_edittext_unfocus"
+        android:gravity="end|center_vertical"
+        android:inputType="numberDecimal"
+        android:letterSpacing="0.05"
+        android:maxLength="14"
+        android:paddingHorizontal="10dp"
+        android:scrollIndicators="end"
+        android:textColor="@color/color_025BE8"
+        android:textSize="@dimen/textSize12sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_hint_parlay_default"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        android:textColor="@color/color_455074_C9CFD7"
+        android:textSize="@dimen/textSize12sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/etBetParlay"
+        app:layout_constraintEnd_toEndOf="@+id/etBetParlay"
+        app:layout_constraintTop_toTopOf="@+id/etBetParlay"
+        tools:text="@string/hint_bet_limit_range" />
+
+    <TextView
+        android:id="@+id/tvSymbol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="PHP"
+        android:textColor="@color/color_000000"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/etBetParlay"
+        app:layout_constraintStart_toStartOf="@+id/etBetParlay"
+        app:layout_constraintTop_toTopOf="@+id/etBetParlay" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

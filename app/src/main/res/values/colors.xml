@@ -532,4 +532,8 @@
     <color name="color_ff0000">#FF0000</color>
     <color name="color_F9FAFD">#F9FAFD</color>
     <color name="color_dbdfea">#dbdfea</color>
+    <color name="light_blue_400">#FF29B6F6</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="gray_400">#FFBDBDBD</color>
+    <color name="gray_600">#FF757575</color>
 </resources>
