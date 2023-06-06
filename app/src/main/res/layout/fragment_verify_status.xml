@@ -8,7 +8,7 @@
     tools:context=".ui.profileCenter.identity.VerifyStatusFragment">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_15"
         android:layout_marginTop="7dp"
@@ -19,40 +19,106 @@
         app:contentPaddingTop="20dp">
 
         <LinearLayout
+            android:id="@+id/layout_verify_success"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:orientation="vertical">
 
+
+            <TextView
+                android:id="@+id/txv_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_20"
+                android:layout_marginEnd="@dimen/margin_15"
+                android:gravity="center"
+                android:text="@string/kyc_verify_successful"
+                android:textColor="@color/color_414655"
+                android:textSize="@dimen/textSize18sp"/>
+
+
             <ImageView
                 android:id="@+id/img_status"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_done" />
+
+
+            <LinearLayout
+                android:id="@+id/btn_kyc_verify"
+                android:layout_width="200dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/bg_theme_radius_22"
+                android:gravity="center"
+                android:paddingHorizontal="20dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_customer" />
+
+                <TextView
+                    android:id="@+id/tvContactUs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/kyc_contact_service_hilight"
+                    android:textColor="@color/home_card_text_color"
+                    android:textSize="@dimen/textSize14sp" />
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/tvCustomer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="@string/kyc_contact_service"
+                android:textColor="@color/color_A5A9B3"
+                android:textSize="@dimen/textSize14sp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_verify_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:visibility="gone"
+            android:orientation="vertical">
+
+            <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
                 android:background="@null"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_done"
-                android:visibility="invisible"
-                tools:src="@drawable/ic_icon_timev_01"
-                tools:visibility="visible" />
+                android:src="@drawable/ic_icon_timev_01" />
 
             <TextView
-                android:id="@+id/txv_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="10dp"
                 android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="10dp"
                 android:gravity="center"
-                android:text="@string/kyc_verify_successful"
+                android:text="\t\tThank you for verifying with us, please kindly wait up to 24 hours for us to process your request."
                 android:textColor="@color/color_DB6372"
-                android:textSize="@dimen/textSize16sp"
-                android:visibility="invisible"
-                tools:text="Thank you for verifying with us, please kindly wait up to 24 hours for us to process your request."
-                tools:visibility="visible" />
+                android:textSize="@dimen/textSize16sp" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
 
 </FrameLayout>

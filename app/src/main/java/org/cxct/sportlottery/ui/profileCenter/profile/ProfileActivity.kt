@@ -52,7 +52,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     private var kYCVerifyDialog: CustomSecurityDialog? = null
 
     enum class VerifiedType(val value: Int) {
-        NOT_YET(0), PASSED(1), VERIFYING(2), VERIFIED_FAILED(3)
+        NOT_YET(0), PASSED(1), VERIFYING(2), VERIFIED_FAILED(3), VERIFIED_WAIT(4)
     }
 
     enum class SecurityCodeEnterType(val value: Int) {
@@ -230,32 +230,27 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             tv_pass_word.text = if (it?.passwordSet == true) getString(R.string.set) else getString(R.string.edit)
             when (it?.verified) {
                 VerifiedType.PASSED.value -> {
-                    ll_verified.isEnabled = false
-                    ll_verified.isClickable = false
+                    ll_verified.isEnabled = true
+                    ll_verified.isClickable = true
                     tv_verified.text = getString(R.string.kyc_passed)
-
-                    icon_identity.visibility = View.GONE
                 }
-                VerifiedType.NOT_YET.value -> {
+                VerifiedType.NOT_YET.value,VerifiedType.VERIFIED_FAILED.value, -> {
                     ll_verified.isEnabled = true
                     ll_verified.isClickable = true
                     tv_verified.text = getString(R.string.kyc_unverified)
 
-                    icon_identity.visibility = View.VISIBLE
                 }
-                VerifiedType.VERIFYING.value -> {
+                VerifiedType.VERIFYING.value,VerifiedType.VERIFIED_WAIT.value -> {
                     ll_verified.isEnabled = true
                     ll_verified.isClickable = true
                     tv_verified.text = getString(R.string.kyc_unverifing)
 
-                    icon_identity.visibility = View.VISIBLE
                 }
                 else -> {
                     ll_verified.isEnabled = true
                     ll_verified.isClickable = true
                     tv_verified.text = getString(R.string.kyc_unverified)
 
-                    icon_identity.visibility = View.VISIBLE
                 }
             }
 
