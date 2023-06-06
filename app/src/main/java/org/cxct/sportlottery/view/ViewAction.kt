@@ -1,6 +1,9 @@
 package org.cxct.sportlottery.view
 
+import android.view.TextureView
 import android.view.View
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 
 object ViewAction {
 
@@ -20,4 +23,9 @@ fun View.onClick(block: () -> Unit) {
         }
         block()
     }
+}
+
+
+fun TextView.setColors(colorResource:Int){
+    setTextColor(ContextCompat.getColor(this.context,colorResource))
 }

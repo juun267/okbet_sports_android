@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape>
+            <solid android:color="@color/color_025BE8_025BE8" />
+            <size android:width="30dp" android:height="2dp"/>
+        </shape>
+    </item>
+
+    <item android:left="10dp" android:right="10dp">
+        <shape >
+            <solid android:color="@color/color_FFFFFF" />
+            <size android:width="2dp" android:height="2dp"/>
+        </shape>
+    </item>
+
+
+
+
+    <item android:height="6dp" android:width="6dp" android:right="12dp"
+        android:left="12dp">
+        <rotate
+            android:fromDegrees="45"
+            android:pivotX="50%"
+            android:pivotY="50%" >
+            <shape
+                android:shape="rectangle" >
+                <solid
+                    android:color="@color/color_025BE8_025BE8" />
+            </shape>
+        </rotate>
+    </item>
+
+
+    <!--    <item >-->
+    <!--        <shape>-->
+    <!--            <size-->
+    <!--                android:width="2dp"-->
+    <!--                android:height="2dp" />-->
+    <!--            <solid android:color="@color/color_FFFFFF" />-->
+    <!--        </shape>-->
+    <!--    </item>-->
+
+    <!--    <item >-->
+    <!--        <shape>-->
+    <!--            <size-->
+    <!--                android:width="4dp"-->
+    <!--                android:height="4dp" />-->
+    <!--            <corners-->
+    <!--                android:bottomRightRadius="0dp" android:bottomLeftRadius="0dp"-->
+    <!--                android:topLeftRadius="0dp" android:topRightRadius="0dp" />-->
+    <!--            <solid android:color="@color/color_025BE8_025BE8" />-->
+    <!--        </shape>-->
+    <!--    </item>-->
+
+
+    <!--    <item >-->
+    <!--        <shape>-->
+    <!--            <size-->
+    <!--                android:width="2dp"-->
+    <!--                android:height="2dp" />-->
+    <!--            <solid android:color="@color/color_FFFFFF" />-->
+    <!--        </shape>-->
+    <!--    </item>-->
+
+    <!--    <item >-->
+    <!--        <shape>-->
+    <!--            <size-->
+    <!--                android:width="10dp"-->
+    <!--                android:height="2dp" />-->
+    <!--            <solid android:color="@color/color_025BE8_025BE8" />-->
+    <!--        </shape>-->
+    <!--    </item>-->
+</layer-list>

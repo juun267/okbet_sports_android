@@ -68,6 +68,13 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">@dimen/textSize16sp</item>
     </style>
+
+    <style name="NoCaseTab2" parent="TextAppearance.Design.Tab">
+        <item name="android:textStyle">normal</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
+    </style>
     <style name="StyleOddButtonLL">
         <item name="android:layout_marginTop">5dp</item>
         <item name="android:layout_marginBottom">5dp</item>
