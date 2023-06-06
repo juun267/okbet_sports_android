@@ -35,6 +35,11 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
 
 
     private fun getHotMatchesData(){
+        viewModel.publicityRecommend.value?.let {
+            it.peekContent().let {data->
+                hotMatchAdapter.setList(data)
+            }
+        }
         viewModel.getRecommend()
         viewModel.publicityRecommend.observe(this){
             it.peekContent().let {data->

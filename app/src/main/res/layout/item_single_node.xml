@@ -7,6 +7,7 @@
     android:layout_height="32dp">
 
     <ImageView
+        android:id="@+id/ivCheckBox"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -16,6 +17,7 @@
 
 
     <ImageView
+        android:id="@+id/ivIcon"
         app:layout_constraintRight_toLeftOf="@id/tvName"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

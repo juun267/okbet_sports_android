@@ -10,6 +10,7 @@ import org.cxct.sportlottery.repository.MyFavoriteRepository
 import org.cxct.sportlottery.repository.SportMenuRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
+import org.cxct.sportlottery.ui.maintab.entity.NodeBean
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 
 class SportLeftMenuViewModel(
@@ -22,7 +23,6 @@ class SportLeftMenuViewModel(
     private val sportMenuRepository: SportMenuRepository, )
     : MainHomeViewModel(androidContext, userInfoRepository, loginRepository, betInfoRepository, infoCenterRepository, favoriteRepository,sportMenuRepository) {
 
-    val userLoginInfo: LiveData<UserInfo?> = userInfoRepository.userInfo
 
 
 
@@ -30,4 +30,12 @@ class SportLeftMenuViewModel(
             return loginRepository.isLogined()
         }
 
+
+    fun getHandicapData():ArrayList<NodeBean>{
+        val dataList= arrayListOf<NodeBean>()
+        dataList.add(NodeBean("European Handicap",true))
+        dataList.add(NodeBean("European Handicap"))
+        dataList.add(NodeBean("European Handicap"))
+        return dataList
+    }
 }

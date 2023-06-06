@@ -28,7 +28,7 @@
                 android:layout_height="36dp"/>
 
             <TextView
-                android:id="@+id/tvBetRecord"
+                android:id="@+id/tvSportName"
                 android:text="Bet record"
                 app:layout_constraintStart_toEndOf="@+id/ivBetRecord"
                 app:layout_constraintTop_toTopOf="@+id/ivBetRecord"
@@ -40,10 +40,10 @@
 
 
             <TextView
-                android:id="@+id/tvUnsettled"
+                android:id="@+id/tvSportNum"
                 android:text="Unsettled Bet"
                 app:layout_constraintStart_toEndOf="@+id/ivBetRecord"
-                app:layout_constraintTop_toBottomOf="@+id/tvBetRecord"
+                app:layout_constraintTop_toBottomOf="@+id/tvSportName"
                 android:textColor="@color/color_6D7693"
                 android:layout_width="wrap_content"
                 android:textSize="12sp"
@@ -52,13 +52,13 @@
 
             <TextView
                 android:text="2123123"
-                app:layout_constraintStart_toEndOf="@+id/tvUnsettled"
-                app:layout_constraintTop_toBottomOf="@+id/tvBetRecord"
+                app:layout_constraintStart_toEndOf="@+id/tvSportNum"
+                app:layout_constraintTop_toBottomOf="@+id/tvSportName"
                 android:textColor="@color/color_FF2E00"
                 android:layout_width="wrap_content"
                 android:paddingLeft="8dp"
                 android:textSize="14sp"
-                app:layout_constraintBaseline_toBaselineOf="@+id/tvUnsettled"
+                app:layout_constraintBaseline_toBaselineOf="@+id/tvSportNum"
                 android:textStyle="bold"
                 android:layout_height="wrap_content"/>
 

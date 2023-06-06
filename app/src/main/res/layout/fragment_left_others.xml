@@ -9,7 +9,7 @@
         android:id="@+id/scroll"
         android:layout_above="@+id/constrainBottom"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -17,14 +17,17 @@
             android:orientation="vertical">
 
             <org.cxct.sportlottery.view.SportNodeView
+                android:id="@+id/nodeHandicap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <org.cxct.sportlottery.view.SportNodeView
+                android:id="@+id/nodeBetRule"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <org.cxct.sportlottery.view.SportNodeView
+                android:id="@+id/nodeLanguage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
