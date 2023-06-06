@@ -415,20 +415,18 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
 
         when (userInfo?.verified) {
             ProfileActivity.VerifiedType.PASSED.value -> {
-                setVerify(false,
-                    false,
+                setVerify(true, true,
                     R.string.kyc_passed,
                     resources.getColor(R.color.color_1CD219))
 
             }
-            ProfileActivity.VerifiedType.NOT_YET.value -> {
-                setVerify(true,
-                    true,
+            ProfileActivity.VerifiedType.NOT_YET.value,ProfileActivity.VerifiedType.VERIFIED_FAILED.value -> {
+                setVerify(true, true,
                     R.string.kyc_unverified,
                     resources.getColor(R.color.color_6D7693))
             }
-            ProfileActivity.VerifiedType.VERIFYING.value -> {
-                setVerify(false, false, R.string.kyc_unverifing, resources.getColor(R.color.color_6D7693))
+            ProfileActivity.VerifiedType.VERIFYING.value,ProfileActivity.VerifiedType.VERIFIED_WAIT.value -> {
+                setVerify(true, true, R.string.kyc_unverifing, resources.getColor(R.color.color_6D7693))
 
             }
             else -> {
