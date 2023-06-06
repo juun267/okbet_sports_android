@@ -244,11 +244,11 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                     icon_identity.visibility = View.VISIBLE
                 }
                 VerifiedType.VERIFYING.value -> {
-                    ll_verified.isEnabled = false
-                    ll_verified.isClickable = false
+                    ll_verified.isEnabled = true
+                    ll_verified.isClickable = true
                     tv_verified.text = getString(R.string.kyc_unverifing)
 
-                    icon_identity.visibility = View.GONE
+                    icon_identity.visibility = View.VISIBLE
                 }
                 else -> {
                     ll_verified.isEnabled = true

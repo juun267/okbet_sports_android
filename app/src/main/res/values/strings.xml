@@ -1475,4 +1475,6 @@
     <string name="C016">TODAY</string>
     <string name="N989">Over max stake</string>
     <string name="N990">Below min stake</string>
+    <string name="P066">Sample</string>
+    <string name="P068">Upload Selfie Photo With Holding Valid ID</string>
 </resources>
