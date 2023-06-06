@@ -6,11 +6,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.common.extentions.callApi
+import org.cxct.sportlottery.common.extentions.safeApi
+import org.cxct.sportlottery.net.ApiResult
+import org.cxct.sportlottery.net.sport.SportRepository
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
+import org.cxct.sportlottery.util.SingleLiveEvent
 import org.cxct.sportlottery.util.TimeUtil
 
 class SportTabViewModel(
@@ -34,9 +39,9 @@ class SportTabViewModel(
         Log.e("For Test", "======>>> SportTabViewModel ${this}")
     }
 
-    val sportMenuResult: LiveData<SportMenuResult?>
+    val sportMenuResult: LiveData<ApiResult<SportMenuData>>
         get() = _sportMenuResult
-    private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
+    private val _sportMenuResult = SingleLiveEvent<ApiResult<SportMenuData>>()
     private var sportMenuData: SportMenuData? = null //球種菜單資料
 
     val curMatchType: LiveData<MatchType?>
@@ -51,27 +56,14 @@ class SportTabViewModel(
 
 
     fun getMatchData() {
-        viewModelScope.launch {
-            val sportMenuResult = getSportMenuAll()
-            sportMenuResult?.let {
-                if (it.success) {
-                    _sportMenuResult.postValue(it)     // 更新大廳上方球種數量、各MatchType下球種和數量
-                }
-            }
-        }
-    }
-
-    //滾球、今日、早盤、冠軍、串關、(即將跟menu同一層)
-    private suspend fun getSportMenuAll(): SportMenuResult? {
-        return doNetwork(androidContext) {
-            sportMenuRepository.getSportMenu(
+        callApi({
+            SportRepository.getSportMenu(
                 TimeUtil.getNowTimeStamp().toString(),
-                TimeUtil.getTodayStartTimeStamp().toString()
-            ).apply {
-                if (isSuccessful && body()?.success == true) {
-                    // 每次執行必做
-                    body()?.sportMenuData?.sortSport().apply { sportMenuData = this }
-                }
+                TimeUtil.getTodayStartTimeStamp().toString())
+        }) {
+            if (it.succeeded()) {
+                it.getData()?.sortSport().apply { sportMenuData = this }
+                _sportMenuResult.postValue(it)     // 更新大廳上方球種數量、各MatchType下球種和數量
             }
         }
     }
@@ -109,7 +101,7 @@ class SportTabViewModel(
         _curMatchType.postValue(matchType)
     }
 
-    fun setSportMenuResult(sportMenuResult: SportMenuResult) {
+    fun setSportMenuResult(sportMenuResult: ApiResult<SportMenuData>) {
         _sportMenuResult.postValue(sportMenuResult)
     }
 }

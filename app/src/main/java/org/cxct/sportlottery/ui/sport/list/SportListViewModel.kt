@@ -260,7 +260,6 @@ class SportListViewModel(
     }
 
     fun cleanGameHallResult() {
-
     }
 
     fun getEndScoreOddsList(gameType: String,
@@ -743,77 +742,37 @@ class SportListViewModel(
     }
 
     val sportMenuData by lazy { SingleLiveEvent<Pair<ApiResult<SportMenuData>, List<Item>>>() }
-    fun loadMatchType(matchType: MatchType) = launch {
 
-        val sportMenuResult = safeApi {
-            SportRepository.getSportMenu(
+    fun loadMatchType(matchType: MatchType) = callApi({
+        SportRepository.getSportMenu(
             TimeUtil.getNowTimeStamp().toString(),
             TimeUtil.getTodayStartTimeStamp().toString())
-        }
+    }) { sportMenuResult->
 
         val menuData = sportMenuResult.getData()
         if (menuData?.sortSport() != null) {
             updateSportInfo(matchType)
         }
 
+
         if(!sportMenuResult.succeeded() || menuData == null) {
             sportMenuData.value = Pair(sportMenuResult, listOf())
-            return@launch
+            return@callApi
         }
 
-        if (matchType == MatchType.AT_START) {
-            sportMenuData.value = Pair(sportMenuResult, menuData.atStart.items)
-            return@launch
+        val itemList = when (matchType) {
+            MatchType.IN_PLAY ->  menuData.menu.inPlay.items
+            MatchType.TODAY -> menuData.menu.today.items
+            MatchType.EARLY -> menuData.menu.early.items
+            MatchType.PARLAY -> menuData.menu.parlay.items
+            MatchType.OUTRIGHT -> menuData.menu.outright.items
+            MatchType.AT_START -> menuData.atStart.items
+            MatchType.EPS -> menuData.menu.eps?.items ?: listOf()
+
+            else -> listOf()
         }
 
-        if (matchType == MatchType.IN_PLAY) {
-            val inplay = menuData.menu.inPlay
-            val inPlayMenu = mutableListOf(Item(
-                    GameType.ALL.key,
-                    GameType.FT.name,
-                    num = inplay.num,
-                    play = listOf(),
-                    sortNum = 0
-                ))
-
-            if (inplay.items.isNotEmpty()) {
-                inPlayMenu.addAll(inPlayMenu)
-            }
-
-            sportMenuData.value = Pair(sportMenuResult, inPlayMenu)
-        }
-
-        when (matchType) {
-
-            MatchType.TODAY -> {
-                sportMenuData.value = Pair(sportMenuResult, menuData.menu.today.items)
-            }
-
-            MatchType.EARLY -> {
-                sportMenuData.value = Pair(sportMenuResult, menuData.menu.early.items)
-            }
-
-            MatchType.CS -> {
-                sportMenuData.value = Pair(sportMenuResult, menuData.menu.cs.items)
-            }
-
-            MatchType.PARLAY -> {
-                sportMenuData.value = Pair(sportMenuResult, menuData.menu.parlay.items)
-            }
-
-            MatchType.OUTRIGHT -> {
-                sportMenuData.value = Pair(sportMenuResult, menuData.menu.outright.items)
-            }
-
-
-            MatchType.EPS -> {
-                sportMenuData.value = Pair(sportMenuResult, menuData.menu.eps?.items ?: listOf())
-            }
-
-            else -> {
-            }
-        }
-
+        sportMenuData.value = Pair(sportMenuResult, itemList)
     }
 
     fun switchMatchType(matchType: MatchType) {

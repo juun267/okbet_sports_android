@@ -433,7 +433,7 @@ open class SportListFragment :
                 }
             }
 
-            it?.let { (parentFragment as SportFragment).updateSportMenuResult(it) }
+//            it?.let { (parentFragment as SportFragment).updateSportMenuResult(it) }
         }
 
         viewModel.curDate.observe(this.viewLifecycleOwner) { dateAdapter.data = it }

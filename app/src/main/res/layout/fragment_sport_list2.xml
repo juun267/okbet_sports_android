@@ -22,66 +22,50 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll">
-            <!-- 首頁遊戲卡片 -->
-            <androidx.constraintlayout.widget.ConstraintLayout
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/color_EAEFF8"
                 android:orientation="vertical">
 
-
-                <LinearLayout
-                    android:id="@+id/ll_sport_type"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/sport_type_list"
                     android:layout_width="match_parent"
-                    android:layout_height="78dp"
-                    android:paddingTop="7dp"
-                    android:elevation="1dp"
+                    android:layout_height="match_parent"
                     android:background="@color/color_FFFFFF"
-                    android:gravity="center_horizontal"
-                    tools:ignore="MissingConstraints">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/sport_type_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:nestedScrollingEnabled="false"
-                        android:paddingLeft="5.5dp"
-                        android:clipToPadding="false"
-                        tools:itemCount="1"
-                        tools:listitem="@layout/itemview_sport_type_v6" />
-                </LinearLayout>
+                    android:nestedScrollingEnabled="false"
+                    android:paddingLeft="5.5dp"
+                    android:clipToPadding="false"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/itemview_sport_type_v6" />
 
                 <LinearLayout
                     android:id="@+id/lin_opt"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="-10dp"
+                    android:layout_height="35dp"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ll_sport_type">
+                    android:paddingHorizontal="12dp"
+                    android:background="@color/white">
 
-                    <LinearLayout
-                        android:id="@+id/lin_filter"
+                    <TextView
+                        android:id="@+id/tvSportName"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="12dp"
-                        android:gravity="center">
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_0D2245"
+                        android:text="footbool"/>
 
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@drawable/ic_filter" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textStyle="bold"
-                            android:textSize="@dimen/textSize12sp"
-                            android:textColor="@color/color_025BE8"
-                            android:text="@string/filter" />
-                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/tvMatchNum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_025BE8"
+                        android:text="34"/>
 
                     <androidx.legacy.widget.Space
                         android:layout_width="0dp"
@@ -89,17 +73,21 @@
                         android:layout_weight="1" />
 
                     <ImageView
-                        android:id="@+id/iv_arrow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:adjustViewBounds="true"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="5dp"
+                        android:id="@+id/ivFilter"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginRight="12dp"
+                        android:src="@drawable/ic_filter" />
+
+                    <ImageView
+                        android:id="@+id/ivArrow"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:src="@drawable/ic_arrow_up_double" />
 
                 </LinearLayout>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
