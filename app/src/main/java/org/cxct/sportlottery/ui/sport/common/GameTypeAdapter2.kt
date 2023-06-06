@@ -71,8 +71,9 @@ class GameTypeAdapter2(private val itemClick: (Item, Int) -> Unit) : BaseQuickAd
     }
 
     override fun setNewInstance(list: MutableList<Item>?) {
-        currentItem = null
+        currentItem = list?.find { it.isSelected }
         super.setNewInstance(list)
     }
+
 }
 

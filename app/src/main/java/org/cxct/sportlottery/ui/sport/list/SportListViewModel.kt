@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.sport.list
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -10,6 +11,9 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.clean
+import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.common.extentions.safeApi
+import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.sport.SportRepository
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.*
@@ -66,7 +70,7 @@ class SportListViewModel(
 
     val oddsListGameHallResult: LiveData<Event<OddsListResult?>>
         get() = _oddsListGameHallResult
-    private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
+    private val _oddsListGameHallResult = SingleLiveEvent<Event<OddsListResult?>>()
 
     //ErrorDialog
     val showErrorDialogMsg: LiveData<String>
@@ -256,7 +260,6 @@ class SportListViewModel(
     }
 
     fun cleanGameHallResult() {
-        _oddsListGameHallResult.clean()
     }
 
     fun getEndScoreOddsList(gameType: String,
@@ -276,6 +279,7 @@ class SportListViewModel(
         getOddsList(gameType, matchType.postValue, requestTimeRangeParams)
     }
 
+    private var requestTag: Any? = null
     private var jobSwitchGameType: Job? = null
     private var jobGetOddsList: Job? = null
     private fun getOddsList(
@@ -286,6 +290,7 @@ class SportListViewModel(
         matchIdList: List<String>? = null,
         tag: Any? = null
     ) {
+        requestTag = tag
         var currentTimeRangeParams: TimeRangeParams? = null
         when (matchType) {
             MatchType.IN_PLAY.postValue, MatchType.AT_START.postValue, MatchType.OTHER.postValue -> {
@@ -364,10 +369,9 @@ class SportListViewModel(
                 }
             }
 
-            if (gameType != this@SportListViewModel.gameType) {
+            if (requestTag != tag) {
                 return@launch
             }
-
             result?.updateMatchType()
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
@@ -737,12 +741,38 @@ class SportListViewModel(
         }
     }
 
-    private val sportMenuData by lazy { SingleLiveEvent<SportMenuData>() }
-    fun loadMatchType(matchType: MatchType) {
-        callApi({ SportRepository.getSportMenu(TimeUtil.getNowTimeStamp().toString(), TimeUtil.getTodayStartTimeStamp().toString()) }) {
-            val data = it.getData()?.sortSport() ?: return@callApi
-            sportMenuData.postValue(data)
+    val sportMenuData by lazy { SingleLiveEvent<Pair<ApiResult<SportMenuData>, List<Item>>>() }
+
+    fun loadMatchType(matchType: MatchType) = callApi({
+        SportRepository.getSportMenu(
+            TimeUtil.getNowTimeStamp().toString(),
+            TimeUtil.getTodayStartTimeStamp().toString())
+    }) { sportMenuResult->
+
+        val menuData = sportMenuResult.getData()
+        if (menuData?.sortSport() != null) {
+            updateSportInfo(matchType)
         }
+
+
+        if(!sportMenuResult.succeeded() || menuData == null) {
+            sportMenuData.value = Pair(sportMenuResult, listOf())
+            return@callApi
+        }
+
+        val itemList = when (matchType) {
+            MatchType.IN_PLAY ->  menuData.menu.inPlay.items
+            MatchType.TODAY -> menuData.menu.today.items
+            MatchType.EARLY -> menuData.menu.early.items
+            MatchType.PARLAY -> menuData.menu.parlay.items
+            MatchType.OUTRIGHT -> menuData.menu.outright.items
+            MatchType.AT_START -> menuData.atStart.items
+            MatchType.EPS -> menuData.menu.eps?.items ?: listOf()
+
+            else -> listOf()
+        }
+
+        sportMenuData.value = Pair(sportMenuResult, itemList)
     }
 
     fun switchMatchType(matchType: MatchType) {

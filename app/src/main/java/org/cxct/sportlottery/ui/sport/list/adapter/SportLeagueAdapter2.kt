@@ -47,10 +47,6 @@ class SportLeagueAdapter2(var matchType: MatchType,
         }
     }
 
-    fun setPreloadItem() {
-        setEmptyView(R.layout.view_list_loading)
-    }
-
     override fun onViewDetachedFromWindow(holder: BaseViewHolder) {
         super.onViewDetachedFromWindow(holder)
         if (holder is SportMatchVH) {

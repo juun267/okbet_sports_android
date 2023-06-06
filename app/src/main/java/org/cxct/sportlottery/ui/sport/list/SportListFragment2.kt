@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.google.android.material.appbar.AppBarLayout
 import org.cxct.sportlottery.BuildConfig
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.clean
 import org.cxct.sportlottery.common.extentions.rotationAnimation
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
@@ -67,18 +68,17 @@ class SportListFragment2
     }
 
     private fun onGameTypeChanged(item: Item, position: Int) {
-        if (!item.isSelected) {
-            //切換球種，清除日期記憶
-            viewModel.tempDatePosition = 0
-            //日期圖示選取狀態下，切換球種要重置UI狀態
-        }
+
+        //切換球種，清除日期記憶
+        viewModel.tempDatePosition = 0
+        //日期圖示選取狀態下，切換球種要重置UI狀態
         gameType = item.code
-        viewModel.cleanGameHallResult()
+        sportLeagueAdapter2.setNewInstance(null)
         val layoutManager = binding.sportTypeList.layoutManager as ScrollCenterLayoutManager
         layoutManager.smoothScrollToPosition(binding.sportTypeList, RecyclerView.State(), position)
         clearSubscribeChannels()
         load(item)
-        binding.linFilter.isVisible = gameType != GameType.ALL.key
+        binding.ivFilter.isVisible = gameType != GameType.ALL.key
     }
 
 //    private val sportLeagueAdapter by lazy {
@@ -160,20 +160,20 @@ class SportListFragment2
         viewModel.filterLeague(mutableListOf())
         gameTypeAdapter.setNewInstance(null)
         sportLeagueAdapter2.setNewInstance(null)
+        setMatchInfo("", "")
         clearSubscribeChannels()
         setupSportTypeList()
         setupToolbarStatus()
     }
 
-    private fun prepareLoad() {
-        viewModel.cleanGameHallResult()
-        sportLeagueAdapter2.setPreloadItem()
-    }
-
     fun reload() {
         reset()
-        prepareLoad()
-        viewModel.switchMatchType(matchType)
+        viewModel.loadMatchType(matchType)
+    }
+
+    private inline fun setMatchInfo(name: String, num: String) {
+        binding.tvSportName.text = name
+        binding.tvMatchNum.text = num
     }
 
     private fun navMatchDetailPage(matchInfo: MatchInfo?) = matchInfo?.let {
@@ -188,14 +188,15 @@ class SportListFragment2
 
     override fun onBindViewStatus(view: View) {
 
-        Log.e("For Test", "======>>> SportTabViewModel SportListFragment ${viewModel}")
         reset()
         setupOddsChangeListener()
         EventBusUtil.targetLifecycle(this)
         initObserve()
         initSocketObserver()
+    }
 
-        prepareLoad()
+    override fun onInitData() {
+        reload()
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -216,14 +217,10 @@ class SportListFragment2
     private fun initToolbar()  = binding.run {
 
         appbarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
-            offsetScrollListener?.invoke(
-                (-verticalOffset) / Math.max(
-                    1.0, appbarLayout.measuredHeight.toDouble()
-                )
-            )
+            offsetScrollListener?.invoke((-verticalOffset) / Math.max(1.0, appbarLayout.measuredHeight.toDouble()))
         })
 
-        linFilter.setOnClickListener {
+        ivFilter.setOnClickListener {
             if (TextUtils.isEmpty(gameType)) {
                 return@setOnClickListener
             }
@@ -256,6 +253,7 @@ class SportListFragment2
 
     private fun initGameListView() = binding.gameList.run {
         layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+        sportLeagueAdapter2.setEmptyView(R.layout.view_list_loading)
         adapter = sportLeagueAdapter2
         addOnScrollListener(object : OnScrollListener() {
 
@@ -284,12 +282,9 @@ class SportListFragment2
         mCalendarSelected = false
     }
 
-    private fun initObserve() {
-        viewModel.notifyLogin.observe(viewLifecycleOwner) {
-            (activity as MainTabActivity).showLoginNotify()
-        }
+    private fun initObserve() = viewModel.run {
 
-        viewModel.showErrorDialogMsg.observe(this.viewLifecycleOwner) {
+        showErrorDialogMsg.observe(this@SportListFragment2.viewLifecycleOwner) {
             if (it == null || it.isBlank() || requireContext() == null) {
                 return@observe
             }
@@ -297,74 +292,22 @@ class SportListFragment2
             showErrorMsgDialog(it)
         }
 
-        viewModel.sportMenuResult.distinctUntilChanged().observe(this.viewLifecycleOwner) {
-
-            when (matchType) {
-                MatchType.IN_PLAY -> {
-                    mutableListOf(
-                        Item(
-                            GameType.ALL.key,
-                            GameType.FT.name,
-                            num = it?.sportMenuData?.menu?.inPlay?.num ?: 0,
-                            play = listOf(),
-                            sortNum = 0
-                        ),
-                    ).apply {
-                        addAll(it?.sportMenuData?.menu?.inPlay?.items ?: listOf())
-                    }.let {
-                        updateSportType(it)
-                    }
-                }
-
-                MatchType.TODAY -> {
-                    updateSportType(it?.sportMenuData?.menu?.today?.items ?: listOf())
-                }
-
-                MatchType.EARLY -> {
-                    updateSportType(it?.sportMenuData?.menu?.early?.items ?: listOf())
-                }
-
-                MatchType.CS -> {
-                    updateSportType(it?.sportMenuData?.menu?.cs?.items ?: listOf())
-                }
-
-                MatchType.PARLAY -> {
-                    updateSportType(it?.sportMenuData?.menu?.parlay?.items ?: listOf())
-                }
-
-                MatchType.OUTRIGHT -> {
-                    updateSportType(it?.sportMenuData?.menu?.outright?.items ?: listOf())
-                }
-
-                MatchType.AT_START -> {
-                    updateSportType(it?.sportMenuData?.atStart?.items ?: listOf())
-                }
-
-                MatchType.EPS -> {
-                    updateSportType(it?.sportMenuData?.menu?.eps?.items ?: listOf())
-                }
-
-                else -> {
-                }
-            }
-
-            it?.let { (parentFragment as SportFragment2).updateSportMenuResult(it) }
-        }
-
-
-        viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner) {
-            Log.e("For Test", "=========>>> oddsListGameHallResult 111 ${requestTag} ${it.tag}")
-            if (requestTag != it.tag) {
+        sportMenuData.observe(this@SportListFragment2.viewLifecycleOwner) {
+            if (!it.first.succeeded()) {
+                ToastUtil.showToast(activity, it.first.msg)
                 return@observe
             }
-            Log.e("For Test", "=========>>> oddsListGameHallResult 2222 ${requestTag} ${it.tag}")
+            updateSportType(it.second)
+            it?.let { (parentFragment as SportFragment2).updateSportMenuResult(it.first) }
+        }
+
+        oddsListGameHallResult.observe(this@SportListFragment2.viewLifecycleOwner) {
+
             val oddsListData = it.getContentIfNotHandled()?.oddsListData ?: return@observe
-            Log.e("For Test", "=========>>> oddsListGameHallResult 33333 ${requestTag} ${it.tag}")
             val leagueOdds: List<LeagueOdd>? = oddsListData.leagueOdds
             if (leagueOdds.isNullOrEmpty()) {
                 return@observe
             }
-            Log.e("For Test", "=========>>> oddsListGameHallResult 44444 ${requestTag} ${it.tag}")
             val mLeagueOddList = (oddsListData.leagueOddsFilter ?: leagueOdds).toMutableList()
             sportLeagueAdapter2.setNewInstance(mLeagueOddList as MutableList<BaseNode> )
             resubscribeChannel(80)
@@ -372,7 +315,7 @@ class SportListFragment2
 //
 //
 //        //當前玩法無賽事
-//        viewModel.isNoEvents.distinctUntilChanged().observe(this.viewLifecycleOwner) {
+//        viewModel.isNoEvents.distinctUntilChanged().observe(this@SportListFragment2.viewLifecycleOwner) {
 ////            sport_type_list.isVisible = !it && matchType != MatchType.CS
 //            //无赛事或者为波胆的时候不显示
 //            binding.llSportType.isVisible = !(it || matchType == MatchType.CS)
@@ -384,19 +327,19 @@ class SportListFragment2
 //            hideLoading()
 //        }
 //
-//        viewModel.betInfoList.observe(this.viewLifecycleOwner) {
+//        viewModel.betInfoList.observe(this@SportListFragment2.viewLifecycleOwner) {
 //            it.peekContent().let { betInfoList ->
 //                sportLeagueAdapter.betInfoList = betInfoList
 //            }
 //        }
 //
-//        viewModel.oddsType.observe(this.viewLifecycleOwner) {
+//        viewModel.oddsType.observe(this@SportListFragment2.viewLifecycleOwner) {
 //            it?.let { oddsType ->
 //                sportLeagueAdapter.oddsType = oddsType
 //            }
 //        }
 //
-//        viewModel.favorMatchList.observe(this.viewLifecycleOwner) {
+//        viewModel.favorMatchList.observe(this@SportListFragment2.viewLifecycleOwner) {
 //            sportLeagueAdapter.data.forEach { leagueOdd ->
 //                leagueOdd.matchOdds.forEach { matchOdd ->
 //                    matchOdd.matchInfo?.isFavorite = it.contains(matchOdd.matchInfo?.id)
@@ -411,19 +354,18 @@ class SportListFragment2
 
     private fun initSocketObserver() {
 
-        receiver.serviceConnectStatus.observe(this.viewLifecycleOwner) {
-            if (it == null) {
-                return@observe
-            }
+//        receiver.serviceConnectStatus.observe(this@SportListFragment2.viewLifecycleOwner) {
+//            if (it == null) {
+//                return@observe
+//            }
+//
+//            if (it == ServiceConnectStatus.CONNECTED) {
+//                viewModel.switchMatchType(matchType = matchType)
+//                subscribeSportChannelHall()
+//            }
+//        }
 
-            if (it == ServiceConnectStatus.CONNECTED) {
-                Log.e("For Test", "=======>>> initSocketObserver 1111")
-                viewModel.switchMatchType(matchType = matchType)
-                subscribeSportChannelHall()
-            }
-        }
-
-//        receiver.matchStatusChange.observe(this.viewLifecycleOwner) {
+//        receiver.matchStatusChange.observe(this@SportListFragment2.viewLifecycleOwner) {
 //            if (it == null) {
 //                return@observe
 //            }
@@ -461,7 +403,7 @@ class SportListFragment2
 //
 //        }
 //
-//        receiver.matchClock.observe(this.viewLifecycleOwner) {
+//        receiver.matchClock.observe(this@SportListFragment2.viewLifecycleOwner) {
 //            if (it == null || binding.gameList.adapter !is SportLeagueAdapter) {
 //                return@observe
 //            }
@@ -482,7 +424,7 @@ class SportListFragment2
 //            }
 //        }
 //
-//        receiver.matchOddsLock.observe(this.viewLifecycleOwner) {
+//        receiver.matchOddsLock.observe(this@SportListFragment2.viewLifecycleOwner) {
 //            if (it == null || binding.gameList.adapter !is SportLeagueAdapter) {
 //                return@observe
 //            }
@@ -502,7 +444,7 @@ class SportListFragment2
 //            }
 //        }
 //
-//        receiver.globalStop.observe(this.viewLifecycleOwner) {
+//        receiver.globalStop.observe(this@SportListFragment2.viewLifecycleOwner) {
 //            if (it == null || binding.gameList.adapter !is SportLeagueAdapter) {
 //                return@observe
 //            }
@@ -523,7 +465,7 @@ class SportListFragment2
 //            }
 //        }
 //
-//        receiver.producerUp.observe(this.viewLifecycleOwner) { //開啟允許投注
+//        receiver.producerUp.observe(this@SportListFragment2.viewLifecycleOwner) { //開啟允許投注
 //            if (it == null) {
 //                return@observe
 //            }
@@ -532,7 +474,7 @@ class SportListFragment2
 //        }
 //
 //
-//        receiver.closePlayCate.observe(this.viewLifecycleOwner) { event ->
+//        receiver.closePlayCate.observe(this@SportListFragment2.viewLifecycleOwner) { event ->
 //            event?.peekContent()?.let {
 //                if (gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code != it.gameType) return@observe
 //                sportLeagueAdapter.data.closePlayCate(it)
@@ -588,9 +530,9 @@ class SportListFragment2
 //        }
     }
 
-    private var requestTag: Any? = null
     private fun load(item: Item) {
-        requestTag = Any().apply { viewModel.switchGameType(matchType, item) }
+        setMatchInfo(item.name, item.num.toString())
+        viewModel.switchGameType(matchType, item, Any())
     }
 
     private fun updateSportType(gameTypeList: List<Item>) {
@@ -618,7 +560,7 @@ class SportListFragment2
             }
         }
         //全部球类tab不支持联赛筛选
-        binding.linFilter.isVisible = gameType != GameType.ALL.key
+        binding.ivFilter.isVisible = gameType != GameType.ALL.key
         gameTypeAdapter.setNewInstance(gameTypeList.toMutableList())
         (binding.sportTypeList.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
             binding.sportTypeList,

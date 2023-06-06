@@ -10,9 +10,10 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.FragmentSport2Binding
+import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.sport.SportMenuResult
+import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.endscore.EndScoreFragment
@@ -87,9 +88,9 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         OverScrollDecoratorHelper.setUpOverScroll(this)
     }
 
-    private fun refreshTabLayout(sportMenuResult: SportMenuResult) {
+    private fun refreshTabLayout(sportMenuResult: ApiResult<SportMenuData>) {
 
-        val sportMenuData = sportMenuResult.sportMenuData
+        val sportMenuData = sportMenuResult.getData()
         val countInPlay = sportMenuData?.menu?.inPlay?.items?.sumOf { it.num } ?: 0
         val countAtStart = sportMenuData?.atStart?.items?.sumOf { it.num } ?: 0
         val countToday = sportMenuData?.menu?.today?.items?.sumOf { it.num } ?: 0
@@ -168,9 +169,8 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
             else -> {
                 fragmentHelper.show(SportListFragment2::class.java, args) { fragment, newInstance ->
-                    if (newInstance) {
-                        fragment.offsetScrollListener = ::setTabElevation
-                    } else {
+                    fragment.offsetScrollListener = ::setTabElevation
+                    if (!newInstance) {
                         fragment.reload()
                     }
                 }
@@ -208,14 +208,14 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             binding.tabLayout.getTabAt(position)?.select()
         }
 
-        sportMenuResult.distinctUntilChanged().observe(viewLifecycleOwner) {
+        sportMenuResult.observe(viewLifecycleOwner) {
             hideLoading()
             updateUiWithResult(it)
         }
     }
 
-    private fun updateUiWithResult(sportMenuResult: SportMenuResult?) {
-        if (sportMenuResult?.success != true) {
+    private fun updateUiWithResult(sportMenuResult: ApiResult<SportMenuData>) {
+        if (!sportMenuResult.succeeded()) {
             return
         }
 
@@ -239,7 +239,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         }
     }
 
-    fun updateSportMenuResult(sportMenuResult: SportMenuResult) {
+    fun updateSportMenuResult(sportMenuResult: ApiResult<SportMenuData>) {
         viewModel.setSportMenuResult(sportMenuResult)
     }
 
