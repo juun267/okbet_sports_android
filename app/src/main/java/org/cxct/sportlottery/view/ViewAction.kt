@@ -34,8 +34,8 @@ fun TextView.setColors(colorResource:Int){
     setTextColor(ContextCompat.getColor(this.context,colorResource))
 }
 
-fun View.expand(){
-    val animator=ObjectAnimator.ofInt(96.dp)
+fun View.expand(height:Int){
+    val animator=ObjectAnimator.ofInt(height)
     animator.duration = 200
     animator.addUpdateListener {
         this.layoutParams.height=animator.animatedValue as Int
@@ -44,8 +44,8 @@ fun View.expand(){
     animator.start()
 }
 
-fun View.unExpand(){
-    val animator=ObjectAnimator.ofInt(96.dp,0)
+fun View.unExpand(height:Int){
+    val animator=ObjectAnimator.ofInt(height,0)
     animator.duration = 200
     animator.addUpdateListener {
         this.layoutParams.height=animator.animatedValue as Int

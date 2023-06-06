@@ -10,6 +10,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ViewSportNodeBinding
 import org.cxct.sportlottery.ui.maintab.entity.NodeBean
 import org.cxct.sportlottery.ui.maintab.menu.adapter.RecyclerNodeAdapter
+import org.cxct.sportlottery.util.DisplayUtil.dp
 
 class SportNodeView(context: Context, attrs: AttributeSet) :LinearLayout(context,attrs){
     //item adapter
@@ -18,13 +19,13 @@ class SportNodeView(context: Context, attrs: AttributeSet) :LinearLayout(context
     private var mNodeList= arrayListOf<NodeBean>()
 
     //是否展开
-    private var isExpand=true
+    private var isExpand=false
 
     val binding: ViewSportNodeBinding
 
     init {
         orientation= VERTICAL
-        binding=ViewSportNodeBinding.inflate(LayoutInflater.from(context),this,true)
+        binding=ViewSportNodeBinding.inflate(LayoutInflater.from(context),this)
         initView()
     }
 
@@ -39,12 +40,12 @@ class SportNodeView(context: Context, attrs: AttributeSet) :LinearLayout(context
                 isExpand = if(isExpand){
                     //收起
                     ivWay.setImageResource(R.drawable.ic_node_close)
-                    recyclerNode.unExpand()
+                    recyclerNode.unExpand(mNodeList.size*32.dp)
                     false
                 }else{
                     //展开
                     ivWay.setImageResource(R.drawable.ic_node_open)
-                    recyclerNode.expand()
+                    recyclerNode.expand(mNodeList.size*32.dp)
                     true
                 }
 
