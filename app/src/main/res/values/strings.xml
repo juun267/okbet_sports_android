@@ -958,7 +958,7 @@
     <string name="kyc_pick_upload_id">Upload Personal ID Documents</string>
     <string name="kyc_size_2_mb">The file size to under 2MB.</string>
     <string name="kyc_contact_service">If you need assistance, please contact customer service</string>
-    <string name="kyc_contact_service_hilight">Contact Us </string>
+    <string name="kyc_contact_service_hilight">Live chat</string>
     <string name="kyc_verify_first">Please get verified.</string>
     <string name="kyc_go_verify">Verify Now</string>
     <string name="kyc_you_wait">Please click the  \"Contact Us\" button to make a video call to complete the real-name authentication</string>
