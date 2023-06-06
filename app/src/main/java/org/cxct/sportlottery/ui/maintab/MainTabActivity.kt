@@ -61,6 +61,7 @@ import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment2
 import org.cxct.sportlottery.ui.maintab.menu.SportLeftFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.ui.sport.SportFragment
+import org.cxct.sportlottery.ui.sport.SportFragment2
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment
 import org.cxct.sportlottery.ui.sport.list.SportLeagueAdapter
 import org.cxct.sportlottery.util.*
@@ -75,7 +76,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         FragmentHelper(
             supportFragmentManager, R.id.fl_content, arrayOf(
                 Pair(HomeFragment::class.java, null),
-                Pair(SportFragment::class.java, null),
+                Pair(SportFragment2::class.java, null),
                 Pair(BetRecordFragment::class.java, null),
                 Pair(FavoriteFragment::class.java, null),
                 Pair(ProfileCenterFragment::class.java, null),
@@ -709,7 +710,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     fun jumpToTheSport(matchType: MatchType? = null, gameType: GameType? = null) {
         resetBackIcon(1)
-        (fragmentHelper.getFragment(1) as SportFragment).setJumpSport(matchType, gameType)
+//        (fragmentHelper.getFragment(1) as SportFragment).setJumpSport(matchType, gameType)
     }
 
     private fun resetBackIcon(position: Int) {

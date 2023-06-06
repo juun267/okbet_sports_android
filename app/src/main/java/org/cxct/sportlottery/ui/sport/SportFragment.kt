@@ -32,7 +32,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
 
     companion object {
 
-        val matchTypeTabPositionMap = mapOf(
+        private val matchTypeTabPositionMap = mapOf(
             MatchType.END_SCORE to 0,
             MatchType.IN_PLAY to 1,
             MatchType.AT_START to 2,

@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.sport.vh
+package org.cxct.sportlottery.ui.sport.list.adapter
 
 import android.content.Context
 import android.text.TextUtils
@@ -19,14 +19,14 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.setLeagueLogo
 import org.cxct.sportlottery.view.expandablerecyclerview.ExpandableAdapter
 
-class SportLeagueVH(val ivCountry: ImageView,
-                    val tvLeagueName: TextView,
-                    val ivArrow: ImageView,
-                    val lifecycle: LifecycleOwner,
-                    root: View): ExpandableAdapter.ViewHolder(root) {
+class SportGroupProvider(val ivCountry: ImageView,
+                         val tvLeagueName: TextView,
+                         val ivArrow: ImageView,
+                         val lifecycle: LifecycleOwner,
+                         root: View): ExpandableAdapter.ViewHolder(root) {
 
     companion object {
-        fun of(context: Context, lifecycle: LifecycleOwner): SportLeagueVH {
+        fun of(context: Context, lifecycle: LifecycleOwner): SportGroupProvider {
             val root = FrameLayout(context)
             root.layoutParams = ViewGroup.LayoutParams(-1, 31.dp)
             root.setBackgroundResource(R.color.color_bbbbbb_ffffff)
@@ -72,7 +72,7 @@ class SportLeagueVH(val ivCountry: ImageView,
             root.addView(tvLeagueName)
 
             val ivArrow = AppCompatImageView(context).apply {
-                setImageResource(R.drawable.selector_arrow_gray)
+                setImageResource(R.drawable.ic_arrow_gray_up1)
                 layoutParams = FrameLayout.LayoutParams(wh20, wh20).apply {
                     gravity = Gravity.CENTER_VERTICAL or Gravity.RIGHT
                     rightMargin = 12.dp
@@ -84,7 +84,7 @@ class SportLeagueVH(val ivCountry: ImageView,
             root.addView(ivArrow)
             root.addView(getDivider(context), dividerParams)
 
-            return SportLeagueVH(ivCountry, tvLeagueName, ivArrow, lifecycle, root)
+            return SportGroupProvider(ivCountry, tvLeagueName, ivArrow, lifecycle, root)
         }
 
         private fun getDivider(context: Context): View {
