@@ -275,7 +275,8 @@ class MultiLanguagesApplication : Application() {
         }
     }
 
-    private fun setNightMode() {
+    fun setNightMode(switch:Boolean=false) {
+        saveNightMode(switch)
         if (isNightMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         } else {

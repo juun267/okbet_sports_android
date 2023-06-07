@@ -1,9 +1,13 @@
 package org.cxct.sportlottery.ui.maintab.menu.viewmodel
 
 import android.app.Application
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.user.odds.OddsChangeOptionRequest
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.HandicapType
 import org.cxct.sportlottery.repository.InfoCenterRepository
@@ -16,6 +20,8 @@ import org.cxct.sportlottery.ui.maintab.entity.NodeBean
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LanguageManager.makeUseLanguage
+import org.cxct.sportlottery.util.LocalUtils
+import org.cxct.sportlottery.util.OddsModeUtil
 
 class SportLeftMenuViewModel(
     androidContext: Application,
@@ -38,15 +44,6 @@ class SportLeftMenuViewModel(
 
     fun isLogin(): Boolean {
         return loginRepository.isLogined()
-    }
-
-
-    fun getHandicapData(): ArrayList<NodeBean> {
-        val dataList = arrayListOf<NodeBean>()
-        dataList.add(NodeBean("European Handicap", "",true))
-        dataList.add(NodeBean("European Handicap"))
-        dataList.add(NodeBean("European Handicap"))
-        return dataList
     }
 
 
@@ -166,4 +163,54 @@ class SportLeftMenuViewModel(
             }
         }
     }
+
+
+    /**
+     * 获取投注方式
+     */
+    fun getBettingRulesData():ArrayList<NodeBean>{
+        val bettingNodeList = arrayListOf<NodeBean>()
+        val userInfo = MultiLanguagesApplication.getInstance()?.userInfo()
+
+        bettingNodeList
+            .add(NodeBean(LocalUtils.getString(R.string.accept_any_change_in_odds), OddsModeUtil.accept_any_odds))
+        bettingNodeList
+            .add(NodeBean(LocalUtils.getString(R.string.accept_better_change_in_odds), OddsModeUtil.accept_better_odds))
+        bettingNodeList
+            .add(NodeBean(LocalUtils.getString(R.string.accept_never_change_in_odds), OddsModeUtil.never_accept_odds_change))
+
+        //旧的投注方式
+        when (userInfo?.oddsChangeOption ?: 0) {
+            OddsModeUtil.accept_any_odds -> bettingNodeList[0].select=true
+            OddsModeUtil.accept_better_odds -> bettingNodeList[1].select=true
+            OddsModeUtil.never_accept_odds_change -> bettingNodeList[2].select=true
+        }
+
+        return bettingNodeList
+    }
+
+    /**
+     * 更改投注方式
+     */
+    fun updateOddsChangeOption(option: Int) {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.userService.oddsChangeOption(
+                    OddsChangeOptionRequest(option)
+                )
+            }?.let { result ->
+                userInfoRepository.updateOddsChangeOption(option)
+            }
+        }
+    }
+
+
+    /**
+     * 很哈人的黑夜模式
+     */
+    fun changeUIMode(isNightMode:Boolean){
+//        val application=MultiLanguagesApplication.appContext as MultiLanguagesApplication
+//        application.setNightMode(isNightMode)
+    }
+
 }
