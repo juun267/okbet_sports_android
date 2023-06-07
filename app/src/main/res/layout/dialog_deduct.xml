@@ -35,47 +35,11 @@
             android:layout_marginHorizontal="@dimen/margin_12"
             android:layout_marginTop="@dimen/margin_12"
             android:text="@string/P070"
-            android:textColor="@color/color_BBBBBB_333333"
+            android:textColor="@color/color_6D7693"
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/guideline"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_10"
-            android:layout_marginHorizontal="@dimen/margin_12">
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/margin_24"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_marginHorizontal="10dp"
-                android:indeterminate="false"
-                android:progressDrawable="@drawable/progress_bar_deduct"/>
-            <TextView
-                android:id="@+id/tvCurrent"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/margin_24"
-                android:paddingHorizontal="@dimen/margin_20"
-                android:gravity="center"
-                android:textColor="@color/color_FFFFFF"
-                android:textSize="@dimen/textSize14sp"
-                android:textStyle="bold"
-                android:text="6000"/>
-            <TextView
-                android:id="@+id/tvTotal"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/margin_24"
-                android:layout_gravity="right"
-                android:paddingHorizontal="@dimen/margin_20"
-                android:gravity="center"
-                android:textColor="@color/color_6D7693"
-                android:textSize="@dimen/textSize14sp"
-                android:textStyle="bold"
-                android:text="8000"/>
-        </FrameLayout>
 
        <LinearLayout
            android:layout_width="match_parent"

@@ -53,10 +53,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         initEvent()
         initObserve(view)
         setupServiceButton()
-    }
-
-    override fun onResume() {
-        super.onResume()
         setupData()
     }
 
