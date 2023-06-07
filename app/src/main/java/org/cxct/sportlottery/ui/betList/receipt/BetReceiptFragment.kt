@@ -161,7 +161,7 @@ class BetReceiptFragment :
     }
 
     private fun initView() {
-        tv_currency.text = showCurrencySign
+        tv_currency.text = "(${showCurrencySign})"
         setupTotalValue()
 
         initButton()
@@ -208,11 +208,11 @@ class BetReceiptFragment :
 
     private fun initButton() {
 
-        if (BetInfoRepository.currentState == 0) {
-            iv_arrow.setImageResource(R.drawable.ic_single_bet_delete)
-        } else {
-            iv_arrow.setImageResource(R.drawable.ic_arrow_down_double)
-        }
+//        if (BetInfoRepository.currentState == 0) {
+//            iv_arrow.setImageResource(R.drawable.ic_single_bet_delete)
+//        } else {
+//            iv_arrow.setImageResource(R.drawable.ic_arrow_down_double)
+//        }
 
         btn_complete.setOnClickListener {
             //清空购物车 ，下注其他盘口

@@ -44,8 +44,10 @@ fun setViewVisible(vararg views: View) {
     views.forEach { it.visibility = View.VISIBLE }
 }
 
-fun setOnClickListeners(vararg view: View, onClick: (View) -> Unit) {
-    view.forEach { it.setOnClickListener(onClick) }
+fun setOnClickListeners(vararg view: View?, onClick: (View) -> Unit) {
+    view.forEach {
+        it?.setOnClickListener(onClick)
+    }
 }
 
 fun setViewGone(vararg views: View) {

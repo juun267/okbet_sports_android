@@ -107,7 +107,7 @@
     <dimen name="icon_signifier_width">24dp</dimen>
     <dimen name="icon_signifier_height">24dp</dimen>
 
-    <dimen name="et_bet_height">40dp</dimen>
+    <dimen name="et_bet_height">36dp</dimen>
 
     <dimen name="bet_button_height">34dp</dimen>
 </resources>

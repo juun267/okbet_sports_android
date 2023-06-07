@@ -317,7 +317,7 @@
                 android:orientation="vertical"
                 android:visibility="visible">
                 <View
-                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginHorizontal="14dp"
                     android:background="@color/color_dbdfea"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"/>
@@ -351,28 +351,15 @@
                         android:text="@string/bet_stake"
                         android:textColor="@color/color_9BB3D9_535D76"
                         android:textSize="@dimen/textSize12sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/et_bet"
+                        app:layout_constraintBottom_toBottomOf="@+id/etBet"
                         app:layout_constraintStart_toEndOf="@+id/guideline_input"
-                        app:layout_constraintTop_toTopOf="@+id/et_bet" />
+                        app:layout_constraintTop_toTopOf="@+id/etBet" />
 
-                    <EditText
-                        android:id="@+id/et_bet"
+                    <org.cxct.sportlottery.ui.betList.view.BetEditText
+                        android:id="@+id/etBet"
                         android:layout_width="0dp"
                         android:layout_height="36dp"
                         android:layout_marginStart="5dp"
-                        android:background="@drawable/bg_radius_2_edittext_unfocus"
-                        android:fontFamily="@font/din_regular"
-                        android:gravity="end|center_vertical"
-                        android:hint="@string/hint_bet_limit_range"
-                        android:inputType="numberDecimal"
-                        android:letterSpacing="0.05"
-                        android:maxLength="14"
-                        android:paddingHorizontal="13dp"
-                        android:textColor="@color/color_025BE8"
-                        android:textColorHint="@color/color_455074_C9CFD7"
-                        android:textSize="@dimen/textSize16sp"
-                        android:textStyle="bold"
-                        android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/tv_bet"
@@ -387,19 +374,8 @@
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/et_bet" />
+                        app:layout_constraintTop_toTopOf="@+id/etBet" />
 
-                    <TextView
-                        android:id="@+id/tvSymbol"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="PHP"
-                        android:layout_marginStart="10dp"
-                        android:textColor="@color/color_000000"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="@+id/et_bet"
-                        app:layout_constraintStart_toStartOf="@+id/et_bet"
-                        app:layout_constraintTop_toTopOf="@+id/et_bet" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
