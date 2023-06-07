@@ -23,6 +23,7 @@ import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.network.withdraw.uwcheck.CheckList
 import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.UWType
@@ -1151,4 +1152,15 @@ class WithdrawViewModel(
     fun setVisibleView(boolean: Boolean){
         _isVisibleView.postValue(boolean)
     }
+
+    fun showCheckDeductMoneyDialog(onConfirm: ()->Unit):DeductDialog?{
+        if((deductMoney.value?:0)!=0){
+            commissionCheckList.value?.firstOrNull()?.let {
+                return DeductDialog(it,onConfirm)
+            }
+        }
+        onConfirm.invoke()
+        return null
+    }
+
 }

@@ -1400,4 +1400,6 @@
     <string name="N987">登录后进行聊天讨论</string>
     <string name="N988">请登录</string>
     <string name="C016">今日</string>
+    <string name="P069">扣除金额提醒</string>
+    <string name="P070">由于您还有 %s 的投注流水未完成，将收取 %s 的手续费！</string>
 </resources>

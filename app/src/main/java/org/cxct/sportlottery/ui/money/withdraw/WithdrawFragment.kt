@@ -253,17 +253,19 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 
         btn_withdraw.setOnClickListener {
             modifyFinish()
-            withdrawBankCardData?.let {
-                viewModel.addWithdraw(
-                    withdrawBankCardData,
-                    viewModel.getChannelMode(),
-                    et_withdrawal_amount.getText(),
-                    et_withdrawal_password.getText(),
-                    null,
-                    null,
-                    null,
-                )
-            }
+            viewModel.showCheckDeductMoneyDialog {
+                withdrawBankCardData?.let {
+                    viewModel.addWithdraw(
+                        withdrawBankCardData,
+                        viewModel.getChannelMode(),
+                        et_withdrawal_amount.getText(),
+                        et_withdrawal_password.getText(),
+                        null,
+                        null,
+                        null,
+                    )
+                }
+            }?.show(childFragmentManager,DeductDialog::class.java.name)
         }
 
         btn_withdraw.setTitleLetterSpacing()

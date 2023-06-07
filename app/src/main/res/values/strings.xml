@@ -1467,4 +1467,6 @@
     <string name="C016">TODAY</string>
     <string name="N989">Over max stake</string>
     <string name="N990">Below min stake</string>
+    <string name="P069">Deduction amount reminder</string>
+    <string name="P070">Since you still have %s outstanding betting rollover, %s processing fee will be charged!</string>
 </resources>
