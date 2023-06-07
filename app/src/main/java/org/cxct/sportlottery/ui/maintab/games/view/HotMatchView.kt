@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.item_league.view.*
 import kotlinx.android.synthetic.main.view_hot_game.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
+import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.JumpInPlayEvent
 import org.cxct.sportlottery.common.extentions.doOnStop
 import org.cxct.sportlottery.common.extentions.gone
@@ -129,13 +130,13 @@ class HotMatchView(
     /**
      * 初始化热门赛事控件
      */
-    fun onCreate(data: LiveData<Event<List<Recommend>>>, fragment: BaseFragment<*>?) {
+    fun onCreate(data: LiveData<Event<List<Recommend>>>,oddsTypeLiveData: LiveData<OddsType>, fragment: BaseFragment<*>?) {
         if (fragment == null) {
             return
         }
         this.fragment = fragment
         //初始化api变量监听
-        initDataObserve(data, fragment)
+        initDataObserve(data, oddsTypeLiveData, fragment)
         //初始化adapter
         initAdapter(fragment)
 
@@ -153,7 +154,7 @@ class HotMatchView(
     /**
      * 数据变量监听
      */
-    private fun initDataObserve(data: LiveData<Event<List<Recommend>>>, fragment: BaseFragment<*>) {
+    private fun initDataObserve(data: LiveData<Event<List<Recommend>>>, oddsTypeLiveData: LiveData<OddsType>,fragment: BaseFragment<*>) {
         data.observe(fragment.viewLifecycleOwner) {
 
             //api获取热门赛事列表
@@ -174,6 +175,9 @@ class HotMatchView(
                     recycler_hot_game.post { firstVisibleRange(fragment) }
                 }
             }
+        }
+        oddsTypeLiveData.observe(fragment.viewLifecycleOwner){
+            adapter?.oddsType = it
         }
     }
 
