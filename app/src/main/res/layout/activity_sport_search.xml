@@ -83,6 +83,7 @@
         android:id="@+id/sportSearchHistoryTag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
         app:max_select="0" />
 
     <androidx.recyclerview.widget.RecyclerView

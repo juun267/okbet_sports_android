@@ -16,4 +16,7 @@ data class League(
     val category: String,
     @Json(name = "categoryIcon")
     val categoryIcon: String,
-)
+){
+    var firstCap: String?=null
+    var isSelected: Boolean=true
+}

@@ -191,9 +191,9 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
 
         //設定本金, 可贏的systemCurrencySign
         binding.apply {
-            tvBalance.text = "${sConfigData?.systemCurrencySign}${TextUtil.formatMoney(0.0)}"
-
-//            clTitle.ivArrow.rotation = 180f //注單開啟後，箭頭朝下
+            tvBalanceSign.text = getString(R.string.text_account_history_balance)
+            tvCurrencySign.text = "(${sConfigData?.systemCurrencySign})"
+            tvBalance.text = TextUtil.formatMoney(0.0)
             titleAllBet.text =
                 getString(R.string.total_bet_money_colon, sConfigData?.systemCurrencySign)
             titleWinnableAmount.text = getString(R.string.total_all_win_amount)
@@ -298,10 +298,8 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             SINGLE -> {
                 currentBetType = SINGLE
                 betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.SINGLE
-                binding.apply {
-                    clParlayList.visibility = View.GONE
-//                    clTitle.ivArrow.setImageResource(R.drawable.ic_single_bet_delete)
-                }
+                binding.clParlayList.visibility = View.GONE
+                binding.clTitle.tvClearAll.gone()
                 binding.lineShadow.gone()
             }
 
@@ -310,9 +308,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 betListRefactorAdapter?.adapterBetType =
                     BetListRefactorAdapter.BetRvType.PARLAY_SINGLE
                 refreshLlMoreOption()
-//                binding.clTitle.ivArrow.setImageResource(
-//                    R.drawable.ic_arrow_up_double
-//                )
+                binding.clTitle.tvClearAll.visible()
                 binding.lineShadow.visible()
             }
 
@@ -322,6 +318,9 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 betListRefactorAdapter?.adapterBetType =
                     BetListRefactorAdapter.BetRvType.BasketballEndingCard
                 refreshLlMoreOption()
+                binding.clTitle.tvClearAll.gone()
+                binding.clTitle.tvClose.gone()
+                binding.clTitle.ivBasHide.visible()
                 binding.lineShadow.visible()
                 binding.btnParlaySingle.gone()
                 binding.btnBet.updateLayoutParams {
@@ -337,20 +336,22 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             if (isOpen) {
                 binding.clTotalInfo.gone()
                 binding.tvExpandOrStacked.text = getString(R.string.expand_more_combinations)
+                binding.tvExpandOrStacked.setTextColor(requireActivity().getColor(R.color.color_14366B))
                 binding.tvExpandOrStacked.setCompoundDrawablesWithIntrinsicBounds(
                     null,
                     null,
-                    ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_up_blue, null),
+                    ResourcesCompat.getDrawable(resources, R.drawable.icon_show_more, null),
                     null
                 )
             } else {
                 binding.clTotalInfo.visible()
 //                betParlayListRefactorAdapter?.closeAllKeyboard()
                 binding.tvExpandOrStacked.text = getString(R.string.stacked_combination)
+                binding.tvExpandOrStacked.setTextColor(requireActivity().getColor(R.color.color_025BE8))
                 binding.tvExpandOrStacked.setCompoundDrawablesWithIntrinsicBounds(
                     null,
                     null,
-                    ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_down_blue, null),
+                    ResourcesCompat.getDrawable(resources, R.drawable.icon_hide_more, null),
                     null
                 )
             }
@@ -373,6 +374,9 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
 
         binding.clTitle.tvClose.setOnClickListener {
             onBackPressed()
+        }
+        binding.clTitle.ivBasHide.setOnClickListener {
+            exitAnimation(false)
         }
 
 
@@ -723,12 +727,8 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
 
         viewModel.userMoney.observe(viewLifecycleOwner) {
             it?.let { money ->
-//                binding.clTitle.tvBalance.text = TextUtil.formatMoney(money)
-//                binding.clTitle.tvBalanceCurrency.text = sConfigData?.systemCurrencySign
-                binding.tvBalance.text =
-                    "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(money)}"
+                binding.tvBalance.text = TextUtil.formatMoney(money)
                 betListRefactorAdapter?.userMoney = money
-//                betSingleListAdapter?.userMoney = money
                 betParlayListRefactorAdapter?.userMoney = money
             }
         }

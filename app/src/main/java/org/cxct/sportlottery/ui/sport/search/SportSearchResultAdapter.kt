@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.sport.search
 
 import android.view.View
+import android.widget.ImageView
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.chad.library.adapter.base.provider.BaseNodeProvider
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -78,6 +79,9 @@ class SportSearchResultAdapter: BaseNodeAdapter() {
             val tvAwayName = helper.getView<HighlightTextView>(R.id.tv_away_name)
             tvAwayName.setCustomText(item.awayName)
             tvAwayName.highlight(searchKey())
+
+            val ivHomeLogo=helper.getView<ImageView>(R.id.ivSRMHomeLogo)
+//            Glide.with(context).load(item.).into(ivHomeLogo)
         }
 
         override fun onClick(helper: BaseViewHolder, view: View, data: BaseNode, position: Int) {

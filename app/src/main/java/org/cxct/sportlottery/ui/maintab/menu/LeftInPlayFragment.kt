@@ -18,12 +18,12 @@ class LeftInPlayFragment:BindingSocketFragment<MainViewModel,FragmentLeftInplayB
         recyclerInPlay.layoutManager=GridLayoutManager(requireContext(),2)
         recyclerInPlay.adapter=inPlayAdapter
 
+        //点击类型，跳转到体育首页
         inPlayAdapter.setOnItemClickListener{_,_,position->
             val gameType = GameType.getGameType(inPlayAdapter.getItem(position)?.code)
             EventBusUtil.post(MenuEvent(false))
             (activity as MainTabActivity).jumpToTheSport(
-                MatchType.EARLY,
-                GameType.getGameType(inPlayAdapter.getItem(position)?.code) ?: GameType.FT
+                MatchType.EARLY,gameType ?: GameType.FT
             )
         }
     }

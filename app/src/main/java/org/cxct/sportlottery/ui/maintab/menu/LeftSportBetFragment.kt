@@ -10,7 +10,7 @@ import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 
 class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,FragmentLeftSportBetBinding>() {
-
+    //热门赛事 adapter
     private val hotMatchAdapter= RecyclerLeftMatchesAdapter()
     //需求暂时不要做了
 //    private val classificationAdapter= RecyclerClassificationAdapter()
@@ -20,11 +20,13 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
         recyclerHotMatch.adapter=hotMatchAdapter
 
         hotMatchAdapter.setOnItemClickListener{_,_,position->
+            //item点击进入详情
             SportDetailActivity.startActivity(requireContext(),
                 matchInfo = hotMatchAdapter.data[position].matchInfo!!,
                 matchType = MatchType.IN_PLAY,
                 true)
         }
+
     }
 
     override fun onInitData() {
@@ -33,13 +35,17 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
     }
 
 
-
+    /**
+     * 获取热门赛事数据
+     */
     private fun getHotMatchesData(){
+        //首页的数据如果不为空
         viewModel.publicityRecommend.value?.let {
             it.peekContent().let {data->
                 hotMatchAdapter.setList(data)
             }
         }
+        //刷新热门赛事数据
         viewModel.getRecommend()
         viewModel.publicityRecommend.observe(this){
             it.peekContent().let {data->

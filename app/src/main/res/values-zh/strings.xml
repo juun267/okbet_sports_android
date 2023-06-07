@@ -1093,7 +1093,7 @@
     <string name="str_if_accept_odds_changes_des3">3.不接受赔率变化—选择该选项时：如果最新的赔率和您选择的赔率不同，我们不会生成注单，并提醒您赔率变化。</string>
     <string name="str_ok_i_got_it">好的,我知道了</string>
     <string name="str_return_last_step">返回上一步</string>
-    <string name="str_bet_other_game">下注其他盘口</string>
+    <string name="str_bet_other_game">下注其他</string>
     <string name="str_press_again_to_exit_the_program">再按一次退出程序</string>
     <string name="str_odds_changed">赔率已变化</string>
     <string name="str_bet_slip_not_confirm_for_a_long_time">注单长时间未确认</string>
@@ -1403,4 +1403,7 @@
     <string name="N935">搜索联赛球队名称</string>
     <string name="C001">搜索</string>
     <string name="D037">取消</string>
+    <string name="N930">明日</string>
+    <string name="N931">后日</string>
+    <string name="N932">之后</string>
 </resources>

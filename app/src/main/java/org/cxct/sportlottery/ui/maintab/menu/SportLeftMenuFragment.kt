@@ -19,8 +19,11 @@ import org.cxct.sportlottery.view.setColors
 class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, FragmentSportLeftMenuBinding> (){
     private fun getMainTabActivity() = activity as MainTabActivity
 
+    //Betting sport
     private val sportBettingFragment=LeftSportBetFragment()
+    //滚球
     private val inPlayFragment by lazy { LeftInPlayFragment() }
+    //其他
     private val othersFragment by lazy { LeftOthersFragment() }
 
     override fun onInitView(view: View) =binding.run {
@@ -33,14 +36,15 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
         linearBetting.onClick {
             replaceTab(0)
         }
-        //click In play
+        //click 滚球
         tvTabInPlay.onClick {
             replaceTab(1)
         }
-        //click others
+        //click 其他
         linearOthers.onClick {
             replaceTab(2)
         }
+        //登录注册
         tvLogin.onClick {
             LoginOKActivity.startRegist(requireContext())
             close()
@@ -49,6 +53,7 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
 
     override fun onInitData() {
         super.onInitData()
+        //默认选中sport betting
        binding.linearBetting.performClick()
         reloadData()
     }
@@ -67,23 +72,17 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
                 tvUserName.visible()
                 tvUserBalance.visible()
                 tvLogin.gone()
+                //用户名
+                tvUserName.text="${viewModel.userInfo.value?.userName} "
+                //余额
+                tvUserBalance.text="₱ ${viewModel.userMoney.value} "
             }else{
                 //未登录
                 tvLogin.visible()
                 tvUserName.gone()
                 tvUserBalance.gone()
             }
-
-            viewModel.userInfo.value?.let {
-                //用户名
-                tvUserName.text=it.userName
-            }
-            viewModel.userMoney.value?.let {
-                //余额
-                tvUserBalance.text="₱ $it"
-            }
         }
-
     }
 
     /**
@@ -98,11 +97,11 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
                 transaction.replace(R.id.frameContent,sportBettingFragment)
             }
             1->{
-                //in-play
+                //滚球
                 transaction.replace(R.id.frameContent,inPlayFragment)
             }
             2->{
-                //others
+                //其他
                 transaction.replace(R.id.frameContent,othersFragment)
             }
         }

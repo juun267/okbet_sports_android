@@ -129,6 +129,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constrainResults"
                 android:layout_width="match_parent"
                 android:layout_height="40dp">
 
@@ -146,7 +147,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingStart="10dp"
-                    android:text="Results"
+                    android:text="@string/game_result"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/ivResults"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -172,6 +173,7 @@
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constrainRules"
                 android:layout_width="match_parent"
                 android:layout_height="40dp">
 
@@ -254,6 +256,7 @@
             android:layout_height="32dp">
 
             <TextView
+                android:id="@+id/tvDay"
                 android:textSize="12sp"
                 android:textColor="@color/color_FFFFFF"
                 android:text="Day"
@@ -264,6 +267,7 @@
 
 
             <TextView
+                android:id="@+id/tvNight"
                 android:textSize="12sp"
                 android:textColor="@color/color_000000"
                 android:text="Night"

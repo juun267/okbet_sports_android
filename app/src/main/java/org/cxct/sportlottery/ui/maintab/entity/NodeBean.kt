@@ -1,3 +1,3 @@
 package org.cxct.sportlottery.ui.maintab.entity
 
-class NodeBean(val name:String,val select:Boolean=false,val icon:Int?=null)
+class NodeBean(val name:String,val data:Any="",var select:Boolean=false,val icon:Int?=null)

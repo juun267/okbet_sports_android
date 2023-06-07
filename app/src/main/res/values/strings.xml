@@ -271,7 +271,7 @@
     <string name="bet_detail">Bet Slip details</string>
     <string name="bet_time2">Betting time</string>
     <string name="at_start_remain_minute">%1$s Minute</string>
-    <string name="date_row_all">ALL DATES</string>
+    <string name="date_row_all">All Dates</string>
     <string name="date_row_today">Matches today</string>
     <string name="ou_hdp_1x2_title">Single</string>
     <string name="odd_button_ou_o">Over</string>
@@ -1098,7 +1098,7 @@
     <string name="str_if_accept_odds_changes_des3">3. Not accept odds changes - if the latest odds are different from the odds you selected, we will not generate a slip and and remind you of the odds change。</string>
     <string name="str_ok_i_got_it">Ok, I see</string>
     <string name="str_return_last_step">Last step</string>
-    <string name="str_bet_other_game">Bet other market</string>
+    <string name="str_bet_other_game">Bet other</string>
     <string name="str_odds_changed">odds changed</string>
     <string name="str_bet_slip_not_confirm_for_a_long_time">Bet slip not confirm for a long time</string>
     <string name="str_exceeding_limit_for_the_event_or_market">Your stake exceed the max limit</string>
@@ -1470,4 +1470,7 @@
     <string name="N935">Search for league team names</string>
     <string name="C001">Search</string>
     <string name="D037">Cancel</string>
+    <string name="N930">Tomorrow</string>
+    <string name="N931">The day after</string>
+    <string name="N932">After</string>
 </resources>
