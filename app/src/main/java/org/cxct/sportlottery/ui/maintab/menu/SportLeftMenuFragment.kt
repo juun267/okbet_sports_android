@@ -19,8 +19,11 @@ import org.cxct.sportlottery.view.setColors
 class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, FragmentSportLeftMenuBinding> (){
     private fun getMainTabActivity() = activity as MainTabActivity
 
+    //Betting sport
     private val sportBettingFragment=LeftSportBetFragment()
+    //滚球
     private val inPlayFragment by lazy { LeftInPlayFragment() }
+    //其他
     private val othersFragment by lazy { LeftOthersFragment() }
 
     override fun onInitView(view: View) =binding.run {

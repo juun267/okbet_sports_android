@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab.menu
 
 import android.view.View
 import org.cxct.sportlottery.databinding.FragmentLeftOthersBinding
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
 
@@ -13,9 +14,9 @@ class LeftOthersFragment:BindingSocketFragment<SportLeftMenuViewModel,FragmentLe
 
     override fun onInitData() {
         super.onInitData()
-        binding.nodeHandicap.setNodeData("Handicap Setting", viewModel.getHandicapData())
-        binding.nodeBetRule.setNodeData("Handicap Setting2", viewModel.getHandicapData())
-        binding.nodeLanguage.setNodeData("Handicap Setting3", viewModel.getHandicapData())
+        binding.nodeHandicap.setNodeData("Handicap Setting", viewModel.getHandicapConfig())
+        binding.nodeBetRule.setNodeData("Betting Rules", viewModel.getHandicapData())
+        binding.nodeLanguage.setNodeData("Language Selection", viewModel.getHandicapData())
 
     }
 }

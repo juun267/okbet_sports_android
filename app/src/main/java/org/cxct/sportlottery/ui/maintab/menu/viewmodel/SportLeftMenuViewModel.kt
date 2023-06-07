@@ -9,6 +9,7 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.MyFavoriteRepository
 import org.cxct.sportlottery.repository.SportMenuRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.maintab.entity.NodeBean
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
@@ -37,5 +38,19 @@ class SportLeftMenuViewModel(
         dataList.add(NodeBean("European Handicap"))
         dataList.add(NodeBean("European Handicap"))
         return dataList
+    }
+
+
+    /**
+     * 获取盘口配置
+     */
+    fun getHandicapConfig():ArrayList<NodeBean>{
+        val handicapConfig=sConfigData?.handicapShow?.split(",")?.filter { it.isNotEmpty() }
+        val handicapList= arrayListOf<NodeBean>()
+        handicapConfig?.forEach {
+            val tempNode=NodeBean(it)
+            handicapList.add(tempNode)
+        }
+        return handicapList
     }
 }
