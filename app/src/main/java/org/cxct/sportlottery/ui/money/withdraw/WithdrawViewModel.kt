@@ -729,19 +729,20 @@ class WithdrawViewModel(
     }
 
     private fun checkInputCompleteByWithdraw(){
-        _submitEnable.value = withdrawAmountMsg.value.isNullOrEmpty() == true &&
+        LogUtil.d("checkInputCompleteByWithdraw="+withdrawAmountMsg.value+","+withdrawPasswordMsg.value)
+        _submitEnable.value = withdrawAmountMsg.value?.isEmpty() == true &&
                 withdrawPasswordMsg.value?.isEmpty() == true
     }
 
     var curTransferType: TransferType? = null
      set(value){
         field = value
-        _createNameErrorMsg.value = null
-        _bankCardNumberMsg.value = null
-        _networkPointMsg.value = null
-        _withdrawPasswordMsg.value = null
-        _walletAddressMsg.value = null
-        _phoneNumberMsg.value = null
+        _createNameErrorMsg = MutableLiveData()
+        _bankCardNumberMsg = MutableLiveData()
+        _networkPointMsg = MutableLiveData()
+        _withdrawPasswordMsg = MutableLiveData()
+        _walletAddressMsg = MutableLiveData()
+        _phoneNumberMsg = MutableLiveData()
      }
 
     fun getWithdrawHint() {
@@ -1103,9 +1104,9 @@ class WithdrawViewModel(
     }
 
     fun resetWithdrawPage() {
-        _withdrawAmountMsg.value = ""
-        _withdrawPasswordMsg.value = ""
-        _withdrawAppointmentMsg.value = ""
+        _withdrawAmountMsg = MutableLiveData()
+        _withdrawPasswordMsg = MutableLiveData()
+        _withdrawAppointmentMsg = MutableLiveData()
         _withdrawAddResult = MutableLiveData<WithdrawAddResult>()
     }
 

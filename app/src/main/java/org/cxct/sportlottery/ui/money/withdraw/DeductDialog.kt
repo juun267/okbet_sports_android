@@ -4,10 +4,16 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.InsetDrawable
 import android.os.Bundle
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
+import android.text.style.TextAppearanceSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
+import com.didichuxing.doraemonkit.util.SpanUtils
+import com.drake.spannable.setSpan
 import kotlinx.android.synthetic.main.dialog_commission_info.*
 import kotlinx.android.synthetic.main.dialog_commission_info.btn_close
 import kotlinx.android.synthetic.main.dialog_deduct.*
@@ -15,6 +21,8 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.withdraw.uwcheck.CheckList
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.LogUtil
+import org.cxct.sportlottery.util.Spanny
 import org.cxct.sportlottery.util.TextUtil
 
 class DeductDialog(val checkList: CheckList, val onConfirm: ()->Unit): DialogFragment() {
@@ -31,11 +39,16 @@ class DeductDialog(val checkList: CheckList, val onConfirm: ()->Unit): DialogFra
         dialog?.setCanceledOnTouchOutside(true)
         dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         dialog?.window?.setBackgroundDrawable(InsetDrawable(ColorDrawable(Color.TRANSPARENT), 40.dp))
-        tvDescription.text = String.format(getString(R.string.P070,"${checkList.unFinishValidAmount ?: 0}","${checkList.deductMoney ?: 0}"))
-        progressBar.progress = (checkList.finishValidAmount?:0).toInt()
-        progressBar.max = (checkList.validCheckAmount?:0).toInt()
-        tvCurrent.text = "${sConfigData?.systemCurrencySign} ${checkList.finishValidAmount?:0}"
-        tvTotal.text = "${sConfigData?.systemCurrencySign} ${checkList.validCheckAmount?:0}"
+        var deductMoney = "${(checkList.deductMoney?:0).toInt()}"
+        val desp = String.format(getString(R.string.P070,"${(checkList.unFinishValidAmount?:0).toInt()}",deductMoney))
+        val startIndex= desp.lastIndexOf(deductMoney)
+        val endIndex = startIndex + deductMoney.length
+        Spanny(desp).apply {
+            setSpan(ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.color_0D2245)),startIndex,endIndex,Spanny.SPAN_EXCLUSIVE_EXCLUSIVE)
+            setSpan(StyleSpan(android.graphics.Typeface.BOLD),startIndex,endIndex,Spanny.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }.let {
+            tvDescription.text = it
+        }
     }
 
     private fun initButton() {
