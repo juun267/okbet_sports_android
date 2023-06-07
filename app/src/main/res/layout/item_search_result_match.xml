@@ -2,26 +2,35 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="81dp"
+    android:foreground="@drawable/fg_ripple"
     android:orientation="vertical"
-    android:paddingLeft="24dp"
-    android:paddingRight="20dp"
-    android:foreground="@drawable/fg_ripple">
+    android:paddingHorizontal="12dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <TextView
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/din_bold"
-            android:text="VS"
-            android:textColor="@color/color_A7B2C4"
-            android:textSize="@dimen/textSize16sp"
-            android:textStyle="bold" />
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/ivSRMAwayLogo"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="25dp"
+                android:background="@color/color_6D7693" />
+
+            <ImageView
+                android:id="@+id/ivSRMHomeLogo"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginBottom="25dp"
+                android:background="@color/color_025BE8" />
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,8 +47,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:lineSpacingExtra="4dp"
+                android:maxLines="1"
                 android:text="Lorem ipsum UFC dolor sit amet,"
-                android:textColor="@color/color_535D76"
+                android:textColor="@color/color_14366B"
                 android:textSize="@dimen/margin_14"
                 app:highlightColor="@color/transparent"
                 app:highlightRadius="0dp"
@@ -53,8 +63,9 @@
                 android:layout_marginTop="6dp"
                 android:gravity="start"
                 android:lineSpacingExtra="4dp"
+                android:maxLines="1"
                 android:text="Lorem ipsum UFC dolor sit amet,"
-                android:textColor="@color/color_535D76"
+                android:textColor="@color/color_14366B"
                 android:textSize="@dimen/margin_14"
                 app:highlightColor="@color/transparent"
                 app:highlightRadius="0dp"
