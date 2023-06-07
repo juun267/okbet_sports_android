@@ -4,13 +4,15 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.chad.library.adapter.base.entity.node.BaseNode
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import kotlinx.android.synthetic.main.item_sport_odd.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.MatchSource
@@ -21,11 +23,9 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.network.odds.list.TimeCounting
-import org.cxct.sportlottery.ui.sport.common.LeagueOddListener
 import org.cxct.sportlottery.ui.sport.common.OddButtonPagerAdapter
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
-import org.cxct.sportlottery.ui.sport.vh.ViewHolderTimer
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.needCountStatus
 import org.cxct.sportlottery.util.setTeamLogo
@@ -37,7 +37,9 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding): BaseViewHolder(bi
 
     companion object {
 
-        fun of(parent: ViewGroup, pool: RecyclerView.RecycledViewPool, lifecycleOwner: LifecycleOwner): SportMatchVH {
+        fun of(parent: ViewGroup, pool: RecyclerView.RecycledViewPool,
+               onItemClick:(Int, View, BaseNode) -> Unit,
+               lifecycleOwner: LifecycleOwner): SportMatchVH {
             val context = parent.context
             val biding = ItemSportOdd2Binding.inflate(LayoutInflater.from(context), parent, false)
             val rcv = biding.rvLeagueOddBtnPagerMain
@@ -45,17 +47,37 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding): BaseViewHolder(bi
             rcv.layoutManager = CustomLinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false).apply {
                 isAutoMeasureEnabled = false
             }
-
+            biding.hIndicator.run {
+                setIndicatorColor(context.getColor(R.color.color_BEC7DC), context.getColor(R.color.color_025BE8))
+                val height = 4.dp
+                itemWidth = 10.dp
+                itemHeight = height
+                mRadius = itemWidth
+                setSpacing(height)
+                biding.hIndicator.itemClickListener = { rcv.smoothScrollToPosition(it) }
+            }
             val oddButtonPagerAdapter = OddButtonPagerAdapter(context)
             oddButtonPagerAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT
+            rcv.doOnLayout {
+                rcv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    val itemWidth = rcv.measuredWidth.toFloat() // 这个很重要，item的宽度要刚好等于recyclerview的宽度，不然PagerSnapHelper翻页会存在滑动偏差导致指示器位置计算的不准
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        val scrollX = recyclerView.computeHorizontalScrollOffset()
+                        val positionFloat = scrollX / itemWidth
+                        val position = positionFloat.toInt()
+                        val progress = positionFloat - position
+                        biding.hIndicator.onPageScrolled(position, progress, scrollX)
+                    }
+                })
+            }
+
             rcv.adapter = oddButtonPagerAdapter
             rcv.setHasFixedSize(true)
             (rcv.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             OverScrollDecoratorHelper.setUpOverScroll(rcv, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
-            biding.hIndicator.bindRecyclerView(rcv)
+            PagerSnapHelper().attachToRecyclerView(rcv)
             return SportMatchVH(biding).apply { lifecycleOwner.doOnDestory { onStop() } }
         }
-        
     }
 
     private val sportMatchTimer by lazy { SportMatchTimer() }
@@ -372,8 +394,10 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding): BaseViewHolder(bi
     fun setupOddsButton(matchType: MatchType,
                         item: MatchOdd,
                         oddsType: OddsType) {
-        (binding.rvLeagueOddBtnPagerMain.adapter as OddButtonPagerAdapter).matchType = matchType
+        val adapter = (binding.rvLeagueOddBtnPagerMain.adapter as OddButtonPagerAdapter)
+        adapter.matchType = matchType
         updateOddsButton(item, oddsType)
+        binding.hIndicator.resetItemCount(adapter.itemCount)
     }
 
     fun updateOddsButton(item: MatchOdd, oddsType: OddsType)
@@ -382,13 +406,13 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding): BaseViewHolder(bi
             item.oddsSort,
             item.playCateNameMap,
             item.betPlayCateNameMap,
-            null,
             item
         )
 
         stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT
         this.oddsType = oddsType
         this.odds = item.oddsMap ?: mutableMapOf()
+        binding.hIndicator.resetItemCount(itemCount)
     }
 
     fun updateMatchInfo(matchInfo: MatchInfo?, matchType: MatchType) = binding.run {

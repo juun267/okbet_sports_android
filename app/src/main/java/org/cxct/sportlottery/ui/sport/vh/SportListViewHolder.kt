@@ -520,7 +520,6 @@ class SportListViewHolder constructor(
                 item.oddsSort,
                 item.playCateNameMap,
                 item.betPlayCateNameMap,
-                null,
                 item
             )
             oddButtonPagerAdapter.apply {

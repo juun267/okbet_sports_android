@@ -4,22 +4,29 @@ import android.content.Context
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import splitties.views.dsl.core.add
+import splitties.views.dsl.core.button
 
-class OddBtnList @JvmOverloads constructor(
+class PlayCateView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
+    private val homeText: TextView
+    private val awayText: TextView
+    private val drawText: TextView
     val oddBtnType: TextView
     var oddBtnHome: OddsButton2
     val oddBtnAway: OddsButton2
@@ -35,7 +42,19 @@ class OddBtnList @JvmOverloads constructor(
     }
 
     init {
-        orientation = VERTICAL
+        12.dp.let { setPadding(it, 0, it, 0) }
+
+        val nameLayout = LinearLayout(context)
+        val param = LayoutParams(0, 16.dp, 1f)
+        homeText = createNameTextView()
+        nameLayout.add(homeText, param)
+        drawText = createNameTextView()
+        nameLayout.add(drawText, param)
+        awayText = createNameTextView()
+        nameLayout.add(awayText, param)
+
+        addView(nameLayout)
+
         oddBtnType = AppCompatTextView(context).apply {
             setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10f)
             setTextColor(context.getColor(R.color.color_00181E))
@@ -52,6 +71,15 @@ class OddBtnList @JvmOverloads constructor(
 
         addView(oddBtnHome, oddBtnParams)
         addView(oddBtnAway, oddBtnParams)
+        layoutParams = ViewGroup.LayoutParams(200.dp, -1)
+    }
+
+
+    private fun createNameTextView(): TextView {
+        val text = AppCompatTextView(context)
+        text.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12f)
+        text.setTextColor(getColor(R.color.color_6D7693))
+        return  text
     }
 
     fun getOtherOddsBtn(): OddsButton2 {

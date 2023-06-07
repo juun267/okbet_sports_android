@@ -7,7 +7,9 @@ import android.view.animation.BounceInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import androidx.annotation.ColorRes
 import androidx.annotation.LayoutRes
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.ViewPropertyAnimatorListenerAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,27 +22,27 @@ import java.util.regex.Pattern
 /**
  * 关于View的一些扩展函数
  */
-fun View.show() {
+inline fun View.show() {
     this.visibility = View.VISIBLE
 }
 
-fun View.hide() {
+inline fun View.hide() {
     this.visibility = View.GONE
 }
 
-fun View.visible() {
+inline fun View.visible() {
     this.visibility = View.VISIBLE
 }
 
-fun View.gone() {
+inline fun View.gone() {
     this.visibility = View.GONE
 }
 
-fun View.inVisible() {
+inline fun View.inVisible() {
     this.visibility = View.INVISIBLE
 }
 
-fun setViewVisible(vararg views: View) {
+inline fun setViewVisible(vararg views: View) {
     views.forEach { it.visibility = View.VISIBLE }
 }
 
@@ -48,12 +50,16 @@ fun setOnClickListeners(vararg view: View, onClick: (View) -> Unit) {
     view.forEach { it.setOnClickListener(onClick) }
 }
 
-fun setViewGone(vararg views: View) {
+inline fun setViewGone(vararg views: View) {
     views.forEach { it.visibility = View.GONE }
 }
 
-fun setViewInvisible(vararg views: View) {
+inline fun setViewInvisible(vararg views: View) {
     views.forEach { it.visibility = View.INVISIBLE }
+}
+
+inline fun View.getColor(@ColorRes id: Int): Int {
+    return ContextCompat.getColor(context, id)
 }
 
 //私有扩展属性，允许2次点击的间隔时间

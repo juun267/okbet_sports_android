@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
@@ -13,8 +14,9 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import splitties.views.dsl.core.button
 
-class OddBtnList @JvmOverloads constructor(
+class PlayCateView2 @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
@@ -35,7 +37,7 @@ class OddBtnList @JvmOverloads constructor(
     }
 
     init {
-        orientation = VERTICAL
+        12.dp.let { setPadding(it, 0, it, 0) }
         oddBtnType = AppCompatTextView(context).apply {
             setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10f)
             setTextColor(context.getColor(R.color.color_00181E))
@@ -52,6 +54,13 @@ class OddBtnList @JvmOverloads constructor(
 
         addView(oddBtnHome, oddBtnParams)
         addView(oddBtnAway, oddBtnParams)
+        layoutParams = ViewGroup.LayoutParams(200.dp, -1)
+    }
+
+    private fun inflatPlaycateName() {
+        button {
+
+        }
     }
 
     fun getOtherOddsBtn(): OddsButton2 {

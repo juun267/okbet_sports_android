@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.entity.node.BaseNode
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
@@ -22,13 +23,13 @@ import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.sport.list.SportLeagueAdapter
 import org.cxct.sportlottery.ui.sport.oddsbtn.OddBtnList
 import org.cxct.sportlottery.ui.sport.oddsbtn.OddsButton2
+import org.cxct.sportlottery.ui.sport.oddsbtn.PlayCateView
 import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TextUtil
 
 
-class OddButtonPagerAdapter(val context: Context
-) :RecyclerView.Adapter<OddButtonPagerViewHolder>(
+class OddButtonPagerAdapter(val context: Context) :RecyclerView.Adapter<OddButtonPagerViewHolder>(
 
 ) {
     private var matchInfo: MatchInfo?= null
@@ -38,7 +39,7 @@ class OddButtonPagerAdapter(val context: Context
     private var matchOdd: MatchOdd? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OddButtonPagerViewHolder {
-        return OddButtonPagerViewHolder(OddBtnList(parent.context), oddStateRefreshListener)
+        return OddButtonPagerViewHolder(PlayCateView(parent.context), oddStateRefreshListener)
     }
 
     override fun onViewRecycled(holder: OddButtonPagerViewHolder) {
@@ -51,8 +52,7 @@ class OddButtonPagerAdapter(val context: Context
     }
 
     fun setData(matchInfo: MatchInfo?, oddsSort: String?, playCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
-                betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?, getPlaySelectedCodeSelectionType: Int?,
-                matchOdd: MatchOdd?
+                betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?, matchOdd: MatchOdd?
     ) {
         this.matchInfo = matchInfo
 
@@ -523,8 +523,8 @@ class OddButtonPagerAdapter(val context: Context
 }
 
 class OddButtonPagerViewHolder(
-    val oddBtnList: OddBtnList,
-    private val oddStateRefreshListener: OddStateChangeListener,
+    val oddBtnList: PlayCateView,
+    private val oddStateRefreshListener: OddStateChangeListener
 ) : OddStateViewHolder(oddBtnList) {
 
     fun update(
@@ -682,6 +682,7 @@ class OddButtonPagerViewHolder(
 
         oddsButton.setOnClickListener {
             itemOdd?.let { odd ->
+
                 //it.isSelected = !it.isSelected
                 oddButtonListener?.onClickBet(
                     oddsButton,

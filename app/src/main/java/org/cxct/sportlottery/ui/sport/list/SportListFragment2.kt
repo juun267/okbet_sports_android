@@ -63,7 +63,9 @@ class SportListFragment2
 
     private val sportLeagueAdapter2 by lazy {
         SportLeagueAdapter2(matchType, this) { position, view, item ->
+            if (item is Odd) {
 
+            }
         }
     }
 
@@ -174,10 +176,6 @@ class SportListFragment2
     private inline fun setMatchInfo(name: String, num: String) {
         binding.tvSportName.text = name
         binding.tvMatchNum.text = num
-    }
-
-    private fun navMatchDetailPage(matchInfo: MatchInfo?) = matchInfo?.let {
-        SportDetailActivity.startActivity(requireContext(), it, matchType)
     }
 
     override fun onInitView(view: View){
