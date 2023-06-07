@@ -1349,4 +1349,6 @@
     <string name="C016">HÔM NAY</string>
     <string name="P066">Ví dụ</string>
     <string name="P068">Tải lên ảnh Selfie cùng Căn cước</string>
+    <string name="P069">Nhắc Trừ tiền</string>
+    <string name="P070">Vì bạn vẫn còn %s Tiền cược chưa thanh toán, %s phí DV sẽ được tính!</string>
 </resources>

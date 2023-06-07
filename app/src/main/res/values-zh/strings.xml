@@ -1408,4 +1408,6 @@
     <string name="C016">今日</string>
     <string name="P066">事例</string>
     <string name="P068">上传手持证件照片</string>
+    <string name="P069">扣除金额提醒</string>
+    <string name="P070">由于您还有 %s 的投注流水未完成，将收取 %s 的手续费！</string>
 </resources>
