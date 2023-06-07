@@ -203,7 +203,7 @@
                 <!--                    app:layout_constraintStart_toEndOf="@+id/tv_bet"-->
                 <!--                    app:layout_constraintTop_toTopOf="parent" />-->
 
-                <org.cxct.sportlottery.view.edittext.BetEditText
+                <org.cxct.sportlottery.ui.betList.view.BetEditText
                     android:id="@+id/etBet"
                     android:layout_width="0dp"
                     android:layout_height="32dp"
