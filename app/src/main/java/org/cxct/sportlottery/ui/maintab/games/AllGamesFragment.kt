@@ -64,7 +64,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         initCollectLayout()
         initSportObserve()
         //初始化热门赛事
-        binding.hotMatchView.onCreate(viewModel.publicityRecommend,this)
+        binding.hotMatchView.onCreate(viewModel.publicityRecommend,viewModel.oddsType,this)
         viewModel.getRecommend()
     }
 
