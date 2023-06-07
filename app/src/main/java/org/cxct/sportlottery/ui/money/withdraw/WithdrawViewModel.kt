@@ -729,7 +729,6 @@ class WithdrawViewModel(
     }
 
     private fun checkInputCompleteByWithdraw(){
-        LogUtil.d("checkInputCompleteByWithdraw="+withdrawAmountMsg.value+","+withdrawPasswordMsg.value)
         _submitEnable.value = withdrawAmountMsg.value?.isEmpty() == true &&
                 withdrawPasswordMsg.value?.isEmpty() == true
     }
