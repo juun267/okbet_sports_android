@@ -1331,4 +1331,5 @@
     <string name="picture_camera_roll" tools:ignore="ExtraTranslation">CameraRoll</string>
     <string name="P069">Paalala sa halaga ng bawas</string>
     <string name="P070">Dahil mayroon ka pang %s natitirang rollover sa pagtaya, %s sisingilin ang processing fee!</string>
+    <string name="p090">Salamat sa pag-verify sa amin, mangyaring maghintay ng hanggang 24 oras para maproseso namin ang iyong kahilingan.</string>
 </resources>

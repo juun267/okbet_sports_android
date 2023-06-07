@@ -1479,4 +1479,5 @@
     <string name="P068">Upload Selfie Photo With Holding Valid ID</string>
     <string name="P069">Deduction amount reminder</string>
     <string name="P070">Since you still have %s outstanding betting rollover, %s processing fee will be charged!</string>
+    <string name="p090">Thank you for verifying with us,please kindly wait up to 24 hours for us to process your request.</string>
 </resources>
