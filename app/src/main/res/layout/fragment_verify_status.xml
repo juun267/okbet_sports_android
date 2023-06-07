@@ -24,6 +24,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
+            android:visibility="gone"
+            tools:visibility="visible"
             android:orientation="vertical">
 
             <ImageView
@@ -106,12 +108,13 @@
                 android:src="@drawable/ic_icon_timev_01" />
 
             <TextView
+                android:id="@+id/tvVerifyProgress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginVertical="10dp"
                 android:gravity="center"
-                android:text="\t\tThank you for verifying with us, please kindly wait up to 24 hours for us to process your request."
+                android:text="@string/p090"
                 android:textColor="@color/color_DB6372"
                 android:textSize="@dimen/textSize16sp" />
 

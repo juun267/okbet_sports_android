@@ -1329,5 +1329,6 @@
     <string name="picture_camera_roll" tools:ignore="ExtraTranslation">CameraRoll</string>
     <string name="P066">Halimbawa</string>
     <string name="P068">Mag-upload ng selfie photo na may hawak na valid ID</string>
+    <string name="p090">Salamat sa pag-verify sa amin, mangyaring maghintay ng hanggang 24 oras para maproseso namin ang iyong kahilingan.</string>
     // 图片选择库中菲语这个会莫名变为中文
 </resources>

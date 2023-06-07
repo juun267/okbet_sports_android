@@ -52,6 +52,7 @@ class VerifyStatusFragment :
                     else -> {
                         layout_verify_success.visibility = View.GONE
                         layout_verify_progress.visibility = View.VISIBLE
+                        tvVerifyProgress.text = "\t\t" + getString(R.string.p090)
                     }
                 }
 
