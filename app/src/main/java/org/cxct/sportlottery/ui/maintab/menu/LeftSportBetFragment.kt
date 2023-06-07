@@ -10,7 +10,7 @@ import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 
 class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,FragmentLeftSportBetBinding>() {
-
+    //热门赛事 adapter
     private val hotMatchAdapter= RecyclerLeftMatchesAdapter()
     //需求暂时不要做了
 //    private val classificationAdapter= RecyclerClassificationAdapter()
@@ -26,6 +26,7 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
                 matchType = MatchType.IN_PLAY,
                 true)
         }
+
     }
 
     override fun onInitData() {

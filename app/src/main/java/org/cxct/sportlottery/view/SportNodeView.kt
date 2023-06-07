@@ -1,8 +1,8 @@
 package org.cxct.sportlottery.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -58,11 +58,44 @@ class SportNodeView(context: Context, attrs: AttributeSet) :LinearLayout(context
     /**
      * 设置选项数据
      */
-    fun setNodeData(title:String,nodes: ArrayList<NodeBean>){
-        //标题
-        binding.tvTitle.text=title
+    fun setNodeChild(nodes: ArrayList<NodeBean>):SportNodeView{
         //item子项
         mNodeList=nodes
         childAdapter.data= mNodeList
+        return this
     }
+
+
+    /**
+     * 设置title
+     */
+    fun setTitle(title:String):SportNodeView{
+        //标题
+        binding.tvTitle.text=title
+        return  this
+    }
+
+
+    /**
+     * 选中点击
+     */
+    @SuppressLint("NotifyDataSetChanged")
+    fun  setOnChildClick(block:(data:NodeBean)->Unit):SportNodeView{
+        childAdapter.setOnItemClickListener{_,_,position->
+            val item=childAdapter.data[position]
+            clearSelect()
+            item.select=true
+            childAdapter.notifyDataSetChanged()
+            block(item)
+        }
+        return this
+    }
+
+
+    private fun clearSelect(){
+        childAdapter.data.forEach {
+            it.select=false
+        }
+    }
+
 }
