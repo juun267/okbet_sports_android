@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.ui.maintab.games.view.HomeFollowView
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.setServiceClick
@@ -89,4 +91,11 @@ class HomeButtomView@JvmOverloads constructor(context: Context, attrs: Attribute
         findViewById<View>(R.id.tvLiveChat).setServiceClick(fragmentManager)
         findViewById<View>(R.id.tvContactUs).setServiceClick(fragmentManager)
     }
+
+    /**
+     * 底部显示社交view  首页需要
+     */
+//    fun showFollowView(){
+//        findViewById<HomeFollowView>(R.id.homeFollowView).showFollowView()
+//    }
 }

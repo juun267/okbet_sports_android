@@ -16,5 +16,9 @@ data class UploadVerifyPhotoKYCRequest(
     @Json(name = "identityTypeBackup")
     val identityTypeBackup: Int?= null,
     @Json(name = "identityNumberBackup")
-    val identityNumberBackup: String?= null
+    val identityNumberBackup: String?= null,
+    @Json(name = "verifyPhoto1")
+    val verifyPhoto1: String?= null,
+    @Json(name = "verifyPhoto2")
+    val verifyPhoto2: String?= null//后台的预留字段 暂时不用
 )

@@ -3,18 +3,14 @@ package org.cxct.sportlottery.ui.sport.detail
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import com.shuyu.gsyvideoplayer.GSYVideoManager
@@ -28,7 +24,6 @@ import org.cxct.sportlottery.databinding.ViewToolbarDetailLiveBinding
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.OKVideoPlayer
 import org.cxct.sportlottery.view.webView.OkWebChromeClient
-import org.cxct.sportlottery.view.webView.OkWebView
 import org.cxct.sportlottery.view.webView.OkWebViewClient
 import org.cxct.sportlottery.view.webView.WebViewCallBack
 

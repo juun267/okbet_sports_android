@@ -52,7 +52,7 @@ class GameChildAdapter(private val onFavoriate: (View, OKGameBean) -> Unit,
 
     override fun onBinding(position: Int, binding: ItemGameChildBinding, item: OKGameBean) {
         binding.apply {
-            ivCover.load(item.imgGame, R.drawable.img_banner01)
+            ivCover.load(item.imgGame, R.drawable.ic_okgames_nodata)
             tvName.text = item.gameName
             tvFirmName.text = item.firmName
             ivFav.isSelected = item.markCollect
