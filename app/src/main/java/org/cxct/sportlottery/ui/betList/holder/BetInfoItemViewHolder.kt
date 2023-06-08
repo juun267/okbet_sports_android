@@ -552,6 +552,7 @@ class BetInfoItemViewHolder(
                 val playCateName = itemData.betPlayCateNameMap?.getNameMap(
                     itemData.matchOdd.gameType, itemData.matchOdd.playCode
                 )?.get(LanguageManager.getSelectLanguage(root.context).key) ?: ""
+
                 tvNameText = when (inPlay && itemData.matchType != MatchType.OUTRIGHT) {
                     true -> {
                         root.context.getString(

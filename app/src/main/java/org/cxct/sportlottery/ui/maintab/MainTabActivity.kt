@@ -70,7 +70,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         FragmentHelper(
             supportFragmentManager, R.id.fl_content, arrayOf(
                 Pair(HomeFragment::class.java, null),
-                Pair(SportFragment2::class.java, null),
+                Pair(SportFragment::class.java, null),
                 Pair(BetRecordFragment::class.java, null),
                 Pair(FavoriteFragment::class.java, null),
                 Pair(ProfileCenterFragment::class.java, null),

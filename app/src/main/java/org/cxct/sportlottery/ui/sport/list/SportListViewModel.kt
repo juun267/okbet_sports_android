@@ -560,6 +560,7 @@ class SportListViewModel(
             MatchType.PARLAY -> menuData.menu.parlay.items
             MatchType.OUTRIGHT -> menuData.menu.outright.items
             MatchType.AT_START -> menuData.atStart.items
+            MatchType.CS -> menuData.menu.cs.items
             MatchType.EPS -> menuData.menu.eps?.items ?: listOf()
 
             else -> listOf()

@@ -113,13 +113,7 @@ class BetReceiptFragment :
                     betResultData?.parlayBets ?: listOf(),
                     this@BetReceiptFragment.betParlayList ?: listOf(),
                     betResultData?.betConfirmTime ?: 0
-                ) { it2 ->
-                    if (it2 == BetReceiptDiffAdapter.ItemType.SINGLE) {
-                        line_shadow.gone()
-                    } else {
-                        line_shadow.visible()
-                    }
-                }
+                )
             }
         }
         //投注結果
@@ -139,13 +133,7 @@ class BetReceiptFragment :
                                     betResultData?.parlayBets ?: listOf(),
                                     this@BetReceiptFragment.betParlayList ?: listOf(),
                                     betResultData?.betConfirmTime ?: 0
-                                ) { it2 ->
-                                    if (it2 == BetReceiptDiffAdapter.ItemType.SINGLE) {
-                                        line_shadow.gone()
-                                    } else {
-                                        line_shadow.visible()
-                                    }
-                                }
+                                )
                             }
                         }
                     } else {
@@ -257,13 +245,7 @@ class BetReceiptFragment :
                         betResultData?.parlayBets ?: listOf(),
                         this@BetReceiptFragment.betParlayList ?: listOf(),
                         betResultData?.betConfirmTime ?: 0
-                    ) { it2 ->
-                        if (it2 == BetReceiptDiffAdapter.ItemType.SINGLE) {
-                            line_shadow.gone()
-                        } else {
-                            line_shadow.visible()
-                        }
-                    }
+                    )
                 }
                 interfaceStatusChangeListener =
                     object : BetReceiptDiffAdapter.InterfaceStatusChangeListener {
@@ -364,6 +346,7 @@ class BetReceiptFragment :
 
             tv_result_status.text = getString(R.string.your_bet_order_success)
             btnLastStep.text = getString(R.string.commission_detail)
+
             btnLastStep.setTextColor(resources.getColor(R.color.color_414655, null))
             btnLastStep.background =
                 ResourcesCompat.getDrawable(resources, R.drawable.bg_radius_8_check_bet, null)

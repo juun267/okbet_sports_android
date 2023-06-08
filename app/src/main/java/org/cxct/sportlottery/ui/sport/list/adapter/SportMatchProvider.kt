@@ -22,13 +22,12 @@ class SportMatchProvider(private val adapter: SportLeagueAdapter2,
         SportLeagueAdapter.ItemType.ITEM.ordinal,150) }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        return SportMatchVH.of(parent, oddBtnCachePool, adapter.lifecycleOwner)
+        return SportMatchVH.of(parent, oddBtnCachePool, onItemClick, adapter.lifecycleOwner)
     }
 
     override fun convert(helper: BaseViewHolder, item: BaseNode) {
         val binding = (helper as SportMatchVH)
-        val matchOdd = item as MatchOdd
-        val matchInfo = item.matchInfo
+        val matchInfo = (item as MatchOdd).matchInfo
         binding.resetStatusView()
         binding.setupMatchInfo(matchInfo, adapter.matchType)
         matchInfo?.let { binding.setupMatchTimeAndStatus(it, adapter.matchType) }
@@ -38,8 +37,7 @@ class SportMatchProvider(private val adapter: SportLeagueAdapter2,
 
     override fun convert(helper: BaseViewHolder, item: BaseNode, payloads: List<Any>) {
         val binding = (helper as SportMatchVH)
-        val matchOdd = item as MatchOdd
-        val matchInfo = item.matchInfo
+        val matchInfo = (item as MatchOdd).matchInfo
         binding.updateMatchInfo(matchInfo, adapter.matchType)
         matchInfo?.let { binding.setupMatchTimeAndStatus(it, adapter.matchType) }
         binding.updateOddsButton(item, adapter.oddsType)

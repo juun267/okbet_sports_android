@@ -356,7 +356,6 @@ dependencies {
     //模糊
     implementation 'com.github.Dimezis:BlurView:version-2.0.3'
     //模糊
-    implementation 'com.github.Dimezis:BlurView:version-2.0.3'
     implementation 'com.hyman:flowlayout-lib:1.1.2'
 //    implementation("com.louiscad.splitties:splitties-fun-pack-android-base:3.0.0")
     implementation("com.louiscad.splitties:splitties-fun-pack-android-base-with-views-dsl:3.0.0")
