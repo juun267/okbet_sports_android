@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.SelectionType
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.UserDiscountChangeEvent
@@ -40,14 +41,14 @@ import org.cxct.sportlottery.service.BackService.Companion.CHANNEL_KEY
 import org.cxct.sportlottery.service.BackService.Companion.CONNECT_STATUS
 import org.cxct.sportlottery.service.BackService.Companion.SERVER_MESSAGE_KEY
 import org.cxct.sportlottery.service.BackService.Companion.mUserId
-import org.cxct.sportlottery.util.EncryptUtil
-import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.convertToIndoOdds
 import org.cxct.sportlottery.util.MatchOddUtil.convertToMYOdds
-import org.cxct.sportlottery.util.SocketUpdateUtil
-import org.cxct.sportlottery.util.sortOddsMap
+import org.cxct.sportlottery.util.MatchOddUtil.setupOddsDiscount
+import org.cxct.sportlottery.util.OddsUtil.updateBetStatus
+import org.cxct.sportlottery.util.OddsUtil.updateBetStatus_1
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -287,12 +288,12 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                     val discount = UserInfoRepository.getDiscount(userId)
                     data?.let {
                         it.setupOddDiscount(discount ?: 1.0F)
-                        SocketUpdateUtil.updateMatchOdds(it)
+                        it.oddsListToOddsMap()
                         it.updateOddsSelectedState()
                         it.filterMenuPlayCate()
                         it.sortOddsMap()
+                        SocketUpdateUtil.updateMatchOdds(it)
                     }
-
                     data?.let { onOddsEvent(it) }
 
                 } ?: run {
@@ -315,6 +316,8 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                     val discount = UserInfoRepository.getDiscount(userId)
                     data?.let {
                         it.setupOddDiscount(discount ?: 1.0F)
+                        //得在所有賠率折扣率, 水位計算完畢後再去判斷更新盤口狀態
+                        it.updateBetStatus()
                         it.updateOddsSelectedState()
                     }
                     _matchOddsChange.postValue(Event(data))
@@ -380,36 +383,48 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
         }
         BetInfoRepository.updateMatchOdd(socketEvent)
     }
-
+    private fun OddsChangeEvent.oddsListToOddsMap() {
+        odds = mutableMapOf()
+        odds = oddsList.associateBy(
+            keySelector = { it.playCateCode.toString() },
+            valueTransform = { it.oddsList?.filter { it != null }?.toMutableList() }).toMutableMap()
+    }
     private fun OddsChangeEvent.setupOddDiscount(discount: Float): OddsChangeEvent {
         this.oddsList.let { oddTypeSocketList ->
             oddTypeSocketList.forEach { oddsList ->
-                if (oddsList.playCateCode != PlayCate.LCS.value) {
-                    oddsList.oddsList?.forEach { odd ->
-                        if (odd != null && odd?.playCode != PlayCate.LCS.value) {
-                            val oddsDiscount = odd?.odds?.applyDiscount(discount)
-                            odd?.odds = odd?.odds?.applyDiscount(discount)
-
-                            if (odd?.odds == odd?.hkOdds && odd?.odds == odd?.malayOdds && odd?.odds == odd?.indoOdds) {
-                                odd?.hkOdds = oddsDiscount
-                                odd?.malayOdds = oddsDiscount
-                                odd?.indoOdds = oddsDiscount
-                            } else {
-                                odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
-                                odd?.malayOdds = odd?.hkOdds?.convertToMYOdds()
-                                odd?.indoOdds = odd?.hkOdds?.convertToIndoOdds()
-                            }
-
-                            if (oddsList.playCateCode == PlayCate.EPS.value) {
-                                odd?.extInfo =
-                                    odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
-                            }
-                        }
-                    }
+                if (oddsList.playCateCode == PlayCate.LCS.value) {
+                    oddsList.oddsList?.setupOddsDiscount(true,
+                        oddsList.playCateCode,
+                        discount)
+                } else {
+                    oddsList.oddsList?.setupOddsDiscount(false,
+                        oddsList.playCateCode,
+                        discount)
                 }
             }
         }
 
+        return this
+    }
+    private fun List<Odd?>.setupOddsDiscount(
+        isLCS: Boolean,
+        playCateCode: String?,
+        discount: Float,
+    ) {
+        this.forEach { odd ->
+            odd.setupOddsDiscount(isLCS, playCateCode, discount)
+        }
+        this?.toMutableList().updateBetStatus()
+    }
+    /**
+     * 得在所有賠率折扣率, 水位計算完畢後再去判斷更新盤口狀態
+     */
+    private fun MatchOddsChangeEvent.updateBetStatus(): MatchOddsChangeEvent {
+        this.odds?.let { oddsMap ->
+            oddsMap.forEach { (_, value) ->
+                value.odds?.updateBetStatus()
+            }
+        }
         return this
     }
 
@@ -433,7 +448,15 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
         }
         return this
     }
-
+    /**
+     * 得在所有賠率折扣率, 水位計算完畢後再去判斷更新盤口狀態
+     */
+    private fun OddsChangeEvent.updateBetStatus(): OddsChangeEvent {
+        oddsList.forEach { oddsList ->
+            oddsList.oddsList?.updateBetStatus_1()
+        }
+        return this
+    }
     private fun OddsChangeEvent.sortOddsMap() {
         this.odds.sortOddsMap()
     }
