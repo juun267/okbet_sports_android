@@ -81,7 +81,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
 
     override fun onBindViewStatus(view: View) = binding.run {
         homeTopView.setup(this@MainHomeFragment2)
-        hotMatchView.onCreate(viewModel.publicityRecommend, this@MainHomeFragment2)
+        hotMatchView.onCreate(viewModel.publicityRecommend, viewModel.oddsType,this@MainHomeFragment2)
         okGamesView.setOkGamesData(this@MainHomeFragment2)
         initBetWinsRecodeLayout()
         initObservable()

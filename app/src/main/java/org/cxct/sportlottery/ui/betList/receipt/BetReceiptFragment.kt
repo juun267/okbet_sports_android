@@ -237,7 +237,6 @@ class BetReceiptFragment :
             val layoutMana = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             layoutManager = layoutMana
             layoutMana.stackFromEnd = true
-            LogUtil.toJson(betResultData?.singleBets)
             betReceiptDiffAdapter = BetReceiptDiffAdapter().apply {
                 betResultData?.apply {
                     submit(

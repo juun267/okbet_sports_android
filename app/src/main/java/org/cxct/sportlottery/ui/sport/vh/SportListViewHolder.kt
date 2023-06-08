@@ -240,8 +240,7 @@ class SportListViewHolder constructor(
             }
         }
         with(itemView.iv_animation) {
-            isVisible =
-                TimeUtil.isTimeInPlay(item.matchInfo?.startTime) && !(item.matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
+            isVisible = !(item.matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
                     ?.getGameDetailAnimationNeedShow() == true
             setOnClickListener {
                 leagueOddListener?.onClickAnimationIconListener(

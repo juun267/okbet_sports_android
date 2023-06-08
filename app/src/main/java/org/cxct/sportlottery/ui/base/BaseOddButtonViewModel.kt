@@ -41,7 +41,9 @@ import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
+import org.cxct.sportlottery.util.MatchOddUtil.setupOddsDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
+import org.cxct.sportlottery.util.OddsUtil.updateBetStatus
 import timber.log.Timber
 
 
@@ -668,15 +670,10 @@ abstract class BaseOddButtonViewModel(
     protected fun org.cxct.sportlottery.network.odds.detail.MatchOdd.setupOddDiscount() {
         val discount = userInfo.value?.discount ?: 1F
         this.odds.forEach { (key, value) ->
-            value.odds.forEach { odd ->
-                if (!key.contains(PlayCate.LCS.value)) { //反波膽不處理折扣
-                    odd?.setupDiscount(discount)
-                }
-
-                if (key == PlayCate.EPS.value) {
-                    odd?.extInfo = odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
-                }
+            value.odds.filterNotNull()?.forEach { odd ->
+                odd.setupOddsDiscount(key == PlayCate.LCS.value, key, discount)
             }
+            value?.odds.updateBetStatus()
         }
     }
 

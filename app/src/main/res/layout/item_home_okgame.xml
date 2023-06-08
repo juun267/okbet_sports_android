@@ -37,6 +37,7 @@
             android:textStyle="bold"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
+            android:visibility="gone"
             android:ellipsize="end"
             android:paddingBottom="8dp"
             android:layout_height="wrap_content"/>

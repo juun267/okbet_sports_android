@@ -24,7 +24,7 @@ class RecyclerHomeOkGamesAdapter : BindingAdapter<OKGameBean, ItemHomeOkgameBind
     override fun onBinding(position: Int, binding: ItemHomeOkgameBinding, item: OKGameBean) {
         binding.tvGameName.text = item.gameName
         binding.tvGameType.text = item.firmName
-        binding.ivCover.load(item.imgGame, R.drawable.img_banner01)
+        binding.ivCover.load(item.imgGame, R.drawable.ic_okgames_nodata)
     }
 
     fun setScreenWidth(screenWidth:Int){

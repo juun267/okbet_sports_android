@@ -65,16 +65,15 @@ class HomeTopView @JvmOverloads constructor(
     }
 
     private fun setUpBanner(lang: String, imageType: Int) {
-        val imageList = sConfigData?.imageList?.filter {
+        var imageList = sConfigData?.imageList?.filter {
             it.imageType == imageType && it.lang == lang && !it.imageName1.isNullOrEmpty()
-        }
-            ?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
+        }?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
         val loopEnable = (imageList?.size ?: 0) > 1
         if (imageList.isNullOrEmpty()) {
             return
         }
         if (imageType == 2) {
-            val xbanner = findViewById<XBanner>(R.id.topBanner)
+            var xbanner = findViewById<XBanner>(R.id.topBanner)
             xbanner.setHandLoop(loopEnable)
             xbanner.setOnItemClickListener(this@HomeTopView)
             xbanner.loadImage { _, model, view, _ ->
@@ -93,6 +92,8 @@ class HomeTopView @JvmOverloads constructor(
             }
             xbanner.setBannerData(images.toMutableList())
         } else {
+            //优惠banne让判断是否首页显示
+            imageList=imageList.filter { it.frontPageShow==1 }
             //优惠活动
             val host = sConfigData?.resServerHost
             val promoteImages = imageList.map {
