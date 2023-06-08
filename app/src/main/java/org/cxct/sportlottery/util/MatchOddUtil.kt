@@ -180,4 +180,57 @@ object MatchOddUtil {
             }
         }
     }
+
+    fun Odd?.setupOddsDiscount(
+        isLCS: Boolean,
+        playCateCode: String?,
+        discount: Float,
+    ) {
+        this.let { odd ->
+            if (isLCS) { //反波膽不處理折扣
+                val oddsDiscount = odd?.odds
+
+                if (odd?.odds == odd?.hkOdds && odd?.odds == odd?.malayOdds && odd?.odds == odd?.indoOdds) {
+                    odd?.odds = oddsDiscount
+                    odd?.hkOdds = oddsDiscount
+                    odd?.malayOdds = oddsDiscount
+                    odd?.indoOdds = oddsDiscount
+                } else {
+                    odd?.odds = oddsDiscount
+                    odd?.hkOdds = odd?.hkOdds
+                    val hkOddsHalfUp =
+                        ArithUtil.round(odd?.hkOdds, 2, RoundingMode.HALF_UP).toDouble()
+                    odd?.malayOdds = hkOddsHalfUp.convertToMYOdds()
+                    odd?.indoOdds = hkOddsHalfUp.convertToIndoOdds()
+                }
+
+                if (playCateCode == PlayCate.EPS.value) {
+                    odd?.extInfo = odd?.extInfo?.toDouble().toString()
+                } else {
+
+                }
+            } else {
+                val oddsDiscount = odd?.odds?.applyDiscount(discount)
+
+                if (odd?.odds == odd?.hkOdds && odd?.odds == odd?.malayOdds && odd?.odds == odd?.indoOdds) {
+                    odd?.odds = oddsDiscount
+                    odd?.hkOdds = oddsDiscount
+                    odd?.malayOdds = oddsDiscount
+                    odd?.indoOdds = oddsDiscount
+                } else {
+                    odd?.odds = oddsDiscount
+                    odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
+                    val hkOddsHalfUp =
+                        ArithUtil.round(odd?.hkOdds, 2, RoundingMode.HALF_UP).toDouble()
+                    odd?.malayOdds = hkOddsHalfUp.convertToMYOdds()
+                    odd?.indoOdds = hkOddsHalfUp?.convertToIndoOdds()
+                }
+
+                if (playCateCode == PlayCate.EPS.value) {
+                    odd?.extInfo =
+                        odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
+                }
+            }
+        }
+    }
 }
