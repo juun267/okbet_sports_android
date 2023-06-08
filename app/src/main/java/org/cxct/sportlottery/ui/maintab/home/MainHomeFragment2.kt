@@ -6,17 +6,23 @@ import android.content.Intent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_main_home.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.event.RegisterInfoEvent
 import org.cxct.sportlottery.common.event.SportStatusEvent
+import org.cxct.sportlottery.common.extentions.collectWith
+import org.cxct.sportlottery.common.extentions.doOnResume
 import org.cxct.sportlottery.common.extentions.newInstanceFragment
 import org.cxct.sportlottery.databinding.FragmentMainHome2Binding
 import org.cxct.sportlottery.net.news.NewsRepository
@@ -30,6 +36,7 @@ import org.cxct.sportlottery.ui.maintab.home.news.HomeNewsAdapter
 import org.cxct.sportlottery.ui.maintab.home.news.NewsDetailActivity
 import org.cxct.sportlottery.ui.maintab.publicity.MarqueeAdapter
 import org.cxct.sportlottery.ui.news.NewsActivity
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.JumpUtil
@@ -92,20 +99,17 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
             viewLifecycleOwner,
             { viewModel.getRecordNew() },
             { viewModel.getRecordResult() })
-        receiver.recordBetNew.observe(viewLifecycleOwner) {
+        receiver.recordBetNew.collectWith(lifecycleScope) {
             it?.let {
-                binding.winsRankView.onNewWSBetData(
-                    it
-                )
+                binding.winsRankView.onNewWSBetData(it)
             }
         }
-        receiver.recordWinsResult.observe(viewLifecycleOwner) {
+        //最新大奖
+        receiver.recordWinsResult.collectWith(lifecycleScope) {
             it?.let {
-                binding.winsRankView.onNewWSWinsData(
-                    it
-                )
+                binding.winsRankView.onNewWSWinsData(it)
             }
-        }//最新大奖
+        }
         viewModel.recordBetNewHttp.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) {
                 binding.winsRankView.onNewHttpBetData(it.reversed())
