@@ -117,7 +117,7 @@
             android:background="@drawable/bg_blue_radius_8_stroke"
             android:textColor="@color/color_025BE8"
             android:textSize="@dimen/margin_14"
-            android:text="@string/dk_reset" />
+            android:text="@string/N744" />
         <androidx.legacy.widget.Space
             android:layout_width="0dp"
             android:layout_height="match_parent"

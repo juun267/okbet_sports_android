@@ -13,7 +13,6 @@ import com.youth.banner.Banner
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
 import kotlinx.android.synthetic.main.fragment_main_home.*
-import kotlinx.android.synthetic.main.fragment_main_left.*
 import kotlinx.android.synthetic.main.fragment_sport_list.*
 import kotlinx.android.synthetic.main.hot_card_game_include.*
 import kotlinx.android.synthetic.main.hot_gaming_include.*
