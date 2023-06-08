@@ -949,7 +949,7 @@
     <string name="kyc_num2">证件号码2</string>
     <string name="kyc_pick_upload_id">请选择上传身份证明文件</string>
     <string name="kyc_size_2_mb">文件大小不超过2MB</string>
-    <string name="kyc_contact_service">遇到问题？请联系在线客服</string>
+    <string name="kyc_contact_service">如需帮助，请联系客服</string>
     <string name="kyc_contact_service_hilight">在线客服</string>
     <string name="kyc_verify_first">请先进行实名验证。</string>
     <string name="kyc_go_verify">立即前往认证</string>
@@ -1400,4 +1400,7 @@
     <string name="N987">登录后进行聊天讨论</string>
     <string name="N988">请登录</string>
     <string name="C016">今日</string>
+    <string name="P066">事例</string>
+    <string name="P068">上传手持证件照片</string>
+    <string name="p090">感谢您与我们核实，请等待我们会在24 小时内处理您的请求。</string>
 </resources>
