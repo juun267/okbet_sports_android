@@ -1358,6 +1358,14 @@
     <string name="N952">Camera scan</string>
     <string name="N956">Can\'t recognize this QR code</string>
     <string name="N980">Denied camera permission</string>
+
+
+    <string name="N902">Follow us</string>
+    <string name="facebookFollow">Facebook</string>
+    <string name="instagramFollow">Instagram</string>
+    <string name="youtubeFollow">YouTube</string>
+    <string name="twitterFollow">Twitter</string>
+    <string name="tiktokFollow">Tiktok</string>
     <string name="P038">Google service is not available, please register/ login with your mobile number.</string>
 
     <string name="F025">Login</string>
