@@ -8,6 +8,7 @@ import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.menu.adapter.RecyclerLeftMatchesAdapter
 import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
+import org.cxct.sportlottery.util.loginedRun
 
 class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,FragmentLeftSportBetBinding>() {
     //热门赛事 adapter
@@ -27,11 +28,19 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
                 true)
         }
 
+
+        viewModel.betCount.observe(this@LeftSportBetFragment){
+            tvRecordNumber.text="$it"
+        }
     }
 
     override fun onInitData() {
         super.onInitData()
         getHotMatchesData()
+
+        if(viewModel.isLogin()){
+            viewModel.getBetRecordCount()
+        }
     }
 
 

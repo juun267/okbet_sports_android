@@ -12,6 +12,7 @@ import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
+import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.view.onClick
 import org.cxct.sportlottery.view.setColors
 
@@ -56,11 +57,13 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
         //默认选中sport betting
        binding.linearBetting.performClick()
         reloadData()
+
     }
 
     fun reloadData(){
         //初始化顶部登录状态
         initLoginData()
+
     }
 
 
