@@ -14,6 +14,8 @@ open class BindingFragment<VM : BaseViewModel, VB: ViewBinding>: BaseFragment<VM
     protected val binding: VB by lazy { createVBinding(layoutInflater, 1) }
     private var _first = true
 
+    fun context() = binding.root.context
+
     override fun createRootView(
         inflater: LayoutInflater,
         container: ViewGroup?,

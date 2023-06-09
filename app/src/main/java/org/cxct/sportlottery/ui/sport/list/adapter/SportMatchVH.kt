@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.ui.sport.list.adapter
 
-import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.chad.library.adapter.base.entity.node.BaseNode
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
@@ -23,8 +22,7 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.ui.sport.common.OddButtonPagerAdapter
-import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
+import org.cxct.sportlottery.ui.sport.common.OddButtonPagerAdapter2
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.needCountStatus
@@ -33,13 +31,16 @@ import org.cxct.sportlottery.view.layoutmanager.CustomLinearLayoutManager
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import java.util.*
 
-class SportMatchVH(private val binding: ItemSportOdd2Binding): BaseViewHolder(binding.root) {
+class SportMatchVH(private val binding: ItemSportOdd2Binding,
+                   private val onFavoriteClick: (String) -> Unit): BaseViewHolder(binding.root) {
 
     companion object {
 
         fun of(parent: ViewGroup, pool: RecyclerView.RecycledViewPool,
-               onItemClick:(Int, View, BaseNode) -> Unit,
-               lifecycleOwner: LifecycleOwner): SportMatchVH {
+               onOddClick: OnOddClickListener,
+               lifecycleOwner: LifecycleOwner,
+               onFavoriteClick: (String) -> Unit): SportMatchVH {
+
             val context = parent.context
             val biding = ItemSportOdd2Binding.inflate(LayoutInflater.from(context), parent, false)
             val rcv = biding.rvLeagueOddBtnPagerMain
@@ -56,8 +57,8 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding): BaseViewHolder(bi
                 setSpacing(height)
                 biding.hIndicator.itemClickListener = { rcv.smoothScrollToPosition(it) }
             }
-            val oddButtonPagerAdapter = OddButtonPagerAdapter(context)
-            oddButtonPagerAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT
+            val oddPageAdapter = OddButtonPagerAdapter2(context, onOddClick)
+            oddPageAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT
             rcv.doOnLayout {
                 rcv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                     val itemWidth = rcv.measuredWidth.toFloat() // 这个很重要，item的宽度要刚好等于recyclerview的宽度，不然PagerSnapHelper翻页会存在滑动偏差导致指示器位置计算的不准
@@ -71,12 +72,12 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding): BaseViewHolder(bi
                 })
             }
 
-            rcv.adapter = oddButtonPagerAdapter
+            rcv.adapter = oddPageAdapter
             rcv.setHasFixedSize(true)
             (rcv.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             OverScrollDecoratorHelper.setUpOverScroll(rcv, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
             PagerSnapHelper().attachToRecyclerView(rcv)
-            return SportMatchVH(biding).apply { lifecycleOwner.doOnDestory { onStop() } }
+            return SportMatchVH(biding, onFavoriteClick).apply { lifecycleOwner.doOnDestory { onStop() } }
         }
     }
 
@@ -87,6 +88,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding): BaseViewHolder(bi
     }
 
     fun resetStatusView() = binding.run {
+        hIndicator.resetItemCount(0)
         setViewGone(leagueNeutral,
             leagueCornerKicks,
             leagueSpt,
@@ -115,31 +117,29 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding): BaseViewHolder(bi
         ivHomeTeamLogo.setTeamLogo(matchInfo?.homeIcon)
         ivAwayTeamLogo.setTeamLogo(matchInfo?.awayIcon)
 
-        val navDetailClick = View.OnClickListener { matchInfo?.let { navMatchDetailPage(ivAwayTeamLogo.context, it, matchType) } }
-
         setupMatchScore(matchInfo, matchType)
         leagueOddMatchPlayCount.text = matchInfo?.playCateNum.toString() + "+>"
-        leagueOddMatchPlayCount.setOnClickListener(navDetailClick)
 
         leagueOddMatchFavorite.isSelected = matchInfo?.isFavorite ?: false
-        leagueOddMatchFavorite.setOnClickListener(navDetailClick)
+        leagueOddMatchFavorite.setOnClickListener {
+            Log.e("For Test", "=======>>> setupMatchInfo 111")
+            matchInfo?.id?.let {
+                Log.e("For Test", "=======>>> setupMatchInfo 2222")
+                onFavoriteClick.invoke(it)
+                Log.e("For Test", "=======>>> setupMatchInfo 33333")
+            }
+            Log.e("For Test", "=======>>> setupMatchInfo 2222")
+        }
 
         leagueNeutral.isSelected = matchInfo?.neutral == 1
-        leagueNeutral.isVisible = matchInfo?.neutral == 1
+        leagueNeutral.isVisible = matchInfo?.neutral == 10
         leagueOddMatchChart.isVisible = matchInfo?.source == MatchSource.SHOW_STATISTICS.code
-        leagueOddMatchChart.setOnClickListener(navDetailClick)
 
         ivPlay.isVisible = matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(matchInfo?.startTime))
-        ivPlay.setOnClickListener(navDetailClick)
 
         ivAnimation.isVisible = TimeUtil.isTimeInPlay(matchInfo?.startTime)
                 && !(matchInfo?.trackerId.isNullOrEmpty())
                 && MultiLanguagesApplication.getInstance()?.getGameDetailAnimationNeedShow() == true
-        ivAnimation.setOnClickListener(navDetailClick)
-    }
-
-    private fun navMatchDetailPage(context: Context, matchInfo: MatchInfo, matchType: MatchType) {
-        SportDetailActivity.startActivity(context, matchInfo, matchType)
     }
 
     private fun setupMatchScore(matchInfo: MatchInfo?, matchType: MatchType) = binding.run {
@@ -339,6 +339,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding): BaseViewHolder(bi
     fun setupMatchTimeAndStatus(matchInfo: MatchInfo,
                                 matchType: MatchType) {
 
+
         if (TimeUtil.isTimeInPlay(matchInfo.startTime) ) {
             if (matchInfo.gameType == GameType.TN.key
                 || !isTimerEnable(matchInfo?.gameType, matchType)
@@ -394,25 +395,9 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding): BaseViewHolder(bi
     fun setupOddsButton(matchType: MatchType,
                         item: MatchOdd,
                         oddsType: OddsType) {
-        val adapter = (binding.rvLeagueOddBtnPagerMain.adapter as OddButtonPagerAdapter)
-        adapter.matchType = matchType
-        updateOddsButton(item, oddsType)
+        val adapter = (binding.rvLeagueOddBtnPagerMain.adapter as OddButtonPagerAdapter2)
+        adapter.setupData(matchType, item, oddsType)
         binding.hIndicator.resetItemCount(adapter.itemCount)
-    }
-
-    fun updateOddsButton(item: MatchOdd, oddsType: OddsType)
-    = (binding.rvLeagueOddBtnPagerMain.adapter as OddButtonPagerAdapter).run {
-        setData(item.matchInfo,
-            item.oddsSort,
-            item.playCateNameMap,
-            item.betPlayCateNameMap,
-            item
-        )
-
-        stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT
-        this.oddsType = oddsType
-        this.odds = item.oddsMap ?: mutableMapOf()
-        binding.hIndicator.resetItemCount(itemCount)
     }
 
     fun updateMatchInfo(matchInfo: MatchInfo?, matchType: MatchType) = binding.run {

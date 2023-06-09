@@ -274,7 +274,7 @@ class OddsButtonDetail @JvmOverloads constructor(
 //        updateOddsTextColor()
 
 //        isSelected = odds?.isSelected ?: false
-        isSelected = QuickListManager.getQuickSelectedList()?.contains(odds?.id) ?: false
+        isSelected = odds?.id?.let { QuickListManager.containOdd(it) } ?: false
 
     }
 
