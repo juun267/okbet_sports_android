@@ -14,6 +14,7 @@ data class SearchResult(
 
     data class SearchResultLeague(
         var league:String = "",
+        var icon:String = "",
         var leagueMatchList: MutableList<SearchResponse.Row.LeagueMatch.MatchInfo> = mutableListOf(),
     ): BaseNode() {
 

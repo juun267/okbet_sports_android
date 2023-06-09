@@ -13,6 +13,8 @@ import org.cxct.sportlottery.network.sport.SearchResult
 import org.cxct.sportlottery.common.adapter.BaseNodeAdapter
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.setLeagueLogo
+import org.cxct.sportlottery.util.setTeamLogo
 import org.cxct.sportlottery.view.highLightTextView.HighlightTextView
 
 
@@ -58,6 +60,8 @@ class SportSearchResultAdapter: BaseNodeAdapter() {
             val tvLeagueTittle = helper.getView<HighlightTextView>(R.id.tvLeagueTittle)
             tvLeagueTittle.setCustomText((item as  SearchResult.SearchResultLeague).league)
             tvLeagueTittle.highlight(searchKey())
+            var ivIcon=helper.getView<ImageView>(R.id.view1)
+            ivIcon.setLeagueLogo(item.icon)
         }
 
     }
@@ -81,7 +85,9 @@ class SportSearchResultAdapter: BaseNodeAdapter() {
             tvAwayName.highlight(searchKey())
 
             val ivHomeLogo=helper.getView<ImageView>(R.id.ivSRMHomeLogo)
-//            Glide.with(context).load(item.).into(ivHomeLogo)
+            val ivAwayLogo=helper.getView<ImageView>(R.id.ivSRMAwayLogo)
+            ivHomeLogo.setTeamLogo(item.homeIcon)
+            ivAwayLogo.setTeamLogo(item.awayIcon)
         }
 
         override fun onClick(helper: BaseViewHolder, view: View, data: BaseNode, position: Int) {
