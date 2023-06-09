@@ -16,15 +16,9 @@
 
         <ImageView
             android:id="@+id/ivCover"
-            android:layout_width="match_parent"
-            android:scaleType="fitXY"
-            android:layout_height="match_parent"/>
-
-        <ImageView
-            android:src="@drawable/bg_home_okgames"
-            android:layout_width="match_parent"
-            android:scaleType="fitXY"
-            android:layout_height="match_parent"/>
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:scaleType="fitXY"/>
 
         <TextView
             android:id="@+id/tvGameType"
