@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
@@ -250,12 +251,12 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 binding.winsRankView.onNewHttpWinsData(it.reversed())
             }
         }
-        receiver.recordNewOkGame.observe(viewLifecycleOwner) {
+        receiver.recordNewOkGame.collectWith(lifecycleScope) {
             if (it != null) {
                 binding.winsRankView.onNewWSBetData(it)
             }
         }
-        receiver.recordResultOkGame.observe(viewLifecycleOwner) {
+        receiver.recordResultOkGame.collectWith(lifecycleScope) {
             if (it != null) {
                 binding.winsRankView.onNewWSWinsData(it)
             }
