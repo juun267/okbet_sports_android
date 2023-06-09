@@ -11,12 +11,13 @@ import kotlinx.android.synthetic.main.dialog_commission_info.btn_close
 import kotlinx.android.synthetic.main.dialog_deduct.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.withdraw.uwcheck.CheckList
+import org.cxct.sportlottery.network.withdraw.uwcheck.UwCheckData
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.Spanny
 
-class DeductDialog(val checkList: CheckList, val onConfirm: ()->Unit): BaseDialog<BaseViewModel>(BaseViewModel::class) {
+class DeductDialog(val uwCheckData: UwCheckData, val onConfirm: ()->Unit): BaseDialog<BaseViewModel>(BaseViewModel::class) {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,8 +29,8 @@ class DeductDialog(val checkList: CheckList, val onConfirm: ()->Unit): BaseDialo
         super.onViewCreated(view, savedInstanceState)
         initButton()
         dialog?.setCanceledOnTouchOutside(true)
-        var deductMoney = "${sConfigData?.systemCurrencySign} ${(checkList.deductMoney?:0).toInt()}"
-        val desp = String.format(getString(R.string.P070,"${(checkList.unFinishValidAmount?:0).toInt()}",deductMoney))
+        var deductMoney = "${sConfigData?.systemCurrencySign} ${(uwCheckData.total?.deductMoney?:0).toInt()}"
+        val desp = String.format(getString(R.string.P070,"${(uwCheckData.total?.unFinishValidAmount?:0).toInt()}",deductMoney))
         val startIndex= desp.lastIndexOf(deductMoney)
         val endIndex = startIndex + deductMoney.length
         Spanny(desp).apply {
