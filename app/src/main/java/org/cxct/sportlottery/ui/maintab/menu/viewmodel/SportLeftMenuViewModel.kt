@@ -233,6 +233,7 @@ class SportLeftMenuViewModel(
                     OddsChangeOptionRequest(option)
                 )
             }?.let {
+                //更新到用户设置
                 userInfoRepository.updateOddsChangeOption(option)
             }
         }

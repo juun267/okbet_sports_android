@@ -119,6 +119,9 @@
             android:name=".ui.money.withdraw.BankActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.news.SportNewsActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.results.ResultsSettlementActivity"
             android:screenOrientation="portrait" />
         <activity

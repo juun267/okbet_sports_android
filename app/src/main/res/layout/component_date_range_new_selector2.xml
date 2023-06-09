@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_time_range"
+    android:paddingStart="20dp"
+    android:paddingTop="15dp"
+    android:paddingEnd="20dp"
+    android:paddingBottom="20dp">
+
+    <TextView
+        android:id="@+id/tv_start_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/start_date"
+        android:textColor="@color/color_535D76"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/ll_start_date_box"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_end_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/end_date"
+        android:textColor="@color/color_535D76"
+        android:textSize="12sp"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="@+id/ll_end_date_box"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/ll_start_date_box"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginRight="@dimen/margin_10"
+        android:background="@drawable/selector_button_radius_4_stroke"
+        app:layout_constraintEnd_toStartOf="@+id/ll_end_date_box"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_start_title">
+
+        <View
+            android:id="@+id/ll_start_date"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:background="@drawable/bg_white_square_shape_4dp_gray_stroke"
+            android:maxWidth="135dp" />
+
+        <TextView
+            android:id="@+id/tv_start_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:hint="@string/hint_birth_date"
+            android:fontFamily="@font/din_regular"
+            android:textFontWeight="500"
+            android:textStyle="bold"
+            android:textColor="@color/color_0D2245"
+            android:textSize="@dimen/textSize14sp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="@dimen/margin_10"
+            android:src="@drawable/ic_calendar_start"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/ll_end_date_box"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:background="@drawable/selector_button_radius_4_stroke"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@+id/ll_start_date_box"
+        app:layout_constraintTop_toTopOf="@+id/ll_start_date_box">
+
+        <View
+            android:id="@+id/ll_end_date"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:background="@drawable/bg_white_square_shape_4dp_gray_stroke"
+            android:maxWidth="135dp"/>
+
+        <TextView
+            android:id="@+id/tv_end_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/din_regular"
+            android:textStyle="bold"
+            android:textFontWeight="500"
+            android:hint="@string/hint_birth_date"
+            android:textColor="@color/color_0D2245"
+            android:textSize="@dimen/textSize14sp" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="@dimen/margin_10"
+            android:src="@drawable/ic_calendar_end"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_search"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="@dimen/margin_20"
+        android:background="@drawable/ic_submit2"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="@string/inquire"
+        android:textAllCaps="false"
+        android:textColor="@color/color_FFFFFF_FFFFFF"
+        android:textSize="@dimen/textSize16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll_start_date_box" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
