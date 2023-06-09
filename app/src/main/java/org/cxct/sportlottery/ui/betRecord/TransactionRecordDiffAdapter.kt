@@ -161,7 +161,7 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                     play_content.setPlayContent(
                         context.getString(R.string.N903),
                         matchOdds.spread,
-                        matchOdds.odds.toInt().toString()
+                        formatForOdd
                     )
                 else
                     play_content.setPlayContent(
