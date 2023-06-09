@@ -5,13 +5,14 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.webkit.URLUtil
+import com.xuexiang.xupdate.utils.UpdateUtils
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.maintab.lottery.LotteryActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
+import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import timber.log.Timber
 
 object JumpUtil {
@@ -69,12 +70,14 @@ object JumpUtil {
 //        }
 
 
-
         try {
             Timber.i("跳转到链接:$href")
             if (URLUtil.isValidUrl(href)) {
                 context.startActivity(
-                    Intent(context, ThirdGameActivity::class.java).putExtra(WebActivity.KEY_URL, href)
+                    Intent(context, ThirdGameActivity::class.java).putExtra(
+                        WebActivity.KEY_URL,
+                        href
+                    )
                         .putExtra(WebActivity.GAME_CATEGORY_CODE, thirdGameCategoryCode)
                 )
             } else {
@@ -111,5 +114,20 @@ object JumpUtil {
                 putExtra(WebActivity.KEY_BACK_EVENT, true)
             }
         )
+    }
+
+    fun toGcash(context: Context, userState: Int, next: () -> Unit) {
+        if (userState == 1) {
+            if (!KvUtils.decodeBooleanTure(KvUtils.GLIFE_TIP_FLAG, false)) {
+                ToGcashDialog(context).show()
+            } else {
+                val uri = Uri.parse("https://miniprogram.gcash.com/s01/axXslZ")
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                UpdateUtils.startActivity(intent)
+            }
+
+        } else {
+            next()
+        }
     }
 }

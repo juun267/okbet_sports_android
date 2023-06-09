@@ -98,7 +98,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         EventBusUtil.targetLifecycle(this)
 
         val loginType = intent.getIntExtra("login_type", LOGIN_TYPE_PWD)
-        if(LOGIN_TYPE_CODE == loginType) {
+        if (LOGIN_TYPE_CODE == loginType) {
             switchLoginType(LOGIN_TYPE_CODE)
         } else if (loginType == LOGIN_TYPE_GOOGLE) {
             googleLogin()
@@ -213,8 +213,10 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private fun login() {
         val deviceSn = JPushInterface.getRegistrationID(this)
-        val deviceId = Settings.Secure.getString(applicationContext.contentResolver,
-            Settings.Secure.ANDROID_ID)
+        val deviceId = Settings.Secure.getString(
+            applicationContext.contentResolver,
+            Settings.Secure.ANDROID_ID
+        )
         var appVersion = org.cxct.sportlottery.BuildConfig.VERSION_NAME
         hideSoftKeyboard(this)
         if (viewModel.loginType == LOGIN_TYPE_CODE) {
@@ -420,7 +422,12 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     private fun updateUiWithResult(loginResult: LoginResult) {
         hideLoading()
         //将userName信息添加到firebase崩溃日志中
-        loginResult.loginData?.let { FirebaseLog.addLogInfo("userName", "${loginResult.loginData}") }
+        loginResult.loginData?.let {
+            FirebaseLog.addLogInfo(
+                "userName",
+                "${loginResult.loginData}"
+            )
+        }
         if (loginResult.success) {
             if (loginResult.loginData?.deviceValidateStatus == 0) {
                 PhoneVerifyActivity.loginData = loginResult.loginData
