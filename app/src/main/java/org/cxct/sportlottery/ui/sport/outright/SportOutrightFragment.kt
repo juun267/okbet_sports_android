@@ -11,18 +11,14 @@ import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_sport_list.*
-import kotlinx.android.synthetic.main.fragment_sport_list.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.TimeRangeEvent
-import org.cxct.sportlottery.common.extentions.setViewGone
-import org.cxct.sportlottery.common.extentions.setViewVisible
 import org.cxct.sportlottery.common.extentions.showLoading
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.TimeRangeParams
-import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.outright.odds.CategoryOdds
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
@@ -45,38 +41,31 @@ import java.util.*
  */
 class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(SportListViewModel::class) {
 
-    //    private val args: GameV3FragmentArgs by navArgs()
     private val matchType = MatchType.OUTRIGHT
     private var gameType: String = GameType.BK.key
     private var mLeagueIsFiltered = false // 是否套用聯賽過濾
 
-    private val gameTypeAdapter by lazy {
-        GameTypeAdapter().apply {
-            gameTypeListener = GameTypeListener {
+    private val gameTypeAdapter by lazy { GameTypeAdapter2(::onGameTypeChanged) }
 
-                if (!it.isSelected) {
-                    //切換球種，清除日期記憶
-                    viewModel.tempDatePosition = 0
-                }
-                gameType = it.code
-                dataSport.forEach { it.isSelected = (it.code == gameType) }
-                notifyDataSetChanged()
-                viewModel.cleanGameHallResult()
-                sportOutrightAdapter2.showLoading(R.layout.view_list_loading)
-//                sportOutrightAdapter.setPreloadItem()
-                //切換球種後要重置位置
-                (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
-                    sport_type_list,
-                    RecyclerView.State(),
-                    dataSport.indexOfFirst { it.isSelected })
-                loading()
-                unSubscribeAll()
-                viewModel.switchGameType(matchType, it)
-                iv_arrow.isSelected = true
-            }
-
-            thirdGameListener = ThirdGameListener {  }
+    private fun onGameTypeChanged(item: Item, position: Int) {
+        if (!item.isSelected) {
+            //切換球種，清除日期記憶
+            viewModel.tempDatePosition = 0
         }
+        gameType = item.code
+
+        viewModel.cleanGameHallResult()
+        sportOutrightAdapter2.showLoading(R.layout.view_list_loading)
+//                sportOutrightAdapter.setPreloadItem()
+        //切換球種後要重置位置
+        (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
+            sport_type_list,
+            RecyclerView.State(),
+            position)
+        loading()
+        unSubscribeAll()
+        viewModel.switchGameType(matchType, item)
+        iv_arrow.isSelected = true
     }
 
 
@@ -340,11 +329,11 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
             }
         }
 
-        gameTypeAdapter.dataSport = gameTypeList
+        gameTypeAdapter.setNewInstance(gameTypeList.toMutableList())
         (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
             sport_type_list,
             RecyclerView.State(),
-            gameTypeAdapter.dataSport.indexOfFirst { it.isSelected })
+            gameTypeList.indexOfFirst { it.isSelected })
         sport_type_list?.post {
             //球種如果選過，下次回來也需要滑動置中
             if (gameTypeList.isEmpty()) {
@@ -361,7 +350,7 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
         odd: Odd,
         playCateCode: String) {
 
-        GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.let {
+        GameType.getGameType(gameTypeAdapter.currentItem?.code)?.let {
 
             (activity as MainTabActivity).setupBetData(FastBetDataBean(
                 matchType = MatchType.OUTRIGHT,
@@ -380,7 +369,7 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
     private val subscribedMatchOdd = mutableMapOf<String, org.cxct.sportlottery.network.outright.odds.MatchOdd>()
 
     private fun subscribeChannelHall(matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd) {
-        val gameType = GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+        val gameType = GameType.getGameType(gameTypeAdapter.currentItem?.code)
         gameType?.let {
             subscribedMatchOdd["${matchOdd.matchInfo?.id}"] = matchOdd
             subscribeChannelHall(it.key, matchOdd?.matchInfo?.id)

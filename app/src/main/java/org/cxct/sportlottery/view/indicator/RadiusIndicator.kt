@@ -19,7 +19,6 @@ class RadiusIndicator  @JvmOverloads constructor(
     defStyleAttr: Int = 0,
 ) : View(context, attrs, defStyleAttr){
 
-
     private var mSpacing = 0
     private var mCurrentIndex = 0
     private var itemCount = 0
@@ -28,15 +27,7 @@ class RadiusIndicator  @JvmOverloads constructor(
     private val mCirclePoints: MutableList<RectF> = ArrayList()
     private var mIndicatorX = 0f
 
-    // 事件回调
-    var isTouchable = false
     var itemClickListener: ((Int) -> Unit)? = null
-    set(value) {
-        if (!isTouchable) {
-            isTouchable = true
-        }
-        field = value
-    }
     private var mDownX = 0f
     private var mDownY = 0f
     private var mTouchSlop = 0
@@ -85,8 +76,13 @@ class RadiusIndicator  @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas) {
-        drawItems(canvas)
-        drawIndicator(canvas)
+        if (itemCount > 0) {
+            drawItems(canvas)
+            drawIndicator(canvas)
+        } else {
+
+        }
+
     }
 
     private fun drawItems(canvas: Canvas) {
@@ -100,7 +96,7 @@ class RadiusIndicator  @JvmOverloads constructor(
     }
 
     private fun drawIndicator(canvas: Canvas) {
-        if (mCirclePoints.size > 0) {
+        if (itemCount > 0 && mCirclePoints.size > 0) {
             canvas.drawRoundRect(
                 RectF(
                     mIndicatorX,
@@ -120,7 +116,7 @@ class RadiusIndicator  @JvmOverloads constructor(
         val x = event.x
         val y = event.y
         when (event.action) {
-            MotionEvent.ACTION_DOWN -> if (isTouchable) {
+            MotionEvent.ACTION_DOWN -> {
                 mDownX = x
                 mDownY = y
                 return true
@@ -150,6 +146,8 @@ class RadiusIndicator  @JvmOverloads constructor(
     private fun prepareCirclePoints() {
         mCirclePoints.clear()
         if (itemCount == 0) {
+            mIndicatorX = 0f
+            mCurrentIndex = 0
             return
         }
 
@@ -208,6 +206,8 @@ class RadiusIndicator  @JvmOverloads constructor(
             itemCount = count
             prepareCirclePoints()
             requestLayout()
+        } else {
+            invalidate()
         }
     }
 }

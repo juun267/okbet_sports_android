@@ -22,7 +22,6 @@ import org.cxct.sportlottery.util.setLeagueLogo
 
 class SportLeagueProvider(
     private val adapter: SportLeagueAdapter2,
-    private val onItemClick:(Int, View, BaseNode) -> Unit,
     override val itemViewType: Int = 1,
     override val layoutId: Int = 0): BaseNodeProvider() {
 
@@ -113,7 +112,6 @@ class SportLeagueProvider(
         adapter.expandOrCollapse(item, parentPayload = position)
         val league = item as LeagueOdd
         setArrowSpin(helper.getView(ivArrowId), league, true)
-        onItemClick.invoke(position, view, league)
     }
 
     private fun setArrowSpin(ivArrow: ImageView, data: LeagueOdd, isAnimate: Boolean) {

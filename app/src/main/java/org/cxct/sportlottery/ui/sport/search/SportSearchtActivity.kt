@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.activity_sport_search.tvSearch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.chat.hideSoftInput
 import org.cxct.sportlottery.ui.sport.SportViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.EmptyView
@@ -129,6 +130,8 @@ class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::
                 return true
             }
         })
+        searchFlag = true
+        tvSearch.text = getString(R.string.C001)
     }
 
     private fun startSearch() {
@@ -148,6 +151,8 @@ class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::
             searchFlag = false
             tvSearch.text = getString(R.string.D037)
             viewModel.getSportSearch(searchKey)
+            hideSoftInput()
+            etSearch.clearFocus()
         } else {
             searchFlag = true
             setHistoryLayoutVisible(true)

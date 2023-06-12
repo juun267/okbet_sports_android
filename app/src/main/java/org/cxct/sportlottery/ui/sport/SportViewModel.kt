@@ -182,7 +182,7 @@ class SportViewModel(
         leagueMatchSearchResult?.forEachIndexed { index, league ->
             var searchResultLeagueList: MutableList<SearchResult.SearchResultLeague> = arrayListOf()
             league.forEach { leagueMatch ->
-                var searchResultLeague = SearchResult.SearchResultLeague(leagueMatch.leagueName)
+                var searchResultLeague = SearchResult.SearchResultLeague(leagueMatch.leagueName,leagueMatch.icon)
                 searchResultLeagueList.add(searchResultLeague)
             }
             finalResult?.get(index).searchResultLeague = searchResultLeagueList

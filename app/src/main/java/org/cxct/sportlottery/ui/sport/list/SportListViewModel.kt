@@ -266,36 +266,44 @@ class SportListViewModel(
             }
             result?.updateMatchType()
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
-                leagueOdd.matchOdds.forEach { matchOdd ->
-                    matchOdd.sortOddsMap()
-                    matchOdd.matchInfo?.let { matchInfo ->
-                        matchInfo.startDateDisplay =
-                            TimeUtil.timeFormat(matchInfo.startTime, "MM/dd")
+                var iterator = leagueOdd.matchOdds.iterator()
+                while (iterator.hasNext()) {
+                    val matchOdd = iterator.next()
+                    if (matchOdd.matchInfo == null) { // 过滤掉matchInfo为空的脏数据
+                        iterator.remove()
+                    } else {
 
-                        matchOdd.matchInfo.startTimeDisplay =
-                            TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
+                        matchOdd.sortOddsMap()
+                        matchOdd.matchInfo?.let { matchInfo ->
+                            matchInfo.startDateDisplay =
+                                TimeUtil.timeFormat(matchInfo.startTime, "MM/dd")
 
-                        matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
-                    }
+                            matchOdd.matchInfo.startTimeDisplay =
+                                TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
 
-                    matchOdd.oddsMap?.forEach { map ->
-                        map.value?.updateOddSelectState()
-                    }
+                            matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
+                        }
+
+                        matchOdd.oddsMap?.forEach { map ->
+                            map.value?.updateOddSelectState()
+                        }
 
 //                    matchOdd.setupPlayCate()
 //                    matchOdd.refactorPlayCode() //改成在OddButtonPagerAdapter處理
-                    matchOdd.sortOdds()
+                        matchOdd.sortOdds()
 
-                    matchOdd.setupOddDiscount()
-                    matchOdd.updateOddStatus()
-                    if (playCateMenuCode != MenuCode.CS.code) {
-                        matchOdd.oddsSort = PlayCateMenuFilterUtils.filterOddsSort(matchOdd.matchInfo?.gameType, MenuCode.MAIN.code)
-                    }
+                        matchOdd.setupOddDiscount()
+                        matchOdd.updateOddStatus()
+                        if (playCateMenuCode != MenuCode.CS.code) {
+                            matchOdd.oddsSort = PlayCateMenuFilterUtils.filterOddsSort(matchOdd.matchInfo?.gameType, MenuCode.MAIN.code)
+                        }
 
-                    matchOdd.filterQuickPlayCate(matchType)
-                    //波胆的数据获取方式
-                    if (matchType == MatchType.CS.postValue) {
-                        matchOdd.playCateNameMap = leagueOdd.playCateNameMap
+                        matchOdd.filterQuickPlayCate(matchType)
+                        //波胆的数据获取方式
+                        if (matchType == MatchType.CS.postValue) {
+                            matchOdd.playCateNameMap = leagueOdd.playCateNameMap
+                        }
+
                     }
                 }
             }
@@ -415,7 +423,7 @@ class SportListViewModel(
             odd?.isSelected = betInfoRepository.betInfoList.value?.peekContent()
                 ?.any { betInfoListData ->
                     betInfoListData.matchOdd.oddsId == odd?.id
-                }
+                } == true
         }
     }
 

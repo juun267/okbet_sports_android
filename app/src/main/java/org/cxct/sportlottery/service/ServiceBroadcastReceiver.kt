@@ -468,7 +468,7 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                     odd?.isSelected =
                         BetInfoRepository.betInfoList.value?.peekContent()?.any { betInfoListData ->
                             betInfoListData.matchOdd?.oddsId == odd?.id
-                        }
+                        } == true
                 }
             }
         }
@@ -497,7 +497,7 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                     odd?.isSelected =
                         BetInfoRepository.betInfoList.value?.peekContent()?.any { betInfoListData ->
                             betInfoListData.matchOdd.oddsId == odd?.id
-                        }
+                        } == true
                 }
             }
         }
