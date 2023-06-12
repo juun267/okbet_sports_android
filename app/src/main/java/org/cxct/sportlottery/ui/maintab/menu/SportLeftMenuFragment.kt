@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.view.View
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.inVisible
 import org.cxct.sportlottery.common.extentions.visible
@@ -12,9 +13,12 @@ import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
+import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.view.onClick
 import org.cxct.sportlottery.view.setColors
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, FragmentSportLeftMenuBinding> (){
@@ -58,12 +62,20 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
        binding.linearBetting.performClick()
         reloadData()
 
+        EventBusUtil.targetLifecycle(this)
     }
 
     fun reloadData(){
         //初始化顶部登录状态
         initLoginData()
 
+    }
+
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSportStatusChange(event: SportStatusEvent) {
+        close()
     }
 
 

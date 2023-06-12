@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <include
@@ -11,18 +13,8 @@
         layout="@layout/view_base_tool_bar_no_drawer" />
 
 
-    <org.cxct.sportlottery.view.DateRangeSearchView2
-        app:layout_constraintTop_toBottomOf="@+id/toolBar"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:id="@+id/dateRange"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:minusDays="6" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerNews"
-        app:layout_constraintTop_toBottomOf="@+id/dateRange"
-        app:layout_constraintLeft_toLeftOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

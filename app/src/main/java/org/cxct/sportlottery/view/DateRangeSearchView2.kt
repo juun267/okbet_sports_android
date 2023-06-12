@@ -22,6 +22,7 @@ import java.util.*
 
 class DateRangeSearchView2  @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
 
+
     var dateRange = -30
     private var minusDays = 6
     private val typedArray by lazy { context.theme.obtainStyledAttributes(attrs, R.styleable.CalendarBottomSheetStyle, 0, 0) }
