@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/tv_odds"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:includeFontPadding="false"
+        android:textColor="@color/selector_button_odd_top_text"
+        android:textSize="@dimen/textSize15sp"
+        android:fontFamily="@font/din_regular"
+        android:textFontWeight="700"
+        android:gravity="center"
+        tools:text="1.067" />
+
+
+    <ImageView
+        android:id="@+id/img_odd_lock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_radius_4_button_odds_lock"
+        android:padding="@dimen/margin_11"
+        android:src="@drawable/ic_lock"
+        android:visibility="gone"
+        tools:visibility="gone" />
+
+    <TextView
+        android:id="@+id/img_odd_unknown"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_radius_4_button_odds_lock"
+        android:gravity="center"
+        android:textSize="@dimen/textSize12sp"
+        android:textColor="@color/color_6C7BA8"
+        android:text="@string/unknown_data"
+        android:visibility="gone" />
+
+</merge>

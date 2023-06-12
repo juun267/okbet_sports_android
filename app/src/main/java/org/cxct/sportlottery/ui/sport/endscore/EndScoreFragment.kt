@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.sport.endscore
 
+import android.graphics.Color
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
@@ -8,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.distinctUntilChanged
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.chad.library.adapter.base.entity.node.BaseExpandNode
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.google.android.material.appbar.AppBarLayout
@@ -15,39 +17,36 @@ import kotlinx.android.synthetic.main.fragment_sport_list.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.TimeRangeEvent
 import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.setViewGone
 import org.cxct.sportlottery.common.extentions.showEmpty
 import org.cxct.sportlottery.common.extentions.showLoading
+import org.cxct.sportlottery.databinding.FragmentSportList2Binding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
-import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
+import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
-import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.util.bindExpanedAdapter
-import org.cxct.sportlottery.util.doOnVisiableRange
-import org.cxct.sportlottery.util.showErrorMsgDialog
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.layoutmanager.SocketGridManager
+import org.cxct.sportlottery.view.stickyheader.StickyHeaderItemDecorator
 import org.greenrobot.eventbus.Subscribe
 
 /**
  * @app_destination 末位比分
  */
-class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportListViewModel::class) {
+class EndScoreFragment: BindingSocketFragment<SportListViewModel, FragmentSportList2Binding>() {
 
     // 篮球末尾比分组合玩法
     private val playCate = PlayCate.FS_LD_CS.value
     private val matchType = MatchType.END_SCORE
-    private var gameType: String = GameType.BK.key
+    private val gameType: String = GameType.BK.key
 
-    override fun layoutId() = R.layout.fragment_sport_list
     fun getCurGameType() = GameType.BK
 
     private val mOddsChangeListener by lazy {
@@ -61,12 +60,12 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
     }
 
     private fun setupOddsChangeListener() {
-//        receiver.oddsChangeListener = mOddsChangeListener
+        receiver.oddsChangeListener = mOddsChangeListener
     }
 
     private val endScoreAdapter: EndScoreAdapter by lazy {
 
-        game_list?.addOnScrollListener(object : OnScrollListener() {
+        binding.gameList.addOnScrollListener(object : OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     subscribeMatchOdds(0)
@@ -101,16 +100,18 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
         }
     }
 
-    override fun onBindView(view: View) {
-        ll_sport_type.gone()
-        EventBusUtil.targetLifecycle(this)
-        viewModel.gameType = gameType
+    override fun onInitView(view: View) {
+        binding.sportTypeList.gone()
         setupToolbar()
         setupGameRow()
         setupGameListView()
+    }
+
+    override fun onBindViewStatus(view: View) {
+        EventBusUtil.targetLifecycle(this)
+        viewModel.gameType = gameType
         initObserve()
-        //新版列表，不需要显示赔率和赛事状态，所以不用接收ws
-//        initSocketObserver()
+        initSocketObserver()
         loadData()
     }
 
@@ -132,15 +133,14 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
     var offsetScrollListener: ((Double) -> Unit)? = null
 
     private fun setupToolbar() {
-
-        appbar_layout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
+        binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
             offsetScrollListener?.invoke((-verticalOffset) / Math.max(1.0, appbar_layout.measuredHeight.toDouble()))
         })
-        iv_arrow.bindExpanedAdapter(endScoreAdapter) { subscribeMatchOdds(100) }
+        binding.ivArrow.bindExpanedAdapter(endScoreAdapter) { subscribeMatchOdds(100) }
     }
 
     private fun setupGameRow() {
-        lin_filter.setOnClickListener {
+        binding.ivFilter.setOnClickListener {
             LeagueSelectActivity.start(
                 it.context,
                 gameType!!,
@@ -151,21 +151,24 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
         }
     }
 
-    private fun setupGameListView() = game_list.run {
-        layoutManager = SocketGridManager(context, 2)
+    private fun setupGameListView() = binding.gameList.run {
+        layoutManager = SocketGridManager(context, 4)
         adapter = endScoreAdapter
+        setRecycledViewPool(endScoreAdapter.recyclerPool)
+//        addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_10))
+//        addItemDecoration(GridItemDecoration(9, 9, Color.RED, false))
+//        StickyHeaderItemDecorator(endScoreAdapter).attachToRecyclerView(this)
     }
 
     private fun subscribeMatchOdds(delay: Long = 0) {
         unSubscribeAll()
-        game_list?.postDelayed(subscribeVisibleRange, delay)
+        binding.gameList.postDelayed(subscribeVisibleRange, delay)
     }
 
     private val subscribeVisibleRange by lazy {
         Runnable {
-            if (game_list == null
-                || endScoreAdapter.getCount() < 1
-                || game_list?.scrollState != RecyclerView.SCROLL_STATE_IDLE) {
+            if (endScoreAdapter.getCount() < 1
+                || binding.gameList.scrollState != RecyclerView.SCROLL_STATE_IDLE) {
                 return@Runnable
             }
 
@@ -215,6 +218,9 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
             }
             endScoreAdapter.setNewInstance(list)
 
+
+
+
             if (list.isNullOrEmpty()) {
                 endScoreAdapter.showEmpty(R.layout.itemview_game_no_record)
             } else {
@@ -240,7 +246,7 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
                 }
             }
 
-            if (game_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !game_list.isComputingLayout) {
+            if (binding.gameList.scrollState == RecyclerView.SCROLL_STATE_IDLE && !binding.gameList.isComputingLayout) {
                 endScoreAdapter.doOnVisiableRange { position, item ->
                     if (item is MatchOdd) {
                         endScoreAdapter.notifyItemChanged(position, item)
@@ -285,7 +291,7 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
     }
 
     private fun unSubscribeAll() {
-        game_list?.removeCallbacks(subscribeVisibleRange)
+        binding.gameList.removeCallbacks(subscribeVisibleRange)
         subscribedMatchOdd.clear()
         unSubscribeChannelHallAll()
     }
@@ -293,7 +299,7 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
     override fun onDestroyView() {
         super.onDestroyView()
         offsetScrollListener = null
-        game_list.adapter = null
+        endScoreAdapter.setNewInstance(null)
         unSubscribeAll()
         unSubscribeChannelHallSport()
     }
@@ -302,6 +308,7 @@ class EndScoreFragment: BaseBottomNavigationFragment<SportListViewModel>(SportLi
     fun onSelectMatch(matchIdList: ArrayList<String>?) {
         viewModel.selectMatchIdList = matchIdList
     }
+
     @Subscribe
     fun onSelectDate(timeRangeEvent: TimeRangeEvent) {
         viewModel.selectTimeRangeParams = object : TimeRangeParams {

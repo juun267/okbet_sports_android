@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.sport.endscore
 
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import com.chad.library.adapter.base.entity.node.BaseNode
@@ -21,6 +22,7 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
     }
 
     override fun convert(helper: BaseViewHolder, item: BaseNode) = helper.run {
+        Log.e("For Test", "=======>>> onBindHeaderViewHolder 22222  1111")
         val matchInfo = (item as MatchOdd).matchInfo
         setText(R.id.tvHomeName, matchInfo?.homeName)
         setText(R.id.tvAwayName, matchInfo?.awayName)
@@ -32,10 +34,14 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
                 it,
                 item)
         }
+
+        Log.e("For Test", "=======>>> onBindHeaderViewHolder 22222  22222")
         getView<View>(R.id.league_odd_match_favorite).run {
             isSelected = matchInfo?.isFavorite ?: false
             setOnClickListener { onItemClick.invoke(helper.bindingAdapterPosition, this, item) }
         }
+
+
 
     }
 

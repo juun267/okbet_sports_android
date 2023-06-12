@@ -54,11 +54,7 @@ class SportLeagueAdapter2(
         }
     }
 
-    private fun updateMatch(index: Int, matchOdd: MatchOdd) {
-//        if (game_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !game_list.isComputingLayout) {
-//            sportLeagueAdapter.updateMatch(index, matchOdd)
-//        }
-    }
+    fun dataCount() = getDefItemCount()
 
     fun onOddsChangeEvent(oddsChangeEvent: OddsChangeEvent, subscribedMatchOdd: MutableMap<String, Pair<MatchOdd, Int>>) {
         if (oddsChangeEvent.oddsList.isNullOrEmpty() || subscribedMatchOdd.isEmpty()) {
