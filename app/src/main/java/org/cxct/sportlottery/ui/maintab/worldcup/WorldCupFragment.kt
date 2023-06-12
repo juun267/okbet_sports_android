@@ -1,26 +1,27 @@
 package org.cxct.sportlottery.ui.maintab.worldcup
 
-import android.content.pm.ActivityInfo
+import android.content.Context
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebChromeClient
+import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import com.bumptech.glide.Glide
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.fragment_worldcup.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.databinding.FragmentWorldcupBinding
 import org.cxct.sportlottery.network.Constants
-import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
-import org.cxct.sportlottery.util.LogUtil
-import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
+import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.fromJson
 import org.cxct.sportlottery.util.startLogin
 import org.cxct.sportlottery.view.webView.OkWebChromeClient
 
@@ -61,7 +62,8 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
                 super.onPageFinished(view, url)
             }
         }
-        okWebView.addJavascriptInterface(WorldCupJsInterface(mainTabActivity()), WorldCupJsInterface.name)
+        okWebView.addJavascriptInterface(WorldCupJsInterface(mainTabActivity()),
+            WorldCupJsInterface.name)
         loadWebURL(MultiLanguagesApplication.mInstance.sOddsType)
     }
 
@@ -116,8 +118,7 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
 
         viewModel.oddsType.observe(viewLifecycleOwner) { loadWebURL(it.code) }
         viewModel.isLogin.observe(viewLifecycleOwner) {
-            if (!it)
-            mainTabActivity().startLogin()
+            if (!it) mainTabActivity().startLogin()
         }
     }
     override fun onDestroyView() {
@@ -125,5 +126,28 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
         binding.okWebView.destroy()
     }
 
+    class WorldCupJsInterface(val context: Context) {
+
+        companion object {
+            const val name = "worldCupJsInterface"
+        }
+
+        @JavascriptInterface
+        fun tapAndroidEvent(infoString: String) {
+
+            if (TextUtils.isEmpty(infoString)) {
+                ToastUtil.showToast(context, R.string.error)
+                return
+            }
+
+            val matchInfo: MatchInfo? = infoString.fromJson()
+            if (matchInfo == null) {
+                ToastUtil.showToast(context, R.string.error)
+                return
+            }
+
+            SportDetailActivity.startActivity(context, matchInfo)
+        }
+    }
 
 }
