@@ -79,7 +79,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 Pair(BetRecordFragment::class.java, null),
                 Pair(FavoriteFragment::class.java, null),
                 Pair(ProfileCenterFragment::class.java, null),
-
             )
         )
     }
@@ -738,6 +737,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     fun jumpToNews() {
         resetBackIcon(0)
         homeFragment().jumpToNews()
+    }
+
+    fun jumpToWorldCup() {
+        resetBackIcon(0)
+        homeFragment().jumpToWorldCup()
     }
 
     fun jumpToInplaySport() {

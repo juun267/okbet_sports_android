@@ -7,9 +7,11 @@ import org.cxct.sportlottery.common.event.JumpInPlayEvent
 import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.sys_maintenance.SportMaintenanceEvent
+import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.maintab.worldcup.WorldCupFragment
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.util.EventBusUtil
@@ -21,14 +23,16 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
 
     private val fragmentHelper by lazy {
 
-        FragmentHelper(childFragmentManager, R.id.fl_content, arrayOf(
-//            Pair(MainHomeFragment::class.java, null),
-//            Pair(HomeLiveFragment::class.java, null),
+        FragmentHelper(childFragmentManager, R.id.fl_content,  mutableListOf(
             Pair(MainHomeFragment2::class.java, null),
             Pair(OKGamesFragment::class.java, null),
             Pair(NewsHomeFragment::class.java, null)
-        ))
-
+        ).apply {
+            if (StaticData.worldCupOpened()){
+                add(Pair(WorldCupFragment::class.java, null))
+            }
+        }.toTypedArray()
+        )
     }
 
     override fun layoutId() = R.layout.fragment_home1
@@ -58,6 +62,8 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
     fun jumpToOKGames() = switchTabByPosition(1)
 
     fun jumpToNews() = switchTabByPosition(2)
+
+    fun jumpToWorldCup() = switchTabByPosition(3)
 
     fun jumpToInplaySport() {
         (activity as MainTabActivity).jumpToInplaySport()
