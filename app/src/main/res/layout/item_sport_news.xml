@@ -38,7 +38,7 @@
         android:maxLines="1"
         android:paddingStart="40dp"
         android:paddingRight="12dp"
-        android:text="content"
+        android:text="This game ."
         android:textColor="@color/color_0D2245"
         android:textFontWeight="600"
         android:textSize="16sp"

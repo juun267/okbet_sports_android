@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.news
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -41,6 +42,10 @@ class NewsViewModel(
     val newsList: LiveData<List<News>>
         get() = _newsList
 
+    val sportsNewsList: LiveData<List<News>>
+        get() = _sportsNewsList
+    private val _sportsNewsList = MutableLiveData<List<News>>()
+
     private val _showAllNews = MutableLiveData<Boolean>()
     val showAllNews: LiveData<Boolean>
         get() = _showAllNews
@@ -52,7 +57,25 @@ class NewsViewModel(
     private var newsPage = 1
     private var loadingNews = false
 
+    private var sportPageIndex=1
+    private var sportPageSize=10
 
+    fun getSportsNewsData() {
+        if(loadingNews){
+            return
+        }
+        sportPageIndex++
+        loadingNews=true
+        viewModelScope.launch {
+            val result= doNetwork(androidContext) {
+                OneBoSportApi.newsService.getMessageList(NewsType.SYSTEM.code, sportPageIndex, sportPageSize)
+            }
+            loadingNews=false
+            if(result!=null){
+                _sportsNewsList.postValue(result.news)
+            }
+        }
+    }
     fun getNewsData(newsType: NewsType, refresh: Boolean = false) {
         if ((!refresh && ((newsResult.value?.total ?: 0) <= (newsList.value?.size ?: 0))) || loadingNews) return
 

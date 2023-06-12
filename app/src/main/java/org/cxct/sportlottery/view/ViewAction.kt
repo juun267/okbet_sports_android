@@ -7,6 +7,8 @@ import android.view.TextureView
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 object ViewAction {
@@ -52,5 +54,24 @@ fun View.unExpand(height:Int){
         this.requestLayout()
     }
     animator.start()
+}
+
+
+fun RecyclerView.loadMore(block: () -> Unit){
+    var lastVisibleItem=0
+    val manager=layoutManager as LinearLayoutManager
+    addOnScrollListener(object:RecyclerView.OnScrollListener(){
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            if (newState ==RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 ==adapter?.itemCount){
+                block()
+            }
+        }
+
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            lastVisibleItem =manager.findLastVisibleItemPosition()
+        }
+    })
 }
 
