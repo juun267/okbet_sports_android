@@ -30,9 +30,9 @@ import kotlinx.android.synthetic.main.activity_detail_sport.*
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import kotlinx.android.synthetic.main.content_baseball_status.*
 import kotlinx.android.synthetic.main.item_sport_odd.view.*
-import kotlinx.android.synthetic.main.view_detail_head_toolbar.*
-import kotlinx.android.synthetic.main.view_detail_head_toolbar.view.*
-import kotlinx.android.synthetic.main.view_toolbar_detail_collaps.*
+import kotlinx.android.synthetic.main.view_detail_head_toolbar1.*
+//import kotlinx.android.synthetic.main.view_detail_head_toolbar.view.*
+import kotlinx.android.synthetic.main.view_toolbar_detail_collaps1.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_collaps.view.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_live.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_live.view.*
@@ -66,6 +66,7 @@ import org.cxct.sportlottery.ui.sport.SportViewModel
 import org.cxct.sportlottery.ui.sport.detail.adapter.*
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 import timber.log.Timber
@@ -107,9 +108,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         TabCateAdapter(OnItemSelectedListener {
             tabCateAdapter.selectedPosition = it
             (rv_cat.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
-                rv_cat,
-                RecyclerView.State(),
-                tabCateAdapter.selectedPosition
+                rv_cat, RecyclerView.State(), tabCateAdapter.selectedPosition
             )
             viewModel.oddsDetailResult.value?.peekContent()?.oddsDetailData?.matchOdd?.playCateTypeList?.getOrNull(
                 it
@@ -180,8 +179,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     text = this.context.getString(R.string.time_null)
                     isVisible = false
                 }
-                collaps_toolbar.tv_toolbar_match_time.text = text
-                collaps_toolbar.tv_toolbar_match_time.isVisible = isVisible
+//                collaps_toolbar.tv_toolbar_match_time.text = text
+//                collaps_toolbar.tv_toolbar_match_time.isVisible = isVisible
             }
         }
         return@Handler false
@@ -223,47 +222,47 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         iv_back.setOnClickListener {
             onBackPressed()
         }
-        iv_toolback.setOnClickListener {
-            if (live_view_tool_bar.isFullScreen) {
-                live_view_tool_bar.showFullScreen(false)
-                showFullScreen(false)
-            } else {
-                if (toolBar.isVisible) {
-                    onBackPressed()
-                } else {
-                    if (intoLive) {
-                        finish()
-                    } else {
-                        toolBar.isVisible = true
-                        live_view_tool_bar.isVisible = false
-                        setScrollEnable(true)
-                        collaps_toolbar.isVisible = false
-                        collaps_toolbar.iv_toolbar_bg.isVisible = true
-                        live_view_tool_bar.release()
-                        showChatWebView(false)
-                    }
-                }
-            }
-        }
+//        iv_toolback.setOnClickListener {
+//            if (live_view_tool_bar.isFullScreen) {
+//                live_view_tool_bar.showFullScreen(false)
+//                showFullScreen(false)
+//            } else {
+//                if (toolBar.isVisible) {
+//                    onBackPressed()
+//                } else {
+//                    if (intoLive) {
+//                        finish()
+//                    } else {
+//                        toolBar.isVisible = true
+//                        live_view_tool_bar.isVisible = false
+//                        setScrollEnable(true)
+//                        collaps_toolbar.isVisible = false
+//                        collaps_toolbar.iv_toolbar_bg.isVisible = true
+//                        live_view_tool_bar.release()
+//                        showChatWebView(false)
+//                    }
+//                }
+//            }
+//        }
 
         iv_refresh.setOnClickListener {
             initAllObserve()
         }
 
-        ImmersionBar.with(this).fitsSystemWindows(false).statusBarDarkFont(false)
+        ImmersionBar.with(this).fitsSystemWindows(false).statusBarDarkFont(true)
             .transparentStatusBar().hideBar(BarHide.FLAG_HIDE_NAVIGATION_BAR).init()
-        ImmersionBar.getStatusBarHeight(this).let {
-            v_statusbar.minimumHeight = it
-            live_view_tool_bar.v_statusbar_live.layoutParams.apply {
-                height = it
-                live_view_tool_bar.v_statusbar_live.layoutParams = this
-            }
-            toolbar_layout.minimumHeight = it
-            collaps_toolbar.layoutParams.apply {
-                height = it + resources.getDimensionPixelOffset(R.dimen.tool_bar_height)
-                collaps_toolbar.layoutParams = this
-            }
-        }
+//        ImmersionBar.getStatusBarHeight(this).let {
+//            v_statusbar.minimumHeight = it
+//            live_view_tool_bar.v_statusbar_live.layoutParams.apply {
+//                height = it
+//                live_view_tool_bar.v_statusbar_live.layoutParams = this
+//            }
+//            toolbar_layout.minimumHeight = it
+//            collaps_toolbar.layoutParams.apply {
+//                height = it + resources.getDimensionPixelOffset(R.dimen.tool_bar_height)
+//                collaps_toolbar.layoutParams = this
+//            }
+//        }
         app_bar_layout.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
             override fun onStateChanged(appBarLayout: AppBarLayout?, state: State?) {
                 if (state === State.COLLAPSED) {
@@ -281,16 +280,16 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         live_view_tool_bar.setOnTouchScreenListener(object :
             DetailLiveViewToolbar.OnTouchScreenListener {
             override fun onTouchScreen() {
-                isFlowing = true;
-                if (collaps_toolbar.visibility == View.GONE) {
-                    collaps_toolbar.startAnimation(enterAnim);
-                    collaps_toolbar.visibility = View.VISIBLE;
-                }
+//                isFlowing = true;
+//                if (collaps_toolbar.visibility == View.GONE) {
+//                    collaps_toolbar.startAnimation(enterAnim);
+//                    collaps_toolbar.visibility = View.VISIBLE;
+//                }
             }
 
             override fun onReleaseScreen() {
-                isFlowing = false;
-                startDelayHideTitle()
+//                isFlowing = false;
+//                startDelayHideTitle()
             }
         })
     }
@@ -462,13 +461,13 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 GameType.getGameType(matchInfo?.gameType) ?: GameType.FT
             )
         )
-        collaps_toolbar.iv_toolbar_bg.setImageResource(
-            GameType.getGameTypeDetailBg(
-                GameType.getGameType(
-                    matchInfo?.gameType
-                ) ?: GameType.FT
-            )
-        )
+//        collaps_toolbar.iv_toolbar_bg.setImageResource(
+//            GameType.getGameTypeDetailBg(
+//                GameType.getGameType(
+//                    matchInfo?.gameType
+//                ) ?: GameType.FT
+//            )
+//        )
         oddsDetailListAdapter =
             OddsDetailListAdapter(OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
                 if (mIsEnabled) {
@@ -720,21 +719,22 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
      * 点击事件
      */
     fun clickButton() {
-        btn_odd.setOnClickListener { isShowOdd(true) }
-        btn_analyze.setOnClickListener { isShowOdd(false) }
+//        btn_odd.setOnClickListener { isShowOdd(true) }
+//        btn_analyze.setOnClickListener { isShowOdd(false) }
+
     }
 
     private fun isShowOdd(isShowOdd: Boolean) {
         val selectColor = ContextCompat.getColor(this, R.color.color_025BE8)
         val nomalColor = ContextCompat.getColor(this, R.color.color_6C7BA8)
-        btn_odd.setTextColor(if (isShowOdd) selectColor else nomalColor)
-        viewBtOdd.isVisible = isShowOdd
+//        btn_odd.setTextColor(if (isShowOdd) selectColor else nomalColor)
+//        viewBtOdd.isVisible = isShowOdd
         rv_detail.isVisible = isShowOdd
         lin_categroy.isVisible = isShowOdd
         vDivider.isVisible = isShowOdd
 
-        btn_analyze.setTextColor(if (!isShowOdd) selectColor else nomalColor)
-        viewBtnAnalyze.isVisible = !isShowOdd
+//        btn_analyze.setTextColor(if (!isShowOdd) selectColor else nomalColor)
+//        viewBtnAnalyze.isVisible = !isShowOdd
         ns_analyze.isVisible = !isShowOdd
 
     }
@@ -755,7 +755,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         //endregion
         //region 比賽延期判斷
         if (matchInfo.status == GameStatus.POSTPONED.code && (matchInfo.gameType == GameType.FT.name || matchInfo.gameType == GameType.BK.name || matchInfo.gameType == GameType.TN.name)) {
-            toolBar.tv_score.text = getString(R.string.game_postponed)
+//            toolBar.tv_score.text = getString(R.string.game_postponed)
             tv_toolbar_home_score.text = "-"
             tv_toolbar_away_score.text = "-"
             lin_bottom.isVisible = false
@@ -787,10 +787,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 }
             }
             lin_bottom.isVisible = false
-            collaps_toolbar.tv_toolbar_match_status.text = tv_match_status.text.trim()
-            collaps_toolbar.tv_toolbar_match_status.isVisible = tv_match_status.isVisible
-            collaps_toolbar.tv_toolbar_match_time.text = tv_match_time.text.trim()
-            collaps_toolbar.tv_toolbar_match_time.isVisible = tv_match_time.isVisible
+//            collaps_toolbar.tv_toolbar_match_status.text = tv_match_status.text.trim()
+//            collaps_toolbar.tv_toolbar_match_status.isVisible = tv_match_status.isVisible
+//            collaps_toolbar.tv_toolbar_match_time.text = tv_match_time.text.trim()
+//            collaps_toolbar.tv_toolbar_match_time.isVisible = tv_match_time.isVisible
             collaps_toolbar.tv_toolbar_home_score.isVisible = tv_score.isVisible
             collaps_toolbar.tv_toolbar_away_score.isVisible = tv_score.isVisible
         }
@@ -799,8 +799,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private fun initSocketObserver() {
         unSubscribeChannelHallAll()
         unSubscribeChannelEventAll()
-        setupSportStatusChange(this){
-            if(it){
+        setupSportStatusChange(this) {
+            if (it) {
                 finish()
             }
         }
@@ -992,9 +992,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             }
             tabCateAdapter.dataList = playCateTypeList
             (rv_cat.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
-                rv_cat,
-                RecyclerView.State(),
-                tabCateAdapter.selectedPosition
+                rv_cat, RecyclerView.State(), tabCateAdapter.selectedPosition
             )
         } else {
             rv_cat.visibility = View.GONE
@@ -1023,16 +1021,18 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     fun updateMenu(matchInfo: MatchInfo) {
         toolBar.apply {
-            lin_live.isVisible = matchInfo?.isLive == 1
-            lin_video.isVisible = matchInfo?.liveVideo == 1
+            lin_live.isVisible = matchInfo.isLive == 1
+            lin_video.isVisible = matchInfo.liveVideo == 1
             lin_anime.isVisible =
                 !(matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
                     ?.getGameDetailAnimationNeedShow() == true
-            lin_live.setOnClickListener {
-                showLive()
-            }
+
+            Timber.d("liveIsShow:${lin_live.isVisible} linVideoIsShow:${lin_video.isVisible} lin_anime:${lin_anime.isVisible}")
 
             if (matchInfo.isLive == 1) {
+                lin_live.setOnClickListener {
+                    showLive()
+                }
                 if (matchInfo.pullRtmpUrl.isNullOrEmpty()) {
                     matchInfo.roundNo?.let {
                         viewModel.getLiveInfo(it)
@@ -1044,6 +1044,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     }
                 }
             }
+
             lin_video.setOnClickListener {
                 live_view_tool_bar.videoUrl?.let {
                     toolBar.isVisible = false
@@ -1055,12 +1056,13 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     startDelayHideTitle()
                 }
             }
+
             lin_anime.setOnClickListener {
                 live_view_tool_bar.animeUrl?.let {
                     toolBar.isVisible = false
                     live_view_tool_bar.isVisible = true
                     collaps_toolbar.isVisible = true
-                    collaps_toolbar.iv_toolbar_bg.isVisible = false
+//                    collaps_toolbar.iv_toolbar_bg.isVisible = false
                     live_view_tool_bar.showAnime()
                     setScrollEnable(false)
                     startDelayHideTitle()
@@ -1112,12 +1114,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
      */
     private fun setScrollEnable(enable: Boolean) {
         (app_bar_layout.getChildAt(0).layoutParams as AppBarLayout.LayoutParams).apply {
-//            scrollFlags = if (enable)
-//                (AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
-//                        or AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED
-//                        or AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP)
+            scrollFlags =
+//                if (enable)
+                (AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED or AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP)
 //            else
-            AppBarLayout.LayoutParams.SCROLL_FLAG_NO_SCROLL
+//            AppBarLayout.LayoutParams.SCROLL_FLAG_NO_SCROLL
         }
     }
 
@@ -1241,8 +1242,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 }
             }
         }
-        tv_toolbar_match_status.isVisible = tv_match_status.isVisible
-        tv_toolbar_match_status.text = tv_match_status.text.trim()
+//        tv_toolbar_match_status.isVisible = tv_match_status.isVisible
+//        tv_toolbar_match_status.text = tv_match_status.text.trim()
     }
 
     /**
@@ -1382,7 +1383,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 else matchInfo.startDateDisplay
             }
         }
-        tv_toolbar_match_status.text = tv_match_status.text.trim()
+//        tv_toolbar_match_status.text = tv_match_status.text.trim()
     }
 
     /**

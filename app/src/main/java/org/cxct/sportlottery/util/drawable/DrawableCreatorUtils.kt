@@ -19,13 +19,13 @@ object DrawableCreatorUtils {
      * solidColor:填充颜色
      */
     fun getCommonBackgroundStyle(
-        cornerRadius: Int, solidColor: Int, strokeColor: Int = 0xaaff, strokeWith: Int = 1
+        cornerRadius: Int, solidColor: Int, strokeColor: Int = 0xaaff, strokeWidth: Int = 1
     ): Drawable {
         val drawableBuilder = DrawableCreator.Builder()
         return try {
             drawableBuilder.apply {
                 setCornersRadius(cornerRadius.dp.toFloat())
-                setStrokeWidth(strokeWith.dp.toFloat())
+                setStrokeWidth(strokeWidth.dp.toFloat())
                 if (strokeColor != 0xaaff) {
                     setStrokeColor(appCtx.getColor(strokeColor))
                 }
@@ -35,8 +35,41 @@ object DrawableCreatorUtils {
             e.printStackTrace()
             drawableBuilder.build()
         }
-
     }
+
+    /**
+     * color 直接传色值即可 R.color.xxx
+     */
+    fun getCommonBackgroundStyle(
+        leftTopCornerRadius: Int = 0,
+        rightTopCornerRadius: Int = 0,
+        leftBottomCornerRadius: Int = 0,
+        rightBottomCornerRadius: Int = 0,
+        solidColor: Int,
+        strokeColor: Int = 0xaaff,
+        strokeWidth: Int,
+    ): Drawable {
+        val drawableBuilder = DrawableCreator.Builder()
+        return try {
+            drawableBuilder.apply {
+                setCornersRadius(
+                    leftBottomCornerRadius.dp.toFloat(),
+                    rightBottomCornerRadius.dp.toFloat(),
+                    leftTopCornerRadius.dp.toFloat(),
+                    rightTopCornerRadius.dp.toFloat()
+                )
+                setStrokeWidth(strokeWidth.dp.toFloat())
+                if (strokeColor != 0xaaff) {
+                    setStrokeColor(appCtx.getColor(strokeColor))
+                }
+                setSolidColor(appCtx.getColor(solidColor))
+            }.build()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            drawableBuilder.build()
+        }
+    }
+
 
     /**
      * 篮球末位比分，删除全部按钮
