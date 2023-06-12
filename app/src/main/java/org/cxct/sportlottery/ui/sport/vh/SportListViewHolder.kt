@@ -240,8 +240,7 @@ class SportListViewHolder constructor(
             }
         }
         with(itemView.iv_animation) {
-            isVisible =
-                TimeUtil.isTimeInPlay(item.matchInfo?.startTime) && !(item.matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
+            isVisible = !(item.matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
                     ?.getGameDetailAnimationNeedShow() == true
             setOnClickListener {
                 leagueOddListener?.onClickAnimationIconListener(
@@ -496,7 +495,7 @@ class SportListViewHolder constructor(
 
         this.matchType = matchType
         this.listener =
-            OddButtonListener { view, matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
+            OddButtonListener { view, matchInfo, odd, playCateCode, betPlayCateName ->
                 leagueOddListener?.onClickBet(
                     view,
                     matchInfo,
@@ -536,6 +535,4 @@ class SportListViewHolder constructor(
         oddButtonPagerAdapter.odds = item.oddsMap ?: mutableMapOf()
     }
 
-    override val oddStateChangeListener: OddStateChangeListener
-        get() = refreshListener
 }

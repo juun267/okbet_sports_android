@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.chad.library.adapter.base.listener.OnItemClickListener
-import com.didichuxing.doraemonkit.util.GsonUtils
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import kotlinx.android.synthetic.main.activity_league_select.*
 import org.cxct.sportlottery.R

@@ -1033,6 +1033,15 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 lin_live.setOnClickListener {
                     showLive()
                 }
+            lin_live.setOnClickListener {
+                if (!viewModel.getLoginBoolean() && sConfigData?.noLoginWitchVideoOrAnimation==1){
+                    AppManager.currentActivity().startLogin()
+                    return@setOnClickListener
+                }
+                showLive()
+            }
+
+            if (matchInfo.isLive == 1) {
                 if (matchInfo.pullRtmpUrl.isNullOrEmpty()) {
                     matchInfo.roundNo?.let {
                         viewModel.getLiveInfo(it)
@@ -1046,6 +1055,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             }
 
             lin_video.setOnClickListener {
+                if (!viewModel.getLoginBoolean() && sConfigData?.noLoginWitchVideoOrAnimation==1){
+                    AppManager.currentActivity().startLogin()
+                    return@setOnClickListener
+                }
                 live_view_tool_bar.videoUrl?.let {
                     toolBar.isVisible = false
                     live_view_tool_bar.isVisible = true
@@ -1058,6 +1071,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             }
 
             lin_anime.setOnClickListener {
+                if (!viewModel.getLoginBoolean() && sConfigData?.noLoginWitchVideoOrAnimation==1){
+                    AppManager.currentActivity().startLogin()
+                    return@setOnClickListener
+                }
                 live_view_tool_bar.animeUrl?.let {
                     toolBar.isVisible = false
                     live_view_tool_bar.isVisible = true

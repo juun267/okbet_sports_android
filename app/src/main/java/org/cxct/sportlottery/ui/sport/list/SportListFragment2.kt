@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.sport.list
 import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.distinctUntilChanged
@@ -12,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.google.android.material.appbar.AppBarLayout
-import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.TimeRangeEvent
 import org.cxct.sportlottery.common.extentions.clean
@@ -20,12 +18,9 @@ import org.cxct.sportlottery.common.extentions.rotationAnimation
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
-import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
-import org.cxct.sportlottery.network.service.ServiceConnectStatus
-import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
@@ -33,8 +28,8 @@ import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.SportFragment2
 import org.cxct.sportlottery.ui.sport.common.*
-import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
+import org.cxct.sportlottery.ui.sport.list.adapter.OnOddClickListener
 import org.cxct.sportlottery.ui.sport.list.adapter.SportLeagueAdapter2
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
@@ -46,7 +41,7 @@ import java.util.*
  * @app_destination 滾球、即將、今日、早盤、冠軍、串關
  */
 class SportListFragment2
-    : BindingSocketFragment<SportListViewModel, FragmentSportList2Binding>() {
+    : BindingSocketFragment<SportListViewModel, FragmentSportList2Binding>(), OnOddClickListener {
 
     private var matchType = MatchType.IN_PLAY
     private var gameType: String? = null
@@ -60,11 +55,12 @@ class SportListFragment2
     private val gameTypeAdapter by lazy { GameTypeAdapter2(::onGameTypeChanged) }
 
     private val sportLeagueAdapter2 by lazy {
-        SportLeagueAdapter2(matchType, this) { position, view, item ->
-            if (item is Odd) {
-
-            }
-        }
+        SportLeagueAdapter2(matchType,
+            this,
+            onOddClick = this@SportListFragment2,
+            onFavorite = { matchId ->
+            loginedRun(context()) { viewModel.pinFavorite(FavoriteType.MATCH, matchId) }
+        })
     }
 
     private fun onGameTypeChanged(item: Item, position: Int) {
@@ -80,75 +76,6 @@ class SportListFragment2
         load(item)
         binding.ivFilter.isVisible = gameType != GameType.ALL.key
     }
-
-//    private val sportLeagueAdapter by lazy {
-//        SportLeagueAdapter(this, matchType).apply {
-//            discount = viewModel.userInfo.value?.discount ?: 1.0F
-//
-//            leagueListener = LeagueListener { resubscribeChannel(400) }
-//            leagueOddListener =
-//                LeagueOddListener(clickListenerPlayType = { matchId, matchInfoList, _, liveVideo ->
-//                    matchInfoList.find {
-//                        TextUtils.equals(matchId, it.id)
-//                    }?.let {
-//                        navMatchDetailPage(it)
-//                    }
-//                },
-//                    clickListenerBet = { view, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
-//                        if (mIsEnabled) {
-//                            avoidFastDoubleClick()
-//                            addOddsDialog(
-//                                view, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap
-//                            )
-//                        }
-//                    },
-//                    clickListenerFavorite = { matchId ->
-//                        matchId?.let {
-//                            viewModel.pinFavorite(FavoriteType.MATCH, it)
-//                        }
-//                    },
-//                    clickListenerStatistics = { matchId ->
-//                        if (viewModel.checkLoginStatus()) {
-//                            data.forEach {
-//                                it.matchOdds.forEach {
-//                                    if (TextUtils.equals(matchId, it.matchInfo?.id)) {
-//                                        navMatchDetailPage(it.matchInfo)
-//                                        return@forEach
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    },
-//                    clickLiveIconListener = { matchId, matchInfoList, _, liveVideo ->
-//                        if (viewModel.checkLoginStatus()) {
-//                            matchInfoList.find {
-//                                TextUtils.equals(matchId, it.id)
-//                            }?.let {
-//                                navMatchDetailPage(it)
-//                            }
-//                        }
-//                    },
-//                    clickAnimationIconListener = { matchId, matchInfoList, _, liveVideo ->
-//                        if (viewModel.checkLoginStatus()) {
-//                            matchInfoList.find {
-//                                TextUtils.equals(matchId, it.id)
-//                            }?.let {
-//                                navMatchDetailPage(it)
-//                            }
-//                        }
-//                    },
-//                    clickCsTabListener = { playCate, matchOdd ->
-//                        data.forEachIndexed { index, l ->
-//                            l.matchOdds.find { m ->
-//                                m == matchOdd
-//                            }?.let {
-//                                it.csTabSelected = playCate
-//                                updateLeagueBySelectCsTab(index, matchOdd)
-//                            }
-//                        }
-//                    })
-//        }
-//    }
 
     private fun reset() {
         matchType = (arguments?.getSerializable("matchType") as MatchType?) ?: MatchType.IN_PLAY
@@ -265,6 +192,7 @@ class SportListFragment2
         ivArrow.rotationAnimation(0f, 0)
     }
 
+    private inline fun BaseNode.isMatchOdd() =  this is org.cxct.sportlottery.network.odds.list.MatchOdd
     private fun initObserve() = viewModel.run {
 
         showErrorDialogMsg.observe(this@SportListFragment2.viewLifecycleOwner) {
@@ -295,42 +223,39 @@ class SportListFragment2
             sportLeagueAdapter2.setNewInstance(mLeagueOddList as MutableList<BaseNode> )
             resubscribeChannel(80)
         }
-//
-//
-//        //當前玩法無賽事
-//        viewModel.isNoEvents.distinctUntilChanged().observe(this@SportListFragment2.viewLifecycleOwner) {
-////            sport_type_list.isVisible = !it && matchType != MatchType.CS
-//            //无赛事或者为波胆的时候不显示
-//            binding.llSportType.isVisible = !(it || matchType == MatchType.CS)
-//            binding.ivCalendar.isVisible =
-//                (matchType == MatchType.EARLY || matchType == MatchType.CS) && !it
-//            if (it) {
-//                sportLeagueAdapter.removePreloadItem()
-//            }
-//            hideLoading()
-//        }
-//
-//        viewModel.betInfoList.observe(this@SportListFragment2.viewLifecycleOwner) {
-//            it.peekContent().let { betInfoList ->
-//                sportLeagueAdapter.betInfoList = betInfoList
-//            }
-//        }
-//
-//        viewModel.oddsType.observe(this@SportListFragment2.viewLifecycleOwner) {
-//            it?.let { oddsType ->
-//                sportLeagueAdapter.oddsType = oddsType
-//            }
-//        }
-//
-//        viewModel.favorMatchList.observe(this@SportListFragment2.viewLifecycleOwner) {
-//            sportLeagueAdapter.data.forEach { leagueOdd ->
-//                leagueOdd.matchOdds.forEach { matchOdd ->
-//                    matchOdd.matchInfo?.isFavorite = it.contains(matchOdd.matchInfo?.id)
-//                }
-//            }
-//
-//            updateAllGameList()
-//        }
+
+        //當前玩法無賽事
+        viewModel.isNoEvents.distinctUntilChanged().observe(this@SportListFragment2.viewLifecycleOwner) {
+
+            hideLoading()
+        }
+
+        viewModel.betInfoList.observe(this@SportListFragment2.viewLifecycleOwner) {
+            if (subscribedMatchOdd.isEmpty()) {
+                return@observe
+            }
+            sportLeagueAdapter2.updateOddsSelectStatus(subscribedMatchOdd.values)
+        }
+
+        viewModel.oddsType.observe(this@SportListFragment2.viewLifecycleOwner) {
+            sportLeagueAdapter2.oddsType = it
+        }
+
+        viewModel.favorMatchList.observe(this@SportListFragment2.viewLifecycleOwner) { favoritList->
+            if (sportLeagueAdapter2.getCount() < 1) {
+                return@observe
+            }
+
+            val favoriteIds = favoritList.toSet()
+            sportLeagueAdapter2.data.forEachIndexed { index, baseNode ->
+                if (baseNode is org.cxct.sportlottery.network.odds.list.MatchOdd) {
+                    baseNode.matchInfo?.let {
+                        it.isFavorite = favoriteIds.contains(it.id)
+                        sportLeagueAdapter2.notifyItemChanged(index)
+                    }
+                }
+            }
+        }
 
     }
 
@@ -348,122 +273,83 @@ class SportListFragment2
 //            }
 //        }
 
-//        receiver.matchStatusChange.observe(this@SportListFragment2.viewLifecycleOwner) {
-//            if (it == null) {
-//                return@observe
-//            }
-//
-//            val matchStatusChangeEvent = it!!
-//
-//            val isFinished =
-//                matchStatusChangeEvent.matchStatusCO?.status == GameMatchStatus.FINISH.value
-//            val matchId = matchStatusChangeEvent.matchStatusCO?.matchId
-//            sportLeagueAdapter.data.toList().forEachIndexed { index, leagueOdd ->
-//                if (isFinished) {
-//                    leagueOdd.matchOdds.toList().find { m ->
-//                        m.matchInfo?.id == matchId
-//                    }?.let { mo ->
-//                        leagueOdd.matchOdds.remove(mo)
-//                        if (leagueOdd.matchOdds.size > 0) {
-//                            sportLeagueAdapter.notifyItemChanged(index)
-//                        } else {
-//                            unSubscribeChannelHall(leagueOdd)
-//                            sportLeagueAdapter.data.remove(leagueOdd)
-//                            sportLeagueAdapter.notifyItemRemoved(index)
-//                        }
-//                    }
-//                } else {
-//                    leagueOdd.matchOdds.forEach { matchOdd ->
-//                        if (SocketUpdateUtil.updateMatchStatus(
-//                                leagueOdd.gameType?.key, matchOdd, matchStatusChangeEvent, context
-//                            ) && leagueOdd.unfoldStatus == FoldState.UNFOLD.code
-//                        ) {
-//                            sportLeagueAdapter.updateMatch(index, matchOdd)
-//                        }
-//                    }
-//                }
-//            }
-//
-//        }
-//
-//        receiver.matchClock.observe(this@SportListFragment2.viewLifecycleOwner) {
-//            if (it == null || binding.gameList.adapter !is SportLeagueAdapter) {
-//                return@observe
-//            }
-//
-//            val matchClockEvent = it
-//            val leagueOdds = sportLeagueAdapter.data
-//            leagueOdds.forEachIndexed { leagueIndex, leagueOdd ->
-//                leagueOdd.matchOdds.forEach { matchOdd ->
-//
-//                    if (SocketUpdateUtil.updateMatchClock(
-//                            matchOdd,
-//                            matchClockEvent
-//                        ) && leagueOdd.unfoldStatus == FoldState.UNFOLD.code
-//                    ) {
-//                        updateMatch(leagueIndex, matchOdd)
-//                    }
-//                }
-//            }
-//        }
-//
-//        receiver.matchOddsLock.observe(this@SportListFragment2.viewLifecycleOwner) {
-//            if (it == null || binding.gameList.adapter !is SportLeagueAdapter) {
-//                return@observe
-//            }
-//            val matchOddsLockEvent = it
-//            val leagueOdds = sportLeagueAdapter.data
-//
-//            leagueOdds.forEachIndexed { leagueIndex, leagueOdd ->
-//                leagueOdd.matchOdds.forEach { matchOdd ->
-//                    if (SocketUpdateUtil.updateOddStatus(
-//                            matchOdd,
-//                            matchOddsLockEvent
-//                        ) && leagueOdd.unfoldStatus == FoldState.UNFOLD.code
-//                    ) {
-//                        updateMatch(leagueIndex, matchOdd)
-//                    }
-//                }
-//            }
-//        }
-//
-//        receiver.globalStop.observe(this@SportListFragment2.viewLifecycleOwner) {
-//            if (it == null || binding.gameList.adapter !is SportLeagueAdapter) {
-//                return@observe
-//            }
-//
-//            val leagueOdds = sportLeagueAdapter.data
-//            val globalStopEvent = it
-//            leagueOdds.forEachIndexed { leagueIndex, leagueOdd ->
-//                leagueOdd.matchOdds.forEach { matchOdd ->
-//                    if (SocketUpdateUtil.updateOddStatus(
-//                            matchOdd,
-//                            globalStopEvent
-//                        ) && leagueOdd.unfoldStatus == FoldState.UNFOLD.code
-//                    ) {
-//                        //暫時不處理 防止過多更新
-//                        updateMatch(leagueIndex, matchOdd)
-//                    }
-//                }
-//            }
-//        }
-//
-//        receiver.producerUp.observe(this@SportListFragment2.viewLifecycleOwner) { //開啟允許投注
-//            if (it == null) {
-//                return@observe
-//            }
-//
-//            resubscribeChannel()
-//        }
-//
-//
-//        receiver.closePlayCate.observe(this@SportListFragment2.viewLifecycleOwner) { event ->
-//            event?.peekContent()?.let {
-//                if (gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code != it.gameType) return@observe
-//                sportLeagueAdapter.data.closePlayCate(it)
-//                sportLeagueAdapter.notifyDataSetChanged()
-//            }
-//        }
+        receiver.matchStatusChange.observe(this@SportListFragment2.viewLifecycleOwner) {
+            if (it == null) {
+                return@observe
+            }
+
+            val matchStatusChangeEvent = it!!
+            val isFinished = matchStatusChangeEvent.matchStatusCO?.status == GameMatchStatus.FINISH.value
+            val matchId = matchStatusChangeEvent.matchStatusCO?.matchId
+            val matchOddPosition = subscribedMatchOdd[matchId] ?: return@observe
+            if (isFinished) {
+                sportLeagueAdapter2.removeMatchOdd(matchOddPosition.first)
+            } else {
+                if (SocketUpdateUtil.updateMatchStatus(matchOddPosition.first.matchInfo?.gameType,
+                        matchOddPosition.first, matchStatusChangeEvent, context)) {
+                    sportLeagueAdapter2.notifyItemChanged(matchOddPosition.second)
+                }
+            }
+
+        }
+
+        receiver.matchClock.observe(this@SportListFragment2.viewLifecycleOwner) { event->
+            if (event == null || sportLeagueAdapter2.getCount() < 1) {
+                return@observe
+            }
+
+            val matchPosition = subscribedMatchOdd[event.matchClockCO?.matchId] ?: return@observe
+            matchPosition.first.matchInfo?.let { matchInfo->
+                if (SocketUpdateUtil.updateMatchClockStatus(matchInfo, event)) {
+                    sportLeagueAdapter2.notifyItemChanged(matchPosition.second, matchPosition.first)
+                }
+            }
+        }
+
+        receiver.matchOddsLock.observe(this@SportListFragment2.viewLifecycleOwner) { event->
+            if (event == null || sportLeagueAdapter2.getCount() < 1) {
+                return@observe
+            }
+
+            val matchPosition = subscribedMatchOdd[event.matchId] ?: return@observe
+            if (SocketUpdateUtil.updateOddStatus(matchPosition.first, event)) {
+                sportLeagueAdapter2.notifyItemChanged(matchPosition.second, matchPosition.first)
+            }
+        }
+
+        receiver.globalStop.observe(this@SportListFragment2.viewLifecycleOwner) { event->
+            if (event == null || sportLeagueAdapter2.getCount() < 1) {
+                return@observe
+            }
+
+            sportLeagueAdapter2.data.forEachIndexed { index, baseNode ->
+                if (baseNode.isMatchOdd() && SocketUpdateUtil.updateOddStatus(baseNode as MatchOdd, event)) {
+                    //暫時不處理 防止過多更新
+                    sportLeagueAdapter2.notifyItemChanged(index, baseNode)
+                }
+            }
+        }
+
+        receiver.producerUp.observe(this@SportListFragment2.viewLifecycleOwner) { //開啟允許投注
+            if (it == null) {
+                return@observe
+            }
+            resubscribeChannel()
+        }
+
+
+        receiver.closePlayCate.observe(this@SportListFragment2.viewLifecycleOwner) { event ->
+            val closeEvent = event?.peekContent() ?: return@observe
+            if (sportLeagueAdapter2.getCount() < 1
+                || gameTypeAdapter.currentItem?.code != closeEvent.gameType
+                || sportLeagueAdapter2.rootNodes.isNullOrEmpty()
+            ) {
+                return@observe
+            }
+
+            (sportLeagueAdapter2.rootNodes!!.toMutableList() as MutableList<LeagueOdd>).closePlayCate(closeEvent)
+            sportLeagueAdapter2.notifyDataSetChanged()
+        }
     }
 
     private fun setupOddsChangeListener() {
@@ -472,45 +358,6 @@ class SportListFragment2
                 sportLeagueAdapter2.onOddsChangeEvent(it, subscribedMatchOdd)
             }
         }
-
-    }
-
-
-//    private fun updateMatch(index: Int, matchOdd: MatchOdd) {
-//        if (binding.gameList.scrollState == RecyclerView.SCROLL_STATE_IDLE && !binding.gameList.isComputingLayout) {
-//            sportLeagueAdapter.updateMatch(index, matchOdd)
-//        }
-//    }
-
-    /**
-     * 若投注單處於未開啟狀態且有加入注單的賠率項資訊有變動時, 更新投注單內資訊
-     */
-    private fun updateBetInfo(leagueOdd: LeagueOdd, oddsChangeEvent: OddsChangeEvent) {
-        if (getBetListPageVisible()) {
-            return
-        }
-
-        //尋找是否有加入注單的賠率項
-        if (leagueOdd.matchOdds.filter { matchOdd ->
-                matchOdd.matchInfo?.id == oddsChangeEvent.eventId
-            }.any { matchOdd ->
-                matchOdd.oddsMap?.values?.any { oddList ->
-                    oddList?.any { odd ->
-                        odd?.isSelected == true
-                    } == true
-                } == true
-            }) {
-            viewModel.updateMatchOdd(oddsChangeEvent)
-        }
-    }
-
-
-    private fun updateAllGameList() {
-//        if (binding.gameList.scrollState == RecyclerView.SCROLL_STATE_IDLE && !binding.gameList.isComputingLayout) {
-//            sportLeagueAdapter.data.forEachIndexed { index, leagueOdd ->
-//                sportLeagueAdapter.updateLeague(index, leagueOdd)
-//            }
-//        }
     }
 
     private fun load(item: Item) {
@@ -522,7 +369,6 @@ class SportListFragment2
 
         if (gameTypeList.isEmpty()) {
             binding.sportTypeList.isVisible = matchType != MatchType.CS
-//            binding.ivCalendar.isVisible = matchType == MatchType.EARLY || matchType == MatchType.CS
             hideLoading()
             return
         }
@@ -552,14 +398,13 @@ class SportListFragment2
 
     }
 
-
-    private fun addOddsDialog(
-        view: View,
-        matchInfo: MatchInfo?,
+    override fun oddClick(
+        matchInfo: MatchInfo,
         odd: Odd,
         playCateCode: String,
-        playCateName: String,
+        betPlayCateName: String,
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
+        view: View
     ) {
 
         var gameType = GameType.getGameType(gameTypeAdapter.currentItem?.code)
@@ -573,7 +418,7 @@ class SportListFragment2
             matchType = matchType,
             gameType = gameType!!,
             playCateCode = playCateCode,
-            playCateName = playCateName,
+            playCateName = betPlayCateName,
             matchInfo = matchInfo,
             matchOdd = null,
             odd = odd,
@@ -581,14 +426,6 @@ class SportListFragment2
             betPlayCateNameMap = betPlayCateNameMap,
         )
         (activity as MainTabActivity).setupBetData(fastBetDataBean, view)
-    }
-
-    private fun unSubscribeChannelHall(leagueOdd: LeagueOdd) {
-        leagueOdd.matchOdds.forEach { matchOdd ->
-            if (leagueOdd.unfoldStatus == FoldState.UNFOLD.code) {
-                unSubscribeChannelHall(leagueOdd.gameType?.key, matchOdd.matchInfo?.id)
-            }
-        }
     }
 
     override fun onDestroyView() {
@@ -666,21 +503,13 @@ class SportListFragment2
         }
 
         sportLeagueAdapter2.doOnVisiableRange { i, baseNode ->
-            if (baseNode is MatchOdd) {
-                val matchOdd = baseNode as org.cxct.sportlottery.network.odds.list.MatchOdd
-                matchOdd.matchInfo?.let {
-                    subscribedMatchOdd[it.id] = Pair(matchOdd, i)
+            if (baseNode is org.cxct.sportlottery.network.odds.list.MatchOdd) {
+                baseNode.matchInfo?.let {
+                    subscribedMatchOdd[it.id] = Pair(baseNode, i)
                     subscribeChannel(it.gameType, it.id)
                 }
             }
         }
     }, delay)
-
-
-    private fun printLog(msg: String) {
-        if (BuildConfig.DEBUG) {
-            Log.e("SportListFragment", msg)
-        }
-    }
 
 }

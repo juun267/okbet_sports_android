@@ -78,7 +78,6 @@ import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 
 class SportFavoriteViewHolder constructor(
     itemView: View,
-    private val refreshListener: OddStateChangeListener,
 ) : ViewHolderTimer(itemView) {
 
     private val oddButtonPagerAdapter by lazy {
@@ -320,8 +319,7 @@ class SportFavoriteViewHolder constructor(
             }
         }
         with(itemView.iv_animation) {
-            isVisible =
-                TimeUtil.isTimeInPlay(item.matchInfo?.startTime) && !(item.matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
+            isVisible =!(item.matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
                     ?.getGameDetailAnimationNeedShow() == true
             setOnClickListener {
                 leagueOddListener?.onClickAnimationIconListener(
@@ -576,7 +574,7 @@ class SportFavoriteViewHolder constructor(
 
         this.matchType = matchType
         this.listener =
-            OddButtonListener { view, matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
+            OddButtonListener { view, matchInfo, odd, playCateCode, betPlayCateName ->
                 leagueOddListener?.onClickBet(
                     view,
                     matchInfo,
@@ -616,6 +614,4 @@ class SportFavoriteViewHolder constructor(
         oddButtonPagerAdapter.odds = item.oddsMap ?: mutableMapOf()
     }
 
-    override val oddStateChangeListener: OddStateChangeListener
-        get() = refreshListener
 }

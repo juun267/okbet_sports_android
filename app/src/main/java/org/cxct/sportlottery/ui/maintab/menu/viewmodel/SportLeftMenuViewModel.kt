@@ -1,12 +1,17 @@
+@file:Suppress("DEPRECATION")
+
 package org.cxct.sportlottery.ui.maintab.menu.viewmodel
 
 import android.app.Application
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.bet.list.BetListRequest
 import org.cxct.sportlottery.network.user.odds.OddsChangeOptionRequest
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.HandicapType
@@ -16,6 +21,7 @@ import org.cxct.sportlottery.repository.MyFavoriteRepository
 import org.cxct.sportlottery.repository.SportMenuRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.maintab.entity.NodeBean
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.LanguageManager
@@ -30,7 +36,7 @@ class SportLeftMenuViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     favoriteRepository: MyFavoriteRepository,
-    private val sportMenuRepository: SportMenuRepository,
+    sportMenuRepository: SportMenuRepository,
 ) : MainHomeViewModel(
     androidContext,
     userInfoRepository,
@@ -41,9 +47,37 @@ class SportLeftMenuViewModel(
     sportMenuRepository
 ) {
 
+    val betCount: LiveData<Int>
+        get() = _betCount
+    private val _betCount = MutableLiveData<Int>()
+
 
     fun isLogin(): Boolean {
         return loginRepository.isLogined()
+    }
+
+
+    /**
+     * 获取未截单数量
+     */
+    fun getBetRecordCount() {
+        val betListRequest = BetListRequest(
+            championOnly = 0,
+            statusList = listOf(1), //全部注單，(0:待成立, 1:未結算)
+            page = 1,
+            gameType = "",
+            pageSize = AccountHistoryViewModel.PAGE_SIZE
+        )
+
+        viewModelScope.launch {
+            val result= doNetwork(androidContext) {
+                OneBoSportApi.betService.getBetList(betListRequest)
+            } ?: return@launch
+
+            result.total?.let {
+                _betCount.postValue(it)
+            }
+        }
     }
 
 
@@ -198,7 +232,8 @@ class SportLeftMenuViewModel(
                 OneBoSportApi.userService.oddsChangeOption(
                     OddsChangeOptionRequest(option)
                 )
-            }?.let { result ->
+            }?.let {
+                //更新到用户设置
                 userInfoRepository.updateOddsChangeOption(option)
             }
         }
@@ -208,9 +243,9 @@ class SportLeftMenuViewModel(
     /**
      * 很哈人的黑夜模式
      */
-    fun changeUIMode(isNightMode:Boolean){
-//        val application=MultiLanguagesApplication.appContext as MultiLanguagesApplication
-//        application.setNightMode(isNightMode)
-    }
+//    fun changeUIMode(isNightMode:Boolean){
+////        val application=MultiLanguagesApplication.appContext as MultiLanguagesApplication
+////        application.setNightMode(isNightMode)
+//    }
 
 }

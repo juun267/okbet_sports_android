@@ -20,7 +20,7 @@ class LeftInPlayFragment:BindingSocketFragment<MainViewModel,FragmentLeftInplayB
 
         //点击类型，跳转到体育首页
         inPlayAdapter.setOnItemClickListener{_,_,position->
-            val gameType = GameType.getGameType(inPlayAdapter.getItem(position)?.code)
+            val gameType = GameType.getGameType(inPlayAdapter.getItem(position).code)
             EventBusUtil.post(MenuEvent(false))
             (activity as MainTabActivity).jumpToTheSport(
                 MatchType.EARLY,gameType ?: GameType.FT

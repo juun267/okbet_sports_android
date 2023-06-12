@@ -1,12 +1,8 @@
 package org.cxct.sportlottery.ui.sport.list.adapter//package org.cxct.sportlottery.ui.sport
 
-import android.util.Log
-import android.view.View
 import androidx.lifecycle.LifecycleOwner
-import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import kotlinx.android.synthetic.main.fragment_sport_list.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.network.common.MatchType
@@ -17,13 +13,17 @@ import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
+import org.cxct.sportlottery.util.QuickListManager
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SocketUpdateUtil.toMutableFormat_1
 import org.cxct.sportlottery.util.SocketUpdateUtil.updateOddStatus
 
-class SportLeagueAdapter2(var matchType: MatchType,
-                          val lifecycleOwner: LifecycleOwner,
-                          private val onChildClick:(Int, View, BaseNode) -> Unit
+class SportLeagueAdapter2(
+    var matchType: MatchType,
+    val lifecycleOwner: LifecycleOwner,
+    onOddClick: OnOddClickListener,
+    onFavorite:(String) -> Unit
+
 ): ExpanableOddsAdapter() {
 
     var oddsType: OddsType = OddsType.EU
@@ -35,8 +35,8 @@ class SportLeagueAdapter2(var matchType: MatchType,
         }
 
     init {
-        addFullSpanNodeProvider(SportLeagueProvider(this, onChildClick)) // 联赛名
-        addFullSpanNodeProvider(SportMatchProvider(this, onChildClick, {  })) // 赛事
+        addFullSpanNodeProvider(SportLeagueProvider(this)) // 联赛名
+        addFullSpanNodeProvider(SportMatchProvider(this, onOddClick, onFavorite)) // 赛事
     }
 
     override fun getItemType(data: List<BaseNode>, position: Int): Int {
@@ -152,5 +152,27 @@ class SportLeagueAdapter2(var matchType: MatchType,
         return isNeedRefresh || isNeedRefreshPlayCate
 
     }
+
+    fun removeMatchOdd(matchOdd: MatchOdd) {
+        remove(matchOdd)
+        rootNodes
+    }
+
+    fun updateOddsSelectStatus(matchOdds: Collection<Pair<MatchOdd, Int>>) {
+        matchOdds.forEach { matchOddPosition ->
+            val matchOdd = matchOddPosition.first
+            matchOdd.oddsMap?.values?.forEachIndexed { _, oddsList ->
+                oddsList?.forEach { odd ->
+                    val isSelected = odd.id?.let { QuickListManager.containOdd(it) } == true
+                    if (odd.isSelected != isSelected) {
+                        odd.isSelected = isSelected
+                        notifyItemChanged(matchOddPosition.second, matchOdd)
+                        return@forEachIndexed
+                    }
+                }
+            }
+        }
+    }
+
 
 }

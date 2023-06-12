@@ -83,7 +83,7 @@ class BetDetailsFragment : BaseFragment<BetListViewModel>(BetListViewModel::clas
             play_content.setPlayContent(
                 context.getString(R.string.N903),
                 matchOdds.spread,
-                matchOdds.odds.toInt().toString()
+                formatForOdd
             )
 
             match_play_time.text = TimeUtil.timeFormat(matchOdds.startTime, TimeUtil.DM_HM_FORMAT)
@@ -273,7 +273,7 @@ class BetDetailsFragment : BaseFragment<BetListViewModel>(BetListViewModel::clas
             play_content.setPlayContent(
                 context.getString(R.string.N903),
                 matchOdds.spread,
-                matchOdds.odds?.toInt().toString()
+                formatForOdd
             )
 
             match_play_time.text = TimeUtil.timeFormat(matchOdds.startTime, TimeUtil.DM_HM_FORMAT)

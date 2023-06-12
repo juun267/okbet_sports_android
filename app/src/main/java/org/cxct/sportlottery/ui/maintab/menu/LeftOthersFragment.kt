@@ -3,14 +3,14 @@ package org.cxct.sportlottery.ui.maintab.menu
 import android.content.Intent
 import android.view.View
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.event.MenuEvent
+import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.FragmentLeftOthersBinding
 import org.cxct.sportlottery.network.Constants
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
+import org.cxct.sportlottery.ui.news.SportNewsActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.JumpUtil
@@ -39,7 +39,12 @@ class LeftOthersFragment:BindingSocketFragment<SportLeftMenuViewModel,FragmentLe
 
         tvNight.onClick {
             //黑夜模式
-           viewModel.changeUIMode(true)
+//           viewModel.changeUIMode(true)
+        }
+
+        //新闻
+        constrainNews.onClick {
+            requireActivity().startActivity(SportNewsActivity::class.java)
         }
     }
 

@@ -1,176 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/color_FFFFFF"
-    android:clickable="true"
-    android:focusable="true"
-    android:orientation="vertical"
-    tools:ignore="SpUsage,RtlSymmetry">
-    <LinearLayout
-        android:id="@+id/linDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_12"
-        android:padding="@dimen/margin_12"
-        android:orientation="vertical">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="@color/color_14366B"
-        android:layout_marginBottom="@dimen/margin_10"
-        android:textSize="@dimen/textSize16sp"
-        android:textStyle="bold"
-        android:text="@string/select_date"/>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        tools:itemCount="5"
-        tools:listitem="@layout/item_select_date"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:layout_marginTop="@dimen/margin_12"
-        android:padding="@dimen/margin_12"
-        android:background="@color/color_FFFFFF">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/color_14366B"
-            android:textSize="@dimen/textSize16sp"
-            android:textStyle="bold"
-            android:text="@string/league_filter"/>
-        <androidx.legacy.widget.Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
-        <Button
-            android:id="@+id/btnReverseSelect"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/margin_36"
-            android:background="@drawable/bg_gray_radius_8"
-            android:textSize="@dimen/textSize14sp"
-            android:textColor="@color/color_6D7693"
-            android:text="@string/reverse_select" />
-        <Button
-            android:id="@+id/btnAllSelect"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/margin_36"
-            android:background="@drawable/bg_blue_radius_8"
-            android:layout_marginLeft="@dimen/margin_8"
-            android:textSize="@dimen/textSize14sp"
-            android:textColor="@color/color_FFFFFF"
-            android:text="@string/select_all" />
-    </LinearLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_league"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:background="@color/color_FFFFFF"
+        android:clickable="true"
+        android:focusable="true"
         android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_filter_league"
-        tools:itemCount="3"
-        />
+        tools:ignore="SpUsage,RtlSymmetry">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/margin_12"
-        android:paddingVertical="@dimen/margin_15"
-        android:elevation="3dp">
-        <Button
-            android:id="@+id/btnCancel"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_40"
-            android:minWidth="80dp"
-            android:paddingHorizontal="@dimen/margin_10"
-            android:textAllCaps="false"
-            android:background="@drawable/bg_gray_radius_8"
-            android:textColor="@color/color_6D7693"
-            android:textSize="@dimen/margin_14"
-            android:text="@string/cancel" />
-        <Button
-            android:id="@+id/btnRest"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_40"
-            android:minWidth="80dp"
-            android:paddingHorizontal="@dimen/margin_10"
-            android:layout_marginLeft="@dimen/margin_8"
-            android:textAllCaps="false"
-            android:background="@drawable/bg_blue_radius_8_stroke"
-            android:textColor="@color/color_025BE8"
-            android:textSize="@dimen/margin_14"
-            android:text="@string/dk_reset" />
-        <androidx.legacy.widget.Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
-        <Button
-            android:id="@+id/btnConfirm"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_40"
-            android:minWidth="150dp"
-            android:paddingHorizontal="@dimen/margin_10"
-            android:textAllCaps="false"
-            android:background="@drawable/bg_blue_radius_8"
-            android:textColor="@color/color_FFFFFF"
-            android:textSize="@dimen/margin_14"
-            android:text="@string/btn_confirm" />
+        <LinearLayout
+            android:id="@+id/linDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_12"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_12">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:gravity="center"
+                android:text="@string/select_date"
+                android:textColor="@color/color_14366B"
+                android:textSize="@dimen/textSize16sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                tools:itemCount="5"
+                tools:listitem="@layout/item_select_date" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_12"
+            android:background="@color/color_FFFFFF"
+            android:gravity="center_vertical"
+            android:padding="@dimen/margin_12">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/league_filter"
+                android:textColor="@color/color_14366B"
+                android:textSize="@dimen/textSize16sp"
+                android:textStyle="bold" />
+
+            <androidx.legacy.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/btnReverseSelect"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/margin_36"
+                android:background="@drawable/bg_gray_radius_8"
+                android:text="@string/reverse_select"
+                android:textColor="@color/color_6D7693"
+                android:textSize="@dimen/textSize14sp" />
+
+            <Button
+                android:id="@+id/btnAllSelect"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/margin_36"
+                android:layout_marginLeft="@dimen/margin_8"
+                android:background="@drawable/bg_blue_radius_8"
+                android:text="@string/select_all"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="@dimen/textSize14sp" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_league"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_filter_league" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="3dp"
+            android:paddingHorizontal="@dimen/margin_12"
+            android:paddingVertical="@dimen/margin_15">
+
+            <Button
+                android:id="@+id/btnCancel"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_40"
+                android:background="@drawable/bg_gray_radius_8"
+                android:minWidth="80dp"
+                android:paddingHorizontal="@dimen/margin_10"
+                android:text="@string/cancel"
+                android:textAllCaps="false"
+                android:textColor="@color/color_6D7693"
+                android:textSize="@dimen/margin_14" />
+
+            <Button
+                android:id="@+id/btnRest"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_40"
+                android:layout_marginLeft="@dimen/margin_8"
+                android:background="@drawable/bg_blue_radius_8_stroke"
+                android:minWidth="80dp"
+                android:paddingHorizontal="@dimen/margin_10"
+                android:text="@string/N744"
+                android:textAllCaps="false"
+                android:textColor="@color/color_025BE8"
+                android:textSize="@dimen/margin_14" />
+
+            <androidx.legacy.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/btnConfirm"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_40"
+                android:background="@drawable/bg_blue_radius_8"
+                android:minWidth="150dp"
+                android:paddingHorizontal="@dimen/margin_10"
+                android:text="@string/btn_confirm"
+                android:textAllCaps="false"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="@dimen/margin_14" />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_index"
         android:layout_width="16dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|right"
         android:layout_marginRight="@dimen/margin_4"
-        app:cardElevation="1dp"
+        app:cardBackgroundColor="@color/color_E5EBF6"
         app:cardCornerRadius="@dimen/margin_10"
-        app:cardBackgroundColor="@color/color_E5EBF6">
+        app:cardElevation="1dp">
 
         <org.cxct.sportlottery.view.IndexBar
             android:id="@+id/indexBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="15dp"
+            app:text_bg_normal="@color/color_FFFFFF"
+            app:text_bg_pressed="@color/color_FF2E00"
+            app:text_bg_radius="8dp"
             app:text_color_normal="@color/color_000000"
             app:text_color_pressed="@color/color_FFFFFF"
             app:text_size_normal="@dimen/textSize12sp"
-            app:text_size_pressed="@dimen/textSize12sp"
-            app:text_bg_radius="8dp"
-            app:text_bg_normal="@color/color_FFFFFF"
-            app:text_bg_pressed="@color/color_FF2E00" />
+            app:text_size_pressed="@dimen/textSize12sp" />
     </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/iv_union"
         android:layout_width="60dp"
         android:layout_height="50dp"
-        android:layout_marginRight="20dp"
         android:layout_gravity="right"
+        android:layout_marginRight="20dp"
         android:background="@drawable/bg_index_union"
         android:gravity="center"
         android:paddingRight="10dp"
-        tools:text="A"
         android:textColor="@color/color_FFFFFF"
         android:textSize="28sp"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:text="A" />
 </FrameLayout>

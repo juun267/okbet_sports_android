@@ -128,7 +128,7 @@ open class OddsOutrightButton @JvmOverloads constructor(
             tv_odds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
 //        updateOddsTextColor()
 
-        val select = QuickListManager.getQuickSelectedList()?.contains(odd?.id) ?: false
+        val select = odd?.id?.let { QuickListManager.containOdd(it) } ?: false
         isSelected = select
         odd?.isSelected = select
         //[Martin]馬來盤＆印尼盤會有負數的賠率
@@ -255,7 +255,7 @@ open class OddsOutrightButton @JvmOverloads constructor(
         }
 
 //        updateOddsTextColor()
-        val select = QuickListManager.getQuickSelectedList()?.contains(odds?.id) ?: false
+        val select = odds?.id?.let { QuickListManager.containOdd(it) } ?: false
         isSelected = select
         odds?.isSelected = select
     }

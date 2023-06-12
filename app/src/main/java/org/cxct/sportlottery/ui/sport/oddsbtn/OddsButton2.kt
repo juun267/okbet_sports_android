@@ -47,7 +47,7 @@ class OddsButton2 @JvmOverloads constructor(
         private val params1 = LayoutParams(-2, -2).apply {
             gravity = Gravity.CENTER_HORIZONTAL
         }
-        private val params2 = LayoutParams(-1, -1)
+        private val params2 = LayoutParams(-2, -2)
 
 
         fun clearOddsViewCaches() {
@@ -464,7 +464,7 @@ class OddsButton2 @JvmOverloads constructor(
         }
 
         reBindText()
-        isSelected = QuickListManager.getQuickSelectedList()?.contains(odds?.id) ?: false
+        isSelected = odds?.id?.let { QuickListManager.containOdd(it) } ?: false
 
         if (odds == null || oddStatus == odds.oddState) {
             return

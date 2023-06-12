@@ -51,7 +51,8 @@
 
 
             <TextView
-                android:text="2123123"
+                android:id="@+id/tvRecordNumber"
+                android:text=""
                 app:layout_constraintStart_toEndOf="@+id/tvSportNum"
                 app:layout_constraintTop_toBottomOf="@+id/tvSportName"
                 android:textColor="@color/color_FF2E00"
