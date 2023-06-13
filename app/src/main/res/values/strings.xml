@@ -1480,4 +1480,8 @@
     <string name="P069">Deduction amount reminder</string>
     <string name="P070">Since you still have %s outstanding betting rollover, %s processing fee will be charged!</string>
     <string name="p090">Thank you for verifying with us,please kindly wait up to 24 hours for us to process your request.</string>
+    <string name="P113">Glife member reminder</string>
+    <string name="P114">Hello, as you have registered on the GLIFE platform, according to the official requirements, deposits and withdrawals must be completed exclusively through the GCASH program. Click \"Open GCASH\" below to proceed. Thank you!</string>
+    <string name="KYC049">Cancel</string>
+    <string name="LT028">Open</string>
 </resources>
