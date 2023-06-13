@@ -11,8 +11,6 @@ import com.xuexiang.xupdate.utils.UpdateUtils
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogToGcashBinding
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
-import org.cxct.sportlottery.ui.base.BaseViewModel
-import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.util.AppManager
 import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.util.KvUtils.GLIFE_TIP_FLAG
@@ -34,6 +32,7 @@ class ToGcashDialog(context: Context, val visibleNoReminder: Boolean = true) : D
         fun allowShow(viewModel: BaseSocketViewModel){
             if (viewModel.getLoginBoolean() && viewModel.userInfo.value?.vipType == 1) {
                 if (!KvUtils.decodeBooleanTure(KvUtils.GLIFE_TIP_FLAG, false)&&needShow) {
+                    needShow=false
                     ToGcashDialog(AppManager.currentActivity()).show()
                 }
             }
