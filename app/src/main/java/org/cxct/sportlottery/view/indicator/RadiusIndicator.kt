@@ -9,9 +9,11 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
+import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.visible
 
 /**
- * 援交矩形指示器
+ * 圆角矩形指示器
  */
 class RadiusIndicator  @JvmOverloads constructor(
     context: Context,
@@ -148,7 +150,10 @@ class RadiusIndicator  @JvmOverloads constructor(
         if (itemCount == 0) {
             mIndicatorX = 0f
             mCurrentIndex = 0
+            gone()
             return
+        } else {
+            visible()
         }
 
         val top = paddingTop.toFloat()

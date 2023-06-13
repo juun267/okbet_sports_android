@@ -5,12 +5,15 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.drawable.DrawableCreator
 
 class GameTypeAdapter2(private val itemClick: (Item, Int) -> Unit) : BaseQuickAdapter<Item, BaseViewHolder>(0), OnItemClickListener {
 
@@ -32,6 +35,16 @@ class GameTypeAdapter2(private val itemClick: (Item, Int) -> Unit) : BaseQuickAd
         param
     }
 
+    private val bgDrawable by lazy {
+        DrawableCreator.Builder()
+            .setShapeAlpha(0.3f)
+            .setSolidColor(ContextCompat.getColor(context, R.color.color_025BE8))
+            .setSizeWidth(iconParams.width.toFloat())
+            .setSizeHeight(iconParams.height.toFloat())
+            .setCornersRadius(iconParams.height.toFloat())
+            .build()
+    }
+
     var currentItem: Item? = null
     private set
 
@@ -43,11 +56,11 @@ class GameTypeAdapter2(private val itemClick: (Item, Int) -> Unit) : BaseQuickAd
 
     override fun convert(holder: BaseViewHolder, item: Item) = (holder.itemView as ImageView).run {
         setImageResource(GameType.getGameTypeMenuIcon(item.code))
-        isSelected = item.isSelected
+        background = if (item.isSelected) bgDrawable else null
     }
 
     override fun convert(holder: BaseViewHolder, item: Item, payloads: List<Any>) {
-        holder.itemView.isSelected = item.isSelected
+        holder.itemView.background = if (item.isSelected) bgDrawable else null
     }
 
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {

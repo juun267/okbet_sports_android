@@ -91,26 +91,26 @@ enum class GameType(val key: String, @StringRes val string: Int) {
         fun getGameTypeMenuIcon(gameType: String): Int {
             return when (gameType) {
                 ALL.key -> R.drawable.selector_sport_all_new
-                FT.key -> R.drawable.selector_sport_football_new
-                BK.key -> R.drawable.selector_sport_basketball_new
-                TN.key -> R.drawable.selector_sport_tennis_new
-                VB.key -> R.drawable.selector_sport_volleyball_new
-                BM.key -> R.drawable.selector_sport_badminton_new
-                TT.key -> R.drawable.selector_sport_pingpong_new
-                IH.key -> R.drawable.selector_sport_icehockey_new
-                BX.key -> R.drawable.selector_sport_boxing_new
-                CB.key -> R.drawable.selector_sport_snooker_new
-                CK.key -> R.drawable.selector_sport_electronic_new
-                BB.key -> R.drawable.selector_sport_baseball_new
-                RB.key -> R.drawable.selector_sport_rugby_new
-                AFT.key -> R.drawable.selector_sport_amfootball_new
-                MR.key -> R.drawable.selector_sport_racing_new
-                GF.key -> R.drawable.selector_sport_golf_new
+                FT.key -> R.drawable.icon_football_selected
+                BK.key -> R.drawable.icon_basketball_selected
+                TN.key -> R.drawable.icon_tennis_selected
+                VB.key -> R.drawable.icon_volleyball_selected
+                BM.key -> R.drawable.icon_badminton_selected
+                TT.key -> R.drawable.icon_tabletennis_selected
+                IH.key -> R.drawable.icon_icehockey_selected
+                BX.key -> R.drawable.icon_boxing_selected
+                CB.key -> R.drawable.icon_billiards_selected
+                CK.key -> R.drawable.icon_electronic_selected
+                BB.key -> R.drawable.icon_baseball_selected
+                RB.key -> R.drawable.icon_rugby_selected
+                AFT.key -> R.drawable.icon_american_football_selected
+                MR.key -> R.drawable.icon_motorracing_selected
+                GF.key -> R.drawable.icon_golf_selected
                 FB.key -> R.drawable.ic_home_finance_piechart
-                ES.key -> R.drawable.selector_sport_gaming_new
+                ES.key -> R.drawable.icon_esport_selected
                 OTHER.key -> R.drawable.ic_home_champ
-                BB_COMING_SOON.key -> R.drawable.selector_sport_baseball_new
-                ES_COMING_SOON.key -> R.drawable.selector_sport_gaming_new
+                BB_COMING_SOON.key -> R.drawable.icon_baseball_selected
+                ES_COMING_SOON.key -> R.drawable.icon_esport_selected
                 else -> R.drawable.ic_game_champ
             }
         }

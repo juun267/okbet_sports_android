@@ -75,6 +75,7 @@ class SportListFragment2
         clearSubscribeChannels()
         load(item)
         binding.ivFilter.isVisible = gameType != GameType.ALL.key
+        binding.tvSportName
     }
 
     private fun reset() {

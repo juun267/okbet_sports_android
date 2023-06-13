@@ -19,7 +19,7 @@ import org.cxct.sportlottery.view.stickyheader.StickyAdapter
 class EndScoreAdapter(val playCate: String, val onItemClick:(Int, View, BaseNode) -> Unit)
     : ExpanableOddsAdapter(), StickyAdapter<BaseViewHolder, BaseViewHolder> {
 
-    val recyclerPool by lazy { RecyclerView.RecycledViewPool().apply { setMaxRecycledViews(3, 100) } }
+    private val recyclerPool by lazy { RecyclerView.RecycledViewPool().apply { setMaxRecycledViews(3, 100) } }
 
     var oddsType: OddsType = OddsType.EU
         set(value) {

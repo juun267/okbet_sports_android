@@ -10,10 +10,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.google.android.material.appbar.AppBarLayout
-import kotlinx.android.synthetic.main.fragment_sport_list.*
+import kotlinx.android.synthetic.main.fragment_sport_list2.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.TimeRangeEvent
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.showLoading
+import org.cxct.sportlottery.databinding.FragmentSportList2Binding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchOdd
@@ -25,6 +27,7 @@ import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
+import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.common.*
@@ -39,7 +42,7 @@ import java.util.*
 /**
  * @app_destination 滾球、即將、今日、早盤、冠軍、串關
  */
-class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(SportListViewModel::class) {
+class SportOutrightFragment: BindingSocketFragment<SportListViewModel, FragmentSportList2Binding>() {
 
     private val matchType = MatchType.OUTRIGHT
     private var gameType: String = GameType.BK.key
@@ -58,14 +61,24 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
         sportOutrightAdapter2.showLoading(R.layout.view_list_loading)
 //                sportOutrightAdapter.setPreloadItem()
         //切換球種後要重置位置
-        (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
-            sport_type_list,
+        (binding.sportTypeList.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
+            binding.sportTypeList,
             RecyclerView.State(),
             position)
         loading()
         unSubscribeAll()
-        viewModel.switchGameType(matchType, item)
-        iv_arrow.isSelected = true
+        load(item)
+        ivArrow.isSelected = true
+    }
+
+    private fun load(item: Item) {
+        setMatchInfo(item.name, item.num.toString())
+        viewModel.switchGameType(matchType, item, Any())
+    }
+
+    private inline fun setMatchInfo(name: String, num: String) {
+        binding.tvSportName.text = name
+        binding.tvMatchNum.text = num
     }
 
 
@@ -91,8 +104,6 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
         if (timer == null) startTimer()
     }
 
-    override fun layoutId() = R.layout.fragment_sport_list
-
     private val sportOutrightAdapter2: SportOutrightAdapter2 by lazy {
 
         game_list?.addOnScrollListener(object : OnScrollListener() {
@@ -114,12 +125,15 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
         }
     }
 
-    override fun onBindView(view: View) {
+    override fun onInitView(view: View) {
+        setupSportTypeList()
+        setupToolbar()
+    }
+
+    override fun onBindViewStatus(view: View) {
         EventBusUtil.targetLifecycle(this)
         arguments?.getString("gameType")?.let { gameType = it }
         gameType?.let { viewModel.gameType = it  }
-        setupSportTypeList()
-        setupToolbar()
         setupGameListView()
         initObserve()
         initSocketObserver()
@@ -153,8 +167,8 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
         })
 
         //冠军不需要筛选
-        lin_filter.isVisible = false
-        lin_filter.setOnClickListener {
+        ivFilter.gone()
+        ivFilter.setOnClickListener {
             gameType?.let {
                 LeagueSelectActivity.start(requireContext(),
                     it,
@@ -164,7 +178,7 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
             }
         }
 
-        iv_arrow.bindExpanedAdapter(sportOutrightAdapter2) { setOutrightLeagueAdapter(120) }
+        ivArrow.bindExpanedAdapter(sportOutrightAdapter2) { setOutrightLeagueAdapter(120) }
     }
     private fun setupGameListView() {
         game_list.apply {
@@ -317,14 +331,14 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
             gameTypeList.find { it.num > 0 }?.let {
                 it.isSelected = true
                 gameType = it.code
-                viewModel.switchGameType(matchType, it)
+                load(it)
             }
         } else {
             (gameTypeList.find { it.code == gameType } ?: gameTypeList.first()).let {
                 gameType = it.code
                 if (!it.isSelected) {
                     it.isSelected = true
-                    viewModel.switchGameType(matchType, it)
+                    load(it)
                 }
             }
         }

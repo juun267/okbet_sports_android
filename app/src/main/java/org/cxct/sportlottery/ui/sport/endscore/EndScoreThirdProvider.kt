@@ -33,9 +33,9 @@ class EndScoreThirdProvider(val adapter: EndScoreAdapter,
         val position = item.parentNode.childNode?.indexOf(item) ?: return@run
 
         when (position % lines) {
-            0 -> setMargins(this, padding12, padding8, padding10, 0)
-            lines - 1 -> setMargins(this, 0, padding8, padding12, 0)
-            else -> setMargins(this, 0, padding8, padding10, 0)
+            0 -> setMargins(this, padding12, padding8, 0, 0)
+            lines - 1 -> setMargins(this, padding10, padding8, padding12, 0)
+            else -> setMargins(this, padding10, padding8, 0, 0)
         }
     }
 
