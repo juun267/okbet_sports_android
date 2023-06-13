@@ -53,7 +53,7 @@ object ArithUtil : DecimalFormatUtil() {
      * 20210220 輸入欄位內提示之金額不顯示小數點
      */
     fun toMoneyFormatForHint(value: Double?): String {
-        return kotlin.runCatching { round(value ?: 0.0, 0, RoundingMode.HALF_UP) }.getOrNull()?:(value ?: 0.0).toInt().toString()
+        return kotlin.runCatching { round(value ?: 0.0, 0, RoundingMode.HALF_UP) }.getOrNull()?:(value ?: 0.0).toString()
     }
 
     /**

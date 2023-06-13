@@ -14,6 +14,7 @@ import android.widget.FrameLayout
 import android.widget.ListPopupWindow
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -235,7 +236,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
 //        iv_menu_left.setOnClickListener {
 //            EventBus.getDefault().post(MenuEvent(true))
 //        }
-        iv_logo.isVisible = activity !is MainTabActivity
+        iv_logo.isInvisible = activity is MainTabActivity
         iv_logo.setOnClickListener {
             (activity as MainTabActivity).backMainHome()
         }
