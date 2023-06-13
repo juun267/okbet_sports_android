@@ -30,7 +30,8 @@ class DeductDialog(val uwCheckData: UwCheckData, val onConfirm: ()->Unit): BaseD
         initButton()
         dialog?.setCanceledOnTouchOutside(true)
         var deductMoney = "${sConfigData?.systemCurrencySign} ${(uwCheckData.total?.deductMoney?:0).toInt()}"
-        val desp = String.format(getString(R.string.P070,"${(uwCheckData.total?.unFinishValidAmount?:0).toInt()}",deductMoney))
+        var unFinishValidMoney = "${sConfigData?.systemCurrencySign} ${(uwCheckData.total?.unFinishValidAmount?:0).toInt()}"
+        val desp = String.format(getString(R.string.P070,unFinishValidMoney,deductMoney))
         val startIndex= desp.lastIndexOf(deductMoney)
         val endIndex = startIndex + deductMoney.length
         Spanny(desp).apply {
