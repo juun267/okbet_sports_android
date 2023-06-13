@@ -161,6 +161,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
             viewModel.getSportMenuFilter()
             if (PopImageDialog.showHomeDialog) {
                 PopImageDialog.showHomeDialog = false
+                MultiLanguagesApplication.showPromotionPopupDialog(getMainTabActivity()){}
                 if (PopImageDialog.checkImageTypeAvailable(ImageType.DIALOG_HOME.code)) {
                     requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
                         putInt(PopImageDialog.IMAGE_TYPE, ImageType.DIALOG_HOME.code)
