@@ -229,9 +229,9 @@
     <string name="change_nickname">Change nickname</string>
     <string name="withdrawal_password">Withdrawal Password</string>
     <string name="current_login_password">Current login password</string>
-    <string name="current_withdrawal_password">Current withdrawal password</string>
+    <string name="current_withdrawal_password">Current Withdrawal Password</string>
     <string name="hint_current_login_password">Password</string>
-    <string name="hint_current_withdrawal_password">Password</string>
+    <string name="hint_current_withdrawal_password">Please enter your withdrawal password</string>
     <string name="new_password">New password</string>
     <string name="hint_withdrawal_new_password">only be 4 characters</string>
     <string name="error_password_cannot_be_same">New password must different from old password</string>
@@ -399,14 +399,14 @@
     <string name="withdraw_setting">Withdrawal Setting</string>
     <string name="select_bank">Bank</string>
     <string name="withdraw_amount">Withdraw</string>
-    <string name="withdraw_password">Withdraw Password</string>
-    <string name="total_withdrawal">Total Withdrawal</string>
+    <string name="withdraw_password">Withdrawal Password</string>
+    <string name="total_withdrawal">Final Withdrawal</string>
     <string name="withdraw_all">EXTRACT ALL</string>
     <string name="withdraw_handling_fee_hint">Service Charge: %1$S %% Service Fee:%2$s%3$s</string>
     <string name="withdraw_crypto_amount_hint">Withdraw(%1$s)：%2$s</string>
     <string name="withdraw_crypto_fee_hint">Withdraw service fee：%1$s%2$s</string>
-    <string name="hint_four_number_password">Withdrawal password</string>
-    <string name="hint_please_enter_withdraw_password">Withdrawal password</string>
+    <string name="hint_four_number_password">Withdrawal Password</string>
+    <string name="hint_please_enter_withdraw_password">Withdrawal Password</string>
     <string name="add_credit_card">Add Bank Card</string>
     <string name="add_crypto_card">Add USDT</string>
     <string name="add_e_wallet">Add eWallet</string>
@@ -957,12 +957,12 @@
     <string name="kyc_num2">ID Number [2]</string>
     <string name="kyc_pick_upload_id">Upload Personal ID Documents</string>
     <string name="kyc_size_2_mb">The file size to under 2MB.</string>
-    <string name="kyc_contact_service">If you have any questions. Contact Us.</string>
-    <string name="kyc_contact_service_hilight">Contact Us </string>
+    <string name="kyc_contact_service">If you need assistance, please contact customer service</string>
+    <string name="kyc_contact_service_hilight">Live chat</string>
     <string name="kyc_verify_first">Please get verified.</string>
     <string name="kyc_go_verify">Verify Now</string>
     <string name="kyc_you_wait">Please click the  \"Contact Us\" button to make a video call to complete the real-name authentication</string>
-    <string name="kyc_verify_successful">Verify successful </string>
+    <string name="kyc_verify_successful">You have completed the real name verification!</string>
     <string name="kyc_unverified">Unverified</string>
     <string name="kyc_passed">Verified</string>
     <string name="kyc_enter_id_num">Enter ID number</string>
@@ -1309,7 +1309,7 @@
     <string name="N019">Contact us</string>
     <string name="J299">Live Chat</string>
     <string name="B023">FAQs</string>
-    <string name="N883">There is no date yet!</string>
+    <string name="N883">There is no data yet!</string>
     <string name="J095">Terms &amp; Condition</string>
     <string name="N482">Transfer prompt</string>
     <string name="N885">Load More</string>
@@ -1358,6 +1358,14 @@
     <string name="N952">Camera scan</string>
     <string name="N956">Can\'t recognize this QR code</string>
     <string name="N980">Denied camera permission</string>
+
+
+    <string name="N902">Follow us</string>
+    <string name="facebookFollow">Facebook</string>
+    <string name="instagramFollow">Instagram</string>
+    <string name="youtubeFollow">YouTube</string>
+    <string name="twitterFollow">Twitter</string>
+    <string name="tiktokFollow">Tiktok</string>
     <string name="P038">Google service is not available, please register/ login with your mobile number.</string>
 
     <string name="F025">Login</string>
@@ -1467,6 +1475,9 @@
     <string name="C016">TODAY</string>
     <string name="N989">Over max stake</string>
     <string name="N990">Below min stake</string>
+    <string name="P066">Sample</string>
+    <string name="P068">Upload Selfie Photo With Holding Valid ID</string>
+    <string name="p090">Thank you for verifying with us,please kindly wait up to 24 hours for us to process your request.</string>
     <string name="P113">Glife member reminder</string>
     <string name="P114">Hello, as you have registered on the GLIFE platform, according to the official requirements, deposits and withdrawals must be completed exclusively through the GCASH program. Click \"Open GCASH\" below to proceed. Thank you!</string>
     <string name="KYC049">Cancel</string>

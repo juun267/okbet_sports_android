@@ -10,10 +10,12 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/margin_10"
+            android:background="@color/white"
             android:orientation="vertical">
 
             <include
@@ -34,50 +36,56 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/color_191919_FCFCFC"
+                android:background="@color/color_F2F9FF"
+                android:orientation="vertical"
+                android:paddingVertical="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_14"
+                    android:drawableLeft="@drawable/bg_red_radius_2"
+                    android:drawablePadding="@dimen/margin_4"
+                    android:text="@string/kyc_pick_upload_id"
+                    android:textColor="@color/color_E23434"
+                    android:textSize="@dimen/textSize14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_14"
+                    android:layout_marginTop="@dimen/margin_4"
+                    android:drawableLeft="@drawable/bg_red_radius_2"
+                    android:drawablePadding="@dimen/margin_4"
+                    android:text="@string/kyc_size_2_mb"
+                    android:textColor="@color/color_E23434"
+                    android:textSize="@dimen/textSize14sp"
+                    android:visibility="visible"
+                    tools:visibility="visible" />
+            </LinearLayout>
+
+            <include
+                android:id="@+id/identityHead"
+                layout="@layout/content_verify_identity_kyc_head"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_F2F9FF"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
                 android:padding="16dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_14"
-                        android:layout_marginTop="@dimen/margin_10"
-                        android:drawableLeft="@drawable/bg_red_radius_2"
-                        android:drawablePadding="@dimen/margin_4"
-                        android:text="@string/kyc_pick_upload_id"
-                        android:textColor="@color/color_E23434"
-                        android:textSize="@dimen/textSize12sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_14"
-                        android:layout_marginTop="@dimen/margin_10"
-                        android:drawableLeft="@drawable/bg_red_radius_2"
-                        android:drawablePadding="@dimen/margin_4"
-                        android:text="@string/kyc_size_2_mb"
-                        android:textColor="@color/color_E23434"
-                        android:textSize="@dimen/textSize12sp"
-                        android:visibility="visible"
-                        tools:visibility="visible" />
-                </LinearLayout>
 
                 <TextView
                     android:id="@+id/btn_submit"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
                     android:background="@drawable/selector_button_default"
+                    android:enabled="false"
                     android:gravity="center"
                     android:text="@string/submit"
-                    android:enabled="false"
                     android:textColor="@color/color_FFFFFF_FFFFFF"
                     android:textSize="@dimen/textSize16sp" />
 
@@ -93,7 +101,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/customer_service"
                         android:textColor="@color/color_A5A9B3"
-                        android:textSize="@dimen/textSize14sp"/>
+                        android:textSize="@dimen/textSize14sp" />
 
                     <TextView
                         android:id="@+id/tv_service"
@@ -101,7 +109,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/btn_service"
                         android:textColor="@color/color_025BE8"
-                        android:textSize="@dimen/textSize14sp"/>
+                        android:textSize="@dimen/textSize14sp" />
 
                 </LinearLayout>
 

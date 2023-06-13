@@ -104,7 +104,7 @@ object JumpUtil {
         context: Context,
         href: String?,
     ) {
-        LogUtil.d(href)
+        href?.let { LogUtil.d(href) }
         context.startActivity(
             Intent(context, LotteryActivity::class.java).apply {
                 putExtra(WebActivity.KEY_URL, href)
