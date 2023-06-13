@@ -77,7 +77,7 @@ class StaticData {
         }
 
         fun worldCupOpened(): Boolean {
-            return true
+            return sConfigData?.worldCupOpen == 0
         }
     }
 }
