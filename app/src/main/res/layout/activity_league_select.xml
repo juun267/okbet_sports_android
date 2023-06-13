@@ -109,7 +109,7 @@
                 android:background="@drawable/bg_gray_radius_8"
                 android:minWidth="80dp"
                 android:paddingHorizontal="@dimen/margin_10"
-                android:text="@string/cancel"
+                android:text="@string/btn_cancel"
                 android:textAllCaps="false"
                 android:textColor="@color/color_6D7693"
                 android:textSize="@dimen/margin_14" />
