@@ -117,8 +117,7 @@ object JumpUtil {
 
     fun toGcash(context: Context, userState: Int, next: () -> Unit) {
         if (userState == 1) {
-            var dialog = ToGcashDialog(context)
-            dialog.setGoneNoReminder()
+            var dialog = ToGcashDialog(context, false)
             dialog.show()
         } else {
             next()
