@@ -88,7 +88,7 @@
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
         android:paddingVertical="12dp"
-        android:text="no reminder"
+        android:text="@string/N379"
         android:textColor="@color/text_color_gray_blue"
         android:textSize="@dimen/textSize14sp" />
 
