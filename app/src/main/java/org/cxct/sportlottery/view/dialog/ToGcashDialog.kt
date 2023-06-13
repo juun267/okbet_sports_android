@@ -62,7 +62,7 @@ class ToGcashDialog(context: Context, val visibleNoReminder: Boolean = true) : D
         binding.btnGlifeOpen.text = context.getString(R.string.LT028)+" "+context.getString(R.string.online_gcash)
         binding.btnGlifeOpen.setOnClickListener {
             KvUtils.put(GLIFE_TIP_FLAG, binding.cbNoReminder.isChecked)
-            val uri = Uri.parse("https://miniprogram.gcash.com/s01/axXslZ")
+            val uri = Uri.parse("https://miniprogram.gcash.com/s01/SBMk5e")
             val intent = Intent(Intent.ACTION_VIEW, uri)
             UpdateUtils.startActivity(intent)
             dismiss()
