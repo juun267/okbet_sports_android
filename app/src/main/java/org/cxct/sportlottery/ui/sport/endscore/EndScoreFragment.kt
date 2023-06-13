@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.sport.endscore
 
-import android.graphics.Color
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
@@ -9,11 +8,9 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.distinctUntilChanged
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
-import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.chad.library.adapter.base.entity.node.BaseExpandNode
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.google.android.material.appbar.AppBarLayout
-import kotlinx.android.synthetic.main.fragment_sport_list.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.TimeRangeEvent
 import org.cxct.sportlottery.common.extentions.gone
@@ -34,7 +31,6 @@ import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.layoutmanager.SocketGridManager
-import org.cxct.sportlottery.view.stickyheader.StickyHeaderItemDecorator
 import org.greenrobot.eventbus.Subscribe
 
 /**
@@ -51,7 +47,7 @@ class EndScoreFragment: BindingSocketFragment<SportListViewModel, FragmentSportL
 
     private val mOddsChangeListener by lazy {
         ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
-            if (game_list == null || context == null || oddsChangeEvent.oddsList.isNullOrEmpty()) {
+            if (binding.gameList == null || context == null || oddsChangeEvent.oddsList.isNullOrEmpty()) {
                 return@OddsChangeListener
             }
 
@@ -110,6 +106,7 @@ class EndScoreFragment: BindingSocketFragment<SportListViewModel, FragmentSportL
     override fun onBindViewStatus(view: View) {
         EventBusUtil.targetLifecycle(this)
         viewModel.gameType = gameType
+        binding.tvMatchNum.text = "0"
         initObserve()
         initSocketObserver()
         loadData()
@@ -134,12 +131,13 @@ class EndScoreFragment: BindingSocketFragment<SportListViewModel, FragmentSportL
 
     private fun setupToolbar() {
         binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
-            offsetScrollListener?.invoke((-verticalOffset) / Math.max(1.0, appbar_layout.measuredHeight.toDouble()))
+            offsetScrollListener?.invoke((-verticalOffset) / Math.max(1.0, binding.appbarLayout.measuredHeight.toDouble()))
         })
         binding.ivArrow.bindExpanedAdapter(endScoreAdapter) { subscribeMatchOdds(100) }
     }
 
     private fun setupGameRow() {
+        binding.tvSportName.setText(R.string.basketball)
         binding.ivFilter.setOnClickListener {
             LeagueSelectActivity.start(
                 it.context,
@@ -154,7 +152,6 @@ class EndScoreFragment: BindingSocketFragment<SportListViewModel, FragmentSportL
     private fun setupGameListView() = binding.gameList.run {
         layoutManager = SocketGridManager(context, 4)
         adapter = endScoreAdapter
-        setRecycledViewPool(endScoreAdapter.recyclerPool)
 //        addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_10))
 //        addItemDecoration(GridItemDecoration(9, 9, Color.RED, false))
 //        StickyHeaderItemDecorator(endScoreAdapter).attachToRecyclerView(this)
@@ -199,7 +196,7 @@ class EndScoreFragment: BindingSocketFragment<SportListViewModel, FragmentSportL
 
         //當前玩法無賽事
         isNoEvents.distinctUntilChanged().observe(viewLifecycleOwner) {
-            sport_type_list.isVisible = !it
+            binding.sportTypeList.isVisible = !it
             hideLoading()
         }
 
@@ -217,9 +214,7 @@ class EndScoreFragment: BindingSocketFragment<SportListViewModel, FragmentSportL
                 (baseNode as BaseExpandNode).isExpanded = (index == 0)
             }
             endScoreAdapter.setNewInstance(list)
-
-
-
+            binding.tvMatchNum.text = "${list?.size ?: 0}"
 
             if (list.isNullOrEmpty()) {
                 endScoreAdapter.showEmpty(R.layout.itemview_game_no_record)

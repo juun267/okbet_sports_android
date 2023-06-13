@@ -1,10 +1,8 @@
 package org.cxct.sportlottery.ui.sport
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.distinctUntilChanged
-import kotlinx.android.synthetic.main.fragment_sport.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
@@ -17,7 +15,6 @@ import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.endscore.EndScoreFragment
-import org.cxct.sportlottery.ui.sport.list.SportListFragment
 import org.cxct.sportlottery.ui.sport.list.SportListFragment2
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
@@ -73,9 +70,9 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     }
 
     fun initToolBar() = binding.homeToolbar.run {
+        background = null
         attach(this@SportFragment2, getMainTabActivity(), viewModel, false)
-        setBackgroundColor(Color.WHITE)
-        searchView.setOnClickListener { startActivity(SportSearchtActivity::class.java) }
+        searchIcon.setOnClickListener { startActivity(SportSearchtActivity::class.java) }
         ivMenuLeft.setOnClickListener {
             getMainTabActivity().showSportLeftMenu(getCurMatchType(), getCurGameType())
             EventBusUtil.post(MenuEvent(true))
@@ -83,7 +80,6 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     }
 
     private fun initTabLayout() = binding.tabLayout.run {
-        setBackgroundColor(Color.WHITE)
         addOnTabSelectedListener(TabSelectedAdapter{ selectTab(it.position) })
         OverScrollDecoratorHelper.setUpOverScroll(this)
     }
@@ -115,13 +111,13 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         addTab(getString(R.string.home_tab_outright), countOutright, 7)
     }
 
-    private fun addTab(name: String, num: Int, position: Int) {
+    private fun addTab(name: String, num: Int, position: Int) = binding.tabLayout.run {
 
-        val tab = if (tabLayout.tabCount > position) {
-            binding.tabLayout.getTabAt(position)!!
+        val tab = if (tabCount > position) {
+            getTabAt(position)!!
         } else {
-            binding.tabLayout.newTab().setCustomView(R.layout.home_cate_tab).apply {
-                binding.tabLayout.addTab(this, position, false)
+            newTab().setCustomView(R.layout.home_cate_tab).apply {
+                addTab(this, position, false)
             }
         }
 
@@ -186,8 +182,6 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         val elevation = (elevation * elevation * maxElevation).toFloat()
         tabLayout.elevation = elevation
         homeToolbar.elevation = elevation
-        vDivider1.elevation = elevation
-        vDivider2.elevation = elevation
     }
 
     private fun initObserve() = viewModel.run {
@@ -245,12 +239,12 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
     private fun getCurMatchType(): MatchType {
         return kotlin.runCatching {
-            matchTypeTabPositionMap[tabLayout.selectedTabPosition]
+            matchTypeTabPositionMap[binding.tabLayout.selectedTabPosition]
         }.getOrNull() ?: MatchType.IN_PLAY
     }
 
     private fun getCurGameType(): GameType? = when (val fragment = fragmentHelper.currentFragment()) {
-        is SportListFragment -> {
+        is SportListFragment2 -> {
             fragment.getCurGameType()
         }
 

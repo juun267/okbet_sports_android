@@ -32,12 +32,11 @@
                     android:id="@+id/sport_type_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/color_FFFFFF"
+                    android:background="@drawable/bg_sportslist_header_2"
                     android:nestedScrollingEnabled="false"
                     android:paddingLeft="5.5dp"
                     android:clipToPadding="false"
-                    tools:itemCount="1"
-                    tools:listitem="@layout/itemview_sport_type_v6" />
+                    tools:itemCount="1" />
 
                 <LinearLayout
                     android:id="@+id/lin_opt"
@@ -54,8 +53,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="12sp"
                         android:textStyle="bold"
-                        android:textColor="@color/color_0D2245"
-                        android:text="footbool"/>
+                        android:textColor="@color/color_0D2245"/>
 
                     <TextView
                         android:id="@+id/tvMatchNum"
@@ -65,7 +63,7 @@
                         android:textSize="12sp"
                         android:textStyle="bold"
                         android:textColor="@color/color_025BE8"
-                        android:text="34"/>
+                        android:text="0"/>
 
                     <androidx.legacy.widget.Space
                         android:layout_width="0dp"
@@ -95,7 +93,6 @@
         android:id="@+id/game_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color_FFFFFF"
         android:overScrollMode="never"
         android:paddingTop="0dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"

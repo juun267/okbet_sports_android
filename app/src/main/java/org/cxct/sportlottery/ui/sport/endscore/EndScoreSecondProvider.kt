@@ -17,12 +17,15 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
                              override val layoutId: Int = R.layout.item_endscore_battle): BaseNodeProvider() {
 
     override fun convert(helper: BaseViewHolder, item: BaseNode, payloads: List<Any>) = helper.run {
-        val matchInfo = (item as MatchOdd).matchInfo
-        getView<View>(R.id.league_odd_match_favorite).isSelected = matchInfo?.isFavorite ?: false
+        if (payloads.first() is MatchOdd) {
+
+        } else {
+            val matchInfo = (item as MatchOdd).matchInfo
+            getView<View>(R.id.league_odd_match_favorite).isSelected = matchInfo?.isFavorite ?: false
+        }
     }
 
     override fun convert(helper: BaseViewHolder, item: BaseNode) = helper.run {
-        Log.e("For Test", "=======>>> onBindHeaderViewHolder 22222  1111")
         val matchInfo = (item as MatchOdd).matchInfo
         setText(R.id.tvHomeName, matchInfo?.homeName)
         setText(R.id.tvAwayName, matchInfo?.awayName)
@@ -35,13 +38,12 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
                 item)
         }
 
-        Log.e("For Test", "=======>>> onBindHeaderViewHolder 22222  22222")
         getView<View>(R.id.league_odd_match_favorite).run {
             isSelected = matchInfo?.isFavorite ?: false
             setOnClickListener { onItemClick.invoke(helper.bindingAdapterPosition, this, item) }
         }
 
-
+        getView<View>(R.id.tvExpand).setOnClickListener { adapter.expandOrCollapse(item, parentPayload = item) }
 
     }
 
