@@ -1467,4 +1467,8 @@
     <string name="C016">TODAY</string>
     <string name="N989">Over max stake</string>
     <string name="N990">Below min stake</string>
+    <string name="P113">Glife member reminder</string>
+    <string name="P114">Hello, as you have registered on the GLIFE platform, according to the official requirements, deposits and withdrawals must be completed exclusively through the GCASH program. Click \"Open GCASH\" below to proceed. Thank you!</string>
+    <string name="KYC049">Cancel</string>
+    <string name="LT028">Open</string>
 </resources>

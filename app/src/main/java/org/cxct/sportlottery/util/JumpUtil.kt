@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.webkit.URLUtil
-import com.xuexiang.xupdate.utils.UpdateUtils
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bettingStation.BettingStation
@@ -118,14 +117,9 @@ object JumpUtil {
 
     fun toGcash(context: Context, userState: Int, next: () -> Unit) {
         if (userState == 1) {
-            if (!KvUtils.decodeBooleanTure(KvUtils.GLIFE_TIP_FLAG, false)) {
-                ToGcashDialog(context).show()
-            } else {
-                val uri = Uri.parse("https://miniprogram.gcash.com/s01/axXslZ")
-                val intent = Intent(Intent.ACTION_VIEW, uri)
-                UpdateUtils.startActivity(intent)
-            }
-
+            var dialog = ToGcashDialog(context)
+            dialog.setGoneNoReminder()
+            dialog.show()
         } else {
             next()
         }

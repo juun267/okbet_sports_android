@@ -1342,4 +1342,8 @@
     <string name="N987">Đăng nhập tài khoản</string>
     <string name="N988">Đăng nhập ngay</string>
     <string name="C016">HÔM NAY</string>
+    <string name="P113">Nhắc nhở thành viên Glife</string>
+    <string name="P114">Xin chào, vì bạn đã đăng ký trên kênh Glife, theo yêu cầu của kênh, bạn phải hoàn thành việc nạp và rút tiền trong Gcash. Để thực hiện, vui lòng nhấp vào nút Gcash dưới đây</string>
+    <string name="KYC049">Huỷ bỏ</string>
+    <string name="LT028">Mở</string>
 </resources>

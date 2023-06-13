@@ -1400,4 +1400,8 @@
     <string name="N987">登录后进行聊天讨论</string>
     <string name="N988">请登录</string>
     <string name="C016">今日</string>
+    <string name="P113">Glife 会员提醒</string>
+    <string name="P114">您好，由于您在Glife渠道注册，按照官方要求，您的充值提现必须在Gcash程序中完成，如果您需要进行此操作，点击下方打开Gcash按钮。</string>
+    <string name="KYC049">取消</string>
+    <string name="LT028">打开</string>
 </resources>

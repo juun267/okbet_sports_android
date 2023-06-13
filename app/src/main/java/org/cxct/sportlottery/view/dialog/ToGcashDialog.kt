@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import androidx.core.view.isVisible
 import com.xuexiang.xupdate.utils.UpdateUtils
 import org.cxct.sportlottery.databinding.DialogToGcashBinding
 import org.cxct.sportlottery.util.KvUtils
@@ -43,6 +44,11 @@ class ToGcashDialog(context: Context) : Dialog(context) {
             dismiss()
         }
 
+
+    }
+
+    fun setGoneNoReminder() {
+        binding.cbNoReminder.isVisible = false
     }
 
     fun setPositiveClickListener(positiveClickListener: OnPositiveListener) {

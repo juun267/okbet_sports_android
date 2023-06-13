@@ -1320,5 +1320,10 @@
     <string name="N988">Mag-login</string>
     <string name="system_notify">Notification ng System</string>
     <string name="C016">Ngayon</string>
-    <string name="picture_camera_roll" tools:ignore="ExtraTranslation">CameraRoll</string> // 图片选择库中菲语这个会莫名变为中文
+    <string name="picture_camera_roll" tools:ignore="ExtraTranslation">CameraRoll</string>
+    <string name="P113">Paalala ng miyembro ng Glife</string>
+    <string name="P114">Hello, dahil nakarehistro ka sa GLIFE platform, ayon sa opisyal na mga kinakailangan, ang mga deposito at pag-withdraw ay dapat kumpletuhin ng eksklusibo sa pamamagitan ng GCASH program. I-click ang \"Open GCASH\" sa ibaba upang magpatuloy. Salamat!</string>
+    <string name="KYC049">Kanselahin</string>
+    <string name="LT028">Buksan</string>
+    // 图片选择库中菲语这个会莫名变为中文
 </resources>

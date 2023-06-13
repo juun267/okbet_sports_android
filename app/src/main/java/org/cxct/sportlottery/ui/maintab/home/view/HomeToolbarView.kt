@@ -29,7 +29,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment2
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.view.dialog.ToGcashTipsDialog
+import org.cxct.sportlottery.view.dialog.ToGcashDialog
 
 class HomeToolbarView @JvmOverloads constructor(
     context: Context,
@@ -234,7 +234,7 @@ class HomeToolbarView @JvmOverloads constructor(
         }
         if (userModelEnable && viewModel.userInfo.value?.vipType == 1) {
             if (!KvUtils.decodeBooleanTure(KvUtils.GLIFE_LOGIN_TIP_FLAG, false)) {
-                ToGcashTipsDialog(context).show()
+                ToGcashDialog(context).show()
             }
         }
     }

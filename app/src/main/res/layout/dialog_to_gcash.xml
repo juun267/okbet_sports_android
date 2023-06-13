@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="130dp"
-            android:text="Glife member reminder"
+            android:text="@string/P113"
             android:textColor="@color/color_0D2245"
             android:textSize="@dimen/textSize20sp"
             android:textStyle="bold" />
@@ -33,7 +33,7 @@
             android:layout_marginHorizontal="30dp"
             android:layout_marginTop="10dp"
             android:lineHeight="@dimen/textSize17sp"
-            android:text="Hello, as you have registered on the GLIFE platform, according to the official requirements, deposits and withdrawals must be completed exclusively through the GCASH program. Click 'Open GCASH' below to proceed. Thank you!"
+            android:text="@string/P114"
             android:textColor="@color/color_6D7693"
             android:textSize="@dimen/textSize13sp" />
 
@@ -52,7 +52,7 @@
                 android:background="@drawable/bg_border_gray_round_8"
                 android:clickable="true"
                 android:gravity="center"
-                android:text="Cancel"
+                android:text="@string/KYC049"
                 android:textColor="@color/color_BEC7DC"
                 android:textSize="16sp" />
 
@@ -68,7 +68,7 @@
                 android:background="@drawable/bg_blue_radius_8"
                 android:clickable="true"
                 android:gravity="center"
-                android:text="open gcash"
+                android:text="@string/LT028"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 
