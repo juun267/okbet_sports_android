@@ -12,9 +12,7 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.stx.xhb.androidx.XBanner
-import kotlinx.android.synthetic.main.layout_home_top.view.ivPaymaya
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.setOnClickListeners
@@ -189,15 +187,10 @@ class HomeTopView @JvmOverloads constructor(
     private fun initRechargeClick(fragment: MainHomeFragment2) {
 
         val depositClick = OnClickListener {
-            if (UserInfoRepository.userInfo.value?.vipType != 1) {
-                fragment.viewModel.checkRechargeKYCVerify()
-                return@OnClickListener
-            }
-
-            fragment.showPromptDialog(
-                context.getString(R.string.prompt), context.getString(R.string.N643)
-            ) {
-
+            UserInfoRepository.userInfo.value?.vipType?.let { it1 ->
+                JumpUtil.toGcash(context,
+                    it1
+                ) { fragment.viewModel.checkRechargeKYCVerify() }
             }
         }
 

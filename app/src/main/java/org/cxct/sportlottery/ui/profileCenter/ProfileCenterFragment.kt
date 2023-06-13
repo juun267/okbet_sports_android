@@ -21,7 +21,6 @@ import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.aboutMe.AboutMeActivity
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.dialog.CustomSecurityDialog
@@ -106,7 +105,7 @@ class ProfileCenterFragment :
                 return@observe
             }
 
-            update_version.setOnClickListener {  }
+            update_version.setOnClickListener { }
             iv_version_new.visibility = View.GONE
         }
 
@@ -195,12 +194,11 @@ class ProfileCenterFragment :
         btn_recharge.setOnClickListener {
             avoidFastDoubleClick()
             //Glife用户
-            if (viewModel.userInfo.value?.vipType == 1) {
-                showPromptDialog(title = getString(R.string.prompt),
-                    message = getString(R.string.N643),
-                    {})
-            } else {
-                viewModel.checkRechargeKYCVerify()
+            context?.let { it2 ->
+                JumpUtil.toGcash(
+                    it2,
+                    viewModel.userInfo.value?.vipType!!
+                ) { viewModel.checkRechargeKYCVerify() }
             }
         }
     }
@@ -209,14 +207,12 @@ class ProfileCenterFragment :
         btn_withdraw.setOnClickListener {
             avoidFastDoubleClick()
             //Glife用户
-            if (viewModel.userInfo.value?.vipType == 1) {
-                showPromptDialog(title = getString(R.string.prompt),
-                    message = getString(R.string.N644),
-                    {})
-            } else {
-                viewModel.checkWithdrawKYCVerify()
+            context?.let { it2 ->
+                JumpUtil.toGcash(
+                    it2,
+                    viewModel.userInfo.value?.vipType!!
+                ) { viewModel.checkWithdrawKYCVerify() }
             }
-
         }
     }
 
@@ -291,7 +287,7 @@ class ProfileCenterFragment :
         //赛果结算
         btn_game_settlement.setOnClickListener {
             //检查是否关闭入口
-            checkSportStatus(requireActivity()){
+            checkSportStatus(requireActivity()) {
                 startActivity(Intent(requireActivity(), ResultsSettlementActivity::class.java))
             }
         }
@@ -325,7 +321,12 @@ class ProfileCenterFragment :
         }
         //关于我们
         btn_about_us.setOnClickListener {
-            startActivity(Intent(requireActivity(), org.cxct.sportlottery.ui.aboutMe.AboutMeActivity::class.java))
+            startActivity(
+                Intent(
+                    requireActivity(),
+                    org.cxct.sportlottery.ui.aboutMe.AboutMeActivity::class.java
+                )
+            )
         }
 
         //资产检测
@@ -637,9 +638,9 @@ class ProfileCenterFragment :
         iv_user_notice.setOnClickListener {
             startActivity(
                 Intent(requireActivity(), InfoCenterActivity::class.java).putExtra(
-                        InfoCenterActivity.KEY_READ_PAGE,
-                        InfoCenterActivity.YET_READ
-                    )
+                    InfoCenterActivity.KEY_READ_PAGE,
+                    InfoCenterActivity.YET_READ
+                )
             )
         }
     }
