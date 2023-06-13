@@ -15,9 +15,10 @@ import org.cxct.sportlottery.util.KvUtils.GLIFE_TIP_FLAG
 /**
  * glife 用户点击存取款跳转gcash
  */
-class ToGcashDialog(context: Context) : Dialog(context) {
+class ToGcashDialog(context: Context, visibleNoReminder: Boolean = true) : Dialog(context) {
 
 
+    private var NoReminderFlag = visibleNoReminder
     private var mPositiveClickListener: OnPositiveListener? = null
     private var mNegativeClickListener: OnNegativeListener? = null
     private lateinit var binding: DialogToGcashBinding
@@ -35,7 +36,7 @@ class ToGcashDialog(context: Context) : Dialog(context) {
             KvUtils.put(GLIFE_TIP_FLAG, binding.cbNoReminder.isChecked)
             dismiss()
         }
-
+        binding.cbNoReminder.isVisible = NoReminderFlag
         binding.btnGlifeOpen.setOnClickListener {
             KvUtils.put(GLIFE_TIP_FLAG, binding.cbNoReminder.isChecked)
             val uri = Uri.parse("https://miniprogram.gcash.com/s01/axXslZ")
@@ -45,10 +46,6 @@ class ToGcashDialog(context: Context) : Dialog(context) {
         }
 
 
-    }
-
-    fun setGoneNoReminder() {
-        binding.cbNoReminder.isVisible = false
     }
 
     fun setPositiveClickListener(positiveClickListener: OnPositiveListener) {
