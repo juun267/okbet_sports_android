@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="bottom"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/white">
+
+        <Button
+            android:id="@+id/btnBtmCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:background="@color/transparent"
+            android:paddingHorizontal="14dp"
+            android:stateListAnimator="@null"
+            android:text="Cancel"
+            android:textColor="@color/color_A7B2C4"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvBtmTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="Nationality"
+            android:textColor="@color/color_414655"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btnBtmDone"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:layout_alignParentEnd="true"
+            android:background="@color/transparent"
+            android:paddingHorizontal="14dp"
+            android:stateListAnimator="@null"
+            android:text="Done"
+            android:textColor="@color/color_025BE8"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvBtmData"
+        android:layout_width="match_parent"
+        android:layout_height="216dp"
+        android:background="@color/white"
+        android:orientation="vertical"
+        tools:listitem="@layout/item_dialog_bottom_select"
+        tools:itemCount="15"
+        android:scrollbars="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+</LinearLayout>

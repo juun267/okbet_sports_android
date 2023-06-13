@@ -3,14 +3,18 @@ package org.cxct.sportlottery.ui.profileCenter.profile
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.RecyclerView
+import com.bigkoo.pickerview.view.TimePickerView
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.android.synthetic.main.include_user_profile.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.load
@@ -23,6 +27,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.dialog.CustomSecurityDialog
+import org.cxct.sportlottery.ui.login.signUp.info.DateTimePickerOptions
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.profileCenter.authbind.AuthActivity
 import org.cxct.sportlottery.ui.profileCenter.cancelaccount.CancelAccountActivity
@@ -34,12 +39,15 @@ import org.cxct.sportlottery.ui.profileCenter.modify.VerificationWaysActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity.Companion.MODIFY_INFO
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
+import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.isStatusOpen
 import org.cxct.sportlottery.util.phoneNumCheckDialog
+import org.cxct.sportlottery.view.dialog.SourceOfIncomeDialog
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
+import java.util.Calendar
 
 /**
  * @app_destination 个人设置
@@ -48,6 +56,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
     //簡訊驗證彈窗
     private var customSecurityDialog: CustomSecurityDialog? = null
+
     //KYC驗證彈窗
     private var kYCVerifyDialog: CustomSecurityDialog? = null
 
@@ -58,6 +67,9 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     enum class SecurityCodeEnterType(val value: Int) {
         REALNAME(0), PW(1)
     }
+
+    //生日选择
+    private var dateTimePicker: TimePickerView? = null
 
     var securityCodeEnter = SecurityCodeEnterType.REALNAME
 
@@ -100,13 +112,16 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStatusbar(R.color.color_232C4F_FFFFFF,true)
+        setStatusbar(R.color.color_232C4F_FFFFFF, true)
         setContentView(R.layout.activity_profile)
 
         initView()
         initButton()
         initObserve()
+        initDateTimeView()
         setupLogout()
+        viewModel.getUserSalaryList()
+
     }
 
     private fun setupLogout() {
@@ -130,13 +145,14 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             ll_wechat.isVisible = enableWithdrawWechat.isStatusOpen()
             ll_real_name.isVisible = enableWithdrawFullName.isStatusOpen()
         }
-
-        tv_pass_word.text = if (viewModel.userInfo.value?.passwordSet == true) getString(R.string.set) else getString(R.string.edit)
+        tv_pass_word.text =
+            if (viewModel.userInfo.value?.passwordSet == true) getString(R.string.set) else getString(
+                R.string.edit
+            )
     }
 
     private fun initButton() {
         custom_tool_bar.setOnBackPressListener { finish() }
-
         //設定個人資訊頁面
         setupToInfoSettingPage()
         btn_head.setOnClickListener {
@@ -154,6 +170,12 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         }
         //暱稱
         btn_nickname.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.NickName) }
+        //出生地
+        llPlaceOfBirth.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.PlaceOfBirth) }
+        //address
+        llAddressCurrent.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.Address) }
+        //zip code
+        llZipCodeCurrent.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.ZipCode) }
         //密碼設置
         btn_pwd_setting.setOnClickListener {
             securityCodeEnter = SecurityCodeEnterType.PW
@@ -174,8 +196,34 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             if (ll_verified.isEnabled)
                 startActivity(VerifyIdentityActivity::class.java)
         }
+        llSourceOfIncome.setOnClickListener {
+            var dialog = SourceOfIncomeDialog(this)
+            dialog.setPositiveClickListener(object : SourceOfIncomeDialog.OnPositiveListener {
+                override fun positiveClick(str: String) {
+                    tvSourceOfIncome.text = str
+                }
+
+            })
+            dialog.show()
+        }
+        var btmLays = layoutInflater.inflate(R.layout.dialog_bottom_select, null)
+        var btnCancel = btmLays.findViewById<Button>(R.id.btnBtmCancel)
+        var btnDone = btmLays.findViewById<Button>(R.id.btnBtmDone)
+        var btnTitle = btmLays.findViewById<TextView>(R.id.tvBtmTitle)
+        var rvData = btmLays.findViewById<RecyclerView>(R.id.rvBtmData)
+        var adapter = DialogBottomDataAdapter(this)
+        adapter.setOnItemClickListener { ater, view, position ->
+            ater.data.forEach { _ ->
+
+            }
+        }
+        rvData.adapter = adapter
+        btnCancel.setOnClickListener { bottomSheet.dismiss() }
+        btnDone.setOnClickListener { bottomSheet.dismiss() }
+        bottomSheet.setContentView(btmLays)
         //注销账号
         ll_cancel_account.setOnClickListener { startActivity(CancelAccountActivity::class.java) }
+        llBirthday.setOnClickListener { dateTimePicker?.show() }
     }
 
     private fun editBindInfo(@ModifyType modifyType: Int) {
@@ -204,7 +252,8 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
     private fun uploadImg(file: File) {
         val userId = viewModel.userInfo.value?.userId.toString()
-        val uploadImgRequest = UploadImgRequest(userId, file, UploadImgRequest.PlatformCodeType.AVATAR)
+        val uploadImgRequest =
+            UploadImgRequest(userId, file, UploadImgRequest.PlatformCodeType.AVATAR)
         viewModel.uploadImage(uploadImgRequest)
     }
 
@@ -226,26 +275,31 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             tv_member_account.text = it?.userName
             tv_id.text = it?.userId?.toString()
             tv_real_name.text = it?.fullName
-            ll_verified.isVisible = sConfigData?.realNameWithdrawVerified.isStatusOpen() || sConfigData?.realNameRechargeVerified.isStatusOpen()
-            tv_pass_word.text = if (it?.passwordSet == true) getString(R.string.set) else getString(R.string.edit)
+            ll_verified.isVisible =
+                sConfigData?.realNameWithdrawVerified.isStatusOpen() || sConfigData?.realNameRechargeVerified.isStatusOpen()
+            tv_pass_word.text =
+                if (it?.passwordSet == true) getString(R.string.set) else getString(R.string.edit)
             when (it?.verified) {
                 VerifiedType.PASSED.value -> {
                     ll_verified.isEnabled = true
                     ll_verified.isClickable = true
                     tv_verified.text = getString(R.string.kyc_passed)
                 }
-                VerifiedType.NOT_YET.value,VerifiedType.VERIFIED_FAILED.value, -> {
+
+                VerifiedType.NOT_YET.value, VerifiedType.VERIFIED_FAILED.value -> {
                     ll_verified.isEnabled = true
                     ll_verified.isClickable = true
                     tv_verified.text = getString(R.string.kyc_unverified)
 
                 }
-                VerifiedType.VERIFYING.value,VerifiedType.VERIFIED_WAIT.value -> {
+
+                VerifiedType.VERIFYING.value, VerifiedType.VERIFIED_WAIT.value -> {
                     ll_verified.isEnabled = true
                     ll_verified.isClickable = true
                     tv_verified.text = getString(R.string.kyc_unverifing)
 
                 }
+
                 else -> {
                     ll_verified.isEnabled = true
                     ll_verified.isClickable = true
@@ -284,7 +338,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 return@observe
             }
 
-             //有手機號碼又不用驗證的狀態下
+            //有手機號碼又不用驗證的狀態下
             securityEnter()
         }
 
@@ -340,6 +394,10 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                     viewModel.checkRechargeSystem()
             }
         }
+        //薪资来源
+        viewModel.salaryList.observe(this) {
+//            salaryPicker?.setPicker(viewModel.salaryStringList)
+        }
     }
 
     private fun securityEnter() {
@@ -389,4 +447,25 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     private fun showKYCVerifyDialog() {
         VerifyIdentityDialog().show(supportFragmentManager, null)
     }
+
+
+    /**
+     * 初始化时间选择控件
+     */
+    private fun initDateTimeView() {
+        val yesterday = Calendar.getInstance()
+        yesterday.add(Calendar.YEAR, -100)
+        val tomorrow = Calendar.getInstance()
+        tomorrow.add(Calendar.YEAR, -21)
+        tomorrow.add(Calendar.DAY_OF_MONTH, -1)
+        dateTimePicker = DateTimePickerOptions(this).getBuilder { date, _ ->
+            TimeUtil.dateToStringFormatYMD(date)?.let {
+
+            }
+        }
+            .setRangDate(yesterday, tomorrow)
+            .setDate(tomorrow)
+            .build()
+    }
+
 }

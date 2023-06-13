@@ -34,7 +34,8 @@
                 android:focusableInTouchMode="true"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
                     android:id="@+id/et_nickname"
@@ -53,6 +54,172 @@
 
                     <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
                         android:id="@+id/eet_nickname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:textColor="@color/color_FFFFFF_DE000000"
+                        android:textSize="@dimen/textSize14sp" />
+
+                </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
+
+            </LinearLayout>
+            <!--  出生地  -->
+            <LinearLayout
+                android:id="@+id/llPlaceOfBirth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:background="@color/color_FFFFFF"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+                    android:id="@+id/etPlaceOfBirth"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_14"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="@dimen/margin_14"
+                    app:hintText="Please enter your place of birth"
+                    app:isResponsiveIconColor="false"
+                    app:labelText="Place of Birth"
+                    app:labelTextStyle="normal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:primaryColor="@color/color_AFAFB1">
+
+                    <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
+                        android:id="@+id/eetPlaceOfBirth"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:textColor="@color/color_FFFFFF_DE000000"
+                        android:textSize="@dimen/textSize14sp" />
+
+                </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
+
+            </LinearLayout>
+
+            <!--  address  -->
+            <LinearLayout
+                android:id="@+id/llAddressParent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <LinearLayout
+                    android:id="@+id/llAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@color/color_FFFFFF"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+                        android:id="@+id/etllAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_14"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="@dimen/margin_14"
+                        app:hintText="Please enter your address"
+                        app:isResponsiveIconColor="false"
+                        app:labelText="Address"
+                        app:labelTextStyle="normal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:primaryColor="@color/color_AFAFB1">
+
+                        <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
+                            android:id="@+id/eetllAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:imeOptions="actionNext"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:textColor="@color/color_FFFFFF_DE000000"
+                            android:textSize="@dimen/textSize14sp" />
+
+                    </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="·"
+                        android:textColor="@color/color_FF2E00"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Address should include: Unit/Room Number/Floor, Building Name, Lot/Block/Phase/House Number, Street Name"
+                        android:textColor="@color/color_FF2E00"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!--  zip code  -->
+            <LinearLayout
+                android:id="@+id/llZipCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:background="@color/color_FFFFFF"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+                    android:id="@+id/etllZipCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_14"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="@dimen/margin_14"
+                    app:hintText="Please enter zip code"
+                    app:isResponsiveIconColor="false"
+                    app:labelText="Zip Code"
+                    app:labelTextStyle="normal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:primaryColor="@color/color_AFAFB1">
+
+                    <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
+                        android:id="@+id/eetllZipCode"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:imeOptions="actionNext"
@@ -240,8 +407,8 @@
                         android:id="@+id/eet_phone_number"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="number"
                         android:imeOptions="actionNext"
+                        android:inputType="number"
                         android:maxLength="11"
                         android:maxLines="1"
                         android:textColor="@color/color_FFFFFF_DE000000"

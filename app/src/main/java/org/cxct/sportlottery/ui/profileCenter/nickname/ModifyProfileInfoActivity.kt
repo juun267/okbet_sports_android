@@ -58,20 +58,40 @@ class ModifyProfileInfoActivity :
                 tv_toolbar_title.text = getString(R.string.real_name)
                 ll_real_name.visibility = View.VISIBLE
             }
+
+            ModifyType.PlaceOfBirth -> {
+                tv_toolbar_title.text = "Place of Birth"
+                llPlaceOfBirth.visibility = View.VISIBLE
+            }
+
+            ModifyType.Address -> {
+                tv_toolbar_title.text = "Address"
+                llAddress.visibility = View.VISIBLE
+            }
+
+            ModifyType.ZipCode -> {
+                tv_toolbar_title.text = "Zip Code"
+                llZipCode.visibility = View.VISIBLE
+            }
+
             ModifyType.NickName -> {                //暱稱
                 setupNickName()
             }
+
             ModifyType.QQNumber -> {
                 tv_toolbar_title.text = getString(R.string.qq_number)
                 ll_qq_number.visibility = View.VISIBLE
             }
+
             ModifyType.Email -> {
                 ll_e_mail.visibility = View.VISIBLE
             }
+
             ModifyType.PhoneNumber -> {
                 tv_toolbar_title.text = getString(R.string.phone_number)
                 ll_phone_number.visibility = View.VISIBLE
             }
+
             ModifyType.WeChat -> {
                 tv_toolbar_title.text = getString(R.string.we_chat)
                 ll_wechat.visibility = View.VISIBLE
@@ -107,15 +127,20 @@ class ModifyProfileInfoActivity :
             val msg = when {
                 it.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
                 !VerifyConstUtil.verifyLengthRange(it, nickNameMinLength, nickNameMaxLength) -> {
-                    LocalUtils.getLocalizedContext().getString(R.string.error_member_nickname, nickNameMinLength, nickNameMaxLength)
+                    LocalUtils.getLocalizedContext().getString(
+                        R.string.error_member_nickname,
+                        nickNameMinLength,
+                        nickNameMaxLength
+                    )
                 }
+
                 else -> null
             }
 
             val isActivated = TextUtils.isEmpty(msg)
             et_nickname.setError(msg, isActivated)
             btn_confirm.isEnabled = isActivated
-            btn_confirm.alpha = if (isActivated) 1f else  0.5f
+            btn_confirm.alpha = if (isActivated) 1f else 0.5f
         }
 
         eet_nickname.setText("") // 设置空触发输入检查
@@ -153,7 +178,7 @@ class ModifyProfileInfoActivity :
             ModifyType.WeChat -> eet_we_chat.text
             ModifyType.PhoneNumber -> eet_phone_number.text
             ModifyType.NickName -> eet_nickname.text
-            else -> { }
+            else -> {}
         }
         viewModel.confirmProfileInfo(modifyType, inputText.toString())
     }
