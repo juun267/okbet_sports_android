@@ -60,7 +60,6 @@ import org.cxct.sportlottery.ui.sport.list.SportLeagueAdapter
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
-import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import kotlin.system.exitProcess
