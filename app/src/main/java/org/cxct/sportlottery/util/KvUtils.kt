@@ -9,8 +9,6 @@ import org.cxct.sportlottery.application.MultiLanguagesApplication
 object KvUtils {
 
 
-    //glife用户登录提示弹窗点击了  不再提示标记
-    const val GLIFE_LOGIN_TIP_FLAG = "glife_login_tip_flag"
     //glife用户存取款提示弹窗点击了  不再提示标记
     const val GLIFE_TIP_FLAG = "glife_tip_flag"
     //篮球删除投注信息提示弹窗  不再提示标记

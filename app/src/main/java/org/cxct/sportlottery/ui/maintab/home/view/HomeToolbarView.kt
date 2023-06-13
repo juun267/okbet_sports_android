@@ -233,7 +233,7 @@ class HomeToolbarView @JvmOverloads constructor(
             ivLogo.setOnClickListener { activity.backMainHome() }
         }
         if (userModelEnable && viewModel.userInfo.value?.vipType == 1) {
-            if (!KvUtils.decodeBooleanTure(KvUtils.GLIFE_LOGIN_TIP_FLAG, false)) {
+            if (!KvUtils.decodeBooleanTure(KvUtils.GLIFE_TIP_FLAG, false)) {
                 ToGcashDialog(context).show()
             }
         }
