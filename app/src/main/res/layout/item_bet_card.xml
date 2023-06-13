@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:paddingHorizontal="12dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:paddingTop="13dp"
+        android:paddingBottom="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:src="@drawable/ic_bet_game_ft"
+            android:layout_width="16dp"
+            android:layout_gravity="center_vertical"
+            android:layout_height="16dp"/>
+
+        <TextView
+            android:text="title | temp  title | temp  title | temp  title | temp  title | temp  title | temp  title | temp"
+            android:layout_weight="1"
+            android:paddingStart="8dp"
+            android:maxLines="1"
+            android:textSize="14sp"
+            android:textColor="@color/color_000000"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical"
+            android:ellipsize="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:background="@drawable/bg_bet_green"
+            android:text="已中奖"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:layout_width="70dp"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="12sp"
+            android:layout_height="24dp"/>
+    </LinearLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:paddingVertical="15dp"
+        android:background="@drawable/bg_bet_card"
+        android:paddingHorizontal="10dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvBetItemKey"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@color/color_6D7693"
+            android:text="Bet Items"
+            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tvBetItemValue"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textColor="@color/color_000000"
+            android:paddingStart="65dp"
+            android:text="Bet ItemsBet ItemsBet ItemsBet ItemsBet ItemsBet ItemsItemsItems"
+            android:textSize="12sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+        <TextView
+            android:id="@+id/tvOddsKey"
+            app:layout_constraintTop_toBottomOf="@+id/tvBetItemKey"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:paddingTop="12dp"
+            android:textColor="@color/color_6D7693"
+            android:text="Odds"
+            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+        <TextView
+            android:id="@+id/tvOddsValue"
+            app:layout_constraintTop_toBottomOf="@+id/tvBetItemKey"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textColor="@color/color_025BE8"
+            android:text="\@2.94"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tvOddsKey"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+
+
+        <TextView
+            android:id="@+id/tvMethodKey"
+            app:layout_constraintTop_toBottomOf="@+id/tvOddsKey"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:paddingTop="10dp"
+            android:textColor="@color/color_6D7693"
+            android:text="Method"
+            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+        <TextView
+            android:id="@+id/tvMethodValue"
+            app:layout_constraintTop_toBottomOf="@+id/tvOddsKey"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textColor="@color/color_000000"
+            android:paddingStart="65dp"
+            android:paddingTop="10dp"
+            android:text="ItemsBet ItemsBet ItemsBet ItemsBet"
+            android:textSize="12sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+
+
+        <TextView
+            android:id="@+id/tvTeamKey"
+            app:layout_constraintTop_toBottomOf="@+id/tvMethodKey"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:paddingTop="10dp"
+            android:textColor="@color/color_6D7693"
+            android:text="Team"
+            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+
+        <TextView
+            android:id="@+id/tvTeamValue"
+            app:layout_constraintTop_toBottomOf="@+id/tvMethodKey"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textColor="@color/color_000000"
+            android:paddingStart="65dp"
+            android:paddingTop="10dp"
+            android:text="联赛名称最宽236px展示，超一行用...代替"
+            android:textSize="12sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+
+        <TextView
+            android:id="@+id/tvTimeKey"
+            app:layout_constraintTop_toBottomOf="@+id/tvTeamKey"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:paddingTop="10dp"
+            android:textColor="@color/color_6D7693"
+            android:text="Competing time"
+            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+
+        <TextView
+            android:id="@+id/tvTimeValue"
+            app:layout_constraintTop_toBottomOf="@+id/tvTeamKey"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textColor="@color/color_000000"
+            android:paddingStart="65dp"
+            android:paddingTop="10dp"
+            android:text="Feb 12,  10:16AM"
+            android:textSize="12sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

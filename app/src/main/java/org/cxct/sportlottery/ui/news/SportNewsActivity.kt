@@ -7,6 +7,9 @@ import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.view.DateRangeSearchView2
 import org.cxct.sportlottery.view.loadMore
 
+/**
+ * 体育侧边栏新闻列表
+ */
 class SportNewsActivity : BindingActivity<NewsViewModel,ActivitySportNewsBinding>() {
     private val newsAdapter=RecyclerSportNewsAdapter()
     private var timeRangeView: DateRangeSearchView2?=null
