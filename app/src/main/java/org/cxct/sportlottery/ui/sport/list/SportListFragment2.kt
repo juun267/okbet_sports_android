@@ -75,6 +75,7 @@ class SportListFragment2
         clearSubscribeChannels()
         load(item)
         binding.ivFilter.isVisible = gameType != GameType.ALL.key
+        binding.tvSportName
     }
 
     private fun reset() {
@@ -93,6 +94,7 @@ class SportListFragment2
 
     fun reload() {
         reset()
+        binding.appbarLayout.scrollTo(0, 0)
         viewModel.loadMatchType(matchType)
     }
 
@@ -163,6 +165,7 @@ class SportListFragment2
     }
 
     private fun initGameListView() = binding.gameList.run {
+
         layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
         sportLeagueAdapter2.setEmptyView(R.layout.view_list_loading)
         adapter = sportLeagueAdapter2

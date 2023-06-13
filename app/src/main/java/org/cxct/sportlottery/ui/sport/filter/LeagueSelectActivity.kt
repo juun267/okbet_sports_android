@@ -109,6 +109,16 @@ class LeagueSelectActivity :
             leagueSelectAdapter.notifyDataSetChanged()
             setSelectSum()
         }
+        btnRest.setOnClickListener {
+            selectStartTime = ""
+            selectEndTime = ""
+            setDateListView()
+            viewModel.getOddsList(gameType,
+                matchType.postValue,
+                startTime ?: "",
+                endTime ?: "",
+                matchIdList)
+        }
         btnConfirm.setOnClickListener {
             var matchSelectList = arrayListOf<String>()
             val countLeague = itemData.count { it.league.isSelected }
@@ -197,6 +207,7 @@ class LeagueSelectActivity :
             MatchType.EARLY, MatchType.CS -> {
                 linDate.isVisible = true
                 rvDate.layoutManager = GridLayoutManager(this,3)
+                if (rvDate.itemDecorationCount==0)
                 rvDate.addItemDecoration(GridItemDecoration(8.dp,12.dp,Color.TRANSPARENT,false))
                 val names = mutableListOf<String>(
                     getString(R.string.label_all),
@@ -245,6 +256,7 @@ class LeagueSelectActivity :
                 }.toSortedMap(Comparator<String> { o1: String, o2: String ->
                     o1.compareTo(o2)
                 })
+                itemData.clear()
                 map.keys.forEach { name ->
                     itemData.addAll(map[name] ?: mutableListOf())
                 }

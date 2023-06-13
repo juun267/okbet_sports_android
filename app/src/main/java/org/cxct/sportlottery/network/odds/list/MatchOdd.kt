@@ -2,6 +2,7 @@ package org.cxct.sportlottery.network.odds.list
 
 
 import android.os.Parcelable
+import com.chad.library.adapter.base.entity.node.BaseExpandNode
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -37,7 +38,7 @@ data class MatchOdd(
     override var quickPlayCateList: MutableList<QuickPlayCate>? = null,
     @Json(name = "oddsSort")
     override var oddsSort: String? = null,
-) : MatchOdd, BaseNode(), Parcelable {
+) : MatchOdd, BaseExpandNode(), Parcelable {
 
     override val childNode: MutableList<BaseNode> = mutableListOf()
 

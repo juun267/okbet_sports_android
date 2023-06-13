@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.sport.endscore
 
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import com.chad.library.adapter.base.entity.node.BaseNode
@@ -16,8 +17,12 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
                              override val layoutId: Int = R.layout.item_endscore_battle): BaseNodeProvider() {
 
     override fun convert(helper: BaseViewHolder, item: BaseNode, payloads: List<Any>) = helper.run {
-        val matchInfo = (item as MatchOdd).matchInfo
-        getView<View>(R.id.league_odd_match_favorite).isSelected = matchInfo?.isFavorite ?: false
+        if (payloads.first() is MatchOdd) {
+
+        } else {
+            val matchInfo = (item as MatchOdd).matchInfo
+            getView<View>(R.id.league_odd_match_favorite).isSelected = matchInfo?.isFavorite ?: false
+        }
     }
 
     override fun convert(helper: BaseViewHolder, item: BaseNode) = helper.run {
@@ -32,10 +37,13 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
                 it,
                 item)
         }
+
         getView<View>(R.id.league_odd_match_favorite).run {
             isSelected = matchInfo?.isFavorite ?: false
             setOnClickListener { onItemClick.invoke(helper.bindingAdapterPosition, this, item) }
         }
+
+        getView<View>(R.id.tvExpand).setOnClickListener { adapter.expandOrCollapse(item, parentPayload = item) }
 
     }
 
