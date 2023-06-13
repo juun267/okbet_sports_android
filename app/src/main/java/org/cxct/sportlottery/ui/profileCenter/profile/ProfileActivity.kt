@@ -121,6 +121,8 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         initDateTimeView()
         setupLogout()
         viewModel.getUserSalaryList()
+        viewModel.getAddressData()
+        initBottomDialog()
 
     }
 
@@ -162,6 +164,45 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         }
     }
 
+    var dialogBtmAdapter = DialogBottomDataAdapter(this)
+    lateinit var rvData: RecyclerView
+    lateinit var btnDialogTitle: TextView
+    lateinit var btnDialogDone: Button
+    private fun initBottomDialog() {
+        var btmLays = layoutInflater.inflate(R.layout.dialog_bottom_select, null)
+        var btnCancel = btmLays.findViewById<Button>(R.id.btnBtmCancel)
+        btnDialogDone = btmLays.findViewById(R.id.btnBtmDone)
+        btnDialogTitle = btmLays.findViewById(R.id.tvBtmTitle)
+        rvData = btmLays.findViewById<RecyclerView>(R.id.rvBtmData)
+        rvData.adapter = dialogBtmAdapter
+        btnCancel.setOnClickListener { bottomSheet.dismiss() }
+
+        bottomSheet.setContentView(btmLays)
+    }
+
+    private fun showBottomDialog(
+        list: MutableList<DialogBottomDataEntity>,
+        callBack: (item: DialogBottomDataEntity) -> Unit
+    ) {
+        lateinit var item: DialogBottomDataEntity
+        dialogBtmAdapter.data = list
+        dialogBtmAdapter.notifyDataSetChanged()
+        rvData.scrollToPosition(0)
+        dialogBtmAdapter.setOnItemClickListener { ater, view, position ->
+            dialogBtmAdapter.data.forEach {
+                it.flag = false
+            }
+            item = dialogBtmAdapter.data[position]
+            item.flag = true
+            dialogBtmAdapter.notifyDataSetChanged()
+        }
+        btnDialogDone.setOnClickListener {
+            callBack(item)
+            bottomSheet.dismiss()
+        }
+        bottomSheet.show()
+    }
+
     private fun setupToInfoSettingPage() {
         //真實姓名
         ll_real_name.setOnClickListener {
@@ -196,31 +237,61 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             if (ll_verified.isEnabled)
                 startActivity(VerifyIdentityActivity::class.java)
         }
-        llSourceOfIncome.setOnClickListener {
-            var dialog = SourceOfIncomeDialog(this)
-            dialog.setPositiveClickListener(object : SourceOfIncomeDialog.OnPositiveListener {
-                override fun positiveClick(str: String) {
-                    tvSourceOfIncome.text = str
-                }
-
-            })
-            dialog.show()
-        }
-        var btmLays = layoutInflater.inflate(R.layout.dialog_bottom_select, null)
-        var btnCancel = btmLays.findViewById<Button>(R.id.btnBtmCancel)
-        var btnDone = btmLays.findViewById<Button>(R.id.btnBtmDone)
-        var btnTitle = btmLays.findViewById<TextView>(R.id.tvBtmTitle)
-        var rvData = btmLays.findViewById<RecyclerView>(R.id.rvBtmData)
-        var adapter = DialogBottomDataAdapter(this)
-        adapter.setOnItemClickListener { ater, view, position ->
-            ater.data.forEach { _ ->
-
+        llNationality.setOnClickListener {
+            showBottomDialog(viewModel.nationalityList) {
+                tvNationality.text = it.name
             }
         }
-        rvData.adapter = adapter
-        btnCancel.setOnClickListener { bottomSheet.dismiss() }
-        btnDone.setOnClickListener { bottomSheet.dismiss() }
-        bottomSheet.setContentView(btmLays)
+        llProvinceCurrent.setOnClickListener {
+            showBottomDialog(viewModel.provincesList) {
+                tvProvinceCurrent.text = it.name
+            }
+        }
+        llProvincePermanent.setOnClickListener {
+            showBottomDialog(viewModel.provincesList) {
+                tvProvincePermanent.text = it.name
+            }
+        }
+        llCityCurrent.setOnClickListener {
+            showBottomDialog(viewModel.cityList) {
+                tvCityCurrent.text = it.name
+            }
+        }
+        llCityPermanent.setOnClickListener {
+            showBottomDialog(viewModel.cityList) {
+                tvCityPermanent.text = it.name
+            }
+        }
+        llAddressCurrent.setOnClickListener {
+            putExtraForProfileInfoActivity(ModifyType.Address)
+        }
+        llAddressPermanent.setOnClickListener {
+            putExtraForProfileInfoActivity(ModifyType.Address)
+        }
+        llZipCodeCurrent.setOnClickListener {
+            putExtraForProfileInfoActivity(ModifyType.ZipCode)
+        }
+        llZipCodePermanent.setOnClickListener {
+            putExtraForProfileInfoActivity(ModifyType.ZipCode)
+        }
+
+        llSourceOfIncome.setOnClickListener {
+            showBottomDialog(viewModel.salaryStringList) {
+                if (it.id == 6) {
+                    var dialog = SourceOfIncomeDialog(this)
+                    dialog.setPositiveClickListener(object :
+                        SourceOfIncomeDialog.OnPositiveListener {
+                        override fun positiveClick(str: String) {
+                            tvSourceOfIncome.text = str
+                        }
+                    })
+                    dialog.show()
+                } else {
+                    tvSourceOfIncome.text = it.name
+                }
+            }
+        }
+
         //注销账号
         ll_cancel_account.setOnClickListener { startActivity(CancelAccountActivity::class.java) }
         llBirthday.setOnClickListener { dateTimePicker?.show() }
@@ -393,10 +464,6 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 else
                     viewModel.checkRechargeSystem()
             }
-        }
-        //薪资来源
-        viewModel.salaryList.observe(this) {
-//            salaryPicker?.setPicker(viewModel.salaryStringList)
         }
     }
 

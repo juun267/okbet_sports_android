@@ -66,7 +66,7 @@ class ModifyProfileInfoActivity :
 
             ModifyType.Address -> {
                 tv_toolbar_title.text = "Address"
-                llAddress.visibility = View.VISIBLE
+                llAddressParent.visibility = View.VISIBLE
             }
 
             ModifyType.ZipCode -> {
