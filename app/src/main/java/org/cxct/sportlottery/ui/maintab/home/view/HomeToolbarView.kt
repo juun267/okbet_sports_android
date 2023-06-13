@@ -232,11 +232,6 @@ class HomeToolbarView @JvmOverloads constructor(
         if (fragment !is MainHomeFragment2) {
             ivLogo.setOnClickListener { activity.backMainHome() }
         }
-        if (userModelEnable && viewModel.userInfo.value?.vipType == 1) {
-            if (!KvUtils.decodeBooleanTure(KvUtils.GLIFE_TIP_FLAG, false)) {
-                ToGcashDialog(context).show()
-            }
-        }
     }
 
     fun onRefreshMoney() {

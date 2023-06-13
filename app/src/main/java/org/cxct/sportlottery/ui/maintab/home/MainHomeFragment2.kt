@@ -37,14 +37,8 @@ import org.cxct.sportlottery.ui.maintab.publicity.MarqueeAdapter
 import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.SpaceItemDecoration
-import org.cxct.sportlottery.util.goneWithSportSwitch
-import org.cxct.sportlottery.util.setTrialPlayGameDataObserve
-import org.cxct.sportlottery.util.setupBackTop
 import org.cxct.sportlottery.view.dialog.PopImageDialog
-import org.cxct.sportlottery.util.setupSportStatusChange
+import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -67,6 +61,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         initToolBar()
         initNews()
         EventBusUtil.targetLifecycle(this@MainHomeFragment2)
+        ToGcashDialog.allowShow(viewModel)
     }
 
     override fun onInitData() {
@@ -165,7 +160,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
             viewModel.getSportMenuFilter()
             if (MultiLanguagesApplication.showHomeDialog) {
                 MultiLanguagesApplication.showHomeDialog = false
-                MultiLanguagesApplication.showPromotionPopupDialog(requireActivity() as AppCompatActivity)
+                MultiLanguagesApplication.showPromotionPopupDialog(requireActivity() as AppCompatActivity){}
                 if (PopImageDialog.checkImageTypeAvailable(7)) {
                     requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
                         putInt(PopImageDialog.IMAGE_TYPE, 7)

@@ -442,7 +442,7 @@ class MultiLanguagesApplication : Application() {
                 override fun onConfirm() {
                     //當玩家點擊"I AM OVER 21 YEARS OLD"後，關閉此視窗
                     getInstance()?.setIsAgeVerifyShow(false)
-                    showPromotionPopupDialog(activity)
+                    showPromotionPopupDialog(activity){}
                 }
 
                 override fun onExit() {
@@ -453,7 +453,7 @@ class MultiLanguagesApplication : Application() {
             }).show()
         }
 
-        open fun showPromotionPopupDialog(activity: AppCompatActivity) {
+        open fun showPromotionPopupDialog(activity: AppCompatActivity, onDismiss: ()->Unit) {
             if (activity.isDestroyed
                 || isCreditSystem()
                 || sConfigData?.imageList?.any { it.imageType == ImageType.PROMOTION.code && !it.imageName3.isNullOrEmpty() && !(isGooglePlayVersion() && it.isHidden) } != true) {
@@ -465,6 +465,10 @@ class MultiLanguagesApplication : Application() {
                 JumpUtil.toInternalWeb(activity,
                     Constants.getPromotionUrl(token, LanguageManager.getSelectLanguage(activity)),
                     activity.getString(R.string.promotion))
+            }.apply {
+                setOnDismissListener{
+                    onDismiss.invoke()
+                }
             }.show()
         }
 
