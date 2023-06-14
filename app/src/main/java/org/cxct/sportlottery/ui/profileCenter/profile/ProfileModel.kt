@@ -53,19 +53,6 @@ class ProfileModel(
     val userDetail: LiveData<UserInfoDetailsEntity> //使用者餘額
         get() = _userDetail
 
-
-    fun getNationality(id: String): String? {
-        return nationalityList.find { it.id == id.toInt() }?.name
-    }
-
-    fun getProvinces(id: String): String? {
-        return provincesList.find { it.id == id.toInt() }?.name
-    }
-
-    fun getCity(id: String): String? {
-        return cityList.find { it.id == id.toInt() }?.name
-    }
-
     fun uploadImage(uploadImgRequest: UploadImgRequest) {
         viewModelScope.launch {
             doNetwork(androidContext) {
@@ -113,7 +100,12 @@ class ProfileModel(
                 salaryStringList.clear()
                 result.rows?.let {
                     result.rows.forEach { salary ->
-                        salaryStringList.add(DialogBottomDataEntity(salary.name, id = salary.id))
+                        salaryStringList.add(
+                            DialogBottomDataEntity(
+                                salary.name,
+                                id = salary.id
+                            )
+                        )
                     }
                 }
             }

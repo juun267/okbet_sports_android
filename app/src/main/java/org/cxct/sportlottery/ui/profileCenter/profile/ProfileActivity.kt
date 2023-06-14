@@ -240,7 +240,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 tvNationality.text = it.name
                 viewModel.userCompleteUserDetails(
                     Uide(
-                        nationality = "${it.id}"
+                        nationality = "${it.name}"
                     )
                 )
             }
@@ -250,7 +250,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 tvProvinceCurrent.text = it.name
                 viewModel.userCompleteUserDetails(
                     Uide(
-                        province = "${it.id}"
+                        province = "${it.name}"
                     )
                 )
             }
@@ -260,7 +260,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 tvProvincePermanent.text = it.name
                 viewModel.userCompleteUserDetails(
                     Uide(
-                        permanentProvince = "${it.id}"
+                        permanentProvince = "${it.name}"
                     )
                 )
             }
@@ -270,7 +270,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 tvCityCurrent.text = it.name
                 viewModel.userCompleteUserDetails(
                     Uide(
-                        city = "${it.id}"
+                        city = "${it.name}"
                     )
                 )
             }
@@ -280,7 +280,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 tvCityPermanent.text = it.name
                 viewModel.userCompleteUserDetails(
                     Uide(
-                        permanentCity = "${it.id}",
+                        permanentCity = "${it.name}",
                     )
                 )
             }
@@ -381,20 +381,19 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
     private fun initObserve() {
         viewModel.userDetail.observe(this) {
-            tvNationality.text = it.t.nationality?.let { it1 -> viewModel.getNationality(it1) }
+            tvNationality.text = it.t.nationality
             tvBirthday.text = it.t.birthday
             tvPlaceOfBirth.text = it.t.placeOfBirth
             tvSourceOfIncome.text = it.t.salarySource?.name
             tvNatureOfWork.text = it.t.natureWork
 
-            tvProvinceCurrent.text = it.t.province?.let { it1 -> viewModel.getProvinces(it1) }
-            tvCityCurrent.text = it.t.city?.let { it1 -> viewModel.getCity(it1) }
+            tvProvinceCurrent.text = it.t.province
+            tvCityCurrent.text = it.t.city
             tvAddressCurrent.text = it.t.address
             tvZipCodeCurrent.text = it.t.zipCode
 
-            tvProvincePermanent.text =
-                it.t.permanentProvince?.let { it1 -> viewModel.getProvinces(it1) }
-            tvCityPermanent.text = it.t.permanentCity?.let { it1 -> viewModel.getCity(it1) }
+            tvProvincePermanent.text = it.t.permanentProvince
+            tvCityPermanent.text = it.t.permanentCity
             tvAddressPermanent.text = it.t.permanentAddress
             tvZipCodePermanent.text = it.t.permanentZipCode
         }
