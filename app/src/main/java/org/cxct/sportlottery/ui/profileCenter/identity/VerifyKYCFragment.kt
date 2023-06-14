@@ -415,6 +415,7 @@ class VerifyKYCFragment :
         btn_submit.isEnabled =
             (firstFile != null && !identity_1st.selector_type.selectedCode.isNullOrBlank() && identity_1st.ed_num.text.isNotEmpty())
                     && ((secondFile != null && identity_2nd.isVisible && !identity_2nd.selector_type.selectedCode.isNullOrBlank() && identity_2nd.ed_num.text.isNotEmpty()) || !identity_2nd.isVisible)
+                    && (layoutUploadIdWithHead.isVisible && headIdFile!=null)
     }
 
     private fun setEdittext() {
