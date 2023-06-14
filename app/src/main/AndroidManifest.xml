@@ -110,6 +110,9 @@
             android:name=".ui.money.recharge.MoneyRechargeActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.betRecord.BetRecordActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.money.withdraw.WithdrawActivity"
             android:screenOrientation="portrait" />
         <activity
