@@ -60,12 +60,11 @@
         android:minHeight="150dp"
         android:orientation="horizontal">
 
-
         <com.contrarywind.view.WheelView
-            android:id="@+id/day"
+            android:id="@+id/year"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.1" />
+            android:layout_weight="1" />
 
         <com.contrarywind.view.WheelView
             android:id="@+id/month"
@@ -74,10 +73,10 @@
             android:layout_weight="1.1" />
 
         <com.contrarywind.view.WheelView
-            android:id="@+id/year"
+            android:id="@+id/day"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1.1" />
 
         <com.contrarywind.view.WheelView
             android:id="@+id/hour"

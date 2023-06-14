@@ -1419,4 +1419,7 @@
     <string name="P106">行业</string>
     <string name="P108">当前居住地</string>
     <string name="P109">永久居住地</string>
+    <string name="J459">温馨提示</string>
+    <string name="P111">地址应包括</string>
+    <string name="P110">单位/房号/楼层、楼名、地段/座/期/门牌号、街道名</string>
 </resources>
