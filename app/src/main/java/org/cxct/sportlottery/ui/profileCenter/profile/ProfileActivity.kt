@@ -481,7 +481,11 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             tvNationality.text = checkStr(it.t.nationality)
             tvBirthday.text = checkStr(it.t.birthday)
             tvPlaceOfBirth.text = checkStr(it.t.placeOfBirth)
-            tvSourceOfIncome.text = checkStr(it.t.salarySource?.name)
+            tvSourceOfIncome.text = if (it.t.salarySource?.id == 6) {
+                checkStr(it.t.salarySource?.name)
+            } else {
+                it.t.salarySource?.id?.let { it1 -> viewModel.getSalaryName(it1) }
+            }
             tvNatureOfWork.text = checkStr(it.t.natureOfWork)
             tvProvinceCurrent.text = checkStr(it.t.province)
             tvCityCurrent.text = checkStr(it.t.city)
