@@ -1409,4 +1409,14 @@
     <string name="P066">事例</string>
     <string name="P068">上传手持证件照片</string>
     <string name="p090">感谢您与我们核实，请等待我们会在24 小时内处理您的请求。</string>
+    <string name="N827">邮政编码</string>
+    <string name="M259">地址</string>
+    <string name="J901">城市</string>
+    <string name="J036">省</string>
+    <string name="P103">国籍</string>
+    <string name="P104">出生地</string>
+    <string name="P105">收入来源</string>
+    <string name="P106">行业</string>
+    <string name="P108">当前居住地</string>
+    <string name="P109">永久居住地</string>
 </resources>

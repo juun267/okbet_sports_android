@@ -1330,5 +1330,15 @@
     <string name="P066">Halimbawa</string>
     <string name="P068">Mag-upload ng selfie photo na may hawak na valid ID</string>
     <string name="p090">Salamat sa pag-verify sa amin, mangyaring maghintay ng hanggang 24 oras para maproseso namin ang iyong kahilingan.</string>
+    <string name="N827">zip code</string>
+    <string name="M259">Address</string>
+    <string name="J901">Lungsod</string>
+    <string name="J036">Lalawigan</string>
+    <string name="P103">Nasyonalidad</string>
+    <string name="P104">Lugar ng Kapanganakan</string>
+    <string name="P105">Pinagmumulan ng Kita</string>
+    <string name="P106">Kalikasan ng trabaho</string>
+    <string name="P108">Kasalukuyang Address ng Bahay</string>
+    <string name="P109">Permanenteng tirahan</string>
     // 图片选择库中菲语这个会莫名变为中文
 </resources>
