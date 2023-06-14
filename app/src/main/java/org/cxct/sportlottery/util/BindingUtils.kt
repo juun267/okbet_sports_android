@@ -505,6 +505,13 @@ fun TextView.setPlayContent(
     )
 }
 
+fun TextView.setPlayItem(playName: String?,
+                         spread: String?){
+//    val playNameStr = if (!playName.isNullOrEmpty()) "<font color=$color_9BB3D9_535D76>${playName} </font> " else ""
+//    val spreadStr = if (!spread.isNullOrEmpty() && playName != spread) "<font color=$color_9BB3D9_535D76>$spread</font> " else ""
+//
+}
+
 fun TextView.makeLinks(vararg links: Pair<String, View.OnClickListener>) {
     val spannableString = SpannableString(this.text)
     var startIndexOfLink = -1
