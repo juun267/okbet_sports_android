@@ -40,7 +40,6 @@ import org.cxct.sportlottery.ui.profileCenter.modify.VerificationWaysActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity.Companion.MODIFY_INFO
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
-import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.isStatusOpen
 import org.cxct.sportlottery.util.phoneNumCheckDialog
@@ -48,7 +47,9 @@ import org.cxct.sportlottery.view.dialog.SourceOfIncomeDialog
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 
 /**
  * @app_destination 个人设置
@@ -182,10 +183,16 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
     private fun showBottomDialog(
         list: MutableList<DialogBottomDataEntity>,
+        title: String,
         callBack: (item: DialogBottomDataEntity) -> Unit
     ) {
         var item: DialogBottomDataEntity? = dialogBtmAdapter.data.find { it.flag }
-        dialogBtmAdapter.data = list
+        var listNew: MutableList<DialogBottomDataEntity> = mutableListOf()
+        list.forEach {
+            listNew.add(it.copy())
+        }
+        btnDialogTitle.text = title
+        dialogBtmAdapter.data = listNew
         dialogBtmAdapter.notifyDataSetChanged()
         rvData.scrollToPosition(0)
         dialogBtmAdapter.setOnItemClickListener { ater, view, position ->
@@ -236,7 +243,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 startActivity(VerifyIdentityActivity::class.java)
         }
         llNationality.setOnClickListener {
-            showBottomDialog(viewModel.nationalityList) {
+            showBottomDialog(viewModel.nationalityList, resources.getString(R.string.P103)) {
                 tvNationality.text = it.name
                 viewModel.userCompleteUserDetails(
                     Uide(
@@ -246,8 +253,10 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             }
         }
         llProvinceCurrent.setOnClickListener {
-            showBottomDialog(viewModel.provincesList) {
+            showBottomDialog(viewModel.provincesList, resources.getString(R.string.J036)) {
                 tvProvinceCurrent.text = it.name
+
+                viewModel.updateCityData(it.id)
                 viewModel.userCompleteUserDetails(
                     Uide(
                         province = "${it.name}"
@@ -256,8 +265,9 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             }
         }
         llProvincePermanent.setOnClickListener {
-            showBottomDialog(viewModel.provincesList) {
+            showBottomDialog(viewModel.provincesPList, resources.getString(R.string.J036)) {
                 tvProvincePermanent.text = it.name
+                viewModel.updateCityPData(it.id)
                 viewModel.userCompleteUserDetails(
                     Uide(
                         permanentProvince = "${it.name}"
@@ -266,31 +276,57 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             }
         }
         llCityCurrent.setOnClickListener {
-            showBottomDialog(viewModel.cityList) {
-                tvCityCurrent.text = it.name
-                viewModel.userCompleteUserDetails(
-                    Uide(
-                        city = "${it.name}"
+            if (viewModel.cityList.isEmpty()) {
+                showBottomDialog(viewModel.provincesList, resources.getString(R.string.J036)) {
+                    tvProvinceCurrent.text = it.name
+                    viewModel.updateCityData(it.id)
+                    viewModel.userCompleteUserDetails(
+                        Uide(
+                            province = "${it.name}"
+                        )
                     )
-                )
+                }
+            } else {
+                showBottomDialog(viewModel.cityList, resources.getString(R.string.J901)) {
+                    tvCityCurrent.text = it.name
+                    viewModel.userCompleteUserDetails(
+                        Uide(
+                            city = "${it.name}"
+                        )
+                    )
+                }
             }
+
         }
         llCityPermanent.setOnClickListener {
-            showBottomDialog(viewModel.cityList) {
-                tvCityPermanent.text = it.name
-                viewModel.userCompleteUserDetails(
-                    Uide(
-                        permanentCity = "${it.name}",
+            if (viewModel.cityPList.isEmpty()) {
+                showBottomDialog(viewModel.provincesPList, resources.getString(R.string.J036)) {
+                    tvProvincePermanent.text = it.name
+                    viewModel.updateCityPData(it.id)
+                    viewModel.userCompleteUserDetails(
+                        Uide(
+                            permanentProvince = "${it.name}"
+                        )
                     )
-                )
+                }
+            } else {
+                showBottomDialog(viewModel.cityPList, resources.getString(R.string.J901)) {
+                    tvCityPermanent.text = it.name
+                    viewModel.userCompleteUserDetails(
+                        Uide(
+                            permanentCity = "${it.name}",
+                        )
+                    )
+                }
             }
+
         }
         llNatureOfWork.setOnClickListener {
-            showBottomDialog(viewModel.cityList) {
+            showBottomDialog(viewModel.workList, resources.getString(R.string.P106)) {
                 tvNatureOfWork.text = it.name
                 viewModel.userCompleteUserDetails(
                     Uide(
-                        natureWork = it.name
+                        natureOfWork = it.name
                     )
                 )
             }
@@ -311,18 +347,23 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         }
 
         llSourceOfIncome.setOnClickListener {
-            showBottomDialog(viewModel.salaryStringList) {
+            showBottomDialog(viewModel.salaryStringList, resources.getString(R.string.P105)) {
                 if (it.id == 6) {
                     var dialog = SourceOfIncomeDialog(this)
                     dialog.setPositiveClickListener(object :
                         SourceOfIncomeDialog.OnPositiveListener {
                         override fun positiveClick(str: String) {
-                            tvSourceOfIncome.text = str
+                            var workstr = if (str.isNullOrEmpty()) {
+                                "other"
+                            } else {
+                                str
+                            }
+                            tvSourceOfIncome.text = workstr
                             viewModel.userCompleteUserDetails(
                                 Uide(
                                     salarySource = SalarySource(
                                         it.id,
-                                        name = it.name
+                                        workstr
                                     )
                                 )
                             )
@@ -335,7 +376,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                         Uide(
                             salarySource = SalarySource(
                                 it.id,
-                                name = it.name
+                                it.name
                             )
                         )
                     )
@@ -379,23 +420,30 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         viewModel.uploadImage(uploadImgRequest)
     }
 
+
+    private fun checkStr(str: String?): String {
+        return if (str.isNullOrEmpty()) {
+            resources.getString(R.string.edit)
+        } else {
+            str
+        }
+    }
+
     private fun initObserve() {
         viewModel.userDetail.observe(this) {
-            tvNationality.text = it.t.nationality
-            tvBirthday.text = it.t.birthday
-            tvPlaceOfBirth.text = it.t.placeOfBirth
-            tvSourceOfIncome.text = it.t.salarySource?.name
-            tvNatureOfWork.text = it.t.natureWork
-
-            tvProvinceCurrent.text = it.t.province
-            tvCityCurrent.text = it.t.city
-            tvAddressCurrent.text = it.t.address
-            tvZipCodeCurrent.text = it.t.zipCode
-
-            tvProvincePermanent.text = it.t.permanentProvince
-            tvCityPermanent.text = it.t.permanentCity
-            tvAddressPermanent.text = it.t.permanentAddress
-            tvZipCodePermanent.text = it.t.permanentZipCode
+            tvNationality.text = checkStr(it.t.nationality)
+            tvBirthday.text = checkStr(it.t.birthday)
+            tvPlaceOfBirth.text = checkStr(it.t.placeOfBirth)
+            tvSourceOfIncome.text = checkStr(it.t.salarySource?.name)
+            tvNatureOfWork.text = checkStr(it.t.natureOfWork)
+            tvProvinceCurrent.text = checkStr(it.t.province)
+            tvCityCurrent.text = checkStr(it.t.city)
+            tvAddressCurrent.text = checkStr(it.t.address)
+            tvZipCodeCurrent.text = checkStr(it.t.zipCode)
+            tvProvincePermanent.text = checkStr(it.t.permanentProvince)
+            tvCityPermanent.text = checkStr(it.t.permanentCity)
+            tvAddressPermanent.text = checkStr(it.t.permanentAddress)
+            tvZipCodePermanent.text = checkStr(it.t.permanentZipCode)
         }
         viewModel.editIconUrlResult.observe(this) {
             val iconUrlResult = it?.getContentIfNotHandled()
@@ -409,11 +457,11 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
         viewModel.userInfo.observe(this) {
             if (it != null) {
-                tvAddressPermanent.text = it.permanentAddress
-                tvZipCodePermanent.text = it.permanentZipCode
-                tvAddressCurrent.text = it.address
-                tvZipCodeCurrent.text = it.zipCode
-                tvPlaceOfBirth.text = it.placeOfBirth
+//                tvAddressPermanent.text = checkStr(it.permanentAddress)
+//                tvZipCodePermanent.text = checkStr(it.permanentZipCode)
+//                tvAddressCurrent.text = checkStr(it.address)
+//                tvZipCodeCurrent.text = checkStr(it.zipCode)
+//                tvPlaceOfBirth.text = checkStr(it.placeOfBirth)
                 updateAvatar(it.iconUrl)
                 tv_nickname.text = it.nickName
                 tv_member_account.text = it.userName
@@ -597,7 +645,9 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         tomorrow.add(Calendar.YEAR, -21)
         tomorrow.add(Calendar.DAY_OF_MONTH, -1)
         dateTimePicker = DateTimePickerOptions(this).getBuilder { date, _ ->
-            TimeUtil.dateToStringFormatYMD(date)?.let {
+            val newDateFormatPattern = "MM/dd/yyyy"
+            val newFormatter = SimpleDateFormat(newDateFormatPattern, Locale.getDefault())
+            newFormatter.format(date).let {
                 tvBirthday.text = it
                 viewModel.userCompleteUserDetails(
                     Uide(

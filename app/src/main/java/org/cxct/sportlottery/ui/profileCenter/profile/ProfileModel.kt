@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.bettingStation.AreaAllResult
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.repository.*
@@ -46,12 +47,20 @@ class ProfileModel(
     //市区 列表
     val cityList: ArrayList<DialogBottomDataEntity> = ArrayList()
 
+    //省 列表
+    val provincesPList: ArrayList<DialogBottomDataEntity> = ArrayList()
+
+    //市区 列表
+    val cityPList: ArrayList<DialogBottomDataEntity> = ArrayList()
+
     //职业 列表
     val workList: ArrayList<DialogBottomDataEntity> = ArrayList()
 
     private val _userDetail = MutableLiveData<UserInfoDetailsEntity>()
     val userDetail: LiveData<UserInfoDetailsEntity> //使用者餘額
         get() = _userDetail
+
+    lateinit var areaData: AreaAllResult
 
     fun uploadImage(uploadImgRequest: UploadImgRequest) {
         viewModelScope.launch {
@@ -115,14 +124,13 @@ class ProfileModel(
                 OneBoSportApi.bettingStationService.getAreaUniversal()
             }?.let {
                 it.let {
+                    areaData = it
                     it.areaAll.countries.forEach {
                         nationalityList.add(DialogBottomDataEntity(it.name, id = it.id))
                     }
-                    it.areaAll.cities.forEach {
-                        cityList.add(DialogBottomDataEntity(it.name, id = it.id))
-                    }
                     it.areaAll.provinces.forEach {
                         provincesList.add(DialogBottomDataEntity(it.name, id = it.id))
+                        provincesPList.add(DialogBottomDataEntity(it.name, id = it.id))
                     }
                 }
             }
@@ -146,6 +154,19 @@ class ProfileModel(
                     _userDetail.postValue(it)
                 }
             }
+        }
+    }
+
+    fun updateCityData(id: Int) {
+        cityList.clear()
+        areaData.areaAll.cities.filter { it.provinceId == id }.forEach {
+            cityList.add(DialogBottomDataEntity(it.name, id = it.id) )
+        }
+    }
+    fun updateCityPData(id: Int) {
+        cityList.clear()
+        areaData.areaAll.cities.filter { it.provinceId == id }.forEach {
+            cityPList.add(DialogBottomDataEntity(it.name, id = it.id) )
         }
     }
 
