@@ -8,6 +8,7 @@ import android.webkit.URLUtil
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bettingStation.BettingStation
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.maintab.lottery.LotteryActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
@@ -113,14 +114,5 @@ object JumpUtil {
                 putExtra(WebActivity.KEY_BACK_EVENT, true)
             }
         )
-    }
-
-    fun toGcash(context: Context, userState: Int, next: () -> Unit) {
-        if (userState == 1) {
-            var dialog = ToGcashDialog(context, false)
-            dialog.show()
-        } else {
-            next()
-        }
     }
 }

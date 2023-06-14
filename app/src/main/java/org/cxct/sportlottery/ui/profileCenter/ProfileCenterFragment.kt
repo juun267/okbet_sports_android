@@ -42,6 +42,7 @@ import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewMod
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.selflimit.SelfLimitActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import java.io.File
@@ -194,11 +195,8 @@ class ProfileCenterFragment :
         btn_recharge.setOnClickListener {
             avoidFastDoubleClick()
             //Glife用户
-            context?.let { it2 ->
-                JumpUtil.toGcash(
-                    it2,
-                    viewModel.userInfo.value?.vipType!!
-                ) { viewModel.checkRechargeKYCVerify() }
+            ToGcashDialog.showByClick(viewModel){
+                viewModel.checkRechargeKYCVerify()
             }
         }
     }
@@ -207,11 +205,8 @@ class ProfileCenterFragment :
         btn_withdraw.setOnClickListener {
             avoidFastDoubleClick()
             //Glife用户
-            context?.let { it2 ->
-                JumpUtil.toGcash(
-                    it2,
-                    viewModel.userInfo.value?.vipType!!
-                ) { viewModel.checkWithdrawKYCVerify() }
+            ToGcashDialog.showByClick(viewModel){
+                viewModel.checkWithdrawKYCVerify()
             }
         }
     }

@@ -62,7 +62,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         initToolBar()
         initNews()
         EventBusUtil.targetLifecycle(this@MainHomeFragment2)
-        ToGcashDialog.allowShow(viewModel)
+        ToGcashDialog.showByLogin(viewModel)
     }
 
     override fun onInitData() {
