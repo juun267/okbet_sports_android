@@ -48,6 +48,7 @@
     </com.google.android.material.tabs.TabLayout>
 
     <RelativeLayout
+        android:id="@+id/relativeBalance"
         android:layout_width="match_parent"
         android:paddingHorizontal="12dp"
         android:layout_marginTop="12dp"
@@ -159,7 +160,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerSettled"
         android:background="@color/color_F8F9FD"
+        android:visibility="gone"
         tools:listitem="@layout/item_bet_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+    <include  android:id="@+id/empty" layout="@layout/view_bet_empty"/>
 </LinearLayout>

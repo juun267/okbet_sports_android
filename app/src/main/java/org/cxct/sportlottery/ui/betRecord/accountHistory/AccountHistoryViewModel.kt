@@ -347,9 +347,15 @@ class AccountHistoryViewModel(
 
         loading()
         viewModelScope.launch {
-            doNetwork(androidContext) {
+            val resultData=doNetwork(androidContext) {
                 OneBoSportApi.betService.getBetList(betListRequest)
-            }?.let { result ->
+            }
+
+            if(resultData==null){
+                _responseFailed.postValue(true)
+                return@launch
+            }
+            resultData.let { result ->
                 betListRequesting = false
                 if (result.success) {
                     requestCount = 0

@@ -145,26 +145,51 @@ enum class GameType(val key: String, @StringRes val string: Int) {
             }
         }
 
+
+        fun getLeftGameTypeMenuIcon2(gameType: String): Int {
+            return when (gameType) {
+                FT.key -> R.drawable.img_soccer2
+                BK.key -> R.drawable.img_basketball2
+                TN.key -> R.drawable.img_tennis2
+                VB.key -> R.drawable.img_volleyball2
+                BM.key -> R.drawable.img_badminton2
+                TT.key -> R.drawable.img_pingpong2
+                IH.key -> R.drawable.img_ice_hockey2
+                BX.key -> R.drawable.img_boxing2
+                CB.key -> R.drawable.img_snooker2
+                CK.key -> R.drawable.img_cricket2
+                BB.key -> R.drawable.img_baseball2
+                RB.key -> R.drawable.img_rugby2
+                AFT.key -> R.drawable.img_amfootball2
+                MR .key-> R.drawable.img_racing2
+                GF.key -> R.drawable.img_golf2
+                FB.key -> R.drawable.img_finance
+                OTHER.key -> R.drawable.ic_bet_champ
+                BB_COMING_SOON.key -> R.drawable.img_baseball2
+                ES_COMING_SOON.key -> R.drawable.img_esports
+                else -> R.drawable.ic_game_champ
+            }
+        }
         fun getBetListGameTypeIcon(gameType: GameType): Int {
             return when (gameType) {
-                FT -> R.drawable.img_soccer
-                BK -> R.drawable.img_basketball
-                TN -> R.drawable.img_tennis
-                VB -> R.drawable.img_volleyball
-                BM -> R.drawable.img_badminton
-                TT -> R.drawable.img_pingpong
-                IH -> R.drawable.img_ice_hockey
-                BX -> R.drawable.img_boxing
-                CB -> R.drawable.img_snooker
-                CK -> R.drawable.img_cricket
-                BB -> R.drawable.img_baseball
-                RB -> R.drawable.img_rugby
-                AFT -> R.drawable.img_amfootball
-                MR -> R.drawable.img_racing
-                GF -> R.drawable.img_golf
+                FT -> R.drawable.img_soccer2
+                BK -> R.drawable.img_basketball2
+                TN -> R.drawable.img_tennis2
+                VB -> R.drawable.img_volleyball2
+                BM -> R.drawable.img_badminton2
+                TT -> R.drawable.img_pingpong2
+                IH -> R.drawable.img_ice_hockey2
+                BX -> R.drawable.img_boxing2
+                CB -> R.drawable.img_snooker2
+                CK -> R.drawable.img_cricket2
+                BB -> R.drawable.img_baseball2
+                RB -> R.drawable.img_rugby2
+                AFT -> R.drawable.img_amfootball2
+                MR -> R.drawable.img_racing2
+                GF -> R.drawable.img_golf2
                 FB -> R.drawable.img_finance
                 OTHER -> R.drawable.ic_bet_champ
-                BB_COMING_SOON -> R.drawable.img_baseball
+                BB_COMING_SOON -> R.drawable.img_baseball2
                 ES_COMING_SOON -> R.drawable.img_esports
                 else -> 0
             }

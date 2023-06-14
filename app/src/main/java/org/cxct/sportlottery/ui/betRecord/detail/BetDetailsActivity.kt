@@ -19,6 +19,8 @@ class BetDetailsActivity : BaseSocketActivity<BetListViewModel>(BetListViewModel
 
     private val betDetailsFragment by lazy { BetDetailsFragment() }
 
+    private val betDetailsFragment2 by lazy { BetDetailsFragment2() }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
@@ -26,10 +28,17 @@ class BetDetailsActivity : BaseSocketActivity<BetListViewModel>(BetListViewModel
         setContentView(binding.root)
         initView()
         initData()
-        replaceFragment(R.id.fl_container,betDetailsFragment)
+
     }
 
     private fun initData(){
+        //体育服务关闭  需要退出页面
+        setupSportStatusChange(this){
+            if(it){
+                finish()
+            }
+        }
+
         val bundle = Bundle()
         var data: Row? = intent.getParcelableExtra("data")
         if (data == null) {
@@ -40,15 +49,13 @@ class BetDetailsActivity : BaseSocketActivity<BetListViewModel>(BetListViewModel
             }
         } else {
             bundle.putParcelable("data", data)
+            betDetailsFragment2.arguments = bundle
+            replaceFragment(R.id.fl_container,betDetailsFragment2)
+            return
         }
         betDetailsFragment.arguments = bundle
+        replaceFragment(R.id.fl_container,betDetailsFragment)
 
-        //体育服务关闭  需要退出页面
-        setupSportStatusChange(this){
-            if(it){
-                finish()
-            }
-        }
 
     }
 

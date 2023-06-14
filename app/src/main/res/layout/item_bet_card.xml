@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:paddingHorizontal="12dp"
     android:layout_width="match_parent"
@@ -13,13 +14,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
+            android:id="@+id/ivGameIcon"
             android:src="@drawable/ic_bet_game_ft"
             android:layout_width="16dp"
             android:layout_gravity="center_vertical"
             android:layout_height="16dp"/>
 
         <TextView
-            android:text="title | temp  title | temp  title | temp  title | temp  title | temp  title | temp  title | temp"
+            android:id="@+id/tvBetType"
+            android:text="title "
             android:layout_weight="1"
             android:paddingStart="8dp"
             android:maxLines="1"
@@ -32,11 +35,14 @@
             android:layout_height="wrap_content"/>
 
         <TextView
-            android:background="@drawable/bg_bet_green"
+            android:id="@+id/tvStatus"
+            android:background="@drawable/bg_bet_status_green"
             android:text="已中奖"
             android:gravity="center"
             android:layout_gravity="center_vertical"
-            android:layout_width="70dp"
+            android:paddingHorizontal="12dp"
+            android:minWidth="70dp"
+            android:layout_width="wrap_content"
             android:textColor="@color/color_FFFFFF"
             android:textSize="12sp"
             android:layout_height="24dp"/>
@@ -45,7 +51,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:paddingVertical="15dp"
+        android:paddingBottom="15dp"
         android:background="@drawable/bg_bet_card"
         android:paddingHorizontal="10dp"
         android:layout_height="wrap_content">
@@ -54,11 +60,47 @@
             android:id="@+id/tvBetItemKey"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:paddingTop="15dp"
             android:textColor="@color/color_6D7693"
             android:text="Bet Items"
             android:textSize="12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:id="@+id/linearEndScore"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="visible"
+            app:layout_constraintRight_toRightOf="parent"
+            android:paddingTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvEndScoreInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_bet_record_endscore"
+                tools:itemCount="4" />
+
+            <TextView
+                android:id="@+id/tvMore"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:minWidth="70dp"
+                android:paddingHorizontal="@dimen/margin_3"
+                android:layout_marginStart="4dp"
+                android:background="@drawable/bg_blue_stroke_radius_3"
+                android:gravity="center"
+                android:textSize="@dimen/textSize12sp"
+                android:singleLine="true"
+                android:textColor="@color/color_025BE8"
+                android:text="More" />
+        </LinearLayout>
+
+
 
         <TextView
             android:id="@+id/tvBetItemValue"
@@ -66,9 +108,11 @@
             app:layout_constraintRight_toRightOf="parent"
             android:textColor="@color/color_000000"
             android:paddingStart="65dp"
+            android:paddingTop="15dp"
             android:text="Bet ItemsBet ItemsBet ItemsBet ItemsBet ItemsBet ItemsItemsItems"
             android:textSize="12sp"
             android:maxLines="1"
+            android:paddingBottom="12dp"
             android:ellipsize="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -76,11 +120,11 @@
 
         <TextView
             android:id="@+id/tvOddsKey"
-            app:layout_constraintTop_toBottomOf="@+id/tvBetItemKey"
+            app:layout_constraintTop_toBottomOf="@+id/tvBetItemValue"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:paddingTop="12dp"
             android:textColor="@color/color_6D7693"
             android:text="Odds"
+            android:paddingBottom="10dp"
             android:textSize="12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -88,7 +132,7 @@
 
         <TextView
             android:id="@+id/tvOddsValue"
-            app:layout_constraintTop_toBottomOf="@+id/tvBetItemKey"
+            app:layout_constraintTop_toBottomOf="@+id/tvBetItemValue"
             app:layout_constraintRight_toRightOf="parent"
             android:textColor="@color/color_025BE8"
             android:text="\@2.94"
@@ -105,7 +149,6 @@
             android:id="@+id/tvMethodKey"
             app:layout_constraintTop_toBottomOf="@+id/tvOddsKey"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:paddingTop="10dp"
             android:textColor="@color/color_6D7693"
             android:text="Method"
             android:textSize="12sp"
@@ -118,9 +161,8 @@
             app:layout_constraintTop_toBottomOf="@+id/tvOddsKey"
             app:layout_constraintRight_toRightOf="parent"
             android:textColor="@color/color_000000"
-            android:paddingStart="65dp"
-            android:paddingTop="10dp"
-            android:text="ItemsBet ItemsBet ItemsBet ItemsBet"
+            android:paddingStart="45dp"
+            android:text="ItemsBet ItemsBet ItemsBet ItemsBet "
             android:textSize="12sp"
             android:maxLines="1"
             android:ellipsize="end"
@@ -148,9 +190,9 @@
             app:layout_constraintTop_toBottomOf="@+id/tvMethodKey"
             app:layout_constraintRight_toRightOf="parent"
             android:textColor="@color/color_000000"
-            android:paddingStart="65dp"
+            android:paddingStart="45dp"
             android:paddingTop="10dp"
-            android:text="联赛名称最宽236px展示，超一行用...代替"
+            android:text="联赛名称最宽236px展示，超一行用...代替联赛名称最宽236px展示，超一行用...代替"
             android:textSize="12sp"
             android:maxLines="1"
             android:ellipsize="end"
@@ -158,10 +200,37 @@
             android:layout_height="wrap_content"/>
 
 
+        <TextView
+            android:id="@+id/tvLeagueKey"
+            app:layout_constraintTop_toBottomOf="@+id/tvTeamKey"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:paddingTop="10dp"
+            android:textColor="@color/color_6D7693"
+            android:text="League"
+            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+
+        <TextView
+            android:id="@+id/tvLeagueValue"
+            app:layout_constraintTop_toBottomOf="@+id/tvTeamKey"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textColor="@color/color_000000"
+            android:paddingStart="65dp"
+            android:paddingTop="10dp"
+            android:text="联赛名称最宽236px展示，超一行用...代替联赛名称最宽236px展示，超一行用...代替"
+            android:textSize="12sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
 
         <TextView
             android:id="@+id/tvTimeKey"
-            app:layout_constraintTop_toBottomOf="@+id/tvTeamKey"
+            app:layout_constraintTop_toBottomOf="@+id/tvLeagueKey"
             app:layout_constraintLeft_toLeftOf="parent"
             android:paddingTop="10dp"
             android:textColor="@color/color_6D7693"
@@ -174,7 +243,7 @@
 
         <TextView
             android:id="@+id/tvTimeValue"
-            app:layout_constraintTop_toBottomOf="@+id/tvTeamKey"
+            app:layout_constraintTop_toBottomOf="@+id/tvLeagueKey"
             app:layout_constraintRight_toRightOf="parent"
             android:textColor="@color/color_000000"
             android:paddingStart="65dp"
@@ -186,6 +255,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
+        <FrameLayout
+            android:id="@+id/frameTeam"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="220dp"
+            android:visibility="gone"
+            android:layout_height="77dp">
+            <ImageView
+                android:src="@drawable/bg_bet_team_name"
+                android:scaleType="fitXY"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+            <TextView
+                android:id="@+id/tvFullTeam"
+                android:textSize="12sp"
+                android:textColor="@color/color_303030"
+                android:text=""
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="12dp"
+                android:maxLines="3"
+                android:ellipsize="end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
