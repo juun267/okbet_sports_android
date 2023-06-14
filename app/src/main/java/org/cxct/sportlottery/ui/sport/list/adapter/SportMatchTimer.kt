@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.sport.list.adapter
 
+import android.widget.TextView
 import java.util.Timer
 import java.util.TimerTask
 
