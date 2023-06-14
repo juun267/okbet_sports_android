@@ -56,14 +56,14 @@ object UserInfoRepository {
 
         val userInfo = transform(userInfoData)
 //            OLD_DISCOUNT = it.discount ?: 1f
-            //userInfoDao.upsert(userInfo)
+        //userInfoDao.upsert(userInfo)
         MultiLanguagesApplication.getInstance()?.saveUserInfo(userInfo)
 
         GameConfigManager.maxBetMoney = userInfoData.maxBetMoney ?: 9999999
         GameConfigManager.maxCpBetMoney = userInfoData.maxCpBetMoney ?: 9999
         GameConfigManager.maxParlayBetMoney = userInfoData.maxParlayBetMoney ?: 9999
 
-        with(sharedPref.edit()){
+        with(sharedPref.edit()) {
             putInt(KEY_USER_LEVEL_ID, userInfoData.userLevelId)
             userInfoData?.liveSyncUserInfoVO?.let {
                 putString(KEY_LIVE_USER_INFO, it.toJson())
@@ -77,7 +77,7 @@ object UserInfoRepository {
 //        return withContext(Dispatchers.IO) {
 //            userInfoDao.getDiscount(userId) ?: 1.0F
 //        }
-        return MultiLanguagesApplication.getInstance()?.userInfo()?.discount?:1.0F
+        return MultiLanguagesApplication.getInstance()?.userInfo()?.discount ?: 1.0F
     }
 
     suspend fun updatePayPwFlag(userId: Long) {
@@ -95,6 +95,41 @@ object UserInfoRepository {
 //        }
 //    }
 
+    suspend fun updatePlaceOfBirth( str: String) {
+
+        var userInfo = MultiLanguagesApplication.getInstance()?.userInfo()
+        userInfo?.placeOfBirth = str
+        MultiLanguagesApplication.getInstance()?.saveUserInfo(userInfo)
+    }
+
+    suspend fun updateaddress( str: String) {
+
+        var userInfo = MultiLanguagesApplication.getInstance()?.userInfo()
+        userInfo?.address = str
+        MultiLanguagesApplication.getInstance()?.saveUserInfo(userInfo)
+    }
+
+    suspend fun updatePermanentAddress( str: String) {
+
+        var userInfo = MultiLanguagesApplication.getInstance()?.userInfo()
+        userInfo?.permanentAddress = str
+        MultiLanguagesApplication.getInstance()?.saveUserInfo(userInfo)
+    }
+
+    suspend fun updateZipCode( str: String) {
+
+        var userInfo = MultiLanguagesApplication.getInstance()?.userInfo()
+        userInfo?.zipCode = str
+        MultiLanguagesApplication.getInstance()?.saveUserInfo(userInfo)
+    }
+
+    suspend fun updatepermanentZipCode( str: String) {
+
+        var userInfo = MultiLanguagesApplication.getInstance()?.userInfo()
+        userInfo?.permanentZipCode = str
+        MultiLanguagesApplication.getInstance()?.saveUserInfo(userInfo)
+    }
+
     suspend fun updateNickname(userId: Long, nickname: String) {
 
         var userInfo = MultiLanguagesApplication.getInstance()?.userInfo()
@@ -102,7 +137,7 @@ object UserInfoRepository {
         MultiLanguagesApplication.getInstance()?.saveUserInfo(userInfo)
     }
 
-    suspend fun updateFullName(userId: Long, fullName: String){
+    suspend fun updateFullName(userId: Long, fullName: String) {
 //        withContext(Dispatchers.IO){
 //            userInfoDao.updateFullName(userId, fullName)
 //        }
@@ -111,7 +146,7 @@ object UserInfoRepository {
         MultiLanguagesApplication.getInstance()?.saveUserInfo(userInfo)
     }
 
-    suspend fun updateQQ(userId: Long, qq: String){
+    suspend fun updateQQ(userId: Long, qq: String) {
 //        withContext(Dispatchers.IO){
 //            userInfoDao.updateQQ(userId, qq)
 //        }
@@ -120,7 +155,7 @@ object UserInfoRepository {
         MultiLanguagesApplication.getInstance()?.saveUserInfo(userInfo)
     }
 
-    suspend fun updateEmail(userId: Long, email: String){
+    suspend fun updateEmail(userId: Long, email: String) {
 //        withContext(Dispatchers.IO){
 //            userInfoDao.updateEmail(userId, email)
 //        }
@@ -129,7 +164,7 @@ object UserInfoRepository {
         MultiLanguagesApplication.getInstance()?.saveUserInfo(userInfo)
     }
 
-    suspend fun updatePhone(userId: Long, phone: String){
+    suspend fun updatePhone(userId: Long, phone: String) {
 //        withContext(Dispatchers.IO){
 //            userInfoDao.updatePhone(userId, phone)
 //        }
@@ -138,7 +173,7 @@ object UserInfoRepository {
         MultiLanguagesApplication.getInstance()?.saveUserInfo(userInfo)
     }
 
-    suspend fun updateWeChat(userId: Long, wechat: String){
+    suspend fun updateWeChat(userId: Long, wechat: String) {
         var userInfo = MultiLanguagesApplication.getInstance()?.userInfo()
         userInfo?.wechat = wechat
         MultiLanguagesApplication.getInstance()?.saveUserInfo(userInfo)
@@ -188,7 +223,7 @@ object UserInfoRepository {
     }
 
 
-    fun updateOddsChangeOption(option:Int){
+    fun updateOddsChangeOption(option: Int) {
         val userInfo = MultiLanguagesApplication.getInstance()?.userInfo()
         userInfo?.oddsChangeOption = option
         MultiLanguagesApplication.getInstance()?.saveUserInfo(userInfo)
@@ -227,6 +262,11 @@ object UserInfoRepository {
             facebookBind = userInfoData.facebookBind,
             passwordSet = userInfoData.passwordSet,
             vipType = userInfoData.vipType,
+            placeOfBirth = userInfoData.placeOfBirth,
+            address = userInfoData.address,
+            permanentAddress = userInfoData.permanentAddress,
+            zipCode = userInfoData.zipCode,
+            permanentZipCode = userInfoData.permanentZipCode,
         )
 
     suspend fun getSign(): ApiResult<JsonElement> = safeApi { signService.getSign() }

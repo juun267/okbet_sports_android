@@ -53,10 +53,12 @@ abstract class BaseOddButtonViewModel(
     userInfoRepository: UserInfoRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-) : BaseWithdrawViewModel(androidContext,
+) : BaseWithdrawViewModel(
+    androidContext,
     loginRepository,
     betInfoRepository,
-    infoCenterRepository) {
+    infoCenterRepository
+) {
 
     val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo
 
@@ -171,37 +173,37 @@ abstract class BaseOddButtonViewModel(
         }
 
         if (betItem == null) {
-                viewModelScope.launch {
-                    doNetwork(androidContext) {
-                        OneBoSportApi.betService.getBetInfo(
-                            BetInfoRequest(
-                                matchInfo.id, odd.id.toString()
-                            )
+            viewModelScope.launch {
+                doNetwork(androidContext) {
+                    OneBoSportApi.betService.getBetInfo(
+                        BetInfoRequest(
+                            matchInfo.id, odd.id.toString()
                         )
-                    }?.let { result ->
-                        //如有其他地方呼叫getBetInfo，api回傳之後也要重設savedOddId
-                        savedOddId = "savedOddId" //重設savedOddId
-                        if (result.success) {
-                            val betInfo = result.BetInfo
-                            Timber.d("betInfoRepository:$betInfoRepository  ${betInfoRepository.currentState}")
-                            betInfoRepository.addInBetInfo(
-                                matchType,
-                                gameType,
-                                playCateCode,
-                                otherPlayCateName ?: playCateName,
-                                odd.nameMap?.get(LanguageManager.getSelectLanguage(androidContext).key)
-                                    ?: odd.name ?: "",
-                                matchInfo,
-                                odd,
-                                subscribeChannelType,
-                                playCateMenuCode,
-                                currentOddsType,
-                                betPlayCateNameMap,
-                                betInfo = betInfo
-                            )
-                        }
+                    )
+                }?.let { result ->
+                    //如有其他地方呼叫getBetInfo，api回傳之後也要重設savedOddId
+                    savedOddId = "savedOddId" //重設savedOddId
+                    if (result.success) {
+                        val betInfo = result.BetInfo
+                        Timber.d("betInfoRepository:$betInfoRepository  ${betInfoRepository.currentState}")
+                        betInfoRepository.addInBetInfo(
+                            matchType,
+                            gameType,
+                            playCateCode,
+                            otherPlayCateName ?: playCateName,
+                            odd.nameMap?.get(LanguageManager.getSelectLanguage(androidContext).key)
+                                ?: odd.name ?: "",
+                            matchInfo,
+                            odd,
+                            subscribeChannelType,
+                            playCateMenuCode,
+                            currentOddsType,
+                            betPlayCateNameMap,
+                            betInfo = betInfo
+                        )
                     }
                 }
+            }
 
         } else {
             odd.id?.let { removeBetInfoItem(it) }
@@ -226,33 +228,33 @@ abstract class BaseOddButtonViewModel(
         }
 
         if (betItem == null) {
-                viewModelScope.launch {
-                    doNetwork(androidContext) {
-                        OneBoSportApi.betService.getBetInfo(
-                            BetInfoRequest(
-                                matchOdd.matchInfo?.id.toString(), odd.id.toString()
-                            )
+            viewModelScope.launch {
+                doNetwork(androidContext) {
+                    OneBoSportApi.betService.getBetInfo(
+                        BetInfoRequest(
+                            matchOdd.matchInfo?.id.toString(), odd.id.toString()
                         )
-                    }?.let { result ->
-                        //如有其他地方呼叫getBetInfo，api回傳之後也要重設savedOddId
-                        savedOddId = "savedOddId" //重設savedOddId
-                        Timber.d("savedOddId result:${result}")
+                    )
+                }?.let { result ->
+                    //如有其他地方呼叫getBetInfo，api回傳之後也要重設savedOddId
+                    savedOddId = "savedOddId" //重設savedOddId
+                    Timber.d("savedOddId result:${result}")
 
-                        if (result.success) {
-                            val betInfo = result.BetInfo
-                            extracted(
-                                matchOdd,
-                                matchType,
-                                gameType,
-                                playCateCode,
-                                playCateName,
-                                odd,
-                                currentOddsType,
-                                betInfo
-                            )
-                        }
+                    if (result.success) {
+                        val betInfo = result.BetInfo
+                        extracted(
+                            matchOdd,
+                            matchType,
+                            gameType,
+                            playCateCode,
+                            playCateName,
+                            odd,
+                            currentOddsType,
+                            betInfo
+                        )
                     }
                 }
+            }
         } else {
             odd.id?.let { removeBetInfoItem(it) }
         }
