@@ -10,6 +10,8 @@ import androidx.core.view.isVisible
 import com.xuexiang.xupdate.utils.UpdateUtils
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogToGcashBinding
+import org.cxct.sportlottery.net.user.UserRepository
+import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.AppManager
 import org.cxct.sportlottery.util.KvUtils
@@ -29,13 +31,20 @@ class ToGcashDialog(context: Context, val visibleNoReminder: Boolean = true) : D
         /**
          * 根据条件判断是否需要显示
          */
-        fun allowShow(viewModel: BaseSocketViewModel){
+        fun showByLogin(viewModel: BaseSocketViewModel){
             if (viewModel.getLoginBoolean() && viewModel.userInfo.value?.vipType == 1) {
                 if (!KvUtils.decodeBooleanTure(KvUtils.GLIFE_TIP_FLAG, false)&&needShow) {
                     needShow=false
                     ToGcashDialog(AppManager.currentActivity()).show()
                 }
             }
+        }
+        fun showByClick(viewModel: BaseSocketViewModel,next: () -> Unit){
+            if (viewModel.getLoginBoolean() && viewModel.userInfo.value?.vipType == 1) {
+                ToGcashDialog(AppManager.currentActivity(),false).show()
+                return
+            }
+            next.invoke()
         }
     }
 

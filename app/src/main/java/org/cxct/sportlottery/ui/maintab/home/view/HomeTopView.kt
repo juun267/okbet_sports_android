@@ -34,6 +34,7 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.getMarketSwitch
 import org.cxct.sportlottery.util.goneWithSportSwitch
 import org.cxct.sportlottery.util.setVisibilityByMarketSwitch
+import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import timber.log.Timber
 
 class HomeTopView @JvmOverloads constructor(
@@ -187,11 +188,9 @@ class HomeTopView @JvmOverloads constructor(
     private fun initRechargeClick(fragment: MainHomeFragment2) {
 
         val depositClick = OnClickListener {
-            UserInfoRepository.userInfo.value?.vipType?.let { it1 ->
-                JumpUtil.toGcash(context,
-                    it1
-                ) { fragment.viewModel.checkRechargeKYCVerify() }
-            }
+             ToGcashDialog.showByClick(fragment.viewModel){
+                 fragment.viewModel.checkRechargeKYCVerify()
+             }
         }
 
         setOnClickListeners(
