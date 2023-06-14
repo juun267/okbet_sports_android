@@ -40,6 +40,7 @@ import org.cxct.sportlottery.ui.profileCenter.modify.VerificationWaysActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity.Companion.MODIFY_INFO
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
+import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.isStatusOpen
 import org.cxct.sportlottery.util.phoneNumCheckDialog
@@ -49,7 +50,7 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Locale
+import java.util.Date
 
 /**
  * @app_destination 个人设置
@@ -432,7 +433,18 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     private fun initObserve() {
         viewModel.userDetail.observe(this) {
             tvNationality.text = checkStr(it.t.nationality)
-            tvBirthday.text = checkStr(it.t.birthday)
+            var b = checkStr(it.t.birthday)
+            tvBirthday.text = if (b.isNullOrEmpty()) {
+                ""
+            } else {
+                var sdf = SimpleDateFormat("yyyy-MM-dd")
+                val date: Date = sdf.parse(b)
+                sdf = SimpleDateFormat("MM/dd/yyyy")
+                val yourFormatedDateString = sdf.format(date)
+                yourFormatedDateString.toString()
+            }
+
+
             tvPlaceOfBirth.text = checkStr(it.t.placeOfBirth)
             tvSourceOfIncome.text = checkStr(it.t.salarySource?.name)
             tvNatureOfWork.text = checkStr(it.t.natureOfWork)
@@ -645,10 +657,14 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         tomorrow.add(Calendar.YEAR, -21)
         tomorrow.add(Calendar.DAY_OF_MONTH, -1)
         dateTimePicker = DateTimePickerOptions(this).getBuilder { date, _ ->
-            val newDateFormatPattern = "MM/dd/yyyy"
-            val newFormatter = SimpleDateFormat(newDateFormatPattern, Locale.getDefault())
-            newFormatter.format(date).let {
-                tvBirthday.text = it
+
+            TimeUtil.dateToStringFormatYMD(date).let {
+
+                var sdf = SimpleDateFormat("yyyy-MM-dd")
+                val date: Date = sdf.parse(it)
+                sdf = SimpleDateFormat("MM/dd/yyyy")
+                val yourFormatedDateString = sdf.format(date)
+                tvBirthday.text = yourFormatedDateString.toString()
                 viewModel.userCompleteUserDetails(
                     Uide(
                         birthday = it
