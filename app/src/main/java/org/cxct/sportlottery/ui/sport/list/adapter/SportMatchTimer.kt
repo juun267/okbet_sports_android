@@ -7,6 +7,8 @@ class SportMatchTimer {
 
     private var timer: Timer? = null
 
+    fun isRuning() = timer != null
+
     fun stop() {
         if (timer != null) {
             timer!!.cancel()

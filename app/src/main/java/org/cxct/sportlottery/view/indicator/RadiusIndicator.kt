@@ -34,7 +34,7 @@ class RadiusIndicator  @JvmOverloads constructor(
     private var mDownY = 0f
     private var mTouchSlop = 0
     private var isFollowTouch = true // 是否跟随手指滑动
-    var mRadius = 0
+    var mRadius = 0F
     var itemWidth = 0
     var itemHeight = 0
 
@@ -92,7 +92,7 @@ class RadiusIndicator  @JvmOverloads constructor(
         val j = mCirclePoints.size
         while (i < j) {
             val pointF = mCirclePoints[i]
-            canvas.drawRoundRect(pointF, 4f, 4f, itemPaint)
+            canvas.drawRoundRect(pointF, mRadius, mRadius, itemPaint)
             i++
         }
     }

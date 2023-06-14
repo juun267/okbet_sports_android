@@ -74,14 +74,16 @@
                         android:id="@+id/ivFilter"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_marginRight="12dp"
+                        android:padding="2dp"
+                        android:layout_marginRight="4dp"
                         android:src="@drawable/ic_filter" />
 
                     <ImageView
                         android:id="@+id/ivArrow"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@drawable/ic_arrow_up_double" />
+                        android:padding="2dp"
+                        android:src="@drawable/ic_arrow_up" />
 
                 </LinearLayout>
 

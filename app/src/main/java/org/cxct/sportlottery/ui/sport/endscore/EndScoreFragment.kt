@@ -47,7 +47,7 @@ class EndScoreFragment: BindingSocketFragment<SportListViewModel, FragmentSportL
 
     private val mOddsChangeListener by lazy {
         ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
-            if (binding.gameList == null || context == null || oddsChangeEvent.oddsList.isNullOrEmpty()) {
+            if (context == null || oddsChangeEvent.oddsList.isNullOrEmpty()) {
                 return@OddsChangeListener
             }
 
@@ -224,30 +224,7 @@ class EndScoreFragment: BindingSocketFragment<SportListViewModel, FragmentSportL
         }
 
         favorMatchList.observe(viewLifecycleOwner) { favorMatchIds ->
-
-            val rootNodes = endScoreAdapter.rootNodes ?: return@observe
-            if (rootNodes.isNullOrEmpty()) {
-                return@observe
-            }
-
-            val matchOddMap = mutableMapOf<String, MatchOdd>()
-            rootNodes.forEach { rootNode ->
-                rootNode.childNode?.forEach {
-                    val matchOdd = (it as MatchOdd)
-                    matchOdd.matchInfo?.run {
-                        isFavorite = favorMatchIds.contains(id)
-                        matchOddMap[id] = matchOdd
-                    }
-                }
-            }
-
-            if (binding.gameList.scrollState == RecyclerView.SCROLL_STATE_IDLE && !binding.gameList.isComputingLayout) {
-                endScoreAdapter.doOnVisiableRange { position, item ->
-                    if (item is MatchOdd) {
-                        endScoreAdapter.notifyItemChanged(position, item)
-                    }
-                }
-            }
+            endScoreAdapter.updateFavorite(favorMatchIds)
         }
     }
 
