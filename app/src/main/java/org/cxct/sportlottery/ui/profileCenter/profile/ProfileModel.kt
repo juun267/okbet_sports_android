@@ -69,6 +69,16 @@ class ProfileModel(
         }
     }
 
+    fun getSalaryName(id: Int): String {
+        var sdf = salaryStringList.find { it.id == id }
+        return if (sdf == null || sdf.name.isEmpty()) {
+            ""
+        } else {
+            salaryStringList.find { it.id == id }!!.name
+        }
+
+    }
+
     //確認是否需要驗證手機
     fun checkNeedToShowSecurityDialog() {
         viewModelScope.launch {
