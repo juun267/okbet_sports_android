@@ -64,13 +64,17 @@ class ToGcashDialog(context: Context, val visibleNoReminder: Boolean = true) : D
             WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT
         )
         binding.btnGlifeCancel.setOnClickListener {
-            KvUtils.put(GLIFE_TIP_FLAG, binding.cbNoReminder.isChecked)
+            if (visibleNoReminder) {
+                KvUtils.put(GLIFE_TIP_FLAG, binding.cbNoReminder.isChecked)
+            }
             dismiss()
         }
         binding.cbNoReminder.isVisible = visibleNoReminder
         binding.btnGlifeOpen.text = context.getString(R.string.LT028)+" "+context.getString(R.string.online_gcash)
         binding.btnGlifeOpen.setOnClickListener {
-            KvUtils.put(GLIFE_TIP_FLAG, binding.cbNoReminder.isChecked)
+            if (visibleNoReminder) {
+                KvUtils.put(GLIFE_TIP_FLAG, binding.cbNoReminder.isChecked)
+            }
             val uri = Uri.parse("https://miniprogram.gcash.com/s01/SBMk5e")
             val intent = Intent(Intent.ACTION_VIEW, uri)
             UpdateUtils.startActivity(intent)
