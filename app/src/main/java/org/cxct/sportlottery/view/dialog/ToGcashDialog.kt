@@ -49,6 +49,7 @@ class ToGcashDialog(context: Context, val visibleNoReminder: Boolean = true) : D
         window?.requestFeature(Window.FEATURE_NO_TITLE)
         binding = DialogToGcashBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setCanceledOnTouchOutside(false)
         window?.setBackgroundDrawableResource(android.R.color.transparent)
         window?.setLayout(
             WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT
