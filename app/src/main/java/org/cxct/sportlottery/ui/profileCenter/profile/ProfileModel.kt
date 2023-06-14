@@ -69,10 +69,10 @@ class ProfileModel(
         }
     }
 
-    fun getSalaryName(id: Int): String {
+    fun getSalaryName(id: Int,default: String): String {
         var sdf = salaryStringList.find { it.id == id }
         return if (sdf == null || sdf.name.isEmpty()) {
-            ""
+            default
         } else {
             salaryStringList.find { it.id == id }!!.name
         }
