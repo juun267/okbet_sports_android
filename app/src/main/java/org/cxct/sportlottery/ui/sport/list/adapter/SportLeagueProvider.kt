@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.sport.list.adapter
 
 import android.content.Context
+import android.graphics.Typeface
 import android.text.TextUtils
 import android.util.TypedValue
 import android.view.Gravity
@@ -29,56 +30,35 @@ class SportLeagueProvider(
     private val ivCountryId = View.generateViewId()
     private val ivArrowId = View.generateViewId()
 
-    private fun getDivider(context: Context): View {
-        val divider = View(context)
-        divider.setBackgroundResource(R.color.color_D3DEF5)
-        return divider
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
 
         val root = FrameLayout(context)
-        root.layoutParams = ViewGroup.LayoutParams(-1, 31.dp)
-        root.setBackgroundResource(R.color.color_bbbbbb_ffffff)
-        val dividerH = 0.5f.dp
-        val dividerParams = FrameLayout.LayoutParams(-1, dividerH)
-        root.addView(getDivider(context), dividerParams)
-
-        val img = AppCompatImageView(context)
-        img.layoutParams = FrameLayout.LayoutParams(4.dp, 30.dp).apply {
-            gravity = Gravity.CENTER_VERTICAL
-            topMargin = dividerH
-            bottomMargin = dividerH
-        }
-        img.adjustViewBounds = true
-        root.addView(img)
+        root.layoutParams = ViewGroup.LayoutParams(-1, -2)
+        root.setBackgroundResource(R.color.color_0D025BE8)
+        6.dp.let { root.setPadding(0, it, 0, it) }
 
         val wh20 = 20.dp
 
         val ivCountry = AppCompatImageView(context)
         ivCountry.id = ivCountryId
         ivCountry.scaleType = ImageView.ScaleType.CENTER_CROP
-        ivCountry.setImageResource(R.drawable.ic_earth)
         ivCountry.layoutParams = FrameLayout.LayoutParams(wh20, wh20).apply {
             gravity = Gravity.CENTER_VERTICAL
-            leftMargin = 13.dp
-            topMargin = dividerH
-            bottomMargin = dividerH
+            leftMargin = 12.dp
+            topMargin = 2.dp
         }
         root.addView(ivCountry)
 
         val tvLeagueName = AppCompatTextView(context).apply {
             id = tvLeagueNameId
-            maxLines = 1
-            ellipsize = TextUtils.TruncateAt.END
+            maxLines = 2
+            typeface = Typeface.DEFAULT_BOLD
             setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12f)
             setTextColor(context.getColor(R.color.color_535D76))
             layoutParams = FrameLayout.LayoutParams(-1, -2).apply {
                 gravity = Gravity.CENTER_VERTICAL
-                leftMargin = 37.dp
-                rightMargin = 42.dp
-                topMargin = dividerH
-                bottomMargin = dividerH
+                leftMargin = 40.dp
+                rightMargin = 56.dp
             }
         }
         root.addView(tvLeagueName)
@@ -89,14 +69,10 @@ class SportLeagueProvider(
             layoutParams = FrameLayout.LayoutParams(wh20, wh20).apply {
                 gravity = Gravity.CENTER_VERTICAL or Gravity.RIGHT
                 rightMargin = 12.dp
-                topMargin = dividerH
-                bottomMargin = dividerH
             }
         }
 
         root.addView(ivArrow)
-        root.addView(getDivider(context), dividerParams)
-
         return BaseViewHolder(root)
     }
 

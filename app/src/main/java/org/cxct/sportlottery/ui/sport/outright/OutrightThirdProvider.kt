@@ -2,11 +2,13 @@ package org.cxct.sportlottery.ui.sport.outright
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.chad.library.adapter.base.provider.BaseNodeProvider
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import kotlinx.android.synthetic.main.button_odd_outright.view.*
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.outright.odds.CategoryOdds
 import org.cxct.sportlottery.ui.sport.oddsbtn.OddsOutrightButton
@@ -24,6 +26,7 @@ class OutrightThirdProvider(val adapter: SportOutrightAdapter2,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return BaseViewHolder(OddsOutrightButton(parent.context).apply {
+            foreground = ContextCompat.getDrawable(context, R.drawable.fg_ripple)
             layoutParams = ViewGroup.MarginLayoutParams(-1, -2)
         })
     }

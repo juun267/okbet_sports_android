@@ -64,7 +64,7 @@ class SportLeagueAdapter2(
         val matchOddWithPosition = subscribedMatchOdd[oddsChangeEvent.eventId] ?: return
 
         if (updateMatchOdds(matchOddWithPosition.first, oddsChangeEvent)) {
-            notifyItemChanged(matchOddWithPosition.second, matchOddWithPosition.first)
+            notifyItemChanged(matchOddWithPosition.second, SportMatchEvent.OddsChanged)
 //            updateMatch(leagueIndex, matchOdd)
 //            updateBetInfo(leagueOdd, oddsChangeEvent)
         }
@@ -162,7 +162,7 @@ class SportLeagueAdapter2(
                     val isSelected = odd.id?.let { QuickListManager.containOdd(it) } == true
                     if (odd.isSelected != isSelected) {
                         odd.isSelected = isSelected
-                        notifyItemChanged(matchOddPosition.second, matchOdd)
+                        notifyItemChanged(matchOddPosition.second, SportMatchEvent.OddSelected)
                         return@forEachIndexed
                     }
                 }

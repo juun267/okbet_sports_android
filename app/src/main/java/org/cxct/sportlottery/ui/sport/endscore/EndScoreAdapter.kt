@@ -12,6 +12,7 @@ import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
+import org.cxct.sportlottery.ui.sport.list.adapter.SportMatchEvent
 import org.cxct.sportlottery.util.SocketUpdateUtil.updateOddStatus
 import org.cxct.sportlottery.view.stickyheader.StickyAdapter
 
@@ -178,5 +179,23 @@ class EndScoreAdapter(val playCate: String, val onItemClick:(Int, View, BaseNode
         return isNeedRefresh
     }
 
+
+    fun updateFavorite(favorMatchIds: List<String>) {
+        rootNodes?.forEach { rootNode ->
+            rootNode.childNode?.forEach {
+                val matchOdd = (it as MatchOdd)
+                matchOdd.matchInfo?.run {
+                    val favorite = favorMatchIds.contains(id)
+                    if (isFavorite != favorite) {
+                        isFavorite = favorite
+                        val position = getItemPosition(matchOdd)
+                        if (position > 0) {
+                            notifyItemChanged(position, SportMatchEvent.FavoriteChanged)
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 }

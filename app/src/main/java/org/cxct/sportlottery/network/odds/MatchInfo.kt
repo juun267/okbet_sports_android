@@ -79,13 +79,14 @@ data class MatchInfo(
 
     //At Start
     var isAtStart: Boolean? = false
-    var remainTime: Long? = null
-    var hasRefreshed: Boolean? = false
+    @Transient
+    var remainTime: Long? = null        // 计时器的时间
+    @Transient
+    var leagueTimeRecode: Long = -1      // 时间标记，如果相同就不进行重复计时
 
     //Other
     var startDateDisplay: String? = null
     var startTimeDisplay: String? = null
-    var timeDisplay: String? = null
 
     var isFavorite = false
 
@@ -119,16 +120,8 @@ data class MatchInfo(
 
     override var matchStatusList: List<MatchStatus>? = null
 
-    //999
-    var scoreStatus: Int? = 0
-
-    // For Android use
-    var isStartPosition: Boolean = false
-    var isLastPosition: Boolean = false
-
     //联赛图标
     var categoryIcon: String? = null
 
     var pullRtmpUrl: String? = null
-    var pullFlvUrl: String? = null
 }

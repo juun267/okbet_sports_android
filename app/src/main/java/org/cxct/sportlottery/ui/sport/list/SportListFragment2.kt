@@ -4,6 +4,7 @@ import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
 import android.view.View
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
 import androidx.lifecycle.distinctUntilChanged
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +22,7 @@ import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
@@ -31,6 +33,7 @@ import org.cxct.sportlottery.ui.sport.common.*
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.ui.sport.list.adapter.OnOddClickListener
 import org.cxct.sportlottery.ui.sport.list.adapter.SportLeagueAdapter2
+import org.cxct.sportlottery.ui.sport.list.adapter.SportMatchEvent
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
@@ -69,7 +72,7 @@ class SportListFragment2
         viewModel.tempDatePosition = 0
         //日期圖示選取狀態下，切換球種要重置UI狀態
         gameType = item.code
-        sportLeagueAdapter2.setNewInstance(null)
+        clearData()
         val layoutManager = binding.sportTypeList.layoutManager as ScrollCenterLayoutManager
         layoutManager.smoothScrollToPosition(binding.sportTypeList, RecyclerView.State(), position)
         clearSubscribeChannels()
@@ -85,7 +88,7 @@ class SportListFragment2
         viewModel.sportMenuResult.clean()
         viewModel.selectMatchIdList = arrayListOf()
         gameTypeAdapter.setNewInstance(null)
-        sportLeagueAdapter2.setNewInstance(null)
+        clearData()
         setMatchInfo("", "")
         clearSubscribeChannels()
         setupSportTypeList()
@@ -94,8 +97,13 @@ class SportListFragment2
 
     fun reload() {
         reset()
-        binding.appbarLayout.scrollTo(0, 0)
+        scrollBackTop()
+        binding.appbarLayout.scrollBy(0, 0)
         viewModel.loadMatchType(matchType)
+    }
+
+    private fun scrollBackTop() = binding.appbarLayout.run {
+        ((layoutParams as CoordinatorLayout.LayoutParams).behavior as AppBarLayout.Behavior?)?.setTopAndBottomOffset(0)
     }
 
     private inline fun setMatchInfo(name: String, num: String) {
@@ -222,8 +230,18 @@ class SportListFragment2
             if (leagueOdds.isNullOrEmpty()) {
                 return@observe
             }
-            val mLeagueOddList = (oddsListData.leagueOddsFilter ?: leagueOdds).toMutableList()
-            sportLeagueAdapter2.setNewInstance(mLeagueOddList as MutableList<BaseNode> )
+
+//            val testLeague = leagueOdds.first()
+//            if (testLeague.matchOdds.isNotEmpty()) {
+//                val matchOdd = testLeague.matchOdds.first()
+//                testLeague.matchOdds.clear()
+//                testLeague.matchOdds.add(matchOdd)
+//                sportLeagueAdapter2.setNewInstance(mutableListOf(testLeague))
+//            } else {
+                val mLeagueOddList = (oddsListData.leagueOddsFilter ?: leagueOdds).toMutableList()
+                sportLeagueAdapter2.setNewInstance(mLeagueOddList as MutableList<BaseNode> )
+//            }
+
             resubscribeChannel(80)
         }
 
@@ -253,8 +271,11 @@ class SportListFragment2
             sportLeagueAdapter2.data.forEachIndexed { index, baseNode ->
                 if (baseNode is org.cxct.sportlottery.network.odds.list.MatchOdd) {
                     baseNode.matchInfo?.let {
-                        it.isFavorite = favoriteIds.contains(it.id)
-                        sportLeagueAdapter2.notifyItemChanged(index)
+                        val isFavorited = favoriteIds.contains(it.id)
+                        if (it.isFavorite != isFavorited) {
+                            it.isFavorite = isFavorited
+                            sportLeagueAdapter2.notifyItemChanged(index, SportMatchEvent.FavoriteChanged)
+                        }
                     }
                 }
             }
@@ -265,16 +286,17 @@ class SportListFragment2
 
     private fun initSocketObserver() {
 
-//        receiver.serviceConnectStatus.observe(this@SportListFragment2.viewLifecycleOwner) {
-//            if (it == null) {
-//                return@observe
-//            }
-//
-//            if (it == ServiceConnectStatus.CONNECTED) {
-//                viewModel.switchMatchType(matchType = matchType)
-//                subscribeSportChannelHall()
-//            }
-//        }
+        var lastConnectStatus = receiver.serviceConnectStatus.value
+        receiver.serviceConnectStatus.observe(this@SportListFragment2.viewLifecycleOwner) {
+            if (it == null || lastConnectStatus == it) {
+                return@observe
+            }
+
+            if (it == ServiceConnectStatus.CONNECTED) {
+                viewModel.switchMatchType(matchType = matchType)
+                subscribeSportChannelHall()
+            }
+        }
 
         receiver.matchStatusChange.observe(this@SportListFragment2.viewLifecycleOwner) {
             if (it == null) {
@@ -368,6 +390,11 @@ class SportListFragment2
         viewModel.switchGameType(matchType, item, Any())
     }
 
+    private fun clearData() {
+        subscribedMatchOdd.clear()
+        sportLeagueAdapter2.setNewInstance(null)
+    }
+
     private fun updateSportType(gameTypeList: List<Item>) {
 
         if (gameTypeList.isEmpty()) {
@@ -433,7 +460,7 @@ class SportListFragment2
 
     override fun onDestroyView() {
         super.onDestroyView()
-        sportLeagueAdapter2.setNewInstance(null)
+        clearData()
         offsetScrollListener = null
         clearSubscribeChannels()
         unSubscribeChannelHallSport()
@@ -442,6 +469,10 @@ class SportListFragment2
     @Subscribe
     fun onSelectMatch(matchIdList: ArrayList<String>) {
         viewModel.selectMatchIdList = matchIdList
+        gameTypeAdapter.currentItem?.let {
+            clearData()
+            load(it)
+        }
     }
 
     @Subscribe
@@ -454,7 +485,7 @@ class SportListFragment2
         }
     }
 
-    open fun getCurGameType(): GameType {
+    fun getCurGameType(): GameType {
         return GameType.getGameType(gameType) ?: GameType.ALL
     }
 

@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.sport.oddsbtn
 
 import android.content.Context
+import android.graphics.Typeface
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
@@ -42,7 +43,7 @@ class PlayCateView @JvmOverloads constructor(
         homeText = createNameTextView()
         nameLayout.addView(homeText, param)
         drawText = createNameTextView()
-        nameLayout.addView(drawText, LayoutParams(-2, -1))
+        nameLayout.addView(drawText, param)
         awayText = createNameTextView()
         nameLayout.addView(awayText, param)
         addView(nameLayout, LayoutParams(-1, 16.dp).apply { bottomMargin = 12.dp })
@@ -53,13 +54,13 @@ class PlayCateView @JvmOverloads constructor(
         oddLayout.addView(oddBtnHome, LayoutParams(-1, oddHeight, 1f).apply { rightMargin = oddMargins })
         oddLayout.addView(oddBtnAway, LayoutParams(-1, oddHeight, 1f).apply { leftMargin = oddMargins })
         addView(oddLayout)
-
     }
 
     private fun createNameTextView(): TextView {
         val text = AppCompatTextView(context)
         text.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12f)
         text.setTextColor(getColor(R.color.color_6D7693))
+        text.typeface = Typeface.DEFAULT_BOLD
         text.gravity = Gravity.CENTER
         return  text
     }

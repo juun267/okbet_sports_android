@@ -8,6 +8,7 @@ import com.chad.library.adapter.base.provider.BaseNodeProvider
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.ui.sport.list.adapter.SportMatchEvent
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setTeamLogo
 
@@ -17,10 +18,12 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
                              override val layoutId: Int = R.layout.item_endscore_battle): BaseNodeProvider() {
 
     override fun convert(helper: BaseViewHolder, item: BaseNode, payloads: List<Any>) = helper.run {
-        if (payloads.first() is MatchOdd) {
+        if (payloads.isEmpty()) {
+            return@run
+        }
 
-        } else {
-            val matchInfo = (item as MatchOdd).matchInfo
+        val matchInfo = (item as MatchOdd).matchInfo
+        if (payloads.first() is SportMatchEvent.FavoriteChanged) {
             getView<View>(R.id.league_odd_match_favorite).isSelected = matchInfo?.isFavorite ?: false
         }
     }
