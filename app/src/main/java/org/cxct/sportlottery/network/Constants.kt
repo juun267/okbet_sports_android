@@ -545,6 +545,9 @@ object Constants {
     const val BETTING_STATION_QUERY_UWSTATION = "/api/front/bettingStation/queryUwStation"
     const val AREA_ALL = "/api/front/area/all"
     const val AREA_UNIVERSAL = "/api/front/area/universal"//国家省市城市
+    const val WORKS_QUERYALL = "/api/front/works/queryAll"//获取所有工作性质列表
+    const val USER_QUERYUSERINFODETAILS = "/api/front/user/queryUserInfoDetails"//完善用户信息详情查询
+    const val USER_COMPLETEUSERDETAILS = "/api/front/user/CompleteUserDetails"//完善用户信息详情
 
     //注销账户
     const val CANCEL_ACCOUNT = "/api/front/user/remove"

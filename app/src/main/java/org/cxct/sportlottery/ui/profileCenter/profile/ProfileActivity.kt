@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.bigkoo.pickerview.listener.CustomListener
 import com.bigkoo.pickerview.view.TimePickerView
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
@@ -121,7 +122,6 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         initDateTimeView()
         setupLogout()
         viewModel.getUserSalaryList()
-        viewModel.getAddressData()
         initBottomDialog()
 
     }
@@ -135,7 +135,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
     override fun onResume() {
         super.onResume()
-        getUserInfo()
+        viewModel.getUserInfo()
     }
 
     private fun initView() {
@@ -184,7 +184,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         list: MutableList<DialogBottomDataEntity>,
         callBack: (item: DialogBottomDataEntity) -> Unit
     ) {
-        lateinit var item: DialogBottomDataEntity
+        var item: DialogBottomDataEntity? = dialogBtmAdapter.data.find { it.flag }
         dialogBtmAdapter.data = list
         dialogBtmAdapter.notifyDataSetChanged()
         rvData.scrollToPosition(0)
@@ -193,11 +193,11 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 it.flag = false
             }
             item = dialogBtmAdapter.data[position]
-            item.flag = true
+            item!!.flag = true
             dialogBtmAdapter.notifyDataSetChanged()
         }
         btnDialogDone.setOnClickListener {
-            callBack(item)
+            item?.let { it1 -> callBack(it1) }
             bottomSheet.dismiss()
         }
         bottomSheet.show()
@@ -213,9 +213,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         btn_nickname.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.NickName) }
         //出生地
         llPlaceOfBirth.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.PlaceOfBirth) }
-        //address
-        llAddressCurrent.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.Address) }
-        //zip code
+
         llZipCodeCurrent.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.ZipCode) }
         //密碼設置
         btn_pwd_setting.setOnClickListener {
@@ -240,39 +238,76 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         llNationality.setOnClickListener {
             showBottomDialog(viewModel.nationalityList) {
                 tvNationality.text = it.name
+                viewModel.userCompleteUserDetails(
+                    Uide(
+                        nationality = "${it.id}"
+                    )
+                )
             }
         }
         llProvinceCurrent.setOnClickListener {
             showBottomDialog(viewModel.provincesList) {
                 tvProvinceCurrent.text = it.name
+                viewModel.userCompleteUserDetails(
+                    Uide(
+                        province = "${it.id}"
+                    )
+                )
             }
         }
         llProvincePermanent.setOnClickListener {
             showBottomDialog(viewModel.provincesList) {
                 tvProvincePermanent.text = it.name
+                viewModel.userCompleteUserDetails(
+                    Uide(
+                        permanentProvince = "${it.id}"
+                    )
+                )
             }
         }
         llCityCurrent.setOnClickListener {
             showBottomDialog(viewModel.cityList) {
                 tvCityCurrent.text = it.name
+                viewModel.userCompleteUserDetails(
+                    Uide(
+                        city = "${it.id}"
+                    )
+                )
             }
         }
         llCityPermanent.setOnClickListener {
             showBottomDialog(viewModel.cityList) {
                 tvCityPermanent.text = it.name
+                viewModel.userCompleteUserDetails(
+                    Uide(
+                        permanentCity = "${it.id}",
+                    )
+                )
             }
         }
+        llNatureOfWork.setOnClickListener {
+            showBottomDialog(viewModel.cityList) {
+                tvNatureOfWork.text = it.name
+                viewModel.userCompleteUserDetails(
+                    Uide(
+                        natureWork = it.name
+                    )
+                )
+            }
+        }
+        //address
         llAddressCurrent.setOnClickListener {
             putExtraForProfileInfoActivity(ModifyType.Address)
         }
         llAddressPermanent.setOnClickListener {
-            putExtraForProfileInfoActivity(ModifyType.Address)
+            putExtraForProfileInfoActivity(ModifyType.AddressP)
         }
+        //zip code
         llZipCodeCurrent.setOnClickListener {
             putExtraForProfileInfoActivity(ModifyType.ZipCode)
         }
         llZipCodePermanent.setOnClickListener {
-            putExtraForProfileInfoActivity(ModifyType.ZipCode)
+            putExtraForProfileInfoActivity(ModifyType.ZipCodeP)
         }
 
         llSourceOfIncome.setOnClickListener {
@@ -283,11 +318,27 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                         SourceOfIncomeDialog.OnPositiveListener {
                         override fun positiveClick(str: String) {
                             tvSourceOfIncome.text = str
+                            viewModel.userCompleteUserDetails(
+                                Uide(
+                                    salarySource = SalarySource(
+                                        it.id,
+                                        name = it.name
+                                    )
+                                )
+                            )
                         }
                     })
                     dialog.show()
                 } else {
                     tvSourceOfIncome.text = it.name
+                    viewModel.userCompleteUserDetails(
+                        Uide(
+                            salarySource = SalarySource(
+                                it.id,
+                                name = it.name
+                            )
+                        )
+                    )
                 }
             }
         }
@@ -329,7 +380,24 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     }
 
     private fun initObserve() {
+        viewModel.userDetail.observe(this) {
+            tvNationality.text = it.t.nationality?.let { it1 -> viewModel.getNationality(it1) }
+            tvBirthday.text = it.t.birthday
+            tvPlaceOfBirth.text = it.t.placeOfBirth
+            tvSourceOfIncome.text = it.t.salarySource?.name
+            tvNatureOfWork.text = it.t.natureWork
 
+            tvProvinceCurrent.text = it.t.province?.let { it1 -> viewModel.getProvinces(it1) }
+            tvCityCurrent.text = it.t.city?.let { it1 -> viewModel.getCity(it1) }
+            tvAddressCurrent.text = it.t.address
+            tvZipCodeCurrent.text = it.t.zipCode
+
+            tvProvincePermanent.text =
+                it.t.permanentProvince?.let { it1 -> viewModel.getProvinces(it1) }
+            tvCityPermanent.text = it.t.permanentCity?.let { it1 -> viewModel.getCity(it1) }
+            tvAddressPermanent.text = it.t.permanentAddress
+            tvZipCodePermanent.text = it.t.permanentZipCode
+        }
         viewModel.editIconUrlResult.observe(this) {
             val iconUrlResult = it?.getContentIfNotHandled()
             if (iconUrlResult?.success != true) {
@@ -341,11 +409,20 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         }
 
         viewModel.userInfo.observe(this) {
-            updateAvatar(it?.iconUrl)
-            tv_nickname.text = it?.nickName
-            tv_member_account.text = it?.userName
-            tv_id.text = it?.userId?.toString()
-            tv_real_name.text = it?.fullName
+            if (it != null) {
+                tvAddressPermanent.text = it.permanentAddress
+                tvZipCodePermanent.text = it.permanentZipCode
+                tvAddressCurrent.text = it.address
+                tvZipCodeCurrent.text = it.zipCode
+                tvPlaceOfBirth.text = it.placeOfBirth
+                updateAvatar(it.iconUrl)
+                tv_nickname.text = it.nickName
+                tv_member_account.text = it.userName
+                tv_id.text = it.userId.toString()
+                tv_real_name.text = it.fullName
+                setWithdrawInfo(it)
+            }
+
             ll_verified.isVisible =
                 sConfigData?.realNameWithdrawVerified.isStatusOpen() || sConfigData?.realNameRechargeVerified.isStatusOpen()
             tv_pass_word.text =
@@ -387,7 +464,6 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 icon_arrow_nickname.visibility = View.VISIBLE
             }
 
-            it?.let { setWithdrawInfo(it) }
         }
 
         //是否顯示簡訊驗證彈窗
@@ -507,10 +583,6 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.color_939393_999999))
     }
 
-    private fun getUserInfo() {
-        viewModel.getUserInfo()
-    }
-
     private fun showKYCVerifyDialog() {
         VerifyIdentityDialog().show(supportFragmentManager, null)
     }
@@ -527,12 +599,33 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         tomorrow.add(Calendar.DAY_OF_MONTH, -1)
         dateTimePicker = DateTimePickerOptions(this).getBuilder { date, _ ->
             TimeUtil.dateToStringFormatYMD(date)?.let {
-
+                tvBirthday.text = it
+                viewModel.userCompleteUserDetails(
+                    Uide(
+                        birthday = it
+                    )
+                )
             }
         }
+            .setLayoutRes(R.layout.dialog_date_select, object : CustomListener {
+                override fun customLayout(v: View) {
+                    //自定义布局中的控件初始化及事件处理
+                    v.findViewById<View>(R.id.btnBtmCancel).setOnClickListener {
+                        dateTimePicker?.dismiss()
+                    }
+                    v.findViewById<View>(R.id.btnBtmDone).setOnClickListener {
+                        dateTimePicker?.returnData()
+                        dateTimePicker?.dismiss()
+                    }
+
+                }
+            })
+            .setItemVisibleCount(6)
+            .setLineSpacingMultiplier(2.0f)
             .setRangDate(yesterday, tomorrow)
             .setDate(tomorrow)
             .build()
+
     }
 
 }

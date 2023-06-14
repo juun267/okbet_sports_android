@@ -8,8 +8,8 @@ import java.lang.annotation.RetentionPolicy
 @Retention(RetentionPolicy.SOURCE)
 @IntDef(
     *[ModifyType.RealName, ModifyType.QQNumber, ModifyType.Email, ModifyType.WeChat,
-        ModifyType.PhoneNumber, ModifyType.NickName, ModifyType.PlaceOfBirth, ModifyType.Address,
-        ModifyType.ZipCode]
+        ModifyType.PhoneNumber, ModifyType.NickName, ModifyType.PlaceOfBirth, ModifyType.Address,ModifyType.AddressP,
+        ModifyType.ZipCode,ModifyType.ZipCodeP]
 )
 annotation class ModifyType {
     companion object {
@@ -22,6 +22,8 @@ annotation class ModifyType {
         const val PlaceOfBirth = 700
         const val Address = 800
         const val ZipCode = 900
+        const val AddressP = 1000
+        const val ZipCodeP = 1100
     }
 }
 
