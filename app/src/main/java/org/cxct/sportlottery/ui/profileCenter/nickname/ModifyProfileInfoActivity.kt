@@ -80,7 +80,7 @@ class ModifyProfileInfoActivity :
                 }
                 eetllAddress.setText("")
                 tvAddressRedTips.text =
-                    resources.getString(R.string.J459) + resources.getString(R.string.P111) + resources.getString(
+                    resources.getString(R.string.J459) +"\t"+ resources.getString(R.string.P111) +"\t"+ resources.getString(
                         R.string.P110
                     )
             }
@@ -95,7 +95,7 @@ class ModifyProfileInfoActivity :
                 }
                 eetllAddress.setText("")
                 tvAddressRedTips.text =
-                    resources.getString(R.string.J459) + resources.getString(R.string.P111) + resources.getString(
+                    resources.getString(R.string.J459) +"\t"+ resources.getString(R.string.P111) +"\t"+ resources.getString(
                         R.string.P110
                     )
             }
