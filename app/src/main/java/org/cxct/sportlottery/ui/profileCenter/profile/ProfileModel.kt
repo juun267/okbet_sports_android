@@ -33,7 +33,6 @@ class ProfileModel(
 ) {
     val editIconUrlResult: LiveData<Event<IconUrlResult?>> = avatarRepository.editIconUrlResult
 
-    //薪资来源
     //薪资来源string 列表
     val salaryStringList: ArrayList<DialogBottomDataEntity> = ArrayList()
 
@@ -125,7 +124,13 @@ class ProfileModel(
             }?.let {
                 it.let {
                     areaData = it
-                    it.areaAll.countries.forEach {
+                    var dbde = it.areaAll.countries.find { it.name.contains("PHILIPPINES") }
+                    dbde?.let {
+                        nationalityList.add(DialogBottomDataEntity(dbde.name, id = dbde.id))
+                    }
+                    it.areaAll.countries.remove(dbde)
+                    var sortList = it.areaAll.countries.sortedBy { it.name.substring(0, 1) }
+                    sortList.forEach {
                         nationalityList.add(DialogBottomDataEntity(it.name, id = it.id))
                     }
                     it.areaAll.provinces.forEach {
@@ -150,8 +155,18 @@ class ProfileModel(
             doNetwork(androidContext) {
                 OneBoSportApi.bettingStationService.userQueryUserInfoDetails()
             }?.let {
-                it.let {
-                    _userDetail.postValue(it)
+                _userDetail.postValue(it)
+                it.t.province?.let { itarea ->
+                    var provincesId = areaData.areaAll.provinces.find { it.name == itarea }?.id
+                    if (provincesId != null) {
+                        updateCityData(provincesId)
+                    }
+                }
+                it.t.permanentProvince?.let { itarea ->
+                    var provincesId = areaData.areaAll.provinces.find { it.name == itarea }?.id
+                    if (provincesId != null) {
+                        updateCityPData(provincesId)
+                    }
                 }
             }
         }
@@ -160,13 +175,14 @@ class ProfileModel(
     fun updateCityData(id: Int) {
         cityList.clear()
         areaData.areaAll.cities.filter { it.provinceId == id }.forEach {
-            cityList.add(DialogBottomDataEntity(it.name, id = it.id) )
+            cityList.add(DialogBottomDataEntity(it.name, id = it.id))
         }
     }
+
     fun updateCityPData(id: Int) {
-        cityList.clear()
+        cityPList.clear()
         areaData.areaAll.cities.filter { it.provinceId == id }.forEach {
-            cityPList.add(DialogBottomDataEntity(it.name, id = it.id) )
+            cityPList.add(DialogBottomDataEntity(it.name, id = it.id))
         }
     }
 

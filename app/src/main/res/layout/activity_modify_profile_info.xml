@@ -88,9 +88,9 @@
                     android:layout_marginStart="@dimen/margin_14"
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="@dimen/margin_14"
-                    app:hintText="Please enter your place of birth"
+                    app:hintText="@string/P104"
                     app:isResponsiveIconColor="false"
-                    app:labelText="Place of Birth"
+                    app:labelText="@string/P104"
                     app:labelTextStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -139,9 +139,9 @@
                         android:layout_marginStart="@dimen/margin_14"
                         android:layout_marginTop="4dp"
                         android:layout_marginEnd="@dimen/margin_14"
-                        app:hintText="Please enter your address"
+                        app:hintText="@string/M259"
                         app:isResponsiveIconColor="false"
-                        app:labelText="Address"
+                        app:labelText="@string/M259"
                         app:labelTextStyle="normal"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -177,10 +177,11 @@
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/tvAddressRedTips"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Address should include: Unit/Room Number/Floor, Building Name, Lot/Block/Phase/House Number, Street Name"
+                        android:text=""
                         android:textColor="@color/color_FF2E00"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -210,9 +211,9 @@
                     android:layout_marginStart="@dimen/margin_14"
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="@dimen/margin_14"
-                    app:hintText="Please enter zip code"
+                    app:hintText="@string/N827"
                     app:isResponsiveIconColor="false"
-                    app:labelText="Zip Code"
+                    app:labelText="@string/N827"
                     app:labelTextStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"

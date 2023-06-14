@@ -1494,4 +1494,7 @@
     <string name="P106">Nature of Work</string>
     <string name="P108">Current Home Address</string>
     <string name="P109">Permanent Home Address</string>
+    <string name="J459">Tips</string>
+    <string name="P111">Address should include</string>
+    <string name="P110">Unit/Room No. /Floor, Building Name, Lot/ Block/Phase/House Number, Street Name</string>
 </resources>
