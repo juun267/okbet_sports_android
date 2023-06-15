@@ -151,7 +151,6 @@ class SportLeagueAdapter2(
 
     fun removeMatchOdd(matchOdd: MatchOdd) {
         remove(matchOdd)
-        rootNodes
     }
 
     fun updateOddsSelectStatus(matchOdds: Collection<Pair<MatchOdd, Int>>) {

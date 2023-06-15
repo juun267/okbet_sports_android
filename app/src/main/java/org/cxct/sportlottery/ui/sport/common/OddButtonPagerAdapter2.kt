@@ -144,7 +144,8 @@ class OddButtonPagerAdapter2(val context: Context,
             Pair(item?.first ?: "", item?.second ?: listOf()),
             oddsType,
             onOddClick,
-            matchType
+            matchType,
+
         )
     }
 
