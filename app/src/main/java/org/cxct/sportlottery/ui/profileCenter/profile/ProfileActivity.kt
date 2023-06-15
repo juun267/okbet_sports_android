@@ -190,15 +190,17 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     ) {
         var item: DialogBottomDataEntity? = list.find { it.flag }
         val listNew: MutableList<DialogBottomDataEntity> = mutableListOf()
+        var trueFlag = false
         list.forEach {
             val ne = it.copy()
             if (ne.name == currStr) {
                 ne.flag = true
+                trueFlag = true
             }
             listNew.add(ne)
         }
-        if (sourceOtherFlag) {
-            list.last().flag = true
+        if (sourceOtherFlag && !trueFlag) {
+            listNew.last().flag = true
         }
         btnDialogTitle.text = title
         dialogBtmAdapter.data = listNew
