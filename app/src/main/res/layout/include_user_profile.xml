@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
                 android:layout_marginEnd="10dp"
-                android:text="Nationality"
+                android:text="@string/P103"
                 android:textColor="@color/color_9FADC6_535D76"
                 android:textSize="@dimen/textSize14sp" />
 
@@ -51,9 +51,9 @@
                 android:ellipsize="end"
                 android:gravity="end"
                 android:maxLines="1"
+                android:text="@string/set"
                 android:textColor="@color/color_6C7BA8_A7B2C4"
-                android:textSize="@dimen/textSize14sp"
-                tools:text="2443875459" />
+                android:textSize="@dimen/textSize14sp" />
 
             <ImageView
                 android:id="@+id/iconNationality"
@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
                 android:layout_marginEnd="10dp"
-                android:text="Birthday"
+                android:text="@string/J902"
                 android:textColor="@color/color_9FADC6_535D76"
                 android:textSize="@dimen/textSize14sp" />
 
@@ -104,7 +104,7 @@
                 android:maxLines="1"
                 android:textColor="@color/color_6C7BA8_A7B2C4"
                 android:textSize="@dimen/textSize14sp"
-                tools:text="2443875459" />
+                android:text="@string/set" />
 
             <ImageView
                 android:id="@+id/iconBirthday"
@@ -140,7 +140,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
                 android:layout_marginEnd="10dp"
-                android:text="Place of Birth"
+                android:text="@string/P104"
                 android:textColor="@color/color_9FADC6_535D76"
                 android:textSize="@dimen/textSize14sp" />
 
@@ -155,7 +155,7 @@
                 android:maxLines="1"
                 android:textColor="@color/color_6C7BA8_A7B2C4"
                 android:textSize="@dimen/textSize14sp"
-                tools:text="2443875459" />
+                android:text="@string/set" />
 
             <ImageView
                 android:id="@+id/iconPlaceOfBirth"
@@ -191,7 +191,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
                 android:layout_marginEnd="10dp"
-                android:text="Source of Income"
+                android:text="@string/P105"
                 android:textColor="@color/color_9FADC6_535D76"
                 android:textSize="@dimen/textSize14sp" />
 
@@ -206,7 +206,7 @@
                 android:maxLines="1"
                 android:textColor="@color/color_6C7BA8_A7B2C4"
                 android:textSize="@dimen/textSize14sp"
-                tools:text="2443875459" />
+                android:text="@string/set" />
 
             <ImageView
                 android:id="@+id/iconSourceOfIncome"
@@ -242,7 +242,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
                 android:layout_marginEnd="10dp"
-                android:text="Nature of Work"
+                android:text="@string/P106"
                 android:textColor="@color/color_9FADC6_535D76"
                 android:textSize="@dimen/textSize14sp" />
 
@@ -257,7 +257,7 @@
                 android:maxLines="1"
                 android:textColor="@color/color_6C7BA8_A7B2C4"
                 android:textSize="@dimen/textSize14sp"
-                tools:text="2443875459" />
+                android:text="@string/set" />
 
             <ImageView
                 android:id="@+id/iconNatureOfWork"
@@ -285,7 +285,7 @@
             android:background="@drawable/bg_gray_border_white"
             android:gravity="center_vertical"
             android:paddingLeft="14dp"
-            android:text="Current Home Address"
+            android:text="@string/P108"
             android:textColor="@color/color_9FADC6_535D76"
             android:textSize="@dimen/textSize14sp" />
 
@@ -304,7 +304,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
                 android:layout_marginEnd="10dp"
-                android:text="Province"
+                android:text="@string/J036"
                 android:textColor="@color/color_9FADC6_535D76"
                 android:textSize="@dimen/textSize14sp" />
 
@@ -319,7 +319,7 @@
                 android:maxLines="1"
                 android:textColor="@color/color_6C7BA8_A7B2C4"
                 android:textSize="@dimen/textSize14sp"
-                tools:text="2443875459" />
+                android:text="@string/set" />
 
             <ImageView
                 android:id="@+id/iconProvinceCurrent"
@@ -355,7 +355,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
                 android:layout_marginEnd="10dp"
-                android:text="City"
+                android:text="@string/J901"
                 android:textColor="@color/color_9FADC6_535D76"
                 android:textSize="@dimen/textSize14sp" />
 
@@ -370,7 +370,7 @@
                 android:maxLines="1"
                 android:textColor="@color/color_6C7BA8_A7B2C4"
                 android:textSize="@dimen/textSize14sp"
-                tools:text="2443875459" />
+                android:text="@string/set" />
 
             <ImageView
                 android:id="@+id/iconCityCurrent"
@@ -406,7 +406,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
                 android:layout_marginEnd="10dp"
-                android:text="Address"
+                android:text="@string/M259"
                 android:textColor="@color/color_9FADC6_535D76"
                 android:textSize="@dimen/textSize14sp" />
 
@@ -421,7 +421,7 @@
                 android:maxLines="1"
                 android:textColor="@color/color_6C7BA8_A7B2C4"
                 android:textSize="@dimen/textSize14sp"
-                tools:text="2443875459" />
+                android:text="@string/set" />
 
             <ImageView
                 android:id="@+id/iconAddressCurrent"
@@ -457,7 +457,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
                 android:layout_marginEnd="10dp"
-                android:text="Zip Code"
+                android:text="@string/N827"
                 android:textColor="@color/color_9FADC6_535D76"
                 android:textSize="@dimen/textSize14sp" />
 
@@ -472,7 +472,7 @@
                 android:maxLines="1"
                 android:textColor="@color/color_6C7BA8_A7B2C4"
                 android:textSize="@dimen/textSize14sp"
-                tools:text="2443875459" />
+                android:text="@string/set" />
 
             <ImageView
                 android:id="@+id/iconZipCodeCurrent"
@@ -501,7 +501,7 @@
             android:background="@drawable/bg_gray_border_white"
             android:gravity="center_vertical"
             android:paddingLeft="14dp"
-            android:text="Permanent Home Address"
+            android:text="@string/P109"
             android:textColor="@color/color_9FADC6_535D76"
             android:textSize="@dimen/textSize14sp" />
 
@@ -520,7 +520,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
                 android:layout_marginEnd="10dp"
-                android:text="Province"
+                android:text="@string/J036"
                 android:textColor="@color/color_9FADC6_535D76"
                 android:textSize="@dimen/textSize14sp" />
 
@@ -535,7 +535,7 @@
                 android:maxLines="1"
                 android:textColor="@color/color_6C7BA8_A7B2C4"
                 android:textSize="@dimen/textSize14sp"
-                tools:text="2443875459" />
+                android:text="@string/set" />
 
             <ImageView
                 android:id="@+id/iconProvincePermanent"
@@ -571,7 +571,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
                 android:layout_marginEnd="10dp"
-                android:text="City"
+                android:text="@string/J901"
                 android:textColor="@color/color_9FADC6_535D76"
                 android:textSize="@dimen/textSize14sp" />
 
@@ -586,7 +586,7 @@
                 android:maxLines="1"
                 android:textColor="@color/color_6C7BA8_A7B2C4"
                 android:textSize="@dimen/textSize14sp"
-                tools:text="2443875459" />
+                android:text="@string/set" />
 
             <ImageView
                 android:id="@+id/iconCityPermanent"
@@ -622,7 +622,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
                 android:layout_marginEnd="10dp"
-                android:text="Address"
+                android:text="@string/M259"
                 android:textColor="@color/color_9FADC6_535D76"
                 android:textSize="@dimen/textSize14sp" />
 
@@ -637,7 +637,7 @@
                 android:maxLines="1"
                 android:textColor="@color/color_6C7BA8_A7B2C4"
                 android:textSize="@dimen/textSize14sp"
-                tools:text="2443875459" />
+                android:text="@string/set" />
 
             <ImageView
                 android:id="@+id/iconAddressPermanent"
@@ -673,7 +673,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
                 android:layout_marginEnd="10dp"
-                android:text="Zip Code"
+                android:text="@string/N827"
                 android:textColor="@color/color_9FADC6_535D76"
                 android:textSize="@dimen/textSize14sp" />
 
@@ -688,7 +688,7 @@
                 android:maxLines="1"
                 android:textColor="@color/color_6C7BA8_A7B2C4"
                 android:textSize="@dimen/textSize14sp"
-                tools:text="2443875459" />
+                android:text="@string/set" />
 
             <ImageView
                 android:id="@+id/iconZipCodePermanent"

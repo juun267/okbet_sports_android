@@ -11,7 +11,7 @@ data class Uide(
     val birthday: String? = "",
     val city: String? = "",
     val nationality: String? = "",
-    val natureWork: String? = "",
+    val natureOfWork: String? = "",
     var permanentAddress: String? = "",
     val permanentCity: String? = "",
     val permanentProvince: String? = "",

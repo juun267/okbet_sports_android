@@ -24,7 +24,7 @@
             android:layout_marginHorizontal="12dp"
             android:layout_marginTop="20dp"
             android:gravity="center"
-            android:text="Source of Income"
+            android:text="@string/P105"
             android:textColor="@color/color_414655"
             android:textSize="@dimen/textSize18sp"
             android:textStyle="bold"
@@ -41,7 +41,7 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="12dp"
             android:background="@drawable/border_gray_round_4"
-            android:hint="Others please specify"
+            android:hint="@string/P105"
             android:paddingHorizontal="14dp"
             android:textSize="14sp" />
 
@@ -73,9 +73,9 @@
                 android:background="@null"
                 android:minWidth="135dp"
                 android:minHeight="36dp"
-                android:text="Cancel"
-                android:textColor="@color/color_FFFFFF_414655"
+                android:text="@string/btn_cancel"
                 android:textAllCaps="false"
+                android:textColor="@color/color_FFFFFF_414655"
                 android:textSize="@dimen/textSize18sp" />
 
             <Button
@@ -87,7 +87,7 @@
                 android:background="@null"
                 android:minWidth="135dp"
                 android:minHeight="36dp"
-                android:text="Submit"
+                android:text="@string/btn_confirm"
                 android:textAllCaps="false"
                 android:textColor="@color/color_317FFF_0760D4"
                 android:textSize="@dimen/textSize18sp" />

@@ -9,7 +9,7 @@ data class AreaAll(
     @Json(name = "cities")
     val cities: List<City>,
     @Json(name = "countries")
-    val countries: List<Country>,
+    val countries: MutableList<Country>,
     @Json(name = "provinces")
     val provinces: List<Province>
 )
@@ -31,7 +31,9 @@ data class Country(
     @Json(name = "id")
     val id: Int,
     @Json(name = "name")
-    val name: String
+    val name: String,
+    @Json(name = "nationality")
+    val nationality: String
 )
 
 @KeepMembers

@@ -1484,4 +1484,17 @@
     <string name="P114">Hello, as you have registered on the GLIFE platform, according to the official requirements, deposits and withdrawals must be completed exclusively through the GCASH program. Click \"Open GCASH\" below to proceed. Thank you!</string>
     <string name="KYC049">Cancel</string>
     <string name="LT028">Open</string>
+    <string name="N827">Zip code</string>
+    <string name="M259">Address</string>
+    <string name="J901">City</string>
+    <string name="J036">Province</string>
+    <string name="P103">Nationality</string>
+    <string name="P104">Place of Birth</string>
+    <string name="P105">Source of Income</string>
+    <string name="P106">Nature of Work</string>
+    <string name="P108">Current Home Address</string>
+    <string name="P109">Permanent Home Address</string>
+    <string name="J459">Tips</string>
+    <string name="P111">Address should include</string>
+    <string name="P110">Unit/Room No. /Floor, Building Name, Lot/ Block/Phase/House Number, Street Name</string>
 </resources>

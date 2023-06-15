@@ -59,28 +59,67 @@ class ModifyProfileInfoActivity :
             }
 
             ModifyType.PlaceOfBirth -> {
-                tv_toolbar_title.text = "Place of Birth"
+                tv_toolbar_title.text = resources.getString(R.string.P104)
                 llPlaceOfBirth.visibility = View.VISIBLE
+
+                eetPlaceOfBirth.checkRegisterListener {
+                    val isActivated = !it.isNullOrEmpty()
+                    btn_confirm.isEnabled = isActivated
+                    btn_confirm.alpha = if (isActivated) 1f else 0.5f
+                }
+                eetPlaceOfBirth.setText("")
             }
 
             ModifyType.Address -> {
-                tv_toolbar_title.text = "Address"
+                tv_toolbar_title.text = resources.getString(R.string.M259)
                 llAddressParent.visibility = View.VISIBLE
+                eetllAddress.checkRegisterListener {
+                    val isActivated = !it.isNullOrEmpty()
+                    btn_confirm.isEnabled = isActivated
+                    btn_confirm.alpha = if (isActivated) 1f else 0.5f
+                }
+                eetllAddress.setText("")
+                tvAddressRedTips.text =
+                    resources.getString(R.string.J459) +"\t"+ resources.getString(R.string.P111) +"\t"+ resources.getString(
+                        R.string.P110
+                    )
             }
 
             ModifyType.AddressP -> {
-                tv_toolbar_title.text = "Address"
+                tv_toolbar_title.text = resources.getString(R.string.M259)
                 llAddressParent.visibility = View.VISIBLE
+                eetllAddress.checkRegisterListener {
+                    val isActivated = !it.isNullOrEmpty()
+                    btn_confirm.isEnabled = isActivated
+                    btn_confirm.alpha = if (isActivated) 1f else 0.5f
+                }
+                eetllAddress.setText("")
+                tvAddressRedTips.text =
+                    resources.getString(R.string.J459) +"\t"+ resources.getString(R.string.P111) +"\t"+ resources.getString(
+                        R.string.P110
+                    )
             }
 
             ModifyType.ZipCode -> {
-                tv_toolbar_title.text = "Zip Code"
+                tv_toolbar_title.text = resources.getString(R.string.N827)
                 llZipCode.visibility = View.VISIBLE
+                eetllZipCode.checkRegisterListener {
+                    val isActivated = !it.isNullOrEmpty()
+                    btn_confirm.isEnabled = isActivated
+                    btn_confirm.alpha = if (isActivated) 1f else 0.5f
+                }
+                eetllZipCode.setText("")
             }
 
             ModifyType.ZipCodeP -> {
-                tv_toolbar_title.text = "Zip Code"
+                tv_toolbar_title.text = resources.getString(R.string.N827)
                 llZipCode.visibility = View.VISIBLE
+                eetllZipCode.checkRegisterListener {
+                    val isActivated = !it.isNullOrEmpty()
+                    btn_confirm.isEnabled = isActivated
+                    btn_confirm.alpha = if (isActivated) 1f else 0.5f
+                }
+                eetllZipCode.setText("")
             }
 
             ModifyType.NickName -> {                //暱稱
