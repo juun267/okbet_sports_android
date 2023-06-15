@@ -199,7 +199,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             }
             listNew.add(ne)
         }
-        if (sourceOtherFlag && !trueFlag) {
+        if (sourceOtherFlag && !trueFlag && listNew.isNotEmpty()) {
             listNew.last().flag = true
         }
         btnDialogTitle.text = title
@@ -353,7 +353,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                         SourceOfIncomeDialog.OnPositiveListener {
                         override fun positiveClick(str: String) {
                             val workstr = str.ifEmpty {
-                                "other"
+                                resources.getString(R.string.other)
                             }
                             tvSourceOfIncome.text = workstr
                             viewModel.userCompleteUserDetails(
