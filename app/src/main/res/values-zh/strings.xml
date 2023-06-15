@@ -1416,4 +1416,23 @@
     <string name="N931">后日</string>
     <string name="N932">之后</string>
     <string name="N744">重置</string>
+    <string name="P069">扣除金额提醒</string>
+    <string name="P070">由于您还有 %s 的投注流水未完成，将收取 %s 的手续费！</string>
+    <string name="P113">Glife 会员提醒</string>
+    <string name="P114">您好，由于您在Glife渠道注册，按照官方要求，您的充值提现必须在Gcash程序中完成，如果您需要进行此操作，点击下方打开Gcash按钮。</string>
+    <string name="KYC049">取消</string>
+    <string name="LT028">打开</string>
+    <string name="N827">邮政编码</string>
+    <string name="M259">地址</string>
+    <string name="J901">城市</string>
+    <string name="J036">省</string>
+    <string name="P103">国籍</string>
+    <string name="P104">出生地</string>
+    <string name="P105">收入来源</string>
+    <string name="P106">行业</string>
+    <string name="P108">当前居住地</string>
+    <string name="P109">永久居住地</string>
+    <string name="J459">温馨提示</string>
+    <string name="P111">地址应包括</string>
+    <string name="P110">单位/房号/楼层、楼名、地段/座/期/门牌号、街道名</string>
 </resources>

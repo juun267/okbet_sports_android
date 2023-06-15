@@ -57,6 +57,8 @@ import org.cxct.sportlottery.ui.sport.SportFragment2
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment
 import org.cxct.sportlottery.ui.sport.list.SportLeagueAdapter
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.view.dialog.PopImageDialog
+import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import kotlin.system.exitProcess
@@ -74,6 +76,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 Pair(ProfileCenterFragment::class.java, null),
 
                 )
+            )
         )
     }
 
@@ -88,10 +91,15 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         var activityInstance: MainTabActivity? = null
 
         /**
-         *
+         * fromLoginOrReg  是否来自登录或者注册页面
          */
-        fun reStart(context: Context, showDialog: Boolean = false) {
-            MultiLanguagesApplication.showHomeDialog = showDialog
+        fun reStart(context: Context, showDialog: Boolean = false,fromLoginOrReg: Boolean = false) {
+            if (fromLoginOrReg){
+                ToGcashDialog.needShow = true
+            }
+            PopImageDialog.showHomeDialog = showDialog
+            PopImageDialog.showSportDialog = showDialog
+            PopImageDialog.showOKGameDialog = showDialog
             val intent = Intent(context, MainTabActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)

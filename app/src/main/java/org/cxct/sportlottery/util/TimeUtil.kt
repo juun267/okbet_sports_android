@@ -825,4 +825,17 @@ object TimeUtil {
     fun String.formatDateDelimiter(): String {
         return this.replace("-", "/")
     }
+
+    /**
+     * oldDate 2020-01-30
+     * oldF yyyy-MM-dd
+     * newF MM-dd-yyyy
+     */
+    fun changeDateFormat(oldDate: String,oldF: String,newF: String):String{
+        var sdf = SimpleDateFormat("yyyy-MM-dd")
+        val date: Date = sdf.parse(oldDate)
+        sdf = SimpleDateFormat("MM/dd/yyyy")
+        val yourFormatedDateString = sdf.format(date)
+        return yourFormatedDateString.toString()
+    }
 }

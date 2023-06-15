@@ -35,9 +35,13 @@ import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment2
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import splitties.views.dsl.core.add
+import org.cxct.sportlottery.view.dialog.ToGcashDialog
 
-class HomeToolbarView@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
-    : LinearLayout(context, attrs, defStyle) {
+class HomeToolbarView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
+) : LinearLayout(context, attrs, defStyle) {
 
     companion object {
         private val textStyle by lazy {
@@ -185,6 +189,8 @@ class HomeToolbarView@JvmOverloads constructor(context: Context, attrs: Attribut
             userMoneyView.gone()
             return
         }
+
+
 
         loginLayout.gone()
         if (userModelEnable) {

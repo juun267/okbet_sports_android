@@ -24,9 +24,9 @@
         android:overScrollMode="never">
 
         <LinearLayout
-            android:background="@color/color_181922_F0F5FA"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_181922_F0F5FA"
             android:orientation="vertical"
             android:paddingBottom="@dimen/margin_30">
 
@@ -37,12 +37,12 @@
 
 
                 <LinearLayout
-                    android:background="@color/color_1D1F2D_FFFFFF"
                     android:id="@+id/btn_head"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                   android:paddingStart="@dimen/margin_14"
-                    android:orientation="vertical">
+                    android:background="@color/color_1D1F2D_FFFFFF"
+                    android:orientation="vertical"
+                    android:paddingStart="@dimen/margin_14">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -78,10 +78,10 @@
                             android:id="@+id/btn_edit_nickname"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="-5dp"
-                            android:layout_marginBottom="-3dp"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentBottom="true"
+                            android:layout_marginEnd="-5dp"
+                            android:layout_marginBottom="-3dp"
                             android:contentDescription="@null"
                             android:scaleType="fitCenter"
                             android:src="@drawable/ic_icon_editor"
@@ -90,13 +90,12 @@
                 </LinearLayout>
 
 
-
                 <LinearLayout
-                    android:background="@color/color_1D1F2D_FFFFFF"
-                    android:layout_marginTop="@dimen/margin_10"
                     android:id="@+id/btn_nickname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:background="@color/color_1D1F2D_FFFFFF"
                     android:gravity="center"
                     android:minHeight="46dp"
                     android:orientation="horizontal">
@@ -145,10 +144,10 @@
                     android:background="@color/color_F0F5FA" />
 
                 <LinearLayout
-                    android:background="@color/color_1D1F2D_FFFFFF"
                     android:id="@+id/btn_pwd_setting"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/color_1D1F2D_FFFFFF"
                     android:gravity="center"
                     android:minHeight="46dp"
                     android:orientation="horizontal">
@@ -162,6 +161,7 @@
                         android:text="@string/setting_password"
                         android:textColor="@color/color_9FADC6_535D76"
                         android:textSize="@dimen/textSize14sp" />
+
                     <TextView
                         android:id="@+id/tv_pass_word"
                         android:layout_width="0dp"
@@ -171,9 +171,9 @@
                         android:ellipsize="end"
                         android:gravity="end"
                         android:maxLines="1"
+                        android:text="@string/set"
                         android:textColor="@color/color_6C7BA8_A7B2C4"
-                        android:textSize="@dimen/textSize14sp"
-                        android:text="@string/set" />
+                        android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -188,18 +188,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/margin_0.5"
                     android:layout_marginStart="14dp"
-                    android:visibility="gone"
-                    android:background="@color/color_F0F5FA" />
+                    android:background="@color/color_F0F5FA"
+                    android:visibility="gone" />
 
                 <LinearLayout
-                    android:background="@color/color_1D1F2D_FFFFFF"
                     android:id="@+id/lin_auth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="visible"
+                    android:background="@color/color_1D1F2D_FFFFFF"
                     android:gravity="center"
                     android:minHeight="46dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="visible">
 
 
                     <TextView
@@ -219,9 +219,9 @@
                         android:ellipsize="end"
                         android:gravity="end"
                         android:maxLines="1"
+                        android:text="@string/set"
                         android:textColor="@color/color_6C7BA8_A7B2C4"
-                        android:textSize="@dimen/textSize14sp"
-                        android:text="@string/set" />
+                        android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -234,10 +234,10 @@
 
 
                 <LinearLayout
-                    android:background="@color/color_1D1F2D_FFFFFF"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:background="@color/color_1D1F2D_FFFFFF"
                     android:gravity="center"
                     android:minHeight="46dp"
                     android:orientation="horizontal">
@@ -274,9 +274,9 @@
                     android:background="@color/color_F0F5FA" />
 
                 <LinearLayout
-                    android:background="@color/color_1D1F2D_FFFFFF"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/color_1D1F2D_FFFFFF"
                     android:gravity="center"
                     android:minHeight="46dp"
                     android:orientation="horizontal">
@@ -312,11 +312,11 @@
                     android:background="@color/color_F0F5FA" />
 
                 <LinearLayout
-                    android:background="@color/color_1D1F2D_FFFFFF"
                     android:id="@+id/ll_real_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="14dp"
+                    android:background="@color/color_1D1F2D_FFFFFF"
                     android:gravity="center"
                     android:minHeight="46dp"
                     android:orientation="horizontal">
@@ -358,10 +358,10 @@
 
                 <!--  QQ號碼  -->
                 <LinearLayout
-                    android:background="@color/color_1D1F2D_FFFFFF"
                     android:id="@+id/ll_qq_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/color_1D1F2D_FFFFFF"
                     android:gravity="center"
                     android:minHeight="46dp"
                     android:orientation="horizontal">
@@ -409,10 +409,10 @@
 
                 <!--  郵箱  -->
                 <LinearLayout
-                    android:background="@color/color_1D1F2D_FFFFFF"
                     android:id="@+id/ll_e_mail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/color_1D1F2D_FFFFFF"
                     android:gravity="center"
                     android:minHeight="46dp"
                     android:orientation="horizontal">
@@ -461,10 +461,10 @@
 
                 <!--  手機號碼  -->
                 <LinearLayout
-                    android:background="@color/color_1D1F2D_FFFFFF"
                     android:id="@+id/ll_phone_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/color_1D1F2D_FFFFFF"
                     android:gravity="center"
                     android:minHeight="46dp"
                     android:orientation="horizontal">
@@ -514,10 +514,10 @@
                 <!--  微信  -->
 
                 <LinearLayout
-                    android:background="@color/color_1D1F2D_FFFFFF"
                     android:id="@+id/ll_wechat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/color_1D1F2D_FFFFFF"
                     android:gravity="center"
                     android:minHeight="46dp"
                     android:orientation="horizontal">
@@ -558,13 +558,20 @@
                         android:layout_height="wrap_content" />
                 </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/margin_0.5"
+                    android:layout_marginStart="14dp"
+                    android:background="@color/color_F0F5FA" />
+
+                <include layout="@layout/include_user_profile"/>
 
                 <LinearLayout
-                    android:layout_marginTop="@dimen/margin_10"
-                    android:background="@color/color_1D1F2D_FFFFFF"
                     android:id="@+id/ll_verified"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:background="@color/color_1D1F2D_FFFFFF"
                     android:gravity="center"
                     android:minHeight="46dp"
                     android:orientation="horizontal">
@@ -610,11 +617,12 @@
                     android:layout_height="@dimen/margin_0.5"
                     android:layout_marginStart="14dp"
                     android:background="@color/color_F0F5FA" />
+
                 <LinearLayout
-                    android:visibility="gone"
                     android:id="@+id/ll_cancel_account"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/color_1D1F2D_FFFFFF"
                     android:gravity="center"
                     android:minHeight="46dp"
                     android:orientation="horizontal">
@@ -649,8 +657,8 @@
                 android:layout_marginEnd="@dimen/margin_20"
                 android:layout_marginBottom="@dimen/margin_30"
                 android:background="@drawable/ic_sign_out"
-                android:textAllCaps="false"
                 android:text="@string/sign_out"
+                android:textAllCaps="false"
                 android:textColor="@color/color_FFFFFF" />
         </LinearLayout>
 

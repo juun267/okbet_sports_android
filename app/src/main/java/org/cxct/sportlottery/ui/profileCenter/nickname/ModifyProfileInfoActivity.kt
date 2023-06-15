@@ -54,24 +54,92 @@ class ModifyProfileInfoActivity :
         //根據傳入的ModifyType當前編輯的欄位做顯示
         when (modifyType) {
             ModifyType.RealName -> {
-
                 tv_toolbar_title.text = getString(R.string.real_name)
                 ll_real_name.visibility = View.VISIBLE
             }
+
+            ModifyType.PlaceOfBirth -> {
+                tv_toolbar_title.text = resources.getString(R.string.P104)
+                llPlaceOfBirth.visibility = View.VISIBLE
+
+                eetPlaceOfBirth.checkRegisterListener {
+                    val isActivated = !it.isNullOrEmpty()
+                    btn_confirm.isEnabled = isActivated
+                    btn_confirm.alpha = if (isActivated) 1f else 0.5f
+                }
+                eetPlaceOfBirth.setText("")
+            }
+
+            ModifyType.Address -> {
+                tv_toolbar_title.text = resources.getString(R.string.M259)
+                llAddressParent.visibility = View.VISIBLE
+                eetllAddress.checkRegisterListener {
+                    val isActivated = !it.isNullOrEmpty()
+                    btn_confirm.isEnabled = isActivated
+                    btn_confirm.alpha = if (isActivated) 1f else 0.5f
+                }
+                eetllAddress.setText("")
+                tvAddressRedTips.text =
+                    resources.getString(R.string.J459) +"\t"+ resources.getString(R.string.P111) +"\t"+ resources.getString(
+                        R.string.P110
+                    )
+            }
+
+            ModifyType.AddressP -> {
+                tv_toolbar_title.text = resources.getString(R.string.M259)
+                llAddressParent.visibility = View.VISIBLE
+                eetllAddress.checkRegisterListener {
+                    val isActivated = !it.isNullOrEmpty()
+                    btn_confirm.isEnabled = isActivated
+                    btn_confirm.alpha = if (isActivated) 1f else 0.5f
+                }
+                eetllAddress.setText("")
+                tvAddressRedTips.text =
+                    resources.getString(R.string.J459) +"\t"+ resources.getString(R.string.P111) +"\t"+ resources.getString(
+                        R.string.P110
+                    )
+            }
+
+            ModifyType.ZipCode -> {
+                tv_toolbar_title.text = resources.getString(R.string.N827)
+                llZipCode.visibility = View.VISIBLE
+                eetllZipCode.checkRegisterListener {
+                    val isActivated = !it.isNullOrEmpty()
+                    btn_confirm.isEnabled = isActivated
+                    btn_confirm.alpha = if (isActivated) 1f else 0.5f
+                }
+                eetllZipCode.setText("")
+            }
+
+            ModifyType.ZipCodeP -> {
+                tv_toolbar_title.text = resources.getString(R.string.N827)
+                llZipCode.visibility = View.VISIBLE
+                eetllZipCode.checkRegisterListener {
+                    val isActivated = !it.isNullOrEmpty()
+                    btn_confirm.isEnabled = isActivated
+                    btn_confirm.alpha = if (isActivated) 1f else 0.5f
+                }
+                eetllZipCode.setText("")
+            }
+
             ModifyType.NickName -> {                //暱稱
                 setupNickName()
             }
+
             ModifyType.QQNumber -> {
                 tv_toolbar_title.text = getString(R.string.qq_number)
                 ll_qq_number.visibility = View.VISIBLE
             }
+
             ModifyType.Email -> {
                 ll_e_mail.visibility = View.VISIBLE
             }
+
             ModifyType.PhoneNumber -> {
                 tv_toolbar_title.text = getString(R.string.phone_number)
                 ll_phone_number.visibility = View.VISIBLE
             }
+
             ModifyType.WeChat -> {
                 tv_toolbar_title.text = getString(R.string.we_chat)
                 ll_wechat.visibility = View.VISIBLE
@@ -80,7 +148,6 @@ class ModifyProfileInfoActivity :
     }
 
     private fun setupInputFieldVerify() {
-
         //真實姓名
         setEditTextFocusChangeMethod(eet_real_name)
         //QQ號碼
@@ -94,7 +161,6 @@ class ModifyProfileInfoActivity :
     }
 
     private fun setupNickName() {
-
         tv_toolbar_title.text = getString(R.string.change_nickname)
         ll_nickname.visibility = View.VISIBLE
         eet_nickname.filterSpecialCharacters()
@@ -102,33 +168,32 @@ class ModifyProfileInfoActivity :
         eet_nickname.maxLines = 1
         val nickNameMinLength = 2
         val nickNameMaxLength = 6
-
         eet_nickname.checkRegisterListener {
             val msg = when {
                 it.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
                 !VerifyConstUtil.verifyLengthRange(it, nickNameMinLength, nickNameMaxLength) -> {
-                    LocalUtils.getLocalizedContext().getString(R.string.error_member_nickname, nickNameMinLength, nickNameMaxLength)
+                    LocalUtils.getLocalizedContext().getString(
+                        R.string.error_member_nickname,
+                        nickNameMinLength,
+                        nickNameMaxLength
+                    )
                 }
+
                 else -> null
             }
-
             val isActivated = TextUtils.isEmpty(msg)
             et_nickname.setError(msg, isActivated)
             btn_confirm.isEnabled = isActivated
-            btn_confirm.alpha = if (isActivated) 1f else  0.5f
+            btn_confirm.alpha = if (isActivated) 1f else 0.5f
         }
-
         eet_nickname.setText("") // 设置空触发输入检查
     }
 
     private fun setEditTextFocusChangeMethod(editText: ExtendedEditText) {
-
         editText.setOnFocusChangeListener { v, hasFocus ->
             if (!hasFocus)
                 viewModel.checkInput(modifyType, editText.text.toString())
         }
-
-
     }
 
     private fun initButton() {
@@ -153,7 +218,12 @@ class ModifyProfileInfoActivity :
             ModifyType.WeChat -> eet_we_chat.text
             ModifyType.PhoneNumber -> eet_phone_number.text
             ModifyType.NickName -> eet_nickname.text
-            else -> { }
+            ModifyType.PlaceOfBirth -> eetPlaceOfBirth.text
+            ModifyType.Address -> eetllAddress.text
+            ModifyType.AddressP -> eetllAddress.text
+            ModifyType.ZipCode -> eetllZipCode.text
+            ModifyType.ZipCodeP -> eetllZipCode.text
+            else -> {}
         }
         viewModel.confirmProfileInfo(modifyType, inputText.toString())
     }
