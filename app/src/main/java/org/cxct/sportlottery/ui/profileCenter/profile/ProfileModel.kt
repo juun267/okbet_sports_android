@@ -136,12 +136,12 @@ class ProfileModel(
                     areaData = it
                     var dbde = it.areaAll.countries.find { it.name.contains("PHILIPPINES") }
                     dbde?.let {
-                        nationalityList.add(DialogBottomDataEntity(dbde.name, id = dbde.id))
+                        nationalityList.add(DialogBottomDataEntity(dbde.nationality, id = dbde.id))
                     }
                     it.areaAll.countries.remove(dbde)
-                    var sortList = it.areaAll.countries.sortedBy { it.name.substring(0, 1) }
+                    var sortList = it.areaAll.countries.sortedBy { it.nationality.substring(0, 1) }
                     sortList.forEach {
-                        nationalityList.add(DialogBottomDataEntity(it.name, id = it.id))
+                        nationalityList.add(DialogBottomDataEntity(it.nationality, id = it.id))
                     }
                     it.areaAll.provinces.forEach {
                         provincesList.add(DialogBottomDataEntity(it.name, id = it.id))
