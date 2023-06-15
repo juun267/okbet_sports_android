@@ -12,18 +12,17 @@
         android:layout_height="0dp"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
-        android:src="@drawable/img_soccer_mobile01"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:background="@drawable/bg_sport_detail_football" />
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="3:2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -37,13 +36,12 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/margin_15"
-            android:visibility="gone">
+            android:layout_height="match_parent"
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="3"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -73,6 +71,11 @@
                 android:gravity="center"
                 android:minWidth="60dp"
                 android:orientation="vertical">
+
+                <org.cxct.sportlottery.view.indicator.RadiusIndicator
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
 
                 <LinearLayout
                     android:id="@+id/ll_time"
@@ -199,7 +202,7 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="3"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -233,8 +236,8 @@
             android:background="@drawable/bg_trans_radius_15"
             android:gravity="center"
             android:paddingHorizontal="@dimen/margin_7"
-            android:visibility="visible"
-            tools:visibility="visible">
+            android:visibility="gone"
+            tools:visibility="gone">
 
             <LinearLayout
                 android:id="@+id/lin_live"
@@ -318,170 +321,171 @@
 
         </LinearLayout>
 
-        <androidx.legacy.widget.Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lin_bottom"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="14dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
-            android:id="@+id/lin_bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="14dp"
-            android:layout_marginBottom="8dp"
-            android:visibility="gone">
+            android:id="@+id/lin_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:gravity="center_vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
 
-            <LinearLayout
-                android:id="@+id/lin_tips"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:gravity="center_vertical"
-                android:visibility="gone"
-                tools:visibility="visible">
-
-                <TextView
-                    android:id="@+id/tv_ft_half"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:textColor="@color/color_1A1A1A_FFFFFF"
-                    android:textSize="@dimen/textSize10sp"
-                    android:visibility="gone"
-                    tools:text="半：1-2"
-                    tools:visibility="visible" />
-
-
-                <TextView
-                    android:id="@+id/league_corner_kicks"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_kicks"
-                    android:drawablePadding="5dp"
-                    android:paddingEnd="10dp"
-                    android:textColor="@color/color_1A1A1A_FFFFFF"
-                    android:textSize="@dimen/textSize10sp"
-                    android:visibility="gone"
-                    tools:text="1-5"
-                    tools:visibility="visible" />
-
-                <TextView
-                    android:id="@+id/tv_yellow_card"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:drawableLeft="@drawable/bg_sport_card_yellow"
-                    android:drawablePadding="5dp"
-                    android:fontFamily="@font/din_regular"
-                    android:gravity="center"
-                    android:textColor="@color/color_FFFFFF"
-                    android:textSize="@dimen/textSize10sp"
-                    android:visibility="gone"
-                    tools:text="1-3"
-                    tools:visibility="visible" />
-
-                <TextView
-                    android:id="@+id/tv_red_card"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:drawableLeft="@drawable/bg_sport_card_red"
-                    android:drawablePadding="5dp"
-                    android:fontFamily="@font/din_regular"
-                    android:textColor="@color/color_1A1A1A_FFFFFF"
-                    android:textSize="@dimen/textSize10sp"
-                    android:visibility="gone"
-                    tools:text="1-2"
-                    tools:visibility="visible" />
-
-                <TextView
-                    android:id="@+id/tv_peroids_score"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/color_1A1A1A_FFFFFF"
-                    android:textSize="12sp"
-                    android:visibility="gone"
-                    tools:text="1-1 2-2 3-3"
-                    tools:visibility="visible" />
-
-            </LinearLayout>
-
-            <include
-                android:id="@+id/content_baseball_status"
-                layout="@layout/content_baseball_status"
-                android:gravity="center_vertical"
-                android:visibility="gone"
-                tools:visibility="gone" />
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/tv_ft_half"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/tv_half"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/din_regular"
-                    android:gravity="center"
-                    android:textColor="@color/color_FFFFFF"
-                    android:textSize="@dimen/textSize10sp"
-                    android:visibility="gone"
-                    tools:text="半：2-1"
-                    tools:visibility="visible" />
-
-                <ImageView
-                    android:id="@+id/imgCorner"
-                    android:layout_width="10dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="11dp"
-                    android:src="@drawable/icon_bell"
-                    android:visibility="gone"
-                    tools:visibility="visible" />
-
-                <TextView
-                    android:id="@+id/tvCorner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="11dp"
-                    android:fontFamily="@font/din_regular"
-                    android:textColor="@color/color_FFFFFF"
-                    android:textSize="@dimen/textSize10sp"
-                    android:visibility="gone"
-                    tools:text="9-2"
-                    tools:visibility="visible" />
+                android:layout_marginRight="10dp"
+                android:textColor="@color/color_1A1A1A_FFFFFF"
+                android:textSize="@dimen/textSize10sp"
+                android:visibility="gone"
+                tools:text="半：1-2"
+                tools:visibility="visible" />
 
 
-                <TextView
-                    android:id="@+id/imgYellowScore"
-                    android:layout_width="10dp"
-                    android:layout_height="12dp"
-                    android:layout_marginLeft="6dp"
-                    android:background="@drawable/bg_radius_2_ffcc15"
-                    android:fontFamily="@font/din_regular"
-                    android:gravity="center"
-                    android:text="1"
-                    android:textColor="@color/color_FFFFFF"
-                    android:textSize="@dimen/textSize8sp"
-                    android:visibility="gone"
-                    tools:visibility="visible" />
+            <TextView
+                android:id="@+id/league_corner_kicks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_kicks"
+                android:drawablePadding="5dp"
+                android:paddingEnd="10dp"
+                android:textColor="@color/color_1A1A1A_FFFFFF"
+                android:textSize="@dimen/textSize10sp"
+                android:visibility="gone"
+                tools:text="1-5"
+                tools:visibility="visible" />
 
+            <TextView
+                android:id="@+id/tv_yellow_card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:drawableLeft="@drawable/bg_sport_card_yellow"
+                android:drawablePadding="5dp"
+                android:fontFamily="@font/din_regular"
+                android:gravity="center"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="@dimen/textSize10sp"
+                android:visibility="gone"
+                tools:text="1-3"
+                tools:visibility="visible" />
 
-                <TextView
-                    android:id="@+id/tvYellowScore"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="6dp"
-                    android:fontFamily="@font/din_regular"
-                    android:textColor="@color/color_FFFFFF"
-                    android:textSize="@dimen/textSize10sp"
-                    android:visibility="gone"
-                    tools:text="3-1"
-                    tools:visibility="visible" />
+            <TextView
+                android:id="@+id/tv_red_card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:drawableLeft="@drawable/bg_sport_card_red"
+                android:drawablePadding="5dp"
+                android:fontFamily="@font/din_regular"
+                android:textColor="@color/color_1A1A1A_FFFFFF"
+                android:textSize="@dimen/textSize10sp"
+                android:visibility="gone"
+                tools:text="1-2"
+                tools:visibility="visible" />
 
-            </LinearLayout>
+            <TextView
+                android:id="@+id/tv_peroids_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_1A1A1A_FFFFFF"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:text="1-1 2-2 3-3"
+                tools:visibility="visible" />
 
         </LinearLayout>
+
+        <include
+            android:id="@+id/content_baseball_status"
+            layout="@layout/content_baseball_status"
+            android:gravity="center_vertical"
+            android:visibility="gone"
+            tools:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/tv_half"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/din_regular"
+                android:gravity="center"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="@dimen/textSize10sp"
+                android:visibility="gone"
+                tools:text="半：2-1"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/imgCorner"
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="11dp"
+                android:src="@drawable/icon_bell"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/tvCorner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="11dp"
+                android:fontFamily="@font/din_regular"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="@dimen/textSize10sp"
+                android:visibility="gone"
+                tools:text="9-2"
+                tools:visibility="visible" />
+
+
+            <TextView
+                android:id="@+id/imgYellowScore"
+                android:layout_width="10dp"
+                android:layout_height="12dp"
+                android:layout_marginLeft="6dp"
+                android:background="@drawable/bg_radius_2_ffcc15"
+                android:fontFamily="@font/din_regular"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="@dimen/textSize8sp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+
+            <TextView
+                android:id="@+id/tvYellowScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:fontFamily="@font/din_regular"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="@dimen/textSize10sp"
+                android:visibility="gone"
+                tools:text="3-1"
+                tools:visibility="visible" />
+
+        </LinearLayout>
+
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 

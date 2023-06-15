@@ -38,8 +38,6 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
 
     abstract fun updateBetListCount(num: Int)
 
-    abstract fun updateBetListOdds(list: MutableList<BetInfoListData>)
-
     abstract fun showLoginNotify()
 
     abstract fun showMyFavoriteNotify(myFavoriteNotifyType: Int)
