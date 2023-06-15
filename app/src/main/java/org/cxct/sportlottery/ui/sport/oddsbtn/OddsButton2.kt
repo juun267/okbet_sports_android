@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Paint
+import android.graphics.drawable.RippleDrawable
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
@@ -87,6 +88,7 @@ class OddsButton2 @JvmOverloads constructor(
         }
 
     init {
+        foreground = ContextCompat.getDrawable(context, R.drawable.fg_ripple)
         setBackgroundResource(R.drawable.selector_button_radius_4_odds)
         orientation = VERTICAL
         gravity = Gravity.CENTER

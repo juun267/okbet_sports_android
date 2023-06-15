@@ -1,9 +1,8 @@
 package org.cxct.sportlottery.ui.sport.list.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
@@ -18,6 +17,7 @@ import org.cxct.sportlottery.common.enums.MatchSource
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ItemSportOdd2Binding
+import org.cxct.sportlottery.network.common.GameStatus
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.MatchInfo
@@ -26,10 +26,10 @@ import org.cxct.sportlottery.ui.sport.common.OddButtonPagerAdapter2
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.needCountStatus
-import org.cxct.sportlottery.util.setTeamLogo
 import org.cxct.sportlottery.view.layoutmanager.CustomLinearLayoutManager
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import java.util.*
+import kotlin.math.abs
 
 class SportMatchVH(private val binding: ItemSportOdd2Binding,
                    private val onFavoriteClick: (String) -> Unit): BaseViewHolder(binding.root) {
@@ -49,11 +49,11 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
                 isAutoMeasureEnabled = false
             }
             biding.hIndicator.run {
-                setIndicatorColor(context.getColor(R.color.color_BEC7DC), context.getColor(R.color.color_025BE8))
+                setIndicatorColor(context.getColor(R.color.color_80BEC7DC), context.getColor(R.color.color_025BE8))
                 val height = 4.dp
                 itemWidth = 10.dp
                 itemHeight = height
-                mRadius = itemWidth
+                mRadius = itemWidth.toFloat()
                 setSpacing(height)
                 biding.hIndicator.itemClickListener = { rcv.smoothScrollToPosition(it) }
             }
@@ -100,10 +100,8 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
             icAttackTnC,
             linHomeRoundScore,
             linAwayRoundScore,
-            leagueOddYellowCardsHome,
-            leagueOddYellowCardsAway,
-            leagueOddMatchCardsHome,
-            leagueOddMatchCardsAway,
+            tvRedCards,
+            tvYellowCards,
             tvPeroidsScore,
             ivLive,
             ivPlay,
@@ -114,22 +112,12 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
     fun setupMatchInfo(matchInfo: MatchInfo?, matchType: MatchType) = binding.run {
         leagueOddMatchNameHome.text = matchInfo?.homeName
         leagueOddMatchNameAway.text = matchInfo?.awayName
-        ivHomeTeamLogo.setTeamLogo(matchInfo?.homeIcon)
-        ivAwayTeamLogo.setTeamLogo(matchInfo?.awayIcon)
 
         setupMatchScore(matchInfo, matchType)
-        leagueOddMatchPlayCount.text = matchInfo?.playCateNum.toString() + "+>"
+        leagueOddMatchPlayCount.text = matchInfo?.playCateNum.toString() + "+ >"
 
         leagueOddMatchFavorite.isSelected = matchInfo?.isFavorite ?: false
-        leagueOddMatchFavorite.setOnClickListener {
-            Log.e("For Test", "=======>>> setupMatchInfo 111")
-            matchInfo?.id?.let {
-                Log.e("For Test", "=======>>> setupMatchInfo 2222")
-                onFavoriteClick.invoke(it)
-                Log.e("For Test", "=======>>> setupMatchInfo 33333")
-            }
-            Log.e("For Test", "=======>>> setupMatchInfo 2222")
-        }
+        leagueOddMatchFavorite.setOnClickListener { matchInfo?.id?.let {onFavoriteClick.invoke(it) } }
 
         leagueNeutral.isSelected = matchInfo?.neutral == 1
         leagueNeutral.isVisible = matchInfo?.neutral == 10
@@ -176,11 +164,24 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
      * 设置足球黄牌，红牌数量
      */
     private fun setCardText(matchInfo: MatchInfo) = binding.run {
-        setMatchCardText(matchInfo,
-            binding.leagueOddMatchCardsHome,
-            binding.leagueOddMatchCardsAway,
-            binding.leagueOddYellowCardsHome,
-            binding.leagueOddYellowCardsAway)
+
+        if (!TimeUtil.isTimeInPlay(matchInfo.startTime)) {
+            tvYellowCards.gone()
+            tvRedCards.gone()
+            return
+        }
+
+        setCardsNum(tvRedCards, matchInfo.homeCards, matchInfo.awayCards)
+        setCardsNum(tvRedCards, matchInfo.homeYellowCards, matchInfo.awayYellowCards)
+    }
+
+    private inline fun setCardsNum(textView: TextView, homeCards: Int, awayCards: Int) {
+        if (homeCards + awayCards == 0) {
+            textView.gone()
+        } else {
+            textView.visible()
+            textView.text = " ${(homeCards)}-${awayCards}"
+        }
     }
 
     private fun setFtScoreText(matchInfo: MatchInfo) {
@@ -324,23 +325,53 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         binding.leagueOddMatchTime.text = if (timeMillis > 1000) {
             TimeUtil.longToMmSs(timeMillis)
         } else {
-            binding.root.context.getString(R.string.time_up)
+            "00:00"
         }
-        matchInfo.leagueTime = (timeMillis / 1000).toInt()
+
+        matchInfo.leagueTimeRecode = timeMillis
     }
 
     private fun onTimerUpdate2(timeMillis: Long, matchInfo: MatchInfo) {
         binding.leagueOddMatchTime.text = String.format(
             binding.root.context.getString(R.string.at_start_remain_minute),
             if (timeMillis > 1000) TimeUtil.longToMinute(timeMillis) else 0)
-        matchInfo.remainTime = timeMillis
+        matchInfo.leagueTimeRecode = timeMillis
     }
 
     fun setupMatchTimeAndStatus(matchInfo: MatchInfo,
                                 matchType: MatchType) {
 
+        val isTimeInPlay = TimeUtil.isTimeInPlay(matchInfo.startTime)
 
-        if (TimeUtil.isTimeInPlay(matchInfo.startTime) ) {
+        binding.leagueOddMatchStatus.apply {
+            text = when {
+                (isTimeInPlay
+                        && matchInfo.status == GameStatus.POSTPONED.code
+                        && (matchInfo.gameType == GameType.FT.name || matchInfo.gameType == GameType.BK.name || matchInfo.gameType == GameType.TN.name)) -> {
+                    context.getString(R.string.game_postponed)
+                }
+                isTimeInPlay -> {
+                    if (matchInfo.statusName18n.isEmptyStr()
+                        || (matchInfo.gameType == GameType.TN.name
+                                || matchInfo.gameType == GameType.VB.name
+                                || matchInfo.gameType == GameType.TT.name
+                                || matchInfo.gameType == GameType.BM.name)) {
+                        ""
+                    } else {
+                        matchInfo.statusName18n
+                    }
+                }
+                TimeUtil.isTimeToday(matchInfo.startTime) -> {
+                    context.getString((R.string.home_tab_today))
+                }
+                else -> {
+                    isVisible = false
+                    ""
+                }
+            }
+        }
+
+        if (isTimeInPlay) {
             if (matchInfo.gameType == GameType.TN.key
                 || !isTimerEnable(matchInfo?.gameType, matchType)
                 || !needCountStatus(matchInfo.socketMatchStatus, matchInfo.leagueTime)) {
@@ -349,9 +380,14 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
             }
 
             binding.leagueOddMatchTime.visible()
-            var timeMillis = matchInfo.leagueTime?.toLong() ?: 0
-            onTimerUpdate(timeMillis * 1000, matchInfo)
+            var timeMillis = (matchInfo.leagueTime?.toLong() ?: 0) * 1000
+            if (sportMatchTimer.isRuning()
+                && abs(timeMillis - matchInfo.leagueTimeRecode) < 3_000) { // 3s以内忽略从新记时
+                return
+            }
 
+            matchInfo.leagueTimeRecode = timeMillis
+            onTimerUpdate(timeMillis, matchInfo)
             val isDecrease = matchInfo.gameType == GameType.BK.key
                     || matchInfo.gameType == GameType.RB.key
                     || matchInfo.gameType == GameType.AFT.key
@@ -373,10 +409,16 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
 
         if (TimeUtil.isTimeAtStart(matchInfo.startTime)) {
             var remainTime = matchInfo.remainTime ?: return
+            if (sportMatchTimer.isRuning()
+                && abs(remainTime - matchInfo.leagueTimeRecode) < 3_000) { // 3s以内忽略从新记时
+                return
+            }
+            matchInfo.leagueTimeRecode = remainTime
             onTimerUpdate2(remainTime, matchInfo)
             sportMatchTimer.start(1000, 1000, object : TimerTask() {
                 override fun run() {
-                    binding.root.post { onTimerUpdate2(--remainTime, matchInfo) }
+                    remainTime -= 1000
+                    binding.root.post { onTimerUpdate2(remainTime, matchInfo) }
                 }
             })
 
@@ -403,19 +445,18 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
     fun updateMatchInfo(matchInfo: MatchInfo?, matchType: MatchType) = binding.run {
         leagueOddMatchNameHome.text = matchInfo?.homeName
         leagueOddMatchNameAway.text = matchInfo?.awayName
-        ivHomeTeamLogo.setTeamLogo(matchInfo?.homeIcon)
-        ivAwayTeamLogo.setTeamLogo(matchInfo?.awayIcon)
         setupMatchScore(matchInfo, matchType)
-        leagueOddMatchPlayCount.text = matchInfo?.playCateNum.toString() + "+>"
+        leagueOddMatchPlayCount.text = matchInfo?.playCateNum.toString() + "+ >"
         leagueOddMatchFavorite.isSelected = matchInfo?.isFavorite ?: false
-        leagueNeutral.isSelected = matchInfo?.neutral == 1
         leagueNeutral.isVisible = matchInfo?.neutral == 1
 
-//            滚球动画 直播 显示控制
-        //itemView.space2.isVisible = (item.matchInfo?.eps == 1 || item.matchInfo?.liveVideo == 1)
         ivLive.isVisible = matchInfo?.liveVideo == 1 && matchInfo?.isLive == 1
-        ivPlay.isVisible = matchInfo?.liveVideo == 1 && matchInfo?.isLive != 1
+        ivPlay.isVisible = ivLive.isVisible
         ivAnimation.isVisible = !matchInfo?.trackerId.isNullOrEmpty()
+    }
+
+    fun updateFavoriteStatus(matchInfo: MatchInfo?) {
+        binding.leagueOddMatchFavorite.isSelected = matchInfo?.isFavorite ?: false
     }
 
     fun setupCsTextLayout(matchType: MatchType, item: MatchOdd) = binding.run {

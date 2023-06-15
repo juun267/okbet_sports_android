@@ -54,11 +54,7 @@ class SportLeagueAdapter2(
         }
     }
 
-    private fun updateMatch(index: Int, matchOdd: MatchOdd) {
-//        if (game_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !game_list.isComputingLayout) {
-//            sportLeagueAdapter.updateMatch(index, matchOdd)
-//        }
-    }
+    fun dataCount() = getDefItemCount()
 
     fun onOddsChangeEvent(oddsChangeEvent: OddsChangeEvent, subscribedMatchOdd: MutableMap<String, Pair<MatchOdd, Int>>) {
         if (oddsChangeEvent.oddsList.isNullOrEmpty() || subscribedMatchOdd.isEmpty()) {
@@ -68,7 +64,7 @@ class SportLeagueAdapter2(
         val matchOddWithPosition = subscribedMatchOdd[oddsChangeEvent.eventId] ?: return
 
         if (updateMatchOdds(matchOddWithPosition.first, oddsChangeEvent)) {
-            notifyItemChanged(matchOddWithPosition.second, matchOddWithPosition.first)
+            notifyItemChanged(matchOddWithPosition.second, SportMatchEvent.OddsChanged)
 //            updateMatch(leagueIndex, matchOdd)
 //            updateBetInfo(leagueOdd, oddsChangeEvent)
         }
@@ -166,7 +162,7 @@ class SportLeagueAdapter2(
                     val isSelected = odd.id?.let { QuickListManager.containOdd(it) } == true
                     if (odd.isSelected != isSelected) {
                         odd.isSelected = isSelected
-                        notifyItemChanged(matchOddPosition.second, matchOdd)
+                        notifyItemChanged(matchOddPosition.second, SportMatchEvent.OddSelected)
                         return@forEachIndexed
                     }
                 }

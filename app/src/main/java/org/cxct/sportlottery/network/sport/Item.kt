@@ -2,9 +2,11 @@ package org.cxct.sportlottery.network.sport
 
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguards.KeepMembers
+import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.common.proguards.KeepMembers
 
-@JsonClass(generateAdapter = true) @KeepMembers
+@JsonClass(generateAdapter = true)
+@KeepMembers
 data class Item(
     @Json(name = "code")
     val code: String,
@@ -18,6 +20,5 @@ data class Item(
     val sortNum: Int
 ) {
     var isSelected: Boolean = false
-    var hasPlay: Boolean = false
     var playCateNum: Int? = null
 }

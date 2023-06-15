@@ -49,16 +49,6 @@
                     android:layout_marginStart="@dimen/margin_5"
                     android:src="@drawable/ic_left" />
 
-                <!--            <include-->
-                <!--                android:id="@+id/lin_search"-->
-                <!--                layout="@layout/view_search_white"-->
-                <!--                android:layout_width="0dp"-->
-                <!--                android:layout_height="@dimen/margin_26"-->
-                <!--                android:layout_marginLeft="10dp"-->
-                <!--                android:layout_marginRight="@dimen/margin_15"-->
-                <!--                android:layout_weight="1"-->
-                <!--                android:visibility="invisible" />-->
-
                 <TextView
                     android:layout_width="0dp"
                     android:gravity="center"

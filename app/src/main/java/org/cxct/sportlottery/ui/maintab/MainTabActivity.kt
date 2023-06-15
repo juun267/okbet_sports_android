@@ -51,10 +51,8 @@ import org.cxct.sportlottery.ui.chat.ChatActivity
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment2
-import org.cxct.sportlottery.ui.maintab.menu.SportLeftFragment
 import org.cxct.sportlottery.ui.maintab.menu.SportLeftMenuFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
-import org.cxct.sportlottery.ui.sport.SportFragment
 import org.cxct.sportlottery.ui.sport.SportFragment2
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment
 import org.cxct.sportlottery.ui.sport.list.SportLeagueAdapter
@@ -207,7 +205,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
      */
     fun checkSportFragment(position: Int): Boolean {
         val fragment = fragmentHelper.getFragment(position)
-        if (fragment is SportFragment) {
+        if (fragment is SportFragment2) {
             return true
         }
         if (fragment is FavoriteFragment && !isOpenChatRoom()) {

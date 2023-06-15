@@ -10,10 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.google.android.material.appbar.AppBarLayout
-import kotlinx.android.synthetic.main.fragment_sport_list.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.TimeRangeEvent
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.showLoading
+import org.cxct.sportlottery.databinding.FragmentSportList2Binding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchOdd
@@ -24,11 +25,10 @@ import org.cxct.sportlottery.network.outright.odds.CategoryOdds
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
-import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
+import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.common.*
-import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
@@ -39,7 +39,7 @@ import java.util.*
 /**
  * @app_destination 滾球、即將、今日、早盤、冠軍、串關
  */
-class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(SportListViewModel::class) {
+class SportOutrightFragment: BindingSocketFragment<SportListViewModel, FragmentSportList2Binding>() {
 
     private val matchType = MatchType.OUTRIGHT
     private var gameType: String = GameType.BK.key
@@ -58,20 +58,30 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
         sportOutrightAdapter2.showLoading(R.layout.view_list_loading)
 //                sportOutrightAdapter.setPreloadItem()
         //切換球種後要重置位置
-        (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
-            sport_type_list,
+        (binding.sportTypeList.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
+            binding.sportTypeList,
             RecyclerView.State(),
             position)
         loading()
         unSubscribeAll()
-        viewModel.switchGameType(matchType, item)
-        iv_arrow.isSelected = true
+        load(item)
+        binding.ivArrow.isSelected = true
+    }
+
+    private fun load(item: Item) {
+        setMatchInfo(item.name, item.num.toString())
+        viewModel.switchGameType(matchType, item, Any())
+    }
+
+    private inline fun setMatchInfo(name: String, num: String) {
+        binding.tvSportName.text = name
+        binding.tvMatchNum.text = num
     }
 
 
     private val mOddsChangeListener by lazy {
         ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
-            if (game_list == null || context == null || oddsChangeEvent.oddsList.isNullOrEmpty()) {
+            if (context == null || oddsChangeEvent.oddsList.isNullOrEmpty()) {
                 return@OddsChangeListener
             }
 
@@ -91,11 +101,9 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
         if (timer == null) startTimer()
     }
 
-    override fun layoutId() = R.layout.fragment_sport_list
-
     private val sportOutrightAdapter2: SportOutrightAdapter2 by lazy {
 
-        game_list?.addOnScrollListener(object : OnScrollListener() {
+        binding.gameList.addOnScrollListener(object : OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     setOutrightLeagueAdapter(0)
@@ -114,12 +122,15 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
         }
     }
 
-    override fun onBindView(view: View) {
+    override fun onInitView(view: View) {
+        setupSportTypeList()
+        setupToolbar()
+    }
+
+    override fun onBindViewStatus(view: View) {
         EventBusUtil.targetLifecycle(this)
         arguments?.getString("gameType")?.let { gameType = it }
         gameType?.let { viewModel.gameType = it  }
-        setupSportTypeList()
-        setupToolbar()
         setupGameListView()
         initObserve()
         initSocketObserver()
@@ -137,7 +148,7 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
     }
 
     private fun setupSportTypeList() {
-        sport_type_list.apply {
+        binding.sportTypeList.apply {
             layoutManager = ScrollCenterLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
             adapter = gameTypeAdapter
@@ -148,32 +159,20 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
 
     private fun setupToolbar() {
 
-        appbar_layout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
-            offsetScrollListener?.invoke((-verticalOffset) / Math.max(1.0, appbar_layout.measuredHeight.toDouble()))
+        binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
+            offsetScrollListener?.invoke((-verticalOffset) / Math.max(1.0, binding.appbarLayout.measuredHeight.toDouble()))
         })
 
         //冠军不需要筛选
-        lin_filter.isVisible = false
-        lin_filter.setOnClickListener {
-            gameType?.let {
-                LeagueSelectActivity.start(requireContext(),
-                    it,
-                    matchType,
-                    null,
-                    viewModel.selectMatchIdList)
-            }
-        }
-
-        iv_arrow.bindExpanedAdapter(sportOutrightAdapter2) { setOutrightLeagueAdapter(120) }
+        binding.ivFilter.gone()
+        binding.ivArrow.bindExpanedAdapter(sportOutrightAdapter2) { setOutrightLeagueAdapter(120) }
     }
-    private fun setupGameListView() {
-        game_list.apply {
+    private fun setupGameListView() = binding.gameList.run {
 //            layoutManager = GridLayoutManager(context, 2)
-            layoutManager = SocketGridManager(context, 2)
-            adapter = sportOutrightAdapter2
-            if (viewModel.getMatchCount(matchType) > 0) {
-                sportOutrightAdapter2.showLoading(R.layout.view_list_loading)
-            }
+        layoutManager = SocketGridManager(context, 2)
+        adapter = sportOutrightAdapter2
+        if (viewModel.getMatchCount(matchType) > 0) {
+            sportOutrightAdapter2.showLoading(R.layout.view_list_loading)
         }
     }
 
@@ -181,16 +180,16 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
      * 設置冠軍adapter, 訂閱當前頁面上的資料
      */
     private fun setOutrightLeagueAdapter(delay: Long = 0) {
-        game_list?.removeCallbacks(subscribeVisibleRange)
+        binding.gameList.removeCallbacks(subscribeVisibleRange)
         unSubscribeAll()
-        game_list?.postDelayed(subscribeVisibleRange, delay)
+        binding.gameList.postDelayed(subscribeVisibleRange, delay)
     }
 
     private val subscribeVisibleRange by lazy {
         Runnable {
-            if (game_list == null
+            if (activity == null
                 || sportOutrightAdapter2.getCount() < 1
-                || game_list?.scrollState != RecyclerView.SCROLL_STATE_IDLE) {
+                || binding.gameList.scrollState != RecyclerView.SCROLL_STATE_IDLE) {
                 return@Runnable
             }
 
@@ -272,7 +271,7 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
 
         //當前玩法無賽事
         isNoEvents.distinctUntilChanged().observe(viewLifecycleOwner) {
-            sport_type_list.isVisible = !it
+            binding.sportTypeList.isVisible = !it
             hideLoading()
         }
 
@@ -307,7 +306,7 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
 
     private fun updateSportType(gameTypeList: List<Item>) {
         if (gameTypeList.isEmpty()) {
-            sport_type_list.isVisible = true
+            binding.sportTypeList.isVisible = true
             hideLoading()
             return
         }
@@ -317,30 +316,30 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
             gameTypeList.find { it.num > 0 }?.let {
                 it.isSelected = true
                 gameType = it.code
-                viewModel.switchGameType(matchType, it)
+                load(it)
             }
         } else {
             (gameTypeList.find { it.code == gameType } ?: gameTypeList.first()).let {
                 gameType = it.code
                 if (!it.isSelected) {
                     it.isSelected = true
-                    viewModel.switchGameType(matchType, it)
+                    load(it)
                 }
             }
         }
 
         gameTypeAdapter.setNewInstance(gameTypeList.toMutableList())
-        (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
-            sport_type_list,
+        (binding.sportTypeList.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
+            binding.sportTypeList,
             RecyclerView.State(),
             gameTypeList.indexOfFirst { it.isSelected })
-        sport_type_list?.post {
+        binding.sportTypeList.post {
             //球種如果選過，下次回來也需要滑動置中
             if (gameTypeList.isEmpty()) {
-                sport_type_list?.visibility = View.GONE
+                binding.sportTypeList.visibility = View.GONE
 
             } else {
-                sport_type_list?.visibility = if (mLeagueIsFiltered) View.GONE else View.VISIBLE
+                binding.sportTypeList.visibility = if (mLeagueIsFiltered) View.GONE else View.VISIBLE
             }
         }
     }
@@ -403,8 +402,7 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
     override fun onDestroyView() {
         super.onDestroyView()
         offsetScrollListener = null
-        game_list.adapter = null
-        game_list?.removeCallbacks(subscribeVisibleRange)
+        binding.sportTypeList.removeCallbacks(subscribeVisibleRange)
         stopTimer()
         unSubscribeAll()
         unSubscribeChannelHallSport()

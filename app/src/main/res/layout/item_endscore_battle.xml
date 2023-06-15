@@ -186,7 +186,8 @@
 
     </LinearLayout>
 
-    <TextView
+    <Button
+        android:id="@+id/tvExpand"
         android:layout_width="150dp"
         android:layout_height="38dp"
         android:gravity="center"

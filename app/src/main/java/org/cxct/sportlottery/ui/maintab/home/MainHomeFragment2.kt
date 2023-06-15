@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.fragment_main_home2.*
 import kotlinx.android.synthetic.main.layout_home_top.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
@@ -37,7 +36,6 @@ import org.cxct.sportlottery.util.goneWithSportSwitch
 import org.cxct.sportlottery.util.setTrialPlayGameDataObserve
 import org.cxct.sportlottery.util.setupBackTop
 import org.cxct.sportlottery.view.dialog.PopImageDialog
-import org.cxct.sportlottery.util.setupSportStatusChange
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -141,7 +139,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
             //隐藏时取消赛事监听
             unSubscribeChannelHallAll()
         } else {
-            homeToolbar.onRefreshMoney()
+            binding.homeToolbar.onRefreshMoney()
             refreshHotMatch()
             //返回页面时，刷新体育相关view状态
             checkToCloseView()
