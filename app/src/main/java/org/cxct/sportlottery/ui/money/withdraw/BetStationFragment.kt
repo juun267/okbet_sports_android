@@ -268,21 +268,23 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
         }
         btn_submit.setOnClickListener {
             modifyFinish()
-            viewModel.addWithdraw(
-                null,
-                viewModel.getChannelMode(),
-                et_amount.getText(),
-                et_password.getText(),
-                if (selectBettingStation == null) null else selectBettingStation!!.id,
-                TimeUtil.dateToDateFormat(
-                    mCalendar.time,
-                    TimeUtil.YMD_FORMAT
-                ) ?: "",
-                TimeUtil.dateToDateFormat(
-                    mCalendar.time,
-                    TimeUtil.HM_FORMAT_SS
-                ) ?: "",
-            )
+            viewModel.showCheckDeductMoneyDialog {
+                viewModel.addWithdraw(
+                    null,
+                    viewModel.getChannelMode(),
+                    et_amount.getText(),
+                    et_password.getText(),
+                    if (selectBettingStation == null) null else selectBettingStation!!.id,
+                    TimeUtil.dateToDateFormat(
+                        mCalendar.time,
+                        TimeUtil.YMD_FORMAT
+                    ) ?: "",
+                    TimeUtil.dateToDateFormat(
+                        mCalendar.time,
+                        TimeUtil.HM_FORMAT_SS
+                    ) ?: "",
+                )
+            }?.show(childFragmentManager,DeductDialog::class.java.name)
         }
     }
 
