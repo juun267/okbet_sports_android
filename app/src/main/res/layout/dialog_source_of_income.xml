@@ -73,7 +73,7 @@
                 android:background="@null"
                 android:minWidth="135dp"
                 android:minHeight="36dp"
-                android:text="@string/cancel"
+                android:text="@string/btn_cancel"
                 android:textAllCaps="false"
                 android:textColor="@color/color_FFFFFF_414655"
                 android:textSize="@dimen/textSize18sp" />

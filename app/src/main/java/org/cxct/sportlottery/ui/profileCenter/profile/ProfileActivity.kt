@@ -188,17 +188,19 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         sourceOtherFlag: Boolean = false,
         callBack: (item: DialogBottomDataEntity) -> Unit
     ) {
-        var item: DialogBottomDataEntity? = dialogBtmAdapter.data.find { it.flag }
+        var item: DialogBottomDataEntity? = list.find { it.flag }
         val listNew: MutableList<DialogBottomDataEntity> = mutableListOf()
+        var trueFlag = false
         list.forEach {
             val ne = it.copy()
             if (ne.name == currStr) {
                 ne.flag = true
+                trueFlag = true
             }
             listNew.add(ne)
         }
-        if (sourceOtherFlag) {
-            list.last().flag = true
+        if (sourceOtherFlag && !trueFlag && listNew.isNotEmpty()) {
+            listNew.last().flag = true
         }
         btnDialogTitle.text = title
         dialogBtmAdapter.data = listNew
@@ -351,7 +353,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                         SourceOfIncomeDialog.OnPositiveListener {
                         override fun positiveClick(str: String) {
                             val workstr = str.ifEmpty {
-                                "other"
+                                resources.getString(R.string.other)
                             }
                             tvSourceOfIncome.text = workstr
                             viewModel.userCompleteUserDetails(
