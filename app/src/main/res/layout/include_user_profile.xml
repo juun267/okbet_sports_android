@@ -51,7 +51,7 @@
                 android:ellipsize="end"
                 android:gravity="end"
                 android:maxLines="1"
-                android:text="@string/edit"
+                android:text="@string/set"
                 android:textColor="@color/color_6C7BA8_A7B2C4"
                 android:textSize="@dimen/textSize14sp" />
 
@@ -104,7 +104,7 @@
                 android:maxLines="1"
                 android:textColor="@color/color_6C7BA8_A7B2C4"
                 android:textSize="@dimen/textSize14sp"
-                android:text="@string/edit" />
+                android:text="@string/set" />
 
             <ImageView
                 android:id="@+id/iconBirthday"
@@ -155,7 +155,7 @@
                 android:maxLines="1"
                 android:textColor="@color/color_6C7BA8_A7B2C4"
                 android:textSize="@dimen/textSize14sp"
-                android:text="@string/edit" />
+                android:text="@string/set" />
 
             <ImageView
                 android:id="@+id/iconPlaceOfBirth"
@@ -206,7 +206,7 @@
                 android:maxLines="1"
                 android:textColor="@color/color_6C7BA8_A7B2C4"
                 android:textSize="@dimen/textSize14sp"
-                android:text="@string/edit" />
+                android:text="@string/set" />
 
             <ImageView
                 android:id="@+id/iconSourceOfIncome"
@@ -257,7 +257,7 @@
                 android:maxLines="1"
                 android:textColor="@color/color_6C7BA8_A7B2C4"
                 android:textSize="@dimen/textSize14sp"
-                android:text="@string/edit" />
+                android:text="@string/set" />
 
             <ImageView
                 android:id="@+id/iconNatureOfWork"
@@ -319,7 +319,7 @@
                 android:maxLines="1"
                 android:textColor="@color/color_6C7BA8_A7B2C4"
                 android:textSize="@dimen/textSize14sp"
-                android:text="@string/edit" />
+                android:text="@string/set" />
 
             <ImageView
                 android:id="@+id/iconProvinceCurrent"
@@ -370,7 +370,7 @@
                 android:maxLines="1"
                 android:textColor="@color/color_6C7BA8_A7B2C4"
                 android:textSize="@dimen/textSize14sp"
-                android:text="@string/edit" />
+                android:text="@string/set" />
 
             <ImageView
                 android:id="@+id/iconCityCurrent"
@@ -421,7 +421,7 @@
                 android:maxLines="1"
                 android:textColor="@color/color_6C7BA8_A7B2C4"
                 android:textSize="@dimen/textSize14sp"
-                android:text="@string/edit" />
+                android:text="@string/set" />
 
             <ImageView
                 android:id="@+id/iconAddressCurrent"
@@ -472,7 +472,7 @@
                 android:maxLines="1"
                 android:textColor="@color/color_6C7BA8_A7B2C4"
                 android:textSize="@dimen/textSize14sp"
-                android:text="@string/edit" />
+                android:text="@string/set" />
 
             <ImageView
                 android:id="@+id/iconZipCodeCurrent"
@@ -535,7 +535,7 @@
                 android:maxLines="1"
                 android:textColor="@color/color_6C7BA8_A7B2C4"
                 android:textSize="@dimen/textSize14sp"
-                android:text="@string/edit" />
+                android:text="@string/set" />
 
             <ImageView
                 android:id="@+id/iconProvincePermanent"
@@ -586,7 +586,7 @@
                 android:maxLines="1"
                 android:textColor="@color/color_6C7BA8_A7B2C4"
                 android:textSize="@dimen/textSize14sp"
-                android:text="@string/edit" />
+                android:text="@string/set" />
 
             <ImageView
                 android:id="@+id/iconCityPermanent"
@@ -637,7 +637,7 @@
                 android:maxLines="1"
                 android:textColor="@color/color_6C7BA8_A7B2C4"
                 android:textSize="@dimen/textSize14sp"
-                android:text="@string/edit" />
+                android:text="@string/set" />
 
             <ImageView
                 android:id="@+id/iconAddressPermanent"
@@ -688,7 +688,7 @@
                 android:maxLines="1"
                 android:textColor="@color/color_6C7BA8_A7B2C4"
                 android:textSize="@dimen/textSize14sp"
-                android:text="@string/edit" />
+                android:text="@string/set" />
 
             <ImageView
                 android:id="@+id/iconZipCodePermanent"
