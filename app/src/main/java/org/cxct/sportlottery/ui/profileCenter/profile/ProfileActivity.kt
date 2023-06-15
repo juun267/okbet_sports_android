@@ -188,7 +188,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         sourceOtherFlag: Boolean = false,
         callBack: (item: DialogBottomDataEntity) -> Unit
     ) {
-        var item: DialogBottomDataEntity? = dialogBtmAdapter.data.find { it.flag }
+        var item: DialogBottomDataEntity? = list.find { it.flag }
         val listNew: MutableList<DialogBottomDataEntity> = mutableListOf()
         list.forEach {
             val ne = it.copy()
