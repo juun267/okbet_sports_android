@@ -5,8 +5,9 @@
     android:background="@drawable/bg_gray_stroke_radius_3"
     xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center"
+    android:maxLines="1"
     android:textColor="@color/color_444E57"
-    android:textSize="@dimen/textSize12sp"
-    tools:text="0-0">
+    android:textSize="12sp"
+    tools:text="0 - 0">
 
 </TextView>

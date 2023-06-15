@@ -49,6 +49,7 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
 
     override fun onInitData() {
         super.onInitData()
+        loading()
         getHotMatchesData()
 
         if(viewModel.isLogin()){
@@ -70,6 +71,7 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
         //刷新热门赛事数据
         viewModel.getRecommend()
         viewModel.publicityRecommend.observe(this){
+            hideLoading()
             it.peekContent().let {data->
                 hotMatchAdapter.setList(data)
             }

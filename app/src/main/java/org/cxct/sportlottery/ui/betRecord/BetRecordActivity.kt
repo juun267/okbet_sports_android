@@ -9,13 +9,15 @@ import org.cxct.sportlottery.view.onClick
 import org.cxct.sportlottery.view.setColors
 
 class BetRecordActivity:BindingActivity<MainViewModel,ActivityBetRecordBinding>() {
+    //未结单
     private val unsettledFragment=UnsettledFragment()
+    //已结单
     private val settledFragment by lazy { SettledFragment() }
     override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
         setContentView(binding.root)
 
-        binding.apply {
+        binding.run {
 
             ivBack.onClick {
                 finish()

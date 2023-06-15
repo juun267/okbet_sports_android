@@ -67,17 +67,17 @@ data class MatchInfo(
 
     override var awayPoints: String? = null
 
-    override var homeCards: Int? = null
+    override var homeCards: Int = 0
 
-    override var awayCards: Int? = null
+    override var awayCards: Int = 0
 
-    override var homeYellowCards: Int? = null
+    override var homeYellowCards: Int = 0
 
-    override var awayYellowCards: Int? = null
+    override var awayYellowCards: Int = 0
 
-    override var homeCornerKicks: Int? = null
+    override var homeCornerKicks: Int = 0
 
-    override var awayCornerKicks: Int? = null
+    override var awayCornerKicks: Int = 0
 
     override var homeHalfScore: String? = null
     override var awayHalfScore: String? = null
