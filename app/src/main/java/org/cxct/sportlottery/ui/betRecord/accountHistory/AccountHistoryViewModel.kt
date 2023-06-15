@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.betRecord.accountHistory
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -27,6 +28,7 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.betRecord.BetListData
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.JsonUtil
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.TimeUtil
 
@@ -48,7 +50,7 @@ class AccountHistoryViewModel(
 ) {
 
     companion object {
-        const val PAGE_SIZE = 20
+        const val PAGE_SIZE = 2
     }
 
     val loading: LiveData<Boolean>
@@ -385,4 +387,132 @@ class AccountHistoryViewModel(
         }
     }
     //endregion 未結算
+
+
+
+    val unsettledData: LiveData<List<org.cxct.sportlottery.network.bet.list.Row>>
+        get() = _unsettledData
+    private val _unsettledData = MutableLiveData<List<org.cxct.sportlottery.network.bet.list.Row>>()
+
+
+    var pageIndex=1
+    private val pageSize=10
+    fun getUnsettledList() {
+        if (betListRequesting )
+            return
+        betListRequesting = true
+
+        val betListRequest = BetListRequest(
+            championOnly = 0,
+            statusList = listOf(0,1), //全部注單，(0:待成立, 1:未結算)
+            page = pageIndex,
+            gameType = "",
+            pageSize = pageSize
+        )
+
+        loading()
+        viewModelScope.launch {
+            val resultData=doNetwork(androidContext) {
+                OneBoSportApi.betService.getBetList(betListRequest)
+            }
+            hideLoading()
+            betListRequesting = false
+            if(resultData==null){
+                _responseFailed.postValue(true)
+                return@launch
+            }
+            pageIndex++
+            resultData.let { result ->
+                if (result.success) {
+                    result.rows?.let {
+                        _unsettledData.postValue(it)
+                        loginRepository.updateTransNum(result.total ?: 0)
+                    }
+                } else {
+                    if (result.code == NetWorkResponseType.REQUEST_TOO_FAST.code && requestCount < requestMaxCount) {
+                        _unsettledData.postValue(arrayListOf())
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
+    val settledData: LiveData<List<org.cxct.sportlottery.network.bet.list.Row>>
+        get() = _settledData
+    private val _settledData = MutableLiveData<List<org.cxct.sportlottery.network.bet.list.Row>>()
+
+
+
+    var pageSettledIndex=1
+    //已结单数据 开始时间
+    var settledStartTime:Long?=0L
+    //已结单数据 结束时间
+    var settledEndTime:Long?=0L
+    //总盈亏
+    var totalReward:Double=0.0
+    //总投注额
+    var totalBet:Double=0.0
+    //有效投注额
+    var totalEfficient:Double=0.0
+    fun getSettledList() {
+        if (betListRequesting )
+            return
+        betListRequesting = true
+
+        val betListRequest = BetListRequest(
+            championOnly = 0,
+            statusList = listOf(2,3,4,5,6,7), //234567 结算注单
+            page = pageSettledIndex,
+            gameType = "",
+            pageSize = pageSize,
+            startTime = settledStartTime.toString(),
+            endTime = settledEndTime.toString()
+        )
+        if(pageSize==1){
+            totalReward=0.0
+            totalBet=0.0
+            totalEfficient=0.0
+        }
+        loading()
+        viewModelScope.launch {
+            val resultData=doNetwork(androidContext) {
+                OneBoSportApi.betService.getBetList(betListRequest)
+            }
+            hideLoading()
+            betListRequesting = false
+            if(resultData==null){
+                _responseFailed.postValue(true)
+                return@launch
+            }
+            pageSettledIndex++
+            resultData.let { result ->
+                if (result.success) {
+                    result.rows?.let {
+                        _settledData.postValue(it)
+                        loginRepository.updateTransNum(result.total ?: 0)
+                    }
+                    result.other?.totalAmount?.let {
+                        totalBet=it
+                    }
+
+                    result.other?.win?.let {
+                        totalReward=it
+                    }
+
+                    result.other?.valueBetAmount?.let {
+                        totalEfficient=it
+                    }
+
+                } else {
+                    if (result.code == NetWorkResponseType.REQUEST_TOO_FAST.code && requestCount < requestMaxCount) {
+                        _settledData.postValue(arrayListOf())
+                    }
+                }
+            }
+        }
+    }
+
 }

@@ -57,18 +57,20 @@ class NewsViewModel(
     private var newsPage = 1
     private var loadingNews = false
 
-    private var sportPageIndex=1
+    var sportPageIndex=1
     private var sportPageSize=10
-
+    var sportStartTime:Long?=0L
+    var sportEndTime:Long?=0L
     fun getSportsNewsData() {
         if(loadingNews){
             return
         }
         sportPageIndex++
         loadingNews=true
+
         viewModelScope.launch {
             val result= doNetwork(androidContext) {
-                OneBoSportApi.newsService.getMessageList(NewsType.SYSTEM.code, sportPageIndex, sportPageSize)
+                OneBoSportApi.newsService.getMessageListByTime(NewsType.SYSTEM.code, sportPageIndex, sportPageSize,sportStartTime, sportEndTime)
             }
             loadingNews=false
             if(result!=null){

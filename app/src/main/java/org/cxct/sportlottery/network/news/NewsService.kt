@@ -12,4 +12,13 @@ interface NewsService {
         @Query("page") page: Int,
         @Query("pageSize") pageSize: Int
     ): Response<NewsResult>
+
+    @GET(MESSAGE_LIST)
+    suspend fun getMessageListByTime(
+        @Query("messageType") messageType: Int,
+        @Query("page") page: Int,
+        @Query("pageSize") pageSize: Int,
+        @Query("startTime") startTime: Long?,
+        @Query("endTime") endTime: Long?
+    ): Response<NewsResult>
 }

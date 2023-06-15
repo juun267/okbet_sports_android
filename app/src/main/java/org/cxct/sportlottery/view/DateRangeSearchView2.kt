@@ -24,7 +24,7 @@ class DateRangeSearchView2  @JvmOverloads constructor(context: Context, attrs: A
 
 
     var dateRange = -30
-    private var minusDays = 6
+    private var minusDays = 30
     private val typedArray by lazy { context.theme.obtainStyledAttributes(attrs, R.styleable.CalendarBottomSheetStyle, 0, 0) }
     private val bottomSheetLayout by lazy { typedArray.getResourceId(R.styleable.CalendarBottomSheetStyle_calendarLayout, R.layout.dialog_bottom_sheet_calendar) }
     private val bottomSheetView by lazy {
@@ -57,8 +57,8 @@ class DateRangeSearchView2  @JvmOverloads constructor(context: Context, attrs: A
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.component_date_range_new_selector2, this, false)
         addView(view)
-        dateRange = typedArray.getInteger(R.styleable.CalendarBottomSheetStyle_dateRange, -90)
-        minusDays = typedArray.getInteger(R.styleable.CalendarBottomSheetStyle_minusDays, 6)
+        dateRange = typedArray.getInteger(R.styleable.CalendarBottomSheetStyle_dateRange, -30)
+        minusDays = typedArray.getInteger(R.styleable.CalendarBottomSheetStyle_minusDays, minusDays)
 
         try {
             initDate(minusDays)
@@ -74,7 +74,7 @@ class DateRangeSearchView2  @JvmOverloads constructor(context: Context, attrs: A
     }
 
     private fun initDate(minusDays: Int) {
-        tv_start_date.text = TimeUtil.getDefaultDate2().startTime
+        tv_start_date.text = TimeUtil.getDefaultDate2(minusDays).startTime
         tv_end_date.text = TimeUtil.getDefaultDate2().endTime
     }
 

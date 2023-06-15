@@ -12,6 +12,7 @@ import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.betRecord.adapter.RecyclerUnsettledAdapter
 import org.cxct.sportlottery.ui.betRecord.dialog.PrintDialog
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.view.loadMore
 import org.cxct.sportlottery.view.onClick
 
 class UnsettledFragment:BindingFragment<AccountHistoryViewModel,FragmentUnsettledBinding>() {
@@ -55,6 +56,10 @@ class UnsettledFragment:BindingFragment<AccountHistoryViewModel,FragmentUnsettle
         empty.emptyView.onClick {
             requireActivity().finish()
         }
+
+        recyclerUnsettled.loadMore {
+            viewModel.getUnsettledList()
+        }
     }
 
 
@@ -66,15 +71,15 @@ class UnsettledFragment:BindingFragment<AccountHistoryViewModel,FragmentUnsettle
     private fun getUnsettledData(){
         //获取未结算数据
         loading()
-        viewModel.getBetList(true)
-        viewModel.betListData.observe(this){
+        viewModel.getUnsettledList()
+        viewModel.unsettledData.observe(this){
             hideLoading()
-            if(it.row.isEmpty()){
+            if(it.isEmpty()&&viewModel.pageIndex==0){
                 binding.empty.emptyView.visible()
                 return@observe
             }
             binding.recyclerUnsettled.visible()
-            mAdapter.setList(it.row)
+            mAdapter.addData(it)
         }
         viewModel.responseFailed.observe(this){
             hideLoading()
