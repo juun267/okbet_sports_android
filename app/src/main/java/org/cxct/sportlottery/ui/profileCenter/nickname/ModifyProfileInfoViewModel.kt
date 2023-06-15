@@ -14,6 +14,7 @@ import org.cxct.sportlottery.network.user.setWithdrawInfo.WithdrawInfoRequest
 import org.cxct.sportlottery.network.user.setWithdrawInfo.WithdrawInfoResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
+import org.cxct.sportlottery.ui.profileCenter.profile.Uide
 import org.cxct.sportlottery.util.VerifyConstUtil
 
 class ModifyProfileInfoViewModel(
@@ -67,10 +68,115 @@ class ModifyProfileInfoViewModel(
     fun confirmProfileInfo(@ModifyType modifyType: Int, inputContent: String) {
         if (checkInput(modifyType, inputContent)) {
             //暱稱設定是獨立一隻api
-            if (modifyType == ModifyType.NickName) {
-                editNickName(inputContent)
-            } else {
-                setWithdrawInfo(modifyType, inputContent)
+            when (modifyType) {
+                ModifyType.NickName -> {
+                    editNickName(inputContent)
+                }
+
+                ModifyType.PlaceOfBirth -> {
+                    userCompleteUserDetails(
+                        modifyType,
+                        Uide(
+                            placeOfBirth = inputContent
+                        )
+                    )
+                }
+
+                ModifyType.Address -> {
+                    userCompleteUserDetails(
+                        modifyType,
+                        Uide(
+                            address = inputContent
+                        )
+                    )
+                }
+
+                ModifyType.AddressP -> {
+                    userCompleteUserDetails(
+                        modifyType,
+                        Uide(
+                            permanentAddress = inputContent
+                        )
+                    )
+                }
+
+                ModifyType.ZipCode -> {
+                    userCompleteUserDetails(
+                        modifyType,
+                        Uide(
+                            zipCode = inputContent
+                        )
+                    )
+                }
+
+                ModifyType.ZipCodeP -> {
+                    userCompleteUserDetails(
+                        modifyType,
+                        Uide(
+                            permanentZipCode = inputContent
+                        )
+                    )
+                }
+
+                else -> {
+                    setWithdrawInfo(modifyType, inputContent)
+                }
+            }
+        }
+    }
+
+    /**
+     * 完善用户信息
+     */
+    private fun userCompleteUserDetails(@ModifyType modifyType: Int, uide: Uide) {
+        launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.bettingStationService.userCompleteUserDetails(uide)
+            }?.let {
+                it.let {
+                    _nicknameResult.postValue(it)
+                    when (modifyType) {
+                        ModifyType.PlaceOfBirth -> {
+                            uide.placeOfBirth?.let { it1 ->
+                                userInfoRepository.updatePlaceOfBirth(
+                                    it1
+                                )
+                            }
+                        }
+
+                        ModifyType.Address -> {
+                            uide.address?.let { it1 ->
+                                userInfoRepository.updateaddress(
+                                    it1
+                                )
+                            }
+                        }
+
+                        ModifyType.AddressP -> {
+                            uide.permanentAddress?.let { it1 ->
+                                userInfoRepository.updatePermanentAddress(
+                                    it1
+                                )
+                            }
+                        }
+
+                        ModifyType.ZipCode -> {
+                            uide.zipCode?.let { it1 ->
+                                userInfoRepository.updateZipCode(
+                                    it1
+                                )
+                            }
+                        }
+
+                        ModifyType.ZipCodeP -> {
+                            uide.permanentZipCode?.let { it1 ->
+                                userInfoRepository.updatepermanentZipCode(
+                                    it1
+                                )
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -81,26 +187,52 @@ class ModifyProfileInfoViewModel(
                 checkFullName(androidContext, inputContent)
                 fullNameErrorMsg.value == ""
             }
+
             ModifyType.QQNumber -> {
                 checkQQ(androidContext, inputContent)
                 qqErrorMsg.value == ""
             }
+
             ModifyType.Email -> {
                 checkEmail(androidContext, inputContent)
                 eMailErrorMsg.value == ""
             }
+
             ModifyType.WeChat -> {
                 checkWeChat(androidContext, inputContent)
                 weChatErrorMsg.value == ""
             }
+
             ModifyType.PhoneNumber -> {
                 checkPhone(androidContext, inputContent)
                 phoneErrorMsg.value == ""
             }
+
             ModifyType.NickName -> {
                 checkNickname(androidContext, inputContent)
                 nickNameErrorMsg.value == ""
             }
+
+            ModifyType.PlaceOfBirth -> {
+                true
+            }
+
+            ModifyType.Address -> {
+                true
+            }
+
+            ModifyType.AddressP -> {
+                true
+            }
+
+            ModifyType.ZipCode -> {
+                true
+            }
+
+            ModifyType.ZipCodeP -> {
+                true
+            }
+
             else -> {
                 false
             }
@@ -112,7 +244,12 @@ class ModifyProfileInfoViewModel(
         loading()
         viewModelScope.launch {
             doNetwork(androidContext) {
-                OneBoSportApi.userService.setWithdrawUserInfo(createWithdrawInfoRequest(modifyType, inputContent))
+                OneBoSportApi.userService.setWithdrawUserInfo(
+                    createWithdrawInfoRequest(
+                        modifyType,
+                        inputContent
+                    )
+                )
             }?.let { result ->
                 hideLoading()
                 _withdrawInfoResult.value = result
@@ -123,12 +260,16 @@ class ModifyProfileInfoViewModel(
         }
     }
 
-    private fun createWithdrawInfoRequest(@ModifyType modifyType: Int, inputContent: String): WithdrawInfoRequest {
+    private fun createWithdrawInfoRequest(
+        @ModifyType modifyType: Int,
+        inputContent: String
+    ): WithdrawInfoRequest {
         val userId = loginRepository.userId
         return when (modifyType) {
             ModifyType.RealName -> {
                 WithdrawInfoRequest(userId = userId, fullName = inputContent)
             }
+
             ModifyType.QQNumber -> WithdrawInfoRequest(userId = userId, qq = inputContent)
             ModifyType.Email -> WithdrawInfoRequest(userId = userId, email = inputContent)
             ModifyType.WeChat -> WithdrawInfoRequest(userId = userId, wechat = inputContent)
@@ -152,12 +293,12 @@ class ModifyProfileInfoViewModel(
         }
     }
 
-/*    fun nicknameDataChanged(context: Context, nickname: String): Boolean {
-        val nicknameError = checkNickname(context, nickname)
-        _nicknameFormState.value = NicknameFormState(nicknameError)
+    /*    fun nicknameDataChanged(context: Context, nickname: String): Boolean {
+            val nicknameError = checkNickname(context, nickname)
+            _nicknameFormState.value = NicknameFormState(nicknameError)
 
-        return nicknameError == null
-    }*/
+            return nicknameError == null
+        }*/
 
     private fun editNickName(nickname: String) {
         viewModelScope.launch {
@@ -182,7 +323,7 @@ class ModifyProfileInfoViewModel(
         }
     }
 
-     fun checkFullName(context: Context, fullName: String?) {
+    fun checkFullName(context: Context, fullName: String?) {
         _fullNameErrorMsg.value = when {
             !VerifyConstUtil.verifyFullName(fullName) -> androidContext.getString(R.string.error_input_has_blank)
             else -> ""

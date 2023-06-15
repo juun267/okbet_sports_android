@@ -7,8 +7,10 @@ import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asFlow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.network.common.PlayCate
@@ -121,13 +123,13 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
     val closePlayCate: LiveData<Event<ClosePlayCateEvent?>>
         get() = _closePlayCate
 
-    val recordBetNew: LiveData<RecordNewEvent?>
+    val recordBetNew: SharedFlow<RecordNewEvent?>
         get() = _recordBetNew
-    val recordWinsResult: LiveData<RecordNewEvent?>
+    val recordWinsResult: SharedFlow<RecordNewEvent?>
         get() = _recordWinsResult
-    val recordNewOkGame: LiveData<RecordNewEvent?>
+    val recordNewOkGame: SharedFlow<RecordNewEvent?>
         get() = _recordNewOkGame
-    val recordResultOkGame: LiveData<RecordNewEvent?>
+    val recordResultOkGame: SharedFlow<RecordNewEvent?>
         get() = _recordResultOkGame
 
     private val _globalStop = MutableLiveData<GlobalStopEvent?>()
@@ -151,10 +153,10 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
     private val _dataSourceChange = MutableLiveData<Boolean?>()
     private val _userInfoChange = MutableLiveData<Boolean?>()
     private val _closePlayCate = MutableLiveData<Event<ClosePlayCateEvent?>>()
-    private val _recordBetNew = MutableLiveData<RecordNewEvent?>()
-    private val _recordWinsResult = MutableLiveData<RecordNewEvent?>()
-    private val _recordNewOkGame = MutableLiveData<RecordNewEvent?>()
-    private val _recordResultOkGame = MutableLiveData<RecordNewEvent?>()
+    private val _recordBetNew = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100)
+    private val _recordWinsResult = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100)
+    private val _recordNewOkGame = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100)
+    private val _recordResultOkGame = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100)
 
 
     override fun onReceive(context: Context?, intent: Intent) {
@@ -352,22 +354,22 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
             EventType.RECORD_NEW -> {
                 //首页最新投注
                 val data = ServiceMessage.getRecondNew(jObjStr)
-                _recordBetNew.postValue(data)
+                _recordBetNew.emit(data)
             }
             EventType.RECORD_RESULT -> {
                 //首页最新大奖
                 val data = ServiceMessage.getRecondResult(jObjStr)
-                _recordWinsResult.postValue(data)
+                _recordWinsResult.emit(data)
             }
             EventType.RECORD_NEW_OK_GAMES -> {
                 //最新投注
                 val data = ServiceMessage.getRecondNew(jObjStr)
-                _recordNewOkGame.postValue(data)
+                _recordNewOkGame.emit(data)
             }
             EventType.RECORD_RESULT_OK_GAMES -> {
                 //最新大奖
                 val data = ServiceMessage.getRecondResult(jObjStr)
-                _recordResultOkGame.postValue(data)
+                _recordResultOkGame.emit(data)
             }
             else -> {}
 

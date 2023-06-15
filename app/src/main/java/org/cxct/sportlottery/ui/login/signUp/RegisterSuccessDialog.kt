@@ -71,7 +71,7 @@ class RegisterSuccessDialog: DialogFragment() {
 //            MainActivity.reStart(mContext)
 //        } else {
         val cxt = context ?: MultiLanguagesApplication.appContext
-        MainTabActivity.reStart(cxt)
+        MainTabActivity.reStart(cxt, fromLoginOrReg = true)
 //        }
     }
 
