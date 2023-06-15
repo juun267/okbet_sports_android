@@ -18,15 +18,11 @@ import android.widget.RelativeLayout
 import androidx.annotation.DrawableRes
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.core.view.postDelayed
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.android.synthetic.main.activity_main_tab.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.OddsType
@@ -36,7 +32,6 @@ import org.cxct.sportlottery.common.event.NetWorkEvent
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.event.ShowFavEvent
 import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -53,7 +48,6 @@ import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.ui.betRecord.BetRecordFragment
 import org.cxct.sportlottery.ui.betRecord.accountHistory.next.AccountHistoryNextFragment
-import org.cxct.sportlottery.ui.favorite.FavoriteActivity
 import org.cxct.sportlottery.ui.chat.ChatActivity
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
@@ -65,6 +59,7 @@ import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment
 import org.cxct.sportlottery.ui.sport.list.SportLeagueAdapter
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.PopImageDialog
+import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import kotlin.system.exitProcess
@@ -80,7 +75,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 Pair(BetRecordFragment::class.java, null),
                 Pair(FavoriteFragment::class.java, null),
                 Pair(ProfileCenterFragment::class.java, null),
-
             )
         )
     }
@@ -95,9 +89,12 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         var activityInstance: MainTabActivity? = null
 
         /**
-         *
+         * fromLoginOrReg  是否来自登录或者注册页面
          */
-        fun reStart(context: Context, showDialog: Boolean = false) {
+        fun reStart(context: Context, showDialog: Boolean = false,fromLoginOrReg: Boolean = false) {
+            if (fromLoginOrReg){
+                ToGcashDialog.needShow = true
+            }
             PopImageDialog.showHomeDialog = showDialog
             PopImageDialog.showSportDialog = showDialog
             PopImageDialog.showOKGameDialog = showDialog

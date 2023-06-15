@@ -1411,4 +1411,8 @@
     <string name="p090">感谢您与我们核实，请等待我们会在24 小时内处理您的请求。</string>
     <string name="P069">扣除金额提醒</string>
     <string name="P070">由于您还有 %s 的投注流水未完成，将收取 %s 的手续费！</string>
+    <string name="P113">Glife 会员提醒</string>
+    <string name="P114">您好，由于您在Glife渠道注册，按照官方要求，您的充值提现必须在Gcash程序中完成，如果您需要进行此操作，点击下方打开Gcash按钮。</string>
+    <string name="KYC049">取消</string>
+    <string name="LT028">打开</string>
 </resources>
