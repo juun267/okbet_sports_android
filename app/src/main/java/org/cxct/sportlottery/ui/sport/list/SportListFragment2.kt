@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.sport.list
 import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
+import android.view.Gravity
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
@@ -28,9 +29,11 @@ import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.ui.sport.SportFragment2
 import org.cxct.sportlottery.ui.sport.common.*
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
+import org.cxct.sportlottery.ui.sport.list.adapter.FooterGamesView
 import org.cxct.sportlottery.ui.sport.list.adapter.OnOddClickListener
 import org.cxct.sportlottery.ui.sport.list.adapter.SportLeagueAdapter2
 import org.cxct.sportlottery.ui.sport.list.adapter.SportMatchEvent
@@ -38,6 +41,7 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 import org.greenrobot.eventbus.Subscribe
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.util.*
 
 /**
@@ -115,13 +119,17 @@ class SportListFragment2
         initToolbar()
         initSportTypeList()
         initGameListView()
+
     }
+
+    private val mianViewModel: OKGamesViewModel by sharedViewModel()
 
     override fun onBindViewStatus(view: View) {
 
         reset()
         setupOddsChangeListener()
         EventBusUtil.targetLifecycle(this)
+        footView.setUp(this, mianViewModel)
         initObserve()
         initSocketObserver()
     }
@@ -172,10 +180,13 @@ class SportListFragment2
         sportTypeList.edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
     }
 
+    private val footView by lazy { FooterGamesView(binding.root.context) }
+
     private fun initGameListView() = binding.gameList.run {
 
         layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
         sportLeagueAdapter2.setEmptyView(R.layout.view_list_loading)
+        sportLeagueAdapter2.addFooterView(footView)
         adapter = sportLeagueAdapter2
         addOnScrollListener(object : OnScrollListener() {
 
@@ -299,22 +310,21 @@ class SportListFragment2
         }
 
         receiver.matchStatusChange.observe(this@SportListFragment2.viewLifecycleOwner) {
-            if (it == null) {
-                return@observe
-            }
+            val matchId = it?.matchStatusCO?.matchId ?: return@observe
 
-            val matchStatusChangeEvent = it!!
-            val isFinished = matchStatusChangeEvent.matchStatusCO?.status == GameMatchStatus.FINISH.value
-            val matchId = matchStatusChangeEvent.matchStatusCO?.matchId
+
+            val isFinished = it.matchStatusCO?.status == GameMatchStatus.FINISH.value
+
             val matchOddPosition = subscribedMatchOdd[matchId] ?: return@observe
             if (isFinished) {
                 sportLeagueAdapter2.removeMatchOdd(matchOddPosition.first)
             } else {
                 if (SocketUpdateUtil.updateMatchStatus(matchOddPosition.first.matchInfo?.gameType,
-                        matchOddPosition.first, matchStatusChangeEvent, context)) {
+                        matchOddPosition.first, it, context)) {
                     sportLeagueAdapter2.notifyItemChanged(matchOddPosition.second)
                 }
             }
+
 
         }
 

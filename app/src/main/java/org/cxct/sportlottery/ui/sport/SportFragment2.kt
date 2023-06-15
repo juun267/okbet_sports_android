@@ -6,12 +6,14 @@ import androidx.lifecycle.distinctUntilChanged
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
+import org.cxct.sportlottery.common.extentions.newInstanceFragment
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.FragmentSport2Binding
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.sport.SportMenuData
+import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.endscore.EndScoreFragment
@@ -22,6 +24,7 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.FragmentHelper2
 import org.cxct.sportlottery.util.phoneNumCheckDialog
+import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.view.tablayout.TabSelectedAdapter
 
@@ -58,6 +61,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     override fun onInitView(view: View) {
         initToolBar()
         initTabLayout()
+        showSportDialog()
     }
 
     override fun onBindViewStatus(view: View) {
@@ -260,6 +264,15 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             null
         }
     }
-
+    private fun showSportDialog(){
+        if (PopImageDialog.showSportDialog) {
+            PopImageDialog.showSportDialog = false
+            if (PopImageDialog.checkImageTypeAvailable(ImageType.DIALOG_SPORT.code)) {
+                requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
+                    putInt(PopImageDialog.IMAGE_TYPE, ImageType.DIALOG_SPORT.code)
+                }).show(childFragmentManager, PopImageDialog::class.simpleName)
+            }
+        }
+    }
 
 }

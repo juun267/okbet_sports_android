@@ -74,7 +74,7 @@ class BackService : Service() {
         const val URL_SEND_MESSAGE = "/ws/notify/room/{roomId}/sendMessage"//描述: 传送指定房间聊天讯息
 
         private const val HEART_BEAT_RATE = 10 * 1000 //每隔10秒進行一次對長連線的心跳檢測
-        private const val RECONNECT_LIMIT = 10 //斷線後重連次數限制
+        private const val RECONNECT_LIMIT = 1 //斷線後重連次數限制
         private const val LOADING_TIME_INTERVAL: Long = 500
     }
 
@@ -92,6 +92,8 @@ class BackService : Service() {
     private var errorFlag = false // Stomp connect錯誤
     private var reconnectionNum = 0//重新連接次數
     private var delay: Boolean = false
+    //切换到后台，大约两分钟后，切换会前台，会导致这个频道被订阅两次，
+    private var firstSetNotifyAll: Boolean = true
 
     inner class MyBinder : Binder() {
         val service: BackService
@@ -181,9 +183,12 @@ class BackService : Service() {
 
                 //訂閱用戶私人頻道
                 subscribeChannel(if (mToken.isEmpty()) URL_USER else URL_USER_PRIVATE)
-
-                //訂閱全體公共頻道
-                subscribeChannel(URL_ALL)
+                //这个只让设置一次频道，避免出现数据重复订阅的情况
+                if (firstSetNotifyAll){
+                    firstSetNotifyAll=false
+                    //訂閱全體公共頻道
+                    subscribeChannel(URL_ALL)
+                }
                 subscribeChannel(URL_PLATFORM)
 
                 //建立連線

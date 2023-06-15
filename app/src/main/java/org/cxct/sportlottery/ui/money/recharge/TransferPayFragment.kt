@@ -44,6 +44,7 @@ import kotlinx.android.synthetic.main.transfer_pay_fragment.tv_fee_rate
 import kotlinx.android.synthetic.main.transfer_pay_fragment.tv_remark
 import kotlinx.android.synthetic.main.transfer_pay_fragment.txv_pay_bank
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.common.RechType
 import org.cxct.sportlottery.network.money.MoneyAddRequest
@@ -664,12 +665,12 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 TextUtil.formatBetQuota(
                     ArithUtil.toMoneyFormatForHint(
                         mSelectRechCfgs?.minMoney ?: 0.00
-                    ).toInt()
+                    ).toIntS(Int.MAX_VALUE)
                 ),
                 TextUtil.formatBetQuota(
                     ArithUtil.toMoneyFormatForHint(
                         mSelectRechCfgs?.maxMoney ?: 999999.00
-                    ).toInt()
+                    ).toIntS(Int.MAX_VALUE)
                 )
             )
         )

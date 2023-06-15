@@ -1,9 +1,8 @@
 package org.cxct.sportlottery.ui.sport.list.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
@@ -27,10 +26,10 @@ import org.cxct.sportlottery.ui.sport.common.OddButtonPagerAdapter2
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.needCountStatus
-import org.cxct.sportlottery.util.setTeamLogo
 import org.cxct.sportlottery.view.layoutmanager.CustomLinearLayoutManager
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import java.util.*
+import kotlin.math.abs
 
 class SportMatchVH(private val binding: ItemSportOdd2Binding,
                    private val onFavoriteClick: (String) -> Unit): BaseViewHolder(binding.root) {
@@ -172,10 +171,17 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
             return
         }
 
-        tvYellowCards.visible()
-        tvRedCards.visible()
-        tvRedCards.text = " ${(matchInfo.homeCards ?: 0)}-${matchInfo.awayCards ?: 0}"
-        tvYellowCards.text = " ${(matchInfo.homeYellowCards ?: 0)}-${matchInfo.awayYellowCards ?: 0}"
+        setCardsNum(tvRedCards, matchInfo.homeCards, matchInfo.awayCards)
+        setCardsNum(tvRedCards, matchInfo.homeYellowCards, matchInfo.awayYellowCards)
+    }
+
+    private inline fun setCardsNum(textView: TextView, homeCards: Int, awayCards: Int) {
+        if (homeCards + awayCards == 0) {
+            textView.gone()
+        } else {
+            textView.visible()
+            textView.text = " ${(homeCards)}-${awayCards}"
+        }
     }
 
     private fun setFtScoreText(matchInfo: MatchInfo) {
@@ -319,15 +325,17 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         binding.leagueOddMatchTime.text = if (timeMillis > 1000) {
             TimeUtil.longToMmSs(timeMillis)
         } else {
-            binding.root.context.getString(R.string.time_up)
+            "00:00"
         }
-        matchInfo.leagueTime = (timeMillis / 1000).toInt()
+
+        matchInfo.leagueTimeRecode = timeMillis
     }
 
-    private fun onTimerUpdate2(timeMillis: Long) {
+    private fun onTimerUpdate2(timeMillis: Long, matchInfo: MatchInfo) {
         binding.leagueOddMatchTime.text = String.format(
             binding.root.context.getString(R.string.at_start_remain_minute),
             if (timeMillis > 1000) TimeUtil.longToMinute(timeMillis) else 0)
+        matchInfo.leagueTimeRecode = timeMillis
     }
 
     fun setupMatchTimeAndStatus(matchInfo: MatchInfo,
@@ -363,9 +371,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
             }
         }
 
-        Log.e("For Test", "======>>> setupMatchTimeAndStatus 111")
         if (isTimeInPlay) {
-            Log.e("For Test", "======>>> setupMatchTimeAndStatus 2222")
             if (matchInfo.gameType == GameType.TN.key
                 || !isTimerEnable(matchInfo?.gameType, matchType)
                 || !needCountStatus(matchInfo.socketMatchStatus, matchInfo.leagueTime)) {
@@ -373,16 +379,15 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
                 return
             }
 
-            Log.e("For Test", "======>>> setupMatchTimeAndStatus 333  ${matchInfo.leagueTimeRecode} ${sportMatchTimer.isRuning()}")
             binding.leagueOddMatchTime.visible()
-            var timeMillis = matchInfo.leagueTime?.toLong() ?: 0
-            if (timeMillis == matchInfo.leagueTimeRecode && sportMatchTimer.isRuning()) {
+            var timeMillis = (matchInfo.leagueTime?.toLong() ?: 0) * 1000
+            if (sportMatchTimer.isRuning()
+                && abs(timeMillis - matchInfo.leagueTimeRecode) < 3_000) { // 3s以内忽略从新记时
                 return
             }
 
-            Log.e("For Test", "======>>> setupMatchTimeAndStatus 4444")
             matchInfo.leagueTimeRecode = timeMillis
-//            onTimerUpdate(timeMillis * 1000, matchInfo)
+            onTimerUpdate(timeMillis, matchInfo)
             val isDecrease = matchInfo.gameType == GameType.BK.key
                     || matchInfo.gameType == GameType.RB.key
                     || matchInfo.gameType == GameType.AFT.key
@@ -393,8 +398,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
                     } else {
                         timeMillis += 1000
                     }
-                    matchInfo.remainTime = timeMillis
-                    Log.e("For Test", "======>>> setupMatchTimeAndStatus 5555 $timeMillis")
+
                     binding.root.post { onTimerUpdate(timeMillis, matchInfo) }
                 }
             })
@@ -404,20 +408,17 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
 
 
         if (TimeUtil.isTimeAtStart(matchInfo.startTime)) {
-            Log.e("For Test", "======>>> setupMatchTimeAndStatus 6666")
             var remainTime = matchInfo.remainTime ?: return
-            if (remainTime == matchInfo.leagueTimeRecode && sportMatchTimer.isRuning()) {
+            if (sportMatchTimer.isRuning()
+                && abs(remainTime - matchInfo.leagueTimeRecode) < 3_000) { // 3s以内忽略从新记时
                 return
             }
-            Log.e("For Test", "======>>> setupMatchTimeAndStatus 7777")
             matchInfo.leagueTimeRecode = remainTime
-//            onTimerUpdate2(remainTime, matchInfo)
+            onTimerUpdate2(remainTime, matchInfo)
             sportMatchTimer.start(1000, 1000, object : TimerTask() {
                 override fun run() {
-                    Log.e("For Test", "======>>> setupMatchTimeAndStatus 8888 $remainTime")
                     remainTime -= 1000
-                    matchInfo.remainTime = remainTime
-                    binding.root.post { onTimerUpdate2(remainTime) }
+                    binding.root.post { onTimerUpdate2(remainTime, matchInfo) }
                 }
             })
 
