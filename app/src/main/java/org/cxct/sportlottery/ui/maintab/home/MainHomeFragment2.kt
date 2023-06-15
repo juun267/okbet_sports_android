@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.layout_home_top.*
-import kotlinx.android.synthetic.main.fragment_main_home.*
+import kotlinx.android.synthetic.main.fragment_main_home2.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
