@@ -29,6 +29,7 @@ import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.network.message.Row
+import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.news.HomeNewsAdapter
@@ -163,12 +164,11 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         }
         viewModel.gotConfig.observe(viewLifecycleOwner) { event ->
             viewModel.getSportMenuFilter()
-            if (MultiLanguagesApplication.showHomeDialog) {
-                MultiLanguagesApplication.showHomeDialog = false
-                MultiLanguagesApplication.showPromotionPopupDialog(requireActivity() as AppCompatActivity)
-                if (PopImageDialog.checkImageTypeAvailable(7)) {
+            if (PopImageDialog.showHomeDialog) {
+                PopImageDialog.showHomeDialog = false
+                if (PopImageDialog.checkImageTypeAvailable(ImageType.DIALOG_HOME.code)) {
                     requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
-                        putInt(PopImageDialog.IMAGE_TYPE, 7)
+                        putInt(PopImageDialog.IMAGE_TYPE, ImageType.DIALOG_HOME.code)
                     }).show(childFragmentManager, PopImageDialog::class.simpleName)
                 }
             }
