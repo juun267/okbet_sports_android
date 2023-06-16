@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="100dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:background="#000000"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvBattleTeam"
+        android:text="Battle\nTeam"
+        android:textColor="@color/color_FFFFFF"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:textSize="10sp"
+        android:gravity="center"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:id="@+id/tvHomeTeamName"
+        android:text="主队"
+        android:textColor="@color/color_FFFFFF"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:textSize="10sp"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:id="@+id/tvAwayTeamName"
+        android:text="客队"
+        android:textColor="@color/color_FFFFFF"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:textSize="10sp"
+        android:gravity="center"
+        android:layout_weight="1"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

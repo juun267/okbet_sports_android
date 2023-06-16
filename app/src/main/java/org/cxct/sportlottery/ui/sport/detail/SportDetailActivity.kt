@@ -198,21 +198,29 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         collaps_toolbar.isVisible = false
                         live_view_tool_bar.release()
                         showChatWebView(false)
-//                        setScrollEnable(true)
                     }
                 }
             }
         }
 
+        if (matchInfo?.gameType == GameType.BB.name || matchInfo?.gameType == GameType.ES.name) {
+            binding.detailToolBarViewPager.isUserInputEnabled = false
+            binding.flRdContainer.gone()
+        }
+
         topBarFragmentList = listOf<Fragment>(SportToolBarTopFragment().apply {
-            Bundle().put("matchInfo", matchInfo?.toJson())
+            arguments = Bundle().also {
+                it.put("matchInfo", this@SportDetailActivity.matchInfo?.toJson())
+            }
         }, SportChartFragment().apply {
-            Bundle().put("matchInfo", matchInfo?.toJson())
+            arguments = Bundle().also {
+                it.put("matchInfo", this@SportDetailActivity.matchInfo?.toJson())
+            }
         })
         sportToolBarTopFragment = topBarFragmentList[0] as SportToolBarTopFragment
         sportChartFragment = topBarFragmentList[1] as SportChartFragment
 
-        detailToolBarViewPager.adapter =
+        binding.detailToolBarViewPager.adapter =
             DetailTopFragmentStateAdapter(this, topBarFragmentList.toMutableList())
         hIndicator.run {
             setIndicatorColor(
@@ -221,11 +229,20 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             val height = 4.dp
             itemWidth = 10.dp
             itemHeight = height
-            mRadius = itemWidth
+            mRadius = itemWidth.toFloat()
             setSpacing(height)
             resetItemCount(2)
         }
-
+        binding.detailToolBarViewPager.registerOnPageChangeCallback(object :
+            OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                Timber.d("onPageSelectedListener:position:${position}")
+                if (position == 1) {
+                    sportChartFragment.notifyRcv()
+                }
+            }
+        })
         flRdContainer.background = DrawableCreatorUtils.getCommonBackgroundStyle(
             14, solidColor = R.color.transparent_black_20
         )
@@ -705,7 +722,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
 
     private fun initUI() {
-
         oddsDetailListAdapter =
             OddsDetailListAdapter(OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
                 if (mIsEnabled) {
@@ -839,10 +855,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                             oddsDetailListAdapter?.awayName = away
                         }
                         //endregion
-
                         tv_toolbar_home_name.text = matchInfo.homeName ?: ""
                         tv_toolbar_away_name.text = matchInfo.awayName ?: ""
                         sportToolBarTopFragment.setupMatchInfo(matchInfo, true)
+                        sportChartFragment.updateMatchInfo(matchInfo)
                     }
                     setupLiveView(result.oddsDetailData?.matchOdd?.matchInfo?.liveVideo)
                 } else {
@@ -996,6 +1012,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                                 tv_toolbar_home_name.text = matchInfo?.homeName ?: ""
                                 tv_toolbar_away_name.text = matchInfo?.awayName ?: ""
                                 sportToolBarTopFragment.setupMatchInfo(matchOdd.matchInfo)
+                                sportChartFragment.updateMatchInfo(matchOdd.matchInfo)
                             }
                         }
                     }
