@@ -314,7 +314,7 @@
     <string name="paymaya_recharge_hint">Mỗi lần đăng nhập vui lòng thành viên kiểm tra tài khoản PayMaya có được sử dụng hay không. Chúng tôi không thể kiểm tra khoản thanh toán vào tài khoản đã hết hạn, và sẽ không chịu trách nhiệm về việc đó!</string>
     <string name="title_pay_channel">Phương thức thanh toán</string>
     <string name="title_choose_pay_channel">Chọn phương thức thanh toán</string>
-    <string name="title_pay_gap">Tài khoản thanh toán</string>
+    <string name="M132">Chọn tài khoản thanh toán</string>
     <string name="title_choose_pay_gap">Chọn tài khoản thanh toán</string>
     <string name="title_pay_bank">Ngân hàng thanh toán</string>
     <string name="title_choose_pay_bank">Chọn ngân hàng thanh toán</string>

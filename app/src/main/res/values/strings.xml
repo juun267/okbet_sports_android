@@ -324,7 +324,7 @@
     <string name="paymaya_recharge_hint">Please log in the member to check whether the PayMaya account is used before each payment. The company is not responsible for failing to check the overdue account.</string>
     <string name="title_pay_channel">Payment channels</string>
     <string name="title_choose_pay_channel">Payment channels</string>
-    <string name="title_pay_gap">Pumili ng account</string>
+    <string name="M132">Payment Account</string>
     <string name="title_choose_pay_gap">Pumili ng account</string>
     <string name="title_pay_bank">Payment bank</string>
     <string name="title_choose_pay_bank">Payment bank</string>
