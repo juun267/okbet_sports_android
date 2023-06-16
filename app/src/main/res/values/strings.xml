@@ -366,6 +366,7 @@
     <string name="online_juan">JuanCash</string>
     <string name="online_dispenshing">Withdraw</string>
     <string name="online_online_bank">Online Banking</string>
+    <string name="aub">AUB</string>
     <string name="online_gcash">Gcash</string>
     <string name="online_grab">GrabPay</string>
     <string name="online_maya">PayMaya</string>
@@ -1497,4 +1498,5 @@
     <string name="J459">Tips</string>
     <string name="P111">Address should include</string>
     <string name="P110">Unit/Room No. /Floor, Building Name, Lot/ Block/Phase/House Number, Street Name</string>
+
 </resources>

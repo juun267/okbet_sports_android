@@ -173,6 +173,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             OnlineType.PAYPAL.type -> R.drawable.ic_paypal_type
             OnlineType.DRAGON_PAY.type -> R.drawable.ic_gragon_pay_type
             OnlineType.FORTUNE_PAY.type -> R.drawable.icon_fortunepay
+            OnlineType.AUB.type -> R.drawable.ic_aub
             else -> R.drawable.ic_online_pay_type
         }
         return this
@@ -373,7 +374,6 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
         //產生對應 spinner 選單
         var count = 1
-
         payRoadSpannerList = mutableListOf()
 
         if (rechCfgsList.size > 1)

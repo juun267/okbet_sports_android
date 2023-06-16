@@ -47,5 +47,6 @@ enum class OnlineType(val type : Int) {
     MOMOPAY(102),//MoMoPay
     ZALOPAY(103),//ZaloPay
     VIETTELPAY(107),//ViettelPay
-    RECHARGE_CARD(108)//刮刮卡充值
+    RECHARGE_CARD(108),//刮刮卡充值
+    AUB(213)//AUB银行
 }
