@@ -5,8 +5,10 @@ import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
@@ -16,9 +18,12 @@ import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.animDuang
 import org.cxct.sportlottery.net.games.data.OKGameBean
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.enterThirdGame
 import org.cxct.sportlottery.util.loginedRun
+import org.cxct.sportlottery.view.transform.TransformInDialog
 import splitties.views.dsl.core.add
 
 class FooterGamesView @JvmOverloads constructor(
@@ -29,14 +34,27 @@ class FooterGamesView @JvmOverloads constructor(
 
     private val gameAdapter by lazy { FooterGameAdapter(::onFavoriteClick, ::onGameClick) }
     private lateinit var gameList: RecyclerView
-    private lateinit var lifecycleOwner: LifecycleOwner
+    private lateinit var fragment: BaseFragment<*>
     private lateinit var okGamesViewModel: OKGamesViewModel
+    private lateinit var nomoeText: TextView
 
     init {
         12.dp.let { setPadding(it, 0, it, 0) }
         orientation = VERTICAL
+        setBackgroundResource(R.color.color_F8F9FD)
+        addNomoreText()
         initGameList()
         addOKBingo()
+    }
+
+    private fun addNomoreText() {
+        nomoeText = AppCompatTextView(context)
+        nomoeText.setPadding(0, 10.dp, 0, 0)
+        nomoeText.setTextColor(ContextCompat.getColor(context, R.color.color_BEC7DC))
+        nomoeText.gravity = Gravity.CENTER
+        nomoeText.textSize = 12f
+        nomoeText.text = "- No more -"
+        addView(nomoeText, ViewGroup.LayoutParams(-1, -2))
     }
 
 
@@ -83,10 +101,10 @@ class FooterGamesView @JvmOverloads constructor(
         addView(gameList)
     }
 
-    fun setUp(lifecycleOwner: LifecycleOwner, viewmodel: OKGamesViewModel) {
-        this.lifecycleOwner = lifecycleOwner
+    fun setUp(fragment: BaseFragment<*>, viewmodel: OKGamesViewModel) {
+        this.fragment = fragment
         this.okGamesViewModel = viewmodel
-        initObserver(lifecycleOwner, viewmodel)
+        initObserver(fragment, viewmodel)
         viewmodel.getOKGamesHall()
     }
 
@@ -102,7 +120,15 @@ class FooterGamesView @JvmOverloads constructor(
         }
 
         enterThirdGameResult.observe(lifecycleOwner) {
+            if (fragment.isVisible) enterThirdGame(fragment, viewmodel, it.second, it.first)
+        }
 
+        gameBalanceResult.observe(fragment) {
+            it.getContentIfNotHandled()?.let { event ->
+                TransformInDialog(event.first, event.second, event.third) {
+                    enterThirdGame(fragment, viewmodel,it, event.first)
+                }.show(fragment.childFragmentManager, null)
+            }
         }
     }
 
@@ -116,7 +142,8 @@ class FooterGamesView @JvmOverloads constructor(
 
     private fun onGameClick(gameBean: OKGameBean) {
         loginedRun(context) {
-
+            okGamesViewModel.requestEnterThirdGame(gameBean, fragment)
+            okGamesViewModel.addRecentPlay(gameBean)
         }
     }
 

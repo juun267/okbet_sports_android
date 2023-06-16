@@ -1123,10 +1123,10 @@ fun View.bindExpanedAdapter(adapter: ExpanableOddsAdapter, block: ((Boolean) -> 
     }
 }
 
-fun BaseFragment<out MainHomeViewModel>.enterThirdGame(
-    result: EnterThirdGameResult,
-    firmType: String,
-) {
+fun enterThirdGame(baseFragment: BaseFragment<*>,
+                   viewModel: MainHomeViewModel,
+                   result: EnterThirdGameResult,
+                   firmType: String) = baseFragment.run {
     hideLoading()
     when (result.resultType) {
         EnterThirdGameResult.ResultType.SUCCESS -> context?.run {
@@ -1147,6 +1147,13 @@ fun BaseFragment<out MainHomeViewModel>.enterThirdGame(
     }
     if (result.resultType != EnterThirdGameResult.ResultType.NONE)
         viewModel.clearThirdGame()
+}
+
+fun BaseFragment<out MainHomeViewModel>.enterThirdGame(
+    result: EnterThirdGameResult,
+    firmType: String,
+) {
+    enterThirdGame(this, viewModel, result, firmType)
 }
 
 // 设置优惠活动点击事件

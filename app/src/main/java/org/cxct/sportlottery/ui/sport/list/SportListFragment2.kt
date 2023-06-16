@@ -3,20 +3,21 @@ package org.cxct.sportlottery.ui.sport.list
 import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
-import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
-import androidx.lifecycle.distinctUntilChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.google.android.material.appbar.AppBarLayout
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.TimeRangeEvent
 import org.cxct.sportlottery.common.extentions.clean
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.rotationAnimation
+import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
@@ -29,19 +30,14 @@ import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.ui.sport.SportFragment2
 import org.cxct.sportlottery.ui.sport.common.*
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
-import org.cxct.sportlottery.ui.sport.list.adapter.FooterGamesView
-import org.cxct.sportlottery.ui.sport.list.adapter.OnOddClickListener
-import org.cxct.sportlottery.ui.sport.list.adapter.SportLeagueAdapter2
-import org.cxct.sportlottery.ui.sport.list.adapter.SportMatchEvent
+import org.cxct.sportlottery.ui.sport.list.adapter.*
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 import org.greenrobot.eventbus.Subscribe
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.util.*
 
 /**
@@ -89,7 +85,6 @@ class SportListFragment2
         matchType = (arguments?.getSerializable("matchType") as MatchType?) ?: MatchType.IN_PLAY
         gameType = arguments?.getString("gameType")
         viewModel.gameType = gameType ?: GameType.FT.key
-        viewModel.sportMenuResult.clean()
         viewModel.selectMatchIdList = arrayListOf()
         gameTypeAdapter.setNewInstance(null)
         clearData()
@@ -99,11 +94,38 @@ class SportListFragment2
         setupToolbarStatus()
     }
 
+    fun resetFooterView(footerView: View) {
+
+        footerView.gone()
+        if (footerView.tag == sportLeagueAdapter2) {
+            return
+        }
+
+        (footerView.parent as ViewGroup?)?.let { it.removeView(footerView) }
+        footerView.tag = sportLeagueAdapter2
+        sportLeagueAdapter2.addFooterView(footerView, 1)
+    }
+
+    private val loadingHolder by lazy {
+        Gloading.wrapView(binding.gameList)
+    }
+
+    override fun showLoading() {
+        if (!loadingHolder.isLoading) {
+            loadingHolder.showLoading()
+        }
+    }
+
+    override fun dismissLoading() {
+        loadingHolder.showLoadSuccess()
+    }
+
     fun reload() {
         reset()
         scrollBackTop()
         binding.appbarLayout.scrollBy(0, 0)
         viewModel.loadMatchType(matchType)
+        showLoading()
     }
 
     private fun scrollBackTop() = binding.appbarLayout.run {
@@ -122,14 +144,11 @@ class SportListFragment2
 
     }
 
-    private val mianViewModel: OKGamesViewModel by sharedViewModel()
-
     override fun onBindViewStatus(view: View) {
 
         reset()
         setupOddsChangeListener()
         EventBusUtil.targetLifecycle(this)
-        footView.setUp(this, mianViewModel)
         initObserve()
         initSocketObserver()
     }
@@ -142,7 +161,7 @@ class SportListFragment2
         if (!hidden) {
             //receiver.oddsChangeListener為activity底下共用, 顯示當前畫面時需重新配置listener
             setupOddsChangeListener()
-            resubscribeChannel(if (needDalay()) 80 else 0)
+            resubscribeChannel(20)
         } else {
             clearSubscribeChannels()
         }
@@ -150,7 +169,7 @@ class SportListFragment2
 
     override fun onResume() {
         super.onResume()
-        resubscribeChannel(if (needDalay()) 80 else 0)
+        resubscribeChannel(20)
     }
 
     private fun initToolbar()  = binding.run {
@@ -180,13 +199,10 @@ class SportListFragment2
         sportTypeList.edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
     }
 
-    private val footView by lazy { FooterGamesView(binding.root.context) }
-
     private fun initGameListView() = binding.gameList.run {
 
         layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-        sportLeagueAdapter2.setEmptyView(R.layout.view_list_loading)
-        sportLeagueAdapter2.addFooterView(footView)
+        sportLeagueAdapter2.setEmptyView(EmptySportGamesView(context()))
         adapter = sportLeagueAdapter2
         addOnScrollListener(object : OnScrollListener() {
 
@@ -226,6 +242,10 @@ class SportListFragment2
         }
 
         sportMenuData.observe(this@SportListFragment2.viewLifecycleOwner) {
+
+            if (it.second.isNullOrEmpty()) {
+                dismissLoading()
+            }
             if (!it.first.succeeded()) {
                 ToastUtil.showToast(activity, it.first.msg)
                 return@observe
@@ -237,6 +257,7 @@ class SportListFragment2
         oddsListGameHallResult.observe(this@SportListFragment2.viewLifecycleOwner) {
 
             val oddsListData = it.getContentIfNotHandled()?.oddsListData ?: return@observe
+            dismissLoading()
             val leagueOdds: List<LeagueOdd>? = oddsListData.leagueOdds
             if (leagueOdds.isNullOrEmpty()) {
                 return@observe
@@ -250,17 +271,20 @@ class SportListFragment2
 //                sportLeagueAdapter2.setNewInstance(mutableListOf(testLeague))
 //            } else {
                 val mLeagueOddList = (oddsListData.leagueOddsFilter ?: leagueOdds).toMutableList()
-                sportLeagueAdapter2.setNewInstance(mLeagueOddList as MutableList<BaseNode> )
+                sportLeagueAdapter2.setNewInstance(mLeagueOddList as MutableList<BaseNode>)
+                sportLeagueAdapter2.footerLayout?.let { footerLayout->
+                    footerLayout.postDelayed({ footerLayout.getChildAt(0)?.visible() }, 200)
+                }
 //            }
 
             resubscribeChannel(80)
         }
 
-        //當前玩法無賽事
-        viewModel.isNoEvents.distinctUntilChanged().observe(this@SportListFragment2.viewLifecycleOwner) {
-
-            hideLoading()
-        }
+//        //當前玩法無賽事
+//        viewModel.isNoEvents.observe(this@SportListFragment2.viewLifecycleOwner) {
+//            Log.e("For Test", "======>>> reload 33333")
+//            loadingHolder.showLoadSuccess()
+//        }
 
         viewModel.betInfoList.observe(this@SportListFragment2.viewLifecycleOwner) {
             if (subscribedMatchOdd.isEmpty()) {
@@ -365,25 +389,11 @@ class SportListFragment2
             }
         }
 
-        receiver.producerUp.observe(this@SportListFragment2.viewLifecycleOwner) { //開啟允許投注
-            if (it == null) {
-                return@observe
-            }
-            resubscribeChannel()
-        }
-
-
         receiver.closePlayCate.observe(this@SportListFragment2.viewLifecycleOwner) { event ->
             val closeEvent = event?.peekContent() ?: return@observe
-            if (sportLeagueAdapter2.getCount() < 1
-                || gameTypeAdapter.currentItem?.code != closeEvent.gameType
-                || sportLeagueAdapter2.rootNodes.isNullOrEmpty()
-            ) {
-                return@observe
+            if (gameTypeAdapter.currentItem?.code == closeEvent.gameType) {
+                sportLeagueAdapter2.closePlayCate(closeEvent)
             }
-
-            (sportLeagueAdapter2.rootNodes!!.toMutableList() as MutableList<LeagueOdd>).closePlayCate(closeEvent)
-            sportLeagueAdapter2.notifyDataSetChanged()
         }
     }
 
@@ -397,6 +407,7 @@ class SportListFragment2
 
     private fun load(item: Item) {
         setMatchInfo(item.name, item.num.toString())
+        showLoading()
         viewModel.switchGameType(matchType, item, Any())
     }
 
@@ -409,7 +420,6 @@ class SportListFragment2
 
         if (gameTypeList.isEmpty()) {
             binding.sportTypeList.isVisible = matchType != MatchType.CS
-            hideLoading()
             return
         }
         //处理默认不选中的情况
@@ -514,16 +524,6 @@ class SportListFragment2
             subscribedChannel.clear()
         }
         subscribeHandler.removeCallbacksAndMessages(null)
-    }
-
-    private fun needDalay(): Boolean {
-        if (sportLeagueAdapter2.getCount() < 1) {
-            return false
-        }
-
-        val view = binding.gameList.layoutManager?.findViewByPosition(0) ?: return false
-        val viewHolder = binding.gameList.getChildViewHolder(view)
-        return (viewHolder !is SportLeagueAdapter.ItemViewHolder)
     }
 
     private fun resubscribeChannel(delay: Long = 0) {

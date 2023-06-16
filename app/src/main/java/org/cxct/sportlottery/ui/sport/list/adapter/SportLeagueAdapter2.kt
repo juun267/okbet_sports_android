@@ -11,12 +11,14 @@ import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.network.service.close_play_cate.ClosePlayCateEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
 import org.cxct.sportlottery.util.QuickListManager
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SocketUpdateUtil.toMutableFormat_1
 import org.cxct.sportlottery.util.SocketUpdateUtil.updateOddStatus
+import org.cxct.sportlottery.util.closePlayCate
 
 class SportLeagueAdapter2(
     var matchType: MatchType,
@@ -35,6 +37,7 @@ class SportLeagueAdapter2(
         }
 
     init {
+        footerWithEmptyEnable = true
         addFullSpanNodeProvider(SportLeagueProvider(this)) // 联赛名
         addFullSpanNodeProvider(SportMatchProvider(this, onOddClick, onFavorite)) // 赛事
     }
@@ -167,6 +170,14 @@ class SportLeagueAdapter2(
                 }
             }
         }
+    }
+
+    fun closePlayCate(closeEvent: ClosePlayCateEvent) {
+        if (getCount() < 1 || rootNodes.isNullOrEmpty()) {
+            return
+        }
+        (rootNodes!!.toMutableList() as MutableList<LeagueOdd>).closePlayCate(closeEvent)
+        notifyDataSetChanged()
     }
 
 
