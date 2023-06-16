@@ -28,7 +28,6 @@ class BetDetailsActivity : BaseSocketActivity<BetListViewModel>(BetListViewModel
         setContentView(binding.root)
         initView()
         initData()
-
     }
 
     private fun initData(){

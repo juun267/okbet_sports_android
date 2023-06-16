@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
     <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         app:tabIndicator="@drawable/bet_time_tab_indicator"
         app:tabTextAppearance="@style/NoUppercaseTab"
@@ -73,6 +74,7 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
+                android:id="@+id/tvReward"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:textSize="14sp"
@@ -82,7 +84,7 @@
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:textColor="@color/color_FF8A00"
-                android:text="₱ 87,330330330330330330.00"
+                android:text="₱ 0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -111,13 +113,14 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
+                android:id="@+id/tvTotalBet"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:paddingTop="8dp"
                 android:paddingHorizontal="8dp"
                 android:textSize="12sp"
                 android:textColor="@color/color_000000"
-                android:text="₱ 98,495495495.00"
+                android:text="₱ 0"
                 android:maxWidth="100dp"
                 android:maxLines="1"
                 android:ellipsize="end"
@@ -137,13 +140,14 @@
 
 
             <TextView
+                android:id="@+id/tvTotalValue"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:paddingTop="33dp"
                 android:paddingHorizontal="8dp"
                 android:textSize="12sp"
                 android:textColor="@color/color_000000"
-                android:text="₱ 98,495495495.00"
+                android:text="₱ 0"
                 android:maxWidth="120dp"
                 android:maxLines="1"
                 android:ellipsize="end"
