@@ -1351,4 +1351,23 @@
     <string name="P066">Ví dụ</string>
     <string name="P068">Tải lên ảnh Selfie cùng Căn cước</string>
     <string name="p090">Cảm ơn bạn đã kiểm tra với chúng tôi, vui lòng chờ đợi, chúng tôi sẽ xử lý yêu cầu của bạn trong vòng 24 giờ.</string>
+    <string name="P069">Nhắc Trừ tiền</string>
+    <string name="P070">Vì bạn vẫn còn %s Tiền cược chưa thanh toán, %s phí DV sẽ được tính!</string>
+    <string name="P113">Glife nhắc nhở</string>
+    <string name="P114">Xin chào, vì bạn đã đăng ký trên kênh Glife, theo yêu cầu của kênh, bạn phải hoàn thành việc nạp và rút tiền trong Gcash. Để thực hiện, vui lòng nhấp vào nút Gcash dưới đây</string>
+    <string name="KYC049">Huỷ bỏ</string>
+    <string name="LT028">Mở</string>
+    <string name="N827">Mã Zip</string>
+    <string name="M259">Địa chỉ</string>
+    <string name="J901">Thành phố</string>
+    <string name="J036">Tỉnh</string>
+    <string name="P103">Quốc tịch</string>
+    <string name="P104">Nơi sinh</string>
+    <string name="P105">Nguồn thu nhập</string>
+    <string name="P106">Ngành nghề</string>
+    <string name="P108">Nơi ở hiện tại</string>
+    <string name="P109">Hộ khẩu thường trú</string>
+    <string name="J459">Gợi ý</string>
+    <string name="P111">Địa chỉ nên bao gồm</string>
+    <string name="P110">Căn hộ/số phòng/tầng, tên tòa nhà, vị trí/khối/thời gian/số nhà, tên đường</string>
 </resources>

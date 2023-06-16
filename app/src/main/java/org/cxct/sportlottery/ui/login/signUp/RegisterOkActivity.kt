@@ -1389,7 +1389,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             it.getContentIfNotHandled()?.let { showKycVerify ->
                 if (showKycVerify) {
                     //跳宣傳頁顯示驗證彈窗
-                    MainTabActivity.reStart(this@RegisterOkActivity)
+                    MainTabActivity.reStart(this@RegisterOkActivity,fromLoginOrReg = true)
                     Handler().postDelayed({
                         MultiLanguagesApplication.showKYCVerifyDialog(AppManager.currentActivity() as FragmentActivity)
                     }, 1000)

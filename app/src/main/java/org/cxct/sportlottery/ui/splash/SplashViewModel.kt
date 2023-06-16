@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.splash
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -16,7 +15,6 @@ import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
-import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.setupDefaultHandicapType
 import retrofit2.Retrofit
 import timber.log.Timber
