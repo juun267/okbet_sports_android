@@ -173,7 +173,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             OnlineType.PAYPAL.type -> R.drawable.ic_paypal_type
             OnlineType.DRAGON_PAY.type -> R.drawable.ic_gragon_pay_type
             OnlineType.FORTUNE_PAY.type -> R.drawable.icon_fortunepay
-            OnlineType.AUB.type -> R.drawable.ic_aub
+            OnlineType.AUB.type -> R.drawable.ic_aub_round
             else -> R.drawable.ic_online_pay_type
         }
         return this
