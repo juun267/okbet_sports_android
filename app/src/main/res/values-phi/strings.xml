@@ -1336,4 +1336,23 @@
     <string name="N930">Bukas</string>
     <string name="N931">Sa makalawa</string>
     <string name="N932">Pagkatapos</string>
+    <string name="P069">Paalala sa halaga ng bawas</string>
+    <string name="P070">Dahil mayroon ka pang %s natitirang rollover sa pagtaya, %s sisingilin ang processing fee!</string>
+    <string name="P113">Paalala ng Glife</string>
+    <string name="P114">Hello, dahil nakarehistro ka sa GLIFE platform, ayon sa opisyal na mga kinakailangan, ang mga deposito at pag-withdraw ay dapat kumpletuhin ng eksklusibo sa pamamagitan ng GCASH program. I-click ang \"Open GCASH\" sa ibaba upang magpatuloy. Salamat!</string>
+    <string name="KYC049">Kanselahin</string>
+    <string name="LT028">Open</string>
+    <string name="N827">Zip code</string>
+    <string name="M259">Address</string>
+    <string name="J901">Lungsod</string>
+    <string name="J036">Lalawigan</string>
+    <string name="P103">Nasyonalidad</string>
+    <string name="P104">Lugar ng Kapanganakan</string>
+    <string name="P105">Pinagmumulan ng Kita</string>
+    <string name="P106">Kalikasan ng trabaho</string>
+    <string name="P108">Kasalukuyang Address ng Bahay</string>
+    <string name="P109">Permanenteng tirahan</string>
+    <string name="J459">Kind tips</string>
+    <string name="P111">Dapat kasama ang address</string>
+    <string name="P110">Unit/Room No. /Floor, Building Name, Lot/ Block/Phase/House Number, Street Name</string>
 </resources>

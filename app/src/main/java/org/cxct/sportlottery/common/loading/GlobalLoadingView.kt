@@ -59,7 +59,7 @@ class GlobalLoadingView @JvmOverloads constructor(
                 val networkConn = isNetworkConnected(context)
                 if (!networkConn) {
                     str = resources.getString(R.string.N655)
-                    image = errorRes
+                    image = R.drawable.img_no_network
                 } else {
                     str = errorText
                     image = errorRes

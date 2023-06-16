@@ -247,7 +247,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
     }
 
     private inline fun clearDateFloatingTipsRunnable() {
-//        binding.root.removeCallbacks(hideDateFloatingTipsRunnable)
+//        binding.root.removeCallbacks(hideDateFcoloatingTipsRunnable)
     }
 
     private fun postDateFloatingTipsRunnable() {

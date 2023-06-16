@@ -6,36 +6,40 @@ import android.content.Intent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.layout_home_top.*
+import kotlinx.android.synthetic.main.fragment_main_home2.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.event.SportStatusEvent
+import org.cxct.sportlottery.common.extentions.collectWith
+import org.cxct.sportlottery.common.extentions.doOnResume
 import org.cxct.sportlottery.common.extentions.newInstanceFragment
 import org.cxct.sportlottery.databinding.FragmentMainHome2Binding
 import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.network.message.Row
+import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.news.HomeNewsAdapter
 import org.cxct.sportlottery.ui.maintab.home.news.NewsDetailActivity
 import org.cxct.sportlottery.ui.maintab.publicity.MarqueeAdapter
 import org.cxct.sportlottery.ui.news.NewsActivity
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.SpaceItemDecoration
-import org.cxct.sportlottery.util.goneWithSportSwitch
-import org.cxct.sportlottery.util.setTrialPlayGameDataObserve
-import org.cxct.sportlottery.util.setupBackTop
 import org.cxct.sportlottery.view.dialog.PopImageDialog
+import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -58,6 +62,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         initToolBar()
         initNews()
         EventBusUtil.targetLifecycle(this@MainHomeFragment2)
+        ToGcashDialog.showByLogin(viewModel)
     }
 
     override fun onInitData() {
@@ -90,20 +95,17 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
             viewLifecycleOwner,
             { viewModel.getRecordNew() },
             { viewModel.getRecordResult() })
-        receiver.recordBetNew.observe(viewLifecycleOwner) {
+        receiver.recordBetNew.collectWith(lifecycleScope) {
             it?.let {
-                binding.winsRankView.onNewWSBetData(
-                    it
-                )
+                binding.winsRankView.onNewWSBetData(it)
             }
         }
-        receiver.recordWinsResult.observe(viewLifecycleOwner) {
+        //最新大奖
+        receiver.recordWinsResult.collectWith(lifecycleScope) {
             it?.let {
-                binding.winsRankView.onNewWSWinsData(
-                    it
-                )
+                binding.winsRankView.onNewWSWinsData(it)
             }
-        }//最新大奖
+        }
         viewModel.recordBetNewHttp.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) {
                 binding.winsRankView.onNewHttpBetData(it.reversed())
@@ -157,12 +159,12 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         }
         viewModel.gotConfig.observe(viewLifecycleOwner) { event ->
             viewModel.getSportMenuFilter()
-            if (MultiLanguagesApplication.showHomeDialog) {
-                MultiLanguagesApplication.showHomeDialog = false
-                MultiLanguagesApplication.showPromotionPopupDialog(requireActivity() as AppCompatActivity)
-                if (PopImageDialog.checkImageTypeAvailable(7)) {
+            if (PopImageDialog.showHomeDialog) {
+                PopImageDialog.showHomeDialog = false
+                MultiLanguagesApplication.showPromotionPopupDialog(getMainTabActivity()){}
+                if (PopImageDialog.checkImageTypeAvailable(ImageType.DIALOG_HOME.code)) {
                     requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
-                        putInt(PopImageDialog.IMAGE_TYPE, 7)
+                        putInt(PopImageDialog.IMAGE_TYPE, ImageType.DIALOG_HOME.code)
                     }).show(childFragmentManager, PopImageDialog::class.simpleName)
                 }
             }

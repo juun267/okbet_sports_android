@@ -6,24 +6,30 @@ import androidx.lifecycle.distinctUntilChanged
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
+import org.cxct.sportlottery.common.extentions.newInstanceFragment
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.FragmentSport2Binding
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.sport.SportMenuData
+import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.ui.sport.endscore.EndScoreFragment
 import org.cxct.sportlottery.ui.sport.list.SportListFragment2
+import org.cxct.sportlottery.ui.sport.list.adapter.FooterGamesView
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.FragmentHelper2
 import org.cxct.sportlottery.util.phoneNumCheckDialog
+import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.view.tablayout.TabSelectedAdapter
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Binding>() {
 
@@ -42,6 +48,8 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
     private inline fun getMainTabActivity() = activity as MainTabActivity
     private val fragmentHelper by lazy { FragmentHelper2(childFragmentManager, R.id.fl_content) }
+    private val footView by lazy { FooterGamesView(binding.root.context) }
+    private val mianViewModel: OKGamesViewModel by sharedViewModel()
 
     var jumpMatchType: MatchType? = null
     var jumpGameType: GameType? = null
@@ -58,10 +66,12 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     override fun onInitView(view: View) {
         initToolBar()
         initTabLayout()
+        showSportDialog()
     }
 
     override fun onBindViewStatus(view: View) {
         initObserve()
+        footView.setUp(this, mianViewModel)
         viewModel.getMatchData()
         jumpMatchType?.let {
             viewModel.firstSwitchMatch(it)
@@ -154,18 +164,21 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             MatchType.OUTRIGHT -> {
                 fragmentHelper.show(SportOutrightFragment::class.java, args) { fragment, newInstance ->
                     fragment.offsetScrollListener = ::setTabElevation
+                    fragment.resetFooterView(footView)
                 }
             }
 
             MatchType.END_SCORE -> {
                 fragmentHelper.show(EndScoreFragment::class.java, args) { fragment, newInstance ->
                     fragment.offsetScrollListener = ::setTabElevation
+                    fragment.resetFooterView(footView)
                 }
             }
 
             else -> {
                 fragmentHelper.show(SportListFragment2::class.java, args) { fragment, newInstance ->
                     fragment.offsetScrollListener = ::setTabElevation
+                    fragment.resetFooterView(footView)
                     if (!newInstance) {
                         fragment.reload()
                     }
@@ -238,9 +251,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     }
 
     private fun getCurMatchType(): MatchType {
-        return kotlin.runCatching {
-            matchTypeTabPositionMap[binding.tabLayout.selectedTabPosition]
-        }.getOrNull() ?: MatchType.IN_PLAY
+        return matchTypeTabPositionMap[binding.tabLayout.selectedTabPosition] ?: MatchType.IN_PLAY
     }
 
     private fun getCurGameType(): GameType? = when (val fragment = fragmentHelper.currentFragment()) {
@@ -260,6 +271,15 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             null
         }
     }
-
+    private fun showSportDialog(){
+        if (PopImageDialog.showSportDialog) {
+            PopImageDialog.showSportDialog = false
+            if (PopImageDialog.checkImageTypeAvailable(ImageType.DIALOG_SPORT.code)) {
+                requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
+                    putInt(PopImageDialog.IMAGE_TYPE, ImageType.DIALOG_SPORT.code)
+                }).show(childFragmentManager, PopImageDialog::class.simpleName)
+            }
+        }
+    }
 
 }

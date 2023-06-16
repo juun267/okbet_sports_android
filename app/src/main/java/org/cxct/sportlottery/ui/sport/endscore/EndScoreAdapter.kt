@@ -33,6 +33,7 @@ class EndScoreAdapter(val playCate: String, val onItemClick:(Int, View, BaseNode
     private val matchItemProvider = EndScoreSecondProvider(this, onItemClick)
 
     init {
+        footerWithEmptyEnable = true
         addFullSpanNodeProvider(EndScoreFirstProvider(this, onItemClick)) // 联赛
         addFullSpanNodeProvider(matchItemProvider) // 比赛球队
         addNodeProvider(EndScoreThirdProvider(this, onItemClick)) //赔率
