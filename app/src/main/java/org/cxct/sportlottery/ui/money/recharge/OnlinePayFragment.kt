@@ -318,7 +318,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 if (mMoneyPayWay?.onlineType == OnlineType.WY.type)
                     tv_game_type_title.text=String.format(resources.getString(R.string.title_choose_pay_channel))
                 else
-                    tv_game_type_title.text=String.format(resources.getString(R.string.title_choose_pay_gap))
+                    tv_game_type_title.text=String.format(resources.getString(R.string.M132))
 
                 payGapBottomSheet.btn_close.setOnClickListener {
                     this.dismiss()
