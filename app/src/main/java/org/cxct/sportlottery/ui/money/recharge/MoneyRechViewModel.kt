@@ -665,6 +665,7 @@ class MoneyRechViewModel(
             OnlineType.FORTUNE_PAY.type -> androidContext.resources.getString(R.string.online_fortune_pay)
             OnlineType.ONLINEBANK.type -> androidContext.resources.getString(R.string.online_online_bank)
             OnlineType.AUB.type -> androidContext.resources.getString(R.string.aub)
+            OnlineType.EPON.type -> androidContext.resources.getString(R.string.epon)
             else -> ""
         }
     }

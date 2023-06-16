@@ -48,5 +48,6 @@ enum class OnlineType(val type : Int) {
     ZALOPAY(103),//ZaloPay
     VIETTELPAY(107),//ViettelPay
     RECHARGE_CARD(108),//刮刮卡充值
-    AUB(213)//AUB银行
+    AUB(213),//AUB银行
+    EPON(214)//E-pon银行
 }
