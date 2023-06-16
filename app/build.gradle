@@ -105,6 +105,7 @@ android {
         }
         OkbetPH {}
         google {
+            applicationId "come.sport.phok"
             manifestPlaceholders = [CHANNEL: "google",]
         }
         huawei {
