@@ -63,12 +63,12 @@ class LoginEditText @JvmOverloads constructor(
         }
 
     private var inputType: Int = 0
+    private var isShowLine: Boolean = true
     private val typedArray by lazy {
         context.theme.obtainStyledAttributes(attrs, R.styleable.CustomView, 0, 0)
     }
 
     private val editable by lazy { typedArray.getBoolean(R.styleable.CustomView_cvEditable, true) }
-    private val isShowLine by lazy { typedArray.getBoolean(R.styleable.CustomView_cvBottomLine, false) }
 
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.edittext_login, this, false)
@@ -84,6 +84,7 @@ class LoginEditText @JvmOverloads constructor(
             view.tv_title.setTextColor( typedArray.getInt(R.styleable.CustomView_cvTextColor, 1))
             view.et_input.setText(typedArray.getText(R.styleable.CustomView_cvText))
             view.et_input.hint = typedArray.getText(R.styleable.CustomView_cvHint)
+            isShowLine = typedArray.getBoolean(R.styleable.CustomView_cvBottomLine, true)
             view.v_bottom_line2.isVisible = isShowLine
             if (!editable) {
                 view.et_input.isEnabled = false
@@ -251,6 +252,11 @@ class LoginEditText @JvmOverloads constructor(
 
     fun setMarginBottom(px: Int) {
         (layout.layoutParams as LayoutParams).setMargins(0, 0, 0, px)
+    }
+
+    fun showLine(show: Boolean) {
+        isShowLine = show
+        v_bottom_line2.isVisible = isShowLine
     }
 
     fun setText(value: String?) {

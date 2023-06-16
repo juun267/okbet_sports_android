@@ -14,5 +14,5 @@ data class PublicityRecommendResult(
     @Json(name = "success")
     override val success: Boolean,
     @Json(name = "t")
-    val result: RecommendResult
+    val result: RecommendResult?
 ) : BaseResult()

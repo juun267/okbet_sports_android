@@ -67,7 +67,7 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
         viewModel.areaAllList.observe(this) {
             hideLoading()
             //请求到了空的行政区域
-            if(it.provinces.isEmpty()||it.cities.isEmpty()){
+            if(it==null||it.provinces.isEmpty()||it.cities.isEmpty()){
                 finishPage()
             }
             val provinceList = viewModel.getProvinceStringList()

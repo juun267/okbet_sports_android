@@ -26,12 +26,16 @@ import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
+import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment2
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.view.dialog.ToGcashDialog
 
-class HomeToolbarView@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
-    : LinearLayout(context, attrs, defStyle) {
+class HomeToolbarView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
+) : LinearLayout(context, attrs, defStyle) {
 
     companion object {
         private val textStyle by lazy {
@@ -190,6 +194,8 @@ class HomeToolbarView@JvmOverloads constructor(context: Context, attrs: Attribut
             return
         }
 
+
+
         loginLayout.gone()
         if (userModelEnable) {
             searchView.gone()
@@ -223,7 +229,7 @@ class HomeToolbarView@JvmOverloads constructor(context: Context, attrs: Attribut
         tvLogin.setOnClickListener { activity.startLogin() }
         tvRegist.setOnClickListener { LoginOKActivity.startRegist(context) }
         ivRefreshMoney.setOnClickListener { onRefreshMoney() }
-        if (fragment !is MainHomeFragment) {
+        if (fragment !is MainHomeFragment2) {
             ivLogo.setOnClickListener { activity.backMainHome() }
         }
     }

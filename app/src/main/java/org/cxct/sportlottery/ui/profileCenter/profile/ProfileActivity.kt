@@ -3,14 +3,19 @@ package org.cxct.sportlottery.ui.profileCenter.profile
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.RecyclerView
+import com.bigkoo.pickerview.listener.CustomListener
+import com.bigkoo.pickerview.view.TimePickerView
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.android.synthetic.main.include_user_profile.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.load
@@ -23,6 +28,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.dialog.CustomSecurityDialog
+import org.cxct.sportlottery.ui.login.signUp.info.DateTimePickerOptions
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.profileCenter.authbind.AuthActivity
 import org.cxct.sportlottery.ui.profileCenter.cancelaccount.CancelAccountActivity
@@ -34,12 +40,15 @@ import org.cxct.sportlottery.ui.profileCenter.modify.VerificationWaysActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity.Companion.MODIFY_INFO
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
+import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.isStatusOpen
 import org.cxct.sportlottery.util.phoneNumCheckDialog
+import org.cxct.sportlottery.view.dialog.SourceOfIncomeDialog
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
+import java.util.Calendar
 
 /**
  * @app_destination 个人设置
@@ -48,18 +57,27 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
     //簡訊驗證彈窗
     private var customSecurityDialog: CustomSecurityDialog? = null
+
     //KYC驗證彈窗
     private var kYCVerifyDialog: CustomSecurityDialog? = null
 
     enum class VerifiedType(val value: Int) {
-        NOT_YET(0), PASSED(1), VERIFYING(2), VERIFIED_FAILED(3)
+        NOT_YET(0), PASSED(1), VERIFYING(2), VERIFIED_FAILED(3), VERIFIED_WAIT(4)
     }
 
     enum class SecurityCodeEnterType(val value: Int) {
         REALNAME(0), PW(1)
     }
 
-    var securityCodeEnter = SecurityCodeEnterType.REALNAME
+    //生日选择
+    private var dateTimePicker: TimePickerView? = null
+
+    private var securityCodeEnter = SecurityCodeEnterType.REALNAME
+
+    private var dialogBtmAdapter = DialogBottomDataAdapter(this)
+    private lateinit var rvData: RecyclerView
+    private lateinit var btnDialogTitle: TextView
+    private lateinit var btnDialogDone: Button
 
     private val mSelectMediaListener = object : OnResultCallbackListener<LocalMedia> {
         override fun onResult(result: MutableList<LocalMedia>?) {
@@ -100,13 +118,17 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStatusbar(R.color.color_232C4F_FFFFFF,true)
+        setStatusbar(R.color.color_232C4F_FFFFFF, true)
         setContentView(R.layout.activity_profile)
 
         initView()
         initButton()
         initObserve()
+        initDateTimeView()
         setupLogout()
+        viewModel.getUserSalaryList()
+        initBottomDialog()
+
     }
 
     private fun setupLogout() {
@@ -118,7 +140,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
     override fun onResume() {
         super.onResume()
-        getUserInfo()
+        viewModel.getUserInfo()
     }
 
     private fun initView() {
@@ -130,13 +152,14 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             ll_wechat.isVisible = enableWithdrawWechat.isStatusOpen()
             ll_real_name.isVisible = enableWithdrawFullName.isStatusOpen()
         }
-
-        tv_pass_word.text = if (viewModel.userInfo.value?.passwordSet == true) getString(R.string.set) else getString(R.string.edit)
+        tv_pass_word.text =
+            if (viewModel.userInfo.value?.passwordSet == true) getString(R.string.set) else getString(
+                R.string.edit
+            )
     }
 
     private fun initButton() {
         custom_tool_bar.setOnBackPressListener { finish() }
-
         //設定個人資訊頁面
         setupToInfoSettingPage()
         btn_head.setOnClickListener {
@@ -144,6 +167,58 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             dialog.mSelectListener = mSelectMediaListener
             dialog.show(supportFragmentManager, null)
         }
+    }
+
+    private fun initBottomDialog() {
+        val btmLays = layoutInflater.inflate(R.layout.dialog_bottom_select, null)
+        val btnCancel = btmLays.findViewById<Button>(R.id.btnBtmCancel)
+        btnDialogDone = btmLays.findViewById(R.id.btnBtmDone)
+        btnDialogTitle = btmLays.findViewById(R.id.tvBtmTitle)
+        rvData = btmLays.findViewById(R.id.rvBtmData)
+        rvData.adapter = dialogBtmAdapter
+        btnCancel.setOnClickListener { bottomSheet.dismiss() }
+
+        bottomSheet.setContentView(btmLays)
+    }
+
+    private fun showBottomDialog(
+        list: MutableList<DialogBottomDataEntity>,
+        title: String,
+        currStr: String?,
+        sourceOtherFlag: Boolean = false,
+        callBack: (item: DialogBottomDataEntity) -> Unit
+    ) {
+        var item: DialogBottomDataEntity? = list.find { it.flag }
+        val listNew: MutableList<DialogBottomDataEntity> = mutableListOf()
+        var trueFlag = false
+        list.forEach {
+            val ne = it.copy()
+            if (ne.name == currStr) {
+                ne.flag = true
+                trueFlag = true
+            }
+            listNew.add(ne)
+        }
+        if (sourceOtherFlag && !trueFlag && listNew.isNotEmpty()) {
+            listNew.last().flag = true
+        }
+        btnDialogTitle.text = title
+        dialogBtmAdapter.data = listNew
+        dialogBtmAdapter.notifyDataSetChanged()
+        rvData.scrollToPosition(0)
+        dialogBtmAdapter.setOnItemClickListener { ater, view, position ->
+            dialogBtmAdapter.data.forEach {
+                it.flag = false
+            }
+            item = dialogBtmAdapter.data[position]
+            item!!.flag = true
+            dialogBtmAdapter.notifyDataSetChanged()
+        }
+        btnDialogDone.setOnClickListener {
+            item?.let { it1 -> callBack(it1) }
+            bottomSheet.dismiss()
+        }
+        bottomSheet.show()
     }
 
     private fun setupToInfoSettingPage() {
@@ -154,6 +229,10 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         }
         //暱稱
         btn_nickname.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.NickName) }
+        //出生地
+        llPlaceOfBirth.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.PlaceOfBirth) }
+
+        llZipCodeCurrent.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.ZipCode) }
         //密碼設置
         btn_pwd_setting.setOnClickListener {
             securityCodeEnter = SecurityCodeEnterType.PW
@@ -174,8 +253,185 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             if (ll_verified.isEnabled)
                 startActivity(VerifyIdentityActivity::class.java)
         }
+        llNationality.setOnClickListener {
+            showBottomDialog(
+                viewModel.nationalityList,
+                resources.getString(R.string.P103),
+                tvNationality.text.toString()
+            ) {
+                tvNationality.text = it.name
+                viewModel.userCompleteUserDetails(
+                    Uide(
+                        nationality = it.name
+                    )
+                )
+            }
+        }
+        llProvinceCurrent.setOnClickListener {
+            showProvinceDialog()
+        }
+        llProvincePermanent.setOnClickListener {
+            showProvincePDialog()
+        }
+        llCityCurrent.setOnClickListener {
+            if (viewModel.cityList.isEmpty()) {
+                showProvinceDialog()
+            } else {
+                showBottomDialog(
+                    viewModel.cityList,
+                    resources.getString(R.string.J901),
+                    tvCityCurrent.text.toString()
+                ) {
+                    tvCityCurrent.text = it.name
+                    viewModel.userCompleteUserDetails(
+                        Uide(
+                            city = it.name
+                        )
+                    )
+                }
+            }
+
+        }
+        llCityPermanent.setOnClickListener {
+            if (viewModel.cityPList.isEmpty()) {
+                showProvincePDialog()
+            } else {
+                showBottomDialog(
+                    viewModel.cityPList,
+                    resources.getString(R.string.J901),
+                    tvCityPermanent.text.toString()
+                ) {
+                    tvCityPermanent.text = it.name
+                    viewModel.userCompleteUserDetails(
+                        Uide(
+                            permanentCity = it.name,
+                        )
+                    )
+                }
+            }
+
+        }
+        llNatureOfWork.setOnClickListener {
+            showBottomDialog(
+                viewModel.workList,
+                resources.getString(R.string.P106),
+                tvNatureOfWork.text.toString()
+            ) {
+                tvNatureOfWork.text = it.name
+                viewModel.userCompleteUserDetails(
+                    Uide(
+                        natureOfWork = it.name
+                    )
+                )
+            }
+        }
+        //address
+        llAddressCurrent.setOnClickListener {
+            putExtraForProfileInfoActivity(ModifyType.Address)
+        }
+        llAddressPermanent.setOnClickListener {
+            putExtraForProfileInfoActivity(ModifyType.AddressP)
+        }
+        //zip code
+        llZipCodeCurrent.setOnClickListener {
+            putExtraForProfileInfoActivity(ModifyType.ZipCode)
+        }
+        llZipCodePermanent.setOnClickListener {
+            putExtraForProfileInfoActivity(ModifyType.ZipCodeP)
+        }
+
+        llSourceOfIncome.setOnClickListener {
+            showBottomDialog(
+                viewModel.salaryStringList,
+                resources.getString(R.string.P105),
+                tvSourceOfIncome.text.toString(),
+                true
+            ) {
+                if (it.id == 6) {
+                    val dialog = SourceOfIncomeDialog(this)
+                    dialog.setPositiveClickListener(object :
+                        SourceOfIncomeDialog.OnPositiveListener {
+                        override fun positiveClick(str: String) {
+                            val workstr = str.ifEmpty {
+                                resources.getString(R.string.other)
+                            }
+                            tvSourceOfIncome.text = workstr
+                            viewModel.userCompleteUserDetails(
+                                Uide(
+                                    salarySource = SalarySource(
+                                        it.id,
+                                        workstr
+                                    )
+                                )
+                            )
+                        }
+                    })
+                    dialog.show()
+                } else {
+                    tvSourceOfIncome.text = it.name
+                    viewModel.userCompleteUserDetails(
+                        Uide(
+                            salarySource = SalarySource(
+                                it.id,
+                                it.name
+                            )
+                        )
+                    )
+                }
+            }
+        }
+
         //注销账号
         ll_cancel_account.setOnClickListener { startActivity(CancelAccountActivity::class.java) }
+        llBirthday.setOnClickListener { dateTimePicker?.show() }
+    }
+
+    private fun showProvinceDialog() {
+        showBottomDialog(
+            viewModel.provincesList,
+            resources.getString(R.string.J036),
+            tvProvinceCurrent.text.toString()
+        ) {
+            viewModel.updateCityData(it.id)
+            if (it.name != tvProvinceCurrent.text.toString()) {
+                tvCityCurrent.text = viewModel.cityList.first().name
+                viewModel.userCompleteUserDetails(
+                    Uide(
+                        city = viewModel.cityList.first().name
+                    )
+                )
+            }
+            tvProvinceCurrent.text = it.name
+            viewModel.userCompleteUserDetails(
+                Uide(
+                    province = it.name
+                )
+            )
+        }
+    }
+
+    private fun showProvincePDialog() {
+        showBottomDialog(
+            viewModel.provincesPList,
+            resources.getString(R.string.J036),
+            tvProvincePermanent.text.toString()
+        ) {
+            viewModel.updateCityPData(it.id)
+            if (it.name != tvCityPermanent.text.toString()) {
+                tvCityPermanent.text = viewModel.cityPList.first().name
+                viewModel.userCompleteUserDetails(
+                    Uide(
+                        permanentCity = viewModel.cityPList.first().name,
+                    )
+                )
+            }
+            tvProvincePermanent.text = it.name
+            viewModel.userCompleteUserDetails(
+                Uide(
+                    permanentProvince = it.name
+                )
+            )
+        }
     }
 
     private fun editBindInfo(@ModifyType modifyType: Int) {
@@ -204,58 +460,101 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
     private fun uploadImg(file: File) {
         val userId = viewModel.userInfo.value?.userId.toString()
-        val uploadImgRequest = UploadImgRequest(userId, file, UploadImgRequest.PlatformCodeType.AVATAR)
+        val uploadImgRequest =
+            UploadImgRequest(userId, file, UploadImgRequest.PlatformCodeType.AVATAR)
         viewModel.uploadImage(uploadImgRequest)
     }
 
-    private fun initObserve() {
 
+    private fun checkStr(str: String?): String {
+        return if (str.isNullOrEmpty()) {
+            resources.getString(R.string.set)
+        } else {
+            str
+        }
+    }
+
+    private fun initObserve() {
+        viewModel.userDetail.observe(this) {
+            tvNationality.text = checkStr(it.t.nationality)
+            tvBirthday.text = checkStr(it.t.birthday)
+            tvPlaceOfBirth.text = checkStr(it.t.placeOfBirth)
+            tvSourceOfIncome.text = if (it.t.salarySource?.id == 6) {
+                checkStr(it.t.salarySource.name)
+            } else if (it.t.salarySource?.id == null) {
+                resources.getString(R.string.set)
+            } else {
+                it.t.salarySource.id.let { it1 ->
+                    viewModel.getSalaryName(
+                        it1,
+                        resources.getString(R.string.set)
+                    )
+                }
+            }
+            tvNatureOfWork.text = checkStr(it.t.natureOfWork)
+            tvProvinceCurrent.text = checkStr(it.t.province)
+            tvCityCurrent.text = checkStr(it.t.city)
+            tvAddressCurrent.text = checkStr(it.t.address)
+            tvZipCodeCurrent.text = checkStr(it.t.zipCode)
+            tvProvincePermanent.text = checkStr(it.t.permanentProvince)
+            tvCityPermanent.text = checkStr(it.t.permanentCity)
+            tvAddressPermanent.text = checkStr(it.t.permanentAddress)
+            tvZipCodePermanent.text = checkStr(it.t.permanentZipCode)
+        }
         viewModel.editIconUrlResult.observe(this) {
             val iconUrlResult = it?.getContentIfNotHandled()
             if (iconUrlResult?.success != true) {
                 iconUrlResult?.msg?.let { msg -> showErrorPromptDialog(msg) {} }
                 return@observe
             }
-
             showPromptDialog(getString(R.string.prompt), getString(R.string.save_avatar_success)) {}
         }
 
         viewModel.userInfo.observe(this) {
-            updateAvatar(it?.iconUrl)
-            tv_nickname.text = it?.nickName
-            tv_member_account.text = it?.userName
-            tv_id.text = it?.userId?.toString()
-            tv_real_name.text = it?.fullName
-            ll_verified.isVisible = sConfigData?.realNameWithdrawVerified.isStatusOpen() || sConfigData?.realNameRechargeVerified.isStatusOpen()
-            tv_pass_word.text = if (it?.passwordSet == true) getString(R.string.set) else getString(R.string.edit)
+            if (it != null) {
+//                tvAddressPermanent.text = checkStr(it.permanentAddress)
+//                tvZipCodePermanent.text = checkStr(it.permanentZipCode)
+//                tvAddressCurrent.text = checkStr(it.address)
+//                tvZipCodeCurrent.text = checkStr(it.zipCode)
+//                tvPlaceOfBirth.text = checkStr(it.placeOfBirth)
+                updateAvatar(it.iconUrl)
+                tv_nickname.text = it.nickName
+                tv_member_account.text = it.userName
+                tv_id.text = it.userId.toString()
+                tv_real_name.text = it.fullName
+                setWithdrawInfo(it)
+            }
+
+            ll_verified.isVisible =
+                sConfigData?.realNameWithdrawVerified.isStatusOpen() || sConfigData?.realNameRechargeVerified.isStatusOpen()
+            tv_pass_word.text =
+                if (it?.passwordSet == true) getString(R.string.set) else getString(R.string.edit)
             when (it?.verified) {
                 VerifiedType.PASSED.value -> {
-                    ll_verified.isEnabled = false
-                    ll_verified.isClickable = false
+                    ll_verified.isEnabled = true
+                    ll_verified.isClickable = true
                     tv_verified.text = getString(R.string.kyc_passed)
-
-                    icon_identity.visibility = View.GONE
                 }
-                VerifiedType.NOT_YET.value -> {
+
+                VerifiedType.NOT_YET.value, VerifiedType.VERIFIED_FAILED.value -> {
                     ll_verified.isEnabled = true
                     ll_verified.isClickable = true
                     tv_verified.text = getString(R.string.kyc_unverified)
 
-                    icon_identity.visibility = View.VISIBLE
                 }
-                VerifiedType.VERIFYING.value -> {
-                    ll_verified.isEnabled = false
-                    ll_verified.isClickable = false
+
+                VerifiedType.VERIFYING.value, VerifiedType.VERIFIED_WAIT.value -> {
+                    ll_verified.isEnabled = true
+                    ll_verified.isClickable = true
                     tv_verified.text = getString(R.string.kyc_unverifing)
 
-                    icon_identity.visibility = View.GONE
                 }
+
                 else -> {
                     ll_verified.isEnabled = true
                     ll_verified.isClickable = true
                     tv_verified.text = getString(R.string.kyc_unverified)
 
-                    icon_identity.visibility = View.VISIBLE
                 }
             }
 
@@ -267,7 +566,6 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 icon_arrow_nickname.visibility = View.VISIBLE
             }
 
-            it?.let { setWithdrawInfo(it) }
         }
 
         //是否顯示簡訊驗證彈窗
@@ -289,7 +587,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 return@observe
             }
 
-             //有手機號碼又不用驗證的狀態下
+            //有手機號碼又不用驗證的狀態下
             securityEnter()
         }
 
@@ -387,11 +685,49 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.color_939393_999999))
     }
 
-    private fun getUserInfo() {
-        viewModel.getUserInfo()
-    }
-
     private fun showKYCVerifyDialog() {
         VerifyIdentityDialog().show(supportFragmentManager, null)
     }
+
+
+    /**
+     * 初始化时间选择控件
+     */
+    private fun initDateTimeView() {
+        val yesterday = Calendar.getInstance()
+        yesterday.add(Calendar.YEAR, -100)
+        val tomorrow = Calendar.getInstance()
+        tomorrow.add(Calendar.YEAR, -21)
+        tomorrow.add(Calendar.DAY_OF_MONTH, -1)
+        dateTimePicker = DateTimePickerOptions(this).getBuilder { date, _ ->
+            TimeUtil.dateToStringFormatYMD(date).let {
+                tvBirthday.text = it
+                viewModel.userCompleteUserDetails(
+                    Uide(
+                        birthday = it
+                    )
+                )
+            }
+        }
+            .setLayoutRes(R.layout.dialog_date_select, object : CustomListener {
+                override fun customLayout(v: View) {
+                    //自定义布局中的控件初始化及事件处理
+                    v.findViewById<View>(R.id.btnBtmCancel).setOnClickListener {
+                        dateTimePicker?.dismiss()
+                    }
+                    v.findViewById<View>(R.id.btnBtmDone).setOnClickListener {
+                        dateTimePicker?.returnData()
+                        dateTimePicker?.dismiss()
+                    }
+
+                }
+            })
+            .setItemVisibleCount(6)
+            .setLineSpacingMultiplier(2.0f)
+            .setRangDate(yesterday, tomorrow)
+            .setDate(tomorrow)
+            .build()
+
+    }
+
 }

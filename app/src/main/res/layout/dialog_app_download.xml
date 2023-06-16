@@ -2,153 +2,130 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="335dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    tools:background="@android:drawable/screen_background_dark_transparent"
-    tools:context=".ui2.splash.AppDownloadDialog">
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/bg_frame_5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/iv_top" />
-
-    <ImageView
-        android:id="@+id/iv_top"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:src="@drawable/bg_top_new_version"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:layout_gravity="center">
 
     <LinearLayout
-        android:layout_width="150dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="start"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/margin_15"
-        android:paddingRight="@dimen/margin_15"
-        app:layout_constraintBottom_toBottomOf="@id/iv_top"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/iv_top">
+        android:layout_marginHorizontal="@dimen/margin_30"
+        android:paddingHorizontal="@dimen/margin_20"
+        android:paddingBottom="@dimen/margin_20"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="center"
+        android:layout_marginTop="70dp"
+        android:paddingTop="70dp"
+        android:background="@drawable/bg_white_radius_16"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/find_new_version"
-            android:textColor="@color/color_FCFCFC"
-            android:textSize="@dimen/textSize16sp"
+            android:textColor="@color/color_0D2245"
+            android:textSize="@dimen/textSize24sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/label_new_version"
             android:layout_width="wrap_content"
-            android:layout_height="16dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="@drawable/bg_radius_8_white_only"
             android:maxLines="1"
-            android:paddingHorizontal="10dp"
             android:text="@string/version_name"
-            android:textColor="@color/color_317FFF_0760D4"
-            android:textSize="@dimen/textSize12sp" />
+            android:textColor="@color/color_6D7693"
+            android:textSize="@dimen/textSize16sp" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/block_progress_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/iv_top">
-
-        <TextView
-            android:id="@+id/tv_current_version"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/block_progress_bar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="25dp"
-            android:includeFontPadding="false"
-            android:textColor="@color/color_AEAEAE_404040"
-            android:textSize="@dimen/textSize14sp"
-            tools:text="v1.2.34" />
-
-        <ProgressBar
-            android:id="@+id/pb_download"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="0dp"
-            android:layout_height="10dp"
-            android:layout_marginHorizontal="9dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="20dp"
-            android:layout_weight="1"
-            android:indeterminate="false"
-            android:max="100"
-            android:progressDrawable="@drawable/progress_bar_new_version"
-            tools:progress="33" />
-
-        <TextView
-            android:id="@+id/tv_new_version"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:layout_marginEnd="18dp"
-            android:includeFontPadding="false"
-            android:textColor="@color/color_AEAEAE_404040"
-            android:textSize="@dimen/textSize14sp"
-            tools:text="v1.2.46" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/block_bottom_bar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="30dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="20dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/block_progress_bar">
-
-        <TextView
-            android:id="@+id/btn_cancel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/bg_radius_20_button_hollow"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="@dimen/margin_10"
             android:gravity="center"
-            android:paddingTop="11dp"
-            android:paddingBottom="11dp"
-            android:text="@string/btn_pass"
-            android:textColor="@color/color_317FFF_0760D4"
-            android:textSize="@dimen/textSize14sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/btn_download"
-            android:layout_width="0dp"
+            <TextView
+                android:id="@+id/tv_current_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:textColor="@color/color_AEAEAE_404040"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="v1.2.34" />
+
+            <ProgressBar
+                android:id="@+id/pb_download"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="0dp"
+                android:layout_height="10dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_weight="1"
+                android:indeterminate="false"
+                android:max="100"
+                android:progressDrawable="@drawable/progress_bar_new_version"
+                tools:progress="33" />
+
+            <TextView
+                android:id="@+id/tv_new_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:textColor="@color/color_AEAEAE_404040"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="v1.2.46" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/block_bottom_bar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_radius_20_button_dusk"
+            android:layout_marginHorizontal="@dimen/margin_5"
+            android:layout_marginTop="20dp"
+            android:visibility="visible"
             android:gravity="center"
-            android:paddingTop="9dp"
-            android:paddingBottom="9dp"
-            android:text="@string/update"
-            android:textColor="@color/color_FCFCFC"
-            android:textSize="@dimen/textSize16sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/btn_cancel"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_40"
+                android:layout_weight="1"
+                android:background="@drawable/bg_gray_stroke_radius_8"
+                android:gravity="center"
+                android:layout_marginRight="@dimen/margin_12"
+                android:text="@string/btn_pass"
+                android:textColor="@color/color_BEC7DC"
+                android:textSize="@dimen/textSize14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/btn_download"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_40"
+                android:layout_weight="1"
+                android:background="@drawable/bg_blue_radius_8"
+                android:gravity="center"
+                android:text="@string/update"
+                android:textColor="@color/color_FCFCFC"
+                android:textSize="@dimen/textSize16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
 
     </LinearLayout>
+
+    <ImageView
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:src="@drawable/ic_update_rocket" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

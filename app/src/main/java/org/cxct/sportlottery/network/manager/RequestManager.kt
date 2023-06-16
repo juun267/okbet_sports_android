@@ -2,6 +2,7 @@ package org.cxct.sportlottery.network.manager
 
 import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -10,10 +11,13 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.CONNECT_TIMEOUT
 import org.cxct.sportlottery.network.Constants.READ_TIMEOUT
 import org.cxct.sportlottery.network.Constants.WRITE_TIMEOUT
+import org.cxct.sportlottery.network.interceptor.Http400or500Interceptor
 import org.cxct.sportlottery.network.interceptor.HttpLogInterceptor
 import org.cxct.sportlottery.network.interceptor.HttpStatusInterceptor
 import org.cxct.sportlottery.network.interceptor.MoreBaseUrlInterceptor
 import org.cxct.sportlottery.network.interceptor.RequestInterceptor
+import org.cxct.sportlottery.repository.KEY_TOKEN
+import org.cxct.sportlottery.repository.NAME_LOGIN
 import org.cxct.sportlottery.util.NullValueAdapter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -27,7 +31,13 @@ import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
 
-class RequestManager private constructor(context: Context) {
+class RequestManager private constructor(private val context: Context) {
+
+    private val sharedPref: SharedPreferences? by lazy {
+        context.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
+    }
+
+    private fun getApiToken() = sharedPref?.getString(KEY_TOKEN, null)
 
     companion object {
         private lateinit var staticContext: Application
@@ -48,16 +58,19 @@ class RequestManager private constructor(context: Context) {
         .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
         .addInterceptor(HttpStatusInterceptor()) // 处理token过期
         .addInterceptor(MoreBaseUrlInterceptor())
-        .addInterceptor(RequestInterceptor(context))
+        .addNetworkInterceptor(Http400or500Interceptor()) //处理后端的沙雕行为
+        .addInterceptor(RequestInterceptor(context, ::getApiToken))
         //.addInterceptor(LogInterceptor().setLevel(LogInterceptor.Level.BODY))
 
 
         .apply {
             //debug版本才打印api內容
             if (BuildConfig.DEBUG) {
+//                addInterceptor(logging)
                 addInterceptor(HttpLogInterceptor())
             }
         }
+
 
     private val mMoshi: Moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
@@ -76,6 +89,14 @@ class RequestManager private constructor(context: Context) {
             .build()
     }
 
+    fun createDefaultRetrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(Constants.getBaseUrl())
+            .client(mOkHttpClientBuilder.build())
+            .addConverterFactory(MoshiConverterFactory.create(mMoshi))
+            .build()
+    }
+
     //20190617 記錄問題: OkHttp 強制信任所有認證
     private fun getUnsafeOkHttpClient(): OkHttpClient.Builder {
         return try {
@@ -84,7 +105,7 @@ class RequestManager private constructor(context: Context) {
                 object : X509TrustManager {
                     @Throws(CertificateException::class)
                     override fun checkClientTrusted(
-                        chain: Array<X509Certificate?>?, authType: String?
+                        chain: Array<X509Certificate?>?, authType: String?,
                     ) {
                         checkServerTrusted(chain)
                     }

@@ -10,7 +10,7 @@ import androidx.annotation.StringRes
 import androidx.appcompat.widget.AppCompatTextView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.SPUtil
+import org.cxct.sportlottery.util.getMarketSwitch
 
 object MainHomeItemHelper {
 
@@ -33,7 +33,7 @@ object MainHomeItemHelper {
         // 推荐
         add(HomeItem(R.string.home_sports, R.drawable.sport0)) //体育
         add(HomeItem(R.string.home_in_play, R.drawable.icon_in_play0)) //滚球
-        if (!SPUtil.getMarketSwitch()) {
+        if (!getMarketSwitch()) {
             add(HomeItem(R.string.home_on_game, R.drawable.icon_on_game0)) //棋牌
             add(HomeItem(R.string.promo, R.drawable.ic_home_promo_nor)) // 优惠
         }

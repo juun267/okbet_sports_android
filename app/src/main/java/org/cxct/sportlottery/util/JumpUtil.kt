@@ -6,12 +6,13 @@ import android.content.Intent
 import android.net.Uri
 import android.webkit.URLUtil
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bettingStation.BettingStation
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.maintab.lottery.LotteryActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
+import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import timber.log.Timber
 
 object JumpUtil {
@@ -69,12 +70,14 @@ object JumpUtil {
 //        }
 
 
-
         try {
             Timber.i("跳转到链接:$href")
             if (URLUtil.isValidUrl(href)) {
                 context.startActivity(
-                    Intent(context, ThirdGameActivity::class.java).putExtra(WebActivity.KEY_URL, href)
+                    Intent(context, ThirdGameActivity::class.java).putExtra(
+                        WebActivity.KEY_URL,
+                        href
+                    )
                         .putExtra(WebActivity.GAME_CATEGORY_CODE, thirdGameCategoryCode)
                 )
             } else {
@@ -102,7 +105,7 @@ object JumpUtil {
         context: Context,
         href: String?,
     ) {
-        LogUtil.d(href)
+        href?.let { LogUtil.d(href) }
         context.startActivity(
             Intent(context, LotteryActivity::class.java).apply {
                 putExtra(WebActivity.KEY_URL, href)

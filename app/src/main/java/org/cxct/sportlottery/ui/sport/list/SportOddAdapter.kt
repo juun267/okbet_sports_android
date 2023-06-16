@@ -117,7 +117,7 @@ class SportOddAdapter(
         if (payloads.isNullOrEmpty()) {
             onBindViewHolder(holder, position)
         } else {
-            Log.d("Hewie", "更新：賽事($position)")
+//            Log.d("Hewie", "更新：賽事($position)")
 
             when (payloads.first()) {
                 is MatchOdd -> {

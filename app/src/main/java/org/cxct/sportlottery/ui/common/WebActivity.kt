@@ -283,4 +283,9 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             }
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        runWithCatch { viewBinding.okWebView.destroy() }
+    }
 }

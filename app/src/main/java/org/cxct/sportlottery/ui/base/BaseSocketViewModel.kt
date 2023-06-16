@@ -23,21 +23,6 @@ abstract class BaseSocketViewModel(
     favoriteRepository
 ) {
 
-    init {
-        /* gotConfigData 判斷：避免進 WebViewActivity crash */
-        if (!loginRepository.isCheckToken && gotConfigData) {
-            viewModelScope.launch {
-                loginRepository.checkToken()
-
-                if (!userInfoRepository.checkedUserInfo && isLogin.value == true) {
-                    doNetwork(androidContext, exceptionHandle = false) {
-                        userInfoRepository.getUserInfo()
-                    }
-                }
-            }
-        }
-    }
-
     fun updateMoney(money: Double?) {
         LoginRepository.updateMoney(money)
     }

@@ -5,9 +5,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
 import org.cxct.sportlottery.net.ApiResult
 
 import java.io.IOException
+
+
+inline fun <T> Flow<T>.collectWith(scope: CoroutineScope, collector: FlowCollector<T>) {
+    scope.launch { collect(collector) }
+}
 
 fun LifecycleOwner.launch(block: suspend () -> Unit ) = lifecycleScope.launch { block() }
 

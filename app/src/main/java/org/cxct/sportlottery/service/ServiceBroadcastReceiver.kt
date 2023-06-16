@@ -7,12 +7,15 @@ import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asFlow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.SelectionType
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.UserDiscountChangeEvent
@@ -40,23 +43,21 @@ import org.cxct.sportlottery.service.BackService.Companion.CHANNEL_KEY
 import org.cxct.sportlottery.service.BackService.Companion.CONNECT_STATUS
 import org.cxct.sportlottery.service.BackService.Companion.SERVER_MESSAGE_KEY
 import org.cxct.sportlottery.service.BackService.Companion.mUserId
-import org.cxct.sportlottery.util.EncryptUtil
-import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.convertToIndoOdds
 import org.cxct.sportlottery.util.MatchOddUtil.convertToMYOdds
-import org.cxct.sportlottery.util.SocketUpdateUtil
-import org.cxct.sportlottery.util.sortOddsMap
+import org.cxct.sportlottery.util.MatchOddUtil.setupOddsDiscount
+import org.cxct.sportlottery.util.OddsUtil.updateBetStatus
+import org.cxct.sportlottery.util.OddsUtil.updateBetStatus_1
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import org.json.JSONTokener
 import timber.log.Timber
 
-open class ServiceBroadcastReceiver(
-    val userInfoRepository: UserInfoRepository? = null, val betInfoRepository: BetInfoRepository
-) : BroadcastReceiver() {
+open class ServiceBroadcastReceiver : BroadcastReceiver() {
 
     val globalStop: LiveData<GlobalStopEvent?>
         get() = _globalStop
@@ -122,13 +123,13 @@ open class ServiceBroadcastReceiver(
     val closePlayCate: LiveData<Event<ClosePlayCateEvent?>>
         get() = _closePlayCate
 
-    val recordBetNew: LiveData<RecordNewEvent?>
+    val recordBetNew: SharedFlow<RecordNewEvent?>
         get() = _recordBetNew
-    val recordWinsResult: LiveData<RecordNewEvent?>
+    val recordWinsResult: SharedFlow<RecordNewEvent?>
         get() = _recordWinsResult
-    val recordNewOkGame: LiveData<RecordNewEvent?>
+    val recordNewOkGame: SharedFlow<RecordNewEvent?>
         get() = _recordNewOkGame
-    val recordResultOkGame: LiveData<RecordNewEvent?>
+    val recordResultOkGame: SharedFlow<RecordNewEvent?>
         get() = _recordResultOkGame
 
     private val _globalStop = MutableLiveData<GlobalStopEvent?>()
@@ -143,7 +144,7 @@ open class ServiceBroadcastReceiver(
     private val _lockMoney = MutableLiveData<Double?>()
     private val _userNotice = MutableLiveData<UserNoticeEvent?>()
     private val _sysMaintenance = MutableLiveData<SysMaintenanceEvent?>()
-    private val _sportMaintenance = MutableLiveData<SportMaintenanceEvent?>()
+    val _sportMaintenance = MutableLiveData<SportMaintenanceEvent?>()
     private val _serviceConnectStatus = MutableLiveData<ServiceConnectStatus>()
     private val _leagueChange = MutableLiveData<LeagueChangeEvent?>()
     private val _matchOddsLock = MutableLiveData<MatchOddsLockEvent?>()
@@ -152,16 +153,16 @@ open class ServiceBroadcastReceiver(
     private val _dataSourceChange = MutableLiveData<Boolean?>()
     private val _userInfoChange = MutableLiveData<Boolean?>()
     private val _closePlayCate = MutableLiveData<Event<ClosePlayCateEvent?>>()
-    private val _recordBetNew = MutableLiveData<RecordNewEvent?>()
-    private val _recordWinsResult = MutableLiveData<RecordNewEvent?>()
-    private val _recordNewOkGame = MutableLiveData<RecordNewEvent?>()
-    private val _recordResultOkGame = MutableLiveData<RecordNewEvent?>()
+    private val _recordBetNew = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100)
+    private val _recordWinsResult = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100)
+    private val _recordNewOkGame = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100)
+    private val _recordResultOkGame = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100)
 
 
     override fun onReceive(context: Context?, intent: Intent) {
         val bundle = intent.extras
         receiveConnectStatus(bundle)
-        receiveMessage(bundle)
+        bundle?.let { receiveMessage(it) }
     }
 
     private fun receiveConnectStatus(bundle: Bundle?) {
@@ -171,10 +172,12 @@ open class ServiceBroadcastReceiver(
         }
     }
 
-    private fun receiveMessage(bundle: Bundle?) {
+    private fun receiveMessage(bundle: Bundle) {
+
         CoroutineScope(Dispatchers.IO).launch {
-            val channelStr = bundle?.getString(CHANNEL_KEY, "") ?: ""
-            val messageStr = bundle?.getString(SERVER_MESSAGE_KEY, "") ?: ""
+
+            val channelStr = bundle.getString(CHANNEL_KEY, "") ?: ""
+            val messageStr = bundle.getString(SERVER_MESSAGE_KEY, "") ?: ""
             val decryptMessage = EncryptUtil.uncompress(messageStr)
             try {
                 decryptMessage?.let {
@@ -269,19 +272,30 @@ open class ServiceBroadcastReceiver(
             EventType.ODDS_CHANGE -> {
                 val data = ServiceMessage.getOddsChange(jObjStr)?.apply {
                     channel = channelStr
+
+                    oddsList.forEach { // 过滤掉空odd(2023.05.30)
+                        if (it.oddsList != null) {
+                            val iterator = it.oddsList?.iterator()
+                            while (iterator.hasNext()) {
+                                if (iterator.next() == null) {
+                                    iterator.remove()
+                                }
+                            }
+                        }
+                    }
                 }
 
                 //query為耗時任務不能在主線程, LiveData需在主線程更新
                 mUserId?.let { userId ->
-                    val discount = userInfoRepository?.getDiscount(userId)
+                    val discount = UserInfoRepository.getDiscount(userId)
                     data?.let {
                         it.setupOddDiscount(discount ?: 1.0F)
-                        SocketUpdateUtil.updateMatchOdds(it)
+                        it.oddsListToOddsMap()
                         it.updateOddsSelectedState()
                         it.filterMenuPlayCate()
                         it.sortOddsMap()
+                        SocketUpdateUtil.updateMatchOdds(it)
                     }
-
                     data?.let { onOddsEvent(it) }
 
                 } ?: run {
@@ -301,20 +315,22 @@ open class ServiceBroadcastReceiver(
                 val data = ServiceMessage.getMatchOddsChange(jObjStr)
                 //query為耗時任務不能在主線程, LiveData需在主線程更新
                 mUserId?.let { userId ->
-                    val discount = userInfoRepository?.getDiscount(userId)
+                    val discount = UserInfoRepository.getDiscount(userId)
                     data?.let {
                         it.setupOddDiscount(discount ?: 1.0F)
+                        //得在所有賠率折扣率, 水位計算完畢後再去判斷更新盤口狀態
+                        it.updateBetStatus()
                         it.updateOddsSelectedState()
                     }
                     _matchOddsChange.postValue(Event(data))
                     data?.let { socketEvent ->
-                        betInfoRepository.updateMatchOdd(socketEvent)
+                        BetInfoRepository.updateMatchOdd(socketEvent)
                     }
 
                 } ?: run {
                     _matchOddsChange.postValue(Event(data))
                     data?.let { socketEvent ->
-                        betInfoRepository.updateMatchOdd(socketEvent)
+                        BetInfoRepository.updateMatchOdd(socketEvent)
                     }
                 }
             }
@@ -338,22 +354,22 @@ open class ServiceBroadcastReceiver(
             EventType.RECORD_NEW -> {
                 //首页最新投注
                 val data = ServiceMessage.getRecondNew(jObjStr)
-                _recordBetNew.postValue(data)
+                _recordBetNew.emit(data)
             }
             EventType.RECORD_RESULT -> {
                 //首页最新大奖
                 val data = ServiceMessage.getRecondResult(jObjStr)
-                _recordWinsResult.postValue(data)
+                _recordWinsResult.emit(data)
             }
             EventType.RECORD_NEW_OK_GAMES -> {
                 //最新投注
                 val data = ServiceMessage.getRecondNew(jObjStr)
-                _recordNewOkGame.postValue(data)
+                _recordNewOkGame.emit(data)
             }
             EventType.RECORD_RESULT_OK_GAMES -> {
                 //最新大奖
                 val data = ServiceMessage.getRecondResult(jObjStr)
-                _recordResultOkGame.postValue(data)
+                _recordResultOkGame.emit(data)
             }
             else -> {}
 
@@ -367,38 +383,50 @@ open class ServiceBroadcastReceiver(
                 it.onChange(socketEvent)
             }
         }
-        betInfoRepository.updateMatchOdd(socketEvent)
+        BetInfoRepository.updateMatchOdd(socketEvent)
     }
-
+    private fun OddsChangeEvent.oddsListToOddsMap() {
+        odds = mutableMapOf()
+        odds = oddsList.associateBy(
+            keySelector = { it.playCateCode.toString() },
+            valueTransform = { it.oddsList?.filter { it != null }?.toMutableList() }).toMutableMap()
+    }
     private fun OddsChangeEvent.setupOddDiscount(discount: Float): OddsChangeEvent {
         this.oddsList.let { oddTypeSocketList ->
             oddTypeSocketList.forEach { oddsList ->
-                if (oddsList.playCateCode != PlayCate.LCS.value) {
-                    oddsList.oddsList?.forEach { odd ->
-                        if (odd != null && odd?.playCode != PlayCate.LCS.value) {
-                            val oddsDiscount = odd?.odds?.applyDiscount(discount)
-                            odd?.odds = odd?.odds?.applyDiscount(discount)
-
-                            if (odd?.odds == odd?.hkOdds && odd?.odds == odd?.malayOdds && odd?.odds == odd?.indoOdds) {
-                                odd?.hkOdds = oddsDiscount
-                                odd?.malayOdds = oddsDiscount
-                                odd?.indoOdds = oddsDiscount
-                            } else {
-                                odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
-                                odd?.malayOdds = odd?.hkOdds?.convertToMYOdds()
-                                odd?.indoOdds = odd?.hkOdds?.convertToIndoOdds()
-                            }
-
-                            if (oddsList.playCateCode == PlayCate.EPS.value) {
-                                odd?.extInfo =
-                                    odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
-                            }
-                        }
-                    }
+                if (oddsList.playCateCode == PlayCate.LCS.value) {
+                    oddsList.oddsList?.setupOddsDiscount(true,
+                        oddsList.playCateCode,
+                        discount)
+                } else {
+                    oddsList.oddsList?.setupOddsDiscount(false,
+                        oddsList.playCateCode,
+                        discount)
                 }
             }
         }
 
+        return this
+    }
+    private fun List<Odd?>.setupOddsDiscount(
+        isLCS: Boolean,
+        playCateCode: String?,
+        discount: Float,
+    ) {
+        this.forEach { odd ->
+            odd.setupOddsDiscount(isLCS, playCateCode, discount)
+        }
+        this?.toMutableList().updateBetStatus()
+    }
+    /**
+     * 得在所有賠率折扣率, 水位計算完畢後再去判斷更新盤口狀態
+     */
+    private fun MatchOddsChangeEvent.updateBetStatus(): MatchOddsChangeEvent {
+        this.odds?.let { oddsMap ->
+            oddsMap.forEach { (_, value) ->
+                value.odds?.updateBetStatus()
+            }
+        }
         return this
     }
 
@@ -422,7 +450,15 @@ open class ServiceBroadcastReceiver(
         }
         return this
     }
-
+    /**
+     * 得在所有賠率折扣率, 水位計算完畢後再去判斷更新盤口狀態
+     */
+    private fun OddsChangeEvent.updateBetStatus(): OddsChangeEvent {
+        oddsList.forEach { oddsList ->
+            oddsList.oddsList?.updateBetStatus_1()
+        }
+        return this
+    }
     private fun OddsChangeEvent.sortOddsMap() {
         this.odds.sortOddsMap()
     }
@@ -432,7 +468,7 @@ open class ServiceBroadcastReceiver(
             oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
                 oddTypeSocketMapEntry.value?.onEach { odd ->
                     odd?.isSelected =
-                        betInfoRepository.betInfoList.value?.peekContent()?.any { betInfoListData ->
+                        BetInfoRepository.betInfoList.value?.peekContent()?.any { betInfoListData ->
                             betInfoListData.matchOdd?.oddsId == odd?.id
                         }
                 }
@@ -461,7 +497,7 @@ open class ServiceBroadcastReceiver(
             oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
                 oddTypeSocketMapEntry.value.odds?.onEach { odd ->
                     odd?.isSelected =
-                        betInfoRepository.betInfoList.value?.peekContent()?.any { betInfoListData ->
+                        BetInfoRepository.betInfoList.value?.peekContent()?.any { betInfoListData ->
                             betInfoListData.matchOdd.oddsId == odd?.id
                         }
                 }

@@ -3,6 +3,8 @@ package org.cxct.sportlottery.repository
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -45,8 +47,17 @@ object LoginRepository {
         MultiLanguagesApplication.appContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
 
-    val isLogin: LiveData<Boolean>
-        get() = _isLogin
+    val isLogin: LiveData<Boolean> by lazy {
+        val mutableLiveData = MutableLiveData<Boolean>()
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            MultiLanguagesApplication.mInstance.userInfo.observeForever { mutableLiveData.value = it != null }
+        } else {
+            Handler(Looper.getMainLooper()).post {
+                MultiLanguagesApplication.mInstance.userInfo.observeForever { mutableLiveData.value = it != null }
+            }
+        }
+        mutableLiveData
+    }
 
     val kickedOut: LiveData<Event<String?>>
         get() = _kickedOut
@@ -54,7 +65,6 @@ object LoginRepository {
     val transNum: LiveData<Int?> //交易狀況數量
         get() = _transNum
 
-    val _isLogin by lazy { MutableLiveData(MultiLanguagesApplication.mInstance.userInfo.value != null) }
     val _kickedOut = MutableLiveData<Event<String?>>()
     private val _transNum = MutableLiveData<Int?>()
 
@@ -132,8 +142,6 @@ object LoginRepository {
                 commit()
             }
         }
-
-    var isCheckToken = false
 
     fun updateMoney(money: Double?) {
         mUserMoney.postValue(money)
@@ -304,7 +312,6 @@ object LoginRepository {
     }
 
     suspend fun setUpLoginData(loginData: LoginData?) {
-        isCheckToken = true
         updateLoginData(loginData)
         updateUserInfo(loginData)
     }
@@ -362,28 +369,11 @@ object LoginRepository {
         }
     }
 
-    suspend fun checkToken() {
-        val checkTokenResponse = kotlin.runCatching { OneBoSportApi.indexService.checkToken() }.getOrNull() ?: return
-
-        if (checkTokenResponse.isSuccessful) {
-            checkTokenResponse.body()?.let {
-                isCheckToken = true
-                _isLogin.value = true
-            }
-        } else {
-
-            isCheckToken = false
-            _isLogin.value = false
-            clear()
-        }
-    }
-
     suspend fun checkIsUserAlive(): Response<NetResult> {
         return OneBoSportApi.indexService.checkToken()
     }
 
     suspend fun logoutAPI(): Response<NetResult> {
-        _isLogin.value = false
         val emptyList = mutableListOf<String>()
         MultiLanguagesApplication.saveSearchHistory(emptyList)
         return OneBoSportApi.indexService.logout(LogoutRequest()).apply {
@@ -396,15 +386,12 @@ object LoginRepository {
     }
 
     suspend fun logout() {
-        _isLogin.value = false
         val emptyList = mutableListOf<String>()
         MultiLanguagesApplication.saveSearchHistory(emptyList)
         clear()
     }
 
     private fun updateLoginData(loginData: LoginData?) {
-        _isLogin.postValue(loginData != null)
-
         GameConfigManager.maxBetMoney = loginData?.maxBetMoney ?: 9999999
         GameConfigManager.maxCpBetMoney = loginData?.maxCpBetMoney ?: 9999
         GameConfigManager.maxParlayBetMoney = loginData?.maxParlayBetMoney ?: 9999

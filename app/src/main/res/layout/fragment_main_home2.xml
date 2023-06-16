@@ -17,26 +17,25 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:descendantFocusability="blocksDescendants">
+            android:descendantFocusability="blocksDescendants"
+            android:orientation="vertical">
 
             <org.cxct.sportlottery.ui.maintab.home.view.HomeTopView
                 android:id="@+id/homeTopView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
+                android:layout_height="wrap_content" />
 
 
             <!--part-2-->
             <org.cxct.sportlottery.ui.maintab.games.view.HotMatchView
                 android:id="@+id/hotMatchView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <org.cxct.sportlottery.ui.maintab.home.view.HomeOkGamesView
                 android:id="@+id/okGamesView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
             <!--part-2-end-->
 
             <include
@@ -46,7 +45,7 @@
             <org.cxct.sportlottery.ui.maintab.home.view.WinsRankView
                 android:id="@+id/winsRankView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <include
                 android:id="@+id/includeBettingStation"
@@ -56,17 +55,18 @@
                 android:id="@+id/homeBottumView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
     <ImageView
         android:id="@+id/ivBackTop"
-        android:src="@drawable/icon_backtop_blue"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:adjustViewBounds="true"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="20dp" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/icon_backtop_blue" />
 
 </RelativeLayout>

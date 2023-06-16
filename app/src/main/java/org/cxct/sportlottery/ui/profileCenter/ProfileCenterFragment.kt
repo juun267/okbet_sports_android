@@ -21,7 +21,6 @@ import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.aboutMe.AboutMeActivity
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.dialog.CustomSecurityDialog
@@ -43,6 +42,7 @@ import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewMod
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.selflimit.SelfLimitActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import java.io.File
@@ -106,7 +106,7 @@ class ProfileCenterFragment :
                 return@observe
             }
 
-            update_version.setOnClickListener {  }
+            update_version.setOnClickListener { }
             iv_version_new.visibility = View.GONE
         }
 
@@ -140,6 +140,7 @@ class ProfileCenterFragment :
 //        }
 
     }
+
     private val mSelectMediaListener = object : OnResultCallbackListener<LocalMedia> {
         override fun onResult(result: MutableList<LocalMedia>?) {
             try {
@@ -158,15 +159,12 @@ class ProfileCenterFragment :
                 }
 
                 val file = File(path!!)
-                if (file.exists())
-                    uploadImg(file)
-                else
-                    throw FileNotFoundException()
+                if (file.exists()) uploadImg(file)
+                else throw FileNotFoundException()
             } catch (e: Exception) {
                 e.printStackTrace()
                 ToastUtil.showToastInCenter(
-                    activity,
-                    getString(R.string.error_reading_file)
+                    activity, getString(R.string.error_reading_file)
                 )
             }
         }
@@ -176,6 +174,7 @@ class ProfileCenterFragment :
         }
 
     }
+
     private fun setupEditNickname() {
         rl_head.setOnClickListener {
             fragmentManager?.let { it1 ->
@@ -196,11 +195,7 @@ class ProfileCenterFragment :
         btn_recharge.setOnClickListener {
             avoidFastDoubleClick()
             //Glife用户
-            if (viewModel.userInfo.value?.vipType == 1) {
-                showPromptDialog(title = getString(R.string.prompt),
-                    message = getString(R.string.N643),
-                    {})
-            } else {
+            ToGcashDialog.showByClick(viewModel){
                 viewModel.checkRechargeKYCVerify()
             }
         }
@@ -210,14 +205,9 @@ class ProfileCenterFragment :
         btn_withdraw.setOnClickListener {
             avoidFastDoubleClick()
             //Glife用户
-            if (viewModel.userInfo.value?.vipType == 1) {
-                showPromptDialog(title = getString(R.string.prompt),
-                    message = getString(R.string.N644),
-                    {})
-            } else {
+            ToGcashDialog.showByClick(viewModel){
                 viewModel.checkWithdrawKYCVerify()
             }
-
         }
     }
 
@@ -292,7 +282,7 @@ class ProfileCenterFragment :
         //赛果结算
         btn_game_settlement.setOnClickListener {
             //检查是否关闭入口
-            checkSportStatus(requireActivity()){
+            checkSportStatus(requireActivity()) {
                 startActivity(Intent(requireActivity(), ResultsSettlementActivity::class.java))
             }
         }
@@ -311,6 +301,7 @@ class ProfileCenterFragment :
                     }
                 }
             }
+
             else -> {
                 lin_help_sub.children.filter { it is TextView }.forEach {
                     (it.layoutParams as LinearLayout.LayoutParams).apply {
@@ -325,7 +316,12 @@ class ProfileCenterFragment :
         }
         //关于我们
         btn_about_us.setOnClickListener {
-            startActivity(Intent(requireActivity(), org.cxct.sportlottery.ui.aboutMe.AboutMeActivity::class.java))
+            startActivity(
+                Intent(
+                    requireActivity(),
+                    org.cxct.sportlottery.ui.aboutMe.AboutMeActivity::class.java
+                )
+            )
         }
 
         //资产检测
@@ -335,12 +331,9 @@ class ProfileCenterFragment :
     // TODO 跳轉Promotion 20220108新增 by Hewie
     private fun toProfileCenter() {
         JumpUtil.toInternalWeb(
-            requireContext(),
-            Constants.getPromotionUrl(
-                viewModel.token,
-                LanguageManager.getSelectLanguage(requireContext())
-            ),
-            getString(R.string.promotion)
+            requireContext(), Constants.getPromotionUrl(
+                viewModel.token, LanguageManager.getSelectLanguage(requireContext())
+            ), getString(R.string.promotion)
         )
     }
 
@@ -351,6 +344,7 @@ class ProfileCenterFragment :
         super.onHiddenChanged(hidden)
         getMoney()
     }
+
     private fun getUserInfo() {
         viewModel.getUserInfo()
     }
@@ -404,16 +398,13 @@ class ProfileCenterFragment :
                         getString(R.string.go_to_setting),
                         true
                     ) {
-                        startActivity(
-                            Intent(
-                                requireActivity(),
-                                SettingPasswordActivity::class.java
-                            ).apply {
-                                putExtra(
-                                    PWD_PAGE,
-                                    SettingPasswordActivity.PwdPage.BANK_PWD
-                                )
-                            })
+                        startActivity(Intent(
+                            requireActivity(), SettingPasswordActivity::class.java
+                        ).apply {
+                            putExtra(
+                                PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD
+                            )
+                        })
                     }
                 } else {
                     viewModel.checkProfileInfoComplete()
@@ -476,7 +467,7 @@ class ProfileCenterFragment :
 
         viewModel.errorMessageDialog.observe(viewLifecycleOwner) {
             val errorMsg = it ?: getString(R.string.unknown_error)
-            CustomAlertDialog(requireContext()).apply {
+            CustomAlertDialog().apply {
                 setMessage(errorMsg)
                 setNegativeButtonText(null)
                 setCanceledOnTouchOutside(false)
@@ -485,8 +476,7 @@ class ProfileCenterFragment :
         }
 
         viewModel.twoFactorSuccess.observe(viewLifecycleOwner) {
-            if (it == true)
-                customSecurityDialog?.dismiss()
+            if (it == true) customSecurityDialog?.dismiss()
         }
 
         viewModel.twoFactorResult.observe(viewLifecycleOwner) {
@@ -575,10 +565,8 @@ class ProfileCenterFragment :
             it.getContentIfNotHandled()?.let { b ->
                 if (b)
                     showKYCVerifyDialog()
-                else {
+                else
                     viewModel.checkWithdrawSystem()
-                }
-
             }
         }
 
@@ -586,11 +574,8 @@ class ProfileCenterFragment :
             it.getContentIfNotHandled()?.let { b ->
                 if (b)
                     showKYCVerifyDialog()
-                else {
-                    loading()
+                else
                     viewModel.checkRechargeSystem()
-                }
-
             }
         }
 
@@ -647,8 +632,10 @@ class ProfileCenterFragment :
     fun setupNoticeButton() {
         iv_user_notice.setOnClickListener {
             startActivity(
-                Intent(requireActivity(), InfoCenterActivity::class.java)
-                    .putExtra(InfoCenterActivity.KEY_READ_PAGE, InfoCenterActivity.YET_READ)
+                Intent(requireActivity(), InfoCenterActivity::class.java).putExtra(
+                    InfoCenterActivity.KEY_READ_PAGE,
+                    InfoCenterActivity.YET_READ
+                )
             )
         }
     }
@@ -671,6 +658,7 @@ class ProfileCenterFragment :
         iv_circle?.visibility =
             (if (noticeCount ?: 0 > 0 && isGuest == false) View.VISIBLE else View.GONE)
     }
+
     //实名验证
     private fun showKYCVerifyDialog() {
         VerifyIdentityDialog().show(childFragmentManager, null)

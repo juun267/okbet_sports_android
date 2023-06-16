@@ -8,7 +8,8 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.common.proguards.KeepMembers
 
 //不可與org.cxct.sportlottery.network.bet.add.Row共用，因matchOdds底下hkOdds有可能為null
-@JsonClass(generateAdapter = true) @KeepMembers
+@JsonClass(generateAdapter = true)
+@KeepMembers
 data class BetResult(
     @Json(name = "eventType")
     val eventType: Int?,

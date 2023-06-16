@@ -5,7 +5,8 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.network.common.BaseResult
 
-@JsonClass(generateAdapter = true) @KeepMembers
+@JsonClass(generateAdapter = true)
+@KeepMembers
 data class BetAddResult(
     @Json(name = "code")
     override val code: Int,

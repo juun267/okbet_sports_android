@@ -59,7 +59,7 @@ class GameCategroyAdapter(
         root.visible()
         val moreEnable = item.gameList.size > 3
         tvMore.isVisible = moreEnable
-        ivMore.isVisible = moreEnable
+//        ivMore.isVisible = moreEnable
         ivIcon.load(item.icon)
         tvName.text = item.categoryName
         (rvGameItem.adapter as GameChildAdapter).setList(item.gameList.toMutableList())

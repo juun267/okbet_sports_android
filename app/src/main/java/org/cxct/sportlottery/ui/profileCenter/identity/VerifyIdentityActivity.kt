@@ -31,8 +31,9 @@ class VerifyIdentityActivity :
     private fun checkKYCStatus() {
         val opt1 = when (viewModel.userInfo.value?.verified) {
             ProfileActivity.VerifiedType.VERIFYING.value,
-            ProfileActivity.VerifiedType.VERIFIED_FAILED.value,
+//            ProfileActivity.VerifiedType.VERIFIED_FAILED.value,
             ProfileActivity.VerifiedType.PASSED.value,
+            ProfileActivity.VerifiedType.VERIFIED_WAIT.value,
             -> true
             else -> {
                 false

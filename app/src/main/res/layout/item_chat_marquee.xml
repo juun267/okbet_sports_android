@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.cxct.sportlottery.view.MixFontTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tv_marquee"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_marginEnd="375dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center_vertical"
+    android:singleLine="true"
+    android:textColor="@color/color_chat_marquee_text"
+    android:textSize="@dimen/textSize12sp"
+    tools:ignore="SpUsage"
+    tools:text="內容長度一定要超過控制元件的長度,內容長度一定要超過控制元件的長度,內容長度一定要超過控制元件的長度" />

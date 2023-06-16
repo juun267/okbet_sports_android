@@ -10,6 +10,8 @@ import android.os.Handler
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -104,16 +106,20 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private val tabCateAdapter: TabCateAdapter by lazy {
         TabCateAdapter(OnItemSelectedListener {
             tabCateAdapter.selectedPosition = it
-            (rv_cat.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(rv_cat,
+            (rv_cat.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
+                rv_cat,
                 RecyclerView.State(),
-                tabCateAdapter.selectedPosition)
+                tabCateAdapter.selectedPosition
+            )
             viewModel.oddsDetailResult.value?.peekContent()?.oddsDetailData?.matchOdd?.playCateTypeList?.getOrNull(
                 it
             )?.code?.let { code ->
+                checkSportGuideState(code)
                 oddsDetailListAdapter?.notifyDataSetChangedByCode(code)
             }
         })
     }
+
     private var betListFragment: BetListFragment? = null
     private var matchOdd: MatchOdd? = null
     private var matchInfo: MatchInfo? = null
@@ -410,6 +416,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         matchInfo?.let {
             setupMatchInfo(it)
         }
+        tabCode?.let {
+            checkSportGuideState(it)
+        }
     }
 
     override fun onResume() {
@@ -571,7 +580,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         }
                         //endregion
 
-                        setupMatchInfo(matchInfo,true)
+                        setupMatchInfo(matchInfo, true)
                     }
                     setupLiveView(result.oddsDetailData?.matchOdd?.matchInfo?.liveVideo)
                 } else {
@@ -734,7 +743,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
      * 配置賽事資訊(隊伍名稱、是否延期、賽制)
      * fromApi api的状态不携带红黄牌等信息
      */
-    private fun setupMatchInfo(matchInfo: MatchInfo,fromApi: Boolean=false) {
+    private fun setupMatchInfo(matchInfo: MatchInfo, fromApi: Boolean = false) {
         //region 隊伍名稱
         tv_game_title.text = matchInfo.leagueName
         tv_home_name.text = matchInfo.homeName ?: ""
@@ -758,7 +767,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         var isInPlay = TimeUtil.isTimeInPlay(matchInfo.startTime)
         if (isInPlay) {
             lin_bottom.isVisible = true
-            if (!fromApi){
+            if (!fromApi) {
                 setStatusText(matchInfo)
                 setupMatchScore(matchInfo)
             }
@@ -790,6 +799,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private fun initSocketObserver() {
         unSubscribeChannelHallAll()
         unSubscribeChannelEventAll()
+        setupSportStatusChange(this){
+            if(it){
+                finish()
+            }
+        }
         receiver.serviceConnectStatus.observe(this) {
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
@@ -977,9 +991,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 }
             }
             tabCateAdapter.dataList = playCateTypeList
-            (rv_cat.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(rv_cat,
+            (rv_cat.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
+                rv_cat,
                 RecyclerView.State(),
-                tabCateAdapter.selectedPosition)
+                tabCateAdapter.selectedPosition
+            )
         } else {
             rv_cat.visibility = View.GONE
         }
@@ -1013,6 +1029,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 !(matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
                     ?.getGameDetailAnimationNeedShow() == true
             lin_live.setOnClickListener {
+                if (!viewModel.getLoginBoolean() && sConfigData?.noLoginWitchVideoOrAnimation==1){
+                    AppManager.currentActivity().startLogin()
+                    return@setOnClickListener
+                }
                 showLive()
             }
 
@@ -1029,6 +1049,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 }
             }
             lin_video.setOnClickListener {
+                if (!viewModel.getLoginBoolean() && sConfigData?.noLoginWitchVideoOrAnimation==1){
+                    AppManager.currentActivity().startLogin()
+                    return@setOnClickListener
+                }
                 live_view_tool_bar.videoUrl?.let {
                     toolBar.isVisible = false
                     live_view_tool_bar.isVisible = true
@@ -1040,6 +1064,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 }
             }
             lin_anime.setOnClickListener {
+                if (!viewModel.getLoginBoolean() && sConfigData?.noLoginWitchVideoOrAnimation==1){
+                    AppManager.currentActivity().startLogin()
+                    return@setOnClickListener
+                }
                 live_view_tool_bar.animeUrl?.let {
                     toolBar.isVisible = false
                     live_view_tool_bar.isVisible = true
@@ -1582,4 +1610,17 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
 
+    /**
+     * 检查篮球末尾比分 新手引导是否已经展示过了
+     */
+    private fun checkSportGuideState(code: String) {
+        if (code == MatchType.END_SCORE.postValue) {
+            if (KvUtils.decodeBooleanTure(KvUtils.BASKETBALL_GUIDE_TIP_FLAG, false)) {
+                dsgView.visibility = GONE
+            } else {
+                dsgView.visibility = VISIBLE
+            }
+        }
+
+    }
 }

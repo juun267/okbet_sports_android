@@ -1,7 +1,9 @@
 package org.cxct.sportlottery.network.user
 
+import androidx.annotation.Keep
 import org.cxct.sportlottery.network.common.UserRebate
 
+@Keep
 data class UserInfo(
     var userId: Long,
     var fullName: String? = null,
@@ -28,7 +30,7 @@ data class UserInfo(
     var discount: Float? = null,
     var verified: Int? = null, // 是否通过实名验证,0:未通过 1:已通过 2:验证中 3:验证失败
     val perBetLimit: Int? = null,
-    var oddsChangeOption:Int? = null ,
+    var oddsChangeOption: Int? = null,
     val uwEnableTime: Long? = 0,
     val maxPayout: Double? = 0.0,
     val firstRechTime: String? = null, //首充时间
@@ -38,4 +40,9 @@ data class UserInfo(
     var passwordSet: Boolean = true,//true 密码为空
     //0是普通用户，1是Glife用户
     var vipType: Int?,
-    )
+    var placeOfBirth: String?="",
+    var address: String?="",
+    var permanentAddress: String?="",
+    var zipCode: String?="",
+    var permanentZipCode: String?="",
+)

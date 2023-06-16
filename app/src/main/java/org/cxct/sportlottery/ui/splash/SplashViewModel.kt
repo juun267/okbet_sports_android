@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.ui.splash
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -14,21 +14,21 @@ import org.cxct.sportlottery.network.index.IndexService
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.setupDefaultHandicapType
 import retrofit2.Retrofit
 import timber.log.Timber
 import kotlin.random.Random
 
 class SplashViewModel(
-    private val androidContext: Context,
+    androidContext: Application,
     private val hostRepository: HostRepository,
+    userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-    private val userInfoRepository: UserInfoRepository,
-    private val playQuotaComRepository: PlayQuotaComRepository
-) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+    favoriteRepository: MyFavoriteRepository,
+) : BaseSocketViewModel(androidContext,userInfoRepository,loginRepository, betInfoRepository, infoCenterRepository,favoriteRepository) {
 
     //當獲取 host 失敗時，就使用下一順位的 serverUrl，重新 request，直到遍歷 ServerUrlList，或成功獲取 host 即停止
     private var mServerUrlIndex = 0
@@ -137,10 +137,7 @@ class SplashViewModel(
         }
     }
 
-    fun goNextPage() {
-//        if (sConfigData?.thirdOpen != FLAG_OPEN) {
-        viewModelScope.launch {
-            loginRepository.checkToken()
+    fun goNextPage() = viewModelScope.launch {
 
             if (!userInfoRepository.checkedUserInfo && isLogin.value == true) {
                 runWithCatch { userInfoRepository.getUserInfo() }
@@ -152,7 +149,6 @@ class SplashViewModel(
 //        } else {
 //            _skipHomePage.postValue(false)
 //        }
-    }
 
     private suspend fun sendGetHostRequest(index: Int) {
         try {

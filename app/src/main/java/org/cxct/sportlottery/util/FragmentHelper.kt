@@ -12,7 +12,9 @@ class FragmentHelper(
 ) {
 
     private var curPos = -1
-    private val fragments: Array<WeakReference<out Fragment>?> = Array(fragmentClasses.size) { null }
+    private val fragments: Array<WeakReference<out Fragment>?> =
+        Array(fragmentClasses.size) { null }
+    private val addedFragment = mutableSetOf<Int>()
 
     fun getFragment(index: Int): Fragment {
         var fragment = fragments[index]?.get()
@@ -45,13 +47,19 @@ class FragmentHelper(
         val transaction = fragmentManager.beginTransaction()
         if (from == null) {
             transaction.replace(viewId, to).commitAllowingStateLoss()
-        } else if (from !== to) {
-            if (!to.isAdded) {
-                transaction.hide(from).add(viewId, to).commitAllowingStateLoss()
-            } else {
+        } else if (from != to) {
+            if (to.isAdded || addedFragment.contains(to.hashCode())) {
                 transaction.hide(from).show(to).commitAllowingStateLoss()
+            } else {
+                addedFragment.add(to.hashCode())
+                transaction.hide(from).add(viewId, to).commitAllowingStateLoss()
             }
         }
+    }
+
+    fun getCurrentFragmentByPos(curPos: Int): Fragment {
+        this.curPos = curPos
+        return getFragment(curPos)
     }
 
     fun getFragmentList(): Array<Fragment?> {

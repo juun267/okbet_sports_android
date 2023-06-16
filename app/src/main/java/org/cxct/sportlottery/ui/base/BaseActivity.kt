@@ -111,7 +111,8 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
             }
 
             else -> {
-                if (this is MaintenanceActivity) {
+                if (this is MaintenanceActivity
+                    || this is SplashActivity) {
                     return
                 }
                 showTokenPromptDialog(result.msg) {
@@ -158,7 +159,6 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
                     this.javaClass.simpleName == ThirdGameActivity::class.java.simpleName
                 ) return@observe
                 showTokenPromptDialog(msg) {
-                    viewModel.loginRepository._isLogin.postValue(false)
                     viewModel.doLogoutCleanUser {
                         run {
                             MainTabActivity.reStart(this)
@@ -191,7 +191,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
             loadingView?.rl_loading?.visibility = View.VISIBLE
             loadingView?.rl_loading?.isClickable = true
         }
-        loadingView?.ivLoading?.setBackgroundResource(R.drawable.anim_loading)
+
         val animationDrawable = loadingView?.ivLoading?.background as AnimationDrawable
         animationDrawable.start()
 //        loadingView?.pb_message?.text = message ?: getString(R.string.loading)

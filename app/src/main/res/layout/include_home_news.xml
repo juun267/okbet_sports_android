@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_4"
-            android:textSize="@dimen/textSize16sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/color_0D2245"
             android:text="@string/N909" />
@@ -60,20 +60,26 @@
                 android:text="@string/B001" />
 
         </com.google.android.material.tabs.TabLayout>
+
         <TextView
+            android:background="@drawable/bg_more"
             android:id="@+id/tvMore"
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:paddingVertical="3dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="4dp"
             android:textColor="@color/color_6D7693"
-            android:textSize="14sp"
+            android:layout_gravity="center_vertical"
+            android:textSize="@dimen/textSize14sp"
+            android:drawableEnd="@drawable/ic_game_gray_arrow_right"
             android:text="@string/N702" />
 
-        <ImageView
-            android:id="@+id/ivMore"
-            android:layout_width="@dimen/margin_16"
-            android:layout_height="@dimen/margin_16"
-            android:src="@drawable/ic_game_gray_arrow_right" />
+<!--        <ImageView-->
+<!--            android:id="@+id/ivMore"-->
+<!--            android:layout_width="@dimen/margin_16"-->
+<!--            android:layout_height="@dimen/margin_16"-->
+<!--            android:src="@drawable/ic_game_gray_arrow_right" />-->
     </LinearLayout>
 
     <View

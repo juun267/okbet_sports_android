@@ -90,9 +90,6 @@ class SingleViewHolder private constructor(itemView: View) :
                             PlayCate.LCS.value -> TextUtil.formatForOddPercentage(
                                 getOdds(this, oddsType ?: OddsType.EU) - 1
                             )
-                            PlayCate.FS_LD_CS.value -> {
-                                getOdds(this, oddsType).toInt().toString()
-                            }
                             else -> TextUtil.formatForOdd(
                                 getOdds(this, oddsType)
                             )
