@@ -47,7 +47,7 @@ class SportOutrightFragment: BindingSocketFragment<SportListViewModel, FragmentS
 
     private val matchType = MatchType.OUTRIGHT
     private var gameType: String = GameType.BK.key
-    private var mLeagueIsFiltered = false // 是否套用聯賽過濾
+
 
     private val gameTypeAdapter by lazy { GameTypeAdapter2(::onGameTypeChanged) }
 
