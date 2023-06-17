@@ -10,6 +10,8 @@ import androidx.core.view.isVisible
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_detail_sport.app_bar_layout
 import kotlinx.android.synthetic.main.activity_detail_sport.collaps_toolbar
+import kotlinx.android.synthetic.main.activity_detail_sport.live_view_tool_bar
+import kotlinx.android.synthetic.main.activity_detail_sport.view.vpContainer
 import kotlinx.android.synthetic.main.content_baseball_status.league_odd_match_basebag
 import kotlinx.android.synthetic.main.content_baseball_status.league_odd_match_bb_status
 import kotlinx.android.synthetic.main.content_baseball_status.league_odd_match_halfStatus
@@ -59,20 +61,14 @@ class SportToolBarTopFragment : BindingSocketFragment<SportViewModel, FragmentTo
                 GameType.getGameType(matchInfo?.gameType) ?: GameType.FT
             )
         )
-        initAnim()
     }
-
-    private lateinit var enterAnim: Animation
-    private lateinit var exitAnim: Animation
-
-    private val delayHideRunnable = Runnable { collaps_toolbar.startAnimation(exitAnim) }
 
     override var startTime: Long = 0
     override var timer: Timer = Timer()
     val handler = Handler(Looper.myLooper()!!)
 
 
-    override var timerHandler: Handler = Handler {
+    override var timerHandler: Handler = Handler(Looper.myLooper()!!) {
         var timeMillis = startTime * 1000L
         if (TimeUtil.isTimeInPlay(matchOdd?.matchInfo?.startTime)) {
             if (!isGamePause) {
@@ -131,67 +127,9 @@ class SportToolBarTopFragment : BindingSocketFragment<SportViewModel, FragmentTo
         matchInfo?.let {
             setupMatchInfo(it)
         }
-
-        initObserver()
-    }
-
-    private fun initAnim() {
-        enterAnim = AnimationUtils.loadAnimation(requireActivity(), R.anim.pop_top_to_bottom_enter)
-        enterAnim.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation?) {
-//                collaps_toolbar.isVisible = true
-//                if (live_view_tool_bar.curType != DetailLiveViewToolbar.LiveType.ANIMATION) {
-//                    iv_fullscreen.isVisible = true
-//                }
-            }
-
-            override fun onAnimationEnd(animation: Animation?) {
-
-            }
-
-            override fun onAnimationRepeat(animation: Animation?) {
-
-            }
-        })
-        enterAnim.duration = 300
-        exitAnim = AnimationUtils.loadAnimation(requireActivity(), R.anim.push_bottom_to_top_exit)
-        exitAnim.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation?) {
-            }
-
-            override fun onAnimationEnd(animation: Animation?) {
-                collaps_toolbar.isVisible = false
-                iv_fullscreen.isVisible = false
-            }
-
-            override fun onAnimationRepeat(animation: Animation?) {
-            }
-        })
-        exitAnim.duration = 300
     }
 
 
-    private fun initObserver() {
-        viewModel.matchLiveInfo.observe(this) {
-            it?.peekContent()?.let { matchRound ->
-                if (lin_live.isVisible) {
-//                    live_view_tool_bar.liveUrl =
-//                        if (matchRound.pullRtmpUrl.isNotEmpty()) matchRound.pullRtmpUrl else matchRound.pullFlvUrl
-//                    if (intoLive) {
-//                        showLive()
-//                    }
-                }
-            }
-        }
-
-        viewModel.animeUrl.observe(this) { event ->
-            event?.getContentIfNotHandled()?.let { url ->
-                if (lin_anime.isVisible) {
-//                    live_view_tool_bar.animeUrl = url
-                }
-            }
-        }
-    }
 
 
     /**
@@ -248,27 +186,6 @@ class SportToolBarTopFragment : BindingSocketFragment<SportViewModel, FragmentTo
             lin_bottom.isVisible = false
 
         }
-    }
-
-
-    fun showLive() {
-//        live_view_tool_bar.liveUrl?.let {
-////            toolBar.isVisible = false
-//            live_view_tool_bar.isVisible = true
-//            collaps_toolbar.isVisible = true
-//            collaps_toolbar.iv_toolbar_bg.isVisible = false
-//            live_view_tool_bar.showLive()
-//            setScrollEnable(false)
-//            startDelayHideTitle()
-//            showChatWebView(true)
-//        }
-    }
-
-
-    private fun startDelayHideTitle() {
-        collaps_toolbar.isVisible = true
-        handler.removeCallbacks(delayHideRunnable)
-        handler.postDelayed(delayHideRunnable, 2000)
     }
 
 
@@ -601,10 +518,5 @@ class SportToolBarTopFragment : BindingSocketFragment<SportViewModel, FragmentTo
     }
 
 
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.clearLiveInfo()
-//        live_view_tool_bar.release()
 
-    }
 }

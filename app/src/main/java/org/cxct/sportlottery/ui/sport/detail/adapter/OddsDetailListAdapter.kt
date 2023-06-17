@@ -632,8 +632,8 @@ class OddsDetailListAdapter(
         private fun controlExpandBottom(expand: Boolean) {
             try {
                 itemView.findViewById<View>(R.id.spaceItemBottom).isVisible = expand
-                itemView.findViewById<View>(R.id.view_line).visibility =
-                    if (expand) View.VISIBLE else View.GONE
+//                itemView.findViewById<View>(R.id.view_line).visibility =
+//                    if (expand) View.VISIBLE else View.GONE
             } catch (e: Exception) {
                 e.printStackTrace()
             }

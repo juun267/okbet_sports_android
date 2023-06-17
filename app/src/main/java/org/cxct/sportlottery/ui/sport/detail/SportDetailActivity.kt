@@ -36,6 +36,7 @@ import kotlinx.android.synthetic.main.item_sport_odd.view.*
 import kotlinx.android.synthetic.main.view_detail_head_toolbar.lin_anime
 import kotlinx.android.synthetic.main.view_detail_head_toolbar1.img_away_logo
 import kotlinx.android.synthetic.main.view_detail_head_toolbar1.img_home_logo
+import kotlinx.android.synthetic.main.view_detail_head_toolbar1.lin_live
 import kotlinx.android.synthetic.main.view_detail_head_toolbar1.lin_video
 import kotlinx.android.synthetic.main.view_detail_head_toolbar1.tv_score
 import kotlinx.android.synthetic.main.view_toolbar_detail_collaps.view.*
@@ -193,11 +194,14 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     if (intoLive) {
                         finish()
                     } else {
-                        vpContainer.isVisible = true
-                        live_view_tool_bar.isVisible = false
-                        collaps_toolbar.isVisible = false
+                        vpContainer.visible()
+                        live_view_tool_bar.gone()
+                        collaps_toolbar.gone()
+                        collaps1.gone()
                         live_view_tool_bar.release()
                         showChatWebView(false)
+                        setScrollEnable(true)
+
                     }
                 }
             }
@@ -294,27 +298,14 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 //                }
 //            }
 //        })
-        live_view_tool_bar.setOnTouchScreenListener(object :
-            DetailLiveViewToolbar.OnTouchScreenListener {
-            override fun onTouchScreen() {
-//                isFlowing = true;
-//                if (collaps_toolbar.visibility == View.GONE) {
-//                    collaps_toolbar.startAnimation(enterAnim);
-//                    collaps_toolbar.visibility = View.VISIBLE;
-//                }
-            }
 
-            override fun onReleaseScreen() {
-//                isFlowing = false;
-//                startDelayHideTitle()
-            }
-        })
     }
 
     fun showFullScreen(enable: Boolean) {
         if (enable) {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
             lin_center.isVisible = false
+            llToolBar.gone()
             vpContainer.isVisible = false
             live_view_tool_bar.isVisible = true
             collaps_toolbar.isVisible = true
@@ -323,12 +314,14 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         } else {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
             lin_center.isVisible = true
+            llToolBar.visible()
             vpContainer.isVisible = false
             live_view_tool_bar.isVisible = true
             collaps_toolbar.isVisible = true
             app_bar_layout.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
-            setScrollEnable(false)
+            setScrollEnable(true)
         }
+
         live_view_tool_bar.layoutParams.apply {
             if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
                 width = ViewGroup.LayoutParams.MATCH_PARENT
@@ -348,7 +341,16 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private fun setScrollEnable(enable: Boolean) {
         (app_bar_layout.getChildAt(0).layoutParams as AppBarLayout.LayoutParams).apply {
             scrollFlags =
-                if (enable) (AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED or AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP)
+                if (enable) (AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL )
+                else AppBarLayout.LayoutParams.SCROLL_FLAG_NO_SCROLL
+        }
+    }
+
+    private fun setResetScrollEnable(enable: Boolean){
+        (app_bar_layout.getChildAt(0).layoutParams as AppBarLayout.LayoutParams).apply {
+            scrollFlags =
+                if (enable) (AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
+                        or AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED or AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP)
                 else AppBarLayout.LayoutParams.SCROLL_FLAG_NO_SCROLL
         }
     }
@@ -586,14 +588,13 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
 
         if (matchInfo.isLive == 1) {
-
             setOnClickListeners(binding.ivLiveStream, binding.tvLiveStream) {
                 if (!viewModel.getLoginBoolean() && sConfigData?.noLoginWitchVideoOrAnimation == 1) {
                     AppManager.currentActivity().startLogin()
                     return@setOnClickListeners
                 }
-//                setScrollEnable(false)
-                sportToolBarTopFragment.showLive()
+                setResetScrollEnable(true)
+                showLive()
             }
 
             if (matchInfo.pullRtmpUrl.isNullOrEmpty()) {
@@ -603,7 +604,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             } else {
                 live_view_tool_bar.liveUrl = matchInfo.pullRtmpUrl
                 if (intoLive) {
-                    sportToolBarTopFragment.showLive()
+                    live_view_tool_bar.showLive()
                 }
             }
         }
@@ -613,6 +614,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 AppManager.currentActivity().startLogin()
                 return@setOnClickListeners
             }
+            setResetScrollEnable(true)
             live_view_tool_bar.videoUrl?.let {
                 binding.vpContainer.gone()
                 live_view_tool_bar.visible()
@@ -627,6 +629,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 AppManager.currentActivity().startLogin()
                 return@setOnClickListeners
             }
+            setResetScrollEnable(true)
             live_view_tool_bar.animeUrl?.let {
                 binding.vpContainer.gone()
                 live_view_tool_bar.visible()
@@ -726,6 +729,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     override fun onDestroy() {
         super.onDestroy()
         releaseWebView()
+        viewModel.clearLiveInfo()
+        live_view_tool_bar.release()
+
     }
 
 
@@ -794,6 +800,18 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
     private fun initObserve() {
+
+        viewModel.matchLiveInfo.observe(this) {
+            it?.peekContent()?.let { matchRound ->
+                if (lin_live.isVisible) {
+                    live_view_tool_bar.liveUrl =
+                        if (matchRound.pullRtmpUrl.isNotEmpty()) matchRound.pullRtmpUrl else matchRound.pullFlvUrl
+                    if (intoLive) {
+                        showLive()
+                    }
+                }
+            }
+        }
 
         viewModel.isLogin.observe(this) {
             setupInput()
@@ -955,6 +973,16 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             }
         }
 
+    }
+
+    fun showLive() {
+        live_view_tool_bar.liveUrl?.let {
+            live_view_tool_bar.isVisible = true
+            collaps_toolbar.isVisible = true
+            vpContainer.isVisible = false
+            live_view_tool_bar.showLive()
+            showChatWebView(true)
+        }
     }
 
 

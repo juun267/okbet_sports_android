@@ -247,7 +247,9 @@
                     app:theme="@style/Widget.AppCompat.Toolbar"
                     tools:visibility="gone">
 
-                    <include layout="@layout/view_toolbar_detail_collaps1" />
+                    <include
+                        android:id="@+id/collaps1"
+                        layout="@layout/view_toolbar_detail_collaps1" />
                 </androidx.appcompat.widget.Toolbar>
 
 
