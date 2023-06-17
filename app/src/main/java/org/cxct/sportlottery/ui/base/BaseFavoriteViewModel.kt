@@ -48,6 +48,7 @@ abstract class BaseFavoriteViewModel(
     private val _leftNotifyFavorite = MutableLiveData<Event<Int?>>()
 
     val notifyMyFavorite = myFavoriteRepository.favorNotify
+    val detailNotifyMyFavorite = myFavoriteRepository.detailFavorNotify
 
     val favorMatchOddList: LiveData<Event<List<LeagueOdd>>>
         get() = mFavorMatchOddList
@@ -313,6 +314,8 @@ abstract class BaseFavoriteViewModel(
     fun notifyFavorite(type: FavoriteType) {
         myFavoriteRepository.notifyFavorite(type)
     }
+
+
 
     fun pinFavorite(
         type: FavoriteType, content: String?, gameType: String? = null

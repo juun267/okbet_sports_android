@@ -146,7 +146,8 @@ class SportChartFragment : BindingFragment<SportViewModel, FragmentChartBinding>
             if (::rcvAdapter.isInitialized) {
                 rcvAdapter.setCurrentGameType(gameType)
                 rcvAdapter.setCurrentSpt(spt)
-                rcvAdapter.addData(list)
+                Timber.d("list.size:${list.size}")
+                rcvAdapter.setNewInstance(list)
             }
         }
     }
@@ -311,6 +312,7 @@ class SportChartFragment : BindingFragment<SportViewModel, FragmentChartBinding>
      */
     private fun assembleData1(gameType: String?) {
         matchInfo?.apply {
+            //足球
             if (gameType == GameType.FT.name) {
                 home1st = homeCornerKicks.toString()
                 away1st = awayCornerKicks.toString()
@@ -323,25 +325,18 @@ class SportChartFragment : BindingFragment<SportViewModel, FragmentChartBinding>
                 home5th = homeScore ?: "0"
                 away5th = awayScore ?: "0"
             } else {
-                try {
-                    matchStatusList?.let {
-                        if (it.isEmpty()) return@let
-                        home1st = it[0].homeScore.toString()
-                        away1st = it[0].awayScore.toString()
-                        if (it.size > 1) {
-                            home2nd = it[1].homeScore.toString()
-                            away2nd = it[1].awayScore.toString()
-                        }
-                        if (it.size > 2) {
-                            home3rd = it[2].homeScore.toString()
-                            away3rd = it[2].awayScore.toString()
-                        }
-                        home4th = homeScore.toString()
-                        away4th = awayScore.toString()
-                        home5th = homeTotalScore.toString()
-                        away5th = awayTotalScore.toString()
+                matchStatusList?.let {
+                    if (it.isEmpty()) return@let
+                    home1st = it[0].homeScore.toString()
+                    away1st = it[0].awayScore.toString()
+                    if (it.size > 1) {
+                        home2nd = it[1].homeScore.toString()
+                        away2nd = it[1].awayScore.toString()
                     }
-                } catch (e: Exception) {
+                    if (it.size > 2) {
+                        home3rd = it[2].homeScore.toString()
+                        away3rd = it[2].awayScore.toString()
+                    }
                     home4th = homeScore.toString()
                     away4th = awayScore.toString()
                     home5th = homeTotalScore.toString()

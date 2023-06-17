@@ -257,13 +257,21 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
         val isMatchFav = matchInfo?.isFavorite ?: false
 
-        ivFavorite.isSelected = isMatchFav
 
         ivFavorite.setOnClickListener {
             viewModel.pinFavorite(
                 FavoriteType.MATCH, matchInfo?.id
             )
         }
+
+        viewModel.detailNotifyMyFavorite.observe(this){
+            if(it.first == (matchInfo?.id ?: "")){
+                ivFavorite.isSelected = it.second
+            }
+        }
+
+        ivFavorite.isSelected = isMatchFav
+
 
         iv_refresh.setOnClickListener {
             initAllObserve()
