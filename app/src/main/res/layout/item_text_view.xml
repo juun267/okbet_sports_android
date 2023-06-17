@@ -14,7 +14,7 @@
         android:paddingVertical="4.5dp"
         android:textSize="10sp"
         android:textColor="#ffffff"
-        android:text="你好"
+        android:text="0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

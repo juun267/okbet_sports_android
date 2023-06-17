@@ -309,6 +309,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             vpContainer.isVisible = false
             live_view_tool_bar.isVisible = true
             collaps_toolbar.isVisible = true
+            clToolContent.gone()
             app_bar_layout.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
             setScrollEnable(false)
         } else {
@@ -317,6 +318,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             llToolBar.visible()
             vpContainer.isVisible = false
             live_view_tool_bar.isVisible = true
+            clToolContent.visible()
             collaps_toolbar.isVisible = true
             app_bar_layout.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
             setScrollEnable(true)
