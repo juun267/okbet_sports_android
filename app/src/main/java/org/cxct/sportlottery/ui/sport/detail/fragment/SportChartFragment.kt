@@ -35,14 +35,28 @@ class SportChartFragment : BindingFragment<SportViewModel, FragmentChartBinding>
 
     private lateinit var rcvAdapter: RcvCharAdapter
 
-
     override fun onInitView(view: View) {
         binding.clRoot.background = ResourcesCompat.getDrawable(
             resources, GameType.getGameTypeDetailBg(
                 GameType.getGameType(matchInfo?.gameType) ?: GameType.FT
-
             ), null
         )
+    }
+
+    override fun onInitData() {
+        super.onInitData()
+        matchInfo = arguments?.get("matchInfo").toString().fromJson<MatchInfo>()
+        initRecyclerView()
+        updateChartView()
+    }
+
+    fun updateMatchInfo(matchInfo: MatchInfo) {
+        if (activity == null) return
+        binding.rcvChartView.postDelayed({
+            this@SportChartFragment.matchInfo = matchInfo
+            Timber.d("=== updateMatchInfo:更新图表数据")
+            updateChartView()
+        },200)
     }
 
     private fun initRecyclerView() {
@@ -85,28 +99,6 @@ class SportChartFragment : BindingFragment<SportViewModel, FragmentChartBinding>
         binding.rcvChartView.layoutManager = rcvLayoutManager
         binding.rcvChartView.adapter = rcvAdapter
         rcvAdapter.setNewInstance(viewModel.chartViewList.value)
-    }
-
-
-    fun updateMatchInfo(matchInfo: MatchInfo) {
-        if (activity == null) return
-        lifecycleScope.launch {
-            delay(100)
-            this@SportChartFragment.matchInfo = matchInfo
-            withContext(Dispatchers.Main){
-                Timber.d("=== updateMatchInfo:更新图表数据")
-                updateChartView()
-            }
-        }
-
-    }
-
-
-    override fun onInitData() {
-        super.onInitData()
-        matchInfo = arguments?.get("matchInfo").toString().fromJson<MatchInfo>()
-        initRecyclerView()
-        updateChartView()
     }
 
     private fun updateChartView() {

@@ -20,7 +20,7 @@ class RcvCharAdapter : BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_te
 
         override fun convert(holder: BaseViewHolder, item: String) {
 
-            //表格去掉header的剩余宽度
+            //表格去掉header的剩余宽度(单位dp )
             val width = 258
 
             when (gameType) {
