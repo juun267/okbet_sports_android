@@ -241,22 +241,22 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
             }
         }
 
-        viewModel.recordNewBetHttpOkGame.observe(viewLifecycleOwner) {
+        viewModel.recordNewBetHttpOkLive.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) {
                 binding.winsRankView.onNewHttpBetData(it.reversed())
             }
         }
-        viewModel.recordResultWinsHttpOkGame.observe(viewLifecycleOwner) {
+        viewModel.recordResultWinsHttpOkLive.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) {
                 binding.winsRankView.onNewHttpWinsData(it.reversed())
             }
         }
-        receiver.recordNewOkGame.collectWith(lifecycleScope) {
+        receiver.recordNewOkLive.collectWith(lifecycleScope) {
             if (it != null) {
                 binding.winsRankView.onNewWSBetData(it)
             }
         }
-        receiver.recordResultOkGame.collectWith(lifecycleScope) {
+        receiver.recordResultOkLive.collectWith(lifecycleScope) {
             if (it != null) {
                 binding.winsRankView.onNewWSWinsData(it)
             }
@@ -329,14 +329,14 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
             return@run gameAdapter
         }
 
-    private inline fun enterGame(okGameBean: OKGameBean) {
+    private inline fun enterGame(bean: OKGameBean) {
         if(LoginRepository.isLogined()){
             //已登录
-            okLiveFragment().enterGame(okGameBean)
+            okLiveFragment().enterGame(bean)
         }else{
             //请求试玩路线
             loading()
-            viewModel.requestEnterThirdGameNoLogin(okGameBean.firmType,okGameBean.gameCode,okGameBean.thirdGameCategory)
+            viewModel.requestEnterThirdGameNoLogin(bean.firmType,bean.gameCode,bean.thirdGameCategory)
         }
     }
 

@@ -7,9 +7,9 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.toIntS
-import org.cxct.sportlottery.net.games.OKGamesRepository
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesHall
+import org.cxct.sportlottery.net.live.OKLiveRepository
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -84,7 +84,7 @@ class OKLiveViewModel(
         }
 
         isLoadingOKGamesHall = true
-        callApi({ OKGamesRepository.okGamesHall() }) {
+        callApi({ OKLiveRepository.okGamesHall() }) {
 
             isLoadingOKGamesHall = false
             val data = it.getData() ?: return@callApi
@@ -113,7 +113,7 @@ class OKLiveViewModel(
         firmId: String? = null,
         page: Int,
         pageSize: Int
-    ) = callApi({ OKGamesRepository.getOKGamesList(page, pageSize, null, categoryId, firmId) }) {
+    ) = callApi({ OKLiveRepository.getOKLivesList(page, pageSize, null, categoryId, firmId) }) {
 
         _gamesList.value = Triple(requestTag, it.total, it.getData())
     }
@@ -122,7 +122,7 @@ class OKLiveViewModel(
         requestTag: Any,
         page: Int = 1,
         pageSize: Int = 12
-    ) = callApi({ OKGamesRepository.getOKGamesList(page, pageSize, null, null, null, true) }) {
+    ) = callApi({ OKLiveRepository.getOKLivesList(page, pageSize, null, null, null, true) }) {
         _gamesList.value = Triple(requestTag, it.total, it.getData())
     }
 
@@ -130,7 +130,7 @@ class OKLiveViewModel(
      * 收藏游戏
      */
     fun collectGame(gameData: OKGameBean) =
-        callApi({ OKGamesRepository.collectOkGames(gameData.id, !gameData.markCollect) }) {
+        callApi({ OKLiveRepository.collectOkGames(gameData.id, !gameData.markCollect) }) {
             if (!it.succeeded()) {
                 ToastUtil.showToast(MultiLanguagesApplication.appContext, it.msg)
                 return@callApi
@@ -216,7 +216,7 @@ class OKLiveViewModel(
         categoryId: String? = null,
         firmId: String? = null,
     ) = callApi({
-        OKGamesRepository.getOKGamesList(page,
+        OKLiveRepository.getOKLivesList(page,
             pageSize,
             gameName,
             categoryId,
@@ -225,22 +225,22 @@ class OKLiveViewModel(
         _gamesList.postValue(Triple(requestTag, it.total, it.getData()))
     }
 
-    val recordNewBetHttpOkGame: LiveData<List<RecordNewEvent>>
-        get() = _recordNewBetHttpOkGame
-    val recordResultWinsHttpOkGame: LiveData<List<RecordNewEvent>>
-        get() = _recordResultWinsHttpOkGame
+    val recordNewBetHttpOkLive: LiveData<List<RecordNewEvent>>
+        get() = _recordNewBetHttpOkLive
+    val recordResultWinsHttpOkLive: LiveData<List<RecordNewEvent>>
+        get() = _recordResultWinsHttpOkLive
 
-    private val _recordNewBetHttpOkGame = MutableLiveData<List<RecordNewEvent>>()
-    private val _recordResultWinsHttpOkGame = MutableLiveData<List<RecordNewEvent>>()
-    fun getOKGamesRecordNew() = callApi({ OKGamesRepository.getOKGamesRecordNew() }) {
+    private val _recordNewBetHttpOkLive = MutableLiveData<List<RecordNewEvent>>()
+    private val _recordResultWinsHttpOkLive = MutableLiveData<List<RecordNewEvent>>()
+    fun getOKGamesRecordNew() = callApi({ OKLiveRepository.getOKLiveRecordNew()}) {
         if (it.succeeded()) {
-            _recordNewBetHttpOkGame.postValue(it.getData())
+            _recordNewBetHttpOkLive.postValue(it.getData())
         }
     }
 
-    fun getOKGamesRecordResult() = callApi({ OKGamesRepository.getOKGamesRecordResult() }) {
+    fun getOKGamesRecordResult() = callApi({ OKLiveRepository.getOKLiveRecordResult() }) {
         if (it.succeeded()) {
-            _recordResultWinsHttpOkGame.postValue(it.getData())
+            _recordResultWinsHttpOkLive.postValue(it.getData())
         }
     }
 
