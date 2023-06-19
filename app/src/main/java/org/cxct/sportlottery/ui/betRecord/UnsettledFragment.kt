@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.betRecord
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentUnsettledBinding
 import org.cxct.sportlottery.network.Constants
@@ -74,10 +75,12 @@ class UnsettledFragment:BindingFragment<AccountHistoryViewModel,FragmentUnsettle
         viewModel.getUnsettledList()
         viewModel.unsettledData.observe(this){
             hideLoading()
-            if(it.isEmpty()&&viewModel.pageIndex==0){
+            if(it.isEmpty()&&viewModel.pageIndex<=2){
                 binding.empty.emptyView.visible()
+                binding.recyclerUnsettled.gone()
                 return@observe
             }
+            binding.empty.emptyView.gone()
             binding.recyclerUnsettled.visible()
             mAdapter.addData(it)
         }
@@ -85,6 +88,7 @@ class UnsettledFragment:BindingFragment<AccountHistoryViewModel,FragmentUnsettle
             hideLoading()
             mAdapter.setList(arrayListOf())
             binding.empty.emptyView.visible()
+            binding.recyclerUnsettled.gone()
         }
     }
 }

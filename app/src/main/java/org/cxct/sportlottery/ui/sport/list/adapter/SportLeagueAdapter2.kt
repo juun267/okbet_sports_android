@@ -1,8 +1,7 @@
-package org.cxct.sportlottery.ui.sport.list.adapter//package org.cxct.sportlottery.ui.sport
+package org.cxct.sportlottery.ui.sport.list.adapter
 
 import androidx.lifecycle.LifecycleOwner
 import com.chad.library.adapter.base.entity.node.BaseNode
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.network.common.MatchType
@@ -24,10 +23,11 @@ import org.cxct.sportlottery.util.doOnVisiableRange
 class SportLeagueAdapter2(
     var matchType: MatchType,
     val lifecycleOwner: LifecycleOwner,
+    private val onNodeExpand: (BaseNode) -> Unit,
     onOddClick: OnOddClickListener,
     onFavorite:(String) -> Unit
 
-): ExpanableOddsAdapter() {
+): ExpanableOddsAdapter<MatchOdd>() {
 
     var oddsType: OddsType = OddsType.EU
         set(value) {
@@ -37,23 +37,11 @@ class SportLeagueAdapter2(
             }
         }
 
-    val holderMatchOdd = mutableMapOf<BaseViewHolder, MatchOdd>()
-
-    fun visiableRangeMatchOdd() = holderMatchOdd.values
-
-    fun findVisiableRangeMatchOdd(id: String): MatchOdd? {
-        return holderMatchOdd.values.find { it.matchInfo?.id == id }
-    }
 
     init {
         footerWithEmptyEnable = true
         addFullSpanNodeProvider(SportLeagueProvider(this)) // 联赛名
         addFullSpanNodeProvider(SportMatchProvider(this, onOddClick, onFavorite)) // 赛事
-    }
-
-    override fun setNewInstance(list: MutableList<BaseNode>?) {
-        holderMatchOdd.clear()
-        super.setNewInstance(list)
     }
 
     override fun getItemType(data: List<BaseNode>, position: Int): Int {
@@ -64,11 +52,10 @@ class SportLeagueAdapter2(
         }
     }
 
-    override fun onViewDetachedFromWindow(holder: BaseViewHolder) {
-        super.onViewDetachedFromWindow(holder)
-        if (holder is SportMatchVH) {
-            holder.onStop()
-        }
+    fun nodeExpandOrCollapse(node: BaseNode, parentPayload: Any?): Int {
+        val num = expandOrCollapse(node, parentPayload = parentPayload)
+        onNodeExpand.invoke(node)
+        return num
     }
 
     fun dataCount() = getDefItemCount()
@@ -84,7 +71,7 @@ class SportLeagueAdapter2(
 
     fun onOddsChangeEvent(oddsChangeEvent: OddsChangeEvent) {
         val eventId = oddsChangeEvent.eventId ?: return
-        if (oddsChangeEvent.oddsList.isNullOrEmpty() || holderMatchOdd.isEmpty()) {
+        if (oddsChangeEvent.oddsList.isNullOrEmpty() || currentVisiableMatchOdds.isEmpty()) {
             return
         }
 

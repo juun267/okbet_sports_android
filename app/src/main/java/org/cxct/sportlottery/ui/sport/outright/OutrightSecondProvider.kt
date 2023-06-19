@@ -21,7 +21,7 @@ class OutrightSecondProvider(val adapter: SportOutrightAdapter2,
         val bean = item as CategoryOdds
         val matchOdd = bean.matchOdd
         helper.setText(R.id.tv_match_name, bean.name)
-
+        helper.itemView.tag = matchOdd
         var startDate = matchOdd?.startDate
         if (TextUtils.isEmpty(startDate)) { //不知道为啥第一条数据一开始的时候会空
             startDate = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, TimeUtil.DMY_FORMAT)

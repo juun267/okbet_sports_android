@@ -1108,7 +1108,7 @@ fun <T> BaseQuickAdapter<T, *>.doOnVisiableRange(block: (Int, T) -> Unit) {
     }
 }
 
-fun View.bindExpanedAdapter(adapter: ExpanableOddsAdapter, block: ((Boolean) -> Unit)? = null) {
+fun View.bindExpanedAdapter(adapter: ExpanableOddsAdapter<*>, block: ((Boolean) -> Unit)? = null) {
     setOnClickListener {
         block?.invoke(isSelected)
         val selected = !isSelected

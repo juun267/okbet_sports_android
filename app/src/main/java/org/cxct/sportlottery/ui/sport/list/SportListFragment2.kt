@@ -6,28 +6,21 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.entity.node.BaseNode
 import org.cxct.sportlottery.common.enums.OddsType
-import org.cxct.sportlottery.common.event.TimeRangeEvent
 import org.cxct.sportlottery.common.extentions.rotationAnimation
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
-import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
-import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.betList.BetInfoListData
-import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.BaseSportListFragment
 import org.cxct.sportlottery.ui.sport.SportFragment2
-import org.cxct.sportlottery.ui.sport.common.*
 import org.cxct.sportlottery.ui.sport.list.adapter.*
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
-import org.greenrobot.eventbus.Subscribe
-import java.util.*
 
 /**
  * @app_destination 滾球、即將、今日、早盤、冠軍、串關
@@ -36,16 +29,15 @@ class SportListFragment2: BaseSportListFragment<SportListViewModel, FragmentSpor
 
     override var matchType = MatchType.IN_PLAY
 
-    private val gameTypeAdapter by lazy { GameTypeAdapter2(::onGameTypeChanged) }
     override fun getGameListAdapter() = sportLeagueAdapter2
     override val oddsChangeListener = ServiceBroadcastReceiver.OddsChangeListener {
         sportLeagueAdapter2.onOddsChangeEvent(it)
     }
 
-
     private val sportLeagueAdapter2 by lazy {
         SportLeagueAdapter2(matchType,
             this,
+            onNodeExpand = { resubscribeChannel(320) },
             onOddClick = this@SportListFragment2,
             onFavorite = { matchId ->
             loginedRun(context()) { viewModel.pinFavorite(FavoriteType.MATCH, matchId) }
@@ -78,12 +70,10 @@ class SportListFragment2: BaseSportListFragment<SportListViewModel, FragmentSpor
         showLoading()
     }
 
-
     override fun onBindViewStatus(view: View) {
         super.onBindViewStatus(view)
         reset()
-        setupOddsChangeListener()
-        EventBusUtil.targetLifecycle(this)
+
         initObserve()
         initSocketObserver()
     }
@@ -116,19 +106,6 @@ class SportListFragment2: BaseSportListFragment<SportListViewModel, FragmentSpor
                 return@observe
             }
             showErrorMsgDialog(it)
-        }
-
-        sportMenuData.observe(this@SportListFragment2.viewLifecycleOwner) {
-
-            if (it.second.isNullOrEmpty()) {
-                dismissLoading()
-            }
-            if (!it.first.succeeded()) {
-                ToastUtil.showToast(activity, it.first.msg)
-                return@observe
-            }
-            updateSportType(it.second)
-            it?.let { (parentFragment as SportFragment2).updateSportMenuResult(it.first) }
         }
 
         oddsListGameHallResult.observe(this@SportListFragment2.viewLifecycleOwner) {
@@ -257,38 +234,6 @@ class SportListFragment2: BaseSportListFragment<SportListViewModel, FragmentSpor
         sportLeagueAdapter2.setNewInstance(null)
     }
 
-    private fun updateSportType(gameTypeList: List<Item>) {
-
-        if (gameTypeList.isEmpty()) {
-            binding.sportTypeList.isVisible = matchType != MatchType.CS
-            return
-        }
-        //处理默认不选中的情况
-        if (gameType.isNullOrEmpty()) {
-            (gameTypeList.find { it.num > 0 } ?: gameTypeList.first()).let {
-                it.isSelected = true
-                gameType = it.code
-                load(it)
-            }
-        } else {
-            (gameTypeList.find { it.code == gameType } ?: gameTypeList.first()).let {
-                gameType = it.code
-                if (!it.isSelected) {
-                    it.isSelected = true
-                    load(it)
-                }
-            }
-        }
-        //全部球类tab不支持联赛筛选
-        binding.ivFilter.isVisible = gameType != GameType.ALL.key
-        gameTypeAdapter.setNewInstance(gameTypeList.toMutableList())
-        (binding.sportTypeList.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
-            binding.sportTypeList,
-            RecyclerView.State(),
-            gameTypeAdapter.data.indexOfFirst { it.isSelected })
-
-    }
-
     override fun oddClick(
         matchInfo: MatchInfo,
         odd: Odd,
@@ -305,37 +250,15 @@ class SportListFragment2: BaseSportListFragment<SportListViewModel, FragmentSpor
         if (gameType == GameType.ALL) {
             gameType = GameType.getGameType(matchInfo.gameType)
         }
-        val fastBetDataBean = FastBetDataBean(
-            matchType = matchType,
-            gameType = gameType!!,
-            playCateCode = playCateCode,
-            playCateName = betPlayCateName,
-            matchInfo = matchInfo,
-            matchOdd = null,
-            odd = odd,
-            subscribeChannelType = ChannelType.HALL,
-            betPlayCateNameMap = betPlayCateNameMap,
-        )
-        (activity as MainTabActivity).setupBetData(fastBetDataBean, view)
+
+        addOddsDialog(matchInfo, odd, playCateCode, betPlayCateNameMap)
     }
 
-
-    @Subscribe
-    fun onSelectMatch(matchIdList: ArrayList<String>) {
+    override fun setSelectMatchIds(matchIdList: ArrayList<String>) {
         viewModel.selectMatchIdList = matchIdList
         gameTypeAdapter.currentItem?.let {
             clearData()
             load(it)
-        }
-    }
-
-    @Subscribe
-    fun onSelectDate(timeRangeEvent: TimeRangeEvent) {
-        viewModel.selectTimeRangeParams = object : TimeRangeParams {
-            override val startTime: String
-                get() = timeRangeEvent.startTime
-            override val endTime: String
-                get() = timeRangeEvent.endTime
         }
     }
 
@@ -359,9 +282,10 @@ class SportListFragment2: BaseSportListFragment<SportListViewModel, FragmentSpor
             return@postDelayed
         }
 
-        sportLeagueAdapter2.visiableRangeMatchOdd().forEach { matchOdd ->
+        sportLeagueAdapter2.recodeRangeMatchOdd().forEach { matchOdd ->
             matchOdd.matchInfo?.let {
                 Log.e("[subscribe]","訂閱${it.name} ${it.id} -> " + "${it.homeName} vs " + "${it.awayName}")
+                Log.e("For Test", "=======>>> 訂閱${it.name} ${it.id} -> " + "${it.homeName} vs " + "${it.awayName}")
                 subscribeChannel(it.gameType, it.id)
             }
         }

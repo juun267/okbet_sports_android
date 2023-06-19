@@ -84,6 +84,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
     private val sportMatchTimer by lazy { SportMatchTimer() }
 
     fun onStop() {
+//        Log.e("For Test", "=======>>>> setupMatchInfo onStop ${mMatchInfo?.leagueName}   ${mMatchInfo?.homeName} VS ${mMatchInfo?.awayName}")
         sportMatchTimer.stop()
     }
 
@@ -108,6 +109,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
             ivAnimation
         )
     }
+
 
     fun setupMatchInfo(matchInfo: MatchInfo?, matchType: MatchType) = binding.run {
         leagueOddMatchNameHome.text = matchInfo?.homeName
