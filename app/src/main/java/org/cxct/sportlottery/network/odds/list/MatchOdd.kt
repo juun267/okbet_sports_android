@@ -44,6 +44,7 @@ data class MatchOdd(
 
     override val oddsEps: EpsOdd? = null
 
+    @Deprecated("不用了")
     var isExpand = false
 
     var isSelected = true
