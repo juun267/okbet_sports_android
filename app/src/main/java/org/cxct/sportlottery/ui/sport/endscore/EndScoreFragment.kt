@@ -4,67 +4,70 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
-import androidx.lifecycle.distinctUntilChanged
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.chad.library.adapter.base.entity.node.BaseExpandNode
 import com.chad.library.adapter.base.entity.node.BaseNode
-import com.google.android.material.appbar.AppBarLayout
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.event.TimeRangeEvent
+import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.showEmpty
-import org.cxct.sportlottery.common.extentions.showLoading
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
-import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
-import org.cxct.sportlottery.ui.base.BindingSocketFragment
-import org.cxct.sportlottery.ui.base.ChannelType
-import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.betList.BetInfoListData
+import org.cxct.sportlottery.ui.sport.BaseSportListFragment
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
-import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
-import org.cxct.sportlottery.ui.sport.list.adapter.EmptySportGamesView
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.layoutmanager.SocketGridManager
-import org.greenrobot.eventbus.Subscribe
 
 /**
  * @app_destination 末位比分
  */
-class EndScoreFragment: BindingSocketFragment<SportListViewModel, FragmentSportList2Binding>() {
+class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportList2Binding>() {
 
     // 篮球末尾比分组合玩法
     private val playCate = PlayCate.FS_LD_CS.value
-    private val matchType = MatchType.END_SCORE
-    private val gameType: String = GameType.BK.key
+    override var matchType = MatchType.END_SCORE
+    override fun getCurGameType() = GameType.BK
+    override fun getGameListAdapter() = endScoreAdapter
+    override fun getGameLayoutManger() = SocketGridManager(context(), 4)
+    override fun observerMenuData() { }
 
-    fun getCurGameType() = GameType.BK
-
-    private val mOddsChangeListener by lazy {
-        ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
-            if (context == null || oddsChangeEvent.oddsList.isNullOrEmpty()) {
-                return@OddsChangeListener
-            }
-
-            endScoreAdapter.onMatchOdds(subscribedMatchOdd, oddsChangeEvent)
+    override val oddsChangeListener = ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
+        if (context == null || oddsChangeEvent.oddsList.isNullOrEmpty()) {
+            return@OddsChangeListener
         }
+        endScoreAdapter.onMatchOdds(oddsChangeEvent)
     }
 
-    private fun setupOddsChangeListener() {
-        receiver.oddsChangeListener = mOddsChangeListener
+    override fun resubscribeChannel(delay: Long) {
+        clearSubscribeChannels()
+        subscribeHandler.postDelayed(subscribeVisibleRange, delay)
     }
 
-    private val endScoreAdapter: EndScoreAdapter by lazy {
+    override fun onFavorite(favoriteMatchIds: List<String>) {
+        endScoreAdapter.updateFavorite(favoriteMatchIds)
+    }
+
+    override fun onOddTypeChanged(oddsType: OddsType) {
+        endScoreAdapter.oddsType = oddsType
+    }
+
+    override fun onBetInfoChanged(betInfoList: List<BetInfoListData>) {
+        endScoreAdapter.updateOddsSelectedStatus(betInfoList)
+    }
+
+
+    private val endScoreAdapter by lazy {
 
         EndScoreAdapter(playCate) { _, view, item ->
             if (item is Odd) {  // 赔率
-                addOutRightOddsDialog(item.parentNode as MatchOdd, item, playCate)
+                val matchOdd = item.parentNode as MatchOdd
+                val matchInfo = matchOdd.matchInfo ?: return@EndScoreAdapter
+                addOddsDialog(matchInfo, item, playCate, matchOdd.betPlayCateNameMap)
                 return@EndScoreAdapter
             }
 
@@ -83,94 +86,28 @@ class EndScoreFragment: BindingSocketFragment<SportListViewModel, FragmentSportL
             }
 
              // 展开或收起后重新订阅
-            subscribeMatchOdds(200)
+            resubscribeChannel(200)
         }
     }
 
     override fun onInitView(view: View) {
+        super.onInitView(view)
         binding.sportTypeList.gone()
-        setupToolbar()
-        setupGameRow()
-        setupGameListView()
+        binding.tvSportName.setText(R.string.basketball)
+
     }
 
     override fun onBindViewStatus(view: View) {
-        EventBusUtil.targetLifecycle(this)
+        super.onBindViewStatus(view)
         viewModel.gameType = gameType
         binding.tvMatchNum.text = "0"
         initObserve()
-        initSocketObserver()
         loadData()
     }
 
     private fun loadData() {
         showLoading()
         viewModel.getGameHallList(matchType)
-    }
-
-    override fun onHiddenChanged(hidden: Boolean) {
-        if (hidden) {
-            unSubscribeAll()
-        } else {
-            //receiver.oddsChangeListener為activity底下共用, 顯示當前畫面時需重新配置listener
-            setupOddsChangeListener()
-            subscribeMatchOdds()
-        }
-    }
-
-    var offsetScrollListener: ((Double) -> Unit)? = null
-
-    private fun setupToolbar() {
-        binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
-            offsetScrollListener?.invoke((-verticalOffset) / Math.max(1.0, binding.appbarLayout.measuredHeight.toDouble()))
-        })
-        binding.ivArrow.bindExpanedAdapter(endScoreAdapter) { subscribeMatchOdds(100) }
-    }
-
-    fun resetFooterView(footerView: View) {
-        if (footerView.tag == endScoreAdapter) {
-            return
-        }
-
-        (footerView.parent as ViewGroup?)?.let { it.removeView(footerView) }
-        footerView.tag = endScoreAdapter
-        endScoreAdapter.addFooterView(footerView)
-    }
-
-    private fun setupGameRow() {
-        binding.tvSportName.setText(R.string.basketball)
-        binding.ivFilter.setOnClickListener {
-            LeagueSelectActivity.start(
-                it.context,
-                gameType!!,
-                matchType,
-                null,
-                viewModel.selectMatchIdList
-            )
-        }
-    }
-
-    private fun setupGameListView() = binding.gameList.run {
-        layoutManager = SocketGridManager(context, 4)
-        adapter = endScoreAdapter
-        endScoreAdapter.setEmptyView(EmptySportGamesView(context()))
-//        addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_10))
-//        addItemDecoration(GridItemDecoration(9, 9, Color.RED, false))
-//        StickyHeaderItemDecorator(endScoreAdapter).attachToRecyclerView(this)
-        addOnScrollListener(object : OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    subscribeMatchOdds(0)
-                } else {
-                    unSubscribeAll()
-                }
-            }
-        })
-    }
-
-    private fun subscribeMatchOdds(delay: Long = 0) {
-        unSubscribeAll()
-        binding.gameList.postDelayed(subscribeVisibleRange, delay)
     }
 
     private val subscribeVisibleRange by lazy {
@@ -180,23 +117,14 @@ class EndScoreFragment: BindingSocketFragment<SportListViewModel, FragmentSportL
                 return@Runnable
             }
 
-            val matchOdds = mutableSetOf<MatchOdd>()
-            endScoreAdapter.doOnVisiableRange { _, item->
-                if (item is MatchOdd) {
-                    matchOdds.add(item)
-                } else if (item is Odd) {
-                    matchOdds.add(item.parentNode as MatchOdd)
-                }
+            endScoreAdapter.recodeRangeMatchOdd().forEach {
+                subscribeChannel(GameType.BK.key, it.matchInfo?.id)
+                it?.matchInfo?.let { Log.e("[subscribe]","訂閱 ${it.name} ${it.id} -> " + "${it.homeName} vs " + "${it.awayName}") }
             }
-
-            matchOdds.forEach { subscribeChannelHall(it) }
         }
     }
 
     private fun initObserve() = viewModel.run {
-        oddsType.observe(viewLifecycleOwner) { it?.let { endScoreAdapter.oddsType = it } }
-        notifyLogin.observe(viewLifecycleOwner) { (activity as MainTabActivity).showLoginNotify() }
-
         showErrorDialogMsg.observe(viewLifecycleOwner) {
             if (requireContext() == null || TextUtils.isEmpty(it)) {
                 return@observe
@@ -206,15 +134,12 @@ class EndScoreFragment: BindingSocketFragment<SportListViewModel, FragmentSportL
         }
 
 
-        betInfoList.observe(viewLifecycleOwner) {
-            it.peekContent().let {
-                endScoreAdapter.updateOddsSelectedStatus(it)
-            }
-        }
-
         oddsListGameHallResult.observe(viewLifecycleOwner) {
 
             val result = it.getContentIfNotHandled()
+            endScoreAdapter.footerLayout?.let { footerLayout->
+                footerLayout.postDelayed({ footerLayout.getChildAt(0)?.visible() }, 200)
+            }
             if (result == null) {
                 dismissLoading()
                 return@observe
@@ -228,76 +153,13 @@ class EndScoreFragment: BindingSocketFragment<SportListViewModel, FragmentSportL
             binding.tvMatchNum.text = "${list?.size ?: 0}"
 
             if (!list.isNullOrEmpty()) {
-                subscribeMatchOdds(120)
+                resubscribeChannel(120)
             }
+
             dismissLoading()
         }
 
-        favorMatchList.observe(viewLifecycleOwner) { favorMatchIds ->
-            endScoreAdapter.updateFavorite(favorMatchIds)
-        }
     }
 
-    private fun initSocketObserver() = receiver.run {
-        serviceConnectStatus.distinctUntilChanged().observe(viewLifecycleOwner) {
-            if (it == ServiceConnectStatus.CONNECTED) {
-                viewModel.switchMatchType(matchType = matchType)
-                subscribeSportChannelHall()
-            }
-        }
 
-        setupOddsChangeListener()
-    }
-
-    private fun addOutRightOddsDialog(matchOdd: MatchOdd, odd: Odd, playCateCode: String) {
-
-        val matchInfo = matchOdd.matchInfo ?: return
-        (activity as MainTabActivity).setupBetData(FastBetDataBean(
-            matchType = MatchType.END_SCORE,
-            gameType = GameType.BK,
-            playCateCode = playCateCode,
-            playCateName = getString(R.string.home_tab_end_score),
-            matchInfo = matchInfo,
-            matchOdd = null,
-            odd = odd,
-            subscribeChannelType = ChannelType.HALL,
-            betPlayCateNameMap = matchOdd.betPlayCateNameMap))
-    }
-
-    private val subscribedMatchOdd = mutableMapOf<String, MatchOdd>()
-
-    private fun subscribeChannelHall(matchOdd: MatchOdd) {
-        subscribedMatchOdd["${matchOdd.matchInfo?.id}"] = matchOdd
-        subscribeChannelHall(GameType.BK.key, matchOdd?.matchInfo?.id)
-        matchOdd?.matchInfo?.let { Log.e("[subscribe]","訂閱 ${it.name} ${it.id} -> " + "${it.homeName} vs " + "${it.awayName}") }
-    }
-
-    private fun unSubscribeAll() {
-        binding.gameList.removeCallbacks(subscribeVisibleRange)
-        subscribedMatchOdd.clear()
-        unSubscribeChannelHallAll()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        offsetScrollListener = null
-        endScoreAdapter.setNewInstance(null)
-        unSubscribeAll()
-        unSubscribeChannelHallSport()
-    }
-
-    @Subscribe
-    fun onSelectMatch(matchIdList: ArrayList<String>?) {
-        viewModel.selectMatchIdList = matchIdList
-    }
-
-    @Subscribe
-    fun onSelectDate(timeRangeEvent: TimeRangeEvent) {
-        viewModel.selectTimeRangeParams = object : TimeRangeParams {
-            override val startTime: String
-                get() = timeRangeEvent.startTime
-            override val endTime: String
-                get() = timeRangeEvent.endTime
-        }
-    }
 }

@@ -29,6 +29,7 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
     }
 
     override fun convert(helper: BaseViewHolder, item: BaseNode) = helper.run {
+        helper.itemView.tag = item
         val matchInfo = (item as MatchOdd).matchInfo
         setText(R.id.tvHomeName, matchInfo?.homeName)
         setText(R.id.tvAwayName, matchInfo?.awayName)

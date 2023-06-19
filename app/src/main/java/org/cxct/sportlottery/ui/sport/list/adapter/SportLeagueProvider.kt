@@ -85,7 +85,7 @@ class SportLeagueProvider(
 
     override fun onClick(helper: BaseViewHolder, view: View, item: BaseNode, position: Int) {
         val position = adapter.getItemPosition(item)
-        adapter.expandOrCollapse(item, parentPayload = position)
+        adapter.nodeExpandOrCollapse(item, parentPayload = position)
         val league = item as LeagueOdd
         setArrowSpin(helper.getView(ivArrowId), league, true)
     }

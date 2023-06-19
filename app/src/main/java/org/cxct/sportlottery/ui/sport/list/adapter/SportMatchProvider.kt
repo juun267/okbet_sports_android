@@ -32,7 +32,7 @@ class SportMatchProvider(private val adapter: SportLeagueAdapter2,
     override fun convert(helper: BaseViewHolder, item: BaseNode) {
         val binding = (helper as SportMatchVH)
         val matchInfo = (item as MatchOdd).matchInfo
-        adapter.holderMatchOdd[helper] = item
+        helper.itemView.tag = item
         binding.resetStatusView()
         binding.setupMatchInfo(matchInfo, adapter.matchType)
         matchInfo?.let { binding.setupMatchTimeAndStatus(it, adapter.matchType) }
