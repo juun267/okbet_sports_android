@@ -121,6 +121,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         leagueOddMatchFavorite.isSelected = matchInfo?.isFavorite ?: false
         leagueOddMatchFavorite.setOnClickListener { matchInfo?.id?.let {onFavoriteClick.invoke(it) } }
 
+        ivOT.isVisible = matchInfo?.gameType == GameType.BK.key && matchInfo?.socketMatchStatus == 40
         leagueNeutral.isSelected = matchInfo?.neutral == 1
         leagueNeutral.isVisible = matchInfo?.neutral == 10
         leagueOddMatchChart.isVisible = matchInfo?.source == MatchSource.SHOW_STATISTICS.code

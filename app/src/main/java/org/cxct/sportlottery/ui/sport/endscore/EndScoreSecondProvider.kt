@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.sport.endscore
 
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import com.chad.library.adapter.base.entity.node.BaseNode
