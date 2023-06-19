@@ -395,11 +395,7 @@
 
             </androidx.core.widget.NestedScrollView>
 
-            <org.cxct.sportlottery.view.DetailSportGuideView
-                android:id="@+id/dsgView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone" />
+
 
         </FrameLayout>
 
@@ -442,5 +438,11 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="gone" />
+
+    <org.cxct.sportlottery.view.DetailSportGuideView
+        android:id="@+id/dsgView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

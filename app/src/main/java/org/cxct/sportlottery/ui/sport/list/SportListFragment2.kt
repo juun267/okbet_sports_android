@@ -17,10 +17,8 @@ import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.sport.BaseSportListFragment
-import org.cxct.sportlottery.ui.sport.SportFragment2
 import org.cxct.sportlottery.ui.sport.list.adapter.*
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 
 /**
  * @app_destination 滾球、即將、今日、早盤、冠軍、串關
@@ -49,11 +47,11 @@ class SportListFragment2: BaseSportListFragment<SportListViewModel, FragmentSpor
         binding.ivFilter.isVisible = gameType != GameType.ALL.key
     }
 
+    // 该方法中不要引用与生命周期有关的(比如：ViewModel、Activity)
     private fun reset() {
         matchType = (arguments?.getSerializable("matchType") as MatchType?) ?: MatchType.IN_PLAY
         gameType = arguments?.getString("gameType") ?: GameType.BK.key
-        viewModel.gameType = gameType ?: GameType.FT.key
-        viewModel.selectMatchIdList = arrayListOf()
+        selectMatchIdList = arrayListOf()
         gameTypeAdapter.setNewInstance(null)
         clearData()
         setMatchInfo("", "")
@@ -255,7 +253,7 @@ class SportListFragment2: BaseSportListFragment<SportListViewModel, FragmentSpor
     }
 
     override fun setSelectMatchIds(matchIdList: ArrayList<String>) {
-        viewModel.selectMatchIdList = matchIdList
+        selectMatchIdList = matchIdList
         gameTypeAdapter.currentItem?.let {
             clearData()
             load(it)
@@ -285,7 +283,6 @@ class SportListFragment2: BaseSportListFragment<SportListViewModel, FragmentSpor
         sportLeagueAdapter2.recodeRangeMatchOdd().forEach { matchOdd ->
             matchOdd.matchInfo?.let {
                 Log.e("[subscribe]","訂閱${it.name} ${it.id} -> " + "${it.homeName} vs " + "${it.awayName}")
-                Log.e("For Test", "=======>>> 訂閱${it.name} ${it.id} -> " + "${it.homeName} vs " + "${it.awayName}")
                 subscribeChannel(it.gameType, it.id)
             }
         }

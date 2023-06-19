@@ -71,11 +71,9 @@ class OddsDetailListAdapter(
             oddsDetailDataList.forEachIndexed { index, data ->
                 data.oddArrayList.forEach { odd ->
                     val oddSelected = betInfoList.any { it.matchOdd.oddsId == odd?.id }
-//                    Timber.d("===洗刷刷-2 odd?.isSelected:${odd?.isSelected} oddSelected:${oddSelected} index:${index}")
                     if (odd?.isSelected != oddSelected) {
                         odd?.isSelected = oddSelected
                         notifyItemChanged(index, odd?.id)
-//                            Timber.d("===洗刷刷 更新单个条目:${index} id:${odd?.id} odd.isSelected:${odd?.isSelected}")
                     }
                 }
             }

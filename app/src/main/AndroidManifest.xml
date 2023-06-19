@@ -202,7 +202,7 @@
             android:name=".ui.sport.filter.LeagueSelectActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.sport.search.earchtActivity"
+            android:name=".ui.sport.search.SportSearchtActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.profileCenter.money_transfer.MoneyTransferActivity"

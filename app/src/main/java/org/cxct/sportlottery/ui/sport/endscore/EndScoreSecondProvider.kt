@@ -1,8 +1,10 @@
 package org.cxct.sportlottery.ui.sport.endscore
 
-import android.util.Log
+import android.graphics.Color
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.chad.library.adapter.base.provider.BaseNodeProvider
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -10,6 +12,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.sport.list.adapter.SportMatchEvent
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import org.cxct.sportlottery.util.setTeamLogo
 
 class EndScoreSecondProvider(val adapter: EndScoreAdapter,
@@ -47,8 +50,35 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
             setOnClickListener { onItemClick.invoke(helper.bindingAdapterPosition, this, item) }
         }
 
-        getView<View>(R.id.tvExpand).setOnClickListener { adapter.expandOrCollapse(item, parentPayload = item) }
+        val tvExpand = getView<TextView>(R.id.tvExpand)
+        val linExpand = getView<View>(R.id.linExpand)
+        resetStyle(linExpand, tvExpand, item.isExpanded)
+        linExpand.setOnClickListener {
+            adapter.expandOrCollapse(item, parentPayload = item)
+            resetStyle(linExpand, tvExpand, item.isExpanded)
+        }
+    }
 
+    private val expandedDrawable by lazy {
+        DrawableCreatorUtils.getCommonBackgroundStyle(8, R.color.color_025BE8)
+    }
+
+    private val collapseDrawable by lazy {
+        DrawableCreatorUtils.getCommonBackgroundStyle(8, android.R.color.white, R.color.color_025BE8, 1)
+    }
+
+    private fun resetStyle(linExpand: View, tvExpand: TextView, isExpand: Boolean) = tvExpand.run {
+        if (isExpand) {
+            setText(R.string.D039)
+            setTextColor(ContextCompat.getColor(context, R.color.color_025BE8))
+            linExpand.background = collapseDrawable
+            setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_to_up_blue, 0)
+        } else {
+            setText(R.string.N698)
+            setTextColor(Color.WHITE)
+            linExpand.background = expandedDrawable
+            setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_to_down_white, 0)
+        }
     }
 
 }

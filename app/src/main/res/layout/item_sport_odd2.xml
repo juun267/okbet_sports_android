@@ -76,9 +76,17 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
                         android:layout_marginRight="5dp"
-                        android:adjustViewBounds="true"
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_n"
+                        tools:ignore="ContentDescription" />
+
+                    <ImageView
+                        android:id="@+id/ivOT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/ic_ot"
                         tools:ignore="ContentDescription" />
 
                     <TextView

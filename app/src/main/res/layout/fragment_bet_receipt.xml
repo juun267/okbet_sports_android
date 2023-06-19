@@ -91,7 +91,7 @@
             android:layout_weight="1"
             android:background="@color/color_202541_FFFFFF">
 
-            <org.cxct.sportlottery.view.ParentRecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:paddingTop="10dp"
                 android:id="@+id/rv_bet_receipt"
                 android:layout_width="match_parent"
@@ -336,7 +336,6 @@
             <TextView
                 android:id="@+id/btnLastStep"
                 android:layout_width="110dp"
-                android:drawablePadding="-10dp"
                 android:paddingHorizontal="20dp"
                 android:layout_height="@dimen/bet_button_height"
                 android:layout_marginRight="10dp"

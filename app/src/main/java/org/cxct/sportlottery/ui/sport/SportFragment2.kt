@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.sport
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.distinctUntilChanged
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
@@ -74,7 +73,6 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         footView.setUp(this, mianViewModel)
         viewModel.getMatchData()
         jumpMatchType?.let {
-            viewModel.firstSwitchMatch(it)
             navGameFragment(it)
         }
     }
@@ -90,7 +88,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     }
 
     private fun initTabLayout() = binding.tabLayout.run {
-        addOnTabSelectedListener(TabSelectedAdapter{ selectTab(it.position) })
+        addOnTabSelectedListener(TabSelectedAdapter{ tab, _ ->selectTab(tab.position) })
         OverScrollDecoratorHelper.setUpOverScroll(this)
     }
 
@@ -137,10 +135,11 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         }
     }
 
+    private var currentMatchType: MatchType? = null
 
     private fun selectTab(position: Int) {
         var matchType =  matchTypeTabPositionMap[position] ?: return
-        viewModel.setCurMatchType(matchType)
+        currentMatchType = matchType
         navGameFragment(matchType)
     }
 
@@ -148,7 +147,6 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     private var lastGameType: String? = null
     private fun navGameFragment(matchType: MatchType) {
         var gameType = jumpGameType?.key
-
         if (lastMatchType == matchType && lastGameType == gameType) {
             return
         }
@@ -179,15 +177,13 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
                 fragmentHelper.show(SportListFragment2::class.java, args) { fragment, newInstance ->
                     fragment.offsetScrollListener = ::setTabElevation
                     fragment.resetFooterView(footView)
-                    if (!newInstance) {
+                    if (!newInstance && fragment.isAdded) {
                         fragment.reload()
                     }
                 }
             }
         }
 
-        jumpMatchType = null
-        jumpGameType = null
     }
 
     private val maxElevation = 5.dp
@@ -197,6 +193,17 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         homeToolbar.elevation = elevation
     }
 
+    fun setJumpSport(matchType: MatchType? = null, gameType: GameType? = null) {
+        jumpMatchType = matchType
+        jumpGameType = gameType
+        if (isAdded) {
+            //如果体育当前已经在指定的matchType页面时，跳过检查重复选中的机制，强制筛选sportListFragment
+            jumpMatchType = jumpMatchType ?: defaultMatchType
+            val position = matchTypeTabPositionMap.entries.find { it.value == matchType }?.key ?: return
+            binding.tabLayout.getTabAt(position)?.select()
+        }
+    }
+
     private fun initObserve() = viewModel.run {
 
         //使用者沒有電話號碼
@@ -204,15 +211,6 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             it.getContentIfNotHandled()?.let { b ->
                 if (!b) phoneNumCheckDialog(requireContext(), childFragmentManager)
             }
-        }
-
-        //distinctUntilChanged() -> 相同的matchType僅會執行一次，有變化才會observe
-        curMatchType.distinctUntilChanged().observe(viewLifecycleOwner) { matchType->
-            if (matchType == null) {
-                return@observe
-            }
-            val position = matchTypeTabPositionMap.entries.find { it.value == matchType }?.key ?: return@observe
-            binding.tabLayout.getTabAt(position)?.select()
         }
 
         sportMenuResult.observe(viewLifecycleOwner) {
@@ -233,17 +231,13 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             return
         }
 
-        val matchType = viewModel.curMatchType.value
+        val matchType = jumpMatchType ?: defaultMatchType
         if (matchType != null) {
             val position = matchTypeTabPositionMap.entries.find { it.value == matchType }?.key ?: return
             binding.tabLayout.getTabAt(position)?.select()
             return
         }
 
-        defaultMatchType?.let {
-            viewModel.setCurMatchType(it)
-            navGameFragment(it)
-        }
     }
 
     fun updateSportMenuResult(sportMenuResult: ApiResult<SportMenuData>) {

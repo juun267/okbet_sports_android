@@ -5,8 +5,9 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import timber.log.Timber
 
-class RcvCharAdapter : BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_text_view) {
+class RcvChartAdapter : BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_text_view) {
 
         private var gameType: String? = null
         private var currentSpt: Int? = null
@@ -35,8 +36,9 @@ class RcvCharAdapter : BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_te
                 GameType.TN.name -> {
                     holder.itemView.layoutParams.let { lp ->
                         val setLp: (Int) -> Unit = { it ->
-                            lp.width = width / it
+                            lp.width = (width / it).dp
                         }
+                        Timber.d("currentSpt:$currentSpt")
                         when (currentSpt) {
                             3, 5, 7 -> {
                                 setLp((currentSpt ?: 3) + 2)
@@ -56,7 +58,7 @@ class RcvCharAdapter : BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_te
                 GameType.VB.name, GameType.TT.name, GameType.BM.name -> {
                     holder.itemView.layoutParams.let { lp ->
                         val setLp: (Int) -> Unit = { it ->
-                            lp.width = width / it
+                            lp.width = (width / it).dp
                         }
                         when (currentSpt) {
                             3, 5, 7 -> {

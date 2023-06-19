@@ -78,7 +78,6 @@ class SportOutrightFragment : BaseSportListFragment<SportListViewModel, Fragment
     override fun onBindViewStatus(view: View) {
         super.onBindViewStatus(view)
         arguments?.getString("gameType")?.let { gameType = it }
-        gameType?.let { viewModel.gameType = it  }
         initObserve()
         viewModel.loadMatchType(matchType)
     }

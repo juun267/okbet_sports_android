@@ -137,6 +137,10 @@ class SportViewModel(
     private var home8th = defaultVale
     private var away8th = defaultVale
 
+    //用于网球
+    private var home9th = defaultVale
+    private var away9th = defaultVale
+
     val chartViewList = SingleLiveEvent<MutableList<String>>()
 
     private var lastSportTypeHashMap: HashMap<String, String?> = hashMapOf(
@@ -565,8 +569,6 @@ class SportViewModel(
      *冰球
      */
     fun assembleData2(matchInfo: MatchInfo) {
-        Timber.d("assembleData2 matchInfo.isEmpty:${matchInfo}")
-        Timber.d("assembleData2 matchStatusList.isEmpty:${matchInfo.matchStatusList?.isEmpty()}")
         matchInfo.matchStatusList?.let {
             if (it.isEmpty()) return@let
             home1st = it[0].homeScore.toString()
@@ -607,12 +609,16 @@ class SportViewModel(
                 away1st = awayCornerKicks.toString()
                 home2nd = homeCards.toString()
                 away2nd = awayCards.toString()
+
                 home3rd = homeYellowCards.toString()
                 away4th = awayYellowCards.toString()
+
                 home4th = homeHalfScore ?: "0"
                 away4th = awayHalfScore ?: "0"
+
                 home5th = (homeTotalScore ?: "0").toString()
                 away5th = (awayTotalScore ?: "0").toString()
+                Timber.d("home5th:$home5th away5th:$away5th")
             }
         } else {
             matchInfo.apply {
@@ -629,14 +635,30 @@ class SportViewModel(
                         home3rd = it[2].homeScore.toString()
                         away3rd = it[2].awayScore.toString()
                     }
+                    if (it.size > 3) {
+                        home4th = it[3].homeScore.toString()
+                        away4th = it[3].awayScore.toString()
+                    }
+                    if (it.size > 4) {
+                        home5th = it[4].homeScore.toString()
+                        away5th = it[4].awayScore.toString()
+                    }
+                    if (it.size > 5) {
+                        home6th = it[5].homeScore.toString()
+                        away6th = it[5].awayScore.toString()
+                    }
+                    if (it.size > 6) {
+                        home7th = it[6].homeScore.toString()
+                        away7th = it[6].awayScore.toString()
+                    }
                 }
-                home4th = homeScore.toString()
-                away4th = awayScore.toString()
-                home5th = homeTotalScore.toString()
-                away5th = awayTotalScore.toString()
+                home8th = homeScore.toString()
+                away8th = awayScore.toString()
+                home9th = homeTotalScore.toString()
+                away9th = awayTotalScore.toString()
             }
         }
-        extracted2(gameType)
+        extracted2(matchInfo, gameType)
     }
 
 
@@ -695,45 +717,79 @@ class SportViewModel(
         chartViewList.postValue(list)
     }
 
-    private fun extracted2(gameType: String?) {
+    private fun extracted2(matchInfo: MatchInfo, gameType: String?) {
         val list: MutableList<String> = mutableListOf()
         list.apply {
             if (gameType == GameType.FT.name) {
                 add("Corners")
+                add(home1st)
+                add(away1st)
+                add("Red\ncard")
+                add(home2nd)
+                add(away2nd)
+                add("Yellow\ncard")
+                add(home3rd)
+                add(away3rd)
+                add("1st Half\nscore")
+                add(home4th)
+                add(away4th)
+                add("Half time\nscore")
+                add(home5th)
+                add(away5th)
             } else {
                 add("1")
-            }
-            add(home1st)
-            add(away1st)
-            if (gameType == GameType.FT.name) {
-                add("Red\ncard")
-            } else {
+                add(home1st)
+                add(away1st)
                 add("2")
-            }
-            add(home2nd)
-            add(away2nd)
-            if (gameType == GameType.FT.name) {
-                add("Yellow\ncard")
-            } else {
+                add(home2nd)
+                add(away2nd)
                 add("3")
+                add(home3rd)
+                add(away3rd)
+                val commonAdd = {
+                    add("赛盘")
+                    add(home8th)
+                    add(away8th)
+                    add("得分")
+                    add(home9th)
+                    add(away9th)
+                }
+                matchInfo.let {
+                    when (it.spt) {
+                        3 -> {
+                        }
+
+                        7 -> {
+                            add("4")
+                            add(home4th)
+                            add(away4th)
+                            add("5")
+                            add(home5th)
+                            add(away5th)
+                            add("6")
+                            add(home6th)
+                            add(away6th)
+                            add("7")
+                            add(home7th)
+                            add(away7th)
+                        }
+
+                        else -> {
+                            add("4")
+                            add(home4th)
+                            add(away4th)
+                            add("5")
+                            add(home5th)
+                            add(away5th)
+                        }
+                    }
+                    commonAdd()
+                }
             }
-            add(home3rd)
-            add(away3rd)
-            if (gameType == GameType.FT.name) {
-                add("1st Half\nscore")
-            } else {
-                add("赛盘")
-            }
-            add(home4th)
-            add(away4th)
-            if (gameType == GameType.FT.name) {
-                add("Half time\nscore")
-            } else {
-                add("得分")
-            }
-            add(home5th)
-            add(away5th)
         }
+//        list.forEach {
+//            Timber.d("it:$it")
+//        }
         chartViewList.postValue(list)
     }
 

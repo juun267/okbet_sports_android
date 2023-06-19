@@ -51,7 +51,6 @@ class SportListViewModel(
     infoCenterRepository,
     myFavoriteRepository,
 ) {
-    var gameType = GameType.FT.key
 
     val oddsListGameHallResult: LiveData<Event<OddsListResult?>>
         get() = _oddsListGameHallResult
@@ -73,11 +72,12 @@ class SportListViewModel(
 
     val outrightList = MutableLiveData<Event<OutrightOddsListResult?>>()
     var selectTimeRangeParams:TimeRangeParams? = null
-    var selectMatchIdList: ArrayList<String>? = null
 
     fun getGameHallList(
         matchType: MatchType,
-        tag: Any? = null) {
+        gameType: String,
+        selectMatchIdList: ArrayList<String> = arrayListOf()
+    ) {
 
         when (matchType) {
             MatchType.IN_PLAY -> {
@@ -85,7 +85,6 @@ class SportListViewModel(
                     gameType = gameType,
                     matchType.postValue,
                     matchIdList = selectMatchIdList,
-                    tag = tag
                 )
             }
             MatchType.AT_START -> {
@@ -94,7 +93,6 @@ class SportListViewModel(
                     matchType.postValue,
                     TimeUtil.getAtStartTimeRangeParams(),
                     matchIdList = selectMatchIdList,
-                    tag = tag
                 )
             }
             MatchType.TODAY -> {
@@ -103,7 +101,6 @@ class SportListViewModel(
                     matchType.postValue,
                     selectTimeRangeParams,
                     matchIdList = selectMatchIdList,
-                    tag = tag
                 )
             }
             MatchType.EARLY -> {
@@ -112,7 +109,6 @@ class SportListViewModel(
                     matchType.postValue,
                     selectTimeRangeParams,
                     matchIdList = selectMatchIdList,
-                    tag = tag
                 )
             }
             MatchType.CS -> {
@@ -121,7 +117,6 @@ class SportListViewModel(
                     matchType.postValue,
                     selectTimeRangeParams,
                     matchIdList = selectMatchIdList,
-                    tag = tag
                 )
             }
             MatchType.PARLAY -> {
@@ -130,7 +125,6 @@ class SportListViewModel(
                     matchType.postValue,
                     selectTimeRangeParams,
                     matchIdList = selectMatchIdList,
-                    tag = tag
                 )
 
             }
@@ -141,7 +135,6 @@ class SportListViewModel(
                     matchType.postValue,
                     selectTimeRangeParams,
                     matchIdList = selectMatchIdList,
-                    tag = tag
                 )
 
             }
@@ -153,15 +146,14 @@ class SportListViewModel(
         }
     }
 
-    fun switchGameType(matchType: MatchType, item: Item, tag: Any? = null) {
-        gameType = item.code
+    fun switchGameType(matchType: MatchType, item: Item) {
         if (jobSwitchGameType?.isActive == true) {
             jobSwitchGameType?.cancel()
         }
         //視覺上需要優先跳轉 tab
         _sportMenuResult.value?.updateSportSelectState(matchType, item.code)
         jobSwitchGameType = viewModelScope.launch {
-            getGameHallList(matchType, tag = tag)
+            getGameHallList(matchType, item.code)
         }
     }
 
@@ -174,7 +166,7 @@ class SportListViewModel(
         getOddsList(gameType, matchType.postValue, selectTimeRangeParams)
     }
 
-    private var requestTag: Any? = null
+    private lateinit var oddsListRequestTag: Any
     private var jobSwitchGameType: Job? = null
     private var jobGetOddsList: Job? = null
     private fun getOddsList(
@@ -183,9 +175,9 @@ class SportListViewModel(
         timeRangeParams: TimeRangeParams? = null,
         leagueIdList: List<String>? = null,
         matchIdList: List<String>? = null,
-        tag: Any? = null
     ) {
-        requestTag = tag
+        val requestTag = Any()
+        oddsListRequestTag = requestTag
         var currentTimeRangeParams: TimeRangeParams? = null
         when (matchType) {
             MatchType.IN_PLAY.postValue, MatchType.AT_START.postValue, MatchType.OTHER.postValue -> {
@@ -259,7 +251,7 @@ class SportListViewModel(
                 }
             }
 
-            if (requestTag != tag) {
+            if (requestTag != oddsListRequestTag) {
                 return@launch
             }
             result?.updateMatchType()
@@ -318,7 +310,7 @@ class SportListViewModel(
                     _oddsListGameHallResult.postValue(Event(result, gameType))
                 }
                 else -> {
-                    _oddsListGameHallResult.postValue(Event(result, tag ?: gameType))
+                    _oddsListGameHallResult.postValue(Event(result, gameType))
                 }
             }
 
@@ -326,7 +318,10 @@ class SportListViewModel(
         }
     }
 
+    private lateinit var outrightOddsListRequestTag: Any
     private fun getOutrightOddsList(gameType: String, leagueIdList: List<String>? = null) {
+        val requestTag = Any()
+        outrightOddsListRequestTag = requestTag
         viewModelScope.launch(Dispatchers.IO) {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.outrightService.getOutrightOddsList(
@@ -346,7 +341,7 @@ class SportListViewModel(
                 )
             }
 
-            if (gameType != this@SportListViewModel.gameType) {
+            if (requestTag != outrightOddsListRequestTag) {
                 return@launch
             }
 
@@ -370,7 +365,7 @@ class SportListViewModel(
                 }
             }
 
-            if (gameType != this@SportListViewModel.gameType) {
+            if (requestTag != outrightOddsListRequestTag) {
                 return@launch
             }
             outrightList.postValue(Event(result, gameType))

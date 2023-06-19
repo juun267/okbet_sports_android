@@ -11,11 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentChartBinding
 import org.cxct.sportlottery.network.common.GameType
@@ -23,17 +19,16 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.chat.RecycleViewDivider
 import org.cxct.sportlottery.ui.sport.SportViewModel
-import org.cxct.sportlottery.ui.sport.detail.adapter.RcvCharAdapter
+import org.cxct.sportlottery.ui.sport.detail.adapter.RcvChartAdapter
 import org.cxct.sportlottery.util.MetricsUtil
 import org.cxct.sportlottery.util.fromJson
 import timber.log.Timber
-import java.util.logging.Handler
 
 class SportChartFragment : BindingFragment<SportViewModel, FragmentChartBinding>() {
 
     private var matchInfo: MatchInfo? = null
 
-    private lateinit var rcvAdapter: RcvCharAdapter
+    private lateinit var rcvAdapter: RcvChartAdapter
 
     override fun onInitView(view: View) {
         binding.clRoot.background = ResourcesCompat.getDrawable(
@@ -51,16 +46,13 @@ class SportChartFragment : BindingFragment<SportViewModel, FragmentChartBinding>
     }
 
     fun updateMatchInfo(matchInfo: MatchInfo) {
-        if (activity == null) return
-        binding.rcvChartView.postDelayed({
-            this@SportChartFragment.matchInfo = matchInfo
-            Timber.d("=== updateMatchInfo:更新图表数据")
-            updateChartView()
-        },200)
+        this@SportChartFragment.matchInfo = matchInfo
+        Timber.d("=== updateMatchInfo:更新图表数据")
+        updateChartView()
     }
 
     private fun initRecyclerView() {
-        rcvAdapter = RcvCharAdapter()
+        rcvAdapter = RcvChartAdapter()
         //添加横线
         val divider = DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL)
         ContextCompat.getDrawable(requireContext(), R.drawable.divider_table_chart)
@@ -123,9 +115,9 @@ class SportChartFragment : BindingFragment<SportViewModel, FragmentChartBinding>
         }
 
         viewModel.chartViewList.observe(this) { cvList ->
-            cvList.forEach {
-                Timber.d(it)
-            }
+//            cvList.forEach {
+//                Timber.d(it)
+//            }
             rcvAdapter.setCurrentGameType(matchInfo?.gameType)
             rcvAdapter.setCurrentSpt(matchInfo?.spt)
             rcvAdapter.setNewInstance(cvList)

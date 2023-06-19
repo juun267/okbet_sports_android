@@ -48,10 +48,11 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
 
     protected abstract var matchType: MatchType
     open fun getCurGameType() = GameType.getGameType(gameType) ?: GameType.ALL
+    protected var selectMatchIdList = arrayListOf<String>()
     protected var gameType: String = GameType.BK.key
         set(value) {
             if (!Objects.equals(value, field)) { // 清除赛选条件
-                viewModel.selectMatchIdList = arrayListOf()
+                selectMatchIdList = arrayListOf()
             }
             field = value
         }
@@ -176,7 +177,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
                 gameType!!,
                 matchType,
                 viewModel.selectTimeRangeParams,
-                viewModel.selectMatchIdList
+                selectMatchIdList
             )
         }
 
@@ -246,10 +247,10 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     protected open fun load(item: Item) {
         showLoading()
         setMatchInfo(item.name, item.num.toString())
-        viewModel.switchGameType(matchType, item, Any())
+        viewModel.switchGameType(matchType, item)
     }
 
-    protected inline fun setMatchInfo(name: String, num: String) {
+    protected fun setMatchInfo(name: String, num: String) {
         binding.tvSportName.text = name
         binding.tvMatchNum.text = num
     }
@@ -295,7 +296,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     }
 
     open fun setSelectMatchIds(matchIdList: ArrayList<String>) {
-        viewModel.selectMatchIdList = matchIdList
+        selectMatchIdList = matchIdList
     }
 
     // 赛选联赛

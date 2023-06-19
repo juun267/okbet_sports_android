@@ -99,7 +99,6 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
 
     override fun onBindViewStatus(view: View) {
         super.onBindViewStatus(view)
-        viewModel.gameType = gameType
         binding.tvMatchNum.text = "0"
         initObserve()
         loadData()
@@ -107,7 +106,7 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
 
     private fun loadData() {
         showLoading()
-        viewModel.getGameHallList(matchType)
+        viewModel.getGameHallList(matchType, gameType, selectMatchIdList)
     }
 
     private val subscribeVisibleRange by lazy {
