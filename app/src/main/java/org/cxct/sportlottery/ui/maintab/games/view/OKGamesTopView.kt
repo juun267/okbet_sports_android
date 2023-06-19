@@ -53,9 +53,9 @@ class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: Attribut
         initView()
     }
 
-    fun setup(lifecycleOwner: LifecycleOwner) {
+    fun setup(lifecycleOwner: LifecycleOwner,imgType: Int) {
         ConfigRepository.onNewConfig(lifecycleOwner) {
-            it?.let { setUpBannerData() }
+            it?.let { setUpBannerData(imgType) }
         }
     }
 
@@ -111,11 +111,11 @@ class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: Attribut
         }
     }
 
-    private fun setUpBannerData() {
+    private fun setUpBannerData(imgType: Int) {
 
         val lang = LanguageManager.getSelectLanguage(context).key
         var imageList = sConfigData?.imageList?.filter {
-            it.imageType == 12 && it.lang == lang && !it.imageName1.isNullOrEmpty() && !(getMarketSwitch() && it.isHidden)
+            it.imageType == imgType && it.lang == lang && !it.imageName1.isNullOrEmpty() && !(getMarketSwitch() && it.isHidden)
         }?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
 
         val loopEnable = imageList?.size ?: 0 > 1

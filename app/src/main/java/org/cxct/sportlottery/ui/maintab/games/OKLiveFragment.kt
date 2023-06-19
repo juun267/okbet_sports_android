@@ -111,7 +111,7 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
 
 
     private fun initTopView() = binding.topView.run {
-        setup(this@OKLiveFragment)
+        setup(this@OKLiveFragment,18)
         onTableClick = ::onTabChange
         onSearchTextChanged = { searchKey ->
             hideKeyboard()
@@ -171,11 +171,11 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
         showPartGameList(viewModel.collectList.value?.second, 0)
     }
 
-    fun enterGame(okGameBean: OKGameBean) {
+    fun enterGame(bean: OKGameBean) {
 
         loginedRun(binding.root.context) {
-            viewModel.requestEnterThirdGame(okGameBean, this)
-            viewModel.addRecentPlay(okGameBean)
+            viewModel.requestEnterThirdGame(bean, this)
+            viewModel.addRecentPlay(bean)
         }
     }
 
