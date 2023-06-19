@@ -370,6 +370,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     fun showSportLeftMenu(matchType: MatchType, gameType: GameType?) {
         fragmentHelper2.show(SportLeftMenuFragment::class.java, Bundle()) { fragment, instance ->
             if(!instance){
+
                 fragment.reloadData()
             }
         }

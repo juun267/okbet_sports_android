@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab.menu
 
 import android.annotation.SuppressLint
 import android.graphics.Typeface
+import android.util.Log
 import android.view.View
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.SportStatusEvent
@@ -74,7 +75,9 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
     fun reloadData(){
         //初始化顶部登录状态
         initLoginData()
-
+        if(sportBettingFragment.isVisible){
+            sportBettingFragment.viewModel.getBetRecordCount()
+        }
     }
 
 
@@ -87,6 +90,7 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
 
     @SuppressLint("SetTextI18n")
     private fun initLoginData(){
+
         binding.apply {
             //已登录
             if(viewModel.isLogin()){

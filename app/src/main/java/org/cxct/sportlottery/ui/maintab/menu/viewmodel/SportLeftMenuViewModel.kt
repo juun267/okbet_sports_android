@@ -3,6 +3,7 @@
 package org.cxct.sportlottery.ui.maintab.menu.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -68,7 +69,6 @@ class SportLeftMenuViewModel(
             gameType = "",
             pageSize = AccountHistoryViewModel.PAGE_SIZE
         )
-
         viewModelScope.launch {
             val result= doNetwork(androidContext) {
                 OneBoSportApi.betService.getBetList(betListRequest)

@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.betRecord
 
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.cxct.sportlottery.R
@@ -23,7 +24,6 @@ class UnsettledFragment:BindingFragment<AccountHistoryViewModel,FragmentUnsettle
     override fun onInitView(view: View) =binding.run {
         recyclerUnsettled.layoutManager=LinearLayoutManager(requireContext())
         recyclerUnsettled.adapter=mAdapter
-
         mAdapter.setOnItemChildClickListener { _, view, position ->
             val data= mAdapter.data[position]
             when(view.id){
@@ -61,34 +61,45 @@ class UnsettledFragment:BindingFragment<AccountHistoryViewModel,FragmentUnsettle
         recyclerUnsettled.loadMore {
             viewModel.getUnsettledList()
         }
+
     }
 
-
-    override fun onInitData() {
-        getUnsettledData()
-    }
-
-
-    private fun getUnsettledData(){
-        //获取未结算数据
-        loading()
-        viewModel.getUnsettledList()
-        viewModel.unsettledData.observe(this){
-            hideLoading()
-            if(it.isEmpty()&&viewModel.pageIndex<=2){
-                binding.empty.emptyView.visible()
-                binding.recyclerUnsettled.gone()
-                return@observe
-            }
-            binding.empty.emptyView.gone()
-            binding.recyclerUnsettled.visible()
-            mAdapter.addData(it)
-        }
+    private fun initObserve(){
+//        viewModel.unsettledData.observe(this){
+//
+//        }
         viewModel.responseFailed.observe(this){
             hideLoading()
             mAdapter.setList(arrayListOf())
             binding.empty.emptyView.visible()
             binding.recyclerUnsettled.gone()
         }
+        viewModel.unsettledDataEvent.observe(this){
+                hideLoading()
+                Log.e("dachang","observe")
+                if(it.isEmpty()&&viewModel.pageIndex<=2){
+                    binding.empty.emptyView.visible()
+                    binding.recyclerUnsettled.gone()
+                    return@observe
+                }
+                binding.empty.emptyView.gone()
+                binding.recyclerUnsettled.visible()
+                mAdapter.addData(it)
+        }
+    }
+
+    override fun onInitData() {
+        viewModel.pageIndex=1
+        mAdapter.data.clear()
+        mAdapter.notifyDataSetChanged()
+        getUnsettledData()
+        initObserve()
+    }
+
+    private fun getUnsettledData(){
+        //获取未结算数据
+//        loading()
+        viewModel.getUnsettledList()
+
     }
 }

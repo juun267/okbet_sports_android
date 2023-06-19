@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.menu
 
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.cxct.sportlottery.common.extentions.startActivity
@@ -54,6 +55,7 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
 
         if(viewModel.isLogin()){
             viewModel.getBetRecordCount()
+
         }
     }
 

@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.betRecord
 
 import android.graphics.Typeface
+import android.util.Log
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityBetRecordBinding
 import org.cxct.sportlottery.ui.base.BindingActivity
@@ -39,6 +40,7 @@ class BetRecordActivity:BindingActivity<MainViewModel,ActivityBetRecordBinding>(
 
     override fun onInitData() {
         super.onInitData()
+        Log.e("dachang","tvUnsettled onInitData")
         binding.tvUnsettled.performClick()
     }
 
