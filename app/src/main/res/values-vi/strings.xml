@@ -121,6 +121,7 @@
     <string name="fishing">Bắn cá</string>
     <string name="home_tan_main">THỂ THAO</string>
     <string name="home_tab_in_play">TRONG TRẬN</string>
+    <string name="home_tab_in_play2">TRONG TRẬN</string>
     <string name="home_tab_today">HÔM NAY</string>
     <string name="home_tab_early">CƯỢC SỚM</string>
     <string name="home_tab_cs">Cược tỷ số</string>
@@ -1338,6 +1339,7 @@
     <string name="chat_currently_ban_to_speak">Hiện đang cấm chat</string>
     <string name="chat_welcome">Chào mừng</string>
     <string name="LT054">Thông báo：</string>
+    <string name="LT054COPY">Thông báo</string>
     <string name="LT058">Phòng chat tạm đóng</string> <!--LT058-->
     <string name="chat_photo_download_done">Đã lưu</string>
     <string name="J871">Tải thất bại</string>
@@ -1348,6 +1350,7 @@
     <string name="N987">Đăng nhập tài khoản</string>
     <string name="N988">Đăng nhập ngay</string>
     <string name="C016">HÔM NAY</string>
+    <string name="C016_small">Hôm nay</string>
     <string name="P066">Ví dụ</string>
     <string name="P068">Tải lên ảnh Selfie cùng Căn cước</string>
     <string name="p090">Cảm ơn bạn đã kiểm tra với chúng tôi, vui lòng chờ đợi, chúng tôi sẽ xử lý yêu cầu của bạn trong vòng 24 giờ.</string>
@@ -1376,4 +1379,29 @@
     <string name="J459">Gợi ý</string>
     <string name="P111">Địa chỉ nên bao gồm</string>
     <string name="P110">Căn hộ/số phòng/tầng, tên tòa nhà, vị trí/khối/thời gian/số nhà, tên đường</string>
+
+    <string name="N944">Lịch sử đơn cược</string>
+    <string name="N947">Quy tắc thể thao</string>
+    <string name="N087">Cài đặt thị trường</string>
+    <string name="B004">Quy tắc cược</string>
+    <string name="J117">Cài đặt thị trường</string>
+    <string name="H026">Tổng lãi và lỗ</string>
+    <string name="N942">Cược tích lũy</string>
+    <string name="N943">Cược hợp lệ</string>
+    <string name="P128">7 ngày qua</string>
+    <string name="PP128">30 ngày qua</string>
+    <string name="N124">Cược xâu</string>
+    <string name="N125">Cược đơn</string>
+    <string name="I040">Mục cược</string>
+    <string name="I043">Tỷ lệ cược chấp</string>
+    <string name="J001">Kèo chấp</string>
+    <string name="N263">Đội</string>
+    <string name="D046">Giải đấu</string>
+    <string name="N895">Thời gian thi đấu</string>
+    <string name="N997">Mã đơn</string>
+    <string name="J226">Không có thêm trận đấu nào nữa</string>
+    <string name="J721">Về trang chủ</string>
+    <string name="J634">Xem chi tiết</string>
+    <string name="D039">Tông nhân</string>
+    <string name="I023">Hôm qua</string>
 </resources>

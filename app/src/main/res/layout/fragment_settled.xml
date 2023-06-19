@@ -24,32 +24,33 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Today" />
+            android:text="@string/C016_small" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Yesterday" />
+            android:text="@string/I023" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="7 days" />
+            android:text="@string/P128" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="30 days" />
+            android:text="@string/PP128" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Other" />
+            android:text="@string/other" />
 
     </com.google.android.material.tabs.TabLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/relativeBalance"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:paddingHorizontal="12dp"
         android:layout_marginTop="12dp"
@@ -57,19 +58,20 @@
         android:background="@color/color_FFFFFF"
         android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_toLeftOf="@+id/tvLine"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/bg_bet_total_reward"
-            android:layout_height="58dp">
+            android:layout_height="40dp">
             <TextView
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:textSize="12sp"
-                android:paddingTop="8dp"
                 android:paddingLeft="8dp"
                 android:textColor="@color/color_6D7693"
-                android:text="Total reward "
+                android:text="@string/H026"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -79,8 +81,9 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:textSize="14sp"
                 android:paddingHorizontal="8dp"
+                android:gravity="right"
                 android:textStyle="bold"
-                android:paddingTop="30dp"
+                android:layout_weight="1"
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:textColor="@color/color_FF8A00"
@@ -88,19 +91,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvLine"
-            android:layout_centerInParent="true"
-            android:layout_width="8dp"
-            android:layout_height="wrap_content"/>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_toRightOf="@+id/tvLine"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_vertical"
             android:background="@drawable/bg_bet_accumulated"
-            android:layout_height="58dp">
+            android:layout_height="40dp">
             <TextView
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -108,7 +108,7 @@
                 android:paddingLeft="8dp"
                 android:textSize="12sp"
                 android:textColor="@color/color_6D7693"
-                android:text="Accumulated"
+                android:text="@string/N942"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -119,6 +119,8 @@
                 android:paddingTop="8dp"
                 android:paddingHorizontal="8dp"
                 android:textSize="12sp"
+                android:layout_weight="1"
+                android:gravity="right"
                 android:textColor="@color/color_000000"
                 android:text="₱ 0"
                 android:maxWidth="100dp"
@@ -126,15 +128,23 @@
                 android:ellipsize="end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/bg_bet_valid"
+            android:layout_height="40dp">
 
             <TextView
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:paddingTop="33dp"
                 android:paddingLeft="8dp"
                 android:textSize="12sp"
                 android:textColor="@color/color_6D7693"
-                android:text="Efficient"
+                android:text="@string/N943"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -143,18 +153,19 @@
                 android:id="@+id/tvTotalValue"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:paddingTop="33dp"
                 android:paddingHorizontal="8dp"
+                android:layout_weight="1"
+                android:gravity="right"
                 android:textSize="12sp"
                 android:textColor="@color/color_000000"
                 android:text="₱ 0"
-                android:maxWidth="120dp"
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </RelativeLayout>
+
+        </LinearLayout>
+    </LinearLayout>
 
     <TextView
         android:background="@color/color_F8F9FD"

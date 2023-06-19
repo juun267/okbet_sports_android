@@ -9,7 +9,7 @@ import org.cxct.sportlottery.common.extentions.createVBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
-open class BindingFragment<VM : BaseViewModel, VB: ViewBinding>: BaseFragment<VM>(null) {
+abstract class BindingFragment<VM : BaseViewModel, VB: ViewBinding>: BaseFragment<VM>(null) {
 
     protected val binding: VB by lazy { createVBinding(layoutInflater, 1) }
     private var _first = true
@@ -35,7 +35,7 @@ open class BindingFragment<VM : BaseViewModel, VB: ViewBinding>: BaseFragment<VM
     override fun onBindView(view: View) { }
 
     // 该方法在整个生命周期中只会执行一次(类似与RecyclerView.Adapter的oonCreateViewHolder)
-    protected open fun onInitView(view: View) { }
+    protected abstract fun onInitView(view: View)
 
     /**
      * 与onInitView方法不同在于每次onViewCreated都会执行，对于都Fragment切换时会发生多次onCreateView的情况

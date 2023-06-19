@@ -7,7 +7,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         style="@style/StyleOddButtonLL"
-        android:background="@drawable/bg_radius_10_fff">
+        android:background="@color/color_FFFFFF">
 
         <include layout="@layout/content_odds_detail_list_one_include" />
 

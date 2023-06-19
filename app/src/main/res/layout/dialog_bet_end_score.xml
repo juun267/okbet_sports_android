@@ -11,7 +11,7 @@
         app:cardCornerRadius="12dp"
         android:layout_height="wrap_content">
         <TextView
-            android:text="Bet Items"
+            android:text="@string/I040"
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/color_000000"

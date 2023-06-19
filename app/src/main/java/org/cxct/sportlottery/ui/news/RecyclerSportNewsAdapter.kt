@@ -22,10 +22,12 @@ class RecyclerSportNewsAdapter:BindingAdapter<News,ItemSportNewsBinding>() {
                 //设置最高10000
                 binding.tvContent.maxLines=10000
                 binding.tvExpand.setColors(R.color.color_025BE8)
+                binding.tvExpand.text=context.getString(R.string.D039)
                 binding.ivArrow.setImageResource(R.drawable.ic_sport_news_arrow_blue)
             }else{
                 binding.tvContent.maxLines=1
                 binding.tvExpand.setColors(R.color.color_6D7693)
+                binding.tvExpand.text=context.getString(R.string.J634)
                 binding.ivArrow.setImageResource(R.drawable.ic_sport_news_arrow)
             }
 

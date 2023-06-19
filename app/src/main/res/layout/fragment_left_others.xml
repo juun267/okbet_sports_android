@@ -37,7 +37,7 @@
                 android:layout_gravity="center_vertical"
                 android:paddingStart="12dp"
                 android:paddingTop="12dp"
-                android:text="Other"
+                android:text="@string/other"
                 android:textColor="@color/color_000000"
                 android:textSize="14sp" />
 
@@ -105,7 +105,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingStart="10dp"
-                    android:text="Event Announcement"
+                    android:text="@string/LT054COPY"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/ivAnnouncement"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -192,7 +192,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingStart="10dp"
-                    android:text="Sports Rules"
+                    android:text="@string/N947"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/ivRules"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -230,6 +230,7 @@
         android:id="@+id/constrainBottom"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
+        android:visibility="gone"
         android:background="@color/color_F9FAFD"
         android:layout_height="68dp">
 

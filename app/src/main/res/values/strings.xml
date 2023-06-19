@@ -120,6 +120,7 @@
     <string name="fishing">Fishing</string>
     <string name="home_tan_main">HOME</string>
     <string name="home_tab_in_play">IN-PLAY</string>
+    <string name="home_tab_in_play2">INPLAY</string>
     <string name="home_tab_today">TODAY</string>
     <string name="home_tab_early">EARLY</string>
     <string name="home_tab_cs">CORRECT SCORE</string>
@@ -1462,6 +1463,7 @@
     <string name="chat_currently_ban_to_speak">Currently ban to speak</string>
     <string name="chat_welcome">Welcome</string>
     <string name="LT054">Notifs：</string>
+    <string name="LT054COPY">Notifs</string>
     <string name="LT058">Chat room is temporarily closed</string> <!--LT058-->
     <string name="chat_photo_download_done">Saved</string>
     <string name="J871">Failed to load</string>
@@ -1473,6 +1475,7 @@
     <string name="N987">Log in to chat and discuss</string>
     <string name="N988">Please login</string>
     <string name="C016">TODAY</string>
+    <string name="C016_small">Today</string>
     <string name="N989">Over max stake</string>
     <string name="N990">Below min stake</string>
     <string name="P066">Sample</string>
@@ -1504,4 +1507,29 @@
     <string name="J459">Tips</string>
     <string name="P111">Address should include</string>
     <string name="P110">Unit/Room No. /Floor, Building Name, Lot/ Block/Phase/House Number, Street Name</string>
+
+    <string name="N944">Bet record</string>
+    <string name="N947">Sports rules</string>
+    <string name="N087">Market settings</string>
+    <string name="B004">Betting rules</string>
+    <string name="J117">Odds Setting</string>
+    <string name="H026">Total Profit and Loss</string>
+    <string name="N942">Accumulated betting</string>
+    <string name="N943">Valid bet</string>
+    <string name="P128">Last 7 days</string>
+    <string name="PP128">Last 30 days</string>
+    <string name="N124">Parlay</string>
+    <string name="N125">Single Bets</string>
+    <string name="I040">Betting Items</string>
+    <string name="I043">Odds</string>
+    <string name="J001">Markets</string>
+    <string name="N263">Team</string>
+    <string name="D046">League</string>
+    <string name="N895">Competing time</string>
+    <string name="N997">Order number</string>
+    <string name="J226">No More Matches</string>
+    <string name="J721">Back home page</string>
+    <string name="J634">Check details</string>
+    <string name="D039">Collapse</string>
+    <string name="I023">Yesterday</string>
 </resources>

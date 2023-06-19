@@ -62,7 +62,7 @@
             app:layout_constraintStart_toStartOf="parent"
             android:paddingTop="15dp"
             android:textColor="@color/color_6D7693"
-            android:text="Bet Items"
+            android:text="@string/I040"
             android:textSize="12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -97,7 +97,7 @@
                 android:textSize="@dimen/textSize12sp"
                 android:singleLine="true"
                 android:textColor="@color/color_025BE8"
-                android:text="More" />
+                android:text="@string/N702" />
         </LinearLayout>
 
 
@@ -107,7 +107,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:textColor="@color/color_000000"
-            android:paddingStart="65dp"
+            android:paddingStart="80dp"
             android:paddingTop="15dp"
             android:text="Bet ItemsBet ItemsBet ItemsBet ItemsBet ItemsBet ItemsItemsItems"
             android:textSize="12sp"
@@ -123,7 +123,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tvBetItemValue"
             app:layout_constraintLeft_toLeftOf="parent"
             android:textColor="@color/color_6D7693"
-            android:text="Odds"
+            android:text="@string/I043"
             android:paddingBottom="10dp"
             android:textSize="12sp"
             android:layout_width="wrap_content"
@@ -150,7 +150,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tvOddsKey"
             app:layout_constraintLeft_toLeftOf="parent"
             android:textColor="@color/color_6D7693"
-            android:text="Method"
+            android:text="@string/J001"
             android:textSize="12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -178,7 +178,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             android:paddingTop="10dp"
             android:textColor="@color/color_6D7693"
-            android:text="Team"
+            android:text="@string/N263"
             android:textSize="12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -206,7 +206,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             android:paddingTop="10dp"
             android:textColor="@color/color_6D7693"
-            android:text="League"
+            android:text="@string/D046"
             android:textSize="12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -234,7 +234,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             android:paddingTop="10dp"
             android:textColor="@color/color_6D7693"
-            android:text="Competing time"
+            android:text="@string/N895"
             android:textSize="12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

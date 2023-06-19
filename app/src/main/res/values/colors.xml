@@ -547,4 +547,8 @@
     <color name="light_blue_600">#FF039BE5</color>
     <color name="gray_400">#FFBDBDBD</color>
     <color name="gray_600">#FF757575</color>
+    <color name="color_e6eefb">#e6eefb</color>
+    <color name="color_181E2A">#181E2A</color>
+    <color name="color_434C65">#434C65</color>
+    <color name="color_002d68">#002d68</color>
 </resources>

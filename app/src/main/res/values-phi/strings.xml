@@ -118,6 +118,7 @@
     <string name="fishing">Pangigisda</string>
     <string name="home_tan_main">Home page</string>
     <string name="home_tab_in_play">IN-PLAY</string>
+    <string name="home_tab_in_play2">INPLAY</string>
     <string name="home_tab_today">Ngayon</string>
     <string name="home_tab_early">Maaga</string>
     <string name="home_tab_cs">Correct score</string>
@@ -1265,6 +1266,7 @@
     <string name="N102">Pagtaya</string>
     <string name="write_suggestion">Pagsusumite</string>
     <string name="LT054">Anunsyo:</string>
+    <string name="LT054COPY">Anunsyo</string>
     <string name="LT058">Pansamantalang sarado ang chat</string>
     <string name="LT003">Chat room lobby</string>
     <string name="chat_chat">Chat</string>
@@ -1326,6 +1328,7 @@
     <string name="N988">Mag-login</string>
     <string name="system_notify">Notification ng System</string>
     <string name="C016">Ngayon</string>
+    <string name="C016_small">Ngayon</string>
     <string name="picture_camera_roll" tools:ignore="ExtraTranslation">CameraRoll</string>
     <string name="P066">Halimbawa</string>
     <string name="P068">Mag-upload ng selfie photo na may hawak na valid ID</string>
@@ -1355,4 +1358,30 @@
     <string name="J459">Kind tips</string>
     <string name="P111">Dapat kasama ang address</string>
     <string name="P110">Unit/Room No. /Floor, Building Name, Lot/ Block/Phase/House Number, Street Name</string>
+
+    <string name="N944">Rekord ng taya</string>
+    <string name="N947">Tuntunin sa sports</string>
+    <string name="N087">Handicap setting</string>
+    <string name="B004">Tuntunin sa pag taya</string>
+    <string name="J117">Handicap setting</string>
+    <string name="H026">Kabuuang Panalo</string>
+    <string name="N942">Naipon na pagtaya</string>
+    <string name="N943">Valid na taya</string>
+    <string name="P128">Huling 7 araw</string>
+    <string name="PP128">Huling 30 araw</string>
+    <string name="N124">String betting</string>
+    <string name="N125">Single bet</string>
+    <string name="I040">Bagay sa pagtaya</string>
+    <string name="I043">Handicap odds</string>
+    <string name="J001">Handicap</string>
+    <string name="N263">Team</string>
+    <string name="D046">Liga</string>
+    <string name="N895">Oras ng pakikipagkumpitensya</string>
+    <string name="N997">Numero ng order</string>
+    <string name="J226">No events</string>
+    <string name="J721">Bumalik sa home</string>
+    <string name="J634">Suriin ang detalye</string>
+    <string name="D039">Alisin</string>
+    <string name="I023">Kahapon</string>
 </resources>
+

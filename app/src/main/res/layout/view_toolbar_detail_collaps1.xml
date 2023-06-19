@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="40dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tool_bar_height"
+        android:layout_gravity="bottom"
+        android:background="@color/color_181E2A"
+        android:gravity="center_vertical">
+
+<!--        <ImageView-->
+<!--            android:id="@+id/iv_toolback"-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_marginLeft="10dp"-->
+<!--            android:padding="7dp"-->
+<!--            android:src="@drawable/ic_arrow_white" />-->
+
+        <LinearLayout
+            android:id="@+id/ll_game_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:gravity="center_vertical"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="1dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/ivToolbarHomeLogo"
+                    tools:src="@drawable/chat_avatar"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"/>
+
+                <TextView
+                    android:id="@+id/tv_toolbar_home_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/margin_10"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="left|center_vertical"
+                    android:paddingStart="10dp"
+                    android:maxLines="1"
+                    android:textColor="@color/color_FFFFFF_FFFFFF"
+                    android:textSize="@dimen/textSize16sp"
+                    tools:text="義大利" />
+
+                <TextView
+                    android:gravity="center"
+                    android:id="@+id/tv_toolbar_home_score"
+                    android:layout_width="34dp"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/din_regular"
+                    android:textColor="@color/color_FFFFFF"
+                    android:textSize="@dimen/textSize20sp"
+                    tools:text="123"
+                    android:background="@color/color_434C65" />
+            </LinearLayout>
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:gravity="center">-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_toolbar_match_status"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_margin="@dimen/margin_3"-->
+<!--                    android:ellipsize="end"-->
+<!--                    android:gravity="center"-->
+<!--                    android:lines="1"-->
+<!--                    -->
+<!--                    android:singleLine="true"-->
+<!--                    android:textColor="@color/color_99FFFFFF"-->
+<!--                    android:textSize="@dimen/textSize12sp"-->
+<!--                    tools:text="下半场" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_toolbar_match_time"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_margin="@dimen/margin_3"-->
+<!--                    android:ellipsize="end"-->
+<!--                    android:fontFamily="@font/din_regular"-->
+<!--                    android:gravity="center"-->
+<!--                    android:lines="1"-->
+<!--                    android:singleLine="true"-->
+<!--                    android:text="@string/time_null"-->
+<!--                    android:textColor="@color/color_99FFFFFF"-->
+<!--                    android:textSize="@dimen/textSize12sp"-->
+<!--                    tools:text="11:00" />-->
+
+<!--            </LinearLayout>-->
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="0dp"
+                android:gravity="center_vertical"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="1dp"
+                android:layout_weight="1">
+
+
+                <TextView
+                    android:id="@+id/tv_toolbar_away_score"
+                    android:layout_width="34dp"
+                    android:gravity="center"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/din_regular"
+                    android:textColor="@color/color_FFFFFF"
+                    android:textSize="@dimen/textSize20sp"
+                    android:text="123"
+                    android:background="@color/color_434C65"/>
+
+                <TextView
+                    android:id="@+id/tv_toolbar_away_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:ellipsize="end"
+                    android:gravity="end|center_vertical"
+                    android:paddingEnd="10dp"
+                    android:layout_weight="1"
+                    android:maxLines="1"
+                    android:textColor="@color/color_FFFFFF_FFFFFF"
+                    android:textSize="@dimen/textSize16sp"
+                    tools:text="義大利" />
+
+                <ImageView
+                    android:id="@+id/ivToolbarAwayLogo"
+                    tools:src="@drawable/chat_avatar"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

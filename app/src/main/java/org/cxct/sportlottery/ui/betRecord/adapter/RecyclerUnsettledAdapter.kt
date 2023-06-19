@@ -37,10 +37,10 @@ class RecyclerUnsettledAdapter : BindingAdapter<Row, ItemBetListBinding>() {
                 val addTime=item.addTime
                 tvInPlay.visible()
                 if(addTime-startTime>0){
-                    tvInPlay.text="INPLAY"
+                    tvInPlay.text=context.getString(R.string.home_tab_in_play2)
                     tvInPlay.setBackgroundResource(R.drawable.bg_bet_title_red)
                 }else{
-                    tvInPlay.text="EARLY"
+                    tvInPlay.text=context.getString(R.string.home_tab_early)
                     tvInPlay.setBackgroundResource(R.drawable.bg_bet_title_green)
                 }
             }else{
@@ -52,18 +52,17 @@ class RecyclerUnsettledAdapter : BindingAdapter<Row, ItemBetListBinding>() {
             when (item.parlayType) {
                 //单注
                 ParlayType.OUTRIGHT.key,ParlayType.SINGLE.key -> {
-                    parlayString.append("Single betting")
+                    parlayString.append(context.getString(R.string.N125))
                     ivDetails.gone()
                     tvInPlay.visible()
                     linearDetails.onClick {
-
                     }
 //                    parlayString.append("-")
 //                    parlayString.append(GameType.getGameTypeString(context, item.gameType))
                 }
                 //串关
                 else -> {
-                    parlayString.append("String betting")
+                    parlayString.append(context.getString(R.string.N124))
                     ivDetails.visible()
                     tvInPlay.gone()
                     linearDetails.onClick {

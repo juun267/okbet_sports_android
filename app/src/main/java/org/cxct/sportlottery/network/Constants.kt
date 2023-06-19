@@ -530,6 +530,8 @@ object Constants {
 
     //news
     const val MESSAGE_LIST = "/api/front/message/list"
+    const val MESSAGE_LIST2 = "/api/front/message/list/v2"
+
 
     const val RED_ENVELOPE_CHECK = "/api/front/redenp/rain/info"    //10s一次
 

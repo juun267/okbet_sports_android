@@ -119,6 +119,7 @@
     <string name="fishing">捕鱼</string>
     <string name="home_tan_main">主页</string>
     <string name="home_tab_in_play">滚球</string>
+    <string name="home_tab_in_play2">滚球</string>
     <string name="home_tab_today">今日</string>
     <string name="home_tab_early">早盘</string>
     <string name="home_tab_cs">波胆</string>
@@ -1396,6 +1397,7 @@
     <string name="chat_welcome">欢迎</string>
     <string name="write_suggestion">填写建议</string>
     <string name="LT054">公告：</string>
+    <string name="LT054COPY">公告</string>
     <string name="LT058">聊天室暂时关闭</string> <!--LT058-->
     <string name="chat_photo_download_done">已储存</string>
     <string name="J871">加载失败</string>
@@ -1406,6 +1408,7 @@
     <string name="N987">登录后进行聊天讨论</string>
     <string name="N988">请登录</string>
     <string name="C016">今日</string>
+    <string name="C016_small">今日</string>
     <string name="P066">事例</string>
     <string name="P068">上传手持证件照片</string>
     <string name="p090">感谢您与我们核实，请等待我们会在24 小时内处理您的请求。</string>
@@ -1435,4 +1438,29 @@
     <string name="J459">温馨提示</string>
     <string name="P111">地址应包括</string>
     <string name="P110">单位/房号/楼层、楼名、地段/座/期/门牌号、街道名</string>
+
+    <string name="N944">注单记录</string>
+    <string name="N947">体育规则</string>
+    <string name="N087">盘口设置</string>
+    <string name="B004">投注规则</string>
+    <string name="J117">盘口设定</string>
+    <string name="H026">总盈亏</string>
+    <string name="N942">累计投注</string>
+    <string name="N943">有效投注</string>
+    <string name="P128">近7天</string>
+    <string name="PP128">近30天</string>
+    <string name="N124">串关投注</string>
+    <string name="N125">单项投注</string>
+    <string name="I040">投注项目</string>
+    <string name="I043">盘口赔率</string>
+    <string name="J001">盘口</string>
+    <string name="N263">球队</string>
+    <string name="D046">联赛</string>
+    <string name="N895">比赛时间</string>
+    <string name="N997">单号</string>
+    <string name="J226">没有更多赛事</string>
+    <string name="J721">返回首页</string>
+    <string name="J634">查看详情</string>
+    <string name="D039">收起</string>
+    <string name="I023">昨日</string>
 </resources>
