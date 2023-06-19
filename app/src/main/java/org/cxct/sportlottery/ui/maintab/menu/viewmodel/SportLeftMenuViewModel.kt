@@ -159,7 +159,7 @@ class SportLeftMenuViewModel(
         val langNodeList = arrayListOf<NodeBean>()
         languageList.forEach {
             val langNode=formatLanguageData(it)
-            if(it.key==LanguageManager.getSelectLanguageName()){
+            if(it.key== LanguageManager.getSelectLanguage(androidContext).key){
                 langNode.select=true
             }
             langNodeList.add(langNode)

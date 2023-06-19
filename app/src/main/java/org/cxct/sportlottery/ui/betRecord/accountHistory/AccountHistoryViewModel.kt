@@ -401,7 +401,7 @@ class AccountHistoryViewModel(
         if (betListRequesting )
             return
         betListRequesting = true
-
+        Log.e("dachang","page :${pageIndex}")
         val betListRequest = BetListRequest(
             championOnly = 0,
             statusList = listOf(0,1), //全部注單，(0:待成立, 1:未結算)
@@ -421,10 +421,11 @@ class AccountHistoryViewModel(
                 _responseFailed.postValue(true)
                 return@launch
             }
-            pageIndex++
+
             resultData.let { result ->
                 if (result.success) {
                     result.rows?.let {
+                        pageIndex++
                         _unsettledData.postValue(it)
                         loginRepository.updateTransNum(result.total ?: 0)
                     }
