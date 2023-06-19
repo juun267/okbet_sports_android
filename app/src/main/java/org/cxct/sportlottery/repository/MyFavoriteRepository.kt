@@ -11,6 +11,7 @@ import org.cxct.sportlottery.network.myfavorite.save.SaveMyFavoriteRequest
 import org.cxct.sportlottery.network.myfavorite.query.SportMenuFavoriteResult
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.SingleLiveEvent
 import org.cxct.sportlottery.util.TextUtil
 import retrofit2.Response
 
@@ -40,6 +41,8 @@ class MyFavoriteRepository {
         get() = _favorNotify
     private val _favorNotify = MutableLiveData<Event<MyFavoriteNotify>>()
 
+    val detailFavorNotify: SingleLiveEvent<Pair<String, Boolean>> = SingleLiveEvent()
+
     val lastSportType: LiveData<Item>
         get() = _lastSportType
     private val _lastSportType = MutableLiveData<Item>()
@@ -61,9 +64,7 @@ class MyFavoriteRepository {
     }
 
     suspend fun pinFavorite(
-        type: FavoriteType,
-        content: String?,
-        gameType: String?
+        type: FavoriteType, content: String?, gameType: String?
     ): Response<MyFavoriteBaseResult> {
         val saveList = when (type) {
             FavoriteType.SPORT -> _favorSportList.value?.toMutableList() ?: mutableListOf()
@@ -72,29 +73,31 @@ class MyFavoriteRepository {
             FavoriteType.OUTRIGHT -> {
                 _favoriteOutrightList.value?.toMutableList() ?: mutableListOf()
             }
+
             FavoriteType.PLAY_CATE -> {
                 _favorPlayCateList.value?.transferSaveList(gameType) ?: mutableListOf()
             }
         }
 
         content?.let {
-            when (saveList.contains(content)) {
-                true ->{
+            val isContain = saveList.contains(content)
+            detailFavorNotify.postValue(Pair(content, !isContain))
+            when (isContain) {
+                true -> {
                     saveList.remove(content)
-                    _favorNotify.postValue(Event(MyFavoriteNotify(type,false)))
+                    _favorNotify.postValue(Event(MyFavoriteNotify(type, false)))
                 }
+
                 false -> {
                     saveList.add(content)
-                    _favorNotify.postValue(Event(MyFavoriteNotify(type,true)))
+                    _favorNotify.postValue(Event(MyFavoriteNotify(type, true)))
                 }
             }
         }
 
         val result = OneBoSportApi.favoriteService.saveMyFavorite(
             SaveMyFavoriteRequest(
-                type.code,
-                saveList.filter { it.isNotBlank() }.toList(),
-                gameType
+                type.code, saveList.filter { it.isNotBlank() }.toList(), gameType
             )
         )
 
@@ -127,13 +130,14 @@ class MyFavoriteRepository {
             FavoriteType.OUTRIGHT -> _favoriteOutrightList.postValue(
                 _favoriteOutrightList.value ?: listOf()
             )
+
             FavoriteType.PLAY_CATE -> _favorPlayCateList.postValue(
                 _favorPlayCateList.value ?: listOf()
             )
         }
     }
 
-    fun setLastSportType(item: Item){
+    fun setLastSportType(item: Item) {
         _lastSportType.postValue(item)
     }
 

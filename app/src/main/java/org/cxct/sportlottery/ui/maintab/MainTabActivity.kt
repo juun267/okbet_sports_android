@@ -794,8 +794,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         SportLeagueAdapter.clearCachePool()
     }
 
-    override fun updateBetListOdds(list: MutableList<BetInfoListData>) {
-    }
 
     open fun getCurrentPosition(): Int = fragmentHelper.getCurrentPosition()
 

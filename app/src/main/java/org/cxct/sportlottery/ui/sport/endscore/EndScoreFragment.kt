@@ -29,6 +29,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
+import org.cxct.sportlottery.ui.sport.list.adapter.EmptySportGamesView
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.layoutmanager.SocketGridManager
 import org.greenrobot.eventbus.Subscribe
@@ -60,16 +61,6 @@ class EndScoreFragment: BindingSocketFragment<SportListViewModel, FragmentSportL
     }
 
     private val endScoreAdapter: EndScoreAdapter by lazy {
-
-        binding.gameList.addOnScrollListener(object : OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    subscribeMatchOdds(0)
-                } else {
-                    unSubscribeAll()
-                }
-            }
-        })
 
         EndScoreAdapter(playCate) { _, view, item ->
             if (item is Odd) {  // 赔率
@@ -113,7 +104,7 @@ class EndScoreFragment: BindingSocketFragment<SportListViewModel, FragmentSportL
     }
 
     private fun loadData() {
-        endScoreAdapter.showLoading(R.layout.view_list_loading)
+        showLoading()
         viewModel.getGameHallList(matchType)
     }
 
@@ -136,6 +127,16 @@ class EndScoreFragment: BindingSocketFragment<SportListViewModel, FragmentSportL
         binding.ivArrow.bindExpanedAdapter(endScoreAdapter) { subscribeMatchOdds(100) }
     }
 
+    fun resetFooterView(footerView: View) {
+        if (footerView.tag == endScoreAdapter) {
+            return
+        }
+
+        (footerView.parent as ViewGroup?)?.let { it.removeView(footerView) }
+        footerView.tag = endScoreAdapter
+        endScoreAdapter.addFooterView(footerView)
+    }
+
     private fun setupGameRow() {
         binding.tvSportName.setText(R.string.basketball)
         binding.ivFilter.setOnClickListener {
@@ -152,9 +153,19 @@ class EndScoreFragment: BindingSocketFragment<SportListViewModel, FragmentSportL
     private fun setupGameListView() = binding.gameList.run {
         layoutManager = SocketGridManager(context, 4)
         adapter = endScoreAdapter
+        endScoreAdapter.setEmptyView(EmptySportGamesView(context()))
 //        addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_10))
 //        addItemDecoration(GridItemDecoration(9, 9, Color.RED, false))
 //        StickyHeaderItemDecorator(endScoreAdapter).attachToRecyclerView(this)
+        addOnScrollListener(object : OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    subscribeMatchOdds(0)
+                } else {
+                    unSubscribeAll()
+                }
+            }
+        })
     }
 
     private fun subscribeMatchOdds(delay: Long = 0) {
@@ -194,11 +205,6 @@ class EndScoreFragment: BindingSocketFragment<SportListViewModel, FragmentSportL
             showErrorMsgDialog(it)
         }
 
-        //當前玩法無賽事
-        isNoEvents.distinctUntilChanged().observe(viewLifecycleOwner) {
-            binding.sportTypeList.isVisible = !it
-            hideLoading()
-        }
 
         betInfoList.observe(viewLifecycleOwner) {
             it.peekContent().let {
@@ -207,7 +213,12 @@ class EndScoreFragment: BindingSocketFragment<SportListViewModel, FragmentSportL
         }
 
         oddsListGameHallResult.observe(viewLifecycleOwner) {
-            val result = it.getContentIfNotHandled() ?: return@observe
+
+            val result = it.getContentIfNotHandled()
+            if (result == null) {
+                dismissLoading()
+                return@observe
+            }
             val list = result.oddsListData?.leagueOdds as MutableList<BaseNode>?
             //api拿到到数据，第一个默认展开
             list?.forEachIndexed { index, baseNode ->
@@ -216,11 +227,10 @@ class EndScoreFragment: BindingSocketFragment<SportListViewModel, FragmentSportL
             endScoreAdapter.setNewInstance(list)
             binding.tvMatchNum.text = "${list?.size ?: 0}"
 
-            if (list.isNullOrEmpty()) {
-                endScoreAdapter.showEmpty(R.layout.itemview_game_no_record)
-            } else {
+            if (!list.isNullOrEmpty()) {
                 subscribeMatchOdds(120)
             }
+            dismissLoading()
         }
 
         favorMatchList.observe(viewLifecycleOwner) { favorMatchIds ->

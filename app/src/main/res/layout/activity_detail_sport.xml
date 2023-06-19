@@ -5,252 +5,442 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    android:id="@+id/coordinator"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent">
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar_layout"
+    <View
+        android:id="@+id/v_statusbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:elevation="0dp"
-        android:background="@color/color_000000">
+        android:layout_height="@dimen/margin_40"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/toolbar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="noScroll|exitUntilCollapsed|snap">
+    <LinearLayout
+        android:id="@+id/llToolBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tool_bar_height"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/v_statusbar">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="0.6"
-                android:orientation="vertical">
-
-                <include
-                    android:id="@+id/toolBar"
-                    layout="@layout/view_detail_head_toolbar"
-                    android:visibility="visible"
-                    tools:visibility="visible" />
-
-                <org.cxct.sportlottery.ui.sport.detail.DetailLiveViewToolbar
-                    android:id="@+id/live_view_tool_bar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:visibility="gone"
-                    tools:visibility="gone" />
-            </LinearLayout>
-
-            <!-- 这边必须使用ToolBar -->
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/collaps_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/tool_bar_height"
-                app:contentInsetStart="0dp"
-                app:contentScrim="@color/transparent"
-                app:layout_collapseMode="pin"
-                app:theme="@style/Widget.AppCompat.Toolbar">
-
-                <include layout="@layout/view_toolbar_detail_collaps" />
-            </androidx.appcompat.widget.Toolbar>
-
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:padding="7dp"
+            android:src="@drawable/ic_union" />
 
         <LinearLayout
-            android:id="@+id/lin_center"
+            android:id="@+id/ll_game_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/color_191919_FCFCFC"
-            android:orientation="vertical"
-            android:visibility="visible"
-            tools:visibility="visible">
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingVertical="5dp">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/color_E3E8EE"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent" />
-
-                <TextView
-                    android:id="@+id/btn_odd"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/betting"
-                    android:textColor="@color/main_tab_text_selector"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="@+id/iv_center"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <View
-                    android:id="@+id/viewBtOdd"
-                    android:layout_width="62dp"
-                    android:layout_height="2dp"
-                    android:background="@drawable/bg_radius_2_025be8"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="@+id/iv_center" />
-
-                <ImageView
-                    android:id="@+id/iv_center"
-                    android:layout_width="1dp"
-                    android:layout_height="24dp"
-                    android:background="@color/color_E3E8EE"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/btn_analyze"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/match_analyze"
-                    android:textColor="@color/color_6C7BA8"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="@+id/iv_center"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <View
-                    android:id="@+id/viewBtnAnalyze"
-                    android:layout_width="62dp"
-                    android:layout_height="2dp"
-                    android:background="@drawable/bg_radius_2_025be8"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="@+id/iv_center"
-                    app:layout_constraintRight_toRightOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <LinearLayout
-                android:id="@+id/lin_categroy"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/margin_40">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_cat"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginHorizontal="@dimen/margin_10"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/tab_odds_detail" />
-
-                <View
-                    android:layout_width="0.5dp"
-                    android:layout_height="match_parent"
-                    android:background="#F1F0F0" />
-
-                <ImageView
-                    android:id="@+id/iv_arrow"
-                    android:layout_width="@dimen/margin_40"
-                    android:layout_height="match_parent"
-                    android:padding="@dimen/margin_10"
-                    android:src="@drawable/selector_arrow_blue_double" />
-            </LinearLayout>
-
-            <View
-                android:id="@+id/vDivider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/color_E3E8EE"/>
+            <TextView
+                android:id="@+id/tv_game_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/color_14366B"
+                android:textSize="@dimen/textSize16sp"
+                tools:text="欧洲足球锦标赛2020" />
         </LinearLayout>
-    </com.google.android.material.appbar.AppBarLayout>
 
-    <FrameLayout
-        android:id="@+id/detailLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_detail"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            tools:listitem="@layout/content_odds_detail_list_group_4_item" />
-
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/ns_analyze"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone">
-
-        </androidx.core.widget.NestedScrollView>
-
-    </FrameLayout>
-
+        <ImageView
+            android:id="@+id/iv_refresh"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="@dimen/margin_10"
+            android:padding="7dp"
+            android:src="@drawable/ic_sport_refresh"
+            app:tint="@color/color_14366B" />
+    </LinearLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/snackbar_holder"
+        android:id="@+id/coordinator"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_gravity="bottom"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/llToolBar">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_FFFFFF"
+            app:elevation="0dp">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/toolbar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:contentScrim="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    app:layout_collapseMode="parallax"
+                    app:layout_collapseParallaxMultiplier="0.6">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/vpContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp">
 
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+                        <androidx.viewpager2.widget.ViewPager2
+                            android:id="@+id/detailToolBarViewPager"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-<!--    <include-->
-<!--        android:id="@+id/cl_bet_list_bar"-->
-<!--        layout="@layout/bet_bar_layout"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="@dimen/bet_list_bar_height"-->
-<!--        android:visibility="visible"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent" />-->
+                        <FrameLayout
+                            android:id="@+id/flRdContainer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:paddingHorizontal="5dp"
+                            android:paddingVertical="3dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <org.cxct.sportlottery.view.indicator.RadiusIndicator
+                                android:id="@+id/hIndicator"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </FrameLayout>
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    <org.cxct.sportlottery.ui.sport.detail.DetailLiveViewToolbar
+                        android:id="@+id/live_view_tool_bar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="40dp"
+                        android:visibility="gone"
+                        tools:visibility="gone" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/clToolContent"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="@color/color_EEF3FC"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="10dp">
+
+                        <ImageView
+                            android:id="@+id/ivFavorite"
+                            android:layout_width="30dp"
+                            android:layout_height="match_parent"
+                            android:padding="5dp"
+                            android:src="@drawable/selector_star_v5"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                        <TextView
+                            android:id="@+id/tvFavoriteSymbol"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:text="Collect"
+                            android:textColor="@color/color_000000"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="@id/ivFavorite"
+                            app:layout_constraintStart_toEndOf="@id/ivFavorite"
+                            app:layout_constraintTop_toTopOf="@+id/ivFavorite" />
+
+                        <TextView
+                            android:id="@+id/tvAnim"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Animation"
+                            android:textColor="@color/color_BEC7DC"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@id/tvFavoriteSymbol"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/tvFavoriteSymbol" />
+
+                        <ImageView
+                            android:id="@+id/ivAnim"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingEnd="5dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/tvAnim"
+                            app:layout_constraintEnd_toStartOf="@+id/tvAnim"
+                            app:layout_constraintTop_toTopOf="@+id/tvAnim"
+                            app:layout_constraintVertical_bias="1.0"
+                            tools:srcCompat="@drawable/icon_animation" />
+
+                        <TextView
+                            android:id="@+id/tvVideo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:text="Video"
+                            android:textColor="@color/color_BEC7DC"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/ivAnim"
+                            app:layout_constraintEnd_toStartOf="@+id/ivAnim"
+                            app:layout_constraintTop_toTopOf="@+id/ivAnim" />
+
+                        <ImageView
+                            android:id="@+id/ivVideo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingEnd="5dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/tvVideo"
+                            app:layout_constraintEnd_toStartOf="@+id/tvVideo"
+                            app:layout_constraintTop_toTopOf="@+id/tvVideo"
+                            tools:srcCompat="@drawable/icon_video" />
+
+                        <TextView
+                            android:id="@+id/tvLiveStream"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:text="MC"
+                            android:textColor="@color/color_BEC7DC"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/ivVideo"
+                            app:layout_constraintEnd_toStartOf="@+id/ivVideo"
+                            app:layout_constraintTop_toTopOf="@+id/ivVideo" />
+
+                        <ImageView
+                            android:id="@+id/ivLiveStream"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingEnd="5dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/tvLiveStream"
+                            app:layout_constraintEnd_toStartOf="@+id/tvLiveStream"
+                            app:layout_constraintTop_toTopOf="@+id/tvLiveStream"
+                            tools:srcCompat="@drawable/icon_live_stream" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+
+                <!-- 这边必须使用ToolBar -->
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/collaps_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/tool_bar_height"
+                    android:visibility="gone"
+                    app:contentInsetStart="0dp"
+                    app:contentScrim="@color/transparent"
+                    app:layout_collapseMode="pin"
+                    app:theme="@style/Widget.AppCompat.Toolbar"
+                    tools:visibility="gone">
+
+                    <include
+                        android:id="@+id/collaps1"
+                        layout="@layout/view_toolbar_detail_collaps1" />
+                </androidx.appcompat.widget.Toolbar>
+
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+            <LinearLayout
+                android:id="@+id/lin_center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_191919_FCFCFC"
+                android:orientation="vertical"
+                android:visibility="visible"
+                tools:visibility="visible">
+
+                <!--                <androidx.constraintlayout.widget.ConstraintLayout-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="40dp">-->
+
+                <!--                    <View-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="1dp"-->
+                <!--                        android:background="@color/color_E3E8EE"-->
+                <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--                        app:layout_constraintLeft_toLeftOf="parent" />-->
+
+                <!--                    <TextView-->
+                <!--                        android:id="@+id/btn_odd"-->
+                <!--                        android:layout_width="0dp"-->
+                <!--                        android:layout_height="match_parent"-->
+                <!--                        android:gravity="center"-->
+                <!--                        android:text="@string/betting"-->
+                <!--                        android:textColor="@color/main_tab_text_selector"-->
+                <!--                        android:textSize="14sp"-->
+                <!--                        android:textStyle="bold"-->
+                <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--                        app:layout_constraintLeft_toLeftOf="parent"-->
+                <!--                        app:layout_constraintRight_toRightOf="@+id/iv_center"-->
+                <!--                        app:layout_constraintTop_toTopOf="parent" />-->
+
+                <!--                    <View-->
+                <!--                        android:id="@+id/viewBtOdd"-->
+                <!--                        android:layout_width="62dp"-->
+                <!--                        android:layout_height="2dp"-->
+                <!--                        android:background="@drawable/bg_radius_2_025be8"-->
+                <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--                        app:layout_constraintLeft_toLeftOf="parent"-->
+                <!--                        app:layout_constraintRight_toRightOf="@+id/iv_center" />-->
+
+                <!--                    <ImageView-->
+                <!--                        android:id="@+id/iv_center"-->
+                <!--                        android:layout_width="1dp"-->
+                <!--                        android:layout_height="24dp"-->
+                <!--                        android:background="@color/color_E3E8EE"-->
+                <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--                        app:layout_constraintLeft_toLeftOf="parent"-->
+                <!--                        app:layout_constraintRight_toRightOf="parent"-->
+                <!--                        app:layout_constraintTop_toTopOf="parent" />-->
+
+                <!--                    <TextView-->
+                <!--                        android:id="@+id/btn_analyze"-->
+                <!--                        android:layout_width="0dp"-->
+                <!--                        android:layout_height="match_parent"-->
+                <!--                        android:gravity="center"-->
+                <!--                        android:text="@string/match_analyze"-->
+                <!--                        android:textColor="@color/color_6C7BA8"-->
+                <!--                        android:textSize="14sp"-->
+                <!--                        android:textStyle="bold"-->
+                <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--                        app:layout_constraintLeft_toLeftOf="@+id/iv_center"-->
+                <!--                        app:layout_constraintRight_toRightOf="parent"-->
+                <!--                        app:layout_constraintTop_toTopOf="parent" />-->
+
+                <!--                    <View-->
+                <!--                        android:id="@+id/viewBtnAnalyze"-->
+                <!--                        android:layout_width="62dp"-->
+                <!--                        android:layout_height="2dp"-->
+                <!--                        android:background="@drawable/bg_radius_2_025be8"-->
+                <!--                        android:visibility="gone"-->
+                <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--                        app:layout_constraintLeft_toLeftOf="@+id/iv_center"-->
+                <!--                        app:layout_constraintRight_toRightOf="parent" />-->
+
+                <!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+
+                <LinearLayout
+                    android:id="@+id/lin_categroy"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/margin_40"
+                    android:background="@color/color_EEF3FC">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_cat"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginHorizontal="@dimen/margin_10"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/tab_odds_detail" />
+
+                    <View
+                        android:layout_width="0.5dp"
+                        android:layout_height="match_parent"
+                        android:background="#F1F0F0" />
+
+                    <ImageView
+                        android:id="@+id/iv_arrow"
+                        android:layout_width="@dimen/margin_40"
+                        android:layout_height="match_parent"
+                        android:background="@color/color_FFFFFF"
+                        android:padding="@dimen/margin_10"
+                        android:src="@drawable/selector_arrow_dark_blue_double" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/vDivider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_E3E8EE" />
+            </LinearLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <FrameLayout
+            android:id="@+id/detailLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_detail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                tools:listitem="@layout/content_odds_detail_list_group_4_item" />
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/ns_analyze"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+
+            </androidx.core.widget.NestedScrollView>
+
+            <org.cxct.sportlottery.view.DetailSportGuideView
+                android:id="@+id/dsgView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+
+        </FrameLayout>
+
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/snackbar_holder"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_gravity="bottom"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <!--    <include-->
+    <!--        android:id="@+id/cl_bet_list_bar"-->
+    <!--        layout="@layout/bet_bar_layout"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="@dimen/bet_list_bar_height"-->
+    <!--        android:visibility="visible"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent" />-->
 
 
     <org.cxct.sportlottery.view.ParlayFloatingWindow
         android:id="@+id/parlayFloatWindow"
-        android:visibility="visible"
-        android:layout_marginBottom="20dp"
         android:layout_width="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <FrameLayout
         android:id="@+id/fl_bet_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         tools:visibility="gone" />
-
-    <org.cxct.sportlottery.view.DetailSportGuideView
-        android:id="@+id/dsgView"
-        android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="match_parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

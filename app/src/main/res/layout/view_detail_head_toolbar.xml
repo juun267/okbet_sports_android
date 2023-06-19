@@ -30,10 +30,12 @@
 
         <View
             android:id="@+id/v_statusbar"
+            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_25" />
 
         <LinearLayout
+            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="@dimen/tool_bar_height"
             android:gravity="center_vertical">
@@ -43,7 +45,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:padding="7dp"
-                android:src="@drawable/ic_arrow_white"
+                android:src="@drawable/ic_union"
                 android:layout_marginLeft="10dp" />
 
             <LinearLayout
@@ -60,7 +62,7 @@
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:ellipsize="end"
-                    android:textColor="@color/color_FFFFFF"
+                    android:textColor="@color/color_14366B"
                     android:textSize="@dimen/textSize16sp"
                     tools:text="欧洲足球锦标赛2020" />
             </LinearLayout>
@@ -68,6 +70,7 @@
             <ImageView
                 android:id="@+id/iv_refresh"
                 android:layout_width="30dp"
+                app:tint="@color/color_14366B"
                 android:layout_height="30dp"
                 android:layout_marginRight="@dimen/margin_10"
                 android:padding="7dp"
@@ -79,6 +82,11 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
+
+        <include
+            android:layout_height="50dp"
+            android:layout_width="match_parent"
+            layout="@layout/view_toolbar_detail_collaps1"/>
 
         <LinearLayout
             android:layout_width="match_parent"

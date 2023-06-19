@@ -26,6 +26,7 @@ class SportOutrightAdapter2(val lifecycle: LifecycleOwner, val onItemClick:(Int,
         }
 
     init {
+        footerWithEmptyEnable = true
         addFullSpanNodeProvider(OutrightFirstProvider(this, lifecycle, onItemClick)) //联赛
         addFullSpanNodeProvider(OutrightSecondProvider(this, lifecycle, onItemClick)) //获胜名称
         addNodeProvider(OutrightThirdProvider(this, lifecycle, onItemClick)) //赔率

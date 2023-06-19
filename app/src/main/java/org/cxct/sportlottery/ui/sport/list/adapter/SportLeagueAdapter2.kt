@@ -11,12 +11,15 @@ import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.network.service.close_play_cate.ClosePlayCateEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
 import org.cxct.sportlottery.util.QuickListManager
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SocketUpdateUtil.toMutableFormat_1
 import org.cxct.sportlottery.util.SocketUpdateUtil.updateOddStatus
+import org.cxct.sportlottery.util.closePlayCate
+import org.cxct.sportlottery.util.doOnVisiableRange
 
 class SportLeagueAdapter2(
     var matchType: MatchType,
@@ -34,9 +37,23 @@ class SportLeagueAdapter2(
             }
         }
 
+    val holderMatchOdd = mutableMapOf<BaseViewHolder, MatchOdd>()
+
+    fun visiableRangeMatchOdd() = holderMatchOdd.values
+
+    fun findVisiableRangeMatchOdd(id: String): MatchOdd? {
+        return holderMatchOdd.values.find { it.matchInfo?.id == id }
+    }
+
     init {
+        footerWithEmptyEnable = true
         addFullSpanNodeProvider(SportLeagueProvider(this)) // 联赛名
         addFullSpanNodeProvider(SportMatchProvider(this, onOddClick, onFavorite)) // 赛事
+    }
+
+    override fun setNewInstance(list: MutableList<BaseNode>?) {
+        holderMatchOdd.clear()
+        super.setNewInstance(list)
     }
 
     override fun getItemType(data: List<BaseNode>, position: Int): Int {
@@ -56,15 +73,29 @@ class SportLeagueAdapter2(
 
     fun dataCount() = getDefItemCount()
 
-    fun onOddsChangeEvent(oddsChangeEvent: OddsChangeEvent, subscribedMatchOdd: MutableMap<String, Pair<MatchOdd, Int>>) {
-        if (oddsChangeEvent.oddsList.isNullOrEmpty() || subscribedMatchOdd.isEmpty()) {
+    fun notifyMatchOddChanged(matchOdd: MatchOdd) {
+        val position = getItemPosition(matchOdd)
+        if (position >= dataCount() || position < 0) {
             return
         }
 
-        val matchOddWithPosition = subscribedMatchOdd[oddsChangeEvent.eventId] ?: return
+        notifyItemChanged(position, matchOdd)
+    }
 
-        if (updateMatchOdds(matchOddWithPosition.first, oddsChangeEvent)) {
-            notifyItemChanged(matchOddWithPosition.second, SportMatchEvent.OddsChanged)
+    fun onOddsChangeEvent(oddsChangeEvent: OddsChangeEvent) {
+        val eventId = oddsChangeEvent.eventId ?: return
+        if (oddsChangeEvent.oddsList.isNullOrEmpty() || holderMatchOdd.isEmpty()) {
+            return
+        }
+
+        val matchOdd = findVisiableRangeMatchOdd(eventId) ?: return
+        val position = getItemPosition(matchOdd)
+        if (position >= dataCount() || position < 0) {
+            return
+        }
+
+        if (updateMatchOdds(matchOdd, oddsChangeEvent)) {
+            notifyItemChanged(position, SportMatchEvent.OddsChanged)
 //            updateMatch(leagueIndex, matchOdd)
 //            updateBetInfo(leagueOdd, oddsChangeEvent)
         }
@@ -153,6 +184,13 @@ class SportLeagueAdapter2(
         remove(matchOdd)
     }
 
+    fun matchStatuChanged(matchOdd: MatchOdd) {
+        val position = getItemPosition(matchOdd)
+        if (position >= 0) {
+            notifyItemChanged(position)
+        }
+    }
+
     fun updateOddsSelectStatus(matchOdds: Collection<Pair<MatchOdd, Int>>) {
         matchOdds.forEach { matchOddPosition ->
             val matchOdd = matchOddPosition.first
@@ -168,6 +206,32 @@ class SportLeagueAdapter2(
             }
         }
     }
+
+    fun updateOddsSelectStatus() {
+        doOnVisiableRange { index, baseNode ->
+            if (baseNode is MatchOdd) {
+                baseNode.oddsMap?.values?.forEachIndexed { _, oddsList ->
+                    oddsList?.forEach { odd ->
+                        val isSelected = odd.id?.let { QuickListManager.containOdd(it) } == true
+                        if (odd.isSelected != isSelected) {
+                            odd.isSelected = isSelected
+                            notifyItemChanged(index, SportMatchEvent.OddSelected)
+                            return@forEachIndexed
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun closePlayCate(closeEvent: ClosePlayCateEvent) {
+        if (getCount() < 1 || rootNodes.isNullOrEmpty()) {
+            return
+        }
+        (rootNodes!!.toMutableList() as MutableList<LeagueOdd>).closePlayCate(closeEvent)
+        notifyDataSetChanged()
+    }
+
 
 
 }

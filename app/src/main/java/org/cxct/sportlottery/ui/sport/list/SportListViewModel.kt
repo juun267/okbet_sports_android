@@ -63,10 +63,10 @@ class SportListViewModel(
     private var _showErrorDialogMsg = MutableLiveData<String>()
     val isNoEvents: LiveData<Boolean>
         get() = _isNoEvents
-    private var _isNoEvents = MutableLiveData<Boolean>()
+    private var _isNoEvents = SingleLiveEvent<Boolean>()
     val sportMenuResult: LiveData<SportMenuResult?>
         get() = _sportMenuResult
-    private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
+    private val _sportMenuResult = SingleLiveEvent<SportMenuResult?>()
 
     var tempDatePosition: Int = 0 //早盤的日期選擇切頁後要記憶的問題，切換球種要清除記憶
 

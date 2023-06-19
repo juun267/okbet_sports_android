@@ -5,10 +5,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <View
-        android:id="@+id/v_statusbar_live"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/margin_25" />
+<!--    <View-->
+<!--        android:id="@+id/v_statusbar_live"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="@dimen/margin_25" />-->
 
     <FrameLayout
         android:id="@+id/fl_root"

@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.OddSpreadForSCO
+import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.common.*
@@ -18,6 +19,7 @@ import org.cxct.sportlottery.network.match.MatchRound
 import org.cxct.sportlottery.network.match.MatchService
 import org.cxct.sportlottery.network.matchLiveInfo.ChatLiveLoginData
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
@@ -33,6 +35,7 @@ import org.cxct.sportlottery.ui.sport.detail.OddsDetailListData
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.px
 import org.cxct.sportlottery.util.DisplayUtil.pxToDp
+import timber.log.Timber
 import java.util.*
 
 class SportViewModel(
@@ -116,6 +119,26 @@ class SportViewModel(
 
     var allSearchData: List<SearchResponse.Row>? = null
 
+    private final val defaultVale = "0"
+    private var home1st = defaultVale
+    private var away1st = defaultVale
+    private var home2nd = defaultVale
+    private var away2nd = defaultVale
+    private var home3rd = defaultVale
+    private var away3rd = defaultVale
+    private var home4th = defaultVale
+    private var away4th = defaultVale
+    private var home5th = defaultVale
+    private var away5th = defaultVale
+    private var home6th = defaultVale
+    private var away6th = defaultVale
+    private var home7th = defaultVale
+    private var away7th = defaultVale
+    private var home8th = defaultVale
+    private var away8th = defaultVale
+
+    val chartViewList = SingleLiveEvent<MutableList<String>>()
+
     private var lastSportTypeHashMap: HashMap<String, String?> = hashMapOf(
         MatchType.IN_PLAY.postValue to null,
         MatchType.AT_START.postValue to null,
@@ -154,9 +177,9 @@ class SportViewModel(
         var searchResult = allSearchData?.filter { row ->
             row.leagueMatchList.any { leagueMatch ->
                 leagueMatch.matchInfoList.any { matchInfo ->
-                    leagueMatch.leagueName.contains(key, true)
-                            || matchInfo.homeName.contains(key,true)
-                            || matchInfo.awayName.contains(key, true)
+                    leagueMatch.leagueName.contains(key, true) || matchInfo.homeName.contains(
+                        key, true
+                    ) || matchInfo.awayName.contains(key, true)
                 }
             }
         }
@@ -172,9 +195,9 @@ class SportViewModel(
         var leagueMatchSearchResult = searchResult?.map { row ->
             row.leagueMatchList.filter { leagueMatch ->
                 leagueMatch.matchInfoList.any { matchInfo ->
-                    leagueMatch.leagueName.contains(key, true)
-                            || matchInfo.homeName.contains(key,true)
-                            ||matchInfo.awayName.contains(key, true)
+                    leagueMatch.leagueName.contains(key, true) || matchInfo.homeName.contains(
+                        key, true
+                    ) || matchInfo.awayName.contains(key, true)
                 }
             }
         }
@@ -182,7 +205,8 @@ class SportViewModel(
         leagueMatchSearchResult?.forEachIndexed { index, league ->
             var searchResultLeagueList: MutableList<SearchResult.SearchResultLeague> = arrayListOf()
             league.forEach { leagueMatch ->
-                var searchResultLeague = SearchResult.SearchResultLeague(leagueMatch.leagueName,leagueMatch.icon)
+                var searchResultLeague =
+                    SearchResult.SearchResultLeague(leagueMatch.leagueName, leagueMatch.icon)
                 searchResultLeagueList.add(searchResultLeague)
             }
             finalResult?.get(index).searchResultLeague = searchResultLeagueList
@@ -192,9 +216,9 @@ class SportViewModel(
         var matchSearchResult = leagueMatchSearchResult?.map { row ->
             row.map { leagueMatch ->
                 leagueMatch.matchInfoList.filter { matchInfo ->
-                    leagueMatch.leagueName.contains(key, true)
-                            || matchInfo.homeName.contains(key,true)
-                            || matchInfo.awayName.contains(key, true)
+                    leagueMatch.leagueName.contains(key, true) || matchInfo.homeName.contains(
+                        key, true
+                    ) || matchInfo.awayName.contains(key, true)
                 }
             }
         }
@@ -204,7 +228,8 @@ class SportViewModel(
 
                 val searchResult = finalResult.getOrNull(index0)
                 if (searchResult != null) {
-                    val matchList: MutableList<SearchResponse.Row.LeagueMatch.MatchInfo> = arrayListOf()
+                    val matchList: MutableList<SearchResponse.Row.LeagueMatch.MatchInfo> =
+                        arrayListOf()
                     league.forEachIndexed { _, matchInfo ->
                         matchInfo.gameType = searchResult.gameType
                         matchList.add(matchInfo)
@@ -250,8 +275,7 @@ class SportViewModel(
                                 }
                             }
                         }
-                        val filteredOddList =
-                            mutableListOf<Odd?>()
+                        val filteredOddList = mutableListOf<Odd?>()
                         value.odds.forEach { detailOdd ->
                             //因排版問題 null也需要添加
                             filteredOddList.add(detailOdd)
@@ -268,12 +292,15 @@ class SportViewModel(
                         )
                         //球員玩法邏輯
                         if (PlayCate.getPlayCate(key) == PlayCate.SCO) {
-                            oddsDetail.setSCOTeamNameList(filteredOddList,
-                                result.oddsDetailData.matchOdd.matchInfo.homeName)
-                            oddsDetail.homeMap = setItemMap(filteredOddList,
-                                result.oddsDetailData.matchOdd.matchInfo.homeName)
-                            oddsDetail.awayMap = setItemMap(filteredOddList,
-                                result.oddsDetailData.matchOdd.matchInfo.awayName)
+                            oddsDetail.setSCOTeamNameList(
+                                filteredOddList, result.oddsDetailData.matchOdd.matchInfo.homeName
+                            )
+                            oddsDetail.homeMap = setItemMap(
+                                filteredOddList, result.oddsDetailData.matchOdd.matchInfo.homeName
+                            )
+                            oddsDetail.awayMap = setItemMap(
+                                filteredOddList, result.oddsDetailData.matchOdd.matchInfo.awayName
+                            )
                             oddsDetail.scoItem = oddsDetail.homeMap // default
                         }
 
@@ -362,10 +389,7 @@ class SportViewModel(
         //過濾掉 其他:(第一、任何、最後), 无進球
         //依隊名分開
         oddList.filterNot { odd ->
-            odd?.playCode == OddSpreadForSCO.SCORE_1ST_O.playCode ||
-                    odd?.playCode == OddSpreadForSCO.SCORE_ANT_O.playCode ||
-                    odd?.playCode == OddSpreadForSCO.SCORE_LAST_O.playCode ||
-                    odd?.playCode == OddSpreadForSCO.SCORE_N.playCode
+            odd?.playCode == OddSpreadForSCO.SCORE_1ST_O.playCode || odd?.playCode == OddSpreadForSCO.SCORE_ANT_O.playCode || odd?.playCode == OddSpreadForSCO.SCORE_LAST_O.playCode || odd?.playCode == OddSpreadForSCO.SCORE_N.playCode
         }.groupBy {
             it?.extInfoMap?.get(LanguageManager.getSelectLanguage(androidContext).key)
         }.forEach {
@@ -378,17 +402,12 @@ class SportViewModel(
         //倒序排列 多的在前(無進球只有一種賠率 放最後面)
         //添加至球員列表內
         oddList.filter { odd ->
-            odd?.playCode == OddSpreadForSCO.SCORE_1ST_O.playCode ||
-                    odd?.playCode == OddSpreadForSCO.SCORE_ANT_O.playCode ||
-                    odd?.playCode == OddSpreadForSCO.SCORE_LAST_O.playCode ||
-                    odd?.playCode == OddSpreadForSCO.SCORE_N.playCode
+            odd?.playCode == OddSpreadForSCO.SCORE_1ST_O.playCode || odd?.playCode == OddSpreadForSCO.SCORE_ANT_O.playCode || odd?.playCode == OddSpreadForSCO.SCORE_LAST_O.playCode || odd?.playCode == OddSpreadForSCO.SCORE_N.playCode
         }.groupBy {
             it?.name
         }.entries.sortedByDescending {
             it.value.size
-        }.associateBy(
-            { it.key }, { it.value }
-        ).forEach {
+        }.associateBy({ it.key }, { it.value }).forEach {
             map[it.key ?: ""] = it.value
         }
         return map
@@ -469,11 +488,13 @@ class SportViewModel(
 
     fun loginLive() {
         if (sConfigData?.liveChatOpen == 0) return
-        var spf = MultiLanguagesApplication.mInstance.getSharedPreferences(NAME_LOGIN,
-            Context.MODE_PRIVATE)
+        var spf = MultiLanguagesApplication.mInstance.getSharedPreferences(
+            NAME_LOGIN, Context.MODE_PRIVATE
+        )
         var spValue = spf.getString(KEY_LIVE_USER_INFO, "")
         if (spValue.isNullOrEmpty()) return
-        var liveSyncUserInfoVO: LiveSyncUserInfoVO = JsonUtil.fromJson(spValue, LiveSyncUserInfoVO::class.java) ?: return
+        var liveSyncUserInfoVO: LiveSyncUserInfoVO =
+            JsonUtil.fromJson(spValue, LiveSyncUserInfoVO::class.java) ?: return
         val hostUrl = sConfigData?.liveChatHost
         if (hostUrl.isNullOrEmpty()) return
         viewModelScope.launch {
@@ -489,5 +510,256 @@ class SportViewModel(
                 }
             }
         }
+    }
+
+
+    /**
+     * 排球
+     * 羽毛球
+     * 乒乓球
+     * 冰球
+     * 台球
+     */
+    fun assembleData3(matchInfo: MatchInfo) {
+        Timber.d("assembleData3 matchStatusList.isEmpty:${matchInfo.matchStatusList?.isEmpty()}")
+        matchInfo.matchStatusList?.let {
+            if (it.isEmpty()) return@let
+            home1st = it[0].homeScore.toString()
+            away1st = it[0].awayScore.toString()
+            if (it.size > 1) {
+                home2nd = it[1].homeScore.toString()
+                away2nd = it[1].awayScore.toString()
+            }
+            if (it.size > 2) {
+                home3rd = it[2].homeScore.toString()
+                away3rd = it[2].awayScore.toString()
+            }
+            if (it.size > 3) {
+                home4th = it[3].homeScore.toString()
+                away4th = it[3].awayScore.toString()
+            }
+            if (it.size > 4) {
+                home5th = it[4].homeScore.toString()
+                away5th = it[4].awayScore.toString()
+            }
+            if (it.size > 5) {
+                home7th = it[5].homeScore.toString()
+                away7th = it[5].awayScore.toString()
+            }
+            if (it.size > 6) {
+                home8th = it[6].homeScore.toString()
+                away8th = it[6].awayScore.toString()
+            }
+            home6th = matchInfo.homeTotalScore.toString()
+            away6th = matchInfo.awayTotalScore.toString()
+        }
+//        }
+        extracted3(matchInfo)
+
+    }
+
+
+    /**
+     *篮球
+     *美式足球
+     *冰球
+     */
+    fun assembleData2(matchInfo: MatchInfo) {
+        Timber.d("assembleData2 matchInfo.isEmpty:${matchInfo}")
+        Timber.d("assembleData2 matchStatusList.isEmpty:${matchInfo.matchStatusList?.isEmpty()}")
+        matchInfo.matchStatusList?.let {
+            if (it.isEmpty()) return@let
+            home1st = it[0].homeScore.toString()
+            away1st = it[0].awayScore.toString()
+            if (it.size > 1) {
+                home2nd = it[1].homeScore.toString()
+                away2nd = it[1].awayScore.toString()
+            }
+            home3rd = (home1st.toIntS() + home2nd.toIntS()).toString()
+            away3rd = (away1st.toIntS() + away2nd.toIntS()).toString()
+
+            if (it.size > 2) {
+                home4th = it[2].homeScore.toString()
+                away4th = it[2].awayScore.toString()
+            }
+            if (it.size > 3) {
+                home5th = it[3].homeScore.toString()
+                away5th = it[3].awayScore.toString()
+            }
+        }
+        //home6th = (home3rd.toIntS() + home4th.toIntS() + home5th.toIntS()).toString()
+        //away6th = (away3rd.toIntS() + away4th.toIntS() + away5th.toIntS()).toString()
+        home6th = matchInfo.homeScore ?: "0"
+        away6th = matchInfo.awayScore ?: "0"
+        extracted1()
+    }
+
+
+    /**
+     * 足球
+     * 网球数据
+     */
+    fun assembleData1(gameType: String?, matchInfo: MatchInfo) {
+        //足球
+        if (gameType == GameType.FT.name) {
+            matchInfo.apply {
+                home1st = homeCornerKicks.toString()
+                away1st = awayCornerKicks.toString()
+                home2nd = homeCards.toString()
+                away2nd = awayCards.toString()
+                home3rd = homeYellowCards.toString()
+                away4th = awayYellowCards.toString()
+                home4th = homeHalfScore ?: "0"
+                away4th = awayHalfScore ?: "0"
+                home5th = (homeTotalScore ?: "0").toString()
+                away5th = (awayTotalScore ?: "0").toString()
+            }
+        } else {
+            matchInfo.apply {
+                Timber.d("assembleData1 matchStatusList.isEmpty:${matchInfo.matchStatusList?.isEmpty()}")
+                matchStatusList?.let {
+                    if (it.isEmpty()) return@let
+                    home1st = it[0].homeScore.toString()
+                    away1st = it[0].awayScore.toString()
+                    if (it.size > 1) {
+                        home2nd = it[1].homeScore.toString()
+                        away2nd = it[1].awayScore.toString()
+                    }
+                    if (it.size > 2) {
+                        home3rd = it[2].homeScore.toString()
+                        away3rd = it[2].awayScore.toString()
+                    }
+                }
+                home4th = homeScore.toString()
+                away4th = awayScore.toString()
+                home5th = homeTotalScore.toString()
+                away5th = awayTotalScore.toString()
+            }
+        }
+        extracted2(gameType)
+    }
+
+
+    private fun extracted3(matchInfo: MatchInfo) {
+        val list: MutableList<String> = mutableListOf()
+        list.apply {
+            add("1")
+            add(home1st)
+            add(away1st)
+            add("2")
+            add(home2nd)
+            add(away2nd)
+            add("3")
+            add(home3rd)
+            add(away3rd)
+            matchInfo.let {
+                when (it.spt) {
+                    3 -> {
+                        add("局")
+                        add(home6th)
+                        add(away6th)
+                    }
+
+                    7 -> {
+                        add("4")
+                        add(home4th)
+                        add(away4th)
+                        add("5")
+                        add(home5th)
+                        add(away5th)
+                        add("6")
+                        add(home7th)
+                        add(away7th)
+                        add("7")
+                        add(home8th)
+                        add(away8th)
+                        add("局")
+                        add(home6th)
+                        add(away6th)
+                    }
+
+                    else -> {
+                        add("4")
+                        add(home4th)
+                        add(away4th)
+                        add("5")
+                        add(home5th)
+                        add(away5th)
+                        add("局")
+                        add(home6th)
+                        add(away6th)
+                    }
+                }
+            }
+        }
+        chartViewList.postValue(list)
+    }
+
+    private fun extracted2(gameType: String?) {
+        val list: MutableList<String> = mutableListOf()
+        list.apply {
+            if (gameType == GameType.FT.name) {
+                add("Corners")
+            } else {
+                add("1")
+            }
+            add(home1st)
+            add(away1st)
+            if (gameType == GameType.FT.name) {
+                add("Red\ncard")
+            } else {
+                add("2")
+            }
+            add(home2nd)
+            add(away2nd)
+            if (gameType == GameType.FT.name) {
+                add("Yellow\ncard")
+            } else {
+                add("3")
+            }
+            add(home3rd)
+            add(away3rd)
+            if (gameType == GameType.FT.name) {
+                add("1st Half\nscore")
+            } else {
+                add("赛盘")
+            }
+            add(home4th)
+            add(away4th)
+            if (gameType == GameType.FT.name) {
+                add("Half time\nscore")
+            } else {
+                add("得分")
+            }
+            add(home5th)
+            add(away5th)
+        }
+        chartViewList.postValue(list)
+    }
+
+    private fun extracted1() {
+        val list: MutableList<String> = mutableListOf()
+        list.apply {
+            clear()
+            add("第一节")
+            add(home1st)
+            add(away1st)
+            add("第二节")
+            add(home2nd)
+            add(away2nd)
+            add("半场比分")
+            add(home3rd)
+            add(away3rd)
+            add("第三节")
+            add(home4th)
+            add(away4th)
+            add("第四节")
+            add(home5th)
+            add(away5th)
+            add("全场比分")
+            add(home6th)
+            add(away6th)
+        }
+        chartViewList.postValue(list)
     }
 }
