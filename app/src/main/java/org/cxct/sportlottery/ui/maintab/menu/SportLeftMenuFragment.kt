@@ -56,6 +56,9 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
             close()
         }
 
+        ivTopCover.onClick {
+
+        }
         tvLogin.text="${getString(R.string.btn_login)}/${getString(R.string.btn_register)}"
     }
 
