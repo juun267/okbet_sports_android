@@ -719,7 +719,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     fun jumpToTheSport(matchType: MatchType? = null, gameType: GameType? = null) {
         resetBackIcon(1)
-//        (fragmentHelper.getFragment(1) as SportFragment).setJumpSport(matchType, gameType)
+        (fragmentHelper.getFragment(1) as SportFragment2).setJumpSport(matchType, gameType)
     }
 
     private fun resetBackIcon(position: Int) {
