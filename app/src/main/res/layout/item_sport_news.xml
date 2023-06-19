@@ -71,7 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingEnd="8dp"
-            android:text="Check the Details"
+            android:text="@string/J634"
             android:textColor="@color/color_6D7693"
             android:textSize="12sp"
             app:layout_constraintLeft_toLeftOf="parent"

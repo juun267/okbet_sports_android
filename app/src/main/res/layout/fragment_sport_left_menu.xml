@@ -97,7 +97,7 @@
             android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/tvTabBetting"
-                android:text="Sports Betting"
+                android:text="@string/B001"
                 android:layout_width="wrap_content"
                 android:textColor="@color/color_025BE8"
                 android:paddingTop="16dp"
@@ -123,7 +123,7 @@
             android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/tvTabInPlay"
-                android:text="In-Play"
+                android:text="@string/home_in_play"
                 android:layout_width="wrap_content"
                 android:paddingTop="16dp"
                 android:textColor="@color/color_6D7693"
@@ -152,7 +152,7 @@
             android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/tvTabOthers"
-                android:text="Others"
+                android:text="@string/other"
                 android:layout_width="wrap_content"
                 android:paddingTop="16dp"
                 android:textColor="@color/color_6D7693"

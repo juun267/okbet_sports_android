@@ -52,7 +52,7 @@ class LeftOthersFragment:BindingSocketFragment<SportLeftMenuViewModel,FragmentLe
         super.onInitData()
         //初始化盘口列表
         binding.nodeHandicap
-            .setTitle("Handicap Setting")
+            .setTitle(getString(R.string.J117))
             .setNodeChild(viewModel.getHandicapConfig())
             .setOnChildClick {
                 //改变盘口选择
@@ -61,7 +61,7 @@ class LeftOthersFragment:BindingSocketFragment<SportLeftMenuViewModel,FragmentLe
 
         //初始化投注玩法
         binding.nodeBetRule
-            .setTitle("Betting Rules")
+            .setTitle(getString(R.string.str_bet_way))
             .setNodeChild(viewModel.getBettingRulesData())
             .setOnChildClick {
                 //更新投注玩法
@@ -70,7 +70,7 @@ class LeftOthersFragment:BindingSocketFragment<SportLeftMenuViewModel,FragmentLe
 
         //初始化语言切换
         binding.nodeLanguage
-            .setTitle("Language Selection")
+            .setTitle(getString(R.string.langugae_setting))
             .setNodeChild(viewModel.getLanguageConfig())
             .setOnChildClick {
                 //切换语言

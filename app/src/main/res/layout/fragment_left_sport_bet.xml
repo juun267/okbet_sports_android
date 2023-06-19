@@ -30,7 +30,7 @@
 
             <TextView
                 android:id="@+id/tvSportName"
-                android:text="Bet record"
+                android:text="@string/N944"
                 app:layout_constraintStart_toEndOf="@+id/ivBetRecord"
                 app:layout_constraintTop_toTopOf="@+id/ivBetRecord"
                 android:textColor="@color/color_00181E"
@@ -42,7 +42,7 @@
 
             <TextView
                 android:id="@+id/tvSportNum"
-                android:text="Unsettled Bet"
+                android:text="@string/not_settled"
                 app:layout_constraintStart_toEndOf="@+id/ivBetRecord"
                 app:layout_constraintTop_toBottomOf="@+id/tvSportName"
                 android:textColor="@color/color_6D7693"
@@ -76,7 +76,7 @@
 
 
         <TextView
-            android:text="Hot Matches"
+            android:text="@string/N881"
             android:paddingStart="12dp"
             android:textSize="14sp"
             android:textColor="@color/color_000000"

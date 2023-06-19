@@ -23,7 +23,7 @@ class SportNewsActivity : BindingActivity<NewsViewModel,ActivitySportNewsBinding
 
         newsAdapter.addHeaderView(timeRangeView!!)
         binding.apply {
-            toolBar.tvToolbarTitle.text="Announcement"
+            toolBar.tvToolbarTitle.text=getString(R.string.LT054COPY)
             toolBar.btnToolbarBack.setOnClickListener {
                 onBackPressed()
             }

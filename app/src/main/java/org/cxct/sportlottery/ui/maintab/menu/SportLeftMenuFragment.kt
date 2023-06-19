@@ -31,6 +31,7 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
     //其他
     private val othersFragment by lazy { LeftOthersFragment() }
 
+    @SuppressLint("SetTextI18n")
     override fun onInitView(view: View) =binding.run {
         //关闭按钮
         ivClose.onClick {
@@ -54,6 +55,8 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
             LoginOKActivity.startRegist(requireContext())
             close()
         }
+
+        tvLogin.text="${getString(R.string.btn_login)}/${getString(R.string.btn_register)}"
     }
 
     override fun onInitData() {

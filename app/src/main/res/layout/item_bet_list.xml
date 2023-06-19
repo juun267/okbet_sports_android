@@ -83,7 +83,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Betting amount:"
+                android:text="@string/bet_receipt_bet_quota"
                 android:textColor="@color/color_6D7693"
                 android:textSize="12sp" />
 
@@ -105,7 +105,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Max. Win:"
+                android:text="@string/bet_info_list_win_quota"
                 android:textColor="@color/color_6D7693"
                 android:textSize="12sp" />
 
@@ -137,7 +137,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Order number"
+                android:text="@string/N997"
                 android:textColor="@color/color_6D7693"
                 android:textSize="12sp" />
 
@@ -171,7 +171,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Order time"
+                android:text="@string/recharge_log_order_time"
                 android:textColor="@color/color_6D7693"
                 android:textSize="12sp" />
 
@@ -193,7 +193,7 @@
                 android:layout_height="30dp"
                 android:background="@drawable/bg_blue_border"
                 android:gravity="center"
-                android:text="Print"
+                android:text="@string/N890"
                 android:textColor="@color/color_025BE8"
                 android:textSize="12sp" />
         </LinearLayout>
