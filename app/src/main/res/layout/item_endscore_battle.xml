@@ -182,18 +182,24 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/tvExpand"
-        android:layout_width="150dp"
-        android:layout_height="38dp"
+    <LinearLayout
+        android:id="@+id/linExpand"
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="20dp"
         android:gravity="center"
-        android:layout_marginTop="@dimen/margin_10"
-        android:layout_marginBottom="@dimen/margin_15"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/bg_radius_4_button_blue"
-        android:textSize="@dimen/textSize14sp"
-        android:textColor="@color/color_FFFFFF"
-        android:text="@string/betting" />
+        android:elevation="2dp">
+
+        <TextView
+            android:id="@+id/tvExpand"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:textSize="@dimen/textSize14sp" />
+    </LinearLayout>
+
 
     <View
         android:layout_width="match_parent"

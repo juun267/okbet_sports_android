@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.util.drawable
 
 import android.graphics.drawable.Drawable
+import androidx.annotation.ColorRes
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -19,7 +20,7 @@ object DrawableCreatorUtils {
      * solidColor:填充颜色
      */
     fun getCommonBackgroundStyle(
-        cornerRadius: Int, solidColor: Int, strokeColor: Int = 0xaaff, strokeWidth: Int = 1
+        cornerRadius: Int, @ColorRes solidColor: Int, @ColorRes strokeColor: Int = 0xaaff, strokeWidth: Int = 1
     ): Drawable {
         val drawableBuilder = DrawableCreator.Builder()
         return try {
