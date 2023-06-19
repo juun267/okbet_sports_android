@@ -417,11 +417,7 @@
     <!--        android:layout_height="@dimen/bet_list_bar_height"-->
     <!--        android:visibility="visible"-->
     <!--        app:layout_constraintBottom_toBottomOf="parent" />-->
-    <org.cxct.sportlottery.view.DetailSportGuideView
-        android:id="@+id/dsgView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
+
 
     <org.cxct.sportlottery.view.ParlayFloatingWindow
         android:id="@+id/parlayFloatWindow"
@@ -442,5 +438,11 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="gone" />
+
+    <org.cxct.sportlottery.view.DetailSportGuideView
+        android:id="@+id/dsgView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -137,22 +137,14 @@ class SportToolBarTopFragment : BindingSocketFragment<SportViewModel, FragmentTo
 
     private fun setStatusText(matchInfo: MatchInfo) {
         tv_match_status.text = when {
-            (TimeUtil.isTimeInPlay(matchInfo.startTime) &&
-                    matchInfo.status == GameStatus.POSTPONED.code &&
-                    (matchInfo.gameType == GameType.FT.name
-                            || matchInfo.gameType == GameType.BK.name
-                            || matchInfo.gameType == GameType.TN.name)) -> {
+            (TimeUtil.isTimeInPlay(matchInfo.startTime) && matchInfo.status == GameStatus.POSTPONED.code && (matchInfo.gameType == GameType.FT.name || matchInfo.gameType == GameType.BK.name || matchInfo.gameType == GameType.TN.name)) -> {
                 getString(R.string.game_postponed) + setSptText(matchInfo)
             }
 
             TimeUtil.isTimeInPlay(matchInfo.startTime) -> {
                 if (matchInfo.statusName18n != null) {
                     //网球，排球，乒乓，羽毛球，就不显示
-                    if (matchInfo.gameType == GameType.TN.name ||
-                        matchInfo.gameType == GameType.VB.name ||
-                        matchInfo.gameType == GameType.TT.name ||
-                        matchInfo.gameType == GameType.BM.name
-                    ) {
+                    if (matchInfo.gameType == GameType.TN.name || matchInfo.gameType == GameType.VB.name || matchInfo.gameType == GameType.TT.name || matchInfo.gameType == GameType.BM.name) {
                         "" + setSptText(matchInfo)
                     } else {
                         matchInfo.statusName18n + (setSptText(matchInfo))

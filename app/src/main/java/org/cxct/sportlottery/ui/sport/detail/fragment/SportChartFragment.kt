@@ -46,12 +46,9 @@ class SportChartFragment : BindingFragment<SportViewModel, FragmentChartBinding>
     }
 
     fun updateMatchInfo(matchInfo: MatchInfo) {
-        if (activity == null) return
-        binding.rcvChartView.postDelayed({
-            this@SportChartFragment.matchInfo = matchInfo
-            Timber.d("=== updateMatchInfo:更新图表数据")
-            updateChartView()
-        },200)
+        this@SportChartFragment.matchInfo = matchInfo
+        Timber.d("=== updateMatchInfo:更新图表数据")
+        updateChartView()
     }
 
     private fun initRecyclerView() {

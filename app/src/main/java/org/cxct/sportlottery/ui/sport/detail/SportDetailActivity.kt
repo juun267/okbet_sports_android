@@ -88,8 +88,8 @@ import java.util.*
 
 
 @Suppress("DEPRECATION", "SetTextI18n")
-class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel::class) ,
-    TimerManager{
+class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel::class),
+    TimerManager {
     //布局
     private val binding by lazy {
         ActivityDetailSportBinding.inflate(layoutInflater)
@@ -200,9 +200,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     } else {
                         vpContainer.visible()
                         live_view_tool_bar.gone()
-                        collaps_toolbar.gone()
-                        collaps1.gone()
                         live_view_tool_bar.release()
+                        collaps_toolbar.gone()
                         showChatWebView(false)
                         setScrollEnable(true)
                     }
@@ -311,7 +310,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             llToolBar.gone()
             vpContainer.isVisible = false
             live_view_tool_bar.isVisible = true
-            collaps_toolbar.isVisible = true
+            collaps_toolbar.isVisible = false
             clToolContent.gone()
             app_bar_layout.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
             setScrollEnable(false)
@@ -345,17 +344,15 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
      */
     private fun setScrollEnable(enable: Boolean) {
         (app_bar_layout.getChildAt(0).layoutParams as AppBarLayout.LayoutParams).apply {
-            scrollFlags =
-                if (enable) (AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL)
-                else AppBarLayout.LayoutParams.SCROLL_FLAG_NO_SCROLL
+            scrollFlags = if (enable) (AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL)
+            else AppBarLayout.LayoutParams.SCROLL_FLAG_NO_SCROLL
         }
     }
 
     private fun setResetScrollEnable(enable: Boolean) {
         (app_bar_layout.getChildAt(0).layoutParams as AppBarLayout.LayoutParams).apply {
             scrollFlags =
-                if (enable) (AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
-                        or AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED or AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP)
+                if (enable) (AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED or AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP)
                 else AppBarLayout.LayoutParams.SCROLL_FLAG_NO_SCROLL
         }
     }
@@ -574,10 +571,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
         val showLive = matchInfo.isLive == 1
         setBg(
-            binding.tvLiveStream,
-            binding.ivLiveStream,
-            R.drawable.icon_live_stream,
-            showLive
+            binding.tvLiveStream, binding.ivLiveStream, R.drawable.icon_live_stream, showLive
         )
 
         val showVideo = matchInfo.liveVideo == 1
@@ -1113,7 +1107,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                                 tv_toolbar_home_name.text = matchInfo?.homeName ?: ""
                                 tv_toolbar_away_name.text = matchInfo?.awayName ?: ""
                                 sportToolBarTopFragment.setupMatchInfo(matchOdd.matchInfo)
-                                sportChartFragment.updateMatchInfo(matchOdd.matchInfo)
+                                Handler(Looper.getMainLooper()).postDelayed({
+                                    sportChartFragment.updateMatchInfo(matchOdd.matchInfo)
+                                },300)
                             }
                         }
                     }
