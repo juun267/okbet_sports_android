@@ -174,6 +174,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             OnlineType.DRAGON_PAY.type -> R.drawable.ic_gragon_pay_type
             OnlineType.FORTUNE_PAY.type -> R.drawable.icon_fortunepay
             OnlineType.AUB.type -> R.drawable.ic_aub_round
+            OnlineType.EPON.type -> R.drawable.ic_epon
             else -> R.drawable.ic_online_pay_type
         }
         return this
@@ -318,7 +319,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 if (mMoneyPayWay?.onlineType == OnlineType.WY.type)
                     tv_game_type_title.text=String.format(resources.getString(R.string.title_choose_pay_channel))
                 else
-                    tv_game_type_title.text=String.format(resources.getString(R.string.title_choose_pay_gap))
+                    tv_game_type_title.text=String.format(resources.getString(R.string.M132))
 
                 payGapBottomSheet.btn_close.setOnClickListener {
                     this.dismiss()

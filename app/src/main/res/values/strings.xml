@@ -367,6 +367,7 @@
     <string name="online_dispenshing">Withdraw</string>
     <string name="online_online_bank">Online Banking</string>
     <string name="aub">AUB</string>
+    <string name="epon">E-pon</string>
     <string name="online_gcash">Gcash</string>
     <string name="online_grab">GrabPay</string>
     <string name="online_maya">PayMaya</string>
