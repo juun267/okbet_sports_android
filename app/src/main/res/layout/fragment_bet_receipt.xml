@@ -336,7 +336,6 @@
             <TextView
                 android:id="@+id/btnLastStep"
                 android:layout_width="110dp"
-                android:drawablePadding="-10dp"
                 android:paddingHorizontal="20dp"
                 android:layout_height="@dimen/bet_button_height"
                 android:layout_marginRight="10dp"

@@ -6,7 +6,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
-class RcvCharAdapter : BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_text_view) {
+class RcvChartAdapter : BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_text_view) {
 
         private var gameType: String? = null
         private var currentSpt: Int? = null

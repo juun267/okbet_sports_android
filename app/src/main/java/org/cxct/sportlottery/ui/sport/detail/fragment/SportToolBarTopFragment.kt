@@ -6,6 +6,7 @@ import android.os.Looper
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.TextView
 import androidx.core.view.isVisible
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_detail_sport.app_bar_layout
@@ -44,14 +45,17 @@ import org.cxct.sportlottery.util.needCountStatus
 import org.cxct.sportlottery.util.setTeamLogo
 import java.util.Timer
 
-class SportToolBarTopFragment : BindingSocketFragment<SportViewModel, FragmentToolBarTopBinding>(),
-    TimerManager {
+class SportToolBarTopFragment : BindingSocketFragment<SportViewModel, FragmentToolBarTopBinding>() {
 
 
     val matchInfo by lazy {
         arguments?.get("matchInfo").toString().fromJson<MatchInfo>()
     }
-    private var isGamePause = false
+
+    val tv_match_time: TextView by lazy {
+        binding.toolBar.tvMatchTime
+    }
+
     private var matchOdd: MatchOdd? = null
     private var intoLive = false
 
@@ -63,63 +67,7 @@ class SportToolBarTopFragment : BindingSocketFragment<SportViewModel, FragmentTo
         )
     }
 
-    override var startTime: Long = 0
-    override var timer: Timer = Timer()
     val handler = Handler(Looper.myLooper()!!)
-
-
-    override var timerHandler: Handler = Handler(Looper.myLooper()!!) {
-        var timeMillis = startTime * 1000L
-        if (TimeUtil.isTimeInPlay(matchOdd?.matchInfo?.startTime)) {
-            if (!isGamePause) {
-                when (matchInfo?.gameType) {
-                    GameType.FT.key -> {
-                        timeMillis += 1000
-                    }
-
-                    GameType.BK.key, GameType.RB.key, GameType.AFT.key -> {
-                        timeMillis -= 1000
-                    }
-
-                    else -> {
-                    }
-                }
-            }
-            //过滤部分球类
-            if (when (matchInfo?.gameType) {
-                    GameType.BB.key, GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.BM.key -> true
-                    else -> {
-                        false
-                    }
-                }
-            ) {
-                tv_match_time.isVisible = false
-                cancelTimer()
-                return@Handler false
-            }
-            tv_match_time?.apply {
-                if (needCountStatus(
-                        matchOdd?.matchInfo?.socketMatchStatus, matchOdd?.matchInfo?.leagueTime
-                    )
-                ) {
-                    if (timeMillis >= 1000) {
-                        text = TimeUtil.longToMmSs(timeMillis)
-                        startTime = timeMillis / 1000L
-                        isVisible = true
-                    } else {
-                        text = this.context.getString(R.string.time_null)
-                        isVisible = false
-                    }
-                } else {
-                    text = this.context.getString(R.string.time_null)
-                    isVisible = false
-                }
-//                collaps_toolbar.tv_toolbar_match_time.text = text
-//                collaps_toolbar.tv_toolbar_match_time.isVisible = isVisible
-            }
-        }
-        return@Handler false
-    }
 
     override fun onInitData() {
         super.onInitData()
@@ -128,8 +76,6 @@ class SportToolBarTopFragment : BindingSocketFragment<SportViewModel, FragmentTo
             setupMatchInfo(it)
         }
     }
-
-
 
 
     /**
@@ -189,18 +135,24 @@ class SportToolBarTopFragment : BindingSocketFragment<SportViewModel, FragmentTo
     }
 
 
-
-
     private fun setStatusText(matchInfo: MatchInfo) {
         tv_match_status.text = when {
-            (TimeUtil.isTimeInPlay(matchInfo.startTime) && matchInfo.status == GameStatus.POSTPONED.code && (matchInfo.gameType == GameType.FT.name || matchInfo.gameType == GameType.BK.name || matchInfo.gameType == GameType.TN.name)) -> {
+            (TimeUtil.isTimeInPlay(matchInfo.startTime) &&
+                    matchInfo.status == GameStatus.POSTPONED.code &&
+                    (matchInfo.gameType == GameType.FT.name
+                            || matchInfo.gameType == GameType.BK.name
+                            || matchInfo.gameType == GameType.TN.name)) -> {
                 getString(R.string.game_postponed) + setSptText(matchInfo)
             }
 
             TimeUtil.isTimeInPlay(matchInfo.startTime) -> {
                 if (matchInfo.statusName18n != null) {
                     //网球，排球，乒乓，羽毛球，就不显示
-                    if (matchInfo.gameType == GameType.TN.name || matchInfo.gameType == GameType.VB.name || matchInfo.gameType == GameType.TT.name || matchInfo.gameType == GameType.BM.name) {
+                    if (matchInfo.gameType == GameType.TN.name ||
+                        matchInfo.gameType == GameType.VB.name ||
+                        matchInfo.gameType == GameType.TT.name ||
+                        matchInfo.gameType == GameType.BM.name
+                    ) {
                         "" + setSptText(matchInfo)
                     } else {
                         matchInfo.statusName18n + (setSptText(matchInfo))
@@ -501,22 +453,4 @@ class SportToolBarTopFragment : BindingSocketFragment<SportViewModel, FragmentTo
             ic_attack_c.visibility = View.GONE
         }
     }
-
-
-    override fun onResume() {
-        super.onResume()
-        startTimer()
-//        isLogin = viewModel.loginRepository.isLogin.value == true
-//        live_view_tool_bar.initLoginStatus(isLogin)
-//        live_view_tool_bar.startPlayer()
-    }
-
-
-    override fun onPause() {
-        super.onPause()
-        cancelTimer()
-    }
-
-
-
 }

@@ -136,6 +136,9 @@ class SportViewModel(
     private var away7th = defaultVale
     private var home8th = defaultVale
     private var away8th = defaultVale
+    //用于网球
+    private var home9th = defaultVale
+    private var away9th = defaultVale
 
     val chartViewList = SingleLiveEvent<MutableList<String>>()
 
@@ -565,8 +568,6 @@ class SportViewModel(
      *冰球
      */
     fun assembleData2(matchInfo: MatchInfo) {
-        Timber.d("assembleData2 matchInfo.isEmpty:${matchInfo}")
-        Timber.d("assembleData2 matchStatusList.isEmpty:${matchInfo.matchStatusList?.isEmpty()}")
         matchInfo.matchStatusList?.let {
             if (it.isEmpty()) return@let
             home1st = it[0].homeScore.toString()
@@ -629,11 +630,27 @@ class SportViewModel(
                         home3rd = it[2].homeScore.toString()
                         away3rd = it[2].awayScore.toString()
                     }
+                    if (it.size>3){
+                        home4th = it[3].homeScore.toString()
+                        away4th = it[3].awayScore.toString()
+                    }
+                    if (it.size>4){
+                        home5th = it[4].homeScore.toString()
+                        away5th = it[4].awayScore.toString()
+                    }
+                    if (it.size>5){
+                        home6th = it[5].homeScore.toString()
+                        away6th = it[5].awayScore.toString()
+                    }
+                    if (it.size>6){
+                        home7th = it[6].homeScore.toString()
+                        away7th = it[6].awayScore.toString()
+                    }
                 }
-                home4th = homeScore.toString()
-                away4th = awayScore.toString()
-                home5th = homeTotalScore.toString()
-                away5th = awayTotalScore.toString()
+                home8th = homeScore.toString()
+                away8th = awayScore.toString()
+                home9th = homeTotalScore.toString()
+                away9th = awayTotalScore.toString()
             }
         }
         extracted2(gameType)
