@@ -18,7 +18,7 @@ import org.cxct.sportlottery.view.stickyheader.StickyAdapter
 
 // 篮球末位比分
 class EndScoreAdapter(val playCate: String, val onItemClick:(Int, View, BaseNode) -> Unit)
-    : ExpanableOddsAdapter(), StickyAdapter<BaseViewHolder, BaseViewHolder> {
+    : ExpanableOddsAdapter<MatchOdd>(), StickyAdapter<BaseViewHolder, BaseViewHolder> {
 
     private val recyclerPool by lazy { RecyclerView.RecycledViewPool().apply { setMaxRecycledViews(3, 100) } }
 
@@ -72,12 +72,12 @@ class EndScoreAdapter(val playCate: String, val onItemClick:(Int, View, BaseNode
 
 
     // scoket推送的赔率变化，更新列表
-    fun onMatchOdds(subscribedMatchOddList: MutableMap<String, MatchOdd>, oddsChangeEvent: OddsChangeEvent): Boolean {
+    fun onMatchOdds(oddsChangeEvent: OddsChangeEvent): Boolean {
         if (oddsChangeEvent.eventId.isEmptyStr() || oddsChangeEvent.odds.isNullOrEmpty()) {
             return false
         }
 
-        val matchOdd = subscribedMatchOddList[oddsChangeEvent.eventId] ?: return false
+        val matchOdd = currentVisiableMatchOdds[oddsChangeEvent.eventId] ?: return false
         if (oddsChangeEvent.channel?.split("/")?.getOrNull(6) != matchOdd.matchInfo?.id) {
             return false
         }

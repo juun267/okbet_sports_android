@@ -165,8 +165,6 @@ class SportListViewModel(
         }
     }
 
-    fun cleanGameHallResult() {
-    }
 
     fun getEndScoreOddsList(gameType: String,
                             matchType: MatchType,
