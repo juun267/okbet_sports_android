@@ -23,7 +23,7 @@ class LeftInPlayFragment:BindingSocketFragment<MainViewModel,FragmentLeftInplayB
             val gameType = GameType.getGameType(inPlayAdapter.getItem(position).code)
             EventBusUtil.post(MenuEvent(false))
             (activity as MainTabActivity).jumpToTheSport(
-                MatchType.EARLY,gameType ?: GameType.FT
+                MatchType.IN_PLAY,gameType ?: GameType.FT
             )
         }
     }

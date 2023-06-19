@@ -44,16 +44,6 @@ class SportTabViewModel(
     private val _sportMenuResult = SingleLiveEvent<ApiResult<SportMenuData>>()
     private var sportMenuData: SportMenuData? = null //球種菜單資料
 
-    val curMatchType: LiveData<MatchType?>
-        get() = _curMatchType
-    private val _curMatchType = MutableLiveData<MatchType?>()
-
-    fun firstSwitchMatch(matchType: MatchType?) {
-        if (_sportMenuResult.value == null) {
-            _curMatchType.postValue(matchType)
-        }
-    }
-
 
     fun getMatchData() {
         callApi({
@@ -95,10 +85,6 @@ class SportTabViewModel(
         }
 
         return this
-    }
-
-    fun setCurMatchType(matchType: MatchType?) {
-        _curMatchType.postValue(matchType)
     }
 
     fun setSportMenuResult(sportMenuResult: ApiResult<SportMenuData>) {
