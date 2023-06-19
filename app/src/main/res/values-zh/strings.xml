@@ -312,7 +312,6 @@
     <string name="title_pay_channel">支付渠道</string>
     <string name="title_choose_pay_channel">选择支付渠道</string>
     <string name="M132">支付账户</string>
-    <string name="title_choose_pay_gap">选择支付账户</string>
     <string name="title_pay_bank">支付银行</string>
     <string name="title_choose_pay_bank">选择支付银行</string>
     <string name="title_pay_msg">支付信息</string>

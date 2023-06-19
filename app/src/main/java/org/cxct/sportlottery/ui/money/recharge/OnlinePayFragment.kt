@@ -192,7 +192,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         tv_pay_gap_subtitle.text =
             if (mSelectRechCfgs?.banks != null) getString(R.string.title_pay_channel) else getString(R.string.M132)
         payGapBottomSheet.tv_game_type_title.text =
-            if (mSelectRechCfgs?.banks != null) getString(R.string.title_choose_pay_channel) else getString(R.string.title_choose_pay_gap)
+            if (mSelectRechCfgs?.banks != null) getString(R.string.title_choose_pay_channel) else getString(R.string.M132)
 
         //反利、手續費
         setupRebateFee()
