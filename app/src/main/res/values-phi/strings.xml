@@ -1326,6 +1326,7 @@
     <string name="N988">Mag-login</string>
     <string name="system_notify">Notification ng System</string>
     <string name="C016">Ngayon</string>
+    <string name="N064">Remarks</string>
     <string name="picture_camera_roll" tools:ignore="ExtraTranslation">CameraRoll</string>
     <string name="P066">Halimbawa</string>
     <string name="P068">Mag-upload ng selfie photo na may hawak na valid ID</string>
@@ -1349,5 +1350,4 @@
     <string name="J459">Kind tips</string>
     <string name="P111">Dapat kasama ang address</string>
     <string name="P110">Unit/Room No. /Floor, Building Name, Lot/ Block/Phase/House Number, Street Name</string>
-    <string name="N064">Ghi chú</string>
 </resources>
