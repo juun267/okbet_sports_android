@@ -10,12 +10,14 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentSettledBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.settledDetailList.RemarkBetRequest
+import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.betRecord.adapter.RecyclerUnsettledAdapter
 import org.cxct.sportlottery.ui.betRecord.dialog.PrintDialog
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.view.loadMore
 import org.cxct.sportlottery.view.onClick
@@ -142,11 +144,11 @@ class SettledFragment:BindingFragment<AccountHistoryViewModel,FragmentSettledBin
     @SuppressLint("SetTextI18n")
     private fun initBetValue(){
         //总盈亏
-        binding.tvReward.text="₱ ${ArithUtil.toMoneyFormatFloor(viewModel.totalReward)}"
+        binding.tvReward.text="$showCurrencySign ${TextUtil.format(viewModel.totalReward)}"
         //总有效投注
-        binding.tvTotalValue.text="₱ ${ArithUtil.toMoneyFormatFloor(viewModel.totalEfficient)}"
+        binding.tvTotalValue.text="$showCurrencySign ${TextUtil.format(viewModel.totalEfficient)}"
         //总投注额
-        binding.tvTotalBet.text="₱ ${ArithUtil.toMoneyFormatFloor(viewModel.totalBet)}"
+        binding.tvTotalBet.text="$showCurrencySign ${TextUtil.format(viewModel.totalBet)}"
     }
 
 }

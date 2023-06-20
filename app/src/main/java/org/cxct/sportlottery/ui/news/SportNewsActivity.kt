@@ -12,16 +12,21 @@ import org.cxct.sportlottery.view.loadMore
  */
 class SportNewsActivity : BindingActivity<NewsViewModel,ActivitySportNewsBinding>() {
     private val newsAdapter=RecyclerSportNewsAdapter()
+    //时间区间控件
     private var timeRangeView: DateRangeSearchView2?=null
     override fun onInitView() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
 
-        timeRangeView=DateRangeSearchView2(this)
         //初始化查询时间
+        timeRangeView=DateRangeSearchView2(this)
         viewModel.sportStartTime=timeRangeView?.startTime
         viewModel.sportEndTime=timeRangeView?.endTime
 
-        newsAdapter.addHeaderView(timeRangeView!!)
+        //添加recycler head
+        timeRangeView?.let {
+            newsAdapter.addHeaderView(it)
+        }
+
         binding.apply {
             toolBar.tvToolbarTitle.text=getString(R.string.LT054COPY)
             toolBar.btnToolbarBack.setOnClickListener {
