@@ -67,6 +67,11 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
                 else -> {
                     parlayString.append(context.getString(R.string.N124))
                     ivDetails.visible()
+                    if(isDetails){
+                        ivDetails.gone()
+                    }else{
+                        ivDetails.visible()
+                    }
                     tvInPlay.gone()
                     linearDetails.onClick {
                         if(isDetails){
@@ -104,11 +109,7 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
                 context.copyToClipboard(item.orderNo)
             }
 
-            if(isDetails){
-                ivDetails.gone()
-            }else{
-                ivDetails.visible()
-            }
+
 
             //投注项 item
             recyclerBetCard.layoutManager = LinearLayoutManager(context)
