@@ -80,6 +80,9 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
         if(sportBettingFragment.isVisible){
             sportBettingFragment.viewModel.getBetRecordCount()
         }
+        if(inPlayFragment.isVisible){
+            inPlayFragment.viewModel.getInPlayList()
+        }
     }
 
 
