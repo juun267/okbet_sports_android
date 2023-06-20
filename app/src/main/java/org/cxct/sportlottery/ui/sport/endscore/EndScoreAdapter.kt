@@ -13,11 +13,12 @@ import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
 import org.cxct.sportlottery.ui.sport.list.adapter.SportMatchEvent
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.SocketUpdateUtil.updateOddStatus
 import org.cxct.sportlottery.view.stickyheader.StickyAdapter
 
 // 篮球末位比分
-class EndScoreAdapter(val playCate: String, val onItemClick:(Int, View, BaseNode) -> Unit)
+class EndScoreAdapter(val playCates: List<String>, val onItemClick:(Int, View, BaseNode) -> Unit)
     : ExpanableOddsAdapter<MatchOdd>(), StickyAdapter<BaseViewHolder, BaseViewHolder> {
 
     private val recyclerPool by lazy { RecyclerView.RecycledViewPool().apply { setMaxRecycledViews(3, 100) } }
@@ -78,35 +79,35 @@ class EndScoreAdapter(val playCate: String, val onItemClick:(Int, View, BaseNode
         }
 
         val matchOdd = currentVisiableMatchOdds[oddsChangeEvent.eventId] ?: return false
+        LogUtil.toJson(oddsChangeEvent.oddsList.map { it.playCateCode })
         if (oddsChangeEvent.channel?.split("/")?.getOrNull(6) != matchOdd.matchInfo?.id) {
             return false
         }
-
-        // 过滤玩法赔率
-        val newOdds = oddsChangeEvent.odds[playCate]
-        if (newOdds.isNullOrEmpty()) {
-            return false
-        }
-
         var needNotifyAllChanged = false
-        if (updateMatchOdds(matchOdd, newOdds, oddsChangeEvent)) {
-            needNotifyAllChanged = true
+        playCates.forEach {
+            // 过滤玩法赔率
+            val newOdds = oddsChangeEvent.odds[it]
+            if (!newOdds.isNullOrEmpty()) {
+                if (updateMatchOdds(matchOdd, newOdds, oddsChangeEvent)) {
+                    needNotifyAllChanged = true
+                }
+            }
         }
-
         if (needNotifyAllChanged) {
             notifyDataSetChanged()
         }
-
         return needNotifyAllChanged
     }
 
-    private fun resetOddIdsMap(matchOdd: MatchOdd, playCate: String) {
+    private fun resetOddIdsMap(matchOdd: MatchOdd, playCates: List<String>) {
         val oddList = matchOdd.childNode as MutableList<Odd>
         val idsMap = mutableMapOf<String, Odd>()
         oddList.forEach { odd->
             odd.parentNode = matchOdd
             odd?.id?.let { idsMap[it] = odd }
-            matchOdd.oddIdsMap[playCate] = idsMap
+            playCates.forEach {
+                matchOdd.oddIdsMap[it] = idsMap
+            }
         }
     }
 
@@ -117,10 +118,10 @@ class EndScoreAdapter(val playCate: String, val onItemClick:(Int, View, BaseNode
         var oddsMap = matchOdd.childNode as MutableList<Odd>
         if (oddsMap.isNullOrEmpty()) {
             nodeAddData(matchOdd, newOdds)
-            resetOddIdsMap(matchOdd, playCate)
+            resetOddIdsMap(matchOdd, playCates)
         } else {
             val oddList = matchOdd.childNode as MutableList<Odd>
-            isNeedRefresh = refreshMatchOdds(playCate, matchOdd, oddList, newOdds)
+            isNeedRefresh = refreshMatchOdds(playCates, matchOdd, oddList, newOdds)
         }
 
         //更新翻譯
@@ -149,34 +150,32 @@ class EndScoreAdapter(val playCate: String, val onItemClick:(Int, View, BaseNode
         return isNeedRefresh
     }
 
-    private fun refreshMatchOdds(playCate: String, matchOdd: MatchOdd, oddsMap: MutableList<Odd>, oddsMapSocket: List<Odd>): Boolean {
+    private fun refreshMatchOdds(playCates: List<String>, matchOdd: MatchOdd, oddsMap: MutableList<Odd>, oddsMapSocket: List<Odd>): Boolean {
 
         if (oddsMap.all { it == null }) { // 如果oddsMap里面全是空对象(之前的逻辑)
             nodeReplaceChildData(matchOdd, oddsMapSocket)
-            resetOddIdsMap(matchOdd, playCate)
+            resetOddIdsMap(matchOdd, playCates)
             return false
         }
-
-        val oddIdsMap: MutableMap<String, Odd> = matchOdd.oddIdsMap[playCate] ?: return false
-
         var isNeedRefresh = false
-        for (socketOdd in oddsMapSocket) {
-            if (socketOdd == null) {
-                continue
-            }
+        playCates.forEach { playCate->
+            val oddIdsMap: MutableMap<String, Odd> = matchOdd.oddIdsMap[playCate] ?: return false
 
-            val odd = oddIdsMap[socketOdd.id]
-            if (odd == null) {
-                socketOdd.parentNode = matchOdd
-                oddIdsMap["${socketOdd.id}"] = socketOdd
-                oddsMap.add(socketOdd)
-                continue
+            for (socketOdd in oddsMapSocket) {
+                if (socketOdd == null) {
+                    continue
+                }
+                val odd = oddIdsMap[socketOdd.id]
+                if (odd == null) {
+                    socketOdd.parentNode = matchOdd
+                    oddIdsMap["${socketOdd.id}"] = socketOdd
+                    oddsMap.add(socketOdd)
+                    continue
+                }
+                isNeedRefresh = true
+                refreshOdds(odd, socketOdd)
             }
-
-            isNeedRefresh = true
-            refreshOdds(odd, socketOdd)
         }
-
         return isNeedRefresh
     }
 

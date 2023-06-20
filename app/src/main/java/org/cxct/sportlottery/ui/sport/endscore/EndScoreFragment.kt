@@ -29,7 +29,7 @@ import org.cxct.sportlottery.view.layoutmanager.SocketGridManager
 class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportList2Binding>() {
 
     // 篮球末尾比分组合玩法
-    private val playCate = PlayCate.FS_LD_CS.value
+    private val playCates = listOf(PlayCate.FS_LD_CS.value)
     override var matchType = MatchType.END_SCORE
     override fun getCurGameType() = GameType.BK
     override fun getGameListAdapter() = endScoreAdapter
@@ -63,11 +63,11 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
 
     private val endScoreAdapter by lazy {
 
-        EndScoreAdapter(playCate) { _, view, item ->
+        EndScoreAdapter(playCates) { _, view, item ->
             if (item is Odd) {  // 赔率
                 val matchOdd = item.parentNode as MatchOdd
                 val matchInfo = matchOdd.matchInfo ?: return@EndScoreAdapter
-                addOddsDialog(matchInfo, item, playCate, matchOdd.betPlayCateNameMap)
+                addOddsDialog(matchInfo, item, item.playCode?:"", matchOdd.betPlayCateNameMap)
                 return@EndScoreAdapter
             }
 
