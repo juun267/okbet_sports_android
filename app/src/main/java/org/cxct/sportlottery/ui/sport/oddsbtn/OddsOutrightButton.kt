@@ -271,58 +271,6 @@ open class OddsOutrightButton @JvmOverloads constructor(
     }
 
 
-    fun setupOddForEPS(odd: Odd?, oddsType: OddsType) {
-        tv_name.apply {
-            text = odd?.extInfo?.toDoubleOrNull()?.let { TextUtil.formatForOdd(it) }
-                ?: odd?.extInfo //低賠率會返回在extInfo
-        }
-
-        tv_spread.visibility = View.GONE
-
-        tv_odds.apply {
-            setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    R.color.selector_button_odd_bottom_text_eps
-                )
-            )
-            text = TextUtil.formatForOdd(getOdds(odd, oddsType))
-        }
-        val diff = getOdds(odd, oddsType)
-        if (diff < 0.0) {
-            tv_odds.setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    R.color.selector_button_odd_bottom_text_red
-                )
-            )
-            iv_arrow.setImageResource(R.drawable.ic_arrow_odd_down)
-
-        } else if (diff > 0.0) {
-            tv_odds.setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    R.color.selector_button_odd_bottom_text_green
-                )
-            )
-            iv_arrow.setImageResource(R.drawable.ic_arrow_odd_up)
-        } else {
-            tv_odds.setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    R.color.selector_button_odd_bottom_text_eps
-                )
-            )
-            iv_arrow.setImageDrawable(null)
-        }
-
-        isSelected = odd?.isSelected ?: false
-        //[Martin]馬來盤＆印尼盤會有負數的賠率
-        //betStatus = if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
-        betStatus = if (odd == null) BetStatus.LOCKED.code else odd.status
-
-    }
-
     //常駐顯示按鈕 依狀態隱藏鎖頭
     private fun setupBetStatus(betStatus: Int) {
         img_odd_lock.apply {

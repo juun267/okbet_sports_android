@@ -1168,3 +1168,16 @@ fun View.bindPromoClick(click: (() -> Unit)? = null) = setOnClickListener {
     )
 }
 
+
+fun View.setArrowSpin(isExpanded: Boolean, isAnimate: Boolean, angle: Float = 180f) {
+    var rotation = angle
+    if (isExpanded) {
+        rotation = 0f
+    }
+
+    if (isAnimate) {
+        rotationAnimation(rotation)
+    } else {
+        this.rotation = rotation
+    }
+}

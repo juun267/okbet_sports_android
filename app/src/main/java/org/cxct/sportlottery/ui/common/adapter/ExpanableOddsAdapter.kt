@@ -27,7 +27,7 @@ abstract class ExpanableOddsAdapter<T: MatchOdd>: BaseNodeAdapter() {
         rootNodes?.forEach {
             val position = getItemPosition(it)
             if (position >= 0) {
-                expand(position)
+                expand(position, parentPayload = it)
             }
         }
     }
@@ -37,7 +37,7 @@ abstract class ExpanableOddsAdapter<T: MatchOdd>: BaseNodeAdapter() {
         rootNodes?.forEach {
             val position = getItemPosition(it)
             if (position >= 0) {
-                collapse(position)
+                collapse(position, parentPayload = it)
             }
         }
     }

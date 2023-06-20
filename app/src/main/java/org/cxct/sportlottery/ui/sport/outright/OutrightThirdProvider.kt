@@ -40,10 +40,10 @@ class OutrightThirdProvider(val adapter: SportOutrightAdapter2,
         val position = parentNode.indexOf(item)  //indexOfCurrentGroup(helper.bindingAdapterPosition)
 
         if (position < 2) { // 第一列
-            if(position % 2 == 0) {
-                setMargins(this, padding10, padding10, padding5, padding5)
+            if(position == 0) {
+                setMargins(this, padding10, 0, padding5, padding5)
             } else {
-                setMargins(this, padding5, padding10, padding10, padding5)
+                setMargins(this, padding5, 0, padding10, padding5)
             }
 
         } else {
@@ -54,7 +54,6 @@ class OutrightThirdProvider(val adapter: SportOutrightAdapter2,
             }
         }
 
-//        oddStateViewHolder.setupOddState(this, item)  // 闪烁动画
     }
 
     private fun setMargins(btn: OddsOutrightButton, left: Int, top: Int, right: Int, bottom: Int) {
