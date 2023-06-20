@@ -13,6 +13,7 @@ import org.cxct.sportlottery.ui.maintab.menu.adapter.RecyclerLeftMatchesAdapter
 import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.loginedRun
+import org.cxct.sportlottery.util.startLogin
 import org.cxct.sportlottery.view.onClick
 
 class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,FragmentLeftSportBetBinding>() {
@@ -34,7 +35,7 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
         }
 
 
-        viewModel.betCount.observe(this@LeftSportBetFragment){
+        viewModel.betCountEvent.observe(this@LeftSportBetFragment){
             tvRecordNumber.text="$it"
         }
 
@@ -43,7 +44,7 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
             if(viewModel.isLogin()){
                 startActivity(BetRecordActivity::class.java)
             }else{
-                LoginOKActivity.startRegist(requireContext())
+                requireActivity().startLogin()
             }
         }
     }

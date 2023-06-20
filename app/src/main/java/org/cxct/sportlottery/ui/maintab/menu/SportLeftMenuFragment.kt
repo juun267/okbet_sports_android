@@ -16,6 +16,7 @@ import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
 import org.cxct.sportlottery.util.EventBusUtil
+import org.cxct.sportlottery.util.startLogin
 import org.cxct.sportlottery.view.onClick
 import org.cxct.sportlottery.view.setColors
 import org.greenrobot.eventbus.Subscribe
@@ -53,7 +54,7 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
         }
         //登录注册
         tvLogin.onClick {
-            LoginOKActivity.startRegist(requireContext())
+            requireActivity().startLogin()
             close()
         }
 
