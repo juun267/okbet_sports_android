@@ -21,16 +21,18 @@
             <ImageView
                 android:id="@+id/ivSRMAwayLogo"
                 android:layout_width="32dp"
+                android:padding="6dp"
                 android:layout_height="32dp"
                 android:layout_marginTop="25dp"
-                tools:background="@color/color_6D7693" />
+                android:background="@drawable/bg_team_logo" />
 
             <ImageView
                 android:id="@+id/ivSRMHomeLogo"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
+                android:padding="6dp"
                 android:layout_marginBottom="25dp"
-                tools:background="@color/color_025BE8" />
+                android:background="@drawable/bg_team_logo" />
         </RelativeLayout>
 
         <LinearLayout
