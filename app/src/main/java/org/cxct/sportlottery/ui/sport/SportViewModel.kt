@@ -657,10 +657,10 @@ class SportViewModel(
                         away7th = it[6].awayScore.toString()
                     }
                 }
-                home8th = homeScore.toString()
-                away8th = awayScore.toString()
-                home9th = homeTotalScore.toString()
-                away9th = awayTotalScore.toString()
+                home8th = homeScore?:"0"
+                away8th = awayScore?:"0"
+                home9th =(homeTotalScore ?: "0").toString()
+                away9th = (awayTotalScore ?: "0").toString()
             }
         }
         extracted2(matchInfo, gameType)
