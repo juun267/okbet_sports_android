@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.inVisible
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.visible
@@ -45,8 +46,10 @@ class RecyclerBetCardAdapter(val row: Row) : BindingAdapter<MatchOdd, ItemBetCar
                 val sortList = row.matchOdds.firstOrNull()?.multiCode?.sortedBy { it.playCode }
                     ?: listOf()
                 val listData = if (sortList.size > 4) {
+                    tvMore.visible()
                     sortList.subList(0, 4)
                 } else {
+                    tvMore.gone()
                     sortList
                 }
                 rvEndScoreInfo.layoutManager =LinearLayoutManager(context,RecyclerView.HORIZONTAL,false)
