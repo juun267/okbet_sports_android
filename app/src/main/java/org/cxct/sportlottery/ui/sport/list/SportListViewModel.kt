@@ -31,6 +31,7 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.TimeUtil.DMY_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
+import org.cxct.sportlottery.util.TimeUtil.YMDE_FORMAT
 import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
@@ -358,7 +359,7 @@ class SportListViewModel(
 //                    matchOdd?.sortOdds()
 
                     matchOdd?.startDate =
-                        TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, DMY_FORMAT)
+                        TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, YMDE_FORMAT)
                     matchOdd?.startTime =
                         TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, HM_FORMAT)
 
