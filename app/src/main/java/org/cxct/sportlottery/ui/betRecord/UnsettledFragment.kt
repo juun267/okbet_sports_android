@@ -36,6 +36,7 @@ class UnsettledFragment:BindingFragment<AccountHistoryViewModel,FragmentUnsettle
                             val orderTime = data.betConfirmTime
                             val requestBet = RemarkBetRequest(orderNo, it1, orderTime.toString())
                             viewModel.remarkBetLiveData.observeForever {
+                                hideLoading()
                                 dialog.dismiss()
                                 val newUrl =
                                     Constants.getPrintReceipt(
@@ -46,6 +47,7 @@ class UnsettledFragment:BindingFragment<AccountHistoryViewModel,FragmentUnsettle
                                     )
                                 JumpUtil.toExternalWeb(requireContext(), newUrl)
                             }
+                            loading()
                             viewModel.reMarkBet(requestBet)
                         }
                     }
