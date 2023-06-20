@@ -51,7 +51,7 @@ class AccountHistoryViewModel(
 ) {
 
     companion object {
-        const val PAGE_SIZE = 2
+        const val PAGE_SIZE = 20
     }
 
     val loading: LiveData<Boolean>
