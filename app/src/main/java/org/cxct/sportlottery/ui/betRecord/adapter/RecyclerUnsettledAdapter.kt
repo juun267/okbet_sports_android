@@ -109,6 +109,12 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
                 context.copyToClipboard(item.orderNo)
             }
 
+            //0,1 未结算数据才显示打印
+            if(item.status in 0..1){
+                tvOrderPrint.visible()
+            }else{
+                tvOrderPrint.gone()
+            }
 
 
             //投注项 item
