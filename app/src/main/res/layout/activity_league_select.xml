@@ -37,6 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="3"
                 tools:itemCount="5"
                 tools:listitem="@layout/item_select_date" />
         </LinearLayout>
@@ -83,16 +84,56 @@
                 android:textColor="@color/color_FFFFFF"
                 android:textSize="@dimen/textSize14sp" />
         </LinearLayout>
+       <FrameLayout
+           android:layout_width="match_parent"
+           android:layout_height="0dp"
+           android:layout_weight="1">
+           <androidx.recyclerview.widget.RecyclerView
+               android:id="@+id/rv_league"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="vertical"
+               app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+               tools:itemCount="3"
+               tools:listitem="@layout/item_filter_league"/>
+           <androidx.cardview.widget.CardView
+               android:id="@+id/cv_index"
+               android:layout_width="16dp"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center_vertical|right"
+               android:layout_marginRight="@dimen/margin_4"
+               app:cardBackgroundColor="@color/color_E5EBF6"
+               app:cardCornerRadius="@dimen/margin_10"
+               app:cardElevation="1dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_league"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="3"
-            tools:listitem="@layout/item_filter_league" />
+               <org.cxct.sportlottery.view.IndexBar
+                   android:id="@+id/indexBar"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginVertical="15dp"
+                   app:text_bg_normal="@color/color_FFFFFF"
+                   app:text_bg_pressed="@color/color_FF2E00"
+                   app:text_bg_radius="8dp"
+                   app:text_color_normal="@color/color_000000"
+                   app:text_color_pressed="@color/color_FFFFFF"
+                   app:text_size_normal="@dimen/textSize12sp"
+                   app:text_size_pressed="@dimen/textSize12sp" />
+           </androidx.cardview.widget.CardView>
+
+           <TextView
+               android:id="@+id/iv_union"
+               android:layout_width="60dp"
+               android:layout_height="50dp"
+               android:layout_gravity="right"
+               android:layout_marginRight="20dp"
+               android:background="@drawable/bg_index_union"
+               android:gravity="center"
+               android:paddingRight="10dp"
+               android:textColor="@color/color_FFFFFF"
+               android:textSize="28sp"
+               android:visibility="gone"
+               tools:text="A" />
+       </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -148,41 +189,5 @@
         </LinearLayout>
     </LinearLayout>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_index"
-        android:layout_width="16dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|right"
-        android:layout_marginRight="@dimen/margin_4"
-        app:cardBackgroundColor="@color/color_E5EBF6"
-        app:cardCornerRadius="@dimen/margin_10"
-        app:cardElevation="1dp">
 
-        <org.cxct.sportlottery.view.IndexBar
-            android:id="@+id/indexBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="15dp"
-            app:text_bg_normal="@color/color_FFFFFF"
-            app:text_bg_pressed="@color/color_FF2E00"
-            app:text_bg_radius="8dp"
-            app:text_color_normal="@color/color_000000"
-            app:text_color_pressed="@color/color_FFFFFF"
-            app:text_size_normal="@dimen/textSize12sp"
-            app:text_size_pressed="@dimen/textSize12sp" />
-    </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:id="@+id/iv_union"
-        android:layout_width="60dp"
-        android:layout_height="50dp"
-        android:layout_gravity="right"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/bg_index_union"
-        android:gravity="center"
-        android:paddingRight="10dp"
-        android:textColor="@color/color_FFFFFF"
-        android:textSize="28sp"
-        android:visibility="gone"
-        tools:text="A" />
 </FrameLayout>

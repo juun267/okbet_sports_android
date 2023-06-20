@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_gradient_item_league"
+    android:foreground="@drawable/fg_ripple"
     android:orientation="vertical">
 
     <LinearLayout

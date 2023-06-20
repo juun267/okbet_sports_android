@@ -55,7 +55,6 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
 
         if(viewModel.isLogin()){
             viewModel.getBetRecordCount()
-
         }
     }
 

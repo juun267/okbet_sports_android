@@ -100,14 +100,19 @@ class RecyclerBetCardAdapter(val row: Row) : BindingAdapter<MatchOdd, ItemBetCar
                     //处理中
                     tvStatus.setBackgroundResource(R.drawable.bg_bet_status_yellow)
                 }
-
+                7->{
+                    tvStatus.setBackgroundResource(R.drawable.bg_bet_status_cancel)
+                }
+                4,5->{
+                    tvStatus.setBackgroundResource(R.drawable.bg_bet_status_gray)
+                }
                 else -> {
                     //投注成功
                     tvStatus.setBackgroundResource(R.drawable.bg_bet_status_green)
                 }
             }
             tvStatus.setBetReceiptStatus(item.status, row.cancelledBy)
-            tvStatus.isVisible = item.status != 7
+//            tvStatus.isVisible = item.status != 7
 
 
             if (null == row.betConfirmTime) {

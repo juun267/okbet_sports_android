@@ -190,14 +190,17 @@ class LeagueSelectActivity :
             ) {
                 val firstCompletelyVisibleItemPosition =
                     linearLayoutManager.findFirstCompletelyVisibleItemPosition()
-                var leagueSection = leagueSelectAdapter.getItem(firstCompletelyVisibleItemPosition)
-                leagueSection.let {
-                    var cap = when (it){
-                        is LeagueOdd-> it.league.firstCap
-                        is MatchOdd-> (it.parentNode as LeagueOdd).league.firstCap
-                        else->""
+                if (firstCompletelyVisibleItemPosition >= 0) {
+                    var leagueSection =
+                        leagueSelectAdapter.getItem(firstCompletelyVisibleItemPosition)
+                    leagueSection.let {
+                        var cap = when (it) {
+                            is LeagueOdd -> it.league.firstCap
+                            is MatchOdd -> (it.parentNode as LeagueOdd).league.firstCap
+                            else -> ""
+                        }
+                        indexBar.updateIndex(indexBar.getTextArray().indexOf(cap))
                     }
-                    indexBar.updateIndex(indexBar.getTextArray().indexOf(cap))
                 }
             }
         })

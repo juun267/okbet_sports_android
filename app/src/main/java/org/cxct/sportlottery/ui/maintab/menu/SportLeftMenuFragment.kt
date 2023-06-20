@@ -77,11 +77,17 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
     fun reloadData(){
         //初始化顶部登录状态
         initLoginData()
+        //刷新订单数量
         if(sportBettingFragment.isVisible){
             sportBettingFragment.viewModel.getBetRecordCount()
         }
+        //刷新滚球列表
         if(inPlayFragment.isVisible){
             inPlayFragment.viewModel.getInPlayList()
+        }
+        //刷新热门赛事
+        if(sportBettingFragment.isVisible){
+            sportBettingFragment.viewModel.getRecommend()
         }
     }
 
