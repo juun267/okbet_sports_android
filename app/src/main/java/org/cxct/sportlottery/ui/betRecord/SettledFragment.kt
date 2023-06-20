@@ -107,8 +107,13 @@ class SettledFragment:BindingFragment<AccountHistoryViewModel,FragmentSettledBin
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onInitData() {
+        viewModel.pageSettledIndex=1
+        mAdapter.data.clear()
+        mAdapter.notifyDataSetChanged()
         getSettledData()
+
     }
 
     private fun getSettledData(){

@@ -1384,5 +1384,15 @@
     <string name="D039">Alisin</string>
     <string name="I023">Kahapon</string>
     <string name="N698">Expand</string>
+    <string name="J244">Corner kick</string>
+    <string name="N937">Half time score</string>
+    <string name="J254">Kabuuang puntos</string>
+    <string name="P140">Pulang kard</string>
+    <string name="P141">Dilaw na kard</string>
+    <string name="N237">Puntos</string>
+    <string name="J245">Unang quarter</string>
+    <string name="J246">Pangalawang quarter</string>
+    <string name="J247">Pangatlong quarter</string>
+    <string name="J248">Pang apat n quarter</string>
 </resources>
 

@@ -30,6 +30,7 @@ import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.JsonUtil
 import org.cxct.sportlottery.util.LocalUtils
+import org.cxct.sportlottery.util.SingleLiveEvent
 import org.cxct.sportlottery.util.TimeUtil
 
 
@@ -50,7 +51,7 @@ class AccountHistoryViewModel(
 ) {
 
     companion object {
-        const val PAGE_SIZE = 2
+        const val PAGE_SIZE = 20
     }
 
     val loading: LiveData<Boolean>
@@ -390,18 +391,13 @@ class AccountHistoryViewModel(
 
 
 
-    val unsettledData: LiveData<List<org.cxct.sportlottery.network.bet.list.Row>>
-        get() = _unsettledData
-    private val _unsettledData = MutableLiveData<List<org.cxct.sportlottery.network.bet.list.Row>>()
-
-
+    val unsettledDataEvent=SingleLiveEvent<List<org.cxct.sportlottery.network.bet.list.Row>>()
     var pageIndex=1
     private val pageSize=10
     fun getUnsettledList() {
         if (betListRequesting )
             return
         betListRequesting = true
-        Log.e("dachang","page :${pageIndex}")
         val betListRequest = BetListRequest(
             championOnly = 0,
             statusList = listOf(0,1), //全部注單，(0:待成立, 1:未結算)
@@ -426,12 +422,12 @@ class AccountHistoryViewModel(
                 if (result.success) {
                     result.rows?.let {
                         pageIndex++
-                        _unsettledData.postValue(it)
+                        unsettledDataEvent.postValue(it)
                         loginRepository.updateTransNum(result.total ?: 0)
                     }
                 } else {
                     if (result.code == NetWorkResponseType.REQUEST_TOO_FAST.code && requestCount < requestMaxCount) {
-                        _unsettledData.postValue(arrayListOf())
+                        unsettledDataEvent.postValue(arrayListOf())
                     }
                 }
             }

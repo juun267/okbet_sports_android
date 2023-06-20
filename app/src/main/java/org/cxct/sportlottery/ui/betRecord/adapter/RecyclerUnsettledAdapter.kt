@@ -17,7 +17,10 @@ import org.cxct.sportlottery.util.copyToClipboard
 import org.cxct.sportlottery.view.onClick
 import java.util.Locale
 
-class RecyclerUnsettledAdapter : BindingAdapter<Row, ItemBetListBinding>() {
+/**
+ * isDetails 是否为详情页   需要隐藏进入详情页
+ */
+class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAdapter<Row, ItemBetListBinding>() {
 
     init {
         //打印
@@ -64,8 +67,16 @@ class RecyclerUnsettledAdapter : BindingAdapter<Row, ItemBetListBinding>() {
                 else -> {
                     parlayString.append(context.getString(R.string.N124))
                     ivDetails.visible()
+                    if(isDetails){
+                        ivDetails.gone()
+                    }else{
+                        ivDetails.visible()
+                    }
                     tvInPlay.gone()
                     linearDetails.onClick {
+                        if(isDetails){
+                            return@onClick
+                        }
                         val intent = Intent(context, BetDetailsActivity::class.java)
                         intent.putExtra("data", item)
                         context.startActivity(intent)
@@ -96,6 +107,13 @@ class RecyclerUnsettledAdapter : BindingAdapter<Row, ItemBetListBinding>() {
             //copy订单号
             linearOrderNumber.onClick {
                 context.copyToClipboard(item.orderNo)
+            }
+
+            //0,1 未结算数据才显示打印
+            if(item.status in 0..1){
+                tvOrderPrint.visible()
+            }else{
+                tvOrderPrint.gone()
             }
 
 

@@ -3,6 +3,8 @@ package org.cxct.sportlottery.ui.maintab.menu
 import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.view.View
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.extentions.gone
@@ -14,7 +16,6 @@ import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
 import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.view.onClick
 import org.cxct.sportlottery.view.setColors
 import org.greenrobot.eventbus.Subscribe
@@ -69,12 +70,25 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
         reloadData()
 
         EventBusUtil.targetLifecycle(this)
+
+
     }
 
     fun reloadData(){
         //初始化顶部登录状态
         initLoginData()
-
+        //刷新订单数量
+        if(sportBettingFragment.isVisible){
+            sportBettingFragment.viewModel.getBetRecordCount()
+        }
+        //刷新滚球列表
+        if(inPlayFragment.isVisible){
+            inPlayFragment.viewModel.getInPlayList()
+        }
+        //刷新热门赛事
+        if(sportBettingFragment.isVisible){
+            sportBettingFragment.viewModel.getRecommend()
+        }
     }
 
 
@@ -87,6 +101,7 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
 
     @SuppressLint("SetTextI18n")
     private fun initLoginData(){
+
         binding.apply {
             //已登录
             if(viewModel.isLogin()){
@@ -97,6 +112,11 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
                 tvUserName.text="${viewModel.userInfo.value?.userName} "
                 //余额
                 tvUserBalance.text="₱ ${viewModel.userMoney.value} "
+
+                Glide.with(requireContext())
+                    .load(viewModel.userInfo.value?.iconUrl)
+                    .apply(RequestOptions().placeholder(R.drawable.ic_person_avatar))
+                    .into(ivUserCover) //載入頭像
             }else{
                 //未登录
                 tvLogin.visible()
