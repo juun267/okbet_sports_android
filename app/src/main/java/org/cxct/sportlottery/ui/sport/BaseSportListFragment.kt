@@ -205,7 +205,6 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
                 if (RecyclerView.SCROLL_STATE_DRAGGING == newState) { // 开始滑动
                     clearSubscribeChannels()
                 } else if (RecyclerView.SCROLL_STATE_IDLE == newState) { // 滑动停止
-                    Log.e("[subscribe]","訂閱=====>>> RecyclerView.SCROLL_STATE_IDLE ")
                     resubscribeChannel(20)
                 }
             }
