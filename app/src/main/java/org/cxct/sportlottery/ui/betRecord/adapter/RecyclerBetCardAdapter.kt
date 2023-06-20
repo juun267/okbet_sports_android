@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.betRecord.adapter
 
 import android.annotation.SuppressLint
 import android.os.CountDownTimer
+import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -76,7 +77,11 @@ class RecyclerBetCardAdapter(val row: Row) : BindingAdapter<MatchOdd, ItemBetCar
             //主客队弹框
             tvFullTeam.text="${item.homeName} vs ${item.awayName}"
             tvTeamValue.onClick {
-                frameTeam.visible()
+                if(frameTeam.visibility== View.VISIBLE){
+                    frameTeam.gone()
+                }else{
+                    frameTeam.visible()
+                }
             }
             //联赛
             tvLeagueValue.text = item.leagueName
