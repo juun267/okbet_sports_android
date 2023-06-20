@@ -1405,4 +1405,14 @@
     <string name="D039">Tông nhân</string>
     <string name="I023">Hôm qua</string>
     <string name="N698">Mở rộng</string>
+    <string name="J244">Phạt góc</string>
+    <string name="N937">Tỷ số hiệp 1</string>
+    <string name="J254">Tổng điểm</string>
+    <string name="P140">Thẻ đỏ</string>
+    <string name="P141">Thẻ vàng</string>
+    <string name="N237">Điểm</string>
+    <string name="J245">Mùa đầu tiên</string>
+    <string name="J246">Mùa thứ 2</string>
+    <string name="J247">Mùa thứ 3</string>
+    <string name="J248">Mùa thứ 4</string>
 </resources>
