@@ -79,7 +79,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     override fun onResume() {
         super.onResume()
         if ((activity as MainTabActivity).getCurrentPosition() == 0
-            && (okGamesFragment().parentFragment as HomeFragment).getCurrentFragment() == okGamesFragment()
+            && okGamesFragment().activity is MainTabActivity
             && okGamesFragment().getCurrentFragment() == this
         ) {
             unSubscribeChannelHallAll()

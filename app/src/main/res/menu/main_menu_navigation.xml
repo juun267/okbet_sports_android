@@ -9,9 +9,9 @@
         android:icon="@drawable/selector_tab_sport"
         android:title="@string/main_tab_sport" />
     <item
-        android:id="@+id/i_betlist"
-        android:icon="@drawable/selector_tab_betlist"
-        android:title="@string/main_tab_betlist" />
+        android:id="@+id/i_game"
+        android:icon="@drawable/selector_tab_game"
+        android:title="@string/news_tab_game" />
     <item
         android:id="@+id/i_favorite"
         android:icon="@drawable/selector_tab_fav"
