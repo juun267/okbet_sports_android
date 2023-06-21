@@ -336,7 +336,7 @@ object Constants {
     const val MATCH_BET_SETTLED_DETAIL_LIST = "/api/front/match/bet/settled/detail/list"
 
     //index
-    const val INDEX_LOGIN = "/api/front/index/login"
+    const val INDEX_LOGIN = "/api/front/index/loginV2"
     const val INDEX_SEND_LOGIN_DEVICE_SMS = "/api/front/index/sendLoginDeviceSms"
     const val INDEX_VALIDATE_LOGIN_DEVICE_SMS = "/api/front/index/validateLoginDeviceSms"
     const val INDEX_LOGOUT = "/api/front/index/logout"
@@ -356,7 +356,7 @@ object Constants {
     const val INDEX_VERIFYORRESET = "/api/front/index/verifyOrResetInfo" // 验证或重置手机号或者邮箱
 
     //登录或注册(新版优化登录注册->使用)
-    const val LOGIN_OR_REG = "/api/front/index/loginOrReg"
+    const val LOGIN_OR_REG = "/api/front/index/loginOrRegV2"
 
     //登录或注册获取验证码(新版优化登录注册->使用)
     const val LOGIN_OR_REG_SEND_VALIDCODE = "/api/front/index/loginOrRegSendValidCode"
