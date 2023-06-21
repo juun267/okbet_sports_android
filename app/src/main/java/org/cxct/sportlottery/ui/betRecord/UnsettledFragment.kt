@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.betRecord
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,21 +15,25 @@ import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.betRecord.adapter.RecyclerUnsettledAdapter
 import org.cxct.sportlottery.ui.betRecord.dialog.PrintDialog
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.view.loadMore
 import org.cxct.sportlottery.view.onClick
 
-class UnsettledFragment:BindingFragment<AccountHistoryViewModel,FragmentUnsettledBinding>() {
-    private val mAdapter= RecyclerUnsettledAdapter()
+/**
+ * 未结单列表
+ */
+class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnsettledBinding>() {
+    private var mAdapter = RecyclerUnsettledAdapter()
 
 
-    override fun onInitView(view: View) =binding.run {
-        recyclerUnsettled.layoutManager=LinearLayoutManager(requireContext())
-        recyclerUnsettled.adapter=mAdapter
+    override fun onInitView(view: View) = binding.run {
+        recyclerUnsettled.layoutManager = LinearLayoutManager(requireContext())
+        recyclerUnsettled.adapter = mAdapter
         mAdapter.setOnItemChildClickListener { _, view, position ->
-            val data= mAdapter.data[position]
-            when(view.id){
+            val data = mAdapter.data[position]
+            when (view.id) {
                 //打印点击
-                R.id.tvOrderPrint->{
+                R.id.tvOrderPrint -> {
                     val dialog = PrintDialog(requireContext())
                     dialog.tvPrintClickListener = { it1 ->
                         if (it1?.isNotEmpty() == true) {
@@ -55,53 +60,72 @@ class UnsettledFragment:BindingFragment<AccountHistoryViewModel,FragmentUnsettle
                 }
             }
         }
-
+        //空视图点击
         empty.emptyView.onClick {
             requireActivity().finish()
         }
 
+        //加载更多
         recyclerUnsettled.loadMore {
             viewModel.getUnsettledList()
         }
 
+        //待成立倒计时结束刷新数据
+        mAdapter.setOnCountTime {
+            viewModel.pageIndex = 1
+            recyclerUnsettled.postDelayed({
+                viewModel.getUnsettledList()
+            },500)
+        }
+
     }
 
-    private fun initObserve(){
-//        viewModel.unsettledData.observe(this){
-//
-//        }
-        viewModel.responseFailed.observe(this){
+    private fun initObserve() {
+        //网络请求失败
+        viewModel.responseFailed.observe(this) {
             hideLoading()
             mAdapter.setList(arrayListOf())
             binding.empty.emptyView.visible()
             binding.recyclerUnsettled.gone()
         }
-        viewModel.unsettledDataEvent.observe(this){
-                hideLoading()
-                Log.e("dachang","observe")
-                if(it.isEmpty()&&viewModel.pageIndex<=2){
-                    binding.empty.emptyView.visible()
-                    binding.recyclerUnsettled.gone()
-                    return@observe
-                }
-                binding.empty.emptyView.gone()
-                binding.recyclerUnsettled.visible()
+        //未接单数据监听
+        viewModel.unsettledDataEvent.observe(this) {
+            hideLoading()
+            //第一页数据为空
+            if (it.isEmpty() && viewModel.pageIndex <= 2) {
+                binding.empty.emptyView.visible()
+                binding.recyclerUnsettled.gone()
+                return@observe
+            }
+            binding.empty.emptyView.gone()
+            binding.recyclerUnsettled.visible()
+
+            if(viewModel.pageIndex == 2){
+                mAdapter.setList(it)
+            }else{
                 mAdapter.addData(it)
+            }
+
+
         }
+
     }
 
+
     override fun onInitData() {
-        viewModel.pageIndex=1
-        mAdapter.data.clear()
-        mAdapter.notifyDataSetChanged()
-        getUnsettledData()
+        refData()
         initObserve()
     }
 
-    private fun getUnsettledData(){
+    @SuppressLint("NotifyDataSetChanged")
+    private fun refData() {
+        loading()
+        viewModel.pageIndex = 1
+        mAdapter.setList(arrayListOf())
+        mAdapter.notifyDataSetChanged()
         //获取未结算数据
-//        loading()
         viewModel.getUnsettledList()
-
     }
+
+
 }

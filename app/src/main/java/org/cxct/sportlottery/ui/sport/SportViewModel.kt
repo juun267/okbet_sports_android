@@ -491,6 +491,7 @@ class SportViewModel(
         _oddsDetailResult.postValue(null)
     }
 
+
     fun loginLive() {
         if (sConfigData?.liveChatOpen == 0) return
         var spf = MultiLanguagesApplication.mInstance.getSharedPreferences(
@@ -616,7 +617,7 @@ class SportViewModel(
                 away2nd = awayCards.toString()
 
                 home3rd = homeYellowCards.toString()
-                away4th = awayYellowCards.toString()
+                away3rd = awayYellowCards.toString()
 
                 home4th = homeHalfScore ?: "0"
                 away4th = awayHalfScore ?: "0"

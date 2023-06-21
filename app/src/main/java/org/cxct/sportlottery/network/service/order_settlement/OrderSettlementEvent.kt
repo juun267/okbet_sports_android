@@ -31,7 +31,7 @@ data class SportBet(
     val rebate: Double?,
     val rebateAmount: Double?,
     val win: Double?,
-    val status: Int?,  //状态 0：未确认，1：未结算，2：赢，3：赢半，4：输，5：输半，6：和，7：已取消 //statusNameMap
+    var status: Int?,  //状态 0：未确认，1：未结算，2：赢，3：赢半，4：输，5：输半，6：和，7：已取消 //statusNameMap
     val cancelReason: String?,
     val cancelledBy: String?, //取消触发来源（ source: 数据源，own: 自有平台），数据源取消的注单允许回滚
     val addTime: String?,
