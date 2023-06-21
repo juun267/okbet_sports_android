@@ -1084,7 +1084,6 @@ fun BaseFragment<SportListViewModel>.showErrorMsgDialog(msg: String) {
     dialog.setTextColor(R.color.color_E44438_e44438)
     dialog.setNegativeButtonText(null)
     dialog.setPositiveClickListener {
-        viewModel.resetErrorDialogMsg()
         dialog.dismiss()
         back()
     }

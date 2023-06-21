@@ -23,6 +23,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -202,6 +203,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         live_view_tool_bar.gone()
                         live_view_tool_bar.release()
                         collaps_toolbar.gone()
+                        releaseWebView()
                         showChatWebView(false)
                         setScrollEnable(true)
                     }
@@ -209,7 +211,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             }
         }
 
-        if (matchInfo?.gameType == GameType.BB.name || matchInfo?.gameType == GameType.ES.name) {
+        if (matchInfo?.gameType == GameType.BB.name ||
+            matchInfo?.gameType == GameType.ES.name ||
+            matchInfo?.gameType == GameType.IH.name) {
             binding.detailToolBarViewPager.isUserInputEnabled = false
             binding.flRdContainer.gone()
         }
@@ -286,20 +290,20 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         ImmersionBar.with(this).fitsSystemWindows(false).statusBarDarkFont(true)
             .transparentStatusBar().hideBar(BarHide.FLAG_HIDE_NAVIGATION_BAR).init()
 
-//        app_bar_layout.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
-//            override fun onStateChanged(appBarLayout: AppBarLayout?, state: State?) {
-//                if (state === State.COLLAPSED) {
-//                    //折叠状态
-//                    collaps_toolbar.visibility = View.VISIBLE
-//                } else {
-//                    if (live_view_tool_bar.isVisible) {
-//                        collaps_toolbar.visibility = View.VISIBLE
-//                    } else {
-//                        collaps_toolbar.visibility = View.GONE
-//                    }
-//                }
-//            }
-//        })
+        app_bar_layout.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
+            override fun onStateChanged(appBarLayout: AppBarLayout?, state: State?) {
+                if (state === State.COLLAPSED) {
+                    //折叠状态
+                    collaps_toolbar.visibility = View.VISIBLE
+                } else {
+                    if (live_view_tool_bar.isVisible) {
+                        collaps_toolbar.visibility = View.VISIBLE
+                    } else {
+                        collaps_toolbar.visibility = View.GONE
+                    }
+                }
+            }
+        })
 
     }
 
@@ -309,6 +313,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             lin_center.isVisible = false
             llToolBar.gone()
             vpContainer.isVisible = false
+            v_statusbar.gone()
             live_view_tool_bar.isVisible = true
             collaps_toolbar.isVisible = false
             clToolContent.gone()
@@ -326,7 +331,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             setScrollEnable(true)
         }
 
-        live_view_tool_bar.layoutParams.apply {
+        live_view_tool_bar.updateLayoutParams {
             if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
                 width = ViewGroup.LayoutParams.MATCH_PARENT
                 height =
@@ -336,7 +341,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 height = ViewGroup.LayoutParams.MATCH_PARENT
             }
         }
-        live_view_tool_bar.invalidate()
+//        live_view_tool_bar.layoutParams.apply {
+//
+//        }
+//        live_view_tool_bar.invalidate()
     }
 
     /**
@@ -854,6 +862,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
         isShowOdd(true)
 //        initAnim()
+
+        rv_detail.setupBackTop(ivBackTop, 180.dp)
     }
 
 
@@ -943,7 +953,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         tv_toolbar_home_name.text = matchInfo.homeName ?: ""
                         tv_toolbar_away_name.text = matchInfo.awayName ?: ""
                         sportToolBarTopFragment.setupMatchInfo(matchInfo, true)
-                        sportChartFragment.updateMatchInfo(matchInfo)
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            sportChartFragment.updateMatchInfo(matchInfo)
+                        }, 300)
                     }
                     setupLiveView(result.oddsDetailData?.matchOdd?.matchInfo?.liveVideo)
                 } else {
@@ -1109,7 +1121,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                                 sportToolBarTopFragment.setupMatchInfo(matchOdd.matchInfo)
                                 Handler(Looper.getMainLooper()).postDelayed({
                                     sportChartFragment.updateMatchInfo(matchOdd.matchInfo)
-                                },300)
+                                }, 300)
                             }
                         }
                     }

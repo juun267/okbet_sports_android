@@ -23,7 +23,7 @@ import org.cxct.sportlottery.util.*
 /**
  * @app_destination 滾球、即將、今日、早盤、冠軍、串關
  */
-class SportListFragment2: BaseSportListFragment<SportListViewModel, FragmentSportList2Binding>(), OnOddClickListener {
+open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, FragmentSportList2Binding>(), OnOddClickListener {
 
     override var matchType = MatchType.IN_PLAY
 
@@ -32,7 +32,7 @@ class SportListFragment2: BaseSportListFragment<SportListViewModel, FragmentSpor
         sportLeagueAdapter2.onOddsChangeEvent(it)
     }
 
-    private val sportLeagueAdapter2 by lazy {
+    protected val sportLeagueAdapter2 by lazy {
         SportLeagueAdapter2(matchType,
             this,
             onNodeExpand = { resubscribeChannel(320) },
@@ -42,14 +42,11 @@ class SportListFragment2: BaseSportListFragment<SportListViewModel, FragmentSpor
         })
     }
 
-    override fun onGameTypeChanged(item: Item, position: Int) {
-        super.onGameTypeChanged(item, position)
-        binding.ivFilter.isVisible = gameType != GameType.ALL.key
-    }
 
     // 该方法中不要引用与生命周期有关的(比如：ViewModel、Activity)
     private fun reset() {
         matchType = (arguments?.getSerializable("matchType") as MatchType?) ?: MatchType.IN_PLAY
+        sportLeagueAdapter2.matchType = matchType
         gameType = arguments?.getString("gameType") ?: GameType.BK.key
         selectMatchIdList = arrayListOf()
         gameTypeAdapter.setNewInstance(null)
@@ -70,13 +67,12 @@ class SportListFragment2: BaseSportListFragment<SportListViewModel, FragmentSpor
 
     override fun onBindViewStatus(view: View) {
         super.onBindViewStatus(view)
-        reset()
-
-        initObserve()
+        observeSportList()
         initSocketObserver()
     }
 
     override fun onInitData() {
+        reset()
         reload()
     }
 
@@ -97,14 +93,7 @@ class SportListFragment2: BaseSportListFragment<SportListViewModel, FragmentSpor
     }
 
     private inline fun BaseNode.isMatchOdd() =  this is org.cxct.sportlottery.network.odds.list.MatchOdd
-    private fun initObserve() = viewModel.run {
-
-        showErrorDialogMsg.observe(this@SportListFragment2.viewLifecycleOwner) {
-            if (it == null || it.isBlank() || requireContext() == null) {
-                return@observe
-            }
-            showErrorMsgDialog(it)
-        }
+    protected open fun observeSportList() = viewModel.run {
 
         oddsListGameHallResult.observe(this@SportListFragment2.viewLifecycleOwner) {
 

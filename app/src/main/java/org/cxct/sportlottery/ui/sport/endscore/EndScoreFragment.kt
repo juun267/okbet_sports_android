@@ -124,14 +124,6 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
     }
 
     private fun initObserve() = viewModel.run {
-        showErrorDialogMsg.observe(viewLifecycleOwner) {
-            if (requireContext() == null || TextUtils.isEmpty(it)) {
-                return@observe
-            }
-
-            showErrorMsgDialog(it)
-        }
-
 
         oddsListGameHallResult.observe(viewLifecycleOwner) {
 
