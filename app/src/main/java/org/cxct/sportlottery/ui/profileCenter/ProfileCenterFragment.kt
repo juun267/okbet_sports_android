@@ -39,6 +39,7 @@ import org.cxct.sportlottery.ui.profileCenter.profile.AvatarSelectorDialog
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.profileCenter.timezone.TimeZoneActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
+import org.cxct.sportlottery.ui.redeem.RedeemActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.selflimit.SelfLimitActivity
 import org.cxct.sportlottery.util.*
@@ -246,6 +247,9 @@ class ProfileCenterFragment :
         btn_about_us.setVisibilityByMarketSwitch()
         iv_profile.setOnClickListener {
             startActivity(Intent(requireActivity(), ProfileActivity::class.java))
+        }
+        btnRedeem.setOnClickListener {
+            startActivity(Intent(requireActivity(),RedeemActivity::class.java))
         }
         //額度轉換
         btn_account_transfer.setOnClickListener {

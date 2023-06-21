@@ -68,6 +68,7 @@ import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoViewMode
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileModel
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
+import org.cxct.sportlottery.ui.redeem.RedeemViewModel
 import org.cxct.sportlottery.ui.results.SettlementViewModel
 import org.cxct.sportlottery.ui.selflimit.SelfLimitViewModel
 import org.cxct.sportlottery.ui.splash.SplashViewModel
@@ -136,6 +137,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { SettlementViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { InfoCenterViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { HelpCenterViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { RedeemViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { WithdrawViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { ProfileModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { ModifyProfileInfoViewModel(get(), get(), get(), get(), get(), get()) }

@@ -139,7 +139,7 @@ class DateRangeSearchView @JvmOverloads constructor(context: Context, attrs: Att
         calendarPopup.isOutsideTouchable = true
         calendarPopup.setOnDismissListener {
             ll_start_date_box.isSelected = false
-            ll_start_date_box.isSelected = false
+            ll_end_date_box.isSelected = false
         }
         bottomSheetView.calendar.setCalendarListener(object : CalendarListener {
             override fun onFirstDateSelected(
