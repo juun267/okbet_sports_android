@@ -85,4 +85,14 @@ object OKGamesRepository {
 
         return okGamesApi.getOKGamesList(params)
     }
+
+    suspend fun getOKLiveList(page: Int, pageSize: Int, gameType: String): ApiResult<List<OKGameBean>> {
+        val params = paramDevice()
+        params.addProperty("page", page)
+        params.addProperty("pageSize", pageSize)
+        params.addProperty("enableHome", 1)
+        params.addProperty("gameEntryType", gameType)
+
+        return okGamesApi.getOKGamesList(params)
+    }
 }

@@ -39,18 +39,18 @@ class FooterGameAdapter(private val onFavoriteClick: (View, OKGameBean) -> Unit,
         return 1
     }
 
-    fun setupData(okLive: MutableList<OKGameBean>?, okgames: MutableList<OKGameBean>?) {
-        val list = mutableListOf<GameCategroy>()
-        if (!okLive.isNullOrEmpty()) {
+    fun setupOKGames(okgames: List<OKGameBean>) {
+        if (okgames.isEmpty()) {
+            return
+        }
+        addData(GameCategroy("OKGames", R.drawable.ic_okgame_label_games, okgames.take(3).toMutableList()))
+    }
 
-            list.add(GameCategroy("OKLive", R.drawable.ic_okgame_label_oklive, okLive.take(3).toMutableList()))
+    fun setupOKLives(okLive: List<OKGameBean>) {
+        if (okLive.isEmpty()) {
+            return
         }
-        if (!okgames.isNullOrEmpty()) {
-            list.add(GameCategroy("OKGames", R.drawable.ic_okgame_label_games, okgames.take(3).toMutableList()))
-        }
-        if (list.isNotEmpty()) {
-            setNewInstance(list as MutableList<BaseNode>)
-        }
+        addData(0, GameCategroy("OKLive", R.drawable.ic_okgame_label_oklive, okLive.take(3).toMutableList()))
     }
 
     fun updateFavoriteStatu(okGameBean: OKGameBean) {

@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.sport
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -49,7 +48,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         MatchType.OUTRIGHT,
         MatchType.MY_EVENT
     )
-    private val favoriteIndex = 0
+    private val favoriteIndex = matchTypeTab.indexOf(MatchType.MY_EVENT)
     private inline fun getMainTabActivity() = activity as MainTabActivity
     private val fragmentHelper by lazy { FragmentHelper2(childFragmentManager, R.id.fl_content) }
     private val footView by lazy { FooterGamesView(binding.root.context) }
@@ -60,8 +59,8 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     //根据赛事数量判断默认的分类
     private var defaultMatchType: MatchType? = null
     private var favoriteItems = listOf<Item>()
-    private inline fun favoriteCount(): Int {
-        return favoriteItems.sumOf { it.leagueOddsList.sumOf { it.matchOdds.size } }
+    private inline fun favoriteCount(items: List<Item>): Int {
+        return items.sumOf { it.leagueOddsList.sumOf { it.matchOdds.size } }
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -128,7 +127,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         addTab(getString(R.string.home_tab_parlay), countParlay, 5)
         addTab(getString(R.string.home_tab_cs), countCS, 6)
         addTab(getString(R.string.home_tab_outright), countOutright, 7)
-        val tabView = addTab(getString(R.string.my_favorite), favoriteCount(), 8)
+        val tabView = addTab(getString(R.string.my_favorite), favoriteCount(favoriteItems), 8)
         if (!LoginRepository.isLogined()) {
             tabView.setOnTouchListener { _, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
@@ -200,7 +199,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
                 fragmentHelper.show(FavoriteFragment2::class.java, args) { fragment, newInstance ->
                     fragment.offsetScrollListener = ::setTabElevation
                     fragment.resetFooterView(footView)
-                    fragment.setFavoriteData(favoriteItems)
+                    viewModel.loadFavoriteGameList()
                 }
             }
 
@@ -247,18 +246,24 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         }
 
         sportTypeMenuData.observe(viewLifecycleOwner) { updateFavoriteItem(it.first) }
-        favorMatchList.observe(viewLifecycleOwner) { viewModel.loadFavoriteGameList() }
+        favorMatchList.observe(viewLifecycleOwner) {
+            viewModel.loadFavoriteGameList()
+        }
     }
 
     private fun updateFavoriteItem(favoriteLeagues: List<Item>) {
 
-        val favoriteTab = binding.tabLayout.getTabAt(favoriteIndex) ?: return
-        favoriteTab.customView?.tv_number?.text = favoriteCount().toString()
-        val currentFragment = fragmentHelper.currentFragment()
-        if (currentFragment is FavoriteFragment2 && favoriteItems.isEmpty()) {
-            currentFragment.setFavoriteData(favoriteLeagues)
+        val favoriteTab = binding.tabLayout.getTabAt(favoriteIndex)
+        if (favoriteTab == null) {
+            favoriteItems = favoriteLeagues
+            return
         }
 
+        favoriteTab.customView?.tv_number?.text = favoriteCount(favoriteLeagues).toString()
+        val currentFragment = fragmentHelper.currentFragment()
+        if (currentFragment is FavoriteFragment2) {
+            currentFragment.setFavoriteData(favoriteLeagues)
+        }
         favoriteItems = favoriteLeagues
     }
 

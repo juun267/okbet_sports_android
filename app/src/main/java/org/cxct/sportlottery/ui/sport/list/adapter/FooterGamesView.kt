@@ -44,7 +44,7 @@ class FooterGamesView @JvmOverloads constructor(
         setBackgroundResource(R.color.color_F8F9FD)
         addNomoreText()
         initGameList()
-        addOKBingo()
+//        addOKBingo()
     }
 
     private fun addNomoreText() {
@@ -105,15 +105,14 @@ class FooterGamesView @JvmOverloads constructor(
         this.fragment = fragment
         this.okGamesViewModel = viewmodel
         initObserver(fragment, viewmodel)
-        viewmodel.getOKGamesHall()
+//        viewmodel.getSportOKLive() // 没有数据暂时不开放 2023.06.21
+        viewmodel.getSportOKGames()
     }
 
     private fun initObserver(lifecycleOwner: LifecycleOwner, viewmodel: OKGamesViewModel) = viewmodel.run {
-        gameHall.observe(lifecycleOwner) {
-            gameAdapter.setupData(it.categoryList?.getOrNull(0)?.gameList?.toMutableList(),
-                it.categoryList?.getOrNull(1)?.gameList?.toMutableList())
 
-        }
+        sportOKGames.observe(lifecycleOwner) { gameAdapter.setupOKGames(it) }
+        sportOKLives.observe(lifecycleOwner) { gameAdapter.setupOKLives(it) }
 
         collectOkGamesResult.observe(lifecycleOwner) {
             gameAdapter.updateFavoriteStatu(it.second)
