@@ -1,24 +1,20 @@
 package org.cxct.sportlottery.ui.sport.list
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.callApi
-import org.cxct.sportlottery.common.extentions.clean
-import org.cxct.sportlottery.common.extentions.isEmptyStr
-import org.cxct.sportlottery.common.extentions.safeApi
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.sport.SportRepository
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.QuickPlayCate
+import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchRequest
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.*
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
@@ -29,14 +25,11 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.TimeUtil.DMY_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.YMDE_FORMAT
-import timber.log.Timber
-import java.util.*
 import kotlin.collections.ArrayList
 
-class SportListViewModel(
+open class SportListViewModel(
     androidContext: Application,
     userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
@@ -57,15 +50,6 @@ class SportListViewModel(
         get() = _oddsListGameHallResult
     private val _oddsListGameHallResult = SingleLiveEvent<Event<OddsListResult?>>()
 
-    //ErrorDialog
-    val showErrorDialogMsg: LiveData<String>
-        get() = _showErrorDialogMsg
-    private var _showErrorDialogMsg = MutableLiveData<String>()
-    val isNoEvents: LiveData<Boolean>
-        get() = _isNoEvents
-    private var _isNoEvents = SingleLiveEvent<Boolean>()
-    val sportMenuResult: LiveData<SportMenuResult?>
-        get() = _sportMenuResult
     private val _sportMenuResult = SingleLiveEvent<SportMenuResult?>()
 
     var tempDatePosition: Int = 0 //早盤的日期選擇切頁後要記憶的問題，切換球種要清除記憶
@@ -73,6 +57,128 @@ class SportListViewModel(
 
     val outrightList = MutableLiveData<Event<OutrightOddsListResult?>>()
     var selectTimeRangeParams:TimeRangeParams? = null
+
+    fun loadFavoriteGameList() {
+        if (!LoginRepository.isLogined()) {
+            return
+        }
+
+        doRequest(androidContext, {
+            OneBoSportApi.favoriteService.getMyFavoriteQueryAll(MyFavoriteMatchRequest(null, MenuCode.MAIN.code))
+        }) { result ->
+
+            if (result?.success != true) {
+                sportTypeMenuData.value = Triple(listOf(), false, "${result?.msg}")
+                return@doRequest
+            }
+
+            val favoriteList = result.rows
+            if (favoriteList.isNullOrEmpty()) {
+                sportTypeMenuData.value = Triple(listOf(), true, "")
+                return@doRequest
+            }
+
+            val gameItems = mutableListOf<Item>()
+
+            favoriteList.forEach {
+                val item = Item(it.gameType,
+                    GameType.getGameTypeString(androidContext, it.gameType),
+                    it.leagueOddsList.size,
+                    0)
+                item.leagueOddsList = it.leagueOddsList
+                gameItems.add(item)
+
+                val leagueOddList = item.leagueOddsList
+
+                leagueOddList.sortOdds()
+                leagueOddList.getPlayCateNameMap()
+                leagueOddList.forEach { leagueOdd ->
+                    leagueOdd.gameType =
+                        GameType.getGameType(leagueOdd.matchOdds[0].matchInfo?.gameType!!)
+                    leagueOdd.matchOdds.forEach { matchOdd ->
+                        matchOdd.matchInfo?.isFavorite = true
+                    }
+
+                    leagueOdd.matchOdds.forEach { matchOdd ->
+                        matchOdd.setupOddDiscountFixed()
+                        matchOdd.matchInfo?.let { matchInfo ->
+
+                            matchInfo.startDateDisplay =
+                                TimeUtil.timeFormat(matchInfo.startTime, "MM/dd")
+                            matchInfo.startTimeDisplay =
+                                TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
+                            matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
+
+                            /* #1 將賽事狀態(先前socket回傳取得)放入當前取得的賽事 */
+                            val mInfo = mFavorMatchOddList.value?.peekContent()?.find { lo ->
+                                lo.league.id == leagueOdd.league.id
+                            }?.matchOdds?.find { mo ->
+                                mo.matchInfo?.id == matchInfo.id
+                            }?.matchInfo
+
+                            matchInfo.socketMatchStatus = mInfo?.socketMatchStatus
+                            matchInfo.statusName18n = mInfo?.statusName18n
+                            matchInfo.homeScore = mInfo?.homeScore
+                            matchInfo.awayScore = mInfo?.awayScore
+                        }
+
+                        // 过滤掉赔率为空掉对象
+                        matchOdd.oddsMap?.let { oddsMap ->
+                            oddsMap.forEach {
+                                oddsMap[it.key] =
+                                    it.value?.filter { null != it }?.toMutableList() ?: mutableListOf()
+                            }
+                        }
+                    }
+                }
+            }
+
+            sportTypeMenuData.value = Triple(gameItems, true, "")
+        }
+    }
+
+    private fun dealLeagueList(playCateMenuCode: String, matchType: String, leagueList: List<LeagueOdd>) {
+        leagueList.updateMatchType()
+        leagueList.forEach { leagueOdd ->
+            var iterator = leagueOdd.matchOdds.iterator()
+            while (iterator.hasNext()) {
+                val matchOdd = iterator.next()
+                if (matchOdd.matchInfo == null) { // 过滤掉matchInfo为空的脏数据
+                    iterator.remove()
+                } else {
+
+                    matchOdd.sortOddsMap()
+                    val matchInfo = matchOdd.matchInfo
+                    matchInfo.startDateDisplay = TimeUtil.timeFormat(matchInfo.startTime, "MM/dd")
+                    matchOdd.matchInfo.startTimeDisplay = TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
+                    matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
+
+                    matchOdd.oddsMap?.forEach { map ->
+                        map.value?.updateOddSelectState()
+                    }
+
+//                    matchOdd.setupPlayCate()
+//                    matchOdd.refactorPlayCode() //改成在OddButtonPagerAdapter處理
+                    matchOdd.sortOdds()
+
+                    matchOdd.setupOddDiscount()
+                    matchOdd.updateOddStatus()
+                    if (playCateMenuCode != MenuCode.CS.code) {
+                        matchOdd.oddsSort = PlayCateMenuFilterUtils.filterOddsSort(matchOdd.matchInfo?.gameType, MenuCode.MAIN.code)
+                    }
+
+                    matchOdd.filterQuickPlayCate(matchType)
+                    //波胆的数据获取方式
+                    if (matchType == MatchType.CS.postValue) {
+                        matchOdd.playCateNameMap = leagueOdd.playCateNameMap
+                    }
+
+                }
+            }
+        }
+
+        leagueList.getPlayCateNameMap(matchType)
+    }
 
     fun getGameHallList(
         matchType: MatchType,
@@ -255,50 +361,8 @@ class SportListViewModel(
             if (requestTag != oddsListRequestTag) {
                 return@launch
             }
-            result?.updateMatchType()
-            result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
-                var iterator = leagueOdd.matchOdds.iterator()
-                while (iterator.hasNext()) {
-                    val matchOdd = iterator.next()
-                    if (matchOdd.matchInfo == null) { // 过滤掉matchInfo为空的脏数据
-                        iterator.remove()
-                    } else {
 
-                        matchOdd.sortOddsMap()
-                        matchOdd.matchInfo?.let { matchInfo ->
-                            matchInfo.startDateDisplay =
-                                TimeUtil.timeFormat(matchInfo.startTime, "MM/dd")
-
-                            matchOdd.matchInfo.startTimeDisplay =
-                                TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
-
-                            matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
-                        }
-
-                        matchOdd.oddsMap?.forEach { map ->
-                            map.value?.updateOddSelectState()
-                        }
-
-//                    matchOdd.setupPlayCate()
-//                    matchOdd.refactorPlayCode() //改成在OddButtonPagerAdapter處理
-                        matchOdd.sortOdds()
-
-                        matchOdd.setupOddDiscount()
-                        matchOdd.updateOddStatus()
-                        if (playCateMenuCode != MenuCode.CS.code) {
-                            matchOdd.oddsSort = PlayCateMenuFilterUtils.filterOddsSort(matchOdd.matchInfo?.gameType, MenuCode.MAIN.code)
-                        }
-
-                        matchOdd.filterQuickPlayCate(matchType)
-                        //波胆的数据获取方式
-                        if (matchType == MatchType.CS.postValue) {
-                            matchOdd.playCateNameMap = leagueOdd.playCateNameMap
-                        }
-
-                    }
-                }
-            }
-            result?.oddsListData.getPlayCateNameMap(matchType)
+            result?.oddsListData?.leagueOdds?.let { dealLeagueList(playCateMenuCode, matchType, it) }
 
             when (matchType) {
                 MatchType.IN_PLAY.postValue,
@@ -374,15 +438,11 @@ class SportListViewModel(
     }
 
 
-    fun resetErrorDialogMsg() {
-        _showErrorDialogMsg.value = ""
-    }
-
     /**
      * 检查赛事是否到了开赛时间，并且更新滚球状态
      */
-    private fun OddsListResult.updateMatchType(): OddsListResult {
-        this.oddsListData?.leagueOdds?.forEach { leagueOdd ->
+    private fun List<LeagueOdd>.updateMatchType() {
+        forEach { leagueOdd ->
             leagueOdd.matchOdds.forEach { matchOdd ->
 
                 matchOdd.matchInfo?.isInPlay =
@@ -392,7 +452,6 @@ class SportListViewModel(
                     TimeUtil.isTimeAtStart(matchOdd.matchInfo?.startTime)
             }
         }
-        return this
     }
 
     /**
@@ -424,8 +483,8 @@ class SportListViewModel(
     /**
      * 更新翻譯
      */
-    private fun OddsListData?.getPlayCateNameMap(matchType: String) {
-        this?.leagueOdds?.onEach { LeagueOdd ->
+    private fun List<LeagueOdd>.getPlayCateNameMap(matchType: String) {
+        onEach { LeagueOdd ->
             LeagueOdd.matchOdds.onEach { matchOdd ->
                 //上方已经把leagueOdds.playCateNameMap 赋值给 matchOdd.playCateNameMap，所以这里不再对波胆玩法处理
                 if (matchType == MatchType.CS.postValue) {
@@ -536,22 +595,18 @@ class SportListViewModel(
         }
     }
 
-    val sportMenuData by lazy { SingleLiveEvent<Pair<ApiResult<SportMenuData>, List<Item>>>() }
+    val sportTypeMenuData by lazy { SingleLiveEvent<Triple<List<Item>, Boolean, String>>() }
+    val sportMenuApiResult = SingleLiveEvent<ApiResult<SportMenuData>>()
 
     fun loadMatchType(matchType: MatchType) = callApi({
         SportRepository.getSportMenu(
             TimeUtil.getNowTimeStamp().toString(),
             TimeUtil.getTodayStartTimeStamp().toString())
     }) { sportMenuResult->
-
         val menuData = sportMenuResult.getData()
-        if (menuData?.sortSport() != null) {
-            updateSportInfo(matchType)
-        }
-
 
         if(!sportMenuResult.succeeded() || menuData == null) {
-            sportMenuData.value = Pair(sportMenuResult, listOf())
+            sportTypeMenuData.value = Triple(listOf(), sportMenuResult.succeeded(), sportMenuResult.msg)
             return@callApi
         }
 
@@ -568,7 +623,8 @@ class SportListViewModel(
             else -> listOf()
         }
 
-        sportMenuData.value = Pair(sportMenuResult, itemList)
+        sportTypeMenuData.value = Triple(itemList, sportMenuResult.succeeded(), sportMenuResult.msg)
+        sportMenuApiResult.value = sportMenuResult
     }
 
     fun switchMatchType(matchType: MatchType) {
@@ -581,17 +637,9 @@ class SportListViewModel(
                 }
             }
         }
-        if (_sportMenuResult.value != null) {
-            updateSportInfo(matchType)
-        }
+
     }
 
-    private fun updateSportInfo(matchType: MatchType) {
-
-        // 無數量直接顯示無資料UI
-        Timber.d("getMatchCount： ${getMatchCount(matchType)}")
-        _isNoEvents.postValue(getMatchCount(matchType) < 1)
-    }
 
     private fun SportMenuResult.updateSportSelectState(
         matchType: MatchType?,

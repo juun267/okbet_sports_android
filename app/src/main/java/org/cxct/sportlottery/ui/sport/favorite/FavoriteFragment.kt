@@ -512,7 +512,6 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.N)
     private fun initObserver() {
         viewModel.userInfo.observe(this.viewLifecycleOwner) {
             favoriteAdapter.discount = it?.discount ?: 1.0F
@@ -775,7 +774,6 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
                     code = it.code.orEmpty(),
                     name = it.showName.orEmpty(),
                     num = 0,
-                    play = null,
                     sortNum = 0
                 )
             )

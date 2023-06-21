@@ -80,8 +80,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     private var betListFragment: BetListFragment? = null
 
-    //    private val homeLeftFragment by lazy { MainLeftFragment2() }
-//    private val sportLeftFragment by lazy { SportLeftMenuFragment() }
     private var exitTime: Long = 0
 
     companion object {
@@ -107,7 +105,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     private val binding by lazy { ActivityMainTabBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        SportLeagueAdapter.clearCachePool()
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         ImmersionBar.with(this).statusBarDarkFont(true).transparentStatusBar()
@@ -148,11 +145,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     private fun initObserve() {
-//        viewModel.userMoney.observe(this) {
-//            it?.let { money ->
-////                cl_bet_list_bar.tv_balance.text = TextUtil.formatMoney(money)
-//            }
-//        }
 
         //设置体育服务监听
         setupSportStatusChange(this) {
@@ -367,7 +359,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     private val fragmentHelper2 by lazy { FragmentHelper2(supportFragmentManager, R.id.left_menu) }
-    fun showSportLeftMenu(matchType: MatchType, gameType: GameType?) {
+    fun showSportLeftMenu() {
         fragmentHelper2.show(SportLeftMenuFragment::class.java, Bundle()) { fragment, instance ->
             if(!instance){
 
@@ -792,7 +784,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         if (activityInstance == this) {
             activityInstance = null
         }
-        SportLeagueAdapter.clearCachePool()
     }
 
 

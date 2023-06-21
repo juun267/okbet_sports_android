@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.ui.sport.oddsbtn
 
 // 赔率显示按钮抽象
-interface AbsOddButton {
+interface AbsOddView {
 
      fun resetStatu()                       // 从(不可用, 锁盘, 上涨, 降低)状态恢复到默认状态
      fun onDeactivated()                    // 赔率不可用
