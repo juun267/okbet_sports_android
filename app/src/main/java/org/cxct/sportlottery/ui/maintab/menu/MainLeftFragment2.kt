@@ -247,7 +247,6 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             hasIndicator = true
         ) {
             getMainTabActivity().jumpToNews()
-            getMainTabActivity().homeBackView(true)
         }
 
         serviceItem = addMenu(++index,

@@ -49,6 +49,7 @@ import org.cxct.sportlottery.ui.betRecord.BetRecordFragment
 import org.cxct.sportlottery.ui.betRecord.accountHistory.next.AccountHistoryNextFragment
 import org.cxct.sportlottery.ui.chat.ChatActivity
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment2
 import org.cxct.sportlottery.ui.maintab.menu.SportLeftMenuFragment
@@ -61,6 +62,7 @@ import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import splitties.activities.start
 import kotlin.system.exitProcess
 
 
@@ -71,7 +73,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             supportFragmentManager, R.id.fl_content, arrayOf(
                 Pair(HomeFragment::class.java, null),
                 Pair(SportFragment2::class.java, null),
-                Pair(BetRecordFragment::class.java, null),
+                Pair(OKGamesFragment::class.java, null),
                 Pair(FavoriteFragment::class.java, null),
                 Pair(ProfileCenterFragment::class.java, null),
             )
@@ -80,8 +82,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     private var betListFragment: BetListFragment? = null
 
-    //    private val homeLeftFragment by lazy { MainLeftFragment2() }
-//    private val sportLeftFragment by lazy { SportLeftMenuFragment() }
     private var exitTime: Long = 0
 
     companion object {
@@ -124,10 +124,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             if (isOpenChatRoom()) {
                 changeChatTabStatus(getString(R.string.N984), R.drawable.selector_tab_chat)
             } else {
-                changeChatTabStatus(
-                    getString(R.string.main_tab_favorite),
-                    R.drawable.selector_tab_fav
-                )
+                changeChatTabStatus(getString(R.string.main_tab_favorite), R.drawable.selector_tab_fav)
             }
         }
     }
@@ -226,15 +223,12 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
 
     private fun initBottomFragment(position: Int) {
-        binding.llHomeBack.setOnClickListener {
-            homeFragment().backMainHome()
-        }
         binding.bottomNavigationView.apply {
             enableAnimation(false)
             enableShiftingMode(false)
             setTextVisibility(true)
             setTextSize(10f)
-            setIconSize(30f)
+            setIconSize(24f)
             menu.getItem(2).isVisible = !getMarketSwitch()
             onNavigationItemSelectedListener =
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
@@ -245,9 +239,8 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                             return@OnNavigationItemSelectedListener false
                         }
 
-
                         when (menuItem.itemId) {
-                            R.id.i_betlist, R.id.i_user -> {
+                            R.id.i_user -> {
                                 if (viewModel.isLogin.value == false) {
                                     startLogin()
                                     return@OnNavigationItemSelectedListener false
@@ -256,12 +249,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
                             R.id.i_favorite -> {
                                 if (isOpenChatRoom()) {
-                                    startActivity(
-                                        Intent(
-                                            this@MainTabActivity,
-                                            ChatActivity::class.java
-                                        )
-                                    )
+                                    start<ChatActivity> {}
                                     return@OnNavigationItemSelectedListener false
                                 } else {
                                     if (viewModel.isLogin.value == false) {
@@ -276,7 +264,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                         if (position == 0) {
                             homeFragment().backMainHome()
                         } else {
-                            binding.llHomeBack.gone()
                             if (position == 1) {
                                 binding.bottomNavigationView.postDelayed({
                                     jumpToTheSport()
@@ -718,54 +705,55 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             .addToBackStack(AccountHistoryNextFragment::class.java.simpleName).commit()
     }
 
-    fun jumpToTheSport(matchType: MatchType? = null, gameType: GameType? = null) {
-        resetBackIcon(1)
-        (fragmentHelper.getFragment(1) as SportFragment2).setJumpSport(matchType, gameType)
-    }
 
-    private fun resetBackIcon(position: Int) {
-        if (bottom_navigation_view.currentItem != position) {
-            bottom_navigation_view.currentItem = position
-        }
-    }
 
     private inline fun homeFragment() = fragmentHelper.getFragment(0) as HomeFragment
 
     fun backMainHome() {
-        resetBackIcon(0)
         homeFragment().backMainHome()
     }
-
     fun jumpToLive() {
-        resetBackIcon(0)
         homeFragment().jumpToLive()
     }
 
     fun jumpToOKGames() {
-        resetBackIcon(0)
-        homeFragment().jumpToOKGames()
+        jumpToGame()
     }
 
     fun jumpToNews() {
-        resetBackIcon(0)
         homeFragment().jumpToNews()
+    }
+    fun jumpToTheSport(matchType: MatchType? = null, gameType: GameType? = null) {
+        (fragmentHelper.getFragment(1) as SportFragment2).setJumpSport(matchType, gameType)
+        if (bottom_navigation_view.currentItem != 1) {
+            bottom_navigation_view.currentItem = 1
+        }
     }
 
     fun jumpToInplaySport() {
         //检测体育服务是否关闭
         checkSportStatus(this) {
-            resetBackIcon(1)
-            ll_home_back.gone()
             jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)
+            if (bottom_navigation_view.currentItem != 1) {
+                bottom_navigation_view.currentItem = 1
+            }
         }
     }
 
     fun jumpToEarlySport() {
-        resetBackIcon(1)
-        ll_home_back.gone()
         jumpToTheSport(MatchType.EARLY, GameType.FT)
+        if (bottom_navigation_view.currentItem != 1) {
+            bottom_navigation_view.currentItem = 1
+        }
     }
-
+    fun jumpToGame() {
+        if (getMarketSwitch()) {
+            return
+        }
+        if (bottom_navigation_view.currentItem != 2) {
+            bottom_navigation_view.currentItem = 2
+        }
+    }
     fun jumpToBetInfo(tabPosition: Int) {
         if (getMarketSwitch()) {
             return
@@ -774,17 +762,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             bottom_navigation_view.currentItem = 2
         }
         (fragmentHelper.getFragment(2) as BetRecordFragment).selectTab(tabPosition)
-    }
-
-    fun homeBackView(boolean: Boolean) {
-        if (boolean) {
-            ll_home_back.visibility = View.VISIBLE
-            bottom_navigation_view.getBottomNavigationItemView(0).visibility = View.INVISIBLE
-        } else {
-            bottom_navigation_view.getBottomNavigationItemView(0).visibility = View.VISIBLE
-            ll_home_back.visibility = View.GONE
-        }
-
     }
 
     override fun onDestroy() {
