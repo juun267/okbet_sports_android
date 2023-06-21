@@ -19,6 +19,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.animDuang
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.enterThirdGame
@@ -111,8 +112,8 @@ class FooterGamesView @JvmOverloads constructor(
 
     private fun initObserver(lifecycleOwner: LifecycleOwner, viewmodel: OKGamesViewModel) = viewmodel.run {
 
-        sportOKGames.observe(lifecycleOwner) { gameAdapter.setupOKGames(it) }
-        sportOKLives.observe(lifecycleOwner) { gameAdapter.setupOKLives(it) }
+        sportOKGames.observe(lifecycleOwner) { gameAdapter.setupOKGames(it, ::onMoreOKGames) }
+        sportOKLives.observe(lifecycleOwner) { gameAdapter.setupOKLives(it, ::onMoreOKLives) }
 
         collectOkGamesResult.observe(lifecycleOwner) {
             gameAdapter.updateFavoriteStatu(it.second)
@@ -144,6 +145,15 @@ class FooterGamesView @JvmOverloads constructor(
             okGamesViewModel.requestEnterThirdGame(gameBean, fragment)
             okGamesViewModel.addRecentPlay(gameBean)
         }
+    }
+
+    private fun onMoreOKGames() {
+        val mainActivity = (fragment.activity as MainTabActivity?) ?: return
+        mainActivity.jumpToOKGames()
+    }
+
+    private fun onMoreOKLives() {
+
     }
 
 }

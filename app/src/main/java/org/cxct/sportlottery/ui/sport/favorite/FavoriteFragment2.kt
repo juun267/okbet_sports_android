@@ -31,11 +31,11 @@ class FavoriteFragment2: SportListFragment2<SportListViewModel, FragmentSportLis
 
     override fun load(item: Item) {
         sportLeagueAdapter2.setNewInstance(item.leagueOddsList.toMutableList())
-        setMatchInfo(item.name, item.num.toString())
+        setMatchInfo(item.name, item.leagueOddsList.size.toString())
     }
 
     fun setFavoriteData(favoriteLeagues: List<Item>) {
-        getGameListAdapter().footerLayout?.getChildAt(0)?.visible()
+        setFooterViewVisiable()
         haveData = true
         if (isAdded) {
             dismissLoading()
