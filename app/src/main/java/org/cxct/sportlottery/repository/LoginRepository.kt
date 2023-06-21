@@ -214,12 +214,9 @@ object LoginRepository {
 
         if (loginResponse.isSuccessful) {
             loginResponse.body()?.let {
-
                 //於遊客帳號添加投注項目至注單內後直接註冊正式帳號 因不會走登出流程 所以直接先清出local user info
                 clear()
-
                 account = registerRequest.userName //預設存帳號
-                setUpLoginData(it.loginData)
             }
         }
 
@@ -227,15 +224,8 @@ object LoginRepository {
     }
 
     suspend fun login(loginRequest: LoginRequest): Response<LoginResult> {
-        val loginResponse = OneBoSportApi.indexService.login(loginRequest)
 
-        if (loginResponse.isSuccessful) {
-            loginResponse.body()?.let {
-                setUpLoginData(it.loginData)
-            }
-        }
-
-        return loginResponse
+        return OneBoSportApi.indexService.login(loginRequest)
     }
 
     /**
@@ -247,40 +237,18 @@ object LoginRepository {
 
     suspend fun loginOrReg(loginRequest: LoginRequest): Response<LoginResult> {
         val loginResponse = OneBoSportApi.indexService.loginOrReg(loginRequest)
-
-        if (loginResponse.isSuccessful) {
-            loginResponse.body()?.let {
-                setUpLoginData(it.loginData)
-            }
-        }
-
         return loginResponse
     }
 
     suspend fun googleLogin(token: String, inviteCode: String?): Response<LoginResult> {
-        val loginResponse = OneBoSportApi.indexService.googleLogin(LoginTokenRequest(token,
+
+        return OneBoSportApi.indexService.googleLogin(LoginTokenRequest(token,
             inviteCode = inviteCode))
-
-        if (loginResponse.isSuccessful) {
-            loginResponse.body()?.let {
-                setUpLoginData(it.loginData)
-            }
-        }
-
-        return loginResponse
     }
 
     suspend fun facebookLogin(token: String, inviteCode: String?): Response<LoginResult> {
-        val loginResponse = OneBoSportApi.indexService.facebookLogin(LoginTokenRequest(token,
+        return OneBoSportApi.indexService.facebookLogin(LoginTokenRequest(token,
             inviteCode = inviteCode))
-
-        if (loginResponse.isSuccessful) {
-            loginResponse.body()?.let {
-                setUpLoginData(it.loginData)
-            }
-        }
-
-        return loginResponse
     }
 
     suspend fun bindGoogle(token: String): Response<AuthBindResult> {
@@ -330,17 +298,7 @@ object LoginRepository {
 
 
     suspend fun loginForGuest(): Response<LoginResult> {
-
-        val loginForGuestResponse =
-            OneBoSportApi.indexService.loginForGuest(LoginForGuestRequest(deviceSn = getDeviceName()))
-
-        if (loginForGuestResponse.isSuccessful) {
-            loginForGuestResponse.body()?.let {
-                setUpLoginData(it.loginData)
-            }
-        }
-
-        return loginForGuestResponse
+        return OneBoSportApi.indexService.loginForGuest(LoginForGuestRequest(deviceSn = getDeviceName()))
     }
 
     fun updateTransNum(transNum: Int) {
