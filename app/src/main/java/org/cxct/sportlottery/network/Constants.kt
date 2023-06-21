@@ -558,7 +558,7 @@ object Constants {
     const val RESET_FORGET_PASSWORD = "/api/front/index/resetForgotPassword" //重设密码
     const val RESET_FORGET_PASSWORD_BY_EMAIL =
         "/api/front/index/resetForgotPasswordByEmail" // 通过邮箱验证后重设密码
-    const val SEND_SMS_FORGET = "/api/front/index/sendSmsForgotPassword" //找回密码-获取短信验证码
+    const val SEND_SMS_FORGET = "/api/front/index/sendSmsForgotPasswordV2" //找回密码-获取短信验证码
     const val SEND_EMAIL_FORGET = "/api/front/index/sendEmailCode" //找回密码-获取邮箱验证码
     const val FORGET_PASSWORD_VALIDATE_EMAIL = "/api/front/index/validateEmailCode"//找回密码-验证邮箱验证码
 

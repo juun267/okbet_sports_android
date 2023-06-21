@@ -178,6 +178,10 @@ class LoginViewModel(
         }
     }
     suspend fun dealWithLoginData(loginResult: LoginResult,loginData: LoginData){
+        if (!loginData.msg.isNullOrBlank()){
+            toast(loginData.msg!!)
+            return
+        }
         loginRepository.setUpLoginData(loginData)
         checkBasicInfo(loginResult) {
             //继续登录
