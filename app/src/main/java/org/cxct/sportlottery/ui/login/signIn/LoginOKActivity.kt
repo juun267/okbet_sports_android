@@ -406,7 +406,9 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             }
         })
         viewModel.selectAccount.observe(this, Observer {
-             start<SelectAccountActivity> {  }
+             start<SelectAccountActivity> {
+                 putExtra(SelectAccountActivity.TYPE_SELECT,SelectAccountActivity.TYPE_LOGIN)
+             }
         })
 
         //跳转至完善注册信息
