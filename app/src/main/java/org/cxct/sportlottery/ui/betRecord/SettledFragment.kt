@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.betRecord
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
@@ -124,18 +125,19 @@ class SettledFragment:BindingFragment<AccountHistoryViewModel,FragmentSettledBin
         viewModel.getSettledList()
         viewModel.settledData.observe(this){
             hideLoading()
+            initBetValue()
             if(it.isEmpty()&&viewModel.pageSettledIndex<=2){
                 binding.empty.emptyView.visible()
                 binding.recyclerSettled.gone()
                 return@observe
             }
-            initBetValue()
             binding.empty.emptyView.gone()
             binding.recyclerSettled.visible()
             mAdapter.addData(it)
         }
         viewModel.responseFailed.observe(this){
             hideLoading()
+            initBetValue()
             mAdapter.setList(arrayListOf())
             binding.empty.emptyView.visible()
         }

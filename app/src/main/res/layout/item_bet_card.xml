@@ -37,7 +37,7 @@
         <TextView
             android:id="@+id/tvStatus"
             android:background="@drawable/bg_bet_status_green"
-            android:text="已中奖"
+            android:text="..."
             android:gravity="center"
             android:layout_gravity="center_vertical"
             android:paddingHorizontal="12dp"
