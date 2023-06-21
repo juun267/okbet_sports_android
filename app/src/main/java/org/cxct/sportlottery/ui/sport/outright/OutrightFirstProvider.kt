@@ -17,8 +17,10 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.dividerView
 import org.cxct.sportlottery.util.setArrowSpin
 import org.cxct.sportlottery.util.setLeagueLogo
+import splitties.views.dsl.core.add
 
 // 冠军列表-联赛名称
 class OutrightFirstProvider(val adapter: SportOutrightAdapter2,
@@ -32,11 +34,17 @@ class OutrightFirstProvider(val adapter: SportOutrightAdapter2,
                            val arrow: ImageView, root: View): BaseViewHolder(root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+
         val context = parent.context
+        val root = LinearLayout(context)
+        root.orientation = LinearLayout.VERTICAL
+        root.foreground = ContextCompat.getDrawable(context, R.drawable.fg_ripple)
+        root.addView(context.dividerView(R.color.color_ebf1fc, 1.dp))
+
         val lin = LinearLayout(context)
         lin.gravity = Gravity.CENTER_VERTICAL
         lin.layoutParams = LinearLayout.LayoutParams(-1, 50.dp)
-        lin.foreground = ContextCompat.getDrawable(context, R.drawable.fg_ripple)
+        root.addView(lin)
 
         val logo = AppCompatImageView(context)
         val p20 = 20.dp
@@ -58,7 +66,7 @@ class OutrightFirstProvider(val adapter: SportOutrightAdapter2,
         arrow.setImageResource(R.drawable.ic_arrow_gray_up1)
         44.dp.let { lin.addView(arrow, LinearLayout.LayoutParams(it, it)) }
 
-        return LeagueVH(logo, name, arrow, lin)
+        return LeagueVH(logo, name, arrow, root)
     }
 
     override fun convert(helper: BaseViewHolder, item: BaseNode)  {

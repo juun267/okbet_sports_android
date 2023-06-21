@@ -29,6 +29,7 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LanguageManager.makeUseLanguage
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.OddsModeUtil
+import org.cxct.sportlottery.util.SingleLiveEvent
 
 class SportLeftMenuViewModel(
     androidContext: Application,
@@ -48,10 +49,8 @@ class SportLeftMenuViewModel(
     sportMenuRepository
 ) {
 
-    val betCount: LiveData<Int>
-        get() = _betCount
-    private val _betCount = MutableLiveData<Int>()
 
+    val betCountEvent=SingleLiveEvent<Int>()
 
     fun isLogin(): Boolean {
         return loginRepository.isLogined()
@@ -75,7 +74,7 @@ class SportLeftMenuViewModel(
             } ?: return@launch
 
             result.total?.let {
-                _betCount.postValue(it)
+                betCountEvent.postValue(it)
             }
         }
     }

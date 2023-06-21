@@ -11,11 +11,14 @@ import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.inVisible
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentSportLeftMenuBinding
+import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
 import org.cxct.sportlottery.util.EventBusUtil
+import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.startLogin
 import org.cxct.sportlottery.view.onClick
 import org.cxct.sportlottery.view.setColors
 import org.greenrobot.eventbus.Subscribe
@@ -53,7 +56,7 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
         }
         //登录注册
         tvLogin.onClick {
-            LoginOKActivity.startRegist(requireContext())
+            requireActivity().startLogin()
             close()
         }
 
@@ -111,8 +114,7 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
                 //用户名
                 tvUserName.text="${viewModel.userInfo.value?.userName} "
                 //余额
-                tvUserBalance.text="₱ ${viewModel.userMoney.value} "
-
+                tvUserBalance.text="$showCurrencySign ${TextUtil.format(viewModel.userMoney.value?:0)}"
                 Glide.with(requireContext())
                     .load(viewModel.userInfo.value?.iconUrl)
                     .apply(RequestOptions().placeholder(R.drawable.ic_person_avatar))

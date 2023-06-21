@@ -12,10 +12,12 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
 import android.webkit.WebView
 import android.widget.*
+import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.DialogFragment
@@ -56,6 +58,7 @@ import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteAdapter
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.DisplayUtil.dpToPx
 import org.cxct.sportlottery.util.SvgUtil.setSvgIcon
 import org.cxct.sportlottery.view.boundsEditText.TextFieldBoxes
@@ -1081,7 +1084,6 @@ fun BaseFragment<SportListViewModel>.showErrorMsgDialog(msg: String) {
     dialog.setTextColor(R.color.color_E44438_e44438)
     dialog.setNegativeButtonText(null)
     dialog.setPositiveClickListener {
-        viewModel.resetErrorDialogMsg()
         dialog.dismiss()
         back()
     }
@@ -1179,5 +1181,22 @@ fun View.setArrowSpin(isExpanded: Boolean, isAnimate: Boolean, angle: Float = 18
         rotationAnimation(rotation)
     } else {
         this.rotation = rotation
+    }
+}
+
+fun Context.dividerView(@ColorRes color: Int, width: Int = 0.5f.dp, isVertical: Boolean = true, margins: Int = 0): View {
+    return View(this).apply {
+        setBackgroundResource(color)
+        if (isVertical) {
+            layoutParams = ViewGroup.MarginLayoutParams(-1, width).apply {
+                leftMargin = margins
+                rightMargin = margins
+            }
+        } else {
+            layoutParams = ViewGroup.MarginLayoutParams(width, -1).apply {
+                leftMargin = margins
+                rightMargin = margins
+            }
+        }
     }
 }

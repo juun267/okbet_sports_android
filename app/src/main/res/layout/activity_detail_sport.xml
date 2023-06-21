@@ -159,7 +159,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:text="Collect"
+                            android:text="@string/main_tab_favorite"
                             android:textColor="@color/color_000000"
                             android:textSize="12sp"
                             android:textStyle="bold"
@@ -171,7 +171,7 @@
                             android:id="@+id/tvAnim"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Animation"
+                            android:text="@string/anime"
                             android:textColor="@color/color_BEC7DC"
                             android:textSize="12sp"
                             app:layout_constraintBottom_toBottomOf="@id/tvFavoriteSymbol"
@@ -194,7 +194,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="10dp"
-                            android:text="Video"
+                            android:text="@string/video"
                             android:textColor="@color/color_BEC7DC"
                             android:textSize="12sp"
                             app:layout_constraintBottom_toBottomOf="@+id/ivAnim"
@@ -216,7 +216,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="10dp"
-                            android:text="MC"
+                            android:text="@string/P142"
                             android:textColor="@color/color_BEC7DC"
                             android:textSize="12sp"
                             app:layout_constraintBottom_toBottomOf="@+id/ivVideo"
@@ -391,11 +391,7 @@
                 android:id="@+id/ns_analyze"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone">
-
-            </androidx.core.widget.NestedScrollView>
-
-
+                android:visibility="gone" />
 
         </FrameLayout>
 
@@ -409,6 +405,7 @@
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 
     <!--    <include-->
     <!--        android:id="@+id/cl_bet_list_bar"-->
@@ -432,6 +429,19 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivBackTop"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintVertical_bias="0.7"
+        android:adjustViewBounds="true"
+        android:src="@drawable/icon_backtop_blue"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <FrameLayout
         android:id="@+id/fl_bet_list"

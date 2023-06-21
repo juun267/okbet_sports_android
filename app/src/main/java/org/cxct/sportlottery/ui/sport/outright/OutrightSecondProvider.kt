@@ -19,6 +19,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.outright.odds.CategoryOdds
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.dividerView
 import org.cxct.sportlottery.util.setArrowSpin
 
 // 冠军列表-玩法
@@ -36,13 +37,18 @@ class OutrightSecondProvider(val adapter: SportOutrightAdapter2,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
 
         val context = parent.context
+
+        val root = LinearLayout(context)
+        root.orientation = LinearLayout.VERTICAL
+        root.addView(context.dividerView(R.color.color_ebf1fc, 1.dp, margins = 12.dp))
+
         val lin = LinearLayout(context)
         val p10 = 10.dp
         val p12 = 12.dp
         lin.setPadding(p12, 0, 2.dp, 0)
         lin.gravity = Gravity.CENTER_VERTICAL
-        lin.layoutParams = LinearLayout.LayoutParams(-1, -2)
         lin.minimumHeight = 40.dp
+        root.addView(lin, LinearLayout.LayoutParams(-1, -2))
 
         val name = AppCompatTextView(context)
         name.maxLines = 2
@@ -65,7 +71,7 @@ class OutrightSecondProvider(val adapter: SportOutrightAdapter2,
         arrow.setImageResource(R.drawable.ic_arrow_gray_up1)
         40.dp.let { lin.addView(arrow, LinearLayout.LayoutParams(it, -2)) }
 
-        return MatchVH(name, time, arrow, lin)
+        return MatchVH(name, time, arrow, root)
     }
 
     override fun convert(helper: BaseViewHolder, item: BaseNode) {

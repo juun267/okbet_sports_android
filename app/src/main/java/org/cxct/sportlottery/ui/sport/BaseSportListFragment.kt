@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
@@ -103,43 +102,48 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     }
 
     protected open fun observerMenuData() {
-        viewModel.sportMenuData.observe(viewLifecycleOwner) {
+        viewModel.sportTypeMenuData.observe(viewLifecycleOwner) {
 
-            if (it.second.isNullOrEmpty()) {
+            if (it.first.isNullOrEmpty()) {
                 dismissLoading()
             }
-            if (!it.first.succeeded()) {
-                ToastUtil.showToast(activity, it.first.msg)
+            if (!it.second) {
+                ToastUtil.showToast(activity, it.third)
                 return@observe
             }
-            updateSportType(it.second)
-            it?.let { (parentFragment as SportFragment2).updateSportMenuResult(it.first) }
+            updateSportType(it.first)
+
+        }
+        viewModel.sportMenuApiResult.observe(viewLifecycleOwner) {
+            (parentFragment as SportFragment2?)?.updateSportMenuResult(it)
         }
     }
 
-    private fun updateSportType(gameTypeList: List<Item>) {
+    protected fun updateSportType(gameTypeList: List<Item>) {
 
         if (gameTypeList.isEmpty()) {
             return
         }
         //处理默认不选中的情况
-        if (gameType.isNullOrEmpty()) {
-            (gameTypeList.find { it.num > 0 } ?: gameTypeList.first()).let {
-                it.isSelected = true
-                gameType = it.code
-                load(it)
-            }
-        } else {
-            (gameTypeList.find { it.code == gameType } ?: gameTypeList.first()).let {
-                gameType = it.code
-                if (!it.isSelected) {
-                    it.isSelected = true
-                    load(it)
-                }
+
+        var targetGameType: Item? = null
+        gameTypeList.forEach {
+            it.isSelected = false
+            if (it.code == gameType) {
+                targetGameType = it
             }
         }
-        //全部球类tab不支持联赛筛选
-        binding.ivFilter.isVisible = gameType != GameType.ALL.key
+        if (targetGameType == null) {
+            targetGameType = gameTypeList.find { it.num > 0}
+        }
+        if (targetGameType == null) {
+            targetGameType = gameTypeList.first()
+        }
+
+        gameType = targetGameType!!.code
+        targetGameType!!.isSelected = true
+        load(targetGameType!!)
+
         gameTypeAdapter.setNewInstance(gameTypeList.toMutableList())
         (binding.sportTypeList.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
             binding.sportTypeList,
@@ -205,7 +209,6 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
                 if (RecyclerView.SCROLL_STATE_DRAGGING == newState) { // 开始滑动
                     clearSubscribeChannels()
                 } else if (RecyclerView.SCROLL_STATE_IDLE == newState) { // 滑动停止
-                    Log.e("[subscribe]","訂閱=====>>> RecyclerView.SCROLL_STATE_IDLE ")
                     resubscribeChannel(20)
                 }
             }

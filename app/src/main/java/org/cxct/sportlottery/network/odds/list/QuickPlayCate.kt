@@ -24,7 +24,4 @@ data class QuickPlayCate(
 ) : Parcelable {
     var isSelected = false
     val quickOdds: MutableMap<String, MutableList<Odd?>?> = mutableMapOf()
-
-    var positionButtonPage = 0
-    var positionButtonPairTab = 0
 }

@@ -80,6 +80,6 @@
         android:outlineAmbientShadowColor="@color/transparent"
         android:outlineSpotShadowColor="@color/transparent"
         android:tag="LEFT"
-        tools:layout="@layout/fragment_main_left" />
+        tools:layout="@layout/fragment_main_left2" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

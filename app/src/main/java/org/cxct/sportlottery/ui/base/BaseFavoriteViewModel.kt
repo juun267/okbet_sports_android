@@ -184,6 +184,7 @@ abstract class BaseFavoriteViewModel(
         mFavorMatchOddList.postValue(Event(rows.updateMatchType()))
     }
 
+
     private fun getMyFavoriteAllMatch(
         playCateMenu: String,
         playCateCode: String?,
@@ -260,7 +261,7 @@ abstract class BaseFavoriteViewModel(
         mFavorMatchOddList.postValue(Event(leagueOddList.updateMatchType()))
     }
 
-    private fun MatchOdd.setupOddDiscountFixed() {
+    protected fun MatchOdd.setupOddDiscountFixed() {
 
         val discount = userInfo.value?.discount ?: 1.0F
 
@@ -368,7 +369,7 @@ abstract class BaseFavoriteViewModel(
     /**
      * 根據賽事的oddsSort將盤口重新排序
      */
-    private fun List<LeagueOdd>.sortOdds() {
+    protected fun List<LeagueOdd>.sortOdds() {
         this.forEach { leagueOdd ->
             leagueOdd.matchOdds.forEach { matchOdd ->
                 val sortOrder = matchOdd.oddsSort?.split(",")
@@ -412,7 +413,7 @@ abstract class BaseFavoriteViewModel(
     /**
      * 更新翻譯
      */
-    private fun List<LeagueOdd>.getPlayCateNameMap() {
+    protected fun List<LeagueOdd>.getPlayCateNameMap() {
         this.onEach { LeagueOdd ->
             LeagueOdd.matchOdds.onEach { matchOdd ->
                 matchOdd.playCateNameMap =
