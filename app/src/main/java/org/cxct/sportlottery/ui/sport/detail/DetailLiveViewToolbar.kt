@@ -102,22 +102,22 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initOnclick() {
-        iv_live.setOnClickListener {
-            liveUrl?.let {
-                showLive()
-            }
-        }
-        iv_video.setOnClickListener {
-            videoUrl?.let {
-                showVideo()
-            }
-        }
-
-        iv_animation.setOnClickListener {
-            animeUrl?.let {
-                showAnime()
-            }
-        }
+//        iv_live.setOnClickListener {
+//            liveUrl?.let {
+//                showLive()
+//            }
+//        }
+//        iv_video.setOnClickListener {
+//            videoUrl?.let {
+//                showVideo()
+//            }
+//        }
+//
+//        iv_animation.setOnClickListener {
+//            animeUrl?.let {
+//                showAnime()
+//            }
+//        }
         iv_fullscreen.setOnClickListener {
             showFullScreen(!isFullScreen)
             if (isFullScreen) {//全屏
@@ -199,27 +199,27 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         when (curType) {
             LiveType.LIVE -> {
                 setViewVisible(player_view, iv_live_sound)
-                setViewGone(viewBinding.webView, iv_live_status, tvStatus, iv_live)
+                setViewGone(viewBinding.webView, iv_live_status, tvStatus)
                 liveUrl?.let { LogUtil.d(it) }
                 iv_live_status.setImageResource(R.drawable.bg_no_play)
-                iv_video.isVisible = !TextUtils.isEmpty(videoUrl)
-                iv_animation.isVisible = !TextUtils.isEmpty(animeUrl)
+//                iv_video.isVisible = !TextUtils.isEmpty(videoUrl)
+//                iv_animation.isVisible = !TextUtils.isEmpty(animeUrl)
             }
 
             LiveType.VIDEO -> {
                 setViewVisible(viewBinding.webView)
-                setViewGone(player_view, iv_live_status, tvStatus, iv_video, iv_live_sound)
-                iv_live.isVisible = !liveUrl.isNullOrEmpty()
-                iv_live_status.setImageResource(R.drawable.bg_no_play)
-                iv_animation.isVisible = !animeUrl.isNullOrEmpty()
+                setViewGone(player_view, iv_live_status, tvStatus, iv_live_sound)
+//                iv_live.isVisible = !liveUrl.isNullOrEmpty()
+//                iv_live_status.setImageResource(R.drawable.bg_no_play)
+//                iv_animation.isVisible = !animeUrl.isNullOrEmpty()
             }
 
             LiveType.ANIMATION -> {
                 setViewVisible(viewBinding.webView)
-                setViewGone(player_view, iv_live_status, iv_live_sound, tvStatus, iv_animation)
+                setViewGone(player_view, iv_live_status, iv_live_sound, tvStatus)
                 iv_live_status.setImageResource(R.drawable.bg_no_play)
-                iv_live.isVisible = !liveUrl.isNullOrEmpty()
-                iv_video.isVisible = !videoUrl.isNullOrEmpty()
+//                iv_live.isVisible = !liveUrl.isNullOrEmpty()
+//                iv_video.isVisible = !videoUrl.isNullOrEmpty()
             }
         }
     }
@@ -281,11 +281,24 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
 
     //region 賽事動畫
     private fun openWebView() {
-        iv_animation.isSelected = true
+//        iv_animation.isSelected = true
         viewBinding.webView.isVisible = true
         player_view.isVisible = false
 
-        viewBinding.webView.okWebChromeClient = OkWebChromeClient()
+        viewBinding.webView.okWebChromeClient = object: OkWebChromeClient(){
+
+
+
+            override fun onHideCustomView() {
+                super.onHideCustomView()
+            }
+
+            override fun onShowCustomView(view: View?, callback: CustomViewCallback?) {
+                super.onShowCustomView(view, callback)
+            }
+        }
+
+
         viewBinding.webView.okWebViewClient = object : OkWebViewClient(object : WebViewCallBack {
             override fun pageStarted(view: View?, url: String?) {}
             override fun pageFinished(view: View?, url: String?) {

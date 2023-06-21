@@ -62,44 +62,44 @@
         </RelativeLayout>
 
 
-        <LinearLayout
-            android:id="@+id/cl_control"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="10dp">
+<!--        <LinearLayout-->
+<!--            android:id="@+id/cl_control"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_gravity="right"-->
+<!--            android:gravity="center"-->
+<!--            android:orientation="vertical"-->
+<!--            android:padding="10dp">-->
 
-            <ImageView
-                android:id="@+id/iv_live"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+<!--            <ImageView-->
+<!--                android:id="@+id/iv_live"-->
+<!--                android:layout_width="30dp"-->
+<!--                android:layout_height="30dp"-->
 
-                android:src="@drawable/ic_live_trans"
-                android:visibility="gone"
-                tools:visibility="visible" />
+<!--                android:src="@drawable/ic_live_trans"-->
+<!--                android:visibility="gone"-->
+<!--                tools:visibility="visible" />-->
 
-            <ImageView
-                android:id="@+id/iv_video"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="20dp"
-                android:src="@drawable/ic_video_trans"
-                android:visibility="gone"
-                tools:visibility="visible" />
+<!--            <ImageView-->
+<!--                android:id="@+id/iv_video"-->
+<!--                android:layout_width="30dp"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:src="@drawable/ic_video_trans"-->
+<!--                android:visibility="gone"-->
+<!--                tools:visibility="visible" />-->
 
-            <ImageView
-                android:id="@+id/iv_animation"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="20dp"
-                android:src="@drawable/ic_anime_trans"
-                android:visibility="gone"
-                tools:visibility="visible" />
+<!--            <ImageView-->
+<!--                android:id="@+id/iv_animation"-->
+<!--                android:layout_width="30dp"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:src="@drawable/ic_anime_trans"-->
+<!--                android:visibility="gone"-->
+<!--                tools:visibility="visible" />-->
 
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
         <ImageView
             android:id="@+id/iv_live_sound"
