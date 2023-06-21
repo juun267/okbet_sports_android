@@ -31,5 +31,7 @@ enum class MoneyType(val code: String) {
     VIETTELPAY("ic_viettelpay"),//107:ViettelPay
     RECHARGE_CARD("ic_recharge_card"),//108:刮刮卡充值 //Recharge Card
     QQONLINE("ic_online_qq"),//4:在線QQ
-    FORTUNE_PAY("ic_fortunepay")//212 fortunePay
+    FORTUNE_PAY("ic_fortunepay"),//212 fortunePay
+    AUB("ic_aub"),//213 AUB
+    EPON("ic_epon")//214 E-PON
 }

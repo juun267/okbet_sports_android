@@ -3,8 +3,8 @@ package org.cxct.sportlottery.util
 import android.content.Context
 import android.content.res.AssetManager
 import androidx.annotation.DrawableRes
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.OnlineType
@@ -75,6 +75,8 @@ object MoneyManager {
             MoneyType.RECHARGE_CARD.code -> R.drawable.ic_recharge_card
             MoneyType.QQONLINE.code -> R.drawable.ic_qq_online
             MoneyType.FORTUNE_PAY.code -> R.drawable.ic_fortunepay
+            MoneyType.AUB.code -> R.drawable.ic_aub
+            MoneyType.EPON.code -> R.drawable.ic_epon
             else -> R.drawable.ic_bank_atm
         }
     }
@@ -97,6 +99,8 @@ object MoneyManager {
             MoneyType.PAYMAYA.code -> R.drawable.ic_pay_maya_type
             MoneyType.PAYPAL_TYPE.code -> R.drawable.ic_paypal_type
             MoneyType.FORTUNE_PAY.code -> R.drawable.ic_fortunepay
+            MoneyType.AUB.code -> R.drawable.ic_aub
+            MoneyType.EPON.code -> R.drawable.ic_epon
             else -> R.drawable.ic_bank_atm
         }
     }
