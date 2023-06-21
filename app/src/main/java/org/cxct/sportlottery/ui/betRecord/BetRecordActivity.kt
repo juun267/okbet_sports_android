@@ -40,7 +40,7 @@ class BetRecordActivity:BindingActivity<MainViewModel,ActivityBetRecordBinding>(
 
     override fun onInitData() {
         super.onInitData()
-        Log.e("dachang","tvUnsettled onInitData")
+        //默认选中未结单
         binding.tvUnsettled.performClick()
     }
 

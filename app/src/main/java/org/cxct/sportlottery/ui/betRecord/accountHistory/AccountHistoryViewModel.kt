@@ -393,7 +393,7 @@ class AccountHistoryViewModel(
 
     val unsettledDataEvent=SingleLiveEvent<List<org.cxct.sportlottery.network.bet.list.Row>>()
     var pageIndex=1
-    private val pageSize=10
+    private val pageSize=20
     fun getUnsettledList() {
         if (betListRequesting )
             return
@@ -406,12 +406,10 @@ class AccountHistoryViewModel(
             pageSize = pageSize
         )
 
-        loading()
         viewModelScope.launch {
             val resultData=doNetwork(androidContext) {
                 OneBoSportApi.betService.getBetList(betListRequest)
             }
-            hideLoading()
             betListRequesting = false
             if(resultData==null){
                 _responseFailed.postValue(true)
