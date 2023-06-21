@@ -142,6 +142,7 @@ class RecyclerBetCardAdapter(val row: Row,val block:()->Unit) :
                     }
 
                     override fun onFinish() {
+                        //执行监听
                         block()
                         if(binding.tvStatus.isAttachedToWindow){
                             tvStatus.setBetReceiptStatus(row.status, row.cancelledBy)

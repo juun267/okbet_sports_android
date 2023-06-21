@@ -21,12 +21,14 @@ import java.util.Locale
  * isDetails 是否为详情页   需要隐藏进入详情页
  */
 class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAdapter<Row, ItemBetListBinding>() {
+
     private var block:()->Unit= { }
+    //待成立注单   倒计时结束监听
     fun setOnCountTime(task:()->Unit){
         block=task
     }
     init {
-        //打印
+        //打印点击
         addChildClickViewIds(R.id.tvOrderPrint)
     }
 
@@ -34,7 +36,6 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
     override fun onBinding(position: Int, binding: ItemBetListBinding, item: Row) {
 
         binding.run {
-
 
             if(item.matchOdds.isNotEmpty()){
                 //开赛时间

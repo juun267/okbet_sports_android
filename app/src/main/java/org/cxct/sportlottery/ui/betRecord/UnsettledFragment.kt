@@ -19,6 +19,9 @@ import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.view.loadMore
 import org.cxct.sportlottery.view.onClick
 
+/**
+ * 未结单列表
+ */
 class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnsettledBinding>() {
     private var mAdapter = RecyclerUnsettledAdapter()
 
@@ -57,15 +60,17 @@ class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnset
                 }
             }
         }
-
+        //空视图点击
         empty.emptyView.onClick {
             requireActivity().finish()
         }
 
+        //加载更多
         recyclerUnsettled.loadMore {
             viewModel.getUnsettledList()
         }
 
+        //待成立倒计时结束刷新数据
         mAdapter.setOnCountTime {
             viewModel.pageIndex = 1
             recyclerUnsettled.postDelayed({
@@ -76,14 +81,17 @@ class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnset
     }
 
     private fun initObserve() {
+        //网络请求失败
         viewModel.responseFailed.observe(this) {
             hideLoading()
             mAdapter.setList(arrayListOf())
             binding.empty.emptyView.visible()
             binding.recyclerUnsettled.gone()
         }
+        //未接单数据监听
         viewModel.unsettledDataEvent.observe(this) {
             hideLoading()
+            //第一页数据为空
             if (it.isEmpty() && viewModel.pageIndex <= 2) {
                 binding.empty.emptyView.visible()
                 binding.recyclerUnsettled.gone()
