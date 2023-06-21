@@ -63,7 +63,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivLogo">
 
-        <Button
+        <TextView
             android:id="@+id/btnOkbet"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -76,11 +76,11 @@
             android:drawablePadding="@dimen/margin_16"
             android:gravity="start|center_vertical"
             android:textAllCaps="false"
-            android:text="OKBET Member Account"
+            android:text="@string/P131"
             android:textColor="@android:color/white"
             android:textSize="@dimen/textSize14sp" />
 
-        <Button
+        <TextView
             android:id="@+id/btnGlife"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -92,7 +92,7 @@
             android:drawablePadding="@dimen/margin_16"
             android:gravity="start|center_vertical"
             android:textAllCaps="false"
-            android:text="OKBET x Glife Member Account"
+            android:text="@string/P132"
             android:textColor="@android:color/white"
             android:textSize="@dimen/textSize14sp" />
 

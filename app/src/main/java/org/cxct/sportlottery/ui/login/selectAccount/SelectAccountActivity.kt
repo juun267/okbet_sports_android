@@ -14,6 +14,7 @@ class SelectAccountActivity : BindingActivity<LoginViewModel, ActivitySelectAcco
 
 
     override fun onInitView() = binding.run {
+        setStatusBarDarkFont()
         bindFinish(btnBack)
         clLiveChat.setServiceClick(supportFragmentManager)
         btnOkbet.setOnClickListener {
