@@ -37,6 +37,7 @@ class SettledFragment:BindingFragment<AccountHistoryViewModel,FragmentSettledBin
         recyclerSettled.layoutManager=LinearLayoutManager(requireContext())
         recyclerSettled.adapter=mAdapter
 
+        mAdapter.enableDefaultEmptyView(requireContext())
         //item打印点击
         mAdapter.setOnItemChildClickListener { _, view, position ->
             val data= mAdapter.data[position]
@@ -68,9 +69,9 @@ class SettledFragment:BindingFragment<AccountHistoryViewModel,FragmentSettledBin
             }
         }
 
-        empty.tvReturn.onClick {
-            requireActivity().finish()
-        }
+//        empty.tvReturn.onClick {
+//            requireActivity().finish()
+//        }
 
         //tab切换
         tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
@@ -139,14 +140,6 @@ class SettledFragment:BindingFragment<AccountHistoryViewModel,FragmentSettledBin
         viewModel.settledData.observe(this){
             hideLoading()
             initBetValue()
-            //如果空数据
-            if(it.isEmpty()&&viewModel.pageSettledIndex<=2){
-                binding.empty.emptyView.visible()
-                binding.recyclerSettled.gone()
-                return@observe
-            }
-
-            binding.empty.emptyView.gone()
             binding.recyclerSettled.visible()
             mAdapter.addData(it)
         }
@@ -155,7 +148,7 @@ class SettledFragment:BindingFragment<AccountHistoryViewModel,FragmentSettledBin
             hideLoading()
             initBetValue()
             mAdapter.setList(arrayListOf())
-            binding.empty.emptyView.visible()
+//            binding.empty.emptyView.visible()
         }
     }
 
