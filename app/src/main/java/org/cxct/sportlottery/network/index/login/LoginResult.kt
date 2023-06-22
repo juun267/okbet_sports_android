@@ -15,5 +15,7 @@ data class LoginResult(
     @Json(name = "success")
     override val success: Boolean,
     @Json(name = "t")
-    val loginData: LoginData? = null
+    val t: LoginData? = null,
+    @Json(name = "rows")
+    val rows: List<LoginData>? = null
 ) : BaseResult(),java.io.Serializable

@@ -245,7 +245,7 @@
                     app:contentScrim="@color/transparent"
                     app:layout_collapseMode="pin"
                     app:theme="@style/Widget.AppCompat.Toolbar"
-                    tools:visibility="gone">
+                    >
 
                     <include
                         android:id="@+id/collaps1"
@@ -262,7 +262,7 @@
                 android:background="@color/color_191919_FCFCFC"
                 android:orientation="vertical"
                 android:visibility="visible"
-                tools:visibility="visible">
+               >
 
                 <!--                <androidx.constraintlayout.widget.ConstraintLayout-->
                 <!--                    android:layout_width="match_parent"-->
@@ -397,6 +397,7 @@
 
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:visibility="gone"
             android:id="@+id/snackbar_holder"
             android:layout_width="match_parent"
             android:layout_height="64dp"
@@ -436,7 +437,7 @@
         android:layout_height="56dp"
         android:layout_gravity="end|bottom"
         android:layout_marginBottom="20dp"
-        app:layout_constraintVertical_bias="0.7"
+        app:layout_constraintVertical_bias="0.8"
         android:adjustViewBounds="true"
         android:src="@drawable/icon_backtop_blue"
         app:layout_constraintTop_toTopOf="parent"

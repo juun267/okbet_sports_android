@@ -16,6 +16,7 @@ import org.cxct.sportlottery.ui.betRecord.adapter.RecyclerUnsettledAdapter
 import org.cxct.sportlottery.ui.betRecord.dialog.PrintDialog
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.view.BetEmptyView
 import org.cxct.sportlottery.view.loadMore
 import org.cxct.sportlottery.view.onClick
 
@@ -29,6 +30,7 @@ class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnset
     override fun onInitView(view: View) = binding.run {
         recyclerUnsettled.layoutManager = LinearLayoutManager(requireContext())
         recyclerUnsettled.adapter = mAdapter
+        mAdapter.setEmptyView(BetEmptyView(requireContext()))
         mAdapter.setOnItemChildClickListener { _, view, position ->
             val data = mAdapter.data[position]
             when (view.id) {
@@ -85,21 +87,11 @@ class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnset
         viewModel.responseFailed.observe(this) {
             hideLoading()
             mAdapter.setList(arrayListOf())
-//            binding.empty.emptyView.visible()
-            binding.recyclerUnsettled.gone()
         }
         //未接单数据监听
         viewModel.unsettledDataEvent.observe(this) {
             hideLoading()
-            //第一页数据为空
-            if (it.isEmpty() && viewModel.pageIndex <= 2) {
-//                binding.empty.emptyView.visible()
-                binding.recyclerUnsettled.gone()
-                return@observe
-            }
-//            binding.empty.emptyView.gone()
             binding.recyclerUnsettled.visible()
-
             if(viewModel.pageIndex == 2){
                 mAdapter.setList(it)
             }else{

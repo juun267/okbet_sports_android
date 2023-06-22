@@ -6,23 +6,28 @@ import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.event.ForgetPwdSelectAccountEvent
+import org.cxct.sportlottery.common.event.LoginSelectAccountEvent
 import org.cxct.sportlottery.databinding.ActivityForgetPassword2Binding
 import org.cxct.sportlottery.common.extentions.bindFinish
 import org.cxct.sportlottery.common.extentions.finishWithOK
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.network.index.forgetPassword.ResetPasswordData
 import org.cxct.sportlottery.network.index.forgetPassword.SendSmsResult
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.login.foget.reset.ResetPasswordActivity
 import org.cxct.sportlottery.ui.login.VerifyCodeDialog
+import org.cxct.sportlottery.ui.login.selectAccount.SelectAccountActivity
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.checkEmail
 import org.cxct.sportlottery.view.checkPhoneNum
 import org.cxct.sportlottery.view.checkSMSCode
-import org.cxct.sportlottery.util.CountDownUtil
-import org.cxct.sportlottery.util.ToastUtil
-import org.cxct.sportlottery.util.setBtnEnable
-import org.cxct.sportlottery.util.setServiceClick
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+import splitties.activities.start
 
 /**
  * @app_destination 通过手机号或者邮箱重置登录密码
@@ -56,6 +61,7 @@ open class ForgetPasswordActivity: BaseActivity<ForgetViewModel>(ForgetViewModel
         setContentView(binding.root)
         initView()
         initObserve()
+        EventBusUtil.targetLifecycle(this)
     }
 
     private fun initView() = binding.run {
@@ -186,12 +192,18 @@ open class ForgetPasswordActivity: BaseActivity<ForgetViewModel>(ForgetViewModel
     private fun updateUiWithResult(smsResult: SendSmsResult?) {
         hideLoading()
         if (smsResult?.success == true) {
-            userName = smsResult.ResetPasswordData?.userName
-            codeCountDown()
-//            CountDownUtil.targSMSTimeStamp()
-            val msg = smsResult.ResetPasswordData?.msg
-            if(!msg.isEmptyStr()) {
-                ToastUtil.showToast(this@ForgetPasswordActivity, msg, Toast.LENGTH_SHORT)
+            when{
+                smsResult.t!= null->{
+                    dealWithSmsResultata(smsResult.t)
+                }
+                smsResult.rows?.size == 1->{
+                    dealWithSmsResultata(smsResult.rows[0])
+                }
+                smsResult.rows?.size == 2->{
+                   start<SelectAccountActivity> {
+                       putExtra(SelectAccountActivity.TYPE_SELECT,SelectAccountActivity.TYPE_FORGET)
+                   }
+                }
             }
             return
         }
@@ -205,11 +217,28 @@ open class ForgetPasswordActivity: BaseActivity<ForgetViewModel>(ForgetViewModel
             binding.etSmsValidCode.setError(smsResult?.msg,false)
         }
     }
+    fun dealWithSmsResultata(resetPasswordData: ResetPasswordData){
+        userName = resetPasswordData.userName
+        codeCountDown()
+        val msg = resetPasswordData.msg
+        if(!msg.isEmptyStr()) {
+            ToastUtil.showToast(this@ForgetPasswordActivity, msg, Toast.LENGTH_SHORT)
+        }
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             finishWithOK()
+        }
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSelectAccount(event: ForgetPwdSelectAccountEvent) {
+        val result = viewModel.smsResult.value
+        result?.rows?.let {
+            it.first { it.vipType==(if(event.isVip) 1 else 0)}.let {
+                dealWithSmsResultata(it)
+            }
         }
     }
 

@@ -708,16 +708,21 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     fun backMainHome() {
         homeFragment().backMainHome()
+        if (bottom_navigation_view.currentItem != 0) {
+            bottom_navigation_view.currentItem = 0
+        }
     }
-    fun jumpToLive() {
-        homeFragment().jumpToLive()
-    }
-
     fun jumpToOKGames() {
-        jumpToGame()
+        if (getMarketSwitch()) {
+            return
+        }
+        if (bottom_navigation_view.currentItem != 2) {
+            bottom_navigation_view.currentItem = 2
+        }
     }
 
     fun jumpToNews() {
+        backMainHome()
         homeFragment().jumpToNews()
     }
     fun jumpToTheSport(matchType: MatchType? = null, gameType: GameType? = null) {
@@ -741,14 +746,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         jumpToTheSport(MatchType.EARLY, GameType.FT)
         if (bottom_navigation_view.currentItem != 1) {
             bottom_navigation_view.currentItem = 1
-        }
-    }
-    fun jumpToGame() {
-        if (getMarketSwitch()) {
-            return
-        }
-        if (bottom_navigation_view.currentItem != 2) {
-            bottom_navigation_view.currentItem = 2
         }
     }
     fun jumpToBetInfo(tabPosition: Int) {

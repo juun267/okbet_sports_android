@@ -109,16 +109,6 @@ class LeagueSelectActivity :
             leagueSelectAdapter.notifyDataSetChanged()
             setSelectSum()
         }
-        btnRest.setOnClickListener {
-            selectStartTime = ""
-            selectEndTime = ""
-            setDateListView()
-            viewModel.getOddsList(gameType,
-                matchType.postValue,
-                startTime ?: "",
-                endTime ?: "",
-                matchIdList)
-        }
         btnConfirm.setOnClickListener {
             var matchSelectList = arrayListOf<String>()
             val countLeague = itemData.count { it.league.isSelected }

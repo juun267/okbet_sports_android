@@ -309,19 +309,23 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             live_view_tool_bar.isVisible = true
             collaps_toolbar.isVisible = false
             clToolContent.gone()
+            detailLayout.gone()
             app_bar_layout.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
             setScrollEnable(false)
         } else {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
             lin_center.isVisible = true
             llToolBar.visible()
+            v_statusbar.visible()
             vpContainer.isVisible = false
             live_view_tool_bar.isVisible = true
+            detailLayout.visible()
             clToolContent.visible()
             collaps_toolbar.isVisible = true
             app_bar_layout.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
             setScrollEnable(true)
         }
+
 
         live_view_tool_bar.updateLayoutParams {
             if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {

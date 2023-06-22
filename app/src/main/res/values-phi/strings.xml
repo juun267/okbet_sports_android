@@ -160,7 +160,7 @@
     <string name="october">Sampu</string>
     <string name="november">Labing Isa</string>
     <string name="december">Labing Dalawa</string>
-    <string name="other">iba pa</string>
+    <string name="other">Iba pa</string>
     <string name="unknown_name"></string>
     <string name="left_menu_odds_type_setting">Handicap setting</string>
     <string name="game_settlement">Resulta</string>
@@ -319,8 +319,7 @@
     <string name="paymaya_recharge_hint">Mag-log in at suriin ang Paymaya account ay ginagamit sa deposito. Ang kumpanya ay hindi mananagot para sa deposito sa nag-expire na account!</string>
     <string name="title_pay_channel">Channel ng pagbabayad</string>
     <string name="title_choose_pay_channel">Pumili ng paraan ng pagbabayad</string>
-    <string name="title_pay_gap">Pumili ng account</string>
-    <string name="title_choose_pay_gap">Pumili ng account</string>
+    <string name="M132">Pumili ng account</string>
     <string name="title_pay_bank">Bangko magbabayad</string>
     <string name="title_choose_pay_bank">Pumili ng bangko</string>
     <string name="title_pay_msg">Impormasyon sa Pagbabayad</string>
@@ -1329,6 +1328,7 @@
     <string name="system_notify">Notification ng System</string>
     <string name="C016">Ngayon</string>
     <string name="C016_small">Ngayon</string>
+    <string name="N064">Remarks</string>
     <string name="picture_camera_roll" tools:ignore="ExtraTranslation">CameraRoll</string>
     <string name="P066">Halimbawa</string>
     <string name="P068">Mag-upload ng selfie photo na may hawak na valid ID</string>
@@ -1358,6 +1358,9 @@
     <string name="J459">Kind tips</string>
     <string name="P111">Dapat kasama ang address</string>
     <string name="P110">Unit/Room No. /Floor, Building Name, Lot/ Block/Phase/House Number, Street Name</string>
+    <string name="P131">OKBET Member Account</string>
+    <string name="P132">OKBET x Glife Member Account</string>
+    <string name="P130">Piliin ang Iyong OKBET Account</string>
 
     <string name="N944">Rekord ng taya</string>
     <string name="N947">Tuntunin sa sports</string>
@@ -1371,7 +1374,7 @@
     <string name="PP128">Huling 30 araw</string>
     <string name="N124">String betting</string>
     <string name="N125">Single bet</string>
-    <string name="I040">Bagay sa pagtaya</string>
+    <string name="I040">Tinayaan</string>
     <string name="I043">Handicap odds</string>
     <string name="J001">Handicap</string>
     <string name="N263">Team</string>

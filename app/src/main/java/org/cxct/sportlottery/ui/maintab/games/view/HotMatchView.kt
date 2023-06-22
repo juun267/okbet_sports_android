@@ -17,7 +17,6 @@ import kotlinx.android.synthetic.main.view_hot_game.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
-import org.cxct.sportlottery.common.event.JumpInPlayEvent
 import org.cxct.sportlottery.common.extentions.doOnStop
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
@@ -69,7 +68,7 @@ class HotMatchView(
 
         //查看更多
         tvHotMore.onClick {
-            EventBusUtil.post(JumpInPlayEvent())
+            (fragment?.activity as MainTabActivity).jumpToInplaySport()
         }
 //        ivHotMore.onClick {
 //            EventBusUtil.post(JumpInPlayEvent())

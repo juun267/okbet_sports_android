@@ -16,6 +16,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
@@ -31,17 +32,14 @@ import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment2
+import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import splitties.views.dsl.core.add
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 
-class HomeToolbarView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyle: Int = 0
-) : LinearLayout(context, attrs, defStyle) {
+class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
+    : LinearLayoutCompat(context, attrs, defStyle) {
 
     companion object {
         private val textStyle by lazy {
@@ -225,7 +223,7 @@ class HomeToolbarView @JvmOverloads constructor(
         tvLogin.setOnClickListener { activity.startLogin() }
         tvRegist.setOnClickListener { LoginOKActivity.startRegist(context) }
         ivRefreshMoney.setOnClickListener { onRefreshMoney() }
-        if (fragment !is MainHomeFragment2) {
+        if (fragment !is MainHomeFragment) {
             ivLogo.setOnClickListener { activity.backMainHome() }
         }
     }

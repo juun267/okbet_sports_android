@@ -13,6 +13,7 @@ data class SendSmsResult(
     @Json(name = "success")
     override val success: Boolean,
     @Json(name = "t")
-    val ResetPasswordData: ResetPasswordData?
-
+    val t: ResetPasswordData?=null,
+    @Json(name = "rows")
+    val rows: List<ResetPasswordData>?=null
 ) : BaseResult()
