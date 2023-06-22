@@ -31,6 +31,7 @@ import org.cxct.sportlottery.common.event.NetWorkEvent
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.event.ShowFavEvent
 import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -41,10 +42,12 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.ConfigRepository
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.BetListFragment
+import org.cxct.sportlottery.ui.betRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.betRecord.BetRecordFragment
 import org.cxct.sportlottery.ui.betRecord.accountHistory.next.AccountHistoryNextFragment
 import org.cxct.sportlottery.ui.chat.ChatActivity
@@ -752,10 +755,15 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         if (getMarketSwitch()) {
             return
         }
-        if (bottom_navigation_view.currentItem != 2) {
-            bottom_navigation_view.currentItem = 2
+        if(LoginRepository.isLogined()){
+            startActivity(BetRecordActivity::class.java)
+        }else{
+            startLogin()
         }
-        (fragmentHelper.getFragment(2) as BetRecordFragment).selectTab(tabPosition)
+//        if (bottom_navigation_view.currentItem != 2) {
+//            bottom_navigation_view.currentItem = 2
+//        }
+//        (fragmentHelper.getFragment(2) as BetRecordFragment).selectTab(tabPosition)
     }
 
     override fun onDestroy() {
