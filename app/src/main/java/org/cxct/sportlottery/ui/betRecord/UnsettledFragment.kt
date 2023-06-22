@@ -85,7 +85,7 @@ class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnset
         viewModel.responseFailed.observe(this) {
             hideLoading()
             mAdapter.setList(arrayListOf())
-            binding.empty.emptyView.visible()
+//            binding.empty.emptyView.visible()
             binding.recyclerUnsettled.gone()
         }
         //未接单数据监听
@@ -93,11 +93,11 @@ class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnset
             hideLoading()
             //第一页数据为空
             if (it.isEmpty() && viewModel.pageIndex <= 2) {
-                binding.empty.emptyView.visible()
+//                binding.empty.emptyView.visible()
                 binding.recyclerUnsettled.gone()
                 return@observe
             }
-            binding.empty.emptyView.gone()
+//            binding.empty.emptyView.gone()
             binding.recyclerUnsettled.visible()
 
             if(viewModel.pageIndex == 2){

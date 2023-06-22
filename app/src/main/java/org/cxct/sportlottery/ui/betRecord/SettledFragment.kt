@@ -141,12 +141,12 @@ class SettledFragment:BindingFragment<AccountHistoryViewModel,FragmentSettledBin
             initBetValue()
             //如果空数据
             if(it.isEmpty()&&viewModel.pageSettledIndex<=2){
-                binding.empty.emptyView.visible()
+//                binding.empty.emptyView.visible()
                 binding.recyclerSettled.gone()
                 return@observe
             }
 
-            binding.empty.emptyView.gone()
+//            binding.empty.emptyView.gone()
             binding.recyclerSettled.visible()
             mAdapter.addData(it)
         }
@@ -155,7 +155,7 @@ class SettledFragment:BindingFragment<AccountHistoryViewModel,FragmentSettledBin
             hideLoading()
             initBetValue()
             mAdapter.setList(arrayListOf())
-            binding.empty.emptyView.visible()
+//            binding.empty.emptyView.visible()
         }
     }
 
