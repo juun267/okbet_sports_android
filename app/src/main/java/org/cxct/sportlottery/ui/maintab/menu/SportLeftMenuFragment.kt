@@ -152,7 +152,7 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
     }
 
     //退出
-    private fun close() {
+    fun close() {
         getMainTabActivity().closeDrawerLayout()
     }
 

@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab.menu
 
 import android.util.Log
 import android.view.View
+import androidx.core.view.postDelayed
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.FragmentLeftSportBetBinding
@@ -43,6 +44,10 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
         constrainBetRecord.onClick {
             if(viewModel.isLogin()){
                 startActivity(BetRecordActivity::class.java)
+                constrainBetRecord.postDelayed({
+                    val parent=parentFragment as SportLeftMenuFragment
+                    parent.close()
+                },500)
             }else{
                 requireActivity().startLogin()
             }
