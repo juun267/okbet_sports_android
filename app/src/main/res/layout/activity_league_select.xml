@@ -139,6 +139,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:elevation="3dp"
+            android:gravity="right"
             android:paddingHorizontal="@dimen/margin_12"
             android:paddingVertical="@dimen/margin_15">
 
@@ -150,29 +151,12 @@
                 android:background="@drawable/bg_gray_radius_8"
                 android:minWidth="80dp"
                 android:paddingHorizontal="@dimen/margin_10"
+                android:layout_marginRight="@dimen/margin_16"
                 android:text="@string/btn_cancel"
                 android:textAllCaps="false"
                 android:textColor="@color/color_6D7693"
                 android:textSize="@dimen/margin_14" />
 
-            <Button
-                android:id="@+id/btnRest"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_40"
-                android:layout_marginLeft="@dimen/margin_8"
-                android:background="@drawable/bg_blue_radius_8_stroke"
-                android:minWidth="80dp"
-                android:paddingHorizontal="@dimen/margin_10"
-                android:text="@string/N744"
-                android:textAllCaps="false"
-                android:textColor="@color/color_025BE8"
-                android:textSize="@dimen/margin_14" />
-
-            <androidx.legacy.widget.Space
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
 
             <Button
                 android:id="@+id/btnConfirm"
