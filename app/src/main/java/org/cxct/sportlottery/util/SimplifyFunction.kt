@@ -1060,7 +1060,7 @@ fun View.setServiceClick(fragmentManager: FragmentManager, block: (() -> Unit)? 
     val serviceUrl2 = sConfigData?.customerServiceUrl2
     when {
         !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-            ServiceDialog().show(fragmentManager, null)
+            ServiceDialog().show(fragmentManager, ServiceDialog::class.java.simpleName)
         }
         serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
                 JumpUtil.toExternalWeb(context, serviceUrl2)
