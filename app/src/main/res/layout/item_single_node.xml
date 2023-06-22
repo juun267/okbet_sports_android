@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/color_F9FAFD"
-    android:paddingHorizontal="13dp"
-    android:layout_height="32dp">
+    android:paddingHorizontal="11dp"
+    android:layout_height="36dp">
 
     <ImageView
         android:id="@+id/ivCheckBox"
@@ -29,11 +29,15 @@
 
     <TextView
         android:id="@+id/tvName"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/ivCheckBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:gravity="right"
         android:paddingStart="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:text="Node"
+        android:text="Node Node Node"
         android:textSize="14sp"
         android:textColor="@color/color_6D7693"
         android:layout_width="wrap_content"

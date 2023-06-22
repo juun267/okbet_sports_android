@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:visibility="gone"
-    android:id="@+id/emptyView"
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:gravity="center_horizontal"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
 
     <ImageView
         android:src="@drawable/ic_bet_empty"
@@ -40,4 +38,8 @@
             android:layout_height="wrap_content"/>
 
     </androidx.cardview.widget.CardView>
-</LinearLayout>
+
+
+</merge>
+
+

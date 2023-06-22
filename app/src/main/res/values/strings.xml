@@ -325,8 +325,7 @@
     <string name="paymaya_recharge_hint">Please log in the member to check whether the PayMaya account is used before each payment. The company is not responsible for failing to check the overdue account.</string>
     <string name="title_pay_channel">Payment channels</string>
     <string name="title_choose_pay_channel">Payment channels</string>
-    <string name="title_pay_gap">Pumili ng account</string>
-    <string name="title_choose_pay_gap">Pumili ng account</string>
+    <string name="M132">Payment Account</string>
     <string name="title_pay_bank">Payment bank</string>
     <string name="title_choose_pay_bank">Payment bank</string>
     <string name="title_pay_msg">Payment information</string>
@@ -367,6 +366,8 @@
     <string name="online_juan">JuanCash</string>
     <string name="online_dispenshing">Withdraw</string>
     <string name="online_online_bank">Online Banking</string>
+    <string name="aub">AUB</string>
+    <string name="epon">E-pon</string>
     <string name="online_gcash">Gcash</string>
     <string name="online_grab">GrabPay</string>
     <string name="online_maya">PayMaya</string>
@@ -1507,6 +1508,11 @@
     <string name="J459">Tips</string>
     <string name="P111">Address should include</string>
     <string name="P110">Unit/Room No. /Floor, Building Name, Lot/ Block/Phase/House Number, Street Name</string>
+
+    <string name="P131">OKBET Member Account</string>
+    <string name="P132">OKBET x Glife Member Account</string>
+    <string name="P130">Select Your OKBET Account</string>
+    <string name="N064">Remarks</string>
 
     <string name="N944">Bet record</string>
     <string name="N947">Sports rules</string>

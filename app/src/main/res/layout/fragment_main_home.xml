@@ -7,7 +7,8 @@
     <org.cxct.sportlottery.ui.maintab.home.view.HomeToolbarView
         android:id="@+id/homeToolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        tools:ignore="MissingClass" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"

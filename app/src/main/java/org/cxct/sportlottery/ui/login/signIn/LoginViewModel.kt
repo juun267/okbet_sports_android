@@ -10,6 +10,7 @@ import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.SingleEvent
 import org.cxct.sportlottery.common.extentions.runWithCatch
+import org.cxct.sportlottery.common.extentions.toast
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -18,11 +19,9 @@ import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.login.selectAccount.SelectAccountActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity.Companion.LOGIN_TYPE_PWD
-import org.cxct.sportlottery.util.AFInAppEventUtil
-import org.cxct.sportlottery.util.LocalUtils
-import org.cxct.sportlottery.util.SPUtil
-import org.cxct.sportlottery.util.VerifyConstUtil
+import org.cxct.sportlottery.util.*
 
 
 class LoginViewModel(
@@ -51,10 +50,13 @@ class LoginViewModel(
         get() = _inviteCodeMsg
     val checkUserExist: LiveData<Boolean>
         get() = _checkUserExist
+    val selectAccount: LiveData<LoginResult>
+        get() = _selectAccount
 
     private val _isLoading = MutableLiveData<Boolean>()
     private val _loginFormState = MutableLiveData<LoginFormState>()
     private val _loginResult = MutableLiveData<LoginResult>()
+    private val _selectAccount= MutableLiveData<LoginResult>()
     private val _loginSmsResult = MutableLiveData<NetResult>()
     private val _validCodeResult = MutableLiveData<ValidCodeResult?>()
     private val _validResult = MutableLiveData<NetResult>()
@@ -110,51 +112,34 @@ class LoginViewModel(
         }
 
     fun login(loginRequest: LoginRequest, originalPassword: String) {
+        loading()
         viewModelScope.launch {
             //預設存帳號
             loginRepository.account = loginRequest.account
 
-            val loginResult = doNetwork(androidContext) {
+            doNetwork(androidContext) {
                 loginRepository.login(loginRequest)
-            }
-
-            loginResult?.let { result ->
-                //检查是否要完善资料
-                checkBasicInfo(result) {
-                    //继续登录
-                    if (result.loginData?.deviceValidateStatus == 1)
-                        runWithCatch { userInfoRepository.getUserInfo() }
-                    _loginResult.postValue(result)
-                    AFInAppEventUtil.login(result.loginData?.uid.toString())
-                }
+            }?.let {
+                hideLoading()
+                dealWithLoginResult(it)
             }
         }
     }
 
 
     fun loginOrReg(loginRequest: LoginRequest) {
+        loading()
         viewModelScope.launch {
             //預設存帳號
             loginRepository.account = loginRequest.account
 
             //登录
-            val loginResult = doNetwork(androidContext) { loginRepository.loginOrReg(loginRequest) }
-            loginResult?.let { result ->
-
-                //检查是否要完善资料
-                checkBasicInfo(result) {
-                    //继续登录
-                    runWithCatch { userInfoRepository.getUserInfo() }
-                    _loginResult.postValue(result)
-                    if (result.loginData?.ifnew == true) {
-                        AFInAppEventUtil.register("username")
-                    } else {
-                        AFInAppEventUtil.login(result.loginData?.uid.toString())
-                    }
-                }
-
+           doNetwork(androidContext) {
+                loginRepository.loginOrReg(loginRequest)
+            }?.let { loginResult->
+                hideLoading()
+                dealWithLoginResult(loginResult)
             }
-
         }
     }
 
@@ -162,24 +147,54 @@ class LoginViewModel(
         loading()
         viewModelScope.launch {
             //預設存帳號
-            val loginResult = doNetwork(androidContext) {
+           doNetwork(androidContext) {
                 loginRepository.googleLogin(
                     token,
                     inviteCode = Constants.getInviteCode()
                 )
-            }
-            loginResult?.let { result ->
-                //检查是否要完善资料
-                checkBasicInfo(result) {
-                    //继续登录
-                    runWithCatch { userInfoRepository.getUserInfo() }
-                    _loginResult.postValue(result)
-                    AFInAppEventUtil.login(result.loginData?.uid.toString())
-                }
+            }?.let { loginResult->
+               hideLoading()
+               dealWithLoginResult(loginResult)
             }
         }
     }
-
+    suspend fun dealWithLoginResult(loginResult: LoginResult) {
+        if (loginResult.success) {
+            //t不为空则t是登录账号，rows里面1个账号就直接登录，2个账号就选择账号
+            when  {
+                loginResult.t != null -> {
+                    dealWithLoginData(loginResult, loginResult.t)
+                }
+                loginResult.rows?.size==1 -> {
+                    val loginData = loginResult.rows[0]
+                    dealWithLoginData(loginResult, loginData)
+                }
+                loginResult.rows?.size==2 -> {
+                    _selectAccount.postValue(loginResult)
+                }
+            }
+        } else {
+           toast(loginResult.msg)
+        }
+    }
+    suspend fun dealWithLoginData(loginResult: LoginResult,loginData: LoginData){
+        if (!loginData.msg.isNullOrBlank()){
+            toast(loginData.msg!!)
+            return
+        }
+        loginRepository.setUpLoginData(loginData)
+        checkBasicInfo(loginResult) {
+            //继续登录
+            if (loginData.deviceValidateStatus == 1)
+                runWithCatch { userInfoRepository.getUserInfo() }
+            _loginResult.postValue(loginResult!!)
+            if (loginData.ifnew != false) {
+                AFInAppEventUtil.register("username")
+            } else {
+                AFInAppEventUtil.login(loginData.uid.toString())
+            }
+        }
+    }
     /**
      * 检查用户完善基本信息
      */
@@ -226,11 +241,8 @@ class LoginViewModel(
                     token,
                     inviteCode = Constants.getInviteCode()
                 )
-            }?.let { result ->
-                runWithCatch { userInfoRepository.getUserInfo() }
-                _loginResult.postValue(result)
-                AFInAppEventUtil.login(result.loginData?.uid.toString())
-                hideLoading()
+            }?.let { loginResult ->
+                dealWithLoginResult(loginResult)
             }
         }
     }

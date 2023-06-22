@@ -709,10 +709,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     fun backMainHome() {
         homeFragment().backMainHome()
     }
-    fun jumpToLive() {
-        homeFragment().jumpToLive()
-    }
-
     fun jumpToOKGames() {
         jumpToGame()
     }
