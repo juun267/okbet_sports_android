@@ -50,8 +50,8 @@ class SportLeftMenuViewModel(
 ) {
 
 
-    val betCountEvent=SingleLiveEvent<Int>()
-
+    val betCountEvent=SingleLiveEvent<Long>()
+    var totalCount=0
     fun isLogin(): Boolean {
         return loginRepository.isLogined()
     }
@@ -74,7 +74,8 @@ class SportLeftMenuViewModel(
             } ?: return@launch
 
             result.total?.let {
-                betCountEvent.postValue(it)
+                totalCount=it
+                betCountEvent.postValue(System.currentTimeMillis())
             }
         }
     }

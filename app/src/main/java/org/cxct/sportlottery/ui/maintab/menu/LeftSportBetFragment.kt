@@ -36,7 +36,7 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
 
 
         viewModel.betCountEvent.observe(this@LeftSportBetFragment){
-            tvRecordNumber.text="$it"
+            tvRecordNumber.text="${viewModel.totalCount}"
         }
 
         //投注详情

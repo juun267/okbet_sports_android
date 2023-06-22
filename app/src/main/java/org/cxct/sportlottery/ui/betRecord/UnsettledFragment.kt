@@ -105,8 +105,6 @@ class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnset
             }else{
                 mAdapter.addData(it)
             }
-
-
         }
 
     }
