@@ -39,6 +39,7 @@
                     android:id="@+id/league_odd_match_favorite"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
+                    android:layout_marginRight="8dp"
                     android:src="@drawable/selector_star_v4"
                     tools:ignore="ContentDescription"
                     tools:visibility="visible" />
@@ -53,7 +54,6 @@
                         android:id="@+id/leagueOddMatchStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
                         android:layout_marginRight="@dimen/margin_5"
                         android:textColor="@color/color_6D7693"
                         android:textSize="10sp"
@@ -580,7 +580,7 @@
             android:textStyle="bold"
             android:gravity="center"
             android:paddingHorizontal="5dp"
-            android:textColor="@color/color_025BE8"
+            android:textColor="@color/color_F26E24"
             android:textSize="12sp"
             tools:text="120+ >" />
 

@@ -59,7 +59,7 @@ import org.cxct.sportlottery.ui.maintab.menu.SportLeftMenuFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.ui.sport.SportFragment2
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment
-import org.cxct.sportlottery.ui.sport.list.SportLeagueAdapter
+import org.cxct.sportlottery.ui.sport.oddsbtn.OddsButton2
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
@@ -768,6 +768,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     override fun onDestroy() {
         super.onDestroy()
+        OddsButton2.clearOddsViewCaches()
         if (activityInstance == this) {
             activityInstance = null
         }
