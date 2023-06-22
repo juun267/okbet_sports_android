@@ -49,9 +49,10 @@ class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        wdLogDetailRemarksLeft.text = getString(R.string.N064) + "："
         viewModel.withdrawLogDetail.observe(this.viewLifecycleOwner) { event ->
             event.peekContent().let { it ->
+                wdLogDetailRemarksRight.text = it.reason
                 wd_log_detail_trans_num_subtitle.text = "${getString(R.string.J630)}："
                 wd_log_detail_amount_subtitle.text =
                     "${getString(R.string.text_account_history_amount)}："
@@ -64,14 +65,17 @@ class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
                             text = LocalUtils.getString(R.string.log_state_processing)
                             setTextColor(ContextCompat.getColor(context, R.color.color_414655))
                         }
+
                         OrderState.SUCCESS.code -> {
                             text = LocalUtils.getString(R.string.recharge_state_success)
                             setTextColor(ContextCompat.getColor(context, R.color.color_1EB65B))
                         }
+
                         OrderState.FAILED.code -> {
                             text = LocalUtils.getString(R.string.recharge_state_failed)
                             setTextColor(ContextCompat.getColor(context, R.color.color_E23434))
                         }
+
                         OrderState.PENGING.code -> {
                             text = LocalUtils.getString(R.string.N653)
                             setTextColor(ContextCompat.getColor(context, R.color.color_414655))

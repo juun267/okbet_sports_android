@@ -173,6 +173,8 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             OnlineType.PAYPAL.type -> R.drawable.ic_paypal_type
             OnlineType.DRAGON_PAY.type -> R.drawable.ic_gragon_pay_type
             OnlineType.FORTUNE_PAY.type -> R.drawable.icon_fortunepay
+            OnlineType.AUB.type -> R.drawable.ic_aub_round
+            OnlineType.EPON.type -> R.drawable.ic_epon
             else -> R.drawable.ic_online_pay_type
         }
         return this
@@ -188,9 +190,9 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
         cv_pay_bank.visibility = if (mSelectRechCfgs?.banks != null) View.VISIBLE else View.GONE
         tv_pay_gap_subtitle.text =
-            if (mSelectRechCfgs?.banks != null) getString(R.string.title_pay_channel) else getString(R.string.title_pay_gap)
+            if (mSelectRechCfgs?.banks != null) getString(R.string.title_pay_channel) else getString(R.string.M132)
         payGapBottomSheet.tv_game_type_title.text =
-            if (mSelectRechCfgs?.banks != null) getString(R.string.title_choose_pay_channel) else getString(R.string.title_choose_pay_gap)
+            if (mSelectRechCfgs?.banks != null) getString(R.string.title_choose_pay_channel) else getString(R.string.M132)
 
         //反利、手續費
         setupRebateFee()
@@ -317,7 +319,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 if (mMoneyPayWay?.onlineType == OnlineType.WY.type)
                     tv_game_type_title.text=String.format(resources.getString(R.string.title_choose_pay_channel))
                 else
-                    tv_game_type_title.text=String.format(resources.getString(R.string.title_choose_pay_gap))
+                    tv_game_type_title.text=String.format(resources.getString(R.string.M132))
 
                 payGapBottomSheet.btn_close.setOnClickListener {
                     this.dismiss()
@@ -373,7 +375,6 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
         //產生對應 spinner 選單
         var count = 1
-
         payRoadSpannerList = mutableListOf()
 
         if (rechCfgsList.size > 1)
