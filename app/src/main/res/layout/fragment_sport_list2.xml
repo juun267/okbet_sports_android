@@ -104,4 +104,13 @@
     </FrameLayout>
 
 
+    <ImageView
+        android:id="@+id/ivBackTop"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="20dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/icon_backtop_blue" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
