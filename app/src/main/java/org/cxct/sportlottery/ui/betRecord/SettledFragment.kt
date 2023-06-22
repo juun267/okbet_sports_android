@@ -20,6 +20,7 @@ import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.view.BetEmptyView
 import org.cxct.sportlottery.view.loadMore
 import org.cxct.sportlottery.view.onClick
 
@@ -36,8 +37,9 @@ class SettledFragment:BindingFragment<AccountHistoryViewModel,FragmentSettledBin
 
         recyclerSettled.layoutManager=LinearLayoutManager(requireContext())
         recyclerSettled.adapter=mAdapter
+//        mAdapter.enableDefaultEmptyView(requireContext())
+        mAdapter.setEmptyView(BetEmptyView(requireContext()))
 
-        mAdapter.enableDefaultEmptyView(requireContext())
         //item打印点击
         mAdapter.setOnItemChildClickListener { _, view, position ->
             val data= mAdapter.data[position]
@@ -69,17 +71,14 @@ class SettledFragment:BindingFragment<AccountHistoryViewModel,FragmentSettledBin
             }
         }
 
-//        empty.tvReturn.onClick {
-//            requireActivity().finish()
-//        }
 
         //tab切换
         tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
             @SuppressLint("NotifyDataSetChanged")
             override fun onTabSelected(tab: TabLayout.Tab) {
+                loading()
                 viewModel.pageSettledIndex=1
                 mAdapter.data.clear()
-                mAdapter.notifyDataSetChanged()
                 when(tab.position){
                     0->{
                         //今天
@@ -108,6 +107,7 @@ class SettledFragment:BindingFragment<AccountHistoryViewModel,FragmentSettledBin
                     }
                 }
                 //刷新数据
+                recyclerSettled.gone()
                 viewModel.getSettledList()
             }
 
@@ -140,6 +140,7 @@ class SettledFragment:BindingFragment<AccountHistoryViewModel,FragmentSettledBin
         viewModel.settledData.observe(this){
             hideLoading()
             initBetValue()
+
             binding.recyclerSettled.visible()
             mAdapter.addData(it)
         }
@@ -147,6 +148,7 @@ class SettledFragment:BindingFragment<AccountHistoryViewModel,FragmentSettledBin
         viewModel.responseFailed.observe(this){
             hideLoading()
             initBetValue()
+            binding.recyclerSettled.visible()
             mAdapter.setList(arrayListOf())
 //            binding.empty.emptyView.visible()
         }
