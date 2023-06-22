@@ -16,6 +16,7 @@ import org.cxct.sportlottery.ui.betRecord.adapter.RecyclerUnsettledAdapter
 import org.cxct.sportlottery.ui.betRecord.dialog.PrintDialog
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.view.BetEmptyView
 import org.cxct.sportlottery.view.loadMore
 import org.cxct.sportlottery.view.onClick
 
@@ -29,6 +30,7 @@ class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnset
     override fun onInitView(view: View) = binding.run {
         recyclerUnsettled.layoutManager = LinearLayoutManager(requireContext())
         recyclerUnsettled.adapter = mAdapter
+        mAdapter.setEmptyView(BetEmptyView(requireContext()))
         mAdapter.setOnItemChildClickListener { _, view, position ->
             val data = mAdapter.data[position]
             when (view.id) {
