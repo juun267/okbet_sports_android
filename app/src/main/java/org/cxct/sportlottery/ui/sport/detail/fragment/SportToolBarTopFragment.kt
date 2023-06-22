@@ -1,34 +1,26 @@
 package org.cxct.sportlottery.ui.sport.detail.fragment
 
 import android.annotation.SuppressLint
+import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.LayoutInflater
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
+import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
-import com.google.android.material.appbar.AppBarLayout
-import kotlinx.android.synthetic.main.activity_detail_sport.app_bar_layout
-import kotlinx.android.synthetic.main.activity_detail_sport.collaps_toolbar
-import kotlinx.android.synthetic.main.activity_detail_sport.live_view_tool_bar
-import kotlinx.android.synthetic.main.activity_detail_sport.view.vpContainer
 import kotlinx.android.synthetic.main.content_baseball_status.league_odd_match_basebag
 import kotlinx.android.synthetic.main.content_baseball_status.league_odd_match_bb_status
 import kotlinx.android.synthetic.main.content_baseball_status.league_odd_match_halfStatus
 import kotlinx.android.synthetic.main.content_baseball_status.txvOut
-import kotlinx.android.synthetic.main.item_endscore_battle.ivAwayLogo
-import kotlinx.android.synthetic.main.item_endscore_battle.ivHomeLogo
 import kotlinx.android.synthetic.main.view_detail_head_toolbar1.*
-import kotlinx.android.synthetic.main.view_toolbar_detail_collaps1.tv_toolbar_away_name
-import kotlinx.android.synthetic.main.view_toolbar_detail_collaps1.tv_toolbar_home_name
-import kotlinx.android.synthetic.main.view_toolbar_detail_live.iv_fullscreen
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.setFbKicks
 import org.cxct.sportlottery.common.extentions.setMatchAttack
 import org.cxct.sportlottery.common.extentions.setMatchRoundScore
 import org.cxct.sportlottery.common.extentions.setMatchScore
-import org.cxct.sportlottery.databinding.FragmentToolBarTopBinding
+import org.cxct.sportlottery.databinding.ViewDetailHeadToolbar1Binding
 import org.cxct.sportlottery.network.common.GameMatchStatus
 import org.cxct.sportlottery.network.common.GameStatus
 import org.cxct.sportlottery.network.common.GameType
@@ -39,28 +31,31 @@ import org.cxct.sportlottery.ui.sport.SportViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.TimerManager
 import org.cxct.sportlottery.util.fromJson
-import org.cxct.sportlottery.util.needCountStatus
 import org.cxct.sportlottery.util.setTeamLogo
-import java.util.Timer
 
-class SportToolBarTopFragment : BindingSocketFragment<SportViewModel, FragmentToolBarTopBinding>() {
+class SportToolBarTopFragment : BindingSocketFragment<SportViewModel, ViewDetailHeadToolbar1Binding>() {
 
 
     val matchInfo by lazy {
         arguments?.get("matchInfo").toString().fromJson<MatchInfo>()
     }
 
-    val tv_match_time: TextView by lazy {
-        binding.toolBar.tvMatchTime
+    override fun createRootView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val frameLayout = FrameLayout(inflater.context)
+        frameLayout.layoutParams = ViewGroup.LayoutParams(-1, -1)
+        frameLayout.addView(super.createRootView(inflater, container, savedInstanceState))
+        return frameLayout
     }
 
-    private var matchOdd: MatchOdd? = null
-    private var intoLive = false
+    val tv_match_time by lazy { binding.tvMatchTime }
 
     override fun onInitView(view: View) {
-        binding.toolBar.ivDetailBg.setImageResource(
+        binding.ivDetailBg.setImageResource(
             GameType.getGameTypeDetailBg(
                 GameType.getGameType(matchInfo?.gameType) ?: GameType.FT
             )
