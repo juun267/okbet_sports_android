@@ -20,12 +20,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.crash.FirebaseLog
+import org.cxct.sportlottery.common.event.LoginSelectAccountEvent
 import org.cxct.sportlottery.common.event.RegisterInfoEvent
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.databinding.ActivityLoginOkBinding
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.login.LoginCodeRequest
+import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.repository.LOGIN_SRC
@@ -36,12 +38,14 @@ import org.cxct.sportlottery.ui.common.dialog.SelfLimitFrozeErrorDialog
 import org.cxct.sportlottery.ui.login.VerifyCodeDialog
 import org.cxct.sportlottery.view.checkRegisterListener
 import org.cxct.sportlottery.ui.login.foget.ForgetWaysActivity
+import org.cxct.sportlottery.ui.login.selectAccount.SelectAccountActivity
 import org.cxct.sportlottery.ui.login.signUp.info.RegisterInfoActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.boundsEditText.SimpleTextChangedWatcher
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import splitties.activities.start
 
 
 /**
@@ -220,7 +224,6 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         var appVersion = org.cxct.sportlottery.BuildConfig.VERSION_NAME
         hideSoftKeyboard(this)
         if (viewModel.loginType == LOGIN_TYPE_CODE) {
-            loading()
             val account = binding.eetAccount.text.toString()
             val smsCode = binding.eetVerificationCode.text.toString()
             var inviteCode = binding.eetRecommendCode.text.toString()
@@ -242,7 +245,6 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
         val verifyCodeDialog = VerifyCodeDialog()
         verifyCodeDialog.callBack = { identity, validCode ->
-            loading()
             val account = binding.eetUsername.text.toString()
             val password = binding.eetPassword.text.toString()
             val loginRequest = LoginRequest(
@@ -269,7 +271,17 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     fun onRegisterInfoCompleted(event: RegisterInfoEvent) {
         updateUiWithResult(event.loginResult)
     }
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSelectAccount(event: LoginSelectAccountEvent) {
+        val loginResult = viewModel.selectAccount.value
+        loginResult?.rows?.let {
+            it.first { it.vipType==(if(event.isVip) 1 else 0)}.let {
+                lifecycleScope.launch {
+                    viewModel.dealWithLoginData(loginResult!!,it)
+                }
+            }
+        }
+    }
     private fun googleLogin() {
         loading()
         AuthManager.authGoogle(this@LoginOKActivity)
@@ -393,6 +405,11 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 updateUiWithResult(it)
             }
         })
+        viewModel.selectAccount.observe(this, Observer {
+             start<SelectAccountActivity> {
+                 putExtra(SelectAccountActivity.TYPE_SELECT,SelectAccountActivity.TYPE_LOGIN)
+             }
+        })
 
         //跳转至完善注册信息
         viewModel.registerInfoEvent.observe(this) {
@@ -421,16 +438,17 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private fun updateUiWithResult(loginResult: LoginResult) {
         hideLoading()
+        val loginData = loginResult.rows?.get(0)
         //将userName信息添加到firebase崩溃日志中
-        loginResult.loginData?.let {
+        loginData?.let {
             FirebaseLog.addLogInfo(
                 "userName",
-                "${loginResult.loginData}"
+                "${loginData}"
             )
         }
         if (loginResult.success) {
-            if (loginResult.loginData?.deviceValidateStatus == 0) {
-                PhoneVerifyActivity.loginData = loginResult.loginData
+            if (loginData?.deviceValidateStatus == 0) {
+                PhoneVerifyActivity.loginData = loginData
                 startActivity(Intent(this@LoginOKActivity, PhoneVerifyActivity::class.java))
             } else {
                 this.run {

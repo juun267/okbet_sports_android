@@ -343,5 +343,29 @@
     "image": "ic_internet_bank",
     "rechType": "onlinePayment",
     "onlineType": "203"
+  },
+  {
+    "titleNameMap": {
+      "zh": "AUB",
+      "en": "AUB",
+      "phi": "AUB",
+      "vi": "AUB"
+    },
+    "subtitle": "菲律賓在線網銀 AUB",
+    "image": "ic_aub",
+    "rechType": "onlinePayment",
+    "onlineType": "213"
+  },
+  {
+    "titleNameMap": {
+      "zh": "E-pon",
+      "en": "E-pon",
+      "phi": "E-pon",
+      "vi": "E-pon"
+    },
+    "subtitle": "菲律賓在線網銀 E-pon",
+    "image": "ic_epon",
+    "rechType": "onlinePayment",
+    "onlineType": "214"
   }
 ]
