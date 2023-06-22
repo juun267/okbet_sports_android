@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
@@ -15,6 +16,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.TimeRangeEvent
 import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -103,17 +105,19 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
 
     protected open fun observerMenuData() {
         viewModel.sportTypeMenuData.observe(viewLifecycleOwner) {
-
-            if (it.first.isNullOrEmpty()) {
-                dismissLoading()
+            if (!it.first.isNullOrEmpty()) {
+                updateSportType(it.first)
+                return@observe
             }
+
+            setFooterViewVisiable()
+            dismissLoading()
             if (!it.second) {
                 ToastUtil.showToast(activity, it.third)
                 return@observe
             }
-            updateSportType(it.first)
-
         }
+
         viewModel.sportMenuApiResult.observe(viewLifecycleOwner) {
             (parentFragment as SportFragment2?)?.updateSportMenuResult(it)
         }
@@ -162,7 +166,15 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
 
         (footerView.parent as ViewGroup?)?.let { it.removeView(footerView) }
         footerView.tag = adapter
-        adapter.addFooterView(footerView, 1)
+        adapter.addFooterView(footerView)
+    }
+
+    protected fun setFooterViewVisiable(delay: Long = 0) {
+        if (delay > 0L) {
+            binding.root.postDelayed({ getGameListAdapter().footerLayout?.getChildAt(0)?.visible() }, delay)
+        } else {
+            getGameListAdapter().footerLayout?.getChildAt(0)?.visible()
+        }
     }
 
 

@@ -39,18 +39,18 @@ class FooterGameAdapter(private val onFavoriteClick: (View, OKGameBean) -> Unit,
         return 1
     }
 
-    fun setupOKGames(okgames: List<OKGameBean>) {
+    fun setupOKGames(okgames: List<OKGameBean>, onMore: () -> Unit) {
         if (okgames.isEmpty()) {
             return
         }
-        addData(GameCategroy("OKGames", R.drawable.ic_okgame_label_games, okgames.take(3).toMutableList()))
+        addData(GameCategroy("OKGames", R.drawable.ic_okgame_label_games, okgames.take(3).toMutableList(), onMore))
     }
 
-    fun setupOKLives(okLive: List<OKGameBean>) {
+    fun setupOKLives(okLive: List<OKGameBean>, onMore: () -> Unit) {
         if (okLive.isEmpty()) {
             return
         }
-        addData(0, GameCategroy("OKLive", R.drawable.ic_okgame_label_oklive, okLive.take(3).toMutableList()))
+        addData(0, GameCategroy("OKLive", R.drawable.ic_okgame_label_oklive, okLive.take(3).toMutableList(), onMore))
     }
 
     fun updateFavoriteStatu(okGameBean: OKGameBean) {
@@ -60,7 +60,7 @@ class FooterGameAdapter(private val onFavoriteClick: (View, OKGameBean) -> Unit,
         }
     }
 
-    private class GameCategroyProvider(override val itemViewType: Int = 1,
+    private inner class GameCategroyProvider(override val itemViewType: Int = 1,
                                        override val layoutId: Int = 0): BaseNodeProvider() {
 
         private val iconId = View.generateViewId()
@@ -105,6 +105,7 @@ class FooterGameAdapter(private val onFavoriteClick: (View, OKGameBean) -> Unit,
             val gameCategroy = item as GameCategroy
             helper.setText(nameId, gameCategroy.name)
             helper.setImageResource(iconId, gameCategroy.icon)
+            helper.getView<View>(moreId).setOnClickListener { gameCategroy.moreEvent.invoke() }
         }
     }
 
@@ -138,5 +139,6 @@ class FooterGameAdapter(private val onFavoriteClick: (View, OKGameBean) -> Unit,
 data class GameCategroy(val name: String,
                         @DrawableRes val icon: Int,
                         val games: MutableList<OKGameBean>,
+                        val moreEvent: () -> Unit,
                         override val childNode: MutableList<BaseNode> = games as MutableList<BaseNode>): BaseNode()
 
