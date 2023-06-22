@@ -9,7 +9,7 @@
     <FrameLayout
         android:id="@+id/frameTitle"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="44dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingHorizontal="12dp">
