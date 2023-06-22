@@ -68,9 +68,9 @@ class SettledFragment:BindingFragment<AccountHistoryViewModel,FragmentSettledBin
             }
         }
 
-        empty.tvReturn.onClick {
-            requireActivity().finish()
-        }
+//        empty.tvReturn.onClick {
+//            requireActivity().finish()
+//        }
 
         //tab切换
         tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{

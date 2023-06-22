@@ -61,9 +61,9 @@ class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnset
             }
         }
         //空视图点击
-        empty.emptyView.onClick {
-            requireActivity().finish()
-        }
+//        empty.emptyView.onClick {
+//            requireActivity().finish()
+//        }
 
         //加载更多
         recyclerUnsettled.loadMore {
