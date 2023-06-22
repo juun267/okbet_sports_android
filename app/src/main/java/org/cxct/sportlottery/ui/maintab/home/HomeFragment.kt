@@ -22,10 +22,7 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
     private val fragmentHelper by lazy {
 
         FragmentHelper(childFragmentManager, R.id.fl_content, arrayOf(
-//            Pair(MainHomeFragment::class.java, null),
-//            Pair(HomeLiveFragment::class.java, null),
             Pair(MainHomeFragment2::class.java, null),
-            Pair(OKGamesFragment::class.java, null),
             Pair(NewsHomeFragment::class.java, null)
         ))
 
@@ -47,7 +44,6 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
     }
 
     private fun switchTabByPosition(position: Int) {
-        (activity as MainTabActivity).homeBackView(position > 0)
         fragmentHelper.showFragment(position)
     }
 
@@ -55,26 +51,7 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
 
     fun jumpToLive() = switchTabByPosition(1)
 
-    fun jumpToOKGames() = switchTabByPosition(1)
-
     fun jumpToNews() = switchTabByPosition(2)
-
-    fun jumpToInplaySport() {
-        (activity as MainTabActivity).jumpToInplaySport()
-    }
-
-    fun jumpToDefaultSport() {
-        (activity as MainTabActivity).jumpToTheSport()
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onJumpToInPlayEvent(event: JumpInPlayEvent) {
-        jumpToInplaySport()
-    }
-
-    fun jumpToEarlySport() {
-        (activity as MainTabActivity).jumpToEarlySport()
-    }
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)

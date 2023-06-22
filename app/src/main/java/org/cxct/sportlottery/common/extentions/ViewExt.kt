@@ -146,6 +146,32 @@ fun View.flashAnimation(
     return alphaAnimator
 }
 
+fun View.alpahAnimation(
+    duration: Long,
+    startAlpha: Float,
+    endAlpha: Float,
+    onEnd: (() -> Unit)? = null
+): ObjectAnimator {
+    this.clearAnimation()
+
+    val alphaAnimator: ObjectAnimator = ObjectAnimator.ofFloat(this, "alpha", startAlpha, endAlpha)
+    alphaAnimator.duration = duration
+    onEnd?.let {
+        alphaAnimator.addListener(object : AnimatorListenerAdapter() {
+
+            override fun onAnimationEnd(animation: Animator) {
+                it.invoke()
+            }
+
+        })
+    }
+
+    alphaAnimator.start()
+    return alphaAnimator
+}
+
+
+
 fun View.translationXAnimation(x: Float, endCall: (() -> Unit)? = null, duration: Long = 200) {
     val anim = ViewCompat.animate(this)
         .setDuration(duration)

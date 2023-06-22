@@ -128,9 +128,7 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
         oddsListGameHallResult.observe(viewLifecycleOwner) {
 
             val result = it.getContentIfNotHandled()
-            endScoreAdapter.footerLayout?.let { footerLayout->
-                footerLayout.postDelayed({ footerLayout.getChildAt(0)?.visible() }, 200)
-            }
+            setFooterViewVisiable(200)
             if (result == null) {
                 dismissLoading()
                 return@observe

@@ -13,7 +13,6 @@ import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
-import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.sport.BaseSportListFragment
@@ -35,7 +34,7 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
     protected val sportLeagueAdapter2 by lazy {
         SportLeagueAdapter2(matchType,
             this,
-            onNodeExpand = { resubscribeChannel(320) },
+            onNodeExpand = { resubscribeChannel(200) },
             onOddClick = this@SportListFragment2,
             onFavorite = { matchId ->
             loginedRun(context()) { viewModel.pinFavorite(FavoriteType.MATCH, matchId) }
@@ -96,6 +95,7 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
     protected open fun observeSportList() = viewModel.run {
 
         oddsListGameHallResult.observe(this@SportListFragment2.viewLifecycleOwner) {
+
 
             val oddsListData = it.getContentIfNotHandled()?.oddsListData ?: return@observe
             dismissLoading()
@@ -229,15 +229,6 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
         view: View
     ) {
-
-        var gameType = GameType.getGameType(gameTypeAdapter.currentItem?.code)
-        if (gameType == null || matchInfo == null) {
-            return
-        }
-        if (gameType == GameType.ALL) {
-            gameType = GameType.getGameType(matchInfo.gameType)
-        }
-
         addOddsDialog(matchInfo, odd, playCateCode, betPlayCateNameMap)
     }
 
@@ -263,9 +254,13 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
 
     private fun firstVisibleRange(delay: Long = 100) = subscribeHandler.postDelayed({
 
+        if (sportLeagueAdapter2.getCount() < 1) {
+            return@postDelayed
+        }
+
         if (binding.gameList.scrollState != RecyclerView.SCROLL_STATE_IDLE
-            || sportLeagueAdapter2.getCount() < 1
             || binding.gameList.isComputingLayout) {
+            resubscribeChannel(40)
             return@postDelayed
         }
 

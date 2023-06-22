@@ -120,9 +120,7 @@ class SportOutrightFragment : BaseSportListFragment<SportListViewModel, Fragment
                 return@observe
             }
 
-            sportOutrightAdapter2.footerLayout?.let { footerLayout->
-                footerLayout.postDelayed({ footerLayout.getChildAt(0)?.visible() }, 200)
-            }
+            setFooterViewVisiable(200)
             val data = it?.getContentIfNotHandled()?.outrightOddsListData?.leagueOdds ?: return@observe
             val list = mutableListOf<MatchOdd>()
             data.forEach { it.matchOdds?.let { list.addAll(it) } }
