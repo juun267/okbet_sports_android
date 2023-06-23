@@ -44,7 +44,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
             val biding = ItemSportOdd2Binding.inflate(LayoutInflater.from(context), parent, false)
             val rcv = biding.rvLeagueOddBtnPagerMain
             biding.contentBaseballStatus.root.gravity = Gravity.TOP
-            biding.contentBaseballStatus.root.setPadding(0, 2.dp, 0, 0)
+//            biding.contentBaseballStatus.root.setPadding(0, 2.dp, 0, 0)
             rcv.setRecycledViewPool(pool)
             rcv.layoutManager = CustomLinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false).apply {
                 isAutoMeasureEnabled = false
