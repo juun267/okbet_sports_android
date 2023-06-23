@@ -859,7 +859,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         isShowOdd(true)
 //        initAnim()
 
-        rv_detail.setupBackTop(ivBackTop, 180.dp)
+        rv_detail.setupBackTop(ivBackTop, 300.dp,tabCode)
     }
 
 
