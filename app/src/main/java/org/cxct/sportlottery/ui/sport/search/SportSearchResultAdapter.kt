@@ -13,7 +13,6 @@ import org.cxct.sportlottery.network.sport.SearchResult
 import org.cxct.sportlottery.common.adapter.BaseNodeAdapter
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.setArrowSpin
 import org.cxct.sportlottery.util.setLeagueLogo
 import org.cxct.sportlottery.util.setTeamLogo
 import org.cxct.sportlottery.view.highLightTextView.HighlightTextView
@@ -68,12 +67,14 @@ class SportSearchResultAdapter : BaseNodeAdapter() {
             tvLeagueTittle.highlight(searchKey())
             var ivIcon = helper.getView<ImageView>(R.id.view1)
             ivIcon.setLeagueLogo(item.icon)
+            helper.getView<View>(R.id.view_arrow_top).isSelected = item.isExpanded
         }
 
         override fun onClick(helper: BaseViewHolder, view: View, data: BaseNode, position: Int) {
             val position = adapter.getItemPosition(data)
             adapter.expandOrCollapse(data, parentPayload = position)
-            helper.getView<View>(R.id.view_arrow_top).setArrowSpin((data as SearchResult.SearchResultLeague).isExpanded, true)
+            helper.getView<View>(R.id.view_arrow_top).isSelected =
+                (data as SearchResult.SearchResultLeague).isExpanded
         }
 
     }
