@@ -18,10 +18,11 @@
 
     <org.cxct.sportlottery.view.highLightTextView.HighlightTextView
         android:id="@+id/tvLeagueTittle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
         android:layout_marginStart="@dimen/margin_8"
-        android:gravity="start"
+        android:gravity="center_vertical"
         android:text="Lorem ipsum UFC dolor sit amet,"
         android:textColor="@color/black"
         android:textSize="@dimen/margin_14"
@@ -35,7 +36,7 @@
         android:id="@+id/view_arrow_top"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:background="@drawable/bg_blue_divide_ver" />
+        android:background="@drawable/ic_arrow_gray_up1" />
 
 </LinearLayout>
 

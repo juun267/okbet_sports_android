@@ -115,6 +115,7 @@ class LeagueSelectViewModel(
             }
             var leagueOddData = mutableListOf<LeagueOdd>()
             result?.oddsListData?.leagueOdds?.forEach {
+                it.isExpanded = false
                 it.league.firstCap = Pinyin.toPinyin(it.league.name.first()).first().toString()
                 it.matchOdds.forEach {
                     it.isSelected = if (matchIdList.isNullOrEmpty()) true else matchIdList.contains(it.matchInfo?.id)

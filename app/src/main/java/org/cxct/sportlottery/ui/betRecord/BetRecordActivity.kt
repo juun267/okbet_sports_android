@@ -3,9 +3,12 @@ package org.cxct.sportlottery.ui.betRecord
 import android.graphics.Typeface
 import android.util.Log
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.event.MenuEvent
+import org.cxct.sportlottery.common.event.ShowInPlayEvent
 import org.cxct.sportlottery.databinding.ActivityBetRecordBinding
 import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
+import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.view.onClick
 import org.cxct.sportlottery.view.setColors
 
@@ -22,6 +25,7 @@ class BetRecordActivity:BindingActivity<MainViewModel,ActivityBetRecordBinding>(
 
             ivBack.onClick {
                 finish()
+                EventBusUtil.post(ShowInPlayEvent())
             }
 
             //未结单
@@ -67,5 +71,6 @@ class BetRecordActivity:BindingActivity<MainViewModel,ActivityBetRecordBinding>(
             }
         }
     }
+
 
 }

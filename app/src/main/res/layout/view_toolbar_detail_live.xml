@@ -119,6 +119,7 @@
             android:layout_gravity="bottom|right"
             android:layout_margin="@dimen/margin_15"
             android:padding="@dimen/margin_5"
+            android:visibility="gone"
             android:src="@drawable/selector_fullscreen" />
     </FrameLayout>
 </LinearLayout>
