@@ -22,6 +22,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
@@ -40,6 +41,8 @@ import org.cxct.sportlottery.common.extentions.rotationAnimation
 import org.cxct.sportlottery.common.extentions.screenHeight
 import org.cxct.sportlottery.common.extentions.translationXAnimation
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.CateDetailData
@@ -77,8 +80,7 @@ import java.io.FileOutputStream
  * @description
  */
 fun RecyclerView.addScrollWithItemVisibility(
-    onScrolling: () -> Unit,
-    onVisible: (visibleList: List<Pair<Int, Int>>) -> Unit
+    onScrolling: () -> Unit, onVisible: (visibleList: List<Pair<Int, Int>>) -> Unit
 ) {
 
 
@@ -107,8 +109,7 @@ fun RecyclerView.addScrollWithItemVisibility(
                                             .forEach { matchPosition ->
                                                 visibleRangePair.add(
                                                     Pair(
-                                                        leaguePosition,
-                                                        matchPosition
+                                                        leaguePosition, matchPosition
                                                     )
                                                 )
                                             }
@@ -133,8 +134,9 @@ fun RecyclerView.addScrollWithItemVisibility(
     })
 }
 
-fun RecyclerView.setupBackTop(targetView: View, offset: Int) {
+fun RecyclerView.setupBackTop(targetView: View, offset: Int, tabCode: String?) {
 
+    val b = tabCode == MatchType.END_SCORE.postValue
     var targetWidth = 0f
     var animaIdle = true
     val animEndCall: () -> Unit = { animaIdle = true }
@@ -150,7 +152,9 @@ fun RecyclerView.setupBackTop(targetView: View, offset: Int) {
 
     targetView.post {
         targetWidth = targetView.measuredWidth.toFloat()
-        if (targetView.translationX != targetWidth) { targetView.translationX = targetWidth }
+        if (targetView.translationX != targetWidth) {
+            targetView.translationX = targetWidth
+        }
     }
 
     addOnScrollListener(object : OnScrollListener() {
@@ -159,25 +163,58 @@ fun RecyclerView.setupBackTop(targetView: View, offset: Int) {
             if (!animaIdle) {
                 return
             }
-
             if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                if (targetView.translationX != targetWidth) {
-                    hideRunnable.invoke()
+                //轻轻滑动只会触发dragging 不会触发idle
+                if (getScrollYDistance()) {
+                    //在最顶端
+                    if (targetView.translationX != targetWidth) {
+                        hideRunnable.invoke()
+                    }
+                    return
                 }
-                return
             }
 
             if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                if (computeVerticalScrollOffset() > offset) {
-                    if (targetView.translationX != 0f) {
+                //如果是篮球末位比分,需要特殊处理
+                if (b) {
+                    if (getScrollYDistance()) {
+                        if (targetView.translationX != targetWidth) {
+                            hideRunnable.invoke()
+                            return
+                        }
+                    } else {
                         animaIdle = false
                         targetView.translationXAnimation(0f, animEndCall)
+                        return
+                    }
+                } else {
+                    val isBigger = computeVerticalScrollOffset().dp > offset
+                    if (isBigger) {
+                        if (targetView.translationX != 0f) {
+                            animaIdle = false
+                            targetView.translationXAnimation(0f, animEndCall)
+                        }
+                    }else{
+                        if (targetView.translationX!=targetWidth){
+                            hideRunnable.invoke()
+                        }
                     }
                 }
             }
         }
-
     })
+}
+
+fun RecyclerView.getScrollYDistance(): Boolean {
+    val layoutManager = if (layoutManager is GridLayoutManager) {
+        layoutManager as GridLayoutManager
+    } else {
+        layoutManager as LinearLayoutManager
+    }
+
+    val position = layoutManager.findFirstVisibleItemPosition()
+    val firstVisibleChildView = layoutManager.findViewByPosition(position)
+    return firstVisibleChildView?.top == 0
 }
 
 
@@ -278,17 +315,15 @@ fun RecyclerView.firstVisibleRange(
                                     if (adapter.data.isNotEmpty()) {
                                         Log.d(
                                             "[subscribe]",
-                                            "訂閱 ${adapter.data.getOrNull(leaguePosition)?.league?.name} -> " +
-                                                    "${
-                                                        adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(
-                                                            matchPosition
-                                                        )?.matchInfo?.homeName
-                                                    } vs " +
-                                                    "${
-                                                        adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(
-                                                            matchPosition
-                                                        )?.matchInfo?.awayName
-                                                    }"
+                                            "訂閱 ${adapter.data.getOrNull(leaguePosition)?.league?.name} -> " + "${
+                                                adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(
+                                                    matchPosition
+                                                )?.matchInfo?.homeName
+                                            } vs " + "${
+                                                adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(
+                                                    matchPosition
+                                                )?.matchInfo?.awayName
+                                            }"
                                         )
                                         (activity as BaseSocketActivity<*>).subscribeChannelHall(
                                             adapter.data.getOrNull(leaguePosition)?.gameType?.key,
@@ -316,8 +351,7 @@ fun MutableMap<String, List<Odd?>?>.setupQuickPlayCate(playCate: String) {
     val playCateSort = QuickPlayCate.values().find { it.value == playCate }?.rowSort?.split(",")
 
     playCateSort?.forEach {
-        if (!this.keys.contains(it) || this[it] == null)
-            this[it] = mutableListOf(null, null, null)
+        if (!this.keys.contains(it) || this[it] == null) this[it] = mutableListOf(null, null, null)
     }
 }
 
@@ -340,11 +374,10 @@ fun MutableMap<String, List<Odd?>?>.sortQuickPlayCate(playCate: String) {
  * 中文之外無間距
  */
 fun TextView.setTitleLetterSpacing() {
-    this.letterSpacing =
-        when (LanguageManager.getSelectLanguage(context)) {
-            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> 0.1F
-            else -> 0F
-        }
+    this.letterSpacing = when (LanguageManager.getSelectLanguage(context)) {
+        LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> 0.1F
+        else -> 0F
+    }
 }
 
 /**
@@ -352,11 +385,10 @@ fun TextView.setTitleLetterSpacing() {
  * 中文之外無間距
  */
 fun TextView.setTitleLetterSpacing2F() {
-    this.letterSpacing =
-        when (LanguageManager.getSelectLanguage(context)) {
-            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> 0.2F
-            else -> 0F
-        }
+    this.letterSpacing = when (LanguageManager.getSelectLanguage(context)) {
+        LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> 0.2F
+        else -> 0F
+    }
 }
 
 /**
@@ -366,10 +398,7 @@ fun TextView.setGradientSpan(startColor: Int, endColor: Int, isLeftToRight: Bool
     var spannableStringBuilder = SpannableStringBuilder(text)
     var span = LinearGradientFontSpan(startColor, endColor, isLeftToRight)
     spannableStringBuilder.setSpan(
-        span,
-        0,
-        spannableStringBuilder.length,
-        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        span, 0, spannableStringBuilder.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
     )
     setText(spannableStringBuilder, TextView.BufferType.SPANNABLE)
 }
@@ -380,8 +409,7 @@ fun TextView.setGradientSpan(startColor: Int, endColor: Int, isLeftToRight: Bool
 fun View.setBackColorWithColorMode(lightModeColor: Int, darkModeColor: Int) {
     setBackgroundColor(
         ContextCompat.getColor(
-            context,
-            if (MultiLanguagesApplication.isNightMode) darkModeColor else lightModeColor
+            context, if (MultiLanguagesApplication.isNightMode) darkModeColor else lightModeColor
         )
     )
 }
@@ -389,16 +417,16 @@ fun View.setBackColorWithColorMode(lightModeColor: Int, darkModeColor: Int) {
 /**
  * 进入三方游戏，试玩检测
  */
-fun BaseFragment<out MainHomeViewModel>.setTrialPlayGameDataObserve(){
-    viewModel.enterTrialPlayGameResult.observe(viewLifecycleOwner){
+fun BaseFragment<out MainHomeViewModel>.setTrialPlayGameDataObserve() {
+    viewModel.enterTrialPlayGameResult.observe(viewLifecycleOwner) {
         hideLoading()
-        if(it==null){
+        if (it == null) {
             //不支持试玩
-            loginedRun(requireContext()){}
-        }else{
+            loginedRun(requireContext()) {}
+        } else {
             //试玩弹框
-            val trialDialog= TrialGameDialog(requireContext())
-            if (isVisible){
+            val trialDialog = TrialGameDialog(requireContext())
+            if (isVisible) {
                 //点击进入游戏
                 trialDialog.setEnterGameClick {
                     enterThirdGame(it.second, it.first)
@@ -411,7 +439,7 @@ fun BaseFragment<out MainHomeViewModel>.setTrialPlayGameDataObserve(){
 }
 
 
-fun loginedRun(context: Context, block: ()-> Unit): Boolean {
+fun loginedRun(context: Context, block: () -> Unit): Boolean {
     if (LoginRepository.isLogined()) {
         block.invoke()
         return true
@@ -424,9 +452,7 @@ fun loginedRun(context: Context, block: ()-> Unit): Boolean {
             Snackbar.LENGTH_LONG
         ).apply {
             val snackView: View = context.layoutInflater.inflate(
-                R.layout.snackbar_login_notify,
-                context.findViewById(android.R.id.content),
-                false
+                R.layout.snackbar_login_notify, context.findViewById(android.R.id.content), false
             )
             (this.view as Snackbar.SnackbarLayout).apply {
                 findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
@@ -448,7 +474,6 @@ fun loginedRun(context: Context, block: ()-> Unit): Boolean {
     context.startActivity(Intent(context, LoginOKActivity::class.java))
     return false
 }
-
 
 
 /**
@@ -606,8 +631,7 @@ fun View.setSpinnerView(
     mListPop.height = FrameLayout.LayoutParams.WRAP_CONTENT
     mListPop.setBackgroundDrawable(
         ContextCompat.getDrawable(
-            context,
-            R.drawable.bg_play_category_pop
+            context, R.drawable.bg_play_category_pop
         )
     )
 
@@ -693,8 +717,7 @@ fun View.setSpinnerView(
 
     mListPop.setBackgroundDrawable(
         ContextCompat.getDrawable(
-            context,
-            R.drawable.bg_play_category_pop
+            context, R.drawable.bg_play_category_pop
         )
     )
     mListPop.setAdapter(spinnerAdapter)
@@ -805,8 +828,7 @@ fun updateDefaultHandicapType() {
     //若config尚未取得或處於更新中則不再更新
     if (!updatingDefaultHandicapType) {
         updatingDefaultHandicapType = true
-        OddsType.values()
-            .firstOrNull { oddsType -> oddsType.code == getDefaultHandicapType().name }
+        OddsType.values().firstOrNull { oddsType -> oddsType.code == getDefaultHandicapType().name }
             ?.let { defaultOddsType ->
                 MultiLanguagesApplication.saveOddsType(defaultOddsType)
             }
@@ -906,8 +928,7 @@ fun getCompressFile(path: String?): File? {
         resizeBitmap(bitmap, 1024)?.let { resizeImage ->
             //對質量進行一次壓縮
             compressImageToFile(resizeImage, 1024)?.let { compressFile ->
-                if (compressFile.exists())
-                    return compressFile
+                if (compressFile.exists()) return compressFile
             }
         }
     }
@@ -1041,40 +1062,44 @@ fun Activity.startLogin() {
 }
 
 fun View.refreshMoneyLoading() {
-    this.startAnimation(RotateAnimation(0f,
-        720f,
-        Animation.RELATIVE_TO_SELF,
-        0.5f,
-        Animation.RELATIVE_TO_SELF,
-        0.5f).apply {
+    this.startAnimation(RotateAnimation(
+        0f, 720f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f
+    ).apply {
         duration = 1000
     })
 }
 
 // 绑定'联系客服'点击事件
-fun View.setServiceClick(fragmentManager: FragmentManager, block: (() -> Unit)? = null) = setOnClickListener {
+fun View.setServiceClick(fragmentManager: FragmentManager, block: (() -> Unit)? = null) =
+    setOnClickListener {
 
-    block?.invoke()
+        block?.invoke()
 
-    val serviceUrl = sConfigData?.customerServiceUrl
-    val serviceUrl2 = sConfigData?.customerServiceUrl2
-    when {
-        !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-            ServiceDialog().show(fragmentManager, ServiceDialog::class.java.simpleName)
-        }
-        serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+        val serviceUrl = sConfigData?.customerServiceUrl
+        val serviceUrl2 = sConfigData?.customerServiceUrl2
+        when {
+            !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                ServiceDialog().show(fragmentManager, ServiceDialog::class.java.simpleName)
+            }
+
+            serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
                 JumpUtil.toExternalWeb(context, serviceUrl2)
-        }
-        !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
+            }
+
+            !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
                 JumpUtil.toExternalWeb(context, serviceUrl)
+            }
         }
     }
-}
 
 
 fun View.setBtnEnable(enable: Boolean) {
     this.isEnabled = enable
-    this.alpha = if(enable) { 1.0f } else { 0.5f }
+    this.alpha = if (enable) {
+        1.0f
+    } else {
+        0.5f
+    }
 }
 
 fun BaseFragment<SportListViewModel>.showErrorMsgDialog(msg: String) {
@@ -1125,30 +1150,32 @@ fun View.bindExpanedAdapter(adapter: ExpanableOddsAdapter<*>, block: ((Boolean) 
     }
 }
 
-fun enterThirdGame(baseFragment: BaseFragment<*>,
-                   viewModel: MainHomeViewModel,
-                   result: EnterThirdGameResult,
-                   firmType: String) = baseFragment.run {
+fun enterThirdGame(
+    baseFragment: BaseFragment<*>,
+    viewModel: MainHomeViewModel,
+    result: EnterThirdGameResult,
+    firmType: String
+) = baseFragment.run {
     hideLoading()
     when (result.resultType) {
         EnterThirdGameResult.ResultType.SUCCESS -> context?.run {
             JumpUtil.toThirdGameWeb(this, result.url ?: "", firmType)
         }
+
         EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(
-            getString(R.string.prompt),
-            result.errorMsg ?: ""
+            getString(R.string.prompt), result.errorMsg ?: ""
         ) {}
+
         EnterThirdGameResult.ResultType.NEED_REGISTER -> requireActivity().startRegister()
 
         EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(
-            getString(R.string.error),
-            result.errorMsg ?: ""
+            getString(R.string.error), result.errorMsg ?: ""
         ) {}
+
         EnterThirdGameResult.ResultType.NONE -> {
         }
     }
-    if (result.resultType != EnterThirdGameResult.ResultType.NONE)
-        viewModel.clearThirdGame()
+    if (result.resultType != EnterThirdGameResult.ResultType.NONE) viewModel.clearThirdGame()
 }
 
 fun BaseFragment<out MainHomeViewModel>.enterThirdGame(
@@ -1161,12 +1188,9 @@ fun BaseFragment<out MainHomeViewModel>.enterThirdGame(
 // 设置优惠活动点击事件
 fun View.bindPromoClick(click: (() -> Unit)? = null) = setOnClickListener {
     JumpUtil.toInternalWeb(
-        context,
-        Constants.getPromotionUrl(
-            LoginRepository.token,
-            LanguageManager.getSelectLanguage(context)
-        ),
-        context.getString(R.string.promotion)
+        context, Constants.getPromotionUrl(
+            LoginRepository.token, LanguageManager.getSelectLanguage(context)
+        ), context.getString(R.string.promotion)
     )
 }
 
@@ -1184,7 +1208,9 @@ fun View.setArrowSpin(isExpanded: Boolean, isAnimate: Boolean, angle: Float = 18
     }
 }
 
-fun Context.dividerView(@ColorRes color: Int, width: Int = 0.5f.dp, isVertical: Boolean = true, margins: Int = 0): View {
+fun Context.dividerView(
+    @ColorRes color: Int, width: Int = 0.5f.dp, isVertical: Boolean = true, margins: Int = 0
+): View {
     return View(this).apply {
         setBackgroundResource(color)
         if (isVertical) {
