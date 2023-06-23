@@ -36,7 +36,7 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
     private val fragmentHelper by lazy {
         FragmentHelper(
             childFragmentManager, R.id.fragmentContainer, arrayOf(
-                Pair(AllLiveFragment::class.java, null), Pair(PartGamesFragment::class.java, null)
+                Pair(AllLiveFragment::class.java, null), Pair(PartLiveFragment::class.java, null)
             )
         )
     }
@@ -119,7 +119,7 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
                 changePartGamesLabel(GameTab.TAB_SEARCH, searchKey)
                 startLoad {
                     viewModel.searchGames(
-                        retagRequest(), searchKey, it, PartGamesFragment.pageSize
+                        retagRequest(), searchKey, it, PartLiveFragment.pageSize
                     )
                 }
             }
@@ -155,8 +155,8 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
         return fragmentHelper.showFragment(0) as AllLiveFragment
     }
 
-    private inline fun showPartGameFragment(): PartGamesFragment {
-        return fragmentHelper.showFragment(1) as PartGamesFragment
+    private inline fun showPartGameFragment(): PartLiveFragment {
+        return fragmentHelper.showFragment(1) as PartLiveFragment
     }
 
     private fun showRecentPart(tab: OKGameTab) {
@@ -192,14 +192,14 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
         val firmId = okgamesFirm.getKey().toString()
         startLoad {
             viewModel.getOKGamesList(
-                retagRequest(), null, firmId, it, PartGamesFragment.pageSize
+                retagRequest(), null, firmId, it, PartLiveFragment.pageSize
             )
         }
     }
 
     private fun loadFavorite(tab: OKGameTab) {
         changePartGamesLabel(tab)
-        startLoad { viewModel.getFavoriteOKGames(retagRequest(), it, PartGamesFragment.pageSize) }
+        startLoad { viewModel.getFavoriteOKGames(retagRequest(), it, PartLiveFragment.pageSize) }
     }
 
     private fun reloadPartGames(tab: OKGameTab) {
@@ -207,7 +207,7 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
         val categoryId = tab.getKey().toString()
         startLoad {
             viewModel.getOKGamesList(
-                retagRequest(), categoryId, null, it, PartGamesFragment.pageSize
+                retagRequest(), categoryId, null, it, PartLiveFragment.pageSize
             )
         }
     }
