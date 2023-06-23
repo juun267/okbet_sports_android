@@ -72,7 +72,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
 
     fun showLive() {
         curType = LiveType.LIVE
-        iv_fullscreen.isVisible = true
+        iv_fullscreen.isVisible = false
         showPlayView()
         switchPlayView(true)
         setWebViewHeight()
@@ -85,7 +85,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         switchPlayView(false)
         showPlayView()
         setWebViewHeight()
-        iv_fullscreen.isVisible = true
+        iv_fullscreen.isVisible = false
         openWebView()
         liveToolBarListener?.onTabClick(1)
     }
@@ -95,7 +95,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         switchPlayView(false)
         showPlayView()
         setWebViewHeight()
-        iv_fullscreen.isVisible = true
+        iv_fullscreen.isVisible = false
         openWebView()
         liveToolBarListener?.onTabClick(2)
     }
