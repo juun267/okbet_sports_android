@@ -7,6 +7,7 @@ import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.button_bet.view.*
+import kotlinx.android.synthetic.main.view_global_loading.view.text
 import org.cxct.sportlottery.R
 import timber.log.Timber
 
@@ -96,6 +97,10 @@ class BetButton @JvmOverloads constructor(
             isSelected = betClickable
             isClickable = betClickable
         }
+    }
+
+    fun setBtnText(text:String){
+        tv_bet.text = text
     }
 
     fun setOddsButtonChangeStyle() {
