@@ -121,7 +121,7 @@
     <string name="fishing">Bắn cá</string>
     <string name="home_tan_main">THỂ THAO</string>
     <string name="home_tab_in_play">TRONG TRẬN</string>
-    <string name="home_tab_in_play2">INPLAY</string>
+    <string name="home_tab_in_play2">TRONG TRẬN</string>
     <string name="home_tab_today">HÔM NAY</string>
     <string name="home_tab_early">CƯỢC SỚM</string>
     <string name="home_tab_cs">Cược tỷ số</string>
@@ -1027,7 +1027,7 @@
     <string name="langugae_setting">Cài đặt ngôn ngữ</string>
     <string name="setting_center">Cài đặt</string>
     <string name="ou_odd">Tỷ lệ cược Châu Âu</string>
-    <string name="home_in_play">IN-PLAY</string>
+    <string name="home_in_play">TRONG TRẬN</string>
     <string name="total_reward_amount">Jackpot tích luỹ</string>
     <string name="hot_elec_game">Game jackpot Hot</string>
     <string name="win_line">Chủ &amp; Khách</string>

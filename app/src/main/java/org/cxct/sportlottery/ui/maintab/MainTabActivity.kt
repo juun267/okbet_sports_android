@@ -30,6 +30,7 @@ import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.event.NetWorkEvent
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.event.ShowFavEvent
+import org.cxct.sportlottery.common.event.ShowInPlayEvent
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
@@ -400,6 +401,12 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             }
         }
     }
+
+    @Subscribe
+    fun onShowInPlay(event: ShowInPlayEvent) {
+        jumpToInplaySport()
+    }
+
 
     @Subscribe
     fun onShowFavEvent(event: ShowFavEvent) {
