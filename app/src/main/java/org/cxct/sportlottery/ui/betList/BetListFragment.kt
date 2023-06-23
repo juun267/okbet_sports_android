@@ -407,11 +407,13 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         val adapterItemClickListener = object : OnItemClickListener {
 
             override fun onOddChangeEndListener() {
+                if (context == null) return
                 binding.btnBet.setBtnText(getString(R.string.bet_info_list_bet))
                 binding.btnBet.resetButtonStyle()
             }
 
             override fun onOddChangeStartListener(isUp: Boolean) {
+                if (context == null) return
                 binding.btnBet.setBtnText(getString(R.string.P139))
                 binding.btnBet.setOddsButtonChangeStyle()
             }
