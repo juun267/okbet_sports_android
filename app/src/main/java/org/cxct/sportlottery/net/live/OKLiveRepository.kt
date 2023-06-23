@@ -50,6 +50,7 @@ object OKLiveRepository {
         val params = paramDevice()
         params.addProperty("page", page)
         params.addProperty("pageSize", pageSize)
+        params.addProperty("gameEntryType", "OK_LIVE")
         if (markCollect == null) {
             params.addProperty("gameName", gameName)
             params.addProperty("categoryId", categoryId)
@@ -75,7 +76,7 @@ object OKLiveRepository {
         params.addProperty("pageSize", pageSize)
         //首页推荐 1启用,2禁用
         params.addProperty("enableHome", 1)
-
+        params.addProperty("gameEntryType", "OK_LIVE")
         return okLiveApi.getOKLiveList(params)
     }
 }
