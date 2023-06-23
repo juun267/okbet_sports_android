@@ -301,6 +301,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 binding.clParlayList.visibility = View.GONE
                 binding.clTitle.tvClearAll.gone()
                 binding.lineShadow.gone()
+                binding.clTitle.tvClose.text = getString(R.string. bottom_sheet_close)
             }
 
             PARLAY -> {
@@ -309,6 +310,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                     BetListRefactorAdapter.BetRvType.PARLAY_SINGLE
                 refreshLlMoreOption()
                 binding.clTitle.tvClearAll.visible()
+                binding.clTitle.tvClose.text = getString(R.string. D039)
                 binding.lineShadow.visible()
             }
 
@@ -405,10 +407,12 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
         val adapterItemClickListener = object : OnItemClickListener {
 
             override fun onOddChangeEndListener() {
+                binding.btnBet.setBtnText(getString(R.string.bet_info_list_bet))
                 binding.btnBet.resetButtonStyle()
             }
 
             override fun onOddChangeStartListener(isUp: Boolean) {
+                binding.btnBet.setBtnText(getString(R.string.P139))
                 binding.btnBet.setOddsButtonChangeStyle()
             }
 

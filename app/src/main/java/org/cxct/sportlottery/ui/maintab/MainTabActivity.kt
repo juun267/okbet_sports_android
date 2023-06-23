@@ -8,6 +8,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.PathMeasure
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
@@ -402,9 +403,12 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
     }
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onShowInPlay(event: ShowInPlayEvent) {
-        jumpToInplaySport()
+        binding.bottomNavigationView.postDelayed({
+            jumpToTheSport(MatchType.IN_PLAY, GameType.BK)
+        },200)
+
     }
 
 
@@ -742,7 +746,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     fun jumpToInplaySport() {
         //检测体育服务是否关闭
         checkSportStatus(this) {
-            jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)
+            jumpToTheSport(MatchType.IN_PLAY, GameType.BK)
             if (bottom_navigation_view.currentItem != 1) {
                 bottom_navigation_view.currentItem = 1
             }

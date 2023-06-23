@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.sport
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
