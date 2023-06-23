@@ -210,7 +210,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
 
     private fun initGameListView() = binding.gameList.run {
 
-        setupBackTop(binding.ivBackTop, 500.dp)
+        setupBackTop(binding.ivBackTop, 500.dp, tabCode = matchType.postValue)
         layoutManager = getGameLayoutManger()
         adapter = getGameListAdapter()
         getGameListAdapter().setEmptyView(EmptySportGamesView(context()))

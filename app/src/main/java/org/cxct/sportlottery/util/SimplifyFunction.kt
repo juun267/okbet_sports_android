@@ -134,7 +134,7 @@ fun RecyclerView.addScrollWithItemVisibility(
     })
 }
 
-fun RecyclerView.setupBackTop(targetView: View, offset: Int, tabCode: String?) {
+fun RecyclerView.setupBackTop(targetView: View, offset: Int, tabCode: String? = null ) {
 
     val b = tabCode == MatchType.END_SCORE.postValue
     var targetWidth = 0f
