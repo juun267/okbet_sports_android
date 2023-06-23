@@ -19,6 +19,7 @@ import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.dividerView
 import org.cxct.sportlottery.util.setArrowSpin
+import org.cxct.sportlottery.util.setExpandArrow
 import org.cxct.sportlottery.util.setLeagueLogo
 import splitties.views.dsl.core.add
 
@@ -63,7 +64,6 @@ class OutrightFirstProvider(val adapter: SportOutrightAdapter2,
 
         val arrow = AppCompatImageView(context)
         arrow.setPadding(p12, p12, p12, p12)
-        arrow.setImageResource(R.drawable.ic_arrow_gray_up1)
         44.dp.let { lin.addView(arrow, LinearLayout.LayoutParams(it, it)) }
 
         return LeagueVH(logo, name, arrow, root)
@@ -74,15 +74,19 @@ class OutrightFirstProvider(val adapter: SportOutrightAdapter2,
         val leagueVH = helper as LeagueVH
         leagueVH.logo.setLeagueLogo(matchOdd.matchInfo?.categoryIcon)
         leagueVH.name.text = matchOdd.matchInfo?.name
-        leagueVH.arrow.setArrowSpin(matchOdd.isExpanded, false)
+        setExpandArrow(leagueVH.arrow, matchOdd.isExpanded)
         setBackground(helper.itemView, matchOdd.isExpanded)
     }
 
     override fun convert(helper: BaseViewHolder, item: BaseNode, payloads: List<Any>) {
+        if (payloads.getOrNull(0) is OutrightFirstProvider) {
+            return
+        }
+
         val matchOdd = item as MatchOdd
         val leagueVH = helper as LeagueVH
-        leagueVH.arrow.setArrowSpin(matchOdd.isExpanded, false)
         setBackground(helper.itemView, matchOdd.isExpanded)
+        setExpandArrow(leagueVH.arrow, matchOdd.isExpanded)
     }
 
     private fun setBackground(view: View, isExpanded: Boolean) {
@@ -97,8 +101,8 @@ class OutrightFirstProvider(val adapter: SportOutrightAdapter2,
         val matchOdd = data as MatchOdd
         val leagueVH = helper as LeagueVH
         val position = adapter.getItemPosition(data)
-        adapter.expandOrCollapse(data, parentPayload = data)
-        leagueVH.arrow.setArrowSpin(matchOdd.isExpanded, true)
+        adapter.expandOrCollapse(data, parentPayload = this@OutrightFirstProvider)
+        leagueVH.arrow.setArrowSpin(matchOdd.isExpanded, true) { setExpandArrow(leagueVH.arrow, matchOdd.isExpanded) }
         setBackground(helper.itemView, matchOdd.isExpanded)
         onItemClick.invoke(position, leagueVH.arrow, matchOdd)
     }

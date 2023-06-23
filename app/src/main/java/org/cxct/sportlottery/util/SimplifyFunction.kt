@@ -1193,16 +1193,24 @@ fun View.bindPromoClick(click: (() -> Unit)? = null) = setOnClickListener {
         ), context.getString(R.string.promotion)
     )
 }
+fun setExpandArrow(ivArrow: ImageView, isExpanded: Boolean) {
+    if (isExpanded) {
+        ivArrow.rotation = 0f
+        ivArrow.setImageResource(R.drawable.ic_filter_arrow_up)
+    } else {
+        ivArrow.rotation = 180f
+        ivArrow.setImageResource(R.drawable.ic_filter_arrow_up2)
+    }
+}
 
-
-fun View.setArrowSpin(isExpanded: Boolean, isAnimate: Boolean, angle: Float = 180f) {
+fun View.setArrowSpin(isExpanded: Boolean, isAnimate: Boolean, angle: Float = 180f, onRotateEnd: (() -> Unit)?= null) {
     var rotation = angle
     if (isExpanded) {
         rotation = 0f
     }
 
     if (isAnimate) {
-        rotationAnimation(rotation)
+        rotationAnimation(rotation, onEnd = onRotateEnd)
     } else {
         this.rotation = rotation
     }

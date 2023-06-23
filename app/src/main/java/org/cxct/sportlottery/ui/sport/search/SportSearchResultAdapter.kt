@@ -12,10 +12,7 @@ import org.cxct.sportlottery.network.sport.SearchResponse
 import org.cxct.sportlottery.network.sport.SearchResult
 import org.cxct.sportlottery.common.adapter.BaseNodeAdapter
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
-import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.setArrowSpin
-import org.cxct.sportlottery.util.setLeagueLogo
-import org.cxct.sportlottery.util.setTeamLogo
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.highLightTextView.HighlightTextView
 
 
@@ -63,17 +60,20 @@ class SportSearchResultAdapter : BaseNodeAdapter() {
     ) : BaseNodeProvider() {
 
         override fun convert(helper: BaseViewHolder, item: BaseNode) {
+            val league = item as SearchResult.SearchResultLeague
             val tvLeagueTittle = helper.getView<HighlightTextView>(R.id.tvLeagueTittle)
-            tvLeagueTittle.setCustomText((item as SearchResult.SearchResultLeague).league)
+            tvLeagueTittle.setCustomText(league.league)
             tvLeagueTittle.highlight(searchKey())
-            var ivIcon = helper.getView<ImageView>(R.id.view1)
-            ivIcon.setLeagueLogo(item.icon)
+            helper.getView<ImageView>(R.id.view1).setLeagueLogo(item.icon)
+            setExpandArrow(helper.getView(R.id.view_arrow_top), league.isExpanded)
         }
 
         override fun onClick(helper: BaseViewHolder, view: View, data: BaseNode, position: Int) {
             val position = adapter.getItemPosition(data)
+            val league = data as SearchResult.SearchResultLeague
             adapter.expandOrCollapse(data, parentPayload = position)
-            helper.getView<View>(R.id.view_arrow_top).setArrowSpin((data as SearchResult.SearchResultLeague).isExpanded, true)
+            val ivArrow = helper.getView<ImageView>(R.id.view_arrow_top)
+            ivArrow.setArrowSpin(league.isExpanded, true) { setExpandArrow(ivArrow, league.isExpanded) }
         }
 
     }

@@ -21,6 +21,7 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.dividerView
 import org.cxct.sportlottery.util.setArrowSpin
+import org.cxct.sportlottery.util.setExpandArrow
 
 // 冠军列表-玩法
 class OutrightSecondProvider(val adapter: SportOutrightAdapter2,
@@ -87,12 +88,11 @@ class OutrightSecondProvider(val adapter: SportOutrightAdapter2,
             matchOdd?.startTime = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, TimeUtil.HM_FORMAT)
         }
         matchVH.time.text = " ${context.getString(R.string.deadline)}:${startDate} ${matchOdd?.startTime}"
-        matchVH.arrow.setArrowSpin(bean.isExpanded, false)
-
+        setExpandArrow(matchVH.arrow, bean.isExpanded)
         matchVH.arrow.setOnClickListener {
             adapter.expandOrCollapse(bean, parentPayload = bean)
             onItemClick.invoke(adapter.getItemPosition(bean), it, bean)
-            it.setArrowSpin(bean.isExpanded, true)
+            it.setArrowSpin(bean.isExpanded, true) { setExpandArrow(matchVH.arrow, bean.isExpanded) }
         }
     }
 

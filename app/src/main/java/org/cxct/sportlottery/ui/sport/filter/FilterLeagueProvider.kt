@@ -8,6 +8,8 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.rotationAnimation
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.util.setArrowSpin
+import org.cxct.sportlottery.util.setExpandArrow
 import org.cxct.sportlottery.util.setLeagueLogo
 
 class FilterLeagueProvider(val adapter: LeagueSelectAdapter,
@@ -25,9 +27,11 @@ class FilterLeagueProvider(val adapter: LeagueSelectAdapter,
         helper.itemView.isSelected = leagueOdd.isExpanded
         val ivCheck=helper.getView<ImageView>(R.id.ivCheck)
         ivCheck.isSelected = leagueOdd.league.isSelected
+        setExpandArrow(ivArrow, leagueOdd.isExpanded)
         ivArrow.setOnClickListener {
             adapter.expandOrCollapse(item)
             helper.itemView.isSelected = leagueOdd.isExpanded
+            ivArrow.setArrowSpin(leagueOdd.isExpanded, true) { setExpandArrow(ivArrow, leagueOdd.isExpanded) }
         }
         helper.itemView.setOnClickListener {
             leagueOdd.league.isSelected = !leagueOdd.league.isSelected
@@ -36,17 +40,5 @@ class FilterLeagueProvider(val adapter: LeagueSelectAdapter,
         }
     }
 
-    private fun setArrowSpin(ivArrow: ImageView, data: LeagueOdd, isAnimate: Boolean) {
-        var rotation = 180f
-        if (data.isExpanded) {
-            rotation = 0f
-        }
-
-        if (isAnimate) {
-            ivArrow.rotationAnimation(rotation)
-        } else {
-            ivArrow.rotation = rotation
-        }
-    }
 
 }

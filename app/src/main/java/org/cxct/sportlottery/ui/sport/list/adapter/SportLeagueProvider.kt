@@ -20,6 +20,7 @@ import org.cxct.sportlottery.common.extentions.rotationAnimation
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.setArrowSpin
+import org.cxct.sportlottery.util.setExpandArrow
 import org.cxct.sportlottery.util.setLeagueLogo
 
 
@@ -68,7 +69,7 @@ class SportLeagueProvider(
 
         val ivArrow = AppCompatImageView(context).apply {
             id = ivArrowId
-            setImageResource(R.drawable.ic_arrow_gray_up1)
+            setImageResource(R.drawable.selector_filter_arrow)
             layoutParams = FrameLayout.LayoutParams(wh20, wh20).apply {
                 gravity = Gravity.CENTER_VERTICAL or Gravity.RIGHT
                 rightMargin = 12.dp
@@ -83,17 +84,20 @@ class SportLeagueProvider(
         val leagueOdd = item as LeagueOdd
         helper.setText(tvLeagueNameId, leagueOdd.league.name)
         helper.getView<ImageView>(ivCountryId).setLeagueLogo(item.league.categoryIcon)
-        helper.getView<View>(ivArrowId).setArrowSpin(leagueOdd.isExpanded, false)
+        setExpandArrow(helper.getView(ivArrowId), leagueOdd.isExpanded)
     }
 
     override fun convert(helper: BaseViewHolder, item: BaseNode, payloads: List<Any>) {
-        helper.getView<View>(ivArrowId).setArrowSpin((item as LeagueOdd).isExpanded, false)
+        setExpandArrow(helper.getView(ivArrowId), (item as LeagueOdd).isExpanded)
     }
 
     override fun onClick(helper: BaseViewHolder, view: View, item: BaseNode, position: Int) {
         val position = adapter.getItemPosition(item)
         adapter.nodeExpandOrCollapse(item, parentPayload = position)
-        helper.getView<View>(ivArrowId).setArrowSpin((item as LeagueOdd).isExpanded, true)
+        val league = item as LeagueOdd
+        helper.getView<ImageView>(ivArrowId).apply {
+            setArrowSpin(league.isExpanded, true) { setExpandArrow(this, league.isExpanded) }
+        }
     }
 
 }
