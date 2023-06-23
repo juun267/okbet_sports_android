@@ -8,7 +8,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.PathMeasure
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
@@ -24,7 +23,6 @@ import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.android.synthetic.main.activity_main_tab.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.BetModeChangeEvent
 import org.cxct.sportlottery.common.event.MenuEvent
@@ -732,6 +730,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     fun jumpToOKGames() {
         resetBackIcon(0)
         homeFragment().jumpToOKGames()
+    }
+
+    fun jumpToOKLive() {
+        resetBackIcon(0)
+        homeFragment().jumpToOKLive()
     }
 
     fun jumpToNews() {
