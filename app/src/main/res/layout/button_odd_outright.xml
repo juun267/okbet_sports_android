@@ -67,15 +67,6 @@
             android:layout_height="wrap_content"
             android:gravity="center">
 
-            <ImageView
-                android:id="@+id/iv_arrow"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:layout_marginRight="2dp"
-                tools:src="@drawable/selector_odds_arrow_up"
-                android:visibility="gone"
-                tools:visibility="visible" />
-
             <TextView
                 android:id="@+id/tv_odds"
                 android:layout_width="wrap_content"
@@ -86,6 +77,15 @@
                 android:fontFamily="@font/din_regular"
                 android:textFontWeight="700"
                 tools:text="1.067" />
+
+            <ImageView
+                android:id="@+id/iv_arrow"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                tools:src="@drawable/icon_odds_up"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
         </LinearLayout>
 
 

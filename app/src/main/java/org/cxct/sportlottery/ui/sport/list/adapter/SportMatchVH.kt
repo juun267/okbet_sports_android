@@ -84,12 +84,10 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
     private val sportMatchTimer by lazy { SportMatchTimer() }
 
     fun onStop() {
-//        Log.e("For Test", "=======>>>> setupMatchInfo onStop ${mMatchInfo?.leagueName}   ${mMatchInfo?.homeName} VS ${mMatchInfo?.awayName}")
         sportMatchTimer.stop()
     }
 
     fun resetStatusView() = binding.run {
-        hIndicator.resetItemCount(0)
         setViewGone(leagueNeutral,
             leagueCornerKicks,
             leagueSpt,

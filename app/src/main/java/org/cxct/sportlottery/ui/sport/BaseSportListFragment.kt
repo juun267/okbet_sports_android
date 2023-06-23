@@ -36,10 +36,8 @@ import org.cxct.sportlottery.ui.sport.common.GameTypeAdapter2
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.ui.sport.list.adapter.EmptySportGamesView
-import org.cxct.sportlottery.util.EdgeBounceEffectHorizontalFactory
-import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.util.ToastUtil
-import org.cxct.sportlottery.util.bindExpanedAdapter
+import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 import org.greenrobot.eventbus.Subscribe
@@ -212,6 +210,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
 
     private fun initGameListView() = binding.gameList.run {
 
+        setupBackTop(binding.ivBackTop, 500.dp, tabCode = matchType.postValue)
         layoutManager = getGameLayoutManger()
         adapter = getGameListAdapter()
         getGameListAdapter().setEmptyView(EmptySportGamesView(context()))

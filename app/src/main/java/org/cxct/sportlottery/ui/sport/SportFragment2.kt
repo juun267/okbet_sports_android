@@ -44,7 +44,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         MatchType.TODAY,
         MatchType.EARLY,
         MatchType.PARLAY,
-        MatchType.CS,
+//        MatchType.CS,
         MatchType.OUTRIGHT,
         MatchType.MY_EVENT
     )
@@ -109,7 +109,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         val countAtStart = sportMenuData?.atStart?.items?.sumOf { it.num } ?: 0
         val countToday = sportMenuData?.menu?.today?.items?.sumOf { it.num } ?: 0
         val countEarly = sportMenuData?.menu?.early?.items?.sumOf { it.num } ?: 0
-        val countCS = sportMenuData?.menu?.cs?.items?.sumOf { it.num } ?: 0
+//        val countCS = sportMenuData?.menu?.cs?.items?.sumOf { it.num } ?: 0
         val countOutright = sportMenuData?.menu?.outright?.items?.sumOf { it.num } ?: 0
         val countParlay = sportMenuData?.menu?.parlay?.items?.sumOf { it.num } ?: 0
         val countBkEnd = sportMenuData?.menu?.bkEnd?.items?.sumOf { it.num } ?: 0
@@ -125,9 +125,9 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         addTab(getString(R.string.home_tab_today), countToday, 3)
         addTab(getString(R.string.home_tab_early), countEarly, 4)
         addTab(getString(R.string.home_tab_parlay), countParlay, 5)
-        addTab(getString(R.string.home_tab_cs), countCS, 6)
-        addTab(getString(R.string.home_tab_outright), countOutright, 7)
-        val tabView = addTab(getString(R.string.my_favorite), favoriteCount(favoriteItems), 8)
+//        addTab(getString(R.string.home_tab_cs), countCS, 6)
+        addTab(getString(R.string.home_tab_outright), countOutright, 6)
+        val tabView = addTab(getString(R.string.my_favorite), favoriteCount(favoriteItems), 7)
         if (!LoginRepository.isLogined()) {
             tabView.setOnTouchListener { _, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
