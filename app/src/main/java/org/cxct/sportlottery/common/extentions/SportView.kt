@@ -465,12 +465,12 @@ fun setBBStatusView(
 
     tvBBStatus.apply {
         text = matchInfo.statusName18n
-        isVisible = true
+        isVisible = !matchInfo.statusName18n.isEmptyStr()
     }
 
     txvOut.apply {
         text = this.context.getString(R.string.game_out,
-            matchInfo.outNumber ?: "")
+            matchInfo.outNumber ?: "0")
         isVisible = true
     }
 

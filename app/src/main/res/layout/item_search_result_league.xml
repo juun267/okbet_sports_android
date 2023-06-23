@@ -35,8 +35,7 @@
     <ImageView
         android:id="@+id/view_arrow_top"
         android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:background="@drawable/selector_filter_arrow_search" />
+        android:layout_height="20dp" />
 
 </LinearLayout>
 
