@@ -200,12 +200,20 @@ fun <T> BaseQuickAdapter<T, *>.showEmpty(@LayoutRes layoutId: Int) {
     this.setEmptyView(layoutId)
 }
 
-fun View.rotationAnimation(rotation: Float, duration: Long = 200) {
-    ViewCompat.animate(this)
+fun View.rotationAnimation(rotation: Float, duration: Long = 200, onEnd: (() -> Unit)?= null) {
+    val animator = ViewCompat.animate(this)
         .setDuration(duration)
 //        .setInterpolator(DecelerateInterpolator())
         .rotation(rotation)
-        .start()
+    onEnd?.let {
+        animator.setListener(object : ViewPropertyAnimatorListenerAdapter() {
+            override fun onAnimationEnd(view: View) {
+            it.invoke()
+            }
+        })
+    }
+
+    animator.start()
 }
 
 fun View.animDuang(scale: Float, duration: Long = 500) {
