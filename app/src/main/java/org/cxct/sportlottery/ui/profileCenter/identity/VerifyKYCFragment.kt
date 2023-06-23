@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -19,6 +20,7 @@ import kotlinx.android.synthetic.main.content_verify_identity_kyc_head.*
 import kotlinx.android.synthetic.main.fragment_verify_identity_kyc.*
 import kotlinx.android.synthetic.main.view_status_spinner.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
@@ -337,7 +339,7 @@ class VerifyKYCFragment :
                         )
                     else
                         viewModel.uploadVerifyPhoto(
-                            headIdFile!!,
+                            headIdFile,
                             firstFile!!,
                             identity_1st.selector_type.selectedCode?.toInt(),
                             identity_1st.ed_num.text.toString()
@@ -373,6 +375,7 @@ class VerifyKYCFragment :
                     dialog.show(parentFragmentManager, VerifyKYCFragment::class.java.simpleName)
                 }
             }
+            identityHead.gone()
             layoutUploadIdWithHead.setOnClickListener {
                 val dialog = PicSelectorDialog()
                 dialog.mSelectListener = mHeadIdListener
@@ -415,6 +418,7 @@ class VerifyKYCFragment :
         btn_submit.isEnabled =
             (firstFile != null && !identity_1st.selector_type.selectedCode.isNullOrBlank() && identity_1st.ed_num.text.isNotEmpty())
                     && ((secondFile != null && identity_2nd.isVisible && !identity_2nd.selector_type.selectedCode.isNullOrBlank() && identity_2nd.ed_num.text.isNotEmpty()) || !identity_2nd.isVisible)
+                    && (identityHead.isGone||(identityHead.isVisible && headIdFile!=null))
     }
 
     private fun setEdittext() {

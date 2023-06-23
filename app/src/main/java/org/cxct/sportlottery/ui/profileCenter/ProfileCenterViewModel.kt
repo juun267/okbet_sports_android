@@ -135,7 +135,7 @@ class ProfileCenterViewModel(
     }
 
     fun uploadVerifyPhoto(
-        headFile: File,
+        headFile: File?,
         firstFile: File,
         identityType: Int?,
         identityNumber: String?,
@@ -152,14 +152,15 @@ class ProfileCenterViewModel(
                     ).toPars()
                 )
             }
-            val headResponse = doNetwork(androidContext) {
-                OneBoSportApi.uploadImgService.uploadImg(
-                    UploadVerifyDocRequest(
-                        userInfo.value?.userId.toString(),
-                        headFile
-                    ).toPars()
-                )
-            }
+            val headResponse = if(headFile==null) null  else
+                 doNetwork(androidContext) {
+                    OneBoSportApi.uploadImgService.uploadImg(
+                        UploadVerifyDocRequest(
+                            userInfo.value?.userId.toString(),
+                            headFile
+                        ).toPars()
+                    )
+                }
             when {
                 docResponse == null -> _docUrlResult.postValue(
                     Event(
@@ -198,17 +199,15 @@ class ProfileCenterViewModel(
 
                             photoResponse.success -> {
                                 _photoUrlResult.postValue(Event(photoResponse))
-                                if (headResponse != null) {
-                                    uploadIdentityDoc(
-                                        docResponse.imgData?.path,
-                                        identityType,
-                                        identityNumber,
-                                        photoResponse.imgData?.path,
-                                        identityTypeBackup,
-                                        identityNumberBackup,
-                                        headResponse.imgData?.path
-                                    )
-                                }
+                                uploadIdentityDoc(
+                                    docResponse.imgData?.path,
+                                    identityType,
+                                    identityNumber,
+                                    photoResponse.imgData?.path,
+                                    identityTypeBackup,
+                                    identityNumberBackup,
+                                    headResponse?.imgData?.path
+                                )
                             }
 
                             else -> {
@@ -223,12 +222,10 @@ class ProfileCenterViewModel(
                             }
                         }
                     } else {
-                        if (headResponse != null) {
-                            uploadIdentityDoc(
-                                docResponse.imgData?.path, identityType, identityNumber,
-                                verifyPhoto1 = headResponse.imgData?.path
-                            )
-                        }
+                        uploadIdentityDoc(
+                            docResponse.imgData?.path, identityType, identityNumber,
+                            verifyPhoto1 = headResponse?.imgData?.path
+                        )
                     }
                 }
 

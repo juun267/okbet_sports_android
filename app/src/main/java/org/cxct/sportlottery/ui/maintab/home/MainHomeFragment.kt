@@ -601,7 +601,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
     private fun setupBanner() {
 
         var imageList =
-            sConfigData?.imageList?.filter { it.imageType == 2 && !(isGooglePlayVersion() && it.isHidden) }
+            sConfigData?.imageList?.filter { it.imageType == 2 && !(getMarketSwitch() && it.isHidden) }
 
         if (imageList.isNullOrEmpty()) {
             banner.setBackgroundResource(R.drawable.img_banner01)

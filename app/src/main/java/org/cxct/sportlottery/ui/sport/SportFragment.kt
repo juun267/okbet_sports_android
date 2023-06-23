@@ -8,11 +8,14 @@ import androidx.lifecycle.distinctUntilChanged
 import kotlinx.android.synthetic.main.fragment_sport.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.event.MenuEvent
+import org.cxct.sportlottery.common.extentions.newInstanceFragment
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.sport.SportMenuResult
+import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.endscore.EndScoreFragment
@@ -23,6 +26,7 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.checkMainPosition
 import org.cxct.sportlottery.util.phoneNumCheckDialog
+import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.view.tablayout.TabSelectedAdapter
 
@@ -65,11 +69,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
             viewModel.firstSwitchMatch(it)
             navGameFragment(it)
         }
-
-//        if (showBKEndDialog) {
-//            showBKEndDialog = false
-//            showBKEndDialog()
-//        }
+        showSportDialog()
     }
 
     private inline fun getMainTabActivity() = activity as MainTabActivity
@@ -295,18 +295,14 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
             }
         }
     }
-
-//    fun showBKEndDialog() {
-//        requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
-//            putInt(PopImageDialog.DrawableResID, R.drawable.img_bk_end)
-//        }).apply {
-//            onClick = {
-//                this@SportFragment.viewModel.setCurMatchType(MatchType.END_SCORE)
-//                navGameFragment(MatchType.END_SCORE)
-//            }
-//            onDismiss = {
-//            }
-//        }.show(childFragmentManager, PopImageDialog::class.simpleName)
-//    }
-
+    private fun showSportDialog(){
+        if (PopImageDialog.showSportDialog) {
+            PopImageDialog.showSportDialog = false
+            if (PopImageDialog.checkImageTypeAvailable(ImageType.DIALOG_SPORT.code)) {
+                requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
+                    putInt(PopImageDialog.IMAGE_TYPE, ImageType.DIALOG_SPORT.code)
+                }).show(childFragmentManager, PopImageDialog::class.simpleName)
+            }
+        }
+    }
 }

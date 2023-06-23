@@ -318,8 +318,7 @@
     <string name="paymaya_recharge_hint">Mag-log in at suriin ang Paymaya account ay ginagamit sa deposito. Ang kumpanya ay hindi mananagot para sa deposito sa nag-expire na account!</string>
     <string name="title_pay_channel">Channel ng pagbabayad</string>
     <string name="title_choose_pay_channel">Pumili ng paraan ng pagbabayad</string>
-    <string name="title_pay_gap">Pumili ng account</string>
-    <string name="title_choose_pay_gap">Pumili ng account</string>
+    <string name="M132">Pumili ng account</string>
     <string name="title_pay_bank">Bangko magbabayad</string>
     <string name="title_choose_pay_bank">Pumili ng bangko</string>
     <string name="title_pay_msg">Impormasyon sa Pagbabayad</string>
@@ -1326,9 +1325,31 @@
     <string name="N988">Mag-login</string>
     <string name="system_notify">Notification ng System</string>
     <string name="C016">Ngayon</string>
+    <string name="N064">Remarks</string>
     <string name="picture_camera_roll" tools:ignore="ExtraTranslation">CameraRoll</string>
     <string name="P066">Halimbawa</string>
     <string name="P068">Mag-upload ng selfie photo na may hawak na valid ID</string>
     <string name="p090">Salamat sa pag-verify sa amin, mangyaring maghintay ng hanggang 24 oras para maproseso namin ang iyong kahilingan.</string>
-    // 图片选择库中菲语这个会莫名变为中文
+    <string name="P069">Paalala sa halaga ng bawas</string>
+    <string name="P070">Dahil mayroon ka pang %s natitirang rollover sa pagtaya, %s sisingilin ang processing fee!</string>
+    <string name="P113">Paalala ng Glife</string>
+    <string name="P114">Hello, dahil nakarehistro ka sa GLIFE platform, ayon sa opisyal na mga kinakailangan, ang mga deposito at pag-withdraw ay dapat kumpletuhin ng eksklusibo sa pamamagitan ng GCASH program. I-click ang \"Open GCASH\" sa ibaba upang magpatuloy. Salamat!</string>
+    <string name="KYC049">Kanselahin</string>
+    <string name="LT028">Open</string>
+    <string name="N827">Zip code</string>
+    <string name="M259">Address</string>
+    <string name="J901">Lungsod</string>
+    <string name="J036">Lalawigan</string>
+    <string name="P103">Nasyonalidad</string>
+    <string name="P104">Lugar ng Kapanganakan</string>
+    <string name="P105">Pinagmumulan ng Kita</string>
+    <string name="P106">Kalikasan ng trabaho</string>
+    <string name="P108">Kasalukuyang Address ng Bahay</string>
+    <string name="P109">Permanenteng tirahan</string>
+    <string name="J459">Kind tips</string>
+    <string name="P111">Dapat kasama ang address</string>
+    <string name="P110">Unit/Room No. /Floor, Building Name, Lot/ Block/Phase/House Number, Street Name</string>
+    <string name="P131">OKBET Member Account</string>
+    <string name="P132">OKBET x Glife Member Account</string>
+    <string name="P130">Piliin ang Iyong OKBET Account</string>
 </resources>

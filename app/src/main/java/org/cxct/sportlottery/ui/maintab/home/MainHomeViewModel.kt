@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.maintab.home
 
 import android.app.Application
 import android.text.TextUtils
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -26,9 +25,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.match.MatchRound
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.list.MatchLiveData
-import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
-import org.cxct.sportlottery.network.service.sys_maintenance.SportMaintenanceEvent
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuFilter
 import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendRequest
@@ -562,7 +559,7 @@ open class MainHomeViewModel(
 
     //region 宣傳頁 優惠活動文字跑馬燈、圖片公告
     fun getPublicityPromotion() {
-        sConfigData?.imageList?.filter { it.imageType == ImageType.PROMOTION.code && !(isGooglePlayVersion() && it.isHidden) }
+        sConfigData?.imageList?.filter { it.imageType == ImageType.PROMOTION.code && !(getMarketSwitch() && it.isHidden) }
             ?.let { promotionList ->
                 promotionList.filter {
                     (it.viewType == 1) && TextUtils.equals(LanguageManager.getSelectLanguage(
