@@ -10,9 +10,12 @@ import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.gyf.immersionbar.ImmersionBar
+import kotlinx.android.synthetic.main.fragment_main_home.*
 import kotlinx.android.synthetic.main.fragment_worldcup.*
+import kotlinx.android.synthetic.main.fragment_worldcup.homeToolbar
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.databinding.FragmentWorldcupBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.odds.MatchInfo
@@ -20,10 +23,13 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
+import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.fromJson
 import org.cxct.sportlottery.util.startLogin
 import org.cxct.sportlottery.view.webView.OkWebChromeClient
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
@@ -43,10 +49,19 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
     override fun onBindView(view: View) {
         ImmersionBar.with(this)
             .fullScreen(true)
-            .statusBarDarkFont(true)
+            .statusBarDarkFont(false)
             .init()
+        initToolBar()
         initObservable()
         initWeb()
+        homeBottumView.bindServiceClick(childFragmentManager)
+    }
+    fun initToolBar() = binding.run {
+        homeToolbar.attach(this@WorldCupFragment, mainTabActivity(), viewModel)
+        homeToolbar.ivMenuLeft.setOnClickListener {
+            EventBusUtil.post(MenuEvent(true))
+            mainTabActivity().showMainLeftMenu(null)
+        }
     }
     var isInitedWeb = false
     private fun initWeb() =binding.okWebView.run {
@@ -62,7 +77,7 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
                 super.onPageFinished(view, url)
             }
         }
-        okWebView.addJavascriptInterface(WorldCupJsInterface(mainTabActivity()),
+        okWebView.addJavascriptInterface(WorldCupJsInterface(this@WorldCupFragment),
             WorldCupJsInterface.name)
         loadWebURL(MultiLanguagesApplication.mInstance.sOddsType)
     }
@@ -75,8 +90,8 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
         }
 
         currentOdsType = oddsType
-        val url = Constants.getWorldCupH5Url(requireContext())
-        binding.okWebView.loadUrl(url)
+        val url = Constants.getWorldCupH5Url(requireContext(),viewModel.token?:"")
+        binding.okWebView.loadUrl("https://www.fiba.basketball/")
     }
 
 
@@ -124,29 +139,44 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
     override fun onDestroyView() {
         super.onDestroyView()
         binding.okWebView.destroy()
+
     }
 
-    class WorldCupJsInterface(val context: Context) {
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (hidden){
+            pauseWebVideo()
+        }else{
+            playWebVideo()
+//            homeToolbar.onRefreshMoney()
+        }
+    }
+
+   open class WorldCupJsInterface(val fragment: WorldCupFragment) {
 
         companion object {
-            const val name = "worldCupJsInterface"
+            const val name = "app"
         }
-
+       @JavascriptInterface
+       fun toBetRecord() {
+           (fragment.activity as MainTabActivity)?.jumpToBetInfo(1)
+       }
+       @JavascriptInterface
+       fun toLogin() {
+           (fragment.activity as MainTabActivity)?.startLogin()
+       }
         @JavascriptInterface
-        fun tapAndroidEvent(infoString: String) {
-
-            if (TextUtils.isEmpty(infoString)) {
-                ToastUtil.showToast(context, R.string.error)
+        fun toDetailEndScore(matchInfoJson: String) {
+            if (TextUtils.isEmpty(matchInfoJson)) {
+                ToastUtil.showToast(fragment.requireContext(), R.string.error)
                 return
             }
-
-            val matchInfo: MatchInfo? = infoString.fromJson()
+            val matchInfo: MatchInfo? = matchInfoJson.fromJson()
             if (matchInfo == null) {
-                ToastUtil.showToast(context, R.string.error)
+                ToastUtil.showToast(fragment.requireContext(), R.string.error)
                 return
             }
-
-            SportDetailActivity.startActivity(context, matchInfo)
+            SportDetailActivity.startActivity(fragment.mainTabActivity(), matchInfo)
         }
     }
 

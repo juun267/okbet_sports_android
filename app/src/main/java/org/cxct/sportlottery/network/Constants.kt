@@ -11,6 +11,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
+import org.cxct.sportlottery.util.getCurrentOddsTypeName
 import org.cxct.sportlottery.util.isMultipleSitePlat
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
@@ -255,17 +256,17 @@ object Constants {
 
     //联系我们
     fun getContactUrl(context: Context): String? {
-
+        isMultipleSitePlat()
         return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/contact-us?platform=" + context.getString(
             R.string.app_name
         ) + "&service=" + URLEncoder.encode(sConfigData?.customerServiceUrl ?: "", "utf-8")
     }
 
-    //2022世界杯内容h5地址
-    fun getWorldCupH5Url(context: Context): String {
+    //2023篮球世界杯内容h5地址
+    fun getWorldCupH5Url(context: Context, token: String? = ""): String {
         val language = getLanguageTag(context)
         val base = getH5BaseUrl()
-        return base + "sports-rule/#/${language}worldcup?platform=${context.getString(R.string.app_name)}&d=android&noBg=1"
+        return base + "sports-rule/#/${language}worldcup?device=android&token=${token}&lang=${getLanguageTag(context)}&oddsType=${getCurrentOddsTypeName()}"
     }
 
     //https://okbet-v2.cxsport.net/activity/mobile/#/print?uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
