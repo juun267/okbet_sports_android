@@ -418,11 +418,14 @@ class AccountHistoryViewModel(
 
             resultData.let { result ->
                 if (result.success) {
-                    result.rows?.let {
+                    if(result.rows.isNullOrEmpty()){
+                        unsettledDataEvent.postValue(arrayListOf())
+                    }else{
                         pageIndex++
-                        unsettledDataEvent.postValue(it)
+                        unsettledDataEvent.postValue(result.rows!!)
                         loginRepository.updateTransNum(result.total ?: 0)
                     }
+
                 } else {
                     if (result.code == NetWorkResponseType.REQUEST_TOO_FAST.code && requestCount < requestMaxCount) {
                         unsettledDataEvent.postValue(arrayListOf())
