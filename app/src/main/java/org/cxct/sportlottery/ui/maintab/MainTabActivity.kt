@@ -233,8 +233,8 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
                     if (mIsEnabled) {
                         avoidFastDoubleClick()
-                        val position = getMenuItemPosition(menuItem)
-                        if (checkMainPosition(position)) {
+                        val itemPosition = getMenuItemPosition(menuItem)
+                        if (checkMainPosition(itemPosition)) {
                             return@OnNavigationItemSelectedListener false
                         }
 
@@ -260,16 +260,16 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                         }
 
                         fragmentHelper.showFragment(position)
-                        if (position == 0) {
+                        if (itemPosition == 0) {
                             homeFragment().backMainHome()
                         } else {
-                            if (position == 1) {
+                            if (itemPosition == 1) {
                                 binding.bottomNavigationView.postDelayed({
                                     jumpToTheSport()
                                 }, 300)
                             }
                         }
-                        setupBetBarVisiblity(position)
+                        setupBetBarVisiblity(itemPosition)
                         return@OnNavigationItemSelectedListener true
                     }
                     return@OnNavigationItemSelectedListener false
