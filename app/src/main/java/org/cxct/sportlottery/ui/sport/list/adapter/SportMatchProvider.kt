@@ -39,9 +39,14 @@ class SportMatchProvider(private val adapter: SportLeagueAdapter2,
         binding.setupOddsButton(adapter.matchType, item, adapter.oddsType)
     }
 
+    override fun onClick(helper: BaseViewHolder, view: View, data: BaseNode, position: Int) {
+        (data as MatchOdd).matchInfo?.let { SportDetailActivity.startActivity(view.context, it, adapter.matchType) }
+    }
+
     override fun convert(helper: BaseViewHolder, item: BaseNode, payloads: List<Any>) {
         val binding = (helper as SportMatchVH)
         val matchOdd = (item as MatchOdd)
+
 
         if (payloads.isNullOrEmpty()) {
             updateMatchOdd(binding, matchOdd)
@@ -49,6 +54,9 @@ class SportMatchProvider(private val adapter: SportLeagueAdapter2,
         }
 
         when(payloads.first()) {
+            is SportMatchEvent.OddsChanged -> {
+                binding.setupOddsButton(adapter.matchType, matchOdd, adapter.oddsType)
+            }
             is SportMatchEvent.OddSelected -> {
                 binding.setupOddsButton(adapter.matchType, matchOdd, adapter.oddsType)
             }
@@ -57,14 +65,19 @@ class SportMatchProvider(private val adapter: SportLeagueAdapter2,
                 binding.updateFavoriteStatus(matchOdd.matchInfo)
             }
 
-            is SportMatchEvent.FavoriteChanged -> {
-                updateMatchOdd(binding, matchOdd)
+            is SportMatchEvent.MatchStatuChanged -> {
+                updateMatchStatus(binding, matchOdd)
             }
 
             else -> {
-                updateMatchOdd(binding, matchOdd)
+
             }
         }
+    }
+
+    private fun updateMatchStatus(binding: SportMatchVH , matchOdd: MatchOdd) {
+        matchOdd.matchInfo?.let { binding.setupMatchTimeAndStatus(it, adapter.matchType) }
+        binding.setupMatchScore(matchOdd.matchInfo, adapter.matchType)
     }
 
     private fun updateMatchOdd(binding: SportMatchVH , matchOdd: MatchOdd) {
@@ -73,10 +86,6 @@ class SportMatchProvider(private val adapter: SportLeagueAdapter2,
         matchInfo?.let { binding.setupMatchTimeAndStatus(it, adapter.matchType) }
         binding.setupOddsButton(adapter.matchType, matchOdd, adapter.oddsType)
         binding.setupCsTextLayout(adapter.matchType, matchOdd)
-    }
-
-    override fun onClick(helper: BaseViewHolder, view: View, data: BaseNode, position: Int) {
-        (data as MatchOdd).matchInfo?.let { SportDetailActivity.startActivity(view.context, it, adapter.matchType) }
     }
 
 

@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
-import org.cxct.sportlottery.common.enums.MatchSource
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ItemSportOdd2Binding
@@ -22,6 +21,7 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.ui.sport.common.OddButtonPagerAdapter2
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TimeUtil
@@ -29,8 +29,6 @@ import org.cxct.sportlottery.util.needCountStatus
 import org.cxct.sportlottery.view.layoutmanager.CustomLinearLayoutManager
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import java.util.*
-import kotlin.math.abs
-
 class SportMatchVH(private val binding: ItemSportOdd2Binding,
                    private val onFavoriteClick: (String) -> Unit): BaseViewHolder(binding.root) {
 
@@ -88,6 +86,8 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
     }
 
     fun resetStatusView() = binding.run {
+        onStop()
+        leagueOddMatchStatus.text = ""
         setViewGone(leagueNeutral,
             leagueCornerKicks,
             leagueSpt,
@@ -104,7 +104,8 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
             tvPeroidsScore,
             ivLive,
             ivPlay,
-            ivAnimation
+            ivAnimation,
+            leagueOddMatchTime
         )
     }
 
@@ -122,7 +123,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         ivOT.isVisible = matchInfo?.gameType == GameType.BK.key && matchInfo?.socketMatchStatus == 40
         leagueNeutral.isSelected = matchInfo?.neutral == 1
         leagueNeutral.isVisible = matchInfo?.neutral == 10
-        leagueOddMatchChart.isVisible = matchInfo?.source == MatchSource.SHOW_STATISTICS.code
+//        leagueOddMatchChart.isVisible = matchInfo?.source == MatchSource.SHOW_STATISTICS.code
 
         ivPlay.isVisible = matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(matchInfo?.startTime))
 
@@ -131,7 +132,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
                 && MultiLanguagesApplication.getInstance()?.getGameDetailAnimationNeedShow() == true
     }
 
-    private fun setupMatchScore(matchInfo: MatchInfo?, matchType: MatchType) = binding.run {
+    fun setupMatchScore(matchInfo: MatchInfo?, matchType: MatchType) = binding.run {
         if (matchType == MatchType.IN_PLAY && matchInfo?.gameType == GameType.BB.key) {
             linearLayout.gone()
             contentBaseballStatus.root.visible()
@@ -342,7 +343,9 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
     fun setupMatchTimeAndStatus(matchInfo: MatchInfo,
                                 matchType: MatchType) {
 
+        sportMatchTimer.stop()
         val isTimeInPlay = TimeUtil.isTimeInPlay(matchInfo.startTime)
+
 
         binding.leagueOddMatchStatus.apply {
             text = when {
@@ -382,13 +385,13 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
 
             binding.leagueOddMatchTime.visible()
             var timeMillis = (matchInfo.leagueTime?.toLong() ?: 0) * 1000
-            if (sportMatchTimer.isRuning()
-                && abs(timeMillis - matchInfo.leagueTimeRecode) < 3_000) { // 3s以内忽略从新记时
+            matchInfo.leagueTimeRecode = timeMillis
+            onTimerUpdate(timeMillis, matchInfo)
+
+            if (matchInfo.stopped == TimeCounting.STOP.value) {
                 return
             }
 
-            matchInfo.leagueTimeRecode = timeMillis
-            onTimerUpdate(timeMillis, matchInfo)
             val isDecrease = matchInfo.gameType == GameType.BK.key
                     || matchInfo.gameType == GameType.RB.key
                     || matchInfo.gameType == GameType.AFT.key
@@ -410,10 +413,6 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
 
         if (TimeUtil.isTimeAtStart(matchInfo.startTime)) {
             var remainTime = matchInfo.remainTime ?: return
-            if (sportMatchTimer.isRuning()
-                && abs(remainTime - matchInfo.leagueTimeRecode) < 3_000) { // 3s以内忽略从新记时
-                return
-            }
             matchInfo.leagueTimeRecode = remainTime
             onTimerUpdate2(remainTime, matchInfo)
             sportMatchTimer.start(1000, 1000, object : TimerTask() {
