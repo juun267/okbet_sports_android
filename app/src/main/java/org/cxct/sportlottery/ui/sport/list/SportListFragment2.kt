@@ -171,10 +171,9 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
 
         receiver.matchClock.observe(this@SportListFragment2.viewLifecycleOwner) { event->
             val matchId =  event?.matchClockCO?.matchId ?: return@observe
-            if (matchId == null || sportLeagueAdapter2.getCount() < 1) {
+            if (sportLeagueAdapter2.getCount() < 1) {
                 return@observe
             }
-
             val matchOdd = sportLeagueAdapter2.findVisiableRangeMatchOdd(matchId) ?: return@observe
             matchOdd.matchInfo?.let { matchInfo->
                 if (SocketUpdateUtil.updateMatchClockStatus(matchInfo, event)) {
@@ -266,7 +265,7 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
 
         sportLeagueAdapter2.recodeRangeMatchOdd().forEach { matchOdd ->
             matchOdd.matchInfo?.let {
-                Log.e("[subscribe]","訂閱${it.name} ${it.id} -> " + "${it.homeName} vs " + "${it.awayName}")
+                Log.e("[subscribe]","====>>> 訂閱${it.name} ${it.id} -> " + "${it.homeName} vs " + "${it.awayName}")
                 subscribeChannel(it.gameType, it.id)
             }
         }

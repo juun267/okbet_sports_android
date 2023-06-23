@@ -6,9 +6,9 @@
     android:layout_height="50dp"
     android:background="#EDF2FC"
     android:gravity="center_vertical"
+    android:orientation="horizontal"
     android:paddingLeft="15dp"
-    android:paddingRight="15dp"
-    android:orientation="horizontal">
+    android:paddingRight="15dp">
 
     <ImageView
         android:id="@+id/view1"
@@ -18,24 +18,25 @@
 
     <org.cxct.sportlottery.view.highLightTextView.HighlightTextView
         android:id="@+id/tvLeagueTittle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_marginStart="@dimen/margin_8"
-        android:gravity="start"
-        android:text="Lorem ipsum UFC dolor sit amet,"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
         android:textColor="@color/black"
         android:textSize="@dimen/margin_14"
         android:textStyle="bold"
         app:highlightColor="@color/transparent"
         app:highlightRadius="0dp"
         app:highlightText="UFC"
-        app:highlightTextColor="@color/color_025BE8" />
+        app:highlightTextColor="@color/color_025BE8"
+        tools:text="Lorem ipsum UFC dolor sit amet," />
 
     <ImageView
         android:id="@+id/view_arrow_top"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:background="@drawable/bg_blue_divide_ver" />
+        android:background="@drawable/selector_filter_arrow_search" />
 
 </LinearLayout>
 

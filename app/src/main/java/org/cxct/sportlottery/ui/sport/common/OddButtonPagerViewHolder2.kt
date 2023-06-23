@@ -207,7 +207,7 @@ class OddButtonPagerViewHolder2(val oddBtnList: PlayCateView) : OddStateViewHold
             || odds == null
             || odds.first == null
             || odds.second.isNullOrEmpty()) {
-            oddBtnList.setOddsInvisible()
+            oddBtnList.setOddsDeactivated()
             return true
         }
 
