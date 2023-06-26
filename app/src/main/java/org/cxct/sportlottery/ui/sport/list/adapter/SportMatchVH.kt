@@ -197,6 +197,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
 
     private fun setBkScoreText(matchInfo: MatchInfo) {
         setScoreTextAtFront(matchInfo)
+        setAllScoreTextAtBottom(matchInfo)
     }
 
     private fun setVbScoreText(matchInfo: MatchInfo) {
