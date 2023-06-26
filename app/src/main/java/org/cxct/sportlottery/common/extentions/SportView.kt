@@ -132,38 +132,44 @@ fun TextView.setMatchRoundScore(matchInfo: MatchInfo) {
             }
         }
         text = spanny
+    }
+
+    val matchStatusList = matchInfo.matchStatusList
+    if (matchStatusList.isNullOrEmpty()) {
+        text = ""
+        return
+    }
+
+    val spanny = Spanny()
+    val quarter: Int = if (matchInfo.gameType == GameType.BK.key) { //球種為籃球有特殊處理
+        //篮球类 1:第一节 2:第二节 6:上半场 7:下半场 13:第一节 14:第二节 15:第三节 16:第四节
+        // 31:半场 32:等待加时赛 40:加时 80:中断 90:弃赛 100:完场 110:加时赛后 301:第1次休息 302:第2次休息 303:第3次休息 999:滚球
+        when (matchInfo.socketMatchStatus) {
+            1, 13 -> 0     //第一节
+            2, 14, 31 -> 1 //第二节
+            15 -> 2        //第三节
+            16 -> 3        //第四节
+            else -> 4      //其他情况全部显示
+        }
     } else {
-        matchInfo.matchStatusList?.let { matchStatusList ->
-            val spanny = Spanny()
-            val quarter: Int = if (matchInfo.gameType == GameType.BK.key) { //球種為籃球有特殊處理
-                //篮球类 1:第一节 2:第二节 6:上半场 7:下半场 13:第一节 14:第二节 15:第三节 16:第四节
-                // 31:半场 32:等待加时赛 40:加时 80:中断 90:弃赛 100:完场 110:加时赛后 301:第1次休息 302:第2次休息 303:第3次休息 999:滚球
-                when (matchInfo.socketMatchStatus) {
-                    1, 13 -> 0     //第一节
-                    2, 14, 31 -> 1 //第二节
-                    15 -> 2        //第三节
-                    16 -> 3        //第四节
-                    else -> 4      //其他情况全部显示
-                }
-            } else {
-                matchStatusList.lastIndex
-            }
-            matchStatusList.forEachIndexed { index, it ->
-                if (index > quarter) return@forEachIndexed
-                val spanScore = "${it.homeScore ?: 0}-${it.awayScore ?: 0}"
-                if (index < quarter) {
-                    spanny.append(spanScore)
-                    spanny.append("  ")
-                } else {
-                    spanny.append(
-                        spanScore,
-                        ForegroundColorSpan(this.context.getColor(R.color.color_F0A536))
-                    )
-                }
-            }
-            text = spanny
+        matchStatusList.lastIndex
+    }
+    matchStatusList.forEachIndexed { index, it ->
+        if (index > quarter) return@forEachIndexed
+        val spanScore = "${it.homeScore ?: 0}-${it.awayScore ?: 0}"
+        if (index < quarter) {
+            spanny.append(spanScore)
+            spanny.append("  ")
+        } else {
+            spanny.append(
+                spanScore,
+                ForegroundColorSpan(this.context.getColor(R.color.color_F0A536))
+            )
         }
     }
+    text = spanny
+
+
 }
 
 /**

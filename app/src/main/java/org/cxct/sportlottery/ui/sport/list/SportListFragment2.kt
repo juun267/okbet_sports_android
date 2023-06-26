@@ -74,11 +74,6 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
         reload()
     }
 
-    override fun onResume() {
-        super.onResume()
-        resubscribeChannel(20)
-    }
-
     private fun setupSportTypeList() {
         val visiable = matchType != MatchType.CS //波胆不需要显示球类
         binding.sportTypeList.isVisible = visiable
@@ -114,7 +109,6 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
                 setSportDataList(mLeagueOddList as MutableList<BaseNode>)
 //            }
 
-            resubscribeChannel(80)
         }
 
     }
@@ -257,7 +251,7 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
 
         sportLeagueAdapter2.recodeRangeMatchOdd().forEach { matchOdd ->
             matchOdd.matchInfo?.let {
-                Log.e("[subscribe]","====>>> 訂閱${it.name} ${it.id} -> " + "${it.homeName} vs " + "${it.awayName}")
+                Log.e("[subscribe]","====>>> 訂閱  $id  ${it.name} ${it.id} -> " + "${it.homeName} vs " + "${it.awayName}")
                 subscribeChannel(it.gameType, it.id)
             }
         }

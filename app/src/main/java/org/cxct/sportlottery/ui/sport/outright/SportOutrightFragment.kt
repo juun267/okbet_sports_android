@@ -1,12 +1,10 @@
 package org.cxct.sportlottery.ui.sport.outright
 
-import android.text.TextUtils
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.entity.node.BaseNode
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
@@ -129,7 +127,6 @@ class SportOutrightFragment : BaseSportListFragment<SportListViewModel, Fragment
                 return@observe
             }
             setSportDataList(list as MutableList<BaseNode>)
-            resubscribeChannel(120)
             dismissLoading()
         }
 

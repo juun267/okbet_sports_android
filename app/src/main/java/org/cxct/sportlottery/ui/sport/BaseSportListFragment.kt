@@ -263,6 +263,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     }
 
     protected fun clearData() {
+        unSubscribeAllChannel()
         setSportDataList(null)
     }
 
@@ -272,6 +273,9 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         val footerLayout = adapter.footerLayout?.getChildAt(0)  as SportFooterGamesView? ?: return
         footerLayout.visible()
         footerLayout.sportNoMoreEnable(!list.isNullOrEmpty())
+        if (!list.isNullOrEmpty()) {
+            resubscribeChannel(120)
+        }
     }
 
 
@@ -294,20 +298,24 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         subscribedChannel.add(Pair(gameType, eventId))
         subscribeChannelHall(gameType, eventId)
     }
+
     protected open fun clearSubscribeChannels() {
+        unSubscribeAllChannel()
+        subscribeHandler.removeCallbacksAndMessages(null)
+    }
+
+    private fun unSubscribeAllChannel() {
+        getGameListAdapter().resetRangeMatchOdd()
         if (subscribedChannel.size > 0) {
-            unSubscribeChannelHallAll()
+            subscribedChannel.forEach { unSubscribeChannelHall(it.first, it.second) }
             subscribedChannel.clear()
         }
-        subscribeHandler.removeCallbacksAndMessages(null)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         clearData()
         offsetScrollListener = null
-        clearSubscribeChannels()
-        unSubscribeChannelHallSport()
     }
 
     open fun setSelectMatchIds(matchIdList: ArrayList<String>) {

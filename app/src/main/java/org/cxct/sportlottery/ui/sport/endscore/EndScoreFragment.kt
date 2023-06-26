@@ -139,10 +139,6 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
             setSportDataList(list)
             binding.tvMatchNum.text = "${list?.size ?: 0}"
 
-            if (!list.isNullOrEmpty()) {
-                resubscribeChannel(120)
-            }
-
             dismissLoading()
         }
 
