@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.webkit.WebView
 import timber.log.Timber
 
-class OkWebView @JvmOverloads constructor(
+open class OkWebView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
 ) : WebView(context, attrs, defStyle) {
 

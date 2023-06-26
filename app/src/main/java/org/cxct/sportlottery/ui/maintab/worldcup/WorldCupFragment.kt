@@ -1,14 +1,19 @@
 package org.cxct.sportlottery.ui.maintab.worldcup
 
+import android.Manifest
+import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.net.http.SslError
 import android.os.Bundle
+import android.os.Message
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.JavascriptInterface
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.fragment_main_home.*
 import kotlinx.android.synthetic.main.fragment_worldcup.*
@@ -23,13 +28,15 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
-import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.util.ToastUtil
-import org.cxct.sportlottery.util.fromJson
-import org.cxct.sportlottery.util.startLogin
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.webView.OkWebChromeClient
+import org.cxct.sportlottery.view.webView.OkWebViewClient
+import org.cxct.sportlottery.view.webView.WebViewCallBack
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import timber.log.Timber
+import java.io.UnsupportedEncodingException
+import java.net.URLEncoder
 
 
 class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
@@ -54,6 +61,7 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
         initToolBar()
         initObservable()
         initWeb()
+        loadWebURL(MultiLanguagesApplication.mInstance.sOddsType)
         homeBottumView.bindServiceClick(childFragmentManager)
     }
     fun initToolBar() = binding.run {
@@ -66,32 +74,84 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
     var isInitedWeb = false
     private fun initWeb() =binding.okWebView.run {
         isInitedWeb = true
-        okWebView.webChromeClient = OkWebChromeClient()
-        okWebView.webViewClient = object : WebViewClient() {
-            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-                view.loadUrl(url)
-                return true
+        setOnTouchListener { view, p1 ->
+            (view as WebView).requestDisallowInterceptTouchEvent(true)
+            false
+        }
+        webChromeClient = object : OkWebChromeClient(){}
+        webViewClient = object : OkWebViewClient(object : WebViewCallBack {
+
+            override fun pageStarted(view: View?, url: String?) {
+                loading()
             }
 
-            override fun onPageFinished(view: WebView, url: String) {
-                super.onPageFinished(view, url)
+            override fun pageFinished(view: View?, url: String?) {
+                hideLoading()
+                binding.okWebView.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
             }
+
+            override fun onError() {
+            }
+        }) {
+            override fun shouldInterceptRequest(
+                view: WebView?, request: WebResourceRequest?
+            ): WebResourceResponse? {
+                return super.shouldInterceptRequest(view, request)
+            }
+
+            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+                return overrideUrlLoading(view, url)
+            }
+
+            override fun onReceivedSslError(
+                view: WebView, handler: SslErrorHandler, error: SslError
+            ) {
+                //此方法是为了处理在5.0以上Https的问题，必须加上
+                handler.proceed()
+//                AlertDialog.Builder(requireContext())
+//                    .setMessage(android.R.string.httpErrorUnsupportedScheme).setPositiveButton(
+//                        "continue"
+//                    ) { dialog, which -> handler.proceed() }.setNegativeButton(
+//                        "cancel"
+//                    ) { dialog, which -> handler.cancel() }.create().show()
+            }
+
         }
-        okWebView.addJavascriptInterface(WorldCupJsInterface(this@WorldCupFragment),
+        addJavascriptInterface(WorldCupJsInterface(this@WorldCupFragment),
             WorldCupJsInterface.name)
-        loadWebURL(MultiLanguagesApplication.mInstance.sOddsType)
+
     }
 
+    fun setCookie(url:String) {
+        try {
+            val cookieManager = CookieManager.getInstance()
+            cookieManager.setAcceptCookie(true)
+
+            val oldCookie = cookieManager.getCookie(url)
+            Timber.i("Cookie:oldCookie:$oldCookie")
+
+            cookieManager.setCookie(
+                url, "x-session-token=" + URLEncoder.encode(viewModel.token, "utf-8")
+            ) //cookies是在HttpClient中获得的cookie
+            cookieManager.flush()
+
+            val newCookie = cookieManager.getCookie(url)
+            Timber.i("Cookie:newCookie:$newCookie")
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+        }
+    }
     var currentOdsType: String? = null
 
     private fun loadWebURL(oddsType: String?) {
         if (currentOdsType != null && currentOdsType.equals(oddsType)) {
             return
         }
-
         currentOdsType = oddsType
-        val url = Constants.getWorldCupH5Url(requireContext(),viewModel.token?:"")
-        binding.okWebView.loadUrl("https://www.fiba.basketball/")
+        val url = Constants.getWorldCupH5Url(requireContext(),"8TIPs2KPjJUqkMuQ/L5Vy7cOSJ1Z1tlozP551w==")
+        setCookie(url)
+        LogUtil.d("url="+url)
+        binding.okWebView.loadUrl(url)
     }
 
 
@@ -133,7 +193,7 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
 
         viewModel.oddsType.observe(viewLifecycleOwner) { loadWebURL(it.code) }
         viewModel.isLogin.observe(viewLifecycleOwner) {
-            if (!it) mainTabActivity().startLogin()
+//            if (!it) mainTabActivity().startLogin()
         }
     }
     override fun onDestroyView() {
@@ -151,7 +211,21 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
 //            homeToolbar.onRefreshMoney()
         }
     }
+    protected open fun overrideUrlLoading(view: WebView, url: String): Boolean {
+        if (!url.startsWith("http")) {
+            try {
+                val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                i.flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                startActivity(i)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            return true
+        }
 
+        view.loadUrl(url)
+        return true
+    }
    open class WorldCupJsInterface(val fragment: WorldCupFragment) {
 
         companion object {
@@ -159,14 +233,17 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
         }
        @JavascriptInterface
        fun toBetRecord() {
+           LogUtil.d("toBetRecord")
            (fragment.activity as MainTabActivity)?.jumpToBetInfo(1)
        }
        @JavascriptInterface
        fun toLogin() {
+           LogUtil.d("toLogin")
            (fragment.activity as MainTabActivity)?.startLogin()
        }
         @JavascriptInterface
         fun toDetailEndScore(matchInfoJson: String) {
+            LogUtil.d("toDetailEndScore")
             if (TextUtils.isEmpty(matchInfoJson)) {
                 ToastUtil.showToast(fragment.requireContext(), R.string.error)
                 return

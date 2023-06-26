@@ -6,7 +6,9 @@ import android.content.pm.PackageManager
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.util.LanguageManager
@@ -264,9 +266,9 @@ object Constants {
 
     //2023篮球世界杯内容h5地址
     fun getWorldCupH5Url(context: Context, token: String? = ""): String {
-        val language = getLanguageTag(context)
-        val base = getH5BaseUrl()
-        return base + "sports-rule/#/${language}worldcup?device=android&token=${token}&lang=${getLanguageTag(context)}&oddsType=${getCurrentOddsTypeName()}"
+//        val base = getH5BaseUrl()
+        val base = "https://172.15.50.32:3000/"
+        return base + "mobile/world-cup?device=android&token=${token}&lang=${getSelectLanguage(context).key}&oddsType=${getCurrentOddsTypeName()}&oddsDiscount=${UserInfoRepository.userInfo.value?.discount?:1.0}"
     }
 
     //https://okbet-v2.cxsport.net/activity/mobile/#/print?uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
