@@ -8,13 +8,25 @@
     android:paddingVertical="8dp"
     tools:ignore="SpUsage">
 
-    <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/iv_avatar"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="12dp"
-        app:riv_corner_radius="18dp"
-        tools:src="@drawable/ic_person_avatar" />
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="12dp"
+            app:riv_corner_radius="18dp"
+            tools:src="@drawable/ic_person_avatar" />
+        <ImageView
+            android:id="@+id/iv_head_admin"
+            android:layout_width="@dimen/margin_12"
+            android:layout_height="@dimen/margin_12"
+            android:visibility="gone"
+            android:layout_gravity="bottom|right"
+            android:src="@drawable/ic_chat_head_admin"/>
+    </FrameLayout>
+
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
