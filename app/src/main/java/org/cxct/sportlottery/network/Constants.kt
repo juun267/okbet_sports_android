@@ -588,11 +588,17 @@ object Constants {
     // 收藏或取消OKGames
     const val OKGAMES_COLLECT = "/api/front/gameEntryGames/collectOkGames"
 
-    // 最新投注
+    // okgame 最新投注
     const val OKGAMES_RECORD_NEW = "/api/front/index/recordNewOkGamesList"
 
-    // 最新大奖
+    // okgame 最新大奖
     const val OKGAMES_RECORD_RESULT = "/api/front/index/recordResultOkGamesList"
+
+    // oklive 最新投注
+    const val OKLIVE_RECORD_NEW = "/api/front/index/recordNewOkLiveList"
+
+    // oklive 最新大奖
+    const val OKLIVE_RECORD_RESULT = "/api/front/index/recordResultOkLiveList"
 
     // 首页最新投注
     const val RECORD_NEW = "/api/front/index/recordNewList"

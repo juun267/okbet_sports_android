@@ -42,10 +42,17 @@ class UserVH(parent: ViewGroup,
         binding.tvTime.text = TimeUtil.timeFormat(curTime, TimeUtil.HM_FORMAT)
 
         if (UserMessageStyle.isAdmin(userType)) {
-            binding.ivAvatar.setImageResource(R.drawable.ic_chat_admin)
+            binding.ivAvatar.apply {
+                load(iconUrl, R.drawable.ic_chat_admin)
+                borderColor = ContextCompat.getColor(context,R.color.color_025BE8)
+                borderWidth = 2f
+            }
+            binding.ivHeadAdmin.isVisible = true
             binding.messageBorder.setBackgroundResource(R.drawable.bg_chat_pop_admin_circle)
             binding.messageBorder.backgroundTintList = null
         } else {
+            binding.ivAvatar.borderWidth = 0f
+            binding.ivHeadAdmin.isVisible = false
             binding.ivAvatar.load(iconUrl, R.drawable.ic_person_avatar)
 
             //0游客、1会员、2管理员(特殊處理)、3訪客

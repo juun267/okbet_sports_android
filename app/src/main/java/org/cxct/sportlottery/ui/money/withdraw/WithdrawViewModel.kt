@@ -1167,5 +1167,4 @@ class WithdrawViewModel(
         onConfirm.invoke()
         return null
     }
-
 }

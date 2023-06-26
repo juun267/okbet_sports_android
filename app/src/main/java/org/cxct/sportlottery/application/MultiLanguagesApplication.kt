@@ -55,6 +55,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.MainTabViewModel
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
+import org.cxct.sportlottery.ui.maintab.games.OKLiveViewModel
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceViewModel
@@ -170,6 +171,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { BindInfoViewModel(get(), get(), get(), get()) }
         viewModel { RegisterInfoViewModel(get(), get(), get(), get()) }
         viewModel { OKGamesViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { OKLiveViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { ChatViewModel(get(), get(), get(), get(), get(), get(), get()) }
     }
 
