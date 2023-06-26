@@ -19,7 +19,6 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.NAME_LOGIN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.BackService
-import org.cxct.sportlottery.service.NetBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
@@ -56,7 +55,6 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
     private fun registerBroadcast(){
         val filter= IntentFilter()
         filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION)
-        registerReceiver(NetBroadcastReceiver(),filter)
 //        LocalBroadcastManager.getInstance(this).registerReceiver(NetBroadcastReceiver(),filter)
     }
 
