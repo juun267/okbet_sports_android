@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.sport
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
@@ -24,7 +23,7 @@ import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.ui.sport.endscore.EndScoreFragment
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment2
 import org.cxct.sportlottery.ui.sport.list.SportListFragment2
-import org.cxct.sportlottery.ui.sport.list.adapter.FooterGamesView
+import org.cxct.sportlottery.ui.sport.list.adapter.SportFooterGamesView
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -52,7 +51,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     private val favoriteIndex = matchTypeTab.indexOf(MatchType.MY_EVENT)
     private inline fun getMainTabActivity() = activity as MainTabActivity
     private val fragmentHelper by lazy { FragmentHelper2(childFragmentManager, R.id.fl_content) }
-    private val footView by lazy { FooterGamesView(binding.root.context) }
+    private val footView by lazy { SportFooterGamesView(binding.root.context) }
     private val mianViewModel: OKGamesViewModel by sharedViewModel()
 
     private var jumpMatchType: MatchType? = null

@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.ui.sport.endscore
 
-import android.text.TextUtils
+
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +10,6 @@ import com.chad.library.adapter.base.entity.node.BaseNode
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.Odd
@@ -128,7 +127,6 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
         oddsListGameHallResult.observe(viewLifecycleOwner) {
 
             val result = it.getContentIfNotHandled()
-            setFooterViewVisiable(200)
             if (result == null) {
                 dismissLoading()
                 return@observe
@@ -138,7 +136,7 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
             list?.forEachIndexed { index, baseNode ->
                 (baseNode as BaseExpandNode).isExpanded = (index == 0)
             }
-            endScoreAdapter.setNewInstance(list)
+            setSportDataList(list)
             binding.tvMatchNum.text = "${list?.size ?: 0}"
 
             if (!list.isNullOrEmpty()) {

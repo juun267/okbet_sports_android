@@ -30,23 +30,17 @@ class FavoriteFragment2: SportListFragment2<SportListViewModel, FragmentSportLis
     }
 
     override fun load(item: Item) {
-        sportLeagueAdapter2.setNewInstance(item.leagueOddsList.toMutableList())
+        setSportDataList(item.leagueOddsList.toMutableList())
         setMatchInfo(item.name, item.leagueOddsList.size.toString())
     }
 
     fun setFavoriteData(favoriteLeagues: List<Item>) {
-        setFooterViewVisiable()
-        haveData = true
-        if (isAdded) {
-            dismissLoading()
-        }
-        if(currentFavoriteList == favoriteLeagues) {
-            return
-        }
         currentFavoriteList = favoriteLeagues
-        if (isAdded) {
+        if (!haveData && isAdded) {
+            dismissLoading()
             updateSportType(favoriteLeagues)
         }
+        haveData = true
     }
 
     override fun onDestroyView() {

@@ -31,7 +31,7 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
         sportLeagueAdapter2.onOddsChangeEvent(it)
     }
 
-    protected val sportLeagueAdapter2 by lazy {
+    private val sportLeagueAdapter2 by lazy {
         SportLeagueAdapter2(matchType,
             this,
             onNodeExpand = { resubscribeChannel(200) },
@@ -109,13 +109,10 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
 //                val matchOdd = testLeague.matchOdds.first()
 //                testLeague.matchOdds.clear()
 //                testLeague.matchOdds.add(matchOdd)
-//                sportLeagueAdapter2.setNewInstance(mutableListOf(testLeague))
+//                setSportDataList(mutableListOf(testLeague))
 //            } else {
                 val mLeagueOddList = (oddsListData.leagueOddsFilter ?: leagueOdds).toMutableList()
-                sportLeagueAdapter2.setNewInstance(mLeagueOddList as MutableList<BaseNode>)
-                sportLeagueAdapter2.footerLayout?.let { footerLayout->
-                    footerLayout.postDelayed({ footerLayout.getChildAt(0)?.visible() }, 200)
-                }
+                setSportDataList(mLeagueOddList as MutableList<BaseNode>)
 //            }
 
             resubscribeChannel(80)
@@ -214,10 +211,6 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
             }
         }
 
-    }
-
-    private fun clearData() {
-        sportLeagueAdapter2.setNewInstance(null)
     }
 
     override fun oddClick(

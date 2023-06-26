@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,7 +28,7 @@ import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.view.transform.TransformInDialog
 import splitties.views.dsl.core.add
 
-class FooterGamesView @JvmOverloads constructor(
+class SportFooterGamesView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
@@ -37,7 +38,7 @@ class FooterGamesView @JvmOverloads constructor(
     private lateinit var gameList: RecyclerView
     private lateinit var fragment: BaseFragment<*>
     private lateinit var okGamesViewModel: OKGamesViewModel
-    private lateinit var nomoeText: TextView
+    private lateinit var noMoreText: TextView
 
     init {
         12.dp.let { setPadding(it, 0, it, 0) }
@@ -49,13 +50,13 @@ class FooterGamesView @JvmOverloads constructor(
     }
 
     private fun addNomoreText() {
-        nomoeText = AppCompatTextView(context)
-        nomoeText.setPadding(0, 10.dp, 0, 0)
-        nomoeText.setTextColor(ContextCompat.getColor(context, R.color.color_BEC7DC))
-        nomoeText.gravity = Gravity.CENTER
-        nomoeText.textSize = 12f
-        nomoeText.text = "- No more -"
-        addView(nomoeText, ViewGroup.LayoutParams(-1, -2))
+        noMoreText = AppCompatTextView(context)
+        noMoreText.setPadding(0, 10.dp, 0, 0)
+        noMoreText.setTextColor(ContextCompat.getColor(context, R.color.color_BEC7DC))
+        noMoreText.gravity = Gravity.CENTER
+        noMoreText.textSize = 12f
+        noMoreText.text = "- ${resources.getString(R.string.N111)} -"
+        addView(noMoreText, ViewGroup.LayoutParams(-1, -2))
     }
 
 
@@ -155,5 +156,10 @@ class FooterGamesView @JvmOverloads constructor(
     private fun onMoreOKLives() {
 
     }
+
+    fun sportNoMoreEnable(enable: Boolean) {
+        noMoreText.isVisible = enable
+    }
+
 
 }

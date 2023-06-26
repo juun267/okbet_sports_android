@@ -7,10 +7,10 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
+import com.chad.library.adapter.base.entity.node.BaseNode
 import com.google.android.material.appbar.AppBarLayout
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
@@ -36,6 +36,7 @@ import org.cxct.sportlottery.ui.sport.common.GameTypeAdapter2
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.ui.sport.list.adapter.EmptySportGamesView
+import org.cxct.sportlottery.ui.sport.list.adapter.SportFooterGamesView
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
@@ -59,6 +60,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     var offsetScrollListener: ((Double) -> Unit)? = null
     protected val gameTypeAdapter by lazy { GameTypeAdapter2(::onGameTypeChanged) }
     private val loadingHolder by lazy { Gloading.wrapView(binding.gameList) }
+
     override fun dismissLoading() = loadingHolder.showLoadSuccess()
     override fun showLoading() = loadingHolder.showLoading()
 
@@ -108,7 +110,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
                 return@observe
             }
 
-            setFooterViewVisiable()
+            setSportDataList(null)
             dismissLoading()
             if (!it.second) {
                 ToastUtil.showToast(activity, it.third)
@@ -124,6 +126,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     protected fun updateSportType(gameTypeList: List<Item>) {
 
         if (gameTypeList.isEmpty()) {
+            setSportDataList(null)
             return
         }
         //处理默认不选中的情况
@@ -167,15 +170,6 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         adapter.addFooterView(footerView)
     }
 
-    protected fun setFooterViewVisiable(delay: Long = 0) {
-        if (delay > 0L) {
-            binding.root.postDelayed({ getGameListAdapter().footerLayout?.getChildAt(0)?.visible() }, delay)
-        } else {
-            getGameListAdapter().footerLayout?.getChildAt(0)?.visible()
-        }
-    }
-
-
     private fun initToolbar()  = binding.run {
 
         appbarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
@@ -212,8 +206,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
 
         setupBackTop(binding.ivBackTop, 500.dp, tabCode = matchType.postValue)
         layoutManager = getGameLayoutManger()
-        adapter = getGameListAdapter()
-        getGameListAdapter().setEmptyView(EmptySportGamesView(context()))
+        adapter = getGameListAdapter().apply { setEmptyView(EmptySportGamesView(context())) }
         addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -269,8 +262,16 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         binding.tvMatchNum.text = num
     }
 
-    private fun clearData() {
-        getGameListAdapter().setNewInstance(null)
+    protected fun clearData() {
+        setSportDataList(null)
+    }
+
+    protected fun setSportDataList(list: MutableList<BaseNode>?) {
+        val adapter = getGameListAdapter()
+        adapter.setNewInstance(list)
+        val footerLayout = adapter.footerLayout?.getChildAt(0)  as SportFooterGamesView? ?: return
+        footerLayout.visible()
+        footerLayout.sportNoMoreEnable(!list.isNullOrEmpty())
     }
 
 

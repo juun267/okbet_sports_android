@@ -120,7 +120,6 @@ class SportOutrightFragment : BaseSportListFragment<SportListViewModel, Fragment
                 return@observe
             }
 
-            setFooterViewVisiable(200)
             val data = it?.getContentIfNotHandled()?.outrightOddsListData?.leagueOdds ?: return@observe
             val list = mutableListOf<MatchOdd>()
             data.forEach { it.matchOdds?.let { list.addAll(it) } }
@@ -129,7 +128,7 @@ class SportOutrightFragment : BaseSportListFragment<SportListViewModel, Fragment
                 dismissLoading()
                 return@observe
             }
-            sportOutrightAdapter2.setNewInstance(list as MutableList<BaseNode>)
+            setSportDataList(list as MutableList<BaseNode>)
             resubscribeChannel(120)
             dismissLoading()
         }

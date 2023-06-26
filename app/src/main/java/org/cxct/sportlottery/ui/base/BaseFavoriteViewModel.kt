@@ -321,7 +321,7 @@ abstract class BaseFavoriteViewModel(
     fun pinFavorite(
         type: FavoriteType, content: String?, gameType: String? = null
     ) {
-        if (isLogin.value != true) {
+        if (!LoginRepository.isLogined()) {
             mNotifyLogin.postValue(true)
             return
         }
