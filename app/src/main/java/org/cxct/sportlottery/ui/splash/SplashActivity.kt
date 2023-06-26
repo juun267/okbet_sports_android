@@ -12,6 +12,7 @@ import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.doOnResume
 import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
 import org.cxct.sportlottery.network.index.config.ImageData
@@ -50,7 +51,8 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
         initObserve()
         //流程: 檢查/獲取 host -> 獲取 config -> 檢查維護狀態 -> 檢查版本更新 -> 跳轉畫面
         checkLocalHost()
-        startService(Intent(this,BackService::class.java))
+        // 避免Not allowed to start service Intent异常
+        doOnResume(once = true) { startService(Intent(this,BackService::class.java)) }
         registerBroadcast()
     }
     private fun registerBroadcast(){
