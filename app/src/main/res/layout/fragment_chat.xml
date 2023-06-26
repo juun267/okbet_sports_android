@@ -31,6 +31,7 @@
         android:orientation="vertical"
         tools:listitem="@layout/item_chat_welcome" />
 
+
     <org.cxct.sportlottery.ui.chat.ChatActionView
         android:id="@+id/v_chat_action"
         android:layout_width="match_parent"

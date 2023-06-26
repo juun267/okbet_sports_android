@@ -383,6 +383,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
 
             is ChatEvent.SendMessageStatusEvent -> {
                 binding.vChatAction.apply {
+                    setOnEmojiClick()
                     setInputMaxLength(chatEvent.textMaxLength)
                     setInputStatus(chatEvent.sendTextEnabled)
                     setSendStatus(chatEvent.sendTextEnabled && etInput.text.toString().isNotEmpty())
