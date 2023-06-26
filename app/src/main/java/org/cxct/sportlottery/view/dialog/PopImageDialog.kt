@@ -93,7 +93,7 @@ class PopImageDialog :
 
         val host = sConfigData?.resServerHost
         val images = imageList.map {
-            XBannerImage(it.imageText1 + "", host + it.imageName1, it.imageLink)
+            XBannerImage(it.imageText1 + "", host + it.imageName1, it.appUrl)
         }
 
         if (imageType == 7 && images.isNotEmpty()) {
