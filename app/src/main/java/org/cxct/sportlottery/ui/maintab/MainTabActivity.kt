@@ -259,14 +259,14 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                             }
                         }
 
-                        fragmentHelper.showFragment(position)
+                        fragmentHelper.showFragment(itemPosition)
                         if (itemPosition == 0) {
                             homeFragment().backMainHome()
                         } else {
                             if (itemPosition == 1) {
                                 binding.bottomNavigationView.postDelayed({
-                                    jumpToTheSport()
-                                }, 300)
+                                    jumpToTheSport(MatchType.IN_PLAY, GameType.BK)
+                                }, 200)
                             }
                         }
                         setupBetBarVisiblity(itemPosition)
@@ -356,7 +356,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     fun showSportLeftMenu() {
         fragmentHelper2.show(SportLeftMenuFragment::class.java, Bundle()) { fragment, instance ->
             if(!instance){
-
                 fragment.reloadData()
             }
         }
