@@ -28,11 +28,7 @@ import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment2
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.getMarketSwitch
-import org.cxct.sportlottery.util.goneWithSportSwitch
-import org.cxct.sportlottery.util.setVisibilityByMarketSwitch
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import timber.log.Timber
 
@@ -96,7 +92,7 @@ class HomeTopView @JvmOverloads constructor(
             val host = sConfigData?.resServerHost
             val promoteImages = imageList.map {
                 Timber.d("host:$host url4:${host + it.imageName4}")
-                XBannerImage(it.imageText1 + "", host + it.imageName4, it.imageLink)
+                XBannerImage(it.imageText1 + "", host + it.imageName4, it.appUrl)
             }
             setUpPromoteView(promoteImages)
         }
@@ -133,7 +129,7 @@ class HomeTopView @JvmOverloads constructor(
 
     private fun jumpToOthers(model: Any) {
         val jumpUrl = (model as XBannerImage).jumpUrl
-        if (jumpUrl.isEmptyStr()) {
+        if (jumpUrl.isNullOrEmpty()) {
             return
         }
 
