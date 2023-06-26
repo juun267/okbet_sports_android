@@ -148,7 +148,7 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
             return
         }
         currentOdsType = oddsType
-        val url = Constants.getWorldCupH5Url(requireContext(),"8TIPs2KPjJUqkMuQ/L5Vy7cOSJ1Z1tlozP551w==")
+        val url = Constants.getWorldCupH5Url(requireContext(),viewModel.token?:"")
         setCookie(url)
         LogUtil.d("url="+url)
         binding.okWebView.loadUrl(url)
