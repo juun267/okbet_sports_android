@@ -1423,4 +1423,7 @@
     <string name="N111">Không còn</string>
     <string name="N934">Lọc giải đấu</string>
     <string name="N933">Hiện không có trận nào</string>
+    <string name="accept_any_change_in_odds">Nhận mọi thay đổi</string>
+    <string name="accept_better_change_in_odds">Nhận thay đổi tốt hơn</string>
+    <string name="accept_never_change_in_odds">Nhận thay đổi tốt hơn</string>
 </resources>
