@@ -31,6 +31,8 @@ import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 // OkGames所有分类
 class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewModel::class) {
 
+    private fun getMainTabActivity() = activity as MainTabActivity
+    fun jumpToOKGames() = getMainTabActivity().jumpToOKGames()
     private lateinit var binding: FragmentAllOkliveBinding
     private val gameAllAdapter by lazy {
         GameCategroyAdapter(
@@ -67,6 +69,7 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
         initSportObserve()
         //初始化热门赛事
         binding.hotMatchView.onCreate(viewModel.publicityRecommend, viewModel.oddsType, this)
+        binding.okLiveOkGamesView.setOkGamesData(this)
         viewModel.getRecommend()
     }
 
