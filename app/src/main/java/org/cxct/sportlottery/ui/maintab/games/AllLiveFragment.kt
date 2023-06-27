@@ -24,6 +24,7 @@ import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.setTrialPlayGameDataObserve
 import org.cxct.sportlottery.util.goneWithSportSwitch
+import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.util.setupSportStatusChange
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 
@@ -334,9 +335,8 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
             //已登录
             okLiveFragment().enterGame(bean)
         }else{
-            //请求试玩路线
-            loading()
-            viewModel.requestEnterThirdGameNoLogin(bean.firmType,bean.gameCode,bean.thirdGameCategory)
+            //不支持试玩
+            loginedRun(requireContext()){}
         }
     }
 
