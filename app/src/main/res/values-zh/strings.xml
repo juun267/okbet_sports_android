@@ -1433,4 +1433,5 @@
     <string name="P130">选择您的会员账号</string>
     <string name="P150">流水不达标提醒</string>
     <string name="P149">在请求提款之前，请完成 %s 投注额（根据 PAGOR 规定，每笔存款交易需要 1 倍流水）。如需帮助，请联系客服。</string>
+    <string name="P160">真人</string>
 </resources>
