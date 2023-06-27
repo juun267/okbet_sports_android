@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -67,7 +68,7 @@
     <org.cxct.sportlottery.ui.maintab.home.view.WinsRankView
         android:id="@+id/winsRankView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
 
     <!--part-4-->
@@ -75,12 +76,17 @@
     <org.cxct.sportlottery.ui.maintab.games.view.HotMatchView
         android:id="@+id/hot_match_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <!--part-5-->
+        android:layout_height="wrap_content" />
 
+    <org.cxct.sportlottery.ui.maintab.home.view.OKLiveOkGamesView
+        android:id="@+id/okLiveOkGamesView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!--part-5-->
     <org.cxct.sportlottery.ui.maintab.home.view.HomeButtomView
         android:id="@+id/homeBottumView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

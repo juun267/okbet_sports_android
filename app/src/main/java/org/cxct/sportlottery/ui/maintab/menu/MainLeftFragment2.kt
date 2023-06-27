@@ -217,7 +217,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             R.drawable.ic_main_menu_oklive_1,
             R.drawable.ic_main_menu_oklive_0,
             textParams,
-            R.string.live,
+            R.string.P160,
             true
         ) { getMainTabActivity().jumpToOKLive() }
 
