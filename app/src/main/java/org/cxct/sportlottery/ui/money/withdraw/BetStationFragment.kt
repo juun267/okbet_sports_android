@@ -269,7 +269,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
         btn_submit.setOnClickListener {
             modifyFinish()
             if(sConfigData?.auditFailureRestrictsWithdrawalsSwitch==1&&(viewModel.uwCheckData?.total?.unFinishValidAmount?:0.0)>0){
-                showPromptDialog(getString(R.string.P150),getString(R.string.P149,viewModel.uwCheckData?.total?.unFinishValidAmount?.toInt().toString())){}
+                showPromptDialog(getString(R.string.P150),getString(R.string.P149,"${sConfigData?.systemCurrencySign}${(viewModel.uwCheckData?.total?.unFinishValidAmount?:0).toInt()}")){}
                 return@setOnClickListener
             }
             viewModel.showCheckDeductMoneyDialog {
