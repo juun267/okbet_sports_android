@@ -24,6 +24,7 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.view.onClick
+import splitties.views.backgroundColor
 
 /**
  * @author kevin
@@ -49,6 +50,7 @@ class ChatActionView @JvmOverloads constructor(
         linearEdit= findViewById(R.id.linearEdit)
         ivEmoji= findViewById(R.id.ivEmoji)
         setLoginStatus()
+        backgroundColor=ContextCompat.getColor(context,R.color.color_chat_action_background)
     }
 
     private fun setLoginStatus() {

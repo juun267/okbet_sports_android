@@ -3,10 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/color_chat_action_background">
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+
 
 
     <View
@@ -91,5 +88,4 @@
         android:textSize="12sp"
         android:visibility="gone"
         android:gravity="center"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
 </merge>

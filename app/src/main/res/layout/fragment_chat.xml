@@ -32,6 +32,15 @@
         tools:listitem="@layout/item_chat_welcome" />
 
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@color/color_326BFF"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="61dp"
+        android:layout_alignParentBottom="true"
+        android:layout_height="100dp">
+
+    </LinearLayout>
     <org.cxct.sportlottery.ui.chat.ChatActionView
         android:id="@+id/v_chat_action"
         android:layout_width="match_parent"
