@@ -10,14 +10,13 @@ import com.chad.library.adapter.base.provider.BaseNodeProvider
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.google.android.material.tabs.TabLayout
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.sport.SportFragment2
 import org.cxct.sportlottery.ui.sport.list.adapter.SportMatchEvent
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.LogUtil
-import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
-import org.cxct.sportlottery.util.setTeamLogo
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.view.tablayout.TabSelectedAdapter
 
@@ -39,7 +38,8 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
 
     override fun convert(helper: BaseViewHolder, item: BaseNode): Unit = helper.run {
         helper.itemView.tag = item
-        val matchInfo = (item as MatchOdd).matchInfo
+        val matchOdd = item as MatchOdd
+        val matchInfo = matchOdd.matchInfo
         setText(R.id.tvHomeName, matchInfo?.homeName)
         setText(R.id.tvAwayName, matchInfo?.awayName)
         setText(R.id.league_odd_match_time, TimeUtil.timeFormat(matchInfo?.startTime, TimeUtil.DM_HM_FORMAT))
@@ -60,25 +60,35 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
         resetStyle(linExpand, tvExpand, item.isExpanded)
         linExpand.setOnClickListener {
             adapter.expandOrCollapse(item, parentPayload = item)
-            LogUtil.toJson((item as MatchOdd).childNode)
             resetStyle(linExpand, tvExpand, item.isExpanded)
         }
-//        getView<TabLayout>(R.id.tabLayout).apply {
-//            LogUtil.toJson((item as MatchOdd).playCateNameMap?.keys)
-//            (item as MatchOdd).playCateNameMap?.forEach {
-//                LogUtil.d(it.value?.get(LanguageManager.getSelectLanguage(context = context).key)?:"")
-//                addTab(TabLayout.Tab().setTag(it.key?:"").setText(it.value?.get(LanguageManager.getSelectLanguage(context = context).key)?:""))
-//            }
-//            addOnTabSelectedListener(TabSelectedAdapter{ tab, _ ->
-//                (item as MatchOdd).playCateNameMap?.keys.let {
-//                    (item as MatchOdd).oddsMap?.get(tab.tag.toString())?.let { it1 ->
-//                        adapter.nodeReplaceChildData(item,
-//                            it1)
-//                    }
-//                }
-//            })
-//            OverScrollDecoratorHelper.setUpOverScroll(this)
-//        }
+        getView<TabLayout>(R.id.tabLayout).apply {
+            if (tabCount>0){
+                removeAllTabs()
+            }
+            LogUtil.toJson(matchOdd.oddIdsMap?.map { it.key+","+it.value?.size })
+            matchOdd.oddIdsMap?.forEach {
+                matchOdd.betPlayCateNameMap?.get(it.key)?.get(LanguageManager.getSelectLanguage(context).key)?.let { name->
+                    addTab(newTab().setTag(it.key).setText(name))
+                }
+            }
+            if (tabCount>0) {
+                matchOdd.selectPlayCode = getTabAt(0)?.tag.toString()
+            }else{
+                matchOdd.selectPlayCode = PlayCate.FS_LD_CS.value
+            }
+            addOnTabSelectedListener(TabSelectedAdapter{ tab, _ ->
+                matchOdd.selectPlayCode = tab.tag.toString()
+                matchOdd.oddIdsMap?.get(matchOdd.selectPlayCode)?.let {
+                    it.values.let {
+                        post{
+                            adapter.nodeReplaceChildData(item, it)
+                        }
+                    }
+                }
+            })
+            OverScrollDecoratorHelper.setUpOverScroll(this)
+        }
     }
 
     private val expandedDrawable by lazy {

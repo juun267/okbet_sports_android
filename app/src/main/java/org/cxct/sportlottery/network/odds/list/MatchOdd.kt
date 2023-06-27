@@ -64,6 +64,10 @@ data class MatchOdd(
     // 列表的父节点
     @Transient
     lateinit var parentNode: BaseNode
+    //篮球末位比分，记录当前选中的末位比分玩法类型
+    @Transient
+    @IgnoredOnParcel
+    var selectPlayCode: String = PlayCate.FS_LD_CS.value
 }
 
 enum class TimeCounting(val value: Int) {

@@ -39,6 +39,7 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.setupOddsDiscount
@@ -425,7 +426,7 @@ abstract class BaseOddButtonViewModel(
             }
         }
 
-        val betType = if (normalBetList[0].matchOdd.playCode == PlayCate.FS_LD_CS.value) {
+        val betType = if (normalBetList[0].matchOdd.playCode.isEndScoreType()) {
             1
         } else {
             0

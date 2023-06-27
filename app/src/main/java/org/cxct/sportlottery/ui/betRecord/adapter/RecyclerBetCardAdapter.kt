@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.bet.MatchOdd
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.ui.betRecord.BetRecordEndScoreAdapter
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.TextUtil
@@ -40,7 +41,7 @@ class RecyclerBetCardAdapter(val row: Row) : BindingAdapter<MatchOdd, ItemBetCar
                 item.oddsType
             )
             //bet items
-            if (row.matchOdds.firstOrNull()?.playCateCode == PlayCate.FS_LD_CS.value) {
+            if (row.matchOdds.firstOrNull()?.playCateCode.isEndScoreType()) {
                 //篮球末尾比分
                 val sortList = row.matchOdds.firstOrNull()?.multiCode?.sortedBy { it.playCode }
                     ?: listOf()

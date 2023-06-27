@@ -22,6 +22,7 @@ import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.bet.settledDetailList.RemarkBetRequest
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.ui.betRecord.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
@@ -157,7 +158,7 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                         matchOdds.odds - 1
                     ) else TextUtil.formatForOdd(matchOdds.odds)
 
-                if (matchOdds.playCateCode == PlayCate.FS_LD_CS.value)
+                if (matchOdds.playCateCode.isEndScoreType())
                     play_content.setPlayContent(
                         context.getString(R.string.N903),
                         matchOdds.spread,
@@ -220,7 +221,7 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                     context.copyToClipboard(data.orderNo)
                 }
                 lin_endscore.isVisible =
-                    data.matchOdds.firstOrNull()?.playCateCode == PlayCate.FS_LD_CS.value
+                    data.matchOdds.firstOrNull()?.playCateCode.isEndScoreType()
                 if (lin_endscore.isVisible) {
                     val sortList = data.matchOdds.firstOrNull()?.multiCode?.sortedBy { it.playCode }
                         ?: listOf()
@@ -316,7 +317,7 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                     ) else TextUtil.formatForOdd(matchOdds.odds)
 
                 val playName =
-                    if (matchOdds.playCateCode == PlayCate.FS_LD_CS.value)
+                    if (matchOdds.playCateCode.isEndScoreType())
                         context.getString(R.string.N903)
                     else matchOdds.playName
                 play_content.setPlayContent(

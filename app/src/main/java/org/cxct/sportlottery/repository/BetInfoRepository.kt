@@ -18,6 +18,7 @@ import org.cxct.sportlottery.network.bet.settledDetailList.BetInfoResult
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
@@ -361,10 +362,10 @@ object BetInfoRepository {
         }
 
         //如果当前选择的是篮球末位比分
-        if (playCateCode == PlayCate.FS_LD_CS.value) {
+        if (playCateCode.isEndScoreType()) {
             //注单中选择的篮球末位比分的个数
             val basketballCount =
-                betList.count { it.matchOdd.playCode == PlayCate.FS_LD_CS.value }
+                betList.count { it.matchOdd.playCode.isEndScoreType()}
             //如果当前选择的注单数量大于100个
 //            Timber.d("basketballCount:${basketballCount}")
             if (basketballCount >= BET_BASKETBALL_ENDING_SCORE_MAX_COUNT) {
@@ -376,7 +377,7 @@ object BetInfoRepository {
             //选择的篮球末位比分的个数
             val basketballCount =
                 betList.count {
-                    it.matchOdd.playCode == PlayCate.FS_LD_CS.value
+                    it.matchOdd.playCode.isEndScoreType()
                 }
             //除了篮球末位比分以外的数量
             val otherCount = betList.size - basketballCount
@@ -416,16 +417,20 @@ object BetInfoRepository {
             //是不是同一场比赛
             val currentMatchName = it.playCateName + it.awayName + it.homeName
             var lastMatchName: String? = null
+            var lastPlayCode: String? = null
             if (betList.isNotEmpty()) {
                 val lastMatchOdd = betList.last().matchOdd
                 lastMatchName =
                     lastMatchOdd.playCateName + lastMatchOdd.awayName + lastMatchOdd.homeName
+                lastPlayCode = lastMatchOdd.playCode
             }
             val isSameMatch = (currentMatchName == lastMatchName) || (lastMatchName == null)
 //            Timber.d("isSameMatch:${isSameMatch} currentMatchName:${currentMatchName} lastMatchName:${lastMatchName}")
             //篮球末位比分
-            if (playCateCode == PlayCate.FS_LD_CS.value) {
-                if (isSameMatch) {
+            //末位比分区分总分和节比分共5种，需要判断是不是末位比分里面同一种
+            val isSamePlayCodeThanBefore = playCateCode == lastPlayCode
+            if (playCateCode.isEndScoreType()) {
+                if (isSameMatch&&isSamePlayCodeThanBefore) {
                     Timber.d("篮球末位比分模式")
                     oddIDArray.add(it.oddsId)
                     betList.add(data)

@@ -21,6 +21,7 @@ import org.cxct.sportlottery.network.bet.settledDetailList.Other
 import org.cxct.sportlottery.network.bet.settledDetailList.Row
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.ui.betRecord.BetRecordEndScoreAdapter
 import org.cxct.sportlottery.ui.betRecord.ParlayType
 import org.cxct.sportlottery.ui.betRecord.detail.BetDetailsActivity
@@ -328,7 +329,7 @@ class AccountHistoryNextAdapter(private val itemClickListener: ItemClickListener
                     itemClickListener.onClick(row, first)
                 }
                 val playName =
-                    if (it.playCateCode == PlayCate.FS_LD_CS.value)
+                    if (it.playCateCode.isEndScoreType())
                         itemView.context.getString(R.string.N903)
                     else it.playName
                 val formatForOdd =
@@ -400,7 +401,7 @@ class AccountHistoryNextAdapter(private val itemClickListener: ItemClickListener
 
                 binding.linEndscoreParent.apply {
                     linEndscore.isVisible =
-                        row.matchOdds.firstOrNull()?.playCateCode == PlayCate.FS_LD_CS.value
+                        row.matchOdds.firstOrNull()?.playCateCode.isEndScoreType()
                     if (linEndscore.isVisible) {
                         itemView.onClick {
                             val intent = Intent(itemView.context, BetDetailsActivity::class.java)

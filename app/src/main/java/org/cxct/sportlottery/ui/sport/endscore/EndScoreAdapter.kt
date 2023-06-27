@@ -7,6 +7,7 @@ import com.chad.library.adapter.base.entity.node.BaseNode
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
@@ -14,15 +15,23 @@ import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
 import org.cxct.sportlottery.ui.sport.list.adapter.SportMatchEvent
 import org.cxct.sportlottery.util.LogUtil
+import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SocketUpdateUtil.updateOddStatus
 import org.cxct.sportlottery.view.stickyheader.StickyAdapter
 
 // 篮球末位比分
-class EndScoreAdapter(val playCates: List<String>, val onItemClick:(Int, View, BaseNode) -> Unit)
+class EndScoreAdapter(val onItemClick:(Int, View, BaseNode) -> Unit)
     : ExpanableOddsAdapter<MatchOdd>(), StickyAdapter<BaseViewHolder, BaseViewHolder> {
 
     private val recyclerPool by lazy { RecyclerView.RecycledViewPool().apply { setMaxRecycledViews(3, 100) } }
-
+    // 篮球末尾比分组合玩法
+    private val playCates = listOf(
+        PlayCate.FS_LD_CS.value,
+        PlayCate.FS_LD_CS_SEG1.value,
+        PlayCate.FS_LD_CS_SEG2.value,
+        PlayCate.FS_LD_CS_SEG3.value,
+        PlayCate.FS_LD_CS_SEG4.value,
+    )
     var oddsType: OddsType = OddsType.EU
         set(value) {
             if (value != field) {
@@ -77,106 +86,36 @@ class EndScoreAdapter(val playCates: List<String>, val onItemClick:(Int, View, B
         if (oddsChangeEvent.eventId.isEmptyStr() || oddsChangeEvent.odds.isNullOrEmpty()) {
             return false
         }
-
         val matchOdd = currentVisiableMatchOdds[oddsChangeEvent.eventId] ?: return false
-        LogUtil.toJson(oddsChangeEvent.oddsList.map { it.playCateCode })
-        if (oddsChangeEvent.channel?.split("/")?.getOrNull(6) != matchOdd.matchInfo?.id) {
+         if (oddsChangeEvent.channel?.split("/")?.getOrNull(6) != matchOdd.matchInfo?.id) {
             return false
         }
-        var needNotifyAllChanged = false
-        playCates.forEach {
-            // 过滤玩法赔率
-            val newOdds = oddsChangeEvent.odds[it]
+        playCates.forEach { playCate->
+            val newOdds = oddsChangeEvent.odds[playCate]
             if (!newOdds.isNullOrEmpty()) {
-                if (updateMatchOdds(matchOdd, newOdds, oddsChangeEvent)) {
-                    needNotifyAllChanged = true
+                val idsMap = mutableMapOf<String, Odd>()
+                newOdds.forEach { odd->
+                    odd.parentNode = matchOdd
+                    odd?.id?.let { idsMap[it] = odd }
+                    matchOdd.oddIdsMap[playCate] = idsMap
                 }
             }
         }
-        if (needNotifyAllChanged) {
-            notifyDataSetChanged()
-        }
-        return needNotifyAllChanged
-    }
-
-    private fun resetOddIdsMap(matchOdd: MatchOdd, playCates: List<String>) {
-        val oddList = matchOdd.childNode as MutableList<Odd>
-        val idsMap = mutableMapOf<String, Odd>()
-        oddList.forEach { odd->
-            odd.parentNode = matchOdd
-            odd?.id?.let { idsMap[it] = odd }
-            playCates.forEach {
-                matchOdd.oddIdsMap[it] = idsMap
-            }
-        }
-    }
-
-    // 赔率变化更新列表赔率
-    private fun updateMatchOdds(matchOdd: MatchOdd, newOdds: MutableList<Odd>, oddsChangeEvent: OddsChangeEvent): Boolean {
-
-        var isNeedRefresh = false
-        var oddsMap = matchOdd.childNode as MutableList<Odd>
-        if (oddsMap.isNullOrEmpty()) {
-            nodeAddData(matchOdd, newOdds)
-            resetOddIdsMap(matchOdd, playCates)
-        } else {
-            val oddList = matchOdd.childNode as MutableList<Odd>
-            isNeedRefresh = refreshMatchOdds(playCates, matchOdd, oddList, newOdds)
-        }
-
+        matchOdd.matchInfo?.playCateNum = oddsChangeEvent.playCateNum
         //更新翻譯
         if(matchOdd.betPlayCateNameMap == null){
             matchOdd.betPlayCateNameMap = mutableMapOf()
         }
         oddsChangeEvent.betPlayCateNameMap?.let { matchOdd.betPlayCateNameMap!!.putAll(it) }
-
         if(matchOdd.playCateNameMap == null){
             matchOdd.playCateNameMap = mutableMapOf()
         }
-
         oddsChangeEvent.playCateNameMap?.let { matchOdd.playCateNameMap!!.putAll(it) }
-
-        if (isNeedRefresh) {
-//            SocketUpdateUtil.sortOdds(matchOdd)
-            matchOdd.updateOddStatus()
-        }
-
-        matchOdd.matchInfo?.playCateNum = oddsChangeEvent.playCateNum
-
-        if (isNeedRefresh) {
-            notifyDataSetChanged()
-        }
-
-        return isNeedRefresh
-    }
-
-    private fun refreshMatchOdds(playCates: List<String>, matchOdd: MatchOdd, oddsMap: MutableList<Odd>, oddsMapSocket: List<Odd>): Boolean {
-
-        if (oddsMap.all { it == null }) { // 如果oddsMap里面全是空对象(之前的逻辑)
-            nodeReplaceChildData(matchOdd, oddsMapSocket)
-            resetOddIdsMap(matchOdd, playCates)
-            return false
-        }
-        var isNeedRefresh = false
-        playCates.forEach { playCate->
-            val oddIdsMap: MutableMap<String, Odd> = matchOdd.oddIdsMap[playCate] ?: return false
-
-            for (socketOdd in oddsMapSocket) {
-                if (socketOdd == null) {
-                    continue
-                }
-                val odd = oddIdsMap[socketOdd.id]
-                if (odd == null) {
-                    socketOdd.parentNode = matchOdd
-                    oddIdsMap["${socketOdd.id}"] = socketOdd
-                    oddsMap.add(socketOdd)
-                    continue
-                }
-                isNeedRefresh = true
-                refreshOdds(odd, socketOdd)
-            }
-        }
-        return isNeedRefresh
+        SocketUpdateUtil.sortOdds(matchOdd)
+        matchOdd.updateOddStatus()
+        LogUtil.d(matchOdd.matchInfo?.id+","+matchOdd.oddIdsMap.keys)
+        notifyDataSetChanged()
+        return true
     }
 
 

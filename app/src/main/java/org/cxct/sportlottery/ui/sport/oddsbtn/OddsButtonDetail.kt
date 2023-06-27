@@ -22,7 +22,7 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
-import org.cxct.sportlottery.util.BetPlayCateFunction.isFS_LD_CS_Type
+import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.util.BetPlayCateFunction.isNOGALType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LocalUtils.getString
@@ -147,7 +147,7 @@ class OddsButtonDetail @JvmOverloads constructor(
 
         lin_name.isVisible = !(hideName && !tv_spread.isVisible)
         //篮球末尾比分，只显示最后空格后面的比分
-        if (mOdd?.playCode?.isFS_LD_CS_Type() == true) {
+        if (mOdd?.playCode?.isEndScoreType() == true) {
             tv_odds.text = tv_name.text.toString().split(" ")?.last()
             lin_name.isVisible = false
         }
@@ -240,7 +240,7 @@ class OddsButtonDetail @JvmOverloads constructor(
                         }
                     }
                     //篮球末尾比分，只显示最后空格后面的比分
-                    playCateCode.isFS_LD_CS_Type() -> {
+                    playCateCode.isEndScoreType() -> {
                         (odds?.nameMap?.get(
                             LanguageManager.getSelectLanguage(
                                 context

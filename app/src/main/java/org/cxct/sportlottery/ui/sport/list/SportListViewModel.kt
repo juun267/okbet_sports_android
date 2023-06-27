@@ -277,9 +277,11 @@ class SportListViewModel(
                         matchOdd.oddsMap?.forEach { map ->
                             map.value?.updateOddSelectState()
                         }
-
-//                    matchOdd.setupPlayCate()
-//                    matchOdd.refactorPlayCode() //改成在OddButtonPagerAdapter處理
+                      if (matchType == MatchType.END_SCORE.postValue){
+                          matchOdd.oddsSort = listOf(PlayCate.FS_LD_CS,PlayCate.FS_LD_CS_SEG1,PlayCate.FS_LD_CS_SEG2,PlayCate.FS_LD_CS_SEG3,PlayCate.FS_LD_CS_SEG4).joinToString(",")
+                      }
+//                      matchOdd.setupPlayCate()
+//                      matchOdd.refactorPlayCode() //改成在OddButtonPagerAdapter處理
                         matchOdd.sortOdds()
 
                         matchOdd.setupOddDiscount()
