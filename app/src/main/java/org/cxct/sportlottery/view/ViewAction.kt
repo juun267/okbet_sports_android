@@ -10,23 +10,27 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import java.util.Date
 
 object ViewAction {
 
 }
 
 
-private var lastClickTime = 0
+private var lastClickTime = 0L
 
 /**
  * 防连续点击click
  */
-fun View.onClick(block: () -> Unit) {
-    val systemTime = System.currentTimeMillis()
+fun View.onClick(time:Int=200,block: () -> Unit) {
     this.setOnClickListener {
-        if (systemTime - lastClickTime < 200) {
+        val systemTime =System.currentTimeMillis()
+        if (systemTime - lastClickTime < time) {
+            Log.e("dachang","systemTime ${systemTime }   lastClickTime${lastClickTime}  time${time}")
             return@setOnClickListener
         }
+        Log.e("dachang","onClick")
+        lastClickTime=systemTime
         block()
     }
 }

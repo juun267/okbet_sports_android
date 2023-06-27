@@ -41,7 +41,7 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
         }
 
         //投注详情
-        constrainBetRecord.onClick {
+        constrainBetRecord.setOnClickListener {
             if(viewModel.isLogin()){
                 startActivity(BetRecordActivity::class.java)
                 constrainBetRecord.postDelayed({
