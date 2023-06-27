@@ -139,7 +139,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/N997"
+                android:text="@string/N142"
                 android:textColor="@color/color_6D7693"
                 android:textSize="12sp" />
 
@@ -173,7 +173,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/recharge_log_order_time"
+                android:text="@string/I039"
                 android:textColor="@color/color_6D7693"
                 android:textSize="12sp" />
 

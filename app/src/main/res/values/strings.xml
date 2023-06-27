@@ -1554,6 +1554,7 @@
     <string name="N111">No more</string>
     <string name="N934">Filter league</string>
     <string name="N933">No events yet</string>
-
-
+    <string name="I059">Settled</string>
+    <string name="I039">Betting Time</string>
+    <string name="N142">Bet Slip No</string>
 </resources>

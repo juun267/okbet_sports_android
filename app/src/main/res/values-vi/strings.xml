@@ -1426,4 +1426,7 @@
     <string name="accept_any_change_in_odds">Nhận mọi thay đổi</string>
     <string name="accept_better_change_in_odds">Nhận thay đổi tốt hơn</string>
     <string name="accept_never_change_in_odds">Nhận thay đổi tốt hơn</string>
+    <string name="I059">Đã kết toán</string>
+    <string name="I039">Thời gian cược</string>
+    <string name="N142">Mã đơn cược</string>
 </resources>

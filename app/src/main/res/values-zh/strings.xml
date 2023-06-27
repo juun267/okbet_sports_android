@@ -1482,5 +1482,7 @@
     <string name="N111">没有更多啦</string>
     <string name="N934">筛选联赛</string>
     <string name="N933">暂无赛事</string>
-
+    <string name="I059">已结算</string>
+    <string name="I039">投注时间</string>
+    <string name="N142">注单号</string>
 </resources>
