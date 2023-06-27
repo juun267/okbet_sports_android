@@ -34,7 +34,8 @@ import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.fromJson
 import org.cxct.sportlottery.util.setTeamLogo
 
-class SportToolBarTopFragment : BindingSocketFragment<SportViewModel, ViewDetailHeadToolbar1Binding>() {
+class SportToolBarTopFragment :
+    BindingSocketFragment<SportViewModel, ViewDetailHeadToolbar1Binding>() {
 
 
     val matchInfo by lazy {
@@ -42,9 +43,7 @@ class SportToolBarTopFragment : BindingSocketFragment<SportViewModel, ViewDetail
     }
 
     override fun createRootView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         val frameLayout = FrameLayout(inflater.context)
         frameLayout.layoutParams = ViewGroup.LayoutParams(-1, -1)
@@ -52,7 +51,11 @@ class SportToolBarTopFragment : BindingSocketFragment<SportViewModel, ViewDetail
         return frameLayout
     }
 
-    val tv_match_time by lazy { binding.tvMatchTime }
+//    val tv_match_time by lazy { binding.tvMatchTime }
+
+    fun getTvMatchTime(): TextView {
+        return binding.tvMatchTime
+    }
 
     override fun onInitView(view: View) {
         binding.ivDetailBg.setImageResource(
@@ -113,15 +116,15 @@ class SportToolBarTopFragment : BindingSocketFragment<SportViewModel, ViewDetail
             var startDate = TimeUtil.timeFormat(matchInfo.startTime, TimeUtil.DM_HM_FORMAT)
             startDate.split(" ").let {
                 if (it.size == 2) {
-                    tv_match_time.text = it[0]
+                    binding.tvMatchTime.text = it[0]
                     tv_score.text = it[1]
                     tv_match_status.isVisible = false
                     tv_score.isVisible = true
-                    tv_match_time.isVisible = true
+                    binding.tvMatchTime.isVisible = true
                 } else {
                     tv_match_status.isVisible = false
                     tv_score.isVisible = false
-                    tv_match_time.isVisible = false
+                    binding.tvMatchTime.isVisible = false
                 }
             }
             lin_bottom.isVisible = false
@@ -296,7 +299,7 @@ class SportToolBarTopFragment : BindingSocketFragment<SportViewModel, ViewDetail
             )
             isVisible = true
         }
-        tv_match_time.apply {
+        binding.tvMatchTime.apply {
             text =
                 if (matchInfo.halfStatus == 0) getString(R.string.half_first_short) else getString(
                     R.string.half_second_short
