@@ -253,14 +253,14 @@ open class SportListViewModel(
         }
     }
 
-    fun switchGameType(matchType: MatchType, item: Item) {
+    fun switchGameType(matchType: MatchType, item: Item, selectMatchIdList: ArrayList<String> = arrayListOf()) {
         if (jobSwitchGameType?.isActive == true) {
             jobSwitchGameType?.cancel()
         }
         //視覺上需要優先跳轉 tab
         _sportMenuResult.value?.updateSportSelectState(matchType, item.code)
         jobSwitchGameType = viewModelScope.launch {
-            getGameHallList(matchType, item.code)
+            getGameHallList(matchType, item.code, selectMatchIdList)
         }
     }
 

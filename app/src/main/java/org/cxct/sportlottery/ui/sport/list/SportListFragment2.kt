@@ -46,7 +46,6 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
         matchType = (arguments?.getSerializable("matchType") as MatchType?) ?: MatchType.IN_PLAY
         sportLeagueAdapter2.matchType = matchType
         gameType = arguments?.getString("gameType") ?: GameType.BK.key
-        selectMatchIdList = arrayListOf()
         gameTypeAdapter.setNewInstance(null)
         clearData()
         setMatchInfo("", "")

@@ -254,7 +254,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     protected open fun load(item: Item) {
         showLoading()
         setMatchInfo(item.name, item.num.toString())
-        viewModel.switchGameType(matchType, item)
+        viewModel.switchGameType(matchType, item, selectMatchIdList)
     }
 
     protected fun setMatchInfo(name: String, num: String) {
