@@ -37,6 +37,7 @@ class PopImageDialog :
         const val IMAGE_TYPE = "imageType"
         var showHomeDialog = true
         var showOKGameDialog = true
+        var showOKLiveDialog = true
         var showSportDialog = true
         fun checkImageTypeAvailable(imageType: Int) = sConfigData?.imageList?.filter {
             it.imageType == imageType && it.lang == LanguageManager.getSelectLanguage(
