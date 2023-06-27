@@ -27,10 +27,10 @@ class PartLiveFragment: BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
 
     private lateinit var binding: FragmentPartOkgamesBinding
 
-    private inline fun oKLiveFragment() = parentFragment as OKLiveFragment
+    private inline fun mOkLiveFragment() = parentFragment as OKLiveFragment
     private val gameChildAdapter by lazy {
         GameChildAdapter(onFavoriate = { view, gameBean ->
-            if (OKLiveFragment().collectGame(gameBean)) {
+            if (mOkLiveFragment().collectGame(gameBean)) {
                 view.animDuang(1.3f)
             }
         }, moreClick = ::onMoreClick)
@@ -62,22 +62,22 @@ class PartLiveFragment: BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
         bindLabels()
     }
     private fun bindClick() {
-        binding.tvTag.setOnClickListener { oKLiveFragment().backGameAll() }
-        binding.tvShowMore.setOnClickListener { oKLiveFragment().backGameAll() }
+        binding.tvTag.setOnClickListener { mOkLiveFragment().backGameAll() }
+        binding.tvShowMore.setOnClickListener { mOkLiveFragment().backGameAll() }
     }
 
 
 
     private fun initGameList() = binding.rvGamesSelect.run {
 
-        setRecycledViewPool(oKLiveFragment().gameItemViewPool)
+        setRecycledViewPool(mOkLiveFragment().gameItemViewPool)
         layoutManager = GridLayoutManager(requireContext(), 3)
         addItemDecoration(GridSpacingItemDecoration(3, 10.dp, false))
         adapter = gameChildAdapter
         gameChildAdapter.setOnItemClickListener { _, _, position ->
             val okGameBean=gameChildAdapter.getItem(position)
             if(LoginRepository.isLogined()){
-                oKLiveFragment().enterGame(okGameBean)
+                mOkLiveFragment().enterGame(okGameBean)
             }else{
                 //请求试玩路线
                 loading()
@@ -87,7 +87,7 @@ class PartLiveFragment: BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
         }
     }
 
-    private fun initObserve() = oKLiveFragment().viewModel.run {
+    private fun initObserve() = mOkLiveFragment().viewModel.run {
         collectOkGamesResult.observe(viewLifecycleOwner) { result ->
             gameChildAdapter.data.forEachIndexed { index, okGameBean ->
                 if (okGameBean.id == result.first) {
@@ -102,7 +102,7 @@ class PartLiveFragment: BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
     }
 
     private fun onMoreClick() {
-        if (oKLiveFragment().loadNextPage(pageIndx)) {
+        if (mOkLiveFragment().loadNextPage(pageIndx)) {
             gameChildAdapter.onLoadingMore()
         } else {
             gameChildAdapter.disableMore()
