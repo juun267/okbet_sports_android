@@ -23,6 +23,7 @@ object OKLiveRepository {
         val params = JsonObject()
         params.addProperty("id", gameId)
         params.addProperty("markCollect", markCollect)
+        params.addProperty("gameEntryType", "OK_LIVE")
         return okLiveApi.okLivecollect(params)
     }
 
