@@ -24,6 +24,7 @@ import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.setTrialPlayGameDataObserve
 import org.cxct.sportlottery.util.goneWithSportSwitch
+import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.util.setupSportStatusChange
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 
@@ -65,13 +66,13 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
         initCollectLayout()
         initSportObserve()
         //初始化热门赛事
-        binding.hotMatchView.onCreate(viewModel.publicityRecommend,viewModel.oddsType,this)
+        binding.hotMatchView.onCreate(viewModel.publicityRecommend, viewModel.oddsType, this)
         viewModel.getRecommend()
     }
 
-    private fun initSportObserve(){
+    private fun initSportObserve() {
         //体育服务开关监听
-        setupSportStatusChange(this){
+        setupSportStatusChange(this) {
             binding.hotMatchView.goneWithSportSwitch()
         }
     }
@@ -96,6 +97,7 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
         //请求热门赛事数据  在hotMatchView初始化之后
 //        viewModel.getRecommend()
     }
+
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (hidden) {
@@ -192,14 +194,18 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
     }
 
     private fun onBindPart3View() {
-        binding.winsRankView.setUp( this, { viewModel.getOKGamesRecordNew() }, { viewModel.getOKGamesRecordResult() })
+        binding.winsRankView.setUp(
+            this,
+            { viewModel.getOKGamesRecordNew() },
+            { viewModel.getOKGamesRecordResult() })
 
         binding.ivProvidersLeft.alpha = 0.5F
         providersAdapter.setOnItemClickListener { _, _, position ->
             okLiveFragment().changePartGames(providersAdapter.getItem(position))
         }
 
-        var okGameProLLM = binding.rvOkLiveProviders.setLinearLayoutManager(LinearLayoutManager.HORIZONTAL)
+        var okGameProLLM =
+            binding.rvOkLiveProviders.setLinearLayoutManager(LinearLayoutManager.HORIZONTAL)
         binding.rvOkLiveProviders.adapter = providersAdapter
         binding.rvOkLiveProviders.layoutManager = okGameProLLM
         binding.rvOkLiveProviders.addOnScrollListener(object : OnScrollListener() {
@@ -220,13 +226,20 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
                     binding.ivProvidersRight.alpha = 1F
                 }
 
-                binding.ivProvidersRight.isClickable = p3ogProviderLastPosi != providersAdapter.data.size - 1
+                binding.ivProvidersRight.isClickable =
+                    p3ogProviderLastPosi != providersAdapter.data.size - 1
             }
         })
 
         viewModel.providerResult.observe(viewLifecycleOwner) { resultData ->
             val firmList = resultData?.firmList ?: return@observe
-
+            if (firmList.size < 2) {
+                binding.rvOkLiveProviders.isGone = true
+                binding.okLiveP3LayoutProvider.isGone = true
+                return@observe
+            }
+            binding.rvOkLiveProviders.isVisible = true
+            binding.okLiveP3LayoutProvider.isVisible = true
             providersAdapter.setNewInstance(firmList.toMutableList())
             if (firmList.isNotEmpty()) {
                 binding.run { setViewVisible(rvOkLiveProviders, okLiveP3LayoutProvider) }
@@ -297,7 +310,7 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
     }
 
     private fun onBindPart5View() {
-       binding.homeBottumView.bindServiceClick(childFragmentManager)
+        binding.homeBottumView.bindServiceClick(childFragmentManager)
     }
 
 
@@ -330,13 +343,12 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
         }
 
     private inline fun enterGame(bean: OKGameBean) {
-        if(LoginRepository.isLogined()){
+        if (LoginRepository.isLogined()) {
             //已登录
             okLiveFragment().enterGame(bean)
-        }else{
-            //请求试玩路线
-            loading()
-            viewModel.requestEnterThirdGameNoLogin(bean.firmType,bean.gameCode,bean.thirdGameCategory)
+        } else {
+            //不支持试玩
+            loginedRun(requireContext()) {}
         }
     }
 

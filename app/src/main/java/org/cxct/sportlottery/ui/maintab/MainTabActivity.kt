@@ -96,6 +96,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             PopImageDialog.showHomeDialog = showDialog
             PopImageDialog.showSportDialog = showDialog
             PopImageDialog.showOKGameDialog = showDialog
+            PopImageDialog.showOKLiveDialog = showDialog
             val intent = Intent(context, MainTabActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)

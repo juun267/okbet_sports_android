@@ -68,7 +68,7 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
         showGameAll()
         initObservable()
         viewModel.getOKGamesHall()
-        showOkGameDialog()
+//        showOkGameDialog()
     }
 
     private var requestTag: Any = Any()
@@ -111,7 +111,7 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
 
 
     private fun initTopView() = binding.topView.run {
-        setup(this@OKLiveFragment,18)
+        setup(this@OKLiveFragment,18, gameType = "oklive")
         onTableClick = ::onTabChange
         onSearchTextChanged = { searchKey ->
             hideKeyboard()
@@ -240,11 +240,11 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
     open fun getCurrentFragment() = fragmentHelper.getCurrentFragment()
 
     private fun showOkGameDialog(){
-        if (PopImageDialog.showOKGameDialog) {
-            PopImageDialog.showOKGameDialog = false
-            if (PopImageDialog.checkImageTypeAvailable(ImageType.DIALOG_OKGAME.code)) {
+        if (PopImageDialog.showOKLiveDialog) {
+            PopImageDialog.showOKLiveDialog = false
+            if (PopImageDialog.checkImageTypeAvailable(ImageType.DIALOG_OKLIVE.code)) {
                 requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
-                    putInt(PopImageDialog.IMAGE_TYPE, ImageType.DIALOG_OKGAME.code)
+                    putInt(PopImageDialog.IMAGE_TYPE, ImageType.DIALOG_OKLIVE.code)
                 }).show(childFragmentManager, PopImageDialog::class.simpleName)
             }
         }
