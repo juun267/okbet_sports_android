@@ -22,11 +22,15 @@ import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreator
 
-class GamesTabAdapter(private val onSelected: (OKGameTab) -> Boolean)
-    : BaseQuickAdapter<OKGameTab, GamesTabAdapter.VH>(0), OnItemClickListener {
+class GamesTabAdapter(gameType: String = "okgame", private val onSelected: (OKGameTab) -> Boolean) :
+    BaseQuickAdapter<OKGameTab, GamesTabAdapter.VH>(0), OnItemClickListener {
 
     private val textColor by lazy { context.getColor(R.color.color_6D7693) }
-    private val localTabs = mutableListOf<OKGameTab>(GameTab.TAB_ALL, GameTab.TAB_FAVORITES, GameTab.TAB_RECENTLY)
+    private val localTabs = if (gameType.toLowerCase() == "oklive") {
+        mutableListOf<OKGameTab>(GameTab.TAB_ALL, GameTab.TAB_FAVORITES_LIVE, GameTab.TAB_RECENTLY)
+    } else {
+        mutableListOf<OKGameTab>(GameTab.TAB_ALL, GameTab.TAB_FAVORITES, GameTab.TAB_RECENTLY)
+    }
 
     var selectedTab: OKGameTab
         private set
@@ -98,7 +102,8 @@ class GamesTabAdapter(private val onSelected: (OKGameTab) -> Boolean)
         return -1
     }
 
-    class VH(context: Context, val root: LinearLayout = LinearLayout(context)): BaseViewHolder(root) {
+    class VH(context: Context, val root: LinearLayout = LinearLayout(context)) :
+        BaseViewHolder(root) {
 
         var icon: ImageView
         var name: TextView
@@ -107,11 +112,11 @@ class GamesTabAdapter(private val onSelected: (OKGameTab) -> Boolean)
             root.layoutParams = ViewGroup.LayoutParams(-2, 36.dp)
             root.gravity = Gravity.CENTER_VERTICAL or Gravity.CENTER_HORIZONTAL
             root.minimumWidth = 71.dp
-            8.dp.let { root.setPadding(it, 0 , it, 0) }
+            8.dp.let { root.setPadding(it, 0, it, 0) }
             root.background = getItemBackground(context)
 
             icon = AppCompatImageView(context)
-            val parms = 20.dp.run { LayoutParams(this,this) }
+            val parms = 20.dp.run { LayoutParams(this, this) }
             parms.rightMargin = 5.dp
             root.addView(icon, parms)
 

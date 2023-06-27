@@ -41,7 +41,7 @@ class OKGamesTopView @JvmOverloads constructor(
 
     private val edtSearch: EditText by lazy { findViewById(R.id.edtSearchGames) }
     private val indicatorView: IndicatorWidget by lazy { findViewById(R.id.indicatorView) }
-    private val gameTabAdapter by lazy { GamesTabAdapter { onTableClick?.invoke(it) ?: false } }
+    private lateinit var gameTabAdapter: GamesTabAdapter
     private val rcvGamesTab by lazy { findViewById<RecyclerView>(R.id.rcvGamesTab) }
     private val bannerCard by lazy { findViewById<View>(R.id.bannerCard) }
     private val okgamesBanner: XBanner by lazy {
@@ -57,7 +57,9 @@ class OKGamesTopView @JvmOverloads constructor(
         initView()
     }
 
-    fun setup(lifecycleOwner: LifecycleOwner, imgType: Int) {
+    fun setup(lifecycleOwner: LifecycleOwner, imgType: Int, gameType: String = "okgame") {
+        gameTabAdapter = GamesTabAdapter(gameType) { onTableClick?.invoke(it) ?: false }
+        setupTables()
         ConfigRepository.onNewConfig(lifecycleOwner) {
             it?.let { setUpBannerData(imgType) }
         }
@@ -65,7 +67,6 @@ class OKGamesTopView @JvmOverloads constructor(
 
     private fun initView() {
         initIndicator()
-        setupTables()
         initSearch()
     }
 
@@ -102,7 +103,7 @@ class OKGamesTopView @JvmOverloads constructor(
             .build()
     }
 
-    private fun setupTables() {
+    fun setupTables() {
         rcvGamesTab.addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_8))
         rcvGamesTab.setLinearLayoutManager(RecyclerView.HORIZONTAL)
         rcvGamesTab.adapter = gameTabAdapter
@@ -121,7 +122,6 @@ class OKGamesTopView @JvmOverloads constructor(
     }
 
     private fun setUpBannerData(imgType: Int) {
-
         val lang = LanguageManager.getSelectLanguage(context).key
         var imageList = sConfigData?.imageList?.filter {
             it.imageType == imgType && it.lang == lang && !it.imageName1.isNullOrEmpty() && !(isGooglePlayVersion() && it.isHidden)

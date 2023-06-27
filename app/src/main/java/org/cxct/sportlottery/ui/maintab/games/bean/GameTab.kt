@@ -47,6 +47,12 @@ class GameTab private constructor(@GameTabIds val id: Int,
             R.drawable.ic_okgame_label_favorite,
             R.string.N873)
 
+        val TAB_FAVORITES_LIVE = GameTab(FAVORITES,
+            R.drawable.ic_oklive_tab_favorite_1,
+            R.drawable.ic_oklive_tab_favorite_0,
+            R.drawable.ic_okgame_label_favorite,
+            R.string.N873)
+
         val TAB_RECENTLY = GameTab(RECENTLY,
             R.drawable.ic_okgame_tab_recently_1,
             R.drawable.ic_okgame_tab_recently_0,
