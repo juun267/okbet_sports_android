@@ -1,39 +1,33 @@
 package org.cxct.sportlottery.ui.maintab.worldcup
 
-import android.Manifest
-import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.net.http.SslError
 import android.os.Bundle
-import android.os.Message
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
 import com.gyf.immersionbar.ImmersionBar
-import kotlinx.android.synthetic.main.fragment_main_home.*
 import kotlinx.android.synthetic.main.fragment_worldcup.*
-import kotlinx.android.synthetic.main.fragment_worldcup.homeToolbar
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.databinding.FragmentWorldcupBinding
 import org.cxct.sportlottery.network.Constants
-import org.cxct.sportlottery.network.odds.MatchInfo
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.EventBusUtil
+import org.cxct.sportlottery.util.LogUtil
+import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.startLogin
 import org.cxct.sportlottery.view.webView.OkWebChromeClient
 import org.cxct.sportlottery.view.webView.OkWebViewClient
 import org.cxct.sportlottery.view.webView.WebViewCallBack
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
@@ -61,7 +55,7 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
         initToolBar()
         initObservable()
         initWeb()
-        loadWebURL(MultiLanguagesApplication.mInstance.sOddsType)
+        loadWebURL()
         homeBottumView.bindServiceClick(childFragmentManager)
     }
     fun initToolBar() = binding.run {
@@ -142,13 +136,13 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
         }
     }
     var currentOdsType: String? = null
-
-    private fun loadWebURL(oddsType: String?) {
+    private fun loadWebURL() {
+        val oddsType=MultiLanguagesApplication.mInstance.sOddsType
         if (currentOdsType != null && currentOdsType.equals(oddsType)) {
             return
         }
         currentOdsType = oddsType
-        val url = Constants.getWorldCupH5Url(requireContext(),"8TIPs2KPjJUqkMuQ/L5Vy7cOSJ1Z1tlozP551w==")
+        val url = Constants.getWorldCupH5Url(requireContext(),viewModel.token?:"")
         setCookie(url)
         LogUtil.d("url="+url)
         binding.okWebView.loadUrl(url)
@@ -182,8 +176,8 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
     }
 
     fun reloadWeb() {
-        showLoading()
-        binding.okWebView.reload()
+        loading()
+        loadWebURL()
     }
 
     private fun initObservable() {
@@ -191,7 +185,7 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
             return
         }
 
-        viewModel.oddsType.observe(viewLifecycleOwner) { loadWebURL(it.code) }
+        viewModel.oddsType.observe(viewLifecycleOwner) { loadWebURL() }
         viewModel.isLogin.observe(viewLifecycleOwner) {
 //            if (!it) mainTabActivity().startLogin()
         }
@@ -208,10 +202,11 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
             pauseWebVideo()
         }else{
             playWebVideo()
-//            homeToolbar.onRefreshMoney()
+            homeToolbar.onRefreshMoney()
+            reloadWeb()
         }
     }
-    protected open fun overrideUrlLoading(view: WebView, url: String): Boolean {
+    fun overrideUrlLoading(view: WebView, url: String): Boolean {
         if (!url.startsWith("http")) {
             try {
                 val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
@@ -242,18 +237,13 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
            (fragment.activity as MainTabActivity)?.startLogin()
        }
         @JavascriptInterface
-        fun toDetailEndScore(matchInfoJson: String) {
+        fun toDetailEndScore(matchId: String,endScore: Boolean) {
             LogUtil.d("toDetailEndScore")
-            if (TextUtils.isEmpty(matchInfoJson)) {
+            if (TextUtils.isEmpty(matchId)) {
                 ToastUtil.showToast(fragment.requireContext(), R.string.error)
                 return
             }
-            val matchInfo: MatchInfo? = matchInfoJson.fromJson()
-            if (matchInfo == null) {
-                ToastUtil.showToast(fragment.requireContext(), R.string.error)
-                return
-            }
-            SportDetailActivity.startActivity(fragment.mainTabActivity(), matchInfo)
+            SportDetailActivity.startActivity(fragment.mainTabActivity(), matchId = matchId, tabCode = if (endScore) MatchType.END_SCORE.postValue else null)
         }
     }
 

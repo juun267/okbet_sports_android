@@ -767,6 +767,8 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         if (bottom_navigation_view.currentItem != 2) {
             bottom_navigation_view.currentItem = 2
         }
+        resetBackIcon(2)
+        ll_home_back.gone()
         (fragmentHelper.getFragment(2) as BetRecordFragment).selectTab(tabPosition)
     }
 
