@@ -69,6 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/margin_36"
                 android:background="@drawable/bg_gary_radius_8_stroke_solid"
+                android:foreground="@drawable/fg_ripple"
                 android:text="@string/reverse_select"
                 android:textColor="@color/color_6D7693"
                 android:textSize="@dimen/textSize14sp" />
@@ -80,6 +81,7 @@
                 android:layout_height="@dimen/margin_36"
                 android:layout_marginLeft="@dimen/margin_8"
                 android:background="@drawable/bg_gary_radius_8_stroke_solid"
+                android:foreground="@drawable/fg_ripple"
                 android:text="@string/select_all"
                 android:textColor="@color/color_6D7693"
                 android:textSize="@dimen/textSize14sp" />
@@ -149,6 +151,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_40"
                 android:background="@drawable/bg_gray_radius_8"
+                android:foreground="@drawable/fg_ripple"
                 android:minWidth="80dp"
                 android:paddingHorizontal="@dimen/margin_10"
                 android:layout_marginRight="@dimen/margin_16"
@@ -164,6 +167,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_40"
                 android:background="@drawable/btn_send_sms_rd8"
+                android:foreground="@drawable/fg_ripple"
                 android:minWidth="150dp"
                 android:paddingHorizontal="@dimen/margin_10"
                 android:text="@string/btn_confirm"

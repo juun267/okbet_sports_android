@@ -171,7 +171,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     }
 
     private fun initToolbar()  = binding.run {
-
+        ivArrow.bindExpanedAdapter(getGameListAdapter()) { resubscribeChannel(320) }
         appbarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
             offsetScrollListener?.invoke((-verticalOffset) / Math.max(1.0, appbarLayout.measuredHeight.toDouble()))
         })
@@ -181,7 +181,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
                 return@setOnClickListener
             }
             LeagueSelectActivity.start(
-                requireContext(),
+                it.context,
                 gameType!!,
                 matchType,
                 viewModel.selectTimeRangeParams,
@@ -189,7 +189,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
             )
         }
 
-        ivArrow.bindExpanedAdapter(getGameListAdapter()) { resubscribeChannel(320) }
+
     }
 
     private fun initSportTypeList() = binding.run {
@@ -265,6 +265,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     protected fun clearData() {
         unSubscribeAllChannel()
         setSportDataList(null)
+        viewModel.selectTimeRangeParams = null
     }
 
     protected fun setSportDataList(list: MutableList<BaseNode>?) {
@@ -326,10 +327,12 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     @Subscribe
     fun onSelectMatch(matchIdList: ArrayList<String>) {
         setSelectMatchIds(matchIdList)
+        Log.e("For Test", "======>>> onSelectMatch ${matchIdList}")
     }
 
     @Subscribe
     fun onSelectDate(timeRangeEvent: TimeRangeEvent) {
+        Log.e("For Test", "======>>> onSelectDate ${timeRangeEvent.startTime}  ${timeRangeEvent.endTime}")
         viewModel.selectTimeRangeParams = object : TimeRangeParams {
             override val startTime: String
                 get() = timeRangeEvent.startTime

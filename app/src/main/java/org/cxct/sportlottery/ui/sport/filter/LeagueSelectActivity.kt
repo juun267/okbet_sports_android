@@ -16,6 +16,7 @@ import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import kotlinx.android.synthetic.main.activity_league_select.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.TimeRangeEvent
+import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.TimeRangeParams
@@ -70,6 +71,8 @@ class LeagueSelectActivity :
     lateinit var linearLayoutManager: LinearLayoutManager
 
 
+    private val loading by lazy { Gloading.wrapView(rv_league) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStatusbar(R.color.color_FFFFFF, true)
@@ -78,10 +81,12 @@ class LeagueSelectActivity :
         setDateListView()
         setupMatchListView()
         initObserve()
+
+        loading.showLoading()
         viewModel.getOddsList(gameType,
             matchType.postValue,
-            startTime ?: "",
-            endTime ?: "",
+            "",
+            "",
             matchIdList)
     }
 
@@ -243,6 +248,7 @@ class LeagueSelectActivity :
 
     private fun initObserve() {
         viewModel.leagueList.observe(this) {
+            loading.showLoadSuccess()
             it.let {
                 var map: Map<String, List<LeagueOdd>> = it.groupBy {
                     it.league.firstCap?:""

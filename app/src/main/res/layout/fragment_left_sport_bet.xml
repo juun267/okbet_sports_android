@@ -2,18 +2,21 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
+        android:id="@+id/content"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constrainBetRecord"
             android:layout_width="match_parent"
             android:background="@drawable/bg_bet_record"
+            android:foreground="@drawable/fg_ripple"
             android:layout_marginHorizontal="12dp"
             android:layout_marginTop="8dp"
             android:layout_height="58dp">

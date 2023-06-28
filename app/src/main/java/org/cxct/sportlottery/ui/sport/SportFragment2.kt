@@ -60,7 +60,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     //根据赛事数量判断默认的分类
     private var defaultMatchType: MatchType? = null
     private var favoriteItems = listOf<Item>()
-    private val favoriteDelayRunable by lazy { DelayRunable { viewModel.loadFavoriteGameList() } }
+    private val favoriteDelayRunable by lazy { DelayRunable(this@SportFragment2) { viewModel.loadFavoriteGameList() } }
     private inline fun favoriteCount(items: List<Item>): Int {
         return items.sumOf { it.leagueOddsList?.sumOf { it.matchOdds.size } ?: 0 }
     }

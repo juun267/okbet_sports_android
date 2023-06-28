@@ -2,8 +2,14 @@ package org.cxct.sportlottery.util
 
 import android.os.Handler
 import android.os.Looper
+import androidx.lifecycle.LifecycleOwner
+import org.cxct.sportlottery.common.extentions.doOnDestory
 
-class DelayRunable(val runnable: Runnable) {
+class DelayRunable(lifecycleOwner: LifecycleOwner? = null, val runnable: Runnable) {
+
+    init {
+        lifecycleOwner?.doOnDestory { clear() }
+    }
 
     private val handler = Handler(Looper.getMainLooper())
 
