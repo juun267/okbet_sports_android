@@ -40,12 +40,12 @@ class SportNodeView(context: Context, attrs: AttributeSet) :LinearLayout(context
                 isExpand = if(isExpand){
                     //收起
                     ivWay.setImageResource(R.drawable.ic_node_close)
-                    recyclerNode.unExpand(mNodeList.size*32.dp)
+                    recyclerNode.unExpand(mNodeList.size*40.dp)
                     false
                 }else{
                     //展开
                     ivWay.setImageResource(R.drawable.ic_node_open)
-                    recyclerNode.expand(mNodeList.size*32.dp)
+                    recyclerNode.expand(mNodeList.size*40.dp)
                     true
                 }
 

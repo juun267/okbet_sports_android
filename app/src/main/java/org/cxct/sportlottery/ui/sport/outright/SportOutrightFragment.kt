@@ -18,7 +18,6 @@ import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.BaseSportListFragment
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
-import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.layoutmanager.SocketGridManager
 
 /**
@@ -55,14 +54,13 @@ class SportOutrightFragment : BaseSportListFragment<SportListViewModel, Fragment
     }
 
 
-    private val sportOutrightAdapter2: SportOutrightAdapter2 by lazy {
+    private val sportOutrightAdapter2 by lazy {
 
         SportOutrightAdapter2(this@SportOutrightFragment) { _, _, item ->
             if (item is Odd) {  // 赔率
                 val matchOdd = (item.parentNode as CategoryOdds).matchOdd
                 val matchInfo = matchOdd.matchInfo ?: return@SportOutrightAdapter2
                 addOddsDialog(matchInfo, item, item.outrightCateKey ?: "", matchOdd.betPlayCateNameMap, matchOdd)
-//                addOutRightOddsDialog((item.parentNode as CategoryOdds).matchOdd, item, item.outrightCateKey ?: "")
             } else { // 展开或收起
                 resubscribeChannel(300)
             }
@@ -100,6 +98,12 @@ class SportOutrightFragment : BaseSportListFragment<SportListViewModel, Fragment
                 return@Runnable
             }
 
+            if (binding.gameList.scrollState == RecyclerView.SCROLL_STATE_IDLE
+                || binding.gameList.isComputingLayout) {
+                resubscribeChannel(50)
+                return@Runnable
+            }
+
             sportOutrightAdapter2.recodeRangeMatchOdd().forEach {
                 subscribeChannelHall(it)
             }
@@ -111,22 +115,12 @@ class SportOutrightFragment : BaseSportListFragment<SportListViewModel, Fragment
             (activity as MainTabActivity).showLoginNotify()
         }
 
-        showErrorDialogMsg.observe(viewLifecycleOwner) {
-            if (requireContext() == null || TextUtils.isEmpty(it)) {
-                return@observe
-            }
-
-            showErrorMsgDialog(it)
-        }
-
         outrightList.observe(viewLifecycleOwner) {
             if (gameType != it.tag) {
                 return@observe
             }
 
-            sportOutrightAdapter2.footerLayout?.let { footerLayout->
-                footerLayout.postDelayed({ footerLayout.getChildAt(0)?.visible() }, 200)
-            }
+            setFooterViewVisiable(200)
             val data = it?.getContentIfNotHandled()?.outrightOddsListData?.leagueOdds ?: return@observe
             val list = mutableListOf<MatchOdd>()
             data.forEach { it.matchOdds?.let { list.addAll(it) } }

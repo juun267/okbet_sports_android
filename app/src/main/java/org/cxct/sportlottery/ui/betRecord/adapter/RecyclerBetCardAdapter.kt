@@ -2,11 +2,15 @@ package org.cxct.sportlottery.ui.betRecord.adapter
 
 import android.annotation.SuppressLint
 import android.os.CountDownTimer
+import android.util.Log
+import android.view.View
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.inVisible
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.visible
@@ -24,15 +28,18 @@ import org.cxct.sportlottery.util.setBetReceiptStatus
 import org.cxct.sportlottery.util.setGameType_MatchType_PlayCateName_OddsType
 import org.cxct.sportlottery.view.dialog.BetEndScoreDialog
 import org.cxct.sportlottery.view.onClick
+import java.lang.Exception
 import java.util.Locale
 
-class RecyclerBetCardAdapter(val row: Row) : BindingAdapter<MatchOdd, ItemBetCardBinding>() {
+class RecyclerBetCardAdapter(val row: Row,val block:()->Unit) :
+    BindingAdapter<MatchOdd, ItemBetCardBinding>() {
+
 
     @SuppressLint("SetTextI18n")
     override fun onBinding(position: Int, binding: ItemBetCardBinding, item: MatchOdd) {
         binding.run {
             //玩法 title
-            tvBetType.text=GameType.getGameTypeString(context, row.gameType)
+            tvBetType.text = GameType.getGameTypeString(context, row.gameType)
             //玩法
             tvMethodValue.setGameType_MatchType_PlayCateName_OddsType(
                 row.gameType,
@@ -46,22 +53,26 @@ class RecyclerBetCardAdapter(val row: Row) : BindingAdapter<MatchOdd, ItemBetCar
                 val sortList = row.matchOdds.firstOrNull()?.multiCode?.sortedBy { it.playCode }
                     ?: listOf()
                 val listData = if (sortList.size > 4) {
+                    tvMore.visible()
                     sortList.subList(0, 4)
                 } else {
+                    tvMore.gone()
                     sortList
                 }
-                rvEndScoreInfo.layoutManager =LinearLayoutManager(context,RecyclerView.HORIZONTAL,false)
-                rvEndScoreInfo.addItemDecoration(SpaceItemDecoration(context,R.dimen.margin_2))
+                rvEndScoreInfo.layoutManager =
+                    LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+                rvEndScoreInfo.addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_2))
                 val scoreAdapter = BetRecordEndScoreAdapter()
                 rvEndScoreInfo.adapter = scoreAdapter
                 scoreAdapter.setList(listData)
                 tvBetItemValue.inVisible()
                 linearEndScore.visible()
                 tvMore.onClick {
-                    val dialog=BetEndScoreDialog(context)
+                    val dialog = BetEndScoreDialog(context)
                     dialog.showEndScoreDialog(sortList)
                 }
             } else {
+                //不是篮球末尾比分
                 tvBetItemValue.visible()
                 linearEndScore.inVisible()
                 tvBetItemValue.text = "${item.playName} ${item.spread}"
@@ -72,9 +83,13 @@ class RecyclerBetCardAdapter(val row: Row) : BindingAdapter<MatchOdd, ItemBetCar
             //主客队
             tvTeamValue.text = "${item.homeName} vs ${item.awayName}"
             //主客队弹框
-            tvFullTeam.text="${item.homeName} vs ${item.awayName}"
+            tvFullTeam.text = "${item.homeName} vs ${item.awayName}"
             tvTeamValue.onClick {
-                frameTeam.visible()
+                if (frameTeam.visibility == View.VISIBLE) {
+                    frameTeam.gone()
+                } else {
+                    frameTeam.visible()
+                }
             }
             //联赛
             tvLeagueValue.text = item.leagueName
@@ -94,38 +109,52 @@ class RecyclerBetCardAdapter(val row: Row) : BindingAdapter<MatchOdd, ItemBetCar
                     tvStatus.setBackgroundResource(R.drawable.bg_bet_status_yellow)
                 }
 
+                7 -> {
+                    //已取消
+                    tvStatus.setBackgroundResource(R.drawable.bg_bet_status_cancel)
+                }
+
+                4, 5 -> {
+                    //输
+                    tvStatus.setBackgroundResource(R.drawable.bg_bet_status_gray)
+                }
+
                 else -> {
                     //投注成功
                     tvStatus.setBackgroundResource(R.drawable.bg_bet_status_green)
                 }
             }
-            tvStatus.setBetReceiptStatus(item.status, row.cancelledBy)
-            tvStatus.isVisible = item.status != 7
 
 
-            if (null == row.betConfirmTime) {
 
-            } else {
-                if (row.betConfirmTime != 0L && System.currentTimeMillis() < row.betConfirmTime) {
-                    val leftTime = row.betConfirmTime.minus(TimeUtil.getNowTimeStamp())
-                    //倒计时投注处理中
-                    object : CountDownTimer(leftTime ?: 0, 1000) {
-                        override fun onTick(millisUntilFinished: Long) {
+            if(row.betConfirmTime!=null&&System.currentTimeMillis() <row.betConfirmTime){
+                //订单剩余时间
+                val leftTime = row.betConfirmTime.minus(TimeUtil.getNowTimeStamp())
+                //倒计时投注处理中
+                object : CountDownTimer(leftTime, 1000) {
+                    override fun onTick(millisUntilFinished: Long) {
+                        if(binding.tvStatus.isAttachedToWindow){
+                            //倒计时 待成立 x 秒
                             tvStatus.text = String.format(
                                 context.getString(R.string.pending),
                                 TimeUtil.longToSecond(millisUntilFinished)
                             )
                         }
+                    }
 
-                        override fun onFinish() {
-                            tvStatus.setBetReceiptStatus(item.status)
+                    override fun onFinish() {
+                        //执行监听
+                        block()
+                        if(binding.tvStatus.isAttachedToWindow){
+                            tvStatus.setBetReceiptStatus(row.status, row.cancelledBy)
                         }
-                    }.start()
-                } else {
-//                    tvStatus.gone()
-                }
+                    }
+                }.start()
+            }else{
+                tvStatus.setBetReceiptStatus(item.status, row.cancelledBy)
             }
 
         }
+
     }
 }

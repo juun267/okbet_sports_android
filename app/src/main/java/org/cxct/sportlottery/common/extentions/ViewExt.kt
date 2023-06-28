@@ -146,6 +146,32 @@ fun View.flashAnimation(
     return alphaAnimator
 }
 
+fun View.alpahAnimation(
+    duration: Long,
+    startAlpha: Float,
+    endAlpha: Float,
+    onEnd: (() -> Unit)? = null
+): ObjectAnimator {
+    this.clearAnimation()
+
+    val alphaAnimator: ObjectAnimator = ObjectAnimator.ofFloat(this, "alpha", startAlpha, endAlpha)
+    alphaAnimator.duration = duration
+    onEnd?.let {
+        alphaAnimator.addListener(object : AnimatorListenerAdapter() {
+
+            override fun onAnimationEnd(animation: Animator) {
+                it.invoke()
+            }
+
+        })
+    }
+
+    alphaAnimator.start()
+    return alphaAnimator
+}
+
+
+
 fun View.translationXAnimation(x: Float, endCall: (() -> Unit)? = null, duration: Long = 200) {
     val anim = ViewCompat.animate(this)
         .setDuration(duration)
@@ -174,12 +200,20 @@ fun <T> BaseQuickAdapter<T, *>.showEmpty(@LayoutRes layoutId: Int) {
     this.setEmptyView(layoutId)
 }
 
-fun View.rotationAnimation(rotation: Float, duration: Long = 200) {
-    ViewCompat.animate(this)
+fun View.rotationAnimation(rotation: Float, duration: Long = 200, onEnd: (() -> Unit)?= null) {
+    val animator = ViewCompat.animate(this)
         .setDuration(duration)
 //        .setInterpolator(DecelerateInterpolator())
         .rotation(rotation)
-        .start()
+    onEnd?.let {
+        animator.setListener(object : ViewPropertyAnimatorListenerAdapter() {
+            override fun onAnimationEnd(view: View) {
+            it.invoke()
+            }
+        })
+    }
+
+    animator.start()
 }
 
 fun View.animDuang(scale: Float, duration: Long = 500) {

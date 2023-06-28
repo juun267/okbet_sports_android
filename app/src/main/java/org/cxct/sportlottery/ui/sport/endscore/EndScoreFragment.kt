@@ -123,21 +123,11 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
     }
 
     private fun initObserve() = viewModel.run {
-        showErrorDialogMsg.observe(viewLifecycleOwner) {
-            if (requireContext() == null || TextUtils.isEmpty(it)) {
-                return@observe
-            }
-
-            showErrorMsgDialog(it)
-        }
-
 
         oddsListGameHallResult.observe(viewLifecycleOwner) {
 
             val result = it.getContentIfNotHandled()
-            endScoreAdapter.footerLayout?.let { footerLayout->
-                footerLayout.postDelayed({ footerLayout.getChildAt(0)?.visible() }, 200)
-            }
+            setFooterViewVisiable(200)
             if (result == null) {
                 dismissLoading()
                 return@observe

@@ -180,5 +180,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <include  android:id="@+id/empty" layout="@layout/view_bet_empty"/>
+<!--    <include  android:id="@+id/empty" layout="@layout/view_bet_empty"/>-->
 </LinearLayout>

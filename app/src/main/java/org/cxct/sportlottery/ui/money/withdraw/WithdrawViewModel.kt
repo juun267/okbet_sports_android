@@ -1159,7 +1159,7 @@ class WithdrawViewModel(
     }
 
     fun showCheckDeductMoneyDialog(onConfirm: ()->Unit):DeductDialog?{
-        if((deductMoney.value?:0)!=0){
+        if((deductMoney.value?:0.0) > 0){
             uwCheckData?.let {
                 return DeductDialog(it,onConfirm)
             }

@@ -17,9 +17,4 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_bet_list" />
 
-    <include
-        android:id="@+id/empty"
-        layout="@layout/view_bet_empty"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

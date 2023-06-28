@@ -165,6 +165,7 @@ class MoneyRechViewModel(
             val transferData: MutableList<MoneyPayWayData> = mutableListOf()
             //篩選，後台有開"且"使用者有權限的充值方式
             val filterRechargeDataList = mutableListOf<RechCfg>()
+
             rechTypesList.forEach { rechTypes ->
                 rechConfigList.forEach { rechConfig ->
                     if (rechTypes.value == rechConfig.rechType) {
@@ -663,6 +664,8 @@ class MoneyRechViewModel(
             OnlineType.DRAGON_PAY.type -> androidContext.resources.getString(R.string.online_gragon_pay)
             OnlineType.FORTUNE_PAY.type -> androidContext.resources.getString(R.string.online_fortune_pay)
             OnlineType.ONLINEBANK.type -> androidContext.resources.getString(R.string.online_online_bank)
+            OnlineType.AUB.type -> androidContext.resources.getString(R.string.aub)
+            OnlineType.EPON.type -> androidContext.resources.getString(R.string.epon)
             else -> ""
         }
     }

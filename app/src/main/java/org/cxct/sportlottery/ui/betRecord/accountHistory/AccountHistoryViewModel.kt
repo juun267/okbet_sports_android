@@ -51,7 +51,7 @@ class AccountHistoryViewModel(
 ) {
 
     companion object {
-        const val PAGE_SIZE = 2
+        const val PAGE_SIZE = 20
     }
 
     val loading: LiveData<Boolean>
@@ -393,7 +393,7 @@ class AccountHistoryViewModel(
 
     val unsettledDataEvent=SingleLiveEvent<List<org.cxct.sportlottery.network.bet.list.Row>>()
     var pageIndex=1
-    private val pageSize=10
+    private val pageSize=20
     fun getUnsettledList() {
         if (betListRequesting )
             return
@@ -406,12 +406,10 @@ class AccountHistoryViewModel(
             pageSize = pageSize
         )
 
-        loading()
         viewModelScope.launch {
             val resultData=doNetwork(androidContext) {
                 OneBoSportApi.betService.getBetList(betListRequest)
             }
-            hideLoading()
             betListRequesting = false
             if(resultData==null){
                 _responseFailed.postValue(true)
@@ -420,11 +418,14 @@ class AccountHistoryViewModel(
 
             resultData.let { result ->
                 if (result.success) {
-                    result.rows?.let {
+                    if(result.rows.isNullOrEmpty()){
+                        unsettledDataEvent.postValue(arrayListOf())
+                    }else{
                         pageIndex++
-                        unsettledDataEvent.postValue(it)
+                        unsettledDataEvent.postValue(result.rows!!)
                         loginRepository.updateTransNum(result.total ?: 0)
                     }
+
                 } else {
                     if (result.code == NetWorkResponseType.REQUEST_TOO_FAST.code && requestCount < requestMaxCount) {
                         unsettledDataEvent.postValue(arrayListOf())

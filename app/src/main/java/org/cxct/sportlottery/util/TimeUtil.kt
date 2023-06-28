@@ -31,7 +31,7 @@ object TimeUtil {
     const val HM_FORMAT_SS_12 = "hh:mm:ss"
     const val MD_HMS_FORMAT = "MM-dd HH:mm:ss"
     const val DM_HM_FORMAT = "MM/dd HH:mm"
-    private const val YMDE_FORMAT = "yyyy-MM-dd"
+    const val YMDE_FORMAT = "yyyy-MM-dd"
     private const val YMDE_HMS_FORMAT = "yyyy-MM-dd HH:mm:ss"
     const val YMDE_FORMAT_1 = "yyyy-MM/dd-EEE"
     const val D_NARROW_MONTH = "dd/MMM"

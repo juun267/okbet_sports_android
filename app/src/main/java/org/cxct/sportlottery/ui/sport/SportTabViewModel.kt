@@ -10,11 +10,15 @@ import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.safeApi
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.sport.SportRepository
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.MenuCode
+import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
+import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.util.SingleLiveEvent
 import org.cxct.sportlottery.util.TimeUtil
 
@@ -25,25 +29,20 @@ class SportTabViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     myFavoriteRepository: MyFavoriteRepository,
-    private val sportMenuRepository: SportMenuRepository,
-) : BaseBottomNavViewModel(
+    sportMenuRepository: SportMenuRepository,
+) : SportListViewModel(
     androidContext,
     userInfoRepository,
     loginRepository,
     betInfoRepository,
     infoCenterRepository,
     myFavoriteRepository,
+    sportMenuRepository
 ) {
-
-    init {
-        Log.e("For Test", "======>>> SportTabViewModel ${this}")
-    }
 
     val sportMenuResult: LiveData<ApiResult<SportMenuData>>
         get() = _sportMenuResult
     private val _sportMenuResult = SingleLiveEvent<ApiResult<SportMenuData>>()
-    private var sportMenuData: SportMenuData? = null //球種菜單資料
-
 
     fun getMatchData() {
         callApi({
@@ -52,7 +51,7 @@ class SportTabViewModel(
                 TimeUtil.getTodayStartTimeStamp().toString())
         }) {
             if (it.succeeded()) {
-                it.getData()?.sortSport().apply { sportMenuData = this }
+                it.getData()?.sortSport()
                 _sportMenuResult.postValue(it)     // 更新大廳上方球種數量、各MatchType下球種和數量
             }
         }

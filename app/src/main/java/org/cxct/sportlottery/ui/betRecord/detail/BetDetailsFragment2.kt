@@ -18,7 +18,7 @@ import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.TextUtil
 
 class BetDetailsFragment2 : BindingFragment<AccountHistoryViewModel, FragmentBetDetails2Binding>() {
-    private val mAdapter = RecyclerUnsettledAdapter()
+    private val mAdapter = RecyclerUnsettledAdapter(true)
 
     override fun onInitView(view: View) = binding.run {
         recyclerUnsettled.layoutManager = LinearLayoutManager(requireContext())

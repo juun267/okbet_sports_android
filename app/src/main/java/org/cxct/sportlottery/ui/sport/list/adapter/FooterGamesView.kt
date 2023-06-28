@@ -19,6 +19,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.animDuang
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.enterThirdGame
@@ -44,7 +45,7 @@ class FooterGamesView @JvmOverloads constructor(
         setBackgroundResource(R.color.color_F8F9FD)
         addNomoreText()
         initGameList()
-        addOKBingo()
+//        addOKBingo()
     }
 
     private fun addNomoreText() {
@@ -105,15 +106,14 @@ class FooterGamesView @JvmOverloads constructor(
         this.fragment = fragment
         this.okGamesViewModel = viewmodel
         initObserver(fragment, viewmodel)
-        viewmodel.getOKGamesHall()
+//        viewmodel.getSportOKLive() // 没有数据暂时不开放 2023.06.21
+        viewmodel.getSportOKGames()
     }
 
     private fun initObserver(lifecycleOwner: LifecycleOwner, viewmodel: OKGamesViewModel) = viewmodel.run {
-        gameHall.observe(lifecycleOwner) {
-            gameAdapter.setupData(it.categoryList?.getOrNull(0)?.gameList?.toMutableList(),
-                it.categoryList?.getOrNull(1)?.gameList?.toMutableList())
 
-        }
+        sportOKGames.observe(lifecycleOwner) { gameAdapter.setupOKGames(it, ::onMoreOKGames) }
+        sportOKLives.observe(lifecycleOwner) { gameAdapter.setupOKLives(it, ::onMoreOKLives) }
 
         collectOkGamesResult.observe(lifecycleOwner) {
             gameAdapter.updateFavoriteStatu(it.second)
@@ -145,6 +145,15 @@ class FooterGamesView @JvmOverloads constructor(
             okGamesViewModel.requestEnterThirdGame(gameBean, fragment)
             okGamesViewModel.addRecentPlay(gameBean)
         }
+    }
+
+    private fun onMoreOKGames() {
+        val mainActivity = (fragment.activity as MainTabActivity?) ?: return
+        mainActivity.jumpToOKGames()
+    }
+
+    private fun onMoreOKLives() {
+
     }
 
 }

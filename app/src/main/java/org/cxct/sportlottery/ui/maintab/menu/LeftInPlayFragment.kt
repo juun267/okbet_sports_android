@@ -32,7 +32,7 @@ class LeftInPlayFragment:BindingSocketFragment<MainViewModel,FragmentLeftInplayB
     /**
      * 请求滚球类型列表
      */
-    private fun getInPlayData(){
+    fun getInPlayData(){
         viewModel.getInPlayList()
         viewModel.inplayList.observe(viewLifecycleOwner) { sportList ->
             sportList?.let {

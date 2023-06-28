@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.OddSpreadForSCO
 import org.cxct.sportlottery.common.extentions.toIntS
@@ -490,6 +491,7 @@ class SportViewModel(
         _oddsDetailResult.postValue(null)
     }
 
+
     fun loginLive() {
         if (sConfigData?.liveChatOpen == 0) return
         var spf = MultiLanguagesApplication.mInstance.getSharedPreferences(
@@ -596,6 +598,10 @@ class SportViewModel(
         extracted1()
     }
 
+    private fun getLocalString(res: Int): String {
+        return LocalUtils.getString(res)
+    }
+
 
     /**
      * 足球
@@ -611,7 +617,7 @@ class SportViewModel(
                 away2nd = awayCards.toString()
 
                 home3rd = homeYellowCards.toString()
-                away4th = awayYellowCards.toString()
+                away3rd = awayYellowCards.toString()
 
                 home4th = homeHalfScore ?: "0"
                 away4th = awayHalfScore ?: "0"
@@ -652,10 +658,10 @@ class SportViewModel(
                         away7th = it[6].awayScore.toString()
                     }
                 }
-                home8th = homeScore.toString()
-                away8th = awayScore.toString()
-                home9th = homeTotalScore.toString()
-                away9th = awayTotalScore.toString()
+                home8th = homeScore?:"0"
+                away8th = awayScore?:"0"
+                home9th =(homeTotalScore ?: "0").toString()
+                away9th = (awayTotalScore ?: "0").toString()
             }
         }
         extracted2(matchInfo, gameType)
@@ -674,10 +680,11 @@ class SportViewModel(
             add("3")
             add(home3rd)
             add(away3rd)
+            val totalScore = getLocalString(R.string.J254)
             matchInfo.let {
                 when (it.spt) {
                     3 -> {
-                        add("局")
+                        add(totalScore)
                         add(home6th)
                         add(away6th)
                     }
@@ -695,7 +702,7 @@ class SportViewModel(
                         add("7")
                         add(home8th)
                         add(away8th)
-                        add("局")
+                        add(totalScore)
                         add(home6th)
                         add(away6th)
                     }
@@ -707,7 +714,7 @@ class SportViewModel(
                         add("5")
                         add(home5th)
                         add(away5th)
-                        add("局")
+                        add(totalScore)
                         add(home6th)
                         add(away6th)
                     }
@@ -721,19 +728,19 @@ class SportViewModel(
         val list: MutableList<String> = mutableListOf()
         list.apply {
             if (gameType == GameType.FT.name) {
-                add("Corners")
+                add(getLocalString(R.string.J244))
                 add(home1st)
                 add(away1st)
-                add("Red\ncard")
+                add(getLocalString(R.string.P140))
                 add(home2nd)
                 add(away2nd)
-                add("Yellow\ncard")
+                add(getLocalString(R.string.P141))
                 add(home3rd)
                 add(away3rd)
-                add("1st Half\nscore")
+                add(getLocalString(R.string.N937))
                 add(home4th)
                 add(away4th)
-                add("Half time\nscore")
+                add(getLocalString(R.string.J254))
                 add(home5th)
                 add(away5th)
             } else {
@@ -747,10 +754,10 @@ class SportViewModel(
                 add(home3rd)
                 add(away3rd)
                 val commonAdd = {
-                    add("赛盘")
+                    add(getLocalString(R.string.J254))
                     add(home8th)
                     add(away8th)
-                    add("得分")
+                    add(getLocalString(R.string.N237))
                     add(home9th)
                     add(away9th)
                 }
@@ -797,25 +804,27 @@ class SportViewModel(
         val list: MutableList<String> = mutableListOf()
         list.apply {
             clear()
-            add("第一节")
+            add(getLocalString(R.string.J245))
             add(home1st)
             add(away1st)
-            add("第二节")
+            add(getLocalString(R.string.J246))
             add(home2nd)
             add(away2nd)
-            add("半场比分")
+            add(getLocalString(R.string.N937))
             add(home3rd)
             add(away3rd)
-            add("第三节")
+            add(getLocalString(R.string.J247))
             add(home4th)
             add(away4th)
-            add("第四节")
+            add(getLocalString(R.string.J248))
             add(home5th)
             add(away5th)
-            add("全场比分")
+            add(getLocalString(R.string.J254))
             add(home6th)
             add(away6th)
         }
         chartViewList.postValue(list)
     }
+
+
 }

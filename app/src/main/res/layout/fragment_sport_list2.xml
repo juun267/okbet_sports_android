@@ -22,16 +22,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/sport_type_list"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/bg_sportslist_header_2"
                     android:nestedScrollingEnabled="false"
                     android:paddingLeft="5.5dp"
@@ -57,18 +55,13 @@
 
                     <TextView
                         android:id="@+id/tvMatchNum"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:layout_marginLeft="4dp"
                         android:textSize="12sp"
                         android:textStyle="bold"
-                        android:textColor="@color/color_025BE8"
-                        android:text="0"/>
-
-                    <androidx.legacy.widget.Space
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
+                        android:textColor="@color/color_025BE8" />
 
                     <ImageView
                         android:id="@+id/ivFilter"
@@ -88,10 +81,13 @@
                 </LinearLayout>
 
             </LinearLayout>
+
+
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout
+        android:id="@+id/linContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -107,5 +103,14 @@
 
     </FrameLayout>
 
+
+    <ImageView
+        android:id="@+id/ivBackTop"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="20dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/icon_backtop_blue" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

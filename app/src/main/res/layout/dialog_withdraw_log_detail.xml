@@ -172,6 +172,29 @@
                         app:layout_constraintRight_toRightOf="parent"
                         tools:text="处理中" />
 
+                    <TextView
+                        android:id="@+id/wdLogDetailRemarksLeft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/N064"
+                        android:textColor="@color/color_FFFFFF_414655"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/wd_log_detail_status_subtitle" />
+
+                    <TextView
+                        android:id="@+id/wdLogDetailRemarksRight"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:textSize="@dimen/textSize14sp"
+                        android:textColor="@color/color_FFFFFF_414655"
+                        android:gravity="start"
+                        app:layout_constraintBaseline_toBaselineOf="@id/wdLogDetailRemarksLeft"
+                        app:layout_constraintLeft_toRightOf="@id/wdLogDetailRemarksLeft"
+                        app:layout_constraintRight_toRightOf="parent" />
+
                     <View
                         android:id="@+id/log_detail_divider"
                         android:layout_width="match_parent"
@@ -180,7 +203,7 @@
                         android:layout_marginHorizontal="@dimen/margin_16"
                         android:background="@color/color_E3E8EE"
                         app:layout_constraintVertical_bias="1"
-                        app:layout_constraintTop_toBottomOf="@id/wd_log_detail_status_subtitle" />
+                        app:layout_constraintTop_toBottomOf="@id/wdLogDetailRemarksRight" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

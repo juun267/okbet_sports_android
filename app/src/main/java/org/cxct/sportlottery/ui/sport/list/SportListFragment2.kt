@@ -13,7 +13,6 @@ import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
-import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.sport.BaseSportListFragment
@@ -23,7 +22,7 @@ import org.cxct.sportlottery.util.*
 /**
  * @app_destination 滾球、即將、今日、早盤、冠軍、串關
  */
-class SportListFragment2: BaseSportListFragment<SportListViewModel, FragmentSportList2Binding>(), OnOddClickListener {
+open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, FragmentSportList2Binding>(), OnOddClickListener {
 
     override var matchType = MatchType.IN_PLAY
 
@@ -32,24 +31,21 @@ class SportListFragment2: BaseSportListFragment<SportListViewModel, FragmentSpor
         sportLeagueAdapter2.onOddsChangeEvent(it)
     }
 
-    private val sportLeagueAdapter2 by lazy {
+    protected val sportLeagueAdapter2 by lazy {
         SportLeagueAdapter2(matchType,
             this,
-            onNodeExpand = { resubscribeChannel(320) },
+            onNodeExpand = { resubscribeChannel(200) },
             onOddClick = this@SportListFragment2,
             onFavorite = { matchId ->
             loginedRun(context()) { viewModel.pinFavorite(FavoriteType.MATCH, matchId) }
         })
     }
 
-    override fun onGameTypeChanged(item: Item, position: Int) {
-        super.onGameTypeChanged(item, position)
-        binding.ivFilter.isVisible = gameType != GameType.ALL.key
-    }
 
     // 该方法中不要引用与生命周期有关的(比如：ViewModel、Activity)
     private fun reset() {
         matchType = (arguments?.getSerializable("matchType") as MatchType?) ?: MatchType.IN_PLAY
+        sportLeagueAdapter2.matchType = matchType
         gameType = arguments?.getString("gameType") ?: GameType.BK.key
         selectMatchIdList = arrayListOf()
         gameTypeAdapter.setNewInstance(null)
@@ -70,13 +66,12 @@ class SportListFragment2: BaseSportListFragment<SportListViewModel, FragmentSpor
 
     override fun onBindViewStatus(view: View) {
         super.onBindViewStatus(view)
-        reset()
-
-        initObserve()
+        observeSportList()
         initSocketObserver()
     }
 
     override fun onInitData() {
+        reset()
         reload()
     }
 
@@ -97,16 +92,10 @@ class SportListFragment2: BaseSportListFragment<SportListViewModel, FragmentSpor
     }
 
     private inline fun BaseNode.isMatchOdd() =  this is org.cxct.sportlottery.network.odds.list.MatchOdd
-    private fun initObserve() = viewModel.run {
-
-        showErrorDialogMsg.observe(this@SportListFragment2.viewLifecycleOwner) {
-            if (it == null || it.isBlank() || requireContext() == null) {
-                return@observe
-            }
-            showErrorMsgDialog(it)
-        }
+    protected open fun observeSportList() = viewModel.run {
 
         oddsListGameHallResult.observe(this@SportListFragment2.viewLifecycleOwner) {
+
 
             val oddsListData = it.getContentIfNotHandled()?.oddsListData ?: return@observe
             dismissLoading()
@@ -182,10 +171,9 @@ class SportListFragment2: BaseSportListFragment<SportListViewModel, FragmentSpor
 
         receiver.matchClock.observe(this@SportListFragment2.viewLifecycleOwner) { event->
             val matchId =  event?.matchClockCO?.matchId ?: return@observe
-            if (matchId == null || sportLeagueAdapter2.getCount() < 1) {
+            if (sportLeagueAdapter2.getCount() < 1) {
                 return@observe
             }
-
             val matchOdd = sportLeagueAdapter2.findVisiableRangeMatchOdd(matchId) ?: return@observe
             matchOdd.matchInfo?.let { matchInfo->
                 if (SocketUpdateUtil.updateMatchClockStatus(matchInfo, event)) {
@@ -240,15 +228,6 @@ class SportListFragment2: BaseSportListFragment<SportListViewModel, FragmentSpor
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
         view: View
     ) {
-
-        var gameType = GameType.getGameType(gameTypeAdapter.currentItem?.code)
-        if (gameType == null || matchInfo == null) {
-            return
-        }
-        if (gameType == GameType.ALL) {
-            gameType = GameType.getGameType(matchInfo.gameType)
-        }
-
         addOddsDialog(matchInfo, odd, playCateCode, betPlayCateNameMap)
     }
 
@@ -274,15 +253,19 @@ class SportListFragment2: BaseSportListFragment<SportListViewModel, FragmentSpor
 
     private fun firstVisibleRange(delay: Long = 100) = subscribeHandler.postDelayed({
 
+        if (sportLeagueAdapter2.getCount() < 1) {
+            return@postDelayed
+        }
+
         if (binding.gameList.scrollState != RecyclerView.SCROLL_STATE_IDLE
-            || sportLeagueAdapter2.getCount() < 1
             || binding.gameList.isComputingLayout) {
+            resubscribeChannel(40)
             return@postDelayed
         }
 
         sportLeagueAdapter2.recodeRangeMatchOdd().forEach { matchOdd ->
             matchOdd.matchInfo?.let {
-                Log.e("[subscribe]","訂閱${it.name} ${it.id} -> " + "${it.homeName} vs " + "${it.awayName}")
+                Log.e("[subscribe]","====>>> 訂閱${it.name} ${it.id} -> " + "${it.homeName} vs " + "${it.awayName}")
                 subscribeChannel(it.gameType, it.id)
             }
         }

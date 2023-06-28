@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_gradient_item_league"
+    android:foreground="@drawable/fg_ripple"
     android:orientation="vertical">
 
     <LinearLayout
@@ -43,7 +44,7 @@
         android:layout_height="30dp"
         android:layout_marginRight="7dp"
         android:padding="5dp"
-        android:src="@drawable/ic_arrow_gray_up1" />
+        android:src="@drawable/selector_filter_arrow" />
 
     </LinearLayout>
 

@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab.menu
 
 import android.util.Log
 import android.view.View
+import androidx.core.view.postDelayed
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.FragmentLeftSportBetBinding
@@ -13,6 +14,7 @@ import org.cxct.sportlottery.ui.maintab.menu.adapter.RecyclerLeftMatchesAdapter
 import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.loginedRun
+import org.cxct.sportlottery.util.startLogin
 import org.cxct.sportlottery.view.onClick
 
 class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,FragmentLeftSportBetBinding>() {
@@ -34,16 +36,20 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
         }
 
 
-        viewModel.betCount.observe(this@LeftSportBetFragment){
-            tvRecordNumber.text="$it"
+        viewModel.betCountEvent.observe(this@LeftSportBetFragment){
+            tvRecordNumber.text="${viewModel.totalCount}"
         }
 
         //投注详情
         constrainBetRecord.onClick {
             if(viewModel.isLogin()){
                 startActivity(BetRecordActivity::class.java)
+                constrainBetRecord.postDelayed({
+                    val parent=parentFragment as SportLeftMenuFragment
+                    parent.close()
+                },500)
             }else{
-                LoginOKActivity.startRegist(requireContext())
+                requireActivity().startLogin()
             }
         }
     }
@@ -55,7 +61,6 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
 
         if(viewModel.isLogin()){
             viewModel.getBetRecordCount()
-
         }
     }
 

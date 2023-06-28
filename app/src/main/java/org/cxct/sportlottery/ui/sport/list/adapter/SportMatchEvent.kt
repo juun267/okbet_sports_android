@@ -8,4 +8,6 @@ sealed class SportMatchEvent {
 
     object OddsChanged : SportMatchEvent()
 
+    object MatchStatuChanged : SportMatchEvent()
+
 }

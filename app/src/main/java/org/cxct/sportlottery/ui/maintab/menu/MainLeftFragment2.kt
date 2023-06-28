@@ -247,7 +247,6 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             hasIndicator = true
         ) {
             getMainTabActivity().jumpToNews()
-            getMainTabActivity().homeBackView(true)
         }
 
         serviceItem = addMenu(++index,
@@ -258,7 +257,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             textParams,
             R.string.LT050,
         )
-        serviceItem.group.setServiceClick(childFragmentManager) { close() }
+        serviceItem.group.setServiceClick(parentFragmentManager) { close() }
 
         val group2Params = LayoutParams(-1, 40.dp)
         group2Params.leftMargin = hMargin

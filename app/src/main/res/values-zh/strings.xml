@@ -312,8 +312,7 @@
     <string name="paymaya_recharge_hint">请每次入款前登录会员核对PayMaya账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
     <string name="title_pay_channel">支付渠道</string>
     <string name="title_choose_pay_channel">选择支付渠道</string>
-    <string name="title_pay_gap">支付账户</string>
-    <string name="title_choose_pay_gap">选择支付账户</string>
+    <string name="M132">支付账户</string>
     <string name="title_pay_bank">支付银行</string>
     <string name="title_choose_pay_bank">选择支付银行</string>
     <string name="title_pay_msg">支付信息</string>
@@ -1438,6 +1437,10 @@
     <string name="J459">温馨提示</string>
     <string name="P111">地址应包括</string>
     <string name="P110">单位/房号/楼层、楼名、地段/座/期/门牌号、街道名</string>
+    <string name="P131">OKBET会员账户</string>
+    <string name="P132">OKBET x Glife会员账户</string>
+    <string name="P130">选择您的会员账号</string>
+    <string name="N064">备注</string>
 
     <string name="N944">注单记录</string>
     <string name="N947">体育规则</string>
@@ -1464,4 +1467,17 @@
     <string name="D039">收起</string>
     <string name="I023">昨日</string>
     <string name="N698">展开</string>
+    <string name="J244">角球</string>
+    <string name="N937">半场比分</string>
+    <string name="J254">总分</string>
+    <string name="P140">红牌</string>
+    <string name="P141">黄牌</string>
+    <string name="N237">积分</string>
+    <string name="J245">第一节</string>
+    <string name="J246">第二节</string>
+    <string name="J247">第三节</string>
+    <string name="J248">第四节</string>
+    <string name="P142">主播</string>
+    <string name="P139">同意投注</string>
+
 </resources>

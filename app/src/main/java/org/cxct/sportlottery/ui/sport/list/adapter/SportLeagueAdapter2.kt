@@ -18,7 +18,6 @@ import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SocketUpdateUtil.toMutableFormat_1
 import org.cxct.sportlottery.util.SocketUpdateUtil.updateOddStatus
 import org.cxct.sportlottery.util.closePlayCate
-import org.cxct.sportlottery.util.doOnVisiableRange
 
 class SportLeagueAdapter2(
     var matchType: MatchType,
@@ -168,36 +167,31 @@ class SportLeagueAdapter2(
     }
 
     fun removeMatchOdd(matchOdd: MatchOdd) {
-        remove(matchOdd)
+        val position = getItemPosition(matchOdd)
+        if (position < 0) {
+            return
+        }
+        val pre = getItemOrNull(position - 1)
+        val next = getItemOrNull(position + 1)
+        if (pre is LeagueOdd && (next is LeagueOdd || next == null)) {
+            removeAt(position - 1)
+        } else {
+            return removeAt(position)
+        }
     }
 
     fun matchStatuChanged(matchOdd: MatchOdd) {
         val position = getItemPosition(matchOdd)
         if (position >= 0) {
-            notifyItemChanged(position)
-        }
-    }
-
-    fun updateOddsSelectStatus(matchOdds: Collection<Pair<MatchOdd, Int>>) {
-        matchOdds.forEach { matchOddPosition ->
-            val matchOdd = matchOddPosition.first
-            matchOdd.oddsMap?.values?.forEachIndexed { _, oddsList ->
-                oddsList?.forEach { odd ->
-                    val isSelected = odd.id?.let { QuickListManager.containOdd(it) } == true
-                    if (odd.isSelected != isSelected) {
-                        odd.isSelected = isSelected
-                        notifyItemChanged(matchOddPosition.second, SportMatchEvent.OddSelected)
-                        return@forEachIndexed
-                    }
-                }
-            }
+            notifyItemChanged(position, SportMatchEvent.MatchStatuChanged)
         }
     }
 
     fun updateOddsSelectStatus() {
-        doOnVisiableRange { index, baseNode ->
-            if (baseNode is MatchOdd) {
-                baseNode.oddsMap?.values?.forEachIndexed { _, oddsList ->
+        currentVisiableMatchOdds.values.forEach { matchOdd ->
+            val index = getItemPosition(matchOdd)
+            if (index > 0) {
+                matchOdd.oddsMap?.values?.forEachIndexed { _, oddsList ->
                     oddsList?.forEach { odd ->
                         val isSelected = odd.id?.let { QuickListManager.containOdd(it) } == true
                         if (odd.isSelected != isSelected) {

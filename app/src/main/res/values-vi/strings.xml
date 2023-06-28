@@ -315,8 +315,7 @@
     <string name="paymaya_recharge_hint">Mỗi lần đăng nhập vui lòng thành viên kiểm tra tài khoản PayMaya có được sử dụng hay không. Chúng tôi không thể kiểm tra khoản thanh toán vào tài khoản đã hết hạn, và sẽ không chịu trách nhiệm về việc đó!</string>
     <string name="title_pay_channel">Phương thức thanh toán</string>
     <string name="title_choose_pay_channel">Chọn phương thức thanh toán</string>
-    <string name="title_pay_gap">Tài khoản thanh toán</string>
-    <string name="title_choose_pay_gap">Chọn tài khoản thanh toán</string>
+    <string name="M132">Chọn tài khoản thanh toán</string>
     <string name="title_pay_bank">Ngân hàng thanh toán</string>
     <string name="title_choose_pay_bank">Chọn ngân hàng thanh toán</string>
     <string name="title_pay_msg">Thông tin thanh toán</string>
@@ -1028,7 +1027,7 @@
     <string name="langugae_setting">Cài đặt ngôn ngữ</string>
     <string name="setting_center">Cài đặt</string>
     <string name="ou_odd">Tỷ lệ cược Châu Âu</string>
-    <string name="home_in_play">Trong trận</string>
+    <string name="home_in_play">TRONG TRẬN</string>
     <string name="total_reward_amount">Jackpot tích luỹ</string>
     <string name="hot_elec_game">Game jackpot Hot</string>
     <string name="win_line">Chủ &amp; Khách</string>
@@ -1379,6 +1378,10 @@
     <string name="J459">Gợi ý</string>
     <string name="P111">Địa chỉ nên bao gồm</string>
     <string name="P110">Căn hộ/số phòng/tầng, tên tòa nhà, vị trí/khối/thời gian/số nhà, tên đường</string>
+    <string name="P131">TK hội viên OKBET</string>
+    <string name="P132">TK hội viên OKBET x Glife</string>
+    <string name="P130">Chọn TK OKBET của bạn</string>
+    <string name="N064">Ghi chú</string>
 
     <string name="N944">Lịch sử đơn cược</string>
     <string name="N947">Quy tắc thể thao</string>
@@ -1405,4 +1408,16 @@
     <string name="D039">Tông nhân</string>
     <string name="I023">Hôm qua</string>
     <string name="N698">Mở rộng</string>
+    <string name="J244">Phạt góc</string>
+    <string name="N937">Tỷ số hiệp 1</string>
+    <string name="J254">Tổng điểm</string>
+    <string name="P140">Thẻ đỏ</string>
+    <string name="P141">Thẻ vàng</string>
+    <string name="N237">Điểm</string>
+    <string name="J245">Mùa đầu tiên</string>
+    <string name="J246">Mùa thứ 2</string>
+    <string name="J247">Mùa thứ 3</string>
+    <string name="J248">Mùa thứ 4</string>
+    <string name="P142">MC</string>
+    <string name="P139">Đồng ý cược</string>
 </resources>

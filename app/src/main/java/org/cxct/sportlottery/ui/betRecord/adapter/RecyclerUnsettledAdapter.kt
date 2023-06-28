@@ -17,10 +17,18 @@ import org.cxct.sportlottery.util.copyToClipboard
 import org.cxct.sportlottery.view.onClick
 import java.util.Locale
 
-class RecyclerUnsettledAdapter : BindingAdapter<Row, ItemBetListBinding>() {
+/**
+ * isDetails 是否为详情页   需要隐藏进入详情页
+ */
+class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAdapter<Row, ItemBetListBinding>() {
 
+    private var block:()->Unit= { }
+    //待成立注单   倒计时结束监听
+    fun setOnCountTime(task:()->Unit){
+        block=task
+    }
     init {
-        //打印
+        //打印点击
         addChildClickViewIds(R.id.tvOrderPrint)
     }
 
@@ -29,17 +37,19 @@ class RecyclerUnsettledAdapter : BindingAdapter<Row, ItemBetListBinding>() {
 
         binding.run {
 
-
             if(item.matchOdds.isNotEmpty()){
                 //开赛时间
-                val startTime=item.matchOdds[0].startTime!!
-                //下注时间
+                val startTime=item.matchOdds[0].startTime?:0
+//                //下注时间
                 val addTime=item.addTime
                 tvInPlay.visible()
+                //通过注单时间与比赛开始时间判断
                 if(addTime-startTime>0){
+                    //滚球
                     tvInPlay.text=context.getString(R.string.home_tab_in_play2)
                     tvInPlay.setBackgroundResource(R.drawable.bg_bet_title_red)
                 }else{
+                    //早盘
                     tvInPlay.text=context.getString(R.string.home_tab_early)
                     tvInPlay.setBackgroundResource(R.drawable.bg_bet_title_green)
                 }
@@ -53,30 +63,32 @@ class RecyclerUnsettledAdapter : BindingAdapter<Row, ItemBetListBinding>() {
                 //单注
                 ParlayType.OUTRIGHT.key,ParlayType.SINGLE.key -> {
                     parlayString.append(context.getString(R.string.N125))
+                    //隐藏详情跳转
                     ivDetails.gone()
                     tvInPlay.visible()
                     linearDetails.onClick {
                     }
-//                    parlayString.append("-")
-//                    parlayString.append(GameType.getGameTypeString(context, item.gameType))
                 }
                 //串关
                 else -> {
                     parlayString.append(context.getString(R.string.N124))
                     ivDetails.visible()
+                    //如果已经是详情页，不可点击进入详情
+                    if(isDetails){
+                        ivDetails.gone()
+                    }else{
+                        ivDetails.visible()
+                    }
                     tvInPlay.gone()
+                    //跳转注单详情
                     linearDetails.onClick {
+                        if(isDetails){
+                            return@onClick
+                        }
                         val intent = Intent(context, BetDetailsActivity::class.java)
                         intent.putExtra("data", item)
                         context.startActivity(intent)
                     }
-//                    ParlayType.getParlayStringRes(item.parlayType)?.let { parlayTypeStringResId ->
-//                        parlayString.append(context.getString(R.string.bet_record_parlay) )
-//                        parlayString.append("(")
-//                        parlayString.append(context.getString(parlayTypeStringResId))
-//                        parlayString.append(") -")
-//                        parlayString.append(GameType.getGameTypeString(context, item.gameType))
-//                    }
                 }
             }
             tvType.text=parlayString.toString()
@@ -98,10 +110,17 @@ class RecyclerUnsettledAdapter : BindingAdapter<Row, ItemBetListBinding>() {
                 context.copyToClipboard(item.orderNo)
             }
 
+            //1 未结算数据才显示打印
+            if(item.status ==1){
+                tvOrderPrint.visible()
+            }else{
+                tvOrderPrint.gone()
+            }
 
-            //投注项 item
+
+//            投注项 item
             recyclerBetCard.layoutManager = LinearLayoutManager(context)
-            val cardAdapter = RecyclerBetCardAdapter(item)
+            val cardAdapter = RecyclerBetCardAdapter(item,block)
             recyclerBetCard.adapter = cardAdapter
             cardAdapter.setList(item.matchOdds)
 

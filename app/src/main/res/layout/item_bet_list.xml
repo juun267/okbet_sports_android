@@ -50,9 +50,11 @@
 
             <TextView
                 android:id="@+id/tvInPlay"
-                android:layout_width="52dp"
+                android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_gravity="center_vertical"
+                android:paddingHorizontal="5dp"
+                android:minWidth="52dp"
                 android:background="@drawable/bg_bet_title_red"
                 android:gravity="center"
                 android:text="INPLAY"

@@ -37,6 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="3"
                 tools:itemCount="5"
                 tools:listitem="@layout/item_select_date" />
         </LinearLayout>
@@ -67,7 +68,7 @@
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/margin_36"
-                android:background="@drawable/bg_gray_radius_8"
+                android:background="@drawable/bg_gary_radius_8_stroke_solid"
                 android:text="@string/reverse_select"
                 android:textColor="@color/color_6D7693"
                 android:textSize="@dimen/textSize14sp" />
@@ -78,26 +79,67 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/margin_36"
                 android:layout_marginLeft="@dimen/margin_8"
-                android:background="@drawable/bg_blue_radius_8"
+                android:background="@drawable/bg_gary_radius_8_stroke_solid"
                 android:text="@string/select_all"
-                android:textColor="@color/color_FFFFFF"
+                android:textColor="@color/color_6D7693"
                 android:textSize="@dimen/textSize14sp" />
         </LinearLayout>
+       <FrameLayout
+           android:layout_width="match_parent"
+           android:layout_height="0dp"
+           android:layout_weight="1">
+           <androidx.recyclerview.widget.RecyclerView
+               android:id="@+id/rv_league"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="vertical"
+               app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+               tools:itemCount="3"
+               tools:listitem="@layout/item_filter_league"/>
+           <androidx.cardview.widget.CardView
+               android:id="@+id/cv_index"
+               android:layout_width="16dp"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center_vertical|right"
+               android:layout_marginRight="@dimen/margin_4"
+               app:cardBackgroundColor="@color/color_E5EBF6"
+               app:cardCornerRadius="@dimen/margin_10"
+               app:cardElevation="1dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_league"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="3"
-            tools:listitem="@layout/item_filter_league" />
+               <org.cxct.sportlottery.view.IndexBar
+                   android:id="@+id/indexBar"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginVertical="15dp"
+                   app:text_bg_normal="@color/color_FFFFFF"
+                   app:text_bg_pressed="@color/color_FF2E00"
+                   app:text_bg_radius="8dp"
+                   app:text_color_normal="@color/color_000000"
+                   app:text_color_pressed="@color/color_FFFFFF"
+                   app:text_size_normal="@dimen/textSize12sp"
+                   app:text_size_pressed="@dimen/textSize12sp" />
+           </androidx.cardview.widget.CardView>
+
+           <TextView
+               android:id="@+id/iv_union"
+               android:layout_width="60dp"
+               android:layout_height="50dp"
+               android:layout_gravity="right"
+               android:layout_marginRight="20dp"
+               android:background="@drawable/bg_index_union"
+               android:gravity="center"
+               android:paddingRight="10dp"
+               android:textColor="@color/color_FFFFFF"
+               android:textSize="28sp"
+               android:visibility="gone"
+               tools:text="A" />
+       </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:elevation="3dp"
+            android:gravity="right"
             android:paddingHorizontal="@dimen/margin_12"
             android:paddingVertical="@dimen/margin_15">
 
@@ -109,80 +151,27 @@
                 android:background="@drawable/bg_gray_radius_8"
                 android:minWidth="80dp"
                 android:paddingHorizontal="@dimen/margin_10"
+                android:layout_marginRight="@dimen/margin_16"
                 android:text="@string/btn_cancel"
                 android:textAllCaps="false"
                 android:textColor="@color/color_6D7693"
                 android:textSize="@dimen/margin_14" />
 
-            <Button
-                android:id="@+id/btnRest"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_40"
-                android:layout_marginLeft="@dimen/margin_8"
-                android:background="@drawable/bg_blue_radius_8_stroke"
-                android:minWidth="80dp"
-                android:paddingHorizontal="@dimen/margin_10"
-                android:text="@string/N744"
-                android:textAllCaps="false"
-                android:textColor="@color/color_025BE8"
-                android:textSize="@dimen/margin_14" />
-
-            <androidx.legacy.widget.Space
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
 
             <Button
                 android:id="@+id/btnConfirm"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_40"
-                android:background="@drawable/bg_blue_radius_8"
+                android:background="@drawable/btn_send_sms_rd8"
                 android:minWidth="150dp"
                 android:paddingHorizontal="@dimen/margin_10"
                 android:text="@string/btn_confirm"
                 android:textAllCaps="false"
-                android:textColor="@color/color_FFFFFF"
+                android:textColor="@color/color_gray_white"
                 android:textSize="@dimen/margin_14" />
         </LinearLayout>
     </LinearLayout>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_index"
-        android:layout_width="16dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|right"
-        android:layout_marginRight="@dimen/margin_4"
-        app:cardBackgroundColor="@color/color_E5EBF6"
-        app:cardCornerRadius="@dimen/margin_10"
-        app:cardElevation="1dp">
 
-        <org.cxct.sportlottery.view.IndexBar
-            android:id="@+id/indexBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="15dp"
-            app:text_bg_normal="@color/color_FFFFFF"
-            app:text_bg_pressed="@color/color_FF2E00"
-            app:text_bg_radius="8dp"
-            app:text_color_normal="@color/color_000000"
-            app:text_color_pressed="@color/color_FFFFFF"
-            app:text_size_normal="@dimen/textSize12sp"
-            app:text_size_pressed="@dimen/textSize12sp" />
-    </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:id="@+id/iv_union"
-        android:layout_width="60dp"
-        android:layout_height="50dp"
-        android:layout_gravity="right"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/bg_index_union"
-        android:gravity="center"
-        android:paddingRight="10dp"
-        android:textColor="@color/color_FFFFFF"
-        android:textSize="28sp"
-        android:visibility="gone"
-        tools:text="A" />
 </FrameLayout>

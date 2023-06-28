@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:background="@color/color_F8F9FD"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/color_F8F9FD"
+    android:orientation="vertical">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_item"
         android:layout_width="match_parent"
@@ -18,31 +18,30 @@
             android:id="@+id/tv_game_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:minHeight="20dp"
-            android:gravity="center_vertical"
             android:layout_marginStart="12dp"
-            android:layout_marginRight="10dp"
+            android:fontFamily="@font/din_regular"
+            android:gravity="center_vertical"
+            android:minHeight="20dp"
+            android:textAllCaps="true"
             android:textColor="@color/color_414655"
             android:textSize="@dimen/textSize14sp"
-            android:textAllCaps="true"
-            android:fontFamily="@font/din_regular"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/odd_detail_pin"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:text="进球 : 大小" />
+            app:layout_constraintEnd_toStartOf="@+id/odd_detail_pin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="进球 : 大小进球 : 大小进球 : 大小进球 : 大小进球 : 大小进球 : 大小" />
 
         <ImageView
             android:id="@+id/odd_detail_pin"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginRight="6dp"
-            android:src="@drawable/selector_item_country_league_pin_v4"
             android:scaleType="centerInside"
+            android:src="@drawable/selector_item_country_league_pin_v4"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/odd_detail_fold"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/odd_detail_fold"
@@ -55,14 +54,14 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
-            app:layout_constraintTop_toBottomOf="@+id/tv_game_name"
-            android:layout_marginTop="10dp"
             android:layout_width="0dp"
             android:layout_height="0.5dp"
+            android:layout_marginTop="10dp"
             android:background="@color/color_DFE8F2"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_game_name" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

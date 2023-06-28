@@ -358,6 +358,7 @@
     <color name="color_0651e5">#0651e5</color>
     <color name="color_95bbf6">#95bbf6</color>
     <color name="color_0D025BE8">#0D025BE8</color>
+    <color name="color_ebf1fc">#ebf1fc</color>
 
     <color name="color_31D089">#31D089</color>
     <color name="color_F3F7FD">#F3F7FD</color>
@@ -453,6 +454,7 @@
 
 
     <color name="color_E7EAF1">#E7EAF1</color>
+    <color name="color_101010">#101010</color>
 
 
     <color name="color_bottom_nav_bar_gradient_start">#FBFFFD</color>

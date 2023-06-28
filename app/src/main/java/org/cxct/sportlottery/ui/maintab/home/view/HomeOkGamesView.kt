@@ -15,7 +15,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
-import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment2
+import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ScreenUtil
@@ -80,7 +80,7 @@ class HomeOkGamesView(context: Context, attrs: AttributeSet) : RelativeLayout(co
         }
 
         tvMore.onClick {
-            (fragment as MainHomeFragment2).jumpToOKGames()
+            (fragment as MainHomeFragment).jumpToOKGames()
         }
 
         //item点击 进入游戏

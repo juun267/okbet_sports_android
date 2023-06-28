@@ -7,7 +7,7 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.view.isVisible
+import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
@@ -16,6 +16,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.TimeRangeEvent
 import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -35,10 +36,8 @@ import org.cxct.sportlottery.ui.sport.common.GameTypeAdapter2
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.ui.sport.list.adapter.EmptySportGamesView
-import org.cxct.sportlottery.util.EdgeBounceEffectHorizontalFactory
-import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.util.ToastUtil
-import org.cxct.sportlottery.util.bindExpanedAdapter
+import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 import org.greenrobot.eventbus.Subscribe
@@ -103,43 +102,50 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     }
 
     protected open fun observerMenuData() {
-        viewModel.sportMenuData.observe(viewLifecycleOwner) {
-
-            if (it.second.isNullOrEmpty()) {
-                dismissLoading()
-            }
-            if (!it.first.succeeded()) {
-                ToastUtil.showToast(activity, it.first.msg)
+        viewModel.sportTypeMenuData.observe(viewLifecycleOwner) {
+            if (!it.first.isNullOrEmpty()) {
+                updateSportType(it.first)
                 return@observe
             }
-            updateSportType(it.second)
-            it?.let { (parentFragment as SportFragment2).updateSportMenuResult(it.first) }
+
+            setFooterViewVisiable()
+            dismissLoading()
+            if (!it.second) {
+                ToastUtil.showToast(activity, it.third)
+                return@observe
+            }
+        }
+
+        viewModel.sportMenuApiResult.observe(viewLifecycleOwner) {
+            (parentFragment as SportFragment2?)?.updateSportMenuResult(it)
         }
     }
 
-    private fun updateSportType(gameTypeList: List<Item>) {
+    protected fun updateSportType(gameTypeList: List<Item>) {
 
         if (gameTypeList.isEmpty()) {
             return
         }
         //处理默认不选中的情况
-        if (gameType.isNullOrEmpty()) {
-            (gameTypeList.find { it.num > 0 } ?: gameTypeList.first()).let {
-                it.isSelected = true
-                gameType = it.code
-                load(it)
-            }
-        } else {
-            (gameTypeList.find { it.code == gameType } ?: gameTypeList.first()).let {
-                gameType = it.code
-                if (!it.isSelected) {
-                    it.isSelected = true
-                    load(it)
-                }
+
+        var targetGameType: Item? = null
+        gameTypeList.forEach {
+            it.isSelected = false
+            if (it.code == gameType) {
+                targetGameType = it
             }
         }
-        //全部球类tab不支持联赛筛选
-        binding.ivFilter.isVisible = gameType != GameType.ALL.key
+        if (targetGameType == null) {
+            targetGameType = gameTypeList.find { it.num > 0}
+        }
+        if (targetGameType == null) {
+            targetGameType = gameTypeList.first()
+        }
+
+        gameType = targetGameType!!.code
+        targetGameType!!.isSelected = true
+        load(targetGameType!!)
+
         gameTypeAdapter.setNewInstance(gameTypeList.toMutableList())
         (binding.sportTypeList.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
             binding.sportTypeList,
@@ -158,7 +164,15 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
 
         (footerView.parent as ViewGroup?)?.let { it.removeView(footerView) }
         footerView.tag = adapter
-        adapter.addFooterView(footerView, 1)
+        adapter.addFooterView(footerView)
+    }
+
+    protected fun setFooterViewVisiable(delay: Long = 0) {
+        if (delay > 0L) {
+            binding.root.postDelayed({ getGameListAdapter().footerLayout?.getChildAt(0)?.visible() }, delay)
+        } else {
+            getGameListAdapter().footerLayout?.getChildAt(0)?.visible()
+        }
     }
 
 
@@ -196,6 +210,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
 
     private fun initGameListView() = binding.gameList.run {
 
+        setupBackTop(binding.ivBackTop, 500.dp, tabCode = matchType.postValue)
         layoutManager = getGameLayoutManger()
         adapter = getGameListAdapter()
         getGameListAdapter().setEmptyView(EmptySportGamesView(context()))
@@ -205,7 +220,6 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
                 if (RecyclerView.SCROLL_STATE_DRAGGING == newState) { // 开始滑动
                     clearSubscribeChannels()
                 } else if (RecyclerView.SCROLL_STATE_IDLE == newState) { // 滑动停止
-                    Log.e("[subscribe]","訂閱=====>>> RecyclerView.SCROLL_STATE_IDLE ")
                     resubscribeChannel(20)
                 }
             }
