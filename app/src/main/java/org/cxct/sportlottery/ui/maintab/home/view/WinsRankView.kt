@@ -5,26 +5,34 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.annotation.DrawableRes
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.doOnDestory
+import org.cxct.sportlottery.common.extentions.doOnResume
+import org.cxct.sportlottery.common.extentions.doWhenLife
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
+import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.maintab.games.AllGamesFragment
 import org.cxct.sportlottery.ui.maintab.games.OkGameRecordAdapter
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.RCVDecoration
+import ua.naiksoftware.stomp.dto.LifecycleEvent
 import kotlin.random.Random
 
 class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : LinearLayout(context, attrs, defStyle) {
 
-    private lateinit var lifecycleOwner: LifecycleOwner
     private var winsRequest: (() -> Unit)? = null
     private var betRequest: (() -> Unit)? = null
 
@@ -75,18 +83,24 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
         }
     }
 
-    fun setUp(lifeOwner: LifecycleOwner, blockWinsRequest: () -> Unit, blockBetRequest: () -> Unit) {
-        lifecycleOwner = lifeOwner
-        lifecycleOwner.doOnDestory { stopPostLoop() }
+    fun setUp(fragment: Fragment, blockWinsRequest: () -> Unit, blockBetRequest: () -> Unit) {
+        fragment.doOnDestory { stopPostLoop() }
         winsRequest = blockWinsRequest
         betRequest = blockBetRequest
-        loadData()
         postLoop()
     }
 
-    private fun loadData() {
+    fun loadData() {
+        clearAllData()
         winsRequest?.invoke()
         betRequest?.invoke()
+    }
+    fun clearAllData(){
+        httpBetDataList.clear()
+        httpWinsDataList.clear()
+        wsBetDataList.clear()
+        wsWinsDataList.clear()
+        gameRecordAdapter.setList(listOf())
     }
 
     private fun postLoop() {

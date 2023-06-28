@@ -21,10 +21,7 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
-import org.cxct.sportlottery.util.SpaceItemDecoration
-import org.cxct.sportlottery.util.setTrialPlayGameDataObserve
-import org.cxct.sportlottery.util.goneWithSportSwitch
-import org.cxct.sportlottery.util.setupSportStatusChange
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 
 // OkGames所有分类
@@ -92,6 +89,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                     subscribeChannelHall(it.gameType, it.id)
                 }
             }
+            binding.winsRankView.loadData()
         }
         //请求热门赛事数据  在hotMatchView初始化之后
 //        viewModel.getRecommend()
@@ -113,6 +111,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             okGamesFragment().viewModel.getOKGamesHall()
 
         }
+        binding.winsRankView.loadData()
     }
 
     private fun initObserve() = okGamesFragment().viewModel.run {
