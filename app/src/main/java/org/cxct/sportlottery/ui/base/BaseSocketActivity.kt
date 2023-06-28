@@ -74,14 +74,16 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
             when (status) {
                 ServiceConnectStatus.RECONNECT_FREQUENCY_LIMIT -> {
                     hideLoading()
-                    showPromptDialog(
-                        getString(R.string.prompt),
-                        getString(R.string.message_socket_connect),
-                        buttonText = null,
-                        { backService?.doReconnect() },
-                        isError = true,
-                        hasCancle = false
-                    )
+                    backService?.doReconnect()
+                    //不需要弹窗提示，直接无限重连
+//                    showPromptDialog(
+//                        getString(R.string.prompt),
+//                        getString(R.string.message_socket_connect),
+//                        buttonText = null,
+//                        { backService?.doReconnect() },
+//                        isError = true,
+//                        hasCancle = false
+//                    )
                 }
                 ServiceConnectStatus.CONNECTING -> {
 //                    loading()
