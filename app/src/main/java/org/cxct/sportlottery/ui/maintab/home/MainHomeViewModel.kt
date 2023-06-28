@@ -246,7 +246,7 @@ open class MainHomeViewModel(
 
      val pageIndexLiveData = MutableLiveData(1)
      val pageSizeLiveData = MutableLiveData(6)
-     val pageSizeOKLiveLD = MutableLiveData(3)
+     val pageSizeOKLiveLD = MutableLiveData(6)
      val totalCountLiveData = MutableLiveData(0)
      val totalPageLiveData = MutableLiveData(0)
 
