@@ -22,6 +22,7 @@ import org.cxct.sportlottery.ui.betRecord.BetRecordEndScoreAdapter
 import org.cxct.sportlottery.ui.betRecord.ParlayType
 import org.cxct.sportlottery.ui.betRecord.TransactionRecordDiffAdapter
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.BetPlayCateFunction.getEndScorePlatCateName
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 class BetDetailsFragment : BaseFragment<BetListViewModel>(BetListViewModel::class) {
@@ -82,7 +83,7 @@ class BetDetailsFragment : BaseFragment<BetListViewModel>(BetListViewModel::clas
                     matchOdds.odds - 1
                 ) else TextUtil.formatForOdd(matchOdds.odds)
             val playName =
-                if (matchOdds.playCateCode.isEndScoreType()) context.getString(R.string.N903)
+                if (matchOdds.playCateCode.isEndScoreType()) matchOdds.playCateCode.getEndScorePlatCateName(context)
                 else matchOdds.playName
             play_content.setPlayContent(
                 playName, matchOdds.spread, formatForOdd
@@ -179,7 +180,7 @@ class BetDetailsFragment : BaseFragment<BetListViewModel>(BetListViewModel::clas
                     matchOdds.odds ?: 0 - 1
                 ) else TextUtil.formatForOdd(matchOdds.odds ?: 0)
             play_content.setPlayContent(
-                context.getString(R.string.N903),
+                matchOdds.playCateCode.getEndScorePlatCateName(context),
                 matchOdds.spread,
                 formatForOdd
             )

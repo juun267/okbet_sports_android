@@ -27,6 +27,7 @@ import org.cxct.sportlottery.ui.betRecord.ParlayType
 import org.cxct.sportlottery.ui.betRecord.detail.BetDetailsActivity
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.BetPlayCateFunction.getEndScorePlatCateName
 import org.cxct.sportlottery.view.onClick
 
 
@@ -330,7 +331,7 @@ class AccountHistoryNextAdapter(private val itemClickListener: ItemClickListener
                 }
                 val playName =
                     if (it.playCateCode.isEndScoreType())
-                        itemView.context.getString(R.string.N903)
+                        it.playCateCode.getEndScorePlatCateName(itemView.context)
                     else it.playName
                 val formatForOdd =
                     when (it.playCateCode) {

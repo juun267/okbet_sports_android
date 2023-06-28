@@ -1,7 +1,10 @@
 package org.cxct.sportlottery.util
 
+import android.content.Context
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 
 object BetPlayCateFunction {
 
@@ -37,6 +40,20 @@ object BetPlayCateFunction {
      */
     fun String?.isEndScoreType(): Boolean {
         return this?.contains(PlayCate.FS_LD_CS.value)==true
+    }
+
+    /**
+     * 末位比分玩法翻译太长用本地翻译
+     */
+    fun String?.getEndScorePlatCateName(context: Context): String {
+        return when(this){
+            PlayCate.FS_LD_CS.value-> context.getString(R.string.P161)
+            PlayCate.FS_LD_CS_SEG1.value-> context.getString(R.string.P162)
+            PlayCate.FS_LD_CS_SEG2.value-> context.getString(R.string.P163)
+            PlayCate.FS_LD_CS_SEG3.value-> context.getString(R.string.P164)
+            PlayCate.FS_LD_CS_SEG4.value-> context.getString(R.string.P165)
+            else-> ""
+        }
     }
 
     /**

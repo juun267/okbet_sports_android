@@ -29,6 +29,7 @@ import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.betRecord.detail.BetDetailsActivity
 import org.cxct.sportlottery.ui.betRecord.dialog.PrintDialog
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.BetPlayCateFunction.getEndScorePlatCateName
 import org.cxct.sportlottery.view.onClick
 
 //TODO 20210719當前api缺少總金額,待後端修正後進行確認
@@ -160,7 +161,7 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
 
                 if (matchOdds.playCateCode.isEndScoreType())
                     play_content.setPlayContent(
-                        context.getString(R.string.N903),
+                        matchOdds.playCateCode.getEndScorePlatCateName(context),
                         matchOdds.spread,
                         formatForOdd
                     )
@@ -318,7 +319,7 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
 
                 val playName =
                     if (matchOdds.playCateCode.isEndScoreType())
-                        context.getString(R.string.N903)
+                        matchOdds.playCateCode.getEndScorePlatCateName(context)
                     else matchOdds.playName
                 play_content.setPlayContent(
                     playName, matchOdds.spread, formatForOdd
