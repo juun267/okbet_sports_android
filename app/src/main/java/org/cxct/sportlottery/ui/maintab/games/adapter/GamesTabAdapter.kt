@@ -26,11 +26,8 @@ class GamesTabAdapter(gameType: String = "okgame", private val onSelected: (OKGa
     BaseQuickAdapter<OKGameTab, GamesTabAdapter.VH>(0), OnItemClickListener {
 
     private val textColor by lazy { context.getColor(R.color.color_6D7693) }
-    private val localTabs = if (gameType.toLowerCase() == "oklive") {
-        mutableListOf<OKGameTab>(GameTab.TAB_ALL, GameTab.TAB_FAVORITES_LIVE, GameTab.TAB_RECENTLY)
-    } else {
+    private val localTabs =
         mutableListOf<OKGameTab>(GameTab.TAB_ALL, GameTab.TAB_FAVORITES, GameTab.TAB_RECENTLY)
-    }
 
     var selectedTab: OKGameTab
         private set
