@@ -29,6 +29,8 @@ import org.cxct.sportlottery.ui.chat.adapter.ChatMessageListAdapter3
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.afterTextChanged
+import org.cxct.sportlottery.view.insertEmoji
+import org.cxct.sportlottery.view.isVisible
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import timber.log.Timber
 import java.io.File
@@ -383,7 +385,15 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
 
             is ChatEvent.SendMessageStatusEvent -> {
                 binding.vChatAction.apply {
-                    setOnEmojiClick()
+                    //表情点击
+                    setOnEmojiClick{
+                        //判断表情框是否显示
+                        if(binding.chatEmojiView.isVisible()){
+                            binding.chatEmojiView.gone()
+                        }else{
+                            binding.chatEmojiView.visible()
+                        }
+                    }
                     setInputMaxLength(chatEvent.textMaxLength)
                     setInputStatus(chatEvent.sendTextEnabled)
                     setSendStatus(chatEvent.sendTextEnabled && etInput.text.toString().isNotEmpty())
@@ -391,6 +401,10 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
                     if (LoginRepository.isLogined() && !chatEvent.sendTextEnabled && !chatEvent.uploadImgEnable) {
                         showToast(getString(R.string.chat_you_banned))
                     }
+                }
+                //选中emoji
+                binding.chatEmojiView.setOnEmojiSelect {
+                    binding.vChatAction.etInput.insertEmoji(it)
                 }
             }
 
@@ -574,6 +588,9 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
         }
 
         if(v == binding.vChatAction.ivSend) {
+            //隐藏表情板块
+            binding.vChatAction.ivEmoji.performClick()
+
             val input = binding.vChatAction.etInput.text.toString().replace("\n", "")
             if (input.isNullOrEmpty()) return
             if (!mIsEnabled) {

@@ -41,7 +41,7 @@ class ChatActionView @JvmOverloads constructor(
     val ivUploadImage: ImageView
     val etInput: EditText
     private val linearEdit:LinearLayout
-    private val ivEmoji:ImageView
+    val ivEmoji:ImageView
     init {
         LayoutInflater.from(context).inflate(R.layout.view_chat_action, this, true)
         ivSend = findViewById(R.id.ivSend)
@@ -116,15 +116,17 @@ class ChatActionView @JvmOverloads constructor(
 
 
     private var expandEmoji=false
-    fun setOnEmojiClick(){
+    fun setOnEmojiClick(block:()->Unit){
         ivEmoji.onClick {
-            if(expandEmoji){
+            expandEmoji = if(expandEmoji){
                 ivEmoji.setImageResource(R.drawable.ic_chat_emoji_normal)
-                expandEmoji=false
+                false
             }else{
                 ivEmoji.setImageResource(R.drawable.ic_chat_emoji_press)
-                expandEmoji=true
+                true
             }
+            block()
         }
     }
+
 }

@@ -16,9 +16,9 @@
             android:id="@+id/rv_chat_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clipToPadding="false"
             android:orientation="vertical"
             android:paddingTop="110dp"
-            android:clipToPadding="false"
             tools:listitem="@layout/item_chat_message_red_envelope" />
     </FrameLayout>
 
@@ -32,20 +32,19 @@
         tools:listitem="@layout/item_chat_welcome" />
 
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:background="@color/color_326BFF"
-        android:layout_width="match_parent"
-        android:layout_marginBottom="61dp"
-        android:layout_alignParentBottom="true"
-        android:layout_height="100dp">
-
-    </LinearLayout>
     <org.cxct.sportlottery.ui.chat.ChatActionView
         android:id="@+id/v_chat_action"
         android:layout_width="match_parent"
         android:layout_height="61dp"
         android:layout_alignParentBottom="true" />
+
+    <org.cxct.sportlottery.view.ChatEmojiView
+        android:id="@+id/chatEmojiView"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <ImageView
         android:id="@+id/ivDownBtn"
@@ -54,11 +53,11 @@
         android:layout_above="@+id/v_chat_action"
         android:layout_alignParentEnd="true"
         android:layout_margin="12dp"
+        android:alpha="0"
         android:elevation="2dp"
-        android:src="@drawable/chat_down_btn"
         android:scaleX="0"
         android:scaleY="0"
-        android:alpha="0"
+        android:src="@drawable/chat_down_btn"
         tools:visibility="visible" />
 
     <!-- region 尚未領取紅包的圖示 -->
