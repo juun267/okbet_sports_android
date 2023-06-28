@@ -148,9 +148,6 @@ class OKLiveOkGamesView(context: Context, attrs: AttributeSet) : RelativeLayout(
     }
 
     private fun <T : OKLiveViewModel> initEnterGame(fragment: BaseBottomNavigationFragment<T>) {
-        fragment.viewModel.enterThirdGameResult.observe(fragment.viewLifecycleOwner) {
-            if (fragment.isVisible) fragment.enterThirdGame(it.second, it.first)
-        }
         fragment.viewModel.gameBalanceResult.observe(fragment.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { event ->
                 TransformInDialog(event.first, event.second, event.third) { enterResult ->
