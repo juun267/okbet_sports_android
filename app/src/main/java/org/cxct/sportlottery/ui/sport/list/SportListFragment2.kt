@@ -69,7 +69,6 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
     }
 
     override fun onInitData() {
-        reset()
         reload()
     }
 
@@ -123,12 +122,11 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
         sportLeagueAdapter2.oddsType = oddsType
     }
 
-    override fun onFavorite(favoriteMatchIds: List<String>) {
+    override fun onFavorite(favoriteIds: Set<String>) {
         if (sportLeagueAdapter2.getCount() < 1) {
             return
         }
 
-        val favoriteIds = favoriteMatchIds.toSet()
         sportLeagueAdapter2.data.forEachIndexed { index, baseNode ->
             if (baseNode is org.cxct.sportlottery.network.odds.list.MatchOdd) {
                 baseNode.matchInfo?.let {

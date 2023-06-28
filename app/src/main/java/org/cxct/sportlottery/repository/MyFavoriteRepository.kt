@@ -25,9 +25,9 @@ class MyFavoriteRepository {
         get() = _favorLeagueList
     private val _favorLeagueList = MutableLiveData<List<String>>()
 
-    val favorMatchList: LiveData<List<String>>
+    val favorMatchList: LiveData<Set<String>>
         get() = _favorMatchList
-    private val _favorMatchList = MutableLiveData<List<String>>()
+    private val _favorMatchList = MutableLiveData<Set<String>>()
 
     val favoriteOutrightList: LiveData<List<String>>
         get() = _favoriteOutrightList
@@ -54,7 +54,7 @@ class MyFavoriteRepository {
             result.body()?.t?.let {
                 _favorSportList.postValue(TextUtil.split(it.sport ?: ""))
                 _favorLeagueList.postValue(TextUtil.split(it.league ?: ""))
-                _favorMatchList.postValue(TextUtil.split(it.match ?: ""))
+                _favorMatchList.postValue(TextUtil.splitSet(it.match))
                 _favoriteOutrightList.postValue(TextUtil.split(it.outright ?: ""))
                 _favorPlayCateList.postValue(it.playCate ?: listOf())
             }
@@ -105,7 +105,7 @@ class MyFavoriteRepository {
             result.body()?.t?.let {
                 _favorSportList.postValue(TextUtil.split(it.sport ?: ""))
                 _favorLeagueList.postValue(TextUtil.split(it.league ?: ""))
-                _favorMatchList.postValue(TextUtil.split(it.match ?: ""))
+                _favorMatchList.postValue(TextUtil.splitSet(it.match))
                 _favoriteOutrightList.postValue(TextUtil.split(it.outright ?: ""))
                 _favorPlayCateList.postValue(it.playCate ?: listOf())
             }
@@ -117,7 +117,7 @@ class MyFavoriteRepository {
     fun clearFavorite() {
         _favorSportList.postValue(listOf())
         _favorLeagueList.postValue(listOf())
-        _favorMatchList.postValue(listOf())
+        _favorMatchList.postValue(setOf())
         _favoriteOutrightList.postValue(listOf())
         _favorPlayCateList.postValue(listOf())
     }
@@ -126,7 +126,7 @@ class MyFavoriteRepository {
         when (type) {
             FavoriteType.SPORT -> _favorSportList.postValue(_favorSportList.value ?: listOf())
             FavoriteType.LEAGUE -> _favorLeagueList.postValue(_favorLeagueList.value ?: listOf())
-            FavoriteType.MATCH -> _favorMatchList.postValue(_favorMatchList.value ?: listOf())
+            FavoriteType.MATCH -> _favorMatchList.postValue(_favorMatchList.value ?: setOf())
             FavoriteType.OUTRIGHT -> _favoriteOutrightList.postValue(
                 _favoriteOutrightList.value ?: listOf()
             )

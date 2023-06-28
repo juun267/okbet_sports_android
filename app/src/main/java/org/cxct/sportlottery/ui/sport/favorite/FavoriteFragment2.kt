@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.sport.favorite
 
 import android.view.View
 import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.toStringS
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
 import org.cxct.sportlottery.network.common.MatchType
@@ -30,8 +31,8 @@ class FavoriteFragment2: SportListFragment2<SportListViewModel, FragmentSportLis
     }
 
     override fun load(item: Item) {
-        setSportDataList(item.leagueOddsList.toMutableList())
-        setMatchInfo(item.name, item.leagueOddsList.size.toString())
+        setSportDataList(item.leagueOddsList?.toMutableList())
+        setMatchInfo(item.name, item.leagueOddsList?.size.toStringS("0"))
     }
 
     fun setFavoriteData(favoriteLeagues: List<Item>) {

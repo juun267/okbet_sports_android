@@ -35,7 +35,7 @@ class SportOutrightFragment : BaseSportListFragment<SportListViewModel, Fragment
         sportOutrightAdapter2.onMatchOdds(oddsChangeEvent)
     }
 
-    override fun onFavorite(favoriteMatchIds: List<String>) { }
+    override fun onFavorite(favoriteMatchIds: Set<String>) { }
 
     override fun onOddTypeChanged(oddsType: OddsType) {
         sportOutrightAdapter2.oddsType = oddsType

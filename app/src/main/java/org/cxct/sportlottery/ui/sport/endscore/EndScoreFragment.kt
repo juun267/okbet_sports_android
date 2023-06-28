@@ -47,7 +47,7 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
         subscribeHandler.postDelayed(subscribeVisibleRange, delay)
     }
 
-    override fun onFavorite(favoriteMatchIds: List<String>) {
+    override fun onFavorite(favoriteMatchIds: Set<String>) {
         endScoreAdapter.updateFavorite(favoriteMatchIds)
     }
 

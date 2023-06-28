@@ -67,7 +67,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     protected abstract fun getGameListAdapter(): ExpanableOddsAdapter<*>
     protected abstract val oddsChangeListener: ServiceBroadcastReceiver.OddsChangeListener
     protected abstract fun resubscribeChannel(delay: Long = 0)
-    protected abstract fun onFavorite(favoriteMatchIds: List<String>)
+    protected abstract fun onFavorite(favoriteMatchIds: Set<String>)
     protected abstract fun onOddTypeChanged(oddsType: OddsType)
     protected abstract fun onBetInfoChanged(betInfoList: List<BetInfoListData>)
 
@@ -270,12 +270,12 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     protected fun setSportDataList(list: MutableList<BaseNode>?) {
         val adapter = getGameListAdapter()
         adapter.setNewInstance(list)
-        val footerLayout = adapter.footerLayout?.getChildAt(0)  as SportFooterGamesView? ?: return
-        footerLayout.visible()
-        footerLayout.sportNoMoreEnable(!list.isNullOrEmpty())
         if (!list.isNullOrEmpty()) {
             resubscribeChannel(120)
         }
+        val footerLayout = adapter.footerLayout?.getChildAt(0) as SportFooterGamesView? ?: return
+        footerLayout.visible()
+        footerLayout.sportNoMoreEnable(!list.isNullOrEmpty())
     }
 
 

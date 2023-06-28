@@ -96,8 +96,7 @@ class OddsValueView @JvmOverloads constructor(
         animation.setAnimationListener(object : Animation.AnimationListener {
 
             override fun onAnimationStart(animation: Animation) { }
-            override fun onAnimationRepeat(animation: Animation) {
-            }
+            override fun onAnimationRepeat(animation: Animation) { }
             override fun onAnimationEnd(animation: Animation) {
                 disableBuoy()
             }

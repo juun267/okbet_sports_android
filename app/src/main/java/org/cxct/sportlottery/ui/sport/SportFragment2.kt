@@ -26,6 +26,7 @@ import org.cxct.sportlottery.ui.sport.list.SportListFragment2
 import org.cxct.sportlottery.ui.sport.list.adapter.SportFooterGamesView
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
+import org.cxct.sportlottery.util.DelayRunable
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.FragmentHelper2
@@ -59,8 +60,9 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     //根据赛事数量判断默认的分类
     private var defaultMatchType: MatchType? = null
     private var favoriteItems = listOf<Item>()
+    private val favoriteDelayRunable by lazy { DelayRunable { viewModel.loadFavoriteGameList() } }
     private inline fun favoriteCount(items: List<Item>): Int {
-        return items.sumOf { it.leagueOddsList.sumOf { it.matchOdds.size } }
+        return items.sumOf { it.leagueOddsList?.sumOf { it.matchOdds.size } ?: 0 }
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -84,7 +86,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             navGameFragment(it)
         }
 
-        viewModel.loadFavoriteGameList()
+        favoriteDelayRunable.doOnDelay(0)
     }
 
     fun initToolBar() = binding.homeToolbar.run {
@@ -199,7 +201,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
                 fragmentHelper.show(FavoriteFragment2::class.java, args) { fragment, newInstance ->
                     fragment.offsetScrollListener = ::setTabElevation
                     fragment.resetFooterView(footView)
-                    viewModel.loadFavoriteGameList()
+                    fragment.setFavoriteData(favoriteItems)
                 }
             }
 
@@ -246,8 +248,12 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         }
 
         sportTypeMenuData.observe(viewLifecycleOwner) { updateFavoriteItem(it.first) }
+
+        var favorMatchs = favorMatchList.value
         favorMatchList.observe(viewLifecycleOwner) {
-            viewModel.loadFavoriteGameList()
+            if (favorMatchs == it) { return@observe }
+            favorMatchs = it
+            favoriteDelayRunable.doOnDelay(1300)
         }
     }
 
