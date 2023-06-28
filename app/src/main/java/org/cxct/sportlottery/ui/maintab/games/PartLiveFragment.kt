@@ -16,7 +16,6 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameLabel
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.util.setTrialPlayGameDataObserve
 
 // 指定类别的三方游戏
@@ -84,8 +83,9 @@ class PartLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveVie
             if (LoginRepository.isLogined()) {
                 mOkLiveFragment().enterGame(okGameBean)
             } else {
-                //不支持试玩
-                loginedRun(requireContext()) {}
+                //请求试玩路线
+                loading()
+                viewModel.requestEnterThirdGameNoLogin(okGameBean.firmType,okGameBean.gameCode,okGameBean.thirdGameCategory)
             }
 
         }
