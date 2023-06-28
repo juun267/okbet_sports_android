@@ -48,7 +48,6 @@ class WorldCupToolbarView@JvmOverloads constructor(context: Context, attrs: Attr
         gravity = Gravity.LEFT or Gravity.CENTER_VERTICAL
         addChildView()
     }
-    lateinit var ivBg: ImageView
     lateinit var ivMenuLeft: ImageView
     lateinit var ivLogo: ImageView
     lateinit var searchView: LinearLayout

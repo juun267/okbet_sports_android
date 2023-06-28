@@ -14,6 +14,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.worldcup.WorldCupFragment
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
+import org.cxct.sportlottery.ui.maintab.worldcup.WorldCupGameFragment
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.FragmentHelper
 import org.greenrobot.eventbus.Subscribe
@@ -30,6 +31,7 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
         ).apply {
             if (StaticData.worldCupOpened()){
                 add(Pair(WorldCupFragment::class.java, null))
+                add(Pair(WorldCupGameFragment::class.java, null))
             }
         }.toTypedArray()
         )
@@ -64,6 +66,8 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
     fun jumpToNews() = switchTabByPosition(2)
 
     fun jumpToWorldCup() = switchTabByPosition(3)
+
+    fun jumpToWorldCupGame() = switchTabByPosition(4)
 
     fun jumpToInplaySport() {
         (activity as MainTabActivity).jumpToInplaySport()
