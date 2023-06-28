@@ -95,6 +95,7 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
                     subscribeChannelHall(it.gameType, it.id)
                 }
             }
+            binding.winsRankView.loadData()
         }
         //请求热门赛事数据  在hotMatchView初始化之后
 //        viewModel.getRecommend()
@@ -117,6 +118,7 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
             okLiveFragment().viewModel.getOKGamesHall()
 
         }
+        binding.winsRankView.loadData()
     }
 
     private fun initObserve() = okLiveFragment().viewModel.run {

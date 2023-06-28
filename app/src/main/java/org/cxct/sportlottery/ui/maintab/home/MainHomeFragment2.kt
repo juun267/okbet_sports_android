@@ -87,7 +87,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
 
     private fun initBetWinsRecodeLayout() {
         binding.winsRankView.setUp(
-            viewLifecycleOwner,
+            this,
             { viewModel.getRecordNew() },
             { viewModel.getRecordResult() })
         receiver.recordBetNew.collectWith(lifecycleScope) {
@@ -128,6 +128,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         checkToCloseView()
         if (getMainTabActivity().getCurrentPosition() == 0 && getHomeFragment().getCurrentFragment() == this) {
             refreshHotMatch()
+            binding.winsRankView.loadData()
         }
     }
 
@@ -138,6 +139,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         } else {
             homeToolbar.onRefreshMoney()
             refreshHotMatch()
+            binding.winsRankView.loadData()
             //返回页面时，刷新体育相关view状态
             checkToCloseView()
         }
