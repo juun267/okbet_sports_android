@@ -172,9 +172,9 @@ class HomeTopView @JvmOverloads constructor(
             fragment.jumpToOKGames()
         }
         binding.vOklive.isInvisible = getMarketSwitch()
-        binding.vOklive.setOnClickListener {
-            fragment.jumpToOKLive()
-        }
+//        binding.vOklive.setOnClickListener {
+//            fragment.jumpToOKLive()
+//        }
 
         if (!LoginRepository.isLogined()) {
             binding.ivGoogle.setOnClickListener {

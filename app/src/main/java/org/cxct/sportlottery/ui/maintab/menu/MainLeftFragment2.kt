@@ -210,18 +210,18 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         ) { getMainTabActivity().jumpToOKGames() }
 
         okGamesItem.group.setVisibilityByMarketSwitch()
-
-        okLiveItem = addMenu(2,
-            groupParams,
-            iconParams,
-            R.drawable.ic_main_menu_oklive_1,
-            R.drawable.ic_main_menu_oklive_0,
-            textParams,
-            R.string.P160,
-            true
-        ) { getMainTabActivity().jumpToOKLive() }
-
-        okLiveItem.group.setVisibilityByMarketSwitch()
+//
+//        okLiveItem = addMenu(2,
+//            groupParams,
+//            iconParams,
+//            R.drawable.ic_main_menu_oklive_1,
+//            R.drawable.ic_main_menu_oklive_0,
+//            textParams,
+//            R.string.P160,
+//            true
+//        ) { getMainTabActivity().jumpToOKLive() }
+//
+//        okLiveItem.group.setVisibilityByMarketSwitch()
 
         var index = binding.llMenuRoot.indexOfChild(divider1)
         promotionItem = addMenu(
