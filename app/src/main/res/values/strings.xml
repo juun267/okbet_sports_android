@@ -1498,6 +1498,7 @@
     <string name="J459">Tips</string>
     <string name="P111">Address should include</string>
     <string name="P110">Unit/Room No. /Floor, Building Name, Lot/ Block/Phase/House Number, Street Name</string>
+    <string name="P160">OKLive</string>
 
     <string name="N064">Remarks</string>
     <string name="P131">OKBET Member Account</string>
@@ -1505,5 +1506,4 @@
     <string name="P130">Select Your OKBET Account</string>
     <string name="P150">Reminder of non-compliance</string>
     <string name="P149">Please complete %s wagering turnover before requesting a withdrawal. (as per PAGOR regulations, 1x turnover is need for every deposit transaction). For assistance, kindly contact customer service.</string>
-    <string name="P160">OKLive</string>
 </resources>
