@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asFlow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -131,6 +130,10 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
         get() = _recordNewOkGame
     val recordResultOkGame: SharedFlow<RecordNewEvent?>
         get() = _recordResultOkGame
+    val recordNewOkLive: SharedFlow<RecordNewEvent?>
+        get() = _recordNewOkLive
+    val recordResultOkLive: SharedFlow<RecordNewEvent?>
+        get() = _recordResultOkLive
 
     private val _globalStop = MutableLiveData<GlobalStopEvent?>()
     private val _matchClock = MutableLiveData<MatchClockEvent?>()
@@ -157,6 +160,8 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
     private val _recordWinsResult = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100)
     private val _recordNewOkGame = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100)
     private val _recordResultOkGame = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100)
+    private val _recordNewOkLive = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100)
+    private val _recordResultOkLive = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100)
 
 
     override fun onReceive(context: Context?, intent: Intent) {
@@ -370,6 +375,16 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                 //最新大奖
                 val data = ServiceMessage.getRecondResult(jObjStr)
                 _recordResultOkGame.emit(data)
+            }
+            EventType.RECORD_NEW_OK_LIVE -> {
+                //最新投注
+                val data = ServiceMessage.getRecondNew(jObjStr)
+                _recordNewOkLive.emit(data)
+            }
+            EventType.RECORD_RESULT_OK_LIVE -> {
+                //最新大奖
+                val data = ServiceMessage.getRecondResult(jObjStr)
+                _recordResultOkLive.emit(data)
             }
             else -> {}
 

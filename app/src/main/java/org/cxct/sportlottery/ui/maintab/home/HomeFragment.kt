@@ -8,6 +8,9 @@ import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.sys_maintenance.SportMaintenanceEvent
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
+import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.FragmentHelper
@@ -17,8 +20,11 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
     private val fragmentHelper by lazy {
 
         FragmentHelper(childFragmentManager, R.id.fl_content, arrayOf(
+//
             Pair(MainHomeFragment::class.java, null),
-            Pair(NewsHomeFragment::class.java, null)
+            Pair(OKGamesFragment::class.java, null),
+            Pair(NewsHomeFragment::class.java, null),
+            Pair(OKLiveFragment::class.java, null)
         ))
 
     }
@@ -44,6 +50,30 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
 
     fun backMainHome() = switchTabByPosition(0)
 
+    fun jumpToLive() = switchTabByPosition(1)
+
+    fun jumpToOKGames() = switchTabByPosition(1)
+
+    fun jumpToNews() = switchTabByPosition(2)
+
+    fun jumpToOKLive() = switchTabByPosition(3)
+
+    fun jumpToInplaySport() {
+        (activity as MainTabActivity).jumpToInplaySport()
+    }
+
+    fun jumpToDefaultSport() {
+        (activity as MainTabActivity).jumpToTheSport()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onJumpToInPlayEvent(event: JumpInPlayEvent) {
+        jumpToInplaySport()
+    }
+
+    fun jumpToEarlySport() {
+        (activity as MainTabActivity).jumpToEarlySport()
+    }
     fun jumpToNews() = switchTabByPosition(1)
 
     override fun onHiddenChanged(hidden: Boolean) {

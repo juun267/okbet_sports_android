@@ -193,7 +193,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.thirdGame.ThirdGameActivity"
-            android:configChanges="orientation|screenSize" />
+            android:configChanges="orientation|screenSize|keyboardHidden" />
         <activity
             android:name=".ui.selflimit.SelfLimitActivity"
             android:screenOrientation="portrait"

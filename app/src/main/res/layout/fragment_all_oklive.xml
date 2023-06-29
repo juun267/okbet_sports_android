@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/includeLiveAll"
+        layout="@layout/include_view_oklive_all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/okLiveP3LayoutProvider"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_okgame_p" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:text="@string/N880"
+            android:textColor="#0D2245"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/iv_providers_left"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="8dp"
+            android:rotation="180"
+            android:src="@drawable/ic_okgame_arrow_right"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/iv_providers_right"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_okgame_arrow_right"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvOkLiveProviders"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:clipToPadding="false"
+        android:paddingHorizontal="12dp"
+        android:visibility="gone" />
+
+
+    <org.cxct.sportlottery.ui.maintab.home.view.WinsRankView
+        android:id="@+id/winsRankView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <!--part-4-->
+
+    <org.cxct.sportlottery.ui.maintab.games.view.HotMatchView
+        android:id="@+id/hot_match_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <org.cxct.sportlottery.ui.maintab.home.view.OKLiveOkGamesView
+        android:id="@+id/okLiveOkGamesView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!--part-5-->
+    <org.cxct.sportlottery.ui.maintab.home.view.HomeButtomView
+        android:id="@+id/homeBottumView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

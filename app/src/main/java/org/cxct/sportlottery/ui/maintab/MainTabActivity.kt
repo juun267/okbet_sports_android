@@ -8,7 +8,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.PathMeasure
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
@@ -24,7 +23,6 @@ import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.android.synthetic.main.activity_main_tab.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.BetModeChangeEvent
 import org.cxct.sportlottery.common.event.MenuEvent
@@ -103,6 +101,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             PopImageDialog.showHomeDialog = showDialog
             PopImageDialog.showSportDialog = showDialog
             PopImageDialog.showOKGameDialog = showDialog
+            PopImageDialog.showOKLiveDialog = showDialog
             val intent = Intent(context, MainTabActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
@@ -729,6 +728,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         if (bottom_navigation_view.currentItem != 2) {
             bottom_navigation_view.currentItem = 2
         }
+    }
+
+    fun jumpToOKLive() {
+        resetBackIcon(0)
+        homeFragment().jumpToOKLive()
     }
 
     fun jumpToNews() {
