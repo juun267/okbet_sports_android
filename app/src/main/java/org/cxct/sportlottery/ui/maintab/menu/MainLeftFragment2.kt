@@ -354,9 +354,9 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         if (isSame || !::okGamesItem.isInitialized) {
             return
         }
-        if (isSame || !::okLiveItem.isInitialized) {
-            return
-        }
+//        if (isSame || !::okLiveItem.isInitialized) {
+//            return
+//        }
 
         binSelected()
     }
