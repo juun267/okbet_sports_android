@@ -289,6 +289,9 @@ class OddsButton2 @JvmOverloads constructor(
         }
     }
 
+    private inline fun String.isSingleType(): Boolean {
+        return this.contains(PlayCate.SINGLE.value) && !this.isCombination()
+    }
 
     fun setupOdd4hall(playCateCode: String, odds: Odd?, status: Int?, oddsType: OddsType, isDrawBtn: Boolean = false) {
         betStatus = status
@@ -303,6 +306,7 @@ class OddsButton2 @JvmOverloads constructor(
 
         if(isDrawBtn) {
             nameText = when {
+                playCateCode.isSingleType() -> ""  // 独赢玩法
                 playCateCode.isNOGALType() -> resources.getString(R.string.none)
                 playCateCode.isCombination() -> {
                     (odds?.nameMap?.get(language) ?: odds?.name)?.split("-")?.firstOrNull() ?: ""

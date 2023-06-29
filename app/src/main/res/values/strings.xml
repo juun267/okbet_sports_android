@@ -1551,6 +1551,11 @@
     <string name="J248">4th Period</string>
     <string name="P142">MC</string>
     <string name="P139">Agree to Bet</string>
-
-
+    <string name="N111">No more</string>
+    <string name="N934">Filter league</string>
+    <string name="N933">No events yet</string>
+    <string name="I059">Settled</string>
+    <string name="I039">Betting Time</string>
+    <string name="N142">Bet Slip No</string>
+    <string name="N104">Favorite</string>
 </resources>

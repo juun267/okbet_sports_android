@@ -744,11 +744,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     }
                 }
             ) {
-                sportToolBarTopFragment.tv_match_time.isVisible = false
+                sportToolBarTopFragment.getTvMatchTime().isVisible = false
                 cancelTimer()
                 return@Handler false
             }
-            sportToolBarTopFragment.tv_match_time.apply {
+            sportToolBarTopFragment.getTvMatchTime().apply {
                 if (needCountStatus(
                         matchOdd?.matchInfo?.socketMatchStatus, matchOdd?.matchInfo?.leagueTime
                     )

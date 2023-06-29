@@ -87,7 +87,7 @@ open class SportListViewModel(
                 item.leagueOddsList = it.leagueOddsList
                 gameItems.add(item)
 
-                val leagueOddList = item.leagueOddsList
+                val leagueOddList = it.leagueOddsList
 
                 leagueOddList.sortOdds()
                 leagueOddList.getPlayCateNameMap()
@@ -242,6 +242,14 @@ open class SportListViewModel(
             MatchType.OUTRIGHT -> {
                 getOutrightOddsList(gameType)
             }
+            MatchType.MY_EVENT -> {
+                getOddsList(
+                    gameType = gameType,
+                    matchType.postValue,
+                    matchIdList = selectMatchIdList,
+                )
+
+            }
             else -> {
             }
         }
@@ -285,11 +293,10 @@ open class SportListViewModel(
                 currentTimeRangeParams = timeRangeParams
             }
             MatchType.TODAY.postValue, MatchType.CS.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue -> {
-                _oddsListGameHallResult.value = Event(null, gameType)
                 currentTimeRangeParams = timeRangeParams
             }
             else -> { // 特殊賽事要給特殊代碼 Ex: matchType: "sc:QAtest"
-                _oddsListGameHallResult.value = Event(null, gameType)
+
             }
         }
 
@@ -357,22 +364,7 @@ open class SportListViewModel(
             }
 
             result?.oddsListData?.leagueOdds?.let { dealLeagueList(playCateMenuCode, matchType, it) }
-
-            when (matchType) {
-                MatchType.IN_PLAY.postValue,
-                MatchType.TODAY.postValue,
-                MatchType.AT_START.postValue,
-                MatchType.EARLY.postValue,
-                MatchType.PARLAY.postValue,
-                MatchType.END_SCORE.postValue,
-                -> {
-                    _oddsListGameHallResult.postValue(Event(result, gameType))
-                }
-                else -> {
-                    _oddsListGameHallResult.postValue(Event(result, gameType))
-                }
-            }
-
+            _oddsListGameHallResult.postValue(Event(result, gameType))
             notifyFavorite(FavoriteType.MATCH)
         }
     }
@@ -613,7 +605,7 @@ open class SportListViewModel(
             MatchType.AT_START -> menuData.atStart.items
             MatchType.CS -> menuData.menu.cs.items
             MatchType.EPS -> menuData.menu.eps?.items ?: listOf()
-
+            MatchType.MY_EVENT -> menuData.menu.myFavorite?.items ?: listOf()
             else -> listOf()
         }
 

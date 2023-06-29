@@ -1420,4 +1420,14 @@
     <string name="J248">Mùa thứ 4</string>
     <string name="P142">MC</string>
     <string name="P139">Đồng ý cược</string>
+    <string name="N111">Không còn</string>
+    <string name="N934">Lọc giải đấu</string>
+    <string name="N933">Hiện không có trận nào</string>
+    <string name="accept_any_change_in_odds">Nhận mọi thay đổi</string>
+    <string name="accept_better_change_in_odds">Nhận thay đổi tốt hơn</string>
+    <string name="accept_never_change_in_odds">Không nhận thay đổi</string>
+    <string name="I059">Đã kết toán</string>
+    <string name="I039">Thời gian cược</string>
+    <string name="N142">Mã đơn cược</string>
+    <string name="N104">Yêu thích</string>
 </resources>

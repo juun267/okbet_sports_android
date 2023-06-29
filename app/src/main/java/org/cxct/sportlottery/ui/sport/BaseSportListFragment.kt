@@ -10,6 +10,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
+import com.chad.library.adapter.base.entity.node.BaseNode
 import com.google.android.material.appbar.AppBarLayout
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
@@ -34,6 +35,7 @@ import org.cxct.sportlottery.ui.sport.common.GameTypeAdapter2
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.ui.sport.list.adapter.EmptySportGamesView
+import org.cxct.sportlottery.ui.sport.list.adapter.SportFooterGamesView
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
@@ -57,13 +59,14 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     var offsetScrollListener: ((Double) -> Unit)? = null
     protected val gameTypeAdapter by lazy { GameTypeAdapter2(::onGameTypeChanged) }
     private val loadingHolder by lazy { Gloading.wrapView(binding.gameList) }
+
     override fun dismissLoading() = loadingHolder.showLoadSuccess()
     override fun showLoading() = loadingHolder.showLoading()
 
     protected abstract fun getGameListAdapter(): ExpanableOddsAdapter<*>
     protected abstract val oddsChangeListener: ServiceBroadcastReceiver.OddsChangeListener
     protected abstract fun resubscribeChannel(delay: Long = 0)
-    protected abstract fun onFavorite(favoriteMatchIds: List<String>)
+    protected abstract fun onFavorite(favoriteMatchIds: Set<String>)
     protected abstract fun onOddTypeChanged(oddsType: OddsType)
     protected abstract fun onBetInfoChanged(betInfoList: List<BetInfoListData>)
 
@@ -106,7 +109,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
                 return@observe
             }
 
-            setFooterViewVisiable()
+            setSportDataList(null)
             dismissLoading()
             if (!it.second) {
                 ToastUtil.showToast(activity, it.third)
@@ -122,6 +125,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     protected fun updateSportType(gameTypeList: List<Item>) {
 
         if (gameTypeList.isEmpty()) {
+            setSportDataList(null)
             return
         }
         //处理默认不选中的情况
@@ -165,17 +169,8 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         adapter.addFooterView(footerView)
     }
 
-    protected fun setFooterViewVisiable(delay: Long = 0) {
-        if (delay > 0L) {
-            binding.root.postDelayed({ getGameListAdapter().footerLayout?.getChildAt(0)?.visible() }, delay)
-        } else {
-            getGameListAdapter().footerLayout?.getChildAt(0)?.visible()
-        }
-    }
-
-
     private fun initToolbar()  = binding.run {
-
+        ivArrow.bindExpanedAdapter(getGameListAdapter()) { resubscribeChannel(320) }
         appbarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
             offsetScrollListener?.invoke((-verticalOffset) / Math.max(1.0, appbarLayout.measuredHeight.toDouble()))
         })
@@ -191,7 +186,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
             )
         }
 
-        ivArrow.bindExpanedAdapter(getGameListAdapter()) { resubscribeChannel(320) }
+
     }
 
     private fun initSportTypeList() = binding.run {
@@ -208,8 +203,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
 
         setupBackTop(binding.ivBackTop, 500.dp, tabCode = matchType.postValue)
         layoutManager = getGameLayoutManger()
-        adapter = getGameListAdapter()
-        getGameListAdapter().setEmptyView(EmptySportGamesView(context()))
+        adapter = getGameListAdapter().apply { setEmptyView(EmptySportGamesView(context())) }
         addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -265,8 +259,21 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         binding.tvMatchNum.text = num
     }
 
-    private fun clearData() {
-        getGameListAdapter().setNewInstance(null)
+    protected fun clearData() {
+        unSubscribeAllChannel()
+        setSportDataList(null)
+        viewModel.selectTimeRangeParams = null
+    }
+
+    protected fun setSportDataList(list: MutableList<BaseNode>?) {
+        val adapter = getGameListAdapter()
+        adapter.setNewInstance(list)
+        if (!list.isNullOrEmpty()) {
+            resubscribeChannel(120)
+        }
+        val footerLayout = adapter.footerLayout?.getChildAt(0) as SportFooterGamesView? ?: return
+        footerLayout.visible()
+        footerLayout.sportNoMoreEnable(!list.isNullOrEmpty())
     }
 
 
@@ -289,20 +296,24 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         subscribedChannel.add(Pair(gameType, eventId))
         subscribeChannelHall(gameType, eventId)
     }
+
     protected open fun clearSubscribeChannels() {
+        unSubscribeAllChannel()
+        subscribeHandler.removeCallbacksAndMessages(null)
+    }
+
+    private fun unSubscribeAllChannel() {
+        getGameListAdapter().resetRangeMatchOdd()
         if (subscribedChannel.size > 0) {
-            unSubscribeChannelHallAll()
+            subscribedChannel.forEach { unSubscribeChannelHall(it.first, it.second) }
             subscribedChannel.clear()
         }
-        subscribeHandler.removeCallbacksAndMessages(null)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         clearData()
         offsetScrollListener = null
-        clearSubscribeChannels()
-        unSubscribeChannelHallSport()
     }
 
     open fun setSelectMatchIds(matchIdList: ArrayList<String>) {
@@ -313,6 +324,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     @Subscribe
     fun onSelectMatch(matchIdList: ArrayList<String>) {
         setSelectMatchIds(matchIdList)
+        Log.e("For Test", "======>>> onSelectMatch ${matchIdList}")
     }
 
     protected fun addOddsDialog(

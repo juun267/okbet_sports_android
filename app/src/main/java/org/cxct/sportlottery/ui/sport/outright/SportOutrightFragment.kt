@@ -1,12 +1,10 @@
 package org.cxct.sportlottery.ui.sport.outright
 
-import android.text.TextUtils
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.entity.node.BaseNode
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
@@ -37,7 +35,7 @@ class SportOutrightFragment : BaseSportListFragment<SportListViewModel, Fragment
         sportOutrightAdapter2.onMatchOdds(oddsChangeEvent)
     }
 
-    override fun onFavorite(favoriteMatchIds: List<String>) { }
+    override fun onFavorite(favoriteMatchIds: Set<String>) { }
 
     override fun onOddTypeChanged(oddsType: OddsType) {
         sportOutrightAdapter2.oddsType = oddsType
@@ -120,7 +118,6 @@ class SportOutrightFragment : BaseSportListFragment<SportListViewModel, Fragment
                 return@observe
             }
 
-            setFooterViewVisiable(200)
             val data = it?.getContentIfNotHandled()?.outrightOddsListData?.leagueOdds ?: return@observe
             val list = mutableListOf<MatchOdd>()
             data.forEach { it.matchOdds?.let { list.addAll(it) } }
@@ -129,8 +126,7 @@ class SportOutrightFragment : BaseSportListFragment<SportListViewModel, Fragment
                 dismissLoading()
                 return@observe
             }
-            sportOutrightAdapter2.setNewInstance(list as MutableList<BaseNode>)
-            resubscribeChannel(120)
+            setSportDataList(list as MutableList<BaseNode>)
             dismissLoading()
         }
 

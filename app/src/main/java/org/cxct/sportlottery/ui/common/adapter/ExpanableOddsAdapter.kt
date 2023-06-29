@@ -124,4 +124,8 @@ abstract class ExpanableOddsAdapter<T: MatchOdd>: BaseNodeAdapter() {
         return currentVisiableMatchOdds[id]
     }
 
+    fun resetRangeMatchOdd() {
+        currentVisiableMatchOdds.clear()
+    }
+
 }

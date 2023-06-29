@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/color_F9FAFD"
+    android:foreground="@drawable/fg_ripple"
     android:paddingHorizontal="12dp"
     android:layout_height="40dp">
 

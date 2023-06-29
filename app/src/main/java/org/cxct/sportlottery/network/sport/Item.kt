@@ -21,5 +21,5 @@ data class Item(
     var isSelected: Boolean = false
     var playCateNum: Int? = null
 
-    var leagueOddsList: List<LeagueOdd> = listOf() // 收藏赛事-该字段会手动负值
+    var leagueOddsList: List<LeagueOdd>? = null // 收藏赛事-该字段会手动负值
 }

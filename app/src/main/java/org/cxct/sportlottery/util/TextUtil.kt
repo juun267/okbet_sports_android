@@ -18,6 +18,13 @@ object TextUtil : DecimalFormatUtil() {
         return str.split(",").toMutableList()
     }
 
+    fun splitSet(str: String?): Set<String> {
+        if (str.isNullOrEmpty()) {
+            return setOf()
+        }
+        return str.split(",").toSet()
+    }
+
 
     fun format(any: Any): String? {
         try {
