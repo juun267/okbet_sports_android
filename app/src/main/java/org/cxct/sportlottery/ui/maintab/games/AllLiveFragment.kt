@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
-import org.cxct.sportlottery.databinding.FragmentAllOkgamesBinding
+import org.cxct.sportlottery.databinding.FragmentAllOkliveBinding
 import org.cxct.sportlottery.databinding.ItemGameCategroyBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
@@ -21,17 +21,22 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.SpaceItemDecoration
+import org.cxct.sportlottery.util.setTrialPlayGameDataObserve
+import org.cxct.sportlottery.util.goneWithSportSwitch
+import org.cxct.sportlottery.util.setupSportStatusChange
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 
 // OkGames所有分类
-class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesViewModel::class) {
+class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewModel::class) {
 
-    private lateinit var binding: FragmentAllOkgamesBinding
+    private fun getMainTabActivity() = activity as MainTabActivity
+    fun jumpToOKGames() = getMainTabActivity().jumpToOKGames()
+    private lateinit var binding: FragmentAllOkliveBinding
     private val gameAllAdapter by lazy {
         GameCategroyAdapter(
             clickCollect = ::onCollectClick,
-            clickGame = ::enterGame, okGamesFragment().gameItemViewPool
+            clickGame = ::enterGame, okLiveFragment().gameItemViewPool
         )
     }
     private var collectGameAdapter: GameChildAdapter? = null
@@ -45,11 +50,11 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     private var lastRequestTimeStamp = 0L
 
 
-    private fun okGamesFragment() = parentFragment as OKGamesFragment
+    private fun okLiveFragment() = parentFragment as OKLiveFragment
     override fun createRootView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
-        return FragmentAllOkgamesBinding.inflate(layoutInflater).apply { binding = this }.root
+        return FragmentAllOkliveBinding.inflate(layoutInflater).apply { binding = this }.root
     }
 
     override fun onBindView(view: View) {
@@ -62,13 +67,14 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         initCollectLayout()
         initSportObserve()
         //初始化热门赛事
-        binding.hotMatchView.onCreate(viewModel.publicityRecommend,viewModel.oddsType,this)
+        binding.hotMatchView.onCreate(viewModel.publicityRecommend, viewModel.oddsType, this)
+        binding.okLiveOkGamesView.setOkGamesData(this)
         viewModel.getRecommend()
     }
 
-    private fun initSportObserve(){
+    private fun initSportObserve() {
         //体育服务开关监听
-        setupSportStatusChange(this){
+        setupSportStatusChange(this) {
             binding.hotMatchView.goneWithSportSwitch()
         }
     }
@@ -76,8 +82,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     override fun onResume() {
         super.onResume()
         if ((activity as MainTabActivity).getCurrentPosition() == 0
-            && okGamesFragment().activity is MainTabActivity
-            && okGamesFragment().getCurrentFragment() == this
+            && (okLiveFragment().parentFragment as HomeFragment).getCurrentFragment() == okLiveFragment()
+            && okLiveFragment().getCurrentFragment() == this
         ) {
             unSubscribeChannelHallAll()
             //重新设置赔率监听
@@ -94,6 +100,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         //请求热门赛事数据  在hotMatchView初始化之后
 //        viewModel.getRecommend()
     }
+
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (hidden) {
@@ -104,17 +111,17 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         //重新设置赔率监听
         binding.hotMatchView.onResume(this)
         viewModel.getRecommend()
-        val noData = okGamesFragment().viewModel.gameHall.value == null
+        val noData = okLiveFragment().viewModel.gameHall.value == null
         val time = System.currentTimeMillis()
         if (noData || time - lastRequestTimeStamp > 60_000) { // 避免短时间重复请求
             lastRequestTimeStamp = time
-            okGamesFragment().viewModel.getOKGamesHall()
+            okLiveFragment().viewModel.getOKGamesHall()
 
         }
         binding.winsRankView.loadData()
     }
 
-    private fun initObserve() = okGamesFragment().viewModel.run {
+    private fun initObserve() = okLiveFragment().viewModel.run {
         gameHall.observe(viewLifecycleOwner) {
             categoryList = it.categoryList?.filter {
                 it.gameList?.let {
@@ -148,8 +155,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             collectGameAdapter?.let { adapter ->
                 //添加收藏或者移除
                 adapter.removeOrAdd(result.second)
-                binding.includeGamesAll.inclueCollect.root.isGone = adapter.data.isNullOrEmpty()
-                setItemMoreVisiable(binding.includeGamesAll.inclueCollect, adapter.dataCount() > 3)
+                binding.includeLiveAll.inclueCollect.root.isGone = adapter.data.isNullOrEmpty()
+                setItemMoreVisiable(binding.includeLiveAll.inclueCollect, adapter.dataCount() > 3)
             }
             //更新最近列表
             recentGameAdapter?.data?.forEachIndexed { index, okGameBean ->
@@ -171,37 +178,41 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         newRecentPlay.observe(viewLifecycleOwner) { okgameBean ->
 
             recentGameAdapter?.let { adapter ->
-                binding.includeGamesAll.inclueRecent.root.visible()
+                binding.includeLiveAll.inclueRecent.root.visible()
                 adapter.data.find { it.id == okgameBean.id }?.let { adapter.remove(it) }
                 adapter.addData(0, okgameBean)
-                setItemMoreVisiable(binding.includeGamesAll.inclueRecent, adapter.dataCount() > 3)
+                setItemMoreVisiable(binding.includeLiveAll.inclueRecent, adapter.dataCount() > 3)
             }
         }
 
     }
 
-    private fun onBindGamesView() = binding.includeGamesAll.run {
-        rvGamesAll.setLinearLayoutManager()
-        rvGamesAll.adapter = gameAllAdapter
+    private fun onBindGamesView() = binding.includeLiveAll.run {
+        rvLiveAll.setLinearLayoutManager()
+        rvLiveAll.adapter = gameAllAdapter
         gameAllAdapter.setOnItemChildClickListener { _, _, position ->
             gameAllAdapter.getItem(position).let {
-                okGamesFragment().changeGameTable(it)
+                okLiveFragment().changeGameTable(it)
             }
         }
     }
 
     private fun onBindPart3View() {
-        binding.winsRankView.setUp( this, { viewModel.getOKGamesRecordNew() }, { viewModel.getOKGamesRecordResult() })
+        binding.winsRankView.setUp(
+            this,
+            { viewModel.getOKGamesRecordNew() },
+            { viewModel.getOKGamesRecordResult() })
 
         binding.ivProvidersLeft.alpha = 0.5F
         providersAdapter.setOnItemClickListener { _, _, position ->
-            okGamesFragment().changePartGames(providersAdapter.getItem(position))
+            okLiveFragment().changePartGames(providersAdapter.getItem(position))
         }
 
-        var okGameProLLM = binding.rvOkgameProviders.setLinearLayoutManager(LinearLayoutManager.HORIZONTAL)
-        binding.rvOkgameProviders.adapter = providersAdapter
-        binding.rvOkgameProviders.layoutManager = okGameProLLM
-        binding.rvOkgameProviders.addOnScrollListener(object : OnScrollListener() {
+        var okGameProLLM =
+            binding.rvOkLiveProviders.setLinearLayoutManager(LinearLayoutManager.HORIZONTAL)
+        binding.rvOkLiveProviders.adapter = providersAdapter
+        binding.rvOkLiveProviders.layoutManager = okGameProLLM
+        binding.rvOkLiveProviders.addOnScrollListener(object : OnScrollListener() {
             override fun onScrollStateChanged(rvView: RecyclerView, newState: Int) {
                 // 获取当前滚动到的条目位置
                 p3ogProviderFirstPosi = okGameProLLM.findFirstVisibleItemPosition()
@@ -219,18 +230,25 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                     binding.ivProvidersRight.alpha = 1F
                 }
 
-                binding.ivProvidersRight.isClickable = p3ogProviderLastPosi != providersAdapter.data.size - 1
+                binding.ivProvidersRight.isClickable =
+                    p3ogProviderLastPosi != providersAdapter.data.size - 1
             }
         })
 
         viewModel.providerResult.observe(viewLifecycleOwner) { resultData ->
             val firmList = resultData?.firmList ?: return@observe
-
+            if (firmList.size < 2) {
+                binding.rvOkLiveProviders.isGone = true
+                binding.okLiveP3LayoutProvider.isGone = true
+                return@observe
+            }
+            binding.rvOkLiveProviders.isVisible = true
+            binding.okLiveP3LayoutProvider.isVisible = true
             providersAdapter.setNewInstance(firmList.toMutableList())
             if (firmList.isNotEmpty()) {
-                binding.run { setViewVisible(rvOkgameProviders, okgameP3LayoutProivder) }
+                binding.run { setViewVisible(rvOkLiveProviders, okLiveP3LayoutProvider) }
             } else {
-                binding.run { setViewGone(rvOkgameProviders, okgameP3LayoutProivder) }
+                binding.run { setViewGone(rvOkLiveProviders, okLiveP3LayoutProvider) }
             }
 
             if (firmList.size > 3) {
@@ -240,22 +258,22 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             }
         }
 
-        viewModel.recordNewBetHttpOkGame.observe(viewLifecycleOwner) {
+        viewModel.recordNewBetHttpOkLive.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) {
                 binding.winsRankView.onNewHttpBetData(it.reversed())
             }
         }
-        viewModel.recordResultWinsHttpOkGame.observe(viewLifecycleOwner) {
+        viewModel.recordResultWinsHttpOkLive.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) {
                 binding.winsRankView.onNewHttpWinsData(it.reversed())
             }
         }
-        receiver.recordNewOkGame.collectWith(lifecycleScope) {
+        receiver.recordNewOkLive.collectWith(lifecycleScope) {
             if (it != null) {
                 binding.winsRankView.onNewWSBetData(it)
             }
         }
-        receiver.recordResultOkGame.collectWith(lifecycleScope) {
+        receiver.recordResultOkLive.collectWith(lifecycleScope) {
             if (it != null) {
                 binding.winsRankView.onNewWSWinsData(it)
             }
@@ -264,28 +282,28 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         //供应商左滑按钮
         binding.ivProvidersLeft.setOnClickListener {
             if (p3ogProviderFirstPosi >= 3) {
-                binding.rvOkgameProviders.layoutManager?.smoothScrollToPosition(
-                    binding.rvOkgameProviders,
+                binding.rvOkLiveProviders.layoutManager?.smoothScrollToPosition(
+                    binding.rvOkLiveProviders,
                     RecyclerView.State(),
                     p3ogProviderFirstPosi - 2
                 )
             } else {
-                binding.rvOkgameProviders.layoutManager?.smoothScrollToPosition(
-                    binding.rvOkgameProviders, RecyclerView.State(), 0
+                binding.rvOkLiveProviders.layoutManager?.smoothScrollToPosition(
+                    binding.rvOkLiveProviders, RecyclerView.State(), 0
                 )
             }
         }
         //供应商右滑按钮
         binding.ivProvidersRight.setOnClickListener {
             if (p3ogProviderLastPosi < providersAdapter.data.size - 4) {
-                binding.rvOkgameProviders.layoutManager?.smoothScrollToPosition(
-                    binding.rvOkgameProviders,
+                binding.rvOkLiveProviders.layoutManager?.smoothScrollToPosition(
+                    binding.rvOkLiveProviders,
                     RecyclerView.State(),
                     p3ogProviderLastPosi + 2
                 )
             } else {
-                binding.rvOkgameProviders.layoutManager?.smoothScrollToPosition(
-                    binding.rvOkgameProviders,
+                binding.rvOkLiveProviders.layoutManager?.smoothScrollToPosition(
+                    binding.rvOkLiveProviders,
                     RecyclerView.State(),
                     providersAdapter.data.size - 1
                 )
@@ -296,27 +314,27 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     }
 
     private fun onBindPart5View() {
-       binding.homeBottumView.bindServiceClick(childFragmentManager)
+        binding.homeBottumView.bindServiceClick(childFragmentManager)
     }
 
 
     private fun initCollectLayout() {
         collectGameAdapter =
-            bindGameCategroyLayout(GameTab.TAB_FAVORITES, binding.includeGamesAll.inclueCollect)
+            bindGameCategroyLayout(GameTab.TAB_FAVORITES, binding.includeLiveAll.inclueCollect)
     }
 
     private fun initRecent() {
         recentGameAdapter =
-            bindGameCategroyLayout(GameTab.TAB_RECENTLY, binding.includeGamesAll.inclueRecent)
+            bindGameCategroyLayout(GameTab.TAB_RECENTLY, binding.includeLiveAll.inclueRecent)
     }
 
     private fun bindGameCategroyLayout(gameTab: GameTab, binding: ItemGameCategroyBinding) =
         binding.run {
             root.gone()
-            linCategroyName.setOnClickListener { okGamesFragment().changeGameTable(gameTab) }
+            linCategroyName.setOnClickListener { okLiveFragment().changeGameTable(gameTab) }
             gameTab.bindLabelIcon(ivIcon)
             gameTab.bindLabelName(tvName)
-            rvGameItem.setRecycledViewPool(okGamesFragment().gameItemViewPool)
+            rvGameItem.setRecycledViewPool(okLiveFragment().gameItemViewPool)
             rvGameItem.layoutManager = SocketLinearManager(context, RecyclerView.HORIZONTAL, false)
             rvGameItem.addItemDecoration(SpaceItemDecoration(root.context, R.dimen.margin_10))
             val gameAdapter = GameChildAdapter(onFavoriate = ::onCollectClick)
@@ -328,14 +346,14 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             return@run gameAdapter
         }
 
-    private inline fun enterGame(okGameBean: OKGameBean) {
-        if(LoginRepository.isLogined()){
+    private inline fun enterGame(bean: OKGameBean) {
+        if (LoginRepository.isLogined()) {
             //已登录
-            okGamesFragment().enterGame(okGameBean)
-        }else{
+            okLiveFragment().enterGame(bean)
+        } else {
             //请求试玩路线
             loading()
-            viewModel.requestEnterThirdGameNoLogin(okGameBean.firmType,okGameBean.gameCode,okGameBean.thirdGameCategory)
+            viewModel.requestEnterThirdGameNoLogin(bean.firmType,bean.gameCode,bean.thirdGameCategory)
         }
     }
 
@@ -344,8 +362,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
      */
     private fun setCollectList(collectList: List<OKGameBean>) {
         val emptyData = collectList.isNullOrEmpty()
-        setItemMoreVisiable(binding.includeGamesAll.inclueCollect, collectList.size > 3)
-        binding.includeGamesAll.inclueCollect.root.isGone = emptyData
+        setItemMoreVisiable(binding.includeLiveAll.inclueCollect, collectList.size > 3)
+        binding.includeLiveAll.inclueCollect.root.isGone = emptyData
         if (!emptyData) {
             collectGameAdapter?.setNewInstance(collectList?.toMutableList())
         }
@@ -356,9 +374,9 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
      * 设置最近游戏列表
      */
     private fun setRecent(recentList: List<OKGameBean>) {
-        setItemMoreVisiable(binding.includeGamesAll.inclueRecent, recentList.size > 3)
+        setItemMoreVisiable(binding.includeLiveAll.inclueRecent, recentList.size > 3)
         val emptyData = recentList.isNullOrEmpty()
-        binding.includeGamesAll.inclueRecent.root.isGone = emptyData
+        binding.includeLiveAll.inclueRecent.root.isGone = emptyData
         if (!emptyData) {
             recentGameAdapter?.setNewInstance(recentList?.toMutableList())
         }
@@ -371,7 +389,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
 
     private fun onCollectClick(view: View, gameData: OKGameBean) {
-        if (okGamesFragment().collectGame(gameData)) {
+        if (okLiveFragment().collectGame(gameData)) {
             view.animDuang(1.3f)
         }
     }

@@ -26,7 +26,7 @@ import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.transform.TransformInDialog
 
 // okgames主Fragment
-class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesViewModel::class) {
+class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewModel::class) {
 
     val gameItemViewPool by lazy {
         RecyclerView.RecycledViewPool().apply { setMaxRecycledViews(0, 20) }
@@ -36,12 +36,12 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
     private val fragmentHelper by lazy {
         FragmentHelper(
             childFragmentManager, R.id.fragmentContainer, arrayOf(
-                Pair(AllGamesFragment::class.java, null), Pair(PartGamesFragment::class.java, null)
+                Pair(AllLiveFragment::class.java, null), Pair(PartLiveFragment::class.java, null)
             )
         )
     }
 
-    private fun isAllTba() = fragmentHelper.getCurrentFragment() is AllGamesFragment
+    private fun isAllTba() = fragmentHelper.getCurrentFragment() is AllLiveFragment
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
@@ -68,7 +68,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         showGameAll()
         initObservable()
         viewModel.getOKGamesHall()
-        showOkGameDialog()
+//        showOkGameDialog()
     }
 
     private var requestTag: Any = Any()
@@ -78,10 +78,10 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
     }
 
     private fun initToolBar() = binding.homeToolbar.run {
-        attach(this@OKGamesFragment, mainTabActivity(), viewModel)
+        attach(this@OKLiveFragment, mainTabActivity(), viewModel)
         ivMenuLeft.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
-            mainTabActivity().showMainLeftMenu(this@OKGamesFragment.javaClass)
+            mainTabActivity().showMainLeftMenu(this@OKLiveFragment.javaClass)
         }
     }
 
@@ -111,7 +111,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
 
 
     private fun initTopView() = binding.topView.run {
-        setup(this@OKGamesFragment,12)
+        setup(this@OKLiveFragment,18, gameType = "oklive")
         onTableClick = ::onTabChange
         onSearchTextChanged = { searchKey ->
             hideKeyboard()
@@ -119,7 +119,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
                 changePartGamesLabel(GameTab.TAB_SEARCH, searchKey)
                 startLoad {
                     viewModel.searchGames(
-                        retagRequest(), searchKey, it, PartGamesFragment.pageSize
+                        retagRequest(), searchKey, it, PartLiveFragment.pageSize
                     )
                 }
             }
@@ -149,14 +149,14 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         }
     }
 
-    private fun showGameAll(): AllGamesFragment {
+    private fun showGameAll(): AllLiveFragment {
         requestBlock = null
         retagRequest()
-        return fragmentHelper.showFragment(0) as AllGamesFragment
+        return fragmentHelper.showFragment(0) as AllLiveFragment
     }
 
-    private inline fun showPartGameFragment(): PartGamesFragment {
-        return fragmentHelper.showFragment(1) as PartGamesFragment
+    private inline fun showPartGameFragment(): PartLiveFragment {
+        return fragmentHelper.showFragment(1) as PartLiveFragment
     }
 
     private fun showRecentPart(tab: OKGameTab) {
@@ -171,11 +171,11 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         showPartGameList(viewModel.collectList.value?.second, 0)
     }
 
-    fun enterGame(okGameBean: OKGameBean) {
+    fun enterGame(bean: OKGameBean) {
 
         loginedRun(binding.root.context) {
-            viewModel.requestEnterThirdGame(okGameBean, this)
-            viewModel.addRecentPlay(okGameBean)
+            viewModel.requestEnterThirdGame(bean, this)
+            viewModel.addRecentPlay(bean)
         }
     }
 
@@ -192,14 +192,14 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         val firmId = okgamesFirm.getKey().toString()
         startLoad {
             viewModel.getOKGamesList(
-                retagRequest(), null, firmId, it, PartGamesFragment.pageSize
+                retagRequest(), null, firmId, it, PartLiveFragment.pageSize
             )
         }
     }
 
     private fun loadFavorite(tab: OKGameTab) {
         changePartGamesLabel(tab)
-        startLoad { viewModel.getFavoriteOKGames(retagRequest(), it, PartGamesFragment.pageSize) }
+        startLoad { viewModel.getFavoriteOKGames(retagRequest(), it, PartLiveFragment.pageSize) }
     }
 
     private fun reloadPartGames(tab: OKGameTab) {
@@ -207,7 +207,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         val categoryId = tab.getKey().toString()
         startLoad {
             viewModel.getOKGamesList(
-                retagRequest(), categoryId, null, it, PartGamesFragment.pageSize
+                retagRequest(), categoryId, null, it, PartLiveFragment.pageSize
             )
         }
     }
@@ -240,11 +240,11 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
     open fun getCurrentFragment() = fragmentHelper.getCurrentFragment()
 
     private fun showOkGameDialog(){
-        if (PopImageDialog.showOKGameDialog) {
-            PopImageDialog.showOKGameDialog = false
-            if (PopImageDialog.checkImageTypeAvailable(ImageType.DIALOG_OKGAME.code)) {
+        if (PopImageDialog.showOKLiveDialog) {
+            PopImageDialog.showOKLiveDialog = false
+            if (PopImageDialog.checkImageTypeAvailable(ImageType.DIALOG_OKLIVE.code)) {
                 requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
-                    putInt(PopImageDialog.IMAGE_TYPE, ImageType.DIALOG_OKGAME.code)
+                    putInt(PopImageDialog.IMAGE_TYPE, ImageType.DIALOG_OKLIVE.code)
                 }).show(childFragmentManager, PopImageDialog::class.simpleName)
             }
         }
