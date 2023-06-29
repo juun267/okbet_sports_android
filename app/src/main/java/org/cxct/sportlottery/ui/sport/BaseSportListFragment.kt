@@ -262,7 +262,6 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     protected fun clearData() {
         unSubscribeAllChannel()
         setSportDataList(null)
-        viewModel.selectTimeRangeParams = null
     }
 
     protected fun setSportDataList(list: MutableList<BaseNode>?) {
