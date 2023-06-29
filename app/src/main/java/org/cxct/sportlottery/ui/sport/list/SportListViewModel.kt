@@ -56,7 +56,6 @@ open class SportListViewModel(
 
 
     val outrightList = MutableLiveData<Event<OutrightOddsListResult?>>()
-    var selectTimeRangeParams:TimeRangeParams? = null
 
     fun loadFavoriteGameList() {
         if (!LoginRepository.isLogined()) {
@@ -206,7 +205,6 @@ open class SportListViewModel(
                 getOddsList(
                     gameType = gameType,
                     matchType.postValue,
-                    selectTimeRangeParams,
                     matchIdList = selectMatchIdList,
                 )
             }
@@ -214,7 +212,6 @@ open class SportListViewModel(
                 getOddsList(
                     gameType = gameType,
                     matchType.postValue,
-                    selectTimeRangeParams,
                     matchIdList = selectMatchIdList,
                 )
             }
@@ -222,7 +219,6 @@ open class SportListViewModel(
                 getOddsList(
                     gameType = gameType,
                     matchType.postValue,
-                    selectTimeRangeParams,
                     matchIdList = selectMatchIdList,
                 )
             }
@@ -230,7 +226,6 @@ open class SportListViewModel(
                 getOddsList(
                     gameType = gameType,
                     matchType.postValue,
-                    selectTimeRangeParams,
                     matchIdList = selectMatchIdList,
                 )
 
@@ -240,7 +235,6 @@ open class SportListViewModel(
                 getOddsList(
                     gameType = gameType,
                     matchType.postValue,
-                    selectTimeRangeParams,
                     matchIdList = selectMatchIdList,
                 )
 
@@ -253,14 +247,14 @@ open class SportListViewModel(
         }
     }
 
-    fun switchGameType(matchType: MatchType, item: Item) {
+    fun switchGameType(matchType: MatchType, item: Item,selectMatchIdList: ArrayList<String>) {
         if (jobSwitchGameType?.isActive == true) {
             jobSwitchGameType?.cancel()
         }
         //視覺上需要優先跳轉 tab
         _sportMenuResult.value?.updateSportSelectState(matchType, item.code)
         jobSwitchGameType = viewModelScope.launch {
-            getGameHallList(matchType, item.code)
+            getGameHallList(matchType, item.code, selectMatchIdList)
         }
     }
 
@@ -270,7 +264,7 @@ open class SportListViewModel(
                             leagueIdList: List<String>? = null,
                             matchIdList: List<String>? = null,) {
 
-        getOddsList(gameType, matchType.postValue, selectTimeRangeParams)
+        getOddsList(gameType, matchType.postValue)
     }
 
     private lateinit var oddsListRequestTag: Any

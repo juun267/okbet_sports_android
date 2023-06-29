@@ -62,7 +62,7 @@ class LeagueSelectViewModel(
         matchType: String,
         startTime: String? = null,
         endTime: String?=null,
-        matchIdList:List<String>?=null
+        isDateSelected: Boolean = false
     ) {
         var playCateMenuCode = MenuCode.MAIN.code
         if (matchType == MatchType.CS.postValue) {
@@ -118,9 +118,12 @@ class LeagueSelectViewModel(
                 it.isExpanded = false
                 it.league.firstCap = Pinyin.toPinyin(it.league.name.first()).first().toString()
                 it.matchOdds.forEach {
-                    it.isSelected = if (matchIdList.isNullOrEmpty()) true else matchIdList.contains(it.matchInfo?.id)
+                    it.isSelected = !isDateSelected
                 }
-                it.league.isSelected = if (matchIdList.isNullOrEmpty()) true else it.matchOdds.all { it.isSelected }
+                it.league.isSelected = when{
+                    isDateSelected->false
+                    else->it.matchOdds.all { it.isSelected }
+                }
                 leagueOddData.add(it)
             }
 

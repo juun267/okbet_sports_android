@@ -11,11 +11,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.entity.node.BaseNode
-import com.chad.library.adapter.base.listener.OnItemClickListener
-import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import kotlinx.android.synthetic.main.activity_league_select.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.event.TimeRangeEvent
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.TimeRangeParams
@@ -40,8 +37,8 @@ class LeagueSelectActivity :
             context: Context,
             gameType: String,
             matchType: MatchType,
-            timeRangeParams: TimeRangeParams?,
-            matchIdList: ArrayList<String>?,
+            timeRangeParams: TimeRangeParams?=null,
+            matchIdList: ArrayList<String>?=null,
         ) {
             var intent = Intent(context, LeagueSelectActivity::class.java)
             intent.putExtra("gameType", gameType)
@@ -57,10 +54,6 @@ class LeagueSelectActivity :
 
     private val gameType by lazy { intent?.getStringExtra("gameType") ?: GameType.FT.key }
     private val matchType by lazy { (intent?.getSerializableExtra("matchType") as MatchType?) ?: MatchType.IN_PLAY }
-
-    private val matchIdList: ArrayList<String>? by lazy { intent?.getStringArrayListExtra("matchIdList") as ArrayList<String> }
-    private val startTime: String? by lazy { intent?.getStringExtra("startTime") }
-    private val endTime: String? by lazy { intent?.getStringExtra("endTime") }
 
     private var selectStartTime:String = ""
     private var selectEndTime:String = ""
@@ -78,11 +71,10 @@ class LeagueSelectActivity :
         setDateListView()
         setupMatchListView()
         initObserve()
-        viewModel.getOddsList(gameType,
+        viewModel.getOddsList(
+            gameType,
             matchType.postValue,
-            startTime ?: "",
-            endTime ?: "",
-            matchIdList)
+          )
     }
 
     private fun setupToolbar() {
@@ -120,9 +112,6 @@ class LeagueSelectActivity :
                 }
             }
             EventBus.getDefault().post(matchSelectList)
-            if (selectStartTime!=startTime||selectEndTime!=endTime){
-                EventBus.getDefault().post(TimeRangeEvent(selectStartTime,selectEndTime))
-            }
             onBackPressed()
         }
     }
@@ -226,12 +215,12 @@ class LeagueSelectActivity :
                 selectDateAdapter= SelectDateAdapter(itemData){
                     selectStartTime = it.startTime
                     selectEndTime = it.endTime
-                }.apply {
-                    itemData.indexOfFirst { it.startTime==startTime&&it.endTime==endTime}.also {
-                       it>0
-                   }.let {
-                       selectPos = it
-                   }
+                    viewModel.getOddsList(gameType,
+                        matchType.postValue,
+                        selectStartTime,
+                        selectStartTime,
+                        true
+                    )
                 }
                 rvDate.adapter = selectDateAdapter
             }

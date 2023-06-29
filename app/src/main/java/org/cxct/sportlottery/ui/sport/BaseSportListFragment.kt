@@ -7,14 +7,12 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.google.android.material.appbar.AppBarLayout
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
-import org.cxct.sportlottery.common.event.TimeRangeEvent
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.common.loading.Gloading
@@ -188,10 +186,8 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
             }
             LeagueSelectActivity.start(
                 requireContext(),
-                gameType!!,
-                matchType,
-                viewModel.selectTimeRangeParams,
-                selectMatchIdList
+                gameType,
+                matchType
             )
         }
 
@@ -261,7 +257,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     protected open fun load(item: Item) {
         showLoading()
         setMatchInfo(item.name, item.num.toString())
-        viewModel.switchGameType(matchType, item)
+        viewModel.switchGameType(matchType, item, selectMatchIdList)
     }
 
     protected fun setMatchInfo(name: String, num: String) {
@@ -317,16 +313,6 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     @Subscribe
     fun onSelectMatch(matchIdList: ArrayList<String>) {
         setSelectMatchIds(matchIdList)
-    }
-
-    @Subscribe
-    fun onSelectDate(timeRangeEvent: TimeRangeEvent) {
-        viewModel.selectTimeRangeParams = object : TimeRangeParams {
-            override val startTime: String
-                get() = timeRangeEvent.startTime
-            override val endTime: String
-                get() = timeRangeEvent.endTime
-        }
     }
 
     protected fun addOddsDialog(
