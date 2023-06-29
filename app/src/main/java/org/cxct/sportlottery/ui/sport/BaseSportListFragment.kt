@@ -47,14 +47,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
 
     protected abstract var matchType: MatchType
     open fun getCurGameType() = GameType.getGameType(gameType) ?: GameType.ALL
-    protected var selectMatchIdList = arrayListOf<String>()
     protected var gameType: String = GameType.BK.key
-        set(value) {
-            if (!Objects.equals(value, field)) { // 清除赛选条件
-                selectMatchIdList = arrayListOf()
-            }
-            field = value
-        }
 
     var offsetScrollListener: ((Double) -> Unit)? = null
     protected val gameTypeAdapter by lazy { GameTypeAdapter2(::onGameTypeChanged) }
@@ -182,7 +175,8 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
             LeagueSelectActivity.start(
                 requireContext(),
                 gameType,
-                matchType
+                matchType,
+                matchIdList = filerMatchIds
             )
         }
 
@@ -248,9 +242,11 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         load(item)
     }
 
-    protected open fun load(item: Item) {
+    private var filerMatchIds = arrayListOf<String>()
+    protected open fun load(item: Item, selectMatchIdList: ArrayList<String> = arrayListOf()) {
         showLoading()
         setMatchInfo(item.name, item.num.toString())
+        filerMatchIds = selectMatchIdList
         viewModel.switchGameType(matchType, item, selectMatchIdList)
     }
 
@@ -260,6 +256,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     }
 
     protected fun clearData() {
+        filerMatchIds.clear()
         unSubscribeAllChannel()
         setSportDataList(null)
     }
@@ -316,7 +313,10 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     }
 
     open fun setSelectMatchIds(matchIdList: ArrayList<String>) {
-        selectMatchIdList = matchIdList
+        gameTypeAdapter.currentItem?.let {
+            clearData()
+            load(it, matchIdList)
+        }
     }
 
     // 赛选联赛

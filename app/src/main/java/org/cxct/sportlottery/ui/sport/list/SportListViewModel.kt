@@ -240,7 +240,7 @@ open class SportListViewModel(
 
             }
             MatchType.OUTRIGHT -> {
-                getOutrightOddsList(gameType)
+                getOutrightOddsList(gameType, selectMatchIdList = selectMatchIdList)
             }
             MatchType.MY_EVENT -> {
                 getOddsList(
@@ -370,7 +370,7 @@ open class SportListViewModel(
     }
 
     private lateinit var outrightOddsListRequestTag: Any
-    private fun getOutrightOddsList(gameType: String, leagueIdList: List<String>? = null) {
+    private fun getOutrightOddsList(gameType: String, leagueIdList: List<String>? = null, selectMatchIdList: ArrayList<String>? = null) {
         val requestTag = Any()
         outrightOddsListRequestTag = requestTag
         viewModelScope.launch(Dispatchers.IO) {
@@ -380,13 +380,15 @@ open class SportListViewModel(
                     if (leagueIdList.isNullOrEmpty()) {
                         OutrightOddsListRequest(
                             gameType,
-                            matchType = MatchType.OUTRIGHT.postValue
+                            matchType = MatchType.OUTRIGHT.postValue,
+                            matchIdList = selectMatchIdList
                         )
                     } else {
                         OutrightOddsListRequest(
                             gameType,
                             matchType = MatchType.OUTRIGHT.postValue,
-                            leagueIdList = leagueIdList
+                            leagueIdList = leagueIdList,
+                            matchIdList = selectMatchIdList
                         )
                     }
                 )

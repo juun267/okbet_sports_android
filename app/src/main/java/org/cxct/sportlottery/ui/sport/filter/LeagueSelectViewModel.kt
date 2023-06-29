@@ -17,13 +17,10 @@ import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.OddsListData
 import org.cxct.sportlottery.network.odds.list.OddsListRequest
 import org.cxct.sportlottery.network.odds.list.OddsListResult
+import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
-import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.LogUtil
-import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
-import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.VerifyConstUtil
+import org.cxct.sportlottery.util.*
 import java.text.Collator
 import java.util.*
 
@@ -112,6 +109,8 @@ class LeagueSelectViewModel(
                         )
                     )
                 }
+
+
             }
             var leagueOddData = mutableListOf<LeagueOdd>()
             result?.oddsListData?.leagueOdds?.forEach {
@@ -135,6 +134,21 @@ class LeagueSelectViewModel(
                 it.league.firstCap = "#"
             }
             _leagueOddList.postValue(leagueOddData)
+        }
+    }
+
+    val outrightLeagues = SingleLiveEvent<List<org.cxct.sportlottery.network.outright.odds.LeagueOdd>>()
+    fun getOutRightLeagueList(gameType: String) {
+
+        val params = OutrightOddsListRequest(gameType, matchType = MatchType.OUTRIGHT.postValue)
+        doRequest(androidContext, { OneBoSportApi.outrightService.getOutrightOddsList(params) }) {
+            val leagues = it?.outrightOddsListData?.leagueOdds
+            if (leagues == null) {
+                outrightLeagues.value = listOf()
+                return@doRequest
+            }
+
+            outrightLeagues.value = leagues!!
         }
     }
 

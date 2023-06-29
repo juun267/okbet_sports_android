@@ -21,6 +21,7 @@ import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.layoutmanager.SocketGridManager
+import java.util.ArrayList
 
 /**
  * @app_destination 末位比分
@@ -105,7 +106,13 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
 
     private fun loadData() {
         showLoading()
-        viewModel.getGameHallList(matchType, gameType, selectMatchIdList)
+        viewModel.getGameHallList(matchType, gameType)
+    }
+
+    override fun setSelectMatchIds(matchIdList: ArrayList<String>) {
+        clearData()
+        showLoading()
+        viewModel.getGameHallList(matchType, gameType, matchIdList)
     }
 
     private val subscribeVisibleRange by lazy {
