@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.thirdGame
 
 import android.content.Context
 import android.content.res.Configuration
+import android.content.res.Resources
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +10,6 @@ import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.view.setPadding
 import kotlinx.android.synthetic.main.menu_motion_floating.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.DisplayUtil.dpToPx
 import org.cxct.sportlottery.util.setVisibilityByCreditSystem
 
 /**
@@ -37,17 +36,22 @@ class MotionFloatingMenu @JvmOverloads constructor(
             //竖屏
         } else {
             //横屏
-            val dp60 = 60.dp
-            val dp50 = 50.dp
-            val dp30 = 30.dp
-            val dp20 = 20.dp
+            fun dp2px(dpValue: Float): Int {
+                val scale = Resources.getSystem().displayMetrics.density
+                return (dpValue * scale + 0.5f).toInt()
+            }
+
+            val dp60 = dp2px(60f)
+            val dp50 = dp2px(50f)
+            val dp30 = dp2px(30f)
+            val dp20 = dp2px(20f)
             val lpn = menu_button.layoutParams
             lpn.width = dp50
             lpn.height = dp50
             menu_button.layoutParams = lpn
             val cs = motion_layout.getConstraintSet(R.id.open)
             fun changeWidgetSize(padding: Float, size: Int, vId: View) {
-                vId.setPadding(padding.dp)
+                vId.setPadding(dp2px(padding))
                 cs.constrainWidth(vId.id, size)
                 cs.constrainHeight(vId.id, size)
             }
