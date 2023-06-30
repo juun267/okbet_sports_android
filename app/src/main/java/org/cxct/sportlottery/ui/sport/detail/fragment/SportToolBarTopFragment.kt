@@ -16,10 +16,7 @@ import kotlinx.android.synthetic.main.content_baseball_status.league_odd_match_h
 import kotlinx.android.synthetic.main.content_baseball_status.txvOut
 import kotlinx.android.synthetic.main.view_detail_head_toolbar1.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.setFbKicks
-import org.cxct.sportlottery.common.extentions.setMatchAttack
-import org.cxct.sportlottery.common.extentions.setMatchRoundScore
-import org.cxct.sportlottery.common.extentions.setMatchScore
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ViewDetailHeadToolbar1Binding
 import org.cxct.sportlottery.network.common.GameMatchStatus
 import org.cxct.sportlottery.network.common.GameStatus
@@ -29,10 +26,7 @@ import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.sport.SportViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.fromJson
-import org.cxct.sportlottery.util.setTeamLogo
+import org.cxct.sportlottery.util.*
 
 class SportToolBarTopFragment :
     BindingSocketFragment<SportViewModel, ViewDetailHeadToolbar1Binding>() {
@@ -101,7 +95,6 @@ class SportToolBarTopFragment :
             activity.tvToolbarHomeScore.text = "-"
             activity.tvToolbarAwayScore.text = "-"
             lin_bottom.isVisible = false
-            return
         }
 
         //赛事进行中，就显示比分状态，否则就不显示左下角，并且显示开赛时间
@@ -253,11 +246,10 @@ class SportToolBarTopFragment :
                 else -> View.GONE
             }
             text = when (matchInfo.gameType) {
-                GameType.VB.key, GameType.TT.key, GameType.BM.key, GameType.TN.key -> (matchInfo.homeTotalScore
-                    ?: 0).toString() + " - " + (matchInfo.awayTotalScore ?: 0).toString()
-
-                else -> (matchInfo.homeScore ?: 0).toString() + " - " + (matchInfo.awayScore
-                    ?: 0).toString()
+                GameType.VB.key, GameType.TT.key, GameType.BM.key, GameType.TN.key ->
+                    matchInfo.homeTotalScore.toStringS("0")+ "-" + matchInfo.awayTotalScore.toStringS("0")
+                else ->
+                    matchInfo.homeScore.toStringS("0") + "-" + matchInfo.awayScore.toStringS("0")
             }
         }
         setMatchScore(
@@ -280,7 +272,7 @@ class SportToolBarTopFragment :
      */
     private fun setPointScore(matchInfo: MatchInfo) {
         tv_point_score.isVisible = TimeUtil.isTimeInPlay(matchInfo.startTime)
-        tv_point_score.text = "(${matchInfo.homePoints ?: "0"}-${matchInfo.awayPoints ?: "0"})"
+        tv_point_score.text = "(${matchInfo.homePoints.toStringS("0")}-${matchInfo.awayPoints.toStringS("0")})"
     }
 
 

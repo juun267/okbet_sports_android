@@ -27,7 +27,7 @@ class RcvChartAdapter : BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_t
             when (gameType) {
                 GameType.FT.name -> {
                     holder.itemView.layoutParams.let { lp ->
-                        lp.width = (width / 5).dp
+                        lp.width = (width / 4).dp
                         holder.itemView.layoutParams = lp
                     }
                 }

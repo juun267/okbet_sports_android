@@ -203,12 +203,13 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 }
             }
         }
-
-        if (matchInfo?.gameType == GameType.BB.name ||
-            matchInfo?.gameType == GameType.ES.name ||
-            matchInfo?.gameType == GameType.IH.name) {
-            binding.detailToolBarViewPager.isUserInputEnabled = false
-            binding.flRdContainer.gone()
+        //指定球类显示比分板
+        when(matchInfo?.gameType){
+            GameType.FT.key, GameType.BK.key, GameType.TN.key, GameType.BM.key, GameType.TT.key, GameType.VB.key->{}
+            else->{
+                binding.detailToolBarViewPager.isUserInputEnabled = false
+                binding.flRdContainer.gone()
+            }
         }
 
         topBarFragmentList = listOf<Fragment>(SportToolBarTopFragment().apply {

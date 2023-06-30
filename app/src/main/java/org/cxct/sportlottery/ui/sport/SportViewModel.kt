@@ -11,6 +11,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.OddSpreadForSCO
 import org.cxct.sportlottery.common.extentions.toIntS
+import org.cxct.sportlottery.common.extentions.toStringS
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.common.*
@@ -609,7 +610,7 @@ class SportViewModel(
      */
     fun assembleData1(gameType: String?, matchInfo: MatchInfo) {
         //足球
-        if (gameType == GameType.FT.name) {
+        if (gameType == GameType.FT.key) {
             matchInfo.apply {
                 home1st = homeCornerKicks.toString()
                 away1st = awayCornerKicks.toString()
@@ -619,11 +620,11 @@ class SportViewModel(
                 home3rd = homeYellowCards.toString()
                 away3rd = awayYellowCards.toString()
 
-                home4th = homeHalfScore ?: "0"
-                away4th = awayHalfScore ?: "0"
+                home4th = homeScore.toStringS("0")
+                away4th = awayScore.toStringS("0")
 
-                home5th = (homeTotalScore ?: "0").toString()
-                away5th = (awayTotalScore ?: "0").toString()
+//                home5th = (homeScore ?: "0").toString()
+//                away5th = (homeScore ?: "0").toString()
                 Timber.d("home5th:$home5th away5th:$away5th")
             }
         } else {
@@ -658,10 +659,10 @@ class SportViewModel(
                         away7th = it[6].awayScore.toString()
                     }
                 }
-                home8th = homeScore?:"0"
-                away8th = awayScore?:"0"
-                home9th =(homeTotalScore ?: "0").toString()
-                away9th = (awayTotalScore ?: "0").toString()
+                home8th = homeTotalScore.toStringS("0")
+                away8th = awayTotalScore.toStringS("0")
+                home9th = homePoints.toStringS("0")
+                away9th = awayPoints.toStringS("0")
             }
         }
         extracted2(matchInfo, gameType)
@@ -727,7 +728,7 @@ class SportViewModel(
     private fun extracted2(matchInfo: MatchInfo, gameType: String?) {
         val list: MutableList<String> = mutableListOf()
         list.apply {
-            if (gameType == GameType.FT.name) {
+            if (gameType == GameType.FT.key) {
                 add(getLocalString(R.string.J244))
                 add(home1st)
                 add(away1st)
@@ -737,12 +738,12 @@ class SportViewModel(
                 add(getLocalString(R.string.P141))
                 add(home3rd)
                 add(away3rd)
-                add(getLocalString(R.string.N937))
+                add(getLocalString(R.string.J254))
                 add(home4th)
                 add(away4th)
-                add(getLocalString(R.string.J254))
-                add(home5th)
-                add(away5th)
+//                add(getLocalString(R.string.J254))
+//                add(home5th)
+//                add(away5th)
             } else {
                 add("1")
                 add(home1st)
