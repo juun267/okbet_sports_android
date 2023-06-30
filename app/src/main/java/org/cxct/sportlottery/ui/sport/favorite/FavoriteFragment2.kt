@@ -8,6 +8,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.ui.sport.list.SportListFragment2
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
+import java.util.ArrayList
 
 class FavoriteFragment2: SportListFragment2<SportListViewModel, FragmentSportList2Binding>() {
 
@@ -29,7 +30,7 @@ class FavoriteFragment2: SportListFragment2<SportListViewModel, FragmentSportLis
         }
     }
 
-    override fun load(item: Item) {
+    override fun load(item: Item, selectMatchIdList: ArrayList<String>) {
         setSportDataList(item.leagueOddsList?.toMutableList())
         setMatchInfo(item.name, item.leagueOddsList?.size.toStringS("0"))
     }

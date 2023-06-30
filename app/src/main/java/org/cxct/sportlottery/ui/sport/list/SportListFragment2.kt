@@ -214,15 +214,6 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
         addOddsDialog(matchInfo, odd, playCateCode, betPlayCateNameMap)
     }
 
-    override fun setSelectMatchIds(matchIdList: ArrayList<String>) {
-        selectMatchIdList = matchIdList
-        gameTypeAdapter.currentItem?.let {
-            clearData()
-            load(it)
-        }
-    }
-
-
     override fun resubscribeChannel(delay: Long) {
         clearSubscribeChannels()
         if (!isVisible) {
