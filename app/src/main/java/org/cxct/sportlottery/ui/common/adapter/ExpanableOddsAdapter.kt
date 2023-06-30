@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.common.adapter
 
-import android.util.Log
 import androidx.core.view.children
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.entity.node.BaseNode

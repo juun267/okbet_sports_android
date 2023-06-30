@@ -68,6 +68,7 @@ class SportOutrightFragment : BaseSportListFragment<SportListViewModel, Fragment
         super.onBindViewStatus(view)
         arguments?.getString("gameType")?.let { gameType = it }
         initObserve()
+        showLoading()
         viewModel.loadMatchType(matchType)
     }
 

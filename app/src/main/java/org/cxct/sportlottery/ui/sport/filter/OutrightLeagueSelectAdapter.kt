@@ -98,17 +98,14 @@ class OutrightLeagueSelectAdapter(private val onSelectChanged: (Int) -> Unit) : 
 
     fun getSelected(): ArrayList<String> {
         var matchSelectList = arrayListOf<String>()
-        val countLeague = itemData.count { it.league!!.isSelected }
-        if (countLeague != itemData.size){
-            itemData.forEach {
+        itemData.forEach {
 
-                if (it.league!!.isSelected) {
-                    matchSelectList.addAll(it.matchOdds!!.map { it.matchInfo?.id?:"" })
-                } else {
-                    it.matchOdds!!.forEach { matchOdd->
-                        if (matchOdd.isSelected) {
-                            matchOdd.matchInfo?.id?.let { matchSelectList.add(it) }
-                        }
+            if (it.league!!.isSelected) {
+                matchSelectList.addAll(it.matchOdds!!.map { it.matchInfo?.id?:"" })
+            } else {
+                it.matchOdds!!.forEach { matchOdd->
+                    if (matchOdd.isSelected) {
+                        matchOdd.matchInfo?.id?.let { matchSelectList.add(it) }
                     }
                 }
             }

@@ -1387,7 +1387,7 @@
     <string name="J634">Suriin ang detalye</string>
     <string name="D039">Alisin</string>
     <string name="I023">Kahapon</string>
-    <string name="N698">Expand</string>
+    <string name="N698">Tingnan lahat</string>
     <string name="J244">Corner kick</string>
     <string name="N937">Half time score</string>
     <string name="J254">Total score</string>
@@ -1406,6 +1406,6 @@
     <string name="I059">Na-settle</string>
     <string name="I039">Oras ng pagtaya</string>
     <string name="N142">Bet Slip No.</string>
-    <string name="N104">Ipunin</string>
+    <string name="N082">Paborito</string>
 </resources>
 

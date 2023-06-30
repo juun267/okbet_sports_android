@@ -261,12 +261,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                         fragmentHelper.showFragment(itemPosition)
                         if (itemPosition == 0) {
                             homeFragment().backMainHome()
-                        } else {
-                            if (itemPosition == 1) {
-                                binding.bottomNavigationView.postDelayed({
-                                    jumpToTheSport(MatchType.IN_PLAY, GameType.BK)
-                                }, 200)
-                            }
                         }
                         setupBetBarVisiblity(itemPosition)
                         return@OnNavigationItemSelectedListener true
@@ -730,6 +724,12 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
     }
 
+    fun jumpToESport() {
+        checkSportStatus(this) {
+            jumpToTheSport(MatchType.EARLY, GameType.ES)
+        }
+    }
+
     fun jumpToNews() {
         backMainHome()
         homeFragment().jumpToNews()
@@ -745,17 +745,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         //检测体育服务是否关闭
         checkSportStatus(this) {
             jumpToTheSport(MatchType.IN_PLAY, GameType.BK)
-            if (bottom_navigation_view.currentItem != 1) {
-                bottom_navigation_view.currentItem = 1
-            }
         }
     }
 
     fun jumpToEarlySport() {
         jumpToTheSport(MatchType.EARLY, GameType.FT)
-        if (bottom_navigation_view.currentItem != 1) {
-            bottom_navigation_view.currentItem = 1
-        }
     }
     fun jumpToBetInfo(tabPosition: Int) {
         if (getMarketSwitch()) {

@@ -224,7 +224,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         }
     }
 
-    protected fun setupOddsChangeListener() {
+    private fun setupOddsChangeListener() {
         if (isAdded) {
             receiver.oddsChangeListener = oddsChangeListener
         }
@@ -245,13 +245,17 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     private var filerMatchIds = arrayListOf<String>()
     protected open fun load(item: Item, selectMatchIdList: ArrayList<String> = arrayListOf()) {
         showLoading()
-        setMatchInfo(item.name, item.num.toString())
+        setMatchInfo(item.name, "")
         filerMatchIds = selectMatchIdList
         viewModel.switchGameType(matchType, item, selectMatchIdList)
     }
 
     protected fun setMatchInfo(name: String, num: String) {
         binding.tvSportName.text = name
+        binding.tvMatchNum.text = num
+    }
+
+    protected fun setMatchNum(num: String) {
         binding.tvMatchNum.text = num
     }
 
@@ -266,6 +270,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         adapter.setNewInstance(list)
         if (!list.isNullOrEmpty()) {
             resubscribeChannel(120)
+            setMatchNum(list.size.toString())
         }
         val footerLayout = adapter.footerLayout?.getChildAt(0) as SportFooterGamesView? ?: return
         footerLayout.visible()
@@ -299,6 +304,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     }
 
     private fun unSubscribeAllChannel() {
+        unSubscribeChannelHallAll()
         getGameListAdapter().resetRangeMatchOdd()
         if (subscribedChannel.size > 0) {
             subscribedChannel.forEach { unSubscribeChannelHall(it.first, it.second) }
@@ -323,7 +329,6 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     @Subscribe
     fun onSelectMatch(matchIdList: ArrayList<String>) {
         setSelectMatchIds(matchIdList)
-        Log.e("For Test", "======>>> onSelectMatch ${matchIdList}")
     }
 
     protected fun addOddsDialog(

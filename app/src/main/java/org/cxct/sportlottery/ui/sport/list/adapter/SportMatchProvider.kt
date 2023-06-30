@@ -44,35 +44,36 @@ class SportMatchProvider(private val adapter: SportLeagueAdapter2,
     }
 
     override fun convert(helper: BaseViewHolder, item: BaseNode, payloads: List<Any>) {
-        val binding = (helper as SportMatchVH)
-        val matchOdd = (item as MatchOdd)
-
-
         if (payloads.isNullOrEmpty()) {
-            updateMatchOdd(binding, matchOdd)
             return
         }
 
-        when(payloads.first()) {
-            is SportMatchEvent.OddsChanged -> {
-                binding.setupOddsButton(adapter.matchType, matchOdd, adapter.oddsType)
-            }
-            is SportMatchEvent.OddSelected -> {
-                binding.setupOddsButton(adapter.matchType, matchOdd, adapter.oddsType)
-            }
+        val binding = (helper as SportMatchVH)
+        val matchOdd = (item as MatchOdd)
 
-            is SportMatchEvent.FavoriteChanged -> {
-                binding.updateFavoriteStatus(matchOdd.matchInfo)
-            }
+        payloads.forEach {
+            when(it) {
+                is SportMatchEvent.OddsChanged -> {
+                    binding.setupOddsButton(adapter.matchType, matchOdd, adapter.oddsType)
+                }
+                is SportMatchEvent.OddSelected -> {
+                    binding.setupOddsButton(adapter.matchType, matchOdd, adapter.oddsType)
+                }
 
-            is SportMatchEvent.MatchStatuChanged -> {
-                updateMatchStatus(binding, matchOdd)
-            }
+                is SportMatchEvent.FavoriteChanged -> {
+                    binding.updateFavoriteStatus(matchOdd.matchInfo)
+                }
 
-            else -> {
+                is SportMatchEvent.MatchStatuChanged -> {
+                    updateMatchStatus(binding, matchOdd)
+                }
 
+                else -> {
+                }
             }
         }
+
+
     }
 
     private fun updateMatchStatus(binding: SportMatchVH , matchOdd: MatchOdd) {
