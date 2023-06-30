@@ -157,36 +157,17 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-
-                    <TextView
-                        android:id="@+id/tv_score"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/din_regular"
-                        android:singleLine="true"
-                        android:textColor="@color/color_FFFFFF"
-                        android:textSize="@dimen/textSize26sp"
-                        android:textStyle="bold"
-                        android:visibility="gone"
-                        tools:text="5 - 5"
-                        tools:visibility="visible" />
-
-                </LinearLayout>
-
                 <TextView
-                    android:id="@+id/tv_point_score"
+                    android:id="@+id/tv_score"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/din_regular"
                     android:singleLine="true"
                     android:textColor="@color/color_FFFFFF"
-                    android:textSize="@dimen/textSize12sp"
+                    android:textSize="@dimen/textSize26sp"
+                    android:textStyle="bold"
                     android:visibility="gone"
-                    tools:text="10 - 5"
+                    tools:text="5 - 5"
                     tools:visibility="visible" />
             </LinearLayout>
 
@@ -411,11 +392,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/color_1A1A1A_FFFFFF"
-                android:textSize="12sp"
+                android:textSize="@dimen/textSize10sp"
                 android:visibility="gone"
                 tools:text="1-1 2-2 3-3"
                 tools:visibility="visible" />
-
+            <TextView
+                android:id="@+id/tv_point_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/din_regular"
+                android:singleLine="true"
+                android:textColor="@color/color_FF8A00"
+                android:textSize="@dimen/textSize10sp"
+                android:visibility="gone"
+                tools:text="(10-5)"
+                tools:visibility="visible" />
         </LinearLayout>
 
         <include

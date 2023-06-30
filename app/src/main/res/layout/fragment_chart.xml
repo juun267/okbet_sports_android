@@ -10,8 +10,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvChartView"
         android:layout_width="358dp"
-        android:layout_height="115dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="124dp"
+        android:layout_marginTop="6dp"
         android:background="@drawable/bg_sport_chart"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

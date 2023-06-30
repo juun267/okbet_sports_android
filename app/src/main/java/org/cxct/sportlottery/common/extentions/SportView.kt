@@ -163,7 +163,7 @@ fun TextView.setMatchRoundScore(matchInfo: MatchInfo) {
         } else {
             spanny.append(
                 spanScore,
-                ForegroundColorSpan(this.context.getColor(R.color.color_F0A536))
+                ForegroundColorSpan(this.context.getColor(R.color.color_FF8A00))
             )
         }
     }
