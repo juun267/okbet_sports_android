@@ -2,9 +2,9 @@
 <eightbitlab.com.blurview.BlurView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/bv_tool_bar"
+    android:id="@+id/blurGroup"
     android:layout_width="match_parent"
-    android:layout_height="241dp"
+    android:layout_height="match_parent"
     tools:ignore="MissingClass">
 
     <View
@@ -14,14 +14,16 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="241dp"
+        android:layout_gravity="bottom"
         android:layout_marginTop="10dp"
         android:alpha="0.95"
         android:background="@drawable/bg_chat_emoji" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerEmoji"
-        android:layout_marginTop="22dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="40dp"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
         android:layout_width="match_parent"
@@ -43,6 +45,7 @@
             android:id="@+id/recyclerColumn"
             tools:listitem="@layout/item_chat_emoji_column"
             android:paddingTop="10dp"
+            tools:itemCount="1"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

@@ -402,9 +402,12 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
                         showToast(getString(R.string.chat_you_banned))
                     }
                 }
-                //选中emoji
+                //表情选中emoji
                 binding.chatEmojiView.setOnEmojiSelect {
                     binding.vChatAction.etInput.insertEmoji(it)
+                }
+                binding.chatEmojiView.setOnClickListener {
+                    binding.vChatAction.ivEmoji.performClick()
                 }
             }
 

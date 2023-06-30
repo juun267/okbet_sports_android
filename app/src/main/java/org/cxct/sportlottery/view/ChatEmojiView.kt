@@ -35,6 +35,10 @@ class ChatEmojiView(context: Context, attrs: AttributeSet?): FrameLayout(context
             val gridManager=GridLayoutManager(context,8)
             recyclerEmoji.layoutManager=gridManager
             recyclerEmoji.adapter=emojiAdapter
+
+//            blurGroup.onClick {
+//                itemBlock("")
+//            }
         }
         initColumn()
     }
@@ -55,11 +59,13 @@ class ChatEmojiView(context: Context, attrs: AttributeSet?): FrameLayout(context
 
         emojiAdapter.setList(arrayListOf("\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22",
             "\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22",
-            "\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22"))
+            "\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22",
+            "\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22"))
 
     }
-
+    private var itemBlock:(emojiText:String)->Unit={}
     fun setOnEmojiSelect(block:(emojiText:String)->Unit){
+        itemBlock=block
         emojiAdapter.setOnItemClickListener{_,_,position->
             block(emojiAdapter.data[position])
         }
