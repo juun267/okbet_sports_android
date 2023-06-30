@@ -16,7 +16,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:background="@drawable/bg_sport_detail_football" />
+        tools:background="@drawable/img_soccer_mobile02" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -39,7 +39,7 @@
             android:layout_height="match_parent"
             android:visibility="visible">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
@@ -48,22 +48,42 @@
 
                 <ImageView
                     android:id="@+id/img_home_logo"
-                    android:layout_width="44dp"
-                    android:layout_height="48dp"
-                    tools:layout_height="48dp" />
+                    android:layout_width="@dimen/margin_48"
+                    android:layout_height="@dimen/margin_48"
+                    android:layout_marginBottom="@dimen/margin_25"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/ic_attack_h"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:layout_marginRight="@dimen/margin_10"
+                    app:layout_constraintEnd_toStartOf="@id/img_home_logo"
+                    app:layout_constraintTop_toTopOf="@id/img_home_logo"
+                    app:layout_constraintBottom_toBottomOf="@id/img_home_logo"
+                    android:src="@drawable/bg_green_dot"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
 
                 <TextView
                     android:id="@+id/tv_home_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/img_home_logo"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginHorizontal="@dimen/margin_10"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="6dp"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textColor="@color/color_FFFFFF_FFFFFF"
                     android:textSize="@dimen/textSize14sp"
                     tools:text="義大利" />
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -141,20 +161,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center">
-
-                        <ImageView
-                            android:id="@+id/ic_attack_h"
-                            android:layout_width="4dp"
-                            android:layout_height="4dp"
-                            android:src="@drawable/bg_green_dot"
-                            android:visibility="gone"
-                            tools:visibility="visible" />
-                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/tv_score"
@@ -169,21 +175,6 @@
                         tools:text="5 - 5"
                         tools:visibility="visible" />
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center">
-
-                        <ImageView
-                            android:id="@+id/ic_attack_c"
-                            android:layout_width="4dp"
-                            android:layout_height="4dp"
-                            android:layout_marginRight="@dimen/margin_4"
-                            android:src="@drawable/bg_green_dot"
-                            android:visibility="gone"
-                            tools:visibility="visible" />
-                    </LinearLayout>
                 </LinearLayout>
 
                 <TextView
@@ -199,8 +190,7 @@
                     tools:visibility="visible" />
             </LinearLayout>
 
-
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
@@ -209,23 +199,42 @@
 
                 <ImageView
                     android:id="@+id/img_away_logo"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    tools:minHeight="48dp"
+                    android:layout_width="@dimen/margin_48"
+                    android:layout_height="@dimen/margin_48"
+                    android:layout_marginBottom="@dimen/margin_25"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/ic_attack_c"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    app:layout_constraintStart_toEndOf="@id/img_away_logo"
+                    app:layout_constraintTop_toTopOf="@id/img_away_logo"
+                    app:layout_constraintBottom_toBottomOf="@id/img_away_logo"
+                    android:src="@drawable/bg_green_dot"
+                    android:visibility="gone"
                     tools:visibility="visible" />
+
 
                 <TextView
                     android:id="@+id/tv_away_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/img_away_logo"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginHorizontal="@dimen/margin_10"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="6dp"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textColor="@color/color_FFFFFF_FFFFFF"
                     android:textSize="@dimen/textSize14sp"
                     tools:text="義大利" />
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -330,7 +339,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="14dp"
-        android:layout_marginBottom="8dp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
