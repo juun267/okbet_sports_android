@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.sport.list.adapter
 
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -123,8 +124,8 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         leagueOddMatchFavorite.setOnClickListener { matchInfo?.id?.let {onFavoriteClick.invoke(it) } }
 
         ivOT.isVisible = matchInfo?.gameType == GameType.BK.key && matchInfo?.socketMatchStatus == 40
-        leagueNeutral.isSelected = matchInfo?.neutral == 1
-        leagueNeutral.isVisible = matchInfo?.neutral == 10
+        leagueNeutral.isVisible = matchInfo?.neutral == 1
+
 //        leagueOddMatchChart.isVisible = matchInfo?.source == MatchSource.SHOW_STATISTICS.code
 
         // ivPlay、ivAnimation同时只显示一个
