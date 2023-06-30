@@ -339,9 +339,7 @@ class HotMatchView(
                         val viewModel = fragment.viewModel as BaseSocketViewModel
                         viewModel.updateMatchBetListData(fastBetDataBean)
                     }
-                    SportDetailActivity.startActivity(
-                        fragment.requireContext(), matchInfo, matchType, false
-                    )
+                    SportDetailActivity.startActivity(fragment.requireContext(), matchInfo = matchInfo, matchType=matchType)
                 }, onClickPlayTypeListener = { _, _, _, _ ->
 
                 })

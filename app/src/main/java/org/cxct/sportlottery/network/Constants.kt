@@ -266,8 +266,8 @@ object Constants {
 
     //2023篮球世界杯内容h5地址
     fun getWorldCupH5Url(context: Context, token: String? = ""): String {
-//        val base = getH5BaseUrl()
-        val base = "https://172.15.50.32:3000/"
+        val base = getH5BaseUrl()
+//        val base = "https://172.15.50.32:3000/"
         return base + "mobile/world-cup?device=android&token=${token}&lang=${getSelectLanguage(context).key}&oddsType=${getCurrentOddsTypeName()}&oddsDiscount=${UserInfoRepository.userInfo.value?.discount?:1.0}"
     }
 

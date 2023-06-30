@@ -186,7 +186,7 @@ open class SportListFragment :
     }
 
     private fun navMatchDetailPage(matchInfo: MatchInfo?) = matchInfo?.let {
-        SportDetailActivity.startActivity(requireContext(), it, matchType)
+        SportDetailActivity.startActivity(requireContext(), matchInfo = it, matchType = matchType)
     }
 
 
