@@ -146,15 +146,12 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
 
         MatchOddsRepository.observerMatchStatus(this) {
             val matchId = it?.matchStatusCO?.matchId ?: return@observerMatchStatus
-            Log.e("[subscribe]","====>>> matchStatusChange 111 $matchId")
             val isFinished = it.matchStatusCO?.status == GameMatchStatus.FINISH.value
             val matchOdd = sportLeagueAdapter2.findVisiableRangeMatchOdd(matchId) ?: return@observerMatchStatus
             if (isFinished) {
                 sportLeagueAdapter2.removeMatchOdd(matchOdd)
             } else {
-                Log.e("[subscribe]","====>>> matchStatusChange 222 $matchId")
                 if (SocketUpdateUtil.updateMatchStatus(matchOdd.matchInfo?.gameType, matchOdd, it, context)) {
-                    Log.e("[subscribe]","====>>> matchStatusChange 333 $matchId")
                     sportLeagueAdapter2.matchStatuChanged(matchOdd)
                 }
             }

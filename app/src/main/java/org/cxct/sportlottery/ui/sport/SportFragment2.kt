@@ -130,7 +130,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         addTab(getString(R.string.home_tab_parlay), countParlay, 5)
 //        addTab(getString(R.string.home_tab_cs), countCS, 6)
         addTab(getString(R.string.home_tab_outright), countOutright, 6)
-        val tabView = addTab(getString(R.string.N104), favoriteCount(favoriteItems), 7)
+        val tabView = addTab(getString(R.string.N082), favoriteCount(favoriteItems), 7)
         if (!LoginRepository.isLogined()) {
             tabView.setOnTouchListener { _, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
@@ -163,7 +163,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     private var currentMatchType: MatchType? = null
 
     private fun selectTab(position: Int) {
-        var matchType =  matchTypeTab[position] ?: return
+        var matchType =  matchTypeTab.getOrNull(position) ?: return
         currentMatchType = matchType
         navGameFragment(matchType)
     }
