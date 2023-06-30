@@ -19,17 +19,17 @@
             <org.cxct.sportlottery.view.SportNodeView
                 android:id="@+id/nodeHandicap"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
 
             <org.cxct.sportlottery.view.SportNodeView
                 android:id="@+id/nodeBetRule"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
 
             <org.cxct.sportlottery.view.SportNodeView
                 android:id="@+id/nodeLanguage"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -45,7 +45,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:visibility="gone"
-                android:layout_height="40dp">
+                android:layout_height="40dp"
+                android:foreground="@drawable/fg_ripple">
 
                 <ImageView
                     android:id="@+id/ivTutorial"
@@ -89,7 +90,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constrainNews"
                 android:layout_width="match_parent"
-                android:layout_height="40dp">
+                android:layout_height="40dp"
+                android:foreground="@drawable/fg_ripple">
 
                 <ImageView
                     android:id="@+id/ivAnnouncement"
@@ -132,7 +134,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constrainResults"
                 android:layout_width="match_parent"
-                android:layout_height="40dp">
+                android:layout_height="40dp"
+                android:foreground="@drawable/fg_ripple">
 
                 <ImageView
                     android:id="@+id/ivResults"
@@ -176,7 +179,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constrainRules"
                 android:layout_width="match_parent"
-                android:layout_height="40dp">
+                android:layout_height="40dp"
+                android:foreground="@drawable/fg_ripple">
 
                 <ImageView
                     android:id="@+id/ivRules"

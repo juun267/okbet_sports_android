@@ -3,17 +3,15 @@ package org.cxct.sportlottery.ui.maintab.menu
 import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.view.View
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.inVisible
+import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentSportLeftMenuBinding
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
-import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
 import org.cxct.sportlottery.util.EventBusUtil
@@ -115,10 +113,7 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
                 tvUserName.text="${viewModel.userInfo.value?.userName} "
                 //余额
                 tvUserBalance.text="$showCurrencySign ${TextUtil.format(viewModel.userMoney.value?:0)}"
-                Glide.with(requireContext())
-                    .load(viewModel.userInfo.value?.iconUrl)
-                    .apply(RequestOptions().placeholder(R.drawable.ic_person_avatar))
-                    .into(ivUserCover) //載入頭像
+                ivUserCover.load(viewModel.userInfo.value?.iconUrl, R.drawable.ic_person_avatar)
             }else{
                 //未登录
                 tvLogin.visible()

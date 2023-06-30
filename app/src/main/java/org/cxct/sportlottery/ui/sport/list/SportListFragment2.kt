@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.entity.node.BaseNode
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.rotationAnimation
-import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.sport.BaseSportListFragment
@@ -31,7 +31,7 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
         sportLeagueAdapter2.onOddsChangeEvent(it)
     }
 
-    protected val sportLeagueAdapter2 by lazy {
+    private val sportLeagueAdapter2 by lazy {
         SportLeagueAdapter2(matchType,
             this,
             onNodeExpand = { resubscribeChannel(200) },
@@ -47,7 +47,6 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
         matchType = (arguments?.getSerializable("matchType") as MatchType?) ?: MatchType.IN_PLAY
         sportLeagueAdapter2.matchType = matchType
         gameType = arguments?.getString("gameType") ?: GameType.BK.key
-        selectMatchIdList = arrayListOf()
         gameTypeAdapter.setNewInstance(null)
         clearData()
         setMatchInfo("", "")
@@ -71,13 +70,7 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
     }
 
     override fun onInitData() {
-        reset()
         reload()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        resubscribeChannel(20)
     }
 
     private fun setupSportTypeList() {
@@ -109,16 +102,12 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
 //                val matchOdd = testLeague.matchOdds.first()
 //                testLeague.matchOdds.clear()
 //                testLeague.matchOdds.add(matchOdd)
-//                sportLeagueAdapter2.setNewInstance(mutableListOf(testLeague))
+//                setSportDataList(mutableListOf(testLeague))
 //            } else {
                 val mLeagueOddList = (oddsListData.leagueOddsFilter ?: leagueOdds).toMutableList()
-                sportLeagueAdapter2.setNewInstance(mLeagueOddList as MutableList<BaseNode>)
-                sportLeagueAdapter2.footerLayout?.let { footerLayout->
-                    footerLayout.postDelayed({ footerLayout.getChildAt(0)?.visible() }, 200)
-                }
+                setSportDataList(mLeagueOddList as MutableList<BaseNode>)
 //            }
 
-            resubscribeChannel(80)
         }
 
     }
@@ -134,12 +123,11 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
         sportLeagueAdapter2.oddsType = oddsType
     }
 
-    override fun onFavorite(favoriteMatchIds: List<String>) {
+    override fun onFavorite(favoriteIds: Set<String>) {
         if (sportLeagueAdapter2.getCount() < 1) {
             return
         }
 
-        val favoriteIds = favoriteMatchIds.toSet()
         sportLeagueAdapter2.data.forEachIndexed { index, baseNode ->
             if (baseNode is org.cxct.sportlottery.network.odds.list.MatchOdd) {
                 baseNode.matchInfo?.let {
@@ -156,10 +144,10 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
 
     private fun initSocketObserver() {
 
-        receiver.matchStatusChange.observe(this@SportListFragment2.viewLifecycleOwner) {
-            val matchId = it?.matchStatusCO?.matchId ?: return@observe
+        MatchOddsRepository.observerMatchStatus(this) {
+            val matchId = it?.matchStatusCO?.matchId ?: return@observerMatchStatus
             val isFinished = it.matchStatusCO?.status == GameMatchStatus.FINISH.value
-            val matchOdd = sportLeagueAdapter2.findVisiableRangeMatchOdd(matchId) ?: return@observe
+            val matchOdd = sportLeagueAdapter2.findVisiableRangeMatchOdd(matchId) ?: return@observerMatchStatus
             if (isFinished) {
                 sportLeagueAdapter2.removeMatchOdd(matchOdd)
             } else {
@@ -216,10 +204,6 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
 
     }
 
-    private fun clearData() {
-        sportLeagueAdapter2.setNewInstance(null)
-    }
-
     override fun oddClick(
         matchInfo: MatchInfo,
         odd: Odd,
@@ -230,15 +214,6 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
     ) {
         addOddsDialog(matchInfo, odd, playCateCode, betPlayCateNameMap)
     }
-
-    override fun setSelectMatchIds(matchIdList: ArrayList<String>) {
-        selectMatchIdList = matchIdList
-        gameTypeAdapter.currentItem?.let {
-            clearData()
-            load(it)
-        }
-    }
-
 
     override fun resubscribeChannel(delay: Long) {
         clearSubscribeChannels()
@@ -265,7 +240,7 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
 
         sportLeagueAdapter2.recodeRangeMatchOdd().forEach { matchOdd ->
             matchOdd.matchInfo?.let {
-                Log.e("[subscribe]","====>>> 訂閱${it.name} ${it.id} -> " + "${it.homeName} vs " + "${it.awayName}")
+                Log.e("[subscribe]","====>>> 訂閱 ${it.name} ${it.id} -> " + "${it.homeName} vs " + "${it.awayName} (${it.gameType} ${it.id})")
                 subscribeChannel(it.gameType, it.id)
             }
         }

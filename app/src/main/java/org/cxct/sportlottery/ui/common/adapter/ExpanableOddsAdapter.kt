@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.common.adapter
 
-import android.util.Log
 import androidx.core.view.children
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.entity.node.BaseNode
@@ -122,6 +121,10 @@ abstract class ExpanableOddsAdapter<T: MatchOdd>: BaseNodeAdapter() {
 
     fun findVisiableRangeMatchOdd(id: String): T? {
         return currentVisiableMatchOdds[id]
+    }
+
+    fun resetRangeMatchOdd() {
+        currentVisiableMatchOdds.clear()
     }
 
 }

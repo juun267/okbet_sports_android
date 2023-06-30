@@ -1378,6 +1378,7 @@
     <string name="J459">Gợi ý</string>
     <string name="P111">Địa chỉ nên bao gồm</string>
     <string name="P110">Căn hộ/số phòng/tầng, tên tòa nhà, vị trí/khối/thời gian/số nhà, tên đường</string>
+    <string name="P160">OKLive</string>
     <string name="P131">TK hội viên OKBET</string>
     <string name="P132">TK hội viên OKBET x Glife</string>
     <string name="P130">Chọn TK OKBET của bạn</string>
@@ -1420,6 +1421,16 @@
     <string name="J248">Mùa thứ 4</string>
     <string name="P142">MC</string>
     <string name="P139">Đồng ý cược</string>
+    <string name="N111">Không còn</string>
+    <string name="N934">Lọc giải đấu</string>
+    <string name="N933">Hiện không có trận nào</string>
+    <string name="accept_any_change_in_odds">Nhận mọi thay đổi</string>
+    <string name="accept_better_change_in_odds">Nhận thay đổi tốt hơn</string>
+    <string name="accept_never_change_in_odds">Không nhận thay đổi</string>
+    <string name="I059">Đã kết toán</string>
+    <string name="I039">Thời gian cược</string>
+    <string name="N142">Mã đơn cược</string>
+    <string name="N082">Yêu thích</string>
     <string name="P161">Kết quả chung cuộc</string>
     <string name="P162">Kết quả hiệp 1</string>
     <string name="P163">Kết quả hiệp 2</string>

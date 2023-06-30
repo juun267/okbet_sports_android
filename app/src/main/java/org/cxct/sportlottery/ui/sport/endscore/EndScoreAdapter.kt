@@ -119,7 +119,7 @@ class EndScoreAdapter(val onItemClick:(Int, View, BaseNode) -> Unit)
     }
 
 
-    fun updateFavorite(favorMatchIds: List<String>) {
+    fun updateFavorite(favorMatchIds: Set<String>) {
         rootNodes?.forEach { rootNode ->
             rootNode.childNode?.forEach {
                 val matchOdd = (it as MatchOdd)

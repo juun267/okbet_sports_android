@@ -5,6 +5,7 @@ import android.view.View
 import androidx.core.view.postDelayed
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.cxct.sportlottery.common.extentions.startActivity
+import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.FragmentLeftSportBetBinding
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
@@ -22,6 +23,7 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
     private val hotMatchAdapter= RecyclerLeftMatchesAdapter()
     //需求暂时不要做了
 //    private val classificationAdapter= RecyclerClassificationAdapter()
+    private val loadingHolder by lazy { Gloading.wrapView(binding.content) }
 
     override fun onInitView(view: View) =binding.run{
         recyclerHotMatch.layoutManager=LinearLayoutManager(requireContext())
@@ -41,7 +43,7 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
         }
 
         //投注详情
-        constrainBetRecord.onClick {
+        constrainBetRecord.setOnClickListener {
             if(viewModel.isLogin()){
                 startActivity(BetRecordActivity::class.java)
                 constrainBetRecord.postDelayed({
@@ -56,7 +58,7 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
 
     override fun onInitData() {
         super.onInitData()
-        loading()
+        loadingHolder.showLoading()
         getHotMatchesData()
 
         if(viewModel.isLogin()){
@@ -78,7 +80,7 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
         //刷新热门赛事数据
         viewModel.getRecommend()
         viewModel.publicityRecommend.observe(this){
-            hideLoading()
+            loadingHolder.showLoadSuccess()
             it.peekContent().let {data->
                 hotMatchAdapter.setList(data)
             }

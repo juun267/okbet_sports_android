@@ -5,6 +5,7 @@
     android:layout_marginEnd="10dp"
     android:layout_marginTop="8dp"
     android:background="@drawable/bg_sport_classifi"
+    android:foreground="@drawable/fg_ripple"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView

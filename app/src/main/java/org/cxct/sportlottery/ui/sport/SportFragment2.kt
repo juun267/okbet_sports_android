@@ -24,9 +24,10 @@ import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.ui.sport.endscore.EndScoreFragment
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment2
 import org.cxct.sportlottery.ui.sport.list.SportListFragment2
-import org.cxct.sportlottery.ui.sport.list.adapter.FooterGamesView
+import org.cxct.sportlottery.ui.sport.list.adapter.SportFooterGamesView
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
+import org.cxct.sportlottery.util.DelayRunable
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.FragmentHelper2
@@ -52,7 +53,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     private val favoriteIndex = matchTypeTab.indexOf(MatchType.MY_EVENT)
     private inline fun getMainTabActivity() = activity as MainTabActivity
     private val fragmentHelper by lazy { FragmentHelper2(childFragmentManager, R.id.fl_content) }
-    private val footView by lazy { FooterGamesView(binding.root.context) }
+    private val footView by lazy { SportFooterGamesView(binding.root.context) }
     private val mianViewModel: OKGamesViewModel by sharedViewModel()
 
     private var jumpMatchType: MatchType? = null
@@ -60,8 +61,9 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     //根据赛事数量判断默认的分类
     private var defaultMatchType: MatchType? = null
     private var favoriteItems = listOf<Item>()
+    private val favoriteDelayRunable by lazy { DelayRunable(this@SportFragment2) { viewModel.loadFavoriteGameList() } }
     private inline fun favoriteCount(items: List<Item>): Int {
-        return items.sumOf { it.leagueOddsList.sumOf { it.matchOdds.size } }
+        return items.sumOf { it.leagueOddsList?.sumOf { it.matchOdds.size } ?: 0 }
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -85,7 +87,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             navGameFragment(it)
         }
 
-        viewModel.loadFavoriteGameList()
+        favoriteDelayRunable.doOnDelay(0)
     }
 
     fun initToolBar() = binding.homeToolbar.run {
@@ -128,7 +130,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         addTab(getString(R.string.home_tab_parlay), countParlay, 5)
 //        addTab(getString(R.string.home_tab_cs), countCS, 6)
         addTab(getString(R.string.home_tab_outright), countOutright, 6)
-        val tabView = addTab(getString(R.string.my_favorite), favoriteCount(favoriteItems), 7)
+        val tabView = addTab(getString(R.string.N082), favoriteCount(favoriteItems), 7)
         if (!LoginRepository.isLogined()) {
             tabView.setOnTouchListener { _, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
@@ -161,7 +163,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     private var currentMatchType: MatchType? = null
 
     private fun selectTab(position: Int) {
-        var matchType =  matchTypeTab[position] ?: return
+        var matchType =  matchTypeTab.getOrNull(position) ?: return
         currentMatchType = matchType
         navGameFragment(matchType)
     }
@@ -200,7 +202,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
                 fragmentHelper.show(FavoriteFragment2::class.java, args) { fragment, newInstance ->
                     fragment.offsetScrollListener = ::setTabElevation
                     fragment.resetFooterView(footView)
-                    viewModel.loadFavoriteGameList()
+                    fragment.setFavoriteData(favoriteItems)
                 }
             }
 
@@ -225,10 +227,12 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     fun setJumpSport(matchType: MatchType? = null, gameType: GameType? = null) {
         jumpMatchType = matchType
         jumpGameType = gameType
+        Log.e("For Test", "=====>>> setJumpSport 000 ${matchType?.postValue} ${gameType?.key} ")
         if (isAdded) {
             //如果体育当前已经在指定的matchType页面时，跳过检查重复选中的机制，强制筛选sportListFragment
             jumpMatchType = jumpMatchType ?: defaultMatchType
             binding.tabLayout.getTabAt(matchTypeTab.indexOfFirst { it == matchType })?.select()
+            Log.e("For Test", "=====>>> setJumpSport 111 ${matchType?.postValue} ${gameType?.key} ")
         }
     }
 
@@ -247,8 +251,12 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         }
 
         sportTypeMenuData.observe(viewLifecycleOwner) { updateFavoriteItem(it.first) }
+
+        var favorMatchs = favorMatchList.value
         favorMatchList.observe(viewLifecycleOwner) {
-            viewModel.loadFavoriteGameList()
+            if (favorMatchs == it) { return@observe }
+            favorMatchs = it
+            favoriteDelayRunable.doOnDelay(1300)
         }
     }
 

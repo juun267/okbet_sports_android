@@ -29,7 +29,7 @@ class EmptySportGamesView @JvmOverloads constructor(
         val text = AppCompatTextView(context)
         text.setTextColor(ContextCompat.getColor(context, R.color.color_BEC7DC))
         text.textSize = 14f
-        text.text = "There is no games yet!"
+        text.setText(R.string.N933)
         addView(text, LayoutParams(-2, -2))
     }
 

@@ -16,10 +16,7 @@ import kotlinx.android.synthetic.main.content_baseball_status.league_odd_match_h
 import kotlinx.android.synthetic.main.content_baseball_status.txvOut
 import kotlinx.android.synthetic.main.view_detail_head_toolbar1.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.setFbKicks
-import org.cxct.sportlottery.common.extentions.setMatchAttack
-import org.cxct.sportlottery.common.extentions.setMatchRoundScore
-import org.cxct.sportlottery.common.extentions.setMatchScore
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ViewDetailHeadToolbar1Binding
 import org.cxct.sportlottery.network.common.GameMatchStatus
 import org.cxct.sportlottery.network.common.GameStatus
@@ -29,12 +26,10 @@ import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.sport.SportViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.fromJson
-import org.cxct.sportlottery.util.setTeamLogo
+import org.cxct.sportlottery.util.*
 
-class SportToolBarTopFragment : BindingSocketFragment<SportViewModel, ViewDetailHeadToolbar1Binding>() {
+class SportToolBarTopFragment :
+    BindingSocketFragment<SportViewModel, ViewDetailHeadToolbar1Binding>() {
 
 
     val matchInfo by lazy {
@@ -42,9 +37,7 @@ class SportToolBarTopFragment : BindingSocketFragment<SportViewModel, ViewDetail
     }
 
     override fun createRootView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         val frameLayout = FrameLayout(inflater.context)
         frameLayout.layoutParams = ViewGroup.LayoutParams(-1, -1)
@@ -52,7 +45,11 @@ class SportToolBarTopFragment : BindingSocketFragment<SportViewModel, ViewDetail
         return frameLayout
     }
 
-    val tv_match_time by lazy { binding.tvMatchTime }
+//    val tv_match_time by lazy { binding.tvMatchTime }
+
+    fun getTvMatchTime(): TextView {
+        return binding.tvMatchTime
+    }
 
     override fun onInitView(view: View) {
         binding.ivDetailBg.setImageResource(
@@ -98,7 +95,6 @@ class SportToolBarTopFragment : BindingSocketFragment<SportViewModel, ViewDetail
             activity.tvToolbarHomeScore.text = "-"
             activity.tvToolbarAwayScore.text = "-"
             lin_bottom.isVisible = false
-            return
         }
 
         //赛事进行中，就显示比分状态，否则就不显示左下角，并且显示开赛时间
@@ -113,15 +109,15 @@ class SportToolBarTopFragment : BindingSocketFragment<SportViewModel, ViewDetail
             var startDate = TimeUtil.timeFormat(matchInfo.startTime, TimeUtil.DM_HM_FORMAT)
             startDate.split(" ").let {
                 if (it.size == 2) {
-                    tv_match_time.text = it[0]
+                    binding.tvMatchTime.text = it[0]
                     tv_score.text = it[1]
                     tv_match_status.isVisible = false
                     tv_score.isVisible = true
-                    tv_match_time.isVisible = true
+                    binding.tvMatchTime.isVisible = true
                 } else {
                     tv_match_status.isVisible = false
                     tv_score.isVisible = false
-                    tv_match_time.isVisible = false
+                    binding.tvMatchTime.isVisible = false
                 }
             }
             lin_bottom.isVisible = false
@@ -250,11 +246,10 @@ class SportToolBarTopFragment : BindingSocketFragment<SportViewModel, ViewDetail
                 else -> View.GONE
             }
             text = when (matchInfo.gameType) {
-                GameType.VB.key, GameType.TT.key, GameType.BM.key, GameType.TN.key -> (matchInfo.homeTotalScore
-                    ?: 0).toString() + " - " + (matchInfo.awayTotalScore ?: 0).toString()
-
-                else -> (matchInfo.homeScore ?: 0).toString() + " - " + (matchInfo.awayScore
-                    ?: 0).toString()
+                GameType.VB.key, GameType.TT.key, GameType.BM.key, GameType.TN.key ->
+                    matchInfo.homeTotalScore.toStringS("0")+ "-" + matchInfo.awayTotalScore.toStringS("0")
+                else ->
+                    matchInfo.homeScore.toStringS("0") + "-" + matchInfo.awayScore.toStringS("0")
             }
         }
         setMatchScore(
@@ -277,7 +272,7 @@ class SportToolBarTopFragment : BindingSocketFragment<SportViewModel, ViewDetail
      */
     private fun setPointScore(matchInfo: MatchInfo) {
         tv_point_score.isVisible = TimeUtil.isTimeInPlay(matchInfo.startTime)
-        tv_point_score.text = "(${matchInfo.homePoints ?: "0"}-${matchInfo.awayPoints ?: "0"})"
+        tv_point_score.text = "(${matchInfo.homePoints.toStringS("0")}-${matchInfo.awayPoints.toStringS("0")})"
     }
 
 
@@ -296,7 +291,7 @@ class SportToolBarTopFragment : BindingSocketFragment<SportViewModel, ViewDetail
             )
             isVisible = true
         }
-        tv_match_time.apply {
+        binding.tvMatchTime.apply {
             text =
                 if (matchInfo.halfStatus == 0) getString(R.string.half_first_short) else getString(
                     R.string.half_second_short

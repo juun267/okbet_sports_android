@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.ui.sport.endscore
 
-import android.text.TextUtils
+
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +10,6 @@ import com.chad.library.adapter.base.entity.node.BaseNode
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.Odd
@@ -23,6 +22,7 @@ import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.layoutmanager.SocketGridManager
+import java.util.ArrayList
 
 /**
  * @app_destination 末位比分
@@ -47,7 +47,7 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
         subscribeHandler.postDelayed(subscribeVisibleRange, delay)
     }
 
-    override fun onFavorite(favoriteMatchIds: List<String>) {
+    override fun onFavorite(favoriteMatchIds: Set<String>) {
         endScoreAdapter.updateFavorite(favoriteMatchIds)
     }
 
@@ -105,7 +105,13 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
 
     private fun loadData() {
         showLoading()
-        viewModel.getGameHallList(matchType, gameType, selectMatchIdList)
+        viewModel.getGameHallList(matchType, gameType)
+    }
+
+    override fun setSelectMatchIds(matchIdList: ArrayList<String>) {
+        clearData()
+        showLoading()
+        viewModel.getGameHallList(matchType, gameType, matchIdList)
     }
 
     private val subscribeVisibleRange by lazy {
@@ -127,7 +133,6 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
         oddsListGameHallResult.observe(viewLifecycleOwner) {
 
             val result = it.getContentIfNotHandled()
-            setFooterViewVisiable(200)
             if (result == null) {
                 dismissLoading()
                 return@observe
@@ -137,12 +142,8 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
             list?.forEachIndexed { index, baseNode ->
                 (baseNode as BaseExpandNode).isExpanded = (index == 0)
             }
-            endScoreAdapter.setNewInstance(list)
+            setSportDataList(list)
             binding.tvMatchNum.text = "${list?.size ?: 0}"
-
-            if (!list.isNullOrEmpty()) {
-                resubscribeChannel(120)
-            }
 
             dismissLoading()
         }

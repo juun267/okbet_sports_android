@@ -25,7 +25,7 @@
             android:paddingHorizontal="9dp"
             app:layout_constraintTop_toTopOf="parent"
             app:tabGravity="fill"
-            app:tabIndicator="@drawable/bg_matchtype_indicator"
+            app:tabIndicator="@null"
             app:tabIndicatorFullWidth="false"
             app:tabMinWidth="52dp"
             app:tabMode="scrollable"

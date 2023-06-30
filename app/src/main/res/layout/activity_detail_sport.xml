@@ -108,7 +108,7 @@
                             android:id="@+id/flRdContainer"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="6dp"
                             android:paddingHorizontal="5dp"
                             android:paddingVertical="3dp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -397,7 +397,7 @@
 
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/snackbar_holder"
             android:layout_width="match_parent"
             android:layout_height="64dp"

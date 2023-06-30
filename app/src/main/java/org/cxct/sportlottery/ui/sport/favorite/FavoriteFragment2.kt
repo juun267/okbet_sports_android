@@ -2,12 +2,13 @@ package org.cxct.sportlottery.ui.sport.favorite
 
 import android.view.View
 import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.extentions.toStringS
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.ui.sport.list.SportListFragment2
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
+import java.util.ArrayList
 
 class FavoriteFragment2: SportListFragment2<SportListViewModel, FragmentSportList2Binding>() {
 
@@ -29,24 +30,18 @@ class FavoriteFragment2: SportListFragment2<SportListViewModel, FragmentSportLis
         }
     }
 
-    override fun load(item: Item) {
-        sportLeagueAdapter2.setNewInstance(item.leagueOddsList.toMutableList())
-        setMatchInfo(item.name, item.leagueOddsList.size.toString())
+    override fun load(item: Item, selectMatchIdList: ArrayList<String>) {
+        setSportDataList(item.leagueOddsList?.toMutableList())
+        setMatchInfo(item.name, item.leagueOddsList?.size.toStringS("0"))
     }
 
     fun setFavoriteData(favoriteLeagues: List<Item>) {
-        setFooterViewVisiable()
-        haveData = true
-        if (isAdded) {
-            dismissLoading()
-        }
-        if(currentFavoriteList == favoriteLeagues) {
-            return
-        }
         currentFavoriteList = favoriteLeagues
-        if (isAdded) {
+        if (!haveData && isAdded) {
+            dismissLoading()
             updateSportType(favoriteLeagues)
         }
+        haveData = true
     }
 
     override fun onDestroyView() {
@@ -54,5 +49,6 @@ class FavoriteFragment2: SportListFragment2<SportListViewModel, FragmentSportLis
         haveData = false
         currentFavoriteList = listOf()
         gameTypeAdapter.setNewInstance(null)
+        setMatchInfo("", "")
     }
 }

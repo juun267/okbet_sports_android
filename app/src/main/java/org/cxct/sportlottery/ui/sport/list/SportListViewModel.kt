@@ -56,7 +56,6 @@ open class SportListViewModel(
 
 
     val outrightList = MutableLiveData<Event<OutrightOddsListResult?>>()
-    var selectTimeRangeParams:TimeRangeParams? = null
 
     fun loadFavoriteGameList() {
         if (!LoginRepository.isLogined()) {
@@ -88,7 +87,7 @@ open class SportListViewModel(
                 item.leagueOddsList = it.leagueOddsList
                 gameItems.add(item)
 
-                val leagueOddList = item.leagueOddsList
+                val leagueOddList = it.leagueOddsList
 
                 leagueOddList.sortOdds()
                 leagueOddList.getPlayCateNameMap()
@@ -206,7 +205,6 @@ open class SportListViewModel(
                 getOddsList(
                     gameType = gameType,
                     matchType.postValue,
-                    selectTimeRangeParams,
                     matchIdList = selectMatchIdList,
                 )
             }
@@ -214,7 +212,6 @@ open class SportListViewModel(
                 getOddsList(
                     gameType = gameType,
                     matchType.postValue,
-                    selectTimeRangeParams,
                     matchIdList = selectMatchIdList,
                 )
             }
@@ -222,7 +219,6 @@ open class SportListViewModel(
                 getOddsList(
                     gameType = gameType,
                     matchType.postValue,
-                    selectTimeRangeParams,
                     matchIdList = selectMatchIdList,
                 )
             }
@@ -230,7 +226,6 @@ open class SportListViewModel(
                 getOddsList(
                     gameType = gameType,
                     matchType.postValue,
-                    selectTimeRangeParams,
                     matchIdList = selectMatchIdList,
                 )
 
@@ -240,27 +235,34 @@ open class SportListViewModel(
                 getOddsList(
                     gameType = gameType,
                     matchType.postValue,
-                    selectTimeRangeParams,
                     matchIdList = selectMatchIdList,
                 )
 
             }
             MatchType.OUTRIGHT -> {
-                getOutrightOddsList(gameType)
+                getOutrightOddsList(gameType, selectMatchIdList = selectMatchIdList)
+            }
+            MatchType.MY_EVENT -> {
+                getOddsList(
+                    gameType = gameType,
+                    matchType.postValue,
+                    matchIdList = selectMatchIdList,
+                )
+
             }
             else -> {
             }
         }
     }
 
-    fun switchGameType(matchType: MatchType, item: Item) {
+    fun switchGameType(matchType: MatchType, item: Item,selectMatchIdList: ArrayList<String>) {
         if (jobSwitchGameType?.isActive == true) {
             jobSwitchGameType?.cancel()
         }
         //視覺上需要優先跳轉 tab
         _sportMenuResult.value?.updateSportSelectState(matchType, item.code)
         jobSwitchGameType = viewModelScope.launch {
-            getGameHallList(matchType, item.code)
+            getGameHallList(matchType, item.code, selectMatchIdList)
         }
     }
 
@@ -270,7 +272,7 @@ open class SportListViewModel(
                             leagueIdList: List<String>? = null,
                             matchIdList: List<String>? = null,) {
 
-        getOddsList(gameType, matchType.postValue, selectTimeRangeParams)
+        getOddsList(gameType, matchType.postValue)
     }
 
     private lateinit var oddsListRequestTag: Any
@@ -291,11 +293,10 @@ open class SportListViewModel(
                 currentTimeRangeParams = timeRangeParams
             }
             MatchType.TODAY.postValue, MatchType.CS.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue -> {
-                _oddsListGameHallResult.value = Event(null, gameType)
                 currentTimeRangeParams = timeRangeParams
             }
             else -> { // 特殊賽事要給特殊代碼 Ex: matchType: "sc:QAtest"
-                _oddsListGameHallResult.value = Event(null, gameType)
+
             }
         }
 
@@ -363,28 +364,13 @@ open class SportListViewModel(
             }
 
             result?.oddsListData?.leagueOdds?.let { dealLeagueList(playCateMenuCode, matchType, it) }
-
-            when (matchType) {
-                MatchType.IN_PLAY.postValue,
-                MatchType.TODAY.postValue,
-                MatchType.AT_START.postValue,
-                MatchType.EARLY.postValue,
-                MatchType.PARLAY.postValue,
-                MatchType.END_SCORE.postValue,
-                -> {
-                    _oddsListGameHallResult.postValue(Event(result, gameType))
-                }
-                else -> {
-                    _oddsListGameHallResult.postValue(Event(result, gameType))
-                }
-            }
-
+            _oddsListGameHallResult.postValue(Event(result, gameType))
             notifyFavorite(FavoriteType.MATCH)
         }
     }
 
     private lateinit var outrightOddsListRequestTag: Any
-    private fun getOutrightOddsList(gameType: String, leagueIdList: List<String>? = null) {
+    private fun getOutrightOddsList(gameType: String, leagueIdList: List<String>? = null, selectMatchIdList: ArrayList<String>? = null) {
         val requestTag = Any()
         outrightOddsListRequestTag = requestTag
         viewModelScope.launch(Dispatchers.IO) {
@@ -394,13 +380,15 @@ open class SportListViewModel(
                     if (leagueIdList.isNullOrEmpty()) {
                         OutrightOddsListRequest(
                             gameType,
-                            matchType = MatchType.OUTRIGHT.postValue
+                            matchType = MatchType.OUTRIGHT.postValue,
+                            matchIdList = selectMatchIdList
                         )
                     } else {
                         OutrightOddsListRequest(
                             gameType,
                             matchType = MatchType.OUTRIGHT.postValue,
-                            leagueIdList = leagueIdList
+                            leagueIdList = leagueIdList,
+                            matchIdList = selectMatchIdList
                         )
                     }
                 )
@@ -619,7 +607,7 @@ open class SportListViewModel(
             MatchType.AT_START -> menuData.atStart.items
             MatchType.CS -> menuData.menu.cs.items
             MatchType.EPS -> menuData.menu.eps?.items ?: listOf()
-
+            MatchType.MY_EVENT -> menuData.menu.myFavorite?.items ?: listOf()
             else -> listOf()
         }
 

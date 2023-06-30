@@ -1508,6 +1508,7 @@
     <string name="J459">Tips</string>
     <string name="P111">Address should include</string>
     <string name="P110">Unit/Room No. /Floor, Building Name, Lot/ Block/Phase/House Number, Street Name</string>
+    <string name="P160">OKLive</string>
 
     <string name="P131">OKBET Member Account</string>
     <string name="P132">OKBET x Glife Member Account</string>
@@ -1551,6 +1552,13 @@
     <string name="J248">4th Period</string>
     <string name="P142">MC</string>
     <string name="P139">Agree to Bet</string>
+    <string name="N111">No more</string>
+    <string name="N934">Filter league</string>
+    <string name="N933">No events yet</string>
+    <string name="I059">Settled</string>
+    <string name="I039">Betting Time</string>
+    <string name="N142">Bet Slip No</string>
+    <string name="N082">Favorite</string>
     <string name="P161">Basketball Ending Total Score</string>
     <string name="P162">Basketball Ending 1st</string>
     <string name="P163">Basketball Ending 2nd</string>

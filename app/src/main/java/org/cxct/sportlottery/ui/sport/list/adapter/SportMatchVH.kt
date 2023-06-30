@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.sport.list.adapter
 
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -43,8 +44,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
             val context = parent.context
             val biding = ItemSportOdd2Binding.inflate(LayoutInflater.from(context), parent, false)
             val rcv = biding.rvLeagueOddBtnPagerMain
-            biding.contentBaseballStatus.root.gravity = Gravity.TOP
-//            biding.contentBaseballStatus.root.setPadding(0, 2.dp, 0, 0)
+            biding.contentBaseballStatus.root.setPadding(0, 4.dp, 0, 0)
             rcv.setRecycledViewPool(pool)
             rcv.layoutManager = CustomLinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false).apply {
                 isAutoMeasureEnabled = false
@@ -124,15 +124,20 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         leagueOddMatchFavorite.setOnClickListener { matchInfo?.id?.let {onFavoriteClick.invoke(it) } }
 
         ivOT.isVisible = matchInfo?.gameType == GameType.BK.key && matchInfo?.socketMatchStatus == 40
-        leagueNeutral.isSelected = matchInfo?.neutral == 1
-        leagueNeutral.isVisible = matchInfo?.neutral == 10
+        leagueNeutral.isVisible = matchInfo?.neutral == 1
+
 //        leagueOddMatchChart.isVisible = matchInfo?.source == MatchSource.SHOW_STATISTICS.code
 
-        ivPlay.isVisible = matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(matchInfo?.startTime))
-
-        ivAnimation.isVisible = TimeUtil.isTimeInPlay(matchInfo?.startTime)
-                && !(matchInfo?.trackerId.isNullOrEmpty())
-                && MultiLanguagesApplication.getInstance()?.getGameDetailAnimationNeedShow() == true
+        // ivPlay、ivAnimation同时只显示一个
+        if (matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(matchInfo?.startTime))) {
+            ivPlay.visible()
+            ivAnimation.gone()
+        } else if (TimeUtil.isTimeInPlay(matchInfo?.startTime)
+            && !(matchInfo?.trackerId.isNullOrEmpty())
+            && MultiLanguagesApplication.getInstance()?.getGameDetailAnimationNeedShow() == true) {
+            ivAnimation.visible()
+            ivPlay.gone()
+        }
     }
 
     fun setupMatchScore(matchInfo: MatchInfo?, matchType: MatchType) = binding.run {
@@ -197,6 +202,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
 
     private fun setBkScoreText(matchInfo: MatchInfo) {
         setScoreTextAtFront(matchInfo)
+        setAllScoreTextAtBottom(matchInfo)
     }
 
     private fun setVbScoreText(matchInfo: MatchInfo) {
@@ -453,9 +459,12 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         leagueOddMatchFavorite.isSelected = matchInfo?.isFavorite ?: false
         leagueNeutral.isVisible = matchInfo?.neutral == 1
 
-        ivLive.isVisible = matchInfo?.liveVideo == 1 && matchInfo?.isLive == 1
-        ivPlay.isVisible = ivLive.isVisible
-        ivAnimation.isVisible = !matchInfo?.trackerId.isNullOrEmpty()
+        if (matchInfo?.liveVideo == 1 && matchInfo?.isLive == 1) {
+//            ivLive.visible()
+            ivPlay.visible()
+        } else if (!matchInfo?.trackerId.isNullOrEmpty()) {
+            ivAnimation.visible()
+        }
     }
 
     fun updateFavoriteStatus(matchInfo: MatchInfo?) {

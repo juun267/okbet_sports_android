@@ -5,7 +5,8 @@
     android:orientation="vertical"
     android:paddingHorizontal="@dimen/margin_12"
     android:gravity="center"
-    android:background="@drawable/shape_date_item_bg_v4">
+    android:background="@drawable/shape_date_item_bg_v4"
+    android:foreground="@drawable/fg_ripple">
    <TextView
        android:id="@+id/tvName"
        android:layout_width="match_parent"

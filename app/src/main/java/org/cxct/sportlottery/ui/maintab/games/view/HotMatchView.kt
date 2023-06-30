@@ -23,6 +23,7 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
+import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.*
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -188,13 +189,13 @@ class HotMatchView(
     ) {
 
         //观察比赛状态改变
-        receiver.matchStatusChange.observe(viewLifecycleOwner) { matchStatusChangeEvent ->
+        MatchOddsRepository.observerMatchStatus(viewLifecycleOwner) { matchStatusChangeEvent ->
             if (matchStatusChangeEvent == null) {
-                return@observe
+                return@observerMatchStatus
             }
 
             if (adapter == null || adapter!!.data.isEmpty()) {
-                return@observe
+                return@observerMatchStatus
             }
             val adapterData = adapter?.data
             adapterData?.forEachIndexed { index, recommend ->

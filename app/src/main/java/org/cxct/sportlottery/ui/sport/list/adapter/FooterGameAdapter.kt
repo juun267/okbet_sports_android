@@ -43,7 +43,7 @@ class FooterGameAdapter(private val onFavoriteClick: (View, OKGameBean) -> Unit,
         if (okgames.isEmpty()) {
             return
         }
-        addData(GameCategroy("OKGames", R.drawable.ic_okgame_label_games, okgames.take(3).toMutableList(), onMore))
+        setNewInstance(mutableListOf(GameCategroy("OKGames", R.drawable.ic_okgame_label_games, okgames.toMutableList(), onMore)))
     }
 
     fun setupOKLives(okLive: List<OKGameBean>, onMore: () -> Unit) {

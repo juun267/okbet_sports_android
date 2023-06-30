@@ -29,12 +29,12 @@ class BetRecordActivity:BindingActivity<MainViewModel,ActivityBetRecordBinding>(
             }
 
             //未结单
-            tvUnsettled.onClick {
+            tvUnsettled.onClick(1000) {
                 changeTabStyle(0)
                 replaceFragment(R.id.frameContainer,unsettledFragment)
             }
             //已结单
-            tvSettled.onClick {
+            tvSettled.onClick(1000) {
                 changeTabStyle(1)
                 replaceFragment(R.id.frameContainer,settledFragment)
             }
@@ -45,7 +45,8 @@ class BetRecordActivity:BindingActivity<MainViewModel,ActivityBetRecordBinding>(
     override fun onInitData() {
         super.onInitData()
         //默认选中未结单
-        binding.tvUnsettled.performClick()
+        changeTabStyle(0)
+        replaceFragment(R.id.frameContainer,unsettledFragment)
     }
 
 

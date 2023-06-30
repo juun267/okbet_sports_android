@@ -99,7 +99,7 @@ open class ThirdGameActivity : WebActivity() {
     private fun setupMenu() {
         motion_menu.setOnMenuListener(object : MotionFloatingMenu.OnMenuListener {
             override fun onHome() {
-                onBackPressed()
+                finish()
             }
 
             override fun onCashSave() {

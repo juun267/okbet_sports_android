@@ -8,7 +8,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.PathMeasure
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
@@ -24,7 +23,6 @@ import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.android.synthetic.main.activity_main_tab.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.BetModeChangeEvent
 import org.cxct.sportlottery.common.event.MenuEvent
@@ -103,6 +101,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             PopImageDialog.showHomeDialog = showDialog
             PopImageDialog.showSportDialog = showDialog
             PopImageDialog.showOKGameDialog = showDialog
+            PopImageDialog.showOKLiveDialog = showDialog
             val intent = Intent(context, MainTabActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
@@ -262,12 +261,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                         fragmentHelper.showFragment(itemPosition)
                         if (itemPosition == 0) {
                             homeFragment().backMainHome()
-                        } else {
-                            if (itemPosition == 1) {
-                                binding.bottomNavigationView.postDelayed({
-                                    jumpToTheSport(MatchType.IN_PLAY, GameType.BK)
-                                }, 200)
-                            }
                         }
                         setupBetBarVisiblity(itemPosition)
                         return@OnNavigationItemSelectedListener true
@@ -731,6 +724,12 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
     }
 
+    fun jumpToESport() {
+        checkSportStatus(this) {
+            jumpToTheSport(MatchType.EARLY, GameType.ES)
+        }
+    }
+
     fun jumpToNews() {
         backMainHome()
         homeFragment().jumpToNews()
@@ -746,17 +745,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         //检测体育服务是否关闭
         checkSportStatus(this) {
             jumpToTheSport(MatchType.IN_PLAY, GameType.BK)
-            if (bottom_navigation_view.currentItem != 1) {
-                bottom_navigation_view.currentItem = 1
-            }
         }
     }
 
     fun jumpToEarlySport() {
         jumpToTheSport(MatchType.EARLY, GameType.FT)
-        if (bottom_navigation_view.currentItem != 1) {
-            bottom_navigation_view.currentItem = 1
-        }
     }
     fun jumpToBetInfo(tabPosition: Int) {
         if (getMarketSwitch()) {

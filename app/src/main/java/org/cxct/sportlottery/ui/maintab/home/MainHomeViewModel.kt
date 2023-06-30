@@ -246,6 +246,7 @@ open class MainHomeViewModel(
 
      val pageIndexLiveData = MutableLiveData(1)
      val pageSizeLiveData = MutableLiveData(6)
+     val pageSizeOKLiveLD = MutableLiveData(6)
      val totalCountLiveData = MutableLiveData(0)
      val totalPageLiveData = MutableLiveData(0)
 
@@ -262,6 +263,28 @@ open class MainHomeViewModel(
             totalCountLiveData.value = it.total
             val totalCount = totalCountLiveData.value ?: 0
             val pageSize = pageSizeLiveData.value ?: 0
+            if (totalPageLiveData.value == 0) {
+                totalPageLiveData.value = totalCount / pageSize
+                if (totalCount % pageSize != 0) {
+                    totalPageLiveData.value = (totalPageLiveData.value ?: 0) + 1
+                }
+            }
+            _homeGamesList.value=it.getData()
+        }
+    }
+    fun getOkLiveOKGamesList(
+    ) = callApi({
+        OKGamesRepository.getHomeOKGamesList(
+            pageIndexLiveData.value ?: 1, pageSizeOKLiveLD.value ?: 1
+        )
+    }) {
+        if (it.getData() == null) {
+            //hide loading
+            _homeGamesList.value = arrayListOf()
+        } else {
+            totalCountLiveData.value = it.total
+            val totalCount = totalCountLiveData.value ?: 0
+            val pageSize = pageSizeOKLiveLD.value ?: 0
             if (totalPageLiveData.value == 0) {
                 totalPageLiveData.value = totalCount / pageSize
                 if (totalCount % pageSize != 0) {

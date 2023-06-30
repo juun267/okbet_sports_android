@@ -61,6 +61,7 @@ import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.betList.BetListFragment
@@ -744,11 +745,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     }
                 }
             ) {
-                sportToolBarTopFragment.tv_match_time.isVisible = false
+                sportToolBarTopFragment.getTvMatchTime().isVisible = false
                 cancelTimer()
                 return@Handler false
             }
-            sportToolBarTopFragment.tv_match_time.apply {
+            sportToolBarTopFragment.getTvMatchTime().apply {
                 if (needCountStatus(
                         matchOdd?.matchInfo?.socketMatchStatus, matchOdd?.matchInfo?.leagueTime
                     )
@@ -1094,34 +1095,32 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             }
         }
 
-        receiver.matchStatusChange.observe(this) {
-            it?.let { matchStatusChangeEvent ->
-                matchStatusChangeEvent.matchStatusCO?.takeIf { ms -> ms.matchId == matchInfo?.id }
-                    ?.apply {
-                        //從滾球以外的狀態轉變為滾球時, 重新獲取一次賽事資料, 看是否有新的直播或動畫url
-                        if (matchType != MatchType.IN_PLAY) {
-                            matchType = MatchType.IN_PLAY
-                            unSubscribeChannelEvent(matchId)
-                            getData()
-                        }
-                        matchOdd?.let { matchOdd ->
-                            var isNeedUpdate = SocketUpdateUtil.updateMatchStatus(
-                                gameType = gameType,
-                                matchOdd = matchOdd,
-                                matchStatusChangeEvent,
-                                context = this@SportDetailActivity
-                            )
-                            if (isNeedUpdate) {
-                                tv_toolbar_home_name.text = matchInfo?.homeName ?: ""
-                                tv_toolbar_away_name.text = matchInfo?.awayName ?: ""
-                                sportToolBarTopFragment.setupMatchInfo(matchOdd.matchInfo)
-                                Handler(Looper.getMainLooper()).postDelayed({
-                                    sportChartFragment.updateMatchInfo(matchOdd.matchInfo)
-                                }, 300)
-                            }
+        MatchOddsRepository.observerMatchStatus(this) { matchStatusChangeEvent->
+            matchStatusChangeEvent.matchStatusCO?.takeIf { ms -> ms.matchId == matchInfo?.id }
+                ?.apply {
+                    //從滾球以外的狀態轉變為滾球時, 重新獲取一次賽事資料, 看是否有新的直播或動畫url
+                    if (matchType != MatchType.IN_PLAY) {
+                        matchType = MatchType.IN_PLAY
+                        unSubscribeChannelEvent(matchId)
+                        getData()
+                    }
+                    matchOdd?.let { matchOdd ->
+                        var isNeedUpdate = SocketUpdateUtil.updateMatchStatus(
+                            gameType = gameType,
+                            matchOdd = matchOdd,
+                            matchStatusChangeEvent,
+                            context = this@SportDetailActivity
+                        )
+                        if (isNeedUpdate) {
+                            tv_toolbar_home_name.text = matchInfo?.homeName ?: ""
+                            tv_toolbar_away_name.text = matchInfo?.awayName ?: ""
+                            sportToolBarTopFragment.setupMatchInfo(matchOdd.matchInfo)
+                            Handler(Looper.getMainLooper()).postDelayed({
+                                sportChartFragment.updateMatchInfo(matchOdd.matchInfo)
+                            }, 300)
                         }
                     }
-            }
+                }
         }
 
         receiver.matchClock.observe(this) {

@@ -7,12 +7,11 @@ import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asFlow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import org.cxct.sportlottery.common.extentions.post
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.odds.Odd
@@ -25,7 +24,6 @@ import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
 import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
 import org.cxct.sportlottery.network.service.match_odds_lock.MatchOddsLockEvent
-import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.network.service.notice.NoticeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEvent
@@ -67,9 +65,6 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
 
     val matchOddsChange: LiveData<Event<MatchOddsChangeEvent?>>
         get() = _matchOddsChange
-
-    val matchStatusChange: LiveData<MatchStatusChangeEvent?>
-        get() = _matchStatusChange
 
     val notice: LiveData<NoticeEvent?>
         get() = _notice
@@ -131,11 +126,14 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
         get() = _recordNewOkGame
     val recordResultOkGame: SharedFlow<RecordNewEvent?>
         get() = _recordResultOkGame
+    val recordNewOkLive: SharedFlow<RecordNewEvent?>
+        get() = _recordNewOkLive
+    val recordResultOkLive: SharedFlow<RecordNewEvent?>
+        get() = _recordResultOkLive
 
     private val _globalStop = MutableLiveData<GlobalStopEvent?>()
     private val _matchClock = MutableLiveData<MatchClockEvent?>()
     private val _matchOddsChange = MutableLiveData<Event<MatchOddsChangeEvent?>>()
-    private val _matchStatusChange = MutableLiveData<MatchStatusChangeEvent?>()
     private val _notice = MutableLiveData<NoticeEvent?>()
     private val _orderSettlement = MutableLiveData<OrderSettlementEvent?>()
     private val _pingPong = MutableLiveData<PingPongEvent?>()
@@ -157,6 +155,8 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
     private val _recordWinsResult = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100)
     private val _recordNewOkGame = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100)
     private val _recordResultOkGame = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100)
+    private val _recordNewOkLive = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100)
+    private val _recordResultOkLive = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100)
 
 
     override fun onReceive(context: Context?, intent: Intent) {
@@ -262,8 +262,10 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
 
             //大廳賠率
             EventType.MATCH_STATUS_CHANGE -> {
-                val data = ServiceMessage.getMatchStatusChange(jObjStr)
-                _matchStatusChange.postValue(data)
+                ServiceMessage.getMatchStatusChange(jObjStr)?.let {
+                    post { MatchOddsRepository.onMatchStatus(it) }
+                }
+
             }
             EventType.MATCH_CLOCK -> {
                 val data = ServiceMessage.getMatchClock(jObjStr)
@@ -371,18 +373,24 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                 val data = ServiceMessage.getRecondResult(jObjStr)
                 _recordResultOkGame.emit(data)
             }
+            EventType.RECORD_NEW_OK_LIVE -> {
+                //最新投注
+                val data = ServiceMessage.getRecondNew(jObjStr)
+                _recordNewOkLive.emit(data)
+            }
+            EventType.RECORD_RESULT_OK_LIVE -> {
+                //最新大奖
+                val data = ServiceMessage.getRecondResult(jObjStr)
+                _recordResultOkLive.emit(data)
+            }
             else -> {}
 
         }
 
     }
 
-    private suspend fun onOddsEvent(socketEvent: OddsChangeEvent) {
-        oddsChangeListener?.let {
-            withContext(Dispatchers.Main) {
-                it.onOddsChangeListener(socketEvent)
-            }
-        }
+    private fun onOddsEvent(socketEvent: OddsChangeEvent) {
+        oddsChangeListener?.let { post { it.onOddsChangeListener(socketEvent) } }
         BetInfoRepository.updateMatchOdd(socketEvent)
     }
     private fun OddsChangeEvent.oddsListToOddsMap() {

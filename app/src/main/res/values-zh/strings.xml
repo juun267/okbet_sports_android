@@ -1437,6 +1437,7 @@
     <string name="J459">温馨提示</string>
     <string name="P111">地址应包括</string>
     <string name="P110">单位/房号/楼层、楼名、地段/座/期/门牌号、街道名</string>
+    <string name="P160">真人</string>
     <string name="P131">OKBET会员账户</string>
     <string name="P132">OKBET x Glife会员账户</string>
     <string name="P130">选择您的会员账号</string>
@@ -1479,6 +1480,13 @@
     <string name="J248">第四节</string>
     <string name="P142">主播</string>
     <string name="P139">同意投注</string>
+    <string name="N111">没有更多啦</string>
+    <string name="N934">筛选联赛</string>
+    <string name="N933">暂无赛事</string>
+    <string name="I059">已结算</string>
+    <string name="I039">投注时间</string>
+    <string name="N142">注单号</string>
+    <string name="N082">收藏赛事</string>
     <string name="P161">篮球末位比分总分</string>
     <string name="P162">篮球末位比分第一节</string>
     <string name="P163">篮球末位比分第二节</string>
