@@ -620,8 +620,8 @@ class SportViewModel(
                 home3rd = homeYellowCards.toString()
                 away3rd = awayYellowCards.toString()
 
-                home4th = (homeScore ?: "0").toString()
-                away4th =  (homeScore ?: "0").toString()
+                home4th = homeScore.toStringS("0")
+                away4th = awayScore.toStringS("0")
 
 //                home5th = (homeScore ?: "0").toString()
 //                away5th = (homeScore ?: "0").toString()
