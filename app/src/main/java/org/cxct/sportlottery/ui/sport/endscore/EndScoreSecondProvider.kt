@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.chad.library.adapter.base.provider.BaseNodeProvider
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -57,12 +58,13 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
         }
         val tvExpand = getView<TextView>(R.id.tvExpand)
         val linExpand = getView<View>(R.id.linExpand)
-        resetStyle(linExpand, tvExpand, item.isExpanded)
+        val tabLayou = getView<TabLayout>(R.id.tabLayout)
+        resetStyle(linExpand, tvExpand,tabLayou, item.isExpanded)
         linExpand.setOnClickListener {
             adapter.expandOrCollapse(item, parentPayload = item)
-            resetStyle(linExpand, tvExpand, item.isExpanded)
+            resetStyle(linExpand, tvExpand,tabLayou, item.isExpanded)
         }
-        getView<TabLayout>(R.id.tabLayout).apply {
+        tabLayou.apply {
             if (tabCount>0){
                 removeAllTabs()
             }
@@ -99,7 +101,7 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
         DrawableCreatorUtils.getCommonBackgroundStyle(8, android.R.color.white, R.color.color_025BE8, 1)
     }
 
-    private fun resetStyle(linExpand: View, tvExpand: TextView, isExpand: Boolean) = tvExpand.run {
+    private fun resetStyle(linExpand: View, tvExpand: TextView,tabLayout: TabLayout, isExpand: Boolean) = tvExpand.run {
         if (isExpand) {
             setText(R.string.D039)
             setTextColor(ContextCompat.getColor(context, R.color.color_025BE8))
@@ -111,9 +113,7 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
             linExpand.background = expandedDrawable
             setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_to_down_white, 0)
         }
+        tabLayout.isVisible = isExpand
     }
 
-    private fun selectTab(position: Int) {
-
-    }
 }
