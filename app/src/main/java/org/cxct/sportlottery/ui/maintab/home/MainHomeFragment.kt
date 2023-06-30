@@ -87,7 +87,7 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
 
     private fun initBetWinsRecodeLayout() {
         binding.winsRankView.setUp(
-            viewLifecycleOwner,
+            this,
             { viewModel.getRecordNew() },
             { viewModel.getRecordResult() })
         receiver.recordBetNew.collectWith(lifecycleScope) {

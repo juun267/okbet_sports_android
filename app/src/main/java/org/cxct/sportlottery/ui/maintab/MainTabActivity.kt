@@ -730,11 +730,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
     }
 
-    fun jumpToOKLive() {
-        resetBackIcon(0)
-        homeFragment().jumpToOKLive()
-    }
-
     fun jumpToNews() {
         backMainHome()
         homeFragment().jumpToNews()

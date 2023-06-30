@@ -50,8 +50,6 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
 
     fun backMainHome() = switchTabByPosition(0)
 
-    fun jumpToLive() = switchTabByPosition(1)
-
     fun jumpToOKGames() = switchTabByPosition(1)
 
     fun jumpToNews() = switchTabByPosition(2)
@@ -66,15 +64,9 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
         (activity as MainTabActivity).jumpToTheSport()
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onJumpToInPlayEvent(event: JumpInPlayEvent) {
-        jumpToInplaySport()
-    }
-
     fun jumpToEarlySport() {
         (activity as MainTabActivity).jumpToEarlySport()
     }
-    fun jumpToNews() = switchTabByPosition(1)
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
