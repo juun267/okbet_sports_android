@@ -127,11 +127,16 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         leagueNeutral.isVisible = matchInfo?.neutral == 10
 //        leagueOddMatchChart.isVisible = matchInfo?.source == MatchSource.SHOW_STATISTICS.code
 
-        ivPlay.isVisible = matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(matchInfo?.startTime))
-
-        ivAnimation.isVisible = TimeUtil.isTimeInPlay(matchInfo?.startTime)
-                && !(matchInfo?.trackerId.isNullOrEmpty())
-                && MultiLanguagesApplication.getInstance()?.getGameDetailAnimationNeedShow() == true
+        // ivPlay、ivAnimation同时只显示一个
+        if (matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(matchInfo?.startTime))) {
+            ivPlay.visible()
+            ivAnimation.gone()
+        } else if (TimeUtil.isTimeInPlay(matchInfo?.startTime)
+            && !(matchInfo?.trackerId.isNullOrEmpty())
+            && MultiLanguagesApplication.getInstance()?.getGameDetailAnimationNeedShow() == true) {
+            ivAnimation.visible()
+            ivPlay.gone()
+        }
     }
 
     fun setupMatchScore(matchInfo: MatchInfo?, matchType: MatchType) = binding.run {
@@ -453,9 +458,12 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         leagueOddMatchFavorite.isSelected = matchInfo?.isFavorite ?: false
         leagueNeutral.isVisible = matchInfo?.neutral == 1
 
-        ivLive.isVisible = matchInfo?.liveVideo == 1 && matchInfo?.isLive == 1
-        ivPlay.isVisible = ivLive.isVisible
-        ivAnimation.isVisible = !matchInfo?.trackerId.isNullOrEmpty()
+        if (matchInfo?.liveVideo == 1 && matchInfo?.isLive == 1) {
+//            ivLive.visible()
+            ivPlay.visible()
+        } else if (!matchInfo?.trackerId.isNullOrEmpty()) {
+            ivAnimation.visible()
+        }
     }
 
     fun updateFavoriteStatus(matchInfo: MatchInfo?) {

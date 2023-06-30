@@ -12,6 +12,7 @@ import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.sport.BaseSportListFragment
@@ -143,14 +144,17 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
 
     private fun initSocketObserver() {
 
-        receiver.matchStatusChange.observe(this@SportListFragment2.viewLifecycleOwner) {
-            val matchId = it?.matchStatusCO?.matchId ?: return@observe
+        MatchOddsRepository.observerMatchStatus(this) {
+            val matchId = it?.matchStatusCO?.matchId ?: return@observerMatchStatus
+            Log.e("[subscribe]","====>>> matchStatusChange 111 $matchId")
             val isFinished = it.matchStatusCO?.status == GameMatchStatus.FINISH.value
-            val matchOdd = sportLeagueAdapter2.findVisiableRangeMatchOdd(matchId) ?: return@observe
+            val matchOdd = sportLeagueAdapter2.findVisiableRangeMatchOdd(matchId) ?: return@observerMatchStatus
             if (isFinished) {
                 sportLeagueAdapter2.removeMatchOdd(matchOdd)
             } else {
+                Log.e("[subscribe]","====>>> matchStatusChange 222 $matchId")
                 if (SocketUpdateUtil.updateMatchStatus(matchOdd.matchInfo?.gameType, matchOdd, it, context)) {
+                    Log.e("[subscribe]","====>>> matchStatusChange 333 $matchId")
                     sportLeagueAdapter2.matchStatuChanged(matchOdd)
                 }
             }
@@ -239,7 +243,7 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
 
         sportLeagueAdapter2.recodeRangeMatchOdd().forEach { matchOdd ->
             matchOdd.matchInfo?.let {
-                Log.e("[subscribe]","====>>> 訂閱 ${it.name} ${it.id} -> " + "${it.homeName} vs " + "${it.awayName}")
+                Log.e("[subscribe]","====>>> 訂閱 ${it.name} ${it.id} -> " + "${it.homeName} vs " + "${it.awayName} (${it.gameType} ${it.id})")
                 subscribeChannel(it.gameType, it.id)
             }
         }

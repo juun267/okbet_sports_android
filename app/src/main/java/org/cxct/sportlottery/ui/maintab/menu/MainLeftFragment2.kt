@@ -163,6 +163,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
 
     private lateinit var sportsItem: MenuItem
     private lateinit var okGamesItem: MenuItem
+    private lateinit var eSportGamesItem: MenuItem
     private lateinit var okLiveItem: MenuItem
     private lateinit var promotionItem: MenuItem
     private lateinit var affiliateItem: MenuItem
@@ -210,6 +211,16 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         ) { getMainTabActivity().jumpToOKGames() }
 
         okGamesItem.group.setVisibilityByMarketSwitch()
+
+        eSportGamesItem = addMenu(2,
+            groupParams,
+            iconParams,
+            R.drawable.ic_main_menu_esport_1,
+            R.drawable.ic_main_menu_esport_0,
+            textParams,
+            R.string.esports,
+            true
+        ) { getMainTabActivity().jumpToESport() }
 //
 //        okLiveItem = addMenu(2,
 //            groupParams,

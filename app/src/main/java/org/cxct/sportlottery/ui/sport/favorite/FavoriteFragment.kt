@@ -36,6 +36,7 @@ import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
+import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
@@ -331,10 +332,10 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
             }
         }
 
-        receiver.matchStatusChange.observe(this.viewLifecycleOwner) { matchStatusChangeEvent ->
+        MatchOddsRepository.observerMatchStatus(this.viewLifecycleOwner) { matchStatusChangeEvent ->
 
             if (matchStatusChangeEvent == null) {
-                return@observe
+                return@observerMatchStatus
             }
 
             val unSubscribed = mutableListOf<LeagueOdd>()

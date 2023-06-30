@@ -224,7 +224,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         }
     }
 
-    protected fun setupOddsChangeListener() {
+    private fun setupOddsChangeListener() {
         if (isAdded) {
             receiver.oddsChangeListener = oddsChangeListener
         }
@@ -299,6 +299,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     }
 
     private fun unSubscribeAllChannel() {
+        unSubscribeChannelHallAll()
         getGameListAdapter().resetRangeMatchOdd()
         if (subscribedChannel.size > 0) {
             subscribedChannel.forEach { unSubscribeChannelHall(it.first, it.second) }
@@ -323,7 +324,6 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     @Subscribe
     fun onSelectMatch(matchIdList: ArrayList<String>) {
         setSelectMatchIds(matchIdList)
-        Log.e("For Test", "======>>> onSelectMatch ${matchIdList}")
     }
 
     protected fun addOddsDialog(

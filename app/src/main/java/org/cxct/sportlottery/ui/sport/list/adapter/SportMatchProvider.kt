@@ -44,14 +44,13 @@ class SportMatchProvider(private val adapter: SportLeagueAdapter2,
     }
 
     override fun convert(helper: BaseViewHolder, item: BaseNode, payloads: List<Any>) {
-        val binding = (helper as SportMatchVH)
-        val matchOdd = (item as MatchOdd)
-
 
         if (payloads.isNullOrEmpty()) {
-            updateMatchOdd(binding, matchOdd)
             return
         }
+
+        val binding = (helper as SportMatchVH)
+        val matchOdd = (item as MatchOdd)
 
         when(payloads.first()) {
             is SportMatchEvent.OddsChanged -> {

@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.sport
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
@@ -226,10 +227,12 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     fun setJumpSport(matchType: MatchType? = null, gameType: GameType? = null) {
         jumpMatchType = matchType
         jumpGameType = gameType
+        Log.e("For Test", "=====>>> setJumpSport 000 ${matchType?.postValue} ${gameType?.key} ")
         if (isAdded) {
             //如果体育当前已经在指定的matchType页面时，跳过检查重复选中的机制，强制筛选sportListFragment
             jumpMatchType = jumpMatchType ?: defaultMatchType
             binding.tabLayout.getTabAt(matchTypeTab.indexOfFirst { it == matchType })?.select()
+            Log.e("For Test", "=====>>> setJumpSport 111 ${matchType?.postValue} ${gameType?.key} ")
         }
     }
 

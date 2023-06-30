@@ -35,6 +35,7 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.betList.adapter.BetListRefactorAdapter
@@ -866,15 +867,13 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
     }
 
     private fun initSocketObserver() {
-        receiver.matchStatusChange.observe(viewLifecycleOwner) {
-            it?.let {
-                if (it.matchStatusCO?.status == StatusType.END_GAME) {
-                    betListRefactorAdapter?.betList?.let { betInfoList ->
-                        betInfoList.forEachIndexed { index, betInfoListData ->
-                            if (SocketUpdateUtil.updateOddStatus(betInfoListData, it)) {
-                                betListRefactorAdapter?.notifyItemChanged(index)
-                                checkAllAmountCanBet()
-                            }
+        MatchOddsRepository.observerMatchStatus(viewLifecycleOwner) {
+            if (it.matchStatusCO?.status == StatusType.END_GAME) {
+                betListRefactorAdapter?.betList?.let { betInfoList ->
+                    betInfoList.forEachIndexed { index, betInfoListData ->
+                        if (SocketUpdateUtil.updateOddStatus(betInfoListData, it)) {
+                            betListRefactorAdapter?.notifyItemChanged(index)
+                            checkAllAmountCanBet()
                         }
                     }
                 }
