@@ -480,7 +480,9 @@ class HotMatchView(
 
     @SuppressLint("SuspiciousIndentation")
     fun firstVisibleRange(fragment: BaseFragment<*>): Boolean {
-        if (recycler_hot_game == null || recycler_hot_game.scrollState != RecyclerView.SCROLL_STATE_IDLE) {
+        if (fragment.activity == null
+            || recycler_hot_game == null
+            || recycler_hot_game.scrollState != RecyclerView.SCROLL_STATE_IDLE) {
             return false
         }
         val adapter = adapter as HotMatchAdapter
