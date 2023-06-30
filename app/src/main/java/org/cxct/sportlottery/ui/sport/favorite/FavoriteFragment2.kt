@@ -31,8 +31,8 @@ class FavoriteFragment2: SportListFragment2<SportListViewModel, FragmentSportLis
     }
 
     override fun load(item: Item, selectMatchIdList: ArrayList<String>) {
+        setMatchInfo(item.name, "")
         setSportDataList(item.leagueOddsList?.toMutableList())
-        setMatchInfo(item.name, item.leagueOddsList?.size.toStringS("0"))
     }
 
     fun setFavoriteData(favoriteLeagues: List<Item>) {

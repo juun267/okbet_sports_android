@@ -4,6 +4,8 @@ import android.graphics.Color
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
+import androidx.core.content.ContextCompat
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
@@ -175,7 +177,7 @@ class OddButtonPagerViewHolder2(val oddBtnList: PlayCateView) : OddStateViewHold
             return
         }
 
-        playCateView.setPlayCateName("1", "2", if (oddsList.size > 2) "X" else "")
+        playCateView.setPlayCateName("", "", playCateView.context.getString(R.string.J784))
     }
 
     private fun bindOddClick(oddsButton: OddsButton2,

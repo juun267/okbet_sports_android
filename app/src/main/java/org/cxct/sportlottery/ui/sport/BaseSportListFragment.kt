@@ -268,9 +268,10 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     protected fun setSportDataList(list: MutableList<BaseNode>?) {
         val adapter = getGameListAdapter()
         adapter.setNewInstance(list)
+        setMatchNum((list?.sumOf { it.childNode?.size ?: 0 })?.toString() ?: "")
         if (!list.isNullOrEmpty()) {
             resubscribeChannel(120)
-            setMatchNum(list.size.toString())
+            binding.linOpt.visible()
         }
         val footerLayout = adapter.footerLayout?.getChildAt(0) as SportFooterGamesView? ?: return
         footerLayout.visible()

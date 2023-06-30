@@ -15,7 +15,7 @@ class SportMatchProvider(private val adapter: SportLeagueAdapter2,
                          private val onOddClick: OnOddClickListener,
                          private val onFavoriteClick: (String) -> Unit,
                          override val itemViewType: Int = 2,
-                         override val layoutId: Int = R.layout.item_sport_odd2): BaseNodeProvider() {
+                         override val layoutId: Int = 0): BaseNodeProvider() {
 
     init {
         addChildClickViewIds(R.id.league_odd_match_favorite)
