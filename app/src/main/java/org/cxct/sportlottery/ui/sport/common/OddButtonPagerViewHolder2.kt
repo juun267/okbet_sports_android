@@ -73,9 +73,6 @@ class OddButtonPagerViewHolder2(val oddBtnList: PlayCateView) : OddStateViewHold
         }
 //        Timber.e("playCateCode: $playCateCode")
 
-        Log.e("For Test", "========>>> bindPlayCateName 111 $playCateName == $betPlayCateName == ${playCateNameMap!![odds!!.first]
-            ?.getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))}")
-
         bindPlayCateName(oddBtnList, "${matchInfo?.gameType}", playCateName, playCateCode, odds.second!!)
         val isDeactivated = (odds.second == null || odds.second!!.all { it == null })
         if (matchType == MatchType.CS && odds?.second?.size == 1) {
@@ -266,8 +263,6 @@ class OddButtonPagerViewHolder2(val oddBtnList: PlayCateView) : OddStateViewHold
         val playCateCode = odds.first ?: ""
 
         bindPlayCateName(oddBtnList, "${matchInfo!!.gameType}", playCateName, playCateCode, odds.second!!)
-        Log.e("For Test", "========>>> bindPlayCateName 222 $playCateName  ${playCateNameMap!![odds!!.first]
-            ?.getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))}")
 
         val isDeactivated = (odds.second == null || odds.second!!.all { it == null })
 
