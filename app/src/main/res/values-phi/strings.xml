@@ -855,7 +855,7 @@
     <!--region 注單模塊調整-->
     <string name="bet_info_bet_lock_hint">Ang bet line ay sarado</string>
     <string name="red_envelope_congratulations">Congratulations</string>
-    <string name="pls_check_amount">Paki-check ang balanse ng account</string>
+    <string name="pls_check_amount">Mangyaring pumunta sa iyong account upang suriin ang na-kredito na halaga</string>
     <string name="redenvelope_fail">Unfortunately</string>
     <string name="redenvelope_fail_desp">Sayang hindi ko nakuha yung OKCOINS</string>
     <string name="hint_enter_city">Paki lagay ang inyong lungsod</string>

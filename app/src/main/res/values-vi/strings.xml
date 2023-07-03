@@ -881,9 +881,9 @@
     <string name="red_envelope_congratulations">Chúc mừng</string>
     <string name="pls_check_amount">Mời tra cứu số dư trong tài khoản</string>
     <string name="redenvelope_fail">Thật không may</string>
-    <string name="redenvelope_fail_desp">Rất tiếc không giật được lì xì</string>
+    <string name="redenvelope_fail_desp">Rất tiếc không giành được OKCOINS</string>
     <string name="hint_enter_city">Vui lòng nhập thành phố</string>
-    <string name="redenvelope_close_hint">Muốn đóng đếm ngược của mưa bao lì xì?\nĐóng đếm ngược nếu không sẽ tiến hành giật bao lì xì</string>
+    <string name="redenvelope_close_hint">Đóng đếm ngược OKCOINS?\\nĐóng đếm ngược nếu không sẽ tiến hành giành OKCOINS</string>
     <!--endregion-->
 
     <string name="verification_status">Verification Status</string>
