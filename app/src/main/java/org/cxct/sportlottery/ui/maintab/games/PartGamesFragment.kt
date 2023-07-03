@@ -19,7 +19,7 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.setTrialPlayGameDataObserve
 
 // 指定类别的三方游戏
-class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesViewModel::class) {
+class PartGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesViewModel::class) {
 
     companion object {
         val pageSize = 12
@@ -35,13 +35,19 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             }
         }, moreClick = ::onMoreClick)
     }
+
+    private var gameTotal: Int = 0
     private var currentTab: OKGameLabel? = null
     private var pageIndx = 1
-    private var labelName: String ?= null
+    private var labelName: String? = null
     private var isLoading = true
-    private val emptyView by lazy { LayoutInflater.from(binding.root.context).inflate(R.layout.view_no_games, binding.root, false) }
+    private val emptyView by lazy {
+        LayoutInflater.from(binding.root.context)
+            .inflate(R.layout.view_no_games, binding.root, false)
+    }
     private val loadingView by lazy {
-        val view = LayoutInflater.from(binding.root.context).inflate(R.layout.layout_loading, binding.root, false)
+        val view = LayoutInflater.from(binding.root.context)
+            .inflate(R.layout.layout_loading, binding.root, false)
         view.setBackgroundColor(Color.TRANSPARENT)
         view.minimumHeight = 300.dp
         view
@@ -61,11 +67,11 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         bindClick()
         bindLabels()
     }
+
     private fun bindClick() {
         binding.tvTag.setOnClickListener { okGamesFragment().backGameAll() }
         binding.tvShowMore.setOnClickListener { okGamesFragment().backGameAll() }
     }
-
 
 
     private fun initGameList() = binding.rvGamesSelect.run {
@@ -75,13 +81,17 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         addItemDecoration(GridSpacingItemDecoration(3, 10.dp, false))
         adapter = gameChildAdapter
         gameChildAdapter.setOnItemClickListener { _, _, position ->
-            val okGameBean=gameChildAdapter.getItem(position)
-            if(LoginRepository.isLogined()){
+            val okGameBean = gameChildAdapter.getItem(position)
+            if (LoginRepository.isLogined()) {
                 okGamesFragment().enterGame(okGameBean)
-            }else{
+            } else {
                 //请求试玩路线
                 loading()
-                viewModel.requestEnterThirdGameNoLogin(okGameBean.firmType,okGameBean.gameCode,okGameBean.thirdGameCategory)
+                viewModel.requestEnterThirdGameNoLogin(
+                    okGameBean.firmType,
+                    okGameBean.gameCode,
+                    okGameBean.thirdGameCategory
+                )
             }
 
         }
@@ -101,11 +111,13 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         setTrialPlayGameDataObserve()
     }
 
-    private fun onMoreClick() {
-        if (okGamesFragment().loadNextPage(pageIndx)) {
-            gameChildAdapter.onLoadingMore()
-        } else {
-            gameChildAdapter.disableMore()
+    fun onMoreClick() {
+        if (gameTotal > gameChildAdapter.data.size) {
+            if (okGamesFragment().loadNextPage(pageIndx)) {
+                gameChildAdapter.onLoadingMore()
+            } else {
+                gameChildAdapter.disableMore()
+            }
         }
     }
 
@@ -127,7 +139,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         }
     }
 
-    fun changeLabel(gameLabel: OKGameLabel, labelName: String ?= null) {
+    fun changeLabel(gameLabel: OKGameLabel, labelName: String? = null) {
         pageIndx = 1
         currentTab = gameLabel
         isLoading = true
@@ -137,7 +149,7 @@ class PartGamesFragment: BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
     }
 
     fun showSearchResault(list: List<OKGameBean>?, total: Int): Int {
-
+        gameTotal = total
         val count = gameChildAdapter.setGameList(list?.toMutableList(), total)
         if (list?.size ?: 0 >= pageSize) {
             pageIndx++

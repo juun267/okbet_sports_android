@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
@@ -69,6 +70,14 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         initObservable()
         viewModel.getOKGamesHall()
         showOkGameDialog()
+        binding.scrollView.setOnScrollChangeListener { v: NestedScrollView, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if (scrollY == (v.getChildAt(0).measuredHeight-v.measuredHeight)) {
+                if(getCurrentFragment() is PartGamesFragment){
+                    (getCurrentFragment()as PartGamesFragment).onMoreClick()
+                }
+
+            }
+        }
     }
 
     private var requestTag: Any = Any()
@@ -111,7 +120,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
 
 
     private fun initTopView() = binding.topView.run {
-        setup(this@OKGamesFragment,12)
+        setup(this@OKGamesFragment, 12)
         onTableClick = ::onTabChange
         onSearchTextChanged = { searchKey ->
             hideKeyboard()
@@ -239,7 +248,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
 
     open fun getCurrentFragment() = fragmentHelper.getCurrentFragment()
 
-    private fun showOkGameDialog(){
+    private fun showOkGameDialog() {
         if (PopImageDialog.showOKGameDialog) {
             PopImageDialog.showOKGameDialog = false
             if (PopImageDialog.checkImageTypeAvailable(ImageType.DIALOG_OKGAME.code)) {
