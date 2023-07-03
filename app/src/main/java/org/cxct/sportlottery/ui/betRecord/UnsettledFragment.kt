@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.betRecord
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.cxct.sportlottery.R
@@ -104,7 +103,6 @@ class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnset
 
 
     override fun onInitData() {
-        Log.e("dachang","onInitData")
         refData()
         initObserve()
     }

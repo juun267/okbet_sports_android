@@ -65,8 +65,10 @@ fun RecyclerView.loadMore(block: () -> Unit){
     addOnScrollListener(object:RecyclerView.OnScrollListener(){
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
-            if (newState ==RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 ==adapter?.itemCount){
-                block()
+            if (newState ==RecyclerView.SCROLL_STATE_IDLE ){
+                if( lastVisibleItem + 1 ==adapter?.itemCount){
+                    block()
+                }
             }
         }
 
