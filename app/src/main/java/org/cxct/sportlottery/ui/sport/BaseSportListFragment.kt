@@ -15,6 +15,7 @@ import com.google.android.material.appbar.AppBarLayout
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.rotationAnimation
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
@@ -162,6 +163,13 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         adapter.addFooterView(footerView)
     }
 
+    protected fun resetArrow() {
+        if (binding.ivArrow.isSelected) {
+            binding.ivArrow.isSelected= false
+            binding.ivArrow.rotationAnimation(0f)
+        }
+    }
+
     private fun initToolbar()  = binding.run {
         ivArrow.bindExpanedAdapter(getGameListAdapter()) { resubscribeChannel(320) }
         appbarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
@@ -244,6 +252,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
 
     private var filerMatchIds = arrayListOf<String>()
     protected open fun load(item: Item, selectMatchIdList: ArrayList<String> = arrayListOf()) {
+        resetArrow()
         showLoading()
         setMatchInfo(item.name, "")
         filerMatchIds = selectMatchIdList
@@ -255,7 +264,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         binding.tvMatchNum.text = num
     }
 
-    protected fun setMatchNum(num: String) {
+    private fun setMatchNum(num: String) {
         binding.tvMatchNum.text = num
     }
 
@@ -265,10 +274,10 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         setSportDataList(null)
     }
 
-    protected fun setSportDataList(list: MutableList<BaseNode>?) {
+    protected fun setSportDataList(list: MutableList<BaseNode>?, sizeNumber: String? = null) {
         val adapter = getGameListAdapter()
         adapter.setNewInstance(list)
-        setMatchNum((list?.sumOf { it.childNode?.size ?: 0 })?.toString() ?: "")
+        if (sizeNumber == null) setMatchNum((list?.sumOf { it.childNode?.size ?: 0 })?.toString() ?: "") else setMatchNum(sizeNumber)
         if (!list.isNullOrEmpty()) {
             resubscribeChannel(120)
             binding.linOpt.visible()

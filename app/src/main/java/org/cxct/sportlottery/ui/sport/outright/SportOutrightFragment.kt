@@ -122,7 +122,7 @@ class SportOutrightFragment : BaseSportListFragment<SportListViewModel, Fragment
                 dismissLoading()
                 return@observe
             }
-            setSportDataList(list as MutableList<BaseNode>)
+            setSportDataList(list as MutableList<BaseNode>, list.size.toString())
             dismissLoading()
         }
 

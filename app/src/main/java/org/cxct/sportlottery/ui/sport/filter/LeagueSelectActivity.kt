@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
@@ -180,7 +181,7 @@ class LeagueSelectActivity :
                 val itemData = mutableListOf<SelectDate>().apply {
                     val calendar = Calendar.getInstance()
                     repeat(names.size) {
-                        if (it == 0) calendar.add(Calendar.DATE, 0) else calendar.add(Calendar.DATE, 1)
+                        if (it < 2) calendar.add(Calendar.DATE, 0) else calendar.add(Calendar.DATE, 1)
                         val date = calendar.time
                         val label=if (it==0) getString(R.string.date_row_all) else TimeUtil.dateToFormat(date,TimeUtil.SELECT_MATCH_FORMAT)
                         val timeRangeParams=TimeUtil.getDayDateTimeRangeParams(TimeUtil.dateToFormat(date,TimeUtil.YMD_FORMAT))
@@ -193,10 +194,11 @@ class LeagueSelectActivity :
                 selectDateAdapter= SelectDateAdapter(itemData){
                     selectStartTime = it.startTime
                     selectEndTime = it.endTime
+                    loading.showLoading()
                     viewModel.getOddsList(gameType,
                         matchType.postValue,
                         selectStartTime,
-                        selectStartTime,
+                        selectEndTime,
                         true
                     )
                 }

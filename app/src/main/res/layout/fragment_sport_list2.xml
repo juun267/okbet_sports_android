@@ -67,17 +67,18 @@
 
                     <ImageView
                         android:id="@+id/ivFilter"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:padding="2dp"
-                        android:layout_marginRight="4dp"
+                        android:layout_width="24dp"
+                        android:layout_height="match_parent"
+                        android:paddingVertical="7.5dp"
+                        android:padding="4dp"
                         android:src="@drawable/ic_filter" />
 
                     <ImageView
                         android:id="@+id/ivArrow"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:padding="2dp"
+                        android:layout_width="24dp"
+                        android:layout_height="match_parent"
+                        android:paddingVertical="7.5dp"
+                        android:padding="4dp"
                         android:src="@drawable/ic_arrow_up" />
 
                 </LinearLayout>
