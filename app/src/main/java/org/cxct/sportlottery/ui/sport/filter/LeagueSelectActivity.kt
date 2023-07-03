@@ -73,14 +73,13 @@ class LeagueSelectActivity :
 
         bindFinish(btnCancel)
         loading.showLoading()
-
+        setDateListView()
         if (MatchType.OUTRIGHT == matchType) {
             initOutrightLeagues()
             initOutrightObserver()
             viewModel.getOutRightLeagueList(gameType)
         } else {
             initLeagues()
-            setDateListView()
             initObserve()
             viewModel.getOddsList(gameType, matchType.postValue)
         }
@@ -175,19 +174,23 @@ class LeagueSelectActivity :
                     getString(R.string.home_tab_today),
                     getString(R.string.N930),
                     getString(R.string.N931),
-                    getString(R.string.N931)
+                    getString(R.string.N932)
                 )
 
                 val itemData = mutableListOf<SelectDate>().apply {
                     val calendar = Calendar.getInstance()
                     repeat(names.size) {
-                        if (it < 2) calendar.add(Calendar.DATE, 0) else calendar.add(Calendar.DATE, 1)
-                        val date = calendar.time
-                        val label=if (it==0) getString(R.string.date_row_all) else TimeUtil.dateToFormat(date,TimeUtil.SELECT_MATCH_FORMAT)
-                        val timeRangeParams=TimeUtil.getDayDateTimeRangeParams(TimeUtil.dateToFormat(date,TimeUtil.YMD_FORMAT))
-                        val startTime = if(it==0) "" else timeRangeParams.startTime?:""
-                        val endTime = if(it==0) "" else timeRangeParams.endTime?:""
-                        add(SelectDate(date,names[it],label,startTime,endTime))
+                        if (it==0){
+                            add(SelectDate(calendar.time,names[it],getString(R.string.date_row_all),"",""))
+                        }else{
+                            if (it == 1) calendar.add(Calendar.DATE, 0) else calendar.add(Calendar.DATE, 1)
+                            val date = calendar.time
+                            val label=TimeUtil.dateToFormat(date,TimeUtil.SELECT_MATCH_FORMAT)
+                            val timeRangeParams=TimeUtil.getDayDateTimeRangeParams(TimeUtil.dateToFormat(date,TimeUtil.YMD_FORMAT))
+                            val startTime = timeRangeParams.startTime?:""
+                            val endTime = timeRangeParams.endTime?:""
+                            add(SelectDate(date,names[it],label,startTime,endTime))
+                        }
                     }
                 }
 
