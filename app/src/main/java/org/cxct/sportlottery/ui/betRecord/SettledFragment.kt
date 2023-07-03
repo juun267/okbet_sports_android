@@ -149,8 +149,11 @@ class SettledFragment:BindingFragment<AccountHistoryViewModel,FragmentSettledBin
             hideLoading()
             initBetValue()
             binding.recyclerSettled.visible()
-            mAdapter.setList(arrayListOf())
-//            binding.empty.emptyView.visible()
+            if(viewModel.settledData.value!=null){
+                mAdapter.setList(viewModel.settledData.value)
+            }else{
+                mAdapter.setList(arrayListOf())
+            }
         }
     }
 

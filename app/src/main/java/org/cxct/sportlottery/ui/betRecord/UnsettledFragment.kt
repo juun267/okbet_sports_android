@@ -86,7 +86,11 @@ class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnset
         //网络请求失败
         viewModel.responseFailed.observe(this) {
             hideLoading()
-            mAdapter.setList(arrayListOf())
+            if(viewModel.unsettledDataEvent.value!=null){
+                mAdapter.setList(viewModel.unsettledDataEvent.value)
+            }else{
+                mAdapter.setList(arrayListOf())
+            }
         }
         //未接单数据监听
         viewModel.unsettledDataEvent.observe(this) {
@@ -103,6 +107,7 @@ class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnset
 
 
     override fun onInitData() {
+        Log.e("dachang","onInitData")
         refData()
         initObserve()
     }
