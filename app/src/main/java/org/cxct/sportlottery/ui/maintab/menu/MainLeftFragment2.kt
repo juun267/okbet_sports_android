@@ -185,7 +185,8 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         val textParams = LayoutParams(0, -2, 1f)
         textParams.leftMargin = iconParams.leftMargin
 
-        sportsItem = addMenu(0,
+        var index1 = 0
+        sportsItem = addMenu(index1++,
             groupParams,
             iconParams,
             R.drawable.ic_main_menu_sports_1,
@@ -200,7 +201,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             }
         }
 
-        okGamesItem = addMenu(1,
+        okGamesItem = addMenu(index1++,
             groupParams,
             iconParams,
             R.drawable.ic_main_menu_okgames_1,
@@ -212,7 +213,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
 
         okGamesItem.group.setVisibilityByMarketSwitch()
 
-        eSportGamesItem = addMenu(2,
+        eSportGamesItem = addMenu(index1++,
             groupParams,
             iconParams,
             R.drawable.ic_main_menu_esport_1,
@@ -221,6 +222,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             R.string.esports,
             true
         ) { getMainTabActivity().jumpToESport() }
+        eSportGamesItem.group.gone()
 //
 //        okLiveItem = addMenu(2,
 //            groupParams,

@@ -47,6 +47,7 @@ import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.setOnClickListeners
+import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityDetailSportBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -203,14 +204,13 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 }
             }
         }
-        //指定球类显示比分板
-        when(matchInfo?.gameType){
-            GameType.FT.key, GameType.BK.key, GameType.TN.key, GameType.BM.key, GameType.TT.key, GameType.VB.key->{}
-            else->{
-                binding.detailToolBarViewPager.isUserInputEnabled = false
-                binding.flRdContainer.gone()
-            }
+        //滚球中并且指定球类显示比分板
+        val needShowBoard = TimeUtil.isTimeInPlay(matchInfo?.startTime)&&when(matchInfo?.gameType){
+            GameType.FT.key, GameType.BK.key, GameType.TN.key, GameType.BM.key, GameType.TT.key, GameType.VB.key->true
+            else->false
         }
+        binding.detailToolBarViewPager.isUserInputEnabled = needShowBoard
+        binding.flRdContainer.isVisible = needShowBoard
 
         topBarFragmentList = listOf<Fragment>(SportToolBarTopFragment().apply {
             arguments = Bundle().also {
@@ -1152,12 +1152,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 }
             }
         }
-
-        receiver.matchOddsChange.observe(this) {
-            it?.getContentIfNotHandled()?.let { matchOddsChangeEvent ->
+        MatchOddsRepository.observerMatchOdds(this) {
                 oddsDetailListAdapter?.oddsDetailDataList?.let { oddsDetailListDataList ->
                     SocketUpdateUtil.updateMatchOddsMap(oddsDetailListDataList,
-                        matchOddsChangeEvent,
+                        it,
                         viewModel.favorPlayCateList.value?.find { playCate -> playCate.gameType == matchInfo?.gameType })
                         ?.let { updatedDataList ->
                             oddsDetailListAdapter?.oddsDetailDataList = updatedDataList
@@ -1165,18 +1163,17 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         var needUpdate = false
                         oddsDetailListDataList.forEachIndexed { index, oddsDetailListData ->
                             if (SocketUpdateUtil.updateMatchOdds(
-                                    oddsDetailListData, matchOddsChangeEvent
+                                    oddsDetailListData, it
                                 ) && oddsDetailListData.isExpand
                             ) {
                                 needUpdate = true
-                                updateBetInfo(oddsDetailListData, matchOddsChangeEvent)
+                                updateBetInfo(oddsDetailListData, it)
                             }
                         }
                         if (needUpdate) {
                             oddsDetailListAdapter?.notifyDataSetChanged()
                         }
                     }
-                }
             }
         }
 

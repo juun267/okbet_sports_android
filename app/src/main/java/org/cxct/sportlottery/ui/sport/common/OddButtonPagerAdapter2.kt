@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.sport.common
 
 import android.content.Context
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
@@ -83,42 +82,7 @@ class OddButtonPagerAdapter2(val context: Context,
 
         val nonNullValues = odds.filterValues { !it.isNullOrEmpty() }
         val gameList = nonNullValues.plus(nonNullValues.filter { it.value?.getOrNull(0) == null })
-            .map { it.key }.run {
-
-                val gameListFilter: MutableList<String>
-                when{
-                    //波膽玩法不限制個數
-                    matchType == MatchType.CS -> {
-                        if (odds.values.isEmpty()) {
-                            //加入假資料
-                            gameListFilter = mutableListOf()
-                            for (i in 1..8) {
-                                gameListFilter.add("EmptyData${i}")
-                            }
-                        } else {
-                            gameListFilter = this.toMutableList()
-                        }
-                    }
-
-                    this.isEmpty() ->{
-                        gameListFilter = mutableListOf()
-                        gameListFilter.add("EmptyData1")
-                    }
-                    this.size > sizeCount(matchInfo?.gameType) -> {
-                        gameListFilter = this.take(sizeCount(matchInfo?.gameType)) as MutableList<String>
-                    }
-                    else -> {
-                        val maxCount = if(sizeCount(matchInfo?.gameType) < oddsSortCount) sizeCount(matchInfo?.gameType) else oddsSortCount
-                        val count = if (sizeCount(matchInfo?.gameType) > this.size) maxCount - this.size else 0
-
-                        gameListFilter = this.take(this.size + 1).toMutableList()
-                        for (i in 1..count) {
-                            gameListFilter.add("EmptyData${i}")
-                        }
-                    }
-                }
-                gameListFilter
-            }
+            .map { it.key }.take(sizeCount(matchInfo?.gameType)).toMutableList()
         data = gameList.withIndex().groupBy {
             it.index / 1
         }.map {

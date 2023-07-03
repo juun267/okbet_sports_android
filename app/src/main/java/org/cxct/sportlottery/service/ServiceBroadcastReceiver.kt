@@ -314,27 +314,17 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
             }
             //具体赛事/赛季频道
             EventType.MATCH_ODDS_CHANGE -> {
-                val data = ServiceMessage.getMatchOddsChange(jObjStr)
+                val data = ServiceMessage.getMatchOddsChange(jObjStr)?:return
                 //query為耗時任務不能在主線程, LiveData需在主線程更新
-                mUserId?.let { userId ->
-                    val discount = UserInfoRepository.getDiscount(userId)
-                    data?.let {
-                        it.setupOddDiscount(discount ?: 1.0F)
-                        //得在所有賠率折扣率, 水位計算完畢後再去判斷更新盤口狀態
-                        it.updateBetStatus()
-                        it.updateOddsSelectedState()
-                    }
-                    _matchOddsChange.postValue(Event(data))
-                    data?.let { socketEvent ->
-                        BetInfoRepository.updateMatchOdd(socketEvent)
-                    }
-
-                } ?: run {
-                    _matchOddsChange.postValue(Event(data))
-                    data?.let { socketEvent ->
-                        BetInfoRepository.updateMatchOdd(socketEvent)
-                    }
+                if (mUserId!=null){
+                    val discount = UserInfoRepository.getDiscount(mUserId!!)
+                    data.setupOddDiscount(discount ?: 1.0F)
+                    data.updateOddsSelectedState()
                 }
+                post{
+                    MatchOddsRepository.onMatchOdds(data)
+                }
+                BetInfoRepository.updateMatchOdd(data)
             }
             //賠率折扣
             EventType.USER_DISCOUNT_CHANGE -> {

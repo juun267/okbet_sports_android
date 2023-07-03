@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.sport.outright
 
 import android.graphics.Typeface
 import android.text.TextUtils
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -75,7 +76,13 @@ class OutrightSecondProvider(val adapter: SportOutrightAdapter2,
         return MatchVH(name, time, arrow, root)
     }
 
+    override fun convert(helper: BaseViewHolder, item: BaseNode, payloads: List<Any>) {
+
+        Log.e("For Test", "=======>>> OutrightSecondProvider 11111")
+    }
+
     override fun convert(helper: BaseViewHolder, item: BaseNode) {
+        Log.e("For Test", "=======>>> OutrightSecondProvider 22222")
         val bean = item as CategoryOdds
         val matchVH = helper as MatchVH
         val matchOdd = bean.matchOdd
