@@ -135,13 +135,14 @@ class PlayCateView @JvmOverloads constructor(
     }
 
     fun setPlayCateName(home: String, away: String, draw: CharSequence) {
-        homeText.text = home
-        awayText.text = away
-        drawText.text = draw
-        draw.isNotEmpty().let {
-            drawText.isVisible = it
-            oddBtnDraw?.isVisible = it
-        }
+        bindText(homeText, home)
+        bindText(awayText, away)
+        bindText(drawText, draw)
+    }
+
+    private fun bindText(textView: TextView, name: CharSequence) {
+        textView.text = name
+        textView.isVisible = name.isNotEmpty()
     }
 
 }
