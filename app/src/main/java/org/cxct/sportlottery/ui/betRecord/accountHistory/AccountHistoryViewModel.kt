@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.betRecord.accountHistory
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -29,7 +28,6 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.betRecord.BetListData
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.JsonUtil
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.SingleLiveEvent
 import org.cxct.sportlottery.util.TimeUtil
@@ -396,12 +394,10 @@ class AccountHistoryViewModel(
     var pageIndex=1
     private val pageSize=20
     fun getUnsettledList() {
-        Log.e("dachang","getUnsettledList")
         if (betListRequesting ){
             _responseFailed.postValue(true)
             return
         }
-        Log.e("dachang","betListRequesting")
         betListRequesting = true
         val betListRequest = BetListRequest(
             championOnly = 0,
@@ -417,7 +413,6 @@ class AccountHistoryViewModel(
             }
             betListRequesting = false
             if(resultData==null){
-                Log.e("dachang","null")
                 _responseFailed.postValue(true)
                 return@launch
             }
@@ -425,19 +420,15 @@ class AccountHistoryViewModel(
 
             resultData.let { result ->
                 if (result.success) {
-                    Log.e("dachang","success")
                     if(result.rows.isNullOrEmpty()){
                         unsettledDataEvent.postValue(arrayListOf())
-                        Log.e("dachang","isNullOrEmpty")
                     }else{
-                        Log.e("dachang","resultData")
                         pageIndex++
                         unsettledDataEvent.postValue(result.rows!!)
                         loginRepository.updateTransNum(result.total ?: 0)
                     }
 
                 } else {
-                    Log.e("dachang","resultcode${result.code}")
                     if (result.code == NetWorkResponseType.REQUEST_TOO_FAST.code && requestCount < requestMaxCount) {
                         unsettledDataEvent.postValue(arrayListOf())
                     }
