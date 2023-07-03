@@ -102,8 +102,19 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
 
     private fun toMaintenanceOrShowDialog(result: BaseResult) {
         when (result.code) {
-//            HttpError.DO_NOT_HANDLE.code -> { 鉴权失败、token过期
-//            }
+            HttpError.DO_NOT_HANDLE.code -> { // 鉴权失败、token过期
+                if (this is MaintenanceActivity
+                    || this is SplashActivity) {
+                    return
+                }
+                showTokenPromptDialog(result.msg) {
+                    viewModel.doLogoutCleanUser {
+                        if (isErrorTokenToMainActivity()) {
+                            MainTabActivity.reStart(this)
+                        }
+                    }
+                }
+            }
 
             HttpError.MAINTENANCE.code -> {
                 startActivity(Intent(this, MaintenanceActivity::class.java))
