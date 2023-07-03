@@ -6,6 +6,7 @@ import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.content_baseball_status.view.*
 import kotlinx.android.synthetic.main.item_sport_favorite.view.*
@@ -468,15 +469,15 @@ fun setBBStatusView(
     ivHalfStatus: ImageView,
     ivBaseBag: ImageView,
 ) {
-
     tvBBStatus.apply {
         text = matchInfo.statusName18n
+        setTextColor(ContextCompat.getColor(context,R.color.color_6C7BA8))
         isVisible = !matchInfo.statusName18n.isEmptyStr()
     }
-
     txvOut.apply {
         text = this.context.getString(R.string.game_out,
             matchInfo.outNumber ?: "0")
+        setTextColor(ContextCompat.getColor(context,R.color.color_6C7BA8))
         isVisible = true
     }
 
