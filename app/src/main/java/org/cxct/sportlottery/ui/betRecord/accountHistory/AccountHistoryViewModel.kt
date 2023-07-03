@@ -396,8 +396,12 @@ class AccountHistoryViewModel(
     var pageIndex=1
     private val pageSize=20
     fun getUnsettledList() {
-        if (betListRequesting )
+        Log.e("dachang","getUnsettledList")
+        if (betListRequesting ){
+            _responseFailed.postValue(true)
             return
+        }
+        Log.e("dachang","betListRequesting")
         betListRequesting = true
         val betListRequest = BetListRequest(
             championOnly = 0,
@@ -413,21 +417,27 @@ class AccountHistoryViewModel(
             }
             betListRequesting = false
             if(resultData==null){
+                Log.e("dachang","null")
                 _responseFailed.postValue(true)
                 return@launch
             }
 
+
             resultData.let { result ->
                 if (result.success) {
+                    Log.e("dachang","success")
                     if(result.rows.isNullOrEmpty()){
                         unsettledDataEvent.postValue(arrayListOf())
+                        Log.e("dachang","isNullOrEmpty")
                     }else{
+                        Log.e("dachang","resultData")
                         pageIndex++
                         unsettledDataEvent.postValue(result.rows!!)
                         loginRepository.updateTransNum(result.total ?: 0)
                     }
 
                 } else {
+                    Log.e("dachang","resultcode${result.code}")
                     if (result.code == NetWorkResponseType.REQUEST_TOO_FAST.code && requestCount < requestMaxCount) {
                         unsettledDataEvent.postValue(arrayListOf())
                     }
@@ -457,8 +467,10 @@ class AccountHistoryViewModel(
     //有效投注额
     var totalEfficient:Double=0.0
     fun getSettledList() {
-        if (betListRequesting )
+        if (betListRequesting ){
+            _responseFailed.postValue(true)
             return
+        }
         betListRequesting = true
 
         val betListRequest = BetListRequest(

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
@@ -196,10 +197,11 @@ class LeagueSelectActivity :
                 selectDateAdapter= SelectDateAdapter(itemData){
                     selectStartTime = it.startTime
                     selectEndTime = it.endTime
+                    loading.showLoading()
                     viewModel.getOddsList(gameType,
                         matchType.postValue,
                         selectStartTime,
-                        selectStartTime,
+                        selectEndTime,
                         true
                     )
                 }

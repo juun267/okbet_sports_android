@@ -4,6 +4,9 @@ import android.graphics.Color
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
+import android.util.Log
+import androidx.core.content.ContextCompat
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
@@ -69,6 +72,9 @@ class OddButtonPagerViewHolder2(val oddBtnList: PlayCateView) : OddStateViewHold
             playCateCode = playCateCode.split("_")[0]
         }
 //        Timber.e("playCateCode: $playCateCode")
+
+        Log.e("For Test", "========>>> bindPlayCateName 111 $playCateName == $betPlayCateName == ${playCateNameMap!![odds!!.first]
+            ?.getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))}")
 
         bindPlayCateName(oddBtnList, "${matchInfo?.gameType}", playCateName, playCateCode, odds.second!!)
         val isDeactivated = (odds.second == null || odds.second!!.all { it == null })
@@ -170,12 +176,14 @@ class OddButtonPagerViewHolder2(val oddBtnList: PlayCateView) : OddStateViewHold
                                  playCateCode: String,
                                  oddsList: List<Odd>) {
 
+
         if (gameType.isESport() || !playCateCode.isSingleType()) {
             playCateView.setPlayCateName("", "", playCateName.updatePlayCateColor())
             return
         }
 
-        playCateView.setPlayCateName("1", "2", if (oddsList.size > 2) "X" else "")
+
+        playCateView.setPlayCateName("", "", playCateView.context.getString(R.string.J784))
     }
 
     private fun bindOddClick(oddsButton: OddsButton2,
@@ -255,7 +263,10 @@ class OddButtonPagerViewHolder2(val oddBtnList: PlayCateView) : OddStateViewHold
             ?.replace("||", "\n") ?: ""
 
         val playCateCode = odds.first ?: ""
+
         bindPlayCateName(oddBtnList, "${matchInfo!!.gameType}", playCateName, playCateCode, odds.second!!)
+        Log.e("For Test", "========>>> bindPlayCateName 222 $playCateName  ${playCateNameMap!![odds!!.first]
+            ?.getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))}")
 
         val isDeactivated = (odds.second == null || odds.second!!.all { it == null })
 

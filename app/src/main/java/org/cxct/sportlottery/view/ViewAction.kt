@@ -26,10 +26,8 @@ fun View.onClick(time:Int=200,block: () -> Unit) {
     this.setOnClickListener {
         val systemTime =System.currentTimeMillis()
         if (systemTime - lastClickTime < time) {
-            Log.e("dachang","systemTime ${systemTime }   lastClickTime${lastClickTime}  time${time}")
             return@setOnClickListener
         }
-        Log.e("dachang","onClick")
         lastClickTime=systemTime
         block()
     }
