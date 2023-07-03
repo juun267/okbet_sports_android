@@ -138,9 +138,10 @@ class SportToolBarTopFragment :
                     if (matchInfo.gameType == GameType.TN.name || matchInfo.gameType == GameType.VB.name || matchInfo.gameType == GameType.TT.name || matchInfo.gameType == GameType.BM.name) {
                         "" + setSptText(matchInfo)
                     } else {
-                        matchInfo.statusName18n
+                        matchInfo.statusName18n + (setSptText(matchInfo))
                     }
-                }else {
+
+                } else {
                     ""
                 }
             }
@@ -224,6 +225,7 @@ class SportToolBarTopFragment :
             setScoreTextAtFront(matchInfo)
             setAttack(matchInfo)
             setBBStatus(matchInfo)
+            setCurrentPeroid(matchInfo)
         } else setBkScoreText(matchInfo)
     }
 
@@ -249,6 +251,12 @@ class SportToolBarTopFragment :
                 else ->
                     matchInfo.homeScore.toStringS("0") + "-" + matchInfo.awayScore.toStringS("0")
             }
+        }
+        if (matchInfo.gameType==GameType.BB.key){
+            tv_total_score.isVisible=true
+            tv_total_score.text =  matchInfo.homeTotalScore.toStringS("0")+ "-" + matchInfo.awayTotalScore.toStringS("0")
+        }else{
+            tv_total_score.isVisible=false
         }
         setMatchScore(
             matchInfo,
@@ -290,10 +298,10 @@ class SportToolBarTopFragment :
             isVisible = true
         }
         binding.tvMatchTime.apply {
-            text = ""
-//                if (matchInfo.halfStatus == 0) getString(R.string.half_first_short) else getString(
-//                    R.string.half_second_short
-//                )
+            text =
+                if (matchInfo.halfStatus == 0) getString(R.string.half_first_short) else getString(
+                    R.string.half_second_short
+                )
             isVisible = true
         }
 

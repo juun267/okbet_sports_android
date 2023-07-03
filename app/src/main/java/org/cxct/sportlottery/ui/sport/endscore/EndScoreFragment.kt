@@ -142,6 +142,7 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
             //api拿到到数据，第一个默认展开
             list?.forEachIndexed { index, baseNode ->
                 (baseNode as BaseExpandNode).isExpanded = (index == 0)
+                baseNode.childNode?.forEach { (it as BaseExpandNode).isExpanded = false }
             }
             setSportDataList(list)
             binding.tvMatchNum.text = "${list?.size ?: 0}"
