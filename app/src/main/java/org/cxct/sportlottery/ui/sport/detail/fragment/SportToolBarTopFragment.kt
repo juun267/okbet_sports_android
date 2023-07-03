@@ -138,10 +138,9 @@ class SportToolBarTopFragment :
                     if (matchInfo.gameType == GameType.TN.name || matchInfo.gameType == GameType.VB.name || matchInfo.gameType == GameType.TT.name || matchInfo.gameType == GameType.BM.name) {
                         "" + setSptText(matchInfo)
                     } else {
-                        matchInfo.statusName18n + (setSptText(matchInfo))
+                        matchInfo.statusName18n
                     }
-
-                } else {
+                }else {
                     ""
                 }
             }
@@ -225,7 +224,6 @@ class SportToolBarTopFragment :
             setScoreTextAtFront(matchInfo)
             setAttack(matchInfo)
             setBBStatus(matchInfo)
-            setCurrentPeroid(matchInfo)
         } else setBkScoreText(matchInfo)
     }
 
@@ -292,10 +290,10 @@ class SportToolBarTopFragment :
             isVisible = true
         }
         binding.tvMatchTime.apply {
-            text =
-                if (matchInfo.halfStatus == 0) getString(R.string.half_first_short) else getString(
-                    R.string.half_second_short
-                )
+            text = ""
+//                if (matchInfo.halfStatus == 0) getString(R.string.half_first_short) else getString(
+//                    R.string.half_second_short
+//                )
             isVisible = true
         }
 
