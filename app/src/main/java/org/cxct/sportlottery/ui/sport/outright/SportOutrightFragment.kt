@@ -88,9 +88,7 @@ class SportOutrightFragment : BaseSportListFragment<SportListViewModel, Fragment
 
     private val subscribeVisibleRange by lazy {
         Runnable {
-            if (activity == null
-                || sportOutrightAdapter2.getCount() < 1
-                || binding.gameList.scrollState != RecyclerView.SCROLL_STATE_IDLE) {
+            if (activity == null) {
                 return@Runnable
             }
 

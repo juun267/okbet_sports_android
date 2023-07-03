@@ -177,13 +177,14 @@ class OddButtonPagerViewHolder2(val oddBtnList: PlayCateView) : OddStateViewHold
                                  oddsList: List<Odd>) {
 
 
-        if (gameType.isESport() || !playCateCode.isSingleType()) {
-            playCateView.setPlayCateName("", "", playCateName.updatePlayCateColor())
-            return
-        }
-
-
-        playCateView.setPlayCateName("", "", playCateView.context.getString(R.string.J784))
+        playCateView.setPlayCateName("", "", playCateName.updatePlayCateColor())
+//        if (gameType.isESport() || !playCateCode.isSingleType()) {
+//            playCateView.setPlayCateName("", "", playCateName.updatePlayCateColor())
+//            return
+//        }
+//
+//
+//        playCateView.setPlayCateName("", "", playCateView.context.getString(R.string.J784))
     }
 
     private fun bindOddClick(oddsButton: OddsButton2,

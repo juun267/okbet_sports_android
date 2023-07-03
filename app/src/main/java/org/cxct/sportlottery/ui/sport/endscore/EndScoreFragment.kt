@@ -19,7 +19,6 @@ import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.sport.BaseSportListFragment
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
-import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.layoutmanager.SocketGridManager
 import java.util.ArrayList
 
@@ -117,8 +116,13 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
 
     private val subscribeVisibleRange by lazy {
         Runnable {
-            if (endScoreAdapter.getCount() < 1
-                || binding.gameList.scrollState != RecyclerView.SCROLL_STATE_IDLE) {
+            if (endScoreAdapter.getCount() < 1) {
+                return@Runnable
+            }
+
+            if (binding.gameList.scrollState != RecyclerView.SCROLL_STATE_IDLE
+                || binding.gameList.isComputingLayout) {
+                resubscribeChannel(40)
                 return@Runnable
             }
 
@@ -145,8 +149,6 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
                 baseNode.childNode?.forEach { (it as BaseExpandNode).isExpanded = false }
             }
             setSportDataList(list)
-            binding.tvMatchNum.text = "${list?.size ?: 0}"
-
             dismissLoading()
         }
 
