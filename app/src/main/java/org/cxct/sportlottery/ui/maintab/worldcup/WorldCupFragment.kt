@@ -20,10 +20,7 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
-import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.util.LogUtil
-import org.cxct.sportlottery.util.ToastUtil
-import org.cxct.sportlottery.util.startLogin
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.webView.OkWebChromeClient
 import org.cxct.sportlottery.view.webView.OkWebViewClient
 import org.cxct.sportlottery.view.webView.WebViewCallBack
@@ -95,6 +92,7 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
 
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 return overrideUrlLoading(view, url)
+                JumpUtil.toInternalWeb(requireContext(),url,"")
             }
 
             override fun onReceivedSslError(
