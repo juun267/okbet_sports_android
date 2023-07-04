@@ -221,6 +221,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     override fun onResume() {
         super.onResume()
         resubscribeChannel(20)
+        setupOddsChangeListener()
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
