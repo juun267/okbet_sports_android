@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
@@ -69,6 +70,14 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
         initObservable()
         viewModel.getOKGamesHall()
 //        showOkGameDialog()
+        binding.scrollView.setOnScrollChangeListener { v: NestedScrollView, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if (scrollY == (v.getChildAt(0).measuredHeight-v.measuredHeight)) {
+                if(getCurrentFragment() is PartLiveFragment){
+                    (getCurrentFragment()as PartLiveFragment).onMoreClick()
+                }
+
+            }
+        }
     }
 
     private var requestTag: Any = Any()
