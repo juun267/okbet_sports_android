@@ -13,7 +13,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.stx.xhb.androidx.XBanner
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.setOnClickListeners
 import org.cxct.sportlottery.common.extentions.visible
@@ -168,9 +167,9 @@ class HomeTopView @JvmOverloads constructor(
             fragment.jumpToOKGames()
         }
         binding.vOklive.isInvisible = getMarketSwitch()
-//        binding.vOklive.setOnClickListener {
-//            fragment.jumpToOKLive()
-//        }
+        binding.vOklive.setOnClickListener {
+            fragment.jumpToOKLive()
+        }
 
         if (!LoginRepository.isLogined()) {
             binding.ivGoogle.setOnClickListener {
