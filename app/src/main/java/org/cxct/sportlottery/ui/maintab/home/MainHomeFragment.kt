@@ -83,6 +83,7 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
         okGamesView.setOkGamesData(this@MainHomeFragment)
         initBetWinsRecodeLayout()
         initObservable()
+        binding.winsRankView.loadData()
     }
 
     private fun initBetWinsRecodeLayout() {
