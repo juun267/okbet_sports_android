@@ -198,7 +198,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
             SportDetailActivity.startActivity(requireContext(),
                 matchInfo = mMatchInfo!!,
                 matchType = MatchType.IN_PLAY,
-                true)
+                intoLive = true)
         }
 
         ll_hot_live_more.setOnClickListener { getHomeFragment().jumpToLive()}
@@ -716,7 +716,7 @@ class MainHomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHome
     }
 
     private fun navOddsDetailFragment(matchType: MatchType, matchInfo: MatchInfo) {
-        SportDetailActivity.startActivity(requireContext(),  matchInfo, matchType)
+        SportDetailActivity.startActivity(requireContext(),  matchInfo =matchInfo, matchType = matchType)
     }
 
     private fun subscribeQueryData(recommendList: List<HandicapData>) {

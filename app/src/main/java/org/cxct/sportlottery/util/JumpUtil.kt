@@ -8,8 +8,10 @@ import android.webkit.URLUtil
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bettingStation.BettingStation
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.common.WebActivity
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.lottery.LotteryActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
@@ -26,17 +28,29 @@ object JumpUtil {
         bettingStation: BettingStation? = null
     ) {
         LogUtil.d("href:===>${href}")
-        context.startActivity(
-            Intent(context, WebActivity::class.java).apply {
-                putExtra(WebActivity.KEY_URL, Constants.appendParams(href))
-                putExtra(WebActivity.KEY_TITLE, title)
-                putExtra(WebActivity.KEY_TOOLBAR_VISIBILITY, toolbarVisibility)
-                putExtra(WebActivity.KEY_BACK_EVENT, backEvent)
-                if (bettingStation != null) {
-                    putExtra(WebActivity.BET_STATION, bettingStation)
+        when{
+            //是否世界杯主题活动页面
+            href?.isNotEmpty() == true &&href?.contains("personal/BasketballWorldCupLottery")->{
+                if (LoginRepository.isLogined()){
+                   (AppManager.currentActivity() as MainTabActivity).jumpToWorldCupGame()
+                }else{
+                    AppManager.currentActivity().startLogin()
                 }
             }
-        )
+            else->{
+                context.startActivity(
+                    Intent(context, WebActivity::class.java).apply {
+                        putExtra(WebActivity.KEY_URL, Constants.appendParams(href))
+                        putExtra(WebActivity.KEY_TITLE, title)
+                        putExtra(WebActivity.KEY_TOOLBAR_VISIBILITY, toolbarVisibility)
+                        putExtra(WebActivity.KEY_BACK_EVENT, backEvent)
+                        if (bettingStation != null) {
+                            putExtra(WebActivity.BET_STATION, bettingStation)
+                        }
+                    }
+                )
+            }
+        }
     }
 
     /**

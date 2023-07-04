@@ -28,6 +28,7 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentMainLeft2Binding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.user.UserInfo
+import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -161,6 +162,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
 
     private var lastItem: MenuItem? = null
 
+    private lateinit var worldCupItem: MenuItem
     private lateinit var sportsItem: MenuItem
     private lateinit var okGamesItem: MenuItem
     private lateinit var okLiveItem: MenuItem
@@ -297,6 +299,20 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         scanItem.ivIndicator?.let {
             it.visible()
             it.setImageDrawable(toRight)
+        }
+
+        if(StaticData.worldCupOpened()){
+            worldCupItem = addMenu(0,
+                groupParams,
+                iconParams,
+                R.drawable.ic_main_menu_fifa_1,
+                R.drawable.ic_main_menu_fifa_1,
+                textParams,
+                R.string.world_cup_2023,
+                true
+            ) {
+                getMainTabActivity().jumpToWorldCup()
+            }
         }
     }
 

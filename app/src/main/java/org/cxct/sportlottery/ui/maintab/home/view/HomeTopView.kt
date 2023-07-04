@@ -8,10 +8,12 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.stx.xhb.androidx.XBanner
+import kotlinx.android.synthetic.main.layout_home_top.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.setOnClickListeners
@@ -19,11 +21,13 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.LayoutHomeTopBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.config.ImageData
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.repository.ConfigRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment2
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
@@ -161,15 +165,26 @@ class HomeTopView @JvmOverloads constructor(
     fun setup(fragment: MainHomeFragment2) {
 
         ConfigRepository.onNewConfig(fragment) { initBanner() }
+        if (StaticData.worldCupOpened()){
+            vWorldCup.isVisible = true
+            vBingo.isVisible = false
+        }else{
+            vWorldCup.isVisible = false
+            vBingo.isVisible = true
+        }
         binding.vSports.setOnClickListener { fragment.jumpToInplaySport() }
         binding.vOkgames.isInvisible = getMarketSwitch()
         binding.vOkgames.setOnClickListener {
             fragment.jumpToOKGames()
         }
-        binding.vOklive.isInvisible = getMarketSwitch()
-        binding.vOklive.setOnClickListener {
-            fragment.jumpToOKLive()
+        binding.vWorldCup.isInvisible = getMarketSwitch()
+        binding.vWorldCup.setOnClickListener {
+            (fragment.activity as MainTabActivity).jumpToWorldCup()
         }
+//        binding.vOklive.isInvisible = getMarketSwitch()
+//        binding.vOklive.setOnClickListener {
+//            fragment.jumpToOKLive()
+//        }
 
         if (!LoginRepository.isLogined()) {
             binding.ivGoogle.setOnClickListener {
