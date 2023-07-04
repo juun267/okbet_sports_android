@@ -74,6 +74,7 @@ import org.cxct.sportlottery.ui.sport.detail.fragment.SportToolBarTopFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
+import org.cxct.sportlottery.view.DividerItemDecorator
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 import splitties.bundle.put
@@ -831,6 +832,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 sportCode = GameType.getGameType(matchInfo?.gameType)
             }
         rv_detail.apply {
+            addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context,R.drawable.bg_divide_eef3fc)))
             (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             adapter = oddsDetailListAdapter
             layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
