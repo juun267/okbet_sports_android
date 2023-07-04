@@ -1,16 +1,11 @@
 package org.cxct.sportlottery.view
 
 import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
-import android.util.Log
-import android.view.TextureView
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import org.cxct.sportlottery.util.DisplayUtil.dp
-import java.util.Date
 
 object ViewAction {
 
