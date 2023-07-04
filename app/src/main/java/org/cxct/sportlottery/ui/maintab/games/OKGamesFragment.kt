@@ -19,6 +19,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameLabel
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.FragmentHelper
 import org.cxct.sportlottery.util.enterThirdGame
@@ -71,7 +72,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
         viewModel.getOKGamesHall()
         showOkGameDialog()
         binding.scrollView.setOnScrollChangeListener { v: NestedScrollView, scrollX, scrollY, oldScrollX, oldScrollY ->
-            if (scrollY == (v.getChildAt(0).measuredHeight-v.measuredHeight)) {
+            if (scrollY >= (v.getChildAt(0).measuredHeight-v.measuredHeight-50.dp)) {
                 if(getCurrentFragment() is PartGamesFragment){
                     (getCurrentFragment()as PartGamesFragment).onMoreClick()
                 }
