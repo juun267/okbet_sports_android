@@ -59,7 +59,7 @@ class PlayCateView @JvmOverloads constructor(
     private fun createNameTextView(): TextView {
         val text = AppCompatTextView(context)
         text.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12f)
-        text.setTextColor(getColor(R.color.color_00181E))
+        text.setTextColor(getColor(R.color.color_6D7693))
         text.typeface = Typeface.DEFAULT_BOLD
         text.gravity = Gravity.CENTER
         return  text
