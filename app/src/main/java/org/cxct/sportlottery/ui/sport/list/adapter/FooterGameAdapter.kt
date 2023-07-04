@@ -94,7 +94,7 @@ class FooterGameAdapter(private val onFavoriteClick: (View, OKGameBean) -> Unit,
             more.id = moreId
             more.textSize = 14f
             more.setTextColor(ContextCompat.getColor(context, R.color.color_6D7693))
-            more.setText(R.string.N702)
+            more.setText(  R.string.N702)
             more.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_game_gray_arrow_right, 0)
             linearLayout.addView(more)
 
