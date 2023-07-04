@@ -125,14 +125,8 @@ class WorldCupGameFragment : BaseBottomNavigationFragment<MainHomeViewModel>(Mai
             e.printStackTrace()
         }
     }
-    var currentOdsType: String? = null
     private fun loadWebURL() {
-        val oddsType=MultiLanguagesApplication.mInstance.sOddsType
-        if (currentOdsType != null && currentOdsType.equals(oddsType)) {
-            return
-        }
-        currentOdsType = oddsType
-        val url = Constants.getWorldCupH5Url(requireContext(),viewModel.token?:"")
+        val url = Constants.getWorldCupActivityH5Url(requireContext(),viewModel.token?:"")
         setCookie(url)
         LogUtil.d("url="+url)
         binding.okWebView.loadUrl(url)

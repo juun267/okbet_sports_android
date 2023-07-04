@@ -744,6 +744,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         resetBackIcon(0)
         homeFragment().jumpToWorldCup()
     }
+    fun jumpToWorldCupGame() {
+        resetBackIcon(0)
+        homeFragment().jumpToWorldCupGame()
+    }
 
     fun jumpToInplaySport() {
         //检测体育服务是否关闭
