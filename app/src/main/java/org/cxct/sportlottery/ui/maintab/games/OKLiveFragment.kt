@@ -19,6 +19,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameLabel
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.FragmentHelper
 import org.cxct.sportlottery.util.enterThirdGame
@@ -71,9 +72,9 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
         viewModel.getOKGamesHall()
 //        showOkGameDialog()
         binding.scrollView.setOnScrollChangeListener { v: NestedScrollView, scrollX, scrollY, oldScrollX, oldScrollY ->
-            if (scrollY == (v.getChildAt(0).measuredHeight-v.measuredHeight)) {
-                if(getCurrentFragment() is PartLiveFragment){
-                    (getCurrentFragment()as PartLiveFragment).onMoreClick()
+            if (scrollY >= (v.getChildAt(0).measuredHeight - v.measuredHeight - 50.dp)) {
+                if (getCurrentFragment() is PartLiveFragment) {
+                    (getCurrentFragment() as PartLiveFragment).onMoreClick()
                 }
 
             }
@@ -120,7 +121,7 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
 
 
     private fun initTopView() = binding.topView.run {
-        setup(this@OKLiveFragment,18, gameType = "oklive")
+        setup(this@OKLiveFragment, 18, gameType = "oklive")
         onTableClick = ::onTabChange
         onSearchTextChanged = { searchKey ->
             hideKeyboard()
@@ -248,7 +249,7 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
 
     open fun getCurrentFragment() = fragmentHelper.getCurrentFragment()
 
-    private fun showOkGameDialog(){
+    private fun showOkGameDialog() {
         if (PopImageDialog.showOKLiveDialog) {
             PopImageDialog.showOKLiveDialog = false
             if (PopImageDialog.checkImageTypeAvailable(ImageType.DIALOG_OKLIVE.code)) {
