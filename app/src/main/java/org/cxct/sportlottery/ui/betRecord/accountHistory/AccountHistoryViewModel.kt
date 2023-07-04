@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.betRecord.accountHistory
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -420,10 +421,11 @@ class AccountHistoryViewModel(
 
             resultData.let { result ->
                 if (result.success) {
+                    pageIndex++
                     if(result.rows.isNullOrEmpty()){
                         unsettledDataEvent.postValue(arrayListOf())
                     }else{
-                        pageIndex++
+
                         unsettledDataEvent.postValue(result.rows!!)
                         loginRepository.updateTransNum(result.total ?: 0)
                     }
