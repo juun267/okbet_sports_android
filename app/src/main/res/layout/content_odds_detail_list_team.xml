@@ -12,23 +12,15 @@
         android:gravity="center"
         android:paddingHorizontal="10dp">
 
-        <ImageView
-            android:id="@+id/iv_home_logo"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:src="@drawable/ic_team_default" />
-
         <TextView
             android:id="@+id/tv_home_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
             android:singleLine="true"
             android:ellipsize="end"
             android:textColor="@color/color_535D76"
             android:textSize="@dimen/textSize14sp"
-            android:textAllCaps="true"
-            tools:text="主队名字" />
+            android:text="Home" />
     </LinearLayout>
 
     <TextView
@@ -42,9 +34,7 @@
         android:ellipsize="end"
         android:textColor="@color/color_535D76"
         android:textSize="@dimen/textSize14sp"
-        android:textAllCaps="true"
-        android:text="@string/draw"
-        tools:text="和"
+        android:text="Draw"
         android:visibility="gone" />
 
     <LinearLayout
@@ -54,23 +44,15 @@
         android:layout_weight="1"
         android:gravity="center">
 
-        <ImageView
-            android:id="@+id/iv_away_logo"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:src="@drawable/ic_team_default" />
-
         <TextView
             android:id="@+id/tv_away_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
             android:singleLine="true"
             android:ellipsize="end"
             android:textColor="@color/color_535D76"
             android:textSize="@dimen/textSize14sp"
-            android:textAllCaps="true"
-            tools:text="客队名字" />
+            android:text="Away" />
     </LinearLayout>
 
 </LinearLayout>

@@ -143,7 +143,7 @@ class OddButtonPagerViewHolder2(val oddBtnList: PlayCateView) : OddStateViewHold
     }
 
     private val textSpanned by lazy {
-        ForegroundColorSpan(Color.parseColor(if (MultiLanguagesApplication.isNightMode) "#a3a3a3" else "#00181E"))
+        ForegroundColorSpan(Color.parseColor(if (MultiLanguagesApplication.isNightMode) "#a3a3a3" else "#6D7693"))
     }
     private val colorSpanned = ForegroundColorSpan(Color.parseColor("#b73a20"))
     private fun String.updatePlayCateColor(): Spanned {

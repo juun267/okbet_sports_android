@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -14,15 +15,23 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemClickListener
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.animDuang
+import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
+import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.databinding.ItemGameCategroyBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.maintab.games.GameChildAdapter
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.RCVDecoration
+import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.enterThirdGame
 import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.view.transform.TransformInDialog
@@ -32,20 +41,23 @@ class SportFooterGamesView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
-) : LinearLayout(context, attrs, defStyleAttr) {
+) : LinearLayout(context, attrs, defStyleAttr), OnItemClickListener {
 
-    private val gameAdapter by lazy { FooterGameAdapter(::onFavoriteClick, ::onGameClick) }
-    private lateinit var gameList: RecyclerView
+    private val okGamesAdapter by lazy { GameChildAdapter(::onFavoriteClick).apply { setOnItemClickListener(this@SportFooterGamesView) } }
     private lateinit var fragment: BaseFragment<*>
     private lateinit var okGamesViewModel: OKGamesViewModel
     private lateinit var noMoreText: TextView
+    private lateinit var okgamesBinding: ItemGameCategroyBinding
+    private val gameItemViewPool by lazy {
+        RecyclerView.RecycledViewPool().apply { setMaxRecycledViews(0, 20) }
+    }
 
     init {
-        12.dp.let { setPadding(it, 0, it, 0) }
+        setPadding(0, 0, 0, 10.dp)
         orientation = VERTICAL
         setBackgroundResource(R.color.color_F8F9FD)
         addNomoreText()
-        initGameList()
+        initOKGameList()
 //        addOKBingo()
     }
 
@@ -94,13 +106,17 @@ class SportFooterGamesView @JvmOverloads constructor(
         addView(linearLayout)
     }
 
-    private fun initGameList() {
-        gameList = RecyclerView(context).apply {
-            layoutManager = GridLayoutManager(context, 3)
-            adapter = gameAdapter
-        }
-
-        addView(gameList)
+    private fun initOKGameList() {
+        okgamesBinding = ItemGameCategroyBinding.inflate(LayoutInflater.from(context), this, true)
+        okgamesBinding.rvGameItem.setLinearLayoutManager(RecyclerView.HORIZONTAL)
+        okgamesBinding.rvGameItem.adapter = okGamesAdapter
+        okgamesBinding.rvGameItem.addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_10))
+        okgamesBinding.rvGameItem.setRecycledViewPool(gameItemViewPool)
+        okgamesBinding.tvName.setText(R.string.J203)
+        okgamesBinding.ivIcon.setImageResource(R.drawable.ic_okgame_label_games)
+        okgamesBinding.tvMore.background = null
+        okgamesBinding.tvMore.setOnClickListener { (fragment.activity as MainTabActivity?)?.jumpToOKGames() }
+        okgamesBinding.root.gone()
     }
 
     fun setUp(fragment: BaseFragment<*>, viewmodel: OKGamesViewModel) {
@@ -113,11 +129,17 @@ class SportFooterGamesView @JvmOverloads constructor(
 
     private fun initObserver(lifecycleOwner: LifecycleOwner, viewmodel: OKGamesViewModel) = viewmodel.run {
 
-        sportOKGames.observe(lifecycleOwner) { gameAdapter.setupOKGames(it, ::onMoreOKGames) }
-        sportOKLives.observe(lifecycleOwner) { gameAdapter.setupOKLives(it, ::onMoreOKLives) }
+        sportOKGames.observe(lifecycleOwner) {
+            if (it.isNullOrEmpty()) {
+                return@observe
+            }
+            okgamesBinding.root.visible()
+            okGamesAdapter.setNewInstance(it.toMutableList())
+        }
+//        sportOKLives.observe(lifecycleOwner) { gameAdapter.setupOKLives(it, ::onMoreOKLives) }
 
         collectOkGamesResult.observe(lifecycleOwner) {
-            gameAdapter.updateFavoriteStatu(it.second)
+            onFavoriteStatus(okGamesAdapter, it.second)
         }
 
         enterThirdGameResult.observe(lifecycleOwner) {
@@ -129,6 +151,16 @@ class SportFooterGamesView @JvmOverloads constructor(
                 TransformInDialog(event.first, event.second, event.third) {
                     enterThirdGame(fragment, viewmodel,it, event.first)
                 }.show(fragment.childFragmentManager, null)
+            }
+        }
+    }
+
+    private fun onFavoriteStatus(adapter: GameChildAdapter, gameData: OKGameBean) {
+        adapter.data.forEachIndexed { index, okGameBean ->
+            if (okGameBean.id == gameData.id) {
+                okGameBean.markCollect = gameData.markCollect
+                adapter.notifyItemChanged(index, okGameBean)
+                return
             }
         }
     }
@@ -148,17 +180,16 @@ class SportFooterGamesView @JvmOverloads constructor(
         }
     }
 
-    private fun onMoreOKGames() {
-        val mainActivity = (fragment.activity as MainTabActivity?) ?: return
-        mainActivity.jumpToOKGames()
-    }
-
     private fun onMoreOKLives() {
 
     }
 
     fun sportNoMoreEnable(enable: Boolean) {
         noMoreText.isVisible = enable
+    }
+
+    override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
+        onGameClick(adapter.getItem(position) as OKGameBean)
     }
 
 

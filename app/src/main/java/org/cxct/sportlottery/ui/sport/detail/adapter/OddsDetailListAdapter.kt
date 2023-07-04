@@ -780,11 +780,6 @@ class OddsDetailListAdapter(
                 odd_detail_fold.isSelected = oddsDetail.isExpand
 
             }
-            //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
-            itemView.tv_home_name?.text = oddsDetail.matchInfo?.homeName
-            itemView.tv_away_name?.text = oddsDetail.matchInfo?.awayName
-            itemView.iv_home_logo?.setTeamLogo(oddsDetail.matchInfo?.homeIcon)
-            itemView.iv_away_logo?.setTeamLogo(oddsDetail.matchInfo?.awayIcon)
             rvBet?.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             itemView.lin_match?.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             when (sportCode) {
@@ -1297,8 +1292,6 @@ class OddsDetailListAdapter(
 
         private fun forCS(oddsDetail: OddsDetailListData) {
 
-            tvHomeName?.text = homeName
-            tvAwayName?.text = awayName
             itemView.tv_draw?.isVisible = true
             itemView.findViewById<LinearLayout>(R.id.ll_content).visibility =
                 if (oddsDetail.isExpand) View.VISIBLE else View.GONE
@@ -1377,9 +1370,6 @@ class OddsDetailListAdapter(
         }
 
         private fun forLCS(oddsDetail: OddsDetailListData) {
-
-            tvHomeName?.text = homeName
-            tvAwayName?.text = awayName
             itemView?.tv_draw.isVisible = true
             itemView.findViewById<LinearLayout>(R.id.ll_content).visibility =
                 if (oddsDetail.isExpand) View.VISIBLE else View.GONE
@@ -1529,8 +1519,6 @@ class OddsDetailListAdapter(
         }
 
         private fun forSingleCS(oddsDetail: OddsDetailListData, spanCount: Int) {
-            tvHomeName?.text = homeName
-            tvAwayName?.text = awayName
             itemView.tv_draw?.isVisible = true
             tvHomeName?.isVisible = oddsDetail.isExpand
             tvAwayName?.isVisible = oddsDetail.isExpand
@@ -1656,8 +1644,6 @@ class OddsDetailListAdapter(
 
             val homeName = teamNameList.firstOrNull() ?: ""
             val awayName = teamNameList.getOrNull(1) ?: ""
-            tvHomeName?.text = homeName
-            tvAwayName?.text = awayName
 
             itemView.findViewById<ConstraintLayout>(R.id.cl_tab).visibility =
                 if (oddsDetail.isExpand) View.VISIBLE else View.GONE
