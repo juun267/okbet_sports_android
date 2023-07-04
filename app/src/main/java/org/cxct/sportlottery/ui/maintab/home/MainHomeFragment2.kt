@@ -4,7 +4,6 @@ package org.cxct.sportlottery.ui.maintab.home
 import android.os.Bundle
 import android.content.Intent
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,16 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_main_home.*
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.event.MenuEvent
-import org.cxct.sportlottery.common.event.RegisterInfoEvent
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.extentions.collectWith
-import org.cxct.sportlottery.common.extentions.doOnResume
 import org.cxct.sportlottery.common.extentions.newInstanceFragment
 import org.cxct.sportlottery.databinding.FragmentMainHome2Binding
 import org.cxct.sportlottery.net.news.NewsRepository
@@ -50,6 +44,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
 
     fun jumpToInplaySport() = getMainTabActivity().jumpToInplaySport()
     fun jumpToOKGames() = getMainTabActivity().jumpToOKGames()
+    fun jumpToOKLive() = getMainTabActivity().jumpToOKLive()
 
     override fun onInitView(view: View) = binding.run {
         scrollView.setupBackTop(ivBackTop, 180.dp) {
@@ -92,7 +87,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
 
     private fun initBetWinsRecodeLayout() {
         binding.winsRankView.setUp(
-            viewLifecycleOwner,
+            this,
             { viewModel.getRecordNew() },
             { viewModel.getRecordResult() })
         receiver.recordBetNew.collectWith(lifecycleScope) {
@@ -133,6 +128,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         checkToCloseView()
         if (getMainTabActivity().getCurrentPosition() == 0 && getHomeFragment().getCurrentFragment() == this) {
             refreshHotMatch()
+            binding.winsRankView.loadData()
         }
     }
 
@@ -143,6 +139,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         } else {
             homeToolbar.onRefreshMoney()
             refreshHotMatch()
+            binding.winsRankView.loadData()
             //返回页面时，刷新体育相关view状态
             checkToCloseView()
         }

@@ -13,6 +13,7 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.worldcup.WorldCupFragment
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
+import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.maintab.worldcup.WorldCupGameFragment
 import org.cxct.sportlottery.util.EventBusUtil
@@ -27,7 +28,8 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
         FragmentHelper(childFragmentManager, R.id.fl_content,  mutableListOf(
             Pair(MainHomeFragment2::class.java, null),
             Pair(OKGamesFragment::class.java, null),
-            Pair(NewsHomeFragment::class.java, null)
+            Pair(NewsHomeFragment::class.java, null),
+            Pair(OKLiveFragment::class.java, null)
         ).apply {
             if (StaticData.worldCupOpened()){
                 add(Pair(WorldCupFragment::class.java, null))
@@ -65,9 +67,13 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
 
     fun jumpToNews() = switchTabByPosition(2)
 
-    fun jumpToWorldCup() = switchTabByPosition(3)
+    fun jumpToOKLive() = switchTabByPosition(3)
 
-    fun jumpToWorldCupGame() = switchTabByPosition(4)
+    fun jumpToWorldCup() = switchTabByPosition(4)
+
+    fun jumpToWorldCupGame() = switchTabByPosition(5)
+
+
 
     fun jumpToInplaySport() {
         (activity as MainTabActivity).jumpToInplaySport()

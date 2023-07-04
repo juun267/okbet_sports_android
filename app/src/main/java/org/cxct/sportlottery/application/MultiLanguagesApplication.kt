@@ -6,6 +6,9 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkRequest
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -25,6 +28,7 @@ import me.jessyan.autosize.AutoSize
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.event.NetWorkEvent
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.common.loading.LoadingAdapter
@@ -51,6 +55,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.MainTabViewModel
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
+import org.cxct.sportlottery.ui.maintab.games.OKLiveViewModel
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceViewModel
@@ -166,6 +171,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { BindInfoViewModel(get(), get(), get(), get()) }
         viewModel { RegisterInfoViewModel(get(), get(), get(), get()) }
         viewModel { OKGamesViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { OKLiveViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { ChatViewModel(get(), get(), get(), get(), get(), get(), get()) }
     }
 
@@ -243,6 +249,7 @@ class MultiLanguagesApplication : Application() {
                 .build()
         }
         Gloading.initDefault(LoadingAdapter())
+        initNetWorkListener()
     }
 
     private val localeResources by lazy {
@@ -495,6 +502,32 @@ class MultiLanguagesApplication : Application() {
                     MainTabActivity.reStart(this)
                 }
             }
+        }
+    }
+
+    private var lastTime=0L
+    private fun initNetWorkListener(){
+        this.let {context->
+            val manager=context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val request= NetworkRequest.Builder().build()
+            manager.requestNetwork(request,object: ConnectivityManager.NetworkCallback(){
+                //网络恢复
+                override fun onAvailable(network: Network) {
+                    super.onAvailable(network)
+                    val nowTime=System.currentTimeMillis()
+                    if(nowTime-lastTime>1000){
+                        lastTime=nowTime
+                        //恢复网络event
+                        EventBusUtil.post(NetWorkEvent(true))
+                    }
+                }
+
+                //网络断开
+                override fun onLost(network: Network) {
+                    super.onLost(network)
+                    EventBusUtil.post(NetWorkEvent(false))
+                }
+            })
         }
     }
 }

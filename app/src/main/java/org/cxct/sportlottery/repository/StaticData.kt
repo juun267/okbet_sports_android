@@ -31,6 +31,7 @@ enum class ImageType(val code: Int) {
     DIALOG_HOME(7),
     DIALOG_SPORT(14),
     DIALOG_OKGAME(16),
+    DIALOG_OKLIVE(-1),
 }
 
 /**

@@ -36,6 +36,7 @@ import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
+import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
@@ -164,6 +165,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
     private lateinit var worldCupItem: MenuItem
     private lateinit var sportsItem: MenuItem
     private lateinit var okGamesItem: MenuItem
+    private lateinit var okLiveItem: MenuItem
     private lateinit var promotionItem: MenuItem
     private lateinit var affiliateItem: MenuItem
     private lateinit var newsItem: MenuItem
@@ -210,6 +212,18 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         ) { getMainTabActivity().jumpToOKGames() }
 
         okGamesItem.group.setVisibilityByMarketSwitch()
+//
+//        okLiveItem = addMenu(2,
+//            groupParams,
+//            iconParams,
+//            R.drawable.ic_main_menu_oklive_1,
+//            R.drawable.ic_main_menu_oklive_0,
+//            textParams,
+//            R.string.P160,
+//            true
+//        ) { getMainTabActivity().jumpToOKLive() }
+//
+//        okLiveItem.group.setVisibilityByMarketSwitch()
 
         var index = binding.llMenuRoot.indexOfChild(divider1)
         promotionItem = addMenu(
@@ -356,6 +370,9 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         if (isSame || !::okGamesItem.isInitialized) {
             return
         }
+//        if (isSame || !::okLiveItem.isInitialized) {
+//            return
+//        }
 
         binSelected()
     }
@@ -363,6 +380,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
 
     private fun binSelected() = when(currentContent) {
         OKGamesFragment::class.java -> okGamesItem.setSelected()
+        OKLiveFragment::class.java -> okLiveItem.setSelected()
         NewsHomeFragment::class.java -> newsItem.setSelected()
 
         else -> {}
