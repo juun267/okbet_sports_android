@@ -252,7 +252,7 @@ class OKGamesViewModel(
         it.getData()?.let { sportOKLives.value = it }
     }
 
-    fun getSportOKGames() = callApi({ OKGamesRepository.getOKLiveList(1, 9, "OK_GAMES") }) {
+    fun getSportOKGames() = callApi({ OKGamesRepository.getOKLiveList(1, 3, "OK_GAMES") }) {
         it.getData()?.let { sportOKGames.value = it }
     }
 
