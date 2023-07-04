@@ -160,6 +160,7 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
         binding.okWebView.onPause()
     }
     private fun pauseWebVideo() {
+        hideLoading()
         try {
             binding.okWebView.loadUrl("javascript:window._player.stop()")
         } catch (e: Exception) {
@@ -176,7 +177,6 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
     }
 
     fun reloadWeb() {
-        loading()
         loadWebURL()
     }
 

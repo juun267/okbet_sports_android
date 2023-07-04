@@ -76,11 +76,9 @@ class WorldCupGameFragment : BaseBottomNavigationFragment<MainHomeViewModel>(Mai
         webViewClient = object : OkWebViewClient(object : WebViewCallBack {
 
             override fun pageStarted(view: View?, url: String?) {
-                loading()
             }
 
             override fun pageFinished(view: View?, url: String?) {
-                hideLoading()
                 binding.okWebView.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
             }
 
@@ -151,7 +149,6 @@ class WorldCupGameFragment : BaseBottomNavigationFragment<MainHomeViewModel>(Mai
         binding.okWebView.onPause()
     }
     fun reloadWeb() {
-        loading()
         loadWebURL()
     }
 
