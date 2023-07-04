@@ -883,7 +883,7 @@
     <string name="redenvelope_fail">Thật không may</string>
     <string name="redenvelope_fail_desp">Rất tiếc không giành được OKCOINS</string>
     <string name="hint_enter_city">Vui lòng nhập thành phố</string>
-    <string name="redenvelope_close_hint">Đóng đếm ngược OKCOINS?\\nĐóng đếm ngược nếu không sẽ tiến hành giành OKCOINS</string>
+    <string name="redenvelope_close_hint">Đóng đếm ngược OKCOINS?\nĐóng đếm ngược nếu không sẽ tiến hành giành OKCOINS</string>
     <!--endregion-->
 
     <string name="verification_status">Verification Status</string>
