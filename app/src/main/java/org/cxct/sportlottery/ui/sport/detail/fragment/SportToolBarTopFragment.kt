@@ -254,7 +254,7 @@ class SportToolBarTopFragment :
         }
         if (matchInfo.gameType==GameType.BB.key){
             tv_total_score.isVisible=true
-            tv_total_score.text =  matchInfo.homeTotalScore.toStringS("0")+ "-" + matchInfo.awayTotalScore.toStringS("0")
+            tv_total_score.text =  "(${matchInfo.homeTotalScore.toStringS("0")}-${matchInfo.awayTotalScore.toStringS("0")})"
         }else{
             tv_total_score.isVisible=false
         }
