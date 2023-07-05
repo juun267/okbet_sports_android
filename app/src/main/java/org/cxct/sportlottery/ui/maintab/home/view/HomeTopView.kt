@@ -8,6 +8,8 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.view.isInvisible
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -35,21 +37,26 @@ import timber.log.Timber
 class HomeTopView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
 ) : LinearLayout(context, attrs, defStyle), XBanner.OnItemClickListener {
-
+    private val venuesAdapter=RecyclerVenuesAdapter()
     val binding: LayoutHomeTopBinding
 
     init {
         orientation = VERTICAL
         binding = LayoutHomeTopBinding.inflate(LayoutInflater.from(context), this)
+
+        binding.recyclerVenues.layoutManager=GridLayoutManager(context,2)
+        binding.recyclerVenues.adapter=venuesAdapter
         initLogin()
         initSportEnterStatus()
+
+
     }
 
     /**
      * 检测体育服务是否关闭
      */
     fun initSportEnterStatus() {
-        binding.tvSportClose.goneWithSportSwitch(false)
+//        binding.tvSportClose.goneWithSportSwitch(false)
     }
 
     private fun initBanner() {
@@ -162,12 +169,14 @@ class HomeTopView @JvmOverloads constructor(
     fun setup(fragment: MainHomeFragment2) {
 
         ConfigRepository.onNewConfig(fragment) { initBanner() }
-        binding.vSports.setOnClickListener { fragment.jumpToInplaySport() }
-        binding.vOkgames.isInvisible = getMarketSwitch()
-        binding.vOkgames.setOnClickListener {
-            fragment.jumpToOKGames()
-        }
-        binding.vOklive.isInvisible = getMarketSwitch()
+
+//        binding.vSports.setOnClickListener { fragment.jumpToInplaySport() }
+//        binding.vOkgames.isInvisible = getMarketSwitch()
+//        binding.vOkgames.setOnClickListener {
+//            fragment.jumpToOKGames()
+//        }
+//        binding.vOklive.isInvisible = getMarketSwitch()
+
 //        binding.vOklive.setOnClickListener {
 //            fragment.jumpToOKLive()
 //        }
@@ -227,8 +236,15 @@ class HomeTopView @JvmOverloads constructor(
             ) {}
 
         }
-
+        initHomeVenues()
     }
 
+
+    /**
+     * 初始化首页场馆列表
+     */
+    private fun initHomeVenues(){
+        venuesAdapter.setList(arrayListOf("","","",""))
+    }
 
 }
