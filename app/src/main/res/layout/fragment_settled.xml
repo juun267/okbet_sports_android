@@ -14,7 +14,7 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         app:tabIndicator="@drawable/bet_time_tab_indicator"
-        app:tabTextAppearance="@style/NoUppercaseTab"
+        app:tabTextAppearance="@style/NoUppercaseTab2"
         app:tabMode="scrollable"
         android:background="@color/color_FFFFFF"
         app:tabSelectedTextColor="@color/color_025BE8"
