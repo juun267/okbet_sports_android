@@ -38,6 +38,7 @@ import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
+import org.cxct.sportlottery.ui.maintab.worldcup.WorldCupFragment
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.util.*
@@ -382,7 +383,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         OKGamesFragment::class.java -> okGamesItem.setSelected()
         OKLiveFragment::class.java -> okLiveItem.setSelected()
         NewsHomeFragment::class.java -> newsItem.setSelected()
-
+        WorldCupFragment::class.java -> worldCupItem.setSelected()
         else -> {}
 
     }
