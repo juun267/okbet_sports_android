@@ -20,8 +20,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:src="@drawable/ic_sport_left_close"
-        android:layout_marginRight="12dp"
+        android:layout_marginRight="4dp"
         android:layout_marginTop="54dp"
+        android:scaleType="centerCrop"
         android:layout_width="46dp"
         android:layout_height="46dp"/>
 
