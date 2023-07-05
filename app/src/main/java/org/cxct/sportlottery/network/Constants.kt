@@ -535,6 +535,8 @@ object Constants {
 
     const val RED_ENVELOPE_PRIZE_BASE = "/api/front/redenp/rain/grab"
     const val RED_ENVELOPE_PRIZE = "${RED_ENVELOPE_PRIZE_BASE}/{redEnpId}"
+    const val REDEEM_CODE = "/api/front/redeemCode/redeem/{redeemCode}"//兑换
+    const val REDEEM_CODE_HISTORY = "/api/front/redeemCode/history "//兑换历史
 
 
     //bettingStation

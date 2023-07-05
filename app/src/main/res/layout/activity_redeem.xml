@@ -200,15 +200,24 @@
                     android:text="Rewards" />
             </LinearLayout>
 
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvRedeem"
+            <com.scwang.smart.refresh.layout.SmartRefreshLayout
+                android:id="@+id/view_refresh"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                tools:itemCount="4"
-                tools:listitem="@layout/item_redeem" />
+                app:srlDragRate="0.3"
+                app:srlEnableLoadMore="true"
+                app:srlEnablePureScrollMode="true">
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvRedeem"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="4"
+                    tools:listitem="@layout/item_redeem" />
+            </com.scwang.smart.refresh.layout.SmartRefreshLayout>
         </LinearLayout>
 
     </LinearLayout>

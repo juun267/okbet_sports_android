@@ -3,7 +3,11 @@ package org.cxct.sportlottery.view.dialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.*
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogRedeemBinding
 
 /**
@@ -28,10 +32,18 @@ class RedeemDialog(context: Context) : Dialog(context) {
         binding.btnPositive.setOnClickListener {
             dismiss()
         }
-
-        binding.tvMessage.text = content
+        if (title == "Congratulations") {
+            var sps = SpannableString(content)
+            sps.setSpan(
+                ForegroundColorSpan(context.resources.getColor(R.color.color_025BE8)),
+                content.indexOf("P"),
+                content.length - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            binding.tvMessage.text = sps
+        } else {
+            binding.tvMessage.text = content
+        }
         binding.tvDialogRedeemTitle.text = title
-
     }
 
     fun setContentMsg(msg: String) {
