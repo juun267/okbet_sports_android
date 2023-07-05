@@ -359,6 +359,8 @@ dependencies {
     implementation 'com.github.Dimezis:BlurView:version-2.0.3'
 //    implementation("com.louiscad.splitties:splitties-fun-pack-android-base:3.0.0")
     implementation("com.louiscad.splitties:splitties-fun-pack-android-base-with-views-dsl:3.0.0")
+    //持续滑动布局ConsecutiveScrollerLayout
+    implementation 'com.github.donkingliang:ConsecutiveScroller:2.6.2'
 
 
     //compose
