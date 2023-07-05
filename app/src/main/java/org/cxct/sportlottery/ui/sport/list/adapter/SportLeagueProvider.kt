@@ -58,7 +58,7 @@ class SportLeagueProvider(
             maxLines = 2
             typeface = Typeface.DEFAULT_BOLD
             setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12f)
-            setTextColor(context.getColor(R.color.color_535D76))
+            setTextColor(context.getColor(R.color.color_0D2245))
             layoutParams = FrameLayout.LayoutParams(-1, -2).apply {
                 gravity = Gravity.CENTER_VERTICAL
                 leftMargin = 40.dp

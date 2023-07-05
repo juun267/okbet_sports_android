@@ -30,8 +30,9 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:textColor="@color/color_14366B"
-            android:textSize="16sp"
-            android:textStyle="bold"
+            android:textSize="@dimen/textSize16sp"
+            android:fontFamily="@font/din_bold"
+            android:textFontWeight="900"
             tools:text="favorites" />
 
         <TextView
@@ -44,7 +45,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/color_6D7693"
             android:layout_gravity="center_vertical"
-            android:textSize="@dimen/textSize14sp"
+            android:textSize="@dimen/textSize13sp"
             android:drawableEnd="@drawable/ic_game_gray_arrow_right"
             android:text="@string/N702" />
 

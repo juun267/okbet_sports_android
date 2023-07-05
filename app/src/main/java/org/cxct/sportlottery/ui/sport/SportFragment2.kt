@@ -1,9 +1,11 @@
 package org.cxct.sportlottery.ui.sport
 
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
@@ -101,8 +103,22 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     }
 
     private fun initTabLayout() = binding.tabLayout.run {
-        addOnTabSelectedListener(TabSelectedAdapter{ tab, _ ->selectTab(tab.position) })
         OverScrollDecoratorHelper.setUpOverScroll(this)
+        addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                selectTab(tab.position)
+                tab.customView!!.tv_title.typeface = Typeface.DEFAULT_BOLD
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {
+                selectTab(tab.position)
+                tab.customView!!.tv_title.typeface = Typeface.DEFAULT
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab) {
+            }
+
+        })
     }
 
     private fun refreshTabLayout(sportMenuResult: ApiResult<SportMenuData>) {

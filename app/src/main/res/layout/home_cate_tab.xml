@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:maxLines="1"
         android:textAllCaps="true"
-        android:textStyle="bold"
         android:textColor="@color/color_select_blue_black"
         android:textSize="12sp"
         tools:text="全部" />

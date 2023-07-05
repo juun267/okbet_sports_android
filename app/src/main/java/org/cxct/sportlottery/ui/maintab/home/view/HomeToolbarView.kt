@@ -52,7 +52,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
 
     init {
         setBackgroundResource(R.color.color_F8F9FD)
-        12.dp.let { setPadding(it, it, it, it) }
+        12.dp.let { setPadding(6.dp, it, it, it) }
         gravity = Gravity.LEFT or Gravity.CENTER_VERTICAL
         addChildView()
     }
