@@ -625,7 +625,8 @@
                     android:background="@color/color_1D1F2D_FFFFFF"
                     android:gravity="center"
                     android:minHeight="46dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
 
                     <TextView
