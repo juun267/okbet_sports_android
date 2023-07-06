@@ -47,8 +47,8 @@ class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::
         }
     }
 
-    private val searchHisTagAdapter by lazy {
-        object : TagAdapter<String>(searchHistoryList) {
+    private fun getSearchTagAdapter(): TagAdapter<String> {
+        return object : TagAdapter<String>(searchHistoryList) {
             override fun getView(parent: FlowLayout?, position: Int, t: String?): View {
                 val pv = layoutInflater.inflate(R.layout.item_sport_search_history, null)
                 var tvName = pv.findViewById<TextView>(R.id.sportSearchHistoryName)
@@ -56,12 +56,13 @@ class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::
                 ivDel.setOnClickListener {
                     searchHistoryList.remove(t)
                     MultiLanguagesApplication.saveSearchHistory(searchHistoryList)
-                    notifyDataChanged()
+                    sportSearchHistoryTag.adapter = getSearchTagAdapter()
                 }
                 tvName.text = t
                 return pv
             }
         }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,7 +98,8 @@ class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::
                 searchHistoryList.clear()
             }
             MultiLanguagesApplication.saveSearchHistory(searchHistoryList)
-            searchHisTagAdapter.notifyDataChanged()
+            sportSearchHistoryTag.adapter = getSearchTagAdapter()
+
         }
         etSearch.post { etSearch.requestFocus() }
         tvSearch.setOnClickListener(object : OnClickListener {
@@ -110,7 +112,8 @@ class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::
                     searchFlag = true
                     tvSearch.text = getString(R.string.C001)
                     setHistoryLayoutVisible(true)
-                    searchHisTagAdapter.notifyDataChanged()
+                    sportSearchHistoryTag.adapter = getSearchTagAdapter()
+
                 }
             }
         })
@@ -119,7 +122,7 @@ class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::
     private fun initSearch() {
         setHistoryLayoutVisible(true)
         MultiLanguagesApplication.searchHistory?.let { searchHistoryList = it }
-        sportSearchHistoryTag.adapter = searchHisTagAdapter
+        sportSearchHistoryTag.adapter = getSearchTagAdapter()
         sportSearchHistoryTag.setOnTagClickListener(object : OnTagClickListener {
             override fun onTagClick(view: View?, position: Int, parent: FlowLayout?): Boolean {
                 var item = searchHistoryList[position]
@@ -156,7 +159,7 @@ class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::
         } else {
             searchFlag = true
             setHistoryLayoutVisible(true)
-            searchHisTagAdapter.notifyDataChanged()
+            sportSearchHistoryTag.adapter = getSearchTagAdapter()
             searchResultAdapter.setNewInstance(null)
         }
     }
