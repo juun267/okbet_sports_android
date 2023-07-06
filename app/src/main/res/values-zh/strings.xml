@@ -1435,4 +1435,12 @@
     <string name="P150">流水不达标提醒</string>
     <string name="P149">在请求提款之前，请完成 %s 投注额（根据 PAGOR 规定，每笔存款交易需要 1 倍流水）。如需帮助，请联系客服。</string>
     <string name="viber">Viber</string>
+    <string name="N592">对不起</string>
+    <string name="P151">兑换</string>
+    <string name="P152">兑换码</string>
+    <string name="P153">兑换记录</string>
+    <string name="P156">奖励</string>
+    <string name="D016">提交</string>
+    <string name="J044">重置</string>
+    <string name="J652">时间</string>
 </resources>

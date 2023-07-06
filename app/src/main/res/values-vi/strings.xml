@@ -1376,4 +1376,12 @@
     <string name="P150">Nhắc nhở về doanh thu không hợp lệ.</string>
     <string name="P149">"Trước khi yêu cầu rút tiền, vui lòng hoàn thành tiền gửi %s(theo quy định của PAGOR, mỗi giao dịch gửi tiền yêu cầu có gấp đôi doanh thu).  Vui lòng liên hệ CSKH để được hỗ trợ. "</string>
     <string name="viber">Viber</string>
+    <string name="N592">Xin lỗi</string>
+    <string name="P151">Đổi</string>
+    <string name="P152">Mã đổi</string>
+    <string name="P153">Lich sử đổi</string>
+    <string name="P156">Giải thưởng</string>
+    <string name="D016">Gửi</string>
+    <string name="J044">Cài đặt lại</string>
+    <string name="J652">Thời gian</string>
 </resources>

@@ -1509,4 +1509,12 @@
     <string name="viber">Viber</string>
     <string name="world_cup_2023">World cup 2023</string>
 
+    <string name="N592">Sorry</string>
+    <string name="P151">Redeem</string>
+    <string name="P152">Redeem Code</string>
+    <string name="P153">Redeem History</string>
+    <string name="P156">Rewards</string>
+    <string name="D016">Submit</string>
+    <string name="J044">Reset</string>
+    <string name="J652">Time</string>
 </resources>
