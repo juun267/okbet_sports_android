@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import kotlinx.android.synthetic.main.content_odds_detail_list_team.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
@@ -1477,6 +1478,9 @@ class OddsDetailListAdapter(
                 rvBet?.let { it1 ->
                     if (isFirstRefresh || it1.adapter == null) {
                         it1.adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, oddsType)
+                        if (it1.itemDecorationCount==0) {
+                            it1.addItemDecoration(GridSpacingItemDecoration(4,4.dp,false))
+                        }
                         it1.layoutManager = GridLayoutManager(itemView.context, 4)
                         isFirstRefresh = false
                     }

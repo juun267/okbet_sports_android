@@ -324,10 +324,10 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 binding.clTitle.tvClearAll.gone()
                 binding.clTitle.tvClose.gone()
                 binding.clTitle.ivBasHide.visible()
-                binding.lineShadow.visible()
+                binding.lineShadow.gone()
                 binding.btnParlaySingle.gone()
                 binding.btnBet.updateLayoutParams {
-                    width = 225.dp
+                    width = 240.dp
                 }
             }
         }

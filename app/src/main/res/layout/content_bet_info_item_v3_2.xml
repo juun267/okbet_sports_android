@@ -16,7 +16,7 @@
             android:id="@+id/odds_content_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="14dp"
+            android:layout_marginHorizontal="12dp"
             android:layout_marginTop="10dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
@@ -47,9 +47,9 @@
                 android:gravity="center"
                 android:maxWidth="290dp"
                 android:maxLines="1"
-                android:textColor="@color/color_FFFFFF_414655"
+                android:textColor="@color/color_0D2245"
                 android:textSize="14sp"
-                android:textStyle="bold"
+                android:textFontWeight="600"
                 tools:text="Manchester United FC (Mad)" />
 
             <TextView
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:maxLines="1"
-                android:textColor="@color/color_FFFFFF_414655"
+                android:textColor="@color/color_0D2245"
                 android:textSize="@dimen/textSize14sp"
                 android:textStyle="bold"
                 tools:text="-0.5/2" />
@@ -275,8 +275,10 @@
                     android:layout_centerInParent="true"
                     android:layout_marginHorizontal="14dp"
                     android:gravity="center"
+                    android:textFontWeight="600"
                     android:text="@string/bet_list_cant_parlay_warn"
-                    android:textColor="#FFCA50" />
+                    android:textSize="@dimen/textSize14sp"
+                    android:textColor="@color/color_FFFFFF" />
 
             </RelativeLayout>
 
@@ -370,7 +372,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/total_win_amount"
-                        android:textColor="@color/color_414655"
+                        android:textColor="@color/color_6D7693"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -388,7 +390,7 @@
                     android:id="@+id/layoutKeyBoard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="10dp" />
+                    android:paddingTop="5dp" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
 

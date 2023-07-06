@@ -352,7 +352,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/text_account_history_balance"
-                    android:textColor="@color/color_535D76"
+                    android:textColor="@color/color_0D2245"
+                    android:textFontWeight="400"
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -364,8 +365,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/din_bold"
                     android:text="12.6445.45"
-                    android:textColor="@color/color_414655"
-                    android:textSize="@dimen/textSize14sp"
+                    android:textColor="@color/color_0D2245"
+                    android:textSize="@dimen/textSize12sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/tvBalanceSign"
                     app:layout_constraintTop_toBottomOf="@+id/tvBalanceSign" />
