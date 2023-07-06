@@ -21,8 +21,9 @@ class OutrightThirdProvider(val adapter: SportOutrightAdapter2,
                             override val itemViewType: Int = 3,
                             override val layoutId: Int = 0): BaseNodeProvider() {
 
-    val padding5 = 5.dp
-    val padding10 = 10.dp
+    private val padding4 = 4.dp
+    private val padding8 = 8.dp
+    private val padding12 = 12.dp
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return BaseViewHolder(OddsOutrightButton(parent.context).apply {
@@ -41,16 +42,16 @@ class OutrightThirdProvider(val adapter: SportOutrightAdapter2,
 
         if (position < 2) { // 第一列
             if(position == 0) {
-                setMargins(this, padding10, 0, padding5, padding5)
+                setMargins(this, padding12, padding8, padding4, padding8)
             } else {
-                setMargins(this, padding5, 0, padding10, padding5)
+                setMargins(this, padding4, padding8, padding12, padding8)
             }
 
         } else {
             if(position % 2 == 0) {
-                setMargins(this, padding10, padding5, padding5, padding5)
+                setMargins(this, padding12, 0, padding4, padding8)
             } else {
-                setMargins(this, padding5, padding5, padding10, padding5)
+                setMargins(this, padding4, 0, padding12, padding8)
             }
         }
 

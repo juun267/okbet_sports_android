@@ -21,7 +21,7 @@ class EndScoreThirdProvider(val adapter: EndScoreAdapter,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return BaseViewHolder(EndingOddsButton(parent.context).apply {
-            layoutParams = ViewGroup.MarginLayoutParams(-1, 38.dp)
+            layoutParams = ViewGroup.MarginLayoutParams(-1, 36.dp)
         })
     }
 

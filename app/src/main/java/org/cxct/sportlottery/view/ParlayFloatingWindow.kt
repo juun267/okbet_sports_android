@@ -24,6 +24,7 @@ class ParlayFloatingWindow @JvmOverloads constructor(
 ) : FrameLayout(context, attrs, defStyle) {
 
     init {
+        setBackgroundResource(R.drawable.bg_rect_ffffff)
         initView()
     }
 
