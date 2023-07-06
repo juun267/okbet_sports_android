@@ -2,9 +2,9 @@ package org.cxct.sportlottery.ui.sport
 
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import androidx.core.content.ContextCompat
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
@@ -36,7 +36,6 @@ import org.cxct.sportlottery.util.FragmentHelper2
 import org.cxct.sportlottery.util.phoneNumCheckDialog
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
-import org.cxct.sportlottery.view.tablayout.TabSelectedAdapter
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Binding>() {
@@ -105,17 +104,29 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     private fun initTabLayout() = binding.tabLayout.run {
         OverScrollDecoratorHelper.setUpOverScroll(this)
         addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            private fun setTabStyle(tab: TabLayout.Tab, font: Typeface, color: Int) {
+                val color = ContextCompat.getColor(context, color)
+                tab.customView!!.tv_number.apply {
+                    typeface = font
+                    setTextColor(color)
+                }
+                tab.customView!!.tv_title.apply {
+                    typeface = font
+                    setTextColor(color)
+                }
+            }
+
             override fun onTabSelected(tab: TabLayout.Tab) {
                 selectTab(tab.position)
-                tab.customView!!.tv_title.typeface = Typeface.DEFAULT_BOLD
+                setTabStyle(tab, Typeface.DEFAULT_BOLD, R.color.color_025BE8)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {
-                selectTab(tab.position)
-                tab.customView!!.tv_title.typeface = Typeface.DEFAULT
+                setTabStyle(tab, Typeface.DEFAULT, R.color.color_6D7693)
             }
 
             override fun onTabReselected(tab: TabLayout.Tab) {
+                selectTab(tab.position)
             }
 
         })
@@ -243,12 +254,10 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     fun setJumpSport(matchType: MatchType? = null, gameType: GameType? = null) {
         jumpMatchType = matchType
         jumpGameType = gameType
-        Log.e("For Test", "=====>>> setJumpSport 000 ${matchType?.postValue} ${gameType?.key} ")
         if (isAdded) {
             //如果体育当前已经在指定的matchType页面时，跳过检查重复选中的机制，强制筛选sportListFragment
             jumpMatchType = jumpMatchType ?: defaultMatchType
             binding.tabLayout.getTabAt(matchTypeTab.indexOfFirst { it == matchType })?.select()
-            Log.e("For Test", "=====>>> setJumpSport 111 ${matchType?.postValue} ${gameType?.key} ")
         }
     }
 

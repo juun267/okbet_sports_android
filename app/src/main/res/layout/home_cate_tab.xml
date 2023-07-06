@@ -12,8 +12,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxLines="1"
-        android:textAllCaps="true"
-        android:textColor="@color/color_select_blue_black"
         android:textSize="12sp"
         tools:text="全部" />
 
@@ -23,8 +21,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_4"
         android:maxLines="1"
-        android:textStyle="bold"
-        android:textColor="@color/color_select_white_gray"
         android:textSize="12sp"
         tools:text="643" />
 
