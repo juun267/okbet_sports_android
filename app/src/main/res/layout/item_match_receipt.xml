@@ -104,11 +104,11 @@
             android:layout_marginTop="8dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textColor="@color/color_A7B2C4"
+            android:textColor="@color/color_0D2245"
             android:textSize="@dimen/textSize12sp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginHorizontal="@dimen/margin_12"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tv_match_type"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_match_type"
             tools:text="奥林匹克运动会2020男子足球(在日本)D组特别投注" />
 
@@ -120,7 +120,7 @@
             android:layout_width="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginHorizontal="10dp"
+            android:layout_marginHorizontal="12dp"
             android:layout_height="0.5dp"/>
 
         <TextView
@@ -132,6 +132,7 @@
             android:drawablePadding="7dp"
             android:textColor="@color/color_FFFFFF_414655"
             android:textSize="@dimen/textSize12sp"
+            android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/topContainer"
             tools:text="让球" />
@@ -159,7 +160,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="12dp"
             android:fontFamily="@font/din_regular"
             android:textColor="@color/color_025BE8_025BE8"
             android:textSize="@dimen/textSize16sp"
@@ -173,10 +174,10 @@
             android:id="@+id/tv_team_names"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="12dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textColor="@color/color_A7B2C4"
+            android:textColor="@color/color_6D7693"
             android:textSize="@dimen/textSize12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_league"
@@ -195,10 +196,10 @@
             app:spanCount="5"
             tools:itemCount="13"
             app:layout_constraintTop_toBottomOf="@+id/tv_team_names"
-            android:layout_marginHorizontal="@dimen/margin_10"
+            android:layout_marginHorizontal="@dimen/margin_12"
             app:layout_constraintStart_toStartOf="@+id/tv_league"
             android:visibility="gone"
-            tools:visibility="gone" />
+            tools:visibility="visible" />
 
         <include
             android:id="@+id/match_receipt_bet_layout"
@@ -206,7 +207,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="12dp"
             android:layout_marginBottom="5dp"
             android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/llcOrder"
@@ -220,7 +221,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:visibility="gone"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/match_receipt_bet_layout"

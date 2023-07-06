@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -140,6 +141,11 @@ class SingleViewHolder private constructor(itemView: View) :
                 rvEndScoreInfo.isVisible =
                     itemData.matchOdds?.firstOrNull()?.playCateCode == PlayCate.FS_LD_CS.value
                 if (rvEndScoreInfo.isVisible) {
+                    (tv_name_type.layoutParams as ConstraintLayout.LayoutParams).apply {
+                        topToTop = R.id.topContainer
+                        bottomToBottom = R.id.topContainer
+                    }
+                    tv_match_type.gone()
                     tvTypeMatch.isVisible = false
                     dividerTitle.isVisible = false
                     tv_play_content.apply {

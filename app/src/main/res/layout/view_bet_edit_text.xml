@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingHorizontal="10dp"
-        android:textColor="@color/color_455074_C9CFD7"
+        android:textColor="@color/color_BEC7DC"
         android:textSize="@dimen/textSize12sp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/etBetParlay"

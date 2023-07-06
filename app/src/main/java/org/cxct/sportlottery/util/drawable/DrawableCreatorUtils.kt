@@ -77,7 +77,7 @@ object DrawableCreatorUtils {
      */
     fun getBasketballDeleteAllDrawable(): Drawable {
         return getCommonBackgroundStyle(
-            cornerRadius = 16, strokeColor = R.color.color_FFCCC9, solidColor = R.color.color_f8f8f8
+            cornerRadius = 16, strokeColor = R.color.color_19025BE8, solidColor = R.color.color_f8f8f8
         )
     }
 
@@ -90,7 +90,7 @@ object DrawableCreatorUtils {
 
     fun getBasketballDeleteButton(): Drawable {
         return getCommonBackgroundStyle(
-            cornerRadius = 5, solidColor = R.color.color_636466
+            cornerRadius = 5, solidColor = R.color.color_A1050B18
         )
     }
 

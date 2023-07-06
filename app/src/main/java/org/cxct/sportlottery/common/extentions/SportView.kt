@@ -206,21 +206,35 @@ fun setMatchAttack(
             GameType.BM.key,
             GameType.CK.key,
             -> {
-                if (matchInfo.attack.equals("H")) {
-                    ivHomeAttack.visibility = View.VISIBLE
-                    ivAwayAttack.visibility = View.INVISIBLE
-                } else {
-                    ivHomeAttack.visibility = View.INVISIBLE
-                    ivAwayAttack.visibility = View.VISIBLE
+                when(matchInfo.attack){
+                    "H"->{
+                        ivHomeAttack.visibility = View.VISIBLE
+                        ivAwayAttack.visibility = View.INVISIBLE
+                    }
+                    "C"->{
+                        ivHomeAttack.visibility = View.INVISIBLE
+                        ivAwayAttack.visibility = View.VISIBLE
+                    }
+                    else->{
+                        ivHomeAttack.visibility = View.INVISIBLE
+                        ivAwayAttack.visibility = View.INVISIBLE
+                    }
                 }
             }
             GameType.TN.key -> {
-                if (matchInfo.attack.equals("H")) {
-                    ivTNHomeAttack.visibility = View.VISIBLE
-                    ivTNAwayAttack.visibility = View.INVISIBLE
-                } else {
-                    ivTNHomeAttack.visibility = View.INVISIBLE
-                    ivTNAwayAttack.visibility = View.VISIBLE
+                when(matchInfo.attack){
+                    "H"->{
+                        ivTNHomeAttack.visibility = View.VISIBLE
+                        ivTNAwayAttack.visibility = View.INVISIBLE
+                    }
+                    "C"->{
+                        ivTNHomeAttack.visibility = View.INVISIBLE
+                        ivTNAwayAttack.visibility = View.VISIBLE
+                    }
+                    else->{
+                        ivTNHomeAttack.visibility = View.INVISIBLE
+                        ivTNAwayAttack.visibility = View.INVISIBLE
+                    }
                 }
             }
             else -> {
