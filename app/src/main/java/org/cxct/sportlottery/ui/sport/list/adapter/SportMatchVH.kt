@@ -117,7 +117,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         leagueOddMatchNameAway.text = matchInfo?.awayName
 
         setupMatchScore(matchInfo, matchType)
-        leagueOddMatchPlayCount.text = matchInfo?.playCateNum.toString() + "+ >"
+        leagueOddMatchPlayCount.text = matchInfo?.playCateNum.toString() + "+ "
 
         leagueOddMatchFavorite.isSelected = matchInfo?.isFavorite ?: false
         leagueOddMatchFavorite.setOnClickListener { matchInfo?.id?.let {onFavoriteClick.invoke(it) } }
@@ -459,7 +459,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         leagueOddMatchNameHome.text = matchInfo?.homeName
         leagueOddMatchNameAway.text = matchInfo?.awayName
         setupMatchScore(matchInfo, matchType)
-        leagueOddMatchPlayCount.text = matchInfo?.playCateNum.toString() + "+ >"
+        leagueOddMatchPlayCount.text = matchInfo?.playCateNum.toString() + "+ "
         leagueOddMatchFavorite.isSelected = matchInfo?.isFavorite ?: false
         leagueNeutral.isVisible = matchInfo?.neutral == 1
         matchInfo?.let { bindLiveStatus(it) }

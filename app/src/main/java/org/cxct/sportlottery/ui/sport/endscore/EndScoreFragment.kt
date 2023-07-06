@@ -4,6 +4,7 @@ package org.cxct.sportlottery.ui.sport.endscore
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.entity.node.BaseExpandNode
 import com.chad.library.adapter.base.entity.node.BaseNode
@@ -93,7 +94,7 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
         super.onInitView(view)
         binding.sportTypeList.gone()
         binding.tvSportName.setText(R.string.basketball)
-
+        binding.gameList.setBackgroundColor(ContextCompat.getColor(context(), R.color.color_FAFDFF))
     }
 
     override fun onBindViewStatus(view: View) {

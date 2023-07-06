@@ -8,6 +8,7 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentUnsettledBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.settledDetailList.RemarkBetRequest
+import org.cxct.sportlottery.network.service.order_settlement.Status
 import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.betRecord.adapter.RecyclerUnsettledAdapter
@@ -76,6 +77,14 @@ class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnset
             },500)
         }
 
+        viewModel.settlementNotificationMsg.observe(viewLifecycleOwner) { event ->
+            val it = event.getContentIfNotHandled() ?: return@observe
+            if (it.status == Status.UN_DONE.code || it.status == Status.CANCEL.code) {
+               recyclerUnsettled.postDelayed({
+                viewModel.getUnsettledList()
+            },500)
+            }
+        }
     }
 
     private fun initObserve() {

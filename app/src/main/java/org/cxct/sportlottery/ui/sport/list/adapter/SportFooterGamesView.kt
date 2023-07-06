@@ -114,7 +114,6 @@ class SportFooterGamesView @JvmOverloads constructor(
         okgamesBinding.rvGameItem.setRecycledViewPool(gameItemViewPool)
         okgamesBinding.tvName.setText(R.string.J203)
         okgamesBinding.ivIcon.setImageResource(R.drawable.ic_okgame_label_games)
-        okgamesBinding.tvMore.background = null
         okgamesBinding.tvMore.setOnClickListener { (fragment.activity as MainTabActivity?)?.jumpToOKGames() }
         okgamesBinding.root.gone()
     }
