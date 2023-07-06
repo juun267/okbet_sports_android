@@ -472,6 +472,7 @@ class AccountHistoryViewModel(
             page = pageSettledIndex,
             gameType = "",
             pageSize = pageSize,
+            queryTimeType="settleTime",
             startTime = settledStartTime.toString(),
             endTime = settledEndTime.toString()
         )
