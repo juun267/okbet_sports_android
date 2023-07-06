@@ -177,15 +177,15 @@ class HomeTopView @JvmOverloads constructor(
         binding.vOkgames.setOnClickListener {
             fragment.jumpToOKGames()
         }
-        binding.vWorldCup.isInvisible = getMarketSwitch()
-        binding.vWorldCup.setOnClickListener {
-            (fragment.activity as MainTabActivity).jumpToWorldCup()
-        }
 //        binding.vOklive.isInvisible = getMarketSwitch()
 //        binding.vOklive.setOnClickListener {
 //            fragment.jumpToOKLive()
 //        }
 
+        binding.vWorldCup.isInvisible = getMarketSwitch()
+        binding.vWorldCup.setOnClickListener {
+            (fragment.activity as MainTabActivity).jumpToWorldCup()
+        }
         if (!LoginRepository.isLogined()) {
             binding.ivGoogle.setOnClickListener {
                 LoginOKActivity.googleLoging(

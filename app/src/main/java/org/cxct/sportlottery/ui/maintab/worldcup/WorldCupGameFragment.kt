@@ -21,10 +21,7 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
-import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.util.LogUtil
-import org.cxct.sportlottery.util.ToastUtil
-import org.cxct.sportlottery.util.startLogin
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.webView.OkWebChromeClient
 import org.cxct.sportlottery.view.webView.OkWebViewClient
 import org.cxct.sportlottery.view.webView.WebViewCallBack
@@ -49,7 +46,6 @@ class WorldCupGameFragment : BaseBottomNavigationFragment<MainHomeViewModel>(Mai
 
     override fun onBindView(view: View) {
         ImmersionBar.with(this)
-            .fullScreen(true)
             .statusBarDarkFont(false)
             .init()
         initToolBar()
@@ -62,7 +58,7 @@ class WorldCupGameFragment : BaseBottomNavigationFragment<MainHomeViewModel>(Mai
         homeToolbar.setBackgroundResource(R.drawable.bg_title_fiba_game)
         homeToolbar.ivMenuLeft.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
-            mainTabActivity().showMainLeftMenu(null)
+            mainTabActivity().showMainLeftMenu(this@WorldCupGameFragment.javaClass)
         }
     }
     var isInitedWeb = false
@@ -85,16 +81,13 @@ class WorldCupGameFragment : BaseBottomNavigationFragment<MainHomeViewModel>(Mai
             override fun onError() {
             }
         }) {
-            override fun shouldInterceptRequest(
-                view: WebView?, request: WebResourceRequest?
-            ): WebResourceResponse? {
-                return super.shouldInterceptRequest(view, request)
-            }
 
-            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-                return overrideUrlLoading(view, url)
+            override fun shouldOverrideUrlLoading(
+                view: WebView?,
+                request: WebResourceRequest?
+            ): Boolean {
+                return true
             }
-
             override fun onReceivedSslError(
                 view: WebView, handler: SslErrorHandler, error: SslError
             ) {
@@ -103,31 +96,12 @@ class WorldCupGameFragment : BaseBottomNavigationFragment<MainHomeViewModel>(Mai
             }
 
         }
-
+        addJavascriptInterface(WorldCupGameJsInterface(this@WorldCupGameFragment),
+            WorldCupGameJsInterface.name)
     }
 
-    fun setCookie(url:String) {
-        try {
-            val cookieManager = CookieManager.getInstance()
-            cookieManager.setAcceptCookie(true)
-
-            val oldCookie = cookieManager.getCookie(url)
-            Timber.i("Cookie:oldCookie:$oldCookie")
-
-            cookieManager.setCookie(
-                url, "x-session-token=" + URLEncoder.encode(viewModel.token, "utf-8")
-            ) //cookies是在HttpClient中获得的cookie
-            cookieManager.flush()
-
-            val newCookie = cookieManager.getCookie(url)
-            Timber.i("Cookie:newCookie:$newCookie")
-        } catch (e: UnsupportedEncodingException) {
-            e.printStackTrace()
-        }
-    }
     private fun loadWebURL() {
         val url = Constants.getWorldCupActivityH5Url(requireContext(),viewModel.token?:"")
-        setCookie(url)
         LogUtil.d("url="+url)
         binding.okWebView.loadUrl(url)
     }
@@ -150,11 +124,7 @@ class WorldCupGameFragment : BaseBottomNavigationFragment<MainHomeViewModel>(Mai
         if (viewModel == null) {
             return
         }
-
         viewModel.oddsType.observe(viewLifecycleOwner) { loadWebURL() }
-        viewModel.isLogin.observe(viewLifecycleOwner) {
-//            if (!it) mainTabActivity().startLogin()
-        }
     }
     override fun onDestroyView() {
         super.onDestroyView()
@@ -165,27 +135,27 @@ class WorldCupGameFragment : BaseBottomNavigationFragment<MainHomeViewModel>(Mai
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (hidden){
-          //todo
+            ImmersionBar.with(this)
+                .statusBarDarkFont(true)
+                .init()
         }else{
+            ImmersionBar.with(this)
+                .statusBarDarkFont(false)
+                .init()
             binding.homeToolbar.onRefreshMoney()
             reloadWeb()
         }
     }
-    fun overrideUrlLoading(view: WebView, url: String): Boolean {
-        if (!url.startsWith("http")) {
-            try {
-                val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                i.flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                startActivity(i)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            return true
+    open class WorldCupGameJsInterface(val fragment: WorldCupGameFragment) {
+
+        companion object {
+            const val name = "app"
         }
-
-        view.loadUrl(url)
-        return true
+        @JavascriptInterface
+        fun toLogin() {
+            LogUtil.d("toLogin")
+            (fragment.activity as MainTabActivity)?.startLogin()
+        }
     }
-
 
 }

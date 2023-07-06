@@ -7,6 +7,7 @@ import android.webkit.WebView
 open class OkWebView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
 ) : WebView(context, attrs, defStyle) {
+
     var okWebViewClient: OkWebViewClient = OkWebViewClient()
         set(value) {
             webViewClient = value

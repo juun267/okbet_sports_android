@@ -74,6 +74,7 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
     fun jumpToWorldCupGame() = switchTabByPosition(5)
 
 
+
     fun jumpToInplaySport() {
         (activity as MainTabActivity).jumpToInplaySport()
     }
