@@ -185,7 +185,7 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
        fun toNewPage(url: String,title: String,inApp: Boolean) {
            LogUtil.d("toNewPage=$url")
            if (inApp){
-               JumpUtil.toInternalWeb(fragment.requireContext(),url,title)
+               JumpUtil.toInternalWeb(fragment.requireContext(),Constants.getH5BaseUrl()+url.replaceFirst("/",""),title)
            }else{
                JumpUtil.toExternalWeb(fragment.requireContext(),url)
            }
