@@ -1428,4 +1428,12 @@
     <string name="J459">温馨提示</string>
     <string name="P111">地址应包括</string>
     <string name="P110">单位/房号/楼层、楼名、地段/座/期/门牌号、街道名</string>
+    <string name="N592">对不起</string>
+    <string name="P151">兑换</string>
+    <string name="P152">兑换码</string>
+    <string name="P153">兑换记录</string>
+    <string name="P156">奖励</string>
+    <string name="D016">提交</string>
+    <string name="J044">重置</string>
+    <string name="J652">时间</string>
 </resources>

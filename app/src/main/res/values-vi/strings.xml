@@ -1370,4 +1370,12 @@
     <string name="J459">Gợi ý</string>
     <string name="P111">Địa chỉ nên bao gồm</string>
     <string name="P110">Căn hộ/số phòng/tầng, tên tòa nhà, vị trí/khối/thời gian/số nhà, tên đường</string>
+    <string name="N592">Xin lỗi</string>
+    <string name="P151">Đổi</string>
+    <string name="P152">Mã đổi</string>
+    <string name="P153">Lich sử đổi</string>
+    <string name="P156">Giải thưởng</string>
+    <string name="D016">Gửi</string>
+    <string name="J044">Cài đặt lại</string>
+    <string name="J652">Thời gian</string>
 </resources>

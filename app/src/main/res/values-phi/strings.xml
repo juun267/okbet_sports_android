@@ -1349,4 +1349,12 @@
     <string name="J459">Kind tips</string>
     <string name="P111">Dapat kasama ang address</string>
     <string name="P110">Unit/Room No. /Floor, Building Name, Lot/ Block/Phase/House Number, Street Name</string>
+    <string name="N592">"Sorry "</string>
+    <string name="P151">I-redeem</string>
+    <string name="P152">Redeem Code</string>
+    <string name="P153">History ng redeem</string>
+    <string name="P156">Rewards</string>
+    <string name="D016">Ipasa</string>
+    <string name="J044">I-reset</string>
+    <string name="J652">Oras</string>
 </resources>

@@ -31,7 +31,7 @@ class RedeemActivity : BaseSocketActivity<RedeemViewModel>(RedeemViewModel::clas
                     showRedeemDialog("You got P${entity.rewards} !", "Congratulations")
                 }
             } else {
-                showRedeemDialog(it.msg, "Sorry")
+                showRedeemDialog(it.msg, resources.getString(R.string.N592))
             }
             hideLoading()
         }
@@ -54,9 +54,10 @@ class RedeemActivity : BaseSocketActivity<RedeemViewModel>(RedeemViewModel::clas
         }
         binding.btnSubmit.setOnClickListener {
             val redemmCode = binding.etRedeemCode.text.toString()
-            loading()
-            viewModel.redeemCode(redemmCode)
-
+            if (redemmCode.isNotEmpty()) {
+                loading()
+                viewModel.redeemCode(redemmCode)
+            }
         }
         binding.rbtnRedeem.setOnClickListener {
             binding.layoutRedemm.isVisible = true
