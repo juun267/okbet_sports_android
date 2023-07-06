@@ -100,28 +100,8 @@ class WorldCupGameFragment : BaseBottomNavigationFragment<MainHomeViewModel>(Mai
             WorldCupGameJsInterface.name)
     }
 
-    fun setCookie(url:String) {
-        try {
-            val cookieManager = CookieManager.getInstance()
-            cookieManager.setAcceptCookie(true)
-
-            val oldCookie = cookieManager.getCookie(url)
-            Timber.i("Cookie:oldCookie:$oldCookie")
-
-            cookieManager.setCookie(
-                url, "x-session-token=" + URLEncoder.encode(viewModel.token, "utf-8")
-            ) //cookies是在HttpClient中获得的cookie
-            cookieManager.flush()
-
-            val newCookie = cookieManager.getCookie(url)
-            Timber.i("Cookie:newCookie:$newCookie")
-        } catch (e: UnsupportedEncodingException) {
-            e.printStackTrace()
-        }
-    }
     private fun loadWebURL() {
         val url = Constants.getWorldCupActivityH5Url(requireContext(),viewModel.token?:"")
-        setCookie(url)
         LogUtil.d("url="+url)
         binding.okWebView.loadUrl(url)
     }
