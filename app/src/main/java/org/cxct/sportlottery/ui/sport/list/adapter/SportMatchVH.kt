@@ -368,7 +368,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
                     context.getString(R.string.game_postponed)
                 }
                 isTimeInPlay -> {
-                    if (matchInfo.statusName18n.isEmptyStr()
+                    if (matchInfo.statusName18n.isNullOrEmpty()
                         || (matchInfo.gameType == GameType.TN.name
                                 || matchInfo.gameType == GameType.VB.name
                                 || matchInfo.gameType == GameType.TT.name

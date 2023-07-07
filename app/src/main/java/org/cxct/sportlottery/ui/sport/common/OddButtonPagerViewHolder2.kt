@@ -48,11 +48,14 @@ class OddButtonPagerViewHolder2(val oddBtnList: PlayCateView) : OddStateViewHold
         }
 
         val replaceScore = odds!!.second?.firstOrNull()?.replaceScore ?: ""
+        val extInfo = odds!!.second?.firstOrNull()?.extInfo ?: ""
         val language = LanguageManager.getSelectLanguage(itemView.context)
         var playCateName = playCateNameMap!![odds.first]?.getPlayCateName(language)
             ?.replace(": ", " ")
             ?.replace("||", "\n")
             ?.replace("{S}", replaceScore)
+            ?.replace("{E}", extInfo)
+            ?.replace("{extInfo}", extInfo)
             ?.replace("{H}", "${matchInfo!!.homeName}")
             ?.replace("{C}", "${matchInfo.awayName}") ?: ""
 
