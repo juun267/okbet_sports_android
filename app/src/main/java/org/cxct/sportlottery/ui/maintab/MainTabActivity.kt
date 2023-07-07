@@ -718,12 +718,14 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             return
         }
         homeFragment().jumpToOKGames()
+        navToPosition(2)
     }
     fun jumpToOKLive() {
         if (getMarketSwitch()) {
             return
         }
         homeFragment().jumpToOKLive()
+        navToPosition(0)
     }
 
     private fun navToPosition(position: Int) {
@@ -749,9 +751,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     fun jumpToWorldCup() {
+        navToPosition(0)
         homeFragment().jumpToWorldCup()
     }
     fun jumpToWorldCupGame() {
+        navToPosition(0)
         homeFragment().jumpToWorldCupGame()
     }
 
