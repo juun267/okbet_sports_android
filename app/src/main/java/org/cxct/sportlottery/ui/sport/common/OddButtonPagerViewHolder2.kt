@@ -150,8 +150,7 @@ class OddButtonPagerViewHolder2(val oddBtnList: PlayCateView) : OddStateViewHold
     }
     private val colorSpanned = ForegroundColorSpan(Color.parseColor("#b73a20"))
     private fun String.updatePlayCateColor(): Spanned {
-        val name = this.replace("\n", " ")
-        val spanned = SpannableStringBuilder(name)
+        val spanned = SpannableStringBuilder(this)
         val index = this.indexOf("\n")
         if (index < 0) {
             spanned.setSpan(textSpanned, 0, this.length, Spanned.SPAN_EXCLUSIVE_INCLUSIVE)
@@ -177,13 +176,13 @@ class OddButtonPagerViewHolder2(val oddBtnList: PlayCateView) : OddStateViewHold
                                  oddsList: List<Odd>) {
 
 
-        playCateView.setPlayCateName("", "", playCateName.updatePlayCateColor())
-//        if (gameType.isESport() || !playCateCode.isSingleType()) {
-//            playCateView.setPlayCateName("", "", playCateName.updatePlayCateColor())
-//            return
-//        }
-//
-//
+//        playCateView.setPlayCateName("", "", playCateName.updatePlayCateColor())
+        if (gameType.isESport() || !playCateCode.isSingleType()) {
+            playCateView.setPlayCateName("", "", playCateName.updatePlayCateColor())
+            return
+        }
+        playCateView.setPlayCateName("1", "2", if (oddsList.size < 3) "" else "X")
+
 //        playCateView.setPlayCateName("", "", playCateView.context.getString(R.string.J784))
     }
 
