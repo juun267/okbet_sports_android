@@ -205,13 +205,7 @@ fun View.rotationAnimation(rotation: Float, duration: Long = 200, onEnd: (() -> 
         .setDuration(duration)
 //        .setInterpolator(DecelerateInterpolator())
         .rotation(rotation)
-    onEnd?.let {
-        animator.setListener(object : ViewPropertyAnimatorListenerAdapter() {
-            override fun onAnimationEnd(view: View) {
-            it.invoke()
-            }
-        })
-    }
+    onEnd?.let { animator.withEndAction(onEnd) }
 
     animator.start()
 }

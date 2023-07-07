@@ -14,6 +14,8 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.RotateAnimation
 import android.webkit.*
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -24,6 +26,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
+import androidx.lifecycle.Observer
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -45,10 +48,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.setOnClickListeners
-import org.cxct.sportlottery.common.extentions.show
-import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ActivityDetailSportBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
@@ -168,6 +168,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private lateinit var sportToolBarTopFragment: SportToolBarTopFragment
     private lateinit var sportChartFragment: SportChartFragment
 
+    private var delayObserver: Runnable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -176,9 +177,19 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         AndroidBug5497Workaround.assistActivity(this)
         initData()
         initToolBar()
-        initAllObserve()
         initUI()
         initBottomNavigation()
+
+        /**
+         * 在observer的回调中有直接通过id方式访问SportToolBarTopFragment中的view,
+         * 如果网络回调较快主线程出现卡顿由SportToolBarTopFragment还没完成相关View的创建并加到Activity的视图树中，此时就会出现空指针
+         * 所以这里延迟订阅网络回调，避免该问题发生
+         */
+        delayObserver = Runnable {
+            initAllObserve()
+            delayObserver = null
+        }
+        binding.root.postDelayed(delayObserver, 300)
     }
 
 
@@ -279,7 +290,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
 
         iv_refresh.setOnClickListener {
-            initAllObserve()
+            it.isEnabled = false
+            removeObserver()  // 订阅之前移除之前的订阅
+            initObserve() // 之前的逻辑，重新订阅
+            it.rotationAnimation(it.rotation + 720f, 1000) { it.isEnabled = true}
         }
 
         ImmersionBar.with(this).fitsSystemWindows(false).statusBarDarkFont(true)
@@ -797,7 +811,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         releaseWebView()
         viewModel.clearLiveInfo()
         live_view_tool_bar.release()
-
+        delayObserver?.let { binding.root.removeCallbacks(it) }
     }
 
 
@@ -866,6 +880,23 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         rv_detail.setupBackTop(ivBackTop, 300.dp,tabCode)
     }
 
+    private fun removeObserver() {
+        viewModel.matchLiveInfo.removeObservers(this)
+        viewModel.isLogin.removeObservers(this)
+        viewModel.notifyLogin.removeObservers(this)
+        viewModel.userInfo.removeObservers(this)
+        viewModel.videoUrl.removeObservers(this)
+        viewModel.animeUrl.removeObservers(this)
+        viewModel.showBetInfoSingle.removeObservers(this)
+        viewModel.oddsDetailResult.removeObservers(this)
+        viewModel.oddsDetailList.removeObservers(this)
+        viewModel.betInfoList.removeObservers(this)
+        viewModel.oddsType.removeObservers(this)
+        viewModel.favorPlayCateList.removeObservers(this)
+        viewModel.showBetUpperLimit.removeObservers(this)
+        viewModel.showBetBasketballUpperLimit.removeObservers(this)
+
+    }
 
     @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
     private fun initObserve() {
