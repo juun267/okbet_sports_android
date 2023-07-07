@@ -98,7 +98,7 @@ fun setMatchScore(matchInfo: MatchInfo, tvHomeScore: TextView, tvAwayScore: Text
             else -> View.GONE
         }
         text = when (matchInfo.gameType) {
-            GameType.VB.key, GameType.TT.key, GameType.BM.key -> (matchInfo.homeTotalScore
+            GameType.VB.key, GameType.TT.key, GameType.BM.key, GameType.BB.key -> (matchInfo.homeTotalScore
                 ?: 0).toString()
             else -> (matchInfo.homeScore ?: 0).toString()
         }
@@ -109,7 +109,7 @@ fun setMatchScore(matchInfo: MatchInfo, tvHomeScore: TextView, tvAwayScore: Text
             else -> View.GONE
         }
         text = when (matchInfo.gameType) {
-            GameType.VB.key, GameType.TT.key, GameType.BM.key -> (matchInfo.awayTotalScore
+            GameType.VB.key, GameType.TT.key, GameType.BM.key, GameType.BB.key -> (matchInfo.awayTotalScore
                 ?: 0).toString()
             else -> (matchInfo.awayScore ?: 0).toString()
         }

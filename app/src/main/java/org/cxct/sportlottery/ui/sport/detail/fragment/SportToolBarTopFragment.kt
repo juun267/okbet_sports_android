@@ -135,12 +135,21 @@ class SportToolBarTopFragment :
             TimeUtil.isTimeInPlay(matchInfo.startTime) -> {
                 if (matchInfo.statusName18n != null) {
                     //网球，排球，乒乓，羽毛球，就不显示
-                    if (matchInfo.gameType == GameType.TN.name || matchInfo.gameType == GameType.VB.name || matchInfo.gameType == GameType.TT.name || matchInfo.gameType == GameType.BM.name) {
-                        "" + setSptText(matchInfo)
-                    } else {
-                        matchInfo.statusName18n + (setSptText(matchInfo))
+                    when(matchInfo.gameType){
+                        GameType.TN.name,GameType.VB.name,GameType.TT.name,GameType.BM.name->{
+                            "" + setSptText(matchInfo)
+                        }
+                        GameType.CK.name->{
+                            matchInfo.statusName18n +  when(matchInfo.attack){
+                                "H"-> matchInfo.homeOver
+                                "C"-> matchInfo.awayOver
+                                else->""
+                            }
+                        }
+                        else->{
+                            matchInfo.statusName18n + (setSptText(matchInfo))
+                        }
                     }
-
                 } else {
                     ""
                 }
@@ -240,6 +249,7 @@ class SportToolBarTopFragment :
     }
 
     private fun setScoreTextAtFront(matchInfo: MatchInfo) {
+        LogUtil.toJson(matchInfo)
         tv_score.apply {
             visibility = when (TimeUtil.isTimeInPlay(matchInfo.startTime)) {
                 true -> View.VISIBLE
@@ -251,6 +261,13 @@ class SportToolBarTopFragment :
                 else ->
                     matchInfo.homeScore.toStringS("0") + "-" + matchInfo.awayScore.toStringS("0")
             }
+        }
+        //棒球，沙巴数据源才显示小比分
+        if (matchInfo.gameType==GameType.BB.key&&matchInfo.source==2){
+            tv_total_score.isVisible=true
+            tv_total_score.text =  "(${matchInfo.homeScore.toStringS("0")}-${matchInfo.awayScore.toStringS("0")})"
+        }else{
+            tv_total_score.isVisible=false
         }
         setMatchScore(
             matchInfo,

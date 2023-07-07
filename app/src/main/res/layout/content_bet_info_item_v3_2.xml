@@ -350,7 +350,7 @@
                         android:layout_height="wrap_content"
                         android:maxWidth="60dp"
                         android:visibility="gone"
-                        android:text="@string/bet_stake"
+                        android:text="@string/F011"
                         android:textColor="@color/color_9BB3D9_535D76"
                         android:textSize="@dimen/textSize12sp"
                         app:layout_constraintBottom_toBottomOf="@+id/etBet"
