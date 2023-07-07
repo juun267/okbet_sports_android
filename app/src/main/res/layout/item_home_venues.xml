@@ -24,7 +24,7 @@
         android:layout_height="match_parent"
         android:background="#90000000"
         android:gravity="center"
-        android:text="@string/N257"
+        android:text="@string/N700"
         android:textColor="@color/color_FFFFFF"
         android:textSize="14sp"
         android:textStyle="bold"
