@@ -593,7 +593,11 @@ class OddButtonPagerViewHolder(
         }
 
         val betPlayCateName =
-            betPlayCateNameMap!![odds.first]?.getPlayCateName(language)?.replace(": ", " ")?.replace("||", "\n") ?: ""
+            betPlayCateNameMap!![odds.first]?.getPlayCateName(language)
+                ?.replace(": ", " ")
+                ?.replace("||", "\n")
+                ?.replace("{E}", extInfo)
+                ?.replace("{extInfo}", extInfo) ?: ""
         var playCateCode = odds.first ?: ""
         //去掉mappingCS playCateCode的後綴
         if (playCateCode.contains(PlayCate.CS.value) && playCateCode.contains("_")) {
