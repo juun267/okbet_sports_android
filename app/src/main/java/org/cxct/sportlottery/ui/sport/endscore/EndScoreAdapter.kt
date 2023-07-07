@@ -1,10 +1,8 @@
 package org.cxct.sportlottery.ui.sport.endscore
 
 import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.entity.node.BaseNode
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.network.common.PlayCate
@@ -17,11 +15,10 @@ import org.cxct.sportlottery.ui.sport.list.adapter.SportMatchEvent
 import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SocketUpdateUtil.updateOddStatus
-import org.cxct.sportlottery.view.stickyheader.StickyAdapter
 
 // 篮球末位比分
 class EndScoreAdapter(val onItemClick:(Int, View, BaseNode) -> Unit)
-    : ExpanableOddsAdapter<MatchOdd>(), StickyAdapter<BaseViewHolder, BaseViewHolder> {
+    : ExpanableOddsAdapter<MatchOdd>() {
 
     private val recyclerPool by lazy { RecyclerView.RecycledViewPool().apply { setMaxRecycledViews(3, 100) } }
     // 篮球末尾比分组合玩法
@@ -40,12 +37,11 @@ class EndScoreAdapter(val onItemClick:(Int, View, BaseNode) -> Unit)
             }
         }
 
-    private val matchItemProvider = EndScoreSecondProvider(this, onItemClick)
 
     init {
         footerWithEmptyEnable = true
         addFullSpanNodeProvider(EndScoreFirstProvider(this, onItemClick)) // 联赛
-        addFullSpanNodeProvider(matchItemProvider) // 比赛球队
+        addFullSpanNodeProvider(EndScoreSecondProvider(this, onItemClick)) // 比赛球队
         addNodeProvider(EndScoreThirdProvider(this, onItemClick)) //赔率
     }
 
@@ -60,24 +56,6 @@ class EndScoreAdapter(val onItemClick:(Int, View, BaseNode) -> Unit)
             is MatchOdd -> 2
             else -> 3
         }
-    }
-
-    override fun dataCount() = getDefItemCount()
-
-    override fun getAdapter(): RecyclerView.Adapter<BaseViewHolder> {
-        return this
-    }
-
-    override fun getHeaderPositionForItem(itemPosition: Int): Int {
-        return if(getItem(itemPosition) is MatchOdd) itemPosition else -1
-    }
-
-    override fun onCreateHeaderViewHolder(parent: ViewGroup): BaseViewHolder {
-        return matchItemProvider.onCreateViewHolder(parent, 2)
-    }
-
-    override fun onBindHeaderViewHolder(holder: BaseViewHolder, headerPosition: Int) {
-        matchItemProvider.convert(holder, getItem(headerPosition))
     }
 
 

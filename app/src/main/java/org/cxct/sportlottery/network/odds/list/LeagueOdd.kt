@@ -32,18 +32,16 @@ data class LeagueOdd(
     var searchMatchOdds = listOf<MatchOdd>()
     var gameType: GameType? = null
 
-    @Transient
     @IgnoredOnParcel
-    override var childNode: MutableList<BaseNode>?=null
-      get() {
-          matchOdds.forEach {
-              it.matchInfo?.let { matchInfo ->
-                  if (matchInfo.leagueName.isEmptyStr()) {
-                      matchInfo.leagueName = league.name
-                  }
-              }
-          }
-         return matchOdds as MutableList<BaseNode>?
-      }
+    override val childNode by lazy {
+        matchOdds.forEach {
+            it.matchInfo?.let { matchInfo ->
+                if (matchInfo.leagueName.isEmptyStr()) {
+                    matchInfo.leagueName = league.name
+                }
+            }
+        }
+        return@lazy matchOdds as MutableList<BaseNode>?
+    }
 
 }
