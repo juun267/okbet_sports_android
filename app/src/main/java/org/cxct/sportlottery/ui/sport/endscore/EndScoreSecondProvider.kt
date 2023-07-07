@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.sport.endscore
 
 import android.graphics.Color
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -11,11 +12,11 @@ import com.chad.library.adapter.base.provider.BaseNodeProvider
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.google.android.material.tabs.TabLayout
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.post
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.PlayCode
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.ui.sport.SportFragment2
 import org.cxct.sportlottery.ui.sport.list.adapter.SportMatchEvent
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BetPlayCateFunction.getEndScoreNameByTab
@@ -29,6 +30,24 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
                              val onItemClick:(Int, View, BaseNode) -> Unit,
                              override val itemViewType: Int = 2,
                              override val layoutId: Int = R.layout.item_endscore_battle): BaseNodeProvider() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+        val vh = super.onCreateViewHolder(parent, viewType)
+        val tabLayout = vh.getView<TabLayout>(R.id.tabLayout)
+        OverScrollDecoratorHelper.setUpOverScroll(tabLayout)
+        tabLayout.addOnTabSelectedListener(TabSelectedAdapter { tab, reselected ->
+            if (reselected) {
+                return@TabSelectedAdapter
+            }
+            val pair = tab.tag as Pair<String, MatchOdd>
+            pair.second.selectPlayCode = pair.first
+            pair.second.oddIdsMap?.get(pair.second.selectPlayCode)?.let {
+                post { adapter.nodeReplaceChildData(pair.second, it.values) }
+            }
+        })
+        return vh
+
+    }
 
     override fun convert(helper: BaseViewHolder, item: BaseNode, payloads: List<Any>) = helper.run {
         if (payloads.isEmpty()) {
@@ -51,9 +70,7 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
         getView<ImageView>(R.id.ivHomeLogo).setTeamLogo(matchInfo?.homeIcon)
         getView<ImageView>(R.id.ivAwayLogo).setTeamLogo(matchInfo?.awayIcon)
         getView<View>(R.id.lin_match).setOnClickListener {
-            onItemClick.invoke(helper.bindingAdapterPosition,
-                it,
-                item)
+            onItemClick.invoke(helper.bindingAdapterPosition, it, item)
         }
 
         getView<View>(R.id.league_odd_match_favorite).run {
@@ -69,29 +86,17 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
             resetStyle(getView(R.id.llMatchInfo),linExpand, tvExpand,tabLayou, item.isExpanded)
         }
         tabLayou.apply {
-            if (tabCount>0){
+            if (tabCount > 0){
                 removeAllTabs()
             }
-            LogUtil.toJson(matchOdd.oddIdsMap?.map { it.key+","+it.value?.size })
+//            LogUtil.toJson(matchOdd.oddIdsMap?.map { it.key+","+it.value?.size })
             matchOdd.oddIdsMap?.keys.forEach {
                 addTab(newTab().setTag(it).setText(it.getEndScoreNameByTab(context)))
             }
-            if (tabCount>0) {
-                matchOdd.selectPlayCode = getTabAt(0)?.tag.toString()
-            }else{
+
+            if (tabCount == 0) {
                 matchOdd.selectPlayCode = PlayCate.FS_LD_CS.value
             }
-            addOnTabSelectedListener(TabSelectedAdapter{ tab, _ ->
-                matchOdd.selectPlayCode = tab.tag.toString()
-                matchOdd.oddIdsMap?.get(matchOdd.selectPlayCode)?.let {
-                    it.values.let {
-                        post{
-                            adapter.nodeReplaceChildData(item, it)
-                        }
-                    }
-                }
-            })
-            OverScrollDecoratorHelper.setUpOverScroll(this)
         }
     }
 
