@@ -82,7 +82,10 @@ class SingleViewHolder private constructor(itemView: View) :
             tv_bet_amount_title.text =
                 context.getString(R.string.bet_receipt_bet_quota_with_sign) + "："
 
-            tv_name_type.text = context.getString(oddsType.res)
+            itemData.matchOdds?.firstOrNull()?.let {
+                tv_name_type.text = context.getString(getOddTypeRes(it,oddsType))
+
+            }
 
             itemData.apply {
                 matchOdds?.firstOrNull()?.apply {
@@ -145,6 +148,7 @@ class SingleViewHolder private constructor(itemView: View) :
                         topToTop = R.id.topContainer
                         bottomToBottom = R.id.topContainer
                     }
+                    tv_name_type.gone()
                     tv_match_type.gone()
                     tvTypeMatch.isVisible = false
                     dividerTitle.isVisible = false
