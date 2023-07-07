@@ -717,7 +717,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         if (getMarketSwitch()) {
             return
         }
-        homeFragment().jumpToOKGames()
+
         navToPosition(2)
     }
     fun jumpToOKLive() {
