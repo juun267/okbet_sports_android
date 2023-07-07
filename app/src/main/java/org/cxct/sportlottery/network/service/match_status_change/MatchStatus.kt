@@ -21,6 +21,8 @@ data class MatchStatus(
     val awayCards: Int? = null,
     @Json(name = "statusCode")
     val statusCode: Int? = null,
+    @Json(name = "status")
+    val status: Int? = null,
     @Json(name = "statusName")
     val statusName: String? = null,
     @Json(name = "statusNameI18n")

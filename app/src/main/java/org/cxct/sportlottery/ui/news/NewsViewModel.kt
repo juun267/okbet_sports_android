@@ -1,17 +1,22 @@
 package org.cxct.sportlottery.ui.news
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.NewsType
 import org.cxct.sportlottery.network.news.News
 import org.cxct.sportlottery.network.news.NewsResult
+import org.cxct.sportlottery.network.news.SportNewsRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.TimeUtil
+import org.json.JSONObject
 
 class NewsViewModel(
     androidContext: Application,
@@ -41,6 +46,10 @@ class NewsViewModel(
     val newsList: LiveData<List<News>>
         get() = _newsList
 
+    val sportsNewsList: LiveData<List<News>>
+        get() = _sportsNewsList
+    private val _sportsNewsList = MutableLiveData<List<News>>()
+
     private val _showAllNews = MutableLiveData<Boolean>()
     val showAllNews: LiveData<Boolean>
         get() = _showAllNews
@@ -52,7 +61,29 @@ class NewsViewModel(
     private var newsPage = 1
     private var loadingNews = false
 
+    var sportPageIndex=1
+    private var sportPageSize=10
+    var sportStartTime:Long?=0L
+    var sportEndTime:Long?=0L
+    fun getSportsNewsData() {
+        if(loadingNews){
+            return
+        }
 
+        loadingNews=true
+        viewModelScope.launch {
+            val params= SportNewsRequest(NewsType.GAME.code,(sportStartTime?:0).toString(),(sportEndTime?:0).toString(),sportPageIndex,sportPageSize)
+            val result= doNetwork(androidContext) {
+                OneBoSportApi.newsService.getMessageListByTime(params)
+            }
+
+            loadingNews=false
+            if(result!=null){
+                sportPageIndex++
+                _sportsNewsList.postValue(result.news)
+            }
+        }
+    }
     fun getNewsData(newsType: NewsType, refresh: Boolean = false) {
         if ((!refresh && ((newsResult.value?.total ?: 0) <= (newsList.value?.size ?: 0))) || loadingNews) return
 

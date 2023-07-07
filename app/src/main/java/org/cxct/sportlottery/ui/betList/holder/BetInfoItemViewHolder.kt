@@ -35,6 +35,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.betList.listener.OnItemClickListener
+import org.cxct.sportlottery.ui.betList.view.BetListPopupWindow
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BetPlayCateFunction.getNameMap
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -164,7 +165,7 @@ class BetInfoItemViewHolder(
         adapterBetType: BetListRefactorAdapter.BetRvType?
     ) = contentView.run {
 
-       val update =  {
+        val update = {
             //更新可贏額
             var win = itemData.betAmount * getOddsAndSaveRealAmount(
                 itemData, currentOddsType
@@ -192,7 +193,7 @@ class BetInfoItemViewHolder(
 
 
         //移除TextChangedListener
-        etBet.apply {
+        etBet.etBetParlay.apply {
             if (tag is TextWatcher) {
                 removeTextChangedListener(tag as TextWatcher)
             }
@@ -202,7 +203,7 @@ class BetInfoItemViewHolder(
 
 
         //設定editText內容
-        etBet.apply {
+        etBet.etBetParlay.apply {
             //金额只默认填充一次，输入之后就不在默认填充
             if (isTouched) {
                 return@apply
@@ -261,7 +262,7 @@ class BetInfoItemViewHolder(
 //                    val max = inputMaxMoney.coerceAtMost(quota.coerceAtLeast(userBalance()))
                     Timber.d("quota:$quota max:$max")
                     if (quota > max) {
-                        etBet.apply {
+                        etBet.etBetParlay.apply {
                             setText(TextUtil.formatInputMoney(max))
                             setSelection(text.length)
                         }
@@ -284,7 +285,7 @@ class BetInfoItemViewHolder(
             }
         }
 
-        etBet.addTextChangedListener(tw)
+        etBet.etBetParlay.addTextChangedListener(tw)
         etBet.tag = tw
         etBet.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
@@ -293,7 +294,7 @@ class BetInfoItemViewHolder(
                     onItemClickListener.onHideKeyBoard()
                     layoutKeyBoard.setupMaxBetMoney(inputMaxMoney)
                     layoutKeyBoard.showKeyboard(
-                        etBet, position
+                        etBet.etBetParlay, position
                     )
                     onItemClickListener.onShowKeyboard(position)
                 }
@@ -307,7 +308,7 @@ class BetInfoItemViewHolder(
             layoutKeyBoard.setupMaxBetMoney(inputMaxMoney)
             if (adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE) {
                 layoutKeyBoard.showKeyboard(
-                    etBet, position
+                    etBet.etBetParlay, position
                 )
             }
         }
@@ -315,7 +316,7 @@ class BetInfoItemViewHolder(
 //                    if (!hasFocus) layoutKeyBoard?.hideKeyboard() //兩個輸入匡會互搶focus不能這樣關閉鍵盤
             itemData.isInputBet = hasFocus
             if (hasFocus) {
-                etBet.setSelection(etBet.text.length)
+                etBet.etBetParlay.setSelection(etBet.etBetParlay.text.length)
             }
             setEtBackground(itemData)
         }
@@ -334,7 +335,12 @@ class BetInfoItemViewHolder(
     private val delayResetTime = totalAnimationDuration - animationDuration * 2
 
     var repeatCount = 0
-    private fun setAnimation(ivArrow: ImageView, tvOdds: TextView, isUp: Boolean) {
+    private fun setAnimation(
+        ivArrow: ImageView,
+        tvOdds: TextView,
+        isUp: Boolean,
+        onItemClickListener: OnItemClickListener
+    ) {
         if (repeatCount == 0) {
             handler.removeCallbacksAndMessages(null)
             resetOddsUI()
@@ -344,18 +350,19 @@ class BetInfoItemViewHolder(
         animation.duration = animationDuration
         animation.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {
+                onItemClickListener.onOddChangeStartListener(isUp)
                 if (isUp) {
-                    ivArrow.setImageResource(R.drawable.ic_arrow_odd_up)
+                    ivArrow.setImageResource(R.drawable.icon_odds_up)
                     tvOdds.setTextColor(
                         ContextCompat.getColor(
-                            tvOdds.context, R.color.color_34CB8A_1D9F51
+                            tvOdds.context, R.color.color_00cc33
                         )
                     )
                 } else {
-                    ivArrow.setImageResource(R.drawable.ic_arrow_odd_down)
+                    ivArrow.setImageResource(R.drawable.icon_odds_down)
                     tvOdds.setTextColor(
                         ContextCompat.getColor(
-                            tvOdds.context, R.color.color_D35555_D35555
+                            tvOdds.context, R.color.color_ff251e
                         )
                     )
                 }
@@ -367,10 +374,11 @@ class BetInfoItemViewHolder(
                 if (repeatCount == 2) {
                     repeatCount = 0
                     handler.postDelayed({
+                        onItemClickListener.onOddChangeEndListener()
                         resetOddsUI()
                     }, delayResetTime)
                 } else {
-                    setAnimation(ivArrow, tvOdds, isUp)
+                    setAnimation(ivArrow, tvOdds, isUp, onItemClickListener)
                 }
             }
 
@@ -403,9 +411,9 @@ class BetInfoItemViewHolder(
             //賠率變動更新箭頭和文字色碼
             repeatCount = 0
             if (itemData.matchOdd.oddState == OddState.LARGER.state) {
-                setAnimation(ivOddsArrow, tvOdds, true)
+                setAnimation(ivOddsArrow, tvOdds, true, onItemClickListener)
             } else if (itemData.matchOdd.oddState == OddState.SMALLER.state) {
-                setAnimation(ivOddsArrow, tvOdds, false)
+                setAnimation(ivOddsArrow, tvOdds, false, onItemClickListener)
             }
 
 //            handler.postDelayed({
@@ -535,6 +543,7 @@ class BetInfoItemViewHolder(
                 val playCateName = itemData.betPlayCateNameMap?.getNameMap(
                     itemData.matchOdd.gameType, itemData.matchOdd.playCode
                 )?.get(LanguageManager.getSelectLanguage(root.context).key) ?: ""
+
                 tvNameText = when (inPlay && itemData.matchType != MatchType.OUTRIGHT) {
                     true -> {
                         root.context.getString(
@@ -570,82 +579,12 @@ class BetInfoItemViewHolder(
                 tvLeagueName.text = itemData.matchOdd.leagueName
             }
         }
-        val view = View.inflate(tvMatchHome.context, R.layout.popupwindow_tips, null)
-        val pop = PopupWindow(tvMatchHome.context).apply {
-            contentView = view
-            setBackgroundDrawable(null)
-            isOutsideTouchable = true
-        }
-        val textView = view.findViewById<TextView>(R.id.tvContent)
-        val imageView = view.findViewById<ImageView>(R.id.ivPopupWindowTipsBg)
-        val showPopAsTop: (TextView, String?) -> Unit = { it, it2 ->
-            if (pop.isShowing) {
-                pop.dismiss()
-            }
 
-            it.setTextColor(it.context.getColor(R.color.color_025BE8))
-            textView.text = it2
-            val xOff: Int
-            val yOff = (-50).dp
-            if (it == tvMatchAway) {
-                xOff = (-20).dp
-                imageView.background =
-                    AppCompatResources.getDrawable(it.context, R.drawable.bg_popup_tips_right)
-            } else {
-                xOff = (-5).dp
-                imageView.background =
-                    AppCompatResources.getDrawable(it.context, R.drawable.bg_popup_tips_left)
-            }
-            pop.showAsDropDown(it, xOff, yOff)
-        }
-
-        setOnClickListeners(tvName, tvLeagueName, tvMatchHome, tvMatchAway, tvOddsContent) {
-            when (it) {
-                tvName -> {
-                    showPopAsTop(tvName, tvNameText)
-                }
-
-                tvLeagueName -> {
-                    showPopAsTop(tvLeagueName, itemData.matchOdd.leagueName)
-                }
-
-                tvMatchHome -> {
-                    showPopAsTop(tvMatchHome, itemData.matchOdd.homeName)
-                }
-
-                tvMatchAway -> {
-                    showPopAsTop(tvMatchAway, itemData.matchOdd.awayName)
-                }
-
-                tvOddsContent -> {
-                    showPopAsTop(tvOddsContent, itemData.matchOdd.playName)
-                }
-            }
-        }
-
-        pop.setOnDismissListener {
-            tvName.setTextColor(tvName.context.getColor(R.color.color_9BB3D9_535D76))
-            tvLeagueName.setTextColor(tvLeagueName.context.getColor(R.color.color_9BB3D9_535D76))
-            tvMatchHome.setTextColor(tvLeagueName.context.getColor(R.color.color_A7B2C4))
-            tvMatchAway.setTextColor(tvLeagueName.context.getColor(R.color.color_A7B2C4))
-        }
-
-
-        //加上OddsType名稱,如果是串关显示欧盘
-//        val tvNamePlusOddsTypeName =
-//            "${tvName.text} [${root.context.getString(if (adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE) currentOddsType.res else OddsType.EU.res)}]"
-//        tvName.text = tvNamePlusOddsTypeName
+        val popupWindow = BetListPopupWindow(context = tvMatchAway.context)
+        popupWindow.initOperation(tvLeagueName, tvMatchHome, tvMatchAway, tvOddsContent,tvName,tvNameText, itemData)
 
         tvNameType.text =
             root.context.getString(if (adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE) currentOddsType.res else OddsType.EU.res)
-
-        //前面加上MatchType名稱
-//        itemData.matchType?.let {
-//            val matchTypeName = root.context.getString(it.resId)
-////            tvName.text = matchTypeName.plus(" ${tvName.text}")
-//            tvMatchType.text = matchTypeName
-//        }
-
 
     }
 
@@ -721,66 +660,12 @@ class BetInfoItemViewHolder(
     }
 
     private fun setEtBackground(itemData: BetInfoListData) {
-        contentView.apply {
-            if (itemData.amountError) {
-                Timber.d("setEtBackground error")
-                etBet.setBackgroundResource(R.drawable.bg_radius_2_edittext_error)
-            } else {
-                if (itemData.isInputBet) {
-                    Timber.d("setEtBackground itemData.isInputBet true")
-                    etBet.setBackgroundResource(R.drawable.bg_radius_2_edittext_focus)
-                } else {
-                    Timber.d("setEtBackground itemData.isInputBet false")
-                    etBet.setBackgroundResource(R.drawable.bg_radius_2_edittext_unfocus)
-                }
-            }
-
-            //更新bet editText hint
-            val betHint = root.context.getString(
-                R.string.hint_bet_limit_range,
-                inputMinMoney.toLong().toString(),
-                inputMaxMoney.toLong().toString()
-            )
-
-            //更新win editText hint
-            val winHint = root.context.getString(
-                R.string.hint_bet_limit_range,
-                inputWinMinMoney.toLong().toString(),
-                inputWinMaxMoney.toLong().toString()
-            )
-
-            if (LoginRepository.isLogin.value == true) {
-                etBet.hint = betHint
-            } else {
-                etBet.hint = ""
-            }
-        }
+        contentView.etBet.setBackgroundAndColor(itemData, inputMinMoney, inputMaxMoney)
     }
 
     private fun checkBetLimit(
         itemData: BetInfoListData
     ) {
-//        contentView.apply {
-//            val betAmount = itemData.betAmount
-//
-//            var amountError = if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
-//                !itemData.input.isNullOrEmpty()
-//            } else {
-//                if (betAmount > inputMaxMoney) {
-//                    //超過最大限額
-//                    true
-//                } else {
-//                    betAmount != 0.0 && betAmount < inputMinMoney
-//                }
-//            }
-//            if (itemData.input.isNullOrEmpty()) {
-//                amountError = true
-//            }
-//
-//            Timber.d("用户余额:$mUserMoney")
-//            val balanceError = betAmount != 0.0 && betAmount > mUserMoney
-//            itemData.amountError = balanceError || amountError
-//        }
         itemData.amountError = false
         setEtBackground(itemData)
     }

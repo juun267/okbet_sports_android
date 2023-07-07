@@ -57,6 +57,7 @@ import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
 import org.cxct.sportlottery.ui.maintab.games.OKLiveViewModel
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
+import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceViewModel
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechViewModel
@@ -175,6 +176,8 @@ class MultiLanguagesApplication : Application() {
         viewModel { OKGamesViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { OKLiveViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { ChatViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { SportLeftMenuViewModel(get(), get(), get(), get(), get(), get(), get()) }
+
     }
 
     private val repoModule = module {
@@ -281,7 +284,8 @@ class MultiLanguagesApplication : Application() {
         }
     }
 
-    private fun setNightMode() {
+    fun setNightMode(switch:Boolean=false) {
+        saveNightMode(switch)
         if (isNightMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         } else {

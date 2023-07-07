@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.network.sport
 
+import com.chad.library.adapter.base.entity.node.BaseExpandNode
 import com.chad.library.adapter.base.entity.node.BaseNode
 import org.cxct.sportlottery.common.proguards.KeepMembers
 
@@ -16,8 +17,9 @@ data class SearchResult(
 
     data class SearchResultLeague(
         var league:String = "",
+        var icon:String = "",
         var leagueMatchList: MutableList<SearchResponse.Row.LeagueMatch.MatchInfo> = mutableListOf(),
-    ): BaseNode() {
+    ): BaseExpandNode() {
 
         override val childNode: MutableList<BaseNode>?
             get() = leagueMatchList as MutableList<BaseNode>?

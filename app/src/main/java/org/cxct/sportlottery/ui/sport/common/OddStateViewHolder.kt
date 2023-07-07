@@ -17,7 +17,6 @@ abstract class OddStateViewHolder(itemView: View) : RecyclerView.ViewHolder(item
         private const val HIGH_LIGHT_TIME: Long = 3000
     }
 
-    abstract val oddStateChangeListener: OddStateChangeListener
     private val mHandler: Handler by lazy { Handler() }
 
     fun setupOddState(oddsButton: OddsButton, itemOdd: Odd?) {

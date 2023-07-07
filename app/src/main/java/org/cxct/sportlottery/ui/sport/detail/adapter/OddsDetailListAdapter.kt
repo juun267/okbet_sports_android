@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import kotlinx.android.synthetic.main.content_odds_detail_list_team.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
@@ -71,11 +72,9 @@ class OddsDetailListAdapter(
             oddsDetailDataList.forEachIndexed { index, data ->
                 data.oddArrayList.forEach { odd ->
                     val oddSelected = betInfoList.any { it.matchOdd.oddsId == odd?.id }
-//                    Timber.d("===洗刷刷-2 odd?.isSelected:${odd?.isSelected} oddSelected:${oddSelected} index:${index}")
                     if (odd?.isSelected != oddSelected) {
                         odd?.isSelected = oddSelected
                         notifyItemChanged(index, odd?.id)
-//                            Timber.d("===洗刷刷 更新单个条目:${index} id:${odd?.id} odd.isSelected:${odd?.isSelected}")
                     }
                 }
             }
@@ -632,8 +631,8 @@ class OddsDetailListAdapter(
         private fun controlExpandBottom(expand: Boolean) {
             try {
                 itemView.findViewById<View>(R.id.spaceItemBottom).isVisible = expand
-                itemView.findViewById<View>(R.id.view_line).visibility =
-                    if (expand) View.VISIBLE else View.GONE
+//                itemView.findViewById<View>(R.id.view_line).visibility =
+//                    if (expand) View.VISIBLE else View.GONE
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -782,11 +781,6 @@ class OddsDetailListAdapter(
                 odd_detail_fold.isSelected = oddsDetail.isExpand
 
             }
-            //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
-            itemView.tv_home_name?.text = oddsDetail.matchInfo?.homeName
-            itemView.tv_away_name?.text = oddsDetail.matchInfo?.awayName
-            itemView.iv_home_logo?.setTeamLogo(oddsDetail.matchInfo?.homeIcon)
-            itemView.iv_away_logo?.setTeamLogo(oddsDetail.matchInfo?.awayIcon)
             rvBet?.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             itemView.lin_match?.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             when (sportCode) {
@@ -1299,8 +1293,6 @@ class OddsDetailListAdapter(
 
         private fun forCS(oddsDetail: OddsDetailListData) {
 
-            tvHomeName?.text = homeName
-            tvAwayName?.text = awayName
             itemView.tv_draw?.isVisible = true
             itemView.findViewById<LinearLayout>(R.id.ll_content).visibility =
                 if (oddsDetail.isExpand) View.VISIBLE else View.GONE
@@ -1379,9 +1371,6 @@ class OddsDetailListAdapter(
         }
 
         private fun forLCS(oddsDetail: OddsDetailListData) {
-
-            tvHomeName?.text = homeName
-            tvAwayName?.text = awayName
             itemView?.tv_draw.isVisible = true
             itemView.findViewById<LinearLayout>(R.id.ll_content).visibility =
                 if (oddsDetail.isExpand) View.VISIBLE else View.GONE
@@ -1489,6 +1478,9 @@ class OddsDetailListAdapter(
                 rvBet?.let { it1 ->
                     if (isFirstRefresh || it1.adapter == null) {
                         it1.adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, oddsType)
+                        if (it1.itemDecorationCount==0) {
+                            it1.addItemDecoration(GridSpacingItemDecoration(4,4.dp,false))
+                        }
                         it1.layoutManager = GridLayoutManager(itemView.context, 4)
                         isFirstRefresh = false
                     }
@@ -1531,8 +1523,6 @@ class OddsDetailListAdapter(
         }
 
         private fun forSingleCS(oddsDetail: OddsDetailListData, spanCount: Int) {
-            tvHomeName?.text = homeName
-            tvAwayName?.text = awayName
             itemView.tv_draw?.isVisible = true
             tvHomeName?.isVisible = oddsDetail.isExpand
             tvAwayName?.isVisible = oddsDetail.isExpand
@@ -1658,8 +1648,6 @@ class OddsDetailListAdapter(
 
             val homeName = teamNameList.firstOrNull() ?: ""
             val awayName = teamNameList.getOrNull(1) ?: ""
-            tvHomeName?.text = homeName
-            tvAwayName?.text = awayName
 
             itemView.findViewById<ConstraintLayout>(R.id.cl_tab).visibility =
                 if (oddsDetail.isExpand) View.VISIBLE else View.GONE

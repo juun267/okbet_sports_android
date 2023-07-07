@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -27,8 +26,7 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TextUtil
 
 
-class OddButtonPagerAdapter(val context: Context
-) :RecyclerView.Adapter<OddButtonPagerViewHolder>(
+class OddButtonPagerAdapter(val context: Context) :RecyclerView.Adapter<OddButtonPagerViewHolder>(
 
 ) {
     private var matchInfo: MatchInfo?= null
@@ -38,7 +36,7 @@ class OddButtonPagerAdapter(val context: Context
     private var matchOdd: MatchOdd? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OddButtonPagerViewHolder {
-        return OddButtonPagerViewHolder(OddBtnList(parent.context), oddStateRefreshListener)
+        return OddButtonPagerViewHolder(OddBtnList(parent.context))
     }
 
     override fun onViewRecycled(holder: OddButtonPagerViewHolder) {
@@ -51,8 +49,7 @@ class OddButtonPagerAdapter(val context: Context
     }
 
     fun setData(matchInfo: MatchInfo?, oddsSort: String?, playCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
-                betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?, getPlaySelectedCodeSelectionType: Int?,
-                matchOdd: MatchOdd?
+                betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?, matchOdd: MatchOdd?
     ) {
         this.matchInfo = matchInfo
 
@@ -524,7 +521,6 @@ class OddButtonPagerAdapter(val context: Context
 
 class OddButtonPagerViewHolder(
     val oddBtnList: OddBtnList,
-    private val oddStateRefreshListener: OddStateChangeListener,
 ) : OddStateViewHolder(oddBtnList) {
 
     fun update(
@@ -563,7 +559,7 @@ class OddButtonPagerViewHolder(
         matchInfo: MatchInfo?,
         playCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
-        odds: Pair<String?, List<Odd?>?>?,
+        odds: Pair<String?, List<Odd?>?>,
         oddsType: OddsType,
         oddButtonListener: OddButtonListener?,
         matchType: MatchType?,
@@ -582,11 +578,11 @@ class OddButtonPagerViewHolder(
         val replaceScore = odds!!.second?.firstOrNull()?.replaceScore ?: ""
         val language = LanguageManager.getSelectLanguage(itemView.context)
         var playCateName = playCateNameMap!![odds.first]?.getPlayCateName(language)
-                ?.replace(": ", " ")
-                ?.replace("||", "\n")
-                ?.replace("{S}", replaceScore)
-                ?.replace("{H}", "${matchInfo!!.homeName}")
-                ?.replace("{C}", "${matchInfo.awayName}") ?: ""
+            ?.replace(": ", " ")
+            ?.replace("||", "\n")
+            ?.replace("{S}", replaceScore)
+            ?.replace("{H}", "${matchInfo!!.homeName}")
+            ?.replace("{C}", "${matchInfo.awayName}") ?: ""
 
         odds.second?.firstOrNull()?.replaceScore?.let { playCateName.replace("{S}", it) }
         if (playCateName == "null" || playCateName.isEmpty()){
@@ -609,7 +605,7 @@ class OddButtonPagerViewHolder(
             val oddBtnOther = oddBtnList.getOtherOddsBtn()
             odds.second?.getOrNull(0).let {
                 bindOddBtn(oddBtnOther, isDeactivated, playCateCode, it, odds.second, oddsType, isOtherBtn = true)
-                bindOddClick(oddBtnOther, it, oddButtonListener, matchInfo, playCateCode, playCateName, betPlayCateName)
+                bindOddClick(oddBtnOther, it, oddButtonListener, matchInfo, playCateCode, betPlayCateName)
             }
             return
         }
@@ -628,7 +624,6 @@ class OddButtonPagerViewHolder(
                 oddButtonListener,
                 matchInfo,
                 playCateCode,
-                playCateName,
                 betPlayCateName)
         }
 
@@ -646,7 +641,6 @@ class OddButtonPagerViewHolder(
                 oddButtonListener,
                 matchInfo,
                 playCateCode,
-                playCateName,
                 betPlayCateName)
         }
 
@@ -665,7 +659,6 @@ class OddButtonPagerViewHolder(
                 oddButtonListener,
                 matchInfo,
                 playCateCode,
-                playCateName,
                 betPlayCateName)
         } else {
             oddBtnList.disableDrawBtn()
@@ -677,18 +670,17 @@ class OddButtonPagerViewHolder(
                              oddButtonListener: OddButtonListener?,
                              matchInfo: MatchInfo?,
                              playCateCode: String,
-                             playCateName: String,
                              betPlayCateName: String) {
 
         oddsButton.setOnClickListener {
             itemOdd?.let { odd ->
+
                 //it.isSelected = !it.isSelected
                 oddButtonListener?.onClickBet(
                     oddsButton,
                     matchInfo,
                     odd,
                     playCateCode,
-                    playCateName,
                     betPlayCateName
                 )
             }
@@ -869,13 +861,11 @@ class OddButtonPagerViewHolder(
         return spanned
     }
 
-    override val oddStateChangeListener: OddStateChangeListener
-        get() = oddStateRefreshListener
 
 }
 
 class OddButtonListener(
-    val clickListenerBet: (view: View, matchInfo: MatchInfo?, odd: Odd, playCateCode: String, playCateName: String, betPlayCateName: String) -> Unit
+    val clickListenerBet: (view: View, matchInfo: MatchInfo?, odd: Odd, playCateCode: String, betPlayCateName: String) -> Unit
 ) {
 
     fun onClickBet(
@@ -883,7 +873,6 @@ class OddButtonListener(
         matchInfo: MatchInfo?,
         odd: Odd,
         playCateCode: String,
-        playCateName: String = "",
         betPlayCateName: String = "",
-    ) = clickListenerBet(view,matchInfo, odd, playCateCode, playCateName, betPlayCateName)
+    ) = clickListenerBet(view,matchInfo, odd, playCateCode, betPlayCateName)
 }

@@ -26,7 +26,7 @@
     <View
         android:id="@+id/img_icon"
         android:layout_width="0dp"
-        android:layout_height="3dp"
+        android:layout_height="2dp"
         android:background="@drawable/bg_matchtype_indicator_detail"
         android:layout_gravity="bottom|center_horizontal"
         app:layout_constraintLeft_toLeftOf="@+id/tv_tab"

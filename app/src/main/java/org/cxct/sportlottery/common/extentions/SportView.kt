@@ -6,6 +6,7 @@ import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.content_baseball_status.view.*
 import kotlinx.android.synthetic.main.item_sport_favorite.view.*
@@ -132,38 +133,44 @@ fun TextView.setMatchRoundScore(matchInfo: MatchInfo) {
             }
         }
         text = spanny
+    }
+
+    val matchStatusList = matchInfo.matchStatusList
+    if (matchStatusList.isNullOrEmpty()) {
+        text = ""
+        return
+    }
+
+    val spanny = Spanny()
+    val quarter: Int = if (matchInfo.gameType == GameType.BK.key) { //球種為籃球有特殊處理
+        //篮球类 1:第一节 2:第二节 6:上半场 7:下半场 13:第一节 14:第二节 15:第三节 16:第四节
+        // 31:半场 32:等待加时赛 40:加时 80:中断 90:弃赛 100:完场 110:加时赛后 301:第1次休息 302:第2次休息 303:第3次休息 999:滚球
+        when (matchInfo.socketMatchStatus) {
+            1, 13 -> 0     //第一节
+            2, 14, 31 -> 1 //第二节
+            15 -> 2        //第三节
+            16 -> 3        //第四节
+            else -> 4      //其他情况全部显示
+        }
     } else {
-        matchInfo.matchStatusList?.let { matchStatusList ->
-            val spanny = Spanny()
-            val quarter: Int = if (matchInfo.gameType == GameType.BK.key) { //球種為籃球有特殊處理
-                //篮球类 1:第一节 2:第二节 6:上半场 7:下半场 13:第一节 14:第二节 15:第三节 16:第四节
-                // 31:半场 32:等待加时赛 40:加时 80:中断 90:弃赛 100:完场 110:加时赛后 301:第1次休息 302:第2次休息 303:第3次休息 999:滚球
-                when (matchInfo.socketMatchStatus) {
-                    1, 13 -> 0     //第一节
-                    2, 14, 31 -> 1 //第二节
-                    15 -> 2        //第三节
-                    16 -> 3        //第四节
-                    else -> 4      //其他情况全部显示
-                }
-            } else {
-                matchStatusList.lastIndex
-            }
-            matchStatusList.forEachIndexed { index, it ->
-                if (index > quarter) return@forEachIndexed
-                val spanScore = "${it.homeScore ?: 0}-${it.awayScore ?: 0}"
-                if (index < quarter) {
-                    spanny.append(spanScore)
-                    spanny.append("  ")
-                } else {
-                    spanny.append(
-                        spanScore,
-                        ForegroundColorSpan(this.context.getColor(R.color.color_F0A536))
-                    )
-                }
-            }
-            text = spanny
+        matchStatusList.lastIndex
+    }
+    matchStatusList.forEachIndexed { index, it ->
+        if (index > quarter) return@forEachIndexed
+        val spanScore = "${it.homeScore ?: 0}-${it.awayScore ?: 0}"
+        if (index < quarter) {
+            spanny.append(spanScore)
+            spanny.append("  ")
+        } else {
+            spanny.append(
+                spanScore,
+                ForegroundColorSpan(this.context.getColor(R.color.color_FF8A00))
+            )
         }
     }
+    text = spanny
+
+
 }
 
 /**
@@ -199,21 +206,35 @@ fun setMatchAttack(
             GameType.BM.key,
             GameType.CK.key,
             -> {
-                if (matchInfo.attack.equals("H")) {
-                    ivHomeAttack.visibility = View.VISIBLE
-                    ivAwayAttack.visibility = View.INVISIBLE
-                } else {
-                    ivHomeAttack.visibility = View.INVISIBLE
-                    ivAwayAttack.visibility = View.VISIBLE
+                when(matchInfo.attack){
+                    "H"->{
+                        ivHomeAttack.visibility = View.VISIBLE
+                        ivAwayAttack.visibility = View.INVISIBLE
+                    }
+                    "C"->{
+                        ivHomeAttack.visibility = View.INVISIBLE
+                        ivAwayAttack.visibility = View.VISIBLE
+                    }
+                    else->{
+                        ivHomeAttack.visibility = View.INVISIBLE
+                        ivAwayAttack.visibility = View.INVISIBLE
+                    }
                 }
             }
             GameType.TN.key -> {
-                if (matchInfo.attack.equals("H")) {
-                    ivTNHomeAttack.visibility = View.VISIBLE
-                    ivTNAwayAttack.visibility = View.INVISIBLE
-                } else {
-                    ivTNHomeAttack.visibility = View.INVISIBLE
-                    ivTNAwayAttack.visibility = View.VISIBLE
+                when(matchInfo.attack){
+                    "H"->{
+                        ivTNHomeAttack.visibility = View.VISIBLE
+                        ivTNAwayAttack.visibility = View.INVISIBLE
+                    }
+                    "C"->{
+                        ivTNHomeAttack.visibility = View.INVISIBLE
+                        ivTNAwayAttack.visibility = View.VISIBLE
+                    }
+                    else->{
+                        ivTNHomeAttack.visibility = View.INVISIBLE
+                        ivTNAwayAttack.visibility = View.INVISIBLE
+                    }
                 }
             }
             else -> {
@@ -312,7 +333,7 @@ fun setMatchTimeAndStatus(
                         isTimerEnable,
                         isTimerPause,
                         matchInfo.leagueTime ?: 0,
-                        (matchInfo.gameType == GameType.BK.key ||
+                        isDecrease = (matchInfo.gameType == GameType.BK.key ||
                                 matchInfo.gameType == GameType.RB.key ||
                                 matchInfo.gameType == GameType.AFT.key)
                     )
@@ -462,21 +483,21 @@ fun setBBStatusView(
     ivHalfStatus: ImageView,
     ivBaseBag: ImageView,
 ) {
-
     tvBBStatus.apply {
         text = matchInfo.statusName18n
-        isVisible = true
+        setTextColor(ContextCompat.getColor(context,R.color.color_6C7BA8))
+        isVisible = !matchInfo.statusName18n.isEmptyStr()
     }
-
     txvOut.apply {
         text = this.context.getString(R.string.game_out,
-            matchInfo.outNumber ?: "")
+            matchInfo.outNumber ?: "0")
+        setTextColor(ContextCompat.getColor(context,R.color.color_6C7BA8))
         isVisible = true
     }
 
     ivHalfStatus.apply {
         setImageResource(if (matchInfo.halfStatus == 0) R.drawable.ic_bb_first_half else R.drawable.ic_bb_second_half)
-        isVisible = true
+        isVisible = matchInfo.halfStatus != null
     }
 
     ivBaseBag.apply {

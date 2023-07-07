@@ -36,6 +36,7 @@ import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
+import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
@@ -313,12 +314,12 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
     private val leagueOddMap = HashMap<String, LeagueOdd>()
     private fun initSocketObserver() {
         //监听体育服务
-        setupSportStatusChange(this){
-            if(it){
+        setupSportStatusChange(this) {
+            if (it) {
                 //如果首页不做处理
-                if(activity is MainTabActivity){
+                if (activity is MainTabActivity) {
                     //体育服务分支没有 FavoriteActivity ， 只好判断非MainTabActivity
-                }else{
+                } else {
                     activity?.finish()
                 }
             }
@@ -331,10 +332,10 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
             }
         }
 
-        receiver.matchStatusChange.observe(this.viewLifecycleOwner) { matchStatusChangeEvent ->
+        MatchOddsRepository.observerMatchStatus(this.viewLifecycleOwner) { matchStatusChangeEvent ->
 
             if (matchStatusChangeEvent == null) {
-                return@observe
+                return@observerMatchStatus
             }
 
             val unSubscribed = mutableListOf<LeagueOdd>()
@@ -512,7 +513,6 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.N)
     private fun initObserver() {
         viewModel.userInfo.observe(this.viewLifecycleOwner) {
             favoriteAdapter.discount = it?.discount ?: 1.0F
@@ -775,7 +775,6 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
                     code = it.code.orEmpty(),
                     name = it.showName.orEmpty(),
                     num = 0,
-                    play = null,
                     sortNum = 0
                 )
             )

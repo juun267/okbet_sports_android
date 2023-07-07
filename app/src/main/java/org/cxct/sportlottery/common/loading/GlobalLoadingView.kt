@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.common.loading
 
+import android.animation.Animator
 import android.content.Context
 import android.graphics.Color
 import android.net.ConnectivityManager
@@ -7,11 +8,13 @@ import android.util.AttributeSet
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.animation.Animation.AnimationListener
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.alpahAnimation
 import org.cxct.sportlottery.common.extentions.load
 
 class GlobalLoadingView @JvmOverloads constructor(
@@ -59,7 +62,7 @@ class GlobalLoadingView @JvmOverloads constructor(
                 val networkConn = isNetworkConnected(context)
                 if (!networkConn) {
                     str = resources.getString(R.string.N655)
-                    image = errorRes
+                    image = R.drawable.img_no_network
                 } else {
                     str = errorText
                     image = errorRes
@@ -76,7 +79,15 @@ class GlobalLoadingView @JvmOverloads constructor(
         mTextView.text = str
         mImageView.load(image)
         setOnClickListener(onClickListener)
-        isVisible = show
+        if (show) {
+            isVisible = true
+            return
+        }
+
+        alpahAnimation(400, 1f, 0f) {
+            isVisible = false
+            alpha = 1f
+        }
     }
 
     override fun onClick(v: View) {

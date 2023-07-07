@@ -58,7 +58,6 @@ class RequestManager private constructor(private val context: Context) {
         .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
         .addInterceptor(HttpStatusInterceptor()) // 处理token过期
         .addInterceptor(MoreBaseUrlInterceptor())
-        .addNetworkInterceptor(Http400or500Interceptor()) //处理后端的沙雕行为
         .addInterceptor(RequestInterceptor(context, ::getApiToken))
         .addNetworkInterceptor(Http400or500Interceptor()) //处理后端的沙雕行为
         //.addInterceptor(LogInterceptor().setLevel(LogInterceptor.Level.BODY))

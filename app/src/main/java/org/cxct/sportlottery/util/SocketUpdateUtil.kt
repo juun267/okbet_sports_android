@@ -502,7 +502,54 @@ object SocketUpdateUtil {
         }
     }
 
-    fun updateMatchInfoClock(matchInfo: MatchInfo, matchClockEvent: MatchClockEvent): Boolean {
+    fun updateMatchClockStatus(matchInfo: MatchInfo, matchClockEvent: MatchClockEvent): Boolean {
+        val matchClockCO = matchClockEvent.matchClockCO ?: return false
+
+        var isNeedRefresh = false
+
+        val leagueTime = if (matchClockCO.gameType == GameType.FT.key) {
+            matchClockCO.matchTime
+        } else if (matchClockCO.gameType == GameType.BK.key
+            || matchClockCO.gameType == GameType.RB.key
+            || matchClockCO.gameType ==GameType.AFT.key) {
+            matchClockCO.remainingTimeInPeriod
+        } else {
+            null
+        }
+
+        if (leagueTime != null && leagueTime.toInt() != matchInfo.leagueTime) {
+            matchInfo.leagueTime = leagueTime.toInt()
+            isNeedRefresh = true
+        }
+
+        if (matchClockCO.stopped != matchInfo.stopped) {
+            matchInfo.stopped = matchClockCO.stopped
+            isNeedRefresh = true
+        }
+
+        return isNeedRefresh
+    }
+
+    fun updateOddStatus2(matchOdd: MatchOdd, matchOddsLockEvent: MatchOddsLockEvent): Boolean {
+        var isNeedRefresh = false
+
+        if (matchOdd.matchInfo?.id == matchOddsLockEvent.matchId) {
+            matchOdd.oddsMap?.values?.forEach { odd ->
+                odd?.forEach {
+                    it?.status = BetStatus.LOCKED.code
+                    isNeedRefresh = true
+                }
+            }
+
+            matchOdd.oddsEps?.eps?.forEach { odd ->
+                odd?.status = BetStatus.LOCKED.code
+            }
+        }
+
+        return isNeedRefresh
+    }
+
+    private fun updateMatchInfoClock(matchInfo: MatchInfo, matchClockEvent: MatchClockEvent): Boolean {
         var isNeedRefresh = false
 
         matchClockEvent.matchClockCO?.let { matchClockCO ->
@@ -804,7 +851,7 @@ object SocketUpdateUtil {
                 .toMutableMap()
     }
 
-    private fun updateMatchOdds(
+    fun updateMatchOdds(
         oddsMap: MutableMap<String, MutableList<Odd?>?>,
         oddsMapSocket: Map<String, List<Odd?>?>?,
     ): Boolean {
@@ -941,7 +988,7 @@ object SocketUpdateUtil {
         }
     }
 
-    private fun updateBetPlayCateNameMap(
+    fun updateBetPlayCateNameMap(
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
         betPlayCateNameMapSocket: Map<String?, Map<String?, String?>?>?,
     ) {
@@ -950,7 +997,7 @@ object SocketUpdateUtil {
         }
     }
 
-    private fun updatePlayCateNameMap(
+    fun updatePlayCateNameMap(
         playCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
         playCateNameMapSocket: Map<String?, Map<String?, String?>?>?
     ) {
@@ -1330,7 +1377,7 @@ object SocketUpdateUtil {
         }.toMutableMap()
     }
 
-    private fun Map<String, List<Odd?>?>.toMutableFormat_1(): MutableMap<String, MutableList<Odd?>?> {
+    fun Map<String, List<Odd?>?>.toMutableFormat_1(): MutableMap<String, MutableList<Odd?>?> {
         return this.mapValues { map ->
             map.value?.toMutableList() ?: mutableListOf()
         }.toMutableMap()

@@ -8,4 +8,5 @@ data class OutrightOddsListRequest(
     val matchType: String,
     val playCateMenuCode: String = "OUTRIGHT",
     val leagueIdList: List<String>? = null,
+    val matchIdList: List<String>? = null,
 )

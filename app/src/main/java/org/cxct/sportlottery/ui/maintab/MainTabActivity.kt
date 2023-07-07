@@ -29,7 +29,9 @@ import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.event.NetWorkEvent
 import org.cxct.sportlottery.common.event.SportStatusEvent
 import org.cxct.sportlottery.common.event.ShowFavEvent
+import org.cxct.sportlottery.common.event.ShowInPlayEvent
 import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -40,26 +42,30 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.ConfigRepository
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.BetListFragment
+import org.cxct.sportlottery.ui.betRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.betRecord.BetRecordFragment
 import org.cxct.sportlottery.ui.betRecord.accountHistory.next.AccountHistoryNextFragment
 import org.cxct.sportlottery.ui.chat.ChatActivity
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment2
-import org.cxct.sportlottery.ui.maintab.menu.SportLeftFragment
+import org.cxct.sportlottery.ui.maintab.menu.SportLeftMenuFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
-import org.cxct.sportlottery.ui.sport.SportFragment
+import org.cxct.sportlottery.ui.sport.SportFragment2
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment
-import org.cxct.sportlottery.ui.sport.list.SportLeagueAdapter
+import org.cxct.sportlottery.ui.sport.oddsbtn.OddsButton2
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import splitties.activities.start
 import kotlin.system.exitProcess
 
 
@@ -69,8 +75,8 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         FragmentHelper(
             supportFragmentManager, R.id.fl_content, arrayOf(
                 Pair(HomeFragment::class.java, null),
-                Pair(SportFragment::class.java, null),
-                Pair(BetRecordFragment::class.java, null),
+                Pair(SportFragment2::class.java, null),
+                Pair(OKGamesFragment::class.java, null),
                 Pair(FavoriteFragment::class.java, null),
                 Pair(ProfileCenterFragment::class.java, null),
             )
@@ -78,8 +84,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     private var betListFragment: BetListFragment? = null
-    private val homeLeftFragment by lazy { MainLeftFragment2() }
-    private val sportLeftFragment by lazy { SportLeftFragment() }
+
     private var exitTime: Long = 0
 
     companion object {
@@ -106,7 +111,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     private val binding by lazy { ActivityMainTabBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        SportLeagueAdapter.clearCachePool()
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         ImmersionBar.with(this).statusBarDarkFont(true).transparentStatusBar()
@@ -144,22 +148,17 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     private fun initObserve() {
-//        viewModel.userMoney.observe(this) {
-//            it?.let { money ->
-////                cl_bet_list_bar.tv_balance.text = TextUtil.formatMoney(money)
-//            }
-//        }
 
         //设置体育服务监听
-        setupSportStatusChange(this){
+        setupSportStatusChange(this) {
             //如果维护开启，当前在体育相关fragment， 退回到首页
-            if(checkMainPosition(getCurrentPosition())){
+            if (checkMainPosition(getCurrentPosition())) {
                 //关闭已选中的投注
                 closeBetFragment()
                 //回到首页
                 binding.bottomNavigationView.postDelayed({
                     backMainHome()
-                },200)
+                }, 200)
             }
 
             EventBusUtil.post(SportStatusEvent(it))
@@ -187,13 +186,12 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
 
-
     /**
      * 关闭投注相关的购物车
      */
-    private fun closeBetFragment(){
+    private fun closeBetFragment() {
         //投注fragment如果已显示
-        if(getBetListPageVisible()){
+        if (getBetListPageVisible()) {
             //关闭
             betListFragment?.onBackPressed()
         }
@@ -206,15 +204,15 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     /**
      * 检查是否为体育相关的fragment
      */
-    fun checkSportFragment(position: Int):Boolean{
-        val fragment=fragmentHelper.getFragment(position)
-        if(fragment is SportFragment){
+    fun checkSportFragment(position: Int): Boolean {
+        val fragment = fragmentHelper.getFragment(position)
+        if (fragment is SportFragment2) {
             return true
         }
-        if(fragment is FavoriteFragment&&!isOpenChatRoom()){
+        if (fragment is FavoriteFragment && !isOpenChatRoom()) {
             return true
         }
-        if(fragment is BetRecordFragment){
+        if (fragment is BetRecordFragment) {
             return true
         }
 
@@ -223,58 +221,48 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
 
     private fun initBottomFragment(position: Int) {
-        binding.llHomeBack.setOnClickListener {
-            homeFragment().backMainHome()
-        }
         binding.bottomNavigationView.apply {
             enableAnimation(false)
             enableShiftingMode(false)
             setTextVisibility(true)
             setTextSize(10f)
-            setIconSize(30f)
+            setIconSize(24f)
             menu.getItem(2).isVisible = !getMarketSwitch()
             onNavigationItemSelectedListener =
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
                     if (mIsEnabled) {
                         avoidFastDoubleClick()
-                        val position = getMenuItemPosition(menuItem)
-                        if(checkMainPosition(position)){
+                        val itemPosition = getMenuItemPosition(menuItem)
+                        if (checkMainPosition(itemPosition)) {
                             return@OnNavigationItemSelectedListener false
                         }
 
-
-                    when (menuItem.itemId) {
-                        R.id.i_betlist, R.id.i_user -> {
-                            if (viewModel.isLogin.value == false) {
-                                startLogin()
-                                return@OnNavigationItemSelectedListener false
-                            }
-                        }
-                        R.id.i_favorite -> {
-                            if(isOpenChatRoom()){
-                                startActivity(Intent(this@MainTabActivity, ChatActivity::class.java))
-                                return@OnNavigationItemSelectedListener false
-                            }else{
+                        when (menuItem.itemId) {
+                            R.id.i_user -> {
                                 if (viewModel.isLogin.value == false) {
                                     startLogin()
                                     return@OnNavigationItemSelectedListener false
                                 }
                             }
-                        }
-                    }
 
-                        fragmentHelper.showFragment(position)
-                        if (position == 0) {
-                            homeFragment().backMainHome()
-                        } else {
-                            binding.llHomeBack.gone()
-                            if (position == 1) {
-                                binding.bottomNavigationView.postDelayed({
-                                    jumpToTheSport()
-                                }, 300)
+                            R.id.i_favorite -> {
+                                if (isOpenChatRoom()) {
+                                    start<ChatActivity> {}
+                                    return@OnNavigationItemSelectedListener false
+                                } else {
+                                    if (viewModel.isLogin.value == false) {
+                                        startLogin()
+                                        return@OnNavigationItemSelectedListener false
+                                    }
+                                }
                             }
                         }
-                        setupBetBarVisiblity(position)
+
+                        fragmentHelper.showFragment(itemPosition)
+                        if (itemPosition == 0) {
+                            homeFragment().backMainHome()
+                        }
+                        setupBetBarVisiblity(itemPosition)
                         return@OnNavigationItemSelectedListener true
                     }
                     return@OnNavigationItemSelectedListener false
@@ -311,6 +299,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             }
 
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+
 //                val mContent: View = drawerLayout.getChildAt(0)
 //                //设置1.1，让主界面更缩小
 //                val scale = 1 - slideOffset
@@ -348,26 +337,27 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         })
     }
 
-    var menuClass: Class<*>? = null
 
     fun showMainLeftMenu(contentFragment: Class<BaseFragment<*>>?) {
-        if (menuClass != homeLeftFragment::class.java) {
-            menuClass = homeLeftFragment::class.java
-            left_menu.layoutParams.width = MetricsUtil.getScreenWidth()
+        fragmentHelper2.show(MainLeftFragment2::class.java, Bundle()) { fragment, _ ->
+            fragment.openWithFragment(contentFragment)
         }
-        homeLeftFragment.openWithFragment(contentFragment)
-        supportFragmentManager.beginTransaction().replace(R.id.left_menu, homeLeftFragment).commit()
+
     }
 
-    fun showSportLeftMenu(matchType: MatchType, gameType: GameType?) {
-        if (menuClass != sportLeftFragment::class.java) {
-            menuClass = sportLeftFragment::class.java
-            left_menu.layoutParams.width = (MetricsUtil.getScreenWidth() * 0.75f).toInt()
+    private val fragmentHelper2 by lazy { FragmentHelper2(supportFragmentManager, R.id.left_menu) }
+    fun showSportLeftMenu() {
+        fragmentHelper2.show(SportLeftMenuFragment::class.java, Bundle()) { fragment, instance ->
+            if(!instance){
+                fragment.reloadData()
+            }
         }
-        supportFragmentManager.beginTransaction().replace(R.id.left_menu, sportLeftFragment)
-            .commit()
-        sportLeftFragment.matchType = matchType
-        sportLeftFragment.gameType = gameType
+
+//        supportFragmentManager.beginTransaction().replace(R.id.left_menu, sportLeftFragment)
+//            .commit()
+
+//        sportLeftFragment.matchType = matchType
+//        sportLeftFragment.gameType = gameType
     }
 
 
@@ -399,16 +389,31 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onNetValidEvent(event:NetWorkEvent){
+    fun onNetValidEvent(event: NetWorkEvent) {
         //网络恢复
-        if(event.isValid){
-            val fragment=fragmentHelper.getFragment(0)
-            if(fragment is HomeFragment){
+        if (event.isValid) {
+            val fragment = fragmentHelper.getFragment(0)
+            if (fragment is HomeFragment) {
                 //更新config   刷新体育服务开关
                 fragment.viewModel.getConfigData()
             }
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onShowInPlay(event: ShowInPlayEvent) {
+        binding.bottomNavigationView.postDelayed({
+            jumpToTheSport(MatchType.IN_PLAY, GameType.BK)
+        },200)
+
+    }
+
+
+    @Subscribe
+    fun onShowFavEvent(event: ShowFavEvent) {
+        showLoginNotify()
+    }
+
     @Subscribe
     fun onBetModeChangeEvent(event: BetModeChangeEvent) {
         if (event.currentMode == BetListFragment.SINGLE) {
@@ -705,42 +710,40 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             .addToBackStack(AccountHistoryNextFragment::class.java.simpleName).commit()
     }
 
-    fun jumpToTheSport(matchType: MatchType? = null, gameType: GameType? = null) {
-        resetBackIcon(1)
-        (fragmentHelper.getFragment(1) as SportFragment).setJumpSport(matchType, gameType)
-    }
 
-    private fun resetBackIcon(position: Int) {
-        if (bottom_navigation_view.currentItem != position) {
-            bottom_navigation_view.currentItem = position
-        }
-    }
 
     private inline fun homeFragment() = fragmentHelper.getFragment(0) as HomeFragment
 
     fun backMainHome() {
-        resetBackIcon(0)
         homeFragment().backMainHome()
+        if (bottom_navigation_view.currentItem != 0) {
+            bottom_navigation_view.currentItem = 0
+        }
     }
-
-    fun jumpToLive() {
-        resetBackIcon(0)
-        homeFragment().jumpToLive()
-    }
-
     fun jumpToOKGames() {
-        resetBackIcon(0)
-        homeFragment().jumpToOKGames()
+        if (getMarketSwitch()) {
+            return
+        }
+        if (bottom_navigation_view.currentItem != 2) {
+            bottom_navigation_view.currentItem = 2
+        }
     }
 
-    fun jumpToOKLive() {
-        resetBackIcon(0)
-        homeFragment().jumpToOKLive()
+    fun jumpToESport() {
+        checkSportStatus(this) {
+            jumpToTheSport(MatchType.EARLY, GameType.ES)
+        }
     }
 
     fun jumpToNews() {
-        resetBackIcon(0)
+        backMainHome()
         homeFragment().jumpToNews()
+    }
+    fun jumpToTheSport(matchType: MatchType? = null, gameType: GameType? = null) {
+        (fragmentHelper.getFragment(1) as SportFragment2).setJumpSport(matchType, gameType)
+        if (bottom_navigation_view.currentItem != 1) {
+            bottom_navigation_view.currentItem = 1
+        }
     }
 
     fun jumpToWorldCup() {
@@ -755,51 +758,36 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     fun jumpToInplaySport() {
         //检测体育服务是否关闭
         checkSportStatus(this) {
-            resetBackIcon(1)
-            ll_home_back.gone()
-            jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)
+            jumpToTheSport(MatchType.IN_PLAY, GameType.BK)
         }
     }
 
     fun jumpToEarlySport() {
-        resetBackIcon(1)
-        ll_home_back.gone()
         jumpToTheSport(MatchType.EARLY, GameType.FT)
     }
-
     fun jumpToBetInfo(tabPosition: Int) {
         if (getMarketSwitch()) {
             return
         }
-        if (bottom_navigation_view.currentItem != 2) {
-            bottom_navigation_view.currentItem = 2
+        if(LoginRepository.isLogined()){
+            startActivity(BetRecordActivity::class.java)
+        }else{
+            startLogin()
         }
-        resetBackIcon(2)
-        ll_home_back.gone()
-        (fragmentHelper.getFragment(2) as BetRecordFragment).selectTab(tabPosition)
-    }
-
-    fun homeBackView(boolean: Boolean) {
-        if (boolean) {
-            ll_home_back.visibility = View.VISIBLE
-            bottom_navigation_view.getBottomNavigationItemView(0).visibility = View.INVISIBLE
-        } else {
-            bottom_navigation_view.getBottomNavigationItemView(0).visibility = View.VISIBLE
-            ll_home_back.visibility = View.GONE
-        }
-
+//        if (bottom_navigation_view.currentItem != 2) {
+//            bottom_navigation_view.currentItem = 2
+//        }
+//        (fragmentHelper.getFragment(2) as BetRecordFragment).selectTab(tabPosition)
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        OddsButton2.clearOddsViewCaches()
         if (activityInstance == this) {
             activityInstance = null
         }
-        SportLeagueAdapter.clearCachePool()
     }
 
-    override fun updateBetListOdds(list: MutableList<BetInfoListData>) {
-    }
 
     open fun getCurrentPosition(): Int = fragmentHelper.getCurrentPosition()
 

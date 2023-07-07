@@ -12,20 +12,18 @@ import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_sport_list.*
-import kotlinx.android.synthetic.main.fragment_sport_list.view.*
 import kotlinx.android.synthetic.main.item_league.view.*
 import kotlinx.android.synthetic.main.view_hot_game.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
-import org.cxct.sportlottery.common.event.JumpInPlayEvent
 import org.cxct.sportlottery.common.extentions.doOnStop
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
+import org.cxct.sportlottery.service.MatchOddsRepository
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.*
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -71,7 +69,7 @@ class HotMatchView(
 
         //查看更多
         tvHotMore.onClick {
-            EventBusUtil.post(JumpInPlayEvent())
+            (fragment?.activity as MainTabActivity).jumpToInplaySport()
         }
 //        ivHotMore.onClick {
 //            EventBusUtil.post(JumpInPlayEvent())
@@ -191,13 +189,13 @@ class HotMatchView(
     ) {
 
         //观察比赛状态改变
-        receiver.matchStatusChange.observe(viewLifecycleOwner) { matchStatusChangeEvent ->
+        MatchOddsRepository.observerMatchStatus(viewLifecycleOwner) { matchStatusChangeEvent ->
             if (matchStatusChangeEvent == null) {
-                return@observe
+                return@observerMatchStatus
             }
 
             if (adapter == null || adapter!!.data.isEmpty()) {
-                return@observe
+                return@observerMatchStatus
             }
             val adapterData = adapter?.data
             adapterData?.forEachIndexed { index, recommend ->

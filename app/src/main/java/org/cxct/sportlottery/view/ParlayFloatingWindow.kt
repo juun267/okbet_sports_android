@@ -20,12 +20,11 @@ import kotlin.math.abs
  * 可以跟随手指移动的窗口
  */
 class ParlayFloatingWindow @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyle: Int = 0
+    context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
 ) : FrameLayout(context, attrs, defStyle) {
 
     init {
+        setBackgroundResource(R.drawable.bg_rect_ffffff)
         initView()
     }
 
@@ -33,7 +32,7 @@ class ParlayFloatingWindow @JvmOverloads constructor(
     lateinit var binding: BetBarLayout2Binding
 
     private fun initView() {
-        binding = BetBarLayout2Binding.inflate(LayoutInflater.from(context),this,true)
+        binding = BetBarLayout2Binding.inflate(LayoutInflater.from(context), this, true)
         tv_bet_list_count = binding.tvBetListCount
     }
 

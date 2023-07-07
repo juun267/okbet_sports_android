@@ -185,7 +185,6 @@ class BetRecordFragment: BaseFragment<AccountHistoryViewModel>(AccountHistoryVie
                     code = it.code.orEmpty(),
                     name = it.showName.orEmpty(),
                     num = 0,
-                    play = null,
                     sortNum = 0
                 )
             )

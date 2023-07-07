@@ -2,10 +2,13 @@ package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
+import android.view.View
+import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
 import android.widget.ImageView
@@ -13,7 +16,10 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -26,16 +32,14 @@ import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment2
+import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import splitties.views.dsl.core.add
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 
-class HomeToolbarView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyle: Int = 0
-) : LinearLayout(context, attrs, defStyle) {
+class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
+    : LinearLayoutCompat(context, attrs, defStyle) {
 
     companion object {
         private val textStyle by lazy {
@@ -48,14 +52,15 @@ class HomeToolbarView @JvmOverloads constructor(
 
     init {
         setBackgroundResource(R.color.color_F8F9FD)
-        12.dp.let { setPadding(it, it, it, it) }
+        12.dp.let { setPadding(6.dp, it, it, it) }
         gravity = Gravity.LEFT or Gravity.CENTER_VERTICAL
         addChildView()
     }
 
     lateinit var ivMenuLeft: ImageView
     lateinit var ivLogo: ImageView
-    lateinit var searchView: LinearLayout
+    private lateinit var searchView: View
+    lateinit var searchIcon: View
     lateinit var userMoneyView: LinearLayout
     lateinit var tvUserMoney: TextView
     lateinit var ivRefreshMoney: ImageView
@@ -71,13 +76,14 @@ class HomeToolbarView @JvmOverloads constructor(
     private fun addChildView() {
         ivMenuLeft = AppCompatImageView(context)
         ivMenuLeft.setImageResource(R.drawable.ic_home_menu)
+        6.dp.let { ivMenuLeft.setPadding(it, it, it, it) }
 
         val wh = 36.dp
         addView(ivMenuLeft, LayoutParams(wh, wh))
 
         ivLogo = AppCompatImageView(context)
         ivLogo.setImageResource(R.drawable.logo_okbet_color)
-        addView(ivLogo, LayoutParams(-2, wh).apply { leftMargin = 12.dp })
+        addView(ivLogo, LayoutParams(-2, 32.dp))
 
         addSearchView()
         addUserView()
@@ -86,30 +92,18 @@ class HomeToolbarView @JvmOverloads constructor(
     }
 
     private fun addSearchView() {
-        searchView = LinearLayout(context).apply {
-            gone()
-            setBackgroundResource(R.drawable.bg_search_radius_18)
-            gravity = Gravity.LEFT or Gravity.CENTER_VERTICAL
-            val padding = 10.dp
-            setPadding(padding, 0, padding, 0)
-        }
 
-        AppCompatImageView(context).run {
-            val wh = 16.dp
+        searchView = LinearLayout(context).apply { gravity = Gravity.RIGHT or Gravity.CENTER_VERTICAL }
+        searchIcon = AppCompatImageView(context).apply {
+            setPadding(0, 0, 0, 2.dp)
             setImageResource(R.drawable.ic_search_home)
-            searchView.addView(this, LayoutParams(wh, wh))
+            val drawable = ContextCompat.getDrawable(context, R.drawable.ic_search_home)
+            DrawableCompat.setTint(drawable!!.mutate(), ContextCompat.getColor(context, R.color.color_0651e5))
+            setImageDrawable(drawable)
+            (searchView as ViewGroup).addView(this)
         }
 
-        AppCompatTextView(context).run {
-            setText(R.string.text_search)
-            maxLines = 1
-            ellipsize = TextUtils.TruncateAt.END
-            setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12f)
-            setTextColor(resources.getColor(R.color.color_A7B2C4))
-            searchView.addView(this, LayoutParams(-2, -2).apply { leftMargin = 5.dp })
-        }
-
-        addView(searchView, LayoutParams(0, 26.dp, 1f).apply { leftMargin = 16.dp })
+        addView(searchView, LayoutParams(-1, 26.dp).apply { leftMargin = 16.dp })
     }
 
     private fun addUserView() {
@@ -229,7 +223,7 @@ class HomeToolbarView @JvmOverloads constructor(
         tvLogin.setOnClickListener { activity.startLogin() }
         tvRegist.setOnClickListener { LoginOKActivity.startRegist(context) }
         ivRefreshMoney.setOnClickListener { onRefreshMoney() }
-        if (fragment !is MainHomeFragment2) {
+        if (fragment !is MainHomeFragment) {
             ivLogo.setOnClickListener { activity.backMainHome() }
         }
     }

@@ -2,13 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/bg_gradient_item_league"
+    android:layout_height="50dp"
+    android:background="@color/color_0D025BE8"
+    android:foreground="@drawable/fg_ripple"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="37dp"
+        android:layout_height="49.5dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -16,11 +17,10 @@
         android:id="@+id/iv_league_logo"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_marginLeft="9dp"
+        android:layout_marginLeft="11dp"
         android:background="@drawable/bg_circle_stroke_team_log"
-        android:padding="3dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_earth" />
+        android:padding="1dp"
+        android:scaleType="centerCrop" />
 
     <TextView
         android:id="@+id/tv_league_name"
@@ -43,7 +43,7 @@
         android:layout_height="30dp"
         android:layout_marginRight="7dp"
         android:padding="5dp"
-        android:src="@drawable/ic_arrow_gray_up1" />
+        android:src="@drawable/selector_filter_arrow" />
 
     </LinearLayout>
 
