@@ -453,24 +453,24 @@ fun setTNRoundScore(
         isVisible = isScoreTextVisible
         text = (matchInfo.awayTotalScore ?: 0).toString()
     }
-    tvHomeScore.apply {
-        isVisible = isScoreTextVisible
-        text = (matchInfo.homeScore ?: 0).toString()
-    }
-
-    tvAwayScore.apply {
-        isVisible = isScoreTextVisible
-        text = (matchInfo.awayScore ?: 0).toString()
-    }
-    tvHomePoints.apply {
-        isVisible = isScoreTextVisible
-        text = (matchInfo.homePoints ?: 0).toString()
-    }
-
-    tvAwayPoints.apply {
-        isVisible = isScoreTextVisible
-        text = (matchInfo.awayPoints ?: 0).toString()
-    }
+//    tvHomeScore.apply {
+//        isVisible = isScoreTextVisible
+//        text = (matchInfo.homeScore ?: 0).toString()
+//    }
+//
+//    tvAwayScore.apply {
+//        isVisible = isScoreTextVisible
+//        text = (matchInfo.awayScore ?: 0).toString()
+//    }
+//    tvHomePoints.apply {
+//        isVisible = isScoreTextVisible
+//        text = (matchInfo.homePoints ?: 0).toString()
+//    }
+//
+//    tvAwayPoints.apply {
+//        isVisible = isScoreTextVisible
+//        text = (matchInfo.awayPoints ?: 0).toString()
+//    }
 }
 
 /**

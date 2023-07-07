@@ -14,7 +14,6 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
@@ -34,7 +33,6 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.dialog.TrialGameDialog
 import org.cxct.sportlottery.view.transform.TransformInDialog
-import splitties.views.dsl.core.add
 
 class SportFooterGamesView @JvmOverloads constructor(
     context: Context,
@@ -83,7 +81,7 @@ class SportFooterGamesView @JvmOverloads constructor(
 
         val img = AppCompatImageView(context)
         img.setImageResource(R.drawable.ic_okgame_label_bingo)
-        titleLayout.add(img, LayoutParams(dp24, dp24))
+        titleLayout.addView(img, LayoutParams(dp24, dp24))
 
         val text = AppCompatTextView(context)
         text.text = "OKBingo"
