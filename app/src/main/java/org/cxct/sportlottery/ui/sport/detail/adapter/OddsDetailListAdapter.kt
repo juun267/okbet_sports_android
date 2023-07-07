@@ -37,6 +37,7 @@ import org.cxct.sportlottery.network.common.ComparePlayCate
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.base.BaseGameAdapter
 import org.cxct.sportlottery.ui.betList.BetInfoListData
@@ -1458,7 +1459,7 @@ class OddsDetailListAdapter(
             oddsDetail: OddsDetailListData, spanCount: Int, payloads: MutableList<Any>?
         ) {
 //            Timber.d("===洗刷刷oddsDetail.gameType: ${oddsDetail.gameType}")
-            if (oddsDetail.gameType == PlayCate.FS_LD_CS.value) {
+            if (oddsDetail.gameType.isEndScoreType()) {
                 //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
                 itemView.lin_match.isVisible = false
                 oddsDetail.oddArrayList.first()?.let {

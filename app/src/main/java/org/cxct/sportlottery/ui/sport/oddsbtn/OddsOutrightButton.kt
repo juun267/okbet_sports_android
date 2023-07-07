@@ -21,7 +21,7 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
-import org.cxct.sportlottery.util.BetPlayCateFunction.isFS_LD_CS_Type
+import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.QuickListManager
@@ -106,7 +106,7 @@ open class OddsOutrightButton @JvmOverloads constructor(
         val languae = LanguageManager.getSelectLanguage(context).key
         val extInfoStr = odd?.extInfoMap?.get(languae) ?: odd?.extInfo
 
-        if (mOdd?.playCode?.isFS_LD_CS_Type() == true) {
+        if (mOdd?.playCode?.isEndScoreType() == true) {
             tv_name.text = mOdd?.name
         } else {
             tv_name.text = if (extInfoStr.isNullOrEmpty()) {

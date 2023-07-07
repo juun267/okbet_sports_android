@@ -5,15 +5,21 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.chad.library.adapter.base.provider.BaseNodeProvider
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.google.android.material.tabs.TabLayout
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.ui.sport.SportFragment2
 import org.cxct.sportlottery.ui.sport.list.adapter.SportMatchEvent
-import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
-import org.cxct.sportlottery.util.setTeamLogo
+import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
+import org.cxct.sportlottery.view.tablayout.TabSelectedAdapter
 
 class EndScoreSecondProvider(val adapter: EndScoreAdapter,
                              val onItemClick:(Int, View, BaseNode) -> Unit,
@@ -31,9 +37,10 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
         }
     }
 
-    override fun convert(helper: BaseViewHolder, item: BaseNode) = helper.run {
+    override fun convert(helper: BaseViewHolder, item: BaseNode): Unit = helper.run {
         helper.itemView.tag = item
-        val matchInfo = (item as MatchOdd).matchInfo
+        val matchOdd = item as MatchOdd
+        val matchInfo = matchOdd.matchInfo
         setText(R.id.tvHomeName, matchInfo?.homeName)
         setText(R.id.tvAwayName, matchInfo?.awayName)
         setText(R.id.league_odd_match_time, TimeUtil.timeFormat(matchInfo?.startTime, TimeUtil.DM_HM_FORMAT))
@@ -49,13 +56,40 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
             isSelected = matchInfo?.isFavorite ?: false
             setOnClickListener { onItemClick.invoke(helper.bindingAdapterPosition, this, item) }
         }
-
         val tvExpand = getView<TextView>(R.id.tvExpand)
         val linExpand = getView<View>(R.id.linExpand)
-        resetStyle(getView(R.id.llMatchInfo), linExpand, tvExpand, item.isExpanded)
+        val tabLayou = getView<TabLayout>(R.id.tabLayout)
+        resetStyle(getView(R.id.llMatchInfo),linExpand, tvExpand,tabLayou, item.isExpanded)
         linExpand.setOnClickListener {
             adapter.expandOrCollapse(item, parentPayload = item)
-            resetStyle(getView(R.id.llMatchInfo), linExpand, tvExpand, item.isExpanded)
+            resetStyle(getView(R.id.llMatchInfo),linExpand, tvExpand,tabLayou, item.isExpanded)
+        }
+        tabLayou.apply {
+            if (tabCount>0){
+                removeAllTabs()
+            }
+            LogUtil.toJson(matchOdd.oddIdsMap?.map { it.key+","+it.value?.size })
+            matchOdd.oddIdsMap?.forEach {
+                matchOdd.betPlayCateNameMap?.get(it.key)?.get(LanguageManager.getSelectLanguage(context).key)?.let { name->
+                    addTab(newTab().setTag(it.key).setText(name))
+                }
+            }
+            if (tabCount>0) {
+                matchOdd.selectPlayCode = getTabAt(0)?.tag.toString()
+            }else{
+                matchOdd.selectPlayCode = PlayCate.FS_LD_CS.value
+            }
+            addOnTabSelectedListener(TabSelectedAdapter{ tab, _ ->
+                matchOdd.selectPlayCode = tab.tag.toString()
+                matchOdd.oddIdsMap?.get(matchOdd.selectPlayCode)?.let {
+                    it.values.let {
+                        post{
+                            adapter.nodeReplaceChildData(item, it)
+                        }
+                    }
+                }
+            })
+            OverScrollDecoratorHelper.setUpOverScroll(this)
         }
     }
 
@@ -67,7 +101,7 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
         DrawableCreatorUtils.getCommonBackgroundStyle(8, android.R.color.white, R.color.color_025BE8, 1)
     }
 
-    private fun resetStyle(llMatchInfo: View, linExpand: View, tvExpand: TextView, isExpand: Boolean) = tvExpand.run {
+    private fun resetStyle(llMatchInfo: View, linExpand: View, tvExpand: TextView,tabLayout: TabLayout, isExpand: Boolean) = tvExpand.run {
         if (isExpand) {
             setText(R.string.D039)
             setTextColor(ContextCompat.getColor(context, R.color.color_025BE8))
@@ -81,6 +115,7 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
             setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_to_down_white, 0)
             llMatchInfo.setBackgroundColor(Color.TRANSPARENT)
         }
+        tabLayout.isVisible = isExpand
     }
 
 }

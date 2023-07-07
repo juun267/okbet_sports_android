@@ -22,12 +22,14 @@ import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.bet.settledDetailList.RemarkBetRequest
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.ui.betRecord.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.betRecord.detail.BetDetailsActivity
 import org.cxct.sportlottery.ui.betRecord.dialog.PrintDialog
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.BetPlayCateFunction.getEndScorePlatCateName
 import org.cxct.sportlottery.view.onClick
 
 //TODO 20210719當前api缺少總金額,待後端修正後進行確認
@@ -157,9 +159,9 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                         matchOdds.odds - 1
                     ) else TextUtil.formatForOdd(matchOdds.odds)
 
-                if (matchOdds.playCateCode == PlayCate.FS_LD_CS.value)
+                if (matchOdds.playCateCode.isEndScoreType())
                     play_content.setPlayContent(
-                        context.getString(R.string.N903),
+                        matchOdds.playCateCode.getEndScorePlatCateName(context),
                         matchOdds.spread,
                         formatForOdd
                     )
@@ -220,7 +222,7 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                     context.copyToClipboard(data.orderNo)
                 }
                 lin_endscore.isVisible =
-                    data.matchOdds.firstOrNull()?.playCateCode == PlayCate.FS_LD_CS.value
+                    data.matchOdds.firstOrNull()?.playCateCode.isEndScoreType()
                 if (lin_endscore.isVisible) {
                     val sortList = data.matchOdds.firstOrNull()?.multiCode?.sortedBy { it.playCode }
                         ?: listOf()
@@ -316,8 +318,8 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                     ) else TextUtil.formatForOdd(matchOdds.odds)
 
                 val playName =
-                    if (matchOdds.playCateCode == PlayCate.FS_LD_CS.value)
-                        context.getString(R.string.N903)
+                    if (matchOdds.playCateCode.isEndScoreType())
+                        matchOdds.playCateCode.getEndScorePlatCateName(context)
                     else matchOdds.playName
                 play_content.setPlayContent(
                     playName, matchOdds.spread, formatForOdd
