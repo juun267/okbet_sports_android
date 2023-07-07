@@ -139,13 +139,6 @@ class SportToolBarTopFragment :
                         GameType.TN.name,GameType.VB.name,GameType.TT.name,GameType.BM.name->{
                             "" + setSptText(matchInfo)
                         }
-                        GameType.CK.name->{
-                            matchInfo.statusName18n +  when(matchInfo.attack){
-                                "H"-> matchInfo.homeOver
-                                "C"-> matchInfo.awayOver
-                                else->""
-                            }
-                        }
                         else->{
                             matchInfo.statusName18n + (setSptText(matchInfo))
                         }

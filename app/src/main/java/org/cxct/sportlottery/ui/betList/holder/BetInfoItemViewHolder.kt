@@ -514,6 +514,7 @@ class BetInfoItemViewHolder(
 //        tv_match_type.tranByPlayCode(playCode, playCateCode, playCateName, rtScore)
         Timber.d("itemData:${itemData.matchOdd}")
         Timber.d("itemData:${false}")
+        LogUtil.toJson(itemData.matchOdd)
         val tvNameText: String
         when {
             itemData.betPlayCateNameMap.isNullOrEmpty() -> {
@@ -548,7 +549,7 @@ class BetInfoItemViewHolder(
                     true -> {
                         root.context.getString(
                             R.string.bet_info_in_play_score,
-                            playCateName,
+                            itemData.matchOdd.playCateName,
                             itemData.matchOdd.homeScore.toString(),
                             itemData.matchOdd.awayScore.toString()
                         )
