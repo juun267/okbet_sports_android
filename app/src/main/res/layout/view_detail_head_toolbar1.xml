@@ -170,6 +170,18 @@
                     tools:text="5 - 5"
                     tools:visibility="visible" />
 
+                <TextView
+                    android:id="@+id/tv_total_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/din_regular"
+                    android:singleLine="true"
+                    android:textColor="@color/color_BEC7DC"
+                    android:textSize="@dimen/textSize10sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:text="5 - 5"
+                    tools:visibility="visible" />
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout

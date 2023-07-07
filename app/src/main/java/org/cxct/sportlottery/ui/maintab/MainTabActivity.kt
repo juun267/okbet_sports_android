@@ -711,9 +711,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     fun backMainHome() {
         homeFragment().backMainHome()
-        if (bottom_navigation_view.currentItem != 0) {
-            bottom_navigation_view.currentItem = 0
-        }
+        navToPosition(0)
     }
     fun jumpToOKGames() {
         if (getMarketSwitch()) {
@@ -724,6 +722,13 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     fun jumpToOKLive() {
         if (getMarketSwitch()) {
             return
+        }
+        homeFragment().jumpToOKLive()
+    }
+
+    private fun navToPosition(position: Int) {
+        if (bottom_navigation_view.currentItem != position) {
+            bottom_navigation_view.currentItem = position
         }
         homeFragment().jumpToOKLive()
     }
@@ -740,9 +745,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
     fun jumpToTheSport(matchType: MatchType? = null, gameType: GameType? = null) {
         (fragmentHelper.getFragment(1) as SportFragment2).setJumpSport(matchType, gameType)
-        if (bottom_navigation_view.currentItem != 1) {
-            bottom_navigation_view.currentItem = 1
-        }
+        navToPosition(1)
     }
 
     fun jumpToWorldCup() {
