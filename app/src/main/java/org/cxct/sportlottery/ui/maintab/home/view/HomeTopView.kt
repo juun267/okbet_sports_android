@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.maintab.home.view
 import android.content.Context
 import android.content.Intent
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -21,6 +22,7 @@ import org.cxct.sportlottery.common.extentions.setOnClickListeners
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.LayoutHomeTopBinding
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.index.config.HomeGameBean
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.repository.ConfigRepository
 import org.cxct.sportlottery.repository.LoginRepository
@@ -33,6 +35,7 @@ import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import timber.log.Timber
+import java.lang.Exception
 
 class HomeTopView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
@@ -48,8 +51,7 @@ class HomeTopView @JvmOverloads constructor(
         binding.recyclerVenues.adapter=venuesAdapter
         initLogin()
         initSportEnterStatus()
-
-
+        initHomeVenues()
     }
 
     /**
@@ -236,7 +238,7 @@ class HomeTopView @JvmOverloads constructor(
             ) {}
 
         }
-        initHomeVenues()
+
     }
 
 
@@ -244,7 +246,7 @@ class HomeTopView @JvmOverloads constructor(
      * 初始化首页场馆列表
      */
     private fun initHomeVenues(){
-        venuesAdapter.setList(arrayListOf("","","",""))
+        venuesAdapter.setList(sConfigData?.homeGamesList)
     }
 
 }
