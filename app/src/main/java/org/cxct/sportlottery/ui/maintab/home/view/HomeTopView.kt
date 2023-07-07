@@ -20,6 +20,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.setOnClickListeners
 import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.LayoutHomeTopBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.config.ImageData
@@ -178,12 +179,6 @@ class HomeTopView @JvmOverloads constructor(
     fun setup(fragment: MainHomeFragment) {
         initVenuesItemClick(fragment)
         ConfigRepository.onNewConfig(fragment) { initBanner() }
-
-
-//        binding.vWorldCup.isInvisible = getMarketSwitch()
-//        binding.vWorldCup.setOnClickListener {
-//            (fragment.activity as MainTabActivity).jumpToWorldCup()
-//        }
         if (!LoginRepository.isLogined()) {
             binding.ivGoogle.setOnClickListener {
                 LoginOKActivity.googleLoging(

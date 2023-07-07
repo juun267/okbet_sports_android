@@ -17,6 +17,7 @@ import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.databinding.FragmentWorldcupBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
@@ -34,7 +35,6 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
 
 
     private lateinit var binding: FragmentWorldcupBinding
-
 
     private inline fun mainTabActivity() = activity as MainTabActivity
 
@@ -103,7 +103,7 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
             WorldCupJsInterface.name)
     }
     private fun loadWebURL() {
-        val url = Constants.getWorldCupH5Url(requireContext(),viewModel.token?:"")
+        val url = Constants.getWorldCupH5Url(requireContext())
         binding.okWebView.loadUrl(url)
     }
 

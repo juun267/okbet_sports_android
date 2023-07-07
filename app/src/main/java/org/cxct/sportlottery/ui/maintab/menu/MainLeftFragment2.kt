@@ -200,7 +200,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         ) {
             //检查是否关闭入口
             checkSportStatus(requireActivity()){
-                getMainTabActivity().jumpToEarlySport()
+                getMainTabActivity().jumpToInplaySport()
             }
         }
 
