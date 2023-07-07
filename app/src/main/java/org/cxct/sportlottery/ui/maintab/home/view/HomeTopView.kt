@@ -15,10 +15,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.stx.xhb.androidx.XBanner
 import kotlinx.android.synthetic.main.layout_home_top.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.isEmptyStr
-import org.cxct.sportlottery.common.extentions.load
-import org.cxct.sportlottery.common.extentions.setOnClickListeners
-import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.LayoutHomeTopBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.config.ImageData
@@ -178,15 +175,20 @@ class HomeTopView @JvmOverloads constructor(
         binding.vOkgames.setOnClickListener {
             fragment.jumpToOKGames()
         }
-//        binding.vOklive.isInvisible = getMarketSwitch()
-//        binding.vOklive.setOnClickListener {
-//            fragment.jumpToOKLive()
-//        }
-
-        binding.vWorldCup.isInvisible = getMarketSwitch()
-        binding.vWorldCup.setOnClickListener {
-            (fragment.activity as MainTabActivity).jumpToWorldCup()
+        if (StaticData.worldCupOpened()){
+            binding.vOklive.gone()
+            binding.vWorldCup.isInvisible = getMarketSwitch()
+            binding.vWorldCup.setOnClickListener {
+                (fragment.activity as MainTabActivity).jumpToWorldCup()
+            }
+        }else{
+            binding.vOklive.isInvisible = getMarketSwitch()
+            binding.vOklive.setOnClickListener {
+                fragment.jumpToOKLive()
+            }
+            binding.vWorldCup.gone()
         }
+
         if (!LoginRepository.isLogined()) {
             binding.ivGoogle.setOnClickListener {
                 LoginOKActivity.googleLoging(
