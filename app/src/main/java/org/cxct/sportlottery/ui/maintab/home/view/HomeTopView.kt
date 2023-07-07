@@ -19,6 +19,7 @@ import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.setOnClickListeners
 import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.LayoutHomeTopBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.config.ImageData
@@ -166,28 +167,27 @@ class HomeTopView @JvmOverloads constructor(
     fun setup(fragment: MainHomeFragment) {
 
         ConfigRepository.onNewConfig(fragment) { initBanner() }
-        if (StaticData.worldCupOpened()){
-            vWorldCup.isVisible = true
-            vBingo.isVisible = false
-        }else{
-            vWorldCup.isVisible = false
-            vBingo.isVisible = true
-        }
         binding.vSports.setOnClickListener { fragment.jumpToInplaySport() }
         binding.vOkgames.isInvisible = getMarketSwitch()
         binding.vOkgames.setOnClickListener {
             (fragment.activity as MainTabActivity).jumpToOKGames()
         }
-        binding.vOklive.gone()
+        binding.vOklive.isInvisible = getMarketSwitch()
 //        binding.vOklive.isInvisible = getMarketSwitch()
 //        binding.vOklive.setOnClickListener {
 //            (fragment.activity as MainTabActivity).jumpToOKLive()
 //        }
-
-        binding.vWorldCup.isInvisible = getMarketSwitch()
-        binding.vWorldCup.setOnClickListener {
-            (fragment.activity as MainTabActivity).jumpToWorldCup()
+        if (StaticData.worldCupOpened()){
+            binding.vBingo.gone()
+            binding.vWorldCup.isInvisible = getMarketSwitch()
+            binding.vWorldCup.setOnClickListener {
+                (fragment.activity as MainTabActivity).jumpToWorldCup()
+            }
+        }else{
+            vBingo.vBingo.show()
+            binding.vWorldCup.gone()
         }
+
         if (!LoginRepository.isLogined()) {
             binding.ivGoogle.setOnClickListener {
                 LoginOKActivity.googleLoging(
