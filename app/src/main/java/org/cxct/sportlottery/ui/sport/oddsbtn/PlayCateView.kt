@@ -46,7 +46,7 @@ class PlayCateView @JvmOverloads constructor(
         nameLayout.addView(drawText, param)
         awayText = createNameTextView()
         nameLayout.addView(awayText, param)
-        addView(nameLayout, LayoutParams(-1, 16.dp).apply { bottomMargin = 12.dp })
+        addView(nameLayout, LayoutParams(-1, 30.dp))
 
         oddBtnHome = createOddBtn()
         oddBtnAway = createOddBtn()
@@ -61,7 +61,8 @@ class PlayCateView @JvmOverloads constructor(
         text.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12f)
         text.setTextColor(getColor(R.color.color_6D7693))
         text.typeface = Typeface.DEFAULT_BOLD
-        text.gravity = Gravity.CENTER
+        text.gravity = Gravity.CENTER_HORIZONTAL
+        text.setLineSpacing(0f, 0.72f)
         return  text
     }
 

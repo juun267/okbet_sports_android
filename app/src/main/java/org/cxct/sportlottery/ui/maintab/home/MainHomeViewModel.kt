@@ -66,7 +66,7 @@ open class MainHomeViewModel(
     val messageListResult: LiveData<Event<MessageListResult?>>
         get() = _messageListResult
 
-    val _enterThirdGameResult = MutableLiveData<Pair<String, EnterThirdGameResult>>()
+    val _enterThirdGameResult = SingleLiveEvent<Pair<String, EnterThirdGameResult>>()
     val enterThirdGameResult: LiveData<Pair<String, EnterThirdGameResult>>
         get() = _enterThirdGameResult
 

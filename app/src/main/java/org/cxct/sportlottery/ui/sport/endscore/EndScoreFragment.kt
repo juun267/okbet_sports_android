@@ -66,7 +66,7 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
             if (item is Odd) {  // 赔率
                 val matchOdd = item.parentNode as MatchOdd
                 val matchInfo = matchOdd.matchInfo ?: return@EndScoreAdapter
-                addOddsDialog(matchInfo, item, matchOdd.selectPlayCode, matchOdd.betPlayCateNameMap)
+                addOddsDialog(matchInfo, item, matchOdd.selectPlayCode, betPlayCateNameMap = matchOdd.betPlayCateNameMap)
                 return@EndScoreAdapter
             }
 

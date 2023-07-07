@@ -214,7 +214,7 @@
                     app:layout_constraintEnd_toStartOf="@id/etBet"
                     android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/color_6D7693"
-                    android:text="@string/bet_info_bet_quota" />
+                    android:text="@string/F011" />
 
                 <org.cxct.sportlottery.ui.betList.view.BetEditText
                     android:id="@+id/etBet"

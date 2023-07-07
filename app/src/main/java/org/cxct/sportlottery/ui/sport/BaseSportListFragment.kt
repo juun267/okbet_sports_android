@@ -348,13 +348,14 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         matchInfo: MatchInfo,
         odd: Odd,
         playCateCode: String,
+        betPlayCateName:String? = null,
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
         outRightMatchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd? = null  // 冠军时必传
     ) {
        val playCateName=when(matchType){
            MatchType.END_SCORE-> getString(R.string.home_tab_end_score)
            MatchType.OUTRIGHT,MatchType.OTHER_OUTRIGHT-> (odd.parentNode as CategoryOdds).name
-           else->betPlayCateNameMap?.get(playCateCode).getPlayCateName(requireContext())
+           else->betPlayCateName?:betPlayCateNameMap?.get(playCateCode).getPlayCateName(requireContext())
        }
         (activity as MainTabActivity).setupBetData(
             FastBetDataBean(

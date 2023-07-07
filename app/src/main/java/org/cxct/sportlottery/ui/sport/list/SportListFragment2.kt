@@ -214,7 +214,7 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
         view: View
     ) {
-        addOddsDialog(matchInfo, odd, playCateCode, betPlayCateNameMap)
+        addOddsDialog(matchInfo, odd, playCateCode,betPlayCateName, betPlayCateNameMap)
     }
 
     override fun resubscribeChannel(delay: Long) {

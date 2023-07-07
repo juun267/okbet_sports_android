@@ -58,7 +58,7 @@ class SportOutrightFragment : BaseSportListFragment<SportListViewModel, Fragment
             if (item is Odd) {  // 赔率
                 val matchOdd = (item.parentNode as CategoryOdds).matchOdd
                 val matchInfo = matchOdd.matchInfo ?: return@SportOutrightAdapter2
-                addOddsDialog(matchInfo, item, item.outrightCateKey ?: "", matchOdd.betPlayCateNameMap, matchOdd)
+                addOddsDialog(matchInfo, item, item.outrightCateKey ?: "", betPlayCateNameMap=matchOdd.betPlayCateNameMap, outRightMatchOdd = matchOdd)
             } else { // 展开或收起
                 resubscribeChannel(300)
             }
