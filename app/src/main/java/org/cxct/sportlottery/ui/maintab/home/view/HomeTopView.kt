@@ -163,29 +163,23 @@ class HomeTopView @JvmOverloads constructor(
     fun setup(fragment: MainHomeFragment2) {
 
         ConfigRepository.onNewConfig(fragment) { initBanner() }
-        if (StaticData.worldCupOpened()){
-            vWorldCup.isVisible = true
-            vBingo.isVisible = false
-        }else{
-            vWorldCup.isVisible = false
-            vBingo.isVisible = true
-        }
         binding.vSports.setOnClickListener { fragment.jumpToInplaySport() }
         binding.vOkgames.isInvisible = getMarketSwitch()
         binding.vOkgames.setOnClickListener {
             fragment.jumpToOKGames()
         }
+        binding.vOklive.isInvisible = getMarketSwitch()
+//        binding.vOklive.setOnClickListener {
+//            fragment.jumpToOKLive()
+//        }
         if (StaticData.worldCupOpened()){
-            binding.vOklive.gone()
+            binding.vBingo.gone()
             binding.vWorldCup.isInvisible = getMarketSwitch()
             binding.vWorldCup.setOnClickListener {
                 (fragment.activity as MainTabActivity).jumpToWorldCup()
             }
         }else{
-            binding.vOklive.isInvisible = getMarketSwitch()
-            binding.vOklive.setOnClickListener {
-                fragment.jumpToOKLive()
-            }
+            vBingo.vBingo.show()
             binding.vWorldCup.gone()
         }
 
