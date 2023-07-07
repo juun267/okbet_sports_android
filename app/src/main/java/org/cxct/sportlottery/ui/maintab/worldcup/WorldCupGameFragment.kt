@@ -101,7 +101,7 @@ class WorldCupGameFragment : BaseBottomNavigationFragment<MainHomeViewModel>(Mai
     }
 
     private fun loadWebURL() {
-        val url = Constants.getWorldCupActivityH5Url(requireContext(),viewModel.token?:"")
+        val url = Constants.getWorldCupActivityH5Url(requireContext())
         LogUtil.d("url="+url)
         binding.okWebView.loadUrl(url)
     }

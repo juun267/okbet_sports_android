@@ -482,36 +482,6 @@ open class MainHomeViewModel(
         return false
     }
 
-    fun setSportClosePromptMessage(sport: String) {
-        _errorPromptMessage.postValue(
-            Event(
-                String.format(
-                    androidContext.getString(R.string.message_no_sport_game),
-                    sport
-                )
-            )
-        )
-    }
-
-    //region 宣傳頁 優惠活動文字跑馬燈、圖片公告
-    fun getPublicityPromotion() {
-        sConfigData?.imageList?.filter { it.imageType == ImageType.PROMOTION.code && !(getMarketSwitch() && it.isHidden) }
-            ?.let { promotionList ->
-                promotionList.filter {
-                    (it.viewType == 1) && TextUtils.equals(
-                        LanguageManager.getSelectLanguage(
-                            androidContext
-                        ).key, it.lang
-                    )
-                }.mapNotNull { it.imageText1 }.let {
-                    //優惠活動圖片公告清單
-                    _publicityPromotionList.postValue(promotionList.map {
-                        PromotionItemData.createData(it)
-                    })
-                }
-            }
-    }
-
     /**
      * 設置大廳獲取的玩法排序、玩法名稱
      */
