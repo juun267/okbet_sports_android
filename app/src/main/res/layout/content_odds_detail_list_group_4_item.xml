@@ -9,8 +9,14 @@
         style="@style/StyleOddButtonLL"
         android:background="@color/color_FFFFFF">
 
-        <include layout="@layout/content_odds_detail_list_one_include" />
-
+        <include layout="@layout/content_odds_detail_list_item"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_bet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_FFFFFF"
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never" />
     </LinearLayout>
 </FrameLayout>
 

@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -82,7 +83,10 @@ class SingleViewHolder private constructor(itemView: View) :
             tv_bet_amount_title.text =
                 context.getString(R.string.bet_receipt_bet_quota_with_sign) + "："
 
-            tv_name_type.text = context.getString(oddsType.res)
+            itemData.matchOdds?.firstOrNull()?.let {
+                tv_name_type.text = context.getString(getOddTypeRes(it,oddsType))
+
+            }
 
             itemData.apply {
                 matchOdds?.firstOrNull()?.apply {
@@ -141,6 +145,12 @@ class SingleViewHolder private constructor(itemView: View) :
                 rvEndScoreInfo.isVisible =
                     itemData.matchOdds?.firstOrNull()?.playCateCode?.isEndScoreType()==true
                 if (rvEndScoreInfo.isVisible) {
+                    (tv_name_type.layoutParams as ConstraintLayout.LayoutParams).apply {
+                        topToTop = R.id.topContainer
+                        bottomToBottom = R.id.topContainer
+                    }
+                    tv_name_type.gone()
+                    tv_match_type.gone()
                     tvTypeMatch.isVisible = false
                     dividerTitle.isVisible = false
                     tv_play_content.apply {

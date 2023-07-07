@@ -29,7 +29,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="12dp"
                 android:layout_marginEnd="1dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical">
@@ -50,8 +50,9 @@
                     android:gravity="left|center_vertical"
                     android:maxLines="1"
                     android:paddingStart="10dp"
+                    android:alpha="0.6"
                     android:textColor="@color/color_FFFFFF_FFFFFF"
-                    android:textSize="@dimen/textSize16sp"
+                    android:textSize="@dimen/textSize12sp"
                     tools:text="義大利" />
 
                 <TextView
@@ -63,7 +64,7 @@
                     android:gravity="center"
                     android:text="-"
                     android:textColor="@color/color_FFFFFF"
-                    android:textSize="@dimen/textSize20sp" />
+                    android:textSize="@dimen/textSize16sp" />
             </LinearLayout>
 
             <!--            <LinearLayout-->
@@ -106,8 +107,8 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="1dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="12dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
@@ -122,7 +123,7 @@
                     android:gravity="center"
                     android:text="-"
                     android:textColor="@color/color_FFFFFF"
-                    android:textSize="@dimen/textSize20sp" />
+                    android:textSize="@dimen/textSize16sp" />
 
                 <TextView
                     android:id="@+id/tv_toolbar_away_name"
@@ -134,8 +135,9 @@
                     android:gravity="end|center_vertical"
                     android:maxLines="1"
                     android:paddingEnd="10dp"
+                    android:alpha="0.6"
                     android:textColor="@color/color_FFFFFF_FFFFFF"
-                    android:textSize="@dimen/textSize16sp"
+                    android:textSize="@dimen/textSize12sp"
                     tools:text="義大利" />
 
                 <ImageView

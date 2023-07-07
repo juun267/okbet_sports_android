@@ -407,32 +407,5 @@ class SportToolBarTopFragment :
      */
     private fun setAttack(matchInfo: MatchInfo) {
         setMatchAttack(matchInfo, ic_attack_h, ic_attack_c, ic_attack_h, ic_attack_c)
-        if (TimeUtil.isTimeInPlay(matchInfo.startTime)) {
-            when (matchInfo.gameType) {
-                GameType.BB.key,
-                GameType.VB.key,
-                GameType.TT.key,
-                GameType.BM.key,
-                GameType.CK.key,
-                GameType.TN.key,
-                -> {
-                    if (matchInfo.attack.equals("H")) {
-                        ic_attack_h.visibility = View.VISIBLE
-                        ic_attack_c.visibility = View.INVISIBLE
-                    } else {
-                        ic_attack_h.visibility = View.INVISIBLE
-                        ic_attack_c.visibility = View.VISIBLE
-                    }
-                }
-
-                else -> {
-                    ic_attack_h.visibility = View.GONE
-                    ic_attack_c.visibility = View.GONE
-                }
-            }
-        } else {
-            ic_attack_h.visibility = View.GONE
-            ic_attack_c.visibility = View.GONE
-        }
     }
 }

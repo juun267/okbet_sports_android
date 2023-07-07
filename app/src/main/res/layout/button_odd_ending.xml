@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         android:includeFontPadding="false"
         android:textColor="@color/selector_button_odd_top_text"
-        android:textSize="@dimen/textSize15sp"
+        android:textSize="14sp"
         android:fontFamily="@font/din_regular"
         android:textFontWeight="700"
         android:gravity="center"

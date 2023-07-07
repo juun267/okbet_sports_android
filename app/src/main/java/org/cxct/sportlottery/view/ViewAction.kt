@@ -1,16 +1,11 @@
 package org.cxct.sportlottery.view
 
 import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
-import android.util.Log
-import android.view.TextureView
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import org.cxct.sportlottery.util.DisplayUtil.dp
-import java.util.Date
 
 object ViewAction {
 
@@ -26,10 +21,8 @@ fun View.onClick(time:Int=200,block: () -> Unit) {
     this.setOnClickListener {
         val systemTime =System.currentTimeMillis()
         if (systemTime - lastClickTime < time) {
-            Log.e("dachang","systemTime ${systemTime }   lastClickTime${lastClickTime}  time${time}")
             return@setOnClickListener
         }
-        Log.e("dachang","onClick")
         lastClickTime=systemTime
         block()
     }
@@ -67,8 +60,10 @@ fun RecyclerView.loadMore(block: () -> Unit){
     addOnScrollListener(object:RecyclerView.OnScrollListener(){
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
-            if (newState ==RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 ==adapter?.itemCount){
-                block()
+            if (newState ==RecyclerView.SCROLL_STATE_IDLE ){
+                if( lastVisibleItem + 1 ==adapter?.itemCount){
+                    block()
+                }
             }
         }
 

@@ -1,24 +1,21 @@
 package org.cxct.sportlottery.ui.betRecord
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentUnsettledBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.settledDetailList.RemarkBetRequest
+import org.cxct.sportlottery.network.service.order_settlement.Status
 import org.cxct.sportlottery.ui.base.BindingFragment
 import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.betRecord.adapter.RecyclerUnsettledAdapter
 import org.cxct.sportlottery.ui.betRecord.dialog.PrintDialog
 import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.view.BetEmptyView
 import org.cxct.sportlottery.view.loadMore
-import org.cxct.sportlottery.view.onClick
 
 /**
  * 未结单列表
@@ -80,13 +77,25 @@ class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnset
             },500)
         }
 
+        viewModel.settlementNotificationMsg.observe(viewLifecycleOwner) { event ->
+            val it = event.getContentIfNotHandled() ?: return@observe
+            if (it.status == Status.UN_DONE.code || it.status == Status.CANCEL.code) {
+               recyclerUnsettled.postDelayed({
+                viewModel.getUnsettledList()
+            },500)
+            }
+        }
     }
 
     private fun initObserve() {
         //网络请求失败
         viewModel.responseFailed.observe(this) {
             hideLoading()
-            mAdapter.setList(arrayListOf())
+            if(viewModel.unsettledDataEvent.value!=null){
+                mAdapter.setList(viewModel.unsettledDataEvent.value)
+            }else{
+                mAdapter.setList(arrayListOf())
+            }
         }
         //未接单数据监听
         viewModel.unsettledDataEvent.observe(this) {

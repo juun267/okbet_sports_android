@@ -13,10 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_bet_receipt.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.toStringS
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentBetReceiptBinding
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.repository.showCurrencySign
@@ -182,11 +184,17 @@ class BetReceiptFragment :
                 )
             }"
         }
-
         //顯示注單收據的數量
-        if (BetInfoRepository.currentBetType == 0 ){
-            viewBall.gone()
-            tv_bet_list_count.gone()
+        if (BetInfoRepository.currentBetType == 0){
+            val bkEndScore=betResultData?.singleBets?.firstOrNull()?.matchOdds?.firstOrNull()?.playCateCode== PlayCate.FS_LD_CS.value
+            if (bkEndScore){
+                viewBall.visible()
+                tv_bet_list_count.visible()
+                tv_bet_list_count.text = betResultData?.singleBets?.firstOrNull()?.matchOdds?.firstOrNull()?.multiCode?.size?.toStringS("0")
+            }else{
+                viewBall.gone()
+                tv_bet_list_count.gone()
+            }
         }else{
             viewBall.visible()
             tv_bet_list_count.visible()
@@ -325,7 +333,7 @@ class BetReceiptFragment :
             lin_result_status.background =
                 AppCompatResources.getDrawable(requireContext(), R.drawable.drawable_bet_failure)
             iv_result_status.setImageResource(R.drawable.ic_bet_failure)
-            tv_result_status.setTextColor(requireContext().getColor(R.color.color_E23434))
+            tv_result_status.setTextColor(requireContext().getColor(R.color.color_ff0000))
             tv_result_status.text = if (betFailed.second.isNullOrEmpty()) {
                 getString(R.string.your_bet_order_fail)
             } else {
@@ -341,7 +349,7 @@ class BetReceiptFragment :
                 AppCompatResources.getDrawable(requireContext(), R.drawable.drawable_bet_successful)
 
             iv_result_status.setImageResource(R.drawable.ic_bet_successful)
-            tv_result_status.setTextColor(requireContext().getColor(R.color.color_1EB65B))
+            tv_result_status.setTextColor(requireContext().getColor(R.color.color_1CD219))
 
             tv_result_status.text = getString(R.string.your_bet_order_success)
             btnLastStep.text = getString(R.string.commission_detail)

@@ -6,6 +6,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.entity.node.BaseNode
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.rotationAnimation
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
 import org.cxct.sportlottery.network.common.*
@@ -48,6 +49,7 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
         sportLeagueAdapter2.matchType = matchType
         gameType = arguments?.getString("gameType") ?: GameType.BK.key
         gameTypeAdapter.setNewInstance(null)
+        binding.linOpt.gone()
         clearData()
         setMatchInfo("", "")
         clearSubscribeChannels()

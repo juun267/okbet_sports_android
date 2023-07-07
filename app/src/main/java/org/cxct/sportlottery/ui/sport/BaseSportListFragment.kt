@@ -14,7 +14,9 @@ import com.chad.library.adapter.base.entity.node.BaseNode
 import com.google.android.material.appbar.AppBarLayout
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.getPlayCateName
 import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.rotationAnimation
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
@@ -24,6 +26,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.outright.odds.CategoryOdds
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
@@ -162,6 +165,13 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         adapter.addFooterView(footerView)
     }
 
+    protected fun resetArrow() {
+        if (binding.ivArrow.isSelected) {
+            binding.ivArrow.isSelected= false
+            binding.ivArrow.rotationAnimation(0f)
+        }
+    }
+
     private fun initToolbar()  = binding.run {
         ivArrow.bindExpanedAdapter(getGameListAdapter()) { resubscribeChannel(320) }
         appbarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
@@ -213,6 +223,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     override fun onResume() {
         super.onResume()
         resubscribeChannel(20)
+        setupOddsChangeListener()
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -244,6 +255,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
 
     private var filerMatchIds = arrayListOf<String>()
     protected open fun load(item: Item, selectMatchIdList: ArrayList<String> = arrayListOf()) {
+        resetArrow()
         showLoading()
         setMatchInfo(item.name, "")
         filerMatchIds = selectMatchIdList
@@ -255,7 +267,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         binding.tvMatchNum.text = num
     }
 
-    protected fun setMatchNum(num: String) {
+    private fun setMatchNum(num: String) {
         binding.tvMatchNum.text = num
     }
 
@@ -265,12 +277,13 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         setSportDataList(null)
     }
 
-    protected fun setSportDataList(list: MutableList<BaseNode>?) {
+    protected fun setSportDataList(list: MutableList<BaseNode>?, sizeNumber: String? = null) {
         val adapter = getGameListAdapter()
         adapter.setNewInstance(list)
+        if (sizeNumber == null) setMatchNum((list?.sumOf { it.childNode?.size ?: 0 })?.toString() ?: "") else setMatchNum(sizeNumber)
         if (!list.isNullOrEmpty()) {
             resubscribeChannel(120)
-            setMatchNum(list.size.toString())
+            binding.linOpt.visible()
         }
         val footerLayout = adapter.footerLayout?.getChildAt(0) as SportFooterGamesView? ?: return
         footerLayout.visible()
@@ -338,13 +351,17 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
         outRightMatchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd? = null  // 冠军时必传
     ) {
-
+       val playCateName=when(matchType){
+           MatchType.END_SCORE-> getString(R.string.home_tab_end_score)
+           MatchType.OUTRIGHT,MatchType.OTHER_OUTRIGHT-> (odd.parentNode as CategoryOdds).name
+           else->betPlayCateNameMap?.get(playCateCode).getPlayCateName(requireContext())
+       }
         (activity as MainTabActivity).setupBetData(
             FastBetDataBean(
             matchType = matchType,
             gameType = getCurGameType(),
             playCateCode = playCateCode,
-            playCateName = getString(R.string.home_tab_end_score),
+            playCateName = playCateName,
             matchInfo = matchInfo,
             matchOdd = outRightMatchOdd,
             odd = odd,

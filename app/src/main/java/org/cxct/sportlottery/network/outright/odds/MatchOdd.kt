@@ -48,16 +48,16 @@ data class MatchOdd(
     @IgnoredOnParcel
     var startTime: String = ""
 
-    override val childNode: MutableList<BaseNode>
-        get() {
-            val oddsNode = mutableListOf<BaseNode>()
-            oddsMap?.entries?.toMutableList()?.forEach {
-                val categoryOdds = CategoryOdds(dynamicMarkets?.get(it.key)?.get() ?: "", this, it.key,it.value?: mutableListOf())
-                oddsNode.add(categoryOdds)
-                categoryOddsMap[it.key] = categoryOdds
-            }
-            return oddsNode
+    override val childNode: MutableList<BaseNode> by lazy {
+        val oddsNode = mutableListOf<BaseNode>()
+        oddsMap?.entries?.toMutableList()?.forEach {
+            val categoryOdds = CategoryOdds(dynamicMarkets?.get(it.key)?.get() ?: "", this, it.key,it.value?: mutableListOf())
+            oddsNode.add(categoryOdds)
+            categoryOddsMap[it.key] = categoryOdds
         }
+        oddsNode
+    }
+
 
     @Transient
     @IgnoredOnParcel

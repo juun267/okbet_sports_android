@@ -23,7 +23,7 @@
             android:nestedScrollingEnabled="false"
             android:background="@color/color_FFFFFF"
             android:overScrollMode="never"
-            android:paddingHorizontal="7dp"
+            android:paddingHorizontal="@dimen/margin_9"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="3"
             tools:itemCount="3"

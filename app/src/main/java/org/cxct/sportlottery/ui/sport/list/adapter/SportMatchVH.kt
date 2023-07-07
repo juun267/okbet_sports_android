@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.sport.list.adapter
 
-import android.util.Log
-import android.view.Gravity
+
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
@@ -118,7 +117,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         leagueOddMatchNameAway.text = matchInfo?.awayName
 
         setupMatchScore(matchInfo, matchType)
-        leagueOddMatchPlayCount.text = matchInfo?.playCateNum.toString() + "+ >"
+        leagueOddMatchPlayCount.text = matchInfo?.playCateNum.toString() + "+ "
 
         leagueOddMatchFavorite.isSelected = matchInfo?.isFavorite ?: false
         leagueOddMatchFavorite.setOnClickListener { matchInfo?.id?.let {onFavoriteClick.invoke(it) } }
@@ -128,15 +127,18 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
 
 //        leagueOddMatchChart.isVisible = matchInfo?.source == MatchSource.SHOW_STATISTICS.code
 
-        // ivPlay、ivAnimation同时只显示一个
-        if (matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(matchInfo?.startTime))) {
-            ivPlay.visible()
-            ivAnimation.gone()
-        } else if (TimeUtil.isTimeInPlay(matchInfo?.startTime)
-            && !(matchInfo?.trackerId.isNullOrEmpty())
-            && MultiLanguagesApplication.getInstance()?.getGameDetailAnimationNeedShow() == true) {
+        matchInfo?.let { bindLiveStatus(it) }
+    }
+
+    private inline fun bindLiveStatus(matchInfo: MatchInfo) = binding.run {
+        if (matchInfo.liveVideo == 1) {
+            if (matchInfo.isLive == 1) {
+                ivLive.visible()
+            } else {
+                ivPlay.visible()
+            }
+        } else if (!matchInfo.trackerId.isNullOrEmpty()) {
             ivAnimation.visible()
-            ivPlay.gone()
         }
     }
 
@@ -150,15 +152,15 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         }
 
         when (matchInfo?.gameType) {
-            GameType.VB.key -> setVbScoreText(matchInfo)
-            GameType.TN.key -> setTnScoreText(matchInfo)
-            GameType.FT.key -> setFtScoreText(matchInfo)
-            GameType.BK.key -> setBkScoreText(matchInfo)
-            GameType.TT.key -> setVbScoreText(matchInfo)
-            GameType.BM.key -> setBmScoreText(matchInfo)
-            GameType.BB.key -> setBbScoreText(matchInfo)
+            GameType.VB.key -> setVbScoreText(matchInfo, matchType)
+            GameType.TN.key -> setTnScoreText(matchInfo, matchType)
+            GameType.FT.key -> setFtScoreText(matchInfo, matchType)
+            GameType.BK.key -> setBkScoreText(matchInfo, matchType)
+            GameType.TT.key -> setVbScoreText(matchInfo, matchType)
+            GameType.BM.key -> setBmScoreText(matchInfo, matchType)
+            GameType.BB.key -> setBbScoreText(matchInfo, matchType)
             GameType.CK.key -> setCkScoreText(matchInfo)
-            else -> matchInfo?.let { setBkScoreText(it) }
+            else -> matchInfo?.let { setBkScoreText(it, matchType) }
         }
     }
 
@@ -194,48 +196,48 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         }
     }
 
-    private fun setFtScoreText(matchInfo: MatchInfo) {
+    private fun setFtScoreText(matchInfo: MatchInfo, matchType: MatchType) {
         setScoreTextAtFront(matchInfo)
         setCardText(matchInfo)
         setFbKicks(matchInfo)
     }
 
-    private fun setBkScoreText(matchInfo: MatchInfo) {
+    private fun setBkScoreText(matchInfo: MatchInfo, matchType: MatchType) {
         setScoreTextAtFront(matchInfo)
-        setAllScoreTextAtBottom(matchInfo)
+        setAllScoreTextAtBottom(matchInfo, matchType)
     }
 
-    private fun setVbScoreText(matchInfo: MatchInfo) {
-        setAllScoreTextAtBottom(matchInfo)
+    private fun setVbScoreText(matchInfo: MatchInfo, matchType: MatchType) {
+        setAllScoreTextAtBottom(matchInfo, matchType)
         setScoreTextAtFront(matchInfo)
         setSptText(matchInfo)
         setCurrentPeroid(matchInfo)
         setAttack(matchInfo)
     }
 
-    private fun setTnScoreText(matchInfo: MatchInfo) {
-        setAllScoreTextAtBottom(matchInfo)
+    private fun setTnScoreText(matchInfo: MatchInfo, matchType: MatchType) {
+        setAllScoreTextAtBottom(matchInfo, matchType)
         setSptText(matchInfo)
         setTennisRoundScore(matchInfo)
         setCurrentPeroid(matchInfo)
         setAttack(matchInfo)
     }
 
-    private fun setBmScoreText(matchInfo: MatchInfo) {
-        setAllScoreTextAtBottom(matchInfo)
+    private fun setBmScoreText(matchInfo: MatchInfo, matchType: MatchType) {
+        setAllScoreTextAtBottom(matchInfo, matchType)
         setScoreTextAtFront(matchInfo)
         setSptText(matchInfo)
         setCurrentPeroid(matchInfo)
         setAttack(matchInfo)
     }
 
-    private fun setBbScoreText(matchInfo: MatchInfo) {
+    private fun setBbScoreText(matchInfo: MatchInfo, matchType: MatchType) {
         if (TimeUtil.isTimeInPlay(matchInfo.startTime)) {
             setScoreTextAtFront(matchInfo)
             setAttack(matchInfo)
             setBBStatus(matchInfo)
         } else {
-            setBkScoreText(matchInfo)
+            setBkScoreText(matchInfo, matchType)
         }
 
     }
@@ -249,8 +251,10 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
     /**
      * 网球和羽毛球  排球，乒乓球 显示局比分
      */
-    private inline fun setAllScoreTextAtBottom(matchInfo: MatchInfo) {
-        binding.tvPeroidsScore.setMatchRoundScore(matchInfo)
+    private inline fun setAllScoreTextAtBottom(matchInfo: MatchInfo, matchType: MatchType) {
+        if(matchType == MatchType.IN_PLAY) {
+            binding.tvPeroidsScore.setMatchRoundScore(matchInfo)
+        }
     }
 
     /**
@@ -455,16 +459,10 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         leagueOddMatchNameHome.text = matchInfo?.homeName
         leagueOddMatchNameAway.text = matchInfo?.awayName
         setupMatchScore(matchInfo, matchType)
-        leagueOddMatchPlayCount.text = matchInfo?.playCateNum.toString() + "+ >"
+        leagueOddMatchPlayCount.text = matchInfo?.playCateNum.toString() + "+ "
         leagueOddMatchFavorite.isSelected = matchInfo?.isFavorite ?: false
         leagueNeutral.isVisible = matchInfo?.neutral == 1
-
-        if (matchInfo?.liveVideo == 1 && matchInfo?.isLive == 1) {
-//            ivLive.visible()
-            ivPlay.visible()
-        } else if (!matchInfo?.trackerId.isNullOrEmpty()) {
-            ivAnimation.visible()
-        }
+        matchInfo?.let { bindLiveStatus(it) }
     }
 
     fun updateFavoriteStatus(matchInfo: MatchInfo?) {

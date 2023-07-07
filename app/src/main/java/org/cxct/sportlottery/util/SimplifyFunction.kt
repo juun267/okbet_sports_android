@@ -438,7 +438,6 @@ fun BaseFragment<out MainHomeViewModel>.setTrialPlayGameDataObserve() {
 
 }
 
-
 fun loginedRun(context: Context, block: () -> Unit): Boolean {
     if (LoginRepository.isLogined()) {
         block.invoke()
@@ -1057,7 +1056,7 @@ fun DialogFragment.showAllowingStateLoss(fragmentManager: FragmentManager, tag: 
     fragmentManager.beginTransaction().add(this, tag).commitAllowingStateLoss()
 }
 
-fun Activity.startLogin() {
+fun Context.startLogin() {
     this.startActivity(Intent(this, LoginOKActivity::class.java))
 }
 

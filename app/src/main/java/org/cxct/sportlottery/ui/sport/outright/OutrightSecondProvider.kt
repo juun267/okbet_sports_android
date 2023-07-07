@@ -76,6 +76,7 @@ class OutrightSecondProvider(val adapter: SportOutrightAdapter2,
     }
 
     override fun convert(helper: BaseViewHolder, item: BaseNode) {
+
         val bean = item as CategoryOdds
         val matchVH = helper as MatchVH
         val matchOdd = bean.matchOdd

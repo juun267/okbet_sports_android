@@ -11,6 +11,7 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
@@ -21,6 +22,7 @@ import org.cxct.sportlottery.common.extentions.flashAnimation
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.ui.sport.detail.adapter.TypeOneListAdapter
 import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
 import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.util.BetPlayCateFunction.isNOGALType
@@ -103,13 +105,15 @@ class OddsButtonDetail @JvmOverloads constructor(
         gameType: String? = null,
         isOddPercentage: Boolean? = false,
         matchInfo: MatchInfo?,
+        adapterName: String?=null
     ) {
         mOdd = odd
         mOddsType = oddsType
         this.matchInfo = matchInfo
-        hideName = TextUtils.equals(matchInfo?.homeName,
-            odd?.name) || TextUtils.equals(matchInfo?.awayName, odd?.name) || TextUtils.equals(
-            getString(R.string.draw), odd?.name)
+        hideName = (TextUtils.equals(matchInfo?.homeName, odd?.name)
+                || TextUtils.equals(matchInfo?.awayName, odd?.name)
+                || TextUtils.equals(getString(R.string.draw), odd?.name))&&adapterName!=TypeOneListAdapter::class.java.name
+
         tv_name.apply {
 //            val extInfoStr =
 //                odd?.extInfoMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.extInfo

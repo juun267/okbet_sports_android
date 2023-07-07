@@ -29,7 +29,6 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.betRecord.BetListData
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.JsonUtil
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.SingleLiveEvent
 import org.cxct.sportlottery.util.TimeUtil
@@ -396,8 +395,10 @@ class AccountHistoryViewModel(
     var pageIndex=1
     private val pageSize=20
     fun getUnsettledList() {
-        if (betListRequesting )
+        if (betListRequesting ){
+            _responseFailed.postValue(true)
             return
+        }
         betListRequesting = true
         val betListRequest = BetListRequest(
             championOnly = 0,
@@ -417,12 +418,14 @@ class AccountHistoryViewModel(
                 return@launch
             }
 
+
             resultData.let { result ->
                 if (result.success) {
+                    pageIndex++
                     if(result.rows.isNullOrEmpty()){
                         unsettledDataEvent.postValue(arrayListOf())
                     }else{
-                        pageIndex++
+
                         unsettledDataEvent.postValue(result.rows!!)
                         loginRepository.updateTransNum(result.total ?: 0)
                     }
@@ -457,8 +460,10 @@ class AccountHistoryViewModel(
     //有效投注额
     var totalEfficient:Double=0.0
     fun getSettledList() {
-        if (betListRequesting )
+        if (betListRequesting ){
+            _responseFailed.postValue(true)
             return
+        }
         betListRequesting = true
 
         val betListRequest = BetListRequest(
@@ -467,6 +472,7 @@ class AccountHistoryViewModel(
             page = pageSettledIndex,
             gameType = "",
             pageSize = pageSize,
+            queryTimeType="settleTime",
             startTime = settledStartTime.toString(),
             endTime = settledEndTime.toString()
         )

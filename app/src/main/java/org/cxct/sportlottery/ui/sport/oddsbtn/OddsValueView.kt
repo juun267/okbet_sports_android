@@ -1,17 +1,13 @@
 package org.cxct.sportlottery.ui.sport.oddsbtn
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
+
 import android.content.Context
-import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
-import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.animation.Animation
 import android.view.animation.Animation.RESTART
-import android.view.animation.AnimationUtils
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.TranslateAnimation
 import android.widget.ImageView

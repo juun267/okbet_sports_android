@@ -59,9 +59,8 @@
             android:singleLine="true"
             android:ellipsize="end"
             android:layout_gravity="center_horizontal"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:textColor="@color/color_414655"
-            android:textFontWeight="700"
             tools:text="Game Name" />
     </LinearLayout>
 

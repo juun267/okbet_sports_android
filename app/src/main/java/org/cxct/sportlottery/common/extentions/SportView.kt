@@ -6,6 +6,7 @@ import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.content_baseball_status.view.*
 import kotlinx.android.synthetic.main.item_sport_favorite.view.*
@@ -205,21 +206,35 @@ fun setMatchAttack(
             GameType.BM.key,
             GameType.CK.key,
             -> {
-                if (matchInfo.attack.equals("H")) {
-                    ivHomeAttack.visibility = View.VISIBLE
-                    ivAwayAttack.visibility = View.INVISIBLE
-                } else {
-                    ivHomeAttack.visibility = View.INVISIBLE
-                    ivAwayAttack.visibility = View.VISIBLE
+                when(matchInfo.attack){
+                    "H"->{
+                        ivHomeAttack.visibility = View.VISIBLE
+                        ivAwayAttack.visibility = View.INVISIBLE
+                    }
+                    "C"->{
+                        ivHomeAttack.visibility = View.INVISIBLE
+                        ivAwayAttack.visibility = View.VISIBLE
+                    }
+                    else->{
+                        ivHomeAttack.visibility = View.INVISIBLE
+                        ivAwayAttack.visibility = View.INVISIBLE
+                    }
                 }
             }
             GameType.TN.key -> {
-                if (matchInfo.attack.equals("H")) {
-                    ivTNHomeAttack.visibility = View.VISIBLE
-                    ivTNAwayAttack.visibility = View.INVISIBLE
-                } else {
-                    ivTNHomeAttack.visibility = View.INVISIBLE
-                    ivTNAwayAttack.visibility = View.VISIBLE
+                when(matchInfo.attack){
+                    "H"->{
+                        ivTNHomeAttack.visibility = View.VISIBLE
+                        ivTNAwayAttack.visibility = View.INVISIBLE
+                    }
+                    "C"->{
+                        ivTNHomeAttack.visibility = View.INVISIBLE
+                        ivTNAwayAttack.visibility = View.VISIBLE
+                    }
+                    else->{
+                        ivTNHomeAttack.visibility = View.INVISIBLE
+                        ivTNAwayAttack.visibility = View.INVISIBLE
+                    }
                 }
             }
             else -> {
@@ -468,21 +483,21 @@ fun setBBStatusView(
     ivHalfStatus: ImageView,
     ivBaseBag: ImageView,
 ) {
-
     tvBBStatus.apply {
         text = matchInfo.statusName18n
+        setTextColor(ContextCompat.getColor(context,R.color.color_6C7BA8))
         isVisible = !matchInfo.statusName18n.isEmptyStr()
     }
-
     txvOut.apply {
         text = this.context.getString(R.string.game_out,
             matchInfo.outNumber ?: "0")
+        setTextColor(ContextCompat.getColor(context,R.color.color_6C7BA8))
         isVisible = true
     }
 
     ivHalfStatus.apply {
         setImageResource(if (matchInfo.halfStatus == 0) R.drawable.ic_bb_first_half else R.drawable.ic_bb_second_half)
-        isVisible = true
+        isVisible = matchInfo.halfStatus != null
     }
 
     ivBaseBag.apply {

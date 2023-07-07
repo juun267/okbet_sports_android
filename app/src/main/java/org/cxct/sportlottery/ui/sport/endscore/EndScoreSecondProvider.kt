@@ -59,10 +59,10 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
         val tvExpand = getView<TextView>(R.id.tvExpand)
         val linExpand = getView<View>(R.id.linExpand)
         val tabLayou = getView<TabLayout>(R.id.tabLayout)
-        resetStyle(linExpand, tvExpand,tabLayou, item.isExpanded)
+        resetStyle(getView(R.id.llMatchInfo),linExpand, tvExpand,tabLayou, item.isExpanded)
         linExpand.setOnClickListener {
             adapter.expandOrCollapse(item, parentPayload = item)
-            resetStyle(linExpand, tvExpand,tabLayou, item.isExpanded)
+            resetStyle(getView(R.id.llMatchInfo),linExpand, tvExpand,tabLayou, item.isExpanded)
         }
         tabLayou.apply {
             if (tabCount>0){
@@ -101,17 +101,19 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
         DrawableCreatorUtils.getCommonBackgroundStyle(8, android.R.color.white, R.color.color_025BE8, 1)
     }
 
-    private fun resetStyle(linExpand: View, tvExpand: TextView,tabLayout: TabLayout, isExpand: Boolean) = tvExpand.run {
+    private fun resetStyle(llMatchInfo: View, linExpand: View, tvExpand: TextView,tabLayout: TabLayout, isExpand: Boolean) = tvExpand.run {
         if (isExpand) {
             setText(R.string.D039)
             setTextColor(ContextCompat.getColor(context, R.color.color_025BE8))
             linExpand.background = collapseDrawable
             setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_to_up_blue, 0)
+            llMatchInfo.setBackgroundColor(ContextCompat.getColor(context, R.color.color_F8F9FD))
         } else {
             setText(R.string.N698)
             setTextColor(Color.WHITE)
             linExpand.background = expandedDrawable
             setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_to_down_white, 0)
+            llMatchInfo.setBackgroundColor(Color.TRANSPARENT)
         }
         tabLayout.isVisible = isExpand
     }

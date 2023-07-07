@@ -1,9 +1,7 @@
 package org.cxct.sportlottery.ui.betRecord
 
 import android.graphics.Typeface
-import android.util.Log
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.event.ShowInPlayEvent
 import org.cxct.sportlottery.databinding.ActivityBetRecordBinding
 import org.cxct.sportlottery.ui.base.BindingActivity
@@ -29,12 +27,12 @@ class BetRecordActivity:BindingActivity<MainViewModel,ActivityBetRecordBinding>(
             }
 
             //未结单
-            tvUnsettled.onClick(1000) {
+            tvUnsettled.onClick(600) {
                 changeTabStyle(0)
                 replaceFragment(R.id.frameContainer,unsettledFragment)
             }
             //已结单
-            tvSettled.onClick(1000) {
+            tvSettled.onClick(600) {
                 changeTabStyle(1)
                 replaceFragment(R.id.frameContainer,settledFragment)
             }

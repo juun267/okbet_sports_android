@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:background="@color/white"
     android:foreground="@drawable/fg_ripple">
 
     <LinearLayout
@@ -118,8 +119,11 @@
         android:id="@+id/llMatchInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
         android:orientation="horizontal"
-        android:layout_marginTop="@dimen/margin_15">
+        android:paddingTop="15dp"
+        android:paddingBottom="6dp"
+        android:background="@color/color_F8F9FD">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -138,7 +142,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:textColor="@color/color_535D76"
+                android:textColor="@color/color_0D2245"
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:textStyle="bold"
@@ -174,7 +178,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:textColor="@color/color_535D76"
+                android:textColor="@color/color_0D2245"
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:textStyle="bold"
@@ -190,10 +194,7 @@
         android:layout_height="40dp"
         android:layout_width="match_parent"
         android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="20dp"
         android:gravity="center"
-        android:elevation="2dp"
         android:foreground="@drawable/fg_ripple">
 
         <TextView
@@ -201,7 +202,8 @@
             android:layout_height="match_parent"
             android:layout_width="wrap_content"
             android:gravity="center"
-            android:textSize="@dimen/textSize14sp" />
+            android:textSize="@dimen/textSize14sp"
+            android:drawablePadding="8dp"/>
     </LinearLayout>
 
     <com.google.android.material.tabs.TabLayout
@@ -225,5 +227,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/color_261B3A98" />
+        android:layout_marginTop="20dp"
+        android:background="@color/color_EEF3FC" />
 </LinearLayout>
