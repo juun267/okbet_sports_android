@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.home.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.util.AttributeSet
@@ -9,13 +10,13 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.stx.xhb.androidx.XBanner
 import kotlinx.android.synthetic.main.layout_home_top.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.setOnClickListeners
 import org.cxct.sportlottery.common.extentions.visible
@@ -40,21 +41,32 @@ import timber.log.Timber
 class HomeTopView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
 ) : LinearLayout(context, attrs, defStyle), XBanner.OnItemClickListener {
-
+    private val venuesAdapter=RecyclerVenuesAdapter()
     val binding: LayoutHomeTopBinding
 
+    companion object{
+        const val OkSport="OKSports"
+        const val OkGame="OKGames"
+        const val OkBingo="OKBingo"
+        const val OkLive="OKLive"
+    }
     init {
         orientation = VERTICAL
         binding = LayoutHomeTopBinding.inflate(LayoutInflater.from(context), this)
+
+        binding.recyclerVenues.layoutManager=GridLayoutManager(context,2)
+        binding.recyclerVenues.adapter=venuesAdapter
         initLogin()
         initSportEnterStatus()
+        initHomeVenues()
     }
 
     /**
      * 检测体育服务是否关闭
      */
+    @SuppressLint("NotifyDataSetChanged")
     fun initSportEnterStatus() {
-        binding.tvSportClose.goneWithSportSwitch(false)
+        venuesAdapter.notifyDataSetChanged()
     }
 
     private fun initBanner() {
@@ -165,29 +177,8 @@ class HomeTopView @JvmOverloads constructor(
     }
 
     fun setup(fragment: MainHomeFragment) {
-
+        initVenuesItemClick(fragment)
         ConfigRepository.onNewConfig(fragment) { initBanner() }
-        binding.vSports.setOnClickListener { fragment.jumpToInplaySport() }
-        binding.vOkgames.isInvisible = getMarketSwitch()
-        binding.vOkgames.setOnClickListener {
-            (fragment.activity as MainTabActivity).jumpToOKGames()
-        }
-        binding.vOklive.isInvisible = getMarketSwitch()
-//        binding.vOklive.isInvisible = getMarketSwitch()
-//        binding.vOklive.setOnClickListener {
-//            (fragment.activity as MainTabActivity).jumpToOKLive()
-//        }
-        if (StaticData.worldCupOpened()){
-            binding.vBingo.gone()
-            binding.vWorldCup.isInvisible = getMarketSwitch()
-            binding.vWorldCup.setOnClickListener {
-                (fragment.activity as MainTabActivity).jumpToWorldCup()
-            }
-        }else{
-            vBingo.vBingo.show()
-            binding.vWorldCup.gone()
-        }
-
         if (!LoginRepository.isLogined()) {
             binding.ivGoogle.setOnClickListener {
                 LoginOKActivity.googleLoging(
@@ -247,4 +238,44 @@ class HomeTopView @JvmOverloads constructor(
     }
 
 
+    /**
+     * 初始化首页场馆列表
+     */
+    private fun initHomeVenues(){
+        sConfigData?.homeGamesList?.forEach {
+            //市场开关   okGames和 世界杯
+            if(it.gameName== OkGame||(it.gameName== OkBingo&&StaticData.worldCupOpened())){
+                //开关为false
+                if(!getMarketSwitch()){
+                    //添加okGames
+                    venuesAdapter.addData(it)
+                }
+            }else{
+                venuesAdapter.addData(it)
+            }
+        }
+    }
+
+
+    private fun initVenuesItemClick(fragment: MainHomeFragment){
+        venuesAdapter.setOnItemClickListener{_,_,position->
+            val item=venuesAdapter.data[position]
+            when(item.gameName){
+                //体育
+                OkSport->{
+                    fragment.jumpToInplaySport()
+                }
+                OkGame->{
+                    (fragment.activity as MainTabActivity).jumpToOKGames()
+                }
+                //bingo
+                OkBingo->{
+                    //开启世界杯才有点击
+                    if(StaticData.worldCupOpened()){
+                        (fragment.activity as MainTabActivity).jumpToWorldCup()
+                    }
+                }
+            }
+        }
+    }
 }
