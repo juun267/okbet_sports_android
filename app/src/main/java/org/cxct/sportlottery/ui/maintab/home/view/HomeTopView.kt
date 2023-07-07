@@ -15,6 +15,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.stx.xhb.androidx.XBanner
 import kotlinx.android.synthetic.main.layout_home_top.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.setOnClickListeners
 import org.cxct.sportlottery.common.extentions.visible
@@ -175,11 +176,12 @@ class HomeTopView @JvmOverloads constructor(
         binding.vSports.setOnClickListener { fragment.jumpToInplaySport() }
         binding.vOkgames.isInvisible = getMarketSwitch()
         binding.vOkgames.setOnClickListener {
-            fragment.jumpToOKGames()
+            (fragment.activity as MainTabActivity).jumpToOKGames()
         }
+        binding.vOklive.gone()
 //        binding.vOklive.isInvisible = getMarketSwitch()
 //        binding.vOklive.setOnClickListener {
-//            fragment.jumpToOKLive()
+//            (fragment.activity as MainTabActivity).jumpToOKLive()
 //        }
 
         binding.vWorldCup.isInvisible = getMarketSwitch()

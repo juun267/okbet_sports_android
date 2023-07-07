@@ -383,11 +383,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
     }
 
-    @Subscribe
-    fun onShowFavEvent(event: ShowFavEvent) {
-        showLoginNotify()
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onNetValidEvent(event: NetWorkEvent) {
         //网络恢复
@@ -724,9 +719,13 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         if (getMarketSwitch()) {
             return
         }
-        if (bottom_navigation_view.currentItem != 2) {
-            bottom_navigation_view.currentItem = 2
+        homeFragment().jumpToOKGames()
+    }
+    fun jumpToOKLive() {
+        if (getMarketSwitch()) {
+            return
         }
+        homeFragment().jumpToOKLive()
     }
 
     fun jumpToESport() {
@@ -747,11 +746,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     fun jumpToWorldCup() {
-        resetBackIcon(0)
         homeFragment().jumpToWorldCup()
     }
     fun jumpToWorldCupGame() {
-        resetBackIcon(0)
         homeFragment().jumpToWorldCupGame()
     }
 

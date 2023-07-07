@@ -23,7 +23,7 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
     private val fragmentHelper by lazy {
 
         FragmentHelper(childFragmentManager, R.id.fl_content,  mutableListOf(
-            Pair(MainHomeFragment2::class.java, null),
+            Pair(MainHomeFragment::class.java, null),
             Pair(OKGamesFragment::class.java, null),
             Pair(NewsHomeFragment::class.java, null),
             Pair(OKLiveFragment::class.java, null)

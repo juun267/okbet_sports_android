@@ -34,7 +34,7 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
             SportDetailActivity.startActivity(requireContext(),
                 matchInfo = hotMatchAdapter.data[position].matchInfo!!,
                 matchType = MatchType.IN_PLAY,
-                true)
+                intoLive = true)
         }
 
 

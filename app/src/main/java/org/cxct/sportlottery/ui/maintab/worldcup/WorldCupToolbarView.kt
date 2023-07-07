@@ -26,7 +26,7 @@ import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment2
+import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
@@ -84,7 +84,7 @@ class WorldCupToolbarView@JvmOverloads constructor(context: Context, attrs: Attr
     private fun addSearchView() {
         searchView = LinearLayout(context).apply {
             gone()
-            setBackgroundResource(R.drawable.bg_search_radius_18)
+//            setBackgroundResource(R.drawable.bg_search_radius_18)
             gravity = Gravity.LEFT or Gravity.CENTER_VERTICAL
             val padding = 10.dp
             setPadding(padding, 0, padding, 0)
@@ -223,7 +223,7 @@ class WorldCupToolbarView@JvmOverloads constructor(context: Context, attrs: Attr
         tvLogin.setOnClickListener { activity.startLogin() }
         tvRegist.setOnClickListener { LoginOKActivity.startRegist(context) }
         ivRefreshMoney.setOnClickListener { onRefreshMoney() }
-        if (fragment !is MainHomeFragment2) {
+        if (fragment !is MainHomeFragment) {
             ivLogo.setOnClickListener { activity.backMainHome() }
         }
     }

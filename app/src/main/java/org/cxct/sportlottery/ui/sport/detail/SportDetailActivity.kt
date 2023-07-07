@@ -94,19 +94,25 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     companion object {
         fun startActivity(
             context: Context,
-            matchInfo: MatchInfo,
+            matchInfo: MatchInfo?=null,
+            matchId: String? = null,
             matchType: MatchType? = null,
             intoLive: Boolean = false,
             tabCode: String? = null,
         ) {
             matchInfo.let {
                 val intent = Intent(context, SportDetailActivity::class.java)
-                intent.putExtra("matchInfo", matchInfo.toJson())
-                intent.putExtra(
-                    "matchType",
-                    matchType
-                        ?: if (TimeUtil.isTimeInPlay(it.startTime)) MatchType.IN_PLAY else MatchType.DETAIL
-                )
+                matchInfo?.let {
+                    intent.putExtra("matchInfo", it.toJson())
+                }
+                matchId?.let {
+                    intent.putExtra("matchId", it)
+                }
+                intent.putExtra("matchType", when{
+                    matchType!=null -> matchType
+                    matchInfo!=null&&TimeUtil.isTimeInPlay(matchInfo.startTime) -> MatchType.IN_PLAY
+                    else->MatchType.DETAIL
+                })
                 intent.putExtra("intoLive", intoLive)
                 intent.putExtra("tabCode", tabCode)
                 context.startActivity(intent)
@@ -163,6 +169,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     //进来后默认切到指定tab
     private val tabCode by lazy { intent.getStringExtra("tabCode") }
+    private val matchId by lazy { intent.getStringExtra("matchId") }
     private var isFlowing = false
     private lateinit var topBarFragmentList: List<Fragment>
     private lateinit var sportToolBarTopFragment: SportToolBarTopFragment
@@ -1291,6 +1298,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         matchInfo?.let {
             viewModel.getOddsDetail(it.id).run {
                 subscribeChannelEvent(it.id)
+            }
+        }
+        matchId?.let {
+            viewModel.getOddsDetail(it).run {
+                subscribeChannelEvent(it)
             }
         }
     }
