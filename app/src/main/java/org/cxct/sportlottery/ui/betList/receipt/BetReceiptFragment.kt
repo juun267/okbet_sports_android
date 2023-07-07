@@ -25,6 +25,7 @@ import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.betList.BetListViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.util.BetsFailedReasonUtil
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.LogUtil
@@ -186,7 +187,7 @@ class BetReceiptFragment :
         }
         //顯示注單收據的數量
         if (BetInfoRepository.currentBetType == 0){
-            val bkEndScore=betResultData?.singleBets?.firstOrNull()?.matchOdds?.firstOrNull()?.playCateCode== PlayCate.FS_LD_CS.value
+            val bkEndScore=betResultData?.singleBets?.firstOrNull()?.matchOdds?.firstOrNull()?.playCateCode.isEndScoreType()
             if (bkEndScore){
                 viewBall.visible()
                 tv_bet_list_count.visible()
