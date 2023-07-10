@@ -1490,4 +1490,7 @@
     <string name="N082">收藏赛事</string>
     <string name="J784">独赢</string>
     <string name="F011">投注金额</string>
+    <string name="J770">主队</string>
+    <string name="J771">客队</string>
+    <string name="J762">和</string>
 </resources>

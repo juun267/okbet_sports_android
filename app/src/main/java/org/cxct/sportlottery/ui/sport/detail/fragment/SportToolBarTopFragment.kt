@@ -242,7 +242,6 @@ class SportToolBarTopFragment :
     }
 
     private fun setScoreTextAtFront(matchInfo: MatchInfo) {
-        LogUtil.toJson(matchInfo)
         tv_score.apply {
             visibility = when (TimeUtil.isTimeInPlay(matchInfo.startTime)) {
                 true -> View.VISIBLE
