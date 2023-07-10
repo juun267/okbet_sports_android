@@ -36,7 +36,7 @@
             android:paddingHorizontal="12dp"
             android:singleLine="true"
             android:textColor="@color/color_000000"
-            android:textColorHint="@color/color_000000"
+            android:textColorHint="@color/color_BEC7DC"
             android:textSize="@dimen/textSize12sp"
             tools:text="fff" />
 
@@ -78,7 +78,7 @@
             android:paddingHorizontal="12dp"
             android:paddingTop="12dp"
             android:scaleType="center"
-            android:src="@drawable/ic_sports_search_delete" />
+            android:src="@drawable/ic_sports_search_delete_false" />
     </FrameLayout>
 
     <com.zhy.view.flowlayout.TagFlowLayout
