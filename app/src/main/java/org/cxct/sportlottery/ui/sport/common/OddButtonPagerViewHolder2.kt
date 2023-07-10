@@ -164,7 +164,7 @@ class OddButtonPagerViewHolder2(val oddBtnList: PlayCateView) : OddStateViewHold
     }
 
     private inline fun String.isSingleType(): Boolean {
-        return this.contains(PlayCate.SINGLE.value) && !this.isCombination()
+        return this == (PlayCate.SINGLE.value) && !this.isCombination()
     }
 
     private inline fun String.isESport(): Boolean {
@@ -179,13 +179,16 @@ class OddButtonPagerViewHolder2(val oddBtnList: PlayCateView) : OddStateViewHold
 
 
 //        playCateView.setPlayCateName("", "", playCateName.updatePlayCateColor())
-        if (gameType.isESport() || !playCateCode.isSingleType()) {
-            playCateView.setPlayCateName("", "", playCateName.updatePlayCateColor())
-            return
-        }
-        playCateView.setPlayCateName("1", "2", if (oddsList.size < 3) "" else "X")
+//        if (gameType.isESport() || !playCateCode.isSingleType()) {
+//            playCateView.setPlayCateName("", "", playCateName.updatePlayCateColor())
+//            return
+//        }
 
-//        playCateView.setPlayCateName("", "", playCateView.context.getString(R.string.J784))
+        if (playCateCode.isSingleType() && gameType == GameType.FT.key) {
+            playCateView.setPlayCateName("1", "2", if (oddsList.size < 3) "" else "X")
+        } else {
+            playCateView.setPlayCateName("", "", playCateName.updatePlayCateColor())
+        }
     }
 
     private fun bindOddClick(oddsButton: OddsButton2,
