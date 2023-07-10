@@ -64,7 +64,7 @@ class SportListViewHolder constructor(
     ) {
         resetStatusView()
         setupMatchInfo(item, matchType, matchInfoList, leagueOddListener)
-        val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
+        val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP
         item.matchInfo?.let {
             setupMatchTimeAndStatus(
                 it,
@@ -90,7 +90,7 @@ class SportListViewHolder constructor(
         oddsType: OddsType,
     ) {
         updateMatchInfo(item, matchType)
-        val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
+        val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP
         item.matchInfo?.let {
             setupMatchTimeAndStatus(
                 it,

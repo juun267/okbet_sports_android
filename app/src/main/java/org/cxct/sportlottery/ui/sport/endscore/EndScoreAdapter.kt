@@ -65,7 +65,7 @@ class EndScoreAdapter(val onItemClick:(Int, View, BaseNode) -> Unit)
             return false
         }
         val matchOdd = currentVisiableMatchOdds[oddsChangeEvent.eventId] ?: return false
-         if (oddsChangeEvent.channel?.split("/")?.getOrNull(6) != matchOdd.matchInfo?.id) {
+        if (oddsChangeEvent.channel?.split("/")?.getOrNull(6) != matchOdd.matchInfo?.id) {
             return false
         }
         playCates.forEach { playCate->
@@ -91,8 +91,12 @@ class EndScoreAdapter(val onItemClick:(Int, View, BaseNode) -> Unit)
         oddsChangeEvent.playCateNameMap?.let { matchOdd.playCateNameMap!!.putAll(it) }
         SocketUpdateUtil.sortOdds(matchOdd)
         matchOdd.updateOddStatus()
+        val position = getItemPosition(matchOdd)
+        if (position < 0) {
+            return false
+        }
+        notifyItemChanged(position, SportMatchEvent.OddsChanged)
         LogUtil.d(matchOdd.matchInfo?.id+","+matchOdd.oddIdsMap.keys)
-        notifyDataSetChanged()
         return true
     }
 

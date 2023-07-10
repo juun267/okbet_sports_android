@@ -68,8 +68,11 @@ data class MatchOdd(
     @Transient
     @IgnoredOnParcel
     var selectPlayCode: String = PlayCate.FS_LD_CS.value
+    @Transient
+    @IgnoredOnParcel
+    var selectPlayOdds: MutableMap<String, Odd>? = null
 }
 
-enum class TimeCounting(val value: Int) {
-    STOP(1), CONTINUE(0)
+object TimeCounting {
+    val STOP = 1
 }
