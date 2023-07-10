@@ -91,7 +91,7 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
             }
 //            LogUtil.toJson(matchOdd.oddIdsMap?.map { it.key+","+it.value?.size })
             matchOdd.oddIdsMap?.keys.forEach {
-                addTab(newTab().setTag(it).setText(it.getEndScoreNameByTab(context)))
+                addTab(newTab().setTag(Pair(it,matchOdd)).setText(it.getEndScoreNameByTab(context)))
             }
 
             if (tabCount == 0) {
