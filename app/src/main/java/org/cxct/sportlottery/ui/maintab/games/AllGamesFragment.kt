@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab.games
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -116,12 +117,14 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     private fun initObserve() = okGamesFragment().viewModel.run {
         gameHall.observe(viewLifecycleOwner) {
-            categoryList = it.categoryList?.filter {
-                it.gameList?.let {
-                    //最多显示12个
-                    if (it.size > 18) it.subList(0, 18)
+            categoryList = it.categoryList?.filter {category->
+                category.gameList?.let { gameList->
+                    //最多显示18个
+                    if (gameList.size > 18) {
+                        category.gameList=gameList.subList(0, 18)
+                    }
                 }
-                !it.gameList.isNullOrEmpty()
+                !category.gameList.isNullOrEmpty()
             }?.toMutableList() ?: mutableListOf()
             //设置游戏分类
             gameAllAdapter.setList(categoryList)

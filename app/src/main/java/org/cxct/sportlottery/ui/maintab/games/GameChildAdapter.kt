@@ -23,7 +23,14 @@ class GameChildAdapter(private val onFavoriate: (View, OKGameBean) -> Unit,
 
     private var moreTextView: TextView? = null
     private var gameTotal: Int = 0
-
+    var itemIndex=1
+    val itemSize=6
+    var totalPage = 0
+    var totalCount=0
+    private var jumpMoreClick: () -> Unit = { }
+    fun setJumpMoreClick(block:() -> Unit){
+        jumpMoreClick=block
+    }
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         if (moreClick != null) {
@@ -62,17 +69,19 @@ class GameChildAdapter(private val onFavoriate: (View, OKGameBean) -> Unit,
             root.setOnClickListener { getOnItemClickListener()?.onItemClick(this@GameChildAdapter, root, position) }
 
 
-            if(position==5){
+            if(position==itemSize-1&&itemIndex==totalPage){
                 blurCard.visible()
             }else{
                 blurCard.gone()
             }
+
+            blurCard.onClick {
+                jumpMoreClick()
+            }
             blurCard.setupWith(binding.root)
                 .setFrameClearDrawable(binding.root.background)
                 .setBlurRadius(1.3f)
-            blurCard.onClick {
 
-            }
         }
     }
 
