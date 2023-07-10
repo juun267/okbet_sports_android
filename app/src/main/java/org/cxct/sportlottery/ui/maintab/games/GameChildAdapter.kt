@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.maintab.games
 import android.content.Context
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
@@ -15,13 +16,21 @@ import org.cxct.sportlottery.databinding.ItemGameChildBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.view.onClick
 
 class GameChildAdapter(private val onFavoriate: (View, OKGameBean) -> Unit,
                        val moreClick: (() -> Unit)? = null) : BindingAdapter<OKGameBean, ItemGameChildBinding>() {
 
     private var moreTextView: TextView? = null
     private var gameTotal: Int = 0
-
+    var itemIndex=1
+    val itemSize=6
+    var totalPage = 0
+    var totalCount=0
+    private var jumpMoreClick: () -> Unit = { }
+    fun setJumpMoreClick(block:() -> Unit){
+        jumpMoreClick=block
+    }
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         if (moreClick != null) {
@@ -58,6 +67,21 @@ class GameChildAdapter(private val onFavoriate: (View, OKGameBean) -> Unit,
             ivFav.isSelected = item.markCollect
             ivFav.setOnClickListener { onFavoriate.invoke(ivFav, item) }
             root.setOnClickListener { getOnItemClickListener()?.onItemClick(this@GameChildAdapter, root, position) }
+
+
+            if(position==itemSize-1&&itemIndex==totalPage){
+                blurCard.visible()
+            }else{
+                blurCard.gone()
+            }
+
+            blurCard.onClick {
+                jumpMoreClick()
+            }
+            blurCard.setupWith(binding.root)
+                .setFrameClearDrawable(binding.root.background)
+                .setBlurRadius(1.3f)
+
         }
     }
 
