@@ -36,7 +36,7 @@
             android:paddingHorizontal="12dp"
             android:singleLine="true"
             android:textColor="@color/color_000000"
-            android:textColorHint="@color/color_000000"
+            android:textColorHint="@color/color_BEC7DC"
             android:textSize="@dimen/textSize12sp"
             tools:text="fff" />
 
