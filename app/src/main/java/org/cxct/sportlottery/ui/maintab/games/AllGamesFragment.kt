@@ -119,7 +119,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             categoryList = it.categoryList?.filter {
                 it.gameList?.let {
                     //最多显示12个
-                    if (it.size > 12) it.subList(0, 12)
+                    if (it.size > 18) it.subList(0, 18)
                 }
                 !it.gameList.isNullOrEmpty()
             }?.toMutableList() ?: mutableListOf()

@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.maintab.games
 import android.content.Context
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
@@ -15,6 +16,7 @@ import org.cxct.sportlottery.databinding.ItemGameChildBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.view.onClick
 
 class GameChildAdapter(private val onFavoriate: (View, OKGameBean) -> Unit,
                        val moreClick: (() -> Unit)? = null) : BindingAdapter<OKGameBean, ItemGameChildBinding>() {
@@ -58,6 +60,19 @@ class GameChildAdapter(private val onFavoriate: (View, OKGameBean) -> Unit,
             ivFav.isSelected = item.markCollect
             ivFav.setOnClickListener { onFavoriate.invoke(ivFav, item) }
             root.setOnClickListener { getOnItemClickListener()?.onItemClick(this@GameChildAdapter, root, position) }
+
+
+            if(position==5){
+                blurCard.visible()
+            }else{
+                blurCard.gone()
+            }
+            blurCard.setupWith(binding.root)
+                .setFrameClearDrawable(binding.root.background)
+                .setBlurRadius(1.3f)
+            blurCard.onClick {
+
+            }
         }
     }
 

@@ -1,8 +1,10 @@
 package org.cxct.sportlottery.ui.maintab.games
 
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
@@ -23,6 +25,8 @@ class GameCategroyAdapter(
 ) :
     BindingAdapter<OKGamesCategory, ItemGameCategroyBinding>() {
 
+    private var itemIndex=1
+    private val itemSize=6
     init {
         addChildClickViewIds(R.id.lin_categroy_name)
     }
@@ -31,7 +35,8 @@ class GameCategroyAdapter(
         val vh = super.onCreateDefViewHolder(parent, viewType)
         vh.vb.rvGameItem.run {
             setRecycledViewPool(gameItemViewPool)
-            layoutManager = SocketLinearManager(context, RecyclerView.HORIZONTAL, false)
+            layoutManager = GridLayoutManager(context,3)
+//            layoutManager = SocketLinearManager(context, RecyclerView.HORIZONTAL, false)
             addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_10))
             adapter = GameChildAdapter(onFavoriate = { view, gameBean ->
                 clickCollect.invoke(view, gameBean)
@@ -55,14 +60,21 @@ class GameCategroyAdapter(
             root.gone()
             return
         }
-
         root.visible()
-        val moreEnable = item.gameList.size > 3
+        val moreEnable = item.gameList.size > 6
         tvMore.isVisible = moreEnable
+        ivBackPage.isVisible=moreEnable
+        ivForwardPage.isVisible=moreEnable
 //        ivMore.isVisible = moreEnable
         ivIcon.load(item.icon)
         tvName.text = item.categoryName
-        (rvGameItem.adapter as GameChildAdapter).setList(item.gameList.toMutableList())
+        if(moreEnable){
+            (rvGameItem.adapter as GameChildAdapter).setList(item.gameList.toMutableList().subList(0,itemSize))
+        }else{
+            (rvGameItem.adapter as GameChildAdapter).setList(item.gameList.toMutableList())
+        }
+
+
     }
 
     fun updateMarkCollect(bean: OKGameBean) {
