@@ -60,7 +60,7 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
             if (it is SportMatchEvent.FavoriteChanged) {
                 getView<View>(R.id.league_odd_match_favorite).isSelected = matchInfo?.isFavorite ?: false
             } else if (it is SportMatchEvent.OddsChanged) {
-                rebindTab(getView(R.id.tabLayout), matchOdd)
+                rebindTab(getView(R.id.tabLayout), matchOdd, true)
             }
         }
     }
@@ -84,11 +84,13 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
         }
         val tvExpand = getView<TextView>(R.id.tvExpand)
         val linExpand = getView<View>(R.id.linExpand)
-        val tabLayou = getView<TabLayout>(R.id.tabLayout)
-        resetStyle(getView(R.id.llMatchInfo), linExpand, tvExpand, tabLayou, item)
+        val tabLayout = getView<TabLayout>(R.id.tabLayout)
+        resetStyle(getView(R.id.llMatchInfo), linExpand, tvExpand, tabLayout, item)
+        rebindTab(tabLayout, matchOdd)
         linExpand.setOnClickListener {
             adapter.expandOrCollapse(item, parentPayload = item)
-            resetStyle(getView(R.id.llMatchInfo), linExpand, tvExpand, tabLayou, item)
+            resetStyle(getView(R.id.llMatchInfo), linExpand, tvExpand, tabLayout, item)
+            rebindTab(tabLayout, matchOdd, true)
         }
 
     }
@@ -116,13 +118,13 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
             llMatchInfo.setBackgroundColor(Color.TRANSPARENT)
         }
 
-        rebindTab(tabLayout, matchOdd)
+
     }
 
-    private fun rebindTab(tablayout: TabLayout, matchOdd: MatchOdd) = tablayout.run {
+    private fun rebindTab(tablayout: TabLayout, matchOdd: MatchOdd, update: Boolean = false) = tablayout.run {
         isVisible = matchOdd.isExpanded
         if (tabCount > 0){
-            if (tabCount == matchOdd.oddIdsMap.size) {
+            if (update && tabCount == matchOdd.oddIdsMap.size) {
                 repeat(tabCount) {
                     val tab = getTabAt(it)!!
                     val pair = tab.tag as Pair<String, MatchOdd>
