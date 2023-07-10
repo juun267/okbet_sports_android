@@ -160,6 +160,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             override fun onTabClick(position: Int) {
                 showChatWebView(position == 0)
             }
+            override fun onClose(){
+                avoidFastDoubleClick()
+                iv_back.performClick()
+            }
         }
     }
 
@@ -212,6 +216,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     if (intoLive) {
                         finish()
                     } else {
+                        selectMenuTab(-1)
                         vpContainer.visible()
                         live_view_tool_bar.gone()
                         live_view_tool_bar.release()
@@ -580,38 +585,31 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
     }
 
-    private fun updateMenu(matchInfo: MatchInfo) {
-        val setBg: (TextView, ImageView, Int, Boolean) -> Unit = { tv, iv, drawable, isHave ->
+     private fun updateMenu(matchInfo: MatchInfo) {
+        val setBg: (TextView, ImageView, Boolean) -> Unit = { tv, iv , isHave ->
             if (isHave) {
                 tv.setTextColor(getColor(R.color.color_000000))
-                AppCompatResources.getDrawable(this, drawable)?.let {
-                    DrawableCompat.setTint(it, getColor(R.color.color_025BE8))
-                    iv.setImageDrawable(it)
-                }
             } else {
                 tv.setTextColor(getColor(R.color.color_BEC7DC))
-                AppCompatResources.getDrawable(this, drawable)?.let {
-                    DrawableCompat.setTint(it, getColor(R.color.color_BEC7DC))
-                    iv.setImageDrawable(it)
-                }
             }
+            iv.isEnabled = isHave
         }
 
         val showLive = matchInfo.isLive == 1
         setBg(
-            binding.tvLiveStream, binding.ivLiveStream, R.drawable.icon_live_stream, showLive
+            binding.tvLiveStream, binding.ivLiveStream, showLive
         )
 
         val showVideo = matchInfo.liveVideo == 1
         setBg(
-            binding.tvVideo, binding.ivVideo, R.drawable.icon_video, matchInfo.liveVideo == 1
+            binding.tvVideo, binding.ivVideo, matchInfo.liveVideo == 1
         )
 
         val showAnim =
             !(matchInfo.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
                 ?.getGameDetailAnimationNeedShow() == true
         setBg(
-            binding.tvAnim, binding.ivAnim, R.drawable.icon_animation, showAnim
+            binding.tvAnim, binding.ivAnim, showAnim
         )
 
 
@@ -622,6 +620,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     AppManager.currentActivity().startLogin()
                     return@setOnClickListeners
                 }
+                selectMenuTab(0)
                 setResetScrollEnable(true)
                 showLive()
             }
@@ -644,6 +643,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     AppManager.currentActivity().startLogin()
                     return@setOnClickListeners
                 }
+                selectMenuTab(1)
                 setResetScrollEnable(true)
                 live_view_tool_bar.videoUrl?.let {
                     binding.vpContainer.gone()
@@ -662,6 +662,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     AppManager.currentActivity().startLogin()
                     return@setOnClickListeners
                 }
+                selectMenuTab(2)
                 setResetScrollEnable(true)
                 live_view_tool_bar.animeUrl?.let {
                     binding.vpContainer.gone()
@@ -1356,6 +1357,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             }
         }
     }
-
+   open fun selectMenuTab(position:Int){
+        listOf(binding.ivLiveStream,binding.ivVideo,binding.ivAnim).forEachIndexed { index, imageView ->
+            imageView.isSelected = position==index
+        }
+    }
 
 }

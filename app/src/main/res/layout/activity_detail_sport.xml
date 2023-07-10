@@ -184,11 +184,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingEnd="5dp"
+                            android:src="@drawable/selector_detail_anim"
                             app:layout_constraintBottom_toBottomOf="@+id/tvAnim"
                             app:layout_constraintEnd_toStartOf="@+id/tvAnim"
                             app:layout_constraintTop_toTopOf="@+id/tvAnim"
-                            app:layout_constraintVertical_bias="1.0"
-                            tools:srcCompat="@drawable/icon_animation" />
+                            app:layout_constraintVertical_bias="1.0" />
 
                         <TextView
                             android:id="@+id/tvVideo"
@@ -207,10 +207,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingEnd="5dp"
+                            android:src="@drawable/selector_detail_video"
                             app:layout_constraintBottom_toBottomOf="@+id/tvVideo"
                             app:layout_constraintEnd_toStartOf="@+id/tvVideo"
-                            app:layout_constraintTop_toTopOf="@+id/tvVideo"
-                            tools:srcCompat="@drawable/icon_video" />
+                            app:layout_constraintTop_toTopOf="@+id/tvVideo" />
 
                         <TextView
                             android:id="@+id/tvLiveStream"
@@ -229,10 +229,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingEnd="5dp"
+                            android:src="@drawable/selector_detail_live"
                             app:layout_constraintBottom_toBottomOf="@+id/tvLiveStream"
                             app:layout_constraintEnd_toStartOf="@+id/tvLiveStream"
-                            app:layout_constraintTop_toTopOf="@+id/tvLiveStream"
-                            tools:srcCompat="@drawable/icon_live_stream" />
+                            app:layout_constraintTop_toTopOf="@+id/tvLiveStream" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
 
