@@ -120,9 +120,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
 //            }
 //        }
         iv_live_close.setOnClickListener {
-            LogUtil.d("ivClose,setOnClickListener")
             liveToolBarListener?.let {
-                LogUtil.d("onClose")
                 it.onClose()
             }
         }
