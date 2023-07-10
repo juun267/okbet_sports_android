@@ -72,6 +72,7 @@ import org.cxct.sportlottery.ui.sport.detail.adapter.*
 import org.cxct.sportlottery.ui.sport.detail.fragment.SportChartFragment
 import org.cxct.sportlottery.ui.sport.detail.fragment.SportToolBarTopFragment
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import org.cxct.sportlottery.view.DividerItemDecorator
@@ -999,6 +1000,12 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             it.peekContent().let { list ->
                 if (list.isNotEmpty()) {
                     oddsDetailListAdapter?.removePreloadItem()
+                    //如果是末位比分，小节比分就折叠起来
+                    if (tabCode == MatchType.END_SCORE.postValue){
+                        list.filter { it.gameType.isEndScoreType()}?.forEach {
+                            it.isExpand = it.gameType==PlayCate.FS_LD_CS.value
+                        }
+                    }
                     oddsDetailListAdapter?.oddsDetailDataList = list
                 }
             }
