@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_141414_F3F4F5"
+    android:orientation="vertical"
+    tools:context=".ui.promotion.PromotionDetailActivity">
+
+    <org.cxct.sportlottery.view.CustomTopToolbar
+        android:id="@+id/custom_tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:topTitleText="@string/promotion"/>
+
+   <org.cxct.sportlottery.view.webView.OkWebView
+       android:id="@+id/okWebView"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:layout_marginTop="@dimen/margin_10"/>
+</LinearLayout>

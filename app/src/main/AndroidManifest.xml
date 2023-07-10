@@ -220,9 +220,6 @@
             android:name=".ui.profileCenter.authbind.AuthActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.maintab.home.news.NewsHomeActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.maintab.home.news.NewsDetailActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
@@ -235,7 +232,13 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
+        <activity
+            android:name=".ui.promotion.PromotionListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.promotion.PromotionDetailActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <service android:name=".service.BackService" /> <!-- broadCast -->
 
         <provider

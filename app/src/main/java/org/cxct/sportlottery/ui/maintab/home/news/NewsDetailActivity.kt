@@ -16,6 +16,7 @@ import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.formatHTML
 import org.cxct.sportlottery.view.webView.OkWebViewClient
 import timber.log.Timber
 import java.util.*
@@ -86,7 +87,7 @@ class NewsDetailActivity :
                 newsItem?.createTimeInMillisecond,
                 TimeUtil.NEWS_TIME_FORMAT,
                 locale = Locale.ENGLISH)
-            okWebContent.loadData(getHtmlData(newsItem?.contents ?: ""), "text/html", null)
+            okWebContent.loadData((newsItem?.contents ?: "").formatHTML(), "text/html", null)
         }
     }
 
@@ -126,12 +127,6 @@ class NewsDetailActivity :
 
     private fun setupRelatedList(newsList: List<NewsItem>) = binding.run {
         (rvNews.adapter as HomeNewsAdapter).setList(newsList)
-    }
-
-    private fun getHtmlData(bodyHTML: String): String {
-        val head =
-            "<head>" + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\"> " + "<style>img{max-width: 100%; width:auto; height:auto!important;}</style>" + "</head>";
-        return "<html>$head<body>$bodyHTML</body></html>";
     }
 
     override fun onDestroy() {

@@ -2,10 +2,13 @@ package org.cxct.sportlottery.net.user.api
 
 import com.google.gson.JsonObject
 import org.cxct.sportlottery.net.ApiResult
+import org.cxct.sportlottery.net.user.data.ActivityImageList
 import org.cxct.sportlottery.net.user.data.SendCodeRespnose
+import org.cxct.sportlottery.network.Constants.ACTIVITY_IMAGELIST_H5
 import org.cxct.sportlottery.network.Constants.INDEX_SENDCODE
 import org.cxct.sportlottery.network.Constants.INDEX_VERIFYORRESET
 import org.cxct.sportlottery.network.Constants.SEND_EMAIL_FORGET
+import org.cxct.sportlottery.network.index.config.ImageData
 import retrofit2.http.Body
 import retrofit2.http.POST
 
@@ -20,5 +23,9 @@ interface UserApiService {
 
     @POST(INDEX_VERIFYORRESET)
     suspend fun verifyOrResetInfo(@Body params: JsonObject): ApiResult<SendCodeRespnose>
+
+    @POST(ACTIVITY_IMAGELIST_H5)
+    suspend fun activityImageListH5(): ApiResult<List<ActivityImageList>>
+
 
 }
