@@ -480,7 +480,7 @@ object SocketUpdateUtil {
     }
 
     private fun needUpdateTotalScore(gameType: String?) = when (gameType) {
-        GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.BM.key, GameType.CK.key -> true
+        GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.BM.key, GameType.CK.key,GameType.BB.key -> true
         else -> false
     }
 

@@ -254,10 +254,10 @@ class SportToolBarTopFragment :
                     matchInfo.homeScore.toStringS("0") + "-" + matchInfo.awayScore.toStringS("0")
             }
         }
-        //棒球，沙巴数据源才显示小比分
+        //棒球，沙巴数据源才显示总比分
         if (matchInfo.gameType==GameType.BB.key&&matchInfo.source==2){
             tv_total_score.isVisible=true
-            tv_total_score.text =  "(${matchInfo.homeScore.toStringS("0")}-${matchInfo.awayScore.toStringS("0")})"
+            tv_total_score.text =  "(${matchInfo.homeTotalScore.toStringS("0")}-${matchInfo.awayTotalScore.toStringS("0")})"
         }else{
             tv_total_score.isVisible=false
         }
