@@ -146,7 +146,7 @@ class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::
             if (searchHistoryList.any { it == searchKey }) {
                 searchHistoryList.remove(searchKey)
                 searchHistoryList.add(0, searchKey)
-            } else if (searchHistoryList.size == 10) {
+            } else if (searchHistoryList.size == 15) {
                 searchHistoryList.removeAt(9)
                 searchHistoryList.add(0, searchKey)
             } else {
