@@ -22,7 +22,7 @@
             android:ellipsize="end"
             android:textColor="@color/color_6D7693"
             android:textSize="@dimen/textSize12sp"
-            android:text="Home" />
+            android:text="@string/J770" />
     </LinearLayout>
 
     <TextView
@@ -36,7 +36,7 @@
         android:ellipsize="end"
         android:textColor="@color/color_6D7693"
         android:textSize="@dimen/textSize12sp"
-        android:text="Draw"
+        android:text="@string/J762"
         android:visibility="gone" />
 
     <LinearLayout
@@ -54,7 +54,7 @@
             android:ellipsize="end"
             android:textColor="@color/color_6D7693"
             android:textSize="@dimen/textSize12sp"
-            android:text="Away" />
+            android:text="@string/J771" />
     </LinearLayout>
 
 </LinearLayout>

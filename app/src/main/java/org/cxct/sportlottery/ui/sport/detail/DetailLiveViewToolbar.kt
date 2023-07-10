@@ -51,6 +51,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     interface LiveToolBarListener {
         fun onFullScreen(fullScreen: Boolean)
         fun onTabClick(position: Int)
+        fun onClose()
     }
 
     private var liveToolBarListener: LiveToolBarListener? = null
@@ -118,6 +119,13 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
 //                showAnime()
 //            }
 //        }
+        iv_live_close.setOnClickListener {
+            LogUtil.d("ivClose,setOnClickListener")
+            liveToolBarListener?.let {
+                LogUtil.d("onClose")
+                it.onClose()
+            }
+        }
         iv_fullscreen.setOnClickListener {
             showFullScreen(!isFullScreen)
             if (isFullScreen) {//全屏

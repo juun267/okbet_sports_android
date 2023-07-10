@@ -1561,4 +1561,7 @@
     <string name="N082">Favorite</string>
     <string name="J784">1X2</string>
     <string name="F011">Stake</string>
+    <string name="J770">Home</string>
+    <string name="J771">Away</string>
+    <string name="J762">Draw</string>
 </resources>
