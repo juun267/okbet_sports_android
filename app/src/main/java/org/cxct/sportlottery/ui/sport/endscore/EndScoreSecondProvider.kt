@@ -14,9 +14,14 @@ import com.google.android.material.tabs.TabLayout
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.post
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.common.PlayCode
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.sport.list.adapter.SportMatchEvent
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.BetPlayCateFunction.getEndScoreNameByTab
+import org.cxct.sportlottery.util.BetPlayCateFunction.getEndScorePlatCateName
+import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.view.tablayout.TabSelectedAdapter
@@ -85,10 +90,8 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
                 removeAllTabs()
             }
 //            LogUtil.toJson(matchOdd.oddIdsMap?.map { it.key+","+it.value?.size })
-            matchOdd.oddIdsMap?.forEach {
-                matchOdd.betPlayCateNameMap?.get(it.key)?.get(LanguageManager.getSelectLanguage(context).key)?.let { name->
-                    addTab(newTab().setTag(Pair(it.key, matchOdd)).setText(name))
-                }
+            matchOdd.oddIdsMap?.keys.forEach {
+                addTab(newTab().setTag(Pair(it,matchOdd)).setText(it.getEndScoreNameByTab(context)))
             }
 
             if (tabCount == 0) {
@@ -121,5 +124,4 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
         }
         tabLayout.isVisible = isExpand
     }
-
 }

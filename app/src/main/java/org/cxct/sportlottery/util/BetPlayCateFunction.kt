@@ -52,7 +52,17 @@ object BetPlayCateFunction {
             PlayCate.FS_LD_CS_SEG2.value-> context.getString(R.string.P163)
             PlayCate.FS_LD_CS_SEG3.value-> context.getString(R.string.P164)
             PlayCate.FS_LD_CS_SEG4.value-> context.getString(R.string.P165)
-            else-> ""
+            else-> this?:""
+        }
+    }
+    fun String?.getEndScoreNameByTab(context: Context): String {
+        return when(this){
+            PlayCate.FS_LD_CS.value-> context.getString(R.string.J254)
+            PlayCate.FS_LD_CS_SEG1.value-> context.getString(R.string.J245)
+            PlayCate.FS_LD_CS_SEG2.value-> context.getString(R.string.J246)
+            PlayCate.FS_LD_CS_SEG3.value-> context.getString(R.string.J247)
+            PlayCate.FS_LD_CS_SEG4.value-> context.getString(R.string.J248)
+            else-> this?:""
         }
     }
 
