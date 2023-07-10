@@ -55,6 +55,11 @@ class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::
                 var ivDel = pv.findViewById<ImageView>(R.id.sportSearchHistoryDelete)
                 ivDel.setOnClickListener {
                     searchHistoryList.remove(t)
+                    if (searchHistoryList.isEmpty()) {
+                        ivClear.setImageResource(R.drawable.ic_sports_search_delete_false)
+                    } else {
+                        ivClear.setImageResource(R.drawable.ic_sports_search_delete_true)
+                    }
                     MultiLanguagesApplication.saveSearchHistory(searchHistoryList)
                     sportSearchHistoryTag.adapter = getSearchTagAdapter()
                 }
@@ -97,9 +102,9 @@ class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::
             if (searchHistoryList.size != 0) {
                 searchHistoryList.clear()
             }
+            ivClear.setImageResource(R.drawable.ic_sports_search_delete_false)
             MultiLanguagesApplication.saveSearchHistory(searchHistoryList)
             sportSearchHistoryTag.adapter = getSearchTagAdapter()
-
         }
         etSearch.post { etSearch.requestFocus() }
         tvSearch.setOnClickListener(object : OnClickListener {
@@ -122,6 +127,11 @@ class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::
     private fun initSearch() {
         setHistoryLayoutVisible(true)
         MultiLanguagesApplication.searchHistory?.let { searchHistoryList = it }
+        if (searchHistoryList.isEmpty()) {
+            ivClear.setImageResource(R.drawable.ic_sports_search_delete_false)
+        } else {
+            ivClear.setImageResource(R.drawable.ic_sports_search_delete_true)
+        }
         sportSearchHistoryTag.adapter = getSearchTagAdapter()
         sportSearchHistoryTag.setOnTagClickListener(object : OnTagClickListener {
             override fun onTagClick(view: View?, position: Int, parent: FlowLayout?): Boolean {
@@ -161,6 +171,11 @@ class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::
             setHistoryLayoutVisible(true)
             sportSearchHistoryTag.adapter = getSearchTagAdapter()
             searchResultAdapter.setNewInstance(null)
+        }
+        if (searchHistoryList.isEmpty()) {
+            ivClear.setImageResource(R.drawable.ic_sports_search_delete_false)
+        } else {
+            ivClear.setImageResource(R.drawable.ic_sports_search_delete_true)
         }
     }
 
