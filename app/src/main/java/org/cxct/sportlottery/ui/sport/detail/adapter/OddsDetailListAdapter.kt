@@ -670,12 +670,13 @@ class OddsDetailListAdapter(
              * */
 
             //有特別的玩法標題會需要調整, 避免View重用導致其他標題也被改動到特別樣式
-            tvGameName?.isAllCaps = true
+            tvGameName?.isAllCaps = false
             tvGameName?.setLineSpacing(0f, 1f)
 
             when (sportCode) {
                 GameType.BK -> {
                     tvGameName?.text = when {
+                        oddsDetail.gameType.isEndScoreType()->tvGameName?.context?.let { getTitleNormal(oddsDetail) }
                         oddsDetail.gameType.contains("-SEG") || oddsDetail.gameType.contains(
                             "-1ST"
                         ) || oddsDetail.gameType.contains(
@@ -1462,19 +1463,22 @@ class OddsDetailListAdapter(
             if (oddsDetail.gameType.isEndScoreType()) {
                 //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
                 itemView.lin_match.isVisible = false
-                oddsDetail.oddArrayList.first()?.let {
-                    Spanny(itemView.context.getString(R.string.N888)).append(
-                        " @", ForegroundColorSpan(itemView.context.getColor(R.color.color_025BE8))
-                    ).append(
-                        getOdds(it, oddsType).toString(),
-                        ForegroundColorSpan(itemView.context.getColor(R.color.color_025BE8)),
-                        CustomTypefaceSpan(
-                            "din_bold.ttf", Typeface.DEFAULT_BOLD
-                        )
-                    ).let {
-                        tvGameName?.text = it
-                    }
-                }
+//                if (oddsDetail.gameType==PlayCate.FS_LD_CS.value){
+//
+//                }
+//                oddsDetail.oddArrayList.first()?.let {
+//                    Spanny(itemView.context.getString(R.string.N888)).append(
+//                        " @", ForegroundColorSpan(itemView.context.getColor(R.color.color_025BE8))
+//                    ).append(
+//                        getOdds(it, oddsType).toString(),
+//                        ForegroundColorSpan(itemView.context.getColor(R.color.color_025BE8)),
+//                        CustomTypefaceSpan(
+//                            "din_bold.ttf", Typeface.DEFAULT_BOLD
+//                        )
+//                    ).let {
+//                        tvGameName?.text = it
+//                    }
+//                }
 //                Timber.d("===洗刷刷3 index:${12} payloads:${payloads?.size}")
                 rvBet?.let { it1 ->
                     if (isFirstRefresh || it1.adapter == null) {
