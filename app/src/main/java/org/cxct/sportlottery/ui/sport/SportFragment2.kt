@@ -36,7 +36,7 @@ import org.cxct.sportlottery.util.FragmentHelper2
 import org.cxct.sportlottery.util.phoneNumCheckDialog
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Binding>() {
 
@@ -55,7 +55,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     private inline fun getMainTabActivity() = activity as MainTabActivity
     private val fragmentHelper by lazy { FragmentHelper2(childFragmentManager, R.id.fl_content) }
     private val footView by lazy { SportFooterGamesView(binding.root.context) }
-    private val mianViewModel: OKGamesViewModel by sharedViewModel()
+    private val mianViewModel: OKGamesViewModel by viewModel()
 
     private var jumpMatchType: MatchType? = null
     private var jumpGameType: GameType? = null
