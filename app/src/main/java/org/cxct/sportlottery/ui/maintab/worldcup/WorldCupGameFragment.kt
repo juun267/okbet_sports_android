@@ -13,6 +13,7 @@ import com.gyf.immersionbar.ImmersionBar
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.event.MenuEvent
+import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.FragmentWorldcupBinding
 import org.cxct.sportlottery.databinding.FragmentWorldcupGameBinding
 import org.cxct.sportlottery.network.Constants
@@ -34,8 +35,7 @@ class WorldCupGameFragment : BaseBottomNavigationFragment<MainHomeViewModel>(Mai
 
 
     private lateinit var binding: FragmentWorldcupGameBinding
-
-
+    private val loadingHolder by lazy { Gloading.wrapView(binding.okWebView) }
     private inline fun mainTabActivity() = activity as MainTabActivity
 
     override fun createRootView(
@@ -64,18 +64,15 @@ class WorldCupGameFragment : BaseBottomNavigationFragment<MainHomeViewModel>(Mai
     var isInitedWeb = false
     private fun initWeb() =binding.okWebView.run {
         isInitedWeb = true
-        setOnTouchListener { view, p1 ->
-            (view as WebView).requestDisallowInterceptTouchEvent(true)
-            false
-        }
         webChromeClient = object : OkWebChromeClient(){}
         webViewClient = object : OkWebViewClient(object : WebViewCallBack {
 
             override fun pageStarted(view: View?, url: String?) {
+                loadingHolder.showLoading()
             }
 
             override fun pageFinished(view: View?, url: String?) {
-                binding.okWebView.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                loadingHolder.showLoadSuccess()
             }
 
             override fun onError() {

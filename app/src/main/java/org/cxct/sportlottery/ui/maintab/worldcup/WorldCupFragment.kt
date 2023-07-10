@@ -14,6 +14,7 @@ import com.gyf.immersionbar.ImmersionBar
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.event.MenuEvent
+import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.FragmentWorldcupBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.common.MatchType
@@ -35,7 +36,7 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
 
 
     private lateinit var binding: FragmentWorldcupBinding
-
+    private val loadingHolder by lazy { Gloading.wrapView(binding.okWebView) }
     private inline fun mainTabActivity() = activity as MainTabActivity
 
     override fun createRootView(
@@ -68,11 +69,11 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
         webViewClient = object : OkWebViewClient(object : WebViewCallBack {
 
             override fun pageStarted(view: View?, url: String?) {
-                loading()
+                loadingHolder.showLoading()
             }
 
             override fun pageFinished(view: View?, url: String?) {
-                hideLoading()
+                loadingHolder.showLoadSuccess()
             }
             override fun onError() {
             }
@@ -119,7 +120,6 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
         binding.okWebView.onPause()
     }
     private fun pauseWebVideo() {
-        hideLoading()
         try {
             binding.okWebView.loadUrl("javascript:window._player.stop()")
         } catch (e: Exception) {
@@ -185,7 +185,7 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
        fun toNewPage(url: String,title: String,inApp: Boolean) {
            LogUtil.d("toNewPage=$url")
            if (inApp){
-               JumpUtil.toInternalWeb(fragment.requireContext(),Constants.getH5BaseUrl()+url.replaceFirst("/",""),title)
+               JumpUtil.toInternalWeb(fragment.requireContext(),url,title)
            }else{
                JumpUtil.toExternalWeb(fragment.requireContext(),url)
            }
