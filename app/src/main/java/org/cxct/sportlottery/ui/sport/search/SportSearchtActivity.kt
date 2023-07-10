@@ -42,7 +42,7 @@ class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::
             gravity = Gravity.CENTER_HORIZONTAL
             setTextColor(getColor(R.color.color_6C7BA8_A7B2C4))
             setBackgroundColor(getColor(R.color.color_F2F5FA))
-            setText(R.string.no_data)
+            setText(R.string.N111)
             textSize = 12f
         }
     }
