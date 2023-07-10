@@ -58,7 +58,7 @@ class WorldCupGameFragment : BaseBottomNavigationFragment<MainHomeViewModel>(Mai
         homeToolbar.setBackgroundResource(R.drawable.bg_title_fiba_game)
         homeToolbar.ivMenuLeft.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
-            mainTabActivity().showMainLeftMenu(this@WorldCupGameFragment.javaClass)
+            mainTabActivity().showMainLeftMenu(null)
         }
     }
     var isInitedWeb = false
