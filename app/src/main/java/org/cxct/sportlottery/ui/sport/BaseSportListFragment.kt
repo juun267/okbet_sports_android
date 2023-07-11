@@ -52,7 +52,6 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     open fun getCurGameType() = GameType.getGameType(gameType) ?: GameType.ALL
     protected var gameType: String = GameType.BK.key
 
-    var offsetScrollListener: ((Double) -> Unit)? = null
     protected val gameTypeAdapter by lazy { GameTypeAdapter2(::onGameTypeChanged) }
     private val loadingHolder by lazy { Gloading.wrapView(binding.gameList) }
 
@@ -174,10 +173,6 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
 
     private fun initToolbar()  = binding.run {
         ivArrow.bindExpanedAdapter(getGameListAdapter()) { resubscribeChannel(320) }
-        appbarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
-            offsetScrollListener?.invoke((-verticalOffset) / Math.max(1.0, appbarLayout.measuredHeight.toDouble()))
-        })
-
         ivFilter.setOnClickListener {
             if (TextUtils.isEmpty(gameType)) {
                 return@setOnClickListener
@@ -328,7 +323,6 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     override fun onDestroyView() {
         super.onDestroyView()
         clearData()
-        offsetScrollListener = null
     }
 
     open fun setSelectMatchIds(matchIdList: ArrayList<String>) {
