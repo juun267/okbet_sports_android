@@ -67,11 +67,11 @@ class GameCategroyAdapter(
         tvMore.isVisible = moreEnable
         ivBackPage.isVisible = moreEnable
         ivForwardPage.isVisible = moreEnable
-//        ivMore.isVisible = moreEnable
         ivIcon.load(item.icon)
         tvName.text = item.categoryName
 
         val childAdapter = rvGameItem.adapter as GameChildAdapter
+        childAdapter.isMoreThan18=item.isMoreThan18
         changeData(rvGameItem.adapter as GameChildAdapter, item, binding)
         //获得总页数
         childAdapter.totalPage = item.gameList!!.size / childAdapter.itemSize

@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.games
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.FragmentAllOkgamesBinding
 import org.cxct.sportlottery.databinding.ItemGameCategroyBinding
@@ -23,10 +21,8 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
-import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 import org.cxct.sportlottery.view.onClick
 
 // OkGames所有分类
@@ -125,6 +121,10 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                     //最多显示18个
                     if (gameList.size > 18) {
                         category.gameList=gameList.subList(0, 18)
+                        //标识是否大于18个
+                        category.isMoreThan18=true
+                    }else{
+                        category.isMoreThan18=false
                     }
                 }
                 !category.gameList.isNullOrEmpty()
@@ -143,6 +143,9 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 //最多显示18个
                 if (gameList.size > 18) {
                     list=list.subList(0, 18)
+                    collectGameAdapter?.isMoreThan18=true
+                }else{
+                    collectGameAdapter?.isMoreThan18=false
                 }
             }
             setCollectList(list)
@@ -178,7 +181,6 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             collectGameAdapter?.let { adapter ->
                 //添加收藏或者移除
                 adapter.removeOrAdd(result.second)
-                initCollectAdapterPage(adapter.data)
                 binding.includeGamesAll.inclueCollect.root.isGone = adapter.data.isNullOrEmpty()
                 setItemMoreVisiable(binding.includeGamesAll.inclueCollect, adapter.dataCount() > 6)
             }
@@ -198,6 +200,9 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 //最多显示18个
                 if (gameList.size > 18) {
                     tempRecentList=list.subList(0, 18)
+                    recentGameAdapter?.isMoreThan18=true
+                }else{
+                    recentGameAdapter?.isMoreThan18=false
                 }
             }
 
