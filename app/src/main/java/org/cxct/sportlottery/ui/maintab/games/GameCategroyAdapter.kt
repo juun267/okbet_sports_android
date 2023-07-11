@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.load
@@ -15,6 +16,7 @@ import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.common.adapter.BindingVH
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 import org.cxct.sportlottery.view.onClick
@@ -37,7 +39,7 @@ class GameCategroyAdapter(
         vh.vb.rvGameItem.run {
             setRecycledViewPool(gameItemViewPool)
             layoutManager = GridLayoutManager(context, 3)
-            addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_10))
+            addItemDecoration(GridSpacingItemDecoration(3, 10.dp, false))
             adapter = GameChildAdapter(onFavoriate = { view, gameBean ->
                 clickCollect.invoke(view, gameBean)
             }).apply {
