@@ -153,7 +153,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             }
 
             override fun onTabClick(position: Int) {
-                showChatWebView(position == 0)
+
             }
         }
     }
@@ -175,7 +175,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         super.onCreate(savedInstanceState)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         setContentView(binding.root)
-        AndroidBug5497Workaround.assistActivity(this)
         initData()
         initToolBar()
         initUI()
@@ -195,6 +194,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
 
     override fun initToolBar() {
+        setStatusbar(R.color.color_FFFFFF,true)
         iv_back.setOnClickListener {
             if (live_view_tool_bar.isFullScreen) {
                 live_view_tool_bar.showFullScreen(false)
@@ -210,8 +210,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         live_view_tool_bar.gone()
                         live_view_tool_bar.release()
                         collaps_toolbar.gone()
-                        releaseWebView()
-                        showChatWebView(false)
                         setScrollEnable(true)
                     }
                 }
@@ -297,9 +295,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             it.rotationAnimation(it.rotation + 720f, 1000) { it.isEnabled = true}
         }
 
-        ImmersionBar.with(this).fitsSystemWindows(false).statusBarDarkFont(true)
-            .transparentStatusBar().hideBar(BarHide.FLAG_HIDE_NAVIGATION_BAR).init()
-
         app_bar_layout.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
             override fun onStateChanged(appBarLayout: AppBarLayout?, state: State?) {
                 if (state === State.COLLAPSED) {
@@ -323,21 +318,17 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             lin_center.isVisible = false
             llToolBar.gone()
             vpContainer.isVisible = false
-            v_statusbar.gone()
             live_view_tool_bar.isVisible = true
             collaps_toolbar.isVisible = false
             clToolContent.gone()
-            detailLayout.gone()
             app_bar_layout.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
             setScrollEnable(false)
         } else {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
             lin_center.isVisible = true
             llToolBar.visible()
-            v_statusbar.visible()
             vpContainer.isVisible = false
             live_view_tool_bar.isVisible = true
-            detailLayout.visible()
             clToolContent.visible()
             collaps_toolbar.isVisible = true
             app_bar_layout.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
@@ -379,91 +370,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
     }
 
-    fun setupAnalyze(matchId: String) {
-        initAnalyzeWV()
-        wv_analyze.apply {
-            settings.javaScriptEnabled = true
 
-            webViewClient = WebViewClient()
-
-            sConfigData?.analysisUrl?.replace(
-                "{lang}",
-                if (LanguageManager.getSelectLanguage(this@SportDetailActivity).key == LanguageManager.Language.PHI.key) {
-                    LanguageManager.Language.EN.key
-                } else {
-                    LanguageManager.getSelectLanguage(this@SportDetailActivity).key
-                }
-            )
-
-                ?.replace("{eventId}", matchId)?.let {
-                    loadUrl(it)
-                }
-            setWebViewCommonBackgroundColor()
-        }
-    }
-
-
-    private lateinit var wv_chat: WebView
-    private lateinit var wv_analyze: WebView
-
-    private fun initChatWV() {
-        if (!::wv_chat.isInitialized) {
-            wv_chat = WebView(this)
-            val lp = FrameLayout.LayoutParams(-1, 60.dp)
-            lp.gravity = Gravity.BOTTOM
-            detailLayout.addView(wv_chat, lp)
-        }
-    }
-
-    fun setupInput() {
-        if (matchInfo?.roundNo.isNullOrEmpty()) {
-            showChatWebView(false)
-            return
-        }
-        if (sConfigData?.liveChatOpen == 0) {
-            showChatWebView(false)
-            return
-        }
-
-        initChatWV()
-        wv_chat.apply {
-            settings.apply {
-                javaScriptEnabled = true
-                useWideViewPort = true
-                displayZoomControls = false
-                textZoom = 100
-                loadWithOverviewMode = true
-            }
-            setWebViewCommonBackgroundColor()
-            webViewClient = WebViewClient()
-            addJavascriptInterface(
-                JavaScriptObject(this@SportDetailActivity), "__oi"
-            )
-            webViewClient = object : WebViewClient() {
-                override fun shouldOverrideUrlLoading(
-                    view: WebView?,
-                    request: WebResourceRequest?,
-                ): Boolean {
-                    return true
-                }
-
-                override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                    super.onPageStarted(view, url, favicon)
-                }
-
-                override fun onPageFinished(view: WebView, url: String?) {
-                    super.onPageFinished(view, url)
-                }
-            }
-        }
-        if (viewModel.isLogin.value == true) {
-            viewModel.loginLive()
-        } else {
-            sConfigData?.liveChatHost?.let { host ->
-                loginChat(host, null)
-            }
-        }
-    }
 
     private fun setupLiveView(liveVideo: Int?) {
         with(live_view_tool_bar) {
@@ -477,7 +384,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             builder.append("device=android")
             builder.append("&lang=" + LanguageManager.getSelectLanguage(this).key)
             LogUtil.d("builder=$builder")
-            wv_chat.loadUrl(builder.toString())
+//            wv_chat.loadUrl(builder.toString())
         } else {
             var builder = StringBuilder("$host?")
             builder.append("room=" + matchInfo?.roundNo)
@@ -487,78 +394,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             builder.append("&device=android")
             builder.append("&lang=" + LanguageManager.getSelectLanguage(this).key)
             LogUtil.d("builder=$builder")
-            wv_chat.loadUrl(builder.toString())
+//            wv_chat.loadUrl(builder.toString())
         }
         Log.d("hjq", "loginChat=" + host)
     }
 
-    fun showChatWebView(visible: Boolean) {
-        if (visible) {
-            initChatWV()
-            wv_chat.isVisible = true
-        } else {
-            if (::wv_chat.isInitialized) {
-                wv_chat.isVisible = false
-            }
-        }
-    }
-
-    fun updateWebHeight(onMini: Boolean) {
-        wv_chat.post {
-            var lp = wv_chat.layoutParams
-            lp.height = if (onMini) 60.dp else ConstraintLayout.LayoutParams.MATCH_PARENT
-            wv_chat.layoutParams = lp
-        }
-
-    }
-
-    private fun initAnalyzeWV() {
-        if (!::wv_analyze.isInitialized) {
-            wv_analyze = WebView(this)
-            wv_analyze.isNestedScrollingEnabled = false
-            ns_analyze.addView(wv_analyze, FrameLayout.LayoutParams(-1, -1))
-        }
-    }
-
-    private fun releaseWebView() {
-        if (::wv_analyze.isInitialized) {
-            wv_analyze.destroy()
-        }
-        if (::wv_chat.isInitialized) {
-            wv_chat.destroy()
-        }
-    }
-
-
-    //注入JavaScript的Java类
-    inner class JavaScriptObject(val activity: SportDetailActivity) {
-        @JavascriptInterface
-        fun notify2arg(action: String, data: Boolean) {
-            LogUtil.d("notify2arg=" + action + "," + data)
-            when (action) {
-                "onMini" -> {
-                    activity.runOnUiThread {
-                        activity.onMini = data
-                        updateWebHeight(data)
-                        activity.setUpBetBarVisible()
-                    }
-                }
-
-                "onEmoji" -> {
-                    activity.runOnUiThread {
-                        activity.showEmoji = data
-                        activity.setUpBetBarVisible()
-                    }
-                }
-
-                "requireLogin" -> {
-                    activity.runOnUiThread {
-                        activity.startLogin()
-                    }
-                }
-            }
-        }
-    }
 
     override fun initMenu() {
     }
@@ -809,7 +649,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     override fun onDestroy() {
         super.onDestroy()
-        releaseWebView()
         viewModel.clearLiveInfo()
         live_view_tool_bar.release()
         delayObserver?.let { binding.root.removeCallbacks(it) }
@@ -871,10 +710,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 oddsDetailListAdapter?.notifyDataSetChanged()
             }
         }
-        matchInfo?.id?.let {
-            setupAnalyze(it)
-            setupInput()
-        }
         isShowOdd(true)
 //        initAnim()
 
@@ -915,7 +750,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
 
         viewModel.isLogin.observe(this) {
-            setupInput()
+
         }
 
         viewModel.notifyLogin.observe(this) {
@@ -1090,7 +925,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             collaps_toolbar.isVisible = true
             vpContainer.isVisible = false
             live_view_tool_bar.showLive()
-            showChatWebView(true)
         }
     }
 
@@ -1115,7 +949,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
 //        btn_analyze.setTextColor(if (!isShowOdd) selectColor else nomalColor)
 //        viewBtnAnalyze.isVisible = !isShowOdd
-        ns_analyze.isVisible = !isShowOdd
 
     }
 

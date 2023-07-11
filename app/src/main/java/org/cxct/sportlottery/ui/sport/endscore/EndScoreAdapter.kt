@@ -91,7 +91,6 @@ class EndScoreAdapter(val onItemClick:(Int, View, BaseNode) -> Unit)
         oddsChangeEvent.playCateNameMap?.let { matchOdd.playCateNameMap!!.putAll(it) }
         SocketUpdateUtil.sortOdds(matchOdd)
         matchOdd.updateOddStatus()
-        LogUtil.d(matchOdd.matchInfo?.id+","+matchOdd.oddIdsMap.keys)
         notifyDataSetChanged()
         return true
     }

@@ -1083,27 +1083,16 @@ class OddsDetailListAdapter(
                 else -> oneList(oddsDetail)
             }
 
-            for (element in oddsDetail.typeCodes) {
-                //有特優賠率時常駐顯示 需求 先隱藏特優賠率
-                if (viewType == PlayCate.EPS.ordinal) {
-                    setVisibility(false)
-                } else {
-                    try {
-                        if (element == code) {
-                            setVisibility(true)
-                            break
-                        } else {
-                            setVisibility(false)
-                        }
-                    } catch (e: Exception) {
-                        setVisibility(true)
-                    }
-                }
+            if(oddsDetail.typeCodes.contains(code)){
+                setVisibility(true)
+            }else{
+                setVisibility(false)
             }
             //当玩法为末位比分的时候不需要显示置顶
             if (oddsDetail.isPin && code != MatchType.END_SCORE.postValue) {
                 setVisibility(true)
             }
+
         }
 
         private fun getTitle(
