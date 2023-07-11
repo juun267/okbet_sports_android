@@ -214,8 +214,7 @@ class FavoriteAdapter(private val matchType: MatchType) :
             payloads.forEach {
                 when (it) {
                     is LeagueOdd -> {
-                        val leagueOdd = payloads.first() as LeagueOdd
-                        (holder as FavoriteAdapter.ItemViewHolder).update(leagueOdd,
+                        (holder as FavoriteAdapter.ItemViewHolder).update(it,
                             matchType,
                             oddsType)
                     }
