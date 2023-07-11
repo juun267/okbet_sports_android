@@ -120,6 +120,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
 //            }
 //        }
         iv_live_close.setOnClickListener {
+            release()
             liveToolBarListener?.let {
                 it.onClose()
             }
@@ -343,7 +344,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     fun release() {
         releasePlayer()
         viewBinding.webView.stopLoading()
-        viewBinding.webView.clearCache(false)
+        viewBinding.webView.clearCache(true)
     }
 
     fun showFullScreen(fullScreen: Boolean) {

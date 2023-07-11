@@ -211,8 +211,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     } else {
                         selectMenuTab(-1)
                         vpContainer.visible()
-                        live_view_tool_bar.gone()
                         live_view_tool_bar.release()
+                        live_view_tool_bar.gone()
                         collaps_toolbar.gone()
                         releaseWebView()
                         showChatWebView(false)
