@@ -69,7 +69,7 @@ class GameChildAdapter(private val onFavoriate: (View, OKGameBean) -> Unit,
             root.setOnClickListener { getOnItemClickListener()?.onItemClick(this@GameChildAdapter, root, position) }
 
 
-            if(position==itemSize-1&&itemIndex==totalPage){
+            if(position==itemSize-1&&itemIndex==3){
                 blurCard.visible()
             }else{
                 blurCard.gone()

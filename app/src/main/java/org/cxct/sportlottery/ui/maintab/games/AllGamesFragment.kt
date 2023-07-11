@@ -135,10 +135,9 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         }
 
         collectList.observe(viewLifecycleOwner) {
-            if (!it.first && collectGameAdapter?.dataCount() ?: 0 > 0) { //如果当前收藏列表可见，切收藏列表不为空则走全部刷新逻辑（走单挑刷新逻辑）
-                return@observe
-            }
-
+//            if ( collectGameAdapter?.dataCount() ?: 0 > 0) { //如果当前收藏列表可见，切收藏列表不为空则走全部刷新逻辑（走单挑刷新逻辑）
+//                return@observe
+//            }
             var list = it.second
             list.let { gameList->
                 //最多显示18个
@@ -179,7 +178,6 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             collectGameAdapter?.let { adapter ->
                 //添加收藏或者移除
                 adapter.removeOrAdd(result.second)
-                adapter.itemIndex=1
                 initCollectAdapterPage(adapter.data)
                 binding.includeGamesAll.inclueCollect.root.isGone = adapter.data.isNullOrEmpty()
                 setItemMoreVisiable(binding.includeGamesAll.inclueCollect, adapter.dataCount() > 6)
