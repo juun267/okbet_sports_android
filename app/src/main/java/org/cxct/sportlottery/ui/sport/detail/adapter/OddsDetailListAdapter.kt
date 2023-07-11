@@ -1081,27 +1081,16 @@ class OddsDetailListAdapter(
                 else -> oneList(oddsDetail)
             }
 
-            for (element in oddsDetail.typeCodes) {
-                //有特優賠率時常駐顯示 需求 先隱藏特優賠率
-                if (viewType == PlayCate.EPS.ordinal) {
-                    setVisibility(false)
-                } else {
-                    try {
-                        if (element == code) {
-                            setVisibility(true)
-                            break
-                        } else {
-                            setVisibility(false)
-                        }
-                    } catch (e: Exception) {
-                        setVisibility(true)
-                    }
-                }
+            if(oddsDetail.typeCodes.contains(code)){
+                setVisibility(true)
+            }else{
+                setVisibility(false)
             }
             //当玩法为末位比分的时候不需要显示置顶
             if (oddsDetail.isPin && code != MatchType.END_SCORE.postValue) {
                 setVisibility(true)
             }
+
         }
 
         private fun getTitle(
@@ -1477,11 +1466,11 @@ class OddsDetailListAdapter(
 //                Timber.d("===洗刷刷3 index:${12} payloads:${payloads?.size}")
                 rvBet?.let { it1 ->
                     if (isFirstRefresh || it1.adapter == null) {
-                        it1.adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, oddsType)
+                        it1.layoutManager = GridLayoutManager(itemView.context, 4)
                         if (it1.itemDecorationCount==0) {
                             it1.addItemDecoration(GridSpacingItemDecoration(4,4.dp,false))
                         }
-                        it1.layoutManager = GridLayoutManager(itemView.context, 4)
+                        it1.adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, oddsType)
                         isFirstRefresh = false
                     }
 

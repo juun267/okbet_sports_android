@@ -23,14 +23,10 @@ class TabCateAdapter(private val onItemSelectedListener: OnItemSelectedListener)
             notifyDataSetChanged()
         }
 
-    private var oldPosition: Int = 0
-
     var selectedPosition: Int = 0
         set(value) {
             field = value
-            notifyItemChanged(oldPosition)
-            notifyItemChanged(value)
-            oldPosition = value
+            notifyDataSetChanged()
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TabCateViewHolder {

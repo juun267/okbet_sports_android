@@ -4,23 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <View
-        android:id="@+id/v_statusbar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/margin_40"
-        android:background="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <LinearLayout
         android:id="@+id/llToolBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tool_bar_height"
         android:background="@color/white"
         android:gravity="center_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/v_statusbar">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/iv_back"
@@ -79,6 +69,8 @@
                 android:id="@+id/toolbar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                android:minHeight="?actionBarSize"
                 app:contentScrim="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
@@ -262,85 +254,12 @@
                 android:layout_height="wrap_content"
                 android:background="@color/color_191919_FCFCFC"
                 android:orientation="vertical"
-                android:visibility="visible"
-               >
-
-                <!--                <androidx.constraintlayout.widget.ConstraintLayout-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="40dp">-->
-
-                <!--                    <View-->
-                <!--                        android:layout_width="match_parent"-->
-                <!--                        android:layout_height="1dp"-->
-                <!--                        android:background="@color/color_E3E8EE"-->
-                <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-                <!--                        app:layout_constraintLeft_toLeftOf="parent" />-->
-
-                <!--                    <TextView-->
-                <!--                        android:id="@+id/btn_odd"-->
-                <!--                        android:layout_width="0dp"-->
-                <!--                        android:layout_height="match_parent"-->
-                <!--                        android:gravity="center"-->
-                <!--                        android:text="@string/betting"-->
-                <!--                        android:textColor="@color/main_tab_text_selector"-->
-                <!--                        android:textSize="14sp"-->
-                <!--                        android:textStyle="bold"-->
-                <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-                <!--                        app:layout_constraintLeft_toLeftOf="parent"-->
-                <!--                        app:layout_constraintRight_toRightOf="@+id/iv_center"-->
-                <!--                        app:layout_constraintTop_toTopOf="parent" />-->
-
-                <!--                    <View-->
-                <!--                        android:id="@+id/viewBtOdd"-->
-                <!--                        android:layout_width="62dp"-->
-                <!--                        android:layout_height="2dp"-->
-                <!--                        android:background="@drawable/bg_radius_2_025be8"-->
-                <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-                <!--                        app:layout_constraintLeft_toLeftOf="parent"-->
-                <!--                        app:layout_constraintRight_toRightOf="@+id/iv_center" />-->
-
-                <!--                    <ImageView-->
-                <!--                        android:id="@+id/iv_center"-->
-                <!--                        android:layout_width="1dp"-->
-                <!--                        android:layout_height="24dp"-->
-                <!--                        android:background="@color/color_E3E8EE"-->
-                <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-                <!--                        app:layout_constraintLeft_toLeftOf="parent"-->
-                <!--                        app:layout_constraintRight_toRightOf="parent"-->
-                <!--                        app:layout_constraintTop_toTopOf="parent" />-->
-
-                <!--                    <TextView-->
-                <!--                        android:id="@+id/btn_analyze"-->
-                <!--                        android:layout_width="0dp"-->
-                <!--                        android:layout_height="match_parent"-->
-                <!--                        android:gravity="center"-->
-                <!--                        android:text="@string/match_analyze"-->
-                <!--                        android:textColor="@color/color_6C7BA8"-->
-                <!--                        android:textSize="14sp"-->
-                <!--                        android:textStyle="bold"-->
-                <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-                <!--                        app:layout_constraintLeft_toLeftOf="@+id/iv_center"-->
-                <!--                        app:layout_constraintRight_toRightOf="parent"-->
-                <!--                        app:layout_constraintTop_toTopOf="parent" />-->
-
-                <!--                    <View-->
-                <!--                        android:id="@+id/viewBtnAnalyze"-->
-                <!--                        android:layout_width="62dp"-->
-                <!--                        android:layout_height="2dp"-->
-                <!--                        android:background="@drawable/bg_radius_2_025be8"-->
-                <!--                        android:visibility="gone"-->
-                <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-                <!--                        app:layout_constraintLeft_toLeftOf="@+id/iv_center"-->
-                <!--                        app:layout_constraintRight_toRightOf="parent" />-->
-
-                <!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
-
+                android:visibility="visible">
 
                 <LinearLayout
                     android:id="@+id/lin_categroy"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/margin_40"
-                    android:elevation="@dimen/margin_2"
+                    android:layout_height="37dp"
                     android:background="@drawable/bg_sport_detail_categroy">
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -348,7 +267,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        android:layout_marginHorizontal="@dimen/margin_8"
+                        android:layout_marginHorizontal="@dimen/margin_10"
                         android:layout_weight="1"
                         android:orientation="horizontal"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -372,27 +291,14 @@
             </LinearLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <FrameLayout
-            android:id="@+id/detailLayout"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_detail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_detail"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                tools:listitem="@layout/content_odds_detail_list_group_4_item" />
-
-            <androidx.core.widget.NestedScrollView
-                android:id="@+id/ns_analyze"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone" />
-
-        </FrameLayout>
-
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="3"
+            tools:listitem="@layout/content_odds_detail_list_group_4_item" />
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:visibility="visible"
@@ -405,14 +311,11 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-
-    <!--    <include-->
-    <!--        android:id="@+id/cl_bet_list_bar"-->
-    <!--        layout="@layout/bet_bar_layout"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="@dimen/bet_list_bar_height"-->
-    <!--        android:visibility="visible"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent" />-->
+    <org.cxct.sportlottery.view.DetailSportGuideView
+        android:id="@+id/dsgView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
     <org.cxct.sportlottery.view.ParlayFloatingWindow
         android:id="@+id/parlayFloatWindow"
