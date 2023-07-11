@@ -125,7 +125,7 @@ class GameCategroyAdapter(
 
 
         if (positionEnd > item.gameList!!.size) {
-            adapter.setList(item.gameList!!.toMutableList())
+            adapter.setList(item.gameList!!.toMutableList().subList(positionStart, item.gameList!!.size))
         } else {
             adapter.setList(item.gameList!!.toMutableList().subList(positionStart, positionEnd))
         }
