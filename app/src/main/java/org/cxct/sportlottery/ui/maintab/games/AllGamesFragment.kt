@@ -125,6 +125,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                     //最多显示18个
                     if (gameList.size > 18) {
                         category.gameList=gameList.subList(0, 18)
+                        //标识是否大于18个
+                        category.isMoreThan18=true
                     }
                 }
                 !category.gameList.isNullOrEmpty()
@@ -178,7 +180,6 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             collectGameAdapter?.let { adapter ->
                 //添加收藏或者移除
                 adapter.removeOrAdd(result.second)
-                initCollectAdapterPage(adapter.data)
                 binding.includeGamesAll.inclueCollect.root.isGone = adapter.data.isNullOrEmpty()
                 setItemMoreVisiable(binding.includeGamesAll.inclueCollect, adapter.dataCount() > 6)
             }
