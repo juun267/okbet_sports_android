@@ -200,8 +200,9 @@ class SportToolBarTopFragment :
     private fun setVbScoreText(matchInfo: MatchInfo) {
         setScoreTextAtFront(matchInfo)
         setAllScoreTextAtBottom(matchInfo)
+        setPointScore(matchInfo)
         setSptText(matchInfo)
-        setCurrentPeroid(matchInfo)
+//        setCurrentPeroid(matchInfo)
         setAttack(matchInfo)
     }
 
@@ -210,15 +211,16 @@ class SportToolBarTopFragment :
         setAllScoreTextAtBottom(matchInfo)
         setPointScore(matchInfo)
         setSptText(matchInfo)
-        setCurrentPeroid(matchInfo)
+//        setCurrentPeroid(matchInfo)
         setAttack(matchInfo)
     }
 
     private fun setBmScoreText(matchInfo: MatchInfo) {
         setScoreTextAtFront(matchInfo)
         setAllScoreTextAtBottom(matchInfo)
+        setPointScore(matchInfo)
         setSptText(matchInfo)
-        setCurrentPeroid(matchInfo)
+//        setCurrentPeroid(matchInfo)
         setAttack(matchInfo)
     }
 
@@ -227,7 +229,7 @@ class SportToolBarTopFragment :
             setScoreTextAtFront(matchInfo)
             setAttack(matchInfo)
             setBBStatus(matchInfo)
-            setCurrentPeroid(matchInfo)
+//            setCurrentPeroid(matchInfo)
         } else setBkScoreText(matchInfo)
     }
 
@@ -277,11 +279,26 @@ class SportToolBarTopFragment :
     }
 
     /**
+     * 排球，兵乓球，羽球 小节分累加
      * 网球设置局比分显示
      */
     private fun setPointScore(matchInfo: MatchInfo) {
-        tv_point_score.isVisible = TimeUtil.isTimeInPlay(matchInfo.startTime)
-        tv_point_score.text = "(${matchInfo.homePoints.toStringS("0")}-${matchInfo.awayPoints.toStringS("0")})"
+        when(matchInfo.gameType){
+            GameType.VB.key,GameType.TT.key,GameType.BM.key->{
+                tv_point_score.isVisible = TimeUtil.isTimeInPlay(matchInfo.startTime)
+                if(matchInfo.matchStatusList.isNullOrEmpty()){
+                    tv_point_score.text=""
+                }else{
+                    val homePoints= matchInfo.matchStatusList?.sumOf { it.homeScore?:0 }
+                    val awayPoints= matchInfo.matchStatusList?.sumOf { it.awayScore?:0 }
+                    tv_point_score.text = "(${homePoints}-${awayPoints})"
+                }
+            }
+            GameType.TN.key->{
+                tv_point_score.isVisible = TimeUtil.isTimeInPlay(matchInfo.startTime)
+                tv_point_score.text = "(${matchInfo.homePoints.toStringS("0")}-${matchInfo.awayPoints.toStringS("0")})"
+            }
+        }
     }
 
 
@@ -344,31 +361,31 @@ class SportToolBarTopFragment :
         return ""
     }
 
-    /**
-     * 设置当前盘数/局数/回合
-     * 网球显示 第x盘
-     * 其他球类显示 第x局
-     */
-    @SuppressLint("SetTextI18n")
-    private fun setCurrentPeroid(matchInfo: MatchInfo) {
-        if (matchInfo.socketMatchStatus == GameMatchStatus.HIDE_SCORE.value || matchInfo.matchStatusList.isNullOrEmpty()) {
-            with(tv_match_status) {
-                visibility = android.view.View.VISIBLE
-                text = matchInfo.statusName18n
-            }
-        } else {
-            matchInfo.matchStatusList?.let {
-                tv_match_status.visibility = View.VISIBLE
-                it.last().let {
-                    tv_match_status.text = (it.statusNameI18n?.get(
-                        LanguageManager.getSelectLanguage(context = activity).key
-                    ) ?: it.statusName) + setSptText(matchInfo)
-                }
-            }
-        }
-//        tv_toolbar_match_status.isVisible = tv_match_status.isVisible
-//        tv_toolbar_match_status.text = tv_match_status.text.trim()
-    }
+//    /**
+//     * 设置当前盘数/局数/回合
+//     * 网球显示 第x盘
+//     * 其他球类显示 第x局
+//     */
+//    @SuppressLint("SetTextI18n")
+//    private fun setCurrentPeroid(matchInfo: MatchInfo) {
+//        if (matchInfo.socketMatchStatus == GameMatchStatus.HIDE_SCORE.value || matchInfo.matchStatusList.isNullOrEmpty()) {
+//            with(tv_match_status) {
+//                visibility = android.view.View.VISIBLE
+//                text = matchInfo.statusName18n
+//            }
+//        } else {
+//            matchInfo.matchStatusList?.let {
+//                tv_match_status.visibility = View.VISIBLE
+//                it.last().let {
+//                    tv_match_status.text = (it.statusNameI18n?.get(
+//                        LanguageManager.getSelectLanguage(context = activity).key
+//                    ) ?: it.statusName) + setSptText(matchInfo)
+//                }
+//            }
+//        }
+////        tv_toolbar_match_status.isVisible = tv_match_status.isVisible
+////        tv_toolbar_match_status.text = tv_match_status.text.trim()
+//    }
 
     /**
      * 设置足球半场比分

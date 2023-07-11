@@ -311,7 +311,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                     BetListRefactorAdapter.BetRvType.PARLAY_SINGLE
                 refreshLlMoreOption()
                 binding.clTitle.tvClearAll.visible()
-                binding.clTitle.tvClose.text = getString(R.string. D039)
+                binding.clTitle.tvClose.text = getString(R.string.D039)
                 binding.clTitle.tvClose.setCompoundDrawablesWithIntrinsicBounds(ResourcesCompat.getDrawable(resources,R.drawable.ic_cart_collapse,null),null,null,null)
                 binding.lineShadow.visible()
             }
