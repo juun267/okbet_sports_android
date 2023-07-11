@@ -724,6 +724,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         if (bottom_navigation_view.currentItem != position) {
             bottom_navigation_view.currentItem = position
         }
+
     }
 
     fun jumpToESport() {
