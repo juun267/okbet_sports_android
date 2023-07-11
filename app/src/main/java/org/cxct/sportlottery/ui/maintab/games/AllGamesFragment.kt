@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
+import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.FragmentAllOkgamesBinding
@@ -24,6 +25,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 import org.cxct.sportlottery.view.onClick
 
@@ -144,20 +146,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                     list=list.subList(0, 18)
                 }
             }
-
-            collectGameAdapter?.let { adapter->
-                adapter.totalCount=list.size
-                adapter.totalPage=list.size/ adapter.itemSize
-                if (list.size % adapter.itemSize != 0) {
-                    adapter.totalPage += 1
-                }
-            }
-
-            if (list.isNotEmpty() && list.size > 6) {
-                setCollectList(list.subList(0, 6))
-            } else {
-                setCollectList(list)
-            }
+            setCollectList(list)
+            initCollectAdapterPage(list)
 
             binding.includeGamesAll.inclueCollect.run {
                 collectGameAdapter?.let { adapter->
@@ -189,8 +179,10 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             collectGameAdapter?.let { adapter ->
                 //添加收藏或者移除
                 adapter.removeOrAdd(result.second)
+                adapter.itemIndex=1
+                initCollectAdapterPage(adapter.data)
                 binding.includeGamesAll.inclueCollect.root.isGone = adapter.data.isNullOrEmpty()
-                setItemMoreVisiable(binding.includeGamesAll.inclueCollect, adapter.dataCount() > 3)
+                setItemMoreVisiable(binding.includeGamesAll.inclueCollect, adapter.dataCount() > 6)
             }
             //更新最近列表
             recentGameAdapter?.data?.forEachIndexed { index, okGameBean ->
@@ -217,14 +209,14 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 if (tempRecentList.size % it.itemSize != 0) {
                     it.totalPage += 1
                 }
-                changeData(it,  tempRecentList,  binding.includeGamesAll.inclueCollect)
+                changeData(it,  tempRecentList,  binding.includeGamesAll.inclueRecent)
             }
 
-            if (tempRecentList.size > 6) {
-                setRecent(list.subList(0, 6))
-            } else {
+//            if (tempRecentList.size > 6) {
+//                setRecent(list.subList(0, 6))
+//            } else {
                 setRecent(list)
-            }
+//            }
 
             binding.includeGamesAll.inclueRecent.run {
                 recentGameAdapter?.let { adapter->
@@ -260,6 +252,16 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     }
 
+    private fun initCollectAdapterPage(list:List<OKGameBean>){
+        collectGameAdapter?.let { adapter->
+            adapter.totalCount=list.size
+            adapter.totalPage=list.size/ adapter.itemSize
+            if (list.size % adapter.itemSize != 0) {
+                adapter.totalPage += 1
+            }
+            changeData(adapter,  list, binding.includeGamesAll.inclueCollect)
+        }
+    }
     private fun onBindGamesView() = binding.includeGamesAll.run {
         rvGamesAll.setLinearLayoutManager()
         rvGamesAll.adapter = gameAllAdapter
@@ -398,7 +400,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             gameTab.bindLabelName(tvName)
             rvGameItem.setRecycledViewPool(okGamesFragment().gameItemViewPool)
             rvGameItem.layoutManager = GridLayoutManager(context,3)
-            rvGameItem.addItemDecoration(SpaceItemDecoration(root.context, R.dimen.margin_10))
+            rvGameItem.addItemDecoration(GridSpacingItemDecoration(3, 10.dp, false))
             val gameAdapter = GameChildAdapter(onFavoriate = ::onCollectClick)
             gameAdapter.setOnItemClickListener { _, _, position ->
                 enterGame(gameAdapter.getItem(position))
@@ -425,11 +427,11 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
      */
     private fun setCollectList(collectList: List<OKGameBean>) {
         val emptyData = collectList.isNullOrEmpty()
-        setItemMoreVisiable(binding.includeGamesAll.inclueCollect, collectList.size > 3)
+        setItemMoreVisiable(binding.includeGamesAll.inclueCollect, collectList.size > 6)
         binding.includeGamesAll.inclueCollect.root.isGone = emptyData
-        if (!emptyData) {
-            collectGameAdapter?.setNewInstance(collectList?.toMutableList())
-        }
+//        if (!emptyData) {
+//            collectGameAdapter?.setNewInstance(collectList?.toMutableList())
+//        }
     }
 
 
@@ -437,13 +439,12 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
      * 设置最近游戏列表
      */
     private fun setRecent(recentList: List<OKGameBean>) {
-        setItemMoreVisiable(binding.includeGamesAll.inclueRecent, recentList.size > 3)
+        setItemMoreVisiable(binding.includeGamesAll.inclueRecent, recentList.size > 6)
         val emptyData = recentList.isNullOrEmpty()
         binding.includeGamesAll.inclueRecent.root.isGone = emptyData
-        if (!emptyData) {
-            recentGameAdapter?.setNewInstance(recentList?.toMutableList())
-
-        }
+//        if (!emptyData) {
+//            recentGameAdapter?.setNewInstance(recentList?.toMutableList())
+//        }
     }
 
     private fun changeData(
@@ -476,6 +477,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             adapter.setList(dataList.toMutableList().subList(positionStart, positionEnd))
         }
     }
+
+
 
     private fun setItemMoreVisiable(binding: ItemGameCategroyBinding, visisable: Boolean) {
 //        binding.ivMore.isVisible = visisable
