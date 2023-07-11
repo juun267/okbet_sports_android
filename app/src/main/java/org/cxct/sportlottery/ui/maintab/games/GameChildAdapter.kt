@@ -27,6 +27,7 @@ class GameChildAdapter(private val onFavoriate: (View, OKGameBean) -> Unit,
     val itemSize=6
     var totalPage = 0
     var totalCount=0
+    var isMoreThan18=false
     private var jumpMoreClick: () -> Unit = { }
     fun setJumpMoreClick(block:() -> Unit){
         jumpMoreClick=block
@@ -70,10 +71,16 @@ class GameChildAdapter(private val onFavoriate: (View, OKGameBean) -> Unit,
 
 
             if(position==itemSize-1&&itemIndex==3){
-                blurCard.visible()
+                if(isMoreThan18){
+                    blurCard.visible()
+                }else{
+                    blurCard.gone()
+                }
             }else{
                 blurCard.gone()
             }
+
+
 
             blurCard.onClick {
                 jumpMoreClick()
