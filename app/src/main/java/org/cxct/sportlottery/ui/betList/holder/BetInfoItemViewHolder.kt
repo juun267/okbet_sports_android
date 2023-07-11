@@ -437,15 +437,6 @@ class BetInfoItemViewHolder(
                     ) - 1
                 )
             }
-
-            PlayCate.FS_LD_CS.value -> {
-                "@ " + getOdds(
-                    itemData.matchOdd,
-                    currentOddsType,
-                    adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE
-                ).toInt().toString()
-            }
-
             else -> {
                 "@ " + TextUtil.formatForOdd(
                     getOdds(

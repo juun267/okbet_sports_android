@@ -26,7 +26,13 @@ enum class TestFlag(val index: Long) { NORMAL(0), GUEST(1), TEST(2) } //是否�
  * @see org.cxct.sportlottery.network.index.config.ConfigData.imageList
  * @see org.cxct.sportlottery.network.index.config.ImageData.imageType
  */
-enum class ImageType(val code: Int) { PROMOTION(5) }
+enum class ImageType(val code: Int) {
+    PROMOTION(5),
+    DIALOG_HOME(7),
+    DIALOG_SPORT(14),
+    DIALOG_OKGAME(16),
+    DIALOG_OKLIVE(-1),
+}
 
 /**
  * config 前端展示的盘口(handicapShow)類型

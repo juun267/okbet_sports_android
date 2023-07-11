@@ -60,13 +60,15 @@ class ProfileCenterViewModel(
         get() = _credentialCompleteResult
     private val _credentialCompleteResult = MutableLiveData<Event<CredentialCompleteResult?>>()
 
-    val userVerifiedType:LiveData<Event<Int?>>
+    val userVerifiedType: LiveData<Event<Int?>>
         get() = _userVerifiedType
-    private val _userVerifiedType =  MutableLiveData<Event<Int?>>()
+    private val _userVerifiedType = MutableLiveData<Event<Int?>>()
+
     //版本状态
     private val _appVersionState = MutableLiveData<AppVersionState>()
     val appVersionState: LiveData<AppVersionState>
         get() = _appVersionState
+
     fun getUserInfo() {
         viewModelScope.launch {
             doNetwork(androidContext) {
@@ -133,6 +135,7 @@ class ProfileCenterViewModel(
     }
 
     fun uploadVerifyPhoto(
+        headFile: File?,
         firstFile: File,
         identityType: Int?,
         identityNumber: String?,
@@ -149,6 +152,15 @@ class ProfileCenterViewModel(
                     ).toPars()
                 )
             }
+            val headResponse = if(headFile==null) null  else
+                 doNetwork(androidContext) {
+                    OneBoSportApi.uploadImgService.uploadImg(
+                        UploadVerifyDocRequest(
+                            userInfo.value?.userId.toString(),
+                            headFile
+                        ).toPars()
+                    )
+                }
             when {
                 docResponse == null -> _docUrlResult.postValue(
                     Event(
@@ -160,10 +172,11 @@ class ProfileCenterViewModel(
                         )
                     )
                 )
+
                 docResponse.success -> {
                     _docUrlResult.postValue(Event(docResponse))
 
-                    if(secndFile != null){
+                    if (secndFile != null) {
                         val photoResponse = doNetwork(androidContext) {
                             OneBoSportApi.uploadImgService.uploadImg(
                                 UploadVerifyDocRequest(
@@ -183,6 +196,7 @@ class ProfileCenterViewModel(
                                     )
                                 )
                             )
+
                             photoResponse.success -> {
                                 _photoUrlResult.postValue(Event(photoResponse))
                                 uploadIdentityDoc(
@@ -191,19 +205,30 @@ class ProfileCenterViewModel(
                                     identityNumber,
                                     photoResponse.imgData?.path,
                                     identityTypeBackup,
-                                    identityNumberBackup
+                                    identityNumberBackup,
+                                    headResponse?.imgData?.path
                                 )
                             }
+
                             else -> {
                                 val error =
-                                    UploadImgResult(photoResponse.code, photoResponse.msg, photoResponse.success, null)
+                                    UploadImgResult(
+                                        photoResponse.code,
+                                        photoResponse.msg,
+                                        photoResponse.success,
+                                        null
+                                    )
                                 _photoUrlResult.postValue(Event(error))
                             }
                         }
-                    }else{
-                        uploadIdentityDoc(docResponse.imgData?.path, identityType, identityNumber)
+                    } else {
+                        uploadIdentityDoc(
+                            docResponse.imgData?.path, identityType, identityNumber,
+                            verifyPhoto1 = headResponse?.imgData?.path
+                        )
                     }
                 }
+
                 else -> {
                     val error = UploadImgResult(
                         docResponse.code, docResponse.msg, docResponse.success, null
@@ -217,10 +242,12 @@ class ProfileCenterViewModel(
     fun uploadIdentityDoc(
         firstVerifyPath: String? = null, identityType: Int?,
         identityNumber: String?, secondVerifyPath: String? = null, identityTypeBackup: Int? = null,
-        identityNumberBackup: String? = null
+        identityNumberBackup: String? = null, verifyPhoto1: String? = null
     ) {
-        val firstVerifyPathUrl = firstVerifyPath ?: _docUrlResult.value?.peekContent()?.imgData?.path
-        val secondVerifyPathUrl = secondVerifyPath ?: _photoUrlResult.value?.peekContent()?.imgData?.path
+        val firstVerifyPathUrl =
+            firstVerifyPath ?: _docUrlResult.value?.peekContent()?.imgData?.path
+        val secondVerifyPathUrl =
+            secondVerifyPath ?: _photoUrlResult.value?.peekContent()?.imgData?.path
         when {
             firstVerifyPathUrl == null -> {
                 _uploadVerifyPhotoResult.postValue(
@@ -234,6 +261,7 @@ class ProfileCenterViewModel(
                     )
                 )
             }
+
             else -> {
                 viewModelScope.launch {
                     val verifyPhotoResponse = doNetwork(androidContext) {
@@ -244,7 +272,8 @@ class ProfileCenterViewModel(
                                 identityNumber,
                                 secondVerifyPathUrl,
                                 identityTypeBackup,
-                                identityNumberBackup
+                                identityNumberBackup,
+                                verifyPhoto1
                             )
                         )
                     }

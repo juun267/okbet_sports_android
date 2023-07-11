@@ -58,4 +58,11 @@ data class UserInfoData(
     @Json(name = "googleBind") var googleBind: Boolean,
     @Json(name = "passwordSet") var passwordSet: Boolean,
     @Json(name = "vipType") var vipType: Int?,
+    @Json(name = "placeOfBirth") var placeOfBirth: String?,
+    @Json(name = "address") var address: String?,
+    @Json(name = "permanentAddress") var permanentAddress: String?,
+    @Json(name = "zipCode") var zipCode: String?,
+    @Json(name = "permanentZipCode") var permanentZipCode: String?,
+
+
 )

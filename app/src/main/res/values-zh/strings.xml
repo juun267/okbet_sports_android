@@ -311,8 +311,7 @@
     <string name="paymaya_recharge_hint">请每次入款前登录会员核对PayMaya账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
     <string name="title_pay_channel">支付渠道</string>
     <string name="title_choose_pay_channel">选择支付渠道</string>
-    <string name="title_pay_gap">支付账户</string>
-    <string name="title_choose_pay_gap">选择支付账户</string>
+    <string name="M132">支付账户</string>
     <string name="title_pay_bank">支付银行</string>
     <string name="title_choose_pay_bank">选择支付银行</string>
     <string name="title_pay_msg">支付信息</string>
@@ -896,9 +895,9 @@
     <string name="red_envelope_congratulations">恭喜您抢到</string>
     <string name="pls_check_amount">请至您的帐户内查询入帐金额</string>
     <string name="redenvelope_fail">很遗憾</string>
-    <string name="redenvelope_fail_desp">很可惜没抢到红包</string>
+    <string name="redenvelope_fail_desp">很可惜没抢到OKCOINS</string>
     <string name="hint_enter_city">请输入所在城市</string>
-    <string name="redenvelope_close_hint">确定关闭红包倒数？\n关闭倒数则不进入抢红包</string>
+    <string name="redenvelope_close_hint">确定关闭OKCOINS倒数？\n关闭倒数则不进入抢OKCOINS</string>
     <!--endregion-->
 
     <string name="verification_status">身份证验证</string>
@@ -949,7 +948,7 @@
     <string name="kyc_num2">证件号码2</string>
     <string name="kyc_pick_upload_id">请选择上传身份证明文件</string>
     <string name="kyc_size_2_mb">文件大小不超过2MB</string>
-    <string name="kyc_contact_service">遇到问题？请联系在线客服</string>
+    <string name="kyc_contact_service">如需帮助，请联系客服</string>
     <string name="kyc_contact_service_hilight">在线客服</string>
     <string name="kyc_verify_first">请先进行实名验证。</string>
     <string name="kyc_go_verify">立即前往认证</string>
@@ -1313,6 +1312,12 @@
     <string name="N704">推荐棋牌游戏</string>
     <string name="N986">方位</string>
 
+    <string name="N902">关注我们</string>
+    <string name="facebookFollow">Facebook</string>
+    <string name="instagramFollow">Instagram</string>
+    <string name="youtubeFollow">YouTube</string>
+    <string name="twitterFollow">Twitter</string>
+    <string name="tiktokFollow">Tiktok</string>
     <string name="F025">立即登录</string>
     <string name="N993">立即试玩</string>
     <string name="N994">免费试用我们的游戏。 任何奖金都不是真钱。</string>
@@ -1400,4 +1405,31 @@
     <string name="N987">登录后进行聊天讨论</string>
     <string name="N988">请登录</string>
     <string name="C016">今日</string>
+    <string name="P066">事例</string>
+    <string name="P068">上传手持证件照片</string>
+    <string name="p090">感谢您与我们核实，请等待我们会在24 小时内处理您的请求。</string>
+    <string name="P069">扣除金额提醒</string>
+    <string name="P070">由于您还有 %s 的投注流水未完成，将收取 %s 的手续费！</string>
+    <string name="P113">Glife 会员提醒</string>
+    <string name="P114">您好，由于您在Glife渠道注册，按照官方要求，您的充值提现必须在Gcash程序中完成，如果您需要进行此操作，点击下方打开Gcash按钮。</string>
+    <string name="KYC049">取消</string>
+    <string name="LT028">打开</string>
+    <string name="N827">邮政编码</string>
+    <string name="M259">地址</string>
+    <string name="J901">城市</string>
+    <string name="J036">省</string>
+    <string name="P103">国籍</string>
+    <string name="P104">出生地</string>
+    <string name="P105">收入来源</string>
+    <string name="P106">行业</string>
+    <string name="P108">当前居住地</string>
+    <string name="P109">永久居住地</string>
+    <string name="J459">温馨提示</string>
+    <string name="P111">地址应包括</string>
+    <string name="P110">单位/房号/楼层、楼名、地段/座/期/门牌号、街道名</string>
+    <string name="P160">真人</string>
+    <string name="P131">OKBET会员账户</string>
+    <string name="P132">OKBET x Glife会员账户</string>
+    <string name="P130">选择您的会员账号</string>
+    <string name="N064">备注</string>
 </resources>

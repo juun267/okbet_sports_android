@@ -2,7 +2,7 @@
 <resources>
     <string name="loading">Loading...</string>
     <string name="connect_first">vui lòng kết nối mạng</string>
-    <string name="error_url_fail">chuyển đổi địa chỉ bị lỗi</string>
+    <string name="error_url_fail">Chuyển đổi địa chỉ bị lỗi</string>
     <string name="unknown_error">Lỗi chưa biết</string>
     <string name="error_reading_file">Lỗi đọc tệp</string>
     <string name="message_guest_no_permission">tài khoản demo không có chức năng hỗ trợ tư vấn, vui lòng đăng ký tài khoản</string>
@@ -314,8 +314,7 @@
     <string name="paymaya_recharge_hint">Mỗi lần đăng nhập vui lòng thành viên kiểm tra tài khoản PayMaya có được sử dụng hay không. Chúng tôi không thể kiểm tra khoản thanh toán vào tài khoản đã hết hạn, và sẽ không chịu trách nhiệm về việc đó!</string>
     <string name="title_pay_channel">Phương thức thanh toán</string>
     <string name="title_choose_pay_channel">Chọn phương thức thanh toán</string>
-    <string name="title_pay_gap">Tài khoản thanh toán</string>
-    <string name="title_choose_pay_gap">Chọn tài khoản thanh toán</string>
+    <string name="M132">Chọn tài khoản thanh toán</string>
     <string name="title_pay_bank">Ngân hàng thanh toán</string>
     <string name="title_choose_pay_bank">Chọn ngân hàng thanh toán</string>
     <string name="title_pay_msg">Thông tin thanh toán</string>
@@ -881,9 +880,9 @@
     <string name="red_envelope_congratulations">Chúc mừng</string>
     <string name="pls_check_amount">Mời tra cứu số dư trong tài khoản</string>
     <string name="redenvelope_fail">Thật không may</string>
-    <string name="redenvelope_fail_desp">Rất tiếc không giật được lì xì</string>
+    <string name="redenvelope_fail_desp">Rất tiếc không giành được OKCOINS</string>
     <string name="hint_enter_city">Vui lòng nhập thành phố</string>
-    <string name="redenvelope_close_hint">Muốn đóng đếm ngược của mưa bao lì xì?\nĐóng đếm ngược nếu không sẽ tiến hành giật bao lì xì</string>
+    <string name="redenvelope_close_hint">Đóng đếm ngược OKCOINS?\nĐóng đếm ngược nếu không sẽ tiến hành giành OKCOINS</string>
     <!--endregion-->
 
     <string name="verification_status">Verification Status</string>
@@ -935,12 +934,12 @@
     <string name="kyc_num2">Số giấy tờ2</string>
     <string name="kyc_pick_upload_id">Mời chọn giấy tờ nhận dạng để tải lên</string>
     <string name="kyc_size_2_mb">Tập tin không lớn hơn 2MB</string>
-    <string name="kyc_contact_service">Nếu có bất kỳ vấn đề nào, hãy liên hệ với CSKH online</string>
-    <string name="kyc_contact_service_hilight">CSKH online</string>
+    <string name="kyc_contact_service">Nếu bạn có bất kỳ câu hỏi nào, xin vui lòng liên hệ.</string>
+    <string name="kyc_contact_service_hilight">Live chat</string>
     <string name="kyc_verify_first">Mời xác minh danh tính trước</string>
     <string name="kyc_go_verify">Xác minh ngay</string>
     <string name="kyc_you_wait">"Tài liệu xác minh danh tính của quý khách đã gửi đi,hãy đợi xét duyệt trong chốc lát"</string>
-    <string name="kyc_verify_successful">Bạn đã xác minh danh tính</string>
+    <string name="kyc_verify_successful">xác minh thành công</string>
     <string name="kyc_unverified">Chưa xác minh</string>
     <string name="kyc_passed">Đã thông qua</string>
     <string name="kyc_enter_id_num">Mời nhập mã số giấy tờ</string>
@@ -1256,6 +1255,12 @@
     <string name="N700">Sắp ra mắt</string>
     <string name="N704">OKGames phổ biến</string>
     <string name="N986">Hướng</string>
+    <string name="N902">Theo dõi chũng tôi</string>
+    <string name="facebookFollow">Facebook</string>
+    <string name="instagramFollow">Instagram</string>
+    <string name="youtubeFollow">YouTube</string>
+    <string name="twitterFollow">Twitter</string>
+    <string name="tiktokFollow">Tiktok</string>
 
     <string name="F025">Đăng nhập</string>
     <string name="N993">Chơi giải trí</string>
@@ -1342,4 +1347,31 @@
     <string name="N987">Đăng nhập tài khoản</string>
     <string name="N988">Đăng nhập ngay</string>
     <string name="C016">HÔM NAY</string>
+    <string name="P066">Ví dụ</string>
+    <string name="P068">Tải lên ảnh Selfie cùng Căn cước</string>
+    <string name="p090">Cảm ơn bạn đã kiểm tra với chúng tôi, vui lòng chờ đợi, chúng tôi sẽ xử lý yêu cầu của bạn trong vòng 24 giờ.</string>
+    <string name="P069">Nhắc Trừ tiền</string>
+    <string name="P070">Vì bạn vẫn còn %s Tiền cược chưa thanh toán, %s phí DV sẽ được tính!</string>
+    <string name="P113">Glife nhắc nhở</string>
+    <string name="P114">Xin chào, vì bạn đã đăng ký trên kênh Glife, theo yêu cầu của kênh, bạn phải hoàn thành việc nạp và rút tiền trong Gcash. Để thực hiện, vui lòng nhấp vào nút Gcash dưới đây</string>
+    <string name="KYC049">Huỷ bỏ</string>
+    <string name="LT028">Mở</string>
+    <string name="N827">Mã Zip</string>
+    <string name="M259">Địa chỉ</string>
+    <string name="J901">Thành phố</string>
+    <string name="J036">Tỉnh</string>
+    <string name="P103">Quốc tịch</string>
+    <string name="P104">Nơi sinh</string>
+    <string name="P105">Nguồn thu nhập</string>
+    <string name="P106">Ngành nghề</string>
+    <string name="P108">Nơi ở hiện tại</string>
+    <string name="P109">Hộ khẩu thường trú</string>
+    <string name="J459">Gợi ý</string>
+    <string name="P111">Địa chỉ nên bao gồm</string>
+    <string name="P110">Căn hộ/số phòng/tầng, tên tòa nhà, vị trí/khối/thời gian/số nhà, tên đường</string>
+    <string name="P160">OKLive</string>
+    <string name="P131">TK hội viên OKBET</string>
+    <string name="P132">TK hội viên OKBET x Glife</string>
+    <string name="P130">Chọn TK OKBET của bạn</string>
+    <string name="N064">Ghi chú</string>
 </resources>

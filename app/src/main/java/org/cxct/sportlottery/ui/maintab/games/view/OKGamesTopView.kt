@@ -27,22 +27,23 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.ui.maintab.games.adapter.GamesTabAdapter
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.drawable.DrawableCreator
-import org.cxct.sportlottery.util.isGooglePlayVersion
 import org.cxct.sportlottery.view.IndicatorWidget
 
 
-class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
-    : LinearLayoutCompat(context, attrs, defStyle), XBanner.OnItemClickListener {
+class OKGamesTopView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
+) : LinearLayoutCompat(context, attrs, defStyle), XBanner.OnItemClickListener {
 
     private val edtSearch: EditText by lazy { findViewById(R.id.edtSearchGames) }
     private val indicatorView: IndicatorWidget by lazy { findViewById(R.id.indicatorView) }
-    private val gameTabAdapter by lazy { GamesTabAdapter { onTableClick?.invoke(it) ?: false } }
+    private lateinit var gameTabAdapter: GamesTabAdapter
     private val rcvGamesTab by lazy { findViewById<RecyclerView>(R.id.rcvGamesTab) }
+    private val bannerCard by lazy { findViewById<View>(R.id.bannerCard) }
     private val okgamesBanner: XBanner by lazy {
         findViewById<XBanner>(R.id.xbanner).apply { setOnItemClickListener(this@OKGamesTopView) }
     }
@@ -56,21 +57,22 @@ class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: Attribut
         initView()
     }
 
-    fun setup(lifecycleOwner: LifecycleOwner) {
+    fun setup(lifecycleOwner: LifecycleOwner, imgType: Int, gameType: String = "okgame") {
+        gameTabAdapter = GamesTabAdapter(gameType) { onTableClick?.invoke(it) ?: false }
+        setupTables()
         ConfigRepository.onNewConfig(lifecycleOwner) {
-            it?.let { setUpBannerData() }
+            it?.let { setUpBannerData(imgType) }
         }
     }
 
     private fun initView() {
         initIndicator()
-        setupTables()
         initSearch()
     }
 
     private fun initSearch() {
         edtSearch.onConfirm { key -> onSearchTextChanged?.invoke(key) }
-        findViewById<View>(R.id.ivSearch).setOnClickListener{ onSearchTextChanged?.invoke(edtSearch.text.toString()) }
+        findViewById<View>(R.id.ivSearch).setOnClickListener { onSearchTextChanged?.invoke(edtSearch.text.toString()) }
         findViewById<View>(R.id.searchLayout).background = DrawableCreator.Builder()
             .setSolidColor(Color.WHITE)
             .setCornersRadius(8.dp.toFloat())
@@ -86,7 +88,12 @@ class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: Attribut
         indicatorView.selectedDrawable = createIndicatorDrawable(w, h, color, 1f)
     }
 
-    private fun createIndicatorDrawable(width: Float, height: Float, color: Int, alpha: Float): Drawable {
+    private fun createIndicatorDrawable(
+        width: Float,
+        height: Float,
+        color: Int,
+        alpha: Float
+    ): Drawable {
         return DrawableCreator.Builder()
             .setSolidColor(color)
             .setShapeAlpha(alpha)
@@ -96,7 +103,7 @@ class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: Attribut
             .build()
     }
 
-    private fun setupTables() {
+    fun setupTables() {
         rcvGamesTab.addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_8))
         rcvGamesTab.setLinearLayoutManager(RecyclerView.HORIZONTAL)
         rcvGamesTab.adapter = gameTabAdapter
@@ -114,20 +121,21 @@ class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: Attribut
         }
     }
 
-    private fun setUpBannerData() {
-
+    private fun setUpBannerData(imgType: Int) {
         val lang = LanguageManager.getSelectLanguage(context).key
         var imageList = sConfigData?.imageList?.filter {
-            it.imageType == 12 && it.lang == lang && !it.imageName1.isNullOrEmpty() && !(isGooglePlayVersion() && it.isHidden)
-        }?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
+            it.imageType == imgType && it.lang == lang && !it.imageName1.isNullOrEmpty() && !(isGooglePlayVersion() && it.isHidden)
+        }
+            ?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
 
         val loopEnable = imageList?.size ?: 0 > 1
         indicatorView.isVisible = loopEnable
 
         if (imageList.isNullOrEmpty()) {
+            bannerCard.visibility = GONE
             return
         }
-
+        bannerCard.visibility = visibility
         okgamesBanner.setHandLoop(loopEnable)
         okgamesBanner.setAutoPlayAble(loopEnable)
         okgamesBanner.setOnItemClickListener(this)
@@ -136,7 +144,7 @@ class OKGamesTopView @JvmOverloads constructor(context: Context, attrs: Attribut
         }
 
         val host = sConfigData?.resServerHost
-        val images = imageList.map{
+        val images = imageList.map {
             XBannerImage(it.imageText1 + "", host + it.imageName1, it.appUrl)
         }
 

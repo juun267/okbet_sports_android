@@ -4,8 +4,8 @@ package org.cxct.sportlottery.ui.maintab.home
 import android.os.Bundle
 import android.content.Intent
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -15,29 +15,25 @@ import kotlinx.android.synthetic.main.fragment_main_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.event.MenuEvent
-import org.cxct.sportlottery.common.event.RegisterInfoEvent
 import org.cxct.sportlottery.common.event.SportStatusEvent
+import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.newInstanceFragment
 import org.cxct.sportlottery.databinding.FragmentMainHome2Binding
 import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.network.message.Row
+import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.news.HomeNewsAdapter
 import org.cxct.sportlottery.ui.maintab.home.news.NewsDetailActivity
 import org.cxct.sportlottery.ui.maintab.publicity.MarqueeAdapter
 import org.cxct.sportlottery.ui.news.NewsActivity
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.SpaceItemDecoration
-import org.cxct.sportlottery.util.goneWithSportSwitch
-import org.cxct.sportlottery.util.setTrialPlayGameDataObserve
-import org.cxct.sportlottery.util.setupBackTop
 import org.cxct.sportlottery.view.dialog.PopImageDialog
-import org.cxct.sportlottery.util.setupSportStatusChange
+import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -48,6 +44,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
 
     fun jumpToInplaySport() = getMainTabActivity().jumpToInplaySport()
     fun jumpToOKGames() = getMainTabActivity().jumpToOKGames()
+    fun jumpToOKLive() = getMainTabActivity().jumpToOKLive()
 
     override fun onInitView(view: View) = binding.run {
         scrollView.setupBackTop(ivBackTop, 180.dp) {
@@ -60,6 +57,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         initToolBar()
         initNews()
         EventBusUtil.targetLifecycle(this@MainHomeFragment2)
+        ToGcashDialog.showByLogin(viewModel)
     }
 
     override fun onInitData() {
@@ -81,7 +79,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
 
     override fun onBindViewStatus(view: View) = binding.run {
         homeTopView.setup(this@MainHomeFragment2)
-        hotMatchView.onCreate(viewModel.publicityRecommend, this@MainHomeFragment2)
+        hotMatchView.onCreate(viewModel.publicityRecommend, viewModel.oddsType,this@MainHomeFragment2)
         okGamesView.setOkGamesData(this@MainHomeFragment2)
         initBetWinsRecodeLayout()
         initObservable()
@@ -89,23 +87,20 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
 
     private fun initBetWinsRecodeLayout() {
         binding.winsRankView.setUp(
-            viewLifecycleOwner,
+            this,
             { viewModel.getRecordNew() },
             { viewModel.getRecordResult() })
-        receiver.recordBetNew.observe(viewLifecycleOwner) {
+        receiver.recordBetNew.collectWith(lifecycleScope) {
             it?.let {
-                binding.winsRankView.onNewWSBetData(
-                    it
-                )
+                binding.winsRankView.onNewWSBetData(it)
             }
         }
-        receiver.recordWinsResult.observe(viewLifecycleOwner) {
+        //最新大奖
+        receiver.recordWinsResult.collectWith(lifecycleScope) {
             it?.let {
-                binding.winsRankView.onNewWSWinsData(
-                    it
-                )
+                binding.winsRankView.onNewWSWinsData(it)
             }
-        }//最新大奖
+        }
         viewModel.recordBetNewHttp.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) {
                 binding.winsRankView.onNewHttpBetData(it.reversed())
@@ -133,6 +128,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         checkToCloseView()
         if (getMainTabActivity().getCurrentPosition() == 0 && getHomeFragment().getCurrentFragment() == this) {
             refreshHotMatch()
+            binding.winsRankView.loadData()
         }
     }
 
@@ -143,6 +139,7 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         } else {
             homeToolbar.onRefreshMoney()
             refreshHotMatch()
+            binding.winsRankView.loadData()
             //返回页面时，刷新体育相关view状态
             checkToCloseView()
         }
@@ -159,12 +156,12 @@ class MainHomeFragment2 : BindingSocketFragment<MainHomeViewModel, FragmentMainH
         }
         viewModel.gotConfig.observe(viewLifecycleOwner) { event ->
             viewModel.getSportMenuFilter()
-            if (MultiLanguagesApplication.showHomeDialog) {
-                MultiLanguagesApplication.showHomeDialog = false
-                MultiLanguagesApplication.showPromotionPopupDialog(requireActivity() as AppCompatActivity)
-                if (PopImageDialog.checkImageTypeAvailable(7)) {
+            if (PopImageDialog.showHomeDialog) {
+                PopImageDialog.showHomeDialog = false
+                MultiLanguagesApplication.showPromotionPopupDialog(getMainTabActivity()){}
+                if (PopImageDialog.checkImageTypeAvailable(ImageType.DIALOG_HOME.code)) {
                     requireContext().newInstanceFragment<PopImageDialog>(Bundle().apply {
-                        putInt(PopImageDialog.IMAGE_TYPE, 7)
+                        putInt(PopImageDialog.IMAGE_TYPE, ImageType.DIALOG_HOME.code)
                     }).show(childFragmentManager, PopImageDialog::class.simpleName)
                 }
             }

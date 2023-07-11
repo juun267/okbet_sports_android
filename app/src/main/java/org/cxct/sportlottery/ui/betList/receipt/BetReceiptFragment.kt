@@ -242,7 +242,6 @@ class BetReceiptFragment :
             val layoutMana = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             layoutManager = layoutMana
             layoutMana.stackFromEnd = true
-            LogUtil.toJson(betResultData?.singleBets)
             betReceiptDiffAdapter = BetReceiptDiffAdapter().apply {
                 betResultData?.apply {
                     submit(
@@ -276,8 +275,9 @@ class BetReceiptFragment :
             }
 
             betReceiptDiffAdapter?.refreshBetStatusFinishFunction = {
-                lin_result_status_processing?.gone()
-                lin_result_status?.visible()
+                //倒计时结束后，不处理
+//                lin_result_status_processing?.gone()
+//                lin_result_status?.visible()
             }
 
             adapter = betReceiptDiffAdapter

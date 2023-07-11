@@ -18,10 +18,6 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
-import org.cxct.sportlottery.common.extentions.gone
-import org.cxct.sportlottery.common.extentions.setOnClickListeners
-import org.cxct.sportlottery.common.extentions.setViewVisible
-import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ContentBetInfoItemV3BaseketballEndingCardBinding
 import org.cxct.sportlottery.network.common.PlayCate
@@ -106,8 +102,8 @@ class BasketballEndingCardViewHolder(
         adapterBetType: BetListRefactorAdapter.BetRvType?
     ) = contentView.run {
         fun showTotalStakeWinAmount(bet: Double) {
-            val totalBet = TextUtil.formatMoney(bet * betListSize, 2)
-            val totalCanWin = TextUtil.formatMoney(bet * itemData.matchOdd.odds, 2)
+            val totalBet = ArithUtil.toMoneyFormatFloor(bet * betListSize)
+            val totalCanWin = ArithUtil.toMoneyFormatFloor(bet * itemData.matchOdd.odds)
             tvTotalStakeAmount.text = "${sConfigData?.systemCurrencySign}${totalBet}"
             tvTotalWinAmount.text = "${sConfigData?.systemCurrencySign}${totalCanWin}"
         }
@@ -345,14 +341,6 @@ class BasketballEndingCardViewHolder(
                         adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE
                     ) - 1
                 )
-            }
-
-            PlayCate.FS_LD_CS.value -> {
-                "@ " + getOdds(
-                    itemData.matchOdd,
-                    currentOddsType,
-                    adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE
-                ).toInt().toString()
             }
 
             else -> {

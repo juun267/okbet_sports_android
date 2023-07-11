@@ -1,35 +1,27 @@
 package org.cxct.sportlottery.ui.splash
 
-import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.View
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.runWithCatch
 import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.repository.FLAG_OPEN
-import org.cxct.sportlottery.repository.NAME_LOGIN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.BackService
-import org.cxct.sportlottery.service.NetBroadcastReceiver
-import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.KvUtils
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.isGooglePlayVersion
+import org.cxct.sportlottery.util.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.system.exitProcess
@@ -53,13 +45,13 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
         initObserve()
         //流程: 檢查/獲取 host -> 獲取 config -> 檢查維護狀態 -> 檢查版本更新 -> 跳轉畫面
         checkLocalHost()
-        startService(Intent(this,BackService::class.java))
+        // 避免Not allowed to start service Intent异常
+        runWithCatch { startService(Intent(this,BackService::class.java)) }
         registerBroadcast()
     }
     private fun registerBroadcast(){
         val filter= IntentFilter()
         filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION)
-        registerReceiver(NetBroadcastReceiver(),filter)
 //        LocalBroadcastManager.getInstance(this).registerReceiver(NetBroadcastReceiver(),filter)
     }
 
@@ -161,7 +153,7 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
                         && it.lang == LanguageManager.getSelectLanguage(this).key
                         && !it.imageName1.isNullOrEmpty()
                         && it.startType == (if (KvUtils.decodeBooleanTure("isFirstOpen", true)
-                    && !(isGooglePlayVersion() && it.isHidden)
+                    && !(getMarketSwitch() && it.isHidden)
                 ) 0 else 1)
             }
                 ?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })

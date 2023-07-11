@@ -20,8 +20,8 @@ android {
         applicationId "com.okbet.ph"
         minSdk 23
         targetSdk 31
-        versionName "1.1.59"
-        versionCode 81
+        versionName "1.1.67"
+        versionCode 89
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         ndk {
@@ -105,6 +105,7 @@ android {
         }
         OkbetPH {}
         google {
+            applicationId "come.sport.phok"
             manifestPlaceholders = [CHANNEL: "google",]
         }
         huawei {

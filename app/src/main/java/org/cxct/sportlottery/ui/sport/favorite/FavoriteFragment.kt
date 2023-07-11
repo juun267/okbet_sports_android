@@ -14,6 +14,8 @@ import android.widget.FrameLayout
 import android.widget.ListPopupWindow
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.distinctUntilChanged
@@ -234,9 +236,10 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
 //        iv_menu_left.setOnClickListener {
 //            EventBus.getDefault().post(MenuEvent(true))
 //        }
-//        iv_logo.setOnClickListener {
-//            (activity as MainTabActivity).backMainHome()
-//        }
+        iv_logo.isInvisible = activity is MainTabActivity
+        iv_logo.setOnClickListener {
+            (activity as MainTabActivity).backMainHome()
+        }
 //        lin_search.setOnClickListener {
 //            startActivity(Intent(requireActivity(), SportSearchtActivity::class.java))
 //        }
@@ -659,7 +662,11 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
             betPlayCateNameMap = betPlayCateNameMap,
         )
 
-        (activity as FavoriteActivity).setupBetData(fastBetDataBean)
+        if (activity is FavoriteActivity) {
+            (activity as FavoriteActivity).setupBetData(fastBetDataBean)
+        } else if (activity is MainTabActivity) {
+            (activity as MainTabActivity).setupBetData(fastBetDataBean)
+        }
     }
 
     private fun subscribeChannelHall(leagueOdd: LeagueOdd) {

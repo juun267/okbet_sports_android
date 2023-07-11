@@ -3,11 +3,10 @@ package org.cxct.sportlottery.view.webView
 import android.content.Context
 import android.util.AttributeSet
 import android.webkit.WebView
-import timber.log.Timber
 
 class OkWebView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
-) : WebView(context, attrs, defStyle) {
+    context: Context, attrs: AttributeSet? = null
+) : WebView(context, attrs) {
 
     var okWebViewClient: OkWebViewClient = OkWebViewClient()
         set(value) {

@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.maintab.home
 
 import android.app.Application
 import android.text.TextUtils
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -26,9 +25,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.match.MatchRound
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.list.MatchLiveData
-import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
-import org.cxct.sportlottery.network.service.sys_maintenance.SportMaintenanceEvent
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuFilter
 import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendRequest
@@ -249,6 +246,7 @@ open class MainHomeViewModel(
 
      val pageIndexLiveData = MutableLiveData(1)
      val pageSizeLiveData = MutableLiveData(6)
+     val pageSizeOKLiveLD = MutableLiveData(6)
      val totalCountLiveData = MutableLiveData(0)
      val totalPageLiveData = MutableLiveData(0)
 
@@ -265,6 +263,28 @@ open class MainHomeViewModel(
             totalCountLiveData.value = it.total
             val totalCount = totalCountLiveData.value ?: 0
             val pageSize = pageSizeLiveData.value ?: 0
+            if (totalPageLiveData.value == 0) {
+                totalPageLiveData.value = totalCount / pageSize
+                if (totalCount % pageSize != 0) {
+                    totalPageLiveData.value = (totalPageLiveData.value ?: 0) + 1
+                }
+            }
+            _homeGamesList.value=it.getData()
+        }
+    }
+    fun getOkLiveOKGamesList(
+    ) = callApi({
+        OKGamesRepository.getHomeOKGamesList(
+            pageIndexLiveData.value ?: 1, pageSizeOKLiveLD.value ?: 1
+        )
+    }) {
+        if (it.getData() == null) {
+            //hide loading
+            _homeGamesList.value = arrayListOf()
+        } else {
+            totalCountLiveData.value = it.total
+            val totalCount = totalCountLiveData.value ?: 0
+            val pageSize = pageSizeOKLiveLD.value ?: 0
             if (totalPageLiveData.value == 0) {
                 totalPageLiveData.value = totalCount / pageSize
                 if (totalCount % pageSize != 0) {
@@ -562,7 +582,7 @@ open class MainHomeViewModel(
 
     //region 宣傳頁 優惠活動文字跑馬燈、圖片公告
     fun getPublicityPromotion() {
-        sConfigData?.imageList?.filter { it.imageType == ImageType.PROMOTION.code && !(isGooglePlayVersion() && it.isHidden) }
+        sConfigData?.imageList?.filter { it.imageType == ImageType.PROMOTION.code && !(getMarketSwitch() && it.isHidden) }
             ?.let { promotionList ->
                 promotionList.filter {
                     (it.viewType == 1) && TextUtils.equals(LanguageManager.getSelectLanguage(

@@ -12,9 +12,7 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.stx.xhb.androidx.XBanner
-import kotlinx.android.synthetic.main.layout_home_top.view.ivPaymaya
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.setOnClickListeners
@@ -24,18 +22,14 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.repository.ConfigRepository
 import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment2
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.getMarketSwitch
-import org.cxct.sportlottery.util.goneWithSportSwitch
-import org.cxct.sportlottery.util.setVisibilityByMarketSwitch
+import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import timber.log.Timber
 
 class HomeTopView @JvmOverloads constructor(
@@ -65,16 +59,15 @@ class HomeTopView @JvmOverloads constructor(
     }
 
     private fun setUpBanner(lang: String, imageType: Int) {
-        val imageList = sConfigData?.imageList?.filter {
-            it.imageType == imageType && it.lang == lang && !it.imageName1.isNullOrEmpty()
-        }
-            ?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
+        var imageList = sConfigData?.imageList?.filter {
+            it.imageType == imageType && it.lang == lang && !it.imageName1.isNullOrEmpty() && !(getMarketSwitch() && it.isHidden)
+        }?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
         val loopEnable = (imageList?.size ?: 0) > 1
         if (imageList.isNullOrEmpty()) {
             return
         }
         if (imageType == 2) {
-            val xbanner = findViewById<XBanner>(R.id.topBanner)
+            var xbanner = findViewById<XBanner>(R.id.topBanner)
             xbanner.setHandLoop(loopEnable)
             xbanner.setOnItemClickListener(this@HomeTopView)
             xbanner.loadImage { _, model, view, _ ->
@@ -93,11 +86,13 @@ class HomeTopView @JvmOverloads constructor(
             }
             xbanner.setBannerData(images.toMutableList())
         } else {
+            //优惠banne让判断是否首页显示
+            imageList=imageList.filter { it.frontPageShow==1 }
             //优惠活动
             val host = sConfigData?.resServerHost
             val promoteImages = imageList.map {
                 Timber.d("host:$host url4:${host + it.imageName4}")
-                XBannerImage(it.imageText1 + "", host + it.imageName4, it.imageLink)
+                XBannerImage(it.imageText1 + "", host + it.imageName4, it.appUrl)
             }
             setUpPromoteView(promoteImages)
         }
@@ -134,7 +129,7 @@ class HomeTopView @JvmOverloads constructor(
 
     private fun jumpToOthers(model: Any) {
         val jumpUrl = (model as XBannerImage).jumpUrl
-        if (jumpUrl.isEmptyStr()) {
+        if (jumpUrl.isNullOrEmpty()) {
             return
         }
 
@@ -172,6 +167,10 @@ class HomeTopView @JvmOverloads constructor(
         binding.vOkgames.setOnClickListener {
             fragment.jumpToOKGames()
         }
+        binding.vOklive.isInvisible = getMarketSwitch()
+//        binding.vOklive.setOnClickListener {
+//            fragment.jumpToOKLive()
+//        }
 
         if (!LoginRepository.isLogined()) {
             binding.ivGoogle.setOnClickListener {
@@ -188,16 +187,9 @@ class HomeTopView @JvmOverloads constructor(
     private fun initRechargeClick(fragment: MainHomeFragment2) {
 
         val depositClick = OnClickListener {
-            if (UserInfoRepository.userInfo.value?.vipType != 1) {
-                fragment.viewModel.checkRechargeKYCVerify()
-                return@OnClickListener
-            }
-
-            fragment.showPromptDialog(
-                context.getString(R.string.prompt), context.getString(R.string.N643)
-            ) {
-
-            }
+             ToGcashDialog.showByClick(fragment.viewModel){
+                 fragment.viewModel.checkRechargeKYCVerify()
+             }
         }
 
         setOnClickListeners(

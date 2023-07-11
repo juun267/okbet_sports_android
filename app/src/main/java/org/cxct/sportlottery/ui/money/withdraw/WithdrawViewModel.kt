@@ -22,7 +22,10 @@ import org.cxct.sportlottery.network.money.config.*
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.network.withdraw.uwcheck.CheckList
+import org.cxct.sportlottery.network.withdraw.uwcheck.TotalData
+import org.cxct.sportlottery.network.withdraw.uwcheck.UwCheckData
 import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.UWType
@@ -210,6 +213,8 @@ class WithdrawViewModel(
         get() = _numberOfBankCard
     private var _numberOfBankCard = MutableLiveData<String>()
 
+    var uwCheckData: UwCheckData?=null
+
 
     /**
      * @param isBalanceMax: 是否為當前餘額作為提款上限, true: 提示字為超過餘額相關, false: 提示字為金額設定相關
@@ -322,6 +327,7 @@ class WithdrawViewModel(
             doNetwork(androidContext) {
                 OneBoSportApi.withdrawService.getWithdrawUwCheck()
             }?.let { result ->
+                uwCheckData = result.t
                 _needCheck.postValue(result.t?.needCheck ?: false)
                 _deductMoney.postValue(result.t?.total?.deductMoney ?: 0.0)
                 _commissionCheckList.postValue(result.t?.checkList ?: listOf())
@@ -728,19 +734,19 @@ class WithdrawViewModel(
     }
 
     private fun checkInputCompleteByWithdraw(){
-        _submitEnable.value = withdrawAmountMsg.value.isNullOrEmpty() == true &&
+        _submitEnable.value = withdrawAmountMsg.value?.isEmpty() == true &&
                 withdrawPasswordMsg.value?.isEmpty() == true
     }
 
     var curTransferType: TransferType? = null
      set(value){
         field = value
-        _createNameErrorMsg.value = null
-        _bankCardNumberMsg.value = null
-        _networkPointMsg.value = null
-        _withdrawPasswordMsg.value = null
-        _walletAddressMsg.value = null
-        _phoneNumberMsg.value = null
+        _createNameErrorMsg = MutableLiveData()
+        _bankCardNumberMsg = MutableLiveData()
+        _networkPointMsg = MutableLiveData()
+        _withdrawPasswordMsg = MutableLiveData()
+        _walletAddressMsg = MutableLiveData()
+        _phoneNumberMsg = MutableLiveData()
      }
 
     fun getWithdrawHint() {
@@ -1102,9 +1108,9 @@ class WithdrawViewModel(
     }
 
     fun resetWithdrawPage() {
-        _withdrawAmountMsg.value = ""
-        _withdrawPasswordMsg.value = ""
-        _withdrawAppointmentMsg.value = ""
+        _withdrawAmountMsg = MutableLiveData()
+        _withdrawPasswordMsg = MutableLiveData()
+        _withdrawAppointmentMsg = MutableLiveData()
         _withdrawAddResult = MutableLiveData<WithdrawAddResult>()
     }
 
@@ -1151,4 +1157,15 @@ class WithdrawViewModel(
     fun setVisibleView(boolean: Boolean){
         _isVisibleView.postValue(boolean)
     }
+
+    fun showCheckDeductMoneyDialog(onConfirm: ()->Unit):DeductDialog?{
+        if((deductMoney.value?:0.0) > 0){
+            uwCheckData?.let {
+                return DeductDialog(it,onConfirm)
+            }
+        }
+        onConfirm.invoke()
+        return null
+    }
+
 }
