@@ -714,10 +714,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         navToPosition(0)
     }
     fun jumpToOKGames() {
-        if (getMarketSwitch()) {
-            return
-        }
-        navToPosition(2)
+
     }
 
     private fun navToPosition(position: Int) {
