@@ -252,6 +252,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     private fun initCollectAdapterPage(list:List<OKGameBean>){
         collectGameAdapter?.let { adapter->
+            adapter.itemIndex=1
             adapter.totalCount=list.size
             adapter.totalPage=list.size/ adapter.itemSize
             if (list.size % adapter.itemSize != 0) {
