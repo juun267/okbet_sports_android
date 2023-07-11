@@ -172,6 +172,10 @@ open class MainHomeViewModel(
         get() = _activityImageList
     private val _activityImageList = MutableLiveData<List<ActivityImageList>>()
 
+    val activityApply: LiveData<String>
+        get() = _activityApply
+    private val _activityApply = MutableLiveData<String>()
+
     //region 宣傳頁用
     fun getRecommend() {
         viewModelScope.launch {
@@ -871,6 +875,13 @@ open class MainHomeViewModel(
     fun getActivityImageListH5() = callApi({UserRepository.activityImageListH5()}){
         if (it.succeeded()){
             _activityImageList.postValue(it.getData())
+        }else{
+            toast(it.msg)
+        }
+    }
+    fun activityApply(activityId: String) = callApi({UserRepository.activityApply(activityId)}){
+        if (it.succeeded()){
+            _activityApply.postValue(it.getData())
         }else{
             toast(it.msg)
         }
