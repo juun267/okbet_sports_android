@@ -12,7 +12,44 @@
         android:id="@+id/custom_tool_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:topTitleText="@string/promotion"/>
+        app:topTitleText="@string/promotion"
+        android:elevation="@dimen/margin_2"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/margin_12"
+            android:paddingHorizontal="@dimen/margin_12">
+            <ImageView
+                android:id="@+id/ivBanner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="120dp"
+                android:adjustViewBounds="true"/>
+            <TextView
+                android:id="@+id/tvSubTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_20"
+                android:textColor="@color/color_303C55"
+                android:textSize="@dimen/textSize18sp"
+                android:textStyle="bold"
+                android:text="Promotion Title Text Text Text Text Text Text Text Text Text Text Text Text"/>
+
+            <TextView
+                android:id="@+id/tvTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:textColor="@color/color_6D7693"
+                android:textSize="@dimen/textSize14sp"
+                android:text="Promotion Title Text Text Text Text Text Text Text Text Text Text Text Text"/>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
    <org.cxct.sportlottery.view.webView.OkWebView
        android:id="@+id/okWebView"
