@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
@@ -94,12 +93,13 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     private fun addSearchView() {
 
         searchView = LinearLayout(context).apply { gravity = Gravity.RIGHT or Gravity.CENTER_VERTICAL }
+        val wh = 24.dp
         searchIcon = AppCompatImageView(context).apply {
-            setPadding(0, 0, 0, 2.dp)
-            setImageResource(R.drawable.ic_search_home)
             val drawable = ContextCompat.getDrawable(context, R.drawable.ic_search_home)
             DrawableCompat.setTint(drawable!!.mutate(), ContextCompat.getColor(context, R.color.color_0651e5))
             setImageDrawable(drawable)
+            minimumHeight = wh
+            minimumWidth = wh
             (searchView as ViewGroup).addView(this)
         }
 
