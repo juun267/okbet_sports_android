@@ -137,20 +137,23 @@ class SettledFragment:BindingFragment<AccountHistoryViewModel,FragmentSettledBin
         viewModel.settledData.observe(this){
             hideLoading()
             initBetValue()
-
             binding.recyclerSettled.visible()
-            mAdapter.addData(it)
+            if( viewModel.pageSettledIndex==2){
+                mAdapter.setList(it)
+            }else{
+                mAdapter.addData(it)
+            }
         }
         //网络失败
         viewModel.responseFailed.observe(this){
             hideLoading()
             initBetValue()
             binding.recyclerSettled.visible()
-            if(viewModel.settledData.value!=null){
-                mAdapter.setList(viewModel.settledData.value)
-            }else{
-                mAdapter.setList(arrayListOf())
-            }
+//            if(viewModel.settledData.value!=null){
+//                mAdapter.setList(viewModel.settledData.value)
+//            }else{
+//                mAdapter.setList(arrayListOf())
+//            }
         }
     }
 
