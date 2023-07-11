@@ -724,11 +724,13 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         if (bottom_navigation_view.currentItem != position) {
             bottom_navigation_view.currentItem = position
         }
+
     }
 
     fun jumpToESport() {
         checkSportStatus(this) {
-            jumpToTheSport(MatchType.EARLY, GameType.ES)
+            (fragmentHelper.getFragment(1) as SportFragment2).setJumpESport()
+            navToPosition(1)
         }
     }
 

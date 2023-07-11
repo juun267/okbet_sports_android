@@ -16,6 +16,7 @@ import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.sport.Item
+import org.cxct.sportlottery.network.sport.Menu
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.repository.LoginRepository
@@ -30,7 +31,6 @@ import org.cxct.sportlottery.ui.sport.list.adapter.SportFooterGamesView
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.DelayRunable
-import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.FragmentHelper2
 import org.cxct.sportlottery.util.phoneNumCheckDialog
@@ -132,9 +132,11 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         })
     }
 
+    private var sportMenu: Menu? = null
     private fun refreshTabLayout(sportMenuResult: ApiResult<SportMenuData>) {
 
         val sportMenuData = sportMenuResult.getData()
+        sportMenuData?.menu?.let { sportMenu = it }
         val countInPlay = sportMenuData?.menu?.inPlay?.items?.sumOf { it.num } ?: 0
         val countAtStart = sportMenuData?.atStart?.items?.sumOf { it.num } ?: 0
         val countToday = sportMenuData?.menu?.today?.items?.sumOf { it.num } ?: 0
@@ -198,7 +200,10 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     private var lastMatchType: MatchType? = null
     private var lastGameType: String? = null
     private fun navGameFragment(matchType: MatchType) {
-        var gameType = jumpGameType?.key
+        var gameType = if (navESport) GameType.ES.key else jumpGameType?.key
+        jumpMatchType = null
+        jumpGameType = null
+
         if (lastMatchType == matchType && lastGameType == gameType) {
             return
         }
@@ -213,21 +218,18 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         when (matchType) {
             MatchType.OUTRIGHT -> {
                 fragmentHelper.show(SportOutrightFragment::class.java, args) { fragment, newInstance ->
-                    fragment.offsetScrollListener = ::setTabElevation
                     fragment.resetFooterView(footView)
                 }
             }
 
             MatchType.END_SCORE -> {
                 fragmentHelper.show(EndScoreFragment::class.java, args) { fragment, newInstance ->
-                    fragment.offsetScrollListener = ::setTabElevation
                     fragment.resetFooterView(footView)
                 }
             }
 
             MatchType.MY_EVENT -> {
                 fragmentHelper.show(FavoriteFragment2::class.java, args) { fragment, newInstance ->
-                    fragment.offsetScrollListener = ::setTabElevation
                     fragment.resetFooterView(footView)
                     fragment.setFavoriteData(favoriteItems)
                 }
@@ -235,7 +237,6 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
             else -> {
                 fragmentHelper.show(SportListFragment2::class.java, args) { fragment, newInstance ->
-                    fragment.offsetScrollListener = ::setTabElevation
                     fragment.resetFooterView(footView)
                     if (!newInstance && fragment.isAdded) {
                         fragment.reload()
@@ -246,9 +247,32 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
     }
 
-    private val maxElevation = 5.dp
-    private fun setTabElevation(elevation: Double) = binding.run {
-//        val elevation = (elevation * elevation * maxElevation).toFloat()
+    private var navESport = false
+    fun setJumpESport() {
+        if (sportMenu == null) {
+            navESport = true
+            return
+        }
+
+        val menuData = sportMenu!!
+        val matchType = findESport(menuData.inPlay.items, MatchType.IN_PLAY)
+            ?: findESport(menuData.today.items, MatchType.TODAY)
+            ?: findESport(menuData.early.items, MatchType.EARLY)
+
+
+        setJumpSport(matchType, gameType = GameType.ES)
+    }
+
+    private fun findESport(items: List<Item>, matchType: MatchType): MatchType? {
+        items.forEach {
+            if (GameType.ES.key == it.code) {
+                jumpMatchType = matchType
+                binding.tabLayout.getTabAt(matchTypeTab.indexOfFirst { it == matchType })?.select()
+                return matchType
+            }
+        }
+
+        return null
     }
 
     fun setJumpSport(matchType: MatchType? = null, gameType: GameType? = null) {
@@ -302,7 +326,8 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     }
 
     private fun updateUiWithResult(sportMenuResult: ApiResult<SportMenuData>) {
-        if (!sportMenuResult.succeeded()) {
+        if (!sportMenuResult.succeeded() || sportMenuResult.getData() == null) {
+            navESport = false
             return
         }
 
@@ -310,15 +335,18 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         refreshTabLayout(sportMenuResult)
         EventBusUtil.post(sportMenuResult)
         if (!isFirstSwitch) {
+            navESport = false
             return
         }
-
-        val matchType = jumpMatchType ?: defaultMatchType
+        val menuData = sportMenuResult.getData()!!.menu
+        val maType = findESport(menuData.inPlay.items, MatchType.IN_PLAY)
+            ?: findESport(menuData.today.items, MatchType.TODAY)
+            ?: findESport(menuData.early.items, MatchType.EARLY)
+        val matchType = if (navESport && maType != null) maType else jumpMatchType ?: defaultMatchType
         if (matchType != null) {
             binding.tabLayout.getTabAt(matchTypeTab.indexOfFirst { it == matchType })?.select()
-            return
         }
-
+        navESport = false
     }
 
     fun updateSportMenuResult(sportMenuResult: ApiResult<SportMenuData>) {

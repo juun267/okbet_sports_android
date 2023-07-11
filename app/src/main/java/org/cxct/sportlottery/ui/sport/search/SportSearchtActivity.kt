@@ -8,6 +8,7 @@ import android.view.View.OnClickListener
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -42,7 +43,7 @@ class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::
             gravity = Gravity.CENTER_HORIZONTAL
             setTextColor(getColor(R.color.color_6C7BA8_A7B2C4))
             setBackgroundColor(getColor(R.color.color_F2F5FA))
-            setText(R.string.no_data)
+            setText(R.string.N111)
             textSize = 12f
         }
     }
@@ -55,6 +56,7 @@ class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::
                 var ivDel = pv.findViewById<ImageView>(R.id.sportSearchHistoryDelete)
                 ivDel.setOnClickListener {
                     searchHistoryList.remove(t)
+                    ivClear.isGone = searchHistoryList.isEmpty()
                     MultiLanguagesApplication.saveSearchHistory(searchHistoryList)
                     sportSearchHistoryTag.adapter = getSearchTagAdapter()
                 }
@@ -97,9 +99,9 @@ class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::
             if (searchHistoryList.size != 0) {
                 searchHistoryList.clear()
             }
+            ivClear.isGone = searchHistoryList.isEmpty()
             MultiLanguagesApplication.saveSearchHistory(searchHistoryList)
             sportSearchHistoryTag.adapter = getSearchTagAdapter()
-
         }
         etSearch.post { etSearch.requestFocus() }
         tvSearch.setOnClickListener(object : OnClickListener {
@@ -122,6 +124,7 @@ class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::
     private fun initSearch() {
         setHistoryLayoutVisible(true)
         MultiLanguagesApplication.searchHistory?.let { searchHistoryList = it }
+        ivClear.isGone = searchHistoryList.isEmpty()
         sportSearchHistoryTag.adapter = getSearchTagAdapter()
         sportSearchHistoryTag.setOnTagClickListener(object : OnTagClickListener {
             override fun onTagClick(view: View?, position: Int, parent: FlowLayout?): Boolean {
@@ -143,7 +146,7 @@ class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::
             if (searchHistoryList.any { it == searchKey }) {
                 searchHistoryList.remove(searchKey)
                 searchHistoryList.add(0, searchKey)
-            } else if (searchHistoryList.size == 10) {
+            } else if (searchHistoryList.size == 15) {
                 searchHistoryList.removeAt(9)
                 searchHistoryList.add(0, searchKey)
             } else {
@@ -162,6 +165,7 @@ class SportSearchtActivity : BaseSocketActivity<SportViewModel>(SportViewModel::
             sportSearchHistoryTag.adapter = getSearchTagAdapter()
             searchResultAdapter.setNewInstance(null)
         }
+        ivClear.isGone = searchHistoryList.isEmpty()
     }
 
     private fun initRecyclerView() {
