@@ -216,6 +216,7 @@
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="4"
+                    android:scrollbars="vertical"
                     tools:listitem="@layout/item_redeem" />
             </com.scwang.smart.refresh.layout.SmartRefreshLayout>
         </LinearLayout>

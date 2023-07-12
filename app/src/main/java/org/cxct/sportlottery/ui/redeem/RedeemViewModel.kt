@@ -57,6 +57,11 @@ class RedeemViewModel(
         startTime: String? = TimeUtil.getDefaultTimeStamp().startTime,
         endTime: String? = TimeUtil.getDefaultTimeStamp().endTime,
     ) {
+        if (page != null) {
+            this.page = page
+        } else {
+            this.page = 1
+        }
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.moneyService.redeemCodeHistory(
