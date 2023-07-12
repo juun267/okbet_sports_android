@@ -48,6 +48,7 @@ public class ExtendedEditText extends TextInputAutoCompleteTextView {
         this(context, null);
         super.setOnFocusChangeListener(focusListener);
         initDefaultColor();
+        handException();
     }
 
     public ExtendedEditText(Context context, AttributeSet attrs) {
@@ -56,6 +57,7 @@ public class ExtendedEditText extends TextInputAutoCompleteTextView {
         super.setOnFocusChangeListener(focusListener);
         initDefaultColor();
         handleAttributes(context, attrs);
+        handException();
     }
 
     public ExtendedEditText(Context context, AttributeSet attrs, int defStyle) {
@@ -64,6 +66,23 @@ public class ExtendedEditText extends TextInputAutoCompleteTextView {
         super.setOnFocusChangeListener(focusListener);
         initDefaultColor();
         handleAttributes(context, attrs);
+        handException();
+    }
+
+
+    /**
+     * 解决以下问题
+     * Fatal Exception: java.lang.NullPointerException:
+     * Attempt to invoke virtual method 'void android.widget.Editor$InsertionPointCursorController.show()' on a null object reference
+     */
+    private void handException() {
+        setOnLongClickListener(new OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                requestFocus();
+                return false;
+            }
+        });
     }
 
     protected void initDefaultColor() {
