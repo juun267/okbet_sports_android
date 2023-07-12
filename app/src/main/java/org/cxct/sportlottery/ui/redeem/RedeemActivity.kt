@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.component_date_range_new_selector.view.btn
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityRedeemBinding
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.view.dialog.RedeemDialog
 
 class RedeemActivity : BaseSocketActivity<RedeemViewModel>(RedeemViewModel::class) {
@@ -28,7 +29,10 @@ class RedeemActivity : BaseSocketActivity<RedeemViewModel>(RedeemViewModel::clas
         viewModel.newsResult.observe(this) {
             if (it.success) {
                 it.entity?.let { entity ->
-                    showRedeemDialog("You got P${entity.rewards} !", "Congratulations")
+                    showRedeemDialog(
+                        "You got ₱${entity.rewards?.let { it1 -> TextUtil.format(it1) }} !",
+                        "Congratulations"
+                    )
                 }
             } else {
                 showRedeemDialog(it.msg, resources.getString(R.string.N592))
@@ -66,7 +70,11 @@ class RedeemActivity : BaseSocketActivity<RedeemViewModel>(RedeemViewModel::clas
             binding.layoutHistoryRedeem.isVisible = false
         }
         binding.rbtnRedeemHis.setOnClickListener {
-            viewModel.redeemCodeHistory()
+            viewModel.redeemCodeHistory(
+                startTime = binding.dateSearchBar.startTime.toString(),
+                endTime = binding.dateSearchBar.endTime.toString(),
+                page = 1
+            )
             binding.layoutRedemm.isVisible = false
             binding.lineRedeem.isVisible = false
             binding.lineRedeemHis.isVisible = true
@@ -75,11 +83,10 @@ class RedeemActivity : BaseSocketActivity<RedeemViewModel>(RedeemViewModel::clas
 
         binding.dateSearchBar.btn_search.setOnClickListener {
             avoidFastDoubleClick()
-            viewModel.page = 1
             viewModel.redeemCodeHistory(
                 startTime = binding.dateSearchBar.startTime.toString(),
                 endTime = binding.dateSearchBar.endTime.toString(),
-                page = viewModel.page
+                page = 1
             )
         }
 

@@ -590,7 +590,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
                                 android:layout_weight="1"
-                                android:text="Redeem"
+                                android:text="@string/P151"
                                 android:textColor="@color/color_6C7BA8"
                                 android:textSize="@dimen/textSize14sp" />
 
