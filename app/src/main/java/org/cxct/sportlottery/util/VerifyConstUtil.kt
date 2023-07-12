@@ -34,7 +34,7 @@ object VerifyConstUtil {
     }
 
     fun verifyInviteCode(inviteCode: CharSequence): Boolean {
-        return Pattern.matches("([_$ENGLISH_WORD$NUMBER]){4,8}$", inviteCode)
+        return Pattern.matches("([_$ENGLISH_WORD$NUMBER]){4,16}$", inviteCode)
     }
 
     //是否為數字
