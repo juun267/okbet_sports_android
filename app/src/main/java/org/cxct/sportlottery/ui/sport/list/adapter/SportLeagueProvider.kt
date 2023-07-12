@@ -1,8 +1,6 @@
 package org.cxct.sportlottery.ui.sport.list.adapter
 
-import android.content.Context
 import android.graphics.Typeface
-import android.text.TextUtils
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
@@ -16,7 +14,6 @@ import com.chad.library.adapter.base.entity.node.BaseNode
 import com.chad.library.adapter.base.provider.BaseNodeProvider
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.rotationAnimation
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.setArrowSpin
@@ -36,10 +33,9 @@ class SportLeagueProvider(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
 
         val root = FrameLayout(context)
-        root.layoutParams = ViewGroup.LayoutParams(-1, -2)
+        root.layoutParams = ViewGroup.LayoutParams(-1, 50.dp)
         root.setBackgroundResource(R.color.color_0D025BE8)
         root.foreground = ContextCompat.getDrawable(context, R.drawable.fg_ripple)
-        6.dp.let { root.setPadding(0, it, 0, it) }
 
         val wh20 = 20.dp
 
@@ -75,8 +71,15 @@ class SportLeagueProvider(
                 rightMargin = 12.dp
             }
         }
-
         root.addView(ivArrow)
+
+        val divider = View(context)
+        divider.setBackgroundColor(ContextCompat.getColor(context, R.color.color_DBE5F6))
+        divider.layoutParams = FrameLayout.LayoutParams(-2, 1.dp).apply {
+            gravity = Gravity.BOTTOM
+        }
+
+        root.addView(divider)
         return BaseViewHolder(root)
     }
 
