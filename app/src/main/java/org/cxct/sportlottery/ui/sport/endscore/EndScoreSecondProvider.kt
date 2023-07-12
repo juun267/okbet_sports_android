@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.sport.endscore
 import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -18,6 +19,7 @@ import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.sport.list.adapter.SportMatchEvent
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BetPlayCateFunction.getEndScoreNameByTab
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.view.tablayout.TabSelectedAdapter
@@ -108,12 +110,14 @@ class EndScoreSecondProvider(val adapter: EndScoreAdapter,
             setText(R.string.D039)
             setTextColor(ContextCompat.getColor(context, R.color.color_025BE8))
             linExpand.background = collapseDrawable
+            (linExpand.layoutParams as MarginLayoutParams).bottomMargin = 10.dp
             setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_to_up_blue, 0)
             llMatchInfo.setBackgroundColor(ContextCompat.getColor(context, R.color.color_F8F9FD))
         } else {
             setText(R.string.N698)
             setTextColor(Color.WHITE)
             linExpand.background = expandedDrawable
+            (linExpand.layoutParams as MarginLayoutParams).bottomMargin = 20.dp
             setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_to_down_white, 0)
             llMatchInfo.setBackgroundColor(Color.TRANSPARENT)
         }
