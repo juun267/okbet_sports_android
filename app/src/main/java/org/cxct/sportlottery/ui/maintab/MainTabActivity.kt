@@ -751,6 +751,15 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         navToPosition(1)
     }
 
+    fun jumpToWorldCup() {
+        navToPosition(0)
+        homeFragment().jumpToWorldCup()
+    }
+    fun jumpToWorldCupGame() {
+        navToPosition(0)
+        homeFragment().jumpToWorldCupGame()
+    }
+
     fun jumpToInplaySport() {
         //检测体育服务是否关闭
         checkSportStatus(this) {
