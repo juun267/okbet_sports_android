@@ -1,8 +1,12 @@
 package org.cxct.sportlottery.network.index.config
 
-import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguards.KeepMembers
+import android.os.Parcelable
+import com.squareup.moshi.JsonClass
+import kotlinx.android.parcel.Parcelize
+import org.cxct.sportlottery.common.proguards.KeepMembers
 
 @JsonClass(generateAdapter = true) @KeepMembers
+@Parcelize
 data class ImageData(
     val id: Int?, //图片id
 //    val imageLink: String?, //图片跳转地址(可空) APP端不再使用这个参数，改用新端appUrl
@@ -23,4 +27,7 @@ data class ImageData(
     val createdAt: Long?,
     val isHidden: Boolean, //送审版本是否隐藏banner 1:是，0：否
     val frontPageShow: Int?, //首页是否显示 0:否 1：是
-)
+    val activityId: String?,
+    val activityType: Int?,
+    val reward: Int?,
+):Parcelable

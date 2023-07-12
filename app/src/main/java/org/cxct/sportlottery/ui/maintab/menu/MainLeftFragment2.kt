@@ -41,6 +41,7 @@ import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.maintab.worldcup.WorldCupFragment
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
+import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreator
@@ -249,7 +250,9 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             textParams,
             R.string.B005,
         )
-        promotionItem.group.bindPromoClick { close() }
+        promotionItem.group.bindPromoClick {
+
+        }
         promotionItem.group.setVisibilityByMarketSwitch()
 
         affiliateItem = addMenu(++index,

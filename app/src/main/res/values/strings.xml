@@ -1589,4 +1589,7 @@
     <string name="N907">Didn\'t win</string>
     <string name="P124">System Cancellation</string>
     <string name="N110">Potential win</string>
+    <string name="P159">Apply</string>
+    <string name="H019">Total valid bet</string>
+    <string name="P169">Promotion Details</string>
 </resources>
