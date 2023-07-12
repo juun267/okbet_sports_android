@@ -732,12 +732,12 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         if (bottom_navigation_view.currentItem != position) {
             bottom_navigation_view.currentItem = position
         }
-        homeFragment().jumpToOKLive()
     }
 
     fun jumpToESport() {
         checkSportStatus(this) {
-            jumpToTheSport(MatchType.EARLY, GameType.ES)
+            (fragmentHelper.getFragment(1) as SportFragment2).setJumpESport()
+            navToPosition(1)
         }
     }
 
@@ -748,15 +748,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     fun jumpToTheSport(matchType: MatchType? = null, gameType: GameType? = null) {
         (fragmentHelper.getFragment(1) as SportFragment2).setJumpSport(matchType, gameType)
         navToPosition(1)
-    }
-
-    fun jumpToWorldCup() {
-        navToPosition(0)
-        homeFragment().jumpToWorldCup()
-    }
-    fun jumpToWorldCupGame() {
-        navToPosition(0)
-        homeFragment().jumpToWorldCupGame()
     }
 
     fun jumpToInplaySport() {

@@ -126,7 +126,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private var intoLive = false
     private var oddsDetailListAdapter: OddsDetailListAdapter? = null
     private var isLogin: Boolean = false
-    private val tabCateAdapter: TabCateAdapter by lazy {
+    private val tabCateAdapter:  TabCateAdapter by lazy {
         TabCateAdapter(OnItemSelectedListener {
             tabCateAdapter.selectedPosition = it
             (rv_cat.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
@@ -219,8 +219,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     } else {
                         selectMenuTab(-1)
                         vpContainer.visible()
-                        live_view_tool_bar.gone()
                         live_view_tool_bar.release()
+                        live_view_tool_bar.gone()
                         collaps_toolbar.gone()
                         releaseWebView()
                         showChatWebView(false)

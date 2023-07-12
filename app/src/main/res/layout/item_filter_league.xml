@@ -23,7 +23,7 @@
         android:maxLines="2"
         android:layout_marginLeft="@dimen/margin_8"
         android:textSize="@dimen/textSize14sp"
-        android:textFontWeight="600"
+        android:textStyle="bold"
         android:textColor="@color/color_0D2245"
         tools:text="University of Technology Sydney"/>
     <LinearLayout
