@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.load
@@ -15,6 +16,7 @@ import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesCategory
 import org.cxct.sportlottery.common.adapter.BindingAdapter
 import org.cxct.sportlottery.common.adapter.BindingVH
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 import org.cxct.sportlottery.view.onClick
@@ -37,7 +39,7 @@ class GameCategroyAdapter(
         vh.vb.rvGameItem.run {
             setRecycledViewPool(gameItemViewPool)
             layoutManager = GridLayoutManager(context, 3)
-            addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_10))
+            addItemDecoration(GridSpacingItemDecoration(3, 10.dp, false))
             adapter = GameChildAdapter(onFavoriate = { view, gameBean ->
                 clickCollect.invoke(view, gameBean)
             }).apply {
@@ -65,11 +67,11 @@ class GameCategroyAdapter(
         tvMore.isVisible = moreEnable
         ivBackPage.isVisible = moreEnable
         ivForwardPage.isVisible = moreEnable
-//        ivMore.isVisible = moreEnable
         ivIcon.load(item.icon)
         tvName.text = item.categoryName
 
         val childAdapter = rvGameItem.adapter as GameChildAdapter
+        childAdapter.isMoreThan18=item.isMoreThan18
         changeData(rvGameItem.adapter as GameChildAdapter, item, binding)
         //获得总页数
         childAdapter.totalPage = item.gameList!!.size / childAdapter.itemSize
@@ -125,7 +127,7 @@ class GameCategroyAdapter(
 
 
         if (positionEnd > item.gameList!!.size) {
-            adapter.setList(item.gameList!!.toMutableList())
+            adapter.setList(item.gameList!!.toMutableList().subList(positionStart, item.gameList!!.size))
         } else {
             adapter.setList(item.gameList!!.toMutableList().subList(positionStart, positionEnd))
         }

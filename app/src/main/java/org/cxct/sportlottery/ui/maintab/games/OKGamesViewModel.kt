@@ -143,11 +143,10 @@ class OKGamesViewModel(
             val markedGames = _collectList.value?.second?.toMutableList() ?: mutableListOf()
             if (gameData.markCollect) {
                 markedGames.add(0, gameData)
-                _collectList.value = Pair(false, markedGames)
+                _collectList.postValue(Pair(false, markedGames))
                 return@callApi
             }
-
-            _collectList.value = Pair(false, markedGames.filter { it.id != gameData.id }.toList())
+            _collectList.postValue(Pair(false, markedGames.filter { it.id != gameData.id }.toList()))
         }
 
     /**
