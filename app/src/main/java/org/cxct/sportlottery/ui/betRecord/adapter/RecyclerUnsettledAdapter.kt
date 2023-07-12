@@ -15,6 +15,7 @@ import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.copyToClipboard
 import org.cxct.sportlottery.view.onClick
+import org.cxct.sportlottery.view.setColors
 import java.util.Locale
 
 /**
@@ -104,8 +105,41 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
 
             //投注金额
             tvBetTotal.text = " ₱ ${TextUtil.format(item.totalAmount)}"
+
+
             //可赢金额
-            tvBetWin.text = " ₱ ${TextUtil.format(item.winnable)}"
+            when(item.status){
+                //未结单  可赢：xxx
+                0,1->{
+                    tvBetWin.text = " ₱ ${TextUtil.format(item.winnable)}"
+                    tvBetWin.setColors(R.color.color_ff0000)
+                    tvWinLabel.text=context.getString(R.string.bet_info_list_win_quota)
+                }
+                //已中奖   赢：xxx
+                2,3->{
+                    tvBetWin.text = " ₱ ${TextUtil.format(item.win?:0)}"
+                    tvBetWin.setColors(R.color.color_ff0000)
+                    tvWinLabel.text=context.getString(R.string.win)
+                }
+                //未中奖  输：xxx
+                4,5->{
+                    tvBetWin.text = " ₱ ${TextUtil.format(item.totalAmount)}"
+                    tvBetWin.setColors(R.color.color_6D7693)
+                    tvWinLabel.text=context.getString(R.string.lose)
+                }
+                //其他  ₱ --
+                else->{
+                    tvBetWin.text = " ₱ --"
+                    tvBetWin.setColors(R.color.color_6D7693)
+                    tvWinLabel.text=""
+                }
+            }
+            if(item.status in 0..1){
+
+            }else{
+
+            }
+
             //订单号
             tvOrderNumber.text = item.orderNo
             //时间

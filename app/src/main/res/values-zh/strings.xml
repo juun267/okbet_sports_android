@@ -1493,4 +1493,7 @@
     <string name="J770">主队</string>
     <string name="J771">客队</string>
     <string name="J762">和</string>
+    <string name="N391">已中奖</string>
+    <string name="N907">未中奖</string>
+    <string name="P124">系统撤单</string>
 </resources>
