@@ -15,7 +15,7 @@
         android:layout_weight="1"
         android:maxLines="2"
         android:layout_marginLeft="@dimen/margin_40"
-        android:textSize="@dimen/textSize14sp"
+        android:textSize="@dimen/textSize12sp"
         android:textColor="@color/color_6D7693"
         tools:text="Shijiazhuang  VS  Bundesliga"/>
     <ImageView
