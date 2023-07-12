@@ -64,20 +64,29 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
                 ParlayType.OUTRIGHT.key,ParlayType.SINGLE.key -> {
                     parlayString.append(context.getString(R.string.N125))
                     //隐藏详情跳转
-                    ivDetails.gone()
-                    tvInPlay.visible()
+                    linearBetDetail.gone()
+//                    tvInPlay.visible()
+                    //未结算的订单， 才显示 滚球，早盘
+                    when(item.status){
+                        0,1->{
+                            tvInPlay.visible()
+                        }
+                        else->{
+                            tvInPlay.gone()
+                        }
+                    }
                     linearDetails.onClick {
                     }
                 }
                 //串关
                 else -> {
                     parlayString.append(context.getString(R.string.N124))
-                    ivDetails.visible()
+                    linearBetDetail.visible()
                     //如果已经是详情页，不可点击进入详情
                     if(isDetails){
-                        ivDetails.gone()
+                        linearBetDetail.gone()
                     }else{
-                        ivDetails.visible()
+                        linearBetDetail.visible()
                     }
                     tvInPlay.gone()
                     //跳转注单详情
@@ -118,12 +127,20 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
             }
 
 
+
 //            投注项 item
             recyclerBetCard.layoutManager = LinearLayoutManager(context)
             val cardAdapter = RecyclerBetCardAdapter(item,block)
             recyclerBetCard.adapter = cardAdapter
-            cardAdapter.setList(item.matchOdds)
-
+            if(isDetails){
+                cardAdapter.setList(item.matchOdds)
+            }else{
+                if(item.matchOdds.size>2){
+                    cardAdapter.setList(item.matchOdds.subList(0,2))
+                }else{
+                    cardAdapter.setList(item.matchOdds)
+                }
+            }
 
         }
     }
