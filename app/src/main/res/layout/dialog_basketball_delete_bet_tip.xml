@@ -27,7 +27,7 @@
             android:text="@string/N901"
             android:textColor="@color/color_414655"
             android:textSize="@dimen/textSize16sp"
-            android:textFontWeight="600"
+            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/tvMessage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
