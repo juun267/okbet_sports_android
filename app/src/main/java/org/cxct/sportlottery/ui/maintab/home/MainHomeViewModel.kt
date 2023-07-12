@@ -16,11 +16,14 @@ import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsDetail
 import org.cxct.sportlottery.net.news.data.NewsItem
+import org.cxct.sportlottery.net.user.UserRepository
+import org.cxct.sportlottery.net.user.data.ActivityImageList
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.match.MatchRound
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
@@ -116,6 +119,14 @@ open class MainHomeViewModel(
     val bettingStationList: LiveData<List<BettingStation>>
         get() = _bettingStationList
     private val _bettingStationList = MutableLiveData<List<BettingStation>>()
+
+    val activityImageList: LiveData<List<ActivityImageList>>
+        get() = _activityImageList
+    private val _activityImageList = MutableLiveData<List<ActivityImageList>>()
+
+    val activityApply: LiveData<String>
+        get() = _activityApply
+    private val _activityApply = MutableLiveData<String>()
 
     //region 宣傳頁用
     fun getRecommend() {
@@ -642,6 +653,20 @@ open class MainHomeViewModel(
         if (it.succeeded()) {
             _bettingStationList.postValue(it.getData())
         } else {
+            toast(it.msg)
+        }
+    }
+    fun getActivityImageListH5() = callApi({UserRepository.activityImageListH5()}){
+        if (it.succeeded()){
+            _activityImageList.postValue(it.getData())
+        }else{
+            toast(it.msg)
+        }
+    }
+    fun activityApply(activityId: String) = callApi({UserRepository.activityApply(activityId)}){
+        if (it.succeeded()){
+            _activityApply.postValue(it.getData())
+        }else{
             toast(it.msg)
         }
     }

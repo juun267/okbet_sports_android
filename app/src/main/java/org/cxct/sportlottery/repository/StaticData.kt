@@ -27,6 +27,7 @@ enum class TestFlag(val index: Long) { NORMAL(0), GUEST(1), TEST(2) } //是否�
  * @see org.cxct.sportlottery.network.index.config.ImageData.imageType
  */
 enum class ImageType(val code: Int) {
+    PROMOTION_LIST(4),
     PROMOTION(5),
     DIALOG_HOME(7),
     DIALOG_SPORT(14),

@@ -34,6 +34,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
+import org.cxct.sportlottery.ui.promotion.PromotionDetailActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import timber.log.Timber
@@ -109,7 +110,7 @@ class HomeTopView @JvmOverloads constructor(
             val host = sConfigData?.resServerHost
             val promoteImages = imageList.map {
                 Timber.d("host:$host url4:${host + it.imageName4}")
-                XBannerImage(it.imageText1 + "", host + it.imageName4, it.appUrl)
+                XBannerImage(it.imageText1 + "", host + it.imageName4, it.appUrl,it.activityId)
             }
             setUpPromoteView(promoteImages)
         }
@@ -122,13 +123,15 @@ class HomeTopView @JvmOverloads constructor(
                     val view = holder.getView<ImageView>(R.id.ivItemPromote)
                     view.load(item.imgUrl, R.drawable.img_banner01)
                 }
-
             }
         promoteAdapter.setNewInstance(imageList.toMutableList())
         promoteAdapter.setOnItemClickListener { adapter, view, position ->
-            jumpToOthers(
-                promoteAdapter.getItem(position)
-            )
+            val itemData = promoteAdapter.getItem(position)
+            if (itemData.activityId.isNullOrEmpty()){
+                jumpToOthers(itemData)
+            }else{
+                PromotionDetailActivity.start(context,itemData.activityId)
+            }
         }
         binding.rcvPromote.apply {
             adapter = promoteAdapter
