@@ -110,7 +110,12 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
                 tvUserBalance.visible()
                 tvLogin.gone()
                 //用户名
-                tvUserName.text="${viewModel.userInfo.value?.nickName?:viewModel.userInfo.value?.userName} "
+                if(viewModel.userInfo.value?.nickName.isNullOrEmpty()){
+                    tvUserName.text="${viewModel.userInfo.value?.userName} "
+                }else{
+                    tvUserName.text="${viewModel.userInfo.value?.nickName} "
+                }
+
                 //余额
                 tvUserBalance.text="$showCurrencySign ${TextUtil.format(viewModel.userMoney.value?:0)}"
                 ivUserCover.load(viewModel.userInfo.value?.iconUrl, R.drawable.ic_person_avatar)
