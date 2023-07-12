@@ -188,7 +188,7 @@ class LeagueSelectActivity :
                             val label=TimeUtil.dateToFormat(date,TimeUtil.SELECT_MATCH_FORMAT)
                             val timeRangeParams=TimeUtil.getDayDateTimeRangeParams(TimeUtil.dateToFormat(date,TimeUtil.YMD_FORMAT))
                             val startTime = timeRangeParams.startTime?:""
-                            val endTime = timeRangeParams.endTime?:""
+                            val endTime = if (it==names.size-1) "" else timeRangeParams.endTime?:""
                             add(SelectDate(date,names[it],label,startTime,endTime))
                         }
                     }
