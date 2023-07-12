@@ -113,7 +113,16 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
                 0,1->{
                     tvBetWin.text = " ₱ ${TextUtil.format(item.winnable)}"
                     tvBetWin.setColors(R.color.color_ff0000)
-                    tvWinLabel.text=context.getString(R.string.bet_info_list_win_quota)
+                    when(item.parlayType){
+                        //单注 描述用 可赢：
+                        ParlayType.OUTRIGHT.key,ParlayType.SINGLE.key->{
+                            tvWinLabel.text=context.getString(R.string.bet_info_list_win_quota)
+                        }
+                        //串关 描述用 最高可赢：
+                        else->{
+                            tvWinLabel.text=context.getString(R.string.N110)
+                        }
+                    }
                 }
                 //已中奖   赢：xxx
                 2,3->{
