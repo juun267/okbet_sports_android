@@ -66,7 +66,7 @@ class RcvChartAdapter : BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_t
                             }
 
                             else -> {
-                                lp.width = (width / 5).dp
+                                lp.width = (width / 6).dp
                             }
                         }
                         holder.itemView.layoutParams = lp
