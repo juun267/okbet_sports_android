@@ -15,6 +15,7 @@ import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.copyToClipboard
 import org.cxct.sportlottery.view.onClick
+import org.cxct.sportlottery.view.setColors
 import java.util.Locale
 
 /**
@@ -64,20 +65,29 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
                 ParlayType.OUTRIGHT.key,ParlayType.SINGLE.key -> {
                     parlayString.append(context.getString(R.string.N125))
                     //隐藏详情跳转
-                    ivDetails.gone()
-                    tvInPlay.visible()
+                    linearBetDetail.gone()
+//                    tvInPlay.visible()
+                    //未结算的订单， 才显示 滚球，早盘
+                    when(item.status){
+                        0,1->{
+                            tvInPlay.visible()
+                        }
+                        else->{
+                            tvInPlay.gone()
+                        }
+                    }
                     linearDetails.onClick {
                     }
                 }
                 //串关
                 else -> {
                     parlayString.append(context.getString(R.string.N124))
-                    ivDetails.visible()
+                    linearBetDetail.visible()
                     //如果已经是详情页，不可点击进入详情
                     if(isDetails){
-                        ivDetails.gone()
+                        linearBetDetail.gone()
                     }else{
-                        ivDetails.visible()
+                        linearBetDetail.visible()
                     }
                     tvInPlay.gone()
                     //跳转注单详情
@@ -95,8 +105,41 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
 
             //投注金额
             tvBetTotal.text = " ₱ ${TextUtil.format(item.totalAmount)}"
+
+
             //可赢金额
-            tvBetWin.text = " ₱ ${TextUtil.format(item.winnable)}"
+            when(item.status){
+                //未结单  可赢：xxx
+                0,1->{
+                    tvBetWin.text = " ₱ ${TextUtil.format(item.winnable)}"
+                    tvBetWin.setColors(R.color.color_ff0000)
+                    tvWinLabel.text=context.getString(R.string.bet_info_list_win_quota)
+                }
+                //已中奖   赢：xxx
+                2,3->{
+                    tvBetWin.text = " ₱ ${TextUtil.format(item.win?:0)}"
+                    tvBetWin.setColors(R.color.color_ff0000)
+                    tvWinLabel.text="${context.getString(R.string.win)}："
+                }
+                //未中奖  输：xxx
+                4,5->{
+                    tvBetWin.text = " ₱ ${TextUtil.format(item.totalAmount)}"
+                    tvBetWin.setColors(R.color.color_6D7693)
+                    tvWinLabel.text="${context.getString(R.string.lose)}："
+                }
+                //其他  ₱ --
+                else->{
+                    tvBetWin.text = " ₱ --"
+                    tvBetWin.setColors(R.color.color_6D7693)
+                    tvWinLabel.text=""
+                }
+            }
+            if(item.status in 0..1){
+
+            }else{
+
+            }
+
             //订单号
             tvOrderNumber.text = item.orderNo
             //时间
@@ -118,12 +161,20 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
             }
 
 
+
 //            投注项 item
             recyclerBetCard.layoutManager = LinearLayoutManager(context)
             val cardAdapter = RecyclerBetCardAdapter(item,block)
             recyclerBetCard.adapter = cardAdapter
-            cardAdapter.setList(item.matchOdds)
-
+            if(isDetails){
+                cardAdapter.setList(item.matchOdds)
+            }else{
+                if(item.matchOdds.size>2){
+                    cardAdapter.setList(item.matchOdds.subList(0,2))
+                }else{
+                    cardAdapter.setList(item.matchOdds)
+                }
+            }
 
         }
     }
