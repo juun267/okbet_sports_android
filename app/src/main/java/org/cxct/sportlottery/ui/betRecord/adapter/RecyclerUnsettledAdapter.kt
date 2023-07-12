@@ -119,13 +119,13 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
                 2,3->{
                     tvBetWin.text = " ₱ ${TextUtil.format(item.win?:0)}"
                     tvBetWin.setColors(R.color.color_ff0000)
-                    tvWinLabel.text=context.getString(R.string.win)
+                    tvWinLabel.text="${context.getString(R.string.win)}："
                 }
                 //未中奖  输：xxx
                 4,5->{
                     tvBetWin.text = " ₱ ${TextUtil.format(item.totalAmount)}"
                     tvBetWin.setColors(R.color.color_6D7693)
-                    tvWinLabel.text=context.getString(R.string.lose)
+                    tvWinLabel.text="${context.getString(R.string.lose)}："
                 }
                 //其他  ₱ --
                 else->{
