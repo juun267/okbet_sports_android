@@ -238,7 +238,7 @@
                     android:layout_marginLeft="8dp"
                     android:text="@string/your_bet_order_success"
                     android:textColor="@color/color_1CD219"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -259,7 +259,7 @@
                     android:layout_height="wrap_content"
                     android:text="滚球注单确认中（9S）"
                     android:textColor="@color/color_E38902"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
                 <ProgressBar
                     android:layout_width="24dp"
@@ -290,7 +290,7 @@
             android:layout_height="wrap_content"
             android:background="@color/color_202541_FFFFFF"
             android:paddingHorizontal="12dp"
-            android:paddingBottom="14dp">
+            android:paddingBottom="10dp" >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
