@@ -134,7 +134,7 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                             val orderNo = data.orderNo
                             val orderTime = data.betConfirmTime
                             val requestBet = RemarkBetRequest(orderNo, it1, orderTime.toString())
-                            viewModel.remarkBetLiveData.observeForever {
+                            viewModel.observerRemarkBetLiveData {
                                 //uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
                                 dialog.dismiss()
                                 val newUrl =
@@ -292,7 +292,7 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                             val orderNo = data.orderNo
                             val orderTime = data.betConfirmTime
                             val requestBet = RemarkBetRequest(orderNo, it1, orderTime.toString())
-                            viewModel.remarkBetLiveData.observeForever {
+                            viewModel.observerRemarkBetLiveData {
                                 //uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
                                 dialog.dismiss()
                                 val newUrl =
@@ -408,7 +408,7 @@ class TransactionRecordDiffAdapter(val viewModel: AccountHistoryViewModel) :
                             val orderNo = data.orderNo
                             val orderTime = data.betConfirmTime
                             val requestBet = RemarkBetRequest(orderNo, it1, orderTime.toString())
-                            viewModel.remarkBetLiveData.observeForever {
+                            viewModel.observerRemarkBetLiveData {
                                 //uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
                                 dialog.dismiss()
                                 val newUrl =
