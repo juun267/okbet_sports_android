@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:visibility="gone">
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/iv_license"
@@ -11,6 +10,7 @@
         android:layout_height="24dp"
         android:src="@drawable/bottom_license"
         android:layout_gravity="center_horizontal"
+        android:visibility="gone"
         android:layout_centerInParent="true"/>
 
     <TextView
