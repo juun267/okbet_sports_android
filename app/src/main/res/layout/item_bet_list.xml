@@ -61,13 +61,30 @@
                 android:textColor="@color/color_FFFFFF"
                 android:textSize="12sp" />
 
-            <ImageView
-                android:id="@+id/ivDetails"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginLeft="10dp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_bet_record_more" />
+            <LinearLayout
+                android:id="@+id/linearBetDetail"
+                android:orientation="horizontal"
+                android:background="@drawable/bg_blue_radius_8_stroke"
+                android:layout_width="73dp"
+                android:gravity="center"
+                android:layout_height="30dp">
+
+                <TextView
+                    android:text="@string/commission_detail"
+                    android:textSize="12sp"
+                    android:textColor="@color/color_025BE8"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_height="14dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_bet_right" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
 
@@ -105,6 +122,7 @@
 
 
             <TextView
+                android:id="@+id/tvWinLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/bet_info_list_win_quota"

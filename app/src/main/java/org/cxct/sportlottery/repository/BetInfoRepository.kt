@@ -257,6 +257,10 @@ object BetInfoRepository {
         updateBetOrderParlay(betList)
         checkBetInfoContent(betList)
         _betInfoList.postValue(Event(betList))
+        if (betList.size==0){
+            betListTabPosition = 0
+            currentState = 0
+        }
     }
 
     fun removeClosedPlatItem() {
@@ -278,6 +282,10 @@ object BetInfoRepository {
         checkBetInfoContent(betList)
         _betIDList.postValue(Event(oddIDArray))
         _betInfoList.postValue(Event(betList))
+        if (betList.size==0){
+            betListTabPosition = 0
+            currentState = 0
+        }
     }
 
 

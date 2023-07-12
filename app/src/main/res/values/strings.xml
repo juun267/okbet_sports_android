@@ -1585,4 +1585,7 @@
     <string name="J770">Home</string>
     <string name="J771">Away</string>
     <string name="J762">Draw</string>
+    <string name="N391">Won</string>
+    <string name="N907">Didn\'t win</string>
+    <string name="P124">System Cancellation</string>
 </resources>

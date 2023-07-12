@@ -1418,7 +1418,7 @@
     <string name="J226">Không có thêm trận đấu nào nữa</string>
     <string name="J721">Về trang chủ</string>
     <string name="J634">Xem chi tiết</string>
-    <string name="D039">Tông nhân</string>
+    <string name="D039">Nhận</string>
     <string name="I023">Hôm qua</string>
     <string name="N698">Mở rộng</string>
     <string name="J244">Phạt góc</string>
@@ -1453,4 +1453,7 @@
     <string name="J770">Đội nhà</string>
     <string name="J771">Đội khách</string>
     <string name="J762">Hòa</string>
+    <string name="N391">Đã trúng thưởng</string>
+    <string name="N907">Chưa trúng</string>
+    <string name="P124">Hệ thống huỷ đơn</string>
 </resources>

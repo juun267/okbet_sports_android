@@ -25,6 +25,7 @@ import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setBetReceiptStatus
+import org.cxct.sportlottery.util.setBetReceiptStatus2
 import org.cxct.sportlottery.util.setGameType_MatchType_PlayCateName_OddsType
 import org.cxct.sportlottery.view.dialog.BetEndScoreDialog
 import org.cxct.sportlottery.view.onClick
@@ -114,8 +115,8 @@ class RecyclerBetCardAdapter(val row: Row,val block:()->Unit) :
                     tvStatus.setBackgroundResource(R.drawable.bg_bet_status_cancel)
                 }
 
-                4, 5 -> {
-                    //输
+                4, 5,6 -> {
+                    //输 和
                     tvStatus.setBackgroundResource(R.drawable.bg_bet_status_gray)
                 }
 
@@ -146,12 +147,12 @@ class RecyclerBetCardAdapter(val row: Row,val block:()->Unit) :
                         //执行监听
                         block()
                         if(binding.tvStatus.isAttachedToWindow){
-                            tvStatus.setBetReceiptStatus(row.status, row.cancelledBy)
+                            tvStatus.setBetReceiptStatus2(row.status, row.cancelledBy)
                         }
                     }
                 }.start()
             }else{
-                tvStatus.setBetReceiptStatus(item.status, row.cancelledBy)
+                tvStatus.setBetReceiptStatus2(item.status, row.cancelledBy)
             }
 
         }
