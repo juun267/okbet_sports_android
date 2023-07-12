@@ -4,9 +4,11 @@ import android.app.Activity
 import android.app.Dialog
 import android.os.Build
 import android.view.View
+import android.view.ViewTreeObserver
 import android.view.Window
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsAnimationCompat
 import androidx.core.view.WindowInsetsCompat
@@ -14,7 +16,9 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import org.cxct.sportlottery.common.extentions.doOnDestory
 import kotlin.math.max
 import kotlin.math.min
 
@@ -52,7 +56,7 @@ object SoftInput {
  * @see getSoftInputHeight 软键盘高度
  */
 @JvmOverloads
-fun Activity.setWindowSoftInput(
+fun AppCompatActivity.setWindowSoftInput(
     float: View? = null,
     transition: View? = float?.parent as? View,
     editText: View? = null,
@@ -63,7 +67,7 @@ fun Activity.setWindowSoftInput(
     if (this is ComponentActivity) {
         lifecycle.addObserver(SoftInput.hideSoftInputObserver)
     }
-    window.setWindowSoftInput(float, transition, editText, margin, setPadding, onChanged)
+    window.setWindowSoftInput(this, float, transition, editText, margin, setPadding, onChanged)
 }
 
 /**
@@ -94,7 +98,7 @@ fun Fragment.setWindowSoftInput(
     onChanged: (() -> Unit)? = null,
 ) {
     lifecycle.addObserver(SoftInput.hideSoftInputObserver)
-    requireActivity().window.setWindowSoftInput(float,
+    requireActivity().window.setWindowSoftInput(this, float,
         transition,
         editText,
         margin,
@@ -128,7 +132,7 @@ fun DialogFragment.setWindowSoftInput(
     onChanged: (() -> Unit)? = null,
 ) {
     lifecycle.addObserver(SoftInput.hideSoftInputObserver)
-    dialog?.window?.setWindowSoftInput(float, transition, editText, margin, setPadding, onChanged)
+    dialog?.window?.setWindowSoftInput(this, float, transition, editText, margin, setPadding, onChanged)
 }
 
 /**
@@ -157,7 +161,7 @@ fun BottomSheetDialogFragment.setWindowSoftInput(
     onChanged: (() -> Unit)? = null,
 ) {
     lifecycle.addObserver(SoftInput.hideSoftInputObserver)
-    dialog?.window?.setWindowSoftInput(float, transition, editText, margin, setPadding, onChanged)
+    dialog?.window?.setWindowSoftInput(this, float, transition, editText, margin, setPadding, onChanged)
 }
 
 /**
@@ -178,13 +182,14 @@ fun BottomSheetDialogFragment.setWindowSoftInput(
  */
 @JvmOverloads
 fun Dialog.setWindowSoftInput(
+    lifecycleOwner: LifecycleOwner,
     float: View? = null,
     transition: View? = window?.decorView,
     editText: View? = null,
     margin: Int = 0,
     setPadding: Boolean = false,
     onChanged: (() -> Unit)? = null,
-) = window?.setWindowSoftInput(float, transition, editText, margin, setPadding, onChanged)
+) = window?.setWindowSoftInput(lifecycleOwner, float, transition, editText, margin, setPadding, onChanged)
 
 /**
  * 软键盘弹出后要求指定视图[float]悬浮在软键盘之上
@@ -204,6 +209,7 @@ fun Dialog.setWindowSoftInput(
  */
 @JvmOverloads
 fun Window.setWindowSoftInput(
+    lifecycleOwner: LifecycleOwner,
     float: View? = null,
     transition: View? = null,
     editText: View? = null,
@@ -215,7 +221,7 @@ fun Window.setWindowSoftInput(
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return
     // 部分系统不支持WindowInsets使用兼容方案处理
     if (!decorView.isSystemInsetsAnimationSupport() || SoftInput.isSoftInputCompatMode) {
-        return setWindowSoftInputCompatible(float, transition, editText, margin, onChanged)
+        return setWindowSoftInputCompatible(lifecycleOwner, float, transition, editText, margin, onChanged)
     }
     setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
     var matchEditText = false
@@ -223,6 +229,8 @@ fun Window.setWindowSoftInput(
     var floatInitialBottom = 0
     var startAnimation: WindowInsetsAnimationCompat? = null
     var transitionY = 0f
+    var destoryed = false
+    lifecycleOwner.doOnDestory { destoryed = true }
     val callback =
         object : WindowInsetsAnimationCompat.Callback(DISPATCH_MODE_CONTINUE_ON_SUBTREE) {
 
@@ -230,7 +238,7 @@ fun Window.setWindowSoftInput(
                 animation: WindowInsetsAnimationCompat,
                 bounds: WindowInsetsAnimationCompat.BoundsCompat,
             ): WindowInsetsAnimationCompat.BoundsCompat {
-                if (float == null || transition == null) return bounds
+                if (destoryed || float == null || transition == null) return bounds
                 hasSoftInput = ViewCompat.getRootWindowInsets(decorView)
                     ?.isVisible(WindowInsetsCompat.Type.ime()) ?: false
                 startAnimation = animation
@@ -247,7 +255,7 @@ fun Window.setWindowSoftInput(
 
             override fun onEnd(animation: WindowInsetsAnimationCompat) {
                 super.onEnd(animation)
-                if (matchEditText) onChanged?.invoke()
+                if (!destoryed && matchEditText) onChanged?.invoke()
             }
 
             override fun onProgress(
@@ -255,7 +263,7 @@ fun Window.setWindowSoftInput(
                 runningAnimations: MutableList<WindowInsetsAnimationCompat>,
             ): WindowInsetsCompat {
                 val fraction = startAnimation?.fraction
-                if (fraction == null || float == null || transition == null || !matchEditText) return insets
+                if (destoryed || fraction == null || float == null || transition == null || !matchEditText) return insets
                 val softInputHeight = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
                 val softInputTop = decorView.bottom - softInputHeight
                 if (hasSoftInput && softInputTop < floatInitialBottom) {
@@ -281,11 +289,13 @@ fun Window.setWindowSoftInput(
                 return insets
             }
         }
+
     ViewCompat.setWindowInsetsAnimationCallback(decorView, callback)
 }
 
 /** 部分系统不支持WindowInsets使用兼容方案处理 */
 private fun Window.setWindowSoftInputCompatible(
+    lifecycleOwner: LifecycleOwner,
     float: View? = null,
     transition: View? = float?.parent as? View,
     editText: View? = null,
@@ -295,34 +305,40 @@ private fun Window.setWindowSoftInputCompatible(
     setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
     var shown = false
     var matchEditText = false
-    decorView.viewTreeObserver.addOnGlobalLayoutListener {
-        val canTransition = float != null && transition != null
-        val floatBottom = if (canTransition) {
-            val r = IntArray(2)
-            float!!.getLocationInWindow(r)
-            r[1] + float.height
-        } else 0
-        val decorBottom = decorView.bottom
-        val rootWindowInsets =
-            ViewCompat.getRootWindowInsets(decorView) ?: return@addOnGlobalLayoutListener
-        val softInputHeight = rootWindowInsets.getInsets(WindowInsetsCompat.Type.ime()).bottom
-        val hasSoftInput = rootWindowInsets.isVisible(WindowInsetsCompat.Type.ime())
-        val offset = (decorBottom - floatBottom - softInputHeight - margin).toFloat()
-        if (hasSoftInput) {
-            matchEditText = editText == null || editText.hasFocus()
-            if (!shown && matchEditText) {
-                transition?.translationY = offset
-                onChanged?.invoke()
+
+    val globalLayoutListener = object : ViewTreeObserver.OnGlobalLayoutListener {
+        override fun onGlobalLayout() {
+            val canTransition = float != null && transition != null
+            val floatBottom = if (canTransition) {
+                val r = IntArray(2)
+                float!!.getLocationInWindow(r)
+                r[1] + float.height
+            } else 0
+            val decorBottom = decorView.bottom
+            val rootWindowInsets = ViewCompat.getRootWindowInsets(decorView) ?: return
+            val softInputHeight = rootWindowInsets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+            val hasSoftInput = rootWindowInsets.isVisible(WindowInsetsCompat.Type.ime())
+            val offset = (decorBottom - floatBottom - softInputHeight - margin).toFloat()
+            if (hasSoftInput) {
+                matchEditText = editText == null || editText.hasFocus()
+                if (!shown && matchEditText) {
+                    transition?.translationY = offset
+                    onChanged?.invoke()
+                }
+                shown = true
+            } else {
+                if (shown && matchEditText) {
+                    transition?.translationY = 0f
+                    onChanged?.invoke()
+                }
+                shown = false
             }
-            shown = true
-        } else {
-            if (shown && matchEditText) {
-                transition?.translationY = 0f
-                onChanged?.invoke()
-            }
-            shown = false
         }
+
     }
+
+    decorView.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
+    lifecycleOwner.doOnDestory { decorView.viewTreeObserver.removeOnGlobalLayoutListener(globalLayoutListener) }
 }
 
 /** 判断系统是否支持[WindowInsetsAnimationCompat] */
