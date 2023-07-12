@@ -190,12 +190,8 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
 
     //hot match
     private fun refreshHotMatch() {
-
-        //重新设置赔率监听
-        binding.hotMatchView.postDelayed({
-            binding.hotMatchView.onResume(this@MainHomeFragment)
-            viewModel.getRecommend()
-        }, 500)
+        binding.hotMatchView.onResume(this@MainHomeFragment)
+        viewModel.getRecommend()
     }
 
     /**

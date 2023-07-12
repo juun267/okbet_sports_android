@@ -48,9 +48,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/margin_5"
                 android:fontFamily="@font/din_regular"
-                android:textColor="@color/color_414655"
                 android:textFontWeight="700"
-                android:textSize="@dimen/textSize10sp"
+                android:textColor="@color/color_0D2245"
+                android:textSize="@dimen/textSize12sp"
                 tools:text="00:43"
                 tools:visibility="visible" />
 
@@ -204,6 +204,7 @@
             android:layout_width="wrap_content"
             android:gravity="center"
             android:textSize="@dimen/textSize14sp"
+            android:textStyle="bold"
             android:drawablePadding="8dp"/>
     </LinearLayout>
 

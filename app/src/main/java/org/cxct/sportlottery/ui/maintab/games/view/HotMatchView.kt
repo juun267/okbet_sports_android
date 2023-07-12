@@ -374,13 +374,13 @@ class HotMatchView(
         }
     }
 
-    fun onResume(fragment: BaseFragment<*>?) {
+    fun onResume(fragment: BaseFragment<*>) {
         //关闭/显示   热门赛事
         goneWithSportSwitch()
         if (fragment is BaseSocketFragment) {
             fragment.receiver.oddsChangeListener = mOddsChangeListener
         }
-        if (fragment is org.cxct.sportlottery.ui.base.BindingSocketFragment<*, *>) {
+        if (fragment is BindingSocketFragment<*, *>) {
             fragment.receiver.oddsChangeListener = mOddsChangeListener
         }
         adapter?.notifyDataSetChanged()
