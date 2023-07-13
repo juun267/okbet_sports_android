@@ -143,11 +143,7 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
                     tvWinLabel.text=""
                 }
             }
-            if(item.status in 0..1){
 
-            }else{
-
-            }
 
             //订单号
             tvOrderNumber.text = item.orderNo
@@ -171,18 +167,14 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
 
 
 
-//            投注项 item
+            //注单列表  非详情页
             recyclerBetCard.layoutManager = LinearLayoutManager(context)
             val cardAdapter = RecyclerBetCardAdapter(item,block)
             recyclerBetCard.adapter = cardAdapter
-            if(isDetails){
-                cardAdapter.setList(item.matchOdds)
+            if(item.matchOdds.size>2){
+                cardAdapter.setList(item.matchOdds.subList(0,2))
             }else{
-                if(item.matchOdds.size>2){
-                    cardAdapter.setList(item.matchOdds.subList(0,2))
-                }else{
-                    cardAdapter.setList(item.matchOdds)
-                }
+                cardAdapter.setList(item.matchOdds)
             }
 
         }
