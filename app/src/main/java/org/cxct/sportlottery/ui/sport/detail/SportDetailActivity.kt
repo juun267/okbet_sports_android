@@ -75,6 +75,7 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
+import org.cxct.sportlottery.view.DetailSportGuideView
 import org.cxct.sportlottery.view.DividerItemDecorator
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
 import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
@@ -1185,15 +1186,21 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
 
+    private var dsgView: DetailSportGuideView? = null
     /**
      * 检查篮球末尾比分 新手引导是否已经展示过了
      */
     private fun checkSportGuideState(code: String) {
         if (code == MatchType.END_SCORE.postValue) {
             if (KvUtils.decodeBooleanTure(KvUtils.BASKETBALL_GUIDE_TIP_FLAG, false)) {
-                dsgView.visibility = GONE
+                dsgView?.visibility = GONE
             } else {
-                dsgView.visibility = VISIBLE
+                if (dsgView == null) {
+                    dsgView = DetailSportGuideView(this)
+                    val parent = parlayFloatWindow.parent as ViewGroup
+                    parent.addView(dsgView, fl_bet_list.indexOfChild(parlayFloatWindow), ViewGroup.LayoutParams(-1, -1))
+                }
+                dsgView!!.visibility = VISIBLE
             }
         }
     }

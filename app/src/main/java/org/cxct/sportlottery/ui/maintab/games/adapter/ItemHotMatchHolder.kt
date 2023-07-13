@@ -5,6 +5,7 @@ import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.setSptText
 import org.cxct.sportlottery.databinding.ItemHotGameViewBinding
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.Odd
@@ -340,6 +341,19 @@ class ItemHotMatchHolder(
             TimeUtil.isTimeInPlay(item.startTime) -> {
                 if (item.matchInfo?.statusName18n != null) {
                     item.matchInfo?.statusName18n
+                } else {
+                    ""
+                }
+                if (item.matchInfo?.statusName18n != null) {
+                    //网球，排球，乒乓，羽毛球，就不显示
+                    when(item.matchInfo?.gameType){
+                        GameType.TN.name,GameType.VB.name,GameType.TT.name,GameType.BM.name->{
+                            "" + setSptText(item.matchInfo!!)
+                        }
+                        else->{
+                            item.matchInfo?.statusName18n + (setSptText(item.matchInfo!!))
+                        }
+                    }
                 } else {
                     ""
                 }
