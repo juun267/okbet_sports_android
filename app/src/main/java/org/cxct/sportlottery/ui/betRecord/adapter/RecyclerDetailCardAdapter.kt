@@ -132,10 +132,7 @@ class RecyclerDetailCardAdapter(val row: Row, val block:()->Unit) :
                     override fun onTick(millisUntilFinished: Long) {
                         if(binding.tvStatus.isAttachedToWindow){
                             //倒计时 待成立 x 秒
-                            tvStatus.text = String.format(
-                                context.getString(R.string.pending),
-                                TimeUtil.longToSecond(millisUntilFinished)
-                            )
+                            tvStatus.text = context.getString(R.string.log_state_processing)
                         }
                     }
 

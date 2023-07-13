@@ -45,7 +45,7 @@ class BetDetailsFragment2 : BindingFragment<AccountHistoryViewModel, FragmentBet
             binding.recyclerUnsettled.adapter = mAdapter
 
             mAdapter!!.setOnItemChildClickListener { _, view, position ->
-                val data = mAdapter!!.data[position]
+//                val data = mAdapter!!.data[position]
                 when (view.id) {
                     //打印点击
                     R.id.tvOrderPrint -> {
