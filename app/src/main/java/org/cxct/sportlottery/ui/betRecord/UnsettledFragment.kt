@@ -39,7 +39,7 @@ class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnset
                             val orderNo = data.orderNo
                             val orderTime = data.betConfirmTime
                             val requestBet = RemarkBetRequest(orderNo, it1, orderTime.toString())
-                            viewModel.remarkBetLiveData.observeForever {
+                            viewModel.observerRemarkBetLiveData {
                                 hideLoading()
                                 dialog.dismiss()
                                 val newUrl =
@@ -121,7 +121,6 @@ class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnset
         loading()
         viewModel.pageIndex = 1
         mAdapter.setList(arrayListOf())
-        mAdapter.notifyDataSetChanged()
         //获取未结算数据
         viewModel.getUnsettledList()
     }

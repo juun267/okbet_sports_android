@@ -310,11 +310,9 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <org.cxct.sportlottery.view.DetailSportGuideView
-        android:id="@+id/dsgView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
+
+
+
 
     <org.cxct.sportlottery.view.ParlayFloatingWindow
         android:id="@+id/parlayFloatWindow"

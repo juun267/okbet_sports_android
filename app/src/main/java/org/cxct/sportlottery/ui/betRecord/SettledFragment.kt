@@ -49,15 +49,14 @@ class SettledFragment:BindingFragment<AccountHistoryViewModel,FragmentSettledBin
                             val orderNo = data.orderNo
                             val orderTime = data.betConfirmTime
                             val requestBet = RemarkBetRequest(orderNo, it1, orderTime.toString())
-                            viewModel.remarkBetLiveData.observeForever {
+                            viewModel.observerRemarkBetLiveData {
                                 dialog.dismiss()
-                                val newUrl =
-                                    Constants.getPrintReceipt(
-                                        requireContext(),
-                                        it.remarkBetResult?.uniqNo,
-                                        orderTime.toString(),
-                                        it1
-                                    )
+                                val newUrl = Constants.getPrintReceipt(
+                                    requireContext(),
+                                    it.remarkBetResult?.uniqNo,
+                                    orderTime.toString(),
+                                    it1
+                                )
                                 JumpUtil.toExternalWeb(requireContext(), newUrl)
                             }
                             viewModel.reMarkBet(requestBet)
@@ -75,7 +74,7 @@ class SettledFragment:BindingFragment<AccountHistoryViewModel,FragmentSettledBin
             override fun onTabSelected(tab: TabLayout.Tab) {
                 loading()
                 viewModel.pageSettledIndex=1
-                mAdapter.data.clear()
+                mAdapter.setNewInstance(null)
                 when(tab.position){
                     0->{
                         //今天
@@ -98,7 +97,7 @@ class SettledFragment:BindingFragment<AccountHistoryViewModel,FragmentSettledBin
                         viewModel.settledEndTime=TimeUtil.getDefaultTimeStamp(30).endTime!!.toLong()
                     }
                     4->{
-                        //其他  除开最近30天的前60天
+                        //其他  最近90天内除开最近30天的前60天
                         viewModel.settledStartTime=TimeUtil.getDefaultTimeStamp(90).startTime!!.toLong()
                         viewModel.settledEndTime=TimeUtil.getDefaultTimeStamp(30).startTime!!.toLong()
                     }
@@ -124,8 +123,7 @@ class SettledFragment:BindingFragment<AccountHistoryViewModel,FragmentSettledBin
     @SuppressLint("NotifyDataSetChanged")
     override fun onInitData() {
         viewModel.pageSettledIndex=1
-        mAdapter.data.clear()
-        mAdapter.notifyDataSetChanged()
+        mAdapter.setNewInstance(null)
         getSettledData()
 
     }
@@ -155,6 +153,7 @@ class SettledFragment:BindingFragment<AccountHistoryViewModel,FragmentSettledBin
 //                mAdapter.setList(arrayListOf())
 //            }
         }
+
     }
 
     @SuppressLint("SetTextI18n")

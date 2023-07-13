@@ -185,6 +185,7 @@ class BetReceiptFragment :
                 )
             }"
         }
+
         //顯示注單收據的數量
         if (BetInfoRepository.currentBetType == 0){
             val bkEndScore=betResultData?.singleBets?.firstOrNull()?.matchOdds?.firstOrNull()?.playCateCode.isEndScoreType()
