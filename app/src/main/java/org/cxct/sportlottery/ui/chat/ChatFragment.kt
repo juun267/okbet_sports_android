@@ -78,7 +78,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
             setPadding = false,
             editText = binding.vChatAction.etInput,
             onChanged = {
-                LogUtil.d("SoftInput visibility = ${hasSoftInput()}")
+//                LogUtil.d("SoftInput visibility = ${hasSoftInput()}")
             }
         )
     }

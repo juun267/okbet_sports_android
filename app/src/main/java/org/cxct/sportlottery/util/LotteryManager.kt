@@ -63,7 +63,7 @@ class LotteryManager {
      * 限定指定页面不能显示
      */
     private fun allowdShow(): Boolean =
-        if (getMarketSwitch())
+        if (activity == null || getMarketSwitch())
             false
         else
             when (activity!!::class) {

@@ -272,8 +272,10 @@ class BetReceiptFragment :
             }
 
             betReceiptDiffAdapter?.refreshBetStatusFinishFunction = {
-                lin_result_status_processing?.gone()
-                lin_result_status?.visible()
+                tvBetProcessingStatus?.text = getString(R.string.str_in_play_bet_confirmed)+ " "
+                //倒计时结束后，不处理
+//                lin_result_status_processing?.gone()
+//                lin_result_status?.visible()
             }
 
             adapter = betReceiptDiffAdapter

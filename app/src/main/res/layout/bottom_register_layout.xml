@@ -10,6 +10,7 @@
         android:layout_height="24dp"
         android:src="@drawable/bottom_license"
         android:layout_gravity="center_horizontal"
+        android:visibility="gone"
         android:layout_centerInParent="true"/>
 
     <TextView
