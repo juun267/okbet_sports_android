@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.betRecord
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
@@ -16,33 +17,46 @@ import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.betRecord.adapter.RecyclerUnsettledAdapter
 import org.cxct.sportlottery.ui.betRecord.dialog.PrintDialog
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.RefreshHelper
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.view.BetEmptyView
 import org.cxct.sportlottery.view.loadMore
 
 /**
  * 已结单列表
  */
-class SettledFragment:BindingFragment<AccountHistoryViewModel,FragmentSettledBinding>() {
-    private val mAdapter=RecyclerUnsettledAdapter()
-
-    override fun onInitView(view: View) =binding.run {
+class SettledFragment : BindingFragment<AccountHistoryViewModel, FragmentSettledBinding>() {
+    private val mAdapter = RecyclerUnsettledAdapter()
+    private val oneDay = 60 * 60 * 24 * 1000
+    private val refreshHelper by lazy { RefreshHelper.of(binding.recyclerSettled, this, false) }
+    override fun onInitView(view: View) = binding.run {
         //默认搜索时间   今天
-        viewModel.settledStartTime=TimeUtil.getTodayStartTimeStamp()
-        viewModel.settledEndTime=TimeUtil.getTodayEndTimeStamp()
+        viewModel.settledStartTime = TimeUtil.getTodayStartTimeStamp()
+        viewModel.settledEndTime = TimeUtil.getTodayEndTimeStamp()
 
-        recyclerSettled.layoutManager=LinearLayoutManager(requireContext())
-        recyclerSettled.adapter=mAdapter
+        recyclerSettled.layoutManager = LinearLayoutManager(requireContext())
+        recyclerSettled.adapter = mAdapter
+
+        refreshHelper.setLoadMoreListener(object : RefreshHelper.LoadMore {
+            override fun onLoadMore(pageIndex: Int, pageSize: Int) {
+                if (viewModel.hasMore) {
+                    viewModel.getSettledList()
+                }else{
+                    refreshHelper.finishLoadMoreWithNoMoreData()
+                }
+            }
+        })
 //        mAdapter.enableDefaultEmptyView(requireContext())
         mAdapter.setEmptyView(BetEmptyView(requireContext()))
 
         //item打印点击
         mAdapter.setOnItemChildClickListener { _, view, position ->
-            val data= mAdapter.data[position]
-            when(view.id){
+            val data = mAdapter.data[position]
+            when (view.id) {
                 //打印点击
-                R.id.tvOrderPrint->{
+                R.id.tvOrderPrint -> {
                     val dialog = PrintDialog(requireContext())
                     dialog.tvPrintClickListener = { it1 ->
                         if (it1?.isNotEmpty() == true) {
@@ -69,37 +83,47 @@ class SettledFragment:BindingFragment<AccountHistoryViewModel,FragmentSettledBin
 
 
         //tab切换
-        tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             @SuppressLint("NotifyDataSetChanged")
             override fun onTabSelected(tab: TabLayout.Tab) {
                 loading()
-                viewModel.pageSettledIndex=1
+                viewModel.pageSettledIndex = 1
+                viewModel.hasMore = true
                 mAdapter.setNewInstance(null)
-                when(tab.position){
-                    0->{
+                when (tab.position) {
+                    0 -> {
                         //今天
-                        viewModel.settledStartTime=TimeUtil.getTodayStartTimeStamp()
-                        viewModel.settledEndTime=TimeUtil.getTodayEndTimeStamp()
+                        viewModel.settledStartTime = TimeUtil.getTodayStartTimeStamp()
+                        viewModel.settledEndTime = TimeUtil.getTodayEndTimeStamp()
                     }
-                    1->{
+
+                    1 -> {
                         //昨天
-                        viewModel.settledStartTime=TimeUtil.getDefaultTimeStamp(1).startTime!!.toLong()
-                        viewModel.settledEndTime=TimeUtil.getDefaultTimeStamp(1).endTime!!.toLong()
+                        viewModel.settledStartTime =
+                            TimeUtil.getDefaultTimeStamp(1).startTime!!.toLong()
+                        viewModel.settledEndTime = viewModel.settledStartTime!! + oneDay - 1
                     }
-                    2->{
+
+                    2 -> {
                         //7天
-                        viewModel.settledStartTime=TimeUtil.getDefaultTimeStamp(7).startTime!!.toLong()
-                        viewModel.settledEndTime=TimeUtil.getDefaultTimeStamp(7).endTime!!.toLong()
+                        viewModel.settledStartTime =
+                            TimeUtil.getDefaultTimeStamp(6).startTime!!.toLong()
+                        viewModel.settledEndTime = TimeUtil.getTodayEndTimeStamp()
                     }
-                    3->{
+
+                    3 -> {
                         //30天
-                        viewModel.settledStartTime=TimeUtil.getDefaultTimeStamp(30).startTime!!.toLong()
-                        viewModel.settledEndTime=TimeUtil.getDefaultTimeStamp(30).endTime!!.toLong()
+                        viewModel.settledStartTime =
+                            TimeUtil.getDefaultTimeStamp(29).startTime!!.toLong()
+                        viewModel.settledEndTime = TimeUtil.getTodayEndTimeStamp()
                     }
-                    4->{
+
+                    4 -> {
                         //其他  最近90天内除开最近30天的前60天
-                        viewModel.settledStartTime=TimeUtil.getDefaultTimeStamp(90).startTime!!.toLong()
-                        viewModel.settledEndTime=TimeUtil.getDefaultTimeStamp(30).startTime!!.toLong()
+                        viewModel.settledStartTime =
+                            TimeUtil.getDefaultTimeStamp(89).startTime!!.toLong()
+                        viewModel.settledEndTime =
+                            TimeUtil.getDefaultTimeStamp(30).startTime!!.toLong()
                     }
                 }
                 //刷新数据
@@ -115,55 +139,57 @@ class SettledFragment:BindingFragment<AccountHistoryViewModel,FragmentSettledBin
         })
 
         //加载更多
-        recyclerSettled.loadMore {
-            viewModel.getSettledList()
-        }
+//        recyclerSettled.loadMore {
+//            if(viewModel.hasMore){
+//                viewModel.getSettledList()
+//            }
+//        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onInitData() {
-        viewModel.pageSettledIndex=1
+        viewModel.pageSettledIndex = 1
         mAdapter.setNewInstance(null)
         getSettledData()
 
     }
 
-    private fun getSettledData(){
+    private fun getSettledData() {
         //获取结算数据
         loading()
         viewModel.getSettledList()
-        viewModel.settledData.observe(this){
+        viewModel.settledData.observe(this) {
             hideLoading()
             initBetValue()
+            refreshHelper.finishWithSuccess()
             binding.recyclerSettled.visible()
-            if( viewModel.pageSettledIndex==2){
+            if (viewModel.pageSettledIndex == 2) {
                 mAdapter.setList(it)
-            }else{
+            } else {
                 mAdapter.addData(it)
             }
         }
         //网络失败
-        viewModel.responseFailed.observe(this){
+        viewModel.responseFailed.observe(this) {
             hideLoading()
             initBetValue()
             binding.recyclerSettled.visible()
-//            if(viewModel.settledData.value!=null){
-//                mAdapter.setList(viewModel.settledData.value)
-//            }else{
-//                mAdapter.setList(arrayListOf())
-//            }
+        }
+        viewModel.errorEvent.observe(this) {
+            hideLoading()
+            ToastUtil.showToast(requireContext(), it)
         }
 
     }
 
     @SuppressLint("SetTextI18n")
-    private fun initBetValue(){
+    private fun initBetValue() {
         //总盈亏
-        binding.tvReward.text="$showCurrencySign ${TextUtil.format(viewModel.totalReward)}"
+        binding.tvReward.text = "$showCurrencySign ${TextUtil.format(viewModel.totalReward)}"
         //总有效投注
-        binding.tvTotalValue.text="$showCurrencySign ${TextUtil.format(viewModel.totalEfficient)}"
+        binding.tvTotalValue.text = "$showCurrencySign ${TextUtil.format(viewModel.totalEfficient)}"
         //总投注额
-        binding.tvTotalBet.text="$showCurrencySign ${TextUtil.format(viewModel.totalBet)}"
+        binding.tvTotalBet.text = "$showCurrencySign ${TextUtil.format(viewModel.totalBet)}"
     }
 
 }

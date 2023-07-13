@@ -461,9 +461,11 @@ class AccountHistoryViewModel(
         get() = _settledData
     private val _settledData = MutableLiveData<List<org.cxct.sportlottery.network.bet.list.Row>>()
 
+    val errorEvent=SingleLiveEvent<String>()
 
 
     var pageSettledIndex=1
+    var hasMore=true
     //已结单数据 开始时间
     var settledStartTime:Long?=0L
     //已结单数据 结束时间
@@ -475,12 +477,6 @@ class AccountHistoryViewModel(
     //有效投注额
     var totalEfficient:Double=0.0
     fun getSettledList() {
-        if (betListRequesting ){
-            _responseFailed.postValue(true)
-            return
-        }
-        betListRequesting = true
-
         val betListRequest = BetListRequest(
             championOnly = 0,
             statusList = listOf(2,3,4,5,6,7), //234567 结算注单
@@ -496,22 +492,23 @@ class AccountHistoryViewModel(
             totalBet=0.0
             totalEfficient=0.0
         }
-        loading()
         viewModelScope.launch {
             val resultData=doNetwork(androidContext) {
                 OneBoSportApi.betService.getBetList(betListRequest)
             }
-            delay(800)
-            hideLoading()
-            betListRequesting = false
+            delay(300)
             if(resultData==null){
                 _responseFailed.postValue(true)
                 return@launch
             }
-            pageSettledIndex++
+
             resultData.let { result ->
                 if (result.success) {
+                    pageSettledIndex++
                     result.rows?.let {
+                        if(it.isEmpty()){
+                            hasMore=false
+                        }
                         _settledData.postValue(it)
                         loginRepository.updateTransNum(result.total ?: 0)
                     }
@@ -528,9 +525,12 @@ class AccountHistoryViewModel(
                     }
 
                 } else {
-                    if (result.code == NetWorkResponseType.REQUEST_TOO_FAST.code && requestCount < requestMaxCount) {
-                        _settledData.postValue(arrayListOf())
-                    }
+                    errorEvent.postValue(result.msg)
+//                    if (result.code == NetWorkResponseType.REQUEST_TOO_FAST.code && requestCount < requestMaxCount) {
+//                        _settledData.postValue(arrayListOf())
+//                    }else{
+//
+//                    }
                 }
             }
         }
