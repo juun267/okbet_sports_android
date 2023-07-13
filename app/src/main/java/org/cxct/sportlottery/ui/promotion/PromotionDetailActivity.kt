@@ -64,7 +64,12 @@ class PromotionDetailActivity :
     }
 
     fun setup(activityData: ActivityImageList) {
-        binding.ivBanner.load(activityData.contentImage)
+        if (activityData.contentImage.isNullOrEmpty()){
+            binding.ivBanner.gone()
+        }else{
+            binding.ivBanner.show()
+            binding.ivBanner.load(activityData.contentImage,R.drawable.img_banner01)
+        }
         binding.tvSubTitle.text = activityData.subTitleText
         binding.tvTime.text = TimeUtil.timeFormat(
             activityData.createdAt,
@@ -92,7 +97,7 @@ class PromotionDetailActivity :
                 }
             }
         }
-        binding.okWebView.setBackgroundResource(R.color.color_F9FAFD)
+        binding.okWebView.setBackgroundResource(R.color.color_F3F4F5)
         binding.okWebView.loadData((activityData.contentText).formatHTML(), "text/html", null)
     }
 }
