@@ -48,7 +48,7 @@ class GameChildAdapter(private val onFavoriate: (View, OKGameBean) -> Unit,
             setPadding(pH, pV, pH, pV)
             setTextColor(cxt.getColor(R.color.color_6D7693))
             setBackgroundResource(R.drawable.bg_white_radius_8)
-            setOnClickListener { moreClick?.invoke() }
+//            setOnClickListener { moreClick?.invoke() }
             layoutParams = LinearLayout.LayoutParams(-2, -2).apply {
                 topMargin = 10.dp
                 bottomMargin = topMargin

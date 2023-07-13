@@ -70,5 +70,6 @@
         android:textSize="@dimen/textSize12sp"
         android:textColor="@color/color_6D7693"
         android:visibility="gone"
+        tools:visibility="visible"
         tools:text="Show More (90)" />
 </LinearLayout>
