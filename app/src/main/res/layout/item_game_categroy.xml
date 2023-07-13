@@ -34,25 +34,47 @@
             android:textStyle="bold"
             tools:text="favorites" />
 
-        <TextView
-            android:background="@drawable/bg_more"
-            android:id="@+id/tvMore"
-            android:gravity="center"
-            android:paddingStart="10dp"
-            android:paddingVertical="3dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/color_6D7693"
-            android:layout_gravity="center_vertical"
-            android:textSize="@dimen/textSize14sp"
-            android:drawableEnd="@drawable/ic_game_gray_arrow_right"
-            android:text="@string/N702" />
+<!--        <TextView-->
+<!--            android:background="@drawable/bg_more"-->
+<!--            android:id="@+id/tvMore"-->
+<!--            android:gravity="center"-->
+<!--            android:paddingStart="10dp"-->
+<!--            android:paddingVertical="3dp"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textColor="@color/color_6D7693"-->
+<!--            android:layout_gravity="center_vertical"-->
+<!--            android:textSize="@dimen/textSize14sp"-->
+<!--            android:drawableEnd="@drawable/ic_game_gray_arrow_right"-->
+<!--            android:text="@string/N702" />-->
 
-<!--        <ImageView-->
-<!--            android:id="@+id/ivMore"-->
-<!--            android:layout_width="@dimen/margin_16"-->
-<!--            android:layout_height="@dimen/margin_16"-->
-<!--            android:src="@drawable/ic_game_gray_arrow_right" />-->
+        <TextView
+            android:id="@+id/tvMore"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="3dp"
+            android:background="@drawable/bg_more"
+            android:gravity="center"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="3dp"
+            android:text="@string/N702"
+            android:textColor="@color/color_6D7693"
+            android:textSize="@dimen/textSize12sp" />
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/ivBackPage"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:padding="5dp"
+            android:src="@drawable/ic_home_okgames_left" />
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/ivForwardPage"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:padding="5dp"
+            android:src="@drawable/ic_home_okgames_right" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -60,7 +82,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:nestedScrollingEnabled="false"
-        android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="3"
         tools:listitem="@layout/item_game_child" />
