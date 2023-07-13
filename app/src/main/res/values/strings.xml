@@ -900,8 +900,8 @@
     <string name="red_envelope_congratulations">Congratulations</string>
     <string name="pls_check_amount">Please check the amount in account</string>
     <string name="redenvelope_fail">Unfortunately</string>
-    <string name="redenvelope_fail_desp">Unfortunately, you didn\'t get the red envelope</string>
-    <string name="redenvelope_close_hint">Close countdown ?\nClose countdown won\'t awarded luck money.</string>
+    <string name="redenvelope_fail_desp">Unfortunately, you didn\'t get the OKCOINS</string>
+    <string name="redenvelope_close_hint">Close countdown ?\nClose countdown won\'t awarded OKCOINS</string>
     <!--endregion-->
 
     <string name="verification_status">Verification Status</string>

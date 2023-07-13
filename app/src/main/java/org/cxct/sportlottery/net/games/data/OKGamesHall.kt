@@ -23,7 +23,9 @@ data class OKGamesCategory(
     val icon: String?,
     val iconSelected: String?,
     val iconUnselected: String?,
-    val gameList: List<OKGameBean>?,
+    var gameList: List<OKGameBean>?,
+    //标记gameList是否大于18个
+    var isMoreThan18:Boolean=false
 ): OKGameTab {
     override fun getKey() = id
 

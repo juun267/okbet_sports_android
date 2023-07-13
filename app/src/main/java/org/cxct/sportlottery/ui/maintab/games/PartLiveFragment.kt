@@ -35,6 +35,9 @@ class PartLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveVie
             }
         }, moreClick = ::onMoreClick)
     }
+
+    var loadingMoreFlag = false
+    private var gameTotal: Int = 0
     private var currentTab: OKGameLabel? = null
     private var pageIndx = 1
     private var labelName: String? = null
@@ -85,7 +88,11 @@ class PartLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveVie
             } else {
                 //请求试玩路线
                 loading()
-                viewModel.requestEnterThirdGameNoLogin(okGameBean.firmType,okGameBean.gameCode,okGameBean.thirdGameCategory)
+                viewModel.requestEnterThirdGameNoLogin(
+                    okGameBean.firmType,
+                    okGameBean.gameCode,
+                    okGameBean.thirdGameCategory
+                )
             }
 
         }
@@ -105,11 +112,15 @@ class PartLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveVie
         setTrialPlayGameDataObserve()
     }
 
-    private fun onMoreClick() {
-        if (mOkLiveFragment().loadNextPage(pageIndx)) {
-            gameChildAdapter.onLoadingMore()
-        } else {
-            gameChildAdapter.disableMore()
+    fun onMoreClick() {
+        if (gameTotal > gameChildAdapter.data.size && !loadingMoreFlag) {
+            if (mOkLiveFragment().loadNextPage(pageIndx)) {
+                loadingMoreFlag = true
+                gameChildAdapter.onLoadingMore()
+            } else {
+                loadingMoreFlag = false
+                gameChildAdapter.disableMore()
+            }
         }
     }
 
@@ -141,7 +152,8 @@ class PartLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveVie
     }
 
     fun showSearchResault(list: List<OKGameBean>?, total: Int): Int {
-
+        loadingMoreFlag = false
+        gameTotal = total
         val count = gameChildAdapter.setGameList(list?.toMutableList(), total)
         if (list?.size ?: 0 >= pageSize) {
             pageIndx++

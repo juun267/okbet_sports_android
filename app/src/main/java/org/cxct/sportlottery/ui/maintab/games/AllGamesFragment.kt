@@ -7,10 +7,11 @@ import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
-import org.cxct.sportlottery.R
+import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.FragmentAllOkgamesBinding
 import org.cxct.sportlottery.databinding.ItemGameCategroyBinding
@@ -20,9 +21,9 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
-import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
+import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.view.onClick
 
 // OkGames所有分类
 class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesViewModel::class) {
@@ -114,12 +115,18 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     private fun initObserve() = okGamesFragment().viewModel.run {
         gameHall.observe(viewLifecycleOwner) {
-            categoryList = it.categoryList?.filter {
-                it.gameList?.let {
-                    //最多显示12个
-                    if (it.size > 12) it.subList(0, 12)
+            categoryList = it.categoryList?.filter {category->
+                category.gameList?.let { gameList->
+                    //最多显示18个
+                    if (gameList.size > 18) {
+                        category.gameList=gameList.subList(0, 18)
+                        //标识是否大于18个
+                        category.isMoreThan18=true
+                    }else{
+                        category.isMoreThan18=false
+                    }
                 }
-                !it.gameList.isNullOrEmpty()
+                !category.gameList.isNullOrEmpty()
             }?.toMutableList() ?: mutableListOf()
             //设置游戏分类
             gameAllAdapter.setList(categoryList)
@@ -127,16 +134,43 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         }
 
         collectList.observe(viewLifecycleOwner) {
-            if (!it.first && collectGameAdapter?.dataCount() ?: 0 > 0) { //如果当前收藏列表可见，切收藏列表不为空则走全部刷新逻辑（走单挑刷新逻辑）
-                return@observe
+//            if ( collectGameAdapter?.dataCount() ?: 0 > 0) { //如果当前收藏列表可见，切收藏列表不为空则走全部刷新逻辑（走单挑刷新逻辑）
+//                return@observe
+//            }
+            var list = it.second
+            list.let { gameList->
+                //最多显示18个
+                if (gameList.size > 18) {
+                    list=list.subList(0, 18)
+                    collectGameAdapter?.isMoreThan18=true
+                }else{
+                    collectGameAdapter?.isMoreThan18=false
+                }
+            }
+            setCollectList(list)
+            initCollectAdapterPage(list)
+
+            binding.includeGamesAll.inclueCollect.run {
+                collectGameAdapter?.let { adapter->
+                    //上一页
+                    ivBackPage.onClick {
+                        if (adapter.itemIndex == 1) {
+                            return@onClick
+                        }
+                        adapter.itemIndex--
+                        changeData(adapter,  it.second, this)
+                    }
+                    //下一页
+                    ivForwardPage.onClick {
+                        if (adapter.itemIndex == adapter.totalPage) {
+                            return@onClick
+                        }
+                        adapter.itemIndex++
+                        changeData(adapter,  it.second, this)
+                    }
+                }
             }
 
-            val list = it.second
-            if (list.isNotEmpty() && list.size > 12) {
-                setCollectList(list.subList(0, 12))
-            } else {
-                setCollectList(list)
-            }
         }
 
         collectOkGamesResult.observe(viewLifecycleOwner) { result ->
@@ -147,7 +181,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 //添加收藏或者移除
                 adapter.removeOrAdd(result.second)
                 binding.includeGamesAll.inclueCollect.root.isGone = adapter.data.isNullOrEmpty()
-                setItemMoreVisiable(binding.includeGamesAll.inclueCollect, adapter.dataCount() > 3)
+                setItemMoreVisiable(binding.includeGamesAll.inclueCollect, adapter.dataCount() > 6)
             }
             //更新最近列表
             recentGameAdapter?.data?.forEachIndexed { index, okGameBean ->
@@ -158,11 +192,53 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             }
         }
 
-        recentPlay.observe(viewLifecycleOwner) {
-            if (it.size > 12) {
-                setRecent(it.subList(0, 12))
-            } else {
-                setRecent(it)
+        recentPlay.observe(viewLifecycleOwner) {list->
+            var tempRecentList=list
+
+            tempRecentList.let { gameList->
+                //最多显示18个
+                if (gameList.size > 18) {
+                    tempRecentList=list.subList(0, 18)
+                    recentGameAdapter?.isMoreThan18=true
+                }else{
+                    recentGameAdapter?.isMoreThan18=false
+                }
+            }
+
+            recentGameAdapter?.let {
+                it.totalCount=tempRecentList.size
+                it.totalPage=tempRecentList.size/ it.itemSize
+                if (tempRecentList.size % it.itemSize != 0) {
+                    it.totalPage += 1
+                }
+                changeData(it,  tempRecentList,  binding.includeGamesAll.inclueRecent)
+            }
+
+//            if (tempRecentList.size > 6) {
+//                setRecent(list.subList(0, 6))
+//            } else {
+                setRecent(list)
+//            }
+
+            binding.includeGamesAll.inclueRecent.run {
+                recentGameAdapter?.let { adapter->
+                    //上一页
+                    ivBackPage.onClick {
+                        if (adapter.itemIndex == 1) {
+                            return@onClick
+                        }
+                        adapter.itemIndex--
+                        changeData(adapter, tempRecentList, this)
+                    }
+                    //下一页
+                    ivForwardPage.onClick {
+                        if (adapter.itemIndex == adapter.totalPage) {
+                            return@onClick
+                        }
+                        adapter.itemIndex++
+                        changeData(adapter,  tempRecentList, this)
+                    }
+                }
             }
         }
 
@@ -178,6 +254,17 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     }
 
+    private fun initCollectAdapterPage(list:List<OKGameBean>){
+        collectGameAdapter?.let { adapter->
+            adapter.itemIndex=1
+            adapter.totalCount=list.size
+            adapter.totalPage=list.size/ adapter.itemSize
+            if (list.size % adapter.itemSize != 0) {
+                adapter.totalPage += 1
+            }
+            changeData(adapter,  list, binding.includeGamesAll.inclueCollect)
+        }
+    }
     private fun onBindGamesView() = binding.includeGamesAll.run {
         rvGamesAll.setLinearLayoutManager()
         rvGamesAll.adapter = gameAllAdapter
@@ -315,14 +402,15 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             gameTab.bindLabelIcon(ivIcon)
             gameTab.bindLabelName(tvName)
             rvGameItem.setRecycledViewPool(okGamesFragment().gameItemViewPool)
-            rvGameItem.layoutManager = SocketLinearManager(context, RecyclerView.HORIZONTAL, false)
-            rvGameItem.addItemDecoration(SpaceItemDecoration(root.context, R.dimen.margin_10))
+            rvGameItem.layoutManager = GridLayoutManager(context,3)
+            rvGameItem.addItemDecoration(GridSpacingItemDecoration(3, 10.dp, false))
             val gameAdapter = GameChildAdapter(onFavoriate = ::onCollectClick)
             gameAdapter.setOnItemClickListener { _, _, position ->
                 enterGame(gameAdapter.getItem(position))
             }
-
+            gameAdapter.setJumpMoreClick { okGamesFragment().changeGameTable(gameTab)  }
             rvGameItem.adapter = gameAdapter
+
             return@run gameAdapter
         }
 
@@ -342,11 +430,11 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
      */
     private fun setCollectList(collectList: List<OKGameBean>) {
         val emptyData = collectList.isNullOrEmpty()
-        setItemMoreVisiable(binding.includeGamesAll.inclueCollect, collectList.size > 3)
+        setItemMoreVisiable(binding.includeGamesAll.inclueCollect, collectList.size > 6)
         binding.includeGamesAll.inclueCollect.root.isGone = emptyData
-        if (!emptyData) {
-            collectGameAdapter?.setNewInstance(collectList?.toMutableList())
-        }
+//        if (!emptyData) {
+//            collectGameAdapter?.setNewInstance(collectList?.toMutableList())
+//        }
     }
 
 
@@ -354,17 +442,52 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
      * 设置最近游戏列表
      */
     private fun setRecent(recentList: List<OKGameBean>) {
-        setItemMoreVisiable(binding.includeGamesAll.inclueRecent, recentList.size > 3)
+        setItemMoreVisiable(binding.includeGamesAll.inclueRecent, recentList.size > 6)
         val emptyData = recentList.isNullOrEmpty()
         binding.includeGamesAll.inclueRecent.root.isGone = emptyData
-        if (!emptyData) {
-            recentGameAdapter?.setNewInstance(recentList?.toMutableList())
+//        if (!emptyData) {
+//            recentGameAdapter?.setNewInstance(recentList?.toMutableList())
+//        }
+    }
+
+    private fun changeData(
+        adapter: GameChildAdapter,
+        dataList:List<OKGameBean>?,
+        binding: ItemGameCategroyBinding
+    ) {
+        val positionStart = (adapter.itemIndex * adapter.itemSize) - adapter.itemSize
+        val positionEnd = positionStart + adapter.itemSize
+        if (dataList== null) {
+            return
+        }
+        //不能前一页
+        if (adapter.itemIndex == 1) {
+            binding.ivBackPage.alpha = 0.5f
+        } else {
+            binding.ivBackPage.alpha = 1f
+        }
+        //不能后一页
+        if (adapter.itemIndex == adapter.totalPage) {
+            binding.ivForwardPage.alpha = 0.5f
+        } else {
+            binding.ivForwardPage.alpha = 1f
+        }
+
+
+        if (positionEnd > dataList.size) {
+            adapter.setList(dataList.toMutableList().subList(positionStart, dataList.size))
+        } else {
+            adapter.setList(dataList.toMutableList().subList(positionStart, positionEnd))
         }
     }
+
+
 
     private fun setItemMoreVisiable(binding: ItemGameCategroyBinding, visisable: Boolean) {
 //        binding.ivMore.isVisible = visisable
         binding.tvMore.isVisible = visisable
+        binding.ivBackPage.isVisible = visisable
+        binding.ivForwardPage.isVisible = visisable
     }
 
 
