@@ -66,7 +66,8 @@ class RecyclerDetailBetAdapter(val row: Row) : BindingAdapter<ParlayComsDetailVO
                 }
                 //未中奖  输：xxx
                 4,5->{
-                    tvBetWin.text = " ₱ ${TextUtil.format(item.stake.toString())}"
+                    //输的金额
+                    tvBetWin.text = " ₱ ${TextUtil.format(item.winMoney?:0)}"
                     tvBetWin.setColors(R.color.color_6D7693)
                     tvWinLabel.text="${context.getString(R.string.lose)}："
                 }
@@ -117,7 +118,7 @@ class RecyclerDetailBetAdapter(val row: Row) : BindingAdapter<ParlayComsDetailVO
                 }
                 //未中奖  输：xxx
                 4,5->{
-                    tvBetWin2.text = " ₱ ${TextUtil.format(row.totalAmount)}"
+                    tvBetWin2.text = " ₱ ${TextUtil.format((row.win?:0).toString().replace("-",""))}"
                     tvBetWin2.setColors(R.color.color_6D7693)
                     tvWinLabel2.text="${context.getString(R.string.lose)}："
                 }
@@ -151,6 +152,11 @@ class RecyclerDetailBetAdapter(val row: Row) : BindingAdapter<ParlayComsDetailVO
             }
 
 
+            if(position==data.size-1){
+                linearBottom.visible()
+            }else{
+                linearBottom.gone()
+            }
 
         }
     }

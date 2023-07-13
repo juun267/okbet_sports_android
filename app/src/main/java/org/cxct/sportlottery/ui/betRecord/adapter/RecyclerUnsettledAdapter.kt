@@ -132,7 +132,8 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
                 }
                 //未中奖  输：xxx
                 4,5->{
-                    tvBetWin.text = " ₱ ${TextUtil.format(item.totalAmount)}"
+                    val money=item.win.toString()
+                    tvBetWin.text = " ₱ ${TextUtil.format(money.replace("-",""))}"
                     tvBetWin.setColors(R.color.color_6D7693)
                     tvWinLabel.text="${context.getString(R.string.lose)}："
                 }
@@ -140,6 +141,7 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
                 else->{
                     tvBetWin.text = " ₱ --"
                     tvBetWin.setColors(R.color.color_6D7693)
+
                     tvWinLabel.text=""
                 }
             }

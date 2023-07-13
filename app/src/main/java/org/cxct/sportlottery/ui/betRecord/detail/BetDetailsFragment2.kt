@@ -40,7 +40,6 @@ class BetDetailsFragment2 : BindingFragment<AccountHistoryViewModel, FragmentBet
 
 //        row.parlayComsDetailVOs
         row?.let {
-
             mAdapter = RecyclerDetailBetAdapter(row)
             binding.recyclerUnsettled.adapter = mAdapter
 
