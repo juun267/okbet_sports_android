@@ -29,9 +29,10 @@ class RedeemActivity : BaseSocketActivity<RedeemViewModel>(RedeemViewModel::clas
         viewModel.newsResult.observe(this) {
             if (it.success) {
                 it.entity?.let { entity ->
+                    var str = getString(R.string.P170)
                     showRedeemDialog(
-                        "You got ₱${entity.rewards?.let { it1 -> TextUtil.format(it1) }} !",
-                        "Congratulations"
+                        "$str ₱${entity.rewards?.let { it1 -> TextUtil.format(it1) }} !",
+                        getString(R.string.Congratulations)
                     )
                 }
             } else {
