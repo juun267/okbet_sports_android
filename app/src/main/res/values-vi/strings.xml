@@ -256,7 +256,7 @@
     <string name="win_half">Thắng nửa</string>
     <string name="lose">Nhập</string>
     <string name="lose_half">Thua nửa</string>
-    <string name="draw">hòa</string>
+    <string name="draw">Hòa</string>
     <string name="canceled">đã hủy</string>
     <string name="odds_change">Tỷ lệ cược đã thay đổi</string>
     <string name="pending">Đang đợi %1$s giây</string>

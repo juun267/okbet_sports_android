@@ -2,10 +2,7 @@ package org.cxct.sportlottery.ui.betRecord.adapter
 
 import android.annotation.SuppressLint
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.View
-import android.widget.TextView
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
@@ -15,28 +12,28 @@ import org.cxct.sportlottery.common.extentions.inVisible
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemBetCardBinding
+import org.cxct.sportlottery.databinding.ItemDetailCardBinding
 import org.cxct.sportlottery.network.bet.MatchOdd
 import org.cxct.sportlottery.network.bet.list.Row
+import org.cxct.sportlottery.network.bet.settledDetailList.MatchOddsVO
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.ui.betRecord.BetRecordEndScoreAdapter
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.setBetReceiptStatus
 import org.cxct.sportlottery.util.setBetReceiptStatus2
 import org.cxct.sportlottery.util.setGameType_MatchType_PlayCateName_OddsType
 import org.cxct.sportlottery.view.dialog.BetEndScoreDialog
 import org.cxct.sportlottery.view.onClick
-import java.lang.Exception
 import java.util.Locale
 
-class RecyclerBetCardAdapter(val row: Row,val block:()->Unit) :
-    BindingAdapter<MatchOdd, ItemBetCardBinding>() {
+class RecyclerDetailCardAdapter(val row: Row, val block:()->Unit) :
+    BindingAdapter<MatchOddsVO, ItemDetailCardBinding>()  {
 
 
     @SuppressLint("SetTextI18n")
-    override fun onBinding(position: Int, binding: ItemBetCardBinding, item: MatchOdd) {
+    override fun onBinding(position: Int, binding: ItemDetailCardBinding, item: MatchOddsVO) {
         binding.run {
             //玩法 title
             tvBetType.text = GameType.getGameTypeString(context, row.gameType)
@@ -103,7 +100,7 @@ class RecyclerBetCardAdapter(val row: Row,val block:()->Unit) :
             ivGameIcon.load(GameType.getLeftGameTypeMenuIcon2(row.gameType))
 
             //状态
-            when (item.status) {
+            when (row.status) {
                 0 -> {
                     //处理中
                     tvStatus.setBackgroundResource(R.drawable.bg_bet_status_yellow)
