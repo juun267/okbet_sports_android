@@ -116,7 +116,9 @@ class BetReceiptFragment :
                     betResultData?.parlayBets ?: listOf(),
                     this@BetReceiptFragment.betParlayList ?: listOf(),
                     betResultData?.betConfirmTime ?: 0
-                )
+                ) { it2 ->
+
+                }
             }
         }
         //投注結果
@@ -185,6 +187,7 @@ class BetReceiptFragment :
                 )
             }"
         }
+
         //顯示注單收據的數量
         if (BetInfoRepository.currentBetType == 0){
             val bkEndScore=betResultData?.singleBets?.firstOrNull()?.matchOdds?.firstOrNull()?.playCateCode.isEndScoreType()
