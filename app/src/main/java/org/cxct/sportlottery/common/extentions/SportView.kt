@@ -30,9 +30,9 @@ fun TextView.setMatchSptText(matchInfo: MatchInfo) {
         visibility = View.VISIBLE
         val homeOver = (matchInfo.homeOver ?: "0").toFloat()
         val awayOver = (matchInfo.awayOver ?: "0").toFloat()
-        text = when {
-            homeOver > 0 -> homeOver.toString()
-            awayOver > 0 -> awayOver.toString()
+        text = when (matchInfo.attack){
+            "H"->" $homeOver"
+            "C"->" $awayOver"
             else -> ""
         }
         return
@@ -584,4 +584,22 @@ fun <K, V> Map<K, V>?.getPlayCateName(context: Context): String {
     val playCateName = this?.get<Any?, V>(selectLanguage.key) ?: this?.get<Any?, V>(
         LanguageManager.Language.EN.key)
     return playCateName.toString()
+}
+
+/**
+ * 賽制(5盤3勝)
+ * 只有网球，排球，乒乓球，羽毛球
+ */
+@SuppressLint("SetTextI18n")
+ fun setSptText(matchInfo: MatchInfo): String {
+    if (matchInfo.gameType == GameType.CK.key) {
+        val homeOver = (matchInfo.homeOver ?: "0").toFloat()
+        val awayOver = (matchInfo.awayOver ?: "0").toFloat()
+        return when (matchInfo.attack){
+            "H"->" $homeOver"
+            "C"->" $awayOver"
+            else -> ""
+        }
+    }
+    return ""
 }
