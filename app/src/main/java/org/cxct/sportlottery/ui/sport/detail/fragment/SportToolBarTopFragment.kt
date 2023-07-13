@@ -343,23 +343,6 @@ class SportToolBarTopFragment :
         }
     }
 
-    /**
-     * 賽制(5盤3勝)
-     * 只有网球，排球，乒乓球，羽毛球
-     */
-    @SuppressLint("SetTextI18n")
-    private fun setSptText(matchInfo: MatchInfo): String {
-        if (matchInfo.gameType == GameType.CK.key) {
-            val homeOver = (matchInfo.homeOver ?: "0").toFloat()
-            val awayOver = (matchInfo.awayOver ?: "0").toFloat()
-            return when {
-                homeOver > 0 -> " $homeOver"
-                awayOver > 0 -> " $awayOver"
-                else -> ""
-            }
-        }
-        return ""
-    }
 
 //    /**
 //     * 设置当前盘数/局数/回合
