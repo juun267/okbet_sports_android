@@ -4,6 +4,7 @@ package org.cxct.sportlottery.net.user.data
 import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import com.stx.xhb.androidx.entity.BaseBannerInfo
 import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.common.proguards.KeepMembers
 
@@ -44,5 +45,15 @@ data class ActivityImageList(
     @Json(name = "titleImage")
     val titleImage: String?=null,
     @Json(name = "titleText")
-    val titleText: String
-):Parcelable
+    val titleText: String,
+    @Json(name = "frontPageShow")
+    val frontPageShow: Int
+):Parcelable,BaseBannerInfo {
+    override fun getXBannerUrl(): String {
+        return titleImage?:""
+    }
+
+    override fun getXBannerTitle(): String {
+        return titleText
+    }
+}
