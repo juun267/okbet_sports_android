@@ -2,8 +2,10 @@ package org.cxct.sportlottery.ui.betRecord.accountHistory
 
 import android.app.Application
 import android.util.Log
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -81,9 +83,22 @@ class AccountHistoryViewModel(
     private val _betSettledRecordResult = MutableLiveData<BetSettledListResult>()
     private var mBetSettledListRequest: BetSettledListRequest? = null
     private val _messageListResult = MutableLiveData<MessageListResult?>()
-    private val _settlementNotificationMsg = MutableLiveData<Event<SportBet>>()
     private val _betDetailResult = MutableLiveData<BetSettledDetailListResult>()
-    val remarkBetLiveData: MutableLiveData<RemarkBetResult> = MutableLiveData()
+    private val remarkBetLiveData: MutableLiveData<RemarkBetResult> = SingleLiveEvent()
+
+    fun observerRemarkBetLiveData(lifecycleOwner: LifecycleOwner? = null, block: (RemarkBetResult) -> Unit) {
+        if (lifecycleOwner == null) {
+            val observer = object : Observer<RemarkBetResult> {
+                override fun onChanged(it: RemarkBetResult) {
+                    block.invoke(it)
+                    remarkBetLiveData.removeObserver(this)
+                }
+            }
+            remarkBetLiveData.observeForever(observer)
+        } else {
+            remarkBetLiveData.observe(lifecycleOwner) { block.invoke(it) }
+        }
+    }
 
     //    private val _sportCodeSpinnerList = MutableLiveData<List<StatusSheetData>>() //當前啟用球種篩選清單
     var tabPosition = 0 //當前tabPosition (for 新版UI)

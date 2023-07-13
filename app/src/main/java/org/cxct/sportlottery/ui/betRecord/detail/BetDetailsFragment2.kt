@@ -35,7 +35,7 @@ class BetDetailsFragment2 : BindingFragment<AccountHistoryViewModel, FragmentBet
                             val orderNo = data.orderNo
                             val orderTime = data.betConfirmTime
                             val requestBet = RemarkBetRequest(orderNo, it1, orderTime.toString())
-                            viewModel.remarkBetLiveData.observeForever {
+                            viewModel.observerRemarkBetLiveData {
                                 dialog.dismiss()
                                 val newUrl =
                                     Constants.getPrintReceipt(
