@@ -86,7 +86,7 @@ class HomeTopView @JvmOverloads constructor(
 
     fun setUpPromoteBanner(list: List<ActivityImageList>){
         //优惠banne让判断是否首页显示
-        val promoteImages=list.filter { it.frontPageShow==0 }
+        val promoteImages=list.filter { it.frontPageShow==1 }
         //优惠活动
         setUpPromoteView(promoteImages)
     }
