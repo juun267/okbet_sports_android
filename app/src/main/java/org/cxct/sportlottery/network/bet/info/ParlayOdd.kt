@@ -2,9 +2,11 @@ package org.cxct.sportlottery.network.bet.info
 
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass import org.cxct.sportlottery.common.proguards.KeepMembers
+import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.common.proguards.KeepMembers
 
-@JsonClass(generateAdapter = true) @KeepMembers
+@JsonClass(generateAdapter = true)
+@KeepMembers
 data class ParlayOdd(
     @Json(name = "max")
     val max: Long,
@@ -23,8 +25,7 @@ data class ParlayOdd(
     @Json(name = "parlayType")
     val parlayType: String,
 ) {
-    //以下新增參數時, 需至BaseOddButtonViewModel.updateBetOrderParlay將舊物件的參數賦予新物件, 否則數值會遺失
-    var sendOutStatus: Boolean = true
+
     var isInputBet = false
     var input: String? = null
     var betAmount: Double = 0.0
