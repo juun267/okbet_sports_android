@@ -11,6 +11,6 @@ class RedeemAdapter :
     override fun convert(holder: BaseViewHolder, item: RedeemCodeHistoryEntity) {
         holder.setText(R.id.tvTime, item.date?.let { TimeUtil.stampToDateHMS(it.toLong()) })
         holder.setText(R.id.tvCode, item.redeemCode)
-        item.rewards?.let { holder.setText(R.id.tvMoney, it.toString()) }
+        item.rewards?.let { holder.setText(R.id.tvMoney, it) }
     }
 }
