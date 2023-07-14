@@ -12,7 +12,7 @@ class PromotionAdapter: BindingAdapter<ActivityImageList, ItemPromotionListBindi
 
     override fun onBinding(position: Int, binding: ItemPromotionListBinding, item: ActivityImageList) {
          binding.apply {
-             ivImage.load(sConfigData?.resServerHost+item.titleImage, R.drawable.img_banner01,R.drawable.img_banner01)
+             ivImage.load(sConfigData?.resServerHost+item.indexImage, R.drawable.img_banner01,R.drawable.img_banner01)
              tvContent.text = item.titleText
          }
     }
