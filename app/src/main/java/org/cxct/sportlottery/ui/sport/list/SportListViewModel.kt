@@ -136,16 +136,15 @@ open class SportListViewModel(
         }
     }
 
-    private fun dealLeagueList(playCateMenuCode: String, matchType: String, leagueList: List<LeagueOdd>) {
+    private fun dealLeagueList(playCateMenuCode: String, matchType: String, leagueList: List<LeagueOdd>,filterMatchIdList: List<String>) {
         leagueList.updateMatchType()
         leagueList.forEach { leagueOdd ->
             var iterator = leagueOdd.matchOdds.iterator()
             while (iterator.hasNext()) {
                 val matchOdd = iterator.next()
-                if (matchOdd.matchInfo == null) { // 过滤掉matchInfo为空的脏数据
+                if (matchOdd.matchInfo == null||(filterMatchIdList.isNotEmpty()&&!filterMatchIdList.contains(matchOdd.matchInfo.id))) { // 过滤掉matchInfo为空的脏数据
                     iterator.remove()
                 } else {
-
                     matchOdd.sortOddsMap()
                     val matchInfo = matchOdd.matchInfo
                     matchInfo.startDateDisplay = TimeUtil.timeFormat(matchInfo.startTime, "MM/dd")
@@ -182,6 +181,7 @@ open class SportListViewModel(
     fun getGameHallList(
         matchType: MatchType,
         gameType: String,
+        selectLeagueIdList: ArrayList<String> = arrayListOf(),
         selectMatchIdList: ArrayList<String> = arrayListOf()
     ) {
 
@@ -190,6 +190,7 @@ open class SportListViewModel(
                 getOddsList(
                     gameType = gameType,
                     matchType.postValue,
+                    leagueIdList = selectLeagueIdList,
                     matchIdList = selectMatchIdList,
                 )
             }
@@ -198,6 +199,7 @@ open class SportListViewModel(
                     gameType = gameType,
                     matchType.postValue,
                     TimeUtil.getAtStartTimeRangeParams(),
+                    leagueIdList = selectLeagueIdList,
                     matchIdList = selectMatchIdList,
                 )
             }
@@ -205,6 +207,7 @@ open class SportListViewModel(
                 getOddsList(
                     gameType = gameType,
                     matchType.postValue,
+                    leagueIdList = selectLeagueIdList,
                     matchIdList = selectMatchIdList,
                 )
             }
@@ -212,6 +215,7 @@ open class SportListViewModel(
                 getOddsList(
                     gameType = gameType,
                     matchType.postValue,
+                    leagueIdList = selectLeagueIdList,
                     matchIdList = selectMatchIdList,
                 )
             }
@@ -219,6 +223,7 @@ open class SportListViewModel(
                 getOddsList(
                     gameType = gameType,
                     matchType.postValue,
+                    leagueIdList = selectLeagueIdList,
                     matchIdList = selectMatchIdList,
                 )
             }
@@ -226,6 +231,7 @@ open class SportListViewModel(
                 getOddsList(
                     gameType = gameType,
                     matchType.postValue,
+                    leagueIdList = selectLeagueIdList,
                     matchIdList = selectMatchIdList,
                 )
 
@@ -235,17 +241,23 @@ open class SportListViewModel(
                 getOddsList(
                     gameType = gameType,
                     matchType.postValue,
+                    leagueIdList = selectLeagueIdList,
                     matchIdList = selectMatchIdList,
                 )
 
             }
             MatchType.OUTRIGHT -> {
-                getOutrightOddsList(gameType, selectMatchIdList = selectMatchIdList)
+                getOutrightOddsList(
+                    gameType,
+                    leagueIdList = selectLeagueIdList,
+                    selectMatchIdList = selectMatchIdList
+                )
             }
             MatchType.MY_EVENT -> {
                 getOddsList(
                     gameType = gameType,
                     matchType.postValue,
+                    leagueIdList = selectLeagueIdList,
                     matchIdList = selectMatchIdList,
                 )
 
@@ -255,14 +267,14 @@ open class SportListViewModel(
         }
     }
 
-    fun switchGameType(matchType: MatchType, item: Item,selectMatchIdList: ArrayList<String>) {
+    fun switchGameType(matchType: MatchType, item: Item,selectLeagueIdList: ArrayList<String>,selectMatchIdList: ArrayList<String>) {
         if (jobSwitchGameType?.isActive == true) {
             jobSwitchGameType?.cancel()
         }
         //視覺上需要優先跳轉 tab
         _sportMenuResult.value?.updateSportSelectState(matchType, item.code)
         jobSwitchGameType = viewModelScope.launch {
-            getGameHallList(matchType, item.code, selectMatchIdList)
+            getGameHallList(matchType, item.code, selectLeagueIdList,selectMatchIdList)
         }
     }
 
@@ -324,7 +336,6 @@ open class SportListViewModel(
                             gameType,
                             matchType,
                             leagueIdList = emptyFilter(leagueIdList),
-                            matchIdList = emptyFilter(matchIdList),
                             startTime = startTime,
                             endTime = endTime,
                             playCateMenuCode = playCateMenuCode
@@ -350,7 +361,6 @@ open class SportListViewModel(
                             gameType,
                             matchType,
                             leagueIdList = emptyFilter(leagueIdList),
-                            matchIdList = emptyFilter(matchIdList),
                             startTime = startTime,
                             endTime = endTime,
                             playCateMenuCode = playCateMenuCode
@@ -363,7 +373,7 @@ open class SportListViewModel(
                 return@launch
             }
 
-            result?.oddsListData?.leagueOdds?.let { dealLeagueList(playCateMenuCode, matchType, it) }
+            result?.oddsListData?.leagueOdds?.let { dealLeagueList(playCateMenuCode, matchType, it,emptyFilter(matchIdList)) }
             _oddsListGameHallResult.postValue(Event(result, gameType))
             notifyFavorite(FavoriteType.MATCH)
         }

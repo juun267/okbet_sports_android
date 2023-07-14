@@ -4,16 +4,15 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import kotlinx.android.synthetic.main.activity_league_select.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BaseNodeAdapter
+import org.cxct.sportlottery.common.event.SelectMatchEvent
 import org.cxct.sportlottery.common.extentions.bindFinish
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.network.common.GameType
@@ -39,14 +38,12 @@ class LeagueSelectActivity :
             gameType: String,
             matchType: MatchType,
             timeRangeParams: TimeRangeParams?=null,
-            matchIdList: ArrayList<String>?=null,
         ) {
             var intent = Intent(context, LeagueSelectActivity::class.java)
             intent.putExtra("gameType", gameType)
             intent.putExtra("matchType", matchType)
             intent.putExtra("startTime", timeRangeParams?.startTime?:"")
             intent.putExtra("endTime", timeRangeParams?.endTime?:"")
-            intent.putExtra("matchIdList", matchIdList)
             context.startActivity(intent)
         }
     }
@@ -90,7 +87,7 @@ class LeagueSelectActivity :
         btnAllSelect.setOnClickListener { setSelectSum(leagueSelectAdapter.selectAll()) }
         btnReverseSelect.setOnClickListener { setSelectSum(leagueSelectAdapter.reverseSelect()) }
         btnConfirm.setOnClickListener {
-            EventBus.getDefault().post(leagueSelectAdapter.getSelected())
+            EventBus.getDefault().post(SelectMatchEvent(leagueSelectAdapter.getSelectedLeagueIds(),leagueSelectAdapter.getSelectedMatchIds()))
             onBackPressed()
         }
         setupMatchListView(leagueSelectAdapter) { position->
@@ -111,7 +108,7 @@ class LeagueSelectActivity :
         btnAllSelect.setOnClickListener { setSelectSum(outRightLeagueAdapter.selectAll()) }
         btnReverseSelect.setOnClickListener { setSelectSum(outRightLeagueAdapter.reverseSelect()) }
         btnConfirm.setOnClickListener {
-            EventBus.getDefault().post(outRightLeagueAdapter.getSelected())
+            EventBus.getDefault().post(SelectMatchEvent(outRightLeagueAdapter.getSelectedLeagueIds(),outRightLeagueAdapter.getSelectedMatchIds()))
             onBackPressed()
         }
         setupMatchListView(outRightLeagueAdapter) { position->
