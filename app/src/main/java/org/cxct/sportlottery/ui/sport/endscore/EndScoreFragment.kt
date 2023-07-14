@@ -108,10 +108,10 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
         viewModel.getGameHallList(matchType, gameType)
     }
 
-    override fun setSelectMatchIds(matchIdList: ArrayList<String>) {
+    override fun setSelectMatch(leagueIdList: ArrayList<String>,matchIdList: ArrayList<String>) {
         clearData()
         showLoading()
-        viewModel.getGameHallList(matchType, gameType, matchIdList)
+        viewModel.getGameHallList(matchType, gameType, leagueIdList,matchIdList)
     }
 
     private val subscribeVisibleRange by lazy {

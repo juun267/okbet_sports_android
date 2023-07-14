@@ -96,7 +96,7 @@ class OutrightLeagueSelectAdapter(private val onSelectChanged: (Int) -> Unit) : 
         return getSelectSum()
     }
 
-    fun getSelected(): ArrayList<String> {
+    fun getSelectedMatchIds(): ArrayList<String> {
         var matchSelectList = arrayListOf<String>()
         itemData.forEach {
 
@@ -111,6 +111,11 @@ class OutrightLeagueSelectAdapter(private val onSelectChanged: (Int) -> Unit) : 
             }
         }
 
+        return matchSelectList
+    }
+    fun getSelectedLeagueIds(): ArrayList<String> {
+        var matchSelectList = arrayListOf<String>()
+        matchSelectList.addAll(itemData.filter { it.league!!.isSelected }.map {it.league!!.id })
         return matchSelectList
     }
 

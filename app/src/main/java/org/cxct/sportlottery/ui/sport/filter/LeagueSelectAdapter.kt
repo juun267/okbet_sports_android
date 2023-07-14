@@ -64,7 +64,7 @@ class LeagueSelectAdapter(private val onSelectChanged: (Int) -> Unit) : BaseNode
         return getSelectSum()
     }
 
-    fun getSelected(): ArrayList<String> {
+    fun getSelectedMatchIds(): ArrayList<String> {
         var matchSelectList = arrayListOf<String>()
         itemData.forEach {
 
@@ -81,7 +81,11 @@ class LeagueSelectAdapter(private val onSelectChanged: (Int) -> Unit) : BaseNode
 
         return matchSelectList
     }
-
+    fun getSelectedLeagueIds(): ArrayList<String> {
+        var matchSelectList = arrayListOf<String>()
+        matchSelectList.addAll(itemData.filter { it.league!!.isSelected||it.matchOdds.any { it.isSelected } }.map {it.league!!.id })
+        return matchSelectList
+    }
     fun getSelectSum(): Int {
         return itemData.sumOf { it.matchOdds?.count{ it.isSelected } }
     }
