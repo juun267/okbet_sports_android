@@ -8,5 +8,5 @@ data class RedeemCodeHistoryEntity(
     @Json(name = "redeemCode")
     val redeemCode: String?,
     @Json(name = "rewards")
-    val rewards: Int?,
+    val rewards: String?,
 )
