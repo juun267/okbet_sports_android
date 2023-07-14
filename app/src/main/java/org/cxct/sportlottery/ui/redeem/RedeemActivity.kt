@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_redeem.rvRedeem
+import kotlinx.android.synthetic.main.activity_redeem.viewNoData
 import kotlinx.android.synthetic.main.activity_withdraw_commission_detail.custom_tool_bar
 import kotlinx.android.synthetic.main.component_date_range_new_selector.view.btn_search
 import org.cxct.sportlottery.R
@@ -45,6 +46,7 @@ class RedeemActivity : BaseSocketActivity<RedeemViewModel>(RedeemViewModel::clas
                 redeemAdapter.data.clear()
             }
             it.rows?.let { it1 -> redeemAdapter.addData(it1) }
+            viewNoData.isVisible = redeemAdapter.data.isEmpty()
         }
     }
 
