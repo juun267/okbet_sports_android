@@ -72,7 +72,7 @@ object UserInfoRepository {
 
     }
 
-    suspend fun getDiscount(userId: Long): Float {
+    suspend fun getDiscount(): Float {
 //        return withContext(Dispatchers.IO) {
 //            userInfoDao.getDiscount(userId) ?: 1.0F
 //        }
