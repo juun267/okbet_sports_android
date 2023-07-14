@@ -166,7 +166,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginVertical="10dp"
             android:background="@drawable/bg_white_border_gray_round_8"
             android:orientation="vertical">
 
@@ -205,6 +205,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+                android:scrollbars="vertical"
                 app:srlDragRate="0.3"
                 app:srlEnableLoadMore="true"
                 app:srlEnablePureScrollMode="true">
@@ -213,10 +214,10 @@
                     android:id="@+id/rvRedeem"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
+                    android:background="@color/transparent"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="4"
                     android:scrollbars="vertical"
+                    tools:itemCount="4"
                     tools:listitem="@layout/item_redeem" />
             </com.scwang.smart.refresh.layout.SmartRefreshLayout>
         </LinearLayout>
