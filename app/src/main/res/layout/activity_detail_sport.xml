@@ -257,7 +257,8 @@
                 <LinearLayout
                     android:id="@+id/lin_categroy"
                     android:layout_width="match_parent"
-                    android:layout_height="37dp"
+                    android:layout_height="@dimen/margin_40"
+                    android:elevation="@dimen/margin_2"
                     android:background="@drawable/bg_sport_detail_categroy">
 
                     <androidx.recyclerview.widget.RecyclerView
