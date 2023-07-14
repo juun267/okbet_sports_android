@@ -32,7 +32,7 @@ class RedeemDialog(context: Context) : Dialog(context) {
         binding.btnPositive.setOnClickListener {
             dismiss()
         }
-        if (title == "Congratulations" && content.contains("₱")) {
+        if (title == context.resources.getString(R.string.Congratulations) && content.contains("₱")) {
             var sps = SpannableString(content)
             sps.setSpan(
                 ForegroundColorSpan(context.resources.getColor(R.color.color_025BE8)),
