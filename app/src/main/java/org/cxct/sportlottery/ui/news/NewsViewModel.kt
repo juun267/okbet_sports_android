@@ -72,7 +72,7 @@ class NewsViewModel(
 
         loadingNews=true
         viewModelScope.launch {
-            val params= SportNewsRequest(NewsType.GAME.code,(sportStartTime?:0).toString(),(sportEndTime?:0).toString(),sportPageIndex,sportPageSize)
+            val params= SportNewsRequest(NewsType.SYSTEM.code,(sportStartTime?:0).toString(),(sportEndTime?:0).toString(),sportPageIndex,sportPageSize)
             val result= doNetwork(androidContext) {
                 OneBoSportApi.newsService.getMessageListByTime(params)
             }

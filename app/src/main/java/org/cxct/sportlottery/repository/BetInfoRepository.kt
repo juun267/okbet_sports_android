@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.repository
 
 
-import androidx.exifinterface.media.ExifInterface.IfdType
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.application.MultiLanguagesApplication
@@ -9,12 +8,9 @@ import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddState
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.enums.SpreadState
-import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.bet.settledDetailList.BetInfo
-import org.cxct.sportlottery.network.bet.settledDetailList.BetInfoRequest
-import org.cxct.sportlottery.network.bet.settledDetailList.BetInfoResult
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
@@ -28,7 +24,6 @@ import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.parlaylimit.ParlayLimitUtil
-import retrofit2.Response
 import timber.log.Timber
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -218,22 +213,6 @@ object BetInfoRepository {
                 _betParlaySuccess.postValue(false)
             }
         }
-    }
-
-
-    private fun updateParlayOddOrder(parlayOddList: MutableList<ParlayOdd>): MutableList<ParlayOdd> {
-        //將串起來的數量賠率移至第一項
-        val pOdd = parlayOddList.find {
-            matchOddList.value?.size.toString() + "C1" == it.parlayType
-        }
-
-        parlayOddList.remove(pOdd)
-
-        pOdd?.let { po ->
-            parlayOddList.add(0, po)
-        }
-
-        return parlayOddList
     }
 
     fun removeItem(oddId: String?) {
@@ -483,11 +462,6 @@ object BetInfoRepository {
         }
     }
 
-
-    suspend fun getBetInfo(betInfoRequest: BetInfoRequest): Response<BetInfoResult> {
-        return OneBoSportApi.betService.getBetInfo(betInfoRequest)
-    }
-
     /**
      * @param isParlayBet 2021/10/29新增, gameType為GameType.PARLAY時不代表該投注為串關投注, 僅由組合後產生的投注才是PARLAY
      * @param betInfo 2022/8/4 賠率上下限統一改為/api/front/match/bet/info取得
@@ -730,11 +704,6 @@ object BetInfoRepository {
         _hasBetPlatClose.postValue(hasBetPlatClose)
     }
 
-    fun updateBetAmount(input: String) {
-        if ((_betInfoList.value?.peekContent()?.size ?: 0) == 0) return
-        _betInfoList.value?.peekContent()?.first()?.inputBetAmountStr = input
-    }
-
     private fun updateQuickListManager(betList: MutableList<BetInfoListData>) {
         //更新快捷投注項選中list
         QuickListManager.setQuickSelectedList(betList.map { bet -> bet.matchOdd.oddsId }
@@ -748,7 +717,7 @@ object BetInfoRepository {
                 changeEvent.odds.toMap().forEach { map ->
                     val value = map.value
                     value?.forEach { odd ->
-                        odd?.let {
+                        if (odd != null) {
                             val newOdd = Odd(
                                 extInfoMap = null,
                                 id = odd.id,

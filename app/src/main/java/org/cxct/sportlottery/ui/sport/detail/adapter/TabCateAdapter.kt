@@ -52,10 +52,10 @@ class TabCateAdapter(private val onItemSelectedListener: OnItemSelectedListener)
 //            itemView.img_icon.isVisible = data?.code == PlayCate.LCS.value
 //            if(data?.code == PlayCate.LCS.value)
 //                itemView.img_icon.setImageResource(R.drawable.selector_lcs_icon)
-
-            itemView.tv_tab.isSelected = position == selectedPosition
-            itemView.tv_tab.paint.isFakeBoldText = position == selectedPosition
-            itemView.img_icon.isVisible = itemView.tv_tab.isSelected
+            val isSelected = position == selectedPosition
+            itemView.tv_tab.isSelected = isSelected
+            itemView.tv_tab.paint.isFakeBoldText = isSelected
+            itemView.img_icon.isVisible = isSelected
             itemView.tv_tab.text = data?.name
             itemView.setOnClickListener {
                 listener.onSelectedItem(position)

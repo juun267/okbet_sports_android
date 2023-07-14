@@ -11,6 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.common.extentions.post
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.SelectionType
@@ -35,12 +36,12 @@ import org.cxct.sportlottery.network.service.sys_maintenance.SysMaintenanceEvent
 import org.cxct.sportlottery.network.service.user_level_config_change.UserLevelConfigListEvent
 import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
 import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.PlayRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.service.BackService.Companion.CHANNEL_KEY
 import org.cxct.sportlottery.service.BackService.Companion.CONNECT_STATUS
 import org.cxct.sportlottery.service.BackService.Companion.SERVER_MESSAGE_KEY
-import org.cxct.sportlottery.service.BackService.Companion.mUserId
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
@@ -50,7 +51,6 @@ import org.cxct.sportlottery.util.MatchOddUtil.setupOddsDiscount
 import org.cxct.sportlottery.util.OddsUtil.updateBetStatus
 import org.cxct.sportlottery.util.OddsUtil.updateBetStatus_1
 import org.json.JSONArray
-import org.json.JSONException
 import org.json.JSONObject
 import org.json.JSONTokener
 import timber.log.Timber
@@ -63,17 +63,11 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
     val matchClock: LiveData<MatchClockEvent?>
         get() = _matchClock
 
-    val matchOddsChange: LiveData<Event<MatchOddsChangeEvent?>>
-        get() = _matchOddsChange
-
     val notice: LiveData<NoticeEvent?>
         get() = _notice
 
     val orderSettlement: LiveData<OrderSettlementEvent?>
         get() = _orderSettlement
-
-    val pingPong: LiveData<PingPongEvent?>
-        get() = _pingPong
 
     val producerUp: LiveData<ProducerUpEvent?>
         get() = _producerUp
@@ -89,10 +83,6 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
 
     val sysMaintenance: LiveData<SysMaintenanceEvent?>
         get() = _sysMaintenance
-
-    val sportMaintenance: LiveData<SportMaintenanceEvent?>
-        get() = _sportMaintenance
-
 
     val serviceConnectStatus: LiveData<ServiceConnectStatus>
         get() = _serviceConnectStatus
@@ -133,7 +123,6 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
 
     private val _globalStop = MutableLiveData<GlobalStopEvent?>()
     private val _matchClock = MutableLiveData<MatchClockEvent?>()
-    private val _matchOddsChange = MutableLiveData<Event<MatchOddsChangeEvent?>>()
     private val _notice = MutableLiveData<NoticeEvent?>()
     private val _orderSettlement = MutableLiveData<OrderSettlementEvent?>()
     private val _pingPong = MutableLiveData<PingPongEvent?>()
@@ -177,26 +166,29 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
         CoroutineScope(Dispatchers.IO).launch {
 
             val channelStr = bundle.getString(CHANNEL_KEY, "") ?: ""
-            val messageStr = bundle.getString(SERVER_MESSAGE_KEY, "") ?: ""
-            val decryptMessage = EncryptUtil.uncompress(messageStr)
+            val messageStr = bundle.getString(SERVER_MESSAGE_KEY) ?: return@launch
+
             try {
-                decryptMessage?.let {
-                    if (it.isNotEmpty()) {
-                        val json = JSONTokener(it).nextValue()
-                        if (json is JSONArray) {
-                            var jsonArray = JSONArray(it)
-                            for (i in 0 until jsonArray.length()) {
-                                var jObj = jsonArray.optJSONObject(i)
-                                val jObjStr = jObj.toString()
-                                handleEvent(jObj, jObjStr, channelStr)
-                            }
-                        } else if (json is JSONObject) {
-                            val jObjStr = json.toString()
-                            handleEvent(json, jObjStr, channelStr)
-                        }
-                    }
+
+                val decryptMessage = EncryptUtil.uncompress(messageStr)
+                if (decryptMessage.isNullOrEmpty()) {
+                    return@launch
                 }
-            } catch (e: JSONException) {
+
+                val json = JSONTokener(decryptMessage).nextValue()
+                if (json is JSONArray) {
+                    var jsonArray = JSONArray(decryptMessage)
+                    for (i in 0 until jsonArray.length()) {
+                        var jObj = jsonArray.optJSONObject(i)
+                        val jObjStr = jObj.toString()
+                        handleEvent(jObj, jObjStr, channelStr)
+                    }
+                } else if (json is JSONObject) {
+                    val jObjStr = json.toString()
+                    handleEvent(json, jObjStr, channelStr)
+                }
+
+            } catch (e: Exception) {
                 Log.e("JSONException", "WS格式出問題 $messageStr")
                 e.printStackTrace()
             }
@@ -272,37 +264,31 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                 _matchClock.postValue(data)
             }
             EventType.ODDS_CHANGE -> {
-                val data = ServiceMessage.getOddsChange(jObjStr)?.apply {
-                    channel = channelStr
+                val data = ServiceMessage.getOddsChange(jObjStr) ?: return
+                data.channel = channelStr
 
-                    oddsList.forEach { // 过滤掉空odd(2023.05.30)
-                        if (it.oddsList != null) {
-                            val iterator = it.oddsList?.iterator()
-                            while (iterator.hasNext()) {
-                                if (iterator.next() == null) {
-                                    iterator.remove()
-                                }
+                data.oddsList.forEach { // 过滤掉空odd(2023.05.30)
+                    if (it.oddsList != null) {
+                        val iterator = it.oddsList?.iterator()
+                        while (iterator.hasNext()) {
+                            if (iterator.next() == null) {
+                                iterator.remove()
                             }
                         }
                     }
                 }
 
-                //query為耗時任務不能在主線程, LiveData需在主線程更新
-                mUserId?.let { userId ->
-                    val discount = UserInfoRepository.getDiscount(userId)
-                    data?.let {
-                        it.setupOddDiscount(discount ?: 1.0F)
-                        it.oddsListToOddsMap()
-                        it.updateOddsSelectedState()
-                        it.filterMenuPlayCate()
-                        it.sortOddsMap()
-                        SocketUpdateUtil.updateMatchOdds(it)
-                    }
-                    data?.let { onOddsEvent(it) }
-
-                } ?: run {
-                    data?.let { onOddsEvent(it) }
+                val time = System.currentTimeMillis()
+                // 登陆的用户计算赔率折扣
+                if (LoginRepository.isLogined()) {
+                    data.setupOddDiscount(UserInfoRepository.getDiscount())
                 }
+                data.oddsListToOddsMap()
+                data.updateOddsSelectedState()
+                data.filterMenuPlayCate()
+                data.sortOddsMap()
+                onOddsEvent(data)
+
             }
             EventType.LEAGUE_CHANGE -> {
                 val data = ServiceMessage.getLeagueChange(jObjStr)
@@ -315,12 +301,11 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
             //具体赛事/赛季频道
             EventType.MATCH_ODDS_CHANGE -> {
                 val data = ServiceMessage.getMatchOddsChange(jObjStr)?:return
-                //query為耗時任務不能在主線程, LiveData需在主線程更新
-                if (mUserId!=null){
-                    val discount = UserInfoRepository.getDiscount(mUserId!!)
-                    data.setupOddDiscount(discount ?: 1.0F)
-                    data.updateOddsSelectedState()
+                // 登陆的用户计算赔率折扣
+                if (LoginRepository.isLogined()) {
+                    data.setupOddDiscount(UserInfoRepository.getDiscount())
                 }
+                data.updateOddsSelectedState()
                 post{
                     MatchOddsRepository.onMatchOdds(data)
                 }
@@ -379,17 +364,23 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
 
     }
 
-    private fun onOddsEvent(socketEvent: OddsChangeEvent) {
-        oddsChangeListener?.let { post { it.onOddsChangeListener(socketEvent) } }
+    private suspend fun onOddsEvent(socketEvent: OddsChangeEvent) {
+        oddsChangeListener?.let {
+            withContext(Dispatchers.Main) {
+                it.onOddsChangeListener(socketEvent)
+            }
+        }
         BetInfoRepository.updateMatchOdd(socketEvent)
     }
     private fun OddsChangeEvent.oddsListToOddsMap() {
-        odds = mutableMapOf()
         odds = oddsList.associateBy(
             keySelector = { it.playCateCode.toString() },
             valueTransform = { it.oddsList?.filter { it != null }?.toMutableList() }).toMutableMap()
     }
     private fun OddsChangeEvent.setupOddDiscount(discount: Float): OddsChangeEvent {
+        if (1.0f == discount) {
+            return this
+        }
         this.oddsList.let { oddTypeSocketList ->
             oddTypeSocketList.forEach { oddsList ->
                 if (oddsList.playCateCode == PlayCate.LCS.value) {
@@ -429,6 +420,9 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
     }
 
     private fun MatchOddsChangeEvent.setupOddDiscount(discount: Float): MatchOddsChangeEvent {
+        if (discount == 1.0f) {
+            return this
+        }
         this.odds?.let { oddsMap ->
             oddsMap.forEach { (key, value) ->
                 if (!key.contains(PlayCate.LCS.value)) {//反波膽不處理折扣
@@ -506,6 +500,11 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
     }
 
     var oddsChangeListener: OddsChangeListener? = null
+//    set(value) {
+//        // 如果某个页面需要订阅赔率变化，发现赛事订阅了但是赔率没变化此时可以从这里排查。是不是回调监听被其他地方抢注了
+//        Log.e("For Test", "========>>> ServiceBroadcastReceiver ${value}")
+//        field = value
+//    }
 
     class OddsChangeListener(val onOddsChangeListener: (oddsChangeEvent: OddsChangeEvent) -> Unit)
 }
