@@ -195,8 +195,8 @@ fun TextView.setBetReceiptStatus2(status: Int?, cancelBy: String? = null) {
     text = when (status) {
         0 -> String.format(context.getString(R.string.pending), " ")
         1 -> context.getString(R.string.bet_info_add_bet_success)
-        2 ,3-> context.getString(R.string.N391)
-        4,5 -> context.getString(R.string.N907)
+        2 ,3-> context.getString(R.string.win)
+        4,5 -> context.getString(R.string.lose)
         6 -> context.getString(R.string.draw)
         7 -> {
             when (cancelBy) {

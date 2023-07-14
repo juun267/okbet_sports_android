@@ -185,11 +185,11 @@ class SettledFragment : BindingFragment<AccountHistoryViewModel, FragmentSettled
     @SuppressLint("SetTextI18n")
     private fun initBetValue() {
         //总盈亏
-        binding.tvReward.text = "$showCurrencySign ${TextUtil.format(viewModel.totalReward)}"
+        binding.tvReward.text = "$showCurrencySign ${TextUtil.formatMoney(viewModel.totalReward,2)}"
         //总有效投注
-        binding.tvTotalValue.text = "$showCurrencySign ${TextUtil.format(viewModel.totalEfficient)}"
+        binding.tvTotalValue.text = "$showCurrencySign ${TextUtil.formatMoney(viewModel.totalEfficient,2)}"
         //总投注额
-        binding.tvTotalBet.text = "$showCurrencySign ${TextUtil.format(viewModel.totalBet)}"
+        binding.tvTotalBet.text = "$showCurrencySign ${TextUtil.formatMoney(viewModel.totalBet,2)}"
     }
 
 }

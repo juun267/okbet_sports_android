@@ -104,14 +104,14 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
             tvType.text=parlayString.toString()
 
             //投注金额
-            tvBetTotal.text = " ₱ ${TextUtil.format(item.totalAmount)}"
+            tvBetTotal.text = " ₱ ${TextUtil.formatMoney(item.totalAmount,2)}"
 
 
             //可赢金额
             when(item.status){
                 //未结单  可赢：xxx
                 0,1->{
-                    tvBetWin.text = " ₱ ${TextUtil.format(item.winnable)}"
+                    tvBetWin.text = " ₱ ${TextUtil.formatMoney(item.winnable,2)}"
                     tvBetWin.setColors(R.color.color_ff0000)
                     when(item.parlayType){
                         //单注 描述用 可赢：
@@ -126,14 +126,14 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
                 }
                 //已中奖   赢：xxx
                 2,3->{
-                    tvBetWin.text = " ₱ ${TextUtil.format(item.win?:0)}"
+                    tvBetWin.text = " ₱ ${TextUtil.formatMoney(item.win?:0,2)}"
                     tvBetWin.setColors(R.color.color_ff0000)
                     tvWinLabel.text="${context.getString(R.string.win)}："
                 }
                 //未中奖  输：xxx
                 4,5->{
                     val money=item.win.toString()
-                    tvBetWin.text = " ₱ ${TextUtil.format(money.replace("-",""))}"
+                    tvBetWin.text = " ₱ ${TextUtil.formatMoney(money.replace("-",""),2)}"
                     tvBetWin.setColors(R.color.color_6D7693)
                     tvWinLabel.text="${context.getString(R.string.lose)}："
                 }
