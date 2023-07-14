@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.promotion
 
 import android.content.Context
 import android.content.Intent
+import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_promotion_detail.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
@@ -64,7 +65,12 @@ class PromotionDetailActivity :
     }
 
     fun setup(activityData: ActivityImageList) {
-        binding.ivBanner.load(activityData.contentImage)
+        if (activityData.contentImage.isNullOrEmpty()){
+            binding.ivBanner.gone()
+        }else{
+            binding.ivBanner.show()
+            binding.ivBanner.load(sConfigData?.resServerHost+activityData.contentImage,R.drawable.img_banner01)
+        }
         binding.tvSubTitle.text = activityData.subTitleText
         binding.tvTime.text = TimeUtil.timeFormat(
             activityData.createdAt,
@@ -92,7 +98,7 @@ class PromotionDetailActivity :
                 }
             }
         }
-        binding.okWebView.setBackgroundResource(R.color.color_F9FAFD)
+        binding.okWebView.setBackgroundColor(ContextCompat.getColor(this,R.color.color_F9FAFD))
         binding.okWebView.loadData((activityData.contentText).formatHTML(), "text/html", null)
     }
 }

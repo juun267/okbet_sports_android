@@ -44,7 +44,7 @@
                 android:background="@drawable/bg_blue_border_12"
                 android:textSize="@dimen/textSize12sp"
                 android:textColor="@color/color_025BE8"
-                android:text="detail"/>
+                android:text="@string/D045"/>
         </LinearLayout>
     </LinearLayout>
 
