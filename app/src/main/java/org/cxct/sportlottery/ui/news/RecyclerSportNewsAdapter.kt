@@ -15,6 +15,7 @@ class RecyclerSportNewsAdapter:BindingAdapter<News,ItemSportNewsBinding>() {
         binding.tvTime.text= TimeUtil.timeFormat(item.addTime.toLong(),
             TimeUtil.NEWS_TIME_FORMAT,
             locale = Locale.ENGLISH)
+        binding.tvContent.text = item.title
         binding.linearMore.onClick {
             //最高行如果是1行
             if(binding.tvContent.maxLines==1){
