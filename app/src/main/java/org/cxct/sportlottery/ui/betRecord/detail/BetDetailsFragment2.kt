@@ -73,7 +73,6 @@ class BetDetailsFragment2 : BindingFragment<AccountHistoryViewModel, FragmentBet
                 }
             }
 
-
             mAdapter!!.setList(it.parlayComsDetailVOs)
             val parlayString = StringBuffer()
             ParlayType.getParlayStringRes(row.parlayType)?.let { parlayTypeStringResId ->
