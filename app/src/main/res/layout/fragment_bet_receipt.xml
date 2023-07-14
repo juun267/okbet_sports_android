@@ -293,8 +293,7 @@
             android:paddingBottom="10dp" >
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent">
 
                 <TextView
@@ -332,6 +331,10 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.legacy.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/btnLastStep"
@@ -350,9 +353,9 @@
 
             <TextView
                 android:id="@+id/btn_complete"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/bet_button_height"
-                android:layout_weight="1"
+                android:minWidth="134dp"
                 android:drawableStart="@drawable/icon_others"
                 android:paddingHorizontal="15dp"
                 android:background="@drawable/button_radius_8_bet_button"
