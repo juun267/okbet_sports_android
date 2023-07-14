@@ -1,10 +1,11 @@
 package org.cxct.sportlottery.ui.sport.list.adapter
 
 import android.content.Context
+import android.graphics.Paint
 import android.graphics.Typeface
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -13,6 +14,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -21,8 +23,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.animDuang
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
-import org.cxct.sportlottery.common.extentions.visible
-import org.cxct.sportlottery.databinding.ItemGameCategroyBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -44,7 +44,7 @@ class SportFooterGamesView @JvmOverloads constructor(
     private lateinit var fragment: BaseFragment<*>
     private lateinit var okGamesViewModel: OKGamesViewModel
     private lateinit var noMoreText: TextView
-    private lateinit var okgamesBinding: ItemGameCategroyBinding
+    private lateinit var moreLabelLayout: LinearLayout
     private val gameItemViewPool by lazy {
         RecyclerView.RecycledViewPool().apply { setMaxRecycledViews(0, 20) }
     }
@@ -104,15 +104,51 @@ class SportFooterGamesView @JvmOverloads constructor(
     }
 
     private fun initOKGameList() {
-        okgamesBinding = ItemGameCategroyBinding.inflate(LayoutInflater.from(context), this, true)
-        okgamesBinding.rvGameItem.setLinearLayoutManager(RecyclerView.HORIZONTAL)
-        okgamesBinding.rvGameItem.adapter = okGamesAdapter
-        okgamesBinding.rvGameItem.addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_10))
-        okgamesBinding.rvGameItem.setRecycledViewPool(gameItemViewPool)
-        okgamesBinding.tvName.setText(R.string.J203)
-        okgamesBinding.ivIcon.setImageResource(R.drawable.ic_okgame_label_games)
-        okgamesBinding.tvMore.setOnClickListener { (fragment.activity as MainTabActivity?)?.jumpToOKGames() }
-        okgamesBinding.root.gone()
+        moreLabelLayout = LinearLayout(context)
+        val dp12 = 12.dp
+        moreLabelLayout.setPadding(dp12, 0, dp12, 0)
+        val params = LayoutParams(-1, -2)
+        params.gravity = Gravity.CENTER_VERTICAL
+        params.topMargin = 16.dp
+        params.bottomMargin = 8.dp
+        addView(moreLabelLayout, params)
+
+        val icon = AppCompatImageView(context)
+        icon.setImageResource(R.drawable.ic_okgame_label_games)
+        24.dp.let { moreLabelLayout.addView(icon, LayoutParams(it, it)) }
+
+        val text = AppCompatTextView(context)
+        text.setPadding(4.dp, 0, 0, 0)
+        text.setTextColor(ContextCompat.getColor(context, R.color.color_14366B))
+        text.typeface = ResourcesCompat.getFont(context, R.font.din_bold)
+        text.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
+        text.paint.style = Paint.Style.FILL_AND_STROKE
+        text.paint.strokeWidth = 0.9f
+        text.setText(R.string.J203)
+        moreLabelLayout.addView(text, LayoutParams(0, -2, 1f))
+
+        val moreText = AppCompatTextView(context)
+        moreText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13f)
+        moreText.setTextColor(ContextCompat.getColor(context, R.color.color_6D7693))
+        moreText.setText(R.string.N702)
+        moreText.setBackgroundResource(R.drawable.bg_more)
+        val dp7 = 7.dp
+        val dp3 = 3.dp
+        moreText.setPadding(dp7, dp3, dp3, dp3)
+        moreText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_game_gray_arrow_right, 0)
+        moreText.setOnClickListener { (fragment.activity as MainTabActivity?)?.jumpToOKGames() }
+        moreLabelLayout.addView(moreText, LayoutParams(-2, -2))
+        moreLabelLayout.gone()
+
+
+        val recyclerView = RecyclerView(context)
+        recyclerView.setPadding(dp12, 0, dp12, 0)
+        recyclerView.isNestedScrollingEnabled = false
+        recyclerView.setLinearLayoutManager(RecyclerView.HORIZONTAL)
+        recyclerView.adapter = okGamesAdapter
+        recyclerView.addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_10))
+        recyclerView.setRecycledViewPool(gameItemViewPool)
+        addView(recyclerView)
     }
 
     fun setUp(fragment: BaseFragment<*>, viewmodel: OKGamesViewModel) {
@@ -129,7 +165,8 @@ class SportFooterGamesView @JvmOverloads constructor(
             if (it.isNullOrEmpty()) {
                 return@observe
             }
-            okgamesBinding.root.visible()
+
+            moreLabelLayout.isVisible = it.isNotEmpty()
             okGamesAdapter.setNewInstance(it.toMutableList())
         }
 //        sportOKLives.observe(lifecycleOwner) { gameAdapter.setupOKLives(it, ::onMoreOKLives) }
