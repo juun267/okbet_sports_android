@@ -80,7 +80,9 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
         initLoginData()
         //刷新订单数量
         if(sportBettingFragment.isVisible){
-            sportBettingFragment.viewModel.getBetRecordCount()
+            if(viewModel.isLogin()){
+                sportBettingFragment.viewModel.getBetRecordCount()
+            }
         }
         //刷新滚球列表
         if(inPlayFragment.isVisible){

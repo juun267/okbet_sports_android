@@ -14,6 +14,7 @@ import com.chad.library.adapter.base.entity.node.BaseNode
 import com.google.android.material.appbar.AppBarLayout
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.event.SelectMatchEvent
 import org.cxct.sportlottery.common.extentions.getPlayCateName
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.rotationAnimation
@@ -23,7 +24,6 @@ import org.cxct.sportlottery.databinding.FragmentSportList2Binding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.outright.odds.CategoryOdds
@@ -181,7 +181,6 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
                 requireContext(),
                 gameType,
                 matchType,
-                matchIdList = filerMatchIds
             )
         }
 
@@ -248,13 +247,11 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         load(item)
     }
 
-    private var filerMatchIds = arrayListOf<String>()
-    protected open fun load(item: Item, selectMatchIdList: ArrayList<String> = arrayListOf()) {
+    protected open fun load(item: Item, selectLeagueIdList: ArrayList<String> = arrayListOf(),selectMatchIdList: ArrayList<String> = arrayListOf()) {
         resetArrow()
         showLoading()
         setMatchInfo(item.name, "")
-        filerMatchIds = selectMatchIdList
-        viewModel.switchGameType(matchType, item, selectMatchIdList)
+        viewModel.switchGameType(matchType, item, selectLeagueIdList,selectMatchIdList)
     }
 
     protected fun setMatchInfo(name: String, num: String) {
@@ -267,7 +264,6 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     }
 
     protected fun clearData() {
-        filerMatchIds.clear()
         unSubscribeAllChannel()
         setSportDataList(null)
     }
@@ -325,17 +321,17 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
         clearData()
     }
 
-    open fun setSelectMatchIds(matchIdList: ArrayList<String>) {
+    open fun setSelectMatch(leagueIdList: ArrayList<String>,matchIdList: ArrayList<String>) {
         gameTypeAdapter.currentItem?.let {
             clearData()
-            load(it, matchIdList)
+            load(it, leagueIdList,matchIdList)
         }
     }
 
     // 赛选联赛
     @Subscribe
-    fun onSelectMatch(matchIdList: ArrayList<String>) {
-        setSelectMatchIds(matchIdList)
+    fun onSelectMatch(selectMatchEvent: SelectMatchEvent) {
+        setSelectMatch(selectMatchEvent.leagueIds,selectMatchEvent.matchIds)
     }
 
     protected fun addOddsDialog(
