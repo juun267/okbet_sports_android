@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.maintab.home.view
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
@@ -25,9 +24,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.common.extentions.doOnResume
 import org.cxct.sportlottery.common.extentions.fitsSystemStatus
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
@@ -35,8 +36,6 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import splitties.views.dsl.core.add
-import org.cxct.sportlottery.view.dialog.ToGcashDialog
 
 class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : LinearLayoutCompat(context, attrs, defStyle) {
@@ -215,6 +214,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
 
         initView()
         initObserver()
+        fragment.doOnResume(-1) { onRefreshMoney() }
     }
 
     private fun initView() {
@@ -228,7 +228,14 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         }
     }
 
+    private var refreshTimeTag = 0L
     fun onRefreshMoney() {
+        val time = System.currentTimeMillis()
+        if (!LoginRepository.isLogined() && time - refreshTimeTag < 1500) {
+            return
+        }
+
+        refreshTimeTag = time
         ivRefreshMoney.startAnimation(RotateAnimation(
             0f,
             720f,

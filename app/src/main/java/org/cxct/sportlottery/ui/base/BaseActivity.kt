@@ -471,4 +471,12 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
         transaction.replace(container, fragment)
         transaction.commit()
     }
+
+    protected open fun fadeStyle() = true
+    override fun startActivityForResult(intent: Intent, requestCode: Int) {
+        super.startActivityForResult(intent, requestCode)
+        if (fadeStyle()) {
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        }
+    }
 }
