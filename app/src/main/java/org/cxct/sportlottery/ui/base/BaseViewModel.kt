@@ -118,7 +118,6 @@ abstract class BaseViewModel(
 
     private fun <T : BaseResult> doResponseError(response: Response<T>): T? {
         /*特殊處理 需採用判斷 response code */
-        Log.e("dachang","doResponseError")
         val url = response.raw().request.url.toString()
         if (response.code() == HttpError.GO_TO_SERVICE_PAGE.code && url.contains(Constants.INDEX_CONFIG)) {
             _errorResultIndex.postValue(response.raw().request.url.host.httpFormat())
