@@ -26,13 +26,10 @@ data class BetInfo(
     @Json(name = "maxCpPayout")
     val maxCpPayoutString: String?
 ) {
-    val playMaxBetSingleBet get() = playMaxBetSingleBetString?.toBigDecimal()
     val maxBetMoney get() = maxBetMoneyString?.toBigDecimal()
     val minBetMoney get() = minBetMoneyString?.toBigDecimal()
     val maxPayout get() = maxPayoutString?.toBigDecimal()
     val maxParlayBetMoney get() = maxParlayBetMoneyString?.toBigDecimal()
-    val minParlayBetMoney get() = minParlayBetMoneyString?.toBigDecimal()
-    val maxParlayPayout get() = maxParlayPayoutString?.toBigDecimal()
     val maxCpBetMoney get() = maxCpBetMoneyString?.toBigDecimal()
     val minCpBetMoney get() = minCpBetMoneyString?.toBigDecimal()
     val maxCpPayout get() = maxCpPayoutString?.toBigDecimal()
