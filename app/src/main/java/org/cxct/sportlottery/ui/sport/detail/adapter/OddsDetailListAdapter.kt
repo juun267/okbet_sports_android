@@ -1471,11 +1471,11 @@ class OddsDetailListAdapter(
 //                Timber.d("===洗刷刷3 index:${12} payloads:${payloads?.size}")
                 rvBet?.let { it1 ->
                     if (isFirstRefresh || it1.adapter == null) {
-                        it1.adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, oddsType)
+                        it1.layoutManager = GridLayoutManager(itemView.context, 4)
                         if (it1.itemDecorationCount==0) {
                             it1.addItemDecoration(GridSpacingItemDecoration(4,4.dp,false))
                         }
-                        it1.layoutManager = GridLayoutManager(itemView.context, 4)
+                        it1.adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, oddsType)
                         isFirstRefresh = false
                     }
 
