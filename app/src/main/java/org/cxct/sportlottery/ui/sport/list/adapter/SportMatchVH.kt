@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ItemSportOdd2Binding
@@ -203,7 +202,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         }
 
         setCardsNum(tvRedCards, matchInfo.homeCards, matchInfo.awayCards)
-        setCardsNum(tvRedCards, matchInfo.homeYellowCards, matchInfo.awayYellowCards)
+        setCardsNum(tvYellowCards, matchInfo.homeYellowCards, matchInfo.awayYellowCards)
     }
 
     private inline fun setCardsNum(textView: TextView, homeCards: Int, awayCards: Int) {
