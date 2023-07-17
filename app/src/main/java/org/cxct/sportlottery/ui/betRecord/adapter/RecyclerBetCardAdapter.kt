@@ -81,7 +81,13 @@ class RecyclerBetCardAdapter(val row: Row,val block:()->Unit) :
             //赔率
             tvOddsValue.text = "@${TextUtil.formatForOdd(item.odds)}"
             //主客队
-            tvTeamValue.text = "${item.homeName} vs ${item.awayName}"
+            if(item.homeName.isEmpty()){
+                tvTeamValue.text = "-"
+                tvBetItemValue.text = "${item.playName}"
+            }else{
+                tvTeamValue.text = "${item.homeName} vs ${item.awayName}"
+            }
+
             //主客队弹框
             tvFullTeam.text = "${item.homeName} vs ${item.awayName}"
             tvTeamValue.onClick {
@@ -94,16 +100,21 @@ class RecyclerBetCardAdapter(val row: Row,val block:()->Unit) :
             //联赛
             tvLeagueValue.text = item.leagueName
             //时间
-            tvTimeValue.text = TimeUtil.timeFormat(
-                item.startTime,
-                TimeUtil.NEWS_TIME_FORMAT,
-                locale = Locale.ENGLISH
-            )
+            if(item.startTime==null){
+                tvTimeValue.text="-"
+            }else{
+                tvTimeValue.text = TimeUtil.timeFormat(
+                    item.startTime,
+                    TimeUtil.NEWS_TIME_FORMAT,
+                    locale = Locale.ENGLISH
+                )
+            }
+
             //icon
             ivGameIcon.load(GameType.getLeftGameTypeMenuIcon2(row.gameType))
 
             //状态
-            when (item.status) {
+            when (row.status) {
                 0 -> {
                     //处理中
                     tvStatus.setBackgroundResource(R.drawable.bg_bet_status_yellow)

@@ -43,6 +43,12 @@ class BetDetailsFragment2 : BindingFragment<AccountHistoryViewModel, FragmentBet
             mAdapter = RecyclerDetailBetAdapter(row)
             binding.recyclerUnsettled.adapter = mAdapter
 
+            row.parlayComsDetailVOs?.forEach {
+                Log.e("dachang","row ${row}")
+                Log.e("dachang","row ${row.status}")
+                Log.e("dachang","row ${row.orderNo}")
+            }
+
             mAdapter!!.setOnItemChildClickListener { _, view, position ->
 //                val data = mAdapter!!.data[position]
                 when (view.id) {
@@ -72,7 +78,6 @@ class BetDetailsFragment2 : BindingFragment<AccountHistoryViewModel, FragmentBet
                     }
                 }
             }
-
 
             mAdapter!!.setList(it.parlayComsDetailVOs)
             val parlayString = StringBuffer()

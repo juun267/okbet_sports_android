@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ItemSportOdd2Binding
@@ -112,6 +111,21 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
     }
 
 
+    // 是否显示加时标志
+    private fun isOT(gameType: String, status: Int): Boolean {
+        if (gameType == GameType.BK.key
+            && (status == 32 || status == 40 || status == 110)) {
+            return true
+        }
+
+        if (gameType == GameType.FT.key
+            && (status == 32 || status == 33 || status == 41 || status == 42 || status == 106 || status == 107 || status == 110 || status == 131)) {
+            return true
+        }
+
+        return false
+    }
+
     fun setupMatchInfo(matchInfo: MatchInfo?, matchType: MatchType) = binding.run {
         leagueOddMatchNameHome.text = matchInfo?.homeName
         leagueOddMatchNameAway.text = matchInfo?.awayName
@@ -120,14 +134,21 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         leagueOddMatchPlayCount.text = matchInfo?.playCateNum.toString() + "+ "
 
         leagueOddMatchFavorite.isSelected = matchInfo?.isFavorite ?: false
-        leagueOddMatchFavorite.setOnClickListener { matchInfo?.id?.let {onFavoriteClick.invoke(it) } }
-
-        ivOT.isVisible = matchInfo?.gameType == GameType.BK.key && matchInfo?.socketMatchStatus == 40
+        leagueOddMatchFavorite.setOnClickListener { matchInfo?.id?.let { onFavoriteClick.invoke(it) } }
+        bindOTStatus(matchInfo)
         leagueNeutral.isVisible = matchInfo?.neutral == 1
 
 //        leagueOddMatchChart.isVisible = matchInfo?.source == MatchSource.SHOW_STATISTICS.code
 
         matchInfo?.let { bindLiveStatus(it) }
+    }
+
+    fun bindOTStatus(matchInfo: MatchInfo?) = binding.run {
+        if (matchInfo?.gameType == null || matchInfo?.socketMatchStatus == null) {
+            ivOT.gone()
+        } else {
+            ivOT.isVisible = isOT(matchInfo?.gameType!!, matchInfo?.socketMatchStatus!!)
+        }
     }
 
     private inline fun bindLiveStatus(matchInfo: MatchInfo) = binding.run {
@@ -184,7 +205,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         }
 
         setCardsNum(tvRedCards, matchInfo.homeCards, matchInfo.awayCards)
-        setCardsNum(tvRedCards, matchInfo.homeYellowCards, matchInfo.awayYellowCards)
+        setCardsNum(tvYellowCards, matchInfo.homeYellowCards, matchInfo.awayYellowCards)
     }
 
     private inline fun setCardsNum(textView: TextView, homeCards: Int, awayCards: Int) {
