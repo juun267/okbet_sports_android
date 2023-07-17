@@ -112,6 +112,21 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
     }
 
 
+    // 是否显示加时标志
+    private fun isOT(gameType: String, status: Int): Boolean {
+        if (gameType == GameType.BK.key
+            && (status == 32 || status == 40 || status == 110)) {
+            return true
+        }
+
+        if (gameType == GameType.FT.key
+            && (status == 32 || status == 33 || status == 41 || status == 42 || status == 106 || status == 107 || status == 110 || status == 131)) {
+            return true
+        }
+
+        return false
+    }
+
     fun setupMatchInfo(matchInfo: MatchInfo?, matchType: MatchType) = binding.run {
         leagueOddMatchNameHome.text = matchInfo?.homeName
         leagueOddMatchNameAway.text = matchInfo?.awayName
@@ -122,7 +137,11 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         leagueOddMatchFavorite.isSelected = matchInfo?.isFavorite ?: false
         leagueOddMatchFavorite.setOnClickListener { matchInfo?.id?.let {onFavoriteClick.invoke(it) } }
 
-        ivOT.isVisible = matchInfo?.gameType == GameType.BK.key && matchInfo?.socketMatchStatus == 40
+        if (matchInfo?.gameType == null || matchInfo?.socketMatchStatus == null) {
+            ivOT.gone()
+        } else {
+            ivOT.isVisible = isOT(matchInfo?.gameType!!, matchInfo?.socketMatchStatus!!)
+        }
         leagueNeutral.isVisible = matchInfo?.neutral == 1
 
 //        leagueOddMatchChart.isVisible = matchInfo?.source == MatchSource.SHOW_STATISTICS.code

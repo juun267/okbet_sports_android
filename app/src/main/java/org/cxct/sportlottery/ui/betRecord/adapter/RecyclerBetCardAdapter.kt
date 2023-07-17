@@ -114,7 +114,7 @@ class RecyclerBetCardAdapter(val row: Row,val block:()->Unit) :
             ivGameIcon.load(GameType.getLeftGameTypeMenuIcon2(row.gameType))
 
             //状态
-            when (item.status) {
+            when (row.status) {
                 0 -> {
                     //处理中
                     tvStatus.setBackgroundResource(R.drawable.bg_bet_status_yellow)
