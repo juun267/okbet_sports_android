@@ -11,7 +11,7 @@ class PromotionAdapter: BindingAdapter<ActivityImageList, ItemPromotionListBindi
 
     override fun onBinding(position: Int, binding: ItemPromotionListBinding, item: ActivityImageList) {
          binding.apply {
-             ivImage.load(sConfigData?.resServerHost+item.indexImage)
+             ivImage.load(sConfigData?.resServerHost+item.titleImage)
              tvContent.text = item.titleText
          }
     }

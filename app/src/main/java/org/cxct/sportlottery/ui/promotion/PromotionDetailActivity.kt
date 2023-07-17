@@ -2,6 +2,8 @@ package org.cxct.sportlottery.ui.promotion
 
 import android.content.Context
 import android.content.Intent
+import android.webkit.ConsoleMessage
+import android.webkit.ValueCallback
 import kotlinx.android.synthetic.main.activity_promotion_detail.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
@@ -14,10 +16,8 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.formatHTML
-import org.cxct.sportlottery.util.setWebViewCommonBackgroundColor
+import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.view.webView.OkWebChromeClient
 import java.util.*
 
 
@@ -64,7 +64,7 @@ class PromotionDetailActivity :
     }
 
     fun setup(activityData: ActivityImageList) {
-        binding.ivBanner.load(activityData.contentImage)
+        binding.ivBanner.load(sConfigData?.resServerHost + activityData.contentImage)
         binding.tvSubTitle.text = activityData.subTitleText
         binding.tvTime.text = TimeUtil.timeFormat(
             activityData.createdAt,

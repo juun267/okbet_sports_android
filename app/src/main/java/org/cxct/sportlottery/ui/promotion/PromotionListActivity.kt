@@ -20,7 +20,6 @@ class PromotionListActivity : BindingActivity<MainHomeViewModel, ActivityPromoti
         }
         binding.rvPromotion.apply {
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-            addItemDecoration(SpaceItemDecoration(context, R.dimen.margin_10))
         }
         viewModel.getActivityImageListH5()
         viewModel.activityImageList.observe(this){
