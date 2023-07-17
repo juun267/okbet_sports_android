@@ -64,7 +64,7 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
             when (item.parlayType) {
                 //单注
                 ParlayType.OUTRIGHT.key,ParlayType.SINGLE.key -> {
-                    parlayString.append(context.getString(R.string.N125))
+                    parlayString.append(context.getString(R.string.N948))
                     //隐藏详情跳转
                     linearBetDetail.gone()
 //                    tvInPlay.visible()
