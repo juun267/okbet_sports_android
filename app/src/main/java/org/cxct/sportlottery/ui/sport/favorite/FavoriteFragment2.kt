@@ -17,6 +17,8 @@ class FavoriteFragment2: SportListFragment2<SportListViewModel, FragmentSportLis
     private var haveData = false
     override fun observeSportList() { }
 
+    override fun observerMenuData() { }
+
     override fun onInitView(view: View) {
         super.onInitView(view)
         binding.ivFilter.gone()
