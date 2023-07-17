@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.betRecord.adapter
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
@@ -96,7 +97,8 @@ class RecyclerDetailBetAdapter(val row: Row) : BindingAdapter<ParlayComsDetailVO
             when(row.status){
                 //未结单  可赢：xxx
                 0,1->{
-                    tvBetWin2.text = " ₱ ${TextUtil.formatMoney(row.winnable,2)}"
+                    val tempRebate:Double=row.rebateAmount?:0.0
+                    tvBetWin2.text = " ₱ ${TextUtil.formatMoney(row.winnable+tempRebate,2)}"
                     tvBetWin2.setColors(R.color.color_ff0000)
                     when(row.parlayType){
                         //单注 描述用 可赢：
@@ -117,7 +119,10 @@ class RecyclerDetailBetAdapter(val row: Row) : BindingAdapter<ParlayComsDetailVO
                 }
                 //未中奖  输：xxx
                 4,5->{
-                    tvBetWin2.text = " ₱ ${TextUtil.formatMoney((row.win?:0).toString().replace("-",""),2)}"
+                    val tempRebate:Double=row.rebateAmount?:0.0
+                    val totalMoney=(row.win?:0).toString().replace("-","").toDouble()+tempRebate
+                    Log.e("dachang","totalMoney${totalMoney}  rebateAmount${row.rebateAmount}")
+                    tvBetWin2.text = " ₱ ${TextUtil.formatMoney(totalMoney,2)}"
                     tvBetWin2.setColors(R.color.color_6D7693)
                     tvWinLabel2.text="${context.getString(R.string.lose)}："
                 }

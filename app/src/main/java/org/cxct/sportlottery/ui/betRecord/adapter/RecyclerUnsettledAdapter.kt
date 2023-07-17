@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.betRecord.adapter
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.adapter.BindingAdapter
@@ -81,7 +82,7 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
                 }
                 //串关
                 else -> {
-                    parlayString.append(context.getString(R.string.N124))
+                    parlayString.append(context.getString(R.string.N949))
                     linearBetDetail.visible()
                     //如果已经是详情页，不可点击进入详情
                     if(isDetails){
@@ -132,8 +133,10 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
                 }
                 //未中奖  输：xxx
                 4,5->{
-                    val money=item.win.toString()
-                    tvBetWin.text = " ₱ ${TextUtil.formatMoney(money.replace("-",""),2)}"
+                    val tempRebate:Double=item.rebateAmount?:0.0
+                    val totalMoney=(item.win?:0).toString().replace("-","").toDouble()+tempRebate
+                    Log.e("dachang","totalMoney${totalMoney}  rebateAmount${item.rebateAmount}")
+                    tvBetWin.text = " ₱ ${TextUtil.formatMoney(totalMoney,2)}"
                     tvBetWin.setColors(R.color.color_6D7693)
                     tvWinLabel.text="${context.getString(R.string.lose)}："
                 }
