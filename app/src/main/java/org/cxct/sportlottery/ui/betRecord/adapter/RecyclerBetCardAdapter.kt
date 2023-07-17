@@ -83,6 +83,7 @@ class RecyclerBetCardAdapter(val row: Row,val block:()->Unit) :
             //主客队
             if(item.homeName.isEmpty()){
                 tvTeamValue.text = "-"
+                tvBetItemValue.text = "${item.playName}"
             }else{
                 tvTeamValue.text = "${item.homeName} vs ${item.awayName}"
             }
