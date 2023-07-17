@@ -4,37 +4,26 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.Gravity
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.RotateAnimation
 import android.webkit.*
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
-import androidx.lifecycle.Observer
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.appbar.AppBarLayout
-import com.gyf.immersionbar.BarHide
-import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_detail_sport.*
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import kotlinx.android.synthetic.main.content_baseball_status.*
@@ -77,7 +66,6 @@ import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import org.cxct.sportlottery.view.DetailSportGuideView
 import org.cxct.sportlottery.view.DividerItemDecorator
 import org.cxct.sportlottery.view.layoutmanager.ScrollCenterLayoutManager
-import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 import splitties.bundle.put
 import timber.log.Timber
 import java.net.URLEncoder
@@ -119,7 +107,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private var matchType: MatchType = MatchType.DETAIL
     private var intoLive = false
     private var oddsDetailListAdapter: OddsDetailListAdapter? = null
-    private var isLogin: Boolean = false
     private val tabCateAdapter:  TabCateAdapter by lazy {
         TabCateAdapter(OnItemSelectedListener {
             tabCateAdapter.selectedPosition = it
@@ -168,7 +155,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     //进来后默认切到指定tab
     private val tabCode by lazy { intent.getStringExtra("tabCode") }
-    private var isFlowing = false
     private lateinit var topBarFragmentList: List<Fragment>
     private lateinit var sportToolBarTopFragment: SportToolBarTopFragment
     private lateinit var sportChartFragment: SportChartFragment
@@ -177,7 +163,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         setContentView(binding.root)
         initData()
         initToolBar()
@@ -197,11 +182,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
 
-    override fun initToolBar() {
+    override fun initToolBar() = binding.run {
         setStatusbar(R.color.color_FFFFFF,true)
-        iv_back.setOnClickListener {
-            if (live_view_tool_bar.isFullScreen) {
-                live_view_tool_bar.showFullScreen(false)
+        ivBack.setOnClickListener {
+            if (liveViewToolBar.isFullScreen) {
+                liveViewToolBar.showFullScreen(false)
                 showFullScreen(false)
             } else {
                 if (vpContainer.isVisible) {
@@ -212,9 +197,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     } else {
                         selectMenuTab(-1)
                         vpContainer.visible()
-                        live_view_tool_bar.release()
-                        live_view_tool_bar.gone()
-                        collaps_toolbar.gone()
+                        liveViewToolBar.release()
+                        liveViewToolBar.gone()
+                        binding.collapsToolbar.gone()
                         setScrollEnable(true)
                     }
                 }
@@ -241,7 +226,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         sportChartFragment = topBarFragmentList[1] as SportChartFragment
 
         binding.detailToolBarViewPager.adapter =
-            DetailTopFragmentStateAdapter(this, topBarFragmentList.toMutableList())
+            DetailTopFragmentStateAdapter(this@SportDetailActivity, topBarFragmentList.toMutableList())
         hIndicator.run {
             setIndicatorColor(
                 context.getColor(R.color.color_FFFFFF), context.getColor(R.color.color_025BE8)
@@ -276,41 +261,38 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         })
 
         val isMatchFav = matchInfo?.isFavorite ?: false
-
-
         ivFavorite.setOnClickListener {
             viewModel.pinFavorite(
                 FavoriteType.MATCH, matchInfo?.id
             )
         }
 
-        viewModel.detailNotifyMyFavorite.observe(this) {
+        viewModel.detailNotifyMyFavorite.observe(this@SportDetailActivity) {
             if (it.first == (matchInfo?.id ?: "")) {
                 ivFavorite.isSelected = it.second
             }
         }
 
         ivFavorite.isSelected = isMatchFav
-
-
-        iv_refresh.setOnClickListener {
+        binding.ivRefresh.setOnClickListener {
             it.isEnabled = false
             removeObserver()  // 订阅之前移除之前的订阅
             initObserve() // 之前的逻辑，重新订阅
             it.rotationAnimation(it.rotation + 720f, 1000) { it.isEnabled = true}
         }
 
-        app_bar_layout.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
-            override fun onStateChanged(appBarLayout: AppBarLayout?, state: State?) {
-                if (state === State.COLLAPSED) {
-                    //折叠状态
-                    collaps_toolbar.visibility = View.VISIBLE
-                } else {
-                    if (live_view_tool_bar.isVisible) {
-                        collaps_toolbar.visibility = View.VISIBLE
-                    } else {
-                        collaps_toolbar.visibility = View.GONE
+        binding.appBarLayout.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
+            private var first = true
+            override fun onStateChanged(appBarLayout: AppBarLayout, state: State) {
+                if (state === State.COLLAPSED) { //折叠状态
+                    binding.collapsToolbar.visible()
+                    if (first) { // 第一次折叠的时候底部会被挡住一截，这里以曲线救国的方式简单解决改问题
+                        first = false
+                        binding.rvDetail.setPadding(0, 0, 0, 40.dp)
+                        binding.rvDetail.postDelayed({ binding.rvDetail.setPadding(0, 0, 0, 0) }, 400)
                     }
+                } else {
+                    binding.collapsToolbar.visibility = binding.liveViewToolBar.visibility
                 }
             }
         })
@@ -542,7 +524,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     override fun showLoginNotify() {
         snackBarLoginNotify.apply {
-            setAnchorView(R.id.snackbar_holder)
+            anchorView = binding.snackbarHolder
             show()
         }
     }
@@ -550,7 +532,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     override fun showMyFavoriteNotify(myFavoriteNotifyType: Int) {
         setSnackBarMyFavoriteNotify(myFavoriteNotifyType)
         snackBarMyFavoriteNotify?.apply {
-            setAnchorView(R.id.snackbar_holder)
+            anchorView = binding.snackbarHolder
             show()
         }
 
@@ -690,7 +672,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context,R.drawable.bg_divide_eef3fc)))
             (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             adapter = oddsDetailListAdapter
-            layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+            setLinearLayoutManager()
             oddsDetailListAdapter?.setPreloadItem()
         }
 
@@ -806,6 +788,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         e.printStackTrace()
                         return@observe
                     }
+
+                    rv_detail.post { rv_detail.requestLayout() }
                     matchOdd = result.oddsDetailData?.matchOdd
 
                     result.oddsDetailData?.matchOdd?.matchInfo?.let { matchInfo ->
