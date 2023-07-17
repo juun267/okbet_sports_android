@@ -241,7 +241,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         binding.detailToolBarViewPager.registerOnPageChangeCallback(object :
             OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
                 Timber.d("onPageSelectedListener:position:${position}")
                 if (position == 1) {
                     sportChartFragment.notifyRcv()
@@ -256,15 +255,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 position: Int, positionOffset: Float, positionOffsetPixels: Int
             ) {
                 hIndicator.onPageScrolled(position, positionOffset, positionOffsetPixels)
-                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
             }
         })
 
-        val isMatchFav = matchInfo?.isFavorite ?: false
         ivFavorite.setOnClickListener {
-            viewModel.pinFavorite(
-                FavoriteType.MATCH, matchInfo?.id
-            )
+            viewModel.pinFavorite(FavoriteType.MATCH, matchInfo?.id)
         }
 
         viewModel.detailNotifyMyFavorite.observe(this@SportDetailActivity) {
@@ -273,7 +268,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             }
         }
 
-        ivFavorite.isSelected = isMatchFav
+        ivFavorite.isSelected = matchInfo?.isFavorite ?: false
         binding.ivRefresh.setOnClickListener {
             it.isEnabled = false
             removeObserver()  // 订阅之前移除之前的订阅
