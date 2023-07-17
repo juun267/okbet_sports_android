@@ -134,18 +134,21 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         leagueOddMatchPlayCount.text = matchInfo?.playCateNum.toString() + "+ "
 
         leagueOddMatchFavorite.isSelected = matchInfo?.isFavorite ?: false
-        leagueOddMatchFavorite.setOnClickListener { matchInfo?.id?.let {onFavoriteClick.invoke(it) } }
-
-        if (matchInfo?.gameType == null || matchInfo?.socketMatchStatus == null) {
-            ivOT.gone()
-        } else {
-            ivOT.isVisible = isOT(matchInfo?.gameType!!, matchInfo?.socketMatchStatus!!)
-        }
+        leagueOddMatchFavorite.setOnClickListener { matchInfo?.id?.let { onFavoriteClick.invoke(it) } }
+        bindOTStatus(matchInfo)
         leagueNeutral.isVisible = matchInfo?.neutral == 1
 
 //        leagueOddMatchChart.isVisible = matchInfo?.source == MatchSource.SHOW_STATISTICS.code
 
         matchInfo?.let { bindLiveStatus(it) }
+    }
+
+    fun bindOTStatus(matchInfo: MatchInfo?) = binding.run {
+        if (matchInfo?.gameType == null || matchInfo?.socketMatchStatus == null) {
+            ivOT.gone()
+        } else {
+            ivOT.isVisible = isOT(matchInfo?.gameType!!, matchInfo?.socketMatchStatus!!)
+        }
     }
 
     private inline fun bindLiveStatus(matchInfo: MatchInfo) = binding.run {

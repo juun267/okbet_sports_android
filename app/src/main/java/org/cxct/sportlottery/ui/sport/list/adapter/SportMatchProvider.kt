@@ -77,7 +77,10 @@ class SportMatchProvider(private val adapter: SportLeagueAdapter2,
     }
 
     private fun updateMatchStatus(binding: SportMatchVH , matchOdd: MatchOdd) {
-        matchOdd.matchInfo?.let { binding.setupMatchTimeAndStatus(it, adapter.matchType) }
+        matchOdd.matchInfo?.let {
+            binding.setupMatchTimeAndStatus(it, adapter.matchType)
+            binding.bindOTStatus(it)
+        }
         binding.setupMatchScore(matchOdd.matchInfo, adapter.matchType)
     }
 
