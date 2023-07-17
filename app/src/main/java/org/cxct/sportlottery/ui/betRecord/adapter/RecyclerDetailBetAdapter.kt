@@ -46,7 +46,7 @@ class RecyclerDetailBetAdapter(val row: Row) : BindingAdapter<ParlayComsDetailVO
             when(row.status){
                 //未结单  可赢：xxx
                 0,1->{
-                    tvBetWin.text = " ₱ ${TextUtil.formatMoney(item.winMoney.toString(),2)}"
+                    tvBetWin.text = " ₱ ${TextUtil.formatMoney(item.winMoney.toString().replace("-",""),2)}"
                     tvBetWin.setColors(R.color.color_ff0000)
                     when(row.parlayType){
                         //单注 描述用 可赢：
@@ -68,7 +68,7 @@ class RecyclerDetailBetAdapter(val row: Row) : BindingAdapter<ParlayComsDetailVO
                 //未中奖  输：xxx
                 4,5->{
                     //输的金额
-                    tvBetWin.text = " ₱ ${TextUtil.formatMoney(item.winMoney.toString(),2)}"
+                    tvBetWin.text = " ₱ ${TextUtil.formatMoney(item.winMoney.toString().replace("-",""),2)}"
                     tvBetWin.setColors(R.color.color_6D7693)
                     tvWinLabel.text="${context.getString(R.string.lose)}："
                 }
