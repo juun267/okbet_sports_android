@@ -112,7 +112,7 @@ class HomeTopView @JvmOverloads constructor(
             object : BaseQuickAdapter<ActivityImageList, BaseViewHolder>(R.layout.item_promote_view) {
                 override fun convert(holder: BaseViewHolder, item: ActivityImageList) {
                     val view = holder.getView<ImageView>(R.id.ivItemPromote)
-                    view.load(sConfigData?.resServerHost+item.titleImage, R.drawable.img_banner01)
+                    view.load(sConfigData?.resServerHost+item.indexImage, R.drawable.img_banner01)
                 }
             }
         promoteAdapter.setNewInstance(imageList.toMutableList())

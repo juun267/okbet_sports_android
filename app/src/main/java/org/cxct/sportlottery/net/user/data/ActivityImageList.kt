@@ -48,12 +48,4 @@ data class ActivityImageList(
     val titleText: String,
     @Json(name = "frontPageShow")
     val frontPageShow: Int
-):Parcelable,BaseBannerInfo {
-    override fun getXBannerUrl(): String {
-        return titleImage?:""
-    }
-
-    override fun getXBannerTitle(): String {
-        return titleText
-    }
-}
+):Parcelable
