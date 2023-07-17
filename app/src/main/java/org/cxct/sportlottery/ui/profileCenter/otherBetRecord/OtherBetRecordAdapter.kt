@@ -7,14 +7,9 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemOtherBetRecordBinding
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.Order
-import org.cxct.sportlottery.util.TextUtil
 
 class OtherBetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
@@ -23,29 +18,25 @@ class OtherBetRecordAdapter(private val clickListener: ItemClickListener) : List
         ITEM, NO_DATA
     }
 
-    private val adapterScope = CoroutineScope(Dispatchers.Default)
 
     fun addFooterAndSubmitList(list: List<Order>?, isLastPage: Boolean) {
-        adapterScope.launch {
-            val items = when (list) {
-                null -> listOf(DataItem.NoData)
-                else -> {
-                    when {
-                        list.isEmpty() -> listOf(DataItem.NoData)
+
+        val items: List<DataItem> = when (list) {
+            null -> listOf(DataItem.NoData)
+            else -> {
+                when {
+                    list.isEmpty() -> listOf(DataItem.NoData)
 //                        isLastPage -> {
 //                            list.map { DataItem.Item(it) } + listOf(DataItem.Footer)
 //                        }
-                        else -> {
-                            list.map { DataItem.Item(it) }
-                        }
+                    else -> {
+                        list.map { DataItem.Item(it) }
                     }
                 }
             }
-
-            withContext(Dispatchers.Main) { //update in main ui thread
-                submitList(items)
-            }
         }
+
+        submitList(items)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
