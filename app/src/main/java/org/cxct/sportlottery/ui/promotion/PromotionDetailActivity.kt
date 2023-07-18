@@ -58,6 +58,7 @@ class PromotionDetailActivity :
             }
         }
         viewModel.activityApply.observe(this) {
+            tvDeposit.text = TextUtil.formatMoney(0)
             tvReward.text = TextUtil.formatMoney(0)
             linApply.isEnabled = false
             linApply.setBackgroundResource(R.drawable.bg_gray_radius_8)
