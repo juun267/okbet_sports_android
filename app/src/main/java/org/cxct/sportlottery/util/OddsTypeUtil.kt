@@ -123,7 +123,7 @@ fun getOddTypeRes(
     sameValue.add(matchOdd.malayOdds ?: 0.0)
     sameValue.add(matchOdd.indoOdds ?: 0.0)
 
-    return if (sameValue.size > 1) {
+    return if (sameValue.size == 1) {
         OddsType.EU.res
     } else {
         oddsType.res

@@ -39,17 +39,17 @@
                 android:layout_above="@+id/line_shadow">
 
                 <include
-                    android:id="@+id/cl_title"
+                    android:id="@+id/clTitle"
                     layout="@layout/bet_bar_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="44dp" />
+                    android:layout_height="40dp" />
 
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_bet_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="44dp"
+                    android:layout_marginTop="40dp"
                     android:background="@color/color_202541_FFFFFF"
                     android:overScrollMode="never"
                     tools:itemCount="3"
@@ -79,7 +79,7 @@
                 android:id="@+id/ll_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/parlayLayout"
+                android:layout_above="@+id/viewDivider1"
                 android:background="@drawable/bg_gradient_bet_top_corner"
                 android:orientation="vertical">
                 <!--串关投注-->
@@ -88,7 +88,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingTop="10dp"
                     android:visibility="gone"
                     tools:visibility="visible">
 
@@ -112,12 +111,12 @@
                             android:id="@+id/cl_total_info"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
                             android:paddingHorizontal="15dp"
-                            android:paddingTop="10dp"
+                            android:paddingTop="5dp"
                             android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
                             tools:visibility="visible">
 
                             <androidx.constraintlayout.widget.Guideline
@@ -128,6 +127,7 @@
                                 app:layout_constraintGuide_percent="0.5" />
 
                             <LinearLayout
+                                android:paddingBottom="5dp"
                                 android:id="@+id/ll_total_stake"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -160,6 +160,7 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:paddingBottom="5dp"
                                 android:id="@+id/ll_est_winning"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -193,6 +194,14 @@
                                     tools:text="0.00" />
                             </LinearLayout>
 
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/color_EEF3FC"
+                                app:layout_constraintBottom_toBottomOf="parent"
+
+                                tools:layout_editor_absoluteX="15dp" />
+
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <TextView
@@ -200,12 +209,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:drawableEnd="@drawable/ic_arrow_up_blue"
-                            android:drawablePadding="4dp"
+                            android:drawableEnd="@drawable/icon_show_more"
+                            android:drawablePadding="10dp"
                             android:gravity="center"
-                            android:paddingVertical="15dp"
+                            android:paddingVertical="10dp"
                             android:text="@string/expand_more_combinations"
-                            android:textColor="@color/color_025BE8"
+                            android:textColor="@color/color_14366B"
                             android:textSize="11sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -232,7 +241,6 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:layout_marginHorizontal="14dp"
                             android:background="@color/color_E3E8EE"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -250,6 +258,15 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
             </LinearLayout>
 
+
+            <View
+                android:id="@+id/viewDivider1"
+                android:layout_above="@+id/parlayLayout"
+                app:layout_constraintTop_toTopOf="parent"
+                android:background="@color/color_dbdfea"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/parlayLayout"
                 android:layout_width="match_parent"
@@ -261,6 +278,8 @@
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="10dp">
 
+
+
                 <TextView
                     android:id="@+id/btnParlaySingle"
                     android:layout_width="78dp"
@@ -269,17 +288,16 @@
                     android:background="@drawable/bg_radius_8_bet_parlay"
                     android:gravity="center"
                     android:text="@string/bet_parlay"
-
                     android:textColor="@color/color_25BF63"
                     android:textSize="@dimen/textSize16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/btn_bet"
+                    app:layout_constraintEnd_toStartOf="@+id/btnBet"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <org.cxct.sportlottery.ui.betList.BetButton
-                    android:id="@+id/btn_bet"
+                    android:id="@+id/btnBet"
                     android:layout_width="140dp"
-                    android:layout_height="@dimen/bet_button_height"
+                    android:layout_height="40dp"
                     android:layout_weight="1"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -292,10 +310,10 @@
                     android:layout_height="0dp"
                     android:background="@drawable/button_radius_8_bet_button"
                     android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="@+id/btn_bet"
-                    app:layout_constraintEnd_toEndOf="@+id/btn_bet"
-                    app:layout_constraintStart_toStartOf="@+id/btn_bet"
-                    app:layout_constraintTop_toTopOf="@+id/btn_bet"
+                    app:layout_constraintBottom_toBottomOf="@+id/btnBet"
+                    app:layout_constraintEnd_toEndOf="@+id/btnBet"
+                    app:layout_constraintStart_toStartOf="@+id/btnBet"
+                    app:layout_constraintTop_toTopOf="@+id/btnBet"
                     tools:visibility="gone">
 
                     <LinearLayout
@@ -330,11 +348,12 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
-                    android:id="@+id/textView6"
+                    android:id="@+id/tvBalanceSign"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/text_account_history_balance"
-                    android:textColor="@color/color_535D76"
+                    android:textColor="@color/color_0D2245"
+                    android:textFontWeight="400"
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -345,12 +364,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/din_bold"
-                    android:text="12.6445.45.45"
-                    android:textColor="@color/color_414655"
-                    android:textSize="@dimen/textSize14sp"
+                    android:text="12.6445.45"
+                    android:textColor="@color/color_0D2245"
+                    android:textSize="@dimen/textSize12sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/textView6"
-                    app:layout_constraintTop_toBottomOf="@+id/textView6" />
+                    app:layout_constraintStart_toStartOf="@+id/tvBalanceSign"
+                    app:layout_constraintTop_toBottomOf="@+id/tvBalanceSign" />
+
+                <TextView
+                    android:id="@+id/tvCurrencySign"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvBalanceSign"
+                    app:layout_constraintStart_toEndOf="@+id/tvBalanceSign"
+                    app:layout_constraintTop_toTopOf="@+id/tvBalanceSign" />
                 <!--endregion bet loading view-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>

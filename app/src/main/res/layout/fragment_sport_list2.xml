@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rootView"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    app:srlDragRate="0.3"
+    app:srlEnableLoadMore="true"
+    app:srlEnablePureScrollMode="true">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/sport_type_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_sportslist_header_2"
+                    android:nestedScrollingEnabled="false"
+                    android:paddingLeft="5.5dp"
+                    android:clipToPadding="false"
+                    tools:itemCount="1" />
+
+                <LinearLayout
+                    android:id="@+id/lin_opt"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="12dp"
+                    android:background="@color/white"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/tvSportName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_0D2245"/>
+
+                    <TextView
+                        android:id="@+id/tvMatchNum"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="4dp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/din_bold"
+                        android:textFontWeight="700"
+                        android:textSize="12sp"
+                        android:textColor="@color/color_025BE8" />
+
+                    <ImageView
+                        android:id="@+id/ivFilter"
+                        android:layout_width="24dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="8dp"
+                        android:paddingVertical="7.5dp"
+                        android:paddingHorizontal="2dp"
+                        android:src="@drawable/ic_filter" />
+
+                    <ImageView
+                        android:id="@+id/ivArrow"
+                        android:layout_width="24dp"
+                        android:layout_height="match_parent"
+                        android:paddingVertical="7.5dp"
+                        android:paddingHorizontal="2dp"
+                        android:src="@drawable/ic_arrow_up" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <FrameLayout
+        android:id="@+id/linContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/game_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:paddingTop="0dp"
+            tools:itemCount="1"
+            tools:listitem="@layout/item_league" />
+
+    </FrameLayout>
+
+
+    <ImageView
+        android:id="@+id/ivBackTop"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="20dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/icon_backtop_blue" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

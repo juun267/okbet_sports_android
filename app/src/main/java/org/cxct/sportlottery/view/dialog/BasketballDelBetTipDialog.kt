@@ -14,7 +14,6 @@ import org.cxct.sportlottery.databinding.DialogBasketballDeleteBetTipBinding
  */
 class BasketballDelBetTipDialog(context: Context) : Dialog(context) {
 
-
     private var mPositiveClickListener: OnPositiveListener? = null
     private var mNegativeClickListener: OnNegativeListener? = null
     private lateinit var binding: DialogBasketballDeleteBetTipBinding

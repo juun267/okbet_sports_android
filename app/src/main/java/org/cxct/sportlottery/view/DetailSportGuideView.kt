@@ -3,25 +3,23 @@ package org.cxct.sportlottery.view
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.util.KvUtils
 
-class DetailSportGuideView : LinearLayout {
+class DetailSportGuideView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
+    : LinearLayout(context, attrs, defStyle) {
 
-    private lateinit var dsgt1: DetailSportGuideTipsView
-    private lateinit var dsgt2: DetailSportGuideTipsView
-    private lateinit var dsgt3: DetailSportGuideTipsView
-    private lateinit var dsgt4: DetailSportGuideTipsView
-    private lateinit var dsgt5: DetailSportGuideTipsView
-    private lateinit var dsgt6: DetailSportGuideTipsView
-    private lateinit var dsgt7: DetailSportGuideTipsView
-    private lateinit var dsgt8: DetailSportGuideTipsView
-    private lateinit var ivBg: ImageView
+    private var dsgt1: DetailSportGuideTipsView
+    private var dsgt2: DetailSportGuideTipsView
+    private var dsgt3: DetailSportGuideTipsView
+    private var dsgt4: DetailSportGuideTipsView
+    private var dsgt5: DetailSportGuideTipsView
+    private var dsgt6: DetailSportGuideTipsView
+    private var dsgt7: DetailSportGuideTipsView
+    private var dsgt8: DetailSportGuideTipsView
+    private var ivBg: ImageView
     private var curIndex = 0
     var dsgtImgList =
         mutableListOf(
@@ -35,34 +33,12 @@ class DetailSportGuideView : LinearLayout {
             R.drawable.bg_sports_detail_tips_08,
         )
 
-    constructor(context: Context?) : super(context) {
-        initView(context)
-    }
 
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
-        initView(context)
-    }
 
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
-    ) {
-        initView(context)
-    }
-
-    constructor(
-        context: Context?,
-        attrs: AttributeSet?,
-        defStyleAttr: Int,
-        defStyleRes: Int
-    ) : super(context, attrs, defStyleAttr, defStyleRes) {
-        initView(context)
-    }
-
-    fun initView(context: Context?) {
+    init {
         LayoutInflater.from(context).inflate(R.layout.detail_sport_guide, this)
         ivBg = findViewById(R.id.iv_bg)
+        ivBg.setImageResource(dsgtImgList[0])
         dsgt1 = findViewById(R.id.dsgt1)
         dsgt2 = findViewById(R.id.dsgt2)
         dsgt3 = findViewById(R.id.dsgt3)

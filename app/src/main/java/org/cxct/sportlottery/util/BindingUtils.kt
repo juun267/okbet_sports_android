@@ -190,6 +190,24 @@ fun TextView.setBetReceiptStatus(status: Int?, cancelBy: String? = null) {
         else -> context.getString(R.string.confirmed)
     }
 }
+@BindingAdapter(value = ["betReceiptStatus", "betResultCancelBy"], requireAll = false) //状态 0：未开始，1：比赛中，2：已结束，3：延期，4：已取消
+fun TextView.setBetReceiptStatus2(status: Int?, cancelBy: String? = null) {
+    text = when (status) {
+        0 -> String.format(context.getString(R.string.pending), " ")
+        1 -> context.getString(R.string.bet_info_add_bet_success)
+        2 ,3-> context.getString(R.string.win)
+        4,5 -> context.getString(R.string.lose)
+        6 -> context.getString(R.string.draw)
+        7 -> {
+            when (cancelBy) {
+                "0" -> context.getString(R.string.cancel_auto)
+                "1" -> context.getString(R.string.P124)
+                else -> context.getString(R.string.P124)
+            }
+        }
+        else -> context.getString(R.string.confirmed)
+    }
+}
 
 @BindingAdapter("statusVisibility") //状态 0：未开始，1：比赛中，2：已结束，3：延期，4：已取消
 fun TextView.setStatusVisibility(status: Int?) {
@@ -503,6 +521,13 @@ fun TextView.setPlayContent(
                 "<font color=$color_025BE8_025BE8>@ <b>$formatForOdd</b></font> ",
         HtmlCompat.FROM_HTML_MODE_LEGACY
     )
+}
+
+fun TextView.setPlayItem(playName: String?,
+                         spread: String?){
+//    val playNameStr = if (!playName.isNullOrEmpty()) "<font color=$color_9BB3D9_535D76>${playName} </font> " else ""
+//    val spreadStr = if (!spread.isNullOrEmpty() && playName != spread) "<font color=$color_9BB3D9_535D76>$spread</font> " else ""
+//
 }
 
 fun TextView.makeLinks(vararg links: Pair<String, View.OnClickListener>) {

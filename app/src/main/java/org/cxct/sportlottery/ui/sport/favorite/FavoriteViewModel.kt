@@ -51,29 +51,6 @@ class FavoriteViewModel(
     val favoriteRepository = myFavoriteRepository
 
 
-    /**
-     * 將新資料配置原本玩法篩選的狀態
-     * @see org.cxct.sportlottery.network.sport.query.Play isSelected 選中狀態 isLocked 可下拉篩選是否有被點選過的狀態
-     * @see org.cxct.sportlottery.network.sport.query.PlayCate isSelected 可下拉篩選被選中的玩法
-     */
-    private fun org.cxct.sportlottery.network.sport.query.Item?.setupPlayState() {
-        val selectedPlayCate =
-            sportQueryData.value?.peekContent()?.items?.find { it.code == this?.code }
-        this?.play?.forEach { newSportPlay ->
-            val oldSportPlay =
-                selectedPlayCate?.play?.find { oldSportPlay -> newSportPlay.code == oldSportPlay.code }
-            newSportPlay.isSelected = oldSportPlay?.isSelected ?: false
-            oldSportPlay?.let { oldPlay ->
-                newSportPlay.isLocked = oldPlay.isLocked
-            }
-
-            newSportPlay.playCateList?.forEach { newPlayCate ->
-                val oldPlayCate =
-                    oldSportPlay?.playCateList?.find { oldPlayCate -> oldPlayCate.code == newPlayCate.code }
-                newPlayCate.isSelected = oldPlayCate?.isSelected ?: false
-            }
-        }
-    }
 
     fun switchGameType(item: Item) {
         _sportQueryData.postValue(

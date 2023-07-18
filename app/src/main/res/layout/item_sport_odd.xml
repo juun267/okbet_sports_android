@@ -533,12 +533,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
-                        android:background="@drawable/bg_drawable_shape_more"
                         android:fontFamily="@font/din_bold"
                         android:gravity="center"
                         android:padding="2dp"
                         android:textColor="@color/color_025BE8"
                         android:textSize="@dimen/textSize10sp"
+                        android:text="AAAAAAAA"
                         tools:text="120+>" />
 
                     <androidx.legacy.widget.Space

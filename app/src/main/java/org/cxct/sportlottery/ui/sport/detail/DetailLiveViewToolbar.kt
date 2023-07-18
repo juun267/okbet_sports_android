@@ -51,6 +51,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     interface LiveToolBarListener {
         fun onFullScreen(fullScreen: Boolean)
         fun onTabClick(position: Int)
+        fun onClose()
     }
 
     private var liveToolBarListener: LiveToolBarListener? = null
@@ -72,7 +73,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
 
     fun showLive() {
         curType = LiveType.LIVE
-        iv_fullscreen.isVisible = true
+        iv_fullscreen.isVisible = false
         showPlayView()
         switchPlayView(true)
         setWebViewHeight()
@@ -85,7 +86,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         switchPlayView(false)
         showPlayView()
         setWebViewHeight()
-        iv_fullscreen.isVisible = true
+        iv_fullscreen.isVisible = false
         openWebView()
         liveToolBarListener?.onTabClick(1)
     }
@@ -95,27 +96,33 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         switchPlayView(false)
         showPlayView()
         setWebViewHeight()
-        iv_fullscreen.isVisible = true
+        iv_fullscreen.isVisible = false
         openWebView()
         liveToolBarListener?.onTabClick(2)
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initOnclick() {
-        iv_live.setOnClickListener {
-            liveUrl?.let {
-                showLive()
-            }
-        }
-        iv_video.setOnClickListener {
-            videoUrl?.let {
-                showVideo()
-            }
-        }
-
-        iv_animation.setOnClickListener {
-            animeUrl?.let {
-                showAnime()
+//        iv_live.setOnClickListener {
+//            liveUrl?.let {
+//                showLive()
+//            }
+//        }
+//        iv_video.setOnClickListener {
+//            videoUrl?.let {
+//                showVideo()
+//            }
+//        }
+//
+//        iv_animation.setOnClickListener {
+//            animeUrl?.let {
+//                showAnime()
+//            }
+//        }
+        iv_live_close.setOnClickListener {
+            release()
+            liveToolBarListener?.let {
+                it.onClose()
             }
         }
         iv_fullscreen.setOnClickListener {
@@ -199,27 +206,27 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         when (curType) {
             LiveType.LIVE -> {
                 setViewVisible(player_view, iv_live_sound)
-                setViewGone(viewBinding.webView, iv_live_status, tvStatus, iv_live)
+                setViewGone(viewBinding.webView, iv_live_status, tvStatus)
                 liveUrl?.let { LogUtil.d(it) }
                 iv_live_status.setImageResource(R.drawable.bg_no_play)
-                iv_video.isVisible = !TextUtils.isEmpty(videoUrl)
-                iv_animation.isVisible = !TextUtils.isEmpty(animeUrl)
+//                iv_video.isVisible = !TextUtils.isEmpty(videoUrl)
+//                iv_animation.isVisible = !TextUtils.isEmpty(animeUrl)
             }
 
             LiveType.VIDEO -> {
                 setViewVisible(viewBinding.webView)
-                setViewGone(player_view, iv_live_status, tvStatus, iv_video, iv_live_sound)
-                iv_live.isVisible = !liveUrl.isNullOrEmpty()
-                iv_live_status.setImageResource(R.drawable.bg_no_play)
-                iv_animation.isVisible = !animeUrl.isNullOrEmpty()
+                setViewGone(player_view, iv_live_status, tvStatus, iv_live_sound)
+//                iv_live.isVisible = !liveUrl.isNullOrEmpty()
+//                iv_live_status.setImageResource(R.drawable.bg_no_play)
+//                iv_animation.isVisible = !animeUrl.isNullOrEmpty()
             }
 
             LiveType.ANIMATION -> {
                 setViewVisible(viewBinding.webView)
-                setViewGone(player_view, iv_live_status, iv_live_sound, tvStatus, iv_animation)
+                setViewGone(player_view, iv_live_status, iv_live_sound, tvStatus)
                 iv_live_status.setImageResource(R.drawable.bg_no_play)
-                iv_live.isVisible = !liveUrl.isNullOrEmpty()
-                iv_video.isVisible = !videoUrl.isNullOrEmpty()
+//                iv_live.isVisible = !liveUrl.isNullOrEmpty()
+//                iv_video.isVisible = !videoUrl.isNullOrEmpty()
             }
         }
     }
@@ -281,11 +288,24 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
 
     //region 賽事動畫
     private fun openWebView() {
-        iv_animation.isSelected = true
+//        iv_animation.isSelected = true
         viewBinding.webView.isVisible = true
         player_view.isVisible = false
 
-        viewBinding.webView.okWebChromeClient = OkWebChromeClient()
+        viewBinding.webView.okWebChromeClient = object: OkWebChromeClient(){
+
+
+
+            override fun onHideCustomView() {
+                super.onHideCustomView()
+            }
+
+            override fun onShowCustomView(view: View?, callback: CustomViewCallback?) {
+                super.onShowCustomView(view, callback)
+            }
+        }
+
+
         viewBinding.webView.okWebViewClient = object : OkWebViewClient(object : WebViewCallBack {
             override fun pageStarted(view: View?, url: String?) {}
             override fun pageFinished(view: View?, url: String?) {
@@ -324,7 +344,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     fun release() {
         releasePlayer()
         viewBinding.webView.stopLoading()
-        viewBinding.webView.clearCache(false)
+        viewBinding.webView.clearCache(true)
     }
 
     fun showFullScreen(fullScreen: Boolean) {

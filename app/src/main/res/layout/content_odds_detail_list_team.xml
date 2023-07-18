@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/lin_match"
     android:layout_width="match_parent"
-    android:layout_height="38dp">
+    android:layout_height="30dp"
+    android:layout_marginHorizontal="@dimen/margin_12"
+    android:background="@drawable/bg_gray_radius_8_f9fafd">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,23 +14,15 @@
         android:gravity="center"
         android:paddingHorizontal="10dp">
 
-        <ImageView
-            android:id="@+id/iv_home_logo"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:src="@drawable/ic_team_default" />
-
         <TextView
             android:id="@+id/tv_home_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
             android:singleLine="true"
             android:ellipsize="end"
-            android:textColor="@color/color_535D76"
-            android:textSize="@dimen/textSize14sp"
-            android:textAllCaps="true"
-            tools:text="主队名字" />
+            android:textColor="@color/color_6D7693"
+            android:textSize="@dimen/textSize12sp"
+            android:text="@string/J770" />
     </LinearLayout>
 
     <TextView
@@ -40,11 +34,9 @@
         android:layout_weight="1"
         android:singleLine="true"
         android:ellipsize="end"
-        android:textColor="@color/color_535D76"
-        android:textSize="@dimen/textSize14sp"
-        android:textAllCaps="true"
-        android:text="@string/draw"
-        tools:text="和"
+        android:textColor="@color/color_6D7693"
+        android:textSize="@dimen/textSize12sp"
+        android:text="@string/J762"
         android:visibility="gone" />
 
     <LinearLayout
@@ -54,23 +46,15 @@
         android:layout_weight="1"
         android:gravity="center">
 
-        <ImageView
-            android:id="@+id/iv_away_logo"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:src="@drawable/ic_team_default" />
-
         <TextView
             android:id="@+id/tv_away_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
             android:singleLine="true"
             android:ellipsize="end"
-            android:textColor="@color/color_535D76"
-            android:textSize="@dimen/textSize14sp"
-            android:textAllCaps="true"
-            tools:text="客队名字" />
+            android:textColor="@color/color_6D7693"
+            android:textSize="@dimen/textSize12sp"
+            android:text="@string/J771" />
     </LinearLayout>
 
 </LinearLayout>

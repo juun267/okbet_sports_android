@@ -30,8 +30,9 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:textColor="@color/color_14366B"
-            android:textSize="16sp"
-            android:textStyle="bold"
+            android:textSize="@dimen/textSize16sp"
+            android:fontFamily="@font/din_bold"
+            android:textFontWeight="900"
             tools:text="favorites" />
 
 <!--        <TextView-->
@@ -52,15 +53,16 @@
             android:id="@+id/tvMore"
             android:layout_width="wrap_content"
             android:layout_height="24dp"
-            android:layout_gravity="center_vertical"
             android:layout_marginEnd="3dp"
             android:background="@drawable/bg_more"
             android:gravity="center"
             android:paddingHorizontal="8dp"
             android:paddingVertical="3dp"
-            android:text="@string/N702"
             android:textColor="@color/color_6D7693"
-            android:textSize="@dimen/textSize12sp" />
+            android:layout_gravity="center_vertical"
+            android:textSize="@dimen/textSize13sp"
+            android:drawableEnd="@drawable/ic_game_gray_arrow_right"
+            android:text="@string/N702" />
 
         <androidx.constraintlayout.utils.widget.ImageFilterView
             android:id="@+id/ivBackPage"

@@ -2,11 +2,13 @@ package org.cxct.sportlottery.ui.sport.outright
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.chad.library.adapter.base.provider.BaseNodeProvider
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import kotlinx.android.synthetic.main.button_odd_outright.view.*
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.outright.odds.CategoryOdds
 import org.cxct.sportlottery.ui.sport.oddsbtn.OddsOutrightButton
@@ -19,11 +21,13 @@ class OutrightThirdProvider(val adapter: SportOutrightAdapter2,
                             override val itemViewType: Int = 3,
                             override val layoutId: Int = 0): BaseNodeProvider() {
 
-    val padding5 = 5.dp
-    val padding10 = 10.dp
+    private val padding4 = 4.dp
+    private val padding8 = 8.dp
+    private val padding12 = 12.dp
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return BaseViewHolder(OddsOutrightButton(parent.context).apply {
+            foreground = ContextCompat.getDrawable(context, R.drawable.fg_ripple)
             layoutParams = ViewGroup.MarginLayoutParams(-1, -2)
         })
     }
@@ -37,21 +41,20 @@ class OutrightThirdProvider(val adapter: SportOutrightAdapter2,
         val position = parentNode.indexOf(item)  //indexOfCurrentGroup(helper.bindingAdapterPosition)
 
         if (position < 2) { // 第一列
-            if(position % 2 == 0) {
-                setMargins(this, padding10, padding10, padding5, padding5)
+            if(position == 0) {
+                setMargins(this, padding12, padding8, padding4, padding8)
             } else {
-                setMargins(this, padding5, padding10, padding10, padding5)
+                setMargins(this, padding4, padding8, padding12, padding8)
             }
 
         } else {
             if(position % 2 == 0) {
-                setMargins(this, padding10, padding5, padding5, padding5)
+                setMargins(this, padding12, 0, padding4, padding8)
             } else {
-                setMargins(this, padding5, padding5, padding10, padding5)
+                setMargins(this, padding4, 0, padding12, padding8)
             }
         }
 
-//        oddStateViewHolder.setupOddState(this, item)  // 闪烁动画
     }
 
     private fun setMargins(btn: OddsOutrightButton, left: Int, top: Int, right: Int, bottom: Int) {

@@ -3,16 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:gravity="center_vertical">
 
     <TextView
         android:id="@+id/league_odd_match_bb_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="5dp"
-        android:textColor="@color/color_6C7BA8"
-        android:textSize="@dimen/textSize10sp"
+        android:layout_marginRight="2dp"
+        android:textColor="@color/color_FFFFFF"
+        android:textSize="10sp"
         android:visibility="gone"
         tools:text="10"
         tools:visibility="visible" />
@@ -21,7 +21,6 @@
         android:id="@+id/league_odd_match_halfStatus"
         android:layout_width="15dp"
         android:layout_height="15dp"
-        android:layout_gravity="center"
         android:layout_marginRight="5dp"
         android:src="@drawable/ic_bb_first_half"
         android:visibility="gone"
@@ -32,7 +31,6 @@
         android:id="@+id/league_odd_match_basebag"
         android:layout_width="12dp"
         android:layout_height="12dp"
-        android:layout_gravity="center"
         android:layout_marginRight="5dp"
         android:src="@drawable/ic_bb_base_bag_0_0_0"
         android:visibility="gone"
@@ -44,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="5dp"
-        android:textColor="@color/color_6C7BA8"
+        android:textColor="@color/color_FFFFFF"
         android:textSize="@dimen/textSize12sp"
         android:visibility="gone"
         tools:text="@string/game_out"

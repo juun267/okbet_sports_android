@@ -1,29 +1,29 @@
 package org.cxct.sportlottery.ui.sport.oddsbtn
 
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.DecelerateInterpolator
+import android.view.animation.TranslateAnimation
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.button_odd_outright.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddState
 import org.cxct.sportlottery.common.enums.OddsType
-import org.cxct.sportlottery.common.extentions.flashAnimation
+import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
 import org.cxct.sportlottery.util.BetPlayCateFunction.isFS_LD_CS_Type
-import org.cxct.sportlottery.util.BetPlayCateFunction.isNOGALType
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.LocalUtils.getString
 import org.cxct.sportlottery.util.QuickListManager
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
@@ -46,6 +46,9 @@ open class OddsOutrightButton @JvmOverloads constructor(
     defStyleAttr: Int = 0,
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
+    private val upAnim by lazy { TranslateAnimation(0f, 0f, 0f, -4.dp.toFloat()) }
+    private val downAnim by lazy { TranslateAnimation(0f, 0f, 0f, 4.dp.toFloat()) }
+
     var betStatus: Int? = null
         set(value) {
             field = value
@@ -56,10 +59,10 @@ open class OddsOutrightButton @JvmOverloads constructor(
 
     var oddStatus: Int? = null
         set(value) {
-            field = value
-            field?.let {
-                setupOddState(it)
+            if (value != field) {
+                setupOddState(value ?: OddState.SAME.state)
             }
+            field = value
         }
 
     private var mOdd: Odd? = null
@@ -95,7 +98,6 @@ open class OddsOutrightButton @JvmOverloads constructor(
     fun setupOdd(
         odd: Odd?,
         oddsType: OddsType,
-        gameType: String? = null,
         isOddPercentage: Boolean? = false,
     ) {
         mOdd = odd
@@ -128,7 +130,7 @@ open class OddsOutrightButton @JvmOverloads constructor(
             tv_odds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
 //        updateOddsTextColor()
 
-        val select = QuickListManager.getQuickSelectedList()?.contains(odd?.id) ?: false
+        val select = odd?.id?.let { QuickListManager.containOdd(it) } ?: false
         isSelected = select
         odd?.isSelected = select
         //[Martin]馬來盤＆印尼盤會有負數的賠率
@@ -137,201 +139,14 @@ open class OddsOutrightButton @JvmOverloads constructor(
 
     }
 
-    fun setupOdd4hall(
-        playCateCode: String,
-        odds: Odd?,
-        oddList: List<Odd?>?,
-        oddsType: OddsType,
-        isDrawBtn: Boolean? = false,
-        isOtherBtn: Boolean? = false,
-    ) {
-        mOdd = odds
-        mOddsType = oddsType
-
-        if (isDrawBtn == true) {
-            when {
-                (oddList?.size ?: 0 > 2) -> {
-                    visibility = View.VISIBLE
-                }
-                (oddList?.size ?: 0 < 3) -> {
-                    visibility = View.INVISIBLE
-                }
-            }
-        }
-
-        when {
-            (oddList == null || oddList.all { odd -> odd == null }) -> {
-                betStatus = BetStatus.DEACTIVATED.code
-                return
-            }
-            ((oddList.size < 2 || odds?.odds ?: 0.0 <= 0.0) && isOtherBtn == false) -> {
-                betStatus = BetStatus.LOCKED.code
-                return
-            }
-            else -> {
-                betStatus = odds?.status
-            }
-        }
-
-        tv_name.apply {
-            if (isDrawBtn == true) {
-                visibility = View.VISIBLE
-
-                text = when {
-                    playCateCode.isNOGALType() -> getString(R.string.none)
-                    playCateCode.isCombination() -> {
-                        (odds?.nameMap?.get(
-                            LanguageManager.getSelectLanguage(context).key
-                        ) ?: odds?.name)?.split("-")?.firstOrNull() ?: ""
-                    }
-                    !playCateCode.isCombination() -> {
-                        odds?.nameMap?.get(
-                            LanguageManager.getSelectLanguage(context).key
-                        ) ?: odds?.name
-                    }
-                    else -> ""
-                }
-            } else {
-                visibility = when {
-                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() || playCateCode.isCSType() -> View.VISIBLE
-                    else -> View.GONE
-                }
-
-                text = when {
-                    playCateCode.isCSType() -> {
-                        odds?.nameMap?.get(
-                            LanguageManager.getSelectLanguage(context).key
-                        ) ?: odds?.name
-                    }
-                    playCateCode.isOUType() -> {
-                        //越南語大小顯示又要特殊處理(用O/U)
-                        val language =
-                            if (LanguageManager.getSelectLanguage(context).key == LanguageManager.Language.VI.key) LanguageManager.Language.EN.key else LanguageManager.getSelectLanguage(
-                                context
-                            ).key
-                        (odds?.nameMap?.get(
-                            language
-                        ) ?: odds?.name)?.abridgeOddsName()
-                    }
-                    playCateCode.isOEType() || playCateCode.isBTSType() -> {
-                        (odds?.nameMap?.get(
-                            LanguageManager.getSelectLanguage(
-                                context
-                            ).key
-                        ) ?: odds?.name)?.abridgeOddsName()
-                    }
-                    playCateCode.isNOGALType() -> {
-                        when (LanguageManager.getSelectLanguage(this.context)) {
-                            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
-                                "第" + odds?.nextScore.toString()
-                            }
-                            else -> {
-                                getOrdinalNumbers(odds?.nextScore.toString())
-                            }
-                        }
-                    }
-                    else -> ""
-                }
-            }
-            requestLayout()
-        }
-
-        tv_spread.apply {
-            visibility = when (!odds?.spread.isNullOrEmpty()) {
-                true -> View.VISIBLE
-                false -> {
-                    when {
-                        playCateCode.isOUType() -> View.INVISIBLE
-                        else -> View.GONE
-                    }
-                }
-            }
-            text = odds?.spread ?: ""
-            requestLayout()
-        }
-
-        tv_odds.apply {
-            text = TextUtil.formatForOdd(getOdds(odds, oddsType))
-        }
-
-//        updateOddsTextColor()
-        val select = QuickListManager.getQuickSelectedList()?.contains(odds?.id) ?: false
-        isSelected = select
-        odds?.isSelected = select
-    }
-
-    //主頁精選oddsButton的判斷
-    fun setupOddName4Home(name: String?, gameType: String? = null) {
-        tv_name.apply {
-            if (gameType?.contains(PlayCate.SINGLE.value) == true) {
-                isVisible = true
-                text = name
-            } else isVisible = false
-        }
-    }
-
-
-    fun setupOddForEPS(odd: Odd?, oddsType: OddsType) {
-        tv_name.apply {
-            text = odd?.extInfo?.toDoubleOrNull()?.let { TextUtil.formatForOdd(it) }
-                ?: odd?.extInfo //低賠率會返回在extInfo
-        }
-
-        tv_spread.visibility = View.GONE
-
-        tv_odds.apply {
-            setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    R.color.selector_button_odd_bottom_text_eps
-                )
-            )
-            text = TextUtil.formatForOdd(getOdds(odd, oddsType))
-        }
-        val diff = getOdds(odd, oddsType)
-        if (diff < 0.0) {
-            tv_odds.setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    R.color.selector_button_odd_bottom_text_red
-                )
-            )
-            iv_arrow.setImageResource(R.drawable.ic_arrow_odd_down)
-
-        } else if (diff > 0.0) {
-            tv_odds.setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    R.color.selector_button_odd_bottom_text_green
-                )
-            )
-            iv_arrow.setImageResource(R.drawable.ic_arrow_odd_up)
-        } else {
-            tv_odds.setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    R.color.selector_button_odd_bottom_text_eps
-                )
-            )
-            iv_arrow.setImageDrawable(null)
-        }
-
-        isSelected = odd?.isSelected ?: false
-        //[Martin]馬來盤＆印尼盤會有負數的賠率
-        //betStatus = if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
-        betStatus = if (odd == null) BetStatus.LOCKED.code else odd.status
-
-    }
-
     //常駐顯示按鈕 依狀態隱藏鎖頭
     private fun setupBetStatus(betStatus: Int) {
-        img_odd_lock.apply {
-            visibility =
-                if (betStatus == BetStatus.LOCKED.code) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
+
+        if (betStatus == BetStatus.LOCKED.code) {
+            clearStatus()
+            tv_odds.text = ""
+            iv_arrow.visible()
+            iv_arrow.setImageResource(R.drawable.ic_lock)
         }
 
         img_odd_unknown.apply {
@@ -344,39 +159,40 @@ open class OddsOutrightButton @JvmOverloads constructor(
         }
 
         isEnabled = (betStatus == BetStatus.ACTIVATED.code)
-        button_odd_detail.isVisible = isEnabled
+        button_odd_detail.isVisible = betStatus != BetStatus.DEACTIVATED.code
     }
 
     private fun setupOddState(oddState: Int) {
         if (!isEnabled) return
-        var status = false
+
+        var animation: Animation? = null
         when (oddState) {
             OddState.LARGER.state -> {
                 tv_odds.setTextColor(
                     ContextCompat.getColor(
                         context,
-                        R.color.color_1EB65B
+                        R.color.color_1CD219
                     )
                 )
                 iv_arrow.apply {
-                    setImageResource(R.drawable.ic_arrow_odd_up)
+                    setImageResource(R.drawable.icon_odds_up)
                     visibility = View.VISIBLE
                 }
-                status = true
+                animation = upAnim
                 isActivated = false
             }
             OddState.SMALLER.state -> {
                 tv_odds.setTextColor(
                     ContextCompat.getColor(
                         context,
-                        R.color.color_E23434
+                        R.color.color_FF2E00
                     )
                 )
                 iv_arrow.apply {
-                    setImageResource(R.drawable.ic_arrow_odd_down)
+                    setImageResource(R.drawable.icon_odds_down)
                     visibility = View.VISIBLE
                 }
-                status = true
+                animation = downAnim
                 isActivated = false
             }
             OddState.SAME.state -> {
@@ -384,83 +200,46 @@ open class OddsOutrightButton @JvmOverloads constructor(
                 isActivated = false
             }
         }
-        val animator = ll_odd_outright.tag
-        if (animator is Animator) {
-            animator.cancel()
-            if (status) {
-                animator.start()
-                return
-            }
+
+        if (iv_arrow.tag == animation) {
+            return
         }
 
-        if (status) {
-            ll_odd_outright.tag = ll_odd_outright.flashAnimation(1000,2,0.3f).apply {
-                addListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator?) {
-                        resetOddsValueState()
-                    }
-                })
+        playAnim(animation!!)
+    }
+
+    private fun playAnim(animation: Animation) {
+
+        animation.interpolator = DecelerateInterpolator()
+        animation.repeatCount = 3
+        animation.repeatMode = Animation.RESTART
+        animation.duration = 500
+        animation.setAnimationListener(object : Animation.AnimationListener {
+
+            override fun onAnimationStart(animation: Animation) { }
+            override fun onAnimationRepeat(animation: Animation) {
             }
-        }
-//        updateOddsTextColor()
+            override fun onAnimationEnd(animation: Animation) {
+                resetOddsValueState()
+            }
+        })
+
+        iv_arrow.tag = animation
+        iv_arrow.visible()
+        iv_arrow.startAnimation(animation)
     }
 
     private fun resetOddsValueState() {
-        tv_odds.setTextColor(
-            ContextCompat.getColorStateList(
-                context,
-                if (MultiLanguagesApplication.isNightMode) R.color.selector_button_odd_bottom_text_dark
-                else R.color.selector_button_odd_bottom_text
-            )
-        )
-        iv_arrow.apply {
-            setImageDrawable(null)
-            visibility = View.GONE
-        }
+        clearStatus()
+        iv_arrow.gone()
     }
 
-    /**
-     * 透過當前賠率更新賠率文字顏色
-     */
-    private fun updateOddsTextColor() {
-        //負盤
-        val diff = getOdds(mOdd, mOddsType)
-        if (diff < 0.0) {
-            tv_odds.setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    R.color.selector_button_odd_bottom_text_red
-                )
-            )
-            iv_arrow.apply {
-                setImageResource(R.drawable.selector_odds_arrow_down)
-                visibility = View.VISIBLE
-            }
-        } else if (diff > 0.0) {//正盤
-            tv_odds.setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    R.color.selector_button_odd_bottom_text_green
-                )
-            )
-            iv_arrow.apply {
-                setImageResource(R.drawable.selector_odds_arrow_up)
-                visibility = View.VISIBLE
-            }
-        } else {
-            tv_odds.setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    if (MultiLanguagesApplication.isNightMode) R.color.selector_button_odd_bottom_text_dark
-                    else R.color.selector_button_odd_bottom_text
-                )
-            )
-            iv_arrow.apply {
-                setImageDrawable(null)
-                visibility = GONE
-            }
-        }
+    private fun clearStatus() {
+        tv_odds.setTextColor(ContextCompat.getColorStateList(context, R.color.selector_button_odd_bottom_text))
+        iv_arrow.clearAnimation()
+        iv_arrow.tag = null
     }
+
 
     /**
      * 玩法判斷

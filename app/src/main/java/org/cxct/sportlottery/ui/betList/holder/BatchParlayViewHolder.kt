@@ -5,27 +5,20 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.MotionEvent
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.content_bet_info_item_v3_2.view.*
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v3.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.toDoubleS
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.listener.OnItemClickListener
 import org.cxct.sportlottery.ui.betRecord.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.KeyboardView
-import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.MoneyInputFilter
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getMultipleOdds
-import org.cxct.sportlottery.view.boundsEditText.EditTextWatcher
-import timber.log.Timber
 
 abstract class BatchParlayViewHolder(
     itemView: View, private val keyboardView: KeyboardView
@@ -55,7 +48,6 @@ abstract class BatchParlayViewHolder(
         setupInputMoney(itemData)
         if (itemData != null) {
             val multipleOdds = betList?.let { getMultipleOdds(it) }
-
             itemView.tv_parlay_type?.text = if (position == 0) {
                 getParlayName(itemData.parlayType).plus("*")
                     .plus(itemData.num.toString()) + multipleOdds
@@ -63,10 +55,7 @@ abstract class BatchParlayViewHolder(
                 getParlayName(itemData.parlayType).plus("*").plus(itemData.num.toString())
             }
             setupBetAmountInput(
-                itemData,
-                OddsType.EU,
-                onItemClickListener,
-                position
+                itemData, onItemClickListener, position
             )
         }
 
@@ -88,22 +77,19 @@ abstract class BatchParlayViewHolder(
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setupBetAmountInput(
-        data: ParlayOdd,
-        currentOddsType: OddsType,
-        onItemClickListener: OnItemClickListener,
-        position: Int
+        data: ParlayOdd, onItemClickListener: OnItemClickListener, position: Int
     ) {
         itemView.apply {
 
-            if (position == 0 && et_bet_parlay.text.isNullOrEmpty() && !isTouched) {
+            if (position == 0 && etBet.etBetParlay.text.isNullOrEmpty() && !isTouched) {
                 if (mUserMoney < inputMinMoney) {
-                    et_bet_parlay.setText(TextUtil.formatInputMoney(mUserMoney))
+                    etBet.etBetParlay.setText(TextUtil.formatInputMoney(mUserMoney))
                 } else {
-                    et_bet_parlay.setText(TextUtil.formatInputMoney(inputMinMoney))
+                    etBet.etBetParlay.setText(TextUtil.formatInputMoney(inputMinMoney))
                 }
             }
 
-            et_bet_parlay.apply {
+            etBet.etBetParlay.apply {
                 //第1步：為了避免TextWatcher在第2步被調用，提前移除
                 if (tag is TextWatcher) {
                     removeTextChangedListener(tag as TextWatcher)
@@ -118,18 +104,18 @@ abstract class BatchParlayViewHolder(
             }
 
             if (!BetInfoRepository.isTouched && position == 0) {
-                Timber.d("1 进来了- - - -- - - - - - - :isTouched:${false}")
-                et_bet_parlay.requestFocus()
+//                Timber.d("1 进来了- - - -- - - - - - - :isTouched:${false}")
+                etBet.etBetParlay.requestFocus()
                 data.isInputBet = true
                 keyboardView.setupMaxBetMoney(inputMaxMoney)
                 keyboardView.setUserMoney(mUserMoney)
-                keyboardView.showKeyboard(et_bet_parlay, 0)
+                keyboardView.showKeyboard(etBet.etBetParlay, 0)
             }
 
             onFocusChangeListener = null
             refreshSingleWinAmount(data)
-            checkBetLimitParlay(data)
-            et_bet_parlay.apply {
+            setEtBetParlayBackground(data)
+            etBet.etBetParlay.apply {
                 filters = arrayOf(MoneyInputFilter())
                 val tw: TextWatcher?
                 tw = object : TextWatcher {
@@ -148,7 +134,7 @@ abstract class BatchParlayViewHolder(
 
                             MAX_BET_VALUE.let { max ->
                                 if (quota > max) {
-                                    et_bet_parlay.apply {
+                                    etBet.etBetParlay.apply {
                                         setText(TextUtil.formatInputMoney(max))
 //                                        setSelection(text.length)
                                     }
@@ -156,7 +142,7 @@ abstract class BatchParlayViewHolder(
                                 }
                             }
                         }
-                        checkBetLimitParlay(data)
+                        setEtBetParlayBackground(data)
                         onItemClickListener.refreshBetInfoTotal()
                         refreshSingleWinAmount(data)
                     }
@@ -176,28 +162,26 @@ abstract class BatchParlayViewHolder(
                 tag = tw
             }
 
-            et_bet_parlay.setOnTouchListener { view, event ->
+
+            etBet.etBetParlay.setOnTouchListener { view, event ->
                 BetInfoRepository.isTouched = true
-                Timber.d("2 进来了- - - -- - - - - - - :isTouched:${BetInfoRepository.isTouched}")
                 if (event.action == MotionEvent.ACTION_UP) {
-//                    et_bet_parlay.isFocusable = true
-                    et_bet_parlay.requestFocus()
+                    etBet.etBetParlay.requestFocus()
+                    etBet.tvSymbol.setTextColor(context.getColor(R.color.color_025BE8))
                     keyboardView.setUserMoney(mUserMoney)
                     keyboardView.setupMaxBetMoney(inputMaxMoney)
                     keyboardView.showKeyboard(
-                        et_bet_parlay, position, isParlay = true
+                        etBet.etBetParlay, position, isParlay = true
                     )
                 }
                 false
             }
 
-            Timber.d("position:${position}")
 
-            et_bet_parlay.setOnFocusChangeListener { _, hasFocus ->
-//                if (!hasFocus) keyboardView.hideKeyboard()
+            etBet.etBetParlay.setOnFocusChangeListener { _, hasFocus ->
                 data.isInputBet = hasFocus
                 if (hasFocus) {
-                    et_bet_parlay.setSelection(et_bet_parlay.text.length)
+                    etBet.etBetParlay.setSelection(etBet.etBetParlay.text.length)
                 }
                 setEtBetParlayBackground(data)
             }
@@ -209,77 +193,17 @@ abstract class BatchParlayViewHolder(
     }
 
     private fun setEtBetParlayBackground(itemData: ParlayOdd) {
-        itemView.apply {
-            if (mHasBetClosed) {
-                et_bet_parlay.setBackgroundResource(R.drawable.bg_radius_2_edittext_unfocus)
-                et_bet_parlay.isEnabled = false
-                tv_hint_parlay_default.text = LocalUtils.getString(R.string.str_market_is_closed)
-            } else {
-                et_bet_parlay.isEnabled = true
-                if (itemData.amountError) {
-                    et_bet_parlay.setBackgroundResource(R.drawable.bg_radius_2_edittext_error)
-                } else if (itemData.isInputBet) {
-                    et_bet_parlay.setBackgroundResource(R.drawable.bg_radius_2_edittext_focus)
-                } else {
-                    et_bet_parlay.setBackgroundResource(R.drawable.bg_radius_2_edittext_unfocus)
-                }
-            }
-
-            val betHint = context.getString(
-                R.string.hint_bet_limit_range,
-                inputMinMoney.toLong().toString(),
-                inputMaxMoney.toLong().toString()
-            )
-            if (LoginRepository.isLogin.value == true) {
-                val etBetHasInput = !et_bet_parlay.text.isNullOrEmpty()
-                tv_hint_parlay_default.isVisible = !etBetHasInput //僅輸入金額以後隱藏
-                if (mHasBetClosed) {
-                    tv_hint_parlay_default.text =
-                        LocalUtils.getString(R.string.str_market_is_closed)
-                    if (etBetHasInput) {
-                        et_bet_parlay.setText("")
-                    }
-                } else {
-                    //限額用整數提示
-                    tv_hint_parlay_default.text = betHint
-                }
-            } else {
-                tv_hint_parlay_default.isVisible = false
-            }
-        }
+        itemView.etBet.setBackgroundAndColor(
+            null, inputMinMoney, inputMaxMoney, itemData2 = itemData
+        )
     }
 
-    private fun checkBetLimitParlay(
-        itemData: ParlayOdd, betAmount: Double = itemData.betAmount
-    ) {
-//        itemView.apply {
-//            val amountError: Boolean = if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
-//                //請輸入正確投注額
-//                !itemData.input.isNullOrEmpty()
-//            } else {
-//                if (betAmount > inputMaxMoney) {
-//                    //超過最大限額
-//                    true
-//                } else {
-//                    betAmount != 0.0 && betAmount < inputMinMoney
-//                }
-//            }
-//            val balanceError: Boolean = betAmount != 0.0 && betAmount > mUserMoney
-//            itemData.amountError = if (balanceError) true else amountError
-//        }
-        setEtBetParlayBackground(itemData)
-    }
 
     private fun refreshSingleWinAmount(itemData: ParlayOdd?) {
         if (itemData == null) {
             itemView.tvCanWinAmount.text = "${sConfigData?.systemCurrencySign} --"
         } else {
             val w = itemData.betAmount.toBigDecimal().multiply(itemData.odds.toBigDecimal())
-//            val winnable =
-//                w.subtract(itemData.betAmount.toBigDecimal().multiply(itemData.num.toBigDecimal()))
-//                    .toDouble()
-//            Timber.d("w:${w} winnable:${winnable} item.betAmount:${itemData.betAmount} itemData.num:${itemData.num}")
-
             itemView.tvCanWinAmount.text =
                 "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(w, 2)}"
         }

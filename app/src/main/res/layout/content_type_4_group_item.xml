@@ -13,19 +13,13 @@
         android:layout_height="38dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingHorizontal="@dimen/odd_item_horizontal">
+        android:layout_marginHorizontal="@dimen/margin_12">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center">
-
-            <ImageView
-                android:id="@+id/iv_home_logo"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:src="@drawable/ic_team_default" />
 
             <TextView
                 android:id="@+id/tv_left_name"
@@ -36,7 +30,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:gravity="center"
-                android:textColor="@color/color_CCCCCC_000000"
+                android:textColor="@color/color_6D7693"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="皇家马德里" />
         </LinearLayout>
@@ -47,12 +41,6 @@
             android:layout_weight="1"
             android:gravity="center">
 
-            <ImageView
-                android:id="@+id/iv_away_logo"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:src="@drawable/ic_team_default" />
-
             <TextView
                 android:id="@+id/tv_right_name"
                 android:layout_width="wrap_content"
@@ -62,7 +50,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:gravity="center"
-                android:textColor="@color/color_CCCCCC_000000"
+                android:textColor="@color/color_6D7693"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="利物浦" />
         </LinearLayout>
@@ -76,10 +64,10 @@
         android:layout_height="wrap_content"
         android:nestedScrollingEnabled="false"
         android:overScrollMode="never"
-        android:paddingTop="7dp"
-        android:paddingBottom="7dp"
-        android:paddingLeft="7dp"
-        android:paddingRight="7dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:paddingLeft="@dimen/margin_9"
+        android:paddingRight="@dimen/margin_9"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2"
         tools:itemCount="4"

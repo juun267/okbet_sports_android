@@ -6,6 +6,7 @@ import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.content_baseball_status.view.*
 import kotlinx.android.synthetic.main.item_sport_favorite.view.*
@@ -29,9 +30,9 @@ fun TextView.setMatchSptText(matchInfo: MatchInfo) {
         visibility = View.VISIBLE
         val homeOver = (matchInfo.homeOver ?: "0").toFloat()
         val awayOver = (matchInfo.awayOver ?: "0").toFloat()
-        text = when {
-            homeOver > 0 -> homeOver.toString()
-            awayOver > 0 -> awayOver.toString()
+        text = when (matchInfo.attack){
+            "H"->" $homeOver"
+            "C"->" $awayOver"
             else -> ""
         }
         return
@@ -97,7 +98,7 @@ fun setMatchScore(matchInfo: MatchInfo, tvHomeScore: TextView, tvAwayScore: Text
             else -> View.GONE
         }
         text = when (matchInfo.gameType) {
-            GameType.VB.key, GameType.TT.key, GameType.BM.key -> (matchInfo.homeTotalScore
+            GameType.VB.key, GameType.TT.key, GameType.BM.key, GameType.BB.key -> (matchInfo.homeTotalScore
                 ?: 0).toString()
             else -> (matchInfo.homeScore ?: 0).toString()
         }
@@ -108,7 +109,7 @@ fun setMatchScore(matchInfo: MatchInfo, tvHomeScore: TextView, tvAwayScore: Text
             else -> View.GONE
         }
         text = when (matchInfo.gameType) {
-            GameType.VB.key, GameType.TT.key, GameType.BM.key -> (matchInfo.awayTotalScore
+            GameType.VB.key, GameType.TT.key, GameType.BM.key, GameType.BB.key -> (matchInfo.awayTotalScore
                 ?: 0).toString()
             else -> (matchInfo.awayScore ?: 0).toString()
         }
@@ -132,8 +133,11 @@ fun TextView.setMatchRoundScore(matchInfo: MatchInfo) {
             }
         }
         text = spanny
-    } else {
-        matchInfo.matchStatusList?.let { matchStatusList ->
+    }else{
+        val matchStatusList = matchInfo.matchStatusList
+        if (matchStatusList.isNullOrEmpty()) {
+            text = ""
+        }else{
             val spanny = Spanny()
             val quarter: Int = if (matchInfo.gameType == GameType.BK.key) { //球種為籃球有特殊處理
                 //篮球类 1:第一节 2:第二节 6:上半场 7:下半场 13:第一节 14:第二节 15:第三节 16:第四节
@@ -157,13 +161,14 @@ fun TextView.setMatchRoundScore(matchInfo: MatchInfo) {
                 } else {
                     spanny.append(
                         spanScore,
-                        ForegroundColorSpan(this.context.getColor(R.color.color_F0A536))
+                        ForegroundColorSpan(this.context.getColor(R.color.color_FF8A00))
                     )
                 }
             }
             text = spanny
         }
     }
+
 }
 
 /**
@@ -199,21 +204,35 @@ fun setMatchAttack(
             GameType.BM.key,
             GameType.CK.key,
             -> {
-                if (matchInfo.attack.equals("H")) {
-                    ivHomeAttack.visibility = View.VISIBLE
-                    ivAwayAttack.visibility = View.INVISIBLE
-                } else {
-                    ivHomeAttack.visibility = View.INVISIBLE
-                    ivAwayAttack.visibility = View.VISIBLE
+                when(matchInfo.attack){
+                    "H"->{
+                        ivHomeAttack.visibility = View.VISIBLE
+                        ivAwayAttack.visibility = View.INVISIBLE
+                    }
+                    "C"->{
+                        ivHomeAttack.visibility = View.INVISIBLE
+                        ivAwayAttack.visibility = View.VISIBLE
+                    }
+                    else->{
+                        ivHomeAttack.visibility = View.INVISIBLE
+                        ivAwayAttack.visibility = View.INVISIBLE
+                    }
                 }
             }
             GameType.TN.key -> {
-                if (matchInfo.attack.equals("H")) {
-                    ivTNHomeAttack.visibility = View.VISIBLE
-                    ivTNAwayAttack.visibility = View.INVISIBLE
-                } else {
-                    ivTNHomeAttack.visibility = View.INVISIBLE
-                    ivTNAwayAttack.visibility = View.VISIBLE
+                when(matchInfo.attack){
+                    "H"->{
+                        ivTNHomeAttack.visibility = View.VISIBLE
+                        ivTNAwayAttack.visibility = View.INVISIBLE
+                    }
+                    "C"->{
+                        ivTNHomeAttack.visibility = View.INVISIBLE
+                        ivTNAwayAttack.visibility = View.VISIBLE
+                    }
+                    else->{
+                        ivTNHomeAttack.visibility = View.INVISIBLE
+                        ivTNAwayAttack.visibility = View.INVISIBLE
+                    }
                 }
             }
             else -> {
@@ -312,7 +331,7 @@ fun setMatchTimeAndStatus(
                         isTimerEnable,
                         isTimerPause,
                         matchInfo.leagueTime ?: 0,
-                        (matchInfo.gameType == GameType.BK.key ||
+                        isDecrease = (matchInfo.gameType == GameType.BK.key ||
                                 matchInfo.gameType == GameType.RB.key ||
                                 matchInfo.gameType == GameType.AFT.key)
                     )
@@ -432,24 +451,24 @@ fun setTNRoundScore(
         isVisible = isScoreTextVisible
         text = (matchInfo.awayTotalScore ?: 0).toString()
     }
-    tvHomeScore.apply {
-        isVisible = isScoreTextVisible
-        text = (matchInfo.homeScore ?: 0).toString()
-    }
-
-    tvAwayScore.apply {
-        isVisible = isScoreTextVisible
-        text = (matchInfo.awayScore ?: 0).toString()
-    }
-    tvHomePoints.apply {
-        isVisible = isScoreTextVisible
-        text = (matchInfo.homePoints ?: 0).toString()
-    }
-
-    tvAwayPoints.apply {
-        isVisible = isScoreTextVisible
-        text = (matchInfo.awayPoints ?: 0).toString()
-    }
+//    tvHomeScore.apply {
+//        isVisible = isScoreTextVisible
+//        text = (matchInfo.homeScore ?: 0).toString()
+//    }
+//
+//    tvAwayScore.apply {
+//        isVisible = isScoreTextVisible
+//        text = (matchInfo.awayScore ?: 0).toString()
+//    }
+//    tvHomePoints.apply {
+//        isVisible = isScoreTextVisible
+//        text = (matchInfo.homePoints ?: 0).toString()
+//    }
+//
+//    tvAwayPoints.apply {
+//        isVisible = isScoreTextVisible
+//        text = (matchInfo.awayPoints ?: 0).toString()
+//    }
 }
 
 /**
@@ -462,21 +481,21 @@ fun setBBStatusView(
     ivHalfStatus: ImageView,
     ivBaseBag: ImageView,
 ) {
-
     tvBBStatus.apply {
         text = matchInfo.statusName18n
-        isVisible = true
+        setTextColor(ContextCompat.getColor(context,R.color.color_6C7BA8))
+        isVisible = !matchInfo.statusName18n.isEmptyStr()
     }
-
     txvOut.apply {
         text = this.context.getString(R.string.game_out,
-            matchInfo.outNumber ?: "")
+            matchInfo.outNumber ?: "0")
+        setTextColor(ContextCompat.getColor(context,R.color.color_6C7BA8))
         isVisible = true
     }
 
     ivHalfStatus.apply {
         setImageResource(if (matchInfo.halfStatus == 0) R.drawable.ic_bb_first_half else R.drawable.ic_bb_second_half)
-        isVisible = true
+        isVisible = matchInfo.halfStatus != null
     }
 
     ivBaseBag.apply {
@@ -565,4 +584,22 @@ fun <K, V> Map<K, V>?.getPlayCateName(context: Context): String {
     val playCateName = this?.get<Any?, V>(selectLanguage.key) ?: this?.get<Any?, V>(
         LanguageManager.Language.EN.key)
     return playCateName.toString()
+}
+
+/**
+ * 賽制(5盤3勝)
+ * 只有网球，排球，乒乓球，羽毛球
+ */
+@SuppressLint("SetTextI18n")
+ fun setSptText(matchInfo: MatchInfo): String {
+    if (matchInfo.gameType == GameType.CK.key) {
+        val homeOver = (matchInfo.homeOver ?: "0").toFloat()
+        val awayOver = (matchInfo.awayOver ?: "0").toFloat()
+        return when (matchInfo.attack){
+            "H"->" $homeOver"
+            "C"->" $awayOver"
+            else -> ""
+        }
+    }
+    return ""
 }

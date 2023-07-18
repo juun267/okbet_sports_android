@@ -5,10 +5,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <View
-        android:id="@+id/v_statusbar_live"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/margin_25" />
+<!--    <View-->
+<!--        android:id="@+id/v_statusbar_live"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="@dimen/margin_25" />-->
 
     <FrameLayout
         android:id="@+id/fl_root"
@@ -57,49 +57,58 @@
                 android:layout_centerInParent="true"
                 android:background="@color/color_025BE8"
                 android:overScrollMode="never" />
-            <!--根據需求，先隱藏賽事動畫-->
-
+            <ImageView
+                android:id="@+id/iv_live_close"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_margin="@dimen/margin_12"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_trans_close"
+                android:visibility="visible"
+                tools:visibility="visible" />
         </RelativeLayout>
 
 
-        <LinearLayout
-            android:id="@+id/cl_control"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="10dp">
+<!--        <LinearLayout-->
+<!--            android:id="@+id/cl_control"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_gravity="right"-->
+<!--            android:gravity="center"-->
+<!--            android:orientation="vertical"-->
+<!--            android:padding="10dp">-->
 
-            <ImageView
-                android:id="@+id/iv_live"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+<!--            <ImageView-->
+<!--                android:id="@+id/iv_live"-->
+<!--                android:layout_width="30dp"-->
+<!--                android:layout_height="30dp"-->
 
-                android:src="@drawable/ic_live_trans"
-                android:visibility="gone"
-                tools:visibility="visible" />
+<!--                android:src="@drawable/ic_live_trans"-->
+<!--                android:visibility="gone"-->
+<!--                tools:visibility="visible" />-->
 
-            <ImageView
-                android:id="@+id/iv_video"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="20dp"
-                android:src="@drawable/ic_video_trans"
-                android:visibility="gone"
-                tools:visibility="visible" />
+<!--            <ImageView-->
+<!--                android:id="@+id/iv_video"-->
+<!--                android:layout_width="30dp"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:src="@drawable/ic_video_trans"-->
+<!--                android:visibility="gone"-->
+<!--                tools:visibility="visible" />-->
 
-            <ImageView
-                android:id="@+id/iv_animation"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="20dp"
-                android:src="@drawable/ic_anime_trans"
-                android:visibility="gone"
-                tools:visibility="visible" />
+<!--            <ImageView-->
+<!--                android:id="@+id/iv_animation"-->
+<!--                android:layout_width="30dp"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:src="@drawable/ic_anime_trans"-->
+<!--                android:visibility="gone"-->
+<!--                tools:visibility="visible" />-->
 
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
+
+
 
         <ImageView
             android:id="@+id/iv_live_sound"
@@ -117,6 +126,7 @@
             android:layout_gravity="bottom|right"
             android:layout_margin="@dimen/margin_15"
             android:padding="@dimen/margin_5"
+            android:visibility="gone"
             android:src="@drawable/selector_fullscreen" />
     </FrameLayout>
 </LinearLayout>

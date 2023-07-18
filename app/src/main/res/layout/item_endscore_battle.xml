@@ -4,7 +4,9 @@
     android:id="@+id/lin_match"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:foreground="@drawable/fg_ripple">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,9 +47,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/margin_5"
                 android:fontFamily="@font/din_regular"
-                android:textColor="@color/color_414655"
                 android:textFontWeight="700"
-                android:textSize="@dimen/textSize10sp"
+                android:textColor="@color/color_0D2245"
+                android:textSize="@dimen/textSize12sp"
                 tools:text="00:43"
                 tools:visibility="visible" />
 
@@ -109,14 +111,18 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
+        android:layout_marginHorizontal="12dp"
         android:background="@color/color_261B3A98"/>
 
     <LinearLayout
         android:id="@+id/llMatchInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
         android:orientation="horizontal"
-        android:layout_marginTop="@dimen/margin_15">
+        android:paddingTop="15dp"
+        android:paddingBottom="6dp"
+        android:background="@color/color_F8F9FD">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -128,16 +134,14 @@
             <ImageView
                 android:id="@+id/ivHomeLogo"
                 android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="5dp"
-                android:background="@drawable/bg_stroke_team_logo" />
+                android:layout_height="40dp" />
 
             <TextView
                 android:id="@+id/tvHomeName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:textColor="@color/color_535D76"
+                android:textColor="@color/color_0D2245"
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:textStyle="bold"
@@ -166,16 +170,14 @@
             <ImageView
                 android:id="@+id/ivAwayLogo"
                 android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="5dp"
-                android:background="@drawable/bg_stroke_team_logo" />
+                android:layout_height="40dp" />
 
             <TextView
                 android:id="@+id/tvAwayName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:textColor="@color/color_535D76"
+                android:textColor="@color/color_0D2245"
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:textStyle="bold"
@@ -186,20 +188,28 @@
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="150dp"
-        android:layout_height="38dp"
+    <LinearLayout
+        android:id="@+id/linExpand"
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="24dp"
         android:gravity="center"
-        android:layout_marginTop="@dimen/margin_10"
-        android:layout_marginBottom="@dimen/margin_15"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/bg_radius_4_button_blue"
-        android:textSize="@dimen/textSize14sp"
-        android:textColor="@color/color_FFFFFF"
-        android:text="@string/betting" />
+        android:foreground="@drawable/fg_ripple">
+
+        <TextView
+            android:id="@+id/tvExpand"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:textSize="@dimen/textSize14sp"
+            android:textStyle="bold"
+            android:drawablePadding="8dp"/>
+    </LinearLayout>
+
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/color_261B3A98" />
+        android:layout_marginTop="20dp"
+        android:background="@color/color_EEF3FC" />
 </LinearLayout>

@@ -1,19 +1,22 @@
 package org.cxct.sportlottery.ui.common.adapter
 
+import androidx.core.view.children
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.entity.node.BaseNode
 import org.cxct.sportlottery.common.adapter.BaseNodeAdapter
+import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 
 // 可展开收起的体育赛事赔率列表
-abstract class ExpanableOddsAdapter: BaseNodeAdapter() {
+abstract class ExpanableOddsAdapter<T: MatchOdd>: BaseNodeAdapter() {
 
     fun getCount() = getDefItemCount()
 
     var rootNodes: MutableList<BaseNode>? = null // 一级父节点集合
 
     override fun setNewInstance(list: MutableList<BaseNode>?) {
+        currentVisiableMatchOdds.clear()
         rootNodes = list
         super.setNewInstance(list)
     }
@@ -23,7 +26,7 @@ abstract class ExpanableOddsAdapter: BaseNodeAdapter() {
         rootNodes?.forEach {
             val position = getItemPosition(it)
             if (position >= 0) {
-                expand(position)
+                expand(position, parentPayload = it)
             }
         }
     }
@@ -33,13 +36,13 @@ abstract class ExpanableOddsAdapter: BaseNodeAdapter() {
         rootNodes?.forEach {
             val position = getItemPosition(it)
             if (position >= 0) {
-                collapse(position)
+                collapse(position, parentPayload = it)
             }
         }
     }
 
     // 根据注单更新选中状态
-    fun updateOddsSelectedStatus(betInfoList: MutableList<BetInfoListData>) {
+    fun updateOddsSelectedStatus(betInfoList: List<BetInfoListData>) {
         if (getDefItemCount() == 0) {
             return
         }
@@ -63,7 +66,7 @@ abstract class ExpanableOddsAdapter: BaseNodeAdapter() {
             val item = getItemOrNull(i)
             if(item is Odd) {
                 val isSelected = betInfoMap.containsKey(item.id)
-                if (isSelected != (item.isSelected == true)) {
+                if (isSelected != item.isSelected) {
                     item.isSelected = isSelected
                     notifyItemChanged(i)
                 }
@@ -95,6 +98,33 @@ abstract class ExpanableOddsAdapter: BaseNodeAdapter() {
         if (oldOdds.extInfo != newOdds.extInfo) {
             oldOdds.extInfo = newOdds?.extInfo
         }
+    }
+
+    // 可见区域的MatchOdd
+    protected val currentVisiableMatchOdds = mutableMapOf<String, T>()
+
+    // 滑动改版后，标记当前可见区域的MatchOdd(后面socket更新知对该区域操作，重新绑定数据或者滑动改变后重新标记该区域)
+    fun recodeRangeMatchOdd(): MutableList<T> {
+
+        currentVisiableMatchOdds.clear()
+        val matchOdds = mutableListOf<T>()
+        recyclerView.children.forEach {
+            if (it.tag is MatchOdd) {
+                val matchOdd = it.tag as T
+                matchOdds.add(matchOdd)
+                matchOdd.matchInfo?.let { currentVisiableMatchOdds[it.id] = matchOdd }
+            }
+        }
+
+        return matchOdds
+    }
+
+    fun findVisiableRangeMatchOdd(id: String): T? {
+        return currentVisiableMatchOdds[id]
+    }
+
+    fun resetRangeMatchOdd() {
+        currentVisiableMatchOdds.clear()
     }
 
 }
