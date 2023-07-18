@@ -129,7 +129,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 !category.gameList.isNullOrEmpty()
             }?.toMutableList() ?: mutableListOf()
             //设置游戏分类
-            gameAllAdapter.setList(categoryList)
+            gameAllAdapter.setCategoryData(categoryList)
             viewModel.getRecentPlay()
         }
 
@@ -150,7 +150,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             setCollectList(list)
             initCollectAdapterPage(list)
 
-            binding.includeGamesAll.inclueCollect.run {
+            binding.inclueCollect.run {
                 collectGameAdapter?.let { adapter->
                     //上一页
                     ivBackPage.onClick {
@@ -180,8 +180,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             collectGameAdapter?.let { adapter ->
                 //添加收藏或者移除
                 adapter.removeOrAdd(result.second)
-                binding.includeGamesAll.inclueCollect.root.isGone = adapter.data.isNullOrEmpty()
-                setItemMoreVisiable(binding.includeGamesAll.inclueCollect, adapter.dataCount() > 6)
+                binding.inclueCollect.root.isGone = adapter.data.isNullOrEmpty()
+                setItemMoreVisiable(binding.inclueCollect, adapter.dataCount() > 6)
             }
             //更新最近列表
             recentGameAdapter?.data?.forEachIndexed { index, okGameBean ->
@@ -211,7 +211,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 if (tempRecentList.size % it.itemSize != 0) {
                     it.totalPage += 1
                 }
-                changeData(it,  tempRecentList,  binding.includeGamesAll.inclueRecent)
+                changeData(it,  tempRecentList,  binding.inclueRecent)
             }
 
 //            if (tempRecentList.size > 6) {
@@ -220,7 +220,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 setRecent(list)
 //            }
 
-            binding.includeGamesAll.inclueRecent.run {
+            binding.inclueRecent.run {
                 recentGameAdapter?.let { adapter->
                     //上一页
                     ivBackPage.onClick {
@@ -245,10 +245,10 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         newRecentPlay.observe(viewLifecycleOwner) { okgameBean ->
 
             recentGameAdapter?.let { adapter ->
-                binding.includeGamesAll.inclueRecent.root.visible()
+                binding.inclueRecent.root.visible()
                 adapter.data.find { it.id == okgameBean.id }?.let { adapter.remove(it) }
                 adapter.addData(0, okgameBean)
-                setItemMoreVisiable(binding.includeGamesAll.inclueRecent, adapter.dataCount() > 3)
+                setItemMoreVisiable(binding.inclueRecent, adapter.dataCount() > 3)
             }
         }
 
@@ -262,10 +262,10 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             if (list.size % adapter.itemSize != 0) {
                 adapter.totalPage += 1
             }
-            changeData(adapter,  list, binding.includeGamesAll.inclueCollect)
+            changeData(adapter,  list, binding.inclueCollect)
         }
     }
-    private fun onBindGamesView() = binding.includeGamesAll.run {
+    private fun onBindGamesView() = binding.run {
         rvGamesAll.setLinearLayoutManager()
         rvGamesAll.adapter = gameAllAdapter
         gameAllAdapter.setOnItemChildClickListener { _, _, position ->
@@ -387,12 +387,12 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
     private fun initCollectLayout() {
         collectGameAdapter =
-            bindGameCategroyLayout(GameTab.TAB_FAVORITES, binding.includeGamesAll.inclueCollect)
+            bindGameCategroyLayout(GameTab.TAB_FAVORITES, binding.inclueCollect)
     }
 
     private fun initRecent() {
         recentGameAdapter =
-            bindGameCategroyLayout(GameTab.TAB_RECENTLY, binding.includeGamesAll.inclueRecent)
+            bindGameCategroyLayout(GameTab.TAB_RECENTLY, binding.inclueRecent)
     }
 
     private fun bindGameCategroyLayout(gameTab: GameTab, binding: ItemGameCategroyBinding) =
@@ -430,8 +430,8 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
      */
     private fun setCollectList(collectList: List<OKGameBean>) {
         val emptyData = collectList.isNullOrEmpty()
-        setItemMoreVisiable(binding.includeGamesAll.inclueCollect, collectList.size > 6)
-        binding.includeGamesAll.inclueCollect.root.isGone = emptyData
+        setItemMoreVisiable(binding.inclueCollect, collectList.size > 6)
+        binding.inclueCollect.root.isGone = emptyData
 //        if (!emptyData) {
 //            collectGameAdapter?.setNewInstance(collectList?.toMutableList())
 //        }
@@ -442,9 +442,9 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
      * 设置最近游戏列表
      */
     private fun setRecent(recentList: List<OKGameBean>) {
-        setItemMoreVisiable(binding.includeGamesAll.inclueRecent, recentList.size > 6)
+        setItemMoreVisiable(binding.inclueRecent, recentList.size > 6)
         val emptyData = recentList.isNullOrEmpty()
-        binding.includeGamesAll.inclueRecent.root.isGone = emptyData
+        binding.inclueRecent.root.isGone = emptyData
 //        if (!emptyData) {
 //            recentGameAdapter?.setNewInstance(recentList?.toMutableList())
 //        }
