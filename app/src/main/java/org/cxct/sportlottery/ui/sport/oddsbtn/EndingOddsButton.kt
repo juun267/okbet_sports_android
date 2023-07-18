@@ -43,7 +43,7 @@ class EndingOddsButton @JvmOverloads constructor(
 
     init {
         foreground = ContextCompat.getDrawable(context, R.drawable.fg_ripple)
-        setBackgroundResource(R.drawable.selector_button_radius_4_odds)
+        setBackgroundResource(R.drawable.selector_button_radius_6_odds)
         inflate(context, R.layout.button_odd_ending, this)
     }
 

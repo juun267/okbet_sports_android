@@ -13,6 +13,7 @@ import androidx.core.view.isVisible
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.extentions.*
+import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 class PlayCateView @JvmOverloads constructor(
@@ -58,11 +59,11 @@ class PlayCateView @JvmOverloads constructor(
 
     private fun createNameTextView(): TextView {
         val text = AppCompatTextView(context)
-        text.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13f)
+        text.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12f)
         text.setTextColor(getColor(R.color.color_6D7693))
-        text.typeface = Typeface.DEFAULT_BOLD
+        text.typeface = AppFont.helvetica
         text.gravity = Gravity.CENTER_HORIZONTAL or Gravity.CENTER_VERTICAL
-        text.setLineSpacing(1f, 0.82f)
+        text.setLineSpacing(1f, 0.9f)
         return text
     }
 

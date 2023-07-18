@@ -51,9 +51,10 @@
                         android:id="@+id/tvSportName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/color_0D2245"/>
+                        android:textSize="@dimen/textSize14sp"
+                        android:fontFamily="@font/helvetica_normal"
+                        android:textColor="@color/color_000000"
+                        tools:text="足球"/>
 
                     <TextView
                         android:id="@+id/tvMatchNum"
@@ -61,11 +62,10 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginLeft="4dp"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/din_bold"
-                        android:textFontWeight="700"
-                        android:textSize="12sp"
-                        android:textColor="@color/color_025BE8" />
+                        android:fontFamily="@font/helvetica_normal"
+                        android:textSize="@dimen/textSize14sp"
+                        android:textColor="@color/color_025BE8"
+                        tools:text="12"/>
 
                     <ImageView
                         android:id="@+id/ivFilter"

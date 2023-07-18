@@ -1,12 +1,7 @@
 package org.cxct.sportlottery.ui.sport.oddsbtn
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.content.Context
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.drawable.RippleDrawable
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
@@ -17,14 +12,11 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.setPadding
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddState
 import org.cxct.sportlottery.common.enums.OddsType
-import org.cxct.sportlottery.common.extentions.flashAnimation
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.util.*
@@ -90,7 +82,7 @@ class OddsButton2 @JvmOverloads constructor(
 
     init {
         foreground = ContextCompat.getDrawable(context, R.drawable.fg_ripple)
-        setBackgroundResource(R.drawable.selector_button_radius_4_odds)
+        setBackgroundResource(R.drawable.selector_button_radius_6_odds)
         orientation = VERTICAL
         gravity = Gravity.CENTER
         betStatus = BetStatus.DEACTIVATED.code
@@ -196,10 +188,7 @@ class OddsButton2 @JvmOverloads constructor(
             setTextColor(ContextCompat.getColorStateList(context, R.color.selector_button_odd_top_text))
             setTextSize(TypedValue.COMPLEX_UNIT_DIP, 11f)
             gravity = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM
-            getPaint().apply {
-                setStyle(Paint.Style.FILL_AND_STROKE)
-                setStrokeWidth(0.37f)
-            }
+            typeface = AppFont.helvetica
         }
         addOddView(oddsName!!, params1, 0)
         return oddsName!!

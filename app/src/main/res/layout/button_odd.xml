@@ -10,7 +10,7 @@
         android:id="@+id/button_odd_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/selector_button_radius_4_odds"
+        android:background="@drawable/selector_button_radius_6_odds"
         android:gravity="center"
         android:orientation="vertical"
         android:paddingHorizontal="4dp"

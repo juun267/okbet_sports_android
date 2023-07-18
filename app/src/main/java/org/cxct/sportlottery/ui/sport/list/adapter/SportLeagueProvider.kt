@@ -15,6 +15,7 @@ import com.chad.library.adapter.base.provider.BaseNodeProvider
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.setArrowSpin
 import org.cxct.sportlottery.util.setExpandArrow
@@ -34,7 +35,7 @@ class SportLeagueProvider(
 
         val root = FrameLayout(context)
         root.layoutParams = ViewGroup.LayoutParams(-1, 50.dp)
-        root.setBackgroundResource(R.color.color_0D025BE8)
+        root.setBackgroundResource(R.color.color_FCFDFF)
         root.foreground = ContextCompat.getDrawable(context, R.drawable.fg_ripple)
 
         val wh20 = 20.dp
@@ -52,9 +53,9 @@ class SportLeagueProvider(
         val tvLeagueName = AppCompatTextView(context).apply {
             id = tvLeagueNameId
             maxLines = 2
-            typeface = Typeface.DEFAULT_BOLD
+            typeface = AppFont.helvetica
             setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12f)
-            setTextColor(context.getColor(R.color.color_0D2245))
+            setTextColor(context.getColor(R.color.color_000000))
             layoutParams = FrameLayout.LayoutParams(-1, -2).apply {
                 gravity = Gravity.CENTER_VERTICAL
                 leftMargin = 40.dp
