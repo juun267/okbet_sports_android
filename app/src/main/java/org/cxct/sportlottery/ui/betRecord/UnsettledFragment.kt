@@ -74,7 +74,7 @@ class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnset
             viewModel.pageIndex = 1
             recyclerUnsettled.postDelayed({
                 viewModel.getUnsettledList()
-            },500)
+            },600)
         }
 
         viewModel.settlementNotificationMsg.observe(viewLifecycleOwner) { event ->
