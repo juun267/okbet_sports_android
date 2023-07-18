@@ -29,8 +29,12 @@ class GameChildAdapter(private val onFavoriate: (View, OKGameBean) -> Unit,
     var totalCount=0
     var isMoreThan18=false
     private var jumpMoreClick: () -> Unit = { }
+    private var onFavoriate2: (View, OKGameBean) -> Unit = {_,_-> }
     fun setJumpMoreClick(block:() -> Unit){
         jumpMoreClick=block
+    }
+    fun onFavoriate2(block:(View, OKGameBean) -> Unit){
+        onFavoriate2=block
     }
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
@@ -66,7 +70,10 @@ class GameChildAdapter(private val onFavoriate: (View, OKGameBean) -> Unit,
             tvName.text = item.gameName
             tvFirmName.text = item.firmName
             ivFav.isSelected = item.markCollect
-            ivFav.setOnClickListener { onFavoriate.invoke(ivFav, item) }
+            ivFav.setOnClickListener {
+                onFavoriate.invoke(ivFav, item)
+                onFavoriate2.invoke(ivFav, item)
+            }
             root.setOnClickListener { getOnItemClickListener()?.onItemClick(this@GameChildAdapter, root, position) }
 
 

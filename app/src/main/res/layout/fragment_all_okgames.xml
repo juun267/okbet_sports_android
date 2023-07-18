@@ -6,10 +6,22 @@
     android:orientation="vertical">
 
     <include
-        android:id="@+id/include_games_all"
-        layout="@layout/include_view_okgames_all"
+        android:id="@+id/inclue_collect"
+        layout="@layout/item_game_categroy"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/inclue_recent"
+        layout="@layout/item_game_categroy"
+        android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_games_all"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="false"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_game_categroy" />
 
     <LinearLayout
         android:id="@+id/okgame_p3_layout_proivder"

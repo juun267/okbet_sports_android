@@ -30,6 +30,13 @@ class GameCategroyAdapter(
     init {
         addChildClickViewIds(R.id.lin_categroy_name)
     }
+    private val adapterMap = hashMapOf<String,GameChildAdapter>()
+    fun setCategoryData(data:MutableList<OKGamesCategory>){
+        data.forEach {
+            adapterMap[it.categoryName?:""] = GameChildAdapter(onFavoriate ={ view, gameBean -> })
+        }
+        setList(data)
+    }
 
     override fun onCreateDefViewHolder(
         parent: ViewGroup,
@@ -40,13 +47,13 @@ class GameCategroyAdapter(
             setRecycledViewPool(gameItemViewPool)
             layoutManager = GridLayoutManager(context, 3)
             addItemDecoration(GridSpacingItemDecoration(3, 10.dp, false))
-            adapter = GameChildAdapter(onFavoriate = { view, gameBean ->
-                clickCollect.invoke(view, gameBean)
-            }).apply {
-                setOnItemClickListener { _, _, position ->
-                    clickGame.invoke(getItem(position))
-                }
-            }
+//            adapter = GameChildAdapter(onFavoriate = { view, gameBean ->
+//                clickCollect.invoke(view, gameBean)
+//            }).apply {
+//                setOnItemClickListener { _, _, position ->
+//                    clickGame.invoke(getItem(position))
+//                }
+//            }
         }
 
         return vh
@@ -57,7 +64,19 @@ class GameCategroyAdapter(
         binding: ItemGameCategroyBinding,
         item: OKGamesCategory,
     ) = binding.run {
+        rvGameItem.run {
+            layoutManager = GridLayoutManager(context, 3)
+            adapter=adapterMap[item.categoryName]
+            adapterMap[item.categoryName]?.setOnItemClickListener{_,_,position->
+                adapterMap[item.categoryName]?.let {
+                    clickGame.invoke(it.getItem(position))
+                }
+            }
+        }
 
+        adapterMap[item.categoryName]?.onFavoriate2 { view, okGameBean ->
+            clickCollect.invoke(view, okGameBean)
+        }
         if (item.gameList.isNullOrEmpty()) {
             root.gone()
             return
@@ -134,19 +153,21 @@ class GameCategroyAdapter(
     }
 
     fun updateMarkCollect(bean: OKGameBean) {
-        var needUpdate = false
-        data.forEach {
+        data.forEachIndexed { index, it ->
             it.gameList?.forEach { gameBean ->
                 if (gameBean.id == bean.id) {
                     gameBean.markCollect = bean.markCollect
-                    needUpdate = true
+                    notifyItemChanged(index)
+                    return
+//                    needUpdate = true
                 }
             }
         }
 
-        if (needUpdate) {
-            notifyDataSetChanged()
-        }
+
+//        if (needUpdate) {
+//            notifyDataSetChanged()
+//        }
     }
 
 }
