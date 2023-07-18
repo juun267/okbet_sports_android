@@ -239,7 +239,7 @@ class HotMatchView(
 
             }
         }
-        receiver.oddsChangeListener = mOddsChangeListener
+        receiver.addOddsChangeListener(viewLifecycleOwner, mOddsChangeListener)
 
         receiver.matchOddsLock.observe(viewLifecycleOwner) {
             it?.let { matchOddsLockEvent ->
@@ -378,10 +378,10 @@ class HotMatchView(
         //关闭/显示   热门赛事
         goneWithSportSwitch()
         if (fragment is BaseSocketFragment) {
-            fragment.receiver.oddsChangeListener = mOddsChangeListener
+            fragment.receiver.addOddsChangeListener(fragment, mOddsChangeListener)
         }
         if (fragment is BindingSocketFragment<*, *>) {
-            fragment.receiver.oddsChangeListener = mOddsChangeListener
+            fragment.receiver.addOddsChangeListener(fragment, mOddsChangeListener)
         }
         adapter?.notifyDataSetChanged()
     }

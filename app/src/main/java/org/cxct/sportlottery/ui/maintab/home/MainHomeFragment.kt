@@ -132,6 +132,7 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
         if (hidden) {
             //隐藏时取消赛事监听
             unSubscribeChannelHallAll()

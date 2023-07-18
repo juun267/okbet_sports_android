@@ -134,15 +134,16 @@ class SportToolBarTopFragment :
 
             TimeUtil.isTimeInPlay(matchInfo.startTime) -> {
                 if (matchInfo.statusName18n != null) {
-                    //网球，排球，乒乓，羽毛球，就不显示
-                    when(matchInfo.gameType){
-                        GameType.TN.name,GameType.VB.name,GameType.TT.name,GameType.BM.name->{
-                            "" + setSptText(matchInfo)
-                        }
-                        else->{
-                            matchInfo.statusName18n + (setSptText(matchInfo))
-                        }
-                    }
+                    matchInfo.statusName18n + (setSptText(matchInfo))
+//                    //网球，排球，乒乓，羽毛球，就不显示
+//                    when(matchInfo.gameType){
+//                        GameType.TN.name,GameType.VB.name,GameType.TT.name,GameType.BM.name->{
+//                            "" + setSptText(matchInfo)
+//                        }
+//                        else->{
+//                            matchInfo.statusName18n + (setSptText(matchInfo))
+//                        }
+//                    }
                 } else {
                     ""
                 }
