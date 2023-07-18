@@ -221,6 +221,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
         if (!hidden) {
             setupOddsChangeListener()
             resubscribeChannel(80)
@@ -231,7 +232,7 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
 
     private fun setupOddsChangeListener() {
         if (isAdded) {
-            receiver.oddsChangeListener = oddsChangeListener
+            receiver.addOddsChangeListener(this, oddsChangeListener)
         }
     }
 

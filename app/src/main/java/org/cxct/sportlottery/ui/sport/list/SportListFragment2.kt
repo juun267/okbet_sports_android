@@ -242,7 +242,7 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
 
         sportLeagueAdapter2.recodeRangeMatchOdd().forEach { matchOdd ->
             matchOdd.matchInfo?.let {
-                Log.e("[subscribe]","====>>> 訂閱 ${it.name} ${it.id} -> " + "${it.homeName} vs " + "${it.awayName} (${it.gameType} ${it.id})")
+//                Log.e("[subscribe]","====>>> 訂閱 ${it.name} ${it.id} -> " + "${it.homeName} vs " + "${it.awayName} (${it.gameType} ${it.id})")
                 subscribeChannel(it.gameType, it.id)
             }
         }
