@@ -34,7 +34,7 @@
                     android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/din_regular"
+                    android:fontFamily="@font/helvetica_normal"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textColor="@color/selector_button_odd_top_text"
@@ -47,7 +47,7 @@
                     android:id="@+id/tv_spread"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/din_regular"
+                    android:fontFamily="@font/helvetica_normal"
                     android:maxLines="1"
                     android:textColor="@color/selector_button_odd_top_text"
                     android:textSize="@dimen/textSize14sp"
@@ -63,26 +63,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center">
-
-                <ImageView
-                    android:id="@+id/iv_arrow"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_marginRight="2dp"
-                    tools:src="@drawable/selector_odds_arrow_up"
-                    android:visibility="gone"
-                    android:layout_marginLeft="2dp"
-                    tools:visibility="visible" />
-
                 <TextView
                     android:id="@+id/tv_odds"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/din_regular"
+                    android:fontFamily="@font/inter_bold"
                     android:textFontWeight="700"
                     android:textColor="@color/selector_button_odd_bottom_text"
                     android:textSize="@dimen/textSize14sp"
                     tools:text="1.067" />
+
+                <ImageView
+                    android:id="@+id/iv_arrow"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_marginStart="2dp"
+                    tools:src="@drawable/icon_odds_up"
+                    android:visibility="gone"
+                    android:layout_marginLeft="2dp"
+                    tools:visibility="visible" />
             </LinearLayout>
 
 

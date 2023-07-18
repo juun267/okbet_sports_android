@@ -668,9 +668,6 @@ class OddsDetailListAdapter(
              * 排球：玩法有 -SEG("第N盤")
              * */
 
-            //有特別的玩法標題會需要調整, 避免View重用導致其他標題也被改動到特別樣式
-            tvGameName?.isAllCaps = true
-            tvGameName?.setLineSpacing(0f, 1f)
 
             when (sportCode) {
                 GameType.BK -> {
@@ -1146,9 +1143,6 @@ class OddsDetailListAdapter(
         }
 
         private fun getTotalCornerTitle(gameTitle: SpannableStringBuilder): SpannableStringBuilder {
-            tvGameName?.isAllCaps = false
-
-            //region 將PlayCateTitle的文字轉為大寫
             val spans = gameTitle.getSpans<Any>(0, gameTitle.length)
             val upperCaseSpannableString =
                 SpannableString(gameTitle.toString().toUpperCase(Locale.getDefault()))
