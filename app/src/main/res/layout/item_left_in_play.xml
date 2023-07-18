@@ -22,6 +22,7 @@
         android:id="@+id/tvSportName"
         android:paddingTop="2dp"
         android:text="Bet record"
+        android:fontFamily="@font/helvetica_normal"
         android:paddingBottom="6dp"
         app:layout_constraintStart_toEndOf="@+id/ivCover"
         app:layout_constraintTop_toTopOf="@+id/ivCover"
