@@ -130,7 +130,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
                 !category.gameList.isNullOrEmpty()
             }?.toMutableList() ?: mutableListOf()
             //设置游戏分类
-            gameAllAdapter.setList(categoryList)
+            gameAllAdapter.setCategoryData(categoryList)
             viewModel.getRecentPlay()
         }
 
