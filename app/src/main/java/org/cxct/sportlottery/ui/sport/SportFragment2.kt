@@ -68,6 +68,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
         fragmentHelper.currentFragment()?.let {
             if (it.isAdded)
                 it.onHiddenChanged(hidden)
