@@ -211,7 +211,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
         super.onHiddenChanged(hidden)
         if (!hidden) {
             //receiver.oddsChangeListener為activity底下共用, 顯示當前畫面時需重新配置listener
-            receiver.oddsChangeListener = mOddsChangeListener
+            receiver.addOddsChangeListener(this, mOddsChangeListener)
             viewModel.getFavoriteMatch()
         }
     }
@@ -399,7 +399,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
             }
         }
 
-        receiver.oddsChangeListener = mOddsChangeListener
+        receiver.addOddsChangeListener(this, mOddsChangeListener)
 
         receiver.matchOddsLock.observe(this.viewLifecycleOwner) {
             it?.let { matchOddsLockEvent ->

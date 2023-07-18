@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineScope
@@ -42,6 +43,7 @@ import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.service.BackService.Companion.CHANNEL_KEY
 import org.cxct.sportlottery.service.BackService.Companion.CONNECT_STATUS
 import org.cxct.sportlottery.service.BackService.Companion.SERVER_MESSAGE_KEY
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
@@ -500,11 +502,16 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
     }
 
     var oddsChangeListener: OddsChangeListener? = null
-//    set(value) {
-//        // 如果某个页面需要订阅赔率变化，发现赛事订阅了但是赔率没变化此时可以从这里排查。是不是回调监听被其他地方抢注了
-//        Log.e("For Test", "========>>> ServiceBroadcastReceiver ${value}")
-//        field = value
-//    }
+    private set
+
+    fun addOddsChangeListener(lifecycleOwner: LifecycleOwner, listener: OddsChangeListener) {
+        if (lifecycleOwner is BaseFragment<*> && !lifecycleOwner.isVisibleToUser()) {
+            return
+        }
+        // 如果某个页面需要订阅赔率变化，发现赛事订阅了但是赔率没变化此时可以从这里排查。是不是回调监听被其他地方抢注了
+//        Log.e("For Test", "========>>> ServiceBroadcastReceiver ${lifecycleOwner.javaClass.name}")
+        oddsChangeListener = listener
+    }
 
     class OddsChangeListener(val onOddsChangeListener: (oddsChangeEvent: OddsChangeEvent) -> Unit)
 }
