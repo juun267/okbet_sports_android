@@ -205,7 +205,8 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
             binding.homeTopView.initSportEnterStatus()
             //关闭/显示   热门赛事
             binding.hotMatchView.goneWithSportSwitch()
-            if(binding.hotMatchView.isVisible){
+            //判断当前fragment是否可见
+            if(binding.hotMatchView.isVisible&&isVisibleToUser()){
                 viewModel.getRecommend()
             }
         }
