@@ -186,7 +186,7 @@ class OddsButton2 @JvmOverloads constructor(
 
         oddsName = AppCompatTextView(context).apply {
             setTextColor(ContextCompat.getColorStateList(context, R.color.selector_button_odd_top_text))
-            setTextSize(TypedValue.COMPLEX_UNIT_DIP, 11f)
+            setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12f)
             gravity = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM
             typeface = AppFont.helvetica
         }

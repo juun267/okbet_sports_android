@@ -41,6 +41,7 @@ class OutrightSecondProvider(val adapter: SportOutrightAdapter2,
 
         val root = LinearLayout(context)
         root.orientation = LinearLayout.VERTICAL
+        root.setBackgroundResource(R.color.color_FFFFFF)
         root.addView(context.dividerView(R.color.color_ebf1fc, 1.dp, margins = 12.dp))
 
         val lin = LinearLayout(context)

@@ -39,6 +39,7 @@ class OutrightFirstProvider(val adapter: SportOutrightAdapter2,
         val context = parent.context
         val root = LinearLayout(context)
         root.orientation = LinearLayout.VERTICAL
+        root.setBackgroundResource(R.color.color_FCFDFF)
         root.foreground = ContextCompat.getDrawable(context, R.drawable.fg_ripple)
         root.addView(context.dividerView(R.color.color_ebf1fc, 1.dp))
 
@@ -75,7 +76,6 @@ class OutrightFirstProvider(val adapter: SportOutrightAdapter2,
         leagueVH.logo.setLeagueLogo(matchOdd.matchInfo?.categoryIcon)
         leagueVH.name.text = matchOdd.matchInfo?.name
         setExpandArrow(leagueVH.arrow, matchOdd.isExpanded)
-        setBackground(helper.itemView, matchOdd.isExpanded)
     }
 
     override fun convert(helper: BaseViewHolder, item: BaseNode, payloads: List<Any>) {
@@ -85,17 +85,9 @@ class OutrightFirstProvider(val adapter: SportOutrightAdapter2,
 
         val matchOdd = item as MatchOdd
         val leagueVH = helper as LeagueVH
-        setBackground(helper.itemView, matchOdd.isExpanded)
         setExpandArrow(leagueVH.arrow, matchOdd.isExpanded)
     }
 
-    private fun setBackground(view: View, isExpanded: Boolean) {
-        if (isExpanded) {
-            view.setBackgroundColor(ContextCompat.getColor(context, R.color.color_0D025BE8))
-        } else {
-            view.setBackgroundColor(ContextCompat.getColor(context, R.color.color_F8F9FD))
-        }
-    }
 
     override fun onClick(helper: BaseViewHolder, view: View, data: BaseNode, position: Int) {
         val matchOdd = data as MatchOdd
@@ -103,7 +95,6 @@ class OutrightFirstProvider(val adapter: SportOutrightAdapter2,
         val position = adapter.getItemPosition(data)
         adapter.expandOrCollapse(data, parentPayload = this@OutrightFirstProvider)
         leagueVH.arrow.setArrowSpin(matchOdd.isExpanded, true) { setExpandArrow(leagueVH.arrow, matchOdd.isExpanded) }
-        setBackground(helper.itemView, matchOdd.isExpanded)
         onItemClick.invoke(position, leagueVH.arrow, matchOdd)
     }
 
