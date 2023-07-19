@@ -73,10 +73,9 @@ class PromotionDetailActivity :
             binding.ivBanner.load(sConfigData?.resServerHost+activityData.contentImage,R.drawable.img_banner01)
         }
         binding.tvSubTitle.text = activityData.subTitleText
-        binding.tvTime.text = TimeUtil.timeFormat(
-            activityData.createdAt,
-            TimeUtil.NEWS_TIME_FORMAT,
-            locale = Locale.ENGLISH)
+        val startTime = TimeUtil.timeFormat(activityData.startTime, TimeUtil.EN_DATE_FORMAT, locale = Locale.ENGLISH)
+        val endTime = TimeUtil.timeFormat(activityData.endTime, TimeUtil.EN_DATE_FORMAT, locale = Locale.ENGLISH)
+        binding.tvTime.text = "$startTime ${getString(R.string.to)} $endTime"
         if (activityData.activityId.isNullOrEmpty()) {
             binding.linActivity.gone()
         } else {
