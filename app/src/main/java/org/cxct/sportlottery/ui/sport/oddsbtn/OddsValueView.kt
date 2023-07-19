@@ -20,6 +20,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.util.AppFont
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 class OddsValueView @JvmOverloads constructor(
@@ -27,10 +28,6 @@ class OddsValueView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
 ) : LinearLayout(context, attrs, defStyleAttr) {
-
-    companion object {
-        private val textStyle by lazy { ResourcesCompat.getFont(MultiLanguagesApplication.appContext, R.font.din_pro_medium) }
-    }
 
 
     private val valuesText: TextView
@@ -41,10 +38,10 @@ class OddsValueView @JvmOverloads constructor(
     init {
         gravity = Gravity.CENTER
         valuesText = AppCompatTextView(context).apply {
-            typeface = textStyle
+            typeface = AppFont.inter_bold
             includeFontPadding = false
             gravity = Gravity.CENTER
-            setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14f)
+            setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
             paint.style = Paint.Style.FILL_AND_STROKE
             paint.strokeWidth = 0.75f
         }
@@ -78,7 +75,7 @@ class OddsValueView @JvmOverloads constructor(
         buoyIcon.gone()
         buoyIcon.clearAnimation()
         buoyIcon.tag = null
-        valuesText.setTextColor(getColor(R.color.color_0D2245))
+        valuesText.setTextColor(getColor(R.color.color_000000))
     }
 
     private fun playAnim(icon: Int, animation: Animation) {
