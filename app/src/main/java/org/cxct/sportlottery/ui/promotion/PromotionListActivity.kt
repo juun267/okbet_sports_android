@@ -21,17 +21,25 @@ class PromotionListActivity : BindingActivity<MainHomeViewModel, ActivityPromoti
         binding.rvPromotion.apply {
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         }
-        viewModel.getActivityImageListH5()
         viewModel.activityImageList.observe(this){
              setListData(it)
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getActivityImageListH5()
+    }
     fun setListData(activityDatas: List<ActivityImageList>){
-        binding.rvPromotion.adapter = PromotionAdapter().apply {
+        if (binding.rvPromotion.adapter==null){
+            binding.rvPromotion.adapter = PromotionAdapter().apply {
             setList(activityDatas)
             setOnItemClickListener { adapter, view, position ->
-                PromotionDetailActivity.start(this@PromotionListActivity, activityDatas[position])
+                PromotionDetailActivity.start(this@PromotionListActivity, data[position])
             }
+        }
+        }else{
+            (binding.rvPromotion.adapter as PromotionAdapter).setList(activityDatas)
         }
     }
 }
