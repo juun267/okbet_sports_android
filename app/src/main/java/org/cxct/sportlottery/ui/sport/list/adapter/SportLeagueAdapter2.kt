@@ -65,26 +65,33 @@ class SportLeagueAdapter2(
             return
         }
 
-        notifyItemChanged(position, matchOdd)
+        notifyMatchItemChanged(position, matchOdd)
     }
 
-    fun onOddsChangeEvent(oddsChangeEvent: OddsChangeEvent) {
-        val eventId = oddsChangeEvent.eventId ?: return
+    // 对外保留的方法刷新item（添加headerview后刷新item时position计算需要加上headerview）
+    fun notifyMatchItemChanged(position: Int, any: Any) {
+        notifyItemChanged(position + headerLayoutCount, any)
+    }
+
+    fun onOddsChangeEvent(oddsChangeEvent: OddsChangeEvent): Int {
+        val eventId = oddsChangeEvent.eventId ?: return -1
         if (oddsChangeEvent.oddsList.isNullOrEmpty() || currentVisiableMatchOdds.isEmpty()) {
-            return
+            return -2
         }
 
-        val matchOdd = findVisiableRangeMatchOdd(eventId) ?: return
+        val matchOdd = findVisiableRangeMatchOdd(eventId) ?: return -3
         val position = getItemPosition(matchOdd)
         if (position >= dataCount() || position < 0) {
-            return
+            return -4
         }
 
         if (updateMatchOdds(matchOdd, oddsChangeEvent)) {
-            notifyItemChanged(position, SportMatchEvent.OddsChanged)
+            notifyMatchItemChanged(position, SportMatchEvent.OddsChanged)
+            return position
 //            updateMatch(leagueIndex, matchOdd)
 //            updateBetInfo(leagueOdd, oddsChangeEvent)
         }
+        return -100 * position
     }
 
     private fun updateMatchOdds(matchOdd: org.cxct.sportlottery.network.common.MatchOdd,
@@ -183,7 +190,7 @@ class SportLeagueAdapter2(
     fun matchStatuChanged(matchOdd: MatchOdd) {
         val position = getItemPosition(matchOdd)
         if (position >= 0) {
-            notifyItemChanged(position, SportMatchEvent.MatchStatuChanged)
+            notifyMatchItemChanged(position, SportMatchEvent.MatchStatuChanged)
         }
     }
 
@@ -196,7 +203,7 @@ class SportLeagueAdapter2(
                         val isSelected = odd.id?.let { QuickListManager.containOdd(it) } == true
                         if (odd.isSelected != isSelected) {
                             odd.isSelected = isSelected
-                            notifyItemChanged(index, SportMatchEvent.OddSelected)
+                            notifyMatchItemChanged(index, SportMatchEvent.OddSelected)
                             return@forEachIndexed
                         }
                     }
@@ -212,7 +219,6 @@ class SportLeagueAdapter2(
         (rootNodes!!.toMutableList() as MutableList<LeagueOdd>).closePlayCate(closeEvent)
         notifyDataSetChanged()
     }
-
 
 
 }
