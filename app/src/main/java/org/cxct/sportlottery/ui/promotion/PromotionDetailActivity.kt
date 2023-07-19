@@ -2,8 +2,6 @@ package org.cxct.sportlottery.ui.promotion
 
 import android.content.Context
 import android.content.Intent
-import android.webkit.ConsoleMessage
-import android.webkit.ValueCallback
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_promotion_detail.*
 import org.cxct.sportlottery.R
@@ -12,13 +10,10 @@ import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.databinding.ActivityPromotionDetailBinding
 import org.cxct.sportlottery.net.user.data.ActivityImageList
-import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BindingActivity
-import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.view.webView.OkWebChromeClient
 import java.util.*
 
 
@@ -75,7 +70,7 @@ class PromotionDetailActivity :
         binding.tvSubTitle.text = activityData.subTitleText
         val startTime = TimeUtil.timeFormat(activityData.startTime, TimeUtil.EN_DATE_FORMAT, locale = Locale.ENGLISH)
         val endTime = TimeUtil.timeFormat(activityData.endTime, TimeUtil.EN_DATE_FORMAT, locale = Locale.ENGLISH)
-        binding.tvTime.text = "$startTime ${getString(R.string.to)} $endTime"
+        binding.tvTime.text = "$startTime ${getString(R.string.J645)} $endTime"
         if (activityData.activityId.isNullOrEmpty()) {
             binding.linActivity.gone()
         } else {
