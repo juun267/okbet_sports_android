@@ -42,8 +42,6 @@ class OddsValueView @JvmOverloads constructor(
             includeFontPadding = false
             gravity = Gravity.CENTER
             setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
-            paint.style = Paint.Style.FILL_AND_STROKE
-            paint.strokeWidth = 0.75f
         }
 
         addView(valuesText)
