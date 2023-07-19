@@ -168,6 +168,7 @@
                             android:text="@string/anime"
                             android:textColor="@color/color_BEC7DC"
                             android:textSize="12sp"
+                            android:fontFamily="@font/helvetica_normal"
                             app:layout_constraintBottom_toBottomOf="@id/tvFavoriteSymbol"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="@id/tvFavoriteSymbol" />
@@ -191,6 +192,7 @@
                             android:text="@string/video"
                             android:textColor="@color/color_BEC7DC"
                             android:textSize="12sp"
+                            android:fontFamily="@font/helvetica_normal"
                             app:layout_constraintBottom_toBottomOf="@+id/ivAnim"
                             app:layout_constraintEnd_toStartOf="@+id/ivAnim"
                             app:layout_constraintTop_toTopOf="@+id/ivAnim" />
@@ -213,6 +215,7 @@
                             android:text="@string/P142"
                             android:textColor="@color/color_BEC7DC"
                             android:textSize="12sp"
+                            android:fontFamily="@font/helvetica_normal"
                             app:layout_constraintBottom_toBottomOf="@+id/ivVideo"
                             app:layout_constraintEnd_toStartOf="@+id/ivVideo"
                             app:layout_constraintTop_toTopOf="@+id/ivVideo" />
