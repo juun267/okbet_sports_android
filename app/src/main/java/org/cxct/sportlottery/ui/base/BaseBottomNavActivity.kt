@@ -14,6 +14,7 @@ import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
+import timber.log.Timber
 import kotlin.reflect.KClass
 
 
@@ -37,8 +38,6 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
     abstract fun updateOddsType(oddsType: OddsType)
 
     abstract fun updateBetListCount(num: Int)
-
-    abstract fun updateBetListOdds(list: MutableList<BetInfoListData>)
 
     abstract fun showLoginNotify()
 
@@ -94,8 +93,12 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
 
                     FavoriteType.MATCH -> {
                         when (result.isFavorite) {
-                            true -> showMyFavoriteNotify(MyFavoriteNotifyType.MATCH_ADD.ordinal)
-                            false -> showMyFavoriteNotify(MyFavoriteNotifyType.MATCH_REMOVE.ordinal)
+                            true -> {
+                                showMyFavoriteNotify(MyFavoriteNotifyType.MATCH_ADD.ordinal)
+                            }
+                            false -> {
+                                showMyFavoriteNotify(MyFavoriteNotifyType.MATCH_REMOVE.ordinal)
+                            }
                         }
                     }
 
@@ -108,7 +111,6 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
                 }
             }
         }
-
     }
 
     protected fun showBetReceiptDialog(

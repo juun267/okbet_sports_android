@@ -9,94 +9,63 @@
     android:focusable="true"
     tools:ignore="SpUsage">
 
-    <ImageView
-        android:id="@+id/iv_arrow"
-        android:layout_width="50dp"
+    <TextView
+        android:id="@+id/tvClose"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:padding="10dp"
-        android:src="@drawable/ic_arrow_up_double"
+        android:layout_marginEnd="2dp"
+        android:drawableStart="@drawable/icon_circle_close"
+        android:drawablePadding="5dp"
+        android:gravity="center"
+        android:paddingStart="5dp"
+        android:paddingEnd="10dp"
+        android:text="@string/bottom_sheet_close"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/viewLeftLine"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="14dp"
-        android:src="@drawable/ic_detail_odd_title_line"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_bet_list"
+        android:id="@+id/tvBetList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
+        android:layout_marginStart="12dp"
         android:text="@string/bet_slip"
         android:textColor="@color/color_FFFFFF_414655"
-        android:textFontWeight="500"
         android:textSize="@dimen/textSize14sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/viewLeftLine"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpUsage" />
 
     <View
         android:id="@+id/view3"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
         android:background="@drawable/bg_circle_317fff_0760d4"
-        app:layout_constraintBottom_toBottomOf="@id/tv_bet_list_count"
-        app:layout_constraintEnd_toEndOf="@id/tv_bet_list_count"
-        app:layout_constraintStart_toStartOf="@id/tv_bet_list_count"
-        app:layout_constraintTop_toTopOf="@id/tv_bet_list_count" />
+        app:layout_constraintBottom_toBottomOf="@id/tvBetList_count"
+        app:layout_constraintEnd_toEndOf="@id/tvBetList_count"
+        app:layout_constraintStart_toStartOf="@id/tvBetList_count"
+        app:layout_constraintTop_toTopOf="@id/tvBetList_count" />
 
     <TextView
-        android:id="@+id/tv_bet_list_count"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="4dp"
+        android:id="@+id/tvBetList_count"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="8dp"
         android:gravity="center"
         android:textColor="@color/color_FFFFFF_FFFFFF"
         android:textSize="@dimen/textSize14sp"
+        android:textStyle="bold"
+        app:autoSizeMaxTextSize="12sp"
         app:autoSizeMinTextSize="8sp"
-        app:autoSizeMaxTextSize="14sp"
         app:autoSizeStepGranularity="1dp"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tv_bet_list"
+        app:layout_constraintStart_toEndOf="@+id/tvBetList"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="100" />
-
-
-<!--    <TextView-->
-<!--        android:id="@+id/tv_balance_currency"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginEnd="@dimen/margin_2"-->
-<!--        android:fontFamily="@font/din_pro_medium"-->
-<!--        android:textStyle="bold"-->
-<!--        android:textColor="@color/color_414655"-->
-<!--        android:textSize="@dimen/textSize16sp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toStartOf="@id/tv_balance"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        tools:text="₱" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/tv_balance"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginEnd="@dimen/margin_10"-->
-<!--        android:fontFamily="@font/din_pro_medium"-->
-<!--        android:textColor="@color/color_FFFFFF_414655"-->
-<!--        android:textSize="@dimen/textSize18sp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toStartOf="@id/iv_arrow"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        tools:text="9,875,241.000" />-->
 
     <TextView
         android:id="@+id/tvOdds"
@@ -104,13 +73,41 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:gravity="center"
+        android:paddingBottom="3dp"
         android:textColor="@color/color_025BE8"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:paddingBottom="3dp"
         app:layout_constraintBottom_toBottomOf="@+id/view3"
         app:layout_constraintStart_toEndOf="@+id/view3"
         app:layout_constraintTop_toTopOf="@+id/view3"
         tools:text="\@2.58" />
+
+    <TextView
+        android:id="@+id/tvClearAll"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:drawableLeft="@drawable/icon_clear"
+        android:drawablePadding="5dp"
+        android:gravity="center"
+        android:paddingHorizontal="10dp"
+        android:text="@string/text_clear"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tvClose"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/ivBasHide"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="10dp"
+        android:padding="11dp"
+        android:src="@drawable/icon_basketball_hide"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/tvClose"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvClose"
+        app:layout_constraintVertical_bias="0.564" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

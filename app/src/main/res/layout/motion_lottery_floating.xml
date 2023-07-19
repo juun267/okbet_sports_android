@@ -54,7 +54,6 @@
                         android:shadowDx="1.0"
                         android:shadowDy="1.0"
                         android:shadowRadius="2.0"
-                        android:fontFamily="@font/din_pro_medium"
                         android:textFontWeight="800"
                         android:text="@string/closing_time"
                         android:textColor="@color/color_FFFFFF"

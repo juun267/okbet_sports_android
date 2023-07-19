@@ -19,7 +19,6 @@
         android:layout_marginLeft="@dimen/margin_10"
         android:layout_marginBottom="8dp"
         android:textStyle="bold"
-        android:fontFamily="@font/din_regular"
         android:textColor="@color/selector_text_color_money_bank"
         android:textSize="@dimen/textSize12sp"
         tools:text="BetStation" />
@@ -31,7 +30,6 @@
         android:layout_marginLeft="@dimen/margin_10"
         android:layout_marginTop="8dp"
         android:textStyle="bold"
-        android:fontFamily="@font/din_regular"
         android:textColor="@color/selector_text_color_money_bank"
         android:textSize="@dimen/textSize12sp"
         tools:text="BetStation" />

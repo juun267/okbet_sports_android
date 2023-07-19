@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_margin="40dp"
+    android:layout_margin="30dp"
     app:cardBackgroundColor="@color/color_191919_FCFCFC"
     app:cardCornerRadius="8dp"
     app:cardElevation="0dp"
@@ -26,7 +26,7 @@
             android:gravity="center"
             android:text="@string/N901"
             android:textColor="@color/color_414655"
-            android:textSize="@dimen/textSize18sp"
+            android:textSize="@dimen/textSize16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/tvMessage"
             app:layout_constraintEnd_toEndOf="parent"
@@ -43,7 +43,7 @@
             android:gravity="center_horizontal"
             android:overScrollMode="never"
             android:text="@string/N899"
-            android:textColor="@color/color_535D76"
+            android:textColor="@color/color_6D7693"
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_max="170dp"
@@ -72,15 +72,16 @@
             android:drawableLeft="@drawable/cb_circle_blue_basketball_delete_tip"
             android:drawablePadding="10dp"
             android:text="@string/N379"
+            android:textColor="@color/color_6D7693"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivGifBasket" />
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/margin_0.5"
             android:layout_marginTop="13dp"
-            android:background="@color/color_191919_EEEFF0"
+            android:background="@color/color_E0E3EE"
             app:layout_constraintBottom_toTopOf="@id/block_bottom_bar"
             app:layout_constraintTop_toBottomOf="@id/cbOkIknow"
             app:layout_constraintVertical_bias="1" />
@@ -107,7 +108,12 @@
                 android:text="@string/N904"
                 android:textAllCaps="false"
                 android:textColor="@color/color_317FFF_0760D4"
-                android:textSize="@dimen/textSize18sp" />
+                android:textSize="@dimen/textSize14sp" />
+
+            <View
+                android:layout_width="@dimen/margin_0.5"
+                android:layout_height="match_parent"
+                android:background="@color/color_E0E3EE"/>
 
             <Button
                 android:id="@+id/btnNegative"
@@ -120,8 +126,8 @@
                 android:minHeight="36dp"
                 android:text="@string/N905"
                 android:textAllCaps="false"
-                android:textColor="@color/color_FFFFFF_414655"
-                android:textSize="@dimen/textSize18sp" />
+                android:textColor="@color/color_6D7693"
+                android:textSize="@dimen/textSize14sp" />
 
         </LinearLayout>
 

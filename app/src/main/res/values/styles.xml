@@ -15,6 +15,7 @@
         <item name="android:statusBarColor">@color/color_FFFFFF</item>
         <item name="android:screenOrientation">portrait</item>
         <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">@font/helvetica_normal</item>
 
         <!-- about issue 24880 在設定window背景色時在暗色模式時也會吃這裡 不會吃 night/styles -->
         <!-- <item name="android:windowBackground"></item> -->
@@ -62,17 +63,26 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">@dimen/textSize14sp</item>
     </style>
+    <style name="NoUppercaseTab2" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
+    </style>
     <style name="NoCaseTab" parent="TextAppearance.Design.Tab">
         <item name="android:textStyle">normal</item>
         <item name="textAllCaps">false</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">@dimen/textSize16sp</item>
     </style>
+
+    <style name="NoCaseTab2" parent="TextAppearance.Design.Tab">
+        <item name="android:textStyle">normal</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
+    </style>
     <style name="StyleOddButtonLL">
-        <item name="android:layout_marginTop">5dp</item>
-        <item name="android:layout_marginBottom">5dp</item>
-        <item name="android:layout_marginLeft">10dp</item>
-        <item name="android:layout_marginRight">10dp</item>
         <item name="android:clipChildren">false</item>
     </style>
 
@@ -85,7 +95,6 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item>
         <item name="android:background">@drawable/bg_radius_6_num_keyboard</item>
-        <item name="android:fontFamily">@font/din_bold</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/color_FFFFFF_414655</item>
         <item name="android:textSize">22sp</item>
@@ -114,5 +123,9 @@
     <!--弹窗动画-->
     <style name="AnimDialogEnter" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/dialog_enter</item>
+    </style>
+    <style name="Widget.AppTheme.MyView" parent="">
+        <item name="android:background">@color/gray_400</item>
+        <item name="exampleColor">@color/light_blue_400</item>
     </style>
 </resources>

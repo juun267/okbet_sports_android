@@ -13,21 +13,13 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.annotation.DrawableRes
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.doOnDestory
-import org.cxct.sportlottery.common.extentions.doOnResume
-import org.cxct.sportlottery.common.extentions.doWhenLife
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
-import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.maintab.games.AllGamesFragment
 import org.cxct.sportlottery.ui.maintab.games.OkGameRecordAdapter
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.RCVDecoration
-import ua.naiksoftware.stomp.dto.LifecycleEvent
 import kotlin.random.Random
 
 class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)

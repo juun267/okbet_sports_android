@@ -87,7 +87,9 @@ class TypeOneListAdapter(
                 setupOdd(odd,
                     oddsType,
                     isOddPercentage = isOddPercentage,
-                    matchInfo = oddsDetail.matchInfo)
+                    matchInfo = oddsDetail.matchInfo,
+                    adapterName = TypeOneListAdapter::class.java.name
+                )
                 setupOddState(this, odd)
                 setOnClickListener {
                     odd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }

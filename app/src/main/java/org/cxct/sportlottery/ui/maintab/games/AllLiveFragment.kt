@@ -87,9 +87,7 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
         ) {
             unSubscribeChannelHallAll()
             //重新设置赔率监听
-            binding.hotMatchView.postDelayed({
-                binding.hotMatchView.onResume(this)
-            }, 500)
+            binding.hotMatchView.onResume(this)
             viewModel.publicityRecommend.value?.peekContent()?.let {
                 it.forEach {
                     subscribeChannelHall(it.gameType, it.id)

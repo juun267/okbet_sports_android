@@ -24,7 +24,7 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
-import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment2
+import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.util.*
@@ -158,7 +158,7 @@ class HomeTopView @JvmOverloads constructor(
 
     }
 
-    fun setup(fragment: MainHomeFragment2) {
+    fun setup(fragment: MainHomeFragment) {
 
         ConfigRepository.onNewConfig(fragment) { initBanner() }
         binding.vSports.setOnClickListener { fragment.jumpToInplaySport() }
@@ -183,7 +183,7 @@ class HomeTopView @JvmOverloads constructor(
         initRechargeClick(fragment)
     }
 
-    private fun initRechargeClick(fragment: MainHomeFragment2) {
+    private fun initRechargeClick(fragment: MainHomeFragment) {
 
         val depositClick = OnClickListener {
              ToGcashDialog.showByClick(fragment.viewModel){

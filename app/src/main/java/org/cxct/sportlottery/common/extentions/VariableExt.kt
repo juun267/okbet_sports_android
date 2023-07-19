@@ -7,6 +7,8 @@ fun String?.toIntS(default: Int = 0) = if (null == this) default else try { toIn
 
 fun Int?.toStringS(default: String = "") = this?.toString() ?: default
 
+fun String?.toStringS(default: String = "") = this ?: default
+
 fun String?.parseColor(default: Int = Color.WHITE) = if (null == this) default else try {  Color.parseColor(this) } catch (e: Exception) { default }
 
 fun String?.toFloatS(default: Float = 0f) = if (null == this) default else try { toFloat() } catch (e: Exception) { default }

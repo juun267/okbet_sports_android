@@ -1,13 +1,22 @@
 package org.cxct.sportlottery.util
 
 object QuickListManager {
-    private var quickListSelected: MutableList<String>? = null
 
-    fun setQuickSelectedList(list: MutableList<String>?){
-        quickListSelected = list
+    private val selectedOddsId = mutableSetOf<String>()
+
+    fun setQuickSelectedList(list: MutableList<String>?) {
+        selectedOddsId.clear()
+        if (list.isNullOrEmpty()) {
+            return
+        }
+        selectedOddsId.addAll(list)
     }
 
-    fun getQuickSelectedList(): MutableList<String>?{
-        return quickListSelected
+    fun containOdd(oddId: String) : Boolean {
+        return selectedOddsId.contains(oddId)
+    }
+
+    fun getQuickSelectedList(): MutableList<String> {
+        return selectedOddsId.toMutableList()
     }
 }

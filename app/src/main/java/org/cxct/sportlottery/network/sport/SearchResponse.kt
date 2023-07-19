@@ -33,6 +33,8 @@ data class SearchResponse(
         data class LeagueMatch(
             @Json(name = "leagueName")
             val leagueName: String = "",
+            @Json(name = "icon")
+            val icon: String = "",
             @Json(name = "matchInfoList")
             val matchInfoList: List<MatchInfo> = listOf(),
             @Json(name = "sort")
@@ -44,6 +46,10 @@ data class SearchResponse(
                 val awayName: String = "",
                 @Json(name = "homeName")
                 val homeName: String = "",
+                @Json(name = "awayIcon")
+                val awayIcon: String = "",
+                @Json(name = "homeIcon")
+                val homeIcon: String = "",
                 @Json(name = "matchId")
                 val matchId: String = "",
                 @Json(name = "startTime")

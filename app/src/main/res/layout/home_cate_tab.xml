@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="horizontal"
-    tools:layout_gravity="center_vertical"
     tools:layout_width="wrap_content">
 
     <TextView
@@ -14,22 +12,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxLines="1"
-        android:textAllCaps="true"
-        android:textStyle="bold"
-        android:textColor="@color/color_select_blue_black"
-        android:textSize="12sp"
+        android:textSize="@dimen/textSize14sp"
+        android:fontFamily="@font/helvetica_normal"
         tools:text="全部" />
 
     <TextView
         android:id="@+id/tv_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
         android:layout_marginLeft="@dimen/margin_4"
-        android:maxLines="1"
-        android:textStyle="bold"
-        android:textColor="@color/color_select_white_gray"
-        android:textSize="12sp"
+        android:textSize="@dimen/textSize14sp"
+        android:fontFamily="@font/helvetica_normal"
         tools:text="643" />
 
 </LinearLayout>

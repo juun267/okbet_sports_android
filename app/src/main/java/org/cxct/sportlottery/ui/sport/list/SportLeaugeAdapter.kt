@@ -189,14 +189,6 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
         notifyItemChanged(position, payload)
     }
 
-    fun updateMatchOdd(position: Int, payload: MatchOdd) {
-        notifyItemChanged(position, PayLoadEnum.PAYLOAD_ODDS)
-    }
-
-    private fun updateLeagueByBetInfo(position: Int) {
-        notifyItemChanged(position, PayLoadEnum.PAYLOAD_BET_INFO)
-    }
-
     fun updateLeagueByExpand(position: Int) {
         notifyItemChanged(position, PayLoadEnum.EXPAND)
     }
@@ -404,8 +396,14 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
         }
 
         private fun updateTimer(matchType: MatchType, gameType: GameType?) {
-            sportOddAdapter.isTimerEnable =
-                itemView.league_odd_list.visibility == View.VISIBLE && (gameType == GameType.FT || gameType == GameType.BK || gameType == GameType.RB || gameType == GameType.AFT || matchType == MatchType.PARLAY || matchType == MatchType.AT_START || matchType == MatchType.MY_EVENT)
+            sportOddAdapter.isTimerEnable = itemView.league_odd_list.visibility == View.VISIBLE
+                    && (gameType == GameType.FT
+                        || gameType == GameType.BK
+                        || gameType == GameType.RB
+                        || gameType == GameType.AFT
+                        || matchType == MatchType.PARLAY
+                        || matchType == MatchType.AT_START
+                        || matchType == MatchType.MY_EVENT)
         }
 
     }

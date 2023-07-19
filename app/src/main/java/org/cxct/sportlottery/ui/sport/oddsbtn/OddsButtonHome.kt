@@ -89,7 +89,7 @@ class OddsButtonHome @JvmOverloads constructor(
         hideItem = typedArray.getBoolean(R.styleable.OddsButton_ob_hide_item_flag, false)
         mBackground =
             typedArray.getDrawable(R.styleable.OddsButton_ob_background)
-                ?: context.theme.getDrawable(R.drawable.selector_button_radius_4_odds)
+                ?: context.theme.getDrawable(R.drawable.selector_button_radius_6_odds)
         oddOrientation =
             typedArray.getInt(R.styleable.OddsButton_ob_orientation, LinearLayout.HORIZONTAL)
         try {
