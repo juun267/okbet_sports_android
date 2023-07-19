@@ -68,6 +68,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
         fragmentHelper.currentFragment()?.let {
             if (it.isAdded)
                 it.onHiddenChanged(hidden)
@@ -104,25 +105,23 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     private fun initTabLayout() = binding.tabLayout.run {
         OverScrollDecoratorHelper.setUpOverScroll(this)
         addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            private fun setTabStyle(tab: TabLayout.Tab, font: Typeface, color: Int) {
+            private fun setTabStyle(tab: TabLayout.Tab, color: Int) {
                 val color = ContextCompat.getColor(context, color)
                 tab.customView!!.tv_number.apply {
-                    typeface = font
                     setTextColor(color)
                 }
                 tab.customView!!.tv_title.apply {
-                    typeface = font
                     setTextColor(color)
                 }
             }
 
             override fun onTabSelected(tab: TabLayout.Tab) {
                 selectTab(tab.position)
-                setTabStyle(tab, Typeface.DEFAULT_BOLD, R.color.color_025BE8)
+                setTabStyle(tab, R.color.color_025BE8)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {
-                setTabStyle(tab, Typeface.DEFAULT, R.color.color_6D7693)
+                setTabStyle(tab, R.color.color_6D7693)
             }
 
             override fun onTabReselected(tab: TabLayout.Tab) {

@@ -362,6 +362,7 @@
     <color name="color_FAFDFF">#fafdff</color>
     <color name="color_ecf2fe">#ecf2fe</color>
     <color name="color_DBE5F6">#DBE5F6</color>
+    <color name="color_FCFDFF">#FCFDFF</color>
 
     <color name="color_31D089">#31D089</color>
     <color name="color_F3F7FD">#F3F7FD</color>
@@ -559,4 +560,7 @@
     <color name="color_002d68">#002d68</color>
     <color name="color_f0f6fd">#f0f6fd</color>
     <color name="color_A1050B18">#A1050B18</color>
+    <color name="color_E1EDFF">#E1EDFF</color>
+    <color name="color_FCFDFF">#FCFDFF</color>
+
 </resources>

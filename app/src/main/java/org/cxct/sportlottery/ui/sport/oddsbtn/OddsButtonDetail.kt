@@ -11,7 +11,6 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
@@ -31,7 +30,6 @@ import org.cxct.sportlottery.util.LocalUtils.getString
 import org.cxct.sportlottery.util.QuickListManager
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
-import timber.log.Timber
 
 
 /**
@@ -89,7 +87,7 @@ class OddsButtonDetail @JvmOverloads constructor(
         hideItem = typedArray.getBoolean(R.styleable.OddsButton_ob_hide_item_flag, false)
         mBackground =
             typedArray.getDrawable(R.styleable.OddsButton_ob_background)
-                ?: context.theme.getDrawable(R.drawable.selector_button_radius_4_odds)
+                ?: context.theme.getDrawable(R.drawable.selector_button_radius_6_odds)
         try {
             inflate(context, R.layout.button_odd_detail, this).apply {
                 button_odd_detail.background = mBackground
@@ -378,11 +376,11 @@ class OddsButtonDetail @JvmOverloads constructor(
                 tv_odds.setTextColor(
                     ContextCompat.getColor(
                         context,
-                        R.color.color_1EB65B
+                        R.color.color_1CD219
                     )
                 )
                 iv_arrow.apply {
-                    setImageResource(R.drawable.ic_arrow_odd_up)
+                    setImageResource(R.drawable.icon_odds_up)
                     visibility = View.VISIBLE
                 }
                 status = true
@@ -392,11 +390,11 @@ class OddsButtonDetail @JvmOverloads constructor(
                 tv_odds.setTextColor(
                     ContextCompat.getColor(
                         context,
-                        R.color.color_E23434
+                        R.color.color_FF2E00
                     )
                 )
                 iv_arrow.apply {
-                    setImageResource(R.drawable.ic_arrow_odd_down)
+                    setImageResource(R.drawable.icon_odds_down)
                     visibility = View.VISIBLE
                 }
                 status = true

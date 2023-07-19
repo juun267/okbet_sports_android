@@ -1,0 +1,10 @@
+package org.cxct.sportlottery.util
+
+import androidx.core.content.res.ResourcesCompat
+import org.cxct.sportlottery.R
+import org.cxct.sportlottery.application.MultiLanguagesApplication
+
+object AppFont {
+
+    val helvetica by lazy { ResourcesCompat.getFont(MultiLanguagesApplication.appContext, R.font.helvetica_normal) }
+}

@@ -12,7 +12,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxLines="1"
-        android:textSize="12sp"
+        android:textSize="@dimen/textSize14sp"
+        android:fontFamily="@font/helvetica_normal"
         tools:text="全部" />
 
     <TextView
@@ -20,8 +21,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_4"
-        android:maxLines="1"
-        android:textSize="12sp"
+        android:textSize="@dimen/textSize14sp"
+        android:fontFamily="@font/helvetica_normal"
         tools:text="643" />
 
 </LinearLayout>
