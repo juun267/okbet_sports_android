@@ -181,6 +181,7 @@ class RedEnvelopeManager {
         }
     }
     fun clickCloseFloatBtn(){
+        val act = activity!!
         val positiveClickListener = {
             //點選關閉，更新顯示過的紅包id
             showedRedenpId = redenpId
@@ -191,16 +192,16 @@ class RedEnvelopeManager {
 
         }
         closeDialog = commonTwoButtonDialog(
-            context = activity!!,
-            fm = activity!!.supportFragmentManager,
+            context = act,
+            fm = act.supportFragmentManager,
             isError = false,
             isShowDivider = true,
-            buttonText = LocalUtils.getString(R.string.btn_sure),
-            cancelText = LocalUtils.getString(R.string.btn_cancel),
+            buttonText = act.getString(R.string.btn_sure),
+            cancelText = act.getString(R.string.btn_cancel),
             positiveClickListener = positiveClickListener,
             negativeClickListener = negativeClickListener,
-            title = LocalUtils.getString(R.string.prompt),
-            errorMessage = LocalUtils.getString(R.string.redenvelope_close_hint)
+            title = act.getString(R.string.prompt),
+            errorMessage = act.getString(R.string.redenvelope_close_hint)
         )?.apply {
             dissmisCallback = {
                 if (it == closeDialog) {

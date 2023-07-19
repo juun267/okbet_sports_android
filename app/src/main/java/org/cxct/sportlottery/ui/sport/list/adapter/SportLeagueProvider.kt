@@ -75,8 +75,8 @@ class SportLeagueProvider(
         root.addView(ivArrow)
 
         val divider = View(context)
-        divider.setBackgroundColor(ContextCompat.getColor(context, R.color.color_DBE5F6))
-        divider.layoutParams = FrameLayout.LayoutParams(-2, 1.dp).apply {
+        divider.setBackgroundColor(ContextCompat.getColor(context, R.color.color_D4E1F1))
+        divider.layoutParams = FrameLayout.LayoutParams(-2, 0.5f.dp).apply {
             gravity = Gravity.BOTTOM
         }
 

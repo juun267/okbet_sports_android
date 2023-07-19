@@ -2,9 +2,12 @@ package org.cxct.sportlottery.ui.sport.list
 
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.entity.node.BaseNode
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.rotationAnimation
@@ -19,6 +22,7 @@ import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.sport.BaseSportListFragment
 import org.cxct.sportlottery.ui.sport.list.adapter.*
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 
 /**
  * @app_destination 滾球、即將、今日、早盤、冠軍、串關
@@ -42,6 +46,13 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
         })
     }
 
+    override fun onInitView(view: View) {
+        super.onInitView(view)
+        val divider = View(view.context)
+        divider.layoutParams = ViewGroup.LayoutParams(-1, 0.5f.dp)
+        divider.setBackgroundColor(ContextCompat.getColor(view.context, R.color.color_D4E1F1))
+        sportLeagueAdapter2.addHeaderView(divider)
+    }
 
     // 该方法中不要引用与生命周期有关的(比如：ViewModel、Activity)
     private fun reset() {

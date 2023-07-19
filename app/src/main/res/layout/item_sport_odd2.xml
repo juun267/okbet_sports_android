@@ -97,14 +97,14 @@
                         android:textColor="@color/color_6C7BA8"
                         android:textSize="@dimen/textSize12sp"
                         android:visibility="gone"
-                        tools:visibility="visible"
+                        tools:visibility="gone"
                         android:text="2131313"/>
 
                     <ImageView
                         android:id="@+id/league_neutral"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginRight="5dp"
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_n"
@@ -114,7 +114,7 @@
                         android:id="@+id/ivOT"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginRight="5dp"
                         android:src="@drawable/ic_ot"
                         tools:ignore="ContentDescription" />
@@ -205,10 +205,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/margin_4"
-                            android:fontFamily="@font/din_pro_medium"
                             android:includeFontPadding="false"
-                            android:textColor="@color/color_6D7693"
-                            android:textSize="12sp"
+                            android:fontFamily="@font/helvetica_normal"
+                            android:textColor="@color/color_000000"
+                            android:textSize="@dimen/textSize14sp"
                             android:textFontWeight="700"
                             tools:text="1"
                             tools:visibility="visible" />
@@ -218,11 +218,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="2dp"
-                            android:fontFamily="@font/din_pro_medium"
                             android:includeFontPadding="false"
-                            android:textColor="@color/color_6D7693"
-                            android:textSize="12sp"
-                            android:textFontWeight="700"
+                            android:fontFamily="@font/helvetica_normal"
+                            android:textColor="@color/color_000000"
+                            android:textSize="@dimen/textSize14sp"
                             tools:text="0"
                             tools:visibility="visible" />
 
@@ -231,11 +230,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="2dp"
-                            android:fontFamily="@font/din_pro_medium"
                             android:includeFontPadding="false"
-                            android:textColor="@color/color_6D7693"
-                            android:textSize="12sp"
-                            android:textFontWeight="700"
+                            android:fontFamily="@font/helvetica_normal"
+                            android:textColor="@color/color_000000"
+                            android:textSize="@dimen/textSize14sp"
                             tools:text="0"
                             tools:visibility="visible" />
                     </LinearLayout>
@@ -245,11 +243,12 @@
                         android:id="@+id/league_odd_match_score_home"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
                         android:fontFamily="@font/helvetica_normal"
+                        android:textColor="@color/color_000000"
+                        android:textSize="@dimen/textSize14sp"
                         android:paddingStart="5dp"
                         android:layout_gravity="center_vertical"
-                        android:textColor="@color/color_414655"
-                        android:textSize="@dimen/textSize14sp"
                         tools:text="0" />
 
                 </LinearLayout>
@@ -326,11 +325,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/margin_4"
-                            android:fontFamily="@font/din_pro_medium"
-                            android:textFontWeight="700"
                             android:includeFontPadding="false"
-                            android:textColor="@color/color_6D7693"
-                            android:textSize="12sp"
+                            android:fontFamily="@font/helvetica_normal"
+                            android:textColor="@color/color_000000"
+                            android:textSize="@dimen/textSize14sp"
                             tools:text="1"
                             tools:visibility="visible" />
 
@@ -339,11 +337,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="2dp"
-                            android:fontFamily="@font/din_pro_medium"
                             android:includeFontPadding="false"
-                            android:textColor="@color/color_6D7693"
-                            android:textSize="12sp"
-                            android:textFontWeight="700"
+                            android:fontFamily="@font/helvetica_normal"
+                            android:textColor="@color/color_000000"
+                            android:textSize="@dimen/textSize14sp"
                             tools:text="0"
                             tools:visibility="visible" />
 
@@ -352,11 +349,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="2dp"
-                            android:fontFamily="@font/din_pro_medium"
                             android:includeFontPadding="false"
-                            android:textColor="@color/color_6D7693"
-                            android:textSize="12sp"
-                            android:textFontWeight="700"
+                            android:fontFamily="@font/helvetica_normal"
+                            android:textColor="@color/color_000000"
+                            android:textSize="@dimen/textSize14sp"
                             tools:text="0"
                             tools:visibility="visible" />
                     </LinearLayout>
@@ -369,8 +365,9 @@
                         android:gravity="top"
                         android:layout_gravity="center_vertical"
                         android:paddingStart="5dp"
+                        android:includeFontPadding="false"
                         android:fontFamily="@font/helvetica_normal"
-                        android:textColor="@color/color_414655"
+                        android:textColor="@color/color_000000"
                         android:textSize="@dimen/textSize14sp"
                         android:visibility="gone"
                         tools:text="0"
