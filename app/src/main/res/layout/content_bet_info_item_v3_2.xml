@@ -134,7 +134,6 @@
                 android:id="@+id/tvOdds"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/din_regular"
                 android:textColor="@color/color_025BE8_025BE8"
                 android:textSize="@dimen/textSize16sp"
                 android:textStyle="bold"

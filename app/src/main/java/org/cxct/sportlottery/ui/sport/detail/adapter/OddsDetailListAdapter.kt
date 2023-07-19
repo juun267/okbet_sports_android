@@ -1451,7 +1451,7 @@ class OddsDetailListAdapter(
                         getOdds(it, oddsType).toString(),
                         ForegroundColorSpan(itemView.context.getColor(R.color.color_025BE8)),
                         CustomTypefaceSpan(
-                            "din_bold.ttf", Typeface.DEFAULT_BOLD
+                            "helvetica_bold.ttf", Typeface.DEFAULT_BOLD
                         )
                     ).let {
                         tvGameName?.text = it
