@@ -344,19 +344,6 @@ class ItemHotMatchHolder(
                 } else {
                     ""
                 }
-                if (item.matchInfo?.statusName18n != null) {
-                    //网球，排球，乒乓，羽毛球，就不显示
-                    when(item.matchInfo?.gameType){
-                        GameType.TN.name,GameType.VB.name,GameType.TT.name,GameType.BM.name->{
-                            "" + setSptText(item.matchInfo!!)
-                        }
-                        else->{
-                            item.matchInfo?.statusName18n + (setSptText(item.matchInfo!!))
-                        }
-                    }
-                } else {
-                    ""
-                }
             }
 
             else -> {
