@@ -42,6 +42,8 @@ object TimeUtil {
     //Feb 12, 2023 10:16AM 新闻时间格式
     const val SELECT_MATCH_FORMAT = "MMM dd"
 
+    const val EN_DATE_FORMAT = "MMM dd, yyyy"
+
 
     //    private const val YMDE_HMS_FORMAT = "yyyy-MM/dd-EEE HH:mm:ss"
     private const val DMY_HM_FORMAT = "yyyy-MM-dd HH:mm"
