@@ -17,7 +17,8 @@ import com.scwang.smart.refresh.layout.api.RefreshHeader
 class RefreshHelper {
 
     private val refreshLayout: SmartRefreshLayout
-    private var pageSize = 20
+    var pageSize = 20
+    private set
     private var pageIndex = 1
     var isRefreshing = false
         private set
@@ -130,6 +131,7 @@ class RefreshHelper {
         isRefreshing = false
         isLoading = false
         refreshLayout.closeHeaderOrFooter()
+        refreshLayout.setNoMoreData(false)
     }
 
     fun finishRefresh(success: Boolean = true) {
