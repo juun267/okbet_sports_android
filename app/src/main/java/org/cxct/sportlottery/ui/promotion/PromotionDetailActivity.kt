@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.promotion
 
 import android.content.Context
 import android.content.Intent
+import android.text.Html
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_promotion_detail.*
 import org.cxct.sportlottery.R
@@ -94,6 +95,6 @@ class PromotionDetailActivity :
             }
         }
         binding.okWebView.setBackgroundColor(ContextCompat.getColor(this,R.color.color_F9FAFD))
-        binding.okWebView.loadData((activityData.contentText).formatHTML(), "text/html", null)
+        binding.okWebView.loadDataWithBaseURL(null,(activityData.contentText).formatHTML(), "text/html", "utf-8",null)
     }
 }
