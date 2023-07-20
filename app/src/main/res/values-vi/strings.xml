@@ -1395,6 +1395,7 @@
     <string name="D016">Gửi</string>
     <string name="J044">Cài đặt lại</string>
     <string name="J652">Thời gian</string>
+    <string name="N064">Ghi chú</string>
 
     <string name="N944">Lịch sử đơn cược</string>
     <string name="N947">Quy tắc thể thao</string>
@@ -1457,14 +1458,12 @@
     <string name="N907">Chưa trúng</string>
     <string name="P124">Hệ thống huỷ đơn</string>
     <string name="N110">Ước thắng cao nhất</string>
+    <string name="D024">Tạm thời không có nội dung</string>
+    <string name="N949">Cược xâu</string>
+    <string name="N948">Cược đơn</string>
     <string name="P159">Yêu cầu</string>
     <string name="H019">Tổng số cược</string>
     <string name="P169">" Chi tiết ưu đãi"</string>
-    <string name="D024">Tạm thời không có nội dung</string>
     <string name="D045">Chi tiết</string>
-    <string name="N949">Cược xâu</string>
-    <string name="N948">Cược đơn</string>
     <string name="J645">Đến</string>
-    <string name="P170">Nhận được</string>
-    <string name="Congratulations">Xin chúc mừng</string>
 </resources>
