@@ -21,7 +21,7 @@ data class ActivityImageList(
     @Json(name = "contentImage")
     val contentImage: String?=null,
     @Json(name = "contentText")
-    val contentText: String,
+    val contentText: String?=null,
     @Json(name = "createdAt")
     val createdAt: Long,
     @Json(name = "endTime")
@@ -41,11 +41,13 @@ data class ActivityImageList(
     @Json(name = "startTime")
     val startTime: Long,
     @Json(name = "subTitleText")
-    val subTitleText: String,
+    val subTitleText: String?=null,
     @Json(name = "titleImage")
     val titleImage: String?=null,
     @Json(name = "titleText")
-    val titleText: String,
+    val titleText: String?=null,
     @Json(name = "frontPageShow")
-    val frontPageShow: Int
+    val frontPageShow: Int,
+    @Json(name = "imageLink")
+    val imageLink: String?=null,
 ):Parcelable

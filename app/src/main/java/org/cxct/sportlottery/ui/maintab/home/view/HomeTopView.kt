@@ -101,7 +101,11 @@ class HomeTopView @JvmOverloads constructor(
         promoteAdapter.setNewInstance(imageList.toMutableList())
         promoteAdapter.setOnItemClickListener { adapter, view, position ->
             val itemData = promoteAdapter.getItem(position)
-            PromotionDetailActivity.start(context, itemData)
+            if (itemData.imageLink.isNullOrEmpty()){
+                PromotionDetailActivity.start(context, itemData)
+            }else{
+                JumpUtil.toInternalWeb(context, itemData.imageLink,context.getString(R.string.P169))
+            }
         }
         binding.rcvPromote.apply {
             adapter = promoteAdapter
