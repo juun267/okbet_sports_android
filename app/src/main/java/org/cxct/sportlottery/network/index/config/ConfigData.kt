@@ -146,7 +146,7 @@ data class ConfigData(
     var selectedDepositAmountSettingList: List<Int>? = null, //存款快捷金额
     var noLoginWitchVideoOrAnimation: Int?, //未登陆观看视频/动画 0-关闭 1-启用
     var auditFailureRestrictsWithdrawalsSwitch:Int?,//提款额度大于打码量的时候直接拒绝提款
-    val homeGamesList:List<HomeGameBean>?  //首页场馆排序
+    var homeGamesList:List<HomeGameBean>?  //首页场馆排序
 ) {
     var enterCertified: Int? = -1 //ProfileCenterViewModel.SecurityEnter
     var hasGetTwoFactorResult: Boolean? = false //判斷是不是已經成功發送過簡訊認證碼 (關掉彈窗要重新設置為false)
