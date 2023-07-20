@@ -33,15 +33,6 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 class WorldCupToolbarView@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : LinearLayout(context, attrs, defStyle) {
 
-    companion object {
-        private val textStyle by lazy {
-            ResourcesCompat.getFont(
-                MultiLanguagesApplication.appContext,
-                R.font.din_bold
-            )
-        }
-    }
-
     init {
         setBackgroundResource(R.drawable.bg_worldcup_head)
         12.dp.let { setPadding(it, it, it, it) }
@@ -114,7 +105,6 @@ class WorldCupToolbarView@JvmOverloads constructor(context: Context, attrs: Attr
         }
 
         tvUserMoney = AppCompatTextView(context).apply {
-            typeface = textStyle
             setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18f)
             setTextColor(resources.getColor(R.color.color_FFFFFF))
             userMoneyView.addView(this, LayoutParams(-2, -2))
