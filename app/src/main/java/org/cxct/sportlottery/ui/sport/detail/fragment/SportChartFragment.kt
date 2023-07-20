@@ -93,6 +93,7 @@ class SportChartFragment : BindingFragment<SportViewModel, FragmentChartBinding>
         rcvAdapter.setNewInstance(viewModel.chartViewList.value)
     }
 
+    private var isObserved = false
     private fun updateChartView() {
         if (activity == null) return
         lifecycleScope.launch {
@@ -114,15 +115,19 @@ class SportChartFragment : BindingFragment<SportViewModel, FragmentChartBinding>
             }
         }
 
+        if (isObserved) {
+            return
+        }
+        isObserved = true
+
         viewModel.chartViewList.observe(this) { cvList ->
-//            cvList.forEach {
-//                Timber.d(it)
-//            }
+            if (!::rcvAdapter.isInitialized) {
+                return@observe
+            }
             rcvAdapter.setCurrentGameType(matchInfo?.gameType)
             rcvAdapter.setCurrentSpt(matchInfo?.spt)
             rcvAdapter.setNewInstance(cvList)
         }
-
     }
 
     fun notifyRcv() {
