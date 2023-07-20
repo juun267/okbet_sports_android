@@ -148,6 +148,7 @@ class OKGamesViewModel(
             _collectList.postValue(Pair(false, markedGames.filter { it.id != gameData.id }.toList()))
         }
 
+
     /**
      * 进入OKgame游戏
      */
