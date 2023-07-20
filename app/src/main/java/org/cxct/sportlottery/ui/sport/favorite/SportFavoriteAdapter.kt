@@ -88,7 +88,7 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater.inflate(R.layout.item_sport_favorite, parent, false)
-        return SportFavoriteViewHolder(view, oddStateRefreshListener)
+        return SportFavoriteViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

@@ -66,7 +66,7 @@ data class Odd(
 
 ) : OddStateParams, Parcelable, BaseNode() {
 
-    var isSelected: Boolean? = false
+    var isSelected: Boolean = false
 
     var nextScore: String? = "" //FT 玩法下個進球會使用到
 

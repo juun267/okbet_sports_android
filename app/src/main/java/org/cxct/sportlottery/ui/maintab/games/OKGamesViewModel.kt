@@ -15,6 +15,7 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
+import org.cxct.sportlottery.util.SingleLiveEvent
 import org.cxct.sportlottery.util.ToastUtil
 
 class OKGamesViewModel(
@@ -142,11 +143,10 @@ class OKGamesViewModel(
             val markedGames = _collectList.value?.second?.toMutableList() ?: mutableListOf()
             if (gameData.markCollect) {
                 markedGames.add(0, gameData)
-                _collectList.value = Pair(false, markedGames)
+                _collectList.postValue(Pair(false, markedGames))
                 return@callApi
             }
-
-            _collectList.value = Pair(false, markedGames.filter { it.id != gameData.id }.toList())
+            _collectList.postValue(Pair(false, markedGames.filter { it.id != gameData.id }.toList()))
         }
 
     /**
@@ -232,6 +232,9 @@ class OKGamesViewModel(
 
     private val _recordNewBetHttpOkGame = MutableLiveData<List<RecordNewEvent>>()
     private val _recordResultWinsHttpOkGame = MutableLiveData<List<RecordNewEvent>>()
+
+    val sportOKLives = SingleLiveEvent<List<OKGameBean>>()
+    val sportOKGames = SingleLiveEvent<List<OKGameBean>>()
     fun getOKGamesRecordNew() = callApi({ OKGamesRepository.getOKGamesRecordNew() }) {
         if (it.succeeded()) {
             _recordNewBetHttpOkGame.postValue(it.getData())
@@ -242,6 +245,14 @@ class OKGamesViewModel(
         if (it.succeeded()) {
             _recordResultWinsHttpOkGame.postValue(it.getData())
         }
+    }
+
+    fun getSportOKLive() = callApi({ OKGamesRepository.getOKLiveList(1, 3, "OK_LIVE") }) {
+        it.getData()?.let { sportOKLives.value = it }
+    }
+
+    fun getSportOKGames() = callApi({ OKGamesRepository.getOKLiveList(1, 12, "OK_GAMES") }) {
+        it.getData()?.let { sportOKGames.value = it }
     }
 
 }

@@ -17,6 +17,7 @@
     <color name="color_cb7c2e">#cb7c2e</color>
     <color name="color_08dc6e">#08dc6e</color>
     <color name="color_34CB8A">#34CB8A</color>
+    <color name="color_00cc33">#00cc33</color>
     <color name="color_E44438">#E44438</color>
     <color name="color_ce3636">#ce3636</color>
     <color name="color_F75452">#F75452</color>
@@ -94,7 +95,6 @@
     <color name="color_4C326BFF">#4c326BFF</color>
 
     <color name="color_FFF27C">#FFF27C</color>
-
     <!--以下部分，是系统中的白天的色值 -->
     <!--命名規則，color_[夜間色碼]_[白天色碼] -->
 
@@ -314,6 +314,7 @@
     <color name="color_F3F9FF">#F3F9FF</color>
     <color name="color_F6FBFF">#F6FBFF</color>
     <color name="color_D35555">#D35555</color>
+    <color name="color_ff251e">#ff251e</color>
     <color name="color_E9EAEB">#E9EAEB</color>
     <color name="color_99FFFFFF">#99FFFFFF</color>
     <color name="color_DFE8F2">#DFE8F2</color>
@@ -321,6 +322,7 @@
     <color name="color_F0A536">#F0A536</color>
     <color name="color_F2F5FA">#F2F5FA</color>
     <color name="color_DFEBFF">#DFEBFF</color>
+    <color name="color_DAE0F4">#DAE0F4</color>
     <color name="color_05025BE8">#05025BE8</color>
     <color name="color_181922">#181922</color>
     <color name="color_F1A027">#F1A027</color>
@@ -346,8 +348,22 @@
     <color name="color_14366B">#14366B</color>
     <color name="color_6D7693">#6D7693</color>
     <color name="color_BEC7DC">#BEC7DC</color>
+    <color name="color_80BEC7DC">#80BEC7DC</color>
     <color name="color_EEF3FC">#EEF3FC</color>
     <color name="color_FF8A00">#FF8A00</color>
+    <color name="color_E0E3EE">#E0E3EE</color>
+    <color name="color_E3EEFF">#E3EEFF</color>
+    <color name="color_E5EBF6">#E5EBF6</color>
+    <color name="color_F26E24">#F26E24</color>
+    <color name="color_0651e5">#0651e5</color>
+    <color name="color_95bbf6">#95bbf6</color>
+    <color name="color_0D025BE8">#0D025BE8</color>
+    <color name="color_ebf1fc">#ebf1fc</color>
+    <color name="color_FAFDFF">#fafdff</color>
+    <color name="color_ecf2fe">#ecf2fe</color>
+    <color name="color_DBE5F6">#DBE5F6</color>
+    <color name="color_FCFDFF">#FCFDFF</color>
+
     <color name="color_31D089">#31D089</color>
     <color name="color_F3F7FD">#F3F7FD</color>
 
@@ -442,6 +458,7 @@
 
 
     <color name="color_E7EAF1">#E7EAF1</color>
+    <color name="color_101010">#101010</color>
 
 
     <color name="color_bottom_nav_bar_gradient_start">#FBFFFD</color>
@@ -528,4 +545,21 @@
     <color name="color_main_toast_text">#C22A22</color>
     <color name="color_main_toast_stroke">#CCFFFFFF</color>
     <color name="color_main_toast_blur_background">#CFC7C7C7</color>
+    <color name="color_D8E7FF">#D8E7FF</color>
+    <color name="color_E7F1FF">#E7F1FF</color>
+    <color name="color_ff0000">#FF0000</color>
+    <color name="color_F9FAFD">#F9FAFD</color>
+    <color name="color_dbdfea">#dbdfea</color>
+    <color name="light_blue_400">#FF29B6F6</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="gray_400">#FFBDBDBD</color>
+    <color name="gray_600">#FF757575</color>
+    <color name="color_e6eefb">#e6eefb</color>
+    <color name="color_181E2A">#181E2A</color>
+    <color name="color_434C65">#434C65</color>
+    <color name="color_002d68">#002d68</color>
+    <color name="color_f0f6fd">#f0f6fd</color>
+    <color name="color_A1050B18">#A1050B18</color>
+    <color name="color_E1EDFF">#E1EDFF</color>
+
 </resources>

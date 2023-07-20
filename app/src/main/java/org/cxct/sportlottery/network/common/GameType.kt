@@ -91,147 +91,99 @@ enum class GameType(val key: String, @StringRes val string: Int) {
         fun getGameTypeMenuIcon(gameType: String): Int {
             return when (gameType) {
                 ALL.key -> R.drawable.selector_sport_all_new
-                FT.key -> R.drawable.selector_sport_football_new
-                BK.key -> R.drawable.selector_sport_basketball_new
-                TN.key -> R.drawable.selector_sport_tennis_new
-                VB.key -> R.drawable.selector_sport_volleyball_new
-                BM.key -> R.drawable.selector_sport_badminton_new
-                TT.key -> R.drawable.selector_sport_pingpong_new
-                IH.key -> R.drawable.selector_sport_icehockey_new
-                BX.key -> R.drawable.selector_sport_boxing_new
-                CB.key -> R.drawable.selector_sport_snooker_new
-                CK.key -> R.drawable.selector_sport_electronic_new
-                BB.key -> R.drawable.selector_sport_baseball_new
-                RB.key -> R.drawable.selector_sport_rugby_new
-                AFT.key -> R.drawable.selector_sport_amfootball_new
-                MR.key -> R.drawable.selector_sport_racing_new
-                GF.key -> R.drawable.selector_sport_golf_new
+                FT.key -> R.drawable.icon_football_selected
+                BK.key -> R.drawable.icon_basketball_selected
+                TN.key -> R.drawable.icon_tennis_selected
+                VB.key -> R.drawable.icon_volleyball_selected
+                BM.key -> R.drawable.icon_badminton_selected
+                TT.key -> R.drawable.icon_tabletennis_selected
+                IH.key -> R.drawable.icon_icehockey_selected
+                BX.key -> R.drawable.icon_boxing_selected
+                CB.key -> R.drawable.icon_billiards_selected
+                CK.key -> R.drawable.icon_electronic_selected
+                BB.key -> R.drawable.icon_baseball_selected
+                RB.key -> R.drawable.icon_rugby_selected
+                AFT.key -> R.drawable.icon_american_football_selected
+                MR.key -> R.drawable.icon_motorracing_selected
+                GF.key -> R.drawable.icon_golf_selected
                 FB.key -> R.drawable.ic_home_finance_piechart
-                ES.key -> R.drawable.selector_sport_gaming_new
+                ES.key -> R.drawable.icon_esport_selected
                 OTHER.key -> R.drawable.ic_home_champ
-                BB_COMING_SOON.key -> R.drawable.selector_sport_baseball_new
-                ES_COMING_SOON.key -> R.drawable.selector_sport_gaming_new
+                BB_COMING_SOON.key -> R.drawable.icon_baseball_selected
+                ES_COMING_SOON.key -> R.drawable.icon_esport_selected
                 else -> R.drawable.ic_game_champ
             }
         }
 
 
-        fun getBetListGameTypeIcon(gameType: GameType): Int {
+
+
+        fun getLeftGameTypeMenuIcon(gameType: String): Int {
             return when (gameType) {
-                FT -> R.drawable.img_soccer
-                BK -> R.drawable.img_basketball
-                TN -> R.drawable.img_tennis
-                VB -> R.drawable.img_volleyball
-                BM -> R.drawable.img_badminton
-                TT -> R.drawable.img_pingpong
-                IH -> R.drawable.img_ice_hockey
-                BX -> R.drawable.img_boxing
-                CB -> R.drawable.img_snooker
-                CK -> R.drawable.img_cricket
-                BB -> R.drawable.img_baseball
-                RB -> R.drawable.img_rugby
-                AFT -> R.drawable.img_amfootball
-                MR -> R.drawable.img_racing
-                GF -> R.drawable.img_golf
-                FB -> R.drawable.img_finance
-                OTHER -> R.drawable.ic_bet_champ
-                BB_COMING_SOON -> R.drawable.img_baseball
-                ES_COMING_SOON -> R.drawable.img_esports
-                else -> 0
+                ALL.key -> R.drawable.selector_sport_all_new
+                FT.key -> R.drawable.ic_inplay_football
+                BK.key -> R.drawable.ic_inplay_basketball
+                TN.key -> R.drawable.ic_inplay_tennis
+                VB.key -> R.drawable.ic_inplay_volleyball
+                BM.key -> R.drawable.ic_inplay_badminton
+                TT.key -> R.drawable.ic_inplay_tabletennis
+                IH.key -> R.drawable.ic_inplay_ice_hockey
+                BX.key -> R.drawable.ic_inplay_ice_boxing
+                CB.key -> R.drawable.ic_inplay_billiards
+                CK.key -> R.drawable.ic_inplay_criket
+                BB.key -> R.drawable.ic_inplay_baseball
+                RB.key -> R.drawable.ic_inplay_rugby
+                AFT.key -> R.drawable.ic_inplay_usfootball
+                MR.key -> R.drawable.ic_inplay_motor_racing
+                GF.key -> R.drawable.ic_inplay_golf
+                ES.key -> R.drawable.ic_inplay_esports
+                else -> R.drawable.ic_game_champ
             }
         }
 
-        fun getGameTypePublicityItemBackground(gameType: GameType): Int {
+
+        fun getLeftGameTypeMenuIcon2(gameType: String): Int {
             return when (gameType) {
-                FT -> R.drawable.bg_publicity_sport_item_football
-                BK -> R.drawable.bg_publicity_sport_item_basketball
-                TN -> R.drawable.bg_publicity_sport_item_tennis
-                VB -> R.drawable.bg_publicity_sport_item_volleyball
-                BM -> R.drawable.bg_publicity_sport_item_badminton
-                TT -> R.drawable.bg_publicity_sport_item_pingpong
-                IH -> R.drawable.bg_publicity_sport_item_icehockey
-                BX -> R.drawable.bg_publicity_sport_item_boxing
-                CB -> R.drawable.bg_publicity_sport_item_snooker
-                CK -> R.drawable.bg_publicity_sport_item_cricket
-                BB -> R.drawable.bg_publicity_sport_item_baseball
-                RB -> R.drawable.bg_publicity_sport_item_rugby
-                AFT -> R.drawable.bg_publicity_sport_item_amfootball
-                MR -> R.drawable.bg_publicity_sport_item_racing
-                GF -> R.drawable.bg_publicity_sport_item_golf
-                FB -> R.drawable.bg_publicity_sport_item_piechart
-                BB_COMING_SOON -> R.drawable.bg_publicity_sport_item_baseball
-                ES -> R.drawable.bg_publicity_sport_item_e_sport
-                else -> R.drawable.bg_publicity_sport_item_football
+                FT.key -> R.drawable.img_soccer2
+                BK.key -> R.drawable.img_basketball2
+                TN.key -> R.drawable.img_tennis2
+                VB.key -> R.drawable.img_volleyball2
+                BM.key -> R.drawable.img_badminton2
+                TT.key -> R.drawable.img_pingpong2
+                IH.key -> R.drawable.img_ice_hockey2
+                BX.key -> R.drawable.img_boxing2
+                CB.key -> R.drawable.img_snooker2
+                CK.key -> R.drawable.img_cricket2
+                BB.key -> R.drawable.img_baseball2
+                RB.key -> R.drawable.img_rugby2
+                AFT.key -> R.drawable.img_amfootball2
+                MR .key-> R.drawable.img_racing2
+                GF.key -> R.drawable.img_golf2
+                else -> R.drawable.ic_game_champ
             }
         }
 
-        fun getGameTypeBannerBg(gameType: GameType): Int {
-            return when (gameType) {
-                FT -> R.drawable.card_sport_football
-                BK -> R.drawable.card_sport_basketball
-                TN -> R.drawable.card_sport_tennis
-                VB -> R.drawable.card_sport_volleyball
-                BM -> R.drawable.card_sport_badminton
-                TT -> R.drawable.card_sport_pingpong
-                IH -> R.drawable.card_sport_icehockey
-                BX -> R.drawable.card_sport_boxing
-                CB -> R.drawable.card_sport_snooker
-                CK -> R.drawable.card_sport_cricket
-                BB -> R.drawable.card_sport_baseball
-                RB -> R.drawable.card_sport_rugby
-                AFT -> R.drawable.card_sport_amfootball
-                MR -> R.drawable.card_sport_racing
-                GF -> R.drawable.card_sport_golf
-                ES -> R.drawable.card_sport_esports
-                else ->
-                    R.drawable.card_sport_football
-            }
-        }
 
         fun getGameTypeDetailBg(gameType: GameType): Int {
             return when (gameType) {
-                FT -> R.drawable.img_soccer_mobile01
-                BK -> R.drawable.img_basketball_mobile01
-                TN -> R.drawable.img_tennis_mobile01
-                VB -> R.drawable.img_volleyball_mobile01
-                BM -> R.drawable.img_badminton_mobile01
-                TT -> R.drawable.img_tabletennis_mobile01
-                IH -> R.drawable.img_icehockey_mobile01
-                BX -> R.drawable.img_boxing_mobile01
-                CB -> R.drawable.img_snooker_mobile01
-                CK -> R.drawable.img_cricket_mobile01
-                BB -> R.drawable.img_baseball_mobile01
-                RB -> R.drawable.img_rugby_mobile01
-                AFT -> R.drawable.img_americafootball_mobile01
-                MR -> R.drawable.img_rancing_mobile01
-                GF -> R.drawable.img_golf_mobile01
-                ES -> R.drawable.img_egame_mobile01
+                FT -> R.drawable.img_soccer_mobile02
+                BK -> R.drawable.img_basketball_mobile02
+                TN -> R.drawable.img_tennis_mobile02
+                VB -> R.drawable.img_volleyball_mobile02
+                BM -> R.drawable.img_badminton_mobile02
+                TT -> R.drawable.img_tabletennis_mobile02
+                IH -> R.drawable.img_icehockey_mobile02
+                BX -> R.drawable.img_boxing_mobile02
+                CB -> R.drawable.img_snooker_mobile02
+                CK -> R.drawable.img_cricket_mobile02
+                BB -> R.drawable.img_baseball_mobile02
+                RB -> R.drawable.img_americafootball_mobile02
+                AFT -> R.drawable.img_americafootball_mobile02
+                MR -> R.drawable.img_rancing_mobile02
+                GF -> R.drawable.img_golf_mobile02
+                ES -> R.drawable.img_egame_mobile02
                 else ->
-                    R.drawable.img_soccer_mobile01
-            }
-        }
-
-        fun getInplayIcon(gameType: String): Int {
-            return when (gameType) {
-                FT.key -> R.drawable.bg_menu_inplay_football
-                BK.key -> R.drawable.bg_menu_inplay_basketball
-                TN.key -> R.drawable.bg_menu_inplay_tennis
-                VB.key -> R.drawable.bg_menu_inplay_volleyball
-                BM.key -> R.drawable.bg_menu_inplay_badminton
-                TT.key -> R.drawable.bg_menu_inplay_tabletennis
-                IH.key -> R.drawable.bg_menu_inplay_icehockey
-                BX.key -> R.drawable.bg_menu_inplay_boxing
-                CB.key -> R.drawable.bg_menu_inplay_billiards
-                CK.key -> R.drawable.bg_menu_inplay_cricket
-                BB.key -> R.drawable.bg_menu_inplay_baseball
-                RB.key -> R.drawable.bg_menu_inplay_rugby
-                AFT.key -> R.drawable.bg_menu_inplay_usfootball
-                MR.key -> R.drawable.bg_menu_inplay_car
-                GF.key -> R.drawable.bg_menu_inplay_golf
-                FB.key -> R.drawable.ic_home_finance_piechart
-                ES.key -> R.drawable.bg_menu_inplay_electronic
-                OTHER.key -> R.drawable.ic_home_champ
-                else -> R.drawable.ic_game_champ
+                    R.drawable.img_soccer_mobile02
             }
         }
     }

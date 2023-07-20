@@ -34,37 +34,41 @@ object RetrofitHolder {
     private fun getApiToken() = sharedPref?.getString(KEY_TOKEN, null)
 
     private val retrofit by lazy {
-        val builder = getClientBulder()
-        builder.addInterceptor(RequestInterceptor(getContext(), ::getApiToken)) // 给header添加token和语言
-        builder.addInterceptor(HttpStatusInterceptor()) // 处理token过期
-        RetrofitUrlManager.getInstance().with(builder) // 通过拦截器实现的动态切换域名
+        val httpClient = getHttpClient { builder ->
+            builder.addInterceptor(RequestInterceptor(getContext(), ::getApiToken)) // 给header添加token和语言
+            builder.addInterceptor(HttpStatusInterceptor()) // 处理token过期
+            RetrofitUrlManager.getInstance().with(builder) // 通过拦截器实现的动态切换域名
+        }
 
         Retrofit.Builder()
             .baseUrl(Constants.getBaseUrl())
-            .client(builder.build())
+            .client(httpClient)
             .addConverterFactory(GsonConverterFactory.create(GsonFactory.getSingletonGson()))
             .build()
     }
 
     private val chatRrofit by lazy {
-        val builder = getClientBulder()
-        builder.addInterceptor(RequestInterceptor(getContext()) { ChatRepository.chatToken })
-        chatUrlManager.with(builder)
+        val httpClient = getHttpClient { builder ->
+            builder.addInterceptor(RequestInterceptor(getContext()) { ChatRepository.chatToken })
+            chatUrlManager.with(builder)
+        }
 
         Retrofit.Builder()
             .baseUrl(sConfigData?.chatHost)
-            .client(builder.build())
+            .client(httpClient)
             .addConverterFactory(GsonConverterFactory.create(GsonFactory.getSingletonGson()))
             .build()
     }
 
     private val signRetrofit: Retrofit by lazy {
-        val builder = getClientBulder()
-        builder.addInterceptor(RequestInterceptor(getContext(), ::getApiToken))
-        builder.addInterceptor(HttpStatusInterceptor()) // 处理token过期
+        val httpClient = getHttpClient { builder ->
+            builder.addInterceptor(RequestInterceptor(getContext(), ::getApiToken))
+            builder.addInterceptor(HttpStatusInterceptor()) // 处理token过期
+        }
+
         Retrofit.Builder()
             .baseUrl(Constants.getBaseUrl())
-            .client(builder.build())
+            .client(httpClient)
             .addConverterFactory(GsonConverterFactory.create(GsonFactory.getSingletonGson()))
             .build()
     }
@@ -88,12 +92,14 @@ object RetrofitHolder {
     }
 
     fun createNewRetrofit(baseUrl: String): Retrofit {
-        val builder = getClientBulder()
-        builder.addInterceptor(RequestInterceptor(getContext(), ::getApiToken))
-        builder.addInterceptor(HttpStatusInterceptor()) // 处理token过期
+        val httpClient = getHttpClient { builder->
+            builder.addInterceptor(RequestInterceptor(getContext(), ::getApiToken))
+            builder.addInterceptor(HttpStatusInterceptor()) // 处理token过期
+        }
+
         return Retrofit.Builder()
             .baseUrl(baseUrl)
-            .client(builder.build())
+            .client(httpClient)
             .addConverterFactory(GsonConverterFactory.create(GsonFactory.getSingletonGson()))
             .build()
     }
@@ -106,19 +112,20 @@ object RetrofitHolder {
         chatUrlManager.setGlobalDomain(host)
     }
 
-    private fun getClientBulder(): OkHttpClient.Builder {
-        return getUnsafeOkHttpClient().connectTimeout(Constants.CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
+    private fun getHttpClient(block: (OkHttpClient.Builder) -> Unit): OkHttpClient {
+        val builder = getUnsafeOkHttpClient().connectTimeout(Constants.CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
             .writeTimeout(Constants.WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
             .readTimeout(Constants.READ_TIMEOUT, TimeUnit.MILLISECONDS)
             .addNetworkInterceptor(Http400or500Interceptor()) //处理后端的沙雕行为
             .addInterceptor(MoreBaseUrlInterceptor())
-            .apply {
-                //debug版本才打印api內容
-                if (BuildConfig.DEBUG) {
-//                    addInterceptor(HttpLoggingInterceptor())
-                    addInterceptor(HttpLogInterceptor())
-                }
-            }
+
+        block.invoke(builder)
+        //debug版本才打印api內容
+        if (BuildConfig.DEBUG) {
+            // 放到所有拦截器添加完成后再添加日志输出拦截器，避免通过拦截器添加的请求头在日志中没有输出的问题
+            builder.addInterceptor(HttpLogInterceptor())
+        }
+        return builder.build()
     }
 
     private fun getUnsafeOkHttpClient(): OkHttpClient.Builder {

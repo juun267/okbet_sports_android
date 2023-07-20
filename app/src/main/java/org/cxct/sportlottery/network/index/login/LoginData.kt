@@ -59,4 +59,6 @@ data class LoginData(
     var ifnew: Boolean?,
     @Json(name = "vipType")
     var vipType: Int?, //0是普通用户，1是Glife用户
+    @Json(name = "msg")
+    var msg: String?   //错误信息提示，需要判断
 ) : java.io.Serializable

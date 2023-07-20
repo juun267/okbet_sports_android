@@ -48,23 +48,16 @@ data class MatchOdd(
     @IgnoredOnParcel
     var startTime: String = ""
 
-    @Transient
-    @IgnoredOnParcel
-    //預設為第一項玩法展開
-    var oddsExpand: MutableMap<String, Boolean>? = oddsMap?.mapValues {
-        it.key == oddsMap?.keys?.firstOrNull()
-    }?.toMutableMap()
-
-    override val childNode: MutableList<BaseNode>
-        get() {
-            val oddsNode = mutableListOf<BaseNode>()
-            oddsMap?.entries?.toMutableList()?.forEach {
-                val categoryOdds = CategoryOdds(dynamicMarkets?.get(it.key)?.get() ?: "", this, it.key,it.value?: mutableListOf())
-                oddsNode.add(categoryOdds)
-                categoryOddsMap[it.key] = categoryOdds
-            }
-            return oddsNode
+    override val childNode: MutableList<BaseNode> by lazy {
+        val oddsNode = mutableListOf<BaseNode>()
+        oddsMap?.entries?.toMutableList()?.forEach {
+            val categoryOdds = CategoryOdds(dynamicMarkets?.get(it.key)?.get() ?: "", this, it.key,it.value?: mutableListOf())
+            oddsNode.add(categoryOdds)
+            categoryOddsMap[it.key] = categoryOdds
         }
+        oddsNode
+    }
+
 
     @Transient
     @IgnoredOnParcel
@@ -74,4 +67,6 @@ data class MatchOdd(
     @IgnoredOnParcel
     var categoryOddsMap = mutableMapOf<String, CategoryOdds>()    //用于本地计算
 
+    var isSelected = true
+    lateinit var parentNode: LeagueOdd
 }

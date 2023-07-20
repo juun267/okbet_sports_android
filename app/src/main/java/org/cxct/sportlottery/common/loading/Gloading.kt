@@ -279,6 +279,7 @@ class Gloading private constructor() {
         }
 
         fun go() {
+            showLoading()
             retryTask?.run()
         }
     }

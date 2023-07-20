@@ -336,7 +336,7 @@ object Constants {
     const val MATCH_BET_SETTLED_DETAIL_LIST = "/api/front/match/bet/settled/detail/list"
 
     //index
-    const val INDEX_LOGIN = "/api/front/index/login"
+    const val INDEX_LOGIN = "/api/front/index/loginV2"
     const val INDEX_SEND_LOGIN_DEVICE_SMS = "/api/front/index/sendLoginDeviceSms"
     const val INDEX_VALIDATE_LOGIN_DEVICE_SMS = "/api/front/index/validateLoginDeviceSms"
     const val INDEX_LOGOUT = "/api/front/index/logout"
@@ -356,7 +356,7 @@ object Constants {
     const val INDEX_VERIFYORRESET = "/api/front/index/verifyOrResetInfo" // 验证或重置手机号或者邮箱
 
     //登录或注册(新版优化登录注册->使用)
-    const val LOGIN_OR_REG = "/api/front/index/loginOrReg"
+    const val LOGIN_OR_REG = "/api/front/index/loginOrRegV2"
 
     //登录或注册获取验证码(新版优化登录注册->使用)
     const val LOGIN_OR_REG_SEND_VALIDCODE = "/api/front/index/loginOrRegSendValidCode"
@@ -530,6 +530,8 @@ object Constants {
 
     //news
     const val MESSAGE_LIST = "/api/front/message/list"
+    const val MESSAGE_LIST2 = "/api/front/message/list/v2"
+
 
     const val RED_ENVELOPE_CHECK = "/api/front/redenp/rain/info"    //10s一次
 
@@ -560,7 +562,7 @@ object Constants {
     const val RESET_FORGET_PASSWORD = "/api/front/index/resetForgotPassword" //重设密码
     const val RESET_FORGET_PASSWORD_BY_EMAIL =
         "/api/front/index/resetForgotPasswordByEmail" // 通过邮箱验证后重设密码
-    const val SEND_SMS_FORGET = "/api/front/index/sendSmsForgotPassword" //找回密码-获取短信验证码
+    const val SEND_SMS_FORGET = "/api/front/index/sendSmsForgotPasswordV2" //找回密码-获取短信验证码
     const val SEND_EMAIL_FORGET = "/api/front/index/sendEmailCode" //找回密码-获取邮箱验证码
     const val FORGET_PASSWORD_VALIDATE_EMAIL = "/api/front/index/validateEmailCode"//找回密码-验证邮箱验证码
 
@@ -590,11 +592,17 @@ object Constants {
     // 收藏或取消OKGames
     const val OKGAMES_COLLECT = "/api/front/gameEntryGames/collectOkGames"
 
-    // 最新投注
+    // okgame 最新投注
     const val OKGAMES_RECORD_NEW = "/api/front/index/recordNewOkGamesList"
 
-    // 最新大奖
+    // okgame 最新大奖
     const val OKGAMES_RECORD_RESULT = "/api/front/index/recordResultOkGamesList"
+
+    // oklive 最新投注
+    const val OKLIVE_RECORD_NEW = "/api/front/index/recordNewOkLiveList"
+
+    // oklive 最新大奖
+    const val OKLIVE_RECORD_RESULT = "/api/front/index/recordResultOkLiveList"
 
     // 首页最新投注
     const val RECORD_NEW = "/api/front/index/recordNewList"

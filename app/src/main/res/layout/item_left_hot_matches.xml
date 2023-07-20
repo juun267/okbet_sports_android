@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingHorizontal="12dp"
+    android:layout_height="42dp"
+    android:foreground="@drawable/fg_ripple">
+
+    <ImageView
+        android:id="@+id/ivLeagueCover"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_width="20dp"
+        android:layout_height="20dp"/>
+
+    <TextView
+        android:id="@+id/tvLeagueName"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ivLeagueCover"
+        android:paddingLeft="8dp"
+        android:paddingEnd="32dp"
+        android:textSize="14sp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:textColor="@color/color_000000"
+        android:layout_width="wrap_content"
+        android:text="Philippine SupPhilippine SupPhilippine "
+        android:layout_height="wrap_content"/>
+
+
+    <ImageView
+        android:src="@drawable/ic_bet_arrow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="16dp"
+        android:layout_height="16dp"/>
+
+
+
+    <TextView
+        android:id="@+id/tvLine"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:background="@color/color_EEF3FC"
+        android:layout_marginTop="6dp"
+        android:layout_height="0.5dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,7 +11,7 @@ data class MatchStatusCO(
     @Json(name = "awayCards")
     val awayCards: Int? = null,
     @Json(name = "awayCornerKicks")
-    val awayCornerKicks: Int? = null,
+    val awayCornerKicks: Int = 0,
     @Json(name = "awayScore")
     val awayScore: Int? = null,
     @Json(name = "awayTotalScore")
@@ -23,7 +23,7 @@ data class MatchStatusCO(
     @Json(name = "homeCards")
     val homeCards: Int? = null,
     @Json(name = "homeCornerKicks")
-    val homeCornerKicks: Int? = null,
+    val homeCornerKicks: Int = 0,
     @Json(name = "homeScore")
     val homeScore: Int? = null,
     @Json(name = "homeTotalScore")

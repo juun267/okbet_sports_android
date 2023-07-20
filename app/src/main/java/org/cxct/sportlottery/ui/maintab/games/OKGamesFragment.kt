@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_all_okgames.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.extentions.newInstanceFragment
@@ -15,16 +15,17 @@ import org.cxct.sportlottery.databinding.FragmentOkgamesBinding
 import org.cxct.sportlottery.net.games.data.OKGameBean
 import org.cxct.sportlottery.net.games.data.OKGamesFirm
 import org.cxct.sportlottery.repository.ImageType
-import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameLabel
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.FragmentHelper
 import org.cxct.sportlottery.util.enterThirdGame
 import org.cxct.sportlottery.util.loginedRun
+import org.cxct.sportlottery.view.ObservableScrollView
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.transform.TransformInDialog
 
@@ -68,10 +69,19 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
     override fun onBindView(view: View) {
         initToolBar()
         initTopView()
+        initScrollView()
         showGameAll()
         initObservable()
         viewModel.getOKGamesHall()
         showOkGameDialog()
+        binding.scrollView.setOnScrollChangeListener { v: NestedScrollView, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if (scrollY >= (v.getChildAt(0).measuredHeight-v.measuredHeight-50.dp)) {
+                if(getCurrentFragment() is PartGamesFragment){
+                    (getCurrentFragment()as PartGamesFragment).onMoreClick()
+                }
+
+            }
+        }
     }
 
     private var requestTag: Any = Any()
@@ -114,7 +124,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
 
 
     private fun initTopView() = binding.topView.run {
-        setup(this@OKGamesFragment)
+        setup(this@OKGamesFragment, 12)
         onTableClick = ::onTabChange
         onSearchTextChanged = { searchKey ->
             hideKeyboard()
@@ -128,7 +138,18 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
             }
         }
     }
+    private fun initScrollView(){
+        binding.scrollView.setOnScrollStatusListener(object :
+            ObservableScrollView.OnScrollStatusListener{
+            override fun onScrollStop() {
+                if (isAllTba())
+                    hot_match_view.firstVisibleRange((fragmentHelper.getFragment(0) as AllGamesFragment))
+            }
 
+            override fun onScrolling() {
+            }
+        })
+    }
     private fun onTabChange(tab: OKGameTab): Boolean {
         when {
 
@@ -242,7 +263,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
 
     open fun getCurrentFragment() = fragmentHelper.getCurrentFragment()
 
-    private fun showOkGameDialog(){
+    private fun showOkGameDialog() {
         if (PopImageDialog.showOKGameDialog) {
             PopImageDialog.showOKGameDialog = false
             if (PopImageDialog.checkImageTypeAvailable(ImageType.DIALOG_OKGAME.code)) {

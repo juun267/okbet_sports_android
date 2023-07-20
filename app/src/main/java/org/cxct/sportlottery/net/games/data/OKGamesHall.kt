@@ -2,6 +2,7 @@ package org.cxct.sportlottery.net.games.data
 
 import android.widget.ImageView
 import android.widget.TextView
+import com.chad.library.adapter.base.entity.node.BaseNode
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.proguards.KeepMembers
@@ -22,7 +23,9 @@ data class OKGamesCategory(
     val icon: String?,
     val iconSelected: String?,
     val iconUnselected: String?,
-    val gameList: List<OKGameBean>?,
+    var gameList: List<OKGameBean>?,
+    //标记gameList是否大于18个
+    var isMoreThan18:Boolean=false
 ): OKGameTab {
     override fun getKey() = id
 
@@ -75,4 +78,6 @@ data class OKGameBean(
     val gameEntryTagName: String?,
     val thirdGameCategory: String?,
     var markCollect: Boolean,
-)
+): BaseNode() {
+    override val childNode: MutableList<BaseNode> = mutableListOf()
+}

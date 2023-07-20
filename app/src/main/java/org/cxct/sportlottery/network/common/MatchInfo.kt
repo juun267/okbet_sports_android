@@ -21,12 +21,12 @@ interface MatchInfo {
     var playCateNum: Int?
 
     //FT
-    var homeCards: Int?
-    var awayCards: Int?
-    var homeYellowCards: Int?
-    var awayYellowCards: Int?
-    var homeCornerKicks: Int?
-    var awayCornerKicks: Int?
+    var homeCards: Int
+    var awayCards: Int
+    var homeYellowCards: Int
+    var awayYellowCards: Int
+    var homeCornerKicks: Int
+    var awayCornerKicks: Int
     var homeHalfScore: String?
     var awayHalfScore: String?
 
