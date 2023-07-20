@@ -80,23 +80,30 @@ class RecyclerBetCardAdapter(val row: Row,val block:()->Unit) :
 
             //赔率
             tvOddsValue.text = "@${TextUtil.formatForOdd(item.odds)}"
+
+            tvTeamValue.onClick {
+            }
             //主客队
             if(item.homeName.isEmpty()){
                 tvTeamValue.text = "-"
                 tvBetItemValue.text = "${item.playName}"
             }else{
                 tvTeamValue.text = "${item.homeName} vs ${item.awayName}"
+                tvTeamValue.onClick {
+                    if(tvTeamValue.text.length<25){
+                        return@onClick
+                    }
+                    if (frameTeam.visibility == View.VISIBLE) {
+                        frameTeam.gone()
+                    } else {
+                        frameTeam.visible()
+                    }
+                }
             }
 
             //主客队弹框
             tvFullTeam.text = "${item.homeName} vs ${item.awayName}"
-            tvTeamValue.onClick {
-                if (frameTeam.visibility == View.VISIBLE) {
-                    frameTeam.gone()
-                } else {
-                    frameTeam.visible()
-                }
-            }
+
             //联赛
             tvLeagueValue.text = item.leagueName
             //时间
