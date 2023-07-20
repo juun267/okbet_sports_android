@@ -1,11 +1,9 @@
 package org.cxct.sportlottery.view.webView
 
-import android.app.Application
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.graphics.Canvas
 import android.webkit.WebChromeClient
-import org.cxct.sportlottery.R
-import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.util.LogUtil
 
 /**
  * webViewChromeClient类
@@ -18,9 +16,11 @@ open class OkWebChromeClient : WebChromeClient() {
      */
     override fun getDefaultVideoPoster(): Bitmap? {
         return if (super.getDefaultVideoPoster() == null) {
-            BitmapFactory.decodeResource(
-                MultiLanguagesApplication.appContext.resources, R.drawable.ic_video
-            )
+            kotlin.runCatching {
+                val bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565)
+                val canvas = Canvas(bitmap)
+                canvas.drawARGB(255, 255, 255, 255)
+                bitmap}.getOrNull()
         } else {
             super.getDefaultVideoPoster()
         }

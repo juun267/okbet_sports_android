@@ -38,11 +38,7 @@ abstract class BaseGameAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
 
     class PreloadItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         companion object {
-            fun from(parent: ViewGroup) =
-                PreloadItemViewHolder(
-                    LayoutInflater.from(parent.context)
-                        .inflate(R.layout.view_list_loading, parent, false)
-                )
+            fun from(parent: ViewGroup) = PreloadItemViewHolder(View(parent.context) )
         }
     }
 

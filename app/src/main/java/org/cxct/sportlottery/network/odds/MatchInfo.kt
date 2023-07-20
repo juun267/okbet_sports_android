@@ -73,19 +73,19 @@ data class MatchInfo(
     override var awayScore: String? = null //客队分数
     override var homeScore: String? = null //主队分数
     override var statusName18n: String? = null //状态名称
-    override var leagueTime: Int? = null
+    override var leagueTime: Int? = null     // 秒为单位
     override var socketMatchStatus: Int? = null //赛事阶段状态id
     override var stopped: Int? = null//賽事是否暫停倒數计时 1:是 ，0：否
 
     //At Start
     var isAtStart: Boolean? = false
     var remainTime: Long? = null
-    var hasRefreshed: Boolean? = false
+    @Transient
+    var leagueTimeRecode: Long = -1      // 时间标记，如果相同就不进行重复计时
 
     //Other
     var startDateDisplay: String? = null
     var startTimeDisplay: String? = null
-    var timeDisplay: String? = null
 
     var isFavorite = false
 
@@ -97,12 +97,12 @@ data class MatchInfo(
     override var awayPoints: String? = null
 
     //FT
-    override var homeCards: Int? = null
-    override var awayCards: Int? = null
-    override var homeYellowCards: Int? = null
-    override var awayYellowCards: Int? = null
-    override var homeCornerKicks: Int? = null
-    override var awayCornerKicks: Int? = null
+    override var homeCards: Int = 0
+    override var awayCards: Int = 0
+    override var homeYellowCards: Int = 0
+    override var awayYellowCards: Int = 0
+    override var homeCornerKicks: Int = 0
+    override var awayCornerKicks: Int = 0
     override var homeHalfScore: String? = null
     override var awayHalfScore: String? = null
 
@@ -119,16 +119,8 @@ data class MatchInfo(
 
     override var matchStatusList: List<MatchStatus>? = null
 
-    //999
-    var scoreStatus: Int? = 0
-
-    // For Android use
-    var isStartPosition: Boolean = false
-    var isLastPosition: Boolean = false
-
     //联赛图标
     var categoryIcon: String? = null
 
     var pullRtmpUrl: String? = null
-    var pullFlvUrl: String? = null
 }

@@ -1,117 +1,55 @@
 package org.cxct.sportlottery.ui.finance
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_recharge_log.*
-import kotlinx.android.synthetic.main.activity_recharge_log.view.*
-import kotlinx.android.synthetic.main.view_no_record.view.*
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemClickListener
+import kotlinx.android.synthetic.main.fragment_recharge_log.*
+import kotlinx.android.synthetic.main.fragment_recharge_log.rvlist
+import kotlinx.android.synthetic.main.fragment_recharge_log.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.common.extentions.setLinearLayoutManager
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.RechType
 import org.cxct.sportlottery.ui.finance.df.Status
-import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.RefreshHelper
+import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.view.DividerItemDecorator
 
 /**
  * @app_destination 存款记录
  */
-class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
-    private var isSlidingToLast:Boolean = false
-    private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
+class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class), OnItemClickListener {
 
-        private fun scrollToTopControl(firstVisibleItemPosition: Int) {
-            iv_scroll_to_top.apply {
-                when {
-                    firstVisibleItemPosition > 0 && alpha == 0f -> {
-                     //   visibility = View.VISIBLE
-                        animate().alpha(1f).setDuration(300).setListener(null)
-                    }
-                    firstVisibleItemPosition <= 0 && alpha == 1f -> {
-                        animate().alpha(0f).setDuration(300).setListener(object : AnimatorListenerAdapter() {
-                            override fun onAnimationEnd(animation: Animator) {
-                                visibility = View.GONE
-                            }
-                        })
-                    }
-                }
-            }
-        }
-
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            recyclerView.layoutManager?.let {
-                val firstVisibleItemPosition: Int = (it as LinearLayoutManager).findFirstVisibleItemPosition()
-                viewModel.getUserRechargeList(false, date_range_selector.startTime.toString(),
-                                              date_range_selector.endTime.toString(),
-                                              selector_order_status.selectedTag,
-                                              selector_method_status.selectedTag)
-
-                scrollToTopControl(firstVisibleItemPosition)
-            }
-         //   isSlidingToLast = dy>0 //dy表示水平方向的滑动 大于0表示向下 小于0表示向上
-            if ( !recyclerView.canScrollVertically(1)){//1表示是否能向上滚动 false表示已经到底部 -1表示是否能向下滚动false表示已经到顶部
-                viewModel.userRechargeListResult.observe(this@RechargeLogFragment) {
-                    if (it.isNullOrEmpty()){
-                        tv_no_data.visibility = View.GONE
-                    }else{
-                        tv_no_data.visibility = View.VISIBLE
-                    }
-                }
-
-            }else{
-                tv_no_data.visibility = View.GONE
-            }
-        }
-
-    }
+    override fun layoutId() = R.layout.fragment_recharge_log
+    private lateinit var refreshHelper: RefreshHelper
 
     private val logDetailDialog by lazy {
         RechargeLogDetailDialog()
     }
 
-    private val rechargeLogAdapter by lazy {
-        RechargeLogAdapter().apply {
-            rechargeLogListener = RechargeLogListener {
-                viewModel.setLogDetail(it)
-            }
-        }
+    private val rechargeAdapter by lazy { RechargeLogAdapter() }
+
+    override fun onBindView(view: View) {
+        iv_scroll_to_top.setOnClickListener { rvlist.smoothScrollToPosition(0) }
+        setupListColumn(view)
+        setupRechargeLogList(view)
+        setupSearch(view)
+        initObserver()
+        reload()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_recharge_log, container, false).apply {
-
-            this.iv_scroll_to_top.setOnClickListener {
-                rvlist.smoothScrollToPosition(0)
-            }
-
-            initNoRecordView(this)
-            setupListColumn(this)
-            setupRechargeLogList(this)
-            setupSearch(this)
-        }
-    }
-
-    private fun initNoRecordView(view: View) {
-        view.view_no_record.list_no_record_img?.apply {
-            viewTreeObserver.addOnGlobalLayoutListener {
-                val lp = layoutParams as LinearLayout.LayoutParams
-                lp.topMargin = 20.dp
-                layoutParams = lp
-            }
-        }
+    private fun reload(pageIndex: Int = 1, pageSize: Int = refreshHelper.pageSize) {
+        viewModel.getUserRechargeList(pageIndex,
+            pageSize,
+            date_range_selector.startTime.toString(),
+            date_range_selector.endTime.toString(),
+            selector_order_status.selectedTag,
+            selector_method_status.selectedTag)
     }
 
     private fun setupListColumn(view: View) {
@@ -119,62 +57,72 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     }
 
     private fun setupRechargeLogList(view: View) {
-        view.rvlist.apply {
-            this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            addOnScrollListener(recyclerViewOnScrollListener)
-            this.adapter = rechargeLogAdapter
-            addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.recycleview_decoration)))
-        }
+        rvlist.setLinearLayoutManager()
+        rvlist.adapter = rechargeAdapter
+        rechargeAdapter.setOnItemClickListener(this)
+        rechargeAdapter.setEmptyView(LayoutInflater.from(view.context).inflate(R.layout.view_no_record, null))
+        rvlist.addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(view.context, R.drawable.recycleview_decoration)))
+        refreshHelper = RefreshHelper.of(rvlist, this, false, true)
+        refreshHelper.setLoadMoreListener(object : RefreshHelper.LoadMore {
+            override fun onLoadMore(pageIndex: Int, pageSize: Int) {
+                reload(pageIndex, pageSize)
+            }
+        })
+    }
+
+    private fun resetListStatus() {
+        rechargeAdapter.setNewInstance(null)
+        refreshHelper.reset()
+    }
+
+    private fun startReload() {
+        resetListStatus()
+        reload()
     }
 
     private fun setupSearch(view: View) {
-        view.date_range_selector.setOnClickSearchListener {
+        date_range_selector.setOnClickSearchListener {
             avoidFastDoubleClick()
-            viewModel.getUserRechargeList(true,
-                date_range_selector.startTime.toString(),
-                date_range_selector.endTime.toString(),
-                selector_order_status.selectedTag,
-                selector_method_status.selectedTag)
+            startReload()
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private fun initObserver() {
 
         selector_method_status.setItemData(rechargeChannelList as MutableList<StatusSheetData>)
         selector_order_status.setItemData(rechargeStateList as MutableList<StatusSheetData>)
+        selector_method_status.setOnItemSelectedListener { startReload() }
+        selector_order_status.setOnItemSelectedListener { startReload() }
 
+        viewModel.rechargeLogDataList.observe(viewLifecycleOwner) {
+            if (it.first == null || it.first!!.size < refreshHelper.pageSize) {
+                refreshHelper.finishLoadMoreWithNoMoreData()
+            } else {
+                refreshHelper.finishLoadMore()
+            }
 
-        viewModel.userRechargeListResult.observe(this.viewLifecycleOwner) {
-            it?.apply {
-                rechargeLogAdapter.data = it
-                setupNoRecordView(it.isNullOrEmpty())
+            if (it.first == null && !it.second) {
+                if (it.third.isEmptyStr()) {
+                    ToastUtil.showToast(context, R.string.J871)
+                } else {
+                    ToastUtil.showToast(context, it.third)
+                }
+                return@observe
+            }
+
+            if (!it.first.isNullOrEmpty()) {
+                rechargeAdapter.addData(it.first!!)
             }
         }
 
         viewModel.rechargeLogDetail.observe(this.viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let {
                 if (logDetailDialog.dialog?.isShowing != true) {
-                    logDetailDialog.show(
-                        parentFragmentManager,
+                    logDetailDialog.show(parentFragmentManager,
                         RechargeLogFragment::class.java.simpleName
                     )
                 }
             }
-        }
-
-        viewModel.isFinalPage.observe(this.viewLifecycleOwner) {
-            rechargeLogAdapter.isFinalPage = it
-        }
-
-        viewModel.getUserRechargeList(true)
-    }
-
-    private fun setupNoRecordView(visible: Boolean) {
-        if (visible) {
-            view_no_record.visibility = View.VISIBLE
-        } else {
-            view_no_record.visibility = View.GONE
         }
     }
 
@@ -239,6 +187,10 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                 }
             }
         }
+    }
+
+    override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
+        viewModel.setLogDetail(Event(rechargeAdapter.getItem(position)))
     }
 
 }

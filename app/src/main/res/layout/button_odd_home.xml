@@ -11,7 +11,7 @@
         android:id="@+id/button_odd_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/selector_button_radius_4_odds"
+        android:background="@drawable/selector_button_radius_6_odds"
         android:paddingHorizontal="8dp"
         android:gravity="center"
         android:orientation="vertical"
@@ -29,7 +29,6 @@
                     android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/din_regular"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textColor="@color/selector_button_odd_top_text"
@@ -43,7 +42,6 @@
                     android:id="@+id/tv_spread"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/din_regular"
                     android:maxLines="1"
                     android:textColor="@color/selector_button_odd_top_text"
                     android:textSize="@dimen/textSize14sp"
@@ -76,7 +74,6 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/selector_button_odd_bottom_text"
                     android:textSize="@dimen/textSize14sp"
-                    android:fontFamily="@font/din_pro_medium"
                     android:textStyle="bold"
                     tools:text="1.067" />
             </LinearLayout>

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
+import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.sport.detail.OddsDetailListData
 import org.cxct.sportlottery.ui.sport.detail.OnOddClickListener
@@ -54,18 +55,7 @@ class Type6GroupAdapter(
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bindModel(oddsList: List<Odd?>) {
-
-            itemView.findViewById<TextView>(R.id.tv_left_name).text = leftName
-            itemView.findViewById<TextView>(R.id.tv_center_name).text = centerName
-            itemView.findViewById<TextView>(R.id.tv_right_name).text = rightName
-            itemView.findViewById<ImageView>(R.id.iv_home_logo).apply {
-                setTeamLogo(oddsDetail.matchInfo?.homeIcon)
-                isVisible = leftName == oddsDetail.matchInfo?.homeName
-            }
-            itemView.findViewById<ImageView>(R.id.iv_away_logo).apply {
-                setTeamLogo(oddsDetail.matchInfo?.homeIcon)
-                isVisible = rightName == oddsDetail.matchInfo?.awayName
-            }
+            itemView.findViewById<TextView>(R.id.tv_draw).show()
             //順序 前兩項左列 中間兩項中列 後兩項右列
             val homeList: MutableList<Odd?> = mutableListOf()
             val drawList: MutableList<Odd?> = mutableListOf()

@@ -1,8 +1,13 @@
 package org.cxct.sportlottery.network.news
 
+import com.google.gson.JsonObject
 import org.cxct.sportlottery.network.Constants.MESSAGE_LIST
+import org.cxct.sportlottery.network.Constants.MESSAGE_LIST2
+import org.cxct.sportlottery.network.money.list.SportBillListRequest
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface NewsService {
@@ -11,5 +16,10 @@ interface NewsService {
         @Query("messageType") messageType: Int,
         @Query("page") page: Int,
         @Query("pageSize") pageSize: Int
+    ): Response<NewsResult>
+
+    @POST(MESSAGE_LIST2)
+    suspend fun getMessageListByTime(
+        @Body request: SportNewsRequest
     ): Response<NewsResult>
 }

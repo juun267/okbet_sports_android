@@ -40,16 +40,15 @@
             android:id="@+id/cLBottom"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-8dp">
+            android:layout_height="wrap_content">
 
             <org.cxct.sportlottery.view.bottomnavigationview.BottomNavigationViewEx
                 android:id="@+id/bottom_navigation_view"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:background="@drawable/bg_icon_bottom_bar"
-                app:elevation="4dp"
-                app:itemIconSize="30dp"
+                app:elevation="3dp"
+                app:itemIconSize="24dp"
                 app:itemTextColor="@color/main_tab_text_selector"
                 app:labelVisibilityMode="labeled"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -59,38 +58,9 @@
                 android:id="@+id/space1"
                 android:background="@color/color_e3e8ee"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="0.5dp"
                 app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_view" />
 
-
-
-            <LinearLayout
-                android:id="@+id/ll_home_back"
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:elevation="6dp"
-                android:orientation="vertical"
-                android:visibility="gone"
-                app:layout_constraintStart_toStartOf="@+id/bottom_navigation_view"
-                app:layout_constraintTop_toTopOf="@+id/bottom_navigation_view">
-
-                <ImageView
-                    android:id="@+id/iv_home_back"
-                    android:layout_width="32dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/margin_6"
-                    android:src="@drawable/icon01_arrow_back" />
-
-                <TextView
-                    android:id="@+id/tv_home_back"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/home_back"
-                    android:textColor="@color/color_025BE8"
-                    android:textSize="@dimen/textSize10sp" />
-            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <!-- 投注單列表 & 快捷投注單 -->
@@ -110,6 +80,6 @@
         android:outlineAmbientShadowColor="@color/transparent"
         android:outlineSpotShadowColor="@color/transparent"
         android:tag="LEFT"
-        tools:layout="@layout/fragment_main_left" />
+        tools:layout="@layout/fragment_main_left2" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

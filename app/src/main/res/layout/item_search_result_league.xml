@@ -1,31 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="28dp"
+    android:layout_height="50dp"
+    android:background="#EDF2FC"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
     android:paddingLeft="15dp"
-    android:paddingRight="20dp"
-    android:background="@color/color_99FFFFFF"
-    android:gravity="center_vertical">
+    android:paddingRight="15dp">
 
     <ImageView
         android:id="@+id/view1"
-        android:layout_width="3dp"
-        android:layout_height="14dp"
-        android:background="@drawable/bg_blue_divide_ver" />
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        tools:background="@drawable/bg_blue_divide_ver" />
 
     <org.cxct.sportlottery.view.highLightTextView.HighlightTextView
         android:id="@+id/tvLeagueTittle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_16"
-        android:gravity="start"
-        android:text="Lorem ipsum UFC dolor sit amet,"
-        android:textColor="@color/color_535D76"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/margin_8"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:textColor="@color/black"
         android:textSize="@dimen/margin_14"
+        android:textStyle="bold"
         app:highlightColor="@color/transparent"
         app:highlightRadius="0dp"
         app:highlightText="UFC"
-        app:highlightTextColor="@color/color_025BE8" />
+        app:highlightTextColor="@color/color_025BE8"
+        tools:text="Lorem ipsum UFC dolor sit amet," />
+
+    <ImageView
+        android:id="@+id/view_arrow_top"
+        android:layout_width="20dp"
+        android:layout_height="20dp" />
+
 </LinearLayout>
 

@@ -25,43 +25,39 @@
             android:focusable="true"
             tools:ignore="SpUsage">
 
-            <ImageView
-                android:id="@+id/iv_arrow"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="10dp"
-
-                android:src="@drawable/ic_arrow_down_double"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/viewLeftLine"
+            <TextView
+                android:id="@+id/tvClose"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="14dp"
-                android:src="@drawable/ic_detail_odd_title_line"
+                android:layout_height="match_parent"
+                android:paddingEnd="10dp"
+                android:paddingStart="5dp"
+                android:drawablePadding="5dp"
+                android:text="@string/bottom_sheet_close"
+                android:layout_marginEnd="2dp"
+                android:gravity="center"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                android:drawableStart="@drawable/icon_circle_close"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_bet_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
+                android:layout_marginStart="12dp"
                 android:text="@string/bet_slip"
                 android:textColor="@color/color_FFFFFF_414655"
                 android:textSize="@dimen/textSize14sp"
+
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/viewLeftLine"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="SpUsage" />
 
             <View
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:id="@+id/viewBall"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
                 android:background="@drawable/bg_circle_317fff_0760d4"
                 app:layout_constraintBottom_toBottomOf="@id/tv_bet_list_count"
                 app:layout_constraintEnd_toEndOf="@id/tv_bet_list_count"
@@ -71,13 +67,13 @@
             <TextView
                 android:id="@+id/tv_bet_list_count"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
+                android:layout_height="18dp"
                 android:layout_marginStart="4dp"
                 android:gravity="center"
                 android:minWidth="20dp"
                 android:textColor="@color/color_FFFFFF_FFFFFF"
-                android:textSize="@dimen/textSize14sp"
-                app:autoSizeMaxTextSize="@dimen/textSize14sp"
+                android:textSize="@dimen/textSize12sp"
+                app:autoSizeMaxTextSize="@dimen/textSize12sp"
                 app:autoSizeMinTextSize="@dimen/textSize12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tv_bet_list"
@@ -93,7 +89,7 @@
             android:layout_weight="1"
             android:background="@color/color_202541_FFFFFF">
 
-            <org.cxct.sportlottery.view.ParentRecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:paddingTop="10dp"
                 android:id="@+id/rv_bet_receipt"
                 android:layout_width="match_parent"
@@ -103,26 +99,7 @@
                 android:clipToPadding="false"
                 tools:listitem="@layout/item_match_receipt" />
 
-            <!--            <View-->
-            <!--                android:id="@+id/line_shadow"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="4dp"-->
-            <!--                android:background="@drawable/bg_gradient_bottom_sheet_shadow"-->
-            <!--                app:layout_constraintBottom_toBottomOf="parent" />-->
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="4dp"-->
-<!--            android:background="@android:color/white">-->
-
-<!--            <View-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="4dp"-->
-<!--                android:background="@drawable/bg_gradient_bottom_sheet_shadow"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent" />-->
-<!--        </LinearLayout>-->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_total_info"
@@ -209,19 +186,7 @@
                 tools:text="0.00 RMB" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <FrameLayout
-            android:background="#ffff"
-            android:paddingBottom="10dp"
-            android:id="@+id/line_shadow"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="12dp"
-                android:layout_gravity="bottom"
-                android:background="@drawable/bg_gradient_bottom_sheet_shadow" />
 
-        </FrameLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -235,7 +200,7 @@
                 android:layout_marginHorizontal="10dp"
                 android:background="@drawable/drawable_bet_successful"
                 android:gravity="center_vertical"
-                android:paddingHorizontal="10dp"
+                android:paddingHorizontal="12dp"
                 android:visibility="gone"
                 tools:visibility="visible">
 
@@ -251,8 +216,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:text="@string/your_bet_order_success"
-                    android:textColor="@color/color_1EB65B"
-                    android:textSize="16sp" />
+                    android:textColor="@color/color_1CD219"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -263,7 +228,7 @@
                 android:background="@drawable/drawable_bet_processing"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:paddingHorizontal="10dp"
+                android:paddingHorizontal="12dp"
                 android:visibility="gone"
                 tools:visibility="gone">
 
@@ -273,7 +238,7 @@
                     android:layout_height="wrap_content"
                     android:text="滚球注单确认中（9S）"
                     android:textColor="@color/color_E38902"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
                 <ProgressBar
                     android:layout_width="24dp"
@@ -291,7 +256,7 @@
             android:layout_height="21dp">
 
             <View
-                android:layout_marginHorizontal="10dp"
+                android:layout_marginHorizontal="12dp"
                 android:layout_marginVertical="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
@@ -303,12 +268,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/color_202541_FFFFFF"
-            android:paddingHorizontal="14dp"
-            android:paddingBottom="14dp">
+            android:paddingHorizontal="12dp"
+            android:paddingBottom="14dp"
+            android:clipToPadding="false">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent">
 
                 <TextView
@@ -316,10 +281,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_FFFFFF_414655"
-                    android:textSize="@dimen/textSize14sp"
+                    android:textSize="@dimen/textSize12sp"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="3dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView7"
+                    app:layout_constraintStart_toEndOf="@+id/textView7"
                     tools:text="₱" />
 
                 <TextView
@@ -327,11 +293,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_FFFFFF_414655"
-                    android:textStyle="bold"
                     android:textSize="@dimen/textSize14sp"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tv_currency"
-                    app:layout_constraintTop_toTopOf="@+id/tv_currency"
+                    app:layout_constraintStart_toStartOf="parent"
                     tools:text="9,875,241.000" />
 
                 <TextView
@@ -339,41 +304,49 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/text_account_history_balance"
-                    android:textSize="12sp"
                     android:textColor="@color/color_535D76"
+                    android:textSize="12sp"
                     app:layout_constraintBottom_toTopOf="@+id/tv_balance"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.legacy.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/btnLastStep"
-                android:layout_width="78dp"
+                android:layout_width="110dp"
+                android:paddingHorizontal="20dp"
                 android:layout_height="@dimen/bet_button_height"
                 android:layout_marginRight="10dp"
+                android:drawableStart="@drawable/icon_history_details"
                 android:background="@drawable/bg_radius_8_bet_last_step"
                 android:gravity="center"
-                android:text="@string/str_return_last_step"
+                android:text="@string/commission_detail"
                 android:textColor="@color/color_025BE8"
-                android:textSize="@dimen/textSize16sp"
+                android:textSize="@dimen/textSize14sp"
                 android:visibility="visible"
-                tools:visibility="gone" />
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/btn_complete"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/bet_button_height"
-                android:layout_weight="1"
+                android:minWidth="134dp"
+                android:drawableStart="@drawable/icon_others"
+                android:paddingHorizontal="15dp"
                 android:background="@drawable/button_radius_8_bet_button"
                 android:gravity="center"
                 android:autoSizeTextType="uniform"
-                android:autoSizeMaxTextSize="@dimen/textSize16sp"
+                android:autoSizeMaxTextSize="@dimen/textSize14sp"
                 android:autoSizeMinTextSize="@dimen/textSize8sp"
                 android:text="@string/btn_sure"
                 android:maxLines="1"
                 android:textColor="@color/color_E8EFFD"
-                android:textSize="@dimen/textSize16sp"
+                android:textSize="@dimen/textSize14sp"
                 android:visibility="visible" />
 
             <LinearLayout
@@ -383,14 +356,15 @@
                 android:layout_weight="1"
                 android:background="@drawable/button_radius_8_bet_button"
                 android:gravity="center"
-                android:visibility="visible">
+                android:visibility="visible"
+                tools:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/submitting"
                     android:textColor="@color/color_FFFFFF_FFFFFF"
-                    android:textSize="@dimen/textSize16sp"
+                    android:textSize="@dimen/textSize14sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

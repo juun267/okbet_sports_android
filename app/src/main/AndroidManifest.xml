@@ -110,6 +110,9 @@
             android:name=".ui.money.recharge.MoneyRechargeActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.betRecord.BetRecordActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.money.withdraw.WithdrawActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -117,6 +120,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.money.withdraw.BankActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.news.SportNewsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.results.ResultsSettlementActivity"
@@ -218,9 +224,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.profileCenter.authbind.AuthActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.maintab.home.news.NewsHomeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.maintab.home.news.NewsDetailActivity"

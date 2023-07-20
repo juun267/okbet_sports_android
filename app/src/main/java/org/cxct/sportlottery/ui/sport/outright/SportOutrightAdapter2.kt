@@ -15,7 +15,7 @@ import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
 import org.cxct.sportlottery.util.SocketUpdateUtil.updateOddStatus
 
-class SportOutrightAdapter2(val lifecycle: LifecycleOwner, val onItemClick:(Int, View, BaseNode) -> Unit): org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter() {
+class SportOutrightAdapter2(val lifecycle: LifecycleOwner, val onItemClick:(Int, View, BaseNode) -> Unit): ExpanableOddsAdapter<MatchOdd>() {
 
     var oddsType: OddsType = OddsType.EU
         set(value) {
@@ -26,6 +26,7 @@ class SportOutrightAdapter2(val lifecycle: LifecycleOwner, val onItemClick:(Int,
         }
 
     init {
+        footerWithEmptyEnable = true
         addFullSpanNodeProvider(OutrightFirstProvider(this, lifecycle, onItemClick)) //联赛
         addFullSpanNodeProvider(OutrightSecondProvider(this, lifecycle, onItemClick)) //获胜名称
         addNodeProvider(OutrightThirdProvider(this, lifecycle, onItemClick)) //赔率
@@ -47,12 +48,12 @@ class SportOutrightAdapter2(val lifecycle: LifecycleOwner, val onItemClick:(Int,
     }
 
     // scoket推送的赔率变化，更新列表
-    fun onMatchOdds(subscribedMatchOddList: MutableMap<String, MatchOdd>, oddsChangeEvent: OddsChangeEvent): Boolean {
+    fun onMatchOdds(oddsChangeEvent: OddsChangeEvent): Boolean {
         if (oddsChangeEvent.eventId.isEmptyStr() || oddsChangeEvent.odds.isNullOrEmpty()) {
             return false
         }
 
-        val matchOdd = subscribedMatchOddList[oddsChangeEvent.eventId] ?: return false
+        val matchOdd = currentVisiableMatchOdds[oddsChangeEvent.eventId] ?: return false
 
         if (oddsChangeEvent.channel?.split("/")?.getOrNull(6) != matchOdd.matchInfo?.id) {
             return false

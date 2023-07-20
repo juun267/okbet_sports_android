@@ -92,8 +92,7 @@ class BetListRefactorAdapter(
 
             //篮球末尾比分
             ViewType.BasketballEndingCard.ordinal -> BasketballEndingCardViewHolder(
-                ContentBetInfoItemV3BaseketballEndingCardBinding.inflate(layoutInflater),
-                userBalance
+                ContentBetInfoItemV3BaseketballEndingCardBinding.inflate(layoutInflater)
             )
 
             //串关多注、注单列表

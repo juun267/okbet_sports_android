@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
             android:background="@color/color_FFFFFF"
-            android:paddingHorizontal="7dp"
+            android:paddingHorizontal="@dimen/margin_9"
             android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="2"

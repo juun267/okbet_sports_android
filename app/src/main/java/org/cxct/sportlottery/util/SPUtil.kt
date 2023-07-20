@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import java.util.*
 
+@Deprecated("请使用KVUtils替代")
 object SPUtil {
     private const val SP_NAME = "language_setting"
     private const val TAG_LANGUAGE = "language_select"

@@ -227,7 +227,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/margin_3"
-                        android:fontFamily="@font/din_regular"
                         android:textColor="@color/color_ECCD86"
                         android:textSize="@dimen/textSize16sp"
                         android:textStyle="bold"
@@ -242,7 +241,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_5"
-                        android:fontFamily="@font/din_regular"
                         android:textColor="@color/color_ECCD86"
                         android:textSize="@dimen/textSize20sp"
                         app:autoSizeMaxTextSize="20dp"
@@ -287,7 +285,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:foreground="@drawable/fg_ripple">
 
                     <ImageView
                         android:layout_width="@dimen/margin_68"
@@ -313,7 +312,6 @@
                             android:id="@+id/tv_deposit_subtitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/din_regular"
                             android:letterSpacing="0.1"
                             android:text="@string/deposits"
                             android:textColor="@color/color_A7B2C4"
@@ -335,7 +333,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:foreground="@drawable/fg_ripple">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -361,7 +360,6 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/din_regular"
                             android:letterSpacing="0.1"
                             android:text="@string/withdraw_down"
                             android:textColor="@color/color_A7B2C4"
@@ -391,7 +389,7 @@
                         android:id="@+id/btn_fund_detail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@null"
+                        android:foreground="@drawable/fg_ripple"
                         android:gravity="center"
                         android:minHeight="@dimen/margin_50"
                         android:orientation="horizontal">
@@ -456,7 +454,7 @@
                         android:id="@+id/btn_account_transfer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@null"
+                        android:foreground="@drawable/fg_ripple"
                         android:gravity="center"
                         android:minHeight="@dimen/margin_50"
                         android:orientation="horizontal"
@@ -505,7 +503,7 @@
                         android:id="@+id/btn_promotion"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@null"
+                        android:foreground="@drawable/fg_ripple"
                         android:gravity="center"
                         android:minHeight="@dimen/margin_50"
                         android:orientation="horizontal">
@@ -563,7 +561,7 @@
                         android:id="@+id/btn_other_bet_record"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@null"
+                        android:foreground="@drawable/fg_ripple"
                         android:gravity="center"
                         android:minHeight="@dimen/margin_50"
                         android:orientation="horizontal">
@@ -613,7 +611,7 @@
                         android:id="@+id/btn_game_settlement"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@null"
+                        android:foreground="@drawable/fg_ripple"
                         android:gravity="center"
                         android:minHeight="@dimen/margin_50"
                         android:orientation="horizontal">
@@ -662,7 +660,7 @@
                         android:id="@+id/btn_help_center"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@null"
+                        android:foreground="@drawable/fg_ripple"
                         android:gravity="center"
                         android:minHeight="@dimen/margin_50"
                         android:orientation="horizontal">
@@ -774,7 +772,7 @@
                         android:id="@+id/btn_self_limit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@null"
+                        android:foreground="@drawable/fg_ripple"
                         android:gravity="center"
                         android:minHeight="@dimen/margin_50"
                         android:orientation="horizontal">
@@ -823,7 +821,7 @@
                         android:id="@+id/btn_time_zone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@null"
+                        android:foreground="@drawable/fg_ripple"
                         android:gravity="center"
                         android:minHeight="@dimen/margin_50"
                         android:orientation="horizontal"
@@ -872,7 +870,7 @@
                         android:id="@+id/btn_version_now"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@null"
+                        android:foreground="@drawable/fg_ripple"
                         android:gravity="center"
                         android:minHeight="@dimen/margin_50"
                         android:orientation="horizontal">
@@ -965,7 +963,7 @@
                         android:id="@+id/btn_affiliate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@null"
+                        android:foreground="@drawable/fg_ripple"
                         android:gravity="center"
                         android:minHeight="@dimen/margin_50"
                         android:orientation="horizontal"
@@ -1014,7 +1012,7 @@
                         android:id="@+id/btn_about_us"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@null"
+                        android:foreground="@drawable/fg_ripple"
                         android:gravity="center"
                         android:minHeight="@dimen/margin_50"
                         android:orientation="horizontal">

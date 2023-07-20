@@ -13,6 +13,7 @@ import org.cxct.sportlottery.network.odds.list.QuickPlayCate
  * @create 2022/4/19
  * @description
  */
+@Deprecated("回调方法分开写，在使用的时候不需要的方法就不用关注了")
 class LeagueOddListener(
     /**
      * matchType 專給串關使用, 主要辨別是否為滾球, 從串關跳轉至滾球賽事詳情
