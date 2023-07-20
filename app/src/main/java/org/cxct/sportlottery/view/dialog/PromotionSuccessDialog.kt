@@ -3,6 +3,8 @@ package org.cxct.sportlottery.view.dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,9 +38,9 @@ class PromotionSuccessDialog : BaseDialog<BaseViewModel>(BaseViewModel::class) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog?.window?.setDimAmount(0f)
-        isCancelable =true
+        isCancelable =false
         binding.root.onClick { dismissAllowingStateLoss() }
-
+        Handler(Looper.getMainLooper()).postDelayed({ dismissAllowingStateLoss() },2000)
     }
 
 
