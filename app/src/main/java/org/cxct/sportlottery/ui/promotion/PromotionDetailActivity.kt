@@ -97,6 +97,6 @@ class PromotionDetailActivity :
             }
         }
         binding.okWebView.setBackgroundColor(ContextCompat.getColor(this,R.color.color_F9FAFD))
-        binding.okWebView.loadDataWithBaseURL(null,(activityData.contentText).formatHTML(), "text/html", "utf-8",null)
+        binding.okWebView.loadDataWithBaseURL(null,(activityData.contentText?:"").formatHTML(), "text/html", "utf-8",null)
     }
 }

@@ -8,6 +8,7 @@ import org.cxct.sportlottery.net.user.data.ActivityImageList
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
+import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
 
@@ -35,7 +36,12 @@ class PromotionListActivity : BindingActivity<MainHomeViewModel, ActivityPromoti
             binding.rvPromotion.adapter = PromotionAdapter().apply {
             setList(activityDatas)
             setOnItemClickListener { adapter, view, position ->
-                PromotionDetailActivity.start(this@PromotionListActivity, data[position])
+                val itemData = data[position]
+                if (itemData.imageLink.isNullOrEmpty()){
+                    PromotionDetailActivity.start(this@PromotionListActivity, itemData)
+                }else{
+                    JumpUtil.toInternalWeb(this@PromotionListActivity, itemData.imageLink,getString(R.string.P169))
+                }
             }
         }
         }else{
