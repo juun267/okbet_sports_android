@@ -786,7 +786,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 //endregion
                 tv_toolbar_home_name.text = matchInfo.homeName ?: ""
                 tv_toolbar_away_name.text = matchInfo.awayName ?: ""
-                sportToolBarTopFragment.updateMatchInfo(matchInfo)
+                sportToolBarTopFragment.updateMatchInfo(matchInfo, true)
                 Handler(Looper.getMainLooper()).postDelayed({
                     sportChartFragment.updateMatchInfo(matchInfo)
                 }, 300)

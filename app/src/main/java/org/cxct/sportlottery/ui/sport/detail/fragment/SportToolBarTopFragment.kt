@@ -1,13 +1,10 @@
 package org.cxct.sportlottery.ui.sport.detail.fragment
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.TextView
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.content_baseball_status.league_odd_match_basebag
 import kotlinx.android.synthetic.main.content_baseball_status.league_odd_match_bb_status
@@ -49,21 +46,21 @@ class SportToolBarTopFragment :
         return isInited && binding.linLive.isVisible
     }
 
-//    val tv_match_time by lazy { binding.tvMatchTime }
-
-    private fun getTvMatchTime(): TextView {
-        return binding.tvMatchTime
-    }
-
-    private var timeText: String = ""
-    private var timeEnable = false
+    private var timeText: String? = null
+    private var timeEnable = true
 
     fun updateMatchTime(time: String) {
         timeText = time
+        if (isInited) {
+            binding.tvMatchTime.text = timeText
+        }
     }
 
     fun setMatchTimeEnable(enable: Boolean) {
         timeEnable = enable
+        if (isInited) {
+            binding.tvMatchTime.isVisible = enable
+        }
     }
 
     override fun onInitView(view: View) {
@@ -84,15 +81,15 @@ class SportToolBarTopFragment :
             }
         }
 
-        matchInfo?.let {
-            setStatusText(it)
-            setupMatchScore(it)
+        timeText?.let {
+            binding.tvMatchTime.text = it
+            binding.tvMatchTime.isVisible = timeEnable
         }
     }
 
-    fun updateMatchInfo(matchInfo: MatchInfo) {
+    fun updateMatchInfo(matchInfo: MatchInfo, fromApi: Boolean = false) {
         if (isInited) {
-            setupMatchInfo(matchInfo)
+            setupMatchInfo(matchInfo, fromApi)
         } else {
             newMatchInfo = matchInfo
         }
@@ -103,7 +100,7 @@ class SportToolBarTopFragment :
      * 配置賽事資訊(隊伍名稱、是否延期、賽制)
      * fromApi api的状态不携带红黄牌等信息
      */
-    private fun setupMatchInfo(matchInfo: MatchInfo) {
+    private fun setupMatchInfo(matchInfo: MatchInfo, fromApi: Boolean = false) {
         //region 隊伍名稱
         tv_home_name.text = matchInfo.homeName ?: ""
         tv_away_name.text = matchInfo.awayName ?: ""
@@ -130,7 +127,10 @@ class SportToolBarTopFragment :
         var isInPlay = TimeUtil.isTimeInPlay(matchInfo.startTime)
         if (isInPlay) {
             lin_bottom.isVisible = true
-
+            if (!fromApi) {
+                setStatusText(matchInfo)
+                setupMatchScore(matchInfo)
+            }
         } else {
             var startDate = TimeUtil.timeFormat(matchInfo.startTime, TimeUtil.DM_HM_FORMAT)
             startDate.split(" ").let {
