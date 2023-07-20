@@ -35,7 +35,6 @@
         android:background="@drawable/chat_arrow_scroll_bottom"
         android:clickable="true"
         android:focusable="true"
-        android:fontFamily="@font/iconfont"
         android:gravity="center"
         android:text="\uE786"
         android:textColor="@android:color/white"

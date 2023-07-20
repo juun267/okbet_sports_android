@@ -53,7 +53,6 @@
                 android:id="@+id/tvOdds"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/din_regular"
                 android:textColor="@color/color_025BE8_025BE8"
                 android:textSize="@dimen/textSize16sp"
                 android:textStyle="bold"
@@ -188,7 +187,6 @@
                 <!--                    android:layout_height="30dp"-->
                 <!--                    android:layout_marginStart="5dp"-->
                 <!--                    android:background="@drawable/bg_radius_2_edittext_unfocus"-->
-                <!--                    android:fontFamily="@font/din_regular"-->
                 <!--                    android:gravity="end|center_vertical"-->
                 <!--                    android:hint="@string/hint_bet_limit_range"-->
                 <!--                    android:inputType="numberDecimal"-->

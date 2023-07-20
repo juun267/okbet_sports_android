@@ -31,7 +31,6 @@
             android:gravity="center_vertical"
             android:textColor="@color/color_14366B"
             android:textSize="@dimen/textSize16sp"
-            android:fontFamily="@font/din_bold"
             android:textFontWeight="900"
             tools:text="favorites" />
 

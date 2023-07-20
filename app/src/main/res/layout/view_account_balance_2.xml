@@ -57,7 +57,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:textColor="@color/color_FFFFFF"
-            android:fontFamily="@font/din_regular"
             android:textSize="@dimen/textSize20sp"
             android:textStyle="bold"
             tools:text="87,547,000.000" />

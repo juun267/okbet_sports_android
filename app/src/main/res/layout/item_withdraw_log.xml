@@ -24,7 +24,6 @@
             android:gravity="center"
             android:textColor="@color/color_414655"
             android:textSize="@dimen/textSize12sp"
-            android:fontFamily="@font/din_regular"
             tools:text="2020-12-12" />
 
         <TextView
@@ -34,7 +33,6 @@
             android:gravity="center"
             android:textColor="@color/color_414655"
             android:textSize="@dimen/textSize12sp"
-            android:fontFamily="@font/din_regular"
             tools:text="11:43:39" />
     </LinearLayout>
 
@@ -63,7 +61,6 @@
             android:textColor="@color/color_535D76"
             android:textSize="@dimen/textSize14sp"
             android:textFontWeight="700"
-            android:fontFamily="@font/din_regular"
             tools:text="1,000,000.00" />
 
         <TextView
@@ -74,7 +71,6 @@
             android:textColor="@color/color_535D76"
             android:textSize="@dimen/textSize14sp"
             android:textFontWeight="700"
-            android:fontFamily="@font/din_regular"
             tools:text="1,000,000.00" />
     </LinearLayout>
 
