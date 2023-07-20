@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:gravity="center"
-            android:paddingHorizontal="14dp"
+            android:paddingHorizontal="5dp"
             tools:text="2022/08/13 08:03:25"
             android:textColor="#414655"
             android:textSize="12sp" />

@@ -15,6 +15,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.view.dialog.PromotionSuccessDialog
 import java.util.*
 
 
@@ -58,6 +59,7 @@ class PromotionDetailActivity :
             tvReward.text = TextUtil.formatMoney(0)
             linApply.isEnabled = false
             linApply.setBackgroundResource(R.drawable.bg_gray_radius_8)
+            PromotionSuccessDialog.newInstance().show(supportFragmentManager,null)
         }
     }
 
