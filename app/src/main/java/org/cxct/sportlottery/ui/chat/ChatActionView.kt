@@ -115,7 +115,7 @@ class ChatActionView @JvmOverloads constructor(
     }
 
 
-    private var expandEmoji=false
+    var expandEmoji=false
     fun setOnEmojiClick(block:()->Unit){
         ivEmoji.onClick {
             expandEmoji = if(expandEmoji){

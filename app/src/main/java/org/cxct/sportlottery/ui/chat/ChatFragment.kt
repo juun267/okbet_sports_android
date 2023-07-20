@@ -4,6 +4,7 @@ package org.cxct.sportlottery.ui.chat
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Context
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -592,7 +593,9 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
 
         if(v == binding.vChatAction.ivSend) {
             //隐藏表情板块
-            binding.vChatAction.ivEmoji.performClick()
+            if(binding.vChatAction.expandEmoji){
+                binding.vChatAction.ivEmoji.performClick()
+            }
 
             val input = binding.vChatAction.etInput.text.toString().replace("\n", "")
             if (input.isNullOrEmpty()) return
