@@ -1594,10 +1594,10 @@
     <string name="P169">Promotion Details</string>
     <string name="D024">There does not have any content.</string>
     <string name="D045">Details</string>
-    <string name="P170">you got</string>
-    <string name="Congratulations">Congratulations</string>
     <string name="N949">Parlay betting</string>
     <string name="N948">Single betting</string>
+    <string name="P170">you got</string>
+    <string name="Congratulations">Congratulations</string>
     <string name="to">To</string>
     <string name="J645">To</string>
 </resources>

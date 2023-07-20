@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="-25dp"
-        android:text="@string/finance_list_no_record"
+        android:text="@string/D024"
         android:textColor="@color/color_6C7BA8_A7B2C4"
         android:textSize="@dimen/textSize16sp"
         android:textFontWeight="400"
