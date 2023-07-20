@@ -18,7 +18,7 @@
         android:id="@+id/tv_version_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/margin_10"
         android:padding="4dp"
         android:textColor="@android:color/darker_gray"
         android:textSize="@dimen/textSize12sp"
