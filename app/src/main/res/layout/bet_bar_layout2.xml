@@ -28,7 +28,6 @@
         android:layout_marginStart="4dp"
         android:background="@drawable/bg_parlay_circle_float"
         android:gravity="center"
-        android:fontFamily="@font/din_pro_medium"
         android:textColor="@color/color_FFFFFF_FFFFFF"
         android:textSize="@dimen/textSize12sp"
         app:autoSizeStepGranularity="1dp"

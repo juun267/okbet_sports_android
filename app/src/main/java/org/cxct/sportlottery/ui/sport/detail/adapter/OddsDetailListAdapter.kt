@@ -1446,6 +1446,7 @@ class OddsDetailListAdapter(
             if (oddsDetail.gameType.isEndScoreType()) {
                 //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
                 itemView.lin_match.isVisible = false
+//<<<<<<< HEAD
 //                if (oddsDetail.gameType==PlayCate.FS_LD_CS.value){
 //
 //                }
@@ -1462,6 +1463,21 @@ class OddsDetailListAdapter(
 //                        tvGameName?.text = it
 //                    }
 //                }
+//=======
+                oddsDetail.oddArrayList.first()?.let {
+                    Spanny(itemView.context.getString(R.string.N888)).append(
+                        " @", ForegroundColorSpan(itemView.context.getColor(R.color.color_025BE8))
+                    ).append(
+                        getOdds(it, oddsType).toString(),
+                        ForegroundColorSpan(itemView.context.getColor(R.color.color_025BE8)),
+                        CustomTypefaceSpan(
+                            "helvetica_bold.ttf", Typeface.DEFAULT_BOLD
+                        )
+                    ).let {
+                        tvGameName?.text = it
+                    }
+                }
+//>>>>>>> dev_bug_fix
 //                Timber.d("===洗刷刷3 index:${12} payloads:${payloads?.size}")
                 rvBet?.let { it1 ->
                     if (isFirstRefresh || it1.adapter == null) {

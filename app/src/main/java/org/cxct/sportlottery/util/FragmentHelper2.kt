@@ -25,10 +25,10 @@ class FragmentHelper2(
         var fragmentInstance = fragmentHolder.take(fragment)
         if (fragmentInstance == null) {
             fragmentInstance = fragment.newInstance()
+            fragmentInstance!!.arguments = bundle
             fragmentHolder.put(fragmentInstance)
         }
 
-        bundle?.let { fragmentInstance!!.arguments = bundle }
         block?.invoke(fragmentInstance!!, true)
 
         current = fragmentInstance!!

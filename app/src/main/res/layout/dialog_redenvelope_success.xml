@@ -43,7 +43,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="180dp"
-                android:fontFamily="@font/din_regular"
                 android:text="₱ 1,000.00"
                 android:textColor="#E48D00"
                 android:textSize="36sp"

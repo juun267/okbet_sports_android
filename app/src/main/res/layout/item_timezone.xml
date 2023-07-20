@@ -30,7 +30,6 @@
             android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/din_regular"
             android:text="GMT+7:00"
             android:layout_marginTop="@dimen/margin_8"
             android:textColor="@color/color_909090_666666"

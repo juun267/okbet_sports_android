@@ -9,7 +9,6 @@
         android:includeFontPadding="false"
         android:textColor="@color/selector_button_odd_top_text"
         android:textSize="14sp"
-        android:fontFamily="@font/din_regular"
         android:textFontWeight="700"
         android:gravity="center"
         tools:text="1.067" />

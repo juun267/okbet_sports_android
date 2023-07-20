@@ -120,7 +120,6 @@ class SportFooterGamesView @JvmOverloads constructor(
         val text = AppCompatTextView(context)
         text.setPadding(4.dp, 0, 0, 0)
         text.setTextColor(ContextCompat.getColor(context, R.color.color_14366B))
-        text.typeface = ResourcesCompat.getFont(context, R.font.din_bold)
         text.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
         text.paint.style = Paint.Style.FILL_AND_STROKE
         text.paint.strokeWidth = 0.9f

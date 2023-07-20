@@ -40,15 +40,6 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : LinearLayoutCompat(context, attrs, defStyle) {
 
-    companion object {
-        private val textStyle by lazy {
-            ResourcesCompat.getFont(
-                MultiLanguagesApplication.appContext,
-                R.font.din_bold
-            )
-        }
-    }
-
     init {
         setBackgroundResource(R.color.color_F8F9FD)
         12.dp.let { setPadding(6.dp, it, it, it) }
@@ -112,7 +103,6 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         }
 
         tvUserMoney = AppCompatTextView(context).apply {
-            typeface = textStyle
             setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18f)
             setTextColor(resources.getColor(R.color.color_FFFFFF_414655))
             userMoneyView.addView(this, LayoutParams(-2, -2))

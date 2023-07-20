@@ -55,7 +55,6 @@
                 android:id="@+id/tvCanWinAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/din_bold"
                 android:textColor="@color/color_E23434"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tvCanWin"
