@@ -56,9 +56,6 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
 
     // 该方法中不要引用与生命周期有关的(比如：ViewModel、Activity)
     private fun reset() {
-        matchType = (arguments?.getSerializable("matchType") as MatchType?) ?: MatchType.IN_PLAY
-        sportLeagueAdapter2.matchType = matchType
-        gameType = arguments?.getString("gameType") ?: GameType.BK.key
         gameTypeAdapter.setNewInstance(null)
         binding.linOpt.gone()
         clearData()
@@ -68,7 +65,10 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
         setupToolbarStatus()
     }
 
-    fun reload() {
+    fun reload(matchType: MatchType, gameType: String?) {
+        this.matchType = matchType
+        this.gameType = gameType ?: GameType.BK.key
+        sportLeagueAdapter2.matchType = this.matchType
         reset()
         scrollBackTop()
         binding.appbarLayout.scrollBy(0, 0)
@@ -83,7 +83,7 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
     }
 
     override fun onInitData() {
-        reload()
+        reload((arguments?.getSerializable("matchType") as MatchType?) ?: MatchType.IN_PLAY, arguments?.getString("gameType"))
     }
 
     private fun setupSportTypeList() {

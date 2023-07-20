@@ -33,13 +33,13 @@
         android:id="@+id/rechargeLogFragment"
         android:name="org.cxct.sportlottery.ui.finance.RechargeLogFragment"
         android:label="fragment_recharge_log"
-        tools:layout="@layout/activity_recharge_log" />
+        tools:layout="@layout/fragment_recharge_log" />
 
     <fragment
         android:id="@+id/withdrawLogFragment"
         android:name="org.cxct.sportlottery.ui.finance.WithdrawLogFragment"
         android:label="fragment_withdraw_log"
-        tools:layout="@layout/activity_recharge_log" />
+        tools:layout="@layout/fragment_recharge_log" />
 
     <fragment
         android:id="@+id/moneyTransferRecordFragment"
@@ -57,6 +57,6 @@
         android:id="@+id/redEnvelopeFragment"
         android:name="org.cxct.sportlottery.ui.finance.RedEnvelopeHistoryFragment"
         android:label="RedEnvelopeFragment"
-        tools:layout="@layout/activity_recharge_log" />
+        tools:layout="@layout/fragment_recharge_log" />
 
 </navigation>
