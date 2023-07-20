@@ -96,8 +96,6 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
             binding.contentBaseballStatus.root,
             icAttackH,
             icAttackC,
-            icAttackTnH,
-            icAttackTnC,
             linHomeRoundScore,
             linAwayRoundScore,
             tvRedCards,
@@ -302,7 +300,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
      *  其中网球标识是另外一个位置
      */
     private inline fun setAttack(matchInfo: MatchInfo) = binding.run {
-        setMatchAttack(matchInfo, icAttackH, icAttackC, icAttackTnH, icAttackTnC)
+        setMatchAttack(matchInfo, icAttackH, icAttackC, icAttackH, icAttackC)
     }
 
 
@@ -329,8 +327,6 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
         //隐藏其他球类的比分
         setViewGone(leagueOddMatchScoreHome,
             leagueOddMatchScoreAway,
-            icAttackTnH,
-            icAttackTnC
         )
 
         linHomeRoundScore.visible()

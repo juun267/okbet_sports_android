@@ -89,7 +89,8 @@
         <activity
             android:name=".ui.sport.detail.SportDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.maintenance.MaintenanceActivity"
             android:launchMode="singleTask"

@@ -179,14 +179,6 @@
                                 android:layout_centerHorizontal="true"
                                 android:src="@drawable/bg_green_dot" />
 
-
-                            <ImageView
-                                android:id="@+id/ic_attack_tn_h"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:layout_marginTop="3dp"
-                                android:src="@drawable/bg_green_dot" />
                         </RelativeLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -303,12 +295,6 @@
                                 android:layout_centerInParent="true"
                                 android:src="@drawable/bg_green_dot" />
 
-                            <ImageView
-                                android:id="@+id/ic_attack_tn_c"
-                                android:layout_width="4dp"
-                                android:layout_height="4dp"
-                                android:layout_centerInParent="true"
-                                android:src="@drawable/bg_green_dot" />
                         </RelativeLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

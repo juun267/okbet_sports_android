@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
@@ -28,7 +27,6 @@ import kotlinx.android.synthetic.main.activity_detail_sport.*
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import kotlinx.android.synthetic.main.content_baseball_status.*
 import kotlinx.android.synthetic.main.item_sport_odd.view.*
-import kotlinx.android.synthetic.main.view_detail_head_toolbar1.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_collaps1.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_collaps1.view.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_live.*
@@ -328,10 +326,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 height = ViewGroup.LayoutParams.MATCH_PARENT
             }
         }
-//        live_view_tool_bar.layoutParams.apply {
-//
-//        }
-//        live_view_tool_bar.invalidate()
+
     }
 
     /**
@@ -354,13 +349,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
 
 
-    private fun setupLiveView(liveVideo: Int?) {
-        with(live_view_tool_bar) {
-            setupToolBarListener(liveToolBarListener)
-        }
+    private fun setupLiveView() {
+        live_view_tool_bar.setupToolBarListener(liveToolBarListener)
     }
 
-    fun loginChat(host: String, chatLiveLoginData: ChatLiveLoginData?) {
+    private fun loginChat(host: String, chatLiveLoginData: ChatLiveLoginData?) {
         if (chatLiveLoginData == null) {
             var builder = StringBuilder("$host?")
             builder.append("device=android")
@@ -538,7 +531,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
     private fun initData() {
-        clickButton()
         matchInfo = intent.getStringExtra("matchInfo")?.fromJson<MatchInfo>()
         matchType = intent.getSerializableExtra("matchType") as MatchType
         intoLive = intent.getBooleanExtra("intoLive", false)
@@ -555,56 +547,53 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     override var timer: Timer = Timer()
     var isGamePause = false
 
-    override var timerHandler: Handler = Handler(Looper.myLooper()!!) {
+    override var timerHandler: Handler = Handler(Looper.getMainLooper()) {
         var timeMillis = startTime * 1000L
-        if (TimeUtil.isTimeInPlay(matchOdd?.matchInfo?.startTime)) {
-            if (!isGamePause) {
-                when (matchInfo?.gameType) {
-                    GameType.FT.key -> {
-                        timeMillis += 1000
-                    }
+        if (!TimeUtil.isTimeInPlay(matchOdd?.matchInfo?.startTime)) {
+            return@Handler false
+        }
 
-                    GameType.BK.key, GameType.RB.key, GameType.AFT.key -> {
-                        timeMillis -= 1000
-                    }
+        if (!isGamePause) {
+            when (matchInfo?.gameType) {
+                GameType.FT.key -> {
+                    timeMillis += 1000
+                }
 
-                    else -> {
-                    }
+                GameType.BK.key, GameType.RB.key, GameType.AFT.key -> {
+                    timeMillis -= 1000
                 }
-            }
-            //过滤部分球类
-            if (when (matchInfo?.gameType) {
-                    GameType.BB.key, GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.BM.key -> true
-                    else -> {
-                        false
-                    }
+
+                else -> {
                 }
-            ) {
-                sportToolBarTopFragment.getTvMatchTime().isVisible = false
-                cancelTimer()
-                return@Handler false
-            }
-            sportToolBarTopFragment.getTvMatchTime().apply {
-                if (needCountStatus(
-                        matchOdd?.matchInfo?.socketMatchStatus, matchOdd?.matchInfo?.leagueTime
-                    )
-                ) {
-                    if (timeMillis >= 1000) {
-                        text = TimeUtil.longToMmSs(timeMillis)
-                        startTime = timeMillis / 1000L
-                        isVisible = true
-                    } else {
-                        text = this.context.getString(R.string.time_null)
-                        isVisible = false
-                    }
-                } else {
-                    text = this.context.getString(R.string.time_null)
-                    isVisible = false
-                }
-//                collaps_toolbar.tv_toolbar_match_time.text = text
-//                collaps_toolbar.tv_toolbar_match_time.isVisible = isVisible
             }
         }
+
+        //过滤部分球类
+        if (matchInfo?.gameType == GameType.BB.key
+            || matchInfo?.gameType == GameType.TN.key
+            || matchInfo?.gameType == GameType.VB.key
+            || matchInfo?.gameType == GameType.TT.key
+            || matchInfo?.gameType == GameType.BM.key) {
+
+            sportToolBarTopFragment.setMatchTimeEnable(false)
+            cancelTimer()
+            return@Handler false
+        }
+
+        if (needCountStatus(matchOdd?.matchInfo?.socketMatchStatus, matchOdd?.matchInfo?.leagueTime)) {
+            if (timeMillis >= 1000) {
+                sportToolBarTopFragment.updateMatchTime(TimeUtil.longToMmSs(timeMillis))
+                sportToolBarTopFragment.setMatchTimeEnable(true)
+                startTime = timeMillis / 1000L
+            } else {
+                sportToolBarTopFragment.updateMatchTime(getString(R.string.time_null))
+                sportToolBarTopFragment.setMatchTimeEnable(false)
+            }
+        } else {
+            sportToolBarTopFragment.updateMatchTime(getString(R.string.time_null))
+            sportToolBarTopFragment.setMatchTimeEnable(false)
+        }
+
         return@Handler false
     }
 
@@ -717,7 +706,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
         viewModel.matchLiveInfo.observe(this) {
             it?.peekContent()?.let { matchRound ->
-                if (lin_live.isVisible) {
+                if (sportToolBarTopFragment.isLiveStatu()) {
                     live_view_tool_bar.liveUrl =
                         if (matchRound.pullRtmpUrl.isNotEmpty()) matchRound.pullRtmpUrl else matchRound.pullFlvUrl
                     if (intoLive) {
@@ -725,10 +714,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     }
                 }
             }
-        }
-
-        viewModel.isLogin.observe(this) {
-
         }
 
         viewModel.notifyLogin.observe(this) {
@@ -740,18 +725,16 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
 
         viewModel.videoUrl.observe(this) { event ->
-            event?.getContentIfNotHandled()?.let { url ->
-                if (lin_video.isVisible) {
-                    live_view_tool_bar.videoUrl = url
-                }
+            val url = event?.getContentIfNotHandled() ?: return@observe
+            if (sportToolBarTopFragment.isLiveStatu()) {
+                live_view_tool_bar.videoUrl = url
             }
         }
 
         viewModel.animeUrl.observe(this) { event ->
-            event?.getContentIfNotHandled()?.let { url ->
-                if (lin_anime.isVisible) {
-                    live_view_tool_bar.animeUrl = url
-                }
+            val url = event?.getContentIfNotHandled()
+            if (sportToolBarTopFragment.isLiveStatu()) {
+                live_view_tool_bar.animeUrl = url
             }
         }
 
@@ -770,45 +753,45 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
 
         viewModel.oddsDetailResult.observe(this) {
-            it?.getContentIfNotHandled()?.let { result ->
-                if (result.success) {
-                    result.setupPlayCateTab()
-                    try {
-                        val selectedPosition = tabCateAdapter.selectedPosition
-                        val dataList = tabCateAdapter.dataList
-                        if (selectedPosition < dataList.size) {
-                            oddsDetailListAdapter?.notifyDataSetChangedByCode(dataList[selectedPosition].code)
-                        }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        return@observe
-                    }
-
-                    rv_detail.post { rv_detail.requestLayout() }
-                    matchOdd = result.oddsDetailData?.matchOdd
-
-                    result.oddsDetailData?.matchOdd?.matchInfo?.let { matchInfo ->
-                        this.matchInfo = matchInfo
-                        //region 配置主客隊名稱給內部Item使用
-                        matchInfo.homeName?.let { home ->
-                            oddsDetailListAdapter?.homeName = home
-                        }
-                        matchInfo.awayName.let { away ->
-                            oddsDetailListAdapter?.awayName = away
-                        }
-                        //endregion
-                        tv_toolbar_home_name.text = matchInfo.homeName ?: ""
-                        tv_toolbar_away_name.text = matchInfo.awayName ?: ""
-                        sportToolBarTopFragment.setupMatchInfo(matchInfo, true)
-                        Handler(Looper.getMainLooper()).postDelayed({
-                            sportChartFragment.updateMatchInfo(matchInfo)
-                        }, 300)
-                    }
-                    setupLiveView(result.oddsDetailData?.matchOdd?.matchInfo?.liveVideo)
-                } else {
-                    showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
-                }
+            val result = it?.getContentIfNotHandled() ?: return@observe
+            if (!result.success) {
+                showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
+                return@observe
             }
+
+            result.setupPlayCateTab()
+            try {
+                val selectedPosition = tabCateAdapter.selectedPosition
+                val dataList = tabCateAdapter.dataList
+                if (selectedPosition < dataList.size) {
+                    oddsDetailListAdapter?.notifyDataSetChangedByCode(dataList[selectedPosition].code)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                return@observe
+            }
+
+            rv_detail.post { rv_detail.requestLayout() }
+            matchOdd = result.oddsDetailData?.matchOdd
+
+            result.oddsDetailData?.matchOdd?.matchInfo?.let { matchInfo ->
+                this.matchInfo = matchInfo
+                //region 配置主客隊名稱給內部Item使用
+                matchInfo.homeName?.let { home ->
+                    oddsDetailListAdapter?.homeName = home
+                }
+                matchInfo.awayName.let { away ->
+                    oddsDetailListAdapter?.awayName = away
+                }
+                //endregion
+                tv_toolbar_home_name.text = matchInfo.homeName ?: ""
+                tv_toolbar_away_name.text = matchInfo.awayName ?: ""
+                sportToolBarTopFragment.updateMatchInfo(matchInfo, true)
+                Handler(Looper.getMainLooper()).postDelayed({
+                    sportChartFragment.updateMatchInfo(matchInfo)
+                }, 300)
+            }
+            setupLiveView()
         }
 
         viewModel.oddsDetailList.observe(this) {
@@ -903,27 +886,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
 
-    /**
-     * 点击事件
-     */
-    fun clickButton() {
-//        btn_odd.setOnClickListener { isShowOdd(true) }
-//        btn_analyze.setOnClickListener { isShowOdd(false) }
-
-    }
-
     private fun isShowOdd(isShowOdd: Boolean) {
-        val selectColor = ContextCompat.getColor(this, R.color.color_025BE8)
-        val nomalColor = ContextCompat.getColor(this, R.color.color_6C7BA8)
-//        btn_odd.setTextColor(if (isShowOdd) selectColor else nomalColor)
-//        viewBtOdd.isVisible = isShowOdd
         rv_detail.isVisible = isShowOdd
         lin_categroy.isVisible = isShowOdd
         vDivider.isVisible = isShowOdd
-
-//        btn_analyze.setTextColor(if (!isShowOdd) selectColor else nomalColor)
-//        viewBtnAnalyze.isVisible = !isShowOdd
-
     }
 
 
@@ -962,7 +928,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         if (isNeedUpdate) {
                             tv_toolbar_home_name.text = matchInfo?.homeName ?: ""
                             tv_toolbar_away_name.text = matchInfo?.awayName ?: ""
-                            sportToolBarTopFragment.setupMatchInfo(matchOdd.matchInfo)
+                            sportToolBarTopFragment.updateMatchInfo(matchOdd.matchInfo)
                             Handler(Looper.getMainLooper()).postDelayed({
                                 sportChartFragment.updateMatchInfo(matchOdd.matchInfo)
                             }, 300)
@@ -1112,22 +1078,23 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     @SuppressLint("InflateParams")
     private fun OddsDetailResult.setupPlayCateTab() {
         val playCateTypeList = this.oddsDetailData?.matchOdd?.playCateTypeList
-        if (playCateTypeList?.isNotEmpty() == true) {
-            //如果是从篮球末位比分进入，拿到数据后，自动切换到篮球末位比分到tab下
-            if (tabCateAdapter.dataList.isEmpty() && tabCode == MatchType.END_SCORE.postValue) {
-                playCateTypeList.indexOfFirst { it.code == tabCode }.let {
-                    if (it >= 0) {
-                        tabCateAdapter.selectedPosition = it
-                    }
+        if (playCateTypeList?.isNotEmpty() != true) {
+            rv_cat.gone()
+            return
+        }
+
+        //如果是从篮球末位比分进入，拿到数据后，自动切换到篮球末位比分到tab下
+        if (tabCateAdapter.dataList.isEmpty() && tabCode == MatchType.END_SCORE.postValue) {
+            playCateTypeList.indexOfFirst { it.code == tabCode }.let {
+                if (it >= 0) {
+                    tabCateAdapter.selectedPosition = it
                 }
             }
-            tabCateAdapter.dataList = playCateTypeList
-            (rv_cat.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
-                rv_cat, RecyclerView.State(), tabCateAdapter.selectedPosition
-            )
-        } else {
-            rv_cat.visibility = View.GONE
         }
+        tabCateAdapter.dataList = playCateTypeList
+        (rv_cat.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
+            rv_cat, RecyclerView.State(), tabCateAdapter.selectedPosition
+        )
     }
 
 
@@ -1137,14 +1104,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         initSocketObserver()
     }
 
-
-    var showEmoji = false
-    var onMini = true
-    fun setUpBetBarVisible() {
+    private fun setUpBetBarVisible() {
         binding.parlayFloatWindow.isVisible = !BetInfoRepository.betInfoList.value?.peekContent()
-            .isNullOrEmpty() && (!showEmoji && onMini)
+            .isNullOrEmpty()
     }
-
 
     private var dsgView: DetailSportGuideView? = null
     /**

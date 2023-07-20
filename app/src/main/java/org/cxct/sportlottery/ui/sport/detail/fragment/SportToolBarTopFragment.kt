@@ -1,14 +1,10 @@
 package org.cxct.sportlottery.ui.sport.detail.fragment
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.TextView
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.content_baseball_status.league_odd_match_basebag
 import kotlinx.android.synthetic.main.content_baseball_status.league_odd_match_bb_status
@@ -18,11 +14,9 @@ import kotlinx.android.synthetic.main.view_detail_head_toolbar1.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.ViewDetailHeadToolbar1Binding
-import org.cxct.sportlottery.network.common.GameMatchStatus
 import org.cxct.sportlottery.network.common.GameStatus
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.odds.MatchInfo
-import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.sport.SportViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
@@ -31,24 +25,42 @@ import org.cxct.sportlottery.util.*
 class SportToolBarTopFragment :
     BindingSocketFragment<SportViewModel, ViewDetailHeadToolbar1Binding>() {
 
-
-    val matchInfo by lazy {
+    private var isInited = false
+    private val matchInfo by lazy {
         arguments?.get("matchInfo").toString().fromJson<MatchInfo>()
     }
 
+    private var newMatchInfo: MatchInfo? = null
     override fun createRootView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         val frameLayout = FrameLayout(inflater.context)
         frameLayout.layoutParams = ViewGroup.LayoutParams(-1, -1)
         frameLayout.addView(super.createRootView(inflater, container, savedInstanceState))
+        isInited = true
         return frameLayout
     }
 
-//    val tv_match_time by lazy { binding.tvMatchTime }
 
-    fun getTvMatchTime(): TextView {
-        return binding.tvMatchTime
+    fun isLiveStatu(): Boolean {
+        return isInited && binding.linLive.isVisible
+    }
+
+    private var timeText: String? = null
+    private var timeEnable = true
+
+    fun updateMatchTime(time: String) {
+        timeText = time
+        if (isInited) {
+            binding.tvMatchTime.text = timeText
+        }
+    }
+
+    fun setMatchTimeEnable(enable: Boolean) {
+        timeEnable = enable
+        if (isInited) {
+            binding.tvMatchTime.isVisible = enable
+        }
     }
 
     override fun onInitView(view: View) {
@@ -59,13 +71,27 @@ class SportToolBarTopFragment :
         )
     }
 
-    val handler = Handler(Looper.myLooper()!!)
-
     override fun onInitData() {
         super.onInitData()
+        if (newMatchInfo != null) {
+            setupMatchInfo(newMatchInfo!!)
+        } else {
+            matchInfo?.let {
+                setupMatchInfo(it)
+            }
+        }
 
-        matchInfo?.let {
-            setupMatchInfo(it)
+        timeText?.let {
+            binding.tvMatchTime.text = it
+            binding.tvMatchTime.isVisible = timeEnable
+        }
+    }
+
+    fun updateMatchInfo(matchInfo: MatchInfo, fromApi: Boolean = false) {
+        if (isInited) {
+            setupMatchInfo(matchInfo, fromApi)
+        } else {
+            newMatchInfo = matchInfo
         }
     }
 
@@ -74,7 +100,7 @@ class SportToolBarTopFragment :
      * 配置賽事資訊(隊伍名稱、是否延期、賽制)
      * fromApi api的状态不携带红黄牌等信息
      */
-    fun setupMatchInfo(matchInfo: MatchInfo, fromApi: Boolean = false) {
+    private fun setupMatchInfo(matchInfo: MatchInfo, fromApi: Boolean = false) {
         //region 隊伍名稱
         tv_home_name.text = matchInfo.homeName ?: ""
         tv_away_name.text = matchInfo.awayName ?: ""
