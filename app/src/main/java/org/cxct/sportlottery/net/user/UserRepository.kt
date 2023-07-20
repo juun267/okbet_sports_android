@@ -4,8 +4,10 @@ import com.google.gson.JsonObject
 import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.RetrofitHolder
 import org.cxct.sportlottery.net.user.api.UserApiService
+import org.cxct.sportlottery.net.user.data.ActivityImageList
 import org.cxct.sportlottery.net.user.data.SendCodeRespnose
 import org.cxct.sportlottery.net.user.data.UserBasicInfoResponse
+import org.cxct.sportlottery.network.index.config.ImageData
 
 object UserRepository {
 
@@ -44,6 +46,13 @@ object UserRepository {
         params.addProperty("code", validCode)
         params.addProperty("verificationMethod", if (emailOrPhone.contains("@")) "EMAIL" else "PHONE")
         return userApi.verifyOrResetInfo(params)
+    }
+
+    suspend fun activityImageListH5(): ApiResult<List<ActivityImageList>> {
+        return userApi.activityImageListH5()
+    }
+    suspend fun activityApply(activityId: String): ApiResult<String> {
+        return userApi.activityApply(activityId)
     }
 
 }
