@@ -26,7 +26,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.didichuxing.doraemonkit.util.GsonUtils
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import kotlinx.android.synthetic.main.content_odds_detail_list_team.view.*
 import org.cxct.sportlottery.R
