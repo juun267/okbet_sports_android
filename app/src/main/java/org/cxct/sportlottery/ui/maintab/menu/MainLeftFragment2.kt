@@ -39,6 +39,7 @@ import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
+import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreator
@@ -222,9 +223,9 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             R.string.esports,
             true
         ) { getMainTabActivity().jumpToESport() }
-        eSportGamesItem.group.gone()
+
 //
-//        okLiveItem = addMenu(2,
+//        okLiveItem = addMenu(index1++,
 //            groupParams,
 //            iconParams,
 //            R.drawable.ic_main_menu_oklive_1,
@@ -246,7 +247,9 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             textParams,
             R.string.B005,
         )
-        promotionItem.group.bindPromoClick { close() }
+        promotionItem.group.bindPromoClick {
+
+        }
         promotionItem.group.setVisibilityByMarketSwitch()
 
         affiliateItem = addMenu(++index,

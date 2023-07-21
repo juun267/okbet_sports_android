@@ -355,6 +355,11 @@ object Constants {
 
     const val INDEX_VERIFYORRESET = "/api/front/index/verifyOrResetInfo" // 验证或重置手机号或者邮箱
 
+    const val ACTIVITY_IMAGELIST_H5 = "/api/front/index/activityImageListH5"
+
+    const val ACTIVITY_APPLY = "/api/front/agentActivity/apply/{activityId}"
+
+
     //登录或注册(新版优化登录注册->使用)
     const val LOGIN_OR_REG = "/api/front/index/loginOrRegV2"
 

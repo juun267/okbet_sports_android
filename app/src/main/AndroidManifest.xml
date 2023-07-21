@@ -239,7 +239,13 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
+        <activity
+            android:name=".ui.promotion.PromotionListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.promotion.PromotionDetailActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <service android:name=".service.BackService" /> <!-- broadCast -->
 
         <provider

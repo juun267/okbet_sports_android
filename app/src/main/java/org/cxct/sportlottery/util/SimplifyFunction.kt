@@ -36,10 +36,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
-import org.cxct.sportlottery.common.extentions.load
-import org.cxct.sportlottery.common.extentions.rotationAnimation
-import org.cxct.sportlottery.common.extentions.screenHeight
-import org.cxct.sportlottery.common.extentions.translationXAnimation
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
@@ -59,6 +56,7 @@ import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
+import org.cxct.sportlottery.ui.promotion.PromotionListActivity
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteAdapter
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -1186,11 +1184,20 @@ fun BaseFragment<out MainHomeViewModel>.enterThirdGame(
 
 // 设置优惠活动点击事件
 fun View.bindPromoClick(click: (() -> Unit)? = null) = setOnClickListener {
-    JumpUtil.toInternalWeb(
-        context, Constants.getPromotionUrl(
-            LoginRepository.token, LanguageManager.getSelectLanguage(context)
-        ), context.getString(R.string.promotion)
-    )
+     AppManager.currentActivity().startActivity(PromotionListActivity::class.java)
+//    JumpUtil.toInternalWeb(
+//        context,
+//        Constants.getPromotionUrl(
+//            LoginRepository.token,
+//            LanguageManager.getSelectLanguage(context)
+//        ),
+//        context.getString(R.string.promotion)
+//    )
+}
+fun String.formatHTML(): String {
+    val head =
+        "<head>" + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\"> " + "<style>img{max-width: 100%; width:auto; height:auto!important;}</style>" + "</head>";
+    return "<html>$head<body>$this</body></html>";
 }
 fun setExpandArrow(ivArrow: ImageView, isExpanded: Boolean) {
     if (isExpanded) {
