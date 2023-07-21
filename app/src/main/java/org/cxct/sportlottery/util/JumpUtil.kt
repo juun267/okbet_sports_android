@@ -5,6 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.webkit.URLUtil
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bettingStation.BettingStation
@@ -15,6 +18,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.lottery.LotteryActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
+import splitties.activities.start
 import timber.log.Timber
 
 object JumpUtil {
@@ -31,7 +35,16 @@ object JumpUtil {
         when{
             //是否世界杯主题活动页面
             href?.isNotEmpty() == true &&href?.contains("personal/BasketballWorldCupLottery")->{
-                (AppManager.currentActivity() as MainTabActivity).jumpToWorldCupGame()
+                when(AppManager.currentActivity()){
+                     is MainTabActivity-> (AppManager.currentActivity() as MainTabActivity)?.jumpToWorldCupGame()
+                     else-> {
+                         MainTabActivity.reStart(context)
+                         GlobalScope.launch {
+                             delay(1000)
+                             (AppManager.currentActivity() as MainTabActivity)?.jumpToWorldCupGame()
+                         }
+                     }
+                }
             }
             else->{
                 context.startActivity(

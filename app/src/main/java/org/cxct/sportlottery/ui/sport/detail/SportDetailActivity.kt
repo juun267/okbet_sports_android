@@ -157,6 +157,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     //进来后默认切到指定tab
     private val tabCode by lazy { intent.getStringExtra("tabCode") }
+    private val matchId by lazy { intent.getStringExtra("matchId") }
     private lateinit var topBarFragmentList: List<Fragment>
     private lateinit var sportToolBarTopFragment: SportToolBarTopFragment
     private lateinit var sportChartFragment: SportChartFragment
@@ -791,6 +792,13 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 tv_toolbar_home_name.text = matchInfo.homeName ?: ""
                 tv_toolbar_away_name.text = matchInfo.awayName ?: ""
                 sportToolBarTopFragment.updateMatchInfo(matchInfo, true)
+                if (matchId!=null){
+                    tv_game_title.text = matchInfo.leagueName
+                    updateMenu(matchInfo)
+                    ivFavorite.isSelected = matchInfo.isFavorite
+                    oddsDetailListAdapter?.sportCode = GameType.getGameType(matchInfo?.gameType)
+                    oddsDetailListAdapter?.notifyDataSetChanged()
+                }
                 Handler(Looper.getMainLooper()).postDelayed({
                     sportChartFragment.updateMatchInfo(matchInfo)
                 }, 300)

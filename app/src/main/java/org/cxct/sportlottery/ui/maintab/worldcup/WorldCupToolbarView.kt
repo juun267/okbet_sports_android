@@ -26,21 +26,12 @@ import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment2
+import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 class WorldCupToolbarView@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : LinearLayout(context, attrs, defStyle) {
-
-    companion object {
-        private val textStyle by lazy {
-            ResourcesCompat.getFont(
-                MultiLanguagesApplication.appContext,
-                R.font.din_bold
-            )
-        }
-    }
 
     init {
         setBackgroundResource(R.drawable.bg_worldcup_head)
@@ -84,7 +75,6 @@ class WorldCupToolbarView@JvmOverloads constructor(context: Context, attrs: Attr
     private fun addSearchView() {
         searchView = LinearLayout(context).apply {
             gone()
-            setBackgroundResource(R.drawable.bg_search_radius_18)
             gravity = Gravity.LEFT or Gravity.CENTER_VERTICAL
             val padding = 10.dp
             setPadding(padding, 0, padding, 0)
@@ -114,7 +104,6 @@ class WorldCupToolbarView@JvmOverloads constructor(context: Context, attrs: Attr
         }
 
         tvUserMoney = AppCompatTextView(context).apply {
-            typeface = textStyle
             setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18f)
             setTextColor(resources.getColor(R.color.color_FFFFFF))
             userMoneyView.addView(this, LayoutParams(-2, -2))
@@ -223,7 +212,7 @@ class WorldCupToolbarView@JvmOverloads constructor(context: Context, attrs: Attr
         tvLogin.setOnClickListener { activity.startLogin() }
         tvRegist.setOnClickListener { LoginOKActivity.startRegist(context) }
         ivRefreshMoney.setOnClickListener { onRefreshMoney() }
-        if (fragment !is MainHomeFragment2) {
+        if (fragment !is MainHomeFragment) {
             ivLogo.setOnClickListener { activity.backMainHome() }
         }
     }

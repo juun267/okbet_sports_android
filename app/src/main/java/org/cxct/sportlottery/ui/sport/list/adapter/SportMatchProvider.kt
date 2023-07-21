@@ -40,7 +40,7 @@ class SportMatchProvider(private val adapter: SportLeagueAdapter2,
     }
 
     override fun onClick(helper: BaseViewHolder, view: View, data: BaseNode, position: Int) {
-        (data as MatchOdd).matchInfo?.let { SportDetailActivity.startActivity(view.context, it, adapter.matchType) }
+        (data as MatchOdd).matchInfo?.let { SportDetailActivity.startActivity(view.context, it, matchType = adapter.matchType) }
     }
 
     override fun convert(helper: BaseViewHolder, item: BaseNode, payloads: List<Any>) {
