@@ -223,9 +223,9 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             R.string.esports,
             true
         ) { getMainTabActivity().jumpToESport() }
-        eSportGamesItem.group.gone()
+
 //
-//        okLiveItem = addMenu(2,
+//        okLiveItem = addMenu(index1++,
 //            groupParams,
 //            iconParams,
 //            R.drawable.ic_main_menu_oklive_1,

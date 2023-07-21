@@ -135,7 +135,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:paddingLeft="12dp"
-                    android:paddingRight="4dp" >
+                    android:paddingRight="4dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="0dp"
@@ -145,52 +145,42 @@
                         <TextView
                             android:id="@+id/league_odd_match_name_home"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="44dp"
                             android:ellipsize="end"
-                            android:gravity="center_vertical"
-                            android:maxLines="2"
                             android:fontFamily="@font/helvetica_normal"
+                            android:maxLines="2"
                             android:textColor="@color/color_000000"
                             android:textSize="@dimen/textSize12sp"
                             app:layout_constrainedWidth="true"
-                            app:layout_constraintEnd_toStartOf="@+id/rl_icon"
-                            app:layout_constraintHorizontal_bias="0"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/ic_attack_h"
+                            app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintHorizontal_chainStyle="packed"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            tools:text="芬兰芬兰芬兰芬兰芬兰芬兰" />
+                            app:layout_constraintVertical_bias="0.0"
+                            tools:text="芬兰芬兰芬兰芬兰芬" />
 
-                        <RelativeLayout
-                            android:id="@+id/rl_icon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                        <ImageView
+                            android:id="@+id/ic_attack_h"
+                            android:layout_width="4dp"
+                            android:layout_height="4dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginTop="8dp"
                             android:layout_marginRight="5dp"
+                            android:src="@drawable/bg_green_dot"
                             app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent" >
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageView
-                                android:id="@+id/ic_attack_h"
-                                android:layout_width="4dp"
-                                android:layout_height="4dp"
-                                android:layout_marginTop="3dp"
-                                android:layout_centerInParent="true"
-                                android:layout_centerHorizontal="true"
-                                android:src="@drawable/bg_green_dot" />
-
-                        </RelativeLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 
                     <LinearLayout
                         android:id="@+id/lin_home_round_score"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
                         tools:visibility="visible">
 
                         <TextView
@@ -198,7 +188,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/margin_4"
-                            android:includeFontPadding="false"
                             android:fontFamily="@font/helvetica_normal"
                             android:textColor="@color/color_000000"
                             android:textSize="@dimen/textSize14sp"
@@ -211,7 +200,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="2dp"
-                            android:includeFontPadding="false"
                             android:fontFamily="@font/helvetica_normal"
                             android:textColor="@color/color_000000"
                             android:textSize="@dimen/textSize14sp"
@@ -223,7 +211,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="2dp"
-                            android:includeFontPadding="false"
                             android:fontFamily="@font/helvetica_normal"
                             android:textColor="@color/color_000000"
                             android:textSize="@dimen/textSize14sp"
@@ -236,12 +223,10 @@
                         android:id="@+id/league_odd_match_score_home"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:includeFontPadding="false"
                         android:fontFamily="@font/helvetica_normal"
                         android:textColor="@color/color_000000"
                         android:textSize="@dimen/textSize14sp"
                         android:paddingStart="5dp"
-                        android:layout_gravity="center_vertical"
                         tools:text="0" />
 
                 </LinearLayout>
@@ -251,7 +236,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="12dp"
                     android:paddingLeft="12dp"
                     android:paddingRight="4dp" >
 
@@ -272,47 +256,39 @@
                             android:textColor="@color/color_000000"
                             android:textSize="@dimen/textSize12sp"
                             app:layout_constrainedWidth="true"
-                            app:layout_constraintEnd_toStartOf="@+id/rl_away_icon"
+                            app:layout_constraintEnd_toStartOf="@+id/ic_attack_c"
                             app:layout_constraintHorizontal_bias="0"
                             app:layout_constraintHorizontal_chainStyle="packed"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             tools:text="俄罗斯" />
 
-                        <RelativeLayout
-                            android:id="@+id/rl_away_icon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                        <ImageView
+                            android:id="@+id/ic_attack_c"
+                            android:layout_width="4dp"
+                            android:layout_height="4dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginTop="8dp"
                             android:layout_marginRight="5dp"
+                            android:src="@drawable/bg_green_dot"
                             app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent">
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageView
-                                android:id="@+id/ic_attack_c"
-                                android:layout_width="4dp"
-                                android:layout_height="4dp"
-                                android:layout_centerInParent="true"
-                                android:src="@drawable/bg_green_dot" />
-
-                        </RelativeLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
                     <LinearLayout
                         android:id="@+id/lin_away_round_score"
                         android:layout_width="wrap_content"
-                        android:layout_gravity="center_vertical"
                         android:layout_height="wrap_content"
                         tools:visibility="visible">
-
 
                         <TextView
                             android:id="@+id/league_odd_match_total_score_away_bottom"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/margin_4"
-                            android:includeFontPadding="false"
                             android:fontFamily="@font/helvetica_normal"
                             android:textColor="@color/color_000000"
                             android:textSize="@dimen/textSize14sp"
@@ -324,7 +300,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="2dp"
-                            android:includeFontPadding="false"
                             android:fontFamily="@font/helvetica_normal"
                             android:textColor="@color/color_000000"
                             android:textSize="@dimen/textSize14sp"
@@ -336,7 +311,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="2dp"
-                            android:includeFontPadding="false"
                             android:fontFamily="@font/helvetica_normal"
                             android:textColor="@color/color_000000"
                             android:textSize="@dimen/textSize14sp"
@@ -350,9 +324,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="top"
-                        android:layout_gravity="center_vertical"
                         android:paddingStart="5dp"
-                        android:includeFontPadding="false"
                         android:fontFamily="@font/helvetica_normal"
                         android:textColor="@color/color_000000"
                         android:textSize="@dimen/textSize14sp"
