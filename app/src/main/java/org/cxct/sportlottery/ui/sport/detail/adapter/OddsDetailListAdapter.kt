@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.didichuxing.doraemonkit.util.GsonUtils
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import kotlinx.android.synthetic.main.content_odds_detail_list_team.view.*
 import org.cxct.sportlottery.R
@@ -1353,43 +1354,31 @@ class OddsDetailListAdapter(
         private fun forSingle(
             oddsDetail: OddsDetailListData, spanCount: Int, payloads: MutableList<Any>?
         ) {
-//            Timber.d("===洗刷刷oddsDetail.gameType: ${oddsDetail.gameType}")
             if (oddsDetail.gameType.isEndScoreType()) {
                 //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
                 itemView.lin_match.isVisible = false
-//                if (oddsDetail.gameType==PlayCate.FS_LD_CS.value){
-//
-//                }
-//                oddsDetail.oddArrayList.first()?.let {
-//                    Spanny(itemView.context.getString(R.string.N888)).append(
-//                        " @", ForegroundColorSpan(itemView.context.getColor(R.color.color_025BE8))
-//                    ).append(
-//                        getOdds(it, oddsType).toString(),
-//                        ForegroundColorSpan(itemView.context.getColor(R.color.color_025BE8)),
-//                        CustomTypefaceSpan(
-//                            "din_bold.ttf", Typeface.DEFAULT_BOLD
-//                        )
-//                    ).let {
-//                        tvGameName?.text = it
-//                    }
-//                }
-//                Timber.d("===洗刷刷3 index:${12} payloads:${payloads?.size}")
                 rvBet?.let { it1 ->
-                    if (isFirstRefresh || it1.adapter == null) {
-                        it1.adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, oddsType)
+                    if (it1.adapter == null) {
+                        it1.layoutManager = GridLayoutManager(itemView.context, 4)
                         if (it1.itemDecorationCount==0) {
                             it1.addItemDecoration(GridSpacingItemDecoration(4,4.dp,false))
                         }
-                        it1.layoutManager = GridLayoutManager(itemView.context, 4)
+                        it1.adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, oddsType)
+                        rvBet.tag = oddsDetail.gameType
                         isFirstRefresh = false
+                    }else{
+                        ((it1.adapter) as TypeSingleAdapter).apply {
+                            if (rvBet.tag != oddsDetail.gameType){
+                                rvBet.tag = oddsDetail.gameType
+                                setOddsDetailData(oddsDetail)
+                             }
+                            notifyDataSetChanged()
+                        }
                     }
-
-                    if (it1.adapter != null && payloads?.isNotEmpty() == true) {
+                    if (payloads?.isNullOrEmpty() == false) {
+                        ((it1.adapter) as TypeSingleAdapter).setOddsDetailData(oddsDetail)
                         payloads.forEach { payloadItem ->
-                            val index =
-                                oddsDetail.oddArrayList.indexOf(oddsDetail.oddArrayList.find { it?.id == payloadItem })
-//                            Timber.d("===洗刷刷3 index:${index} payloads:${payloads.size}")
-                            ((it1.adapter) as TypeSingleAdapter).setOddsDetailData(oddsDetail)
+                            val index = oddsDetail.oddArrayList.indexOf(oddsDetail.oddArrayList.find { it?.id == payloadItem })
                             runWithCatch { it1.adapter?.notifyItemChanged(index) }
                         }
                     }
