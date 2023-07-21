@@ -303,7 +303,7 @@ class BetReceiptFragment :
             iv_result_status.setImageResource(R.drawable.ic_bet_failure)
             tv_result_status.setTextColor(requireContext().getColor(R.color.color_ff0000))
             tv_result_status.text = if (betFailed.second.isNullOrEmpty()) {
-                getString(R.string.your_bet_order_fail)
+                getString(R.string.N417)
             } else {
                 BetsFailedReasonUtil.getFailedReasonByCode(betFailed.second)
             }
