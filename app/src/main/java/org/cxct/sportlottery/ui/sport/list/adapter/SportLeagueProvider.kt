@@ -30,6 +30,7 @@ class SportLeagueProvider(
     private val tvLeagueNameId = View.generateViewId()
     private val ivCountryId = View.generateViewId()
     private val ivArrowId = View.generateViewId()
+    private val dividerId = View.generateViewId()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
 
@@ -37,6 +38,12 @@ class SportLeagueProvider(
         root.layoutParams = ViewGroup.LayoutParams(-1, 50.dp)
         root.setBackgroundResource(R.color.color_FCFDFF)
         root.foreground = ContextCompat.getDrawable(context, R.drawable.fg_ripple)
+
+        val topDivider = View(context)
+        topDivider.id = dividerId
+        topDivider.layoutParams = ViewGroup.LayoutParams(-1, 0.5f.dp)
+        topDivider.setBackgroundColor(ContextCompat.getColor(context, R.color.color_D4E1F1))
+        root.addView(topDivider)
 
         val wh20 = 20.dp
 
@@ -87,6 +94,7 @@ class SportLeagueProvider(
     override fun convert(helper: BaseViewHolder, item: BaseNode) {
         val leagueOdd = item as LeagueOdd
         helper.setText(tvLeagueNameId, leagueOdd.league.name)
+        helper.setVisible(dividerId, helper.bindingAdapterPosition == 0)
         helper.getView<ImageView>(ivCountryId).setLeagueLogo(item.league.categoryIcon)
         setExpandArrow(helper.getView(ivArrowId), leagueOdd.isExpanded)
     }

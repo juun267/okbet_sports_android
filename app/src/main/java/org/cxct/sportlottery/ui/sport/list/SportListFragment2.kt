@@ -46,13 +46,6 @@ open class SportListFragment2<M, VB>: BaseSportListFragment<SportListViewModel, 
         })
     }
 
-    override fun onInitView(view: View) {
-        super.onInitView(view)
-        val divider = View(view.context)
-        divider.layoutParams = ViewGroup.LayoutParams(-1, 0.5f.dp)
-        divider.setBackgroundColor(ContextCompat.getColor(view.context, R.color.color_D4E1F1))
-        sportLeagueAdapter2.addHeaderView(divider)
-    }
 
     // 该方法中不要引用与生命周期有关的(比如：ViewModel、Activity)
     private fun reset() {

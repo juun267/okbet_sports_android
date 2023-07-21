@@ -70,7 +70,8 @@ class SportLeagueAdapter2(
 
     // 对外保留的方法刷新item（添加headerview后刷新item时position计算需要加上headerview）
     fun notifyMatchItemChanged(position: Int, any: Any) {
-        notifyItemChanged(position + headerLayoutCount, any)
+        notifyItemChanged(position, any)
+//        notifyItemChanged(position + headerLayoutCount, any)
     }
 
     fun onOddsChangeEvent(oddsChangeEvent: OddsChangeEvent): Int {
