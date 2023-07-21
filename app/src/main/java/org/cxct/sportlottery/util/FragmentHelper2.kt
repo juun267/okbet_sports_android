@@ -17,7 +17,6 @@ class FragmentHelper2(
                            block: ((T, Boolean) -> Unit)? = null): T {
 
         if (current?.javaClass == fragment) {
-            bundle?.let { current!!.arguments = it }
             block?.invoke(current!! as T, false)
             return current as T
         }
