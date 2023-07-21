@@ -1,18 +1,14 @@
 package org.cxct.sportlottery.util
 
 import android.content.Context
-import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.service.ApplicationBroadcastReceiver
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 
-object CheckOKSystemUtils {
-}
 
 /**
  * 检查是否关闭体育入口
@@ -47,7 +43,7 @@ private fun updateSportStatus(status:Int?){
  * 监听体育服务广播
  */
 fun setupSportStatusChange(lifecycleOwner: LifecycleOwner, block: (isOpen:Boolean) -> Unit){
-    ApplicationBroadcastReceiver.sportMaintenance.observe(lifecycleOwner){
+    ServiceBroadcastReceiver.sportMaintenance.observe(lifecycleOwner){
         it?.let {
             //更新体育开关字段
             updateSportStatus(it.status)

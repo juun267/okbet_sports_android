@@ -42,7 +42,6 @@ class BackService : Service() {
         const val SERVICE_SEND_DATA = "SERVICE_SEND_DATA"
         const val CHANNEL_KEY = "channel"
         const val SERVER_MESSAGE_KEY = "serverMessage"
-        const val CONNECT_STATUS = "connectStatus"
 
         //        const val WS_END_TYPE = "proto"
         const val WS_END_TYPE = "encrypted"
@@ -278,18 +277,11 @@ class BackService : Service() {
         bundle.putBoolean(USE_SUBSCRIBE_DATA, isSubscribeData)
         val intent = Intent(SERVICE_SEND_DATA)
         intent.putExtras(bundle)
-        ApplicationBroadcastReceiver.receiveMessage(bundle)
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+        ServiceBroadcastReceiver.onReceiveMessage(bundle)
     }
 
     private fun sendConnectStatusToActivity(connectStatus: ServiceConnectStatus) {
-        val bundle = Bundle().apply {
-            putSerializable(CONNECT_STATUS, connectStatus)
-        }
-        val intent = Intent(SERVICE_SEND_DATA).apply {
-            putExtras(bundle)
-        }
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+        ServiceBroadcastReceiver.onConnectStatus(connectStatus)
     }
 
     private fun setJObjToJArray(message: String): String {

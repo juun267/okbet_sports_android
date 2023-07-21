@@ -37,7 +37,6 @@ import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.money.RedEnveLopeModel
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.service.ApplicationBroadcastReceiver
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.betList.BetListViewModel
 import org.cxct.sportlottery.ui.betRecord.TransactionStatusViewModel
@@ -196,10 +195,6 @@ class MultiLanguagesApplication : Application() {
     }
 
 
-    private val serviceModule = module {
-        factory { ServiceBroadcastReceiver() }
-    }
-
     override fun attachBaseContext(base: Context) {
         //第一次进入app时保存系统选择语言(为了选择随系统语言时使用，如果不保存，切换语言后就拿不到了）
         LanguageManager.saveSystemCurrentLanguage(base)
@@ -231,7 +226,7 @@ class MultiLanguagesApplication : Application() {
             androidContext(this@MultiLanguagesApplication)
             modules(
                 listOf(
-                    viewModelModule, repoModule, serviceModule
+                    viewModelModule, repoModule
                 )
             )
         }
@@ -493,7 +488,7 @@ class MultiLanguagesApplication : Application() {
     }
 
     open fun setupSystemStatusChange(owner: LifecycleOwner) {
-        ApplicationBroadcastReceiver.onSystemStatusChange.observe(owner) {
+        ServiceBroadcastReceiver.onSystemStatusChange.observe(owner) {
             if (it) {
                 if (AppManager.currentActivity() !is MaintenanceActivity) {
                     startActivity(Intent(this, MaintenanceActivity::class.java).apply {
