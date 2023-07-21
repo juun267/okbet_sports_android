@@ -124,20 +124,28 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
         collectList.observe(viewLifecycleOwner) {
 
-            //初始化收藏数据
-            binding.gameViewCollect
-                .setIcon(GameTab.TAB_FAVORITES.labelIcon)
-                .setCategoryName(GameTab.TAB_FAVORITES.name)
-                .setListData(it.second)
-                .setOnFavoriteClick {gameBean->
-                    okGamesFragment().collectGame(gameBean)
+            if(viewModel.loginRepository.isLogined()){
+                if(it.second.isNullOrEmpty()){
+                    return@observe
                 }
-                .setOnGameClick {gameBean->
-                    enterGame(gameBean)
-                }
-                .setOnMoreClick {
-                    okGamesFragment().changeGameTable(GameTab.TAB_FAVORITES)
-                }
+                binding.gameViewCollect.visible()
+                //初始化收藏数据
+                binding.gameViewCollect
+                    .setIcon(GameTab.TAB_FAVORITES.labelIcon)
+                    .setCategoryName(GameTab.TAB_FAVORITES.name)
+                    .setListData(it.second)
+                    .setOnFavoriteClick {gameBean->
+                        okGamesFragment().collectGame(gameBean)
+                    }
+                    .setOnGameClick {gameBean->
+                        enterGame(gameBean)
+                    }
+                    .setOnMoreClick {
+                        okGamesFragment().changeGameTable(GameTab.TAB_FAVORITES)
+                    }
+            }else{
+                binding.gameViewCollect.gone()
+            }
 
         }
 
@@ -156,6 +164,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             gameListAdapter.notifyDataSetChanged()
             //更新最近游戏
             binding.gameViewRecent.getDataList().forEach {
+
                 it.forEach {
                     if(result.second.id==it.id){
                         it.markCollect=result.second.markCollect
@@ -167,22 +176,28 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
         }
 
         recentPlay.observe(viewLifecycleOwner) {list->
-
-            //初始化最近游戏数据
-            binding.gameViewRecent
-                .setIcon(GameTab.TAB_RECENTLY.labelIcon)
-                .setCategoryName(GameTab.TAB_RECENTLY.name)
-                .setListData(list)
-                .setOnFavoriteClick {
-                    okGamesFragment().collectGame(it)
-                }
-                .setOnGameClick {
-                    enterGame(it)
-                }
-                .setOnMoreClick {
-                    okGamesFragment().changeGameTable(GameTab.TAB_RECENTLY)
-                }
-
+            if(list.isNullOrEmpty()){
+                return@observe
+            }
+            if(viewModel.loginRepository.isLogined()){
+                binding.gameViewRecent.visible()
+                //初始化最近游戏数据
+                binding.gameViewRecent
+                    .setIcon(GameTab.TAB_RECENTLY.labelIcon)
+                    .setCategoryName(GameTab.TAB_RECENTLY.name)
+                    .setListData(list)
+                    .setOnFavoriteClick {
+                        okGamesFragment().collectGame(it)
+                    }
+                    .setOnGameClick {
+                        enterGame(it)
+                    }
+                    .setOnMoreClick {
+                        okGamesFragment().changeGameTable(GameTab.TAB_RECENTLY)
+                    }
+            }else{
+                binding.gameViewRecent.gone()
+            }
         }
 
         newRecentPlay.observe(viewLifecycleOwner) { okgameBean ->
