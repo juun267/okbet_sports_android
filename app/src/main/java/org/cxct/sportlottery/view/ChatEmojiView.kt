@@ -57,10 +57,8 @@ class ChatEmojiView(context: Context, attrs: AttributeSet?): FrameLayout(context
         }
 
 
-        emojiAdapter.setList(arrayListOf("\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22",
-            "\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22",
-            "\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22",
-            "\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22","\uD83D\uDE22"))
+
+        emojiAdapter.setList(ViewAction.emojiString.split(" ").toMutableList())
 
     }
     private var itemBlock:(emojiText:String)->Unit={}
