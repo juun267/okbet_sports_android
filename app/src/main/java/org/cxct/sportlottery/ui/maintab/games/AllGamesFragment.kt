@@ -200,10 +200,6 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
             }
         }
 
-        newRecentPlay.observe(viewLifecycleOwner) { okgameBean ->
-
-        }
-
     }
 
     private fun onBindGamesView() = binding.run {
