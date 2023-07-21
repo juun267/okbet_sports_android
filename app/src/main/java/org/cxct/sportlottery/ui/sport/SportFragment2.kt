@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.sport
 
-import android.graphics.Typeface
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -254,19 +253,20 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
         }
 
         val menuData = sportMenu!!
-        val matchType = findESport(menuData.inPlay.items, MatchType.IN_PLAY)
-            ?: findESport(menuData.today.items, MatchType.TODAY)
-            ?: findESport(menuData.early.items, MatchType.EARLY)
-
-
+        val matchType = findESportMatchType(menuData)
         setJumpSport(matchType, gameType = GameType.ES)
     }
 
+    private fun findESportMatchType(menu: Menu): MatchType {
+        return findESport(menu.inPlay.items, MatchType.IN_PLAY)
+            ?: findESport(menu.today.items, MatchType.TODAY)
+            ?: findESport(menu.early.items, MatchType.EARLY)
+            ?: MatchType.IN_PLAY
+    }
     private fun findESport(items: List<Item>, matchType: MatchType): MatchType? {
         items.forEach {
             if (GameType.ES.key == it.code) {
                 jumpMatchType = matchType
-                binding.tabLayout.getTabAt(matchTypeTab.indexOfFirst { it == matchType })?.select()
                 return matchType
             }
         }
@@ -338,10 +338,11 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             return
         }
         val menuData = sportMenuResult.getData()!!.menu
-        val maType = findESport(menuData.inPlay.items, MatchType.IN_PLAY)
-            ?: findESport(menuData.today.items, MatchType.TODAY)
-            ?: findESport(menuData.early.items, MatchType.EARLY)
-        val matchType = if (navESport && maType != null) maType else jumpMatchType ?: defaultMatchType
+        val matchType = if (navESport) {
+            findESportMatchType(menuData)
+        } else {
+            jumpMatchType ?: defaultMatchType
+        }
         if (matchType != null) {
             binding.tabLayout.getTabAt(matchTypeTab.indexOfFirst { it == matchType })?.select()
         }
