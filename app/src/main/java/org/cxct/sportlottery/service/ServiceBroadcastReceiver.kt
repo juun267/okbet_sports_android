@@ -1,8 +1,6 @@
 package org.cxct.sportlottery.service
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
+
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.LifecycleOwner
@@ -36,12 +34,8 @@ import org.cxct.sportlottery.network.service.sys_maintenance.SportMaintenanceEve
 import org.cxct.sportlottery.network.service.sys_maintenance.SysMaintenanceEvent
 import org.cxct.sportlottery.network.service.user_level_config_change.UserLevelConfigListEvent
 import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
-import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.PlayRepository
-import org.cxct.sportlottery.repository.UserInfoRepository
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.service.BackService.Companion.CHANNEL_KEY
-import org.cxct.sportlottery.service.BackService.Companion.CONNECT_STATUS
 import org.cxct.sportlottery.service.BackService.Companion.SERVER_MESSAGE_KEY
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.util.*
@@ -57,7 +51,8 @@ import org.json.JSONObject
 import org.json.JSONTokener
 import timber.log.Timber
 
-open class ServiceBroadcastReceiver : BroadcastReceiver() {
+object ServiceBroadcastReceiver {
+
 
     val globalStop: LiveData<GlobalStopEvent?>
         get() = _globalStop
@@ -132,8 +127,7 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
     private val _userMoney = MutableLiveData<Double?>()
     private val _lockMoney = MutableLiveData<Double?>()
     private val _userNotice = MutableLiveData<UserNoticeEvent?>()
-    private val _sysMaintenance = MutableLiveData<SysMaintenanceEvent?>()
-    val _sportMaintenance = MutableLiveData<SportMaintenanceEvent?>()
+    private val _sysMaintenance = SingleLiveEvent<SysMaintenanceEvent?>()
     private val _serviceConnectStatus = MutableLiveData<ServiceConnectStatus>()
     private val _leagueChange = MutableLiveData<LeagueChangeEvent?>()
     private val _matchOddsLock = MutableLiveData<MatchOddsLockEvent?>()
@@ -149,21 +143,15 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
     private val _recordNewOkLive = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100)
     private val _recordResultOkLive = MutableSharedFlow<RecordNewEvent?>(extraBufferCapacity= 100)
 
+    val sportMaintenance: LiveData<SportMaintenanceEvent?> = MutableLiveData()
+    val onSystemStatusChange: LiveData<Boolean> = SingleLiveEvent()
 
-    override fun onReceive(context: Context?, intent: Intent) {
-        val bundle = intent.extras
-        receiveConnectStatus(bundle)
-        bundle?.let { receiveMessage(it) }
+
+    fun onConnectStatus(connectStatus: ServiceConnectStatus) {
+        _serviceConnectStatus.postValue(connectStatus)
     }
 
-    private fun receiveConnectStatus(bundle: Bundle?) {
-        val connectStatus = bundle?.get(CONNECT_STATUS) as ServiceConnectStatus?
-        connectStatus?.let { status ->
-            _serviceConnectStatus.postValue(status)
-        }
-    }
-
-    private fun receiveMessage(bundle: Bundle) {
+    fun onReceiveMessage(bundle: Bundle) {
 
         CoroutineScope(Dispatchers.IO).launch {
 
@@ -218,12 +206,14 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
             EventType.SYS_MAINTENANCE -> {
                 val data = ServiceMessage.getSysMaintenance(jObjStr)
                 _sysMaintenance.postValue(data)
+                (onSystemStatusChange as MutableLiveData<Boolean>).postValue(data?.status == 1)
             }
             //体育服务开关
             EventType.SPORT_MAINTAIN_STATUS -> {
                 val data = ServiceMessage.getSportMaintenance(jObjStr)
-                _sportMaintenance.postValue(data)
+                (sportMaintenance as MutableLiveData<SportMaintenanceEvent?>).postValue(data)
             }
+
             //公共频道
             EventType.DATA_SOURCE_CHANGE -> {
                 _dataSourceChange.postValue(true)
@@ -280,7 +270,6 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                     }
                 }
 
-                val time = System.currentTimeMillis()
                 // 登陆的用户计算赔率折扣
                 if (LoginRepository.isLogined()) {
                     data.setupOddDiscount(UserInfoRepository.getDiscount())
@@ -360,6 +349,7 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                 val data = ServiceMessage.getRecondResult(jObjStr)
                 _recordResultOkLive.emit(data)
             }
+
             else -> {}
 
         }

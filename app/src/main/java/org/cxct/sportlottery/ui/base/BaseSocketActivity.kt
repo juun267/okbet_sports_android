@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.os.IBinder
 import android.text.SpannableStringBuilder
 import androidx.lifecycle.Observer
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.repository.KEY_USER_LEVEL_ID
@@ -15,7 +14,6 @@ import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.util.GameConfigManager
-import org.koin.android.ext.android.inject
 import timber.log.Timber
 import kotlin.reflect.KClass
 
@@ -26,7 +24,7 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         this.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
 
-    val receiver: ServiceBroadcastReceiver by inject()
+    val receiver = ServiceBroadcastReceiver
 
     private var backService: BackService? = null
     private var isServiceBound = false
@@ -234,15 +232,12 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
     override fun onStart() {
         super.onStart()
-
-        subscribeBroadCastReceiver()
         bindService()
     }
 
     override fun onStop() {
         super.onStop()
 
-        removeBroadCastReceiver()
         unBindService()
     }
 
@@ -272,14 +267,4 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         return false
     }
 
-    private fun subscribeBroadCastReceiver() {
-        val filter = IntentFilter().apply {
-            addAction(BackService.SERVICE_SEND_DATA)
-        }
-        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter)
-    }
-
-    private fun removeBroadCastReceiver() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver)
-    }
 }

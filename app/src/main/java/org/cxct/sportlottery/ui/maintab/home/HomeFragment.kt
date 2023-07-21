@@ -3,11 +3,7 @@ package org.cxct.sportlottery.ui.maintab.home
 import android.os.Bundle
 import android.view.View
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.toIntS
-import org.cxct.sportlottery.network.service.EventType
-import org.cxct.sportlottery.network.service.sys_maintenance.SportMaintenanceEvent
 import org.cxct.sportlottery.repository.StaticData
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.worldcup.WorldCupFragment
@@ -42,13 +38,6 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
         super.onViewCreated(view, savedInstanceState)
         switchTabByPosition(0)
         EventBusUtil.targetLifecycle(this)
-
-        viewModel.gotConfig.observe(viewLifecycleOwner){
-            sConfigData?.sportMaintainStatus?.let {
-                val event=SportMaintenanceEvent(EventType.SPORT_MAINTAIN_STATUS,it.toIntS(0))
-                receiver._sportMaintenance.postValue(event)
-            }
-        }
     }
 
     private fun switchTabByPosition(position: Int) {
