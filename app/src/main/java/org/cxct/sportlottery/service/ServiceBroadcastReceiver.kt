@@ -128,7 +128,6 @@ object ServiceBroadcastReceiver {
     private val _lockMoney = MutableLiveData<Double?>()
     private val _userNotice = MutableLiveData<UserNoticeEvent?>()
     private val _sysMaintenance = SingleLiveEvent<SysMaintenanceEvent?>()
-    val _sportMaintenance = MutableLiveData<SportMaintenanceEvent?>()
     private val _serviceConnectStatus = MutableLiveData<ServiceConnectStatus>()
     private val _leagueChange = MutableLiveData<LeagueChangeEvent?>()
     private val _matchOddsLock = MutableLiveData<MatchOddsLockEvent?>()
@@ -212,7 +211,6 @@ object ServiceBroadcastReceiver {
             //体育服务开关
             EventType.SPORT_MAINTAIN_STATUS -> {
                 val data = ServiceMessage.getSportMaintenance(jObjStr)
-                _sportMaintenance.postValue(data)
                 (sportMaintenance as MutableLiveData<SportMaintenanceEvent?>).postValue(data)
             }
 
