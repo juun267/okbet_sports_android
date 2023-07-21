@@ -31,12 +31,10 @@ class AccountHistoryAdapter(
     private var mIsLastPage: Boolean = false //是否最後一頁資料
     private var mSportTypeList: List<StatusSheetData> = listOf() //球種篩選清單
 
-    private val adapterScope = CoroutineScope(Dispatchers.Default)
-
     fun addFooterAndSubmitList(list: MutableList<Row?>, isLastPage: Boolean) {
-            mRowList = list
-            mIsLastPage = isLastPage
-            updateData()
+        mRowList = list
+        mIsLastPage = isLastPage
+        updateData()
     }
 
     /**

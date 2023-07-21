@@ -21,7 +21,7 @@ class MixFontTextView @JvmOverloads constructor(
 ) : AppCompatTextView(context, attributeSet, defStyleAttr) {
 
 
-    private val fontOther = ResourcesCompat.getFont(context, R.font.din_regular)
+    private val fontOther = ResourcesCompat.getFont(context, R.font.helvetica_normal)
 
 
     var mixFontText: CharSequence? = null

@@ -495,7 +495,7 @@ class SportListViewHolder constructor(
 
         this.matchType = matchType
         this.listener =
-            OddButtonListener { view, matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
+            OddButtonListener { view, matchInfo, odd, playCateCode, betPlayCateName ->
                 leagueOddListener?.onClickBet(
                     view,
                     matchInfo,
@@ -519,7 +519,6 @@ class SportListViewHolder constructor(
                 item.oddsSort,
                 item.playCateNameMap,
                 item.betPlayCateNameMap,
-                null,
                 item
             )
             oddButtonPagerAdapter.apply {
@@ -536,6 +535,4 @@ class SportListViewHolder constructor(
         oddButtonPagerAdapter.odds = item.oddsMap ?: mutableMapOf()
     }
 
-    override val oddStateChangeListener: OddStateChangeListener
-        get() = refreshListener
 }

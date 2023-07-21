@@ -1,27 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingLeft="24dp"
-    android:paddingRight="20dp"
-    android:foreground="@drawable/fg_ripple">
+    android:layout_height="81dp"
+    android:foreground="@drawable/fg_ripple"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp">
 
-        <TextView
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/din_bold"
-            android:text="VS"
-            android:textColor="@color/color_A7B2C4"
-            android:textSize="@dimen/textSize16sp"
-            android:textStyle="bold" />
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/ivSRMAwayLogo"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/bg_team_logo"
+                android:padding="6dp" />
+
+            <ImageView
+                android:id="@+id/ivSRMHomeLogo"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginBottom="25dp"
+                android:background="@drawable/bg_team_logo"
+                android:padding="6dp" />
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,12 +47,14 @@
 
             <org.cxct.sportlottery.view.highLightTextView.HighlightTextView
                 android:id="@+id/tv_home_name"
-                android:layout_width="match_parent"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
                 android:gravity="start"
                 android:lineSpacingExtra="4dp"
+                android:maxLines="1"
                 android:text="Lorem ipsum UFC dolor sit amet,"
-                android:textColor="@color/color_535D76"
+                android:textColor="@color/color_14366B"
                 android:textSize="@dimen/margin_14"
                 app:highlightColor="@color/transparent"
                 app:highlightRadius="0dp"
@@ -48,13 +63,15 @@
 
             <org.cxct.sportlottery.view.highLightTextView.HighlightTextView
                 android:id="@+id/tv_away_name"
-                android:layout_width="match_parent"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
+                android:ellipsize="end"
                 android:gravity="start"
                 android:lineSpacingExtra="4dp"
+                android:maxLines="1"
                 android:text="Lorem ipsum UFC dolor sit amet,"
-                android:textColor="@color/color_535D76"
+                android:textColor="@color/color_14366B"
                 android:textSize="@dimen/margin_14"
                 app:highlightColor="@color/transparent"
                 app:highlightRadius="0dp"
@@ -62,13 +79,20 @@
                 app:highlightTextColor="@color/color_025BE8" />
         </LinearLayout>
 
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="12dp"
+            android:background="@color/color_EEF3FC" />
+
         <TextView
             android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:gravity="right"
             android:text="2022/08/13\n08:03:25"
-            android:textColor="@color/color_A7B2C4"
+            android:textColor="@color/color_14366B"
             android:textSize="@dimen/textSize12sp" />
 
     </LinearLayout>
@@ -76,6 +100,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/color_191919_EEEFF0" />
+        android:background="@color/color_EEF3FC" />
 
 </LinearLayout>

@@ -15,8 +15,12 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.stx.xhb.androidx.XBanner
 import kotlinx.android.synthetic.main.layout_home_top.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.load
+import org.cxct.sportlottery.common.extentions.setOnClickListeners
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.LayoutHomeTopBinding
+import org.cxct.sportlottery.net.user.data.ActivityImageList
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.repository.*
@@ -25,10 +29,12 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
+import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment2
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
+import org.cxct.sportlottery.ui.promotion.PromotionDetailActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import timber.log.Timber
@@ -53,13 +59,9 @@ class HomeTopView @JvmOverloads constructor(
         binding.tvSportClose.goneWithSportSwitch(false)
     }
 
-    private fun initBanner() {
+    private fun setUpBanner() {
+        val imageType = 2
         val lang = LanguageManager.getSelectLanguage(context).key
-        setUpBanner(lang, 2)
-        setUpBanner(lang, 5)
-    }
-
-    private fun setUpBanner(lang: String, imageType: Int) {
         var imageList = sConfigData?.imageList?.filter {
             it.imageType == imageType && it.lang == lang && !it.imageName1.isNullOrEmpty() && !(getMarketSwitch() && it.isHidden)
         }?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
@@ -67,52 +69,48 @@ class HomeTopView @JvmOverloads constructor(
         if (imageList.isNullOrEmpty()) {
             return
         }
-        if (imageType == 2) {
-            var xbanner = findViewById<XBanner>(R.id.topBanner)
-            xbanner.setHandLoop(loopEnable)
-            xbanner.setOnItemClickListener(this@HomeTopView)
-            xbanner.loadImage { _, model, view, _ ->
-                (view as ImageView).load((model as XBannerImage).imgUrl, R.drawable.img_banner01)
-            }
-            val host = sConfigData?.resServerHost
-            val images = imageList.map {
-                Timber.d("host:$host url1:${host + it.imageName1}")
-                XBannerImage(it.imageText1 + "", host + it.imageName1, it.appUrl)
-            }
-            //opt1 ->ImageType = 5,为活动轮播图
-            //opt2 ->后台有配置
-            //满足以上两点 -> 显示活动轮播图r
-            if (images.isNotEmpty()) {
-                xbanner.visible()
-            }
-            xbanner.setBannerData(images.toMutableList())
-        } else {
-            //优惠banne让判断是否首页显示
-            imageList=imageList.filter { it.frontPageShow==1 }
-            //优惠活动
-            val host = sConfigData?.resServerHost
-            val promoteImages = imageList.map {
-                Timber.d("host:$host url4:${host + it.imageName4}")
-                XBannerImage(it.imageText1 + "", host + it.imageName4, it.appUrl)
-            }
-            setUpPromoteView(promoteImages)
+        var xbanner = findViewById<XBanner>(R.id.topBanner)
+        xbanner.setHandLoop(loopEnable)
+        xbanner.setOnItemClickListener(this@HomeTopView)
+        xbanner.loadImage { _, model, view, _ ->
+            (view as ImageView).load((model as XBannerImage).imgUrl, R.drawable.img_banner01)
         }
+        val host = sConfigData?.resServerHost
+        val images = imageList.map {
+            Timber.d("host:$host url1:${host + it.imageName1}")
+            XBannerImage(it.imageText1 + "", host + it.imageName1, it.appUrl)
+        }
+        //opt1 ->ImageType = 5,为活动轮播图
+        //opt2 ->后台有配置
+        //满足以上两点 -> 显示活动轮播图r
+        if (images.isNotEmpty()) {
+            xbanner.visible()
+        }
+        xbanner.setBannerData(images.toMutableList())
     }
 
-    private fun setUpPromoteView(imageList: List<XBannerImage>) {
+    fun setUpPromoteBanner(list: List<ActivityImageList>){
+        //优惠banne让判断是否首页显示
+        val promoteImages=list.filter { it.frontPageShow==1 }
+        //优惠活动
+        setUpPromoteView(promoteImages)
+    }
+    private fun setUpPromoteView(imageList: List<ActivityImageList>) {
         val promoteAdapter =
-            object : BaseQuickAdapter<XBannerImage, BaseViewHolder>(R.layout.item_promote_view) {
-                override fun convert(holder: BaseViewHolder, item: XBannerImage) {
+            object : BaseQuickAdapter<ActivityImageList, BaseViewHolder>(R.layout.item_promote_view) {
+                override fun convert(holder: BaseViewHolder, item: ActivityImageList) {
                     val view = holder.getView<ImageView>(R.id.ivItemPromote)
-                    view.load(item.imgUrl, R.drawable.img_banner01)
+                    view.load(sConfigData?.resServerHost+item.indexImage, R.drawable.img_banner01)
                 }
-
             }
         promoteAdapter.setNewInstance(imageList.toMutableList())
         promoteAdapter.setOnItemClickListener { adapter, view, position ->
-            jumpToOthers(
-                promoteAdapter.getItem(position)
-            )
+            val itemData = promoteAdapter.getItem(position)
+            if (itemData.imageLink.isNullOrEmpty()){
+                PromotionDetailActivity.start(context, itemData)
+            }else{
+                JumpUtil.toInternalWeb(context, itemData.imageLink,context.getString(R.string.P169))
+            }
         }
         binding.rcvPromote.apply {
             adapter = promoteAdapter
@@ -160,9 +158,14 @@ class HomeTopView @JvmOverloads constructor(
 
     }
 
-    fun setup(fragment: MainHomeFragment2) {
-
-        ConfigRepository.onNewConfig(fragment) { initBanner() }
+    fun setup(fragment: MainHomeFragment) {
+        ConfigRepository.onNewConfig(fragment) {
+            setUpBanner()
+            fragment.viewModel.getActivityImageListH5()
+        }
+        fragment.viewModel.activityImageList.observe(fragment){
+            setUpPromoteBanner(it)
+        }
         binding.vSports.setOnClickListener { fragment.jumpToInplaySport() }
         binding.vOkgames.isInvisible = getMarketSwitch()
         binding.vOkgames.setOnClickListener {
@@ -195,7 +198,7 @@ class HomeTopView @JvmOverloads constructor(
         initRechargeClick(fragment)
     }
 
-    private fun initRechargeClick(fragment: MainHomeFragment2) {
+    private fun initRechargeClick(fragment: MainHomeFragment) {
 
         val depositClick = OnClickListener {
              ToGcashDialog.showByClick(fragment.viewModel){

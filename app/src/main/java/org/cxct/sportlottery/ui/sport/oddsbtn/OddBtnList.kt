@@ -34,21 +34,18 @@ class OddBtnList @JvmOverloads constructor(
         topMargin = margin
     }
 
-
     init {
-        setPadding(0, 0, margin, 0)
         orientation = VERTICAL
         oddBtnType = AppCompatTextView(context).apply {
             setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10f)
             setTextColor(context.getColor(R.color.color_00181E))
-            setAutoSizeTextTypeWithDefaults(TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM)
-            setAutoSizeTextTypeUniformWithConfiguration(6, 10, 1, TypedValue.COMPLEX_UNIT_SP)
+            TextViewCompat.setAutoSizeTextTypeWithDefaults(this, TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM)
+            TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(this, 6, 10, 1, TypedValue.COMPLEX_UNIT_SP)
             maxLines = 3
             gravity = Gravity.CENTER
         }
 
-        val odd_btn_row1_typeParam = LayoutParams(oddWidth, typeNameHeight)
-        addView(oddBtnType, odd_btn_row1_typeParam)
+        addView(oddBtnType, LayoutParams(oddWidth, typeNameHeight))
 
         oddBtnHome = createOddBtn()
         oddBtnAway = createOddBtn()

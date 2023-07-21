@@ -6,10 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemMoneyTransferHistoryBinding
 import org.cxct.sportlottery.network.third_game.query_transfers.Row
@@ -20,26 +16,21 @@ class MoneyTransferRecordAdapter (private val clickListener: ItemClickListener) 
         ITEM, NO_DATA
     }
 
-    private val adapterScope = CoroutineScope(Dispatchers.Default)
 
     fun addFooterAndSubmitList(list: List<Row>?, isLastPage: Boolean) {
-        adapterScope.launch {
-            val items = when (list) {
-                null -> listOf(DataItem.NoData)
-                else -> {
-                    when {
-                        list.isEmpty() -> listOf(DataItem.NoData)
-                        else -> {
-                            list.map { DataItem.Item(it) }
-                        }
+        val items = when (list) {
+            null -> listOf(DataItem.NoData)
+            else -> {
+                when {
+                    list.isEmpty() -> listOf(DataItem.NoData)
+                    else -> {
+                        list.map { DataItem.Item(it) }
                     }
                 }
             }
-
-            withContext(Dispatchers.Main) { //update in main ui thread
-                submitList(items)
-            }
         }
+
+        submitList(items)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

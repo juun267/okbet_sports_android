@@ -123,7 +123,8 @@ class BetReceiptDiffForParlayShowSingleAdapter : ListAdapter<MatchOdd, RecyclerV
                     )
                     tv_odds.text = "@ $formatForOdd"
 
-                    tv_name_type.text = context.getString(oddsType.res)
+
+                    tv_name_type.text = context.getString(getOddTypeRes(itemData,oddsType))
 
                     tv_league.text = leagueName
                     tv_team_names.setTeamNames(15, homeName, awayName)

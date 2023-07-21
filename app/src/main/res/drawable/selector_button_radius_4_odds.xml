@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/bg_radius_4_button_blue" android:state_enabled="true" android:state_selected="true" />
-    <item android:drawable="@drawable/bg_radius_4_button_white_silver_light" android:state_enabled="true" android:state_selected="false" />
-    <item android:drawable="@drawable/bg_radius_4_button_white_silver_light" android:state_enabled="false" android:state_selected="true" />
-    <item android:drawable="@drawable/bg_radius_4_button_white_silver_light" android:state_enabled="false" android:state_selected="false" />
-</selector>

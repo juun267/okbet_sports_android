@@ -10,8 +10,15 @@
         android:orientation="vertical"
         style="@style/StyleOddButtonLL"
         android:background="@drawable/bg_radius_10_fff">
-
-        <include layout="@layout/content_odds_detail_list_one_include" />
+        <include layout="@layout/content_odds_detail_list_item" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_bet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_9"
+            android:background="@color/color_FFFFFF"
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never" />
         <include layout="@layout/space_content_odds_detail_list"/>
 
     </LinearLayout>

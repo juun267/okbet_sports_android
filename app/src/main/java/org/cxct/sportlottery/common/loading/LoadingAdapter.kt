@@ -7,7 +7,7 @@ import androidx.annotation.StringRes
 import org.cxct.sportlottery.R
 
 
-class LoadingAdapter(@StringRes val emptyString: Int = R.string.finance_list_no_record,
+class LoadingAdapter(@StringRes val emptyString: Int = R.string.D024,
                      @DrawableRes val emptyIcon: Int = R.drawable.img_nogames,
                      @StringRes val loadingString: Int = R.string.loading,
                      @DrawableRes val loadingIcon: Int = R.drawable.anim_loading,

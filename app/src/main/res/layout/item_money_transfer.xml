@@ -48,7 +48,6 @@
             app:moneyFormat="@{data.money}"
             android:textColor="@color/color_A7B2C4"
             android:textSize="@dimen/textSize14sp"
-            android:fontFamily="@font/din_bold"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/imageView2"

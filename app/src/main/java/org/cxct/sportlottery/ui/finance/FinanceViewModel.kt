@@ -38,9 +38,6 @@ class FinanceViewModel(
     val isLoading: LiveData<Boolean> //使用者餘額
         get() = _isLoading
 
-    val userRechargeListResult: LiveData<MutableList<Row>?>
-        get() = _userRechargeListResult
-
     val userWithdrawListResult: LiveData<MutableList<org.cxct.sportlottery.network.withdraw.list.Row>?>
         get() = _userWithdrawResult
     val userSportBillListResult: LiveData<SportBillResult>
@@ -61,7 +58,6 @@ class FinanceViewModel(
         get() = _accountHistoryList
 
     private val _isLoading = MutableLiveData<Boolean>()
-    private val _userRechargeListResult = MutableLiveData<MutableList<Row>?>()
     private val _userWithdrawResult =
         MutableLiveData<MutableList<org.cxct.sportlottery.network.withdraw.list.Row>?>()
     private val _userSportBillListResult = MutableLiveData<SportBillResult>()
@@ -100,49 +96,44 @@ class FinanceViewModel(
         _isLoading.postValue(false)
     }
 
-
-    private val rechargeLogList = mutableListOf<Row>()
-
+    val rechargeLogDataList = SingleLiveEvent<Triple<List<Row>?, Boolean, String?>>()
+    private lateinit var rechargeReqTag: Any
     fun getUserRechargeList(
-        isFirstFetch: Boolean,
+        pageIndex: Int,
+        pageSizeNum: Int,
         startTime: String? = TimeUtil.getDefaultTimeStamp().startTime,
         endTime: String? = TimeUtil.getDefaultTimeStamp().endTime,
         status: String? = null,
         rechType: String? = null,
     ) {
-        if (!isFirstFetch && isFinalPage.value == true) return
-
-        loading()
+        val tag = Any()
+        rechargeReqTag = tag
 
         val filter = { item: String? -> if (item == allTag || item.isNullOrBlank()) null else item }
 
-        when {
-            isFirstFetch -> {
-                _isFinalPage.postValue(false)
-                page = 1
-            }
-            else -> {
-                if (isFinalPage.value == false) {
-                    page++
-                }
-            }
-        }
-
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.moneyService.getUserRechargeList(
-                    RechargeListRequest(
-                        rechType = filter(rechType),
-                        status = filter(status)?.toIntOrNull(),
-                        startTime = startTime,
-                        endTime = endTime,
-                        page = page,
-                        pageSize = pageSize
-                    )
+        doRequest(androidContext, {
+            OneBoSportApi.moneyService.getUserRechargeList(
+                RechargeListRequest(
+                    rechType = filter(rechType),
+                    status = filter(status)?.toIntOrNull(),
+                    startTime = startTime,
+                    endTime = endTime,
+                    page = pageIndex,
+                    pageSize = pageSizeNum
                 )
+            )
+        }) { result ->
+
+            if (tag != rechargeReqTag) {
+                return@doRequest
             }
 
-            result?.rows?.map {
+            if (result == null) {
+                rechargeLogDataList.postValue(Triple(null, false, ""))
+                return@doRequest
+            }
+
+            result.rows?.forEach {
                 it.rechState = when (it.status) {
                     Status.SUCCESS.code -> LocalUtils.getString(R.string.recharge_state_success)
                     Status.FAILED.code -> LocalUtils.getString(R.string.recharge_state_failed)
@@ -168,25 +159,10 @@ class FinanceViewModel(
                 it.rechDateAndTime = TimeUtil.timeFormat(it.addTime, "yyyy-MM-dd HH:mm:ss")
                 it.rechDateStr = TimeUtil.timeFormat(it.addTime, "yyyy-MM-dd")
                 it.rechTimeStr = TimeUtil.timeFormat(it.addTime, "HH:mm:ss")
-
                 it.displayMoney = TextUtil.formatMoney(it.rechMoney)
             }
-            if (isFirstFetch) {
-                rechargeLogList.clear()
-            }
-            result?.rows?.let {
-                rechargeLogList.addAll(it)
-            }
 
-            result?.total?.let {
-                _isFinalPage.postValue(page * pageSize >= it)
-            }
-
-            if (result?.success == true) {
-                _userRechargeListResult.postValue(rechargeLogList)
-            }
-
-            hideLoading()
+            rechargeLogDataList.postValue(Triple(result.rows, result.success, result.msg))
         }
     }
 

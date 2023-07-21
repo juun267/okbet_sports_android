@@ -102,7 +102,18 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
 
     private fun toMaintenanceOrShowDialog(result: BaseResult) {
         when (result.code) {
-            HttpError.DO_NOT_HANDLE.code -> {
+            HttpError.DO_NOT_HANDLE.code -> { // 鉴权失败、token过期
+                if (this is MaintenanceActivity
+                    || this is SplashActivity) {
+                    return
+                }
+                showTokenPromptDialog(result.msg) {
+                    viewModel.doLogoutCleanUser {
+                        if (isErrorTokenToMainActivity()) {
+                            MainTabActivity.reStart(this)
+                        }
+                    }
+                }
             }
 
             HttpError.MAINTENANCE.code -> {
@@ -470,5 +481,13 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
         val transaction = supportFragmentManager.beginTransaction();
         transaction.replace(container, fragment)
         transaction.commit()
+    }
+
+    protected open fun fadeStyle() = true
+    override fun startActivityForResult(intent: Intent, requestCode: Int) {
+        super.startActivityForResult(intent, requestCode)
+        if (fadeStyle()) {
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        }
     }
 }

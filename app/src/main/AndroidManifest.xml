@@ -89,7 +89,8 @@
         <activity
             android:name=".ui.sport.detail.SportDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.maintenance.MaintenanceActivity"
             android:launchMode="singleTask"
@@ -110,6 +111,9 @@
             android:name=".ui.money.recharge.MoneyRechargeActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.betRecord.BetRecordActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.money.withdraw.WithdrawActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -117,6 +121,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.money.withdraw.BankActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.news.SportNewsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.results.ResultsSettlementActivity"
@@ -220,9 +227,6 @@
             android:name=".ui.profileCenter.authbind.AuthActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.maintab.home.news.NewsHomeActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.maintab.home.news.NewsDetailActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
@@ -235,7 +239,13 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
+        <activity
+            android:name=".ui.promotion.PromotionListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.promotion.PromotionDetailActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <service android:name=".service.BackService" /> <!-- broadCast -->
 
         <provider

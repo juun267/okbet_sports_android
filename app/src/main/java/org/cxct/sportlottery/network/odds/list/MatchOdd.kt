@@ -2,6 +2,7 @@ package org.cxct.sportlottery.network.odds.list
 
 
 import android.os.Parcelable
+import com.chad.library.adapter.base.entity.node.BaseExpandNode
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -37,13 +38,16 @@ data class MatchOdd(
     override var quickPlayCateList: MutableList<QuickPlayCate>? = null,
     @Json(name = "oddsSort")
     override var oddsSort: String? = null,
-) : MatchOdd, BaseNode(), Parcelable {
+) : MatchOdd, BaseExpandNode(), Parcelable {
 
     override val childNode: MutableList<BaseNode> = mutableListOf()
 
     override val oddsEps: EpsOdd? = null
 
+    @Deprecated("不用了")
     var isExpand = false
+
+    var isSelected = true
 
     var quickPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null //足球快捷玩法的翻譯
 
@@ -56,6 +60,10 @@ data class MatchOdd(
     @Transient
     @IgnoredOnParcel
     var oddIdsMap: MutableMap<String, MutableMap<String, Odd>> = mutableMapOf()  //用于本地计算
+
+    // 列表的父节点
+    @Transient
+    lateinit var parentNode: BaseNode
 }
 
 enum class TimeCounting(val value: Int) {

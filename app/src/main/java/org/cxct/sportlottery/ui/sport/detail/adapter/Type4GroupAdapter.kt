@@ -72,14 +72,6 @@ class Type4GroupAdapter(
                 leftName?.plus(if (isShowSpreadWithName) key else "")
             itemView.findViewById<TextView>(R.id.tv_right_name).text =
                 rightName?.plus(if (isShowSpreadWithName) key else "")
-            itemView.findViewById<ImageView>(R.id.iv_home_logo).apply {
-                setTeamLogo(oddsDetail.matchInfo?.homeIcon)
-                isVisible = leftName == oddsDetail.matchInfo?.homeName
-            }
-            itemView.findViewById<ImageView>(R.id.iv_away_logo).apply {
-                setTeamLogo(oddsDetail.matchInfo?.awayIcon)
-                isVisible = rightName == oddsDetail.matchInfo?.awayName
-            }
             itemView.findViewById<RecyclerView>(R.id.rv_bet)?.apply {
                 visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
                 adapter = TypeCSAdapter(oddsDetail, oddsList, onOddClickListener, oddsType)
