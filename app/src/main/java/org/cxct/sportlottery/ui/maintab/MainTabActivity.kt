@@ -752,12 +752,12 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     fun jumpToWorldCup() {
-        navToPosition(0)
         homeFragment().jumpToWorldCup()
+        navToPosition(0)
     }
     fun jumpToWorldCupGame() {
-        navToPosition(0)
         homeFragment().jumpToWorldCupGame()
+        navToPosition(0)
     }
 
     fun jumpToInplaySport() {

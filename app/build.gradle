@@ -361,6 +361,8 @@ dependencies {
     implementation 'com.hyman:flowlayout-lib:1.1.2'
 //    implementation("com.louiscad.splitties:splitties-fun-pack-android-base:3.0.0")
     implementation("com.louiscad.splitties:splitties-fun-pack-android-base-with-views-dsl:3.0.0")
+
+
     //compose
 //    implementation 'androidx.activity:activity-compose:1.6.1'
 //    implementation "androidx.compose.ui:ui:$compose_version"
