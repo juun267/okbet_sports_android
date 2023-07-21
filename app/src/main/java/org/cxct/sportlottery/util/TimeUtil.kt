@@ -53,6 +53,9 @@ object TimeUtil {
     fun stampToDateHMS(time: Long): String {
         return timeFormat(time, YMD_HMS_FORMAT)
     }
+    fun stampToDateHMSByRecord(time: Long): String {
+        return timeFormat(time, YMD_HMS_FORMAT_CHANGE_LINE)
+    }
 
     fun stampToDateHMSTimeZone(time: Long): String {
         val timeZoneGTM = try {
