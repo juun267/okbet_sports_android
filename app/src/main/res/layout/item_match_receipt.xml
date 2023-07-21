@@ -67,11 +67,11 @@
                 android:id="@+id/tv_play_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxWidth="300dp"
                 android:gravity="center_vertical|start"
-                android:maxWidth="180dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textColor="@color/color_FFFFFF_414655"
+                android:textColor="@color/color_0D2245"
                 android:textSize="@dimen/textSize15sp"
                 tools:text="日本奥运队" />
 
@@ -89,9 +89,10 @@
                 android:text="1.5/2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:textColor="@color/color_FFFFFF_414655"/>
+                android:textSize="@dimen/textSize14sp"
+                android:textStyle="bold"
+                android:textColor="@color/color_0D2245"/>
 
 
 

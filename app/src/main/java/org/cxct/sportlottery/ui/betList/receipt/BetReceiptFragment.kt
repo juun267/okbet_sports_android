@@ -27,6 +27,7 @@ import org.cxct.sportlottery.ui.betList.BetListViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.BetsFailedReasonUtil
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.setupSportStatusChange
 import timber.log.Timber
 
 
@@ -106,12 +107,18 @@ class BetReceiptFragment :
                 }
             }
 
-            if (needUpdate) betReceiptDiffAdapter?.submit(
+            if (needUpdate) {
+                betReceiptDiffAdapter?.submit(
                 singleBets,
                 parlayBets,
                 this@BetReceiptFragment.betParlayList ?: listOf(),
                 betResultData?.betConfirmTime ?: 0
-            )
+                )
+
+                setupReceiptStatusTips()
+                lin_result_status_processing?.gone()
+                updateBetResultStatus(Pair(sportBet.status==7,sportBet.cancelReason))
+            }
         }
 
         //投注結果
