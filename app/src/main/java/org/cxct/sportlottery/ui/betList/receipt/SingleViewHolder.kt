@@ -108,7 +108,7 @@ class SingleViewHolder private constructor(itemView: View) :
 
                     tv_play_content.text = playName
                     tvSpread.text = if (matchType != MatchType.OUTRIGHT) spread else ""
-
+                    dividerTitle.isVisible = tvSpread.text.isNotEmpty()
                     tv_odds.text = "@ $formatForOdd"
 
                     tv_league.text = leagueName
@@ -128,14 +128,10 @@ class SingleViewHolder private constructor(itemView: View) :
                     tvBetTime.text = TimeUtil.timeFormat(betConfirmTime, "yyyy-MM-dd HH:mm:ss")
                 }
 
-                if (status != 0)
+                if (status != 0) {
                     tv_bet_status_single.setBetReceiptStatus(status)
-
-                //"status": 7 顯示賠率已改變
-                if (status == 7)
                     interfaceStatusChangeListener?.onChange(code)
-
-                tv_bet_status_single.setReceiptStatusColor(status)
+                }
 
                 if (matchType == MatchType.OUTRIGHT) {
                     tv_team_names.visibility = View.GONE
