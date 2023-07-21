@@ -13,11 +13,13 @@
     <org.cxct.sportlottery.ui.maintab.games.view.GamesPageView
         android:id="@+id/gameViewCollect"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="wrap_content"/>
 
 
     <org.cxct.sportlottery.ui.maintab.games.view.GamesPageView
         android:id="@+id/gameViewRecent"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
