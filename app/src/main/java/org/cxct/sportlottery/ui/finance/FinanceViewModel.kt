@@ -166,7 +166,7 @@ class FinanceViewModel(
                 }
 
                 it.rechDateAndTime = TimeUtil.stampToDateHMSByRecord(it.addTime)
-                it.rechDateStr = TimeUtil.timeFormat(it.addTime, "yyyy-MM-dd")
+                it.rechDateStr = TimeUtil.timeFormat(it.addTime, "yyyy/MM/dd")
                 it.rechTimeStr = TimeUtil.timeFormat(it.addTime, "HH:mm:ss")
 
                 it.displayMoney = TextUtil.formatMoney(it.rechMoney)
@@ -227,8 +227,8 @@ class FinanceViewModel(
                     page++
 
                     result.rows.map {
-                        it.addTime = TimeUtil.stampToDateHMSByRecord(it.addTime.toLong())
-                        val split = it.addTime.split(' ')
+                        it.addTime = TimeUtil.timeFormat(it.addTime.toLong(), TimeUtil.YMD_HMS_FORMAT_CHANGE_LINE_2)
+                        val split = it.addTime.split(" ")
                         it.rechDateStr = split[0]
                         it.rechTimeStr = split[1]
                     }
@@ -319,7 +319,7 @@ class FinanceViewModel(
                 it.applyTime?.let { nonNullApTime ->
                     it.withdrawDateAndTime =
                         TimeUtil.stampToDateHMSByRecord(nonNullApTime)
-                    it.withdrawDate = TimeUtil.timeFormat(nonNullApTime, "yyyy-MM-dd")
+                    it.withdrawDate = TimeUtil.timeFormat(nonNullApTime, "yyyy/MM/dd")
                     it.withdrawTime = TimeUtil.timeFormat(nonNullApTime, "HH:mm:ss")
                 }
 
@@ -397,7 +397,7 @@ class FinanceViewModel(
                 }
 
                 it.rechDateAndTime = TimeUtil.stampToDateHMSByRecord(it.addTime)
-                it.rechDateStr = TimeUtil.timeFormat(it.addTime, "yyyy-MM-dd")
+                it.rechDateStr = TimeUtil.timeFormat(it.addTime, "yyyy/MM/dd")
                 it.rechTimeStr = TimeUtil.timeFormat(it.addTime, "HH:mm:ss")
                 it.displayMoney = TextUtil.formatMoney(it.money)
             }
