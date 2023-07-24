@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.button_odd_ending.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
@@ -63,25 +64,28 @@ class EndingOddsButton @JvmOverloads constructor(
 
     //常駐顯示按鈕 依狀態隱藏鎖頭
     private fun setupBetStatus(betStatus: Int) {
-        img_odd_lock.apply {
-            visibility =
-                if (betStatus == BetStatus.LOCKED.code) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
+        
+        when(betStatus) {
+            BetStatus.ACTIVATED.code -> {
+                bindStatu(true, true, false, false)
+            }
+
+            BetStatus.LOCKED.code -> {
+                bindStatu(false, false, true, false)
+            }
+
+            else -> {
+                bindStatu(false, false, false, true)
+            }
         }
 
-        img_odd_unknown.apply {
-            visibility =
-                if (betStatus == BetStatus.DEACTIVATED.code) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
-        }
+    }
 
-        isEnabled = (betStatus == BetStatus.ACTIVATED.code)
+    private fun bindStatu(enable: Boolean, isActivated: Boolean, isLocked: Boolean, isDeactivated: Boolean) {
+        isEnabled = enable
+        tv_odds.isVisible = isActivated
+        img_odd_lock.isVisible = isLocked
+        img_odd_unknown.isVisible = isDeactivated
     }
 
     private fun setupOddState(oddState: Int) {
