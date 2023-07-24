@@ -94,6 +94,14 @@ class ChatViewModel(
         ChatService.sendMessage(liveMsgEntity)
     }
 
+
+    fun chatSendPictureMessage(imagePath:String){
+        val msgEvent = LiveMsgEntity()
+        msgEvent.content = imagePath
+        msgEvent.type = ChatType.CHAT_SEND_PIC_MSG.code.toString()
+        chatSendMessage(msgEvent)
+    }
+
     private inline fun convertRoomMsg(roomMsg: ChatMessageResult): ChatRoomMsg<*, *> {
         if (roomMsg.userId == userId) {
             return ChatMineMsg(roomMsg)

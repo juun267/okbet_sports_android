@@ -80,11 +80,17 @@ class ChatEmojiView(context: Context, attrs: AttributeSet?): FrameLayout(context
         gifAdapter.setList(arrayListOf("","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""))
     }
 
-    private var itemBlock:(emojiText:String)->Unit={}
+    //点击emoji表情
     fun setOnEmojiSelect(block:(emojiText:String)->Unit){
-        itemBlock=block
         emojiAdapter.setOnItemClickListener{_,_,position->
             block(emojiAdapter.data[position])
+        }
+    }
+
+    //点击发送图片表情
+    fun setOnPictureSelect(block:(picturePath:String)->Unit){
+        gifAdapter.setOnItemClickListener{_,_,position->
+            block(gifAdapter.data[position])
         }
     }
 

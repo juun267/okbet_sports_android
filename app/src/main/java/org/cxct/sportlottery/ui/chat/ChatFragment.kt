@@ -386,9 +386,8 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
 
             is ChatEvent.SendMessageStatusEvent -> {
                 binding.vChatAction.apply {
-                    //表情点击
+                    //表情点击 弹出表情框
                     setOnEmojiClick{
-                        //判断表情框是否显示
                         if(binding.chatEmojiView.isVisible()){
                             binding.chatEmojiView.gone()
                         }else{
@@ -406,6 +405,10 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
                 //表情选中emoji
                 binding.chatEmojiView.setOnEmojiSelect {
                     binding.vChatAction.etInput.insertEmoji(it)
+                }
+                //发送图片表情
+                binding.chatEmojiView.setOnPictureSelect {
+//                   viewModel.chatSendPictureMessage(it)
                 }
                 binding.chatEmojiView.setOnClickListener {
                     binding.vChatAction.ivEmoji.performClick()
