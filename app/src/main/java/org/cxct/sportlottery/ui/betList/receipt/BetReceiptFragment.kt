@@ -7,9 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.didichuxing.doraemonkit.util.GsonUtils
 import kotlinx.android.synthetic.main.fragment_bet_receipt.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
@@ -26,7 +28,10 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.betList.BetListViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.BetsFailedReasonUtil
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.toJson
+import splitties.views.setCompoundDrawables
 import timber.log.Timber
 
 
@@ -106,12 +111,17 @@ class BetReceiptFragment :
                 }
             }
 
-            if (needUpdate) betReceiptDiffAdapter?.submit(
+            if (needUpdate) {
+                betReceiptDiffAdapter?.submit(
                 singleBets,
                 parlayBets,
                 this@BetReceiptFragment.betParlayList ?: listOf(),
                 betResultData?.betConfirmTime ?: 0
-            )
+                )
+                setupReceiptStatusTips()
+                lin_result_status_processing?.gone()
+                updateBetResultStatus(Pair(sportBet.status==7,sportBet.cancelReason))
+            }
         }
 
         //投注結果
@@ -206,7 +216,7 @@ class BetReceiptFragment :
         }
 
         btnLastStep.setOnClickListener {
-            if (viewModel.betFailed.value?.first == false) {
+            if (btnLastStep.text == getText(R.string.commission_detail)) {
                 //投注成功 ， 查看注单
                 activity?.let {
                     it.supportFragmentManager.beginTransaction().remove(this@BetReceiptFragment)
@@ -246,10 +256,9 @@ class BetReceiptFragment :
 
             interfaceStatusChangeListener = object : BetReceiptDiffAdapter.InterfaceStatusChangeListener {
                 override fun onChange(cancelBy: String?) {
-                    val firstBetFailed = cancelBy?.isNotEmpty() ?: true
-                    val pair = Pair(firstBetFailed, cancelBy)
-                    Timber.d("betFirst:${firstBetFailed} betSecond:$cancelBy")
-                    updateBetResultStatus(pair)
+                    if (cancelBy.isNullOrEmpty())
+                        return
+                    updateBetResultStatus(Pair(true, cancelBy))
                 }
             }
 
@@ -290,7 +299,6 @@ class BetReceiptFragment :
 //        Timber.d("投注成功或失败: ${betFailed.first}")
 
         Timber.d("滑动位置:${betReceiptDiffAdapter?.items?.size?.minus(1) ?: 0}")
-
         binding.rvBetReceipt.postDelayed({
             binding.rvBetReceipt.scrollToPosition(betReceiptDiffAdapter?.items?.size?.minus(1) ?: 0)
         }, 100)
@@ -308,6 +316,7 @@ class BetReceiptFragment :
                 BetsFailedReasonUtil.getFailedReasonByCode(betFailed.second)
             }
             btnLastStep.text = getString(R.string.str_return_last_step)
+            btnLastStep.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(requireContext(),R.drawable.ic_bet_recept_back),null,null,null)
             btnLastStep.setTextColor(resources.getColor(R.color.color_025BE8, null))
             btnLastStep.background =
                 ResourcesCompat.getDrawable(resources, R.drawable.bg_radius_8_bet_last_step, null)
