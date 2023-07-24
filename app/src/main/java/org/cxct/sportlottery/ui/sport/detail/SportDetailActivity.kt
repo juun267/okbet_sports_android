@@ -26,7 +26,6 @@ import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_detail_sport.*
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import kotlinx.android.synthetic.main.content_baseball_status.*
-import kotlinx.android.synthetic.main.item_sport_odd.view.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_collaps1.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_collaps1.view.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_live.*

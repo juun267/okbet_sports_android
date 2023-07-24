@@ -9,8 +9,8 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
-import org.cxct.sportlottery.ui.sport.list.SportLeagueAdapter
 
+const val ODDS_ITEM_TYPE = 99
 class SportMatchProvider(private val adapter: SportLeagueAdapter2,
                          private val onOddClick: OnOddClickListener,
                          private val onFavoriteClick: (String) -> Unit,
@@ -22,7 +22,7 @@ class SportMatchProvider(private val adapter: SportLeagueAdapter2,
     }
 
     private val oddBtnCachePool = RecyclerView.RecycledViewPool().apply {
-        setMaxRecycledViews(SportLeagueAdapter.ItemType.ITEM.ordinal,150)
+        setMaxRecycledViews(ODDS_ITEM_TYPE,150)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
