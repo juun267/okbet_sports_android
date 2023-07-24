@@ -11,7 +11,7 @@ import org.cxct.sportlottery.util.getSportEnterIsClose
 class RecyclerVenuesAdapter : BindingAdapter<HomeGameBean, ItemHomeVenuesBinding>()  {
     override fun onBinding(position: Int, binding: ItemHomeVenuesBinding, item: HomeGameBean) {
         binding.run {
-            when(item.gameName){
+            when(item.uniqueName){
                 //体育
                 HomeTopView.OkSport->{
                     ivSportCover.setImageResource(R.drawable.img_sports)
