@@ -3,6 +3,7 @@ package org.cxct.sportlottery.view
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.GridLayoutManager
@@ -10,16 +11,23 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import org.cxct.sportlottery.databinding.ViewChatEmojiBinding
 import org.cxct.sportlottery.ui.chat.adapter.RecyclerChatColumnAdapter
 import org.cxct.sportlottery.ui.chat.adapter.RecyclerChatEmojiAdapter
+import org.cxct.sportlottery.ui.chat.adapter.RecyclerChatGifAdapter
 import org.cxct.sportlottery.ui.chat.bean.EmojiColumnBean
 
 class ChatEmojiView(context: Context, attrs: AttributeSet?): FrameLayout(context,attrs) {
     //表情类别
     private val columnAdapter= RecyclerChatColumnAdapter()
 
-    //表情列表adapter
+    //emoji adapter
     private val emojiAdapter= RecyclerChatEmojiAdapter()
+    private val gridManager=GridLayoutManager(context,8)
+
+    //picture adapter
+    private val gifAdapter= RecyclerChatGifAdapter()
+    private val gridManager4=GridLayoutManager(context,4)
 
     val binding:ViewChatEmojiBinding
+
     init {
         binding =ViewChatEmojiBinding.inflate(LayoutInflater.from(context), this,true)
         initView()
@@ -36,9 +44,6 @@ class ChatEmojiView(context: Context, attrs: AttributeSet?): FrameLayout(context
             recyclerEmoji.layoutManager=gridManager
             recyclerEmoji.adapter=emojiAdapter
 
-//            blurGroup.onClick {
-//                itemBlock("")
-//            }
         }
         initColumn()
     }
@@ -52,15 +57,29 @@ class ChatEmojiView(context: Context, attrs: AttributeSet?): FrameLayout(context
         columnAdapter.setList(arrayListOf(c1,c2,c3))
         columnAdapter.setOnItemClickListener{_,_,position->
             clearSelect()
-            columnAdapter.data[position].select=true
+            val item=columnAdapter.data[position]
+            item.select=true
             columnAdapter.notifyDataSetChanged()
+            when(item.name){
+                "Emoji"->{
+                    binding.recyclerEmoji.layoutManager=gridManager
+                    binding.recyclerEmoji.adapter=emojiAdapter
+                }
+                else->{
+                    binding.recyclerEmoji.layoutManager=gridManager4
+                    binding.recyclerEmoji.adapter=gifAdapter
+                }
+            }
         }
-
-
-
         emojiAdapter.setList(ViewAction.emojiString.split(" ").toMutableList())
-
+        initGifList()
     }
+
+    //图片表情包
+    private fun initGifList(){
+        gifAdapter.setList(arrayListOf("","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""))
+    }
+
     private var itemBlock:(emojiText:String)->Unit={}
     fun setOnEmojiSelect(block:(emojiText:String)->Unit){
         itemBlock=block
