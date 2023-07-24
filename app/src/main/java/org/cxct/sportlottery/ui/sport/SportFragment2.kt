@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.extentions.newInstanceFragment
+import org.cxct.sportlottery.common.extentions.post
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.databinding.FragmentSport2Binding
 import org.cxct.sportlottery.net.ApiResult
@@ -29,10 +30,7 @@ import org.cxct.sportlottery.ui.sport.list.SportListFragment2
 import org.cxct.sportlottery.ui.sport.list.adapter.SportFooterGamesView
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
-import org.cxct.sportlottery.util.DelayRunable
-import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.util.FragmentHelper2
-import org.cxct.sportlottery.util.phoneNumCheckDialog
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -258,10 +256,15 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
     }
 
     private fun findESportMatchType(menu: Menu): MatchType {
-        return findESport(menu.inPlay.items, MatchType.IN_PLAY)
+        val matchType = findESport(menu.inPlay.items, MatchType.IN_PLAY)
             ?: findESport(menu.today.items, MatchType.TODAY)
             ?: findESport(menu.early.items, MatchType.EARLY)
-            ?: MatchType.IN_PLAY
+
+        if (matchType == null) {
+            ToastUtil.showToast(context(), R.string.P172)
+            return MatchType.IN_PLAY
+        }
+        return matchType
     }
     private fun findESport(items: List<Item>, matchType: MatchType): MatchType? {
         items.forEach {
@@ -344,7 +347,8 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             jumpMatchType ?: defaultMatchType
         }
         if (matchType != null) {
-            binding.tabLayout.getTabAt(matchTypeTab.indexOfFirst { it == matchType })?.select()
+            // 加post, 避免选中的tab不 能滚动到中间
+            post{ binding.tabLayout.getTabAt(matchTypeTab.indexOfFirst { it == matchType })?.select() }
         }
         navESport = false
     }
