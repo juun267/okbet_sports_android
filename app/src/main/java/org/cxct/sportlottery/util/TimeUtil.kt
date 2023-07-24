@@ -56,7 +56,7 @@ object TimeUtil {
         return timeFormat(time, YMD_HMS_FORMAT)
     }
     fun stampToDateHMSByRecord(time: Long): String {
-        return timeFormat(time, YMD_HMS_FORMAT_CHANGE_LINE)
+        return timeFormat(time, YMD_HMS_FORMAT_CHANGE_LINE_2)
     }
 
     fun stampToDateHMSTimeZone(time: Long): String {
