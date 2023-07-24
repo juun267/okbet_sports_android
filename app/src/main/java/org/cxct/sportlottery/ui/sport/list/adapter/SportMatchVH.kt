@@ -489,7 +489,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
     fun setupCsTextLayout(matchType: MatchType, item: MatchOdd) = binding.run {
         if (matchType == MatchType.CS) {
             llCsTextLayout.visible()
-            setMatchCsLayout(item, tvCorrect1, tvCorrect2, tvCorrect3, null)
+            setMatchCsLayout(item, tvCorrect1, tvCorrect2, tvCorrect3)
         } else {
             llCsTextLayout.gone()
         }

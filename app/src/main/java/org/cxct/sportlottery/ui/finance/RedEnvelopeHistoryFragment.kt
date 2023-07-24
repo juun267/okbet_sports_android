@@ -10,8 +10,8 @@ import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_recharge_log.*
-import kotlinx.android.synthetic.main.activity_recharge_log.view.*
+import kotlinx.android.synthetic.main.activity_redenvelope_log.*
+import kotlinx.android.synthetic.main.activity_redenvelope_log.view.*
 import kotlinx.android.synthetic.main.component_date_range_new_selector.view.*
 import kotlinx.android.synthetic.main.view_no_record.view.*
 import org.cxct.sportlottery.R

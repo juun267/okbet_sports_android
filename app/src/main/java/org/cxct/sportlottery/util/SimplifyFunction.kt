@@ -28,7 +28,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.item_favorite.view.*
 import kotlinx.android.synthetic.main.view_account_balance_2.*
 import kotlinx.coroutines.flow.*
 import org.cxct.sportlottery.BuildConfig
@@ -37,9 +36,7 @@ import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.*
-import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.CateDetailData
@@ -47,7 +44,6 @@ import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.service.close_play_cate.ClosePlayCateEvent
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.adapter.ExpanableOddsAdapter
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.common.dialog.CustomAlertDialog
@@ -57,7 +53,6 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
-import org.cxct.sportlottery.ui.sport.favorite.FavoriteAdapter
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.DisplayUtil.dpToPx
@@ -66,71 +61,9 @@ import org.cxct.sportlottery.view.boundsEditText.TextFieldBoxes
 import org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
 import org.cxct.sportlottery.view.dialog.TrialGameDialog
 import org.cxct.sportlottery.view.statusSelector.StatusSpinnerAdapter
-import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
-
-
-/**
- * @author kevin
- * @create 2022/3/31
- * @description
- */
-fun RecyclerView.addScrollWithItemVisibility(
-    onScrolling: () -> Unit, onVisible: (visibleList: List<Pair<Int, Int>>) -> Unit
-) {
-
-
-    addOnScrollListener(object : RecyclerView.OnScrollListener() {
-        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-            super.onScrollStateChanged(recyclerView, newState)
-            val currentAdapter = adapter
-            Timber.d("onScrollStateChanged")
-            when (newState) {
-                //停止
-                RecyclerView.SCROLL_STATE_IDLE -> {
-                    Timber.d("SCROLL_STATE_IDLE")
-                    val visibleRangePair = mutableListOf<Pair<Int, Int>>()
-
-                    when (currentAdapter) {
-
-                        is FavoriteAdapter -> {
-                            getVisibleRangePosition().forEach { leaguePosition ->
-                                val viewByPosition =
-                                    layoutManager?.findViewByPosition(leaguePosition)
-                                viewByPosition?.let {
-                                    if (getChildViewHolder(it) is FavoriteAdapter.ItemViewHolder) {
-                                        val viewHolder =
-                                            getChildViewHolder(it) as FavoriteAdapter.ItemViewHolder
-                                        viewHolder.itemView.rv_league.getVisibleRangePosition()
-                                            .forEach { matchPosition ->
-                                                visibleRangePair.add(
-                                                    Pair(
-                                                        leaguePosition, matchPosition
-                                                    )
-                                                )
-                                            }
-                                    }
-                                }
-                            }
-                        }
-
-
-                    }
-
-                    onVisible(visibleRangePair)
-                }
-
-                //手指滾動
-                RecyclerView.SCROLL_STATE_DRAGGING -> {
-                    Timber.d("SCROLL_STATE_DRAGGING")
-                    onScrolling()
-                }
-            }
-        }
-    })
-}
 
 fun RecyclerView.setupBackTop(targetView: View, offset: Int, tabCode: String? = null ) {
 
@@ -286,57 +219,6 @@ fun RecyclerView.getVisibleRangePosition(): List<Int> {
                 }
             }
         }
-    }
-}
-
-/**
- * 初次獲取資料訂閱可視範圍內賽事(GameV3Fragment、GameLeagueFragment、MyFavoriteFragment)
- */
-@Deprecated("不建议使用这种没有复用逻辑的集合式")
-@SuppressLint("LogNotTimber")
-fun RecyclerView.firstVisibleRange(
-    adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>,
-    activity: Activity,
-) {
-    post {
-        getVisibleRangePosition().forEach { leaguePosition ->
-            val viewByPosition = layoutManager?.findViewByPosition(leaguePosition)
-            when (adapter) {
-
-                is FavoriteAdapter -> {
-                    viewByPosition?.let { view ->
-                        if (getChildViewHolder(view) is FavoriteAdapter.ItemViewHolder) {
-                            val viewHolder =
-                                getChildViewHolder(view) as FavoriteAdapter.ItemViewHolder
-                            viewHolder.itemView.rv_league.getVisibleRangePosition()
-                                .forEach { matchPosition ->
-                                    if (adapter.data.isNotEmpty()) {
-                                        Log.d(
-                                            "[subscribe]",
-                                            "訂閱 ${adapter.data.getOrNull(leaguePosition)?.league?.name} -> " + "${
-                                                adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(
-                                                    matchPosition
-                                                )?.matchInfo?.homeName
-                                            } vs " + "${
-                                                adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(
-                                                    matchPosition
-                                                )?.matchInfo?.awayName
-                                            }"
-                                        )
-                                        (activity as BaseSocketActivity<*>).subscribeChannelHall(
-                                            adapter.data.getOrNull(leaguePosition)?.gameType?.key,
-                                            adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(
-                                                matchPosition
-                                            )?.matchInfo?.id
-                                        )
-                                    }
-                                }
-                        }
-                    }
-                }
-            }
-        }
-
     }
 }
 
