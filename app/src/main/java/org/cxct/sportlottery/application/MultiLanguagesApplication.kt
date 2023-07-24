@@ -466,7 +466,7 @@ class MultiLanguagesApplication : Application() {
         open fun showPromotionPopupDialog(activity: AppCompatActivity, onDismiss: ()->Unit) {
             if (activity.isDestroyed
                 || isCreditSystem()
-                || sConfigData?.imageList?.any { it.imageType == ImageType.PROMOTION.code && !it.imageName3.isNullOrEmpty() && !(getMarketSwitch() && it.isHidden) } != true) {
+                || sConfigData?.imageList?.any { it.imageType == ImageType.PROMOTION.code && !it.imageName3.isNullOrEmpty() && (!getMarketSwitch() && !it.isHidden) } != true) {
                 return
             }
 
