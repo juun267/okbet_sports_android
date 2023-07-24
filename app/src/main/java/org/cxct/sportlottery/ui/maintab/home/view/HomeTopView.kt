@@ -48,10 +48,10 @@ class HomeTopView @JvmOverloads constructor(
     val binding: LayoutHomeTopBinding
 
     companion object{
-        const val OkSport="OKSports"
-        const val OkGame="OKGames"
-        const val OkBingo="OKBingo"
-        const val OkLive="OKLive"
+        const val OkSport="pageOKSports"
+        const val OkGame="pageOKGames"
+        const val OkBingo="pageOKBingo"
+        const val OkLive="pageOKLive"
     }
     init {
         orientation = VERTICAL
@@ -247,7 +247,7 @@ class HomeTopView @JvmOverloads constructor(
 
         sConfigData?.homeGamesList?.forEach {
             //市场开关   okGames和 世界杯
-            if(it.gameName== OkGame||(it.gameName== OkBingo&&StaticData.worldCupOpened())){
+            if(it.uniqueName== OkGame||(it.uniqueName== OkBingo&&StaticData.worldCupOpened())){
                 //开关为false
                 if(!getMarketSwitch()){
                     //添加okGames
@@ -263,7 +263,7 @@ class HomeTopView @JvmOverloads constructor(
     private fun initVenuesItemClick(fragment: MainHomeFragment){
         venuesAdapter.setOnItemClickListener{_,_,position->
             val item=venuesAdapter.data[position]
-            when(item.gameName){
+            when(item.uniqueName){
                 //体育
                 OkSport->{
                     fragment.jumpToInplaySport()
