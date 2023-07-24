@@ -2,6 +2,8 @@ package org.cxct.sportlottery.util
 
 import android.content.Context
 import com.bumptech.glide.Glide
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.network.index.config.ConfigData
 import org.cxct.sportlottery.network.index.config.ImageData
@@ -9,11 +11,12 @@ import org.cxct.sportlottery.network.index.config.ImageData
 object ConfigResource {
 
     private val BANNER_SPLASH = 9           // 启动页轮播图
+    private val BANNER_HOME = 2             // 首页轮播图
     private val HOME_AD = 7                 // 首页弹窗
     private val SPORT_AD = 14               // 体育弹窗
     private val OKGAME_AD = 16              // okgame 弹窗
     private val PROMOTIONS_AD = 5           // 优惠活动
-    private val IMAGE_TYPE_SORT = arrayOf(BANNER_SPLASH, HOME_AD, SPORT_AD, OKGAME_AD, PROMOTIONS_AD) // 图片缓存下载顺序
+    private val IMAGE_TYPE_SORT = arrayOf(BANNER_SPLASH, HOME_AD, BANNER_HOME, SPORT_AD, OKGAME_AD, PROMOTIONS_AD) // 图片缓存下载顺序
 
     // 预下载图片资源
     fun preloadResource(config: ConfigData) {
@@ -43,6 +46,7 @@ object ConfigResource {
     private fun takeUrl(imgData: ImageData, host: String, lang: String): Pair<Int, String>? {
 
         if (imgData.imageType == BANNER_SPLASH
+            || imgData.imageType == BANNER_HOME
             || imgData.imageType == HOME_AD
             || imgData.imageType == SPORT_AD
             || imgData.imageType == OKGAME_AD) {
@@ -66,7 +70,7 @@ object ConfigResource {
     }
 
     private fun preDownloadImg(context: Context, url: String) {
-        Glide.with(context).load(url).downloadOnly(Integer.MAX_VALUE, Integer.MAX_VALUE)
+        GlobalScope.async { Glide.with(context).load(url).downloadOnly(Integer.MAX_VALUE, Integer.MAX_VALUE).get() }
     }
 
 }
