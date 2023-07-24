@@ -9,14 +9,10 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.content_baseball_status.view.*
-import kotlinx.android.synthetic.main.item_sport_favorite.view.*
-import kotlinx.android.synthetic.main.item_sport_odd.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.ui.sport.common.LeagueOddListener
-import org.cxct.sportlottery.ui.sport.vh.ViewHolderTimer
 import org.cxct.sportlottery.util.*
 
 
@@ -293,141 +289,6 @@ fun setMatchCardText(
 }
 
 /**
- * 设置赛事时间和状态
- */
-fun setMatchTimeAndStatus(
-    matchInfo: MatchInfo,
-    tvMatchTime: TextView,
-    tvMatchStatus: TextView,
-    viewHolderTimer: ViewHolderTimer,
-    isTimerEnable: Boolean,
-    isTimerPause: Boolean,
-) {
-
-    tvMatchTime.apply {
-        when {
-            TimeUtil.isTimeInPlay(matchInfo.startTime) -> {
-                if (matchInfo.gameType == GameType.TN.key) {
-                    visibility = View.GONE
-                    return
-                }
-                val socketValue = matchInfo.socketMatchStatus
-
-                if (needCountStatus(socketValue, matchInfo.leagueTime)) {
-                    visibility = View.VISIBLE
-                    viewHolderTimer.listener =
-                        object : ViewHolderTimer.TimerListener {
-                            override fun onTimerUpdate(timeMillis: Long) {
-                                if (timeMillis > 1000) {
-                                    text =
-                                        TimeUtil.longToMmSs(timeMillis)
-                                } else {
-                                    text = context.getString(R.string.time_up)
-                                }
-                                matchInfo.leagueTime = (timeMillis / 1000).toInt()
-                            }
-                        }
-                    viewHolderTimer.updateTimer(
-                        isTimerEnable,
-                        isTimerPause,
-                        matchInfo.leagueTime ?: 0,
-                        isDecrease = (matchInfo.gameType == GameType.BK.key ||
-                                matchInfo.gameType == GameType.RB.key ||
-                                matchInfo.gameType == GameType.AFT.key)
-                    )
-
-                } else {
-                    visibility = View.GONE
-                }
-            }
-            TimeUtil.isTimeAtStart(matchInfo.startTime) -> {
-                viewHolderTimer.listener = object : ViewHolderTimer.TimerListener {
-                    override fun onTimerUpdate(timeMillis: Long) {
-                        if (timeMillis > 1000) {
-                            val min = TimeUtil.longToMinute(timeMillis)
-                            text =
-                                String.format(resources.getString(R.string.at_start_remain_minute),
-                                    min
-                                )
-                        } else {
-                            //等待Socket更新
-                            text =
-                                String.format(resources.getString(R.string.at_start_remain_minute),
-                                    0)
-                        }
-                        matchInfo.remainTime = timeMillis
-//                            itemView.league_odd_match_remain_time_icon.visibility = View.VISIBLE
-                    }
-                }
-
-                matchInfo.remainTime?.let { remainTime ->
-                    viewHolderTimer.updateTimer(
-                        true,
-                        isTimerPause,
-                        (remainTime / 1000).toInt(),
-                        true
-                    )
-                }
-            }
-            else -> {
-                visibility = View.VISIBLE
-                text =
-                    TimeUtil.timeFormat(matchInfo?.startTime,
-                        if (TimeUtil.isTimeToday(matchInfo?.startTime)) TimeUtil.HM_FORMAT else TimeUtil.DM_HM_FORMAT)
-            }
-        }
-    }
-    tvMatchStatus.apply {
-        text = when {
-            (TimeUtil.isTimeInPlay(matchInfo.startTime)
-                    && matchInfo.status == GameStatus.POSTPONED.code
-                    && (matchInfo.gameType == GameType.FT.name || matchInfo.gameType == GameType.BK.name || matchInfo.gameType == GameType.TN.name)) -> {
-                context.getString(R.string.game_postponed)
-            }
-            TimeUtil.isTimeInPlay(matchInfo.startTime) -> {
-                if (matchInfo.statusName18n != null) {
-                    //网球，排球，乒乓，羽毛球，就不显示
-                    if (matchInfo.gameType == GameType.TN.name
-                        || matchInfo.gameType == GameType.VB.name
-                        || matchInfo.gameType == GameType.TT.name
-                        || matchInfo.gameType == GameType.BM.name
-                    ) {
-                        ""
-                    } else {
-                        matchInfo.statusName18n
-
-                    }
-
-                } else {
-                    ""
-                }
-            }
-            TimeUtil.isTimeToday(matchInfo.startTime) -> {
-                context.getString((R.string.home_tab_today))
-            }
-            else -> {
-                isVisible = false
-                ""
-            }
-        }
-    }
-    when {
-        (TimeUtil.isTimeInPlay(matchInfo.startTime) && matchInfo.status == GameStatus.POSTPONED.code && (matchInfo.gameType == GameType.FT.name || matchInfo.gameType == GameType.BK.name || matchInfo.gameType == GameType.TN.name)) -> {
-            tvMatchTime.visibility = View.GONE
-        }
-
-        TimeUtil.isTimeInPlay(matchInfo.startTime) -> {
-            if (matchInfo.statusName18n != null) {
-                tvMatchStatus.visibility = View.VISIBLE
-            }
-        }
-        TimeUtil.isTimeAtStart(matchInfo.startTime) -> {
-            tvMatchStatus.visibility = View.GONE
-        }
-    }
-}
-
-/**
  * 设置网球的中间分数布局
  */
 fun setTNRoundScore(
@@ -527,8 +388,7 @@ fun setMatchCsLayout(
     item: MatchOdd,
     tv_correct_1: TextView,
     tv_correct_2: TextView,
-    tv_correct_3: TextView,
-    leagueOddListener: LeagueOddListener?,
+    tv_correct_3: TextView
 ) {
     //比照h5，直接使用local波膽翻譯文字
     tv_correct_1.text = tv_correct_1.context.getText(R.string.correct)
@@ -566,20 +426,17 @@ fun setMatchCsLayout(
         tv_correct_1.isSelected = true
         tv_correct_2.isSelected = false
         tv_correct_3.isSelected = false
-        leagueOddListener?.onClickCsTabListener(PlayCate.CS, item)
     }
 
     tv_correct_2.setOnClickListener {
         tv_correct_1.isSelected = false
         tv_correct_2.isSelected = true
         tv_correct_3.isSelected = false
-        leagueOddListener?.onClickCsTabListener(PlayCate.CS_1ST_SD, item)
     }
     tv_correct_3.setOnClickListener {
         tv_correct_1.isSelected = false
         tv_correct_2.isSelected = false
         tv_correct_3.isSelected = true
-        leagueOddListener?.onClickCsTabListener(PlayCate.LCS, item)
     }
 }
 

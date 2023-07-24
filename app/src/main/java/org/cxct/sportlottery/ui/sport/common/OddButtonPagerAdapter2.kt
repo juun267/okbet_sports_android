@@ -11,7 +11,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.ui.sport.list.SportLeagueAdapter
+import org.cxct.sportlottery.ui.sport.list.adapter.ODDS_ITEM_TYPE
 import org.cxct.sportlottery.ui.sport.list.adapter.OnOddClickListener
 import org.cxct.sportlottery.ui.sport.oddsbtn.PlayCateView
 import org.cxct.sportlottery.util.LanguageManager
@@ -48,7 +48,7 @@ class OddButtonPagerAdapter2(val context: Context,
     }
 
     override fun getItemViewType(position: Int): Int {
-        return SportLeagueAdapter.ItemType.ITEM.ordinal
+        return ODDS_ITEM_TYPE
     }
 
     fun setupData(matchType: MatchType, item: MatchOdd, oddsType: OddsType) {

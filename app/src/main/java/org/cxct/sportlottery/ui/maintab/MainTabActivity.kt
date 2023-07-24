@@ -45,7 +45,6 @@ import org.cxct.sportlottery.repository.ConfigRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.ui.betRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.betRecord.BetRecordFragment
@@ -58,7 +57,6 @@ import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment2
 import org.cxct.sportlottery.ui.maintab.menu.SportLeftMenuFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.ui.sport.SportFragment2
-import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment
 import org.cxct.sportlottery.ui.sport.oddsbtn.OddsButton2
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.PopImageDialog
@@ -77,7 +75,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 Pair(HomeFragment::class.java, null),
                 Pair(SportFragment2::class.java, null),
                 Pair(OKGamesFragment::class.java, null),
-                Pair(FavoriteFragment::class.java, null),
+                Pair(OKGamesFragment::class.java, null), // 占坑
                 Pair(ProfileCenterFragment::class.java, null),
             )
         )
@@ -207,9 +205,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     fun checkSportFragment(position: Int): Boolean {
         val fragment = fragmentHelper.getFragment(position)
         if (fragment is SportFragment2) {
-            return true
-        }
-        if (fragment is FavoriteFragment && !isOpenChatRoom()) {
             return true
         }
         if (fragment is BetRecordFragment) {
