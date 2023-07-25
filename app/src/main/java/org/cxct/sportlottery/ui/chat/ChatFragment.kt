@@ -4,6 +4,7 @@ package org.cxct.sportlottery.ui.chat
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Context
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +30,8 @@ import org.cxct.sportlottery.ui.chat.adapter.ChatMessageListAdapter3
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.afterTextChanged
+import org.cxct.sportlottery.view.insertEmoji
+import org.cxct.sportlottery.view.isVisible
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import timber.log.Timber
 import java.io.File
@@ -383,6 +386,14 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
 
             is ChatEvent.SendMessageStatusEvent -> {
                 binding.vChatAction.apply {
+                    //输入框表情icon点击
+                    setOnEmojiClick{
+                        if(binding.chatEmojiView.isVisible()){
+                            binding.chatEmojiView.gone()
+                        }else{
+                            binding.chatEmojiView.visible()
+                        }
+                    }
                     setInputMaxLength(chatEvent.textMaxLength)
                     setInputStatus(chatEvent.sendTextEnabled)
                     setSendStatus(chatEvent.sendTextEnabled && etInput.text.toString().isNotEmpty())
@@ -390,6 +401,18 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
                     if (LoginRepository.isLogined() && !chatEvent.sendTextEnabled && !chatEvent.uploadImgEnable) {
                         showToast(getString(R.string.chat_you_banned))
                     }
+                }
+                //表情选中emoji
+                binding.chatEmojiView.setOnEmojiSelect {
+                    binding.vChatAction.etInput.insertEmoji(it)
+                }
+                //发送图片表情
+                binding.chatEmojiView.setOnPictureSelect {
+                    binding.vChatAction.ivEmoji.performClick()
+                   viewModel.chatSendPictureMessage(it)
+                }
+                binding.chatEmojiView.setOnClickListener {
+                    binding.vChatAction.ivEmoji.performClick()
                 }
             }
 
@@ -528,6 +551,10 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
 
             onError(iconUrlResult.msg) { }
         }
+
+        viewModel.chatStickerEvent.observe(this){
+                binding.chatEmojiView.initColumn(it)
+        }
     }
 
     private fun insertItem(isMe: Boolean = false) {
@@ -573,6 +600,11 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
         }
 
         if(v == binding.vChatAction.ivSend) {
+            //隐藏表情板块
+            if(binding.vChatAction.expandEmoji){
+                binding.vChatAction.ivEmoji.performClick()
+            }
+
             val input = binding.vChatAction.etInput.text.toString().replace("\n", "")
             if (input.isNullOrEmpty()) return
             if (!mIsEnabled) {
