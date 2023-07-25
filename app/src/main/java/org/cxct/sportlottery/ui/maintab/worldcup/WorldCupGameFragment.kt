@@ -49,7 +49,6 @@ class WorldCupGameFragment : BaseBottomNavigationFragment<MainHomeViewModel>(Mai
             .statusBarDarkFont(false)
             .init()
         initToolBar()
-        initObservable()
         initWeb()
         loadWebURL()
     }
@@ -102,33 +101,6 @@ class WorldCupGameFragment : BaseBottomNavigationFragment<MainHomeViewModel>(Mai
         LogUtil.d("url="+url)
         binding.okWebView.loadUrl(url)
     }
-
-
-    override fun onResume() {
-        super.onResume()
-        binding.okWebView.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        binding.okWebView.onPause()
-    }
-    fun reloadWeb() {
-        loadWebURL()
-    }
-
-    private fun initObservable() {
-        if (viewModel == null) {
-            return
-        }
-        viewModel.oddsType.observe(viewLifecycleOwner) { loadWebURL() }
-    }
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding.okWebView.destroy()
-
-    }
-
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (hidden){
@@ -140,7 +112,7 @@ class WorldCupGameFragment : BaseBottomNavigationFragment<MainHomeViewModel>(Mai
                 .statusBarDarkFont(false)
                 .init()
             binding.homeToolbar.onRefreshMoney()
-            reloadWeb()
+            loadWebURL()
         }
     }
     open class WorldCupGameJsInterface(val fragment: WorldCupGameFragment) {
