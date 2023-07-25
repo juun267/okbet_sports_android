@@ -14,6 +14,7 @@ import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.fragment_worldcup.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.MenuEvent
 import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.FragmentWorldcupBinding
@@ -39,6 +40,7 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
     private lateinit var binding: FragmentWorldcupBinding
     private val loadingHolder by lazy { Gloading.wrapView(binding.okWebView) }
     private inline fun mainTabActivity() = activity as MainTabActivity
+    private var mOddType: OddsType = MultiLanguagesApplication.mInstance.mOddsType.value?:OddsType.EU
 
     override fun createRootView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
@@ -136,10 +138,11 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
         if (viewModel == null) {
             return
         }
-
         viewModel.oddsType.observe(viewLifecycleOwner) {
-            LogUtil.d("oddsType")
-            loadWebURL()
+            if (mOddType!=it){
+                mOddType=it
+                loadWebURL()
+            }
         }
     }
     override fun onDestroyView() {
@@ -159,7 +162,6 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
                 .statusBarDarkFont(false)
                 .init()
             binding.homeToolbar.onRefreshMoney()
-            LogUtil.d("onHiddenChanged")
             loadWebURL()
         }
     }
