@@ -3,19 +3,15 @@ package org.cxct.sportlottery.service
 import android.app.Service
 import android.content.Intent
 import android.os.Binder
-import android.os.Bundle
 import android.os.IBinder
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
+import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.network.Constants
-import org.cxct.sportlottery.network.common.MatchOdd
-import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
-import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.util.EncryptUtil
 import org.cxct.sportlottery.util.HTTPsUtil
 import timber.log.Timber
@@ -26,32 +22,17 @@ import ua.naiksoftware.stomp.dto.StompHeader
 import java.net.ConnectException
 import java.net.NoRouteToHostException
 import java.net.SocketTimeoutException
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 
 class BackService : Service() {
     companion object {
 
-
-        const val CUSTOM_DATA_MATCH_ODD = "CUSTOM_DATA_MATCH_ODD"
-        const val CUSTOM_DATA_MATCH_TYPE = "CUSTOM_DATA_MATCH_TYPE"
-
-        const val USE_SUBSCRIBE_DATA = "USE_SUBSCRIBE_DATA" //是否將第一筆訂閱後取得的資料作為新資料直接顯示, 而非用於變化更新
-
-        const val SERVICE_SEND_DATA = "SERVICE_SEND_DATA"
-        const val CHANNEL_KEY = "channel"
-        const val SERVER_MESSAGE_KEY = "serverMessage"
-
-        //        const val WS_END_TYPE = "proto"
         const val WS_END_TYPE = "encrypted"
 
         private val URL_SOCKET_HOST_AND_PORT: String get() = "${Constants.getSocketUrl()}/api/ws/app/im" //app连接端点,无sockjs
 
         const val URL_ALL = "/ws/notify/all/$WS_END_TYPE" //全体公共频道
-        //const val URL_ALL = "/ws/notify/all" //全体公共频道
-
-        const val URL_PING = "/ws/ping" //心跳检测通道 （pong消息将发往用户私人频道）
 
         private const val SPORT_HALL_CHANNEL_LENGTH = 6
 
@@ -65,12 +46,8 @@ class BackService : Service() {
         //const val URL_USER = "/user/self"
         //val URL_USER_PRIVATE: String get() = "/ws/notify/user/$mUserId"  //用户私人频道
         //val URL_PLATFORM get() = "/ws/notify/platform/$mPlatformId"
-        const val URL_EVENT =
-            "/ws/notify/event" //具体赛事/赛季频道 //(普通玩法：eventId就是matchId，冠军玩法：eventId是赛季Id)
+        const val URL_EVENT = "/ws/notify/event" //具体赛事/赛季频道 //(普通玩法：eventId就是matchId，冠军玩法：eventId是赛季Id)
         const val URL_HALL = "/ws/notify/hall" //大厅赔率频道 //cateMenuCode：HDP&OU=讓球&大小, 1X2=獨贏
-        const val URL_CHAT_ROOM = "/ws/notify/room" //订阅聊天室
-        const val URL_CHAT_USER = "/ws/notify/user" //订阅用户
-        const val URL_SEND_MESSAGE = "/ws/notify/room/{roomId}/sendMessage"//描述: 传送指定房间聊天讯息
 
         private const val HEART_BEAT_RATE = 10 * 1000 //每隔10秒進行一次對長連線的心跳檢測
         private const val RECONNECT_LIMIT = 1 //斷線後重連次數限制
@@ -84,8 +61,7 @@ class BackService : Service() {
     private var mCompositeDisposable: CompositeDisposable? = null //訊息接收通道 數組
     private val mHeader: List<StompHeader> get() = listOf(StompHeader("token", mToken))
     private val mSubscribedMap = mutableMapOf<String, Disposable?>() //Map<url, channel>
-    private val mOriginalSubscribedMap =
-        mutableMapOf<String, Disposable?>() //投注單頁面邏輯, 紀錄進入投注單前以訂閱的頻道, 離開投注單頁面時, 解除訂閱不解除此map中的頻道
+    private val mOriginalSubscribedMap = mutableMapOf<String, Disposable?>() //投注單頁面邏輯, 紀錄進入投注單前以訂閱的頻道, 離開投注單頁面時, 解除訂閱不解除此map中的頻道
     private var mFastBetSubscribed: String? = null
     private val mSubscribeChannelPending = mutableListOf<String>()
     private var errorFlag = false // Stomp connect錯誤
@@ -241,55 +217,12 @@ class BackService : Service() {
         mStompClient = null
     }
 
-    private fun sendMessageToActivity(
-        channel: String,
-        message: String,
-        matchOdd: MatchOdd?,
-        matchType: MatchType?,
-        isSubscribeData: Boolean,
-    ) {
-        val bundle = Bundle()
-        bundle.putString(CHANNEL_KEY, channel)
-        bundle.putString(SERVER_MESSAGE_KEY, setJObjToJArray(message))
-        when (matchOdd) {
-            //首頁使用的資料結構
-            is Recommend -> {
-                matchOdd
-            }
-            //大廳使用的資料結構
-            is org.cxct.sportlottery.network.odds.list.MatchOdd -> {
-                matchOdd
-            }
-            //詳細頁使用的資料結構
-            is org.cxct.sportlottery.network.odds.detail.MatchOdd -> {
-                matchOdd
-            }
-            is org.cxct.sportlottery.network.bet.info.MatchOdd -> {
-                matchOdd
-            }
-            else -> {
-                null
-            }
-        }?.let {
-            bundle.putParcelable(CUSTOM_DATA_MATCH_ODD, it)
-        }
-        bundle.putSerializable(CUSTOM_DATA_MATCH_TYPE, matchType)
-        bundle.putBoolean(USE_SUBSCRIBE_DATA, isSubscribeData)
-        val intent = Intent(SERVICE_SEND_DATA)
-        intent.putExtras(bundle)
-        ServiceBroadcastReceiver.onReceiveMessage(bundle)
+    private fun sendMessageToActivity(channel: String, message: String?) {
+        message?.let { ServiceBroadcastReceiver.onReceiveMessage(channel, message) }
     }
 
     private fun sendConnectStatusToActivity(connectStatus: ServiceConnectStatus) {
         ServiceBroadcastReceiver.onConnectStatus(connectStatus)
-    }
-
-    private fun setJObjToJArray(message: String): String {
-        var newStr = message
-        if (message.startsWith("{") && message.endsWith("}")) {
-            newStr = "[$message]"
-        }
-        return newStr
     }
 
     private fun resetSubscriptions() {
@@ -303,12 +236,7 @@ class BackService : Service() {
      * mStompClient?.isConnected 可能實際上不代表Client連線成功
      * @param firstSubscribeData 是否使用訂閱後第一筆資料作為新資料直接顯示, 而非更新
      * */
-    private fun subscribeChannel(
-        url: String,
-        matchOdd: MatchOdd? = null,
-        matchType: MatchType? = null,
-        firstSubscribeData: Boolean = false,
-    ) {
+    private fun subscribeChannel(url: String) {
         if (mSubscribedMap.containsKey(url)) return
 
         if (mStompClient?.isConnected != true) {
@@ -319,20 +247,14 @@ class BackService : Service() {
 
         Timber.i(">>> subscribe channel: $url")
 
-        //紀錄是否為訂閱後第一筆
-        var useSubscribeData = firstSubscribeData
-
         mStompClient?.run {
             this.topic(url, mHeader)
                 .subscribeOn(Schedulers.io())
                 .subscribe({ topicMessage ->
-                    Timber.v("[$url] 訂閱接收訊息: ${EncryptUtil.uncompress(topicMessage.payload)}")
-                    sendMessageToActivity(url,
-                        topicMessage.payload,
-                        matchOdd,
-                        matchType,
-                        useSubscribeData)
-                    useSubscribeData = false //第一筆過後將flag設為false
+                    if (BuildConfig.DEBUG) { // 仅开发模式执行，该段代码会进行数据解密会对性能有所影响
+                        Timber.v("[$url] 訂閱接收訊息: ${EncryptUtil.uncompress(topicMessage.payload)}")
+                    }
+                    sendMessageToActivity(url, topicMessage.payload)
                 }, { throwable ->
                     Timber.e("[$url] 訂閱通道失敗: $throwable")
                 })
@@ -398,12 +320,12 @@ class BackService : Service() {
         }
     }
 
-    fun subscribeEventChannel(eventId: String?, matchOdd: MatchOdd? = null) {
+    fun subscribeEventChannel(eventId: String?) {
         if (eventId == null) return
 
         val url = "$URL_EVENT/$mPlatformId/$eventId/$WS_END_TYPE"
         //val url = "$URL_EVENT/$mPlatformId/$eventId"
-        subscribeChannel(url, matchOdd)
+        subscribeChannel(url)
     }
 
     fun unsubscribeEventChannel(eventId: String?) {
@@ -431,24 +353,17 @@ class BackService : Service() {
     }
 
     fun subscribeSportChannelHall() {
-        val url =
-            "$URL_HALL/$WS_END_TYPE" //推送频道从原本的/notify/hall/{platformId}/{gameType}调整为/notify/hall,移除平台id与gameType,
+        val url = "$URL_HALL/$WS_END_TYPE" //推送频道从原本的/notify/hall/{platformId}/{gameType}调整为/notify/hall,移除平台id与gameType,
         //val url = "$URL_HALL"
         subscribeChannel(url)
     }
 
-    fun subscribeHallChannel(
-        gameType: String?,
-        eventId: String?,
-        matchOdd: MatchOdd? = null,
-        matchType: MatchType? = null,
-        isSubscribeData: Boolean = false,
-    ) {
+    fun subscribeHallChannel(gameType: String?, eventId: String?) {
         if (gameType == null || eventId == null) return
         val url = "$URL_HALL/$mPlatformId/$gameType/$eventId/$WS_END_TYPE"
         //val url = "$URL_HALL/$mPlatformId/$gameType/$eventId"
 
-        subscribeChannel(url, matchOdd, matchType, isSubscribeData)
+        subscribeChannel(url)
     }
 
     fun unsubscribeHallChannel(gameType: String?, eventId: String?) {

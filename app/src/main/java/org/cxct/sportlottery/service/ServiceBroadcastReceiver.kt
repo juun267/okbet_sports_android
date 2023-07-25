@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.service
 
 
-import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -35,8 +34,6 @@ import org.cxct.sportlottery.network.service.sys_maintenance.SysMaintenanceEvent
 import org.cxct.sportlottery.network.service.user_level_config_change.UserLevelConfigListEvent
 import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.service.BackService.Companion.CHANNEL_KEY
-import org.cxct.sportlottery.service.BackService.Companion.SERVER_MESSAGE_KEY
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
@@ -151,12 +148,9 @@ object ServiceBroadcastReceiver {
         _serviceConnectStatus.postValue(connectStatus)
     }
 
-    fun onReceiveMessage(bundle: Bundle) {
+    fun onReceiveMessage(channelStr: String, messageStr: String) {
 
         CoroutineScope(Dispatchers.IO).launch {
-
-            val channelStr = bundle.getString(CHANNEL_KEY, "") ?: ""
-            val messageStr = bundle.getString(SERVER_MESSAGE_KEY) ?: return@launch
 
             try {
 
