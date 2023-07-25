@@ -211,4 +211,13 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
         finish()
         exitProcess(0)
     }
+
+    private var isSkiped = false
+    override fun startActivity(intent: Intent) {
+        if (!isSkiped) {
+            isSkiped = true
+            super.startActivity(intent)
+        }
+    }
+
 }
