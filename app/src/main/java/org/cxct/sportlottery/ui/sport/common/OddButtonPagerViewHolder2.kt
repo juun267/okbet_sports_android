@@ -4,9 +4,7 @@ import android.graphics.Color
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
-import android.util.Log
-import androidx.core.content.ContextCompat
-import org.cxct.sportlottery.R
+import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
@@ -21,7 +19,7 @@ import org.cxct.sportlottery.ui.sport.oddsbtn.PlayCateView
 import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
 import org.cxct.sportlottery.util.LanguageManager
 
-class OddButtonPagerViewHolder2(val oddBtnList: PlayCateView) : OddStateViewHolder(oddBtnList) {
+class OddButtonPagerViewHolder2(val oddBtnList: PlayCateView) : RecyclerView.ViewHolder(oddBtnList) {
 
     private fun <K, V> Map<K, V>?.getPlayCateName(selectLanguage: LanguageManager.Language): String {
         val playCateName = this?.get<Any?, V>(selectLanguage.key) ?: this?.get<Any?, V>(
