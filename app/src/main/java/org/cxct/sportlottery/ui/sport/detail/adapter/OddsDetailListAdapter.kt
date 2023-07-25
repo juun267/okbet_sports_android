@@ -1372,10 +1372,12 @@ class OddsDetailListAdapter(
                                 rvBet.tag = oddsDetail.gameType
                                 setOddsDetailData(oddsDetail)
                              }
-                            notifyDataSetChanged()
+                            if (payloads?.isEmpty()==true){
+                                notifyDataSetChanged()
+                            }
                         }
                     }
-                    if (payloads?.isNullOrEmpty() == false) {
+                    if (payloads?.isNotEmpty()==true) {
                         ((it1.adapter) as TypeSingleAdapter).setOddsDetailData(oddsDetail)
                         payloads.forEach { payloadItem ->
                             val index = oddsDetail.oddArrayList.indexOf(oddsDetail.oddArrayList.find { it?.id == payloadItem })
