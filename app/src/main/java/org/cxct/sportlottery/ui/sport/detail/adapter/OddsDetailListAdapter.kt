@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.didichuxing.doraemonkit.util.GsonUtils
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import kotlinx.android.synthetic.main.content_odds_detail_list_team.view.*
 import org.cxct.sportlottery.R
@@ -1365,10 +1366,12 @@ class OddsDetailListAdapter(
                                 rvBet.tag = oddsDetail.gameType
                                 setOddsDetailData(oddsDetail)
                              }
-                            notifyDataSetChanged()
+                            if (payloads?.isEmpty()==true){
+                                notifyDataSetChanged()
+                            }
                         }
                     }
-                    if (payloads?.isNullOrEmpty() == false) {
+                    if (payloads?.isNotEmpty()==true) {
                         ((it1.adapter) as TypeSingleAdapter).setOddsDetailData(oddsDetail)
                         payloads.forEach { payloadItem ->
                             val index = oddsDetail.oddArrayList.indexOf(oddsDetail.oddArrayList.find { it?.id == payloadItem })
