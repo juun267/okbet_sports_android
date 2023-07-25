@@ -386,7 +386,7 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
 
             is ChatEvent.SendMessageStatusEvent -> {
                 binding.vChatAction.apply {
-                    //表情点击 弹出表情框
+                    //输入框表情icon点击
                     setOnEmojiClick{
                         if(binding.chatEmojiView.isVisible()){
                             binding.chatEmojiView.gone()

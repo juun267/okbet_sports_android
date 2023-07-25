@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<eightbitlab.com.blurview.BlurView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/blurGroup"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:ignore="MissingClass">
+    android:layout_height="match_parent">
+
 
     <View
         android:layout_width="match_parent"
@@ -19,17 +17,17 @@
         android:layout_height="241dp"
         android:layout_gravity="bottom"
         android:layout_marginTop="10dp"
-        android:alpha="0.95"
+        android:alpha="0.98"
         android:background="@drawable/bg_chat_emoji" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerEmoji"
+        android:layout_width="match_parent"
+        android:layout_height="191dp"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="40dp"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="191dp"/>
+        android:layout_marginBottom="40dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,12 +43,12 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerColumn"
-            tools:listitem="@layout/item_chat_emoji_column"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:paddingTop="10dp"
             tools:itemCount="1"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            tools:listitem="@layout/item_chat_emoji_column" />
 
     </LinearLayout>
-</eightbitlab.com.blurview.BlurView>
+</merge>
