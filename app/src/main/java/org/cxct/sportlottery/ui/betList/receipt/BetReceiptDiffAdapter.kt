@@ -178,6 +178,8 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                         position,
                         holder.itemView.tv_bet_status_single,
                     )
+                }else{
+                    stopRunnable(position)
                 }
             }
 
@@ -204,6 +206,8 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                         position,
                         holder.itemView.tv_bet_status,
                     )
+                }else{
+                    stopRunnable(position)
                 }
             }
         }

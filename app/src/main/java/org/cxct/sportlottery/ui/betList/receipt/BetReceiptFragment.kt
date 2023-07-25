@@ -310,16 +310,20 @@ class BetReceiptFragment :
                 AppCompatResources.getDrawable(requireContext(), R.drawable.drawable_bet_failure)
             iv_result_status.setImageResource(R.drawable.ic_bet_failure)
             tv_result_status.setTextColor(requireContext().getColor(R.color.color_ff0000))
-            tv_result_status.text = if (betFailed.second.isNullOrEmpty()) {
-                getString(R.string.N417)
-            } else {
-                BetsFailedReasonUtil.getFailedReasonByCode(betFailed.second)
+            if (betFailed.second.isNullOrEmpty()){
+                tv_result_status.text = getString(R.string.N417)
+                btnLastStep.text = getString(R.string.commission_detail)
+                btnLastStep.setTextColor(resources.getColor(R.color.color_414655, null))
+                btnLastStep.background =
+                    ResourcesCompat.getDrawable(resources, R.drawable.bg_radius_8_check_bet, null)
+            }else{
+                tv_result_status.text = BetsFailedReasonUtil.getFailedReasonByCode(betFailed.second)
+                btnLastStep.text = getString(R.string.str_return_last_step)
+                btnLastStep.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(requireContext(),R.drawable.ic_bet_recept_back),null,null,null)
+                btnLastStep.setTextColor(resources.getColor(R.color.color_025BE8, null))
+                btnLastStep.background =
+                    ResourcesCompat.getDrawable(resources, R.drawable.bg_radius_8_bet_last_step, null)
             }
-            btnLastStep.text = getString(R.string.str_return_last_step)
-            btnLastStep.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(requireContext(),R.drawable.ic_bet_recept_back),null,null,null)
-            btnLastStep.setTextColor(resources.getColor(R.color.color_025BE8, null))
-            btnLastStep.background =
-                ResourcesCompat.getDrawable(resources, R.drawable.bg_radius_8_bet_last_step, null)
         } else {
             //投注成功
             lin_result_status.background =
