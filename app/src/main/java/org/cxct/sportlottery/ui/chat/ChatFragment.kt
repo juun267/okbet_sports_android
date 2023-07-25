@@ -408,7 +408,8 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
                 }
                 //发送图片表情
                 binding.chatEmojiView.setOnPictureSelect {
-//                   viewModel.chatSendPictureMessage(it)
+                    binding.vChatAction.ivEmoji.performClick()
+                   viewModel.chatSendPictureMessage(it)
                 }
                 binding.chatEmojiView.setOnClickListener {
                     binding.vChatAction.ivEmoji.performClick()
@@ -549,6 +550,10 @@ class ChatFragment: BindingSocketFragment<ChatViewModel, FragmentChatBinding>(),
             }
 
             onError(iconUrlResult.msg) { }
+        }
+
+        viewModel.chatStickerEvent.observe(this){
+                binding.chatEmojiView.initColumn(it)
         }
     }
 
