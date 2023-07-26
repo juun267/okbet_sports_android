@@ -274,7 +274,7 @@ object Constants {
     fun getWorldCupActivityH5Url(context: Context): String {
         val base = getH5BaseUrl()
 //        val base = "https://172.15.60.159:3000/"
-        return base + "mobile/personal/BasketballWorldCupLottery?bkType=1&device=android&token=${LoginRepository.token?:""}&lang=${getSelectLanguage(context).key}"
+        return base + "mobile/BasketballWorldCupLottery?bkType=1&device=android&token=${LoginRepository.token?:""}&lang=${getSelectLanguage(context).key}"
     }
 
     //https://okbet-v2.cxsport.net/activity/mobile/#/print?uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
