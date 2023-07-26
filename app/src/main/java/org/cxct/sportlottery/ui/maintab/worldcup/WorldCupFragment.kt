@@ -56,6 +56,10 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
         initToolBar()
         initObservable()
         initWeb()
+    }
+
+    override fun onResume() {
+        super.onResume()
         homeToolbar.post {
             loadWebURL()
         }
@@ -108,6 +112,7 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
         }
         addJavascriptInterface(WorldCupJsInterface(this@WorldCupFragment),
             WorldCupJsInterface.name)
+
     }
     private fun loadWebURL() {
         val url = Constants.getWorldCupH5Url(requireContext(),homeToolbar.height.pxToDp)

@@ -34,7 +34,7 @@ object JumpUtil {
         LogUtil.d("href:===>${href}")
         when{
             //是否世界杯主题活动页面
-            href?.isNotEmpty() == true &&href?.endsWith("/BasketballWorldCupLottery")->{
+            href?.isNotEmpty() == true &&href?.contains("/BasketballWorldCupLottery")->{
                 when(AppManager.currentActivity()){
                      is MainTabActivity-> (AppManager.currentActivity() as MainTabActivity)?.jumpToWorldCupGame()
                      else-> {
@@ -47,7 +47,7 @@ object JumpUtil {
                 }
             }
             //是否世界杯页面
-            href?.isNotEmpty() == true &&href?.endsWith("/world-cup")->{
+            href?.isNotEmpty() == true &&href?.contains("/world-cup")->{
                 when(AppManager.currentActivity()){
                     is MainTabActivity-> (AppManager.currentActivity() as MainTabActivity)?.jumpToWorldCup()
                     else-> {
