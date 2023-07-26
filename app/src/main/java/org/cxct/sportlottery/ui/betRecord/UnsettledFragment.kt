@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentUnsettledBinding
 import org.cxct.sportlottery.network.Constants
@@ -27,6 +28,7 @@ class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnset
     override fun onInitView(view: View) = binding.run {
         recyclerUnsettled.layoutManager = LinearLayoutManager(requireContext())
         recyclerUnsettled.adapter = mAdapter
+        recyclerUnsettled.gone()
         mAdapter.setEmptyView(BetEmptyView(requireContext()))
         mAdapter.setOnItemChildClickListener { _, view, position ->
             val data = mAdapter.data[position]

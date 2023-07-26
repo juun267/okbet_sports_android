@@ -27,12 +27,12 @@ class BetRecordActivity:BindingActivity<MainViewModel,ActivityBetRecordBinding>(
             }
 
             //未结单
-            tvUnsettled.onClick(600) {
+            tvUnsettled.onClick(2000) {
                 changeTabStyle(0)
                 replaceFragment(R.id.frameContainer,unsettledFragment)
             }
             //已结单
-            tvSettled.onClick(600) {
+            tvSettled.onClick(2000) {
                 changeTabStyle(1)
                 replaceFragment(R.id.frameContainer,settledFragment)
             }
