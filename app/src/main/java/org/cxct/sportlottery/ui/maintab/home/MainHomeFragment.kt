@@ -138,6 +138,7 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
             //隐藏时取消赛事监听
             unSubscribeChannelHallAll()
         } else {
+            binding.scrollView.smoothScrollTo(0, 0)
             binding.homeToolbar.onRefreshMoney()
             refreshHotMatch()
             //返回页面时，刷新体育相关view状态
