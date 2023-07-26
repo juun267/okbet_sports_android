@@ -31,6 +31,7 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.betRecord.BetListData
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.JsonUtil
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.SingleLiveEvent
 import org.cxct.sportlottery.util.TimeUtil
@@ -424,6 +425,8 @@ class AccountHistoryViewModel(
         )
 
         viewModelScope.launch {
+            //服务器连续请求需要间隔
+            delay(1000)
             val resultData=doNetwork(androidContext) {
                 OneBoSportApi.betService.getBetList(betListRequest)
             }
@@ -446,9 +449,10 @@ class AccountHistoryViewModel(
                     }
 
                 } else {
-                    if (result.code == NetWorkResponseType.REQUEST_TOO_FAST.code && requestCount < requestMaxCount) {
-                        unsettledDataEvent.postValue(arrayListOf())
-                    }
+                    unsettledDataEvent.postValue(arrayListOf())
+//                    if (result.code == NetWorkResponseType.REQUEST_TOO_FAST.code && requestCount < requestMaxCount) {
+//                        unsettledDataEvent.postValue(arrayListOf())
+//                    }
                 }
             }
         }
@@ -493,10 +497,11 @@ class AccountHistoryViewModel(
             totalEfficient=0.0
         }
         viewModelScope.launch {
+            delay(1500)
             val resultData=doNetwork(androidContext) {
                 OneBoSportApi.betService.getBetList(betListRequest)
             }
-            delay(300)
+
             if(resultData==null){
                 _responseFailed.postValue(true)
                 return@launch
