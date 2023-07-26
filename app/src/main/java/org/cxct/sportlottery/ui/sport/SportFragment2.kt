@@ -261,7 +261,8 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             ?: findESport(menu.early.items, MatchType.EARLY)
 
         if (matchType == null) {
-            ToastUtil.showToast(context(), R.string.P172)
+            showPromptDialog(getString(R.string.prompt), getString(R.string.P172)) { }
+//            ToastUtil.showToast(context(), R.string.P172)
             return MatchType.IN_PLAY
         }
         return matchType

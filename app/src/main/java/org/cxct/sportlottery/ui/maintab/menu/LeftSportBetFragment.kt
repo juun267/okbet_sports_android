@@ -44,14 +44,9 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
 
         //投注详情
         constrainBetRecord.setOnClickListener {
-            if(viewModel.isLogin()){
+            loginedRun(it.context) {
                 startActivity(BetRecordActivity::class.java)
-                constrainBetRecord.postDelayed({
-                    val parent=parentFragment as SportLeftMenuFragment
-                    parent.close()
-                },500)
-            }else{
-                requireActivity().startLogin()
+                constrainBetRecord.postDelayed({ (parentFragment as SportLeftMenuFragment?)?.close() },500)
             }
         }
     }

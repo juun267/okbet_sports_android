@@ -9,10 +9,10 @@ import android.os.Bundle;
 import android.os.Process;
 
 import androidx.activity.ComponentActivity;
-import androidx.appcompat.app.AppCompatActivity;
 
 import org.cxct.sportlottery.application.MultiLanguagesApplication;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,7 +25,7 @@ import java.util.Stack;
 
 public class AppManager {
     private static int actAccount = 0;
-    private static Activity currentActivity = null;
+    private static WeakReference<Activity> currentActivity = null;
     private static boolean isInit = false;
     private static Application sApplication;
     private static Stack<Activity> activityStack;
@@ -96,7 +96,7 @@ public class AppManager {
     }
 
     public static Activity currentActivity() {
-        return currentActivity;
+        return currentActivity.get();
     }
 
     public static void finishActivity() {
@@ -233,7 +233,7 @@ public class AppManager {
         }
 
         public void onActivityStarted(Activity activity) {
-            AppManager.currentActivity = activity;
+            AppManager.currentActivity = new WeakReference(activity);
             if (AppManager.actAccount == 0) {
                 this.postStatus(activity, true);
                 AppManager.isForeground = true;
@@ -243,7 +243,7 @@ public class AppManager {
         }
 
         public void onActivityResumed(Activity activity) {
-            AppManager.currentActivity = activity;
+            AppManager.currentActivity = new WeakReference(activity);
         }
 
         public void onActivityPaused(Activity activity) {

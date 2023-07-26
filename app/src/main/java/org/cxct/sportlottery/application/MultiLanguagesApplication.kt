@@ -17,13 +17,14 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.observe
-import androidx.multidex.MultiDex
 import cn.jpush.android.api.JPushInterface
 import com.appsflyer.AppsFlyerLib
 import com.didichuxing.doraemonkit.DoKit
 import com.xuexiang.xupdate.XUpdate
 import com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION
 import com.xuexiang.xupdate.utils.UpdateUtils
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import me.jessyan.autosize.AutoSize
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
@@ -34,60 +35,15 @@ import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.common.loading.LoadingAdapter
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.manager.RequestManager
-import org.cxct.sportlottery.network.money.RedEnveLopeModel
 import org.cxct.sportlottery.network.user.UserInfo
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
-import org.cxct.sportlottery.ui.betList.BetListViewModel
-import org.cxct.sportlottery.ui.betRecord.TransactionStatusViewModel
-import org.cxct.sportlottery.ui.betRecord.accountHistory.AccountHistoryViewModel
-import org.cxct.sportlottery.ui.chat.ChatViewModel
-import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
-import org.cxct.sportlottery.ui.finance.FinanceViewModel
-import org.cxct.sportlottery.ui.helpCenter.HelpCenterViewModel
-import org.cxct.sportlottery.ui.infoCenter.InfoCenterViewModel
-import org.cxct.sportlottery.ui.login.foget.ForgetViewModel
-import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
-import org.cxct.sportlottery.ui.login.signUp.RegisterViewModel
-import org.cxct.sportlottery.ui.login.signUp.info.RegisterInfoViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.maintab.MainTabViewModel
-import org.cxct.sportlottery.ui.maintab.MainViewModel
-import org.cxct.sportlottery.ui.maintab.games.OKGamesViewModel
-import org.cxct.sportlottery.ui.maintab.games.OKLiveViewModel
-import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
-import org.cxct.sportlottery.ui.maintab.menu.viewmodel.SportLeftMenuViewModel
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
-import org.cxct.sportlottery.ui.maintenance.MaintenanceViewModel
-import org.cxct.sportlottery.ui.money.recharge.MoneyRechViewModel
-import org.cxct.sportlottery.ui.money.withdraw.WithdrawViewModel
-import org.cxct.sportlottery.ui.news.NewsViewModel
-import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
-import org.cxct.sportlottery.ui.profileCenter.authbind.AuthViewModel
-import org.cxct.sportlottery.ui.profileCenter.cancelaccount.CancelAccountViewModel
-import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordViewModel
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
-import org.cxct.sportlottery.ui.profileCenter.modify.BindInfoViewModel
-import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
-import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoViewModel
-import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordViewModel
-import org.cxct.sportlottery.ui.profileCenter.profile.ProfileModel
-import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
-import org.cxct.sportlottery.ui.results.SettlementViewModel
-import org.cxct.sportlottery.ui.selflimit.SelfLimitViewModel
-import org.cxct.sportlottery.ui.splash.SplashViewModel
-import org.cxct.sportlottery.ui.sport.SportTabViewModel
-import org.cxct.sportlottery.ui.sport.SportViewModel
-import org.cxct.sportlottery.ui.sport.favorite.FavoriteViewModel
-import org.cxct.sportlottery.ui.sport.filter.LeagueSelectViewModel
-import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.AgeVerifyDialog
 import org.cxct.sportlottery.view.dialog.promotion.PromotionPopupDialog
-import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.context.startKoin
-import org.koin.dsl.module
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 import java.util.*
@@ -132,120 +88,49 @@ class MultiLanguagesApplication : Application() {
         }
 
 
-    private val viewModelModule = module {
-        viewModel { SplashViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { MoneyRechViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { MainViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { LoginViewModel(get(), get(), get(), get(), get()) }
-        viewModel { RegisterViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { SettlementViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { InfoCenterViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { HelpCenterViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { WithdrawViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { ProfileModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { ModifyProfileInfoViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { SettingPasswordViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { FeedbackViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { SelfLimitViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { FinanceViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { ProfileCenterViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { VersionUpdateViewModel(get(), get(), get(), get()) }
-        viewModel { MoneyTransferViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { MaintenanceViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { OtherBetRecordViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { AccountHistoryViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { TransactionStatusViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { NewsViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { RedEnveLopeModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { MainTabViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { SportViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { FavoriteViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { LeagueSelectViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { SportListViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { SportTabViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { CancelAccountViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { MainHomeViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { ForgetViewModel(get(), get(), get(), get()) }
-        viewModel { BetListViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { AuthViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { BindInfoViewModel(get(), get(), get(), get()) }
-        viewModel { RegisterInfoViewModel(get(), get(), get(), get()) }
-        viewModel { OKGamesViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { OKLiveViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { ChatViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { SportLeftMenuViewModel(get(), get(), get(), get(), get(), get(), get()) }
-
-    }
-
-    private val repoModule = module {
-        single { UserInfoRepository }
-        single { LoginRepository }
-        single { SportMenuRepository }
-        single { SettlementRepository() }
-        single { InfoCenterRepository() }
-        single { MoneyRepository }
-        single { BetInfoRepository }
-        single { AvatarRepository(get()) }
-        single { FeedbackRepository() }
-        single { HostRepository(get()) }
-        single { WithdrawRepository }
-        single { PlayQuotaComRepository() }
-        single { MyFavoriteRepository() }
-        single { SelfLimitRepository() }
-    }
-
-
     override fun attachBaseContext(base: Context) {
         //第一次进入app时保存系统选择语言(为了选择随系统语言时使用，如果不保存，切换语言后就拿不到了）
         LanguageManager.saveSystemCurrentLanguage(base)
         super.attachBaseContext(base)
-        MultiDex.install(this)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         //用户在系统设置页面切换语言时保存系统选择语言(为了选择随系统语言时使用，如果不保存，切换语言后就拿不到了）
         LanguageManager.saveSystemCurrentLanguage(applicationContext, newConfig)
-//        MultiLanguage.onConfigurationChanged(applicationContext)
-    }
-
-    private fun getDefaultSharedPreferences(): SharedPreferences {
-        return getSharedPreferences(packageName + "_preferences", MODE_PRIVATE)
     }
 
     override fun onCreate() {
         super.onCreate()
         appContext = applicationContext
-        instance = this
         mInstance = this
-        AppManager.init(this)
-        myPref = getDefaultSharedPreferences()
-        AutoSize.initCompatMultiProcess(this)
-        TimeZone.setDefault(timeZone)
-        startKoin {
-            androidContext(this@MultiLanguagesApplication)
-            modules(
-                listOf(
-                    viewModelModule, repoModule
-                )
-            )
-        }
 
-        RequestManager.init(this)
-        setupTimber()
+        asyncInit()
+        AppManager.init(mInstance)
+        AutoSize.initCompatMultiProcess(this)
         setNightMode()
         LanguageManager.init(this)
+        RequestManager.init(mInstance)
+        if (BuildConfig.DEBUG) {
+            CrashHandler.setup(mInstance) //错误日志收集
+            DoKit.Builder(mInstance) //性能监控模块
+                .build()
+        }
+
+    }
+
+    // 不需要在主线程初始化的进行异步初始化
+    private fun asyncInit() = GlobalScope.async {
+
+        AppViewModel.startKoin(this@MultiLanguagesApplication)
+        setupTimber()
+        TimeZone.setDefault(TimeZoneUitl.timeZone)
         //生成UUID作為設備識別碼
         setupDeviceCode()
         initAppsFlyerSDK()
         initJpush()
         initXUpdate()
 
-        if (BuildConfig.DEBUG) {
-            CrashHandler.setup(this) //错误日志收集
-            DoKit.Builder(this) //性能监控模块
-                .build()
-        }
         Gloading.initDefault(LoadingAdapter())
         initNetWorkListener()
     }
@@ -277,7 +162,7 @@ class MultiLanguagesApplication : Application() {
         }
     }
 
-    fun setNightMode(switch:Boolean=false) {
+    private fun setNightMode(switch:Boolean=false) {
         saveNightMode(switch)
         if (isNightMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
@@ -329,7 +214,7 @@ class MultiLanguagesApplication : Application() {
         }
     }
 
-    fun initXUpdate() {
+    private fun initXUpdate() {
         XUpdate.get()
             .debug(BuildConfig.DEBUG)
             .isWifiOnly(true) //默认设置只在wifi下检查版本更新
@@ -341,7 +226,7 @@ class MultiLanguagesApplication : Application() {
 
                 //设置版本更新出错的监听
                 if (error.code != CHECK_NO_NEW_VERSION) {          //对不同错误进行处理
-                    ToastUtil.showToast(instance, error.toString())
+                    ToastUtil.showToast(mInstance, error.toString())
                 }
             }
             .supportSilentInstall(true) //设置是否支持静默安装，默认是true
@@ -350,11 +235,10 @@ class MultiLanguagesApplication : Application() {
     }
 
     companion object {
-        var myPref: SharedPreferences? = null
+        val myPref: SharedPreferences by lazy { mInstance.getSharedPreferences(mInstance.packageName + "_preferences", MODE_PRIVATE) }
         lateinit var appContext: Context
         const val UUID_DEVICE_CODE = "uuidDeviceCode"
         const val UUID = "uuid"
-        private var instance: MultiLanguagesApplication? = null
         lateinit var mInstance: MultiLanguagesApplication
 
         fun stringOf(@StringRes strId: Int): String {
@@ -416,27 +300,8 @@ class MultiLanguagesApplication : Application() {
             return if (isNightMode) nightModeColor else defaultColor
         }
 
-        var timeZone: TimeZone
-            get() {
-                var displayName = myPref?.getString("timeZone", null)
-                if (displayName.isNullOrBlank()) {
-                    return TimeZone.getDefault()
-                } else {
-                    var zone = TimeZone.getTimeZone(displayName)
-                    zone.id = myPref?.getString("timeZoneId", null)
-                    return zone
-                }
-            }
-            set(zone) {
-                val editor = myPref?.edit()
-                editor?.putString("timeZone", zone.getDisplayName(false, TimeZone.SHORT))
-                editor?.putString("timeZoneId", zone.id)
-                editor?.apply()
-            }
-
-        fun getInstance(): MultiLanguagesApplication? {
-            if (instance == null) throw IllegalStateException("Application not be created yet.")
-            return instance
+        fun getInstance(): MultiLanguagesApplication {
+            return mInstance
         }
 
         //確認年齡彈窗
