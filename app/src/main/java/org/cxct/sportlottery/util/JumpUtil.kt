@@ -34,7 +34,7 @@ object JumpUtil {
         LogUtil.d("href:===>${href}")
         when{
             //是否世界杯主题活动页面
-            href?.isNotEmpty() == true &&href?.contains("personal/BasketballWorldCupLottery")->{
+            href?.isNotEmpty() == true &&href?.endsWith("/BasketballWorldCupLottery")->{
                 when(AppManager.currentActivity()){
                      is MainTabActivity-> (AppManager.currentActivity() as MainTabActivity)?.jumpToWorldCupGame()
                      else-> {
@@ -44,6 +44,19 @@ object JumpUtil {
                              (AppManager.currentActivity() as MainTabActivity)?.jumpToWorldCupGame()
                          }
                      }
+                }
+            }
+            //是否世界杯页面
+            href?.isNotEmpty() == true &&href?.endsWith("/world-cup")->{
+                when(AppManager.currentActivity()){
+                    is MainTabActivity-> (AppManager.currentActivity() as MainTabActivity)?.jumpToWorldCup()
+                    else-> {
+                        MainTabActivity.reStart(context)
+                        GlobalScope.launch {
+                            delay(1000)
+                            (AppManager.currentActivity() as MainTabActivity)?.jumpToWorldCup()
+                        }
+                    }
                 }
             }
             else->{

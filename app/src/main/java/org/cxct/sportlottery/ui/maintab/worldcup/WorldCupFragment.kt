@@ -139,16 +139,13 @@ class WorldCupFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHom
             return
         }
         viewModel.oddsType.observe(viewLifecycleOwner) {
-            if (mOddType!=it){
-                mOddType=it
+            if (mOddType != it) {
+                mOddType = it
                 loadWebURL()
             }
         }
     }
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding.okWebView.destroy()
-    }
+
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)

@@ -271,10 +271,10 @@ object Constants {
         return base + "mobile/world-cup?device=android&token=${LoginRepository.token?:""}&lang=${getSelectLanguage(context).key}&oddsType=${getCurrentOddsTypeName()}&oddsDiscount=${UserInfoRepository.userInfo.value?.discount?:1.0}&toolbarHeight=$toolbarHeight"
     }
     //2023篮球世界杯活动h5地址
-    fun getWorldCupActivityH5Url(context: Context): String {
+    fun getWorldCupActivityH5Url(context: Context,toolbarHeight:Int): String {
         val base = getH5BaseUrl()
-//        val base = "https://172.15.60.159:3000/"
-        return base + "mobile/BasketballWorldCupLottery?bkType=1&device=android&token=${LoginRepository.token?:""}&lang=${getSelectLanguage(context).key}"
+//        val base = "https://172.15.60.199:3000/"
+        return base + "mobile/BasketballWorldCupLottery?bkType=1&device=android&token=${LoginRepository.token?:""}&lang=${getSelectLanguage(context).key}&toolbarHeight=$toolbarHeight"
     }
 
     //https://okbet-v2.cxsport.net/activity/mobile/#/print?uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
