@@ -1,13 +1,9 @@
 package org.cxct.sportlottery.ui.betList.adapter
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
-import org.cxct.sportlottery.databinding.ContentBetInfoItemV32Binding
-import org.cxct.sportlottery.databinding.ContentBetInfoItemV3BaseketballEndingCardBinding
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.ui.betList.BetInfoListData
@@ -15,7 +11,7 @@ import org.cxct.sportlottery.ui.betList.adapter.BetListRefactorAdapter.BetRvType
 import org.cxct.sportlottery.ui.betList.holder.BasketballEndingCardViewHolder
 import org.cxct.sportlottery.ui.betList.listener.OnItemClickListener
 import org.cxct.sportlottery.util.KeyboardView
-import org.cxct.sportlottery.ui.betList.holder.BatchParlayConnectViewHolder as BpcVh
+import org.cxct.sportlottery.ui.betList.holder.BatchParlayViewHolder as BpcVh
 import org.cxct.sportlottery.ui.betList.holder.BetInfoItemViewHolder as BiVh
 
 class BetListRefactorAdapter(
@@ -83,24 +79,15 @@ class BetListRefactorAdapter(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             //单注和串关
-            ViewType.Bet.ordinal -> BiVh(
-                ContentBetInfoItemV32Binding.inflate(layoutInflater), userBalance
-            )
+            ViewType.Bet.ordinal -> BiVh(parent)
 
             //篮球末尾比分
-            ViewType.BasketballEndingCard.ordinal -> BasketballEndingCardViewHolder(
-                ContentBetInfoItemV3BaseketballEndingCardBinding.inflate(layoutInflater)
-            )
+            ViewType.BasketballEndingCard.ordinal -> BasketballEndingCardViewHolder(parent)
 
             //串关多注、注单列表
-            else -> BpcVh(
-                layoutInflater.inflate(
-                    R.layout.item_bet_list_batch_control_connect_v3, parent, false
-                ), keyboardView
-            )
+            else -> BpcVh(parent, keyboardView)
         }
     }
 
@@ -172,7 +159,7 @@ class BetListRefactorAdapter(
             }
 
             is BpcVh -> {
-                holder.bind(
+                holder.setupParlayItem(
                     parlayList?.getOrNull(position),
                     hasBetClosed,
                     onItemClickListener,

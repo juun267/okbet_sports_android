@@ -11,23 +11,22 @@ import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.util.TypedValue
+import android.view.LayoutInflater
 import android.view.MotionEvent
-import android.view.View
+import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
-import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.item_match_receipt.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddState
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.*
-import org.cxct.sportlottery.databinding.ContentBetInfoItemV32Binding
+import org.cxct.sportlottery.databinding.ContentBetInfoItemV32Binding as ItemBinding
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.LoginRepository
@@ -42,8 +41,8 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import timber.log.Timber
 
 class BetInfoItemViewHolder(
-    val contentView: ContentBetInfoItemV32Binding,
-    val userBalance: () -> Double,
+    parent: ViewGroup,
+    private val contentView: ItemBinding = ItemBinding.inflate(LayoutInflater.from(parent.context))
 ) : BetInfoChangeViewHolder(contentView.root) {
     private var inputMaxMoney: Double = 0.0
     private var inputMinMoney: Double = 0.0
