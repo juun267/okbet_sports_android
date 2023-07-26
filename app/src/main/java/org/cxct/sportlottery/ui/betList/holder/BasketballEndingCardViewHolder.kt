@@ -3,14 +3,16 @@ package org.cxct.sportlottery.ui.betList.holder
 import android.annotation.SuppressLint
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.MotionEvent
+import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.BetStatus
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.extentions.*
-import org.cxct.sportlottery.databinding.ContentBetInfoItemV3BaseketballEndingCardBinding
+import org.cxct.sportlottery.databinding.ContentBetInfoItemV3BaseketballEndingCardBinding as ItemBinding
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
@@ -28,7 +30,8 @@ import org.cxct.sportlottery.view.dialog.BasketballDelBetTipDialog
 import timber.log.Timber
 
 class BasketballEndingCardViewHolder(
-    private val binding: ContentBetInfoItemV3BaseketballEndingCardBinding,
+    parent: ViewGroup,
+    private val binding: ItemBinding = ItemBinding.inflate(LayoutInflater.from(parent.context)),
 ) : RecyclerView.ViewHolder(binding.root) {
 
     private var inputMaxMoney: Double = 0.0
