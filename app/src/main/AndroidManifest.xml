@@ -135,6 +135,7 @@
         <activity
             android:name=".ui.splash.SplashActivity"
             android:exported="true"
+            android:theme="@style/lunchTheme"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
