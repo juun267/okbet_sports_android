@@ -1,10 +1,9 @@
 package org.cxct.sportlottery.ui.splash
 
 import android.content.Intent
-import android.content.IntentFilter
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.View
+import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.cxct.sportlottery.BuildConfig
@@ -36,24 +35,23 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ImmersionBar.with(this).statusBarDarkFont(true).transparentStatusBar()
-            .fitsSystemWindows(false).init()
+        ImmersionBar.with(this)
+            .statusBarDarkFont(true)
+            .transparentStatusBar()
+            .hideBar(BarHide.FLAG_HIDE_NAVIGATION_BAR)
+            .fitsSystemWindows(false)
+            .init()
         setContentView(R.layout.activity_splash)
         loading()
         setupVersion()
-        //checkPermissionGranted()
+
         initObserve()
         //流程: 檢查/獲取 host -> 獲取 config -> 檢查維護狀態 -> 檢查版本更新 -> 跳轉畫面
         checkLocalHost()
         // 避免Not allowed to start service Intent异常
         runWithCatch { startService(Intent(this,BackService::class.java)) }
-        registerBroadcast()
     }
-    private fun registerBroadcast(){
-        val filter= IntentFilter()
-        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION)
-//        LocalBroadcastManager.getInstance(this).registerReceiver(NetBroadcastReceiver(),filter)
-    }
+
 
     private fun setupVersion() {
         val version = BuildConfig.VERSION_NAME
@@ -210,6 +208,13 @@ class SplashActivity : BaseSocketActivity<SplashViewModel>(SplashViewModel::clas
         super.onBackPressed()
         finish()
         exitProcess(0)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (isSkiped) {
+            window.setBackgroundDrawable(null)
+        }
     }
 
     private var isSkiped = false

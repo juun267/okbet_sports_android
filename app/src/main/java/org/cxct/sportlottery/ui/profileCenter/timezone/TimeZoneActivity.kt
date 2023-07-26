@@ -12,25 +12,18 @@ import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.common.extentions.safeClose
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.maintab.MainViewModel
-import org.cxct.sportlottery.util.JsonUtil
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.TimeZoneUitl
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 import timber.log.Timber
-import java.lang.ref.WeakReference
 
 /**
  * @app_destination 外觀(日間/夜間)切換-时区切换
  */
 class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
-
-    companion object {
-        private var timeZones: WeakReference<List<TimeZone>>? = null
-    }
 
     lateinit var adapter: TimeZoneAdapter
     private var originItems = listOf<TimeZone>()
@@ -73,7 +66,7 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             val zone = java.util.TimeZone.getTimeZone(it.name)
             zone.id = it.country_en + "/" + it.city_en
             java.util.TimeZone.setDefault(zone)
-            MultiLanguagesApplication.timeZone = zone
+            TimeZoneUitl.timeZone = zone
         })
 
         setup()
@@ -82,15 +75,7 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private fun setup() = lifecycleScope.launch(Dispatchers.IO) {
 
-        var zoneList = timeZones?.get()
-        if (zoneList == null) {
-            val inputSystem = assets.open("timezone.json")
-            val data = inputSystem.readBytes()
-            inputSystem.safeClose()
-            zoneList = JsonUtil.listFrom(String(data), TimeZone::class.java) ?: listOf()
-            timeZones = WeakReference(zoneList)
-        }
-
+        var zoneList = TimeZoneUitl.getTimeZoneList(this@TimeZoneActivity)
         originItems = zoneList
         selectItem = findCurrentZone()
 
