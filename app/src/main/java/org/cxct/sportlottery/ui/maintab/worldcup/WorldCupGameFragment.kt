@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
 import com.gyf.immersionbar.ImmersionBar
+import kotlinx.android.synthetic.main.fragment_worldcup.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.event.MenuEvent
@@ -23,6 +24,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.pxToDp
 import org.cxct.sportlottery.view.webView.OkWebChromeClient
 import org.cxct.sportlottery.view.webView.OkWebViewClient
 import org.cxct.sportlottery.view.webView.WebViewCallBack
@@ -50,7 +52,9 @@ class WorldCupGameFragment : BaseBottomNavigationFragment<MainHomeViewModel>(Mai
             .init()
         initToolBar()
         initWeb()
-        loadWebURL()
+        homeToolbar.post {
+            loadWebURL()
+        }
     }
     fun initToolBar() = binding.run {
         homeToolbar.attach(this@WorldCupGameFragment, mainTabActivity(), viewModel)
@@ -94,19 +98,22 @@ class WorldCupGameFragment : BaseBottomNavigationFragment<MainHomeViewModel>(Mai
         }
         addJavascriptInterface(WorldCupGameJsInterface(this@WorldCupGameFragment),
             WorldCupGameJsInterface.name)
+        binding.okWebView.clearCache(true)
     }
 
     private fun loadWebURL() {
-        val url = Constants.getWorldCupActivityH5Url(requireContext())
+        val url = Constants.getWorldCupActivityH5Url(requireContext(),homeToolbar.height.pxToDp)
         LogUtil.d("url="+url)
         binding.okWebView.loadUrl(url)
     }
+
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (hidden){
             ImmersionBar.with(this)
                 .statusBarDarkFont(true)
                 .init()
+            binding.okWebView.clearCache(true)
         }else{
             ImmersionBar.with(this)
                 .statusBarDarkFont(false)
