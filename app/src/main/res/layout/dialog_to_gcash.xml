@@ -45,14 +45,14 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/btnGlifeCancel"
+                android:id="@+id/btnGlifeOpen"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/bg_border_gray_round_8"
                 android:clickable="true"
                 android:gravity="center"
-                android:text="@string/KYC049"
+                android:text="@string/LT028"
                 android:textColor="@color/color_BEC7DC"
                 android:textSize="16sp" />
 
@@ -61,14 +61,14 @@
                 android:layout_height="0dp" />
 
             <TextView
-                android:id="@+id/btnGlifeOpen"
+                android:id="@+id/btnGlifeCancel"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/bg_blue_radius_8"
                 android:clickable="true"
                 android:gravity="center"
-                android:text="@string/LT028"
+                android:text="@string/bottom_sheet_close"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 
