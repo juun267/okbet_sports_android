@@ -12,7 +12,6 @@ import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEv
 import org.cxct.sportlottery.network.service.match_odds_lock.MatchOddsLockEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
-import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchInfo
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.ui.sport.detail.OddsDetailListData
 
@@ -735,110 +734,6 @@ object SocketUpdateUtil {
 
         if (isNeedRefreshPlayCate) {
             matchOdd.matchInfo?.playCateNum = oddsChangeEvent.playCateNum
-        }
-
-        return isNeedRefresh || isNeedRefreshPlayCate
-    }
-
-    fun updateMatchOddsNew(
-        context: Context?,
-        hotMatchInfo: HotMatchInfo,
-        oddsChangeEvent: OddsChangeEvent,
-        matchType: MatchType? = null
-    ): Boolean {
-        var isNeedRefresh = false
-        var isNeedRefreshPlayCate = false
-
-        context?.let {
-            if (oddsChangeEvent.eventId != null && oddsChangeEvent.eventId == hotMatchInfo?.id) {
-                val cateMenuCode =
-                    oddsChangeEvent.channel?.split(context.getString(R.string.splash_no_trans))
-                        ?.getOrNull(6)
-                isNeedRefresh = when {
-                    (cateMenuCode == PlayCate.EPS.value) -> {
-                        updateMatchOdds(
-                            mutableMapOf(
-                                Pair(
-                                    PlayCate.EPS.value,
-                                    hotMatchInfo.oddsEps?.eps?.toMutableList() ?: mutableListOf()
-                                )
-                            ),
-                            oddsChangeEvent.odds,
-                        )
-                    }
-
-                    (cateMenuCode == PlayCate.OUTRIGHT.value) -> {
-                        var updated = false
-                        oddsChangeEvent.odds?.forEach { (key, value) ->
-                            hotMatchInfo.oddsMap?.let { oddsMap ->
-                                if (oddsMap.containsKey(key)) {
-                                    if (updateMatchOdds(
-                                            mutableMapOf(
-                                                Pair(key, oddsMap[key] as MutableList<Odd?>?)
-                                            ), mutableMapOf(Pair(key, value))
-                                        )
-                                    ) updated = true
-                                } else {
-                                    oddsMap[key] = value?.toMutableList()
-                                    updated = true
-                                }
-                            }
-                        }
-                        updated
-                    }
-
-                    (QuickPlayCate.values().map { it.value }.contains(cateMenuCode)) -> {
-                        updateMatchOdds(
-                            hotMatchInfo.quickPlayCateList?.find { it.isSelected }?.quickOdds?.toMutableFormat_1()
-                                ?: mutableMapOf(), oddsChangeEvent.odds
-                        )
-                    }
-
-                    else -> {
-                        if (hotMatchInfo.oddsMap == null) {
-                            hotMatchInfo.oddsMap = mutableMapOf()
-                        }
-                        updateMatchOdds(
-                            hotMatchInfo.oddsMap as MutableMap<String, MutableList<Odd?>?>? ?: mutableMapOf(),
-                            oddsChangeEvent.odds,
-                        )
-                    }
-                }
-
-                //更新翻譯
-                if (hotMatchInfo.betPlayCateNameMap == null) {
-                    hotMatchInfo.betPlayCateNameMap = mutableMapOf()
-                }
-                updateBetPlayCateNameMap(
-                    hotMatchInfo.betPlayCateNameMap, oddsChangeEvent.betPlayCateNameMap
-                )
-                if (hotMatchInfo.playCateNameMap == null) {
-                    hotMatchInfo.playCateNameMap = mutableMapOf()
-                }
-                updatePlayCateNameMap(
-                    hotMatchInfo.playCateNameMap, oddsChangeEvent.playCateNameMap
-                )
-
-                isNeedRefreshPlayCate = when (hotMatchInfo.quickPlayCateList.isNullOrEmpty()) {
-                    true -> {
-                        insertPlayCate(hotMatchInfo, oddsChangeEvent, matchType)
-                    }
-
-                    false -> {
-                        refreshPlayCate(hotMatchInfo, oddsChangeEvent, matchType)
-                    }
-                } || (hotMatchInfo.matchInfo?.playCateNum != oddsChangeEvent.playCateNum)
-
-
-                if (isNeedRefresh) {
-                    sortOdds(hotMatchInfo)
-                    hotMatchInfo.updateOddStatus()
-                }
-
-                if (isNeedRefreshPlayCate) {
-                    hotMatchInfo.matchInfo?.playCateNum = oddsChangeEvent.playCateNum
-                }
-            }
         }
 
         return isNeedRefresh || isNeedRefreshPlayCate

@@ -14,7 +14,6 @@ import org.cxct.sportlottery.network.league.LeagueService
 import org.cxct.sportlottery.network.lottery.LotteryService
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.match.MatchService
-import org.cxct.sportlottery.network.matchCategory.MatchCategoryService
 import org.cxct.sportlottery.network.matchresult.MatchResultService
 import org.cxct.sportlottery.network.message.MessageService
 import org.cxct.sportlottery.network.money.MoneyService
@@ -22,12 +21,10 @@ import org.cxct.sportlottery.network.myfavorite.FavoriteService
 import org.cxct.sportlottery.network.news.NewsService
 import org.cxct.sportlottery.network.odds.OddsService
 import org.cxct.sportlottery.network.outright.OutrightService
-import org.cxct.sportlottery.network.playcate.PlayCateListService
 import org.cxct.sportlottery.network.sport.SportService
 import org.cxct.sportlottery.network.third_game.ThirdGameService
 import org.cxct.sportlottery.network.uploadImg.UploadImgService
 import org.cxct.sportlottery.network.user.UserService
-import org.cxct.sportlottery.network.vip.VipService
 import org.cxct.sportlottery.network.withdraw.WithdrawService
 
 
@@ -86,12 +83,6 @@ object OneBoSportApi {
         get() = RequestManager.instance
             .retrofit
             .create(MatchResultService::class.java)
-
-
-    val playCateListService: PlayCateListService
-        get() = RequestManager.instance
-            .retrofit
-            .create(PlayCateListService::class.java)
 
 
     val outrightService: OutrightService
@@ -159,22 +150,10 @@ object OneBoSportApi {
             .retrofit
             .create(HostService::class.java)
 
-
-    val vipService: VipService
-        get() = RequestManager.instance
-            .retrofit
-            .create(VipService::class.java)
-
-
     val playQuotaComService: PlayQuotaComService
         get() = RequestManager.instance
             .retrofit
             .create(PlayQuotaComService::class.java)
-
-    val matchCategoryService: MatchCategoryService
-        get() = RequestManager.instance
-            .retrofit
-            .create(MatchCategoryService::class.java)
 
     val credentialService: CredentialService
         get() = RequestManager.instance

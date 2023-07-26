@@ -73,7 +73,5 @@ data class Recommend(
     override var quickPlayCateList: MutableList<QuickPlayCate>? = null
     override val oddsEps: EpsOdd? = null
 
-    var unfold: Int = FoldState.UNFOLD.code
-
     var runningTime: String = ""
 }

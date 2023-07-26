@@ -6,8 +6,6 @@ import org.cxct.sportlottery.network.Constants.USER_BILL_LIST
 import org.cxct.sportlottery.network.Constants.USER_RECHARGE_LIST
 import org.cxct.sportlottery.network.money.config.MoneyRechCfgResult
 import org.cxct.sportlottery.network.money.list.*
-import org.cxct.sportlottery.network.withdraw.list.WithdrawListRequest
-import org.cxct.sportlottery.network.withdraw.list.WithdrawListResult
 import retrofit2.Response
 import retrofit2.http.*
 

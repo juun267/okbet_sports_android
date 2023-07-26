@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.network.index.logout
 
+import org.cxct.sportlottery.common.proguards.KeepMembers
 
+@KeepMembers
 data class LogoutRequest(
     val uid: Int? = null,
     val userId: Int? = null,

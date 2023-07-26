@@ -1,8 +1,10 @@
 package org.cxct.sportlottery.network.money.list
 
+import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.network.common.PagingParams
 import org.cxct.sportlottery.network.common.TimeRangeParams
 
+@KeepMembers
 data class RechargeListRequest(
     val rechType: String? = null,
     val status: Int? = null,

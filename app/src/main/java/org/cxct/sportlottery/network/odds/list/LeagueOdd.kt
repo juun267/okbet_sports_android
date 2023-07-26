@@ -29,7 +29,6 @@ data class LeagueOdd(
         matchOdds.forEach { it.parentNode = this }
     }
     var unfoldStatus: Int = FoldState.UNFOLD.code
-    var searchMatchOdds = listOf<MatchOdd>()
     var gameType: GameType? = null
 
     @Transient

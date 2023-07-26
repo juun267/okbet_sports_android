@@ -16,5 +16,4 @@ data class Row(
     val icon: String
 ) {
     var isExpand = true
-    var searchList = listOf<League>()
 }

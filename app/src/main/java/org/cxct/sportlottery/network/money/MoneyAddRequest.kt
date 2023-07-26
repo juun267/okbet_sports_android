@@ -1,5 +1,8 @@
 package org.cxct.sportlottery.network.money
 
+import org.cxct.sportlottery.common.proguards.KeepMembers
+
+@KeepMembers
 data class MoneyAddRequest(
     val rechCfgId: Int,//充值配置id
     val bankCode: String?,//银行代码

@@ -31,6 +31,5 @@ data class MatchLiveData(
     )
     override var quickPlayCateList: MutableList<QuickPlayCate>? = null
     override val oddsEps: EpsOdd? = null
-    var runningTime: String = ""
 
 }

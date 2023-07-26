@@ -23,14 +23,12 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.match.MatchRound
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.network.sport.SportMenuFilter
 import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendRequest
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
-import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -349,21 +347,6 @@ open class MainHomeViewModel(
                 OneBoSportApi.messageService.getPromoteNotice(typeList)
             }?.let { result -> _messageListResult.postValue(Event(result)) }
         }
-    }
-
-    fun requestEnterThirdGame(gameData: QueryGameEntryData, baseFragment: BaseFragment<*>) {
-        if (gameData == null) {
-            _enterThirdGameResult.postValue(
-                Pair("${gameData.firmCode}", EnterThirdGameResult(
-                    resultType = EnterThirdGameResult.ResultType.FAIL,
-                    url = null,
-                    errorMsg = androidContext.getString(R.string.hint_game_maintenance)
-                ))
-            )
-            return
-        }
-
-        requestEnterThirdGame("${gameData.firmType}", "${gameData.gameCode}", "${gameData.gameCategory}", baseFragment)
     }
 
     /**

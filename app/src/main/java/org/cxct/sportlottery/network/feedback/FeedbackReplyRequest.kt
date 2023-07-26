@@ -1,5 +1,8 @@
 package org.cxct.sportlottery.network.feedback
 
+import org.cxct.sportlottery.common.proguards.KeepMembers
+
+@KeepMembers
 data class FeedbackReplyRequest(
     val content: String,//反馈内容
     val feedbackCode: String,//反馈码

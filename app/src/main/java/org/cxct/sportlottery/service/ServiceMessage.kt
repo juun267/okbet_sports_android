@@ -14,7 +14,6 @@ import org.cxct.sportlottery.network.service.notice.NoticeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEvent
 import org.cxct.sportlottery.network.service.ping_pong.PingPongEvent
-import org.cxct.sportlottery.network.service.play_quota_change.PlayQuotaChangeEvent
 import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.network.service.sys_maintenance.SportMaintenanceEvent
@@ -115,12 +114,6 @@ object ServiceMessage {
 //        val adapter = moshi.adapter(UserNoticeEvent::class.java)
 //        return adapter.fromJson(messageStr)
         return FastJsonUtils.jsonToObject(messageStr,UserNoticeEvent::class.java)
-    }
-
-    fun getPlayQuotaChange(messageStr: String): PlayQuotaChangeEvent? {
-//        val adapter = moshi.adapter(PlayQuotaChangeEvent::class.java)
-//        return adapter.fromJson(messageStr)
-        return FastJsonUtils.jsonToObject(messageStr,PlayQuotaChangeEvent::class.java)
     }
 
     fun getLeagueChange(messageStr: String): LeagueChangeEvent? {

@@ -124,17 +124,5 @@ class MainViewModel(
         }
     }
 
-    fun getLiveRoundCount() {
-        viewModelScope.launch {
-            var result = doNetwork(androidContext) {
-                OneBoSportApi.matchService.getLiveRoundCount()
-            }?.let {
-                if (it.success) {
-                    _liveRoundCount.postValue(it.t.toString())
-                }
-            }
-        }
-    }
-
 
 }
