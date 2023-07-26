@@ -426,7 +426,7 @@ class AccountHistoryViewModel(
 
         viewModelScope.launch {
             //服务器连续请求需要间隔
-            delay(1000)
+            delay(2000)
             val resultData=doNetwork(androidContext) {
                 OneBoSportApi.betService.getBetList(betListRequest)
             }
@@ -497,7 +497,7 @@ class AccountHistoryViewModel(
             totalEfficient=0.0
         }
         viewModelScope.launch {
-            delay(1500)
+            delay(2000)
             val resultData=doNetwork(androidContext) {
                 OneBoSportApi.betService.getBetList(betListRequest)
             }

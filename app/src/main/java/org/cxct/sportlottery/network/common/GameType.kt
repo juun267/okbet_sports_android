@@ -159,6 +159,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 AFT.key -> R.drawable.img_amfootball2
                 MR .key-> R.drawable.img_racing2
                 GF.key -> R.drawable.img_golf2
+                ES.key -> R.drawable.ic_inplay_esports2
                 else -> R.drawable.ic_game_champ
             }
         }
