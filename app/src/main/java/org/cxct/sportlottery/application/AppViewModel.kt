@@ -35,6 +35,7 @@ import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoViewMode
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileModel
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
+import org.cxct.sportlottery.ui.redeem.RedeemViewModel
 import org.cxct.sportlottery.ui.results.SettlementViewModel
 import org.cxct.sportlottery.ui.selflimit.SelfLimitViewModel
 import org.cxct.sportlottery.ui.splash.SplashViewModel
@@ -89,7 +90,7 @@ object AppViewModel {
         viewModel { OKLiveViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { ChatViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { SportLeftMenuViewModel(get(), get(), get(), get(), get(), get(), get()) }
-
+        viewModel { RedeemViewModel(get(), get(), get(), get(), get(), get()) }
     }
 
     private val repoModule = module {
