@@ -140,6 +140,9 @@ data class ConfigData(
     var youtubeLinkConfig:String?,//youtube连接配置
     var twitterLinkConfig:String?,//twitter连接配置
     var tiktokLinkConfig:String?,//tiktok连接配置
+    var telegramLinkConfig : String?,//telegram连接配置
+    var viberLinkConfig : String?,//viber连接配置
+    var whatsappLinkConfig : String?,//whatapp连接配置
     var selectedDepositAmountSettingList: List<Int>? = null, //存款快捷金额
     var auditFailureRestrictsWithdrawalsSwitch:Int?//提款额度大于打码量的时候直接拒绝提款
     var noLoginWitchVideoOrAnimation: Int? ,//未登陆观看视频/动画 0-关闭 1-启用
