@@ -22,6 +22,7 @@ import org.cxct.sportlottery.ui.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.betList.listener.OnItemClickListener
 import org.cxct.sportlottery.ui.betList.view.BetListPopupWindow
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.BetPlayCateFunction.getEndScoreNameByTab
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.KvUtils.BASKETBALL_DEL_TIP_FLAG
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
@@ -59,6 +60,15 @@ class BasketballEndingCardViewHolder(
     ) {
         mUserMoney = userMoney
         mUserLogin = userLogin
+        if (betList.isNullOrEmpty()) {
+            binding.tvBasketBallEndingScore.setText(R.string.N903)
+        } else {
+            val matchOdd = betList.first().matchOdd
+            binding.tvBasketBallEndingScore.run {
+                text = "${context.getString(R.string.N903)}-${matchOdd.playCode.getEndScoreNameByTab(context)}"
+            }
+        }
+
         //設置投注限額
         setupInputLimit(itemData)
         binding.layoutKeyBoard.setUserMoney(mUserMoney)

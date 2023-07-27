@@ -1488,6 +1488,12 @@
     <string name="I039">投注时间</string>
     <string name="N142">注单号</string>
     <string name="N082">收藏赛事</string>
+    <string name="P161">篮球末位比分总分</string>
+    <string name="P162">篮球末位比分第一节</string>
+    <string name="P163">篮球末位比分第二节</string>
+    <string name="P164">篮球末位比分第三节</string>
+    <string name="P165">篮球末位比分第四节</string>
+
     <string name="J784">独赢</string>
     <string name="F011">投注金额</string>
     <string name="J770">主队</string>

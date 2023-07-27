@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.didichuxing.doraemonkit.util.GsonUtils
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import kotlinx.android.synthetic.main.content_odds_detail_list_team.view.*
 import org.cxct.sportlottery.R
@@ -37,6 +38,7 @@ import org.cxct.sportlottery.network.common.ComparePlayCate
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.base.BaseGameAdapter
 import org.cxct.sportlottery.ui.betList.BetInfoListData
@@ -64,6 +66,16 @@ class OddsDetailListAdapter(
     private val onOddClickListener: OnOddClickListener
 ) : BaseGameAdapter() {
 
+    private val CS = R.layout.content_odds_detail_list_cs
+    private val SINGLE_2_CS = R.layout.content_odds_detail_list_single_2_cs_item
+    private val ONE_LIST = R.layout.content_odds_detail_list_one
+    private val SINGLE = R.layout.content_odds_detail_list_single
+    private val SINGLE_2_ITEM = R.layout.content_odds_detail_list_single_2_item
+    private val FG_LG = R.layout.content_odds_detail_list_fg_lg
+    private val GROUP_6 = R.layout.content_odds_detail_list_group_6_item
+    private val GROUP_4 = R.layout.content_odds_detail_list_group_4_item
+    private val SCO = R.layout.content_odds_detail_list_sco
+    private val EPS = R.layout.content_odds_detail_list_eps
 
     @set:Synchronized
     var betInfoList: MutableList<BetInfoListData> = mutableListOf()
@@ -135,19 +147,6 @@ class OddsDetailListAdapter(
     var oddsDetailListener: OddsDetailListener? = null
 
 
-    enum class LayoutType(val layout: Int) {
-        CS(R.layout.content_odds_detail_list_cs), SINGLE_2_CS(R.layout.content_odds_detail_list_single_2_cs_item), ONE_LIST(
-            R.layout.content_odds_detail_list_one
-        ),
-        SINGLE(R.layout.content_odds_detail_list_single), SINGLE_2_ITEM(R.layout.content_odds_detail_list_single_2_item), FG_LG(
-            R.layout.content_odds_detail_list_fg_lg
-        ),
-        GROUP_6(R.layout.content_odds_detail_list_group_6_item), GROUP_4(R.layout.content_odds_detail_list_group_4_item), SCO(
-            R.layout.content_odds_detail_list_sco
-        ),
-        EPS(R.layout.content_odds_detail_list_eps)
-    }
-
     fun setPreloadItem() {
         oddsDetailDataList.clear()
         isPreload = true
@@ -217,7 +216,7 @@ class OddsDetailListAdapter(
                     PlayCate.PK_FINISH.ordinal,
                     PlayCate.OU_PK.ordinal,
                     PlayCate.PK_HDP.ordinal,
-                    -> LayoutType.SINGLE_2_ITEM.layout
+                    -> SINGLE_2_ITEM
 
                     PlayCate.SINGLE.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.HWMG_SINGLE.ordinal, PlayCate.CORNER_SINGLE.ordinal, PlayCate.CORNER_1ST_SINGLE.ordinal, PlayCate.PENALTY_SINGLE.ordinal, PlayCate.PENALTY_1ST_SINGLE.ordinal,
                     PlayCate.SINGLE_OT.ordinal, PlayCate.SINGLE_1ST_OT.ordinal, PlayCate.P_SINGLE.ordinal, PlayCate.P_SINGLE_1ST.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal,
@@ -230,27 +229,27 @@ class OddsDetailListAdapter(
                     PlayCate.PK_ROUND3.ordinal,
                     PlayCate.PK_ROUND4.ordinal,
                     PlayCate.PK_ROUND5.ordinal,
-                    -> LayoutType.SINGLE.layout
+                    -> SINGLE
 
                     PlayCate.CS.ordinal, PlayCate.CS_OT.ordinal, PlayCate.CS_1ST_SD.ordinal, PlayCate.LCS.ordinal,
-                    -> LayoutType.CS.layout
+                    -> CS
 
                     PlayCate.FGLG.ordinal,
-                    -> LayoutType.FG_LG.layout
+                    -> FG_LG
 
                     PlayCate.SCO.ordinal,
-                    -> LayoutType.SCO.layout
+                    -> SCO
 
                     PlayCate.DC_OU.ordinal, PlayCate.SINGLE_OU.ordinal, PlayCate.SINGLE_BTS.ordinal, PlayCate.SINGLE_FLG.ordinal, PlayCate.DC_BTS.ordinal, PlayCate.DC_FLG.ordinal,
-                    -> LayoutType.GROUP_6.layout
+                    -> GROUP_6
 
                     PlayCate.OU_BTS.ordinal, PlayCate.OU_OE.ordinal, PlayCate.OU_TTS1ST.ordinal,
-                    -> LayoutType.GROUP_4.layout
+                    -> GROUP_4
 
                     PlayCate.EPS.ordinal,
-                    -> LayoutType.EPS.layout
+                    -> EPS
 
-                    else -> LayoutType.ONE_LIST.layout
+                    else -> ONE_LIST
                 }
             }
 
@@ -265,12 +264,12 @@ class OddsDetailListAdapter(
                     PlayCate.TG_OU_H_INCL_OT.ordinal, PlayCate.TG_OU_H_2ST_INCL_OT.ordinal, PlayCate.TG_OU_H_SEG1.ordinal, PlayCate.TG_OU_H_SEG2.ordinal, PlayCate.TG_OU_H_SEG3.ordinal, PlayCate.TG_OU_H_SEG4.ordinal,
                     PlayCate.TG_OU_C_INCL_OT.ordinal, PlayCate.TG_OU_C_1ST.ordinal, PlayCate.TG_OU_C_2ST_INCL_OT.ordinal, PlayCate.TG_OU_C_SEG1.ordinal, PlayCate.TG_OU_C_SEG2.ordinal, PlayCate.TG_OU_C_SEG3.ordinal, PlayCate.TG_OU_C_SEG4.ordinal,
                     PlayCate.OE_SEG4.ordinal, PlayCate.FS_LD_CS.ordinal,
-                    -> LayoutType.SINGLE_2_ITEM.layout
+                    -> SINGLE_2_ITEM
 
                     PlayCate.EPS.ordinal,
-                    -> LayoutType.EPS.layout
+                    -> EPS
 
-                    else -> LayoutType.ONE_LIST.layout
+                    else -> ONE_LIST
                 }
             }
 
@@ -285,14 +284,14 @@ class OddsDetailListAdapter(
                     PlayCate.SET_HDP.ordinal, PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal, PlayCate.HDP_SEG4.ordinal, PlayCate.HDP_SEG5.ordinal,
                     PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OU_SEG4.ordinal, PlayCate.OU_SEG5.ordinal,
                     PlayCate.WIN_SEG1_CHAMP.ordinal, PlayCate.LOSE_SEG1_CHAMP.ordinal, PlayCate.TIE_BREAK.ordinal,
-                    -> LayoutType.SINGLE_2_ITEM.layout
+                    -> SINGLE_2_ITEM
 
-                    PlayCate.CS.ordinal, PlayCate.CS_SEG1.ordinal, PlayCate.LCS.ordinal -> LayoutType.SINGLE_2_CS.layout
+                    PlayCate.CS.ordinal, PlayCate.CS_SEG1.ordinal, PlayCate.LCS.ordinal -> SINGLE_2_CS
 
                     PlayCate.EPS.ordinal,
-                    -> LayoutType.EPS.layout
+                    -> EPS
 
-                    else -> LayoutType.ONE_LIST.layout
+                    else -> ONE_LIST
                 }
             }
 
@@ -302,12 +301,12 @@ class OddsDetailListAdapter(
                     PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OU_SEG4.ordinal, PlayCate.OU_SEG5.ordinal,
                     PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal, PlayCate.SINGLE_SEG5.ordinal,
                     PlayCate.OE.ordinal, PlayCate.OE_SEG1.ordinal, PlayCate.OE_SEG2.ordinal, PlayCate.OE_SEG3.ordinal, PlayCate.OE_SEG4.ordinal, PlayCate.OE_SEG5.ordinal,
-                    -> LayoutType.SINGLE_2_ITEM.layout
+                    -> SINGLE_2_ITEM
 
                     PlayCate.EPS.ordinal,
-                    -> LayoutType.EPS.layout
+                    -> EPS
 
-                    else -> LayoutType.ONE_LIST.layout
+                    else -> ONE_LIST
                 }
             }
 
@@ -316,12 +315,12 @@ class OddsDetailListAdapter(
                     PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal,
                     PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal,
                     PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OE_SEG1.ordinal, PlayCate.OE_SEG2.ordinal, PlayCate.OE_SEG3.ordinal, PlayCate.OE.ordinal, PlayCate.SET_HDP.ordinal,
-                    -> LayoutType.SINGLE_2_ITEM.layout
+                    -> SINGLE_2_ITEM
 
                     PlayCate.EPS.ordinal,
-                    -> LayoutType.EPS.layout
+                    -> EPS
 
-                    else -> LayoutType.ONE_LIST.layout
+                    else -> ONE_LIST
                 }
             }
 
@@ -330,12 +329,12 @@ class OddsDetailListAdapter(
                     PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.SINGLE_2ST.ordinal,
                     PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal, PlayCate.HDP_SEG4.ordinal, PlayCate.HDP_1ST.ordinal, PlayCate.HDP_2ST.ordinal,
                     PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OU_SEG4.ordinal, PlayCate.OU_1ST.ordinal, PlayCate.OU_2ST.ordinal,
-                    -> LayoutType.SINGLE_2_ITEM.layout
+                    -> SINGLE_2_ITEM
 
                     PlayCate.EPS.ordinal,
-                    -> LayoutType.EPS.layout
+                    -> EPS
 
-                    else -> LayoutType.ONE_LIST.layout
+                    else -> ONE_LIST
                 }
             }
 
@@ -343,25 +342,25 @@ class OddsDetailListAdapter(
                 when (viewType) {
                     PlayCate.SINGLE.ordinal, PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.OU.ordinal, PlayCate.OU_1ST.ordinal,
                     PlayCate.EXTRA_TIME.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.TG_OU_H.ordinal, PlayCate.TG_OU_C.ordinal,
-                    -> LayoutType.SINGLE_2_ITEM.layout
+                    -> SINGLE_2_ITEM
 
                     PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_1ST.ordinal,
-                    -> LayoutType.SINGLE.layout
+                    -> SINGLE
 
                     PlayCate.EPS.ordinal,
-                    -> LayoutType.EPS.layout
+                    -> EPS
 
                     PlayCate.WM.ordinal, PlayCate.WM_1ST.ordinal,
-                    -> LayoutType.ONE_LIST.layout
+                    -> ONE_LIST
 
-                    else -> LayoutType.ONE_LIST.layout
+                    else -> ONE_LIST
                 }
             }
 
             GameType.ES -> {
                 when (viewType) {
-                    PlayCate.CS_5_MAP.ordinal -> LayoutType.SINGLE_2_CS.layout
-                    else -> LayoutType.SINGLE_2_ITEM.layout
+                    PlayCate.CS_5_MAP.ordinal -> SINGLE_2_CS
+                    else -> SINGLE_2_ITEM
                 }
             }
 
@@ -370,27 +369,27 @@ class OddsDetailListAdapter(
                     PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal,
                     PlayCate.SINGLE_SEG5.ordinal, PlayCate.SINGLE_SEG6.ordinal, PlayCate.SINGLE_SEG7.ordinal, PlayCate.SINGLE_SEG8.ordinal, PlayCate.SINGLE_1ST.ordinal,
                     PlayCate.HDP.ordinal, PlayCate.OU.ordinal,
-                    -> LayoutType.SINGLE_2_ITEM.layout
+                    -> SINGLE_2_ITEM
 
                     PlayCate.EPS.ordinal,
-                    -> LayoutType.EPS.layout
+                    -> EPS
 
-                    else -> LayoutType.ONE_LIST.layout
+                    else -> ONE_LIST
                 }
             }
 
             GameType.IH -> {
                 when (viewType) {
                     PlayCate.HDP.ordinal, PlayCate.OU.ordinal, PlayCate.OE.ordinal, PlayCate.SINGLE_ND.ordinal,
-                    -> LayoutType.SINGLE_2_ITEM.layout
+                    -> SINGLE_2_ITEM
 
                     PlayCate.SINGLE.ordinal,
-                    -> LayoutType.SINGLE.layout
+                    -> SINGLE
 
                     PlayCate.EPS.ordinal,
-                    -> LayoutType.EPS.layout
+                    -> EPS
 
-                    else -> LayoutType.ONE_LIST.layout
+                    else -> ONE_LIST
                 }
             }
 
@@ -399,18 +398,18 @@ class OddsDetailListAdapter(
                     PlayCate.SINGLE_ND.ordinal,
                     PlayCate.HDP.ordinal, PlayCate.HDP_1ST.ordinal, PlayCate.HDP_2ST.ordinal,
                     PlayCate.OU.ordinal, PlayCate.OU_1ST.ordinal, PlayCate.OU_2ST.ordinal,
-                    -> LayoutType.SINGLE_2_ITEM.layout
+                    -> SINGLE_2_ITEM
 
                     PlayCate.SINGLE.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.SINGLE_2ST.ordinal,
-                    -> LayoutType.SINGLE.layout
+                    -> SINGLE
 
                     PlayCate.EPS.ordinal,
-                    -> LayoutType.EPS.layout
+                    -> EPS
 
                     PlayCate.WM.ordinal,
-                    -> LayoutType.ONE_LIST.layout
+                    -> ONE_LIST
 
-                    else -> LayoutType.ONE_LIST.layout
+                    else -> ONE_LIST
                 }
             }
 
@@ -420,24 +419,24 @@ class OddsDetailListAdapter(
                     PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal, PlayCate.HDP_SEG4.ordinal,
                     PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OU_SEG4.ordinal,
                     PlayCate.SET_HDP.ordinal,
-                    -> LayoutType.SINGLE_2_ITEM.layout
+                    -> SINGLE_2_ITEM
 
                     PlayCate.EPS.ordinal,
-                    -> LayoutType.EPS.layout
+                    -> EPS
 
-                    else -> LayoutType.ONE_LIST.layout
+                    else -> ONE_LIST
                 }
             }
 
             GameType.BX -> {
                 when (viewType) {
                     PlayCate.SINGLE.ordinal, PlayCate.OU.ordinal, PlayCate.GTD.ordinal, PlayCate.MOV.ordinal, PlayCate.MOV_UFC.ordinal, PlayCate.ROUND.ordinal, PlayCate.ROUND_UFC.ordinal,
-                    -> LayoutType.SINGLE_2_ITEM.layout
+                    -> SINGLE_2_ITEM
 
                     PlayCate.EPS.ordinal,
-                    -> LayoutType.EPS.layout
+                    -> EPS
 
-                    else -> LayoutType.ONE_LIST.layout
+                    else -> ONE_LIST
                 }
             }
 
@@ -453,119 +452,33 @@ class OddsDetailListAdapter(
                     PlayCate.MODW_2ND_C.ordinal,
                     PlayCate.S_RAFO_2ND_W_H.ordinal, PlayCate.S_RAFO_2ND_W_C.ordinal,
                     PlayCate.OU_2_WAY_1ST_C.ordinal, PlayCate.OU_2_WAY_1ST_H.ordinal,
-                    -> LayoutType.SINGLE_2_ITEM.layout
+                    -> SINGLE_2_ITEM
 
                     PlayCate.SINGLE.ordinal, PlayCate.MOST_FOUR.ordinal, PlayCate.MOST_SIX.ordinal,
                     PlayCate.HOP.ordinal, PlayCate.FIL.ordinal,
-                    -> LayoutType.SINGLE.layout
+                    -> SINGLE
 
                     PlayCate.EPS.ordinal,
-                    -> LayoutType.EPS.layout
+                    -> EPS
 
-                    else -> LayoutType.ONE_LIST.layout
+                    else -> ONE_LIST
                 }
             }
 
-            else -> LayoutType.ONE_LIST.layout
+            else -> ONE_LIST
 
         }
 
 
-        return when (viewType) {
-            else -> {
-                ViewHolder(
-                    LayoutInflater.from(parent.context).inflate(layout, parent, false), viewType
-                ).apply {
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(layout, parent, false), viewType).apply {
+            if (layout == SCO)
 
-                    when (layout) {
-
-                        LayoutType.SCO.layout -> {
-                            rvBet?.apply {
-                                if (itemDecorationCount == 0)
-                                    addItemDecoration(
-                                        DividerItemDecorator(
-                                            ContextCompat.getDrawable(
-                                                context, R.drawable.divider_color_silverlight_1dp
-                                            )
-                                        )
-                                    )
-                            }
-                        }
-
-                        LayoutType.GROUP_4.layout,
-                        LayoutType.GROUP_6.layout,
-                        -> {
-                            rvBet?.apply {
-//                                addItemDecoration(
-//                                    DividerItemDecorator(
-//                                        ContextCompat.getDrawable(
-//                                            context,
-//                                            R.drawable.divider_color_white4_2dp
-//                                        )
-//                                    )
-//                                )
-                            }
-                        }
-
-                        LayoutType.CS.layout -> {
-                            rvHome?.apply {
-//                                addItemDecoration(
-//                                    CustomForOddDetailVerticalDivider(
-//                                        context,
-//                                        R.dimen.recyclerview_news_item_dec_spec
-//                                    )
-//                                )
-                            }
-                            rvDraw?.apply {
-//                                addItemDecoration(
-//                                    CustomForOddDetailVerticalDivider(
-//                                        context,
-//                                        R.dimen.recyclerview_news_item_dec_spec
-//                                    )
-//                                )
-                            }
-                            rvAway?.apply {
-//                                addItemDecoration(
-//                                    CustomForOddDetailVerticalDivider(
-//                                        context,
-//                                        R.dimen.recyclerview_news_item_dec_spec
-//                                    )
-//                                )
-                            }
-                        }
-
-                        LayoutType.ONE_LIST.layout,
-                        LayoutType.FG_LG.layout,
-                        -> {
-                            rvBet?.apply {
-//                                addItemDecoration(
-//                                    CustomForOddDetailVerticalDivider(
-//                                        context,
-//                                        R.dimen.recyclerview_news_item_dec_spec
-//                                    )
-//                                )
-                            }
-                        }
-
-                        LayoutType.SINGLE.layout,
-                        LayoutType.SINGLE_2_ITEM.layout,
-                        LayoutType.SINGLE_2_CS.layout,
-                        -> {
-                            rvBet?.apply {
-//                                addItemDecoration(
-//                                    GridItemDecoration(
-//                                        context.resources.getDimensionPixelOffset(R.dimen.recyclerview_news_item_dec_spec),
-//                                        context.resources.getDimensionPixelOffset(R.dimen.recyclerview_news_item_dec_spec),
-//                                        ContextCompat.getColor(context, R.color.color_FFFFFF),
-//                                        false
-//                                    )
-//                                )
-                            }
-                        }
+                rvBet?.apply {
+                    if (itemDecorationCount == 0) {
+                        addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_color_silverlight_1dp)))
                     }
                 }
             }
-        }
 
     }
 
@@ -579,25 +492,19 @@ class OddsDetailListAdapter(
     override fun onBindViewHolder(
         holder: RecyclerView.ViewHolder, position: Int,
     ) {
-        when (holder) {
-            is ViewHolder -> {
-                if (oddsDetailDataList.isNotEmpty()) holder.bindModel(
-                    oddsDetailDataList[position],
-                )
-            }
+        if(holder is ViewHolder) {
+            if (oddsDetailDataList.isNotEmpty()) holder.bindModel(
+                oddsDetailDataList[position],
+            )
         }
     }
 
-    override fun onBindViewHolder(
-        holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>
-    ) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
         super.onBindViewHolder(holder, position, payloads)
-        when (holder) {
-            is ViewHolder -> {
-                if (oddsDetailDataList.isNotEmpty()) holder.bindModel(
-                    oddsDetailDataList[position], payloads
-                )
-            }
+        if(holder is ViewHolder) {
+            if (oddsDetailDataList.isNotEmpty()) holder.bindModel(
+                oddsDetailDataList[position], payloads
+            )
         }
     }
 
@@ -672,6 +579,7 @@ class OddsDetailListAdapter(
             when (sportCode) {
                 GameType.BK -> {
                     tvGameName?.text = when {
+                        oddsDetail.gameType.isEndScoreType()->tvGameName?.context?.let { getTitleNormal(oddsDetail) }
                         oddsDetail.gameType.contains("-SEG") || oddsDetail.gameType.contains(
                             "-1ST"
                         ) || oddsDetail.gameType.contains(
@@ -1440,40 +1348,33 @@ class OddsDetailListAdapter(
         private fun forSingle(
             oddsDetail: OddsDetailListData, spanCount: Int, payloads: MutableList<Any>?
         ) {
-//            Timber.d("===洗刷刷oddsDetail.gameType: ${oddsDetail.gameType}")
-            if (oddsDetail.gameType == PlayCate.FS_LD_CS.value) {
+            if (oddsDetail.gameType.isEndScoreType()) {
                 //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
                 itemView.lin_match.isVisible = false
-                oddsDetail.oddArrayList.first()?.let {
-                    Spanny(itemView.context.getString(R.string.N888)).append(
-                        " @", ForegroundColorSpan(itemView.context.getColor(R.color.color_025BE8))
-                    ).append(
-                        getOdds(it, oddsType).toString(),
-                        ForegroundColorSpan(itemView.context.getColor(R.color.color_025BE8)),
-                        CustomTypefaceSpan(
-                            "helvetica_bold.ttf", Typeface.DEFAULT_BOLD
-                        )
-                    ).let {
-                        tvGameName?.text = it
-                    }
-                }
-//                Timber.d("===洗刷刷3 index:${12} payloads:${payloads?.size}")
                 rvBet?.let { it1 ->
-                    if (isFirstRefresh || it1.adapter == null) {
+                    if (it1.adapter == null) {
                         it1.layoutManager = GridLayoutManager(itemView.context, 4)
                         if (it1.itemDecorationCount==0) {
                             it1.addItemDecoration(GridSpacingItemDecoration(4,4.dp,false))
                         }
                         it1.adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, oddsType)
+                        rvBet.tag = oddsDetail.gameType
                         isFirstRefresh = false
+                    }else{
+                        ((it1.adapter) as TypeSingleAdapter).apply {
+                            if (rvBet.tag != oddsDetail.gameType){
+                                rvBet.tag = oddsDetail.gameType
+                                setOddsDetailData(oddsDetail)
+                             }
+                            if (payloads?.isEmpty()==true){
+                                notifyDataSetChanged()
+                            }
+                        }
                     }
-
-                    if (it1.adapter != null && payloads?.isNotEmpty() == true) {
+                    if (payloads?.isNotEmpty()==true) {
+                        ((it1.adapter) as TypeSingleAdapter).setOddsDetailData(oddsDetail)
                         payloads.forEach { payloadItem ->
-                            val index =
-                                oddsDetail.oddArrayList.indexOf(oddsDetail.oddArrayList.find { it?.id == payloadItem })
-//                            Timber.d("===洗刷刷3 index:${index} payloads:${payloads.size}")
-                            ((it1.adapter) as TypeSingleAdapter).setOddsDetailData(oddsDetail)
+                            val index = oddsDetail.oddArrayList.indexOf(oddsDetail.oddArrayList.find { it?.id == payloadItem })
                             runWithCatch { it1.adapter?.notifyItemChanged(index) }
                         }
                     }

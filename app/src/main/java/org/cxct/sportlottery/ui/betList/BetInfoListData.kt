@@ -26,16 +26,7 @@ class BetInfoListData(
                 value
             }
         }
-    var inputWin: String? = null
-    var betWin: Double = 0.0
-    var inputBetWinStr: String? = betWin.toString()
-        set(value) {
-            field = if (value.isNullOrEmpty()) {
-                betWin.toString()
-            } else {
-                value
-            }
-        }
+
     var realAmount:Double = 0.0 //計算出來的實際下注金額
     var amountError: Boolean = false
     var pointMarked: Boolean = false //紅色標記, 紀錄是否能串關

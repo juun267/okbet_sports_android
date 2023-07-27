@@ -418,7 +418,7 @@ class SportMatchVH(private val binding: ItemSportOdd2Binding,
             matchInfo.leagueTimeRecode = timeMillis
             onTimerUpdate(timeMillis, matchInfo)
 
-            if (matchInfo.stopped == TimeCounting.STOP.value) {
+            if (matchInfo.stopped == TimeCounting.STOP) {
                 return
             }
 

@@ -17,6 +17,7 @@ import org.cxct.sportlottery.common.extentions.toDoubleS
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.util.TextUtil.dRoundDown2
 import org.cxct.sportlottery.util.TextUtil.strRoundDown2
 import timber.log.Timber
@@ -115,7 +116,7 @@ class KeyboardView @JvmOverloads constructor(
 //        }
         tvMax.setOnClickListener {
             val finalBetMoney: String
-            if (gameType != null && PlayCate.FS_LD_CS.value == gameType) {
+            if (gameType != null && gameType.isEndScoreType()) {
                 val userMoneyRd = mUserMoney.dRoundDown2()
                 val maxItemMoneyRd = maxBetMoney.strRoundDown2()
                 val betMoney = ArithUtil.toMoneyFormatFloor(userMoneyRd.toDouble() / betItemCount)

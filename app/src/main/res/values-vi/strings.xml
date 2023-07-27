@@ -1456,4 +1456,9 @@
     <string name="P149">"Trước khi yêu cầu rút tiền, vui lòng hoàn thành tiền gửi %s(theo quy định của PAGCOR, mỗi giao dịch gửi tiền yêu cầu có gấp đôi doanh thu).  Vui lòng liên hệ CSKH để được hỗ trợ. "</string>
     <string name="str_return_last_step">Trở về</string>
     <string name="viber">Viber</string>
+    <string name="P161">Kết quả chung cuộc</string>
+    <string name="P162">Kết quả hiệp 1</string>
+    <string name="P163">Kết quả hiệp 2</string>
+    <string name="P164">Kết quả hiệp 3</string>
+    <string name="P165">Kết quả hiệp 4</string>
 </resources>
