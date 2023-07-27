@@ -14,20 +14,7 @@ data class League(
     @Json(name = "num")
     val num: Int
 ) {
-    var isPin = false
     var isSelected = false
     var firstCap = ""
     var icon = ""
-}
-@JsonClass(generateAdapter = true) @KeepMembers
-data class FilterMatch(
-    @Json(name = "id")
-    val id: String,
-    @Json(name = "name")
-    val name: String,
-    @Json(name = "num")
-    val num: Int
-) {
-    var isSelected = false
-    var firstCap = ""
 }

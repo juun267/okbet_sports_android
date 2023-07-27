@@ -23,14 +23,12 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.match.MatchRound
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.network.sport.SportMenuFilter
 import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendRequest
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
-import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -351,23 +349,6 @@ open class MainHomeViewModel(
         }
     }
 
-    fun requestEnterThirdGame(gameData: QueryGameEntryData, baseFragment: BaseFragment<*>) {
-        if (gameData == null) {
-            _enterThirdGameResult.postValue(
-                Pair("${gameData.firmCode}", EnterThirdGameResult(
-                    resultType = EnterThirdGameResult.ResultType.FAIL,
-                    url = null,
-                    errorMsg = androidContext.getString(R.string.hint_game_maintenance)
-                ))
-            )
-            return
-        }
-
-        requestEnterThirdGame(
-            "${gameData.firmType}", "${gameData.gameCode}", "${gameData.gameCategory}", baseFragment
-        )
-    }
-
     /**
      * 未登录试玩
      */
@@ -431,25 +412,12 @@ open class MainHomeViewModel(
 
             //先调用三方游戏的登入接口, 确认返回成功200之后再接著调用自动转换额度的接口, 如果没有登入成功, 后面就不做额度自动转换的调用了
             if (!thirdLoginResult.success) {
-                _enterThirdGameResult.postValue(
-                    Pair(
-                        firmType,
-                        EnterThirdGameResult(
-                            EnterThirdGameResult.ResultType.FAIL,
-                            null,
-                            thirdLoginResult?.msg
-                        )
-                    )
-                )
+                _enterThirdGameResult.postValue(Pair(firmType, EnterThirdGameResult(EnterThirdGameResult.ResultType.FAIL,  null, thirdLoginResult?.msg)))
                 baseFragment.hideLoading()
                 return@launch
             }
 
-            val thirdGameResult = EnterThirdGameResult(
-                EnterThirdGameResult.ResultType.SUCCESS,
-                thirdLoginResult.msg,
-                gameCategory
-            )
+            val thirdGameResult = EnterThirdGameResult(EnterThirdGameResult.ResultType.SUCCESS, thirdLoginResult.msg, gameCategory)
             if (autoTransfer(firmType)) { //第三方自動轉換
                 _enterThirdGameResult.postValue(Pair(firmType, thirdGameResult))
                 baseFragment.hideLoading()
@@ -462,15 +430,11 @@ open class MainHomeViewModel(
 
     //20200302 記錄問題：新增一個 NONE type，來清除狀態，避免 fragment 畫面重啟馬上就會觸發 observe，重複開啟第三方遊戲
     fun clearThirdGame() {
-        _enterThirdGameResult.postValue(
-            Pair(
-                "", EnterThirdGameResult(
-                    resultType = EnterThirdGameResult.ResultType.NONE,
-                    url = null,
-                    errorMsg = null
-                )
-            )
-        )
+        _enterThirdGameResult.postValue(Pair("", EnterThirdGameResult(
+            resultType = EnterThirdGameResult.ResultType.NONE,
+            url = null,
+            errorMsg = null
+        )))
     }
 
     private suspend fun thirdGameLogin(firmType: String, gameCode: String): NetResult? {
@@ -491,20 +455,6 @@ open class MainHomeViewModel(
         }
 
         return false
-    }
-
-    /**
-     * 設置大廳獲取的玩法排序、玩法名稱
-     */
-    private fun Recommend.setupOddsSort() {
-        val nowGameType = gameType
-        val playCateMenuCode = menuList.firstOrNull()?.code
-        val oddsSortFilter = PlayCateMenuFilterUtils.filterOddsSort(nowGameType, playCateMenuCode)
-        val playCateNameMapFilter =
-            PlayCateMenuFilterUtils.filterPlayCateNameMap(nowGameType, playCateMenuCode)
-
-        oddsSort = oddsSortFilter
-        playCateNameMap = playCateNameMapFilter
     }
 
     private fun Recommend.sortOddsByMenu() {
@@ -578,14 +528,7 @@ open class MainHomeViewModel(
      */
     fun getHomeNews(pageNum: Int, pageSize: Int, categoryIds: List<Int>) {
         viewModelScope.launch {
-            callApi({
-                NewsRepository.getHomeNews(
-                    pageNum,
-                    pageSize,
-                    NewsRepository.SORT_CREATE_TIME,
-                    categoryIds
-                )
-            }) {
+            callApi({ NewsRepository.getHomeNews(pageNum, pageSize, NewsRepository.SORT_CREATE_TIME,categoryIds) }) {
                 if (it.succeeded()) {
                     _homeNewsList.postValue(it.getData()?.firstOrNull()?.detailList ?: listOf())
                 } else {
@@ -600,14 +543,7 @@ open class MainHomeViewModel(
      */
     fun getPageNews(pageNum: Int, pageSize: Int, categoryId: Int) {
         viewModelScope.launch {
-            callApi({
-                NewsRepository.getPageNews(
-                    pageNum,
-                    pageSize,
-                    NewsRepository.SORT_CREATE_TIME,
-                    categoryId
-                )
-            }) {
+            callApi({ NewsRepository.getPageNews(pageNum, pageSize, NewsRepository.SORT_CREATE_TIME,categoryId) }) {
                 if (it.succeeded()) {
                     it.getData()?.let {
                         _pageNewsList.postValue(it)

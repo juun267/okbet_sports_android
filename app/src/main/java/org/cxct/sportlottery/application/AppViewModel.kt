@@ -41,7 +41,6 @@ import org.cxct.sportlottery.ui.selflimit.SelfLimitViewModel
 import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.ui.sport.SportTabViewModel
 import org.cxct.sportlottery.ui.sport.SportViewModel
-import org.cxct.sportlottery.ui.sport.favorite.FavoriteViewModel
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectViewModel
 import org.cxct.sportlottery.ui.sport.list.SportListViewModel
 import org.koin.android.ext.koin.androidContext
@@ -77,7 +76,6 @@ object AppViewModel {
         viewModel { RedEnveLopeModel(get(), get(), get(), get(), get(), get()) }
         viewModel { MainTabViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { SportViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { FavoriteViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { LeagueSelectViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { SportListViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { SportTabViewModel(get(), get(), get(), get(), get(), get(), get()) }

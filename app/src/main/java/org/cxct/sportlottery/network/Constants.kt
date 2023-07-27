@@ -400,13 +400,8 @@ object Constants {
     const val LEAGUE_LIST = "/api/front/match/league/list"
 
     //match
-    const val MATCH_PRELOAD = "/api/front/match/preload"
     const val MATCH_LIVE_URL = "/api/front/match/live/url"
-    const val MATCH_TRACKER_URL = "/api/front/match/tracker/url/{mappingId}"
     const val MATCH_LIVE_ROUND = "/api/front/liveRound"
-    const val MATCH_LIVE_ROUND_COUNT = "/api/front/liveRound/count"
-    const val MATCH_LIVE_ROUND_HALL = "/api/front/liveRound/mobile/hall"
-    const val LIVE_LOGIN = "/api/live/front/login/"
 
     //match result
     const val MATCH_RESULT_LIST = "/api/front/match/result/list"
@@ -415,15 +410,11 @@ object Constants {
     //odds
     const val MATCH_ODDS_LIST = "/api/front/match/odds/simple/list"
     const val MATCH_ODDS_DETAIL = "/api/front/match/odds/detail"
-    const val MATCH_ODDS_EPS_LIST = "/api/front/match/odds/eps/list"
-    const val MATCH_ODDS_QUICK_LIST = "/api/front/match/odds/quick/list"
     const val MATCH_INPLAY_ALL = "/api/front/match/odds/mobile/inplay/all"
 
     //sport
     const val SPORT_LIST = "/api/front/sport/list"
     const val SPORT_MENU = "/api/front/sport/mobile/menu"
-    const val SPORT_QUERY = "/api/front/sport/query"
-    const val SPORT_COUPON_MENU = "/api/front/sport/coupon/menu"
     const val SPORT_SEARCH_ENGINE = "/api/front/sport/searchEngine"
     const val SPORT_PUBLICITY_RECOMMEND = "/api/front/sport/recommend"
     const val SPORT_MENU_FILTER = "/api/front/sport/menu/list"
@@ -434,24 +425,15 @@ object Constants {
     const val MYFAVORITE_SAVE = "/api/front/myFavorite/save"
     const val MYFAVORITE_QUERY_ALL = "/api/front/myFavorite/queryAll"
 
-    //play category list
-    const val PLAYCATE_TYPE_LIST = "/api/front/playcate/type/list"
-
     //outright
     const val OUTRIGHT_ODDS_LIST = "/api/front/outright/odds/list"
     const val OUTRIGHT_RESULT_LIST = "/api/front/outright/result/list"
-    const val OUTRIGHT_LEAGUE_LIST = "/api/front/outright/league/list" // outright/season/list棄用
-    const val OUTRIGHT_BET_ADD = "/api/front/outright/bet/add"
     const val OUTRIGHT_BET_INFO = "/api/front/outright/bet/info"
 
 
     //infoCenter
     const val USER_NOTICE_LIST = "/api/front/user/notice/list"
     const val USER_NOTICE_READED = "/api/front/user/notice/readed/{id}"
-
-    //vip / member level
-    const val USER_LEVEL_GROWTH = "/api/front/user/level/getLevelGrowth"
-    const val THIRD_REBATES = "/api/front/playcom/thirdRebates"
 
     //money
     const val RECHARGE_CONFIG_MAP = "/api/front/rechcfg/map"
@@ -469,7 +451,6 @@ object Constants {
     const val USER_UPDATE_PWD = "/api/front/user/updatepwd" //更新密码
     const val USER_UPDATE_FUND_PWD = "/api/front/user/updatefundpwd" //更新资金密码
     const val USER_WITHDRAW_INFO = "/api/front/user/setWdUserInfo" //設置提款資料
-    const val USER_CREDIT_CIRCLE_HISTORY = "/api/front/user/credit/circle/history"
     const val USER_BET_LIMIT = "/api/front/user/setPerBetLimit"
     const val USER_FROZE = "/api/front/user/setFroze"
     const val LOCK_MONEY = "/api/front/user/lockMoney"
@@ -523,12 +504,6 @@ object Constants {
     const val QUERY_FIRST_ORDERS = "/api/front/thirdapi/queryFirstOrders"
     const val QUERY_SECOND_ORDERS = "/api/front/thirdapi/querySecondOrders"
 
-    const val MATCH_CATEGORY_RECOMMEND = "/api/front/matchCategory/recommend/query" //查询推薦賽事
-    const val MATCH_CATEGORY_SPECIAL_MATCH =
-        "/api/front/matchCategory/special/match/query" //查詢主頁精選賽事
-    const val MATCH_CATEGORY_SPECIAL_MENU =
-        "/api/front/matchCategory/special/menu/query" //查詢主頁精選賽事菜单
-    const val MATCH_CATEGORY_QUERY = "/api/front/matchCategory/query" //(新)查询参赛表
 
     //credential
     const val CREDENTIAL_INITIALIZE = "/api/front/realid/initialize"
@@ -579,20 +554,6 @@ object Constants {
     const val SEND_SMS_FORGET = "/api/front/index/sendSmsForgotPasswordV2" //找回密码-获取短信验证码
     const val SEND_EMAIL_FORGET = "/api/front/index/sendEmailCode" //找回密码-获取邮箱验证码
     const val FORGET_PASSWORD_VALIDATE_EMAIL = "/api/front/index/validateEmailCode"//找回密码-验证邮箱验证码
-
-    //首页二次改版接口
-    const val QUERY_GAME_ENTRY_CONFIG =
-        "/api/front/gameEntryConfig/queryGameEntryConfig" //电子，棋牌接口（首页和二级页面使用同一个接口）
-
-    //首页热门盘口推荐
-    const val HOT_HANDICAP_LIST = "/api/front/match/odds/mobile/hot/handicap/{handicapType}/list"
-
-    //首页热门直播
-    const val HOT_LIVE_LIST = "/api/front/liveRound/mobile/hotMatch/list"
-
-    //获取累计头奖金额
-    const val QUERY_TOTAL_REWARD_AMOUNT =
-        "/api/front/gameEntryConfig/queryTotalRewardAmount" //电子，棋牌接口（首页和二级页面使用同一个接口）
 
     //全局抽奖活动
     const val LOTTERY_GET = "/api/front/lottery/get"

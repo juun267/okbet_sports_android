@@ -3,6 +3,7 @@ package org.cxct.sportlottery.network.withdraw.list
 import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.network.common.PagingParams
 import org.cxct.sportlottery.network.common.TimeRangeParams
+
 @KeepMembers
 data class WithdrawListRequest(
     val checkStatus: Int? = null,

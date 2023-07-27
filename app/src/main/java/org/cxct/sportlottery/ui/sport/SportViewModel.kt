@@ -30,7 +30,6 @@ import org.cxct.sportlottery.network.sport.*
 import org.cxct.sportlottery.network.sport.Sport
 import org.cxct.sportlottery.network.sport.query.*
 import org.cxct.sportlottery.network.sport.query.Play
-import org.cxct.sportlottery.network.user.info.LiveSyncUserInfoVO
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.sport.detail.OddsDetailListData
@@ -491,33 +490,6 @@ class SportViewModel(
     fun clearLiveInfo() {
         _matchLiveInfo.postValue(null)
         _oddsDetailResult.postValue(null)
-    }
-
-
-    fun loginLive() {
-        if (sConfigData?.liveChatOpen == 0) return
-        var spf = MultiLanguagesApplication.mInstance.getSharedPreferences(
-            NAME_LOGIN, Context.MODE_PRIVATE
-        )
-        var spValue = spf.getString(KEY_LIVE_USER_INFO, "")
-        if (spValue.isNullOrEmpty()) return
-        var liveSyncUserInfoVO: LiveSyncUserInfoVO =
-            JsonUtil.fromJson(spValue, LiveSyncUserInfoVO::class.java) ?: return
-        val hostUrl = sConfigData?.liveChatHost
-        if (hostUrl.isNullOrEmpty()) return
-        viewModelScope.launch {
-            hostUrl?.let {
-                val retrofit = RequestManager.instance.createRetrofit(hostUrl)
-                val result = doNetwork(androidContext) {
-                    retrofit.create(MatchService::class.java).liveLogin(
-                        liveSyncUserInfoVO
-                    )
-                }
-                result?.chatLiveLoginData?.let {
-                    _liveLoginInfo.postValue(Event(it))
-                }
-            }
-        }
     }
 
 
