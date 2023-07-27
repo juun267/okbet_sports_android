@@ -144,7 +144,7 @@ data class ConfigData(
     var viberLinkConfig : String?,//viber连接配置
     var whatsappLinkConfig : String?,//whatapp连接配置
     var selectedDepositAmountSettingList: List<Int>? = null, //存款快捷金额
-    var auditFailureRestrictsWithdrawalsSwitch:Int?//提款额度大于打码量的时候直接拒绝提款
+    var auditFailureRestrictsWithdrawalsSwitch:Int?,//提款额度大于打码量的时候直接拒绝提款
     var noLoginWitchVideoOrAnimation: Int? ,//未登陆观看视频/动画 0-关闭 1-启用
     var homeGamesList:List<HomeGameBean>?  //首页场馆排序
 ) {
