@@ -124,7 +124,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingVertical="20dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/btn_exit">
@@ -133,13 +133,14 @@
                         android:id="@+id/iv_pagcor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="25dp"
                         android:src="@drawable/ic_pagcor" />
 
                     <ImageView
                         android:id="@+id/iv_pagcor_21"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:visibility="gone"
                         android:src="@drawable/ic_pagcor_21" />
                 </LinearLayout>
 
