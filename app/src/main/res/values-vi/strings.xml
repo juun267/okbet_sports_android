@@ -1461,4 +1461,14 @@
     <string name="P163">Kết quả hiệp 2</string>
     <string name="P164">Kết quả hiệp 3</string>
     <string name="P165">Kết quả hiệp 4</string>
+    <string name="N592">Xin lỗi</string>
+    <string name="P151">Đổi</string>
+    <string name="P152">Mã đổi</string>
+    <string name="P153">Lich sử đổi</string>
+    <string name="P156">Giải thưởng</string>
+    <string name="D016">Gửi</string>
+    <string name="J044">Cài đặt lại</string>
+    <string name="J652">Thời gian</string>
+    <string name="P170">Nhận được</string>
+    <string name="Congratulations">Xin chúc mừng</string>
 </resources>

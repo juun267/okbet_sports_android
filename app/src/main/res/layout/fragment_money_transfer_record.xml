@@ -88,7 +88,8 @@
         android:layout_marginTop="@dimen/margin_14"
         android:paddingBottom="@dimen/margin_3"
         android:background="@drawable/bg_square_shape_6dp_gray_deposit_stroke"
-        android:layout_below="@+id/ll_status">
+        android:layout_below="@+id/ll_status"
+        android:layout_above="@+id/tv_no_data_tips">
 
         <LinearLayout
             android:id="@+id/linearLayout5"
@@ -179,14 +180,13 @@
     <TextView
         android:id="@+id/tv_no_data_tips"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/color_131932_F0F5FA"
+        android:layout_height="56dp"
+        android:background="@color/color_191919_FCFCFC"
         android:gravity="center"
-        android:paddingVertical="12dp"
+        android:layout_marginBottom="12dp"
         android:text="@string/no_data"
         android:textColor="@color/color_909090_666666"
-        android:textSize="@dimen/textSize12sp"
-        android:visibility="visible"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        android:textSize="@dimen/textSize12sp" />
 </RelativeLayout>
 

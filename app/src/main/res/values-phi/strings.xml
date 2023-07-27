@@ -1436,5 +1436,14 @@
     <string name="P150">Paalala sa hindi pagsunod</string>
     <string name="P149">Mangyaring kumpletuhin ang wagering turnover %s sa pagtaya bago humiling ng withdrawal. (Alinsunod sa mga regulasyon ng PAGCOR, 1x turnover ang kailangan para sa bawat deposito na transaksyon) Para sa assistance, mangyaring makipag-ugnayan sa customer service.</string>
     <string name="viber">Viber</string>
+    <string name="N592">"Sorry "</string>
+    <string name="P151">I-redeem</string>
+    <string name="P152">Redeem Code</string>
+    <string name="P153">History ng redeem</string>
+    <string name="D016">Ipasa</string>
+    <string name="J044">I-reset</string>
+    <string name="J652">Oras</string>
+    <string name="P170">Nakuha mo</string>
+    <string name="Congratulations">Congratulations</string>
 </resources>
 

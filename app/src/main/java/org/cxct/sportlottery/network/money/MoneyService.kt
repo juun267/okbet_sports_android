@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.network.money
 
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.Constants.REDEEM_CODE
+import org.cxct.sportlottery.network.Constants.REDEEM_CODE_HISTORY
 import org.cxct.sportlottery.network.Constants.RED_ENVELOPE_PRIZE
 import org.cxct.sportlottery.network.Constants.USER_BILL_LIST
 import org.cxct.sportlottery.network.Constants.USER_RECHARGE_LIST
@@ -34,7 +36,7 @@ interface MoneyService {
 
     @GET(RED_ENVELOPE_PRIZE)
     suspend fun getRedEnvelopePrize(
-        @Path("redEnpId") redEnpId: Int? ,
+        @Path("redEnpId") redEnpId: Int?,
     ): Response<RedEnvelopePrizeResult>
 
 
@@ -42,5 +44,12 @@ interface MoneyService {
     suspend fun getRedEnvelopeHistoryList(
         @Body withdrawListRequest: RedEnvelopeListRequest
     ): Response<RedEnvelopeListResult>
+
+
+    @GET(REDEEM_CODE)
+    suspend fun redeemCode(@Path("redeemCode") code: String?): Response<RedeemCodeResponse>
+
+    @POST(REDEEM_CODE_HISTORY)
+    suspend fun redeemCodeHistory(@Body code: SportBillListRequest?): Response<RedeemCodeHistoryResponse>
 
 }
