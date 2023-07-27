@@ -464,7 +464,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             }
         }
 
-
         if (showAnim) {
             setOnClickListeners(binding.ivAnim, binding.tvAnim) {
                 if (!viewModel.getLoginBoolean() && sConfigData?.noLoginWitchVideoOrAnimation == 1) {
