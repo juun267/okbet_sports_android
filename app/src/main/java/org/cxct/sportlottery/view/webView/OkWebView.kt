@@ -4,9 +4,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.webkit.WebView
 
-class OkWebView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null
-) : WebView(context, attrs) {
+open class OkWebView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
+) : WebView(context, attrs, defStyle) {
 
     var okWebViewClient: OkWebViewClient = OkWebViewClient()
         set(value) {

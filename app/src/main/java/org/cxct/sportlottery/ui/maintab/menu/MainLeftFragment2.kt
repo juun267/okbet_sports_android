@@ -28,6 +28,7 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.FragmentMainLeft2Binding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.user.UserInfo
+import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -37,6 +38,7 @@ import org.cxct.sportlottery.ui.maintab.MainViewModel
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
 import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
 import org.cxct.sportlottery.ui.maintab.home.news.NewsHomeFragment
+import org.cxct.sportlottery.ui.maintab.worldcup.WorldCupFragment
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.promotion.PromotionListActivity
@@ -162,6 +164,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
 
     private var lastItem: MenuItem? = null
 
+    private lateinit var worldCupItem: MenuItem
     private lateinit var sportsItem: MenuItem
     private lateinit var okGamesItem: MenuItem
     private lateinit var eSportGamesItem: MenuItem
@@ -313,6 +316,20 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             it.visible()
             it.setImageDrawable(toRight)
         }
+
+        if(StaticData.worldCupOpened()){
+            worldCupItem = addMenu(0,
+                groupParams,
+                iconParams,
+                R.drawable.ic_main_menu_fifa_1,
+                R.drawable.ic_main_menu_fifa_1,
+                textParams,
+                R.string.world_cup_2023,
+                true
+            ) {
+                getMainTabActivity().jumpToWorldCup()
+            }
+        }
     }
 
     private fun initLanguageItem(group2Params: LayoutParams,
@@ -381,7 +398,7 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         OKGamesFragment::class.java -> okGamesItem.setSelected()
         OKLiveFragment::class.java -> okLiveItem.setSelected()
         NewsHomeFragment::class.java -> newsItem.setSelected()
-
+        WorldCupFragment::class.java -> worldCupItem.setSelected()
         else -> {}
 
     }

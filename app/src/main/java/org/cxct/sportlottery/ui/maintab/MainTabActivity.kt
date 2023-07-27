@@ -8,12 +8,17 @@ import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
 import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
+import androidx.core.view.forEach
+import androidx.core.view.get
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.android.synthetic.main.activity_main_tab.*
+import kotlinx.android.synthetic.main.custom_bottom_sheet_item.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.enums.OddsType
 import org.cxct.sportlottery.common.event.BetModeChangeEvent
@@ -53,6 +58,7 @@ import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import splitties.activities.start
+import kotlin.reflect.jvm.internal.impl.types.checker.TypeRefinementSupport.Enabled
 import kotlin.system.exitProcess
 
 
@@ -213,6 +219,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
                     if (mIsEnabled) {
                         avoidFastDoubleClick()
+                        enableSelectBottomNav(true)
                         val itemPosition = getMenuItemPosition(menuItem)
                         if (checkMainPosition(itemPosition)) {
                             return@OnNavigationItemSelectedListener false
@@ -603,10 +610,23 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     private fun navToPosition(position: Int) {
+        bottom_navigation_view.maxItemCount
         if (bottom_navigation_view.currentItem != position) {
             bottom_navigation_view.currentItem = position
         }
+    }
 
+    /**
+     * 清除选中状态，由于组件必须选中一个，就默认选中第一个，并且设置未选中的样式
+     */
+    private fun enableSelectBottomNav(enable: Boolean) {
+        if (enable){
+            bottom_navigation_view.itemTextColor = ContextCompat.getColorStateList(this@MainTabActivity,R.color.main_tab_text_selector)
+            bottom_navigation_view.menu[0].icon = ContextCompat.getDrawable(this@MainTabActivity,R.drawable.selector_tab_home)
+        }else{
+            bottom_navigation_view.itemTextColor = ContextCompat.getColorStateList(this@MainTabActivity,R.color.color_6C7BA8)
+            bottom_navigation_view.menu[0].icon = ContextCompat.getDrawable(this@MainTabActivity,R.drawable.ic_tab_home_nor)
+        }
     }
 
     fun jumpToESport() {
@@ -623,6 +643,17 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     fun jumpToTheSport(matchType: MatchType? = null, gameType: GameType? = null) {
         (fragmentHelper.getFragment(1) as SportFragment2).setJumpSport(matchType, gameType)
         navToPosition(1)
+    }
+
+    fun jumpToWorldCup() {
+        navToPosition(0)
+        enableSelectBottomNav(false)
+        homeFragment().jumpToWorldCup()
+    }
+    fun jumpToWorldCupGame() {
+        navToPosition(0)
+        enableSelectBottomNav(false)
+        homeFragment().jumpToWorldCupGame()
     }
 
     fun jumpToInplaySport() {

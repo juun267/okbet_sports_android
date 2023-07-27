@@ -74,8 +74,8 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
                 if (view is ViewGroup) { // 赛事详情
                     item.matchInfo?.let {
                         SportDetailActivity.startActivity(view.context,
-                            it,
-                            MatchType.EARLY,
+                            matchInfo = it,
+                            matchType = MatchType.EARLY,
                             tabCode = MatchType.END_SCORE.postValue)
                     }
                 } else { // 收藏赛事
