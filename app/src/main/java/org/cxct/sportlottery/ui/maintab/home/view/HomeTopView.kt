@@ -1,13 +1,15 @@
 package org.cxct.sportlottery.ui.maintab.home.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.core.view.isInvisible
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -36,21 +38,32 @@ import timber.log.Timber
 class HomeTopView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
 ) : LinearLayout(context, attrs, defStyle), XBanner.OnItemClickListener {
-
+    private val venuesAdapter=RecyclerVenuesAdapter()
     val binding: LayoutHomeTopBinding
 
+    companion object{
+        const val OkSport="pageOKSports"
+        const val OkGame="pageOKGames"
+        const val OkBingo="pageOKBingo"
+        const val OkLive="pageOKLive"
+    }
     init {
         orientation = VERTICAL
         binding = LayoutHomeTopBinding.inflate(LayoutInflater.from(context), this)
+
+        binding.recyclerVenues.layoutManager=GridLayoutManager(context,2)
+        binding.recyclerVenues.adapter=venuesAdapter
         initLogin()
         initSportEnterStatus()
+        initHomeVenues()
     }
 
     /**
      * 检测体育服务是否关闭
      */
+    @SuppressLint("NotifyDataSetChanged")
     fun initSportEnterStatus() {
-        binding.tvSportClose.goneWithSportSwitch(false)
+        venuesAdapter.notifyDataSetChanged()
     }
 
     private fun setUpBanner() {
@@ -229,4 +242,39 @@ class HomeTopView @JvmOverloads constructor(
     }
 
 
+    /**
+     * 初始化首页场馆列表
+     */
+    private fun initHomeVenues(){
+        sConfigData?.homeGamesList=sConfigData?.homeGamesList?.sortedBy { it.gameSort }
+
+        sConfigData?.homeGamesList?.forEach {
+            //okGames市场开关
+            if(it.uniqueName== OkGame){
+                //开关为false
+                if(!getMarketSwitch()){
+                    //添加okGames
+                    venuesAdapter.addData(it)
+                }
+            }else{
+                venuesAdapter.addData(it)
+            }
+        }
+    }
+
+
+    private fun initVenuesItemClick(fragment: MainHomeFragment){
+        venuesAdapter.setOnItemClickListener{_,_,position->
+            val item=venuesAdapter.data[position]
+            when(item.uniqueName){
+                //体育
+                OkSport->{
+                    fragment.jumpToInplaySport()
+                }
+                OkGame->{
+                    fragment.jumpToOKGames()
+                }
+            }
+        }
+    }
 }
