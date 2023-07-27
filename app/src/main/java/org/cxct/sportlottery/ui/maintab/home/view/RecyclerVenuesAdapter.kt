@@ -6,6 +6,7 @@ import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemHomeVenuesBinding
 import org.cxct.sportlottery.network.index.config.HomeGameBean
+import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.util.getSportEnterIsClose
 
 class RecyclerVenuesAdapter : BindingAdapter<HomeGameBean, ItemHomeVenuesBinding>()  {
@@ -31,9 +32,15 @@ class RecyclerVenuesAdapter : BindingAdapter<HomeGameBean, ItemHomeVenuesBinding
                 }
                 //bingo
                 HomeTopView.OkBingo->{
-                    ivSportCover.setImageResource(R.drawable.img_okbingo)
-                    tvSportClose.visible()
-                    tvSportClose.text=context.getString(R.string.N700)
+                    //开启世界杯  替换掉bingo
+                    if(StaticData.worldCupOpened()){
+                        ivSportCover.setImageResource(R.drawable.img_worldcup)
+                        tvSportClose.gone()
+                    }else{
+                        ivSportCover.setImageResource(R.drawable.img_okbingo)
+                        tvSportClose.visible()
+                        tvSportClose.text=context.getString(R.string.N700)
+                    }
                 }
                 //oklive
                 HomeTopView.OkLive->{

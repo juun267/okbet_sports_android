@@ -9,24 +9,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.stx.xhb.androidx.XBanner
+import kotlinx.android.synthetic.main.layout_home_top.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.setOnClickListeners
 import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.extentions.*
 import org.cxct.sportlottery.databinding.LayoutHomeTopBinding
 import org.cxct.sportlottery.net.user.data.ActivityImageList
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.config.ImageData
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.repository.ConfigRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.bean.XBannerImage
 import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
@@ -70,7 +76,7 @@ class HomeTopView @JvmOverloads constructor(
         val imageType = 2
         val lang = LanguageManager.getSelectLanguage(context).key
         var imageList = sConfigData?.imageList?.filter {
-            it.imageType == imageType && it.lang == lang && !it.imageName1.isNullOrEmpty() && !(getMarketSwitch() && it.isHidden)
+            it.imageType == imageType && it.lang == lang && !it.imageName1.isNullOrEmpty() && (!getMarketSwitch() && !it.isHidden)
         }?.sortedWith(compareByDescending<ImageData> { it.imageSort }.thenByDescending { it.createdAt })
         val loopEnable = (imageList?.size ?: 0) > 1
         if (imageList.isNullOrEmpty()) {
@@ -166,6 +172,7 @@ class HomeTopView @JvmOverloads constructor(
     }
 
     fun setup(fragment: MainHomeFragment) {
+        initVenuesItemClick(fragment)
         ConfigRepository.onNewConfig(fragment) {
             setUpBanner()
             fragment.viewModel.getActivityImageListH5()
@@ -239,8 +246,8 @@ class HomeTopView @JvmOverloads constructor(
         sConfigData?.homeGamesList=sConfigData?.homeGamesList?.sortedBy { it.gameSort }
 
         sConfigData?.homeGamesList?.forEach {
-            //okGames市场开关
-            if(it.uniqueName== OkGame){
+            //市场开关   okGames和 世界杯
+            if(it.uniqueName== OkGame||(it.uniqueName== OkBingo&&StaticData.worldCupOpened())){
                 //开关为false
                 if(!getMarketSwitch()){
                     //添加okGames
@@ -262,7 +269,14 @@ class HomeTopView @JvmOverloads constructor(
                     fragment.jumpToInplaySport()
                 }
                 OkGame->{
-                    fragment.jumpToOKGames()
+                    (fragment.activity as MainTabActivity).jumpToOKGames()
+                }
+                //bingo
+                OkBingo->{
+                    //开启世界杯才有点击
+                    if(StaticData.worldCupOpened()){
+                        (fragment.activity as MainTabActivity).jumpToWorldCup()
+                    }
                 }
             }
         }
