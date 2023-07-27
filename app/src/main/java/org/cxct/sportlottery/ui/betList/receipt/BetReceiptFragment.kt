@@ -190,8 +190,9 @@ class BetReceiptFragment :
         }"
 
         //顯示注單收據的數量
-        if (BetInfoRepository.currentBetType == 0){
-            val bkEndScore=betResultData?.singleBets?.firstOrNull()?.matchOdds?.firstOrNull()?.playCateCode.isEndScoreType()
+        if (BetInfoRepository.currentBetType == 0) {
+            val firstMatchOdds = betResultData?.singleBets?.firstOrNull()?.matchOdds?.firstOrNull()
+            val bkEndScore= firstMatchOdds?.playCateCode.isEndScoreType()
             if (bkEndScore){
                 viewBall.visible()
                 tv_bet_list_count.visible()
