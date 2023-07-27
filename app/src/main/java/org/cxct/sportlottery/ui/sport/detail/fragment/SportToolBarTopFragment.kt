@@ -43,7 +43,7 @@ class SportToolBarTopFragment :
 
 
     fun isLiveStatu(): Boolean {
-        return isInited && binding.linLive.isVisible
+        return isInited
     }
 
     private var timeText: String? = null

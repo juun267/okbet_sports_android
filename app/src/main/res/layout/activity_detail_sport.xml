@@ -169,9 +169,9 @@
                             android:textColor="@color/color_BEC7DC"
                             android:textSize="12sp"
                             android:fontFamily="@font/helvetica_normal"
-                            app:layout_constraintBottom_toBottomOf="@id/tvFavoriteSymbol"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/tvFavoriteSymbol" />
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageView
                             android:id="@+id/ivAnim"
@@ -179,10 +179,9 @@
                             android:layout_height="wrap_content"
                             android:paddingEnd="5dp"
                             android:src="@drawable/selector_detail_anim"
-                            app:layout_constraintBottom_toBottomOf="@+id/tvAnim"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/tvAnim"
-                            app:layout_constraintTop_toTopOf="@+id/tvAnim"
-                            app:layout_constraintVertical_bias="1.0" />
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/tvVideo"
@@ -193,9 +192,9 @@
                             android:textColor="@color/color_BEC7DC"
                             android:textSize="12sp"
                             android:fontFamily="@font/helvetica_normal"
-                            app:layout_constraintBottom_toBottomOf="@+id/ivAnim"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/ivAnim"
-                            app:layout_constraintTop_toTopOf="@+id/ivAnim" />
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageView
                             android:id="@+id/ivVideo"
@@ -203,9 +202,9 @@
                             android:layout_height="wrap_content"
                             android:paddingEnd="5dp"
                             android:src="@drawable/selector_detail_video"
-                            app:layout_constraintBottom_toBottomOf="@+id/tvVideo"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/tvVideo"
-                            app:layout_constraintTop_toTopOf="@+id/tvVideo" />
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/tvLiveStream"
@@ -216,9 +215,9 @@
                             android:textColor="@color/color_BEC7DC"
                             android:textSize="12sp"
                             android:fontFamily="@font/helvetica_normal"
-                            app:layout_constraintBottom_toBottomOf="@+id/ivVideo"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/ivVideo"
-                            app:layout_constraintTop_toTopOf="@+id/ivVideo" />
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageView
                             android:id="@+id/ivLiveStream"
@@ -226,9 +225,9 @@
                             android:layout_height="wrap_content"
                             android:paddingEnd="5dp"
                             android:src="@drawable/selector_detail_live"
-                            app:layout_constraintBottom_toBottomOf="@+id/tvLiveStream"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/tvLiveStream"
-                            app:layout_constraintTop_toTopOf="@+id/tvLiveStream" />
+                            app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
 
