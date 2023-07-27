@@ -52,11 +52,14 @@ class LoginViewModel(
         get() = _checkUserExist
     val selectAccount: LiveData<LoginResult>
         get() = _selectAccount
+    val loginGlifeOrRegist: LiveData<LoginResult>
+        get() = _loginGlifeOrRegist
 
     private val _isLoading = MutableLiveData<Boolean>()
     private val _loginFormState = MutableLiveData<LoginFormState>()
     private val _loginResult = MutableLiveData<LoginResult>()
     private val _selectAccount= MutableLiveData<LoginResult>()
+    private val _loginGlifeOrRegist= MutableLiveData<LoginResult>()
     private val _loginSmsResult = MutableLiveData<NetResult>()
     private val _validCodeResult = MutableLiveData<ValidCodeResult?>()
     private val _validResult = MutableLiveData<NetResult>()
@@ -167,7 +170,12 @@ class LoginViewModel(
                 }
                 loginResult.rows?.size==1 -> {
                     val loginData = loginResult.rows[0]
-                    dealWithLoginData(loginResult, loginData)
+                    // 询问是否登录GLIFE账号，或注册一个 okbet平台账号
+                    if (loginData.vipType==1){
+                       _loginGlifeOrRegist.postValue(loginResult)
+                    }else{
+                        dealWithLoginData(loginResult, loginData)
+                    }
                 }
                 loginResult.rows?.size==2 -> {
                     _selectAccount.postValue(loginResult)
