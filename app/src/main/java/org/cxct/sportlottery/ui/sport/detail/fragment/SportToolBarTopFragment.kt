@@ -42,10 +42,6 @@ class SportToolBarTopFragment :
     }
 
 
-    fun isLiveStatu(): Boolean {
-        return isInited
-    }
-
     private var timeText: String? = null
     private var timeEnable = true
 
