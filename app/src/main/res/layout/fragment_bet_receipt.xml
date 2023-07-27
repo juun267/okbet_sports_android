@@ -318,10 +318,12 @@
 
             <TextView
                 android:id="@+id/btnLastStep"
-                android:layout_width="110dp"
+                android:layout_width="wrap_content"
                 android:paddingHorizontal="20dp"
                 android:layout_height="@dimen/bet_button_height"
+                android:minWidth="110dp"
                 android:layout_marginRight="10dp"
+                android:drawablePadding="8dp"
                 android:drawableStart="@drawable/icon_history_details"
                 android:background="@drawable/bg_radius_8_bet_last_step"
                 android:gravity="center"
@@ -335,7 +337,7 @@
                 android:id="@+id/btn_complete"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/bet_button_height"
-                android:minWidth="134dp"
+                android:minWidth="120dp"
                 android:drawableStart="@drawable/icon_others"
                 android:paddingHorizontal="15dp"
                 android:background="@drawable/button_radius_8_bet_button"

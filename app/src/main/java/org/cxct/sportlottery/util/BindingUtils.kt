@@ -184,7 +184,7 @@ fun TextView.setBetReceiptStatus(status: Int?, cancelBy: String? = null) {
             when (cancelBy) {
                 "0" -> context.getString(R.string.cancel_auto)
                 "1" -> context.getString(R.string.cancel_manual)
-                else -> context.getString(R.string.odds_change)
+                else -> context.getString(R.string.N417)
             }
         }
         else -> context.getString(R.string.confirmed)

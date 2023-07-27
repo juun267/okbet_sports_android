@@ -1051,7 +1051,7 @@
     <string name="str_if_accept_odds_changes_des2">2. Tanggapin ang pinakamahusay na pagbabago ng odds - kapag pinili mo ang opsyong ito, kung ang pinakabagong logro ay mas mahusay kaysa sa odds na iyong pinili, bubuo kami ng bet slip. Kung ang pinakabagong mga logro ay mas mababa kaysa sa iyong mga napiling odds, hindi kami bubuo ng slip ng taya at ipaalala sa iyo ang pagbabago ng odds.</string>
     <string name="str_if_accept_odds_changes_des3">3. Huwag tumanggap ng mga pagbabago sa odds--kapag pinili mo ang opsyong ito: kung ang pinakabagong odds ay iba sa iyong napiling odds, hindi kami gagawa ng slip ng taya at ipaalala sa iyo ang mga pagbabago sa odds.</string>
     <string name="str_ok_i_got_it">Okay, alam ko na</string>
-    <string name="str_return_last_step">Bumalik sa nakaraang hakbang</string>
+    <string name="str_return_last_step">Last step</string>
     <string name="str_bet_other_game">Taya sa iba</string>
     <string name="str_press_again_to_exit_the_program">Pindutin muli upang lumabas sa programa</string>
     <string name="str_odds_changed">Nagbago ang mga odds</string>
@@ -1427,5 +1427,6 @@
     <string name="D045">Detalye</string>
     <string name="J645">Hanggang</string>
     <string name="P172">Wala pang e-sports event!</string>
+    <string name="N417">Tinanggi</string>
 </resources>
 
