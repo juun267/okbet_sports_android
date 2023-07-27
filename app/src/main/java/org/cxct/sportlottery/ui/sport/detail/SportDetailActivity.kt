@@ -710,12 +710,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
         viewModel.matchLiveInfo.observe(this) {
             it?.peekContent()?.let { matchRound ->
-                if (sportToolBarTopFragment.isLiveStatu()) {
-                    live_view_tool_bar.liveUrl =
-                        if (matchRound.pullRtmpUrl.isNotEmpty()) matchRound.pullRtmpUrl else matchRound.pullFlvUrl
-                    if (intoLive) {
-                        showLive()
-                    }
+                live_view_tool_bar.liveUrl =
+                    if (matchRound.pullRtmpUrl.isNotEmpty()) matchRound.pullRtmpUrl else matchRound.pullFlvUrl
+                if (intoLive) {
+                    showLive()
                 }
             }
         }
@@ -730,16 +728,12 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
         viewModel.videoUrl.observe(this) { event ->
             val url = event?.getContentIfNotHandled() ?: return@observe
-            if (sportToolBarTopFragment.isLiveStatu()) {
-                live_view_tool_bar.videoUrl = url
-            }
+            live_view_tool_bar.videoUrl = url
         }
 
         viewModel.animeUrl.observe(this) { event ->
             val url = event?.getContentIfNotHandled()
-            if (sportToolBarTopFragment.isLiveStatu()) {
-                live_view_tool_bar.animeUrl = url
-            }
+            live_view_tool_bar.animeUrl = url
         }
 
         viewModel.showBetInfoSingle.observe(this) {
