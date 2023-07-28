@@ -13,28 +13,60 @@
 
     <ImageButton
         android:id="@+id/btn_back"
-        android:layout_width="36dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_width="33dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layout_margin="16dp"
         android:background="@null"
         android:contentDescription="@null"
-        android:padding="5dp"
-        android:scaleX="0.9"
-        android:scaleY="0.9"
-        android:src="@drawable/ic_arrow_login"
-        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/ic_login_close"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/v_top" />
 
     <ImageView
         android:id="@+id/ivLogo"
-        android:layout_width="151dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="120dp"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
         android:src="@drawable/logo_okbet_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/tvSummary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_12"
+        android:textSize="@dimen/textSize14sp"
+        android:textColor="@color/color_0D2245"
+        tools:text="Up to  P500  bonus for new user！"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivLogo"/>
+    <TextView
+        android:id="@+id/tvSubTitle1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_24"
+        android:textSize="@dimen/textSize16sp"
+        android:textColor="@color/color_0D2245"
+        android:text="@string/P173"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvSummary"/>
+
+    <TextView
+        android:id="@+id/tvSubTitle2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textSize16sp"
+        android:textColor="@color/color_6D7693"
+        android:layout_marginTop="@dimen/margin_8"
+        android:text="@string/P174"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvSubTitle1"/>
 
 
     <ScrollView
@@ -42,25 +74,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="30dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="16dp"
         android:elevation="1dp"
         android:layout_marginHorizontal="15dp"
-        android:background="@drawable/bg_white_radius_8"
         android:overScrollMode="never"
         android:scrollbars="none"
         android:fadingEdge="none"
-        app:layout_constraintTop_toBottomOf="@id/ivLogo">
+        app:layout_constraintTop_toBottomOf="@id/tvSubTitle2">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingTop="15dp"
-            android:paddingHorizontal="20dp">
+            android:layout_height="match_parent">
 
             <FrameLayout
                 android:id="@+id/fl_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/margin_12"
+                android:paddingVertical="@dimen/margin_15"
+                android:background="@drawable/bg_white_radius_8"
+                android:elevation="2dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -69,7 +102,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
                         android:id="@+id/et_account"
@@ -86,6 +119,7 @@
                             android:id="@+id/eet_account"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
                             android:imeOptions="actionNext"
                             android:inputType="text"
                             android:maxLines="1"
@@ -179,7 +213,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
                         android:id="@+id/et_username"
@@ -231,39 +265,13 @@
                 </LinearLayout>
             </FrameLayout>
 
-            <TextView
-                android:id="@+id/tv_pwd_login"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:button="@drawable/effect_login_select_checkbox"
-                android:paddingStart="6dp"
-                android:text="@string/password_login"
-                android:textColor="@color/color_025BE8_025BE8"
-                android:textSize="@dimen/textSize12sp"
-                android:visibility="gone"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fl_input" />
 
-            <TextView
-                android:id="@+id/tv_code_login"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:button="@drawable/effect_login_select_checkbox"
-                android:paddingStart="6dp"
-                android:text="@string/otp_login"
-                android:textColor="@color/color_025BE8_025BE8"
-                android:textSize="@dimen/textSize12sp"
-                android:visibility="visible"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fl_input" />
 
             <TextView
                 android:id="@+id/tv_forget_password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="5dp"
                 android:background="@null"
                 android:clickable="true"
                 android:focusable="true"
@@ -280,7 +288,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:layout_marginTop="@dimen/margin_50"
-                android:background="@drawable/ic_submit"
+                android:background="@drawable/bg_blue_radius_8"
                 android:text="@string/btn_login"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
@@ -289,14 +297,42 @@
                 android:enabled="false"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fl_input" />
+            <TextView
+                android:id="@+id/tv_pwd_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:button="@drawable/effect_login_select_checkbox"
+                android:paddingStart="6dp"
+                android:text="@string/password_login"
+                android:textColor="@color/color_025BE8_025BE8"
+                android:textSize="@dimen/textSize12sp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_login" />
 
+            <TextView
+                android:id="@+id/tv_code_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:button="@drawable/effect_login_select_checkbox"
+                android:paddingStart="6dp"
+                android:text="@string/otp_login"
+                android:textColor="@color/color_025BE8_025BE8"
+                android:textSize="@dimen/textSize12sp"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_login" />
             <LinearLayout
                 android:id="@+id/lin_third"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="visible"
-                android:layout_marginTop="@dimen/margin_30"
+                android:layout_marginTop="@dimen/margin_40"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn_login">
@@ -329,28 +365,29 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/margin_20"
                     android:orientation="vertical">
 
                     <LinearLayout
                         android:id="@+id/btn_google"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="@dimen/margin_45"
-                        android:gravity="center"
-                        android:background="@drawable/bg_white_stroke_gray_radius_8">
+                        android:layout_gravity="center"
+                        android:paddingHorizontal="@dimen/margin_20"
+                        android:gravity="center">
 
                         <ImageView
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
                             android:src="@drawable/ic_google" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/margin_16"
+                            android:layout_marginLeft="@dimen/margin_10"
                             android:textSize="@dimen/sp_14"
-                            android:textColor="@color/color_535D76"
-                            android:text="@string/N589" />
+                            android:textStyle="bold"
+                            android:textColor="@color/color_0D2245"
+                            android:text="@string/google" />
                     </LinearLayout>
 
 
@@ -366,52 +403,56 @@
 
             </LinearLayout>
 
-
-            <CheckBox
-                android:id="@+id/cbPrivacy"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:button="@drawable/login_check_style"
-                android:paddingStart="10dp"
-                app:layout_constraintTop_toBottomOf="@id/lin_third"
-                android:layout_marginTop="13dp"
-                android:gravity="start"
-                android:textColor="@color/color_535D76"
-                android:textColorLink="@color/color_025BE8"
-                android:textSize="@dimen/textSize13sp"
-                android:lineSpacingExtra="3dp"
-                android:text="@string/login_privacy" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                app:layout_constraintTop_toBottomOf="@id/cbPrivacy"
-                android:layout_marginTop="30dp">
-
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/margin_10"
+                android:paddingVertical="@dimen/margin_12"
+                android:background="@drawable/bg_white_radius_16_stoke_blue"
+                app:layout_constraintTop_toBottomOf="@id/lin_third">
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tvPrivacy"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="left"
-                    android:textColor="@color/color_535D76"
+                    android:paddingStart="10dp"
+                    android:gravity="start"
+                    android:textColor="@color/color_6D7693"
                     android:textColorLink="@color/color_025BE8"
-                    android:textSize="@dimen/textSize13sp"
+                    android:textSize="@dimen/textSize12sp"
                     android:lineSpacingExtra="3dp"
-                    android:text="@string/need_help" />
+                    android:text="@string/login_privacy" />
 
-                <TextView
-                    android:id="@+id/tv_customer_service"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:drawablePadding="3dp"
-                    android:gravity="left"
-                    android:drawableLeft="@drawable/ic_customer_service"
-                    android:textColor="@color/color_025BE8"
-                    android:textSize="@dimen/textSize13sp"
-                    android:text="@string/live_service" />
+                    android:gravity="center_horizontal"
+                    android:layout_marginTop="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:textColor="@color/color_6D7693"
+                        android:textColorLink="@color/color_025BE8"
+                        android:textSize="@dimen/textSize12sp"
+                        android:lineSpacingExtra="3dp"
+                        android:text="@string/need_help" />
+
+                    <TextView
+                        android:id="@+id/tv_customer_service"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:drawablePadding="3dp"
+                        android:gravity="left"
+                        android:drawableLeft="@drawable/ic_customer_service"
+                        android:textColor="@color/color_025BE8"
+                        android:textSize="@dimen/textSize12sp"
+                        android:text="@string/live_service" />
+                </LinearLayout>
             </LinearLayout>
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,6 +22,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.crash.FirebaseLog
 import org.cxct.sportlottery.common.event.LoginSelectAccountEvent
 import org.cxct.sportlottery.common.event.RegisterInfoEvent
+import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.databinding.ActivityLoginOkBinding
 import org.cxct.sportlottery.common.extentions.startActivity
@@ -43,6 +44,7 @@ import org.cxct.sportlottery.ui.login.signUp.info.RegisterInfoActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.boundsEditText.SimpleTextChangedWatcher
+import org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import splitties.activities.start
@@ -101,7 +103,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         viewModel.focusChangeCheckAllInputComplete()
         EventBusUtil.targetLifecycle(this)
 
-        val loginType = intent.getIntExtra("login_type", LOGIN_TYPE_PWD)
+        val loginType = intent.getIntExtra("login_type", LOGIN_TYPE_CODE)
         if (LOGIN_TYPE_CODE == loginType) {
             switchLoginType(LOGIN_TYPE_CODE)
         } else if (loginType == LOGIN_TYPE_GOOGLE) {
@@ -294,9 +296,9 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private fun setupAuthLogin() {
         btn_google.setOnClickListener {
-            if (binding.cbPrivacy.isChecked) {
+//            if (binding.cbPrivacy.isChecked) {
                 googleLogin()
-            }
+//            }
 
         }
 
@@ -310,11 +312,11 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun setupPrivacy() {
-        binding.cbPrivacy.setVisibilityByMarketSwitch()
-        binding.cbPrivacy.setOnCheckedChangeListener { buttonView, isChecked ->
-            viewModel.agreeChecked = isChecked
-        }
-        binding.cbPrivacy.makeLinks(
+        binding.tvPrivacy.setVisibilityByMarketSwitch()
+//        binding.tvPrivacy.setOnCheckedChangeListener { buttonView, isChecked ->
+//            viewModel.agreeChecked = isChecked
+//        }
+        binding.tvPrivacy.makeLinks(
             Pair(
                 applicationContext.getString(R.string.login_privacy_policy),
                 View.OnClickListener {
@@ -325,7 +327,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                     )
                 })
         )
-        binding.cbPrivacy.makeLinks(
+        binding.tvPrivacy.makeLinks(
             Pair(
                 applicationContext.getString(R.string.login_terms_conditions),
                 View.OnClickListener {
@@ -540,5 +542,6 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         binding.etRecommendCode.isVisible =
             viewModel.loginType == LOGIN_TYPE_CODE && viewModel.checkUserExist.value == false
     }
+
 
 }

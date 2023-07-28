@@ -5,7 +5,7 @@
             <item android:id="@android:id/background">
                 <shape android:shape="rectangle">
                     <corners android:radius="8dp" />
-                    <gradient android:type="linear" android:startColor="#FF71ADFF" android:endColor="#FF1971FD" />
+                    <solid android:color="#FF71ADFF" />
                 </shape>
             </item>
         </ripple>
@@ -14,7 +14,7 @@
     <item android:state_enabled="false">
         <shape android:shape="rectangle">
             <corners android:radius="8dp" />
-            <gradient android:type="linear" android:startColor="#71ADFF" android:endColor="#1971FD" />
+            <solid android:color="@color/color_025BE8" />
         </shape>
     </item>
 </selector>
