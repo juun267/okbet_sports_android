@@ -24,7 +24,7 @@ fun checkSportStatus(context: Context, block: () -> Unit) {
 /**
  * 是否关闭体育入口  return true 是关闭体育入口
  */
-private fun getSportEnterIsClose():Boolean{
+ fun getSportEnterIsClose():Boolean{
 //    status=0关闭维护  1开启维护
     val status = sConfigData?.sportMaintainStatus
     return "1"==status

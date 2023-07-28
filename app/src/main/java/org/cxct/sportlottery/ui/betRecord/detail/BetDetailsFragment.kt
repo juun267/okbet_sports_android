@@ -15,12 +15,14 @@ import org.cxct.sportlottery.network.bet.MatchOdd
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.betList.BetListViewModel
 import org.cxct.sportlottery.ui.betRecord.BetRecordEndScoreAdapter
 import org.cxct.sportlottery.ui.betRecord.ParlayType
 import org.cxct.sportlottery.ui.betRecord.TransactionRecordDiffAdapter
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.BetPlayCateFunction.getEndScorePlatCateName
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 class BetDetailsFragment : BaseFragment<BetListViewModel>(BetListViewModel::class) {
@@ -81,7 +83,7 @@ class BetDetailsFragment : BaseFragment<BetListViewModel>(BetListViewModel::clas
                     matchOdds.odds - 1
                 ) else TextUtil.formatForOdd(matchOdds.odds)
             val playName =
-                if (matchOdds.playCateCode == PlayCate.FS_LD_CS.value) context.getString(R.string.N903)
+                if (matchOdds.playCateCode.isEndScoreType()) matchOdds.playCateCode.getEndScorePlatCateName(context)
                 else matchOdds.playName
             play_content.setPlayContent(
                 playName, matchOdds.spread, formatForOdd
@@ -139,7 +141,7 @@ class BetDetailsFragment : BaseFragment<BetListViewModel>(BetListViewModel::clas
                 context.copyToClipboard(row.orderNo)
             }
             lin_endscore.isVisible =
-                row.matchOdds.firstOrNull()?.playCateCode == PlayCate.FS_LD_CS.value
+                row.matchOdds.firstOrNull()?.playCateCode.isEndScoreType()
             if (lin_endscore.isVisible) {
                 if (rv_endscore_info.adapter == null) {
                     rv_endscore_info.layoutManager = GridLayoutManager(rv_endscore_info.context, 8)
@@ -178,7 +180,7 @@ class BetDetailsFragment : BaseFragment<BetListViewModel>(BetListViewModel::clas
                     matchOdds.odds ?: 0 - 1
                 ) else TextUtil.formatForOdd(matchOdds.odds ?: 0)
             play_content.setPlayContent(
-                context.getString(R.string.N903),
+                matchOdds.playCateCode.getEndScorePlatCateName(context),
                 matchOdds.spread,
                 formatForOdd
             )
@@ -214,7 +216,7 @@ class BetDetailsFragment : BaseFragment<BetListViewModel>(BetListViewModel::clas
                 context.copyToClipboard(row.orderNo ?: "")
             }
             lin_endscore.isVisible =
-                row.matchOdds?.firstOrNull()?.playCateCode == PlayCate.FS_LD_CS.value
+                row.matchOdds?.firstOrNull()?.playCateCode.isEndScoreType()
             if (lin_endscore.isVisible) {
                 if (rv_endscore_info.adapter == null) {
                     rv_endscore_info.layoutManager = GridLayoutManager(rv_endscore_info.context, 8)

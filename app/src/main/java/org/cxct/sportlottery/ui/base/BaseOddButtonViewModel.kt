@@ -39,6 +39,7 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.betList.BetInfoListData
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.setupOddsDiscount
@@ -172,41 +173,43 @@ abstract class BaseOddButtonViewModel(
             currentOddsType = OddsType.EU
         }
 
-        if (betItem == null) {
-            viewModelScope.launch {
-                doNetwork(androidContext) {
-                    OneBoSportApi.betService.getBetInfo(
-                        BetInfoRequest(
-                            matchInfo.id, odd.id.toString()
-                        )
+        if (betItem != null) {
+            odd.id?.let { removeBetInfoItem(it) }
+            return
+        }
+
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.betService.getBetInfo(
+                    BetInfoRequest(
+                        matchInfo.id, odd.id.toString()
                     )
-                }?.let { result ->
-                    //如有其他地方呼叫getBetInfo，api回傳之後也要重設savedOddId
-                    savedOddId = "savedOddId" //重設savedOddId
-                    if (result.success) {
-                        val betInfo = result.BetInfo
-                        Timber.d("betInfoRepository:$betInfoRepository  ${betInfoRepository.currentState}")
-                        betInfoRepository.addInBetInfo(
-                            matchType,
-                            gameType,
-                            playCateCode,
-                            otherPlayCateName ?: playCateName,
-                            odd.nameMap?.get(LanguageManager.getSelectLanguage(androidContext).key)
-                                ?: odd.name ?: "",
-                            matchInfo,
-                            odd,
-                            subscribeChannelType,
-                            playCateMenuCode,
-                            currentOddsType,
-                            betPlayCateNameMap,
-                            betInfo = betInfo
-                        )
-                    }
-                }
+                )
+            } ?: return@launch
+
+            //如有其他地方呼叫getBetInfo，api回傳之後也要重設savedOddId
+            savedOddId = "savedOddId" //重設savedOddId
+            if (!result.success) {
+                return@launch
             }
 
-        } else {
-            odd.id?.let { removeBetInfoItem(it) }
+            val betInfo = result.BetInfo
+            Timber.d("betInfoRepository:$betInfoRepository  ${betInfoRepository.currentState}")
+            betInfoRepository.addInBetInfo(
+                matchType,
+                gameType,
+                playCateCode,
+                otherPlayCateName ?: playCateName,
+                odd.nameMap?.get(LanguageManager.getSelectLanguage(androidContext).key)
+                    ?: odd.name ?: "",
+                matchInfo,
+                odd,
+                subscribeChannelType,
+                playCateMenuCode,
+                currentOddsType,
+                betPlayCateNameMap,
+                betInfo = betInfo
+            )
         }
     }
 
@@ -425,7 +428,7 @@ abstract class BaseOddButtonViewModel(
             }
         }
 
-        val betType = if (normalBetList[0].matchOdd.playCode == PlayCate.FS_LD_CS.value) {
+        val betType = if (normalBetList[0].matchOdd.playCode.isEndScoreType()) {
             1
         } else {
             0
@@ -444,8 +447,10 @@ abstract class BaseOddButtonViewModel(
                         betType = betType
                     )
                 )
-            }
-            result?.receipt?.singleBets?.forEach { s ->
+            } ?: return@launch
+
+            val singleBets = result.receipt?.singleBets
+            singleBets?.forEach { s ->
                 s.matchOdds?.forEach { m ->
                     s.matchType = normalBetList.find { betInfoListData ->
                         betInfoListData.matchOdd.oddsId == m.oddsId
@@ -453,55 +458,55 @@ abstract class BaseOddButtonViewModel(
 //                    s.oddsType = oddsType
                 }
             }
-            Event(result).getContentIfNotHandled()?.let {
-                if (it.success) {
-                    //检查是否有item注单下注失败
-                    val haveSingleItemFailed =
-                        it.receipt?.singleBets?.any { singleIt -> singleIt.status == 7 } ?: false
-                    val haveParlayItemFailed =
-                        it.receipt?.parlayBets?.any { parlayIt -> parlayIt.status == 7 } ?: false
 
-                    if (!haveSingleItemFailed && !haveParlayItemFailed) {
-                        betInfoRepository.clear()
-                        _betFailed.postValue(Pair(false, ""))
-                        _betAddResult.postValue(Event(result))
-                    } else {
-                        var failedReason: String? = ""
-                        it.receipt?.singleBets?.forEach {
-                            if (it.status != 7) {
-                                it.matchOdds?.forEach {
-                                    betInfoRepository.removeItem(it.oddsId)
-                                }
-                            } else {
-                                failedReason = it.code
-                            }
-                        }
-                        it.receipt?.parlayBets?.forEach {
-                            if (it.status != 7) {
-                                it.matchOdds?.forEach {
-                                    betInfoRepository.removeItem(it.oddsId)
-                                }
-                            } else {
-                                failedReason = it.code
-                            }
-                        }
-                        withContext(Dispatchers.Main) {
-                            SingleToast.showSingleToastNoImage(
-                                androidContext,
-                                BetsFailedReasonUtil.getFailedReasonByCode(failedReason)
-                            )
-                        }
-                        result?.success = false
+            if (!result.success) {
+                result.success = false
+                _betAddResult.postValue(Event(result))
+                return@launch
+            }
 
-                        _betAddResult.postValue(Event(result))
-//                        //处理赔率更新
-                        _betFailed.postValue(Pair(true, failedReason))
+            //检查是否有item注单下注失败
+            val haveSingleItemFailed = singleBets?.any { singleIt -> singleIt.status == 7 } ?: false
+            val parlayBets = result.receipt?.parlayBets
+            val haveParlayItemFailed = parlayBets?.any { parlayIt -> parlayIt.status == 7 } ?: false
+
+            if (!haveSingleItemFailed && !haveParlayItemFailed) {
+                betInfoRepository.clear()
+                _betFailed.postValue(Pair(false, ""))
+                _betAddResult.postValue(Event(result))
+                return@launch
+            }
+
+            var failedReason: String? = ""
+            singleBets?.forEach {
+                if (it.status != 7) {
+                    it.matchOdds?.forEach {
+                        betInfoRepository.removeItem(it.oddsId)
                     }
                 } else {
-                    result?.success = false
-                    _betAddResult.postValue(Event(result))
+                    failedReason = it.code
                 }
             }
+            parlayBets?.forEach {
+                if (it.status != 7) {
+                    it.matchOdds?.forEach {
+                        betInfoRepository.removeItem(it.oddsId)
+                    }
+                } else {
+                    failedReason = it.code
+                }
+            }
+            withContext(Dispatchers.Main) {
+                SingleToast.showSingleToastNoImage(
+                    androidContext,
+                    BetsFailedReasonUtil.getFailedReasonByCode(failedReason)
+                )
+            }
+
+            result.success = false
+            _betAddResult.postValue(Event(result))
+            //处理赔率更新
+            _betFailed.postValue(Pair(true, failedReason))
         }
     }
 

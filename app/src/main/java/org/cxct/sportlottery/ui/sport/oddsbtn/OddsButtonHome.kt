@@ -24,8 +24,15 @@ import org.cxct.sportlottery.common.extentions.flashAnimation
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.util.BetPlayCateFunction.abridgeOddsName
+import org.cxct.sportlottery.util.BetPlayCateFunction.getOrdinalNumbers
+import org.cxct.sportlottery.util.BetPlayCateFunction.isBTSType
+import org.cxct.sportlottery.util.BetPlayCateFunction.isCSType
 import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
 import org.cxct.sportlottery.util.BetPlayCateFunction.isNOGALType
+import org.cxct.sportlottery.util.BetPlayCateFunction.isOEType
+import org.cxct.sportlottery.util.BetPlayCateFunction.isOUType
+import org.cxct.sportlottery.util.BetPlayCateFunction.isSingleType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LocalUtils.getString
@@ -207,7 +214,7 @@ class OddsButtonHome @JvmOverloads constructor(
         tv_name.apply {
 
             if (isDrawBtn == true) {
-                visibility = View.VISIBLE
+                visibility = VISIBLE
 
                 text = when {
                     playCateCode.isNOGALType() -> getString(R.string.none)
@@ -225,8 +232,8 @@ class OddsButtonHome @JvmOverloads constructor(
                 }
             } else {
                 visibility = when {
-                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() || playCateCode.isCSType() || playCateCode.isSingleType() -> View.VISIBLE
-                    else -> View.GONE
+                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() || playCateCode.isCSType() || playCateCode.isSingleType() -> VISIBLE
+                    else -> GONE
                 }
                 text = when {
                     playCateCode.isSingleType() -> {
@@ -505,48 +512,6 @@ class OddsButtonHome @JvmOverloads constructor(
                 setImageDrawable(null)
                 visibility = GONE
             }
-        }
-    }
-
-    /**
-     * 玩法判斷
-     * */
-    private fun String.isCSType(): Boolean {
-        return this.contains(PlayCate.CS.value) && !this.isCombination()
-    }
-
-    private fun String.isOUType(): Boolean {
-        return this.contains(PlayCate.OU.value) && !this.isCombination()
-    }
-
-    private fun String.isSingleType(): Boolean {
-        return this.contains(PlayCate.SINGLE.value) && !this.isCombination()
-    }
-
-    private fun String.isOEType(): Boolean {
-        return (this.contains(PlayCate.OE.value) || this.contains(PlayCate.Q_OE.value)) && !this.isCombination()
-    }
-
-    private fun String.isBTSType(): Boolean {
-        return this.contains(PlayCate.BTS.value) && !this.isCombination()
-    }
-
-    /**
-     * 後端回傳文字需保留完整文字, 文字顯示縮減由前端自行處理
-     */
-    private fun String.abridgeOddsName(): String {
-        return this.replace("Over", "O").replace("Under", "U")
-    }
-
-    /**
-     * 足球：下個進球玩法會使用到
-     */
-    private fun getOrdinalNumbers(number: String): String {
-        return when (number) {
-            "1" -> "1st"
-            "2" -> "2nd"
-            "3" -> "3rd"
-            else -> "${number}th"
         }
     }
 

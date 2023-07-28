@@ -1051,8 +1051,8 @@
     <string name="str_if_accept_odds_changes_des2">2. Tanggapin ang pinakamahusay na pagbabago ng odds - kapag pinili mo ang opsyong ito, kung ang pinakabagong logro ay mas mahusay kaysa sa odds na iyong pinili, bubuo kami ng bet slip. Kung ang pinakabagong mga logro ay mas mababa kaysa sa iyong mga napiling odds, hindi kami bubuo ng slip ng taya at ipaalala sa iyo ang pagbabago ng odds.</string>
     <string name="str_if_accept_odds_changes_des3">3. Huwag tumanggap ng mga pagbabago sa odds--kapag pinili mo ang opsyong ito: kung ang pinakabagong odds ay iba sa iyong napiling odds, hindi kami gagawa ng slip ng taya at ipaalala sa iyo ang mga pagbabago sa odds.</string>
     <string name="str_ok_i_got_it">Okay, alam ko na</string>
-    <string name="str_return_last_step">Bumalik sa nakaraang hakbang</string>
-    <string name="str_bet_other_game">Taya sa iba</string>
+    <string name="str_return_last_step">Bumalik</string>
+    <string name="str_bet_other_game">Tumaya sa Iba</string>
     <string name="str_press_again_to_exit_the_program">Pindutin muli upang lumabas sa programa</string>
     <string name="str_odds_changed">Nagbago ang mga odds</string>
     <string name="str_self_exclusion">Self-exclusion</string>
@@ -1391,14 +1391,14 @@
     <string name="N698">Tingnan lahat</string>
     <string name="J244">Corner kick</string>
     <string name="N937">Half time score</string>
-    <string name="J254">Total score</string>
+    <string name="J254">Kabuuang puntos</string>
     <string name="P140">Pulang kard</string>
     <string name="P141">Dilaw na kard</string>
     <string name="N237">Puntos</string>
     <string name="J245">Unang quarter</string>
     <string name="J246">Pangalawang quarter</string>
     <string name="J247">Pangatlong quarter</string>
-    <string name="J248">Pang apat n quarter</string>
+    <string name="J248">Pang apat na quarter</string>
     <string name="P142">Anchor</string>
     <string name="P139">Agree sa taya</string>
     <string name="N111">Wala na</string>
@@ -1408,6 +1408,11 @@
     <string name="I039">Oras ng pagtaya</string>
     <string name="N142">Bet Slip No.</string>
     <string name="N082">Paborito</string>
+    <string name="P161">Basketball Huling Iskor</string>
+    <string name="P162">Basketball Huling Iskor 1st Quarter</string>
+    <string name="P163">Basketball Huling Iskor 2nd Quarter</string>
+    <string name="P164">Basketball Huling Iskor 3rd Quarter</string>
+    <string name="P165">basketball Huling Iskor 4th Quarter</string>
     <string name="J784">Single win</string>
     <string name="F011">Taya</string>
     <string name="J770">Home</string>
@@ -1427,5 +1432,18 @@
     <string name="D045">Detalye</string>
     <string name="J645">Hanggang</string>
     <string name="P172">Wala pang e-sports event!</string>
+    <string name="N417">Tinanggi</string>
+    <string name="P150">Paalala sa hindi pagsunod</string>
+    <string name="P149">Mangyaring kumpletuhin ang wagering turnover %s sa pagtaya bago humiling ng withdrawal. (Alinsunod sa mga regulasyon ng PAGCOR, 1x turnover ang kailangan para sa bawat deposito na transaksyon) Para sa assistance, mangyaring makipag-ugnayan sa customer service.</string>
+    <string name="viber">Viber</string>
+    <string name="N592">"Sorry "</string>
+    <string name="P151">I-redeem</string>
+    <string name="P152">Redeem Code</string>
+    <string name="P153">History ng redeem</string>
+    <string name="D016">Ipasa</string>
+    <string name="J044">I-reset</string>
+    <string name="J652">Oras</string>
+    <string name="P170">Nakuha mo</string>
+    <string name="Congratulations">Congratulations</string>
 </resources>
 

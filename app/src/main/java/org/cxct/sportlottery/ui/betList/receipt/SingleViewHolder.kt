@@ -19,6 +19,7 @@ import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.bet.add.betReceipt.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.betList.adapter.BetReceiptEndScoreAdapter
 import org.cxct.sportlottery.util.*
@@ -138,7 +139,7 @@ class SingleViewHolder private constructor(itemView: View) :
                 }
                 //篮球末位比分，细节显示
                 rvEndScoreInfo.isVisible =
-                    itemData.matchOdds?.firstOrNull()?.playCateCode == PlayCate.FS_LD_CS.value
+                    itemData.matchOdds?.firstOrNull()?.playCateCode?.isEndScoreType()==true
                 if (rvEndScoreInfo.isVisible) {
                     (tv_name_type.layoutParams as ConstraintLayout.LayoutParams).apply {
                         topToTop = R.id.topContainer

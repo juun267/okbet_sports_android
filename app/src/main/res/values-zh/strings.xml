@@ -1488,6 +1488,12 @@
     <string name="I039">投注时间</string>
     <string name="N142">注单号</string>
     <string name="N082">收藏赛事</string>
+    <string name="P161">篮球末位比分总分</string>
+    <string name="P162">篮球末位比分第一节</string>
+    <string name="P163">篮球末位比分第二节</string>
+    <string name="P164">篮球末位比分第三节</string>
+    <string name="P165">篮球末位比分第四节</string>
+
     <string name="J784">独赢</string>
     <string name="F011">投注金额</string>
     <string name="J770">主队</string>
@@ -1500,11 +1506,24 @@
     <string name="D024">暂无任何内容</string>
     <string name="N949">串关投注</string>
     <string name="N948">单关投注</string>
+    <string name="N592">对不起</string>
+    <string name="P151">兑换</string>
+    <string name="P152">兑换码</string>
+    <string name="P153">兑换记录</string>
+    <string name="P156">奖励</string>
+    <string name="D016">提交</string>
+    <string name="J044">重置</string>
+    <string name="J652">时间</string>
+    <string name="P170">获得</string>
+    <string name="Congratulations">恭喜您</string>
     <string name="P159">申请</string>
     <string name="H019">总有效投注</string>
-    <string name="P156">奖励</string>
     <string name="P169">优惠活动详情</string>
     <string name="D045">详情</string>
     <string name="J645">到</string>
     <string name="P172">暂无电竞赛事！</string>
+    <string name="N417">已拒绝</string>
+    <string name="P150">流水不达标提醒</string>
+    <string name="P149">在请求提款之前，请完成 %s 投注额（根据 PAGCOR 规定，每笔存款交易需要 1 倍流水）。如需帮助，请联系客服。</string>
+    <string name="viber">Viber</string>
 </resources>

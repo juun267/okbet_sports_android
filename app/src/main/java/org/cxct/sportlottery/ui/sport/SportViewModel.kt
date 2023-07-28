@@ -264,9 +264,10 @@ class SportViewModel(
                 OneBoSportApi.oddsService.getOddsDetail(OddsDetailRequest(matchId))
             }
             //MatchInfo中聯賽名稱為null, 為配合注單取用欄位, 將聯賽名稱塞入
-            result?.oddsDetailData?.matchOdd?.matchInfo?.leagueName =
-                result?.oddsDetailData?.league?.name
-
+            result?.oddsDetailData?.matchOdd?.matchInfo?.apply {
+                leagueName = result?.oddsDetailData?.league?.name
+                isFavorite = favorMatchList.value?.contains(matchId)==true
+            }
             _oddsDetailResult.postValue(Event(result))
             result?.success?.let { success ->
                 val list: ArrayList<OddsDetailListData> = ArrayList()

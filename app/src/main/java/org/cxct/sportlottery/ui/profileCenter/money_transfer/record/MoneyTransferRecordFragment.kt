@@ -9,10 +9,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.component_date_range_new_selector.view.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_record.*
+import kotlinx.android.synthetic.main.fragment_money_transfer_record.date_range_selector
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.adapter.StatusSheetData
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
+import org.cxct.sportlottery.util.LogUtil
 
 /**
  * @app_destination 转换记录
@@ -47,17 +49,17 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
                 viewModel.getNextPage(visibleItemCount, firstVisibleItemPosition, totalItemCount)
                 scrollToTopControl(firstVisibleItemPosition)
             }
-            if ( !recyclerView.canScrollVertically(1)){//1表示是否能向上滚动 false表示已经到底部 -1表示是否能向下滚动false表示已经到顶部
-                viewModel.queryTransfersResult.observe(this@MoneyTransferRecordFragment){
-                    if (it.rows.isNullOrEmpty()){
-                        tv_no_data_tips.visibility = View.GONE
-                    }else{
-                        tv_no_data_tips.visibility = View.VISIBLE
-                    }
-                }
-            }else{
-                tv_no_data_tips.visibility = View.GONE
-            }
+//            if ( !recyclerView.canScrollVertically(1)){//1表示是否能向上滚动 false表示已经到底部 -1表示是否能向下滚动false表示已经到顶部
+//                viewModel.queryTransfersResult.observe(this@MoneyTransferRecordFragment){
+//                    if (it.rows.isNullOrEmpty()){
+//                        tv_no_data_tips.visibility = View.GONE
+//                    }else{
+//                        tv_no_data_tips.visibility = View.VISIBLE
+//                    }
+//                }
+//            }else{
+//                tv_no_data_tips.visibility = View.GONE
+//            }
         }
     }
 
@@ -130,6 +132,12 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
     private fun initObserver() {
         viewModel.queryTransfersResult.observe(viewLifecycleOwner) {
             rvAdapter.addFooterAndSubmitList(viewModel.recordDataList, viewModel.isLastPage)
+            if (!rv_record.canScrollVertically(1) && !rvAdapter.currentList.isNullOrEmpty()) {
+                tv_no_data_tips.visibility = View.VISIBLE
+            } else {
+                tv_no_data_tips.visibility = View.GONE
+            }
+            LogUtil.d("tv_no_data_tips="+tv_no_data_tips.visibility)
         }
 
         viewModel.recordInPlatSheetList.observe(viewLifecycleOwner) {

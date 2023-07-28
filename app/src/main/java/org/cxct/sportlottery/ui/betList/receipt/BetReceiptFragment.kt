@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,8 +26,12 @@ import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.betList.BetListViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.util.BetsFailedReasonUtil
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.toJson
+import splitties.views.setCompoundDrawables
 import org.cxct.sportlottery.util.setupSportStatusChange
 import timber.log.Timber
 
@@ -114,7 +119,6 @@ class BetReceiptFragment :
                 this@BetReceiptFragment.betParlayList ?: listOf(),
                 betResultData?.betConfirmTime ?: 0
                 )
-
                 setupReceiptStatusTips()
                 lin_result_status_processing?.gone()
                 updateBetResultStatus(Pair(sportBet.status==7,sportBet.cancelReason))
@@ -188,7 +192,7 @@ class BetReceiptFragment :
         //顯示注單收據的數量
         if (BetInfoRepository.currentBetType == 0) {
             val firstMatchOdds = betResultData?.singleBets?.firstOrNull()?.matchOdds?.firstOrNull()
-            val bkEndScore= firstMatchOdds?.playCateCode== PlayCate.FS_LD_CS.value
+            val bkEndScore= firstMatchOdds?.playCateCode.isEndScoreType()
             if (bkEndScore){
                 viewBall.visible()
                 tv_bet_list_count.visible()
@@ -213,7 +217,7 @@ class BetReceiptFragment :
         }
 
         btnLastStep.setOnClickListener {
-            if (viewModel.betFailed.value?.first == false) {
+            if (btnLastStep.text == getText(R.string.commission_detail)) {
                 //投注成功 ， 查看注单
                 activity?.let {
                     it.supportFragmentManager.beginTransaction().remove(this@BetReceiptFragment)
@@ -253,10 +257,9 @@ class BetReceiptFragment :
 
             interfaceStatusChangeListener = object : BetReceiptDiffAdapter.InterfaceStatusChangeListener {
                 override fun onChange(cancelBy: String?) {
-                    val firstBetFailed = cancelBy?.isNotEmpty() ?: true
-                    val pair = Pair(firstBetFailed, cancelBy)
-                    Timber.d("betFirst:${firstBetFailed} betSecond:$cancelBy")
-                    updateBetResultStatus(pair)
+                    if (cancelBy.isNullOrEmpty())
+                        return
+                    updateBetResultStatus(Pair(true, cancelBy))
                 }
             }
 
@@ -297,7 +300,6 @@ class BetReceiptFragment :
 //        Timber.d("投注成功或失败: ${betFailed.first}")
 
         Timber.d("滑动位置:${betReceiptDiffAdapter?.items?.size?.minus(1) ?: 0}")
-
         binding.rvBetReceipt.postDelayed({
             binding.rvBetReceipt.scrollToPosition(betReceiptDiffAdapter?.items?.size?.minus(1) ?: 0)
         }, 100)
@@ -309,15 +311,20 @@ class BetReceiptFragment :
                 AppCompatResources.getDrawable(requireContext(), R.drawable.drawable_bet_failure)
             iv_result_status.setImageResource(R.drawable.ic_bet_failure)
             tv_result_status.setTextColor(requireContext().getColor(R.color.color_ff0000))
-            tv_result_status.text = if (betFailed.second.isNullOrEmpty()) {
-                getString(R.string.your_bet_order_fail)
-            } else {
-                BetsFailedReasonUtil.getFailedReasonByCode(betFailed.second)
+            if (betFailed.second.isNullOrEmpty()){
+                tv_result_status.text = getString(R.string.N417)
+                btnLastStep.text = getString(R.string.commission_detail)
+                btnLastStep.setTextColor(resources.getColor(R.color.color_414655, null))
+                btnLastStep.background =
+                    ResourcesCompat.getDrawable(resources, R.drawable.bg_radius_8_check_bet, null)
+            }else{
+                tv_result_status.text = BetsFailedReasonUtil.getFailedReasonByCode(betFailed.second)
+                btnLastStep.text = getString(R.string.str_return_last_step)
+                btnLastStep.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(requireContext(),R.drawable.ic_bet_recept_back),null,null,null)
+                btnLastStep.setTextColor(resources.getColor(R.color.color_025BE8, null))
+                btnLastStep.background =
+                    ResourcesCompat.getDrawable(resources, R.drawable.bg_radius_8_bet_last_step, null)
             }
-            btnLastStep.text = getString(R.string.str_return_last_step)
-            btnLastStep.setTextColor(resources.getColor(R.color.color_025BE8, null))
-            btnLastStep.background =
-                ResourcesCompat.getDrawable(resources, R.drawable.bg_radius_8_bet_last_step, null)
         } else {
             //投注成功
             lin_result_status.background =

@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.network.common
 
 import org.cxct.sportlottery.common.proguards.KeepMembers
+import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
 
 @KeepMembers
 enum class PlayCate(val value: String) {
@@ -368,6 +369,10 @@ enum class PlayCate(val value: String) {
     OU_2_WAY_1ST_C("O/U-2-WAY-1ST-C"),
     OU_2_WAY_1ST_H("O/U-2-WAY-1ST-H"),
     FS_LD_CS("FS-LD-CS"),
+    FS_LD_CS_SEG1("FS-LD-CS-SEG1"),
+    FS_LD_CS_SEG2("FS-LD-CS-SEG2"),
+    FS_LD_CS_SEG3("FS-LD-CS-SEG3"),
+    FS_LD_CS_SEG4("FS-LD-CS-SEG4"),
     BOTTOM_NAVIGATION("BOTTOM_NAVIGATION"),
     NO_DATA("NO_DATA");
 
@@ -797,4 +802,5 @@ enum class PlayCate(val value: String) {
             }
         }
     }
+
 }

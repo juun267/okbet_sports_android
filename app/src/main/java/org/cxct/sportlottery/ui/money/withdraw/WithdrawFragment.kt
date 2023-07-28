@@ -249,6 +249,10 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 
         btn_withdraw.setOnClickListener {
             modifyFinish()
+            if(sConfigData?.auditFailureRestrictsWithdrawalsSwitch==1&&(viewModel.uwCheckData?.total?.unFinishValidAmount?:0.0)>0){
+                showPromptDialog(getString(R.string.P150),getString(R.string.P149,"${sConfigData?.systemCurrencySign}${(viewModel.uwCheckData?.total?.unFinishValidAmount?:0).toInt()}")){}
+                return@setOnClickListener
+            }
             viewModel.showCheckDeductMoneyDialog {
                 withdrawBankCardData?.let {
                     viewModel.addWithdraw(
@@ -528,7 +532,12 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                         JumpUtil.toExternalWeb(requireContext(), it.content.authorizeUrl)
                     }
                 } else {
-                    showErrorPromptDialog(getString(R.string.prompt), it.msg) {}
+                    //流水不达标提醒
+                    if (it.code == 2280){
+                        showPromptDialog(getString(R.string.P150), it.msg) {}
+                    }else{
+                        showErrorPromptDialog(getString(R.string.prompt), it.msg) {}
+                    }
                 }
             if (it.content?.authorizeUrl?.isNotEmpty() == true) {
                 JumpUtil.toExternalWeb(requireContext(), it.content?.authorizeUrl)

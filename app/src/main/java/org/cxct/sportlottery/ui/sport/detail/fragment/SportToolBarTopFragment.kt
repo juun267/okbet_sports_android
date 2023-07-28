@@ -42,10 +42,6 @@ class SportToolBarTopFragment :
     }
 
 
-    fun isLiveStatu(): Boolean {
-        return isInited && binding.linLive.isVisible
-    }
-
     private var timeText: String? = null
     private var timeEnable = true
 

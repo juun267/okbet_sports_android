@@ -58,6 +58,7 @@ import org.cxct.sportlottery.ui.sport.detail.adapter.*
 import org.cxct.sportlottery.ui.sport.detail.fragment.SportChartFragment
 import org.cxct.sportlottery.ui.sport.detail.fragment.SportToolBarTopFragment
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.BetPlayCateFunction.isEndScoreType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 import org.cxct.sportlottery.view.DetailSportGuideView
@@ -80,23 +81,27 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     companion object {
         fun startActivity(
             context: Context,
-            matchInfo: MatchInfo,
+            matchInfo: MatchInfo?=null,
+            matchId: String? = null,
             matchType: MatchType? = null,
             intoLive: Boolean = false,
             tabCode: String? = null,
         ) {
-            matchInfo.let {
-                val intent = Intent(context, SportDetailActivity::class.java)
-                intent.putExtra("matchInfo", matchInfo.toJson())
-                intent.putExtra(
-                    "matchType",
-                    matchType
-                        ?: if (TimeUtil.isTimeInPlay(it.startTime)) MatchType.IN_PLAY else MatchType.DETAIL
-                )
-                intent.putExtra("intoLive", intoLive)
-                intent.putExtra("tabCode", tabCode)
-                context.startActivity(intent)
+            val intent = Intent(context, SportDetailActivity::class.java)
+            matchInfo?.let {
+                intent.putExtra("matchInfo", it.toJson())
             }
+            matchId?.let {
+                intent.putExtra("matchId", it)
+            }
+            intent.putExtra("matchType", when{
+                matchType!=null -> matchType
+                matchInfo!=null&&TimeUtil.isTimeInPlay(matchInfo.startTime) -> MatchType.IN_PLAY
+                else->MatchType.DETAIL
+            })
+            intent.putExtra("intoLive", intoLive)
+            intent.putExtra("tabCode", tabCode)
+            context.startActivity(intent)
         }
     }
 
@@ -152,6 +157,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     //进来后默认切到指定tab
     private val tabCode by lazy { intent.getStringExtra("tabCode") }
+    private val matchId by lazy { intent.getStringExtra("matchId") }
     private lateinit var topBarFragmentList: List<Fragment>
     private lateinit var sportToolBarTopFragment: SportToolBarTopFragment
     private lateinit var sportChartFragment: SportChartFragment
@@ -458,7 +464,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             }
         }
 
-
         if (showAnim) {
             setOnClickListeners(binding.ivAnim, binding.tvAnim) {
                 if (!viewModel.getLoginBoolean() && sConfigData?.noLoginWitchVideoOrAnimation == 1) {
@@ -705,12 +710,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
         viewModel.matchLiveInfo.observe(this) {
             it?.peekContent()?.let { matchRound ->
-                if (sportToolBarTopFragment.isLiveStatu()) {
-                    live_view_tool_bar.liveUrl =
-                        if (matchRound.pullRtmpUrl.isNotEmpty()) matchRound.pullRtmpUrl else matchRound.pullFlvUrl
-                    if (intoLive) {
-                        showLive()
-                    }
+                live_view_tool_bar.liveUrl =
+                    if (matchRound.pullRtmpUrl.isNotEmpty()) matchRound.pullRtmpUrl else matchRound.pullFlvUrl
+                if (intoLive) {
+                    showLive()
                 }
             }
         }
@@ -725,16 +728,12 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
         viewModel.videoUrl.observe(this) { event ->
             val url = event?.getContentIfNotHandled() ?: return@observe
-            if (sportToolBarTopFragment.isLiveStatu()) {
-                live_view_tool_bar.videoUrl = url
-            }
+            live_view_tool_bar.videoUrl = url
         }
 
         viewModel.animeUrl.observe(this) { event ->
             val url = event?.getContentIfNotHandled()
-            if (sportToolBarTopFragment.isLiveStatu()) {
-                live_view_tool_bar.animeUrl = url
-            }
+            live_view_tool_bar.animeUrl = url
         }
 
         viewModel.showBetInfoSingle.observe(this) {
@@ -786,6 +785,13 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 tv_toolbar_home_name.text = matchInfo.homeName ?: ""
                 tv_toolbar_away_name.text = matchInfo.awayName ?: ""
                 sportToolBarTopFragment.updateMatchInfo(matchInfo, true)
+                if (matchId!=null){
+                    tv_game_title.text = matchInfo.leagueName
+                    updateMenu(matchInfo)
+                    ivFavorite.isSelected = matchInfo.isFavorite
+                    oddsDetailListAdapter?.sportCode = GameType.getGameType(matchInfo?.gameType)
+                    oddsDetailListAdapter?.notifyDataSetChanged()
+                }
                 Handler(Looper.getMainLooper()).postDelayed({
                     sportChartFragment.updateMatchInfo(matchInfo)
                 }, 300)
@@ -797,6 +803,12 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             it.peekContent().let { list ->
                 if (list.isNotEmpty()) {
                     oddsDetailListAdapter?.removePreloadItem()
+                    //如果是末位比分，小节比分就折叠起来
+                    if (tabCode == MatchType.END_SCORE.postValue){
+                        list.filter { it.gameType.isEndScoreType()}?.forEach {
+                            it.isExpand = it.gameType==PlayCate.FS_LD_CS.value
+                        }
+                    }
                     oddsDetailListAdapter?.oddsDetailDataList = list
                 }
             }
@@ -1070,6 +1082,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         matchInfo?.let {
             viewModel.getOddsDetail(it.id).run {
                 subscribeChannelEvent(it.id)
+            }
+        }
+        matchId?.let {
+            viewModel.getOddsDetail(it).run {
+                subscribeChannelEvent(it)
             }
         }
     }

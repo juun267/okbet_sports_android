@@ -6,11 +6,14 @@ import android.content.pm.PackageManager
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
+import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
+import org.cxct.sportlottery.util.getCurrentOddsTypeName
 import org.cxct.sportlottery.util.isMultipleSitePlat
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
@@ -255,17 +258,23 @@ object Constants {
 
     //联系我们
     fun getContactUrl(context: Context): String? {
-
+        isMultipleSitePlat()
         return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/contact-us?platform=" + context.getString(
             R.string.app_name
         ) + "&service=" + URLEncoder.encode(sConfigData?.customerServiceUrl ?: "", "utf-8")
     }
 
-    //2022世界杯内容h5地址
-    fun getWorldCupH5Url(context: Context): String {
-        val language = getLanguageTag(context)
+    //2023篮球世界杯内容h5地址
+    fun getWorldCupH5Url(context: Context,toolbarHeight:Int): String {
         val base = getH5BaseUrl()
-        return base + "sports-rule/#/${language}worldcup?platform=${context.getString(R.string.app_name)}&d=android&noBg=1"
+//        val base = "https://172.15.60.159:3000/"
+        return base + "mobile/world-cup?device=android&token=${LoginRepository.token?:""}&lang=${getSelectLanguage(context).key}&oddsType=${getCurrentOddsTypeName()}&oddsDiscount=${UserInfoRepository.userInfo.value?.discount?:1.0}&toolbarHeight=$toolbarHeight"
+    }
+    //2023篮球世界杯活动h5地址
+    fun getWorldCupActivityH5Url(context: Context,toolbarHeight:Int): String {
+        val base = getH5BaseUrl()
+//        val base = "https://172.15.60.199:3000/"
+        return base + "mobile/BasketballWorldCupLottery?bkType=1&device=android&token=${LoginRepository.token?:""}&lang=${getSelectLanguage(context).key}&toolbarHeight=$toolbarHeight"
     }
 
     //https://okbet-v2.cxsport.net/activity/mobile/#/print?uniqNo=B0d7593ed42d8840ec9a56f5530e09773c&addTime=1681790156872
@@ -517,6 +526,8 @@ object Constants {
 
     const val RED_ENVELOPE_PRIZE_BASE = "/api/front/redenp/rain/grab"
     const val RED_ENVELOPE_PRIZE = "${RED_ENVELOPE_PRIZE_BASE}/{redEnpId}"
+    const val REDEEM_CODE = "/api/front/redeemCode/redeem/{redeemCode}"//兑换
+    const val REDEEM_CODE_HISTORY = "/api/front/redeemCode/history "//兑换历史
 
 
     //bettingStation

@@ -14,6 +14,7 @@ import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.databinding.FragmentSportList2Binding
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.betList.BetInfoListData
@@ -28,8 +29,6 @@ import java.util.ArrayList
  */
 class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportList2Binding>() {
 
-    // 篮球末尾比分组合玩法
-    private val playCate = PlayCate.FS_LD_CS.value
     override var matchType = MatchType.END_SCORE
     override fun getCurGameType() = GameType.BK
     override fun getGameListAdapter() = endScoreAdapter
@@ -63,11 +62,11 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
 
     private val endScoreAdapter by lazy {
 
-        EndScoreAdapter(playCate) { _, view, item ->
+        EndScoreAdapter { _, view, item ->
             if (item is Odd) {  // 赔率
                 val matchOdd = item.parentNode as MatchOdd
                 val matchInfo = matchOdd.matchInfo ?: return@EndScoreAdapter
-                addOddsDialog(matchInfo, item, playCate,betPlayCateNameMap = matchOdd.betPlayCateNameMap)
+                addOddsDialog(matchInfo, item, matchOdd.selectPlayCode, betPlayCateNameMap = matchOdd.betPlayCateNameMap)
                 return@EndScoreAdapter
             }
 
@@ -75,8 +74,8 @@ class EndScoreFragment: BaseSportListFragment<SportListViewModel, FragmentSportL
                 if (view is ViewGroup) { // 赛事详情
                     item.matchInfo?.let {
                         SportDetailActivity.startActivity(view.context,
-                            it,
-                            MatchType.EARLY,
+                            matchInfo = it,
+                            matchType = MatchType.EARLY,
                             tabCode = MatchType.END_SCORE.postValue)
                     }
                 } else { // 收藏赛事

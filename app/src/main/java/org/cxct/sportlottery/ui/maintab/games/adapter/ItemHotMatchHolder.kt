@@ -129,7 +129,7 @@ class ItemHotMatchHolder(
             setupMatchTimeAndStatus(
                 item = data,
                 isTimerEnable = true,
-                isTimerPause = data.matchInfo?.stopped == TimeCounting.STOP.value
+                isTimerPause = data.matchInfo?.stopped == TimeCounting.STOP
             )
             //endregion
         }
