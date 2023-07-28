@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.betRecord.accountHistory
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,6 +15,7 @@ import org.cxct.sportlottery.network.bet.settledDetailList.RemarkBetRequest
 import org.cxct.sportlottery.network.bet.settledList.RemarkBetResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
+import org.cxct.sportlottery.util.JsonUtil
 import org.cxct.sportlottery.util.SingleLiveEvent
 import org.cxct.sportlottery.util.TimeUtil
 
@@ -102,8 +104,6 @@ class AccountHistoryViewModel(
         )
 
         viewModelScope.launch {
-            //服务器连续请求需要间隔
-            delay(2000)
             val resultData=doNetwork(androidContext) {
                 OneBoSportApi.betService.getBetList(betListRequest)
             }
@@ -112,7 +112,6 @@ class AccountHistoryViewModel(
                 _responseFailed.postValue(true)
                 return@launch
             }
-
 
             resultData.let { result ->
                 if (result.success) {
@@ -127,9 +126,6 @@ class AccountHistoryViewModel(
 
                 } else {
                     unsettledDataEvent.postValue(arrayListOf())
-//                    if (result.code == NetWorkResponseType.REQUEST_TOO_FAST.code && requestCount < requestMaxCount) {
-//                        unsettledDataEvent.postValue(arrayListOf())
-//                    }
                 }
             }
         }
@@ -174,7 +170,6 @@ class AccountHistoryViewModel(
             totalEfficient=0.0
         }
         viewModelScope.launch {
-            delay(2000)
             val resultData=doNetwork(androidContext) {
                 OneBoSportApi.betService.getBetList(betListRequest)
             }
@@ -208,11 +203,6 @@ class AccountHistoryViewModel(
 
                 } else {
                     errorEvent.postValue(result.msg)
-//                    if (result.code == NetWorkResponseType.REQUEST_TOO_FAST.code && requestCount < requestMaxCount) {
-//                        _settledData.postValue(arrayListOf())
-//                    }else{
-//
-//                    }
                 }
             }
         }

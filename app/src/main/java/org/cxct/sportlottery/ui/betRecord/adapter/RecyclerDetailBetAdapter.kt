@@ -121,7 +121,6 @@ class RecyclerDetailBetAdapter(val row: Row) : BindingAdapter<ParlayComsDetailVO
                 4,5->{
                     val tempRebate:Double=row.rebateAmount?:0.0
                     val totalMoney=(row.win?:0).toString().replace("-","").toDouble()+tempRebate
-                    Log.e("dachang","totalMoney${totalMoney}  rebateAmount${row.rebateAmount}")
                     tvBetWin2.text = " ₱ ${TextUtil.formatMoney(totalMoney,2)}"
                     tvBetWin2.setColors(R.color.color_6D7693)
                     tvWinLabel2.text="${context.getString(R.string.lose)}："

@@ -72,7 +72,6 @@
 -dontwarn com.shuyu.gsyvideoplayer.video.base.**
 -keep class com.shuyu.gsyvideoplayer.utils.** { *; }
 -dontwarn com.shuyu.gsyvideoplayer.utils.**
--keep class tv.danmaku.ijk.** { *; }
 -dontwarn tv.danmaku.ijk.**
 -keep class com.google.android.exoplayer2.** {*;}
 -keep interface com.google.android.exoplayer2.**

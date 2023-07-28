@@ -135,7 +135,6 @@ class RecyclerUnsettledAdapter(private val isDetails:Boolean=false) : BindingAda
                 4,5->{
                     val tempRebate:Double=item.rebateAmount?:0.0
                     val totalMoney=(item.win?:0).toString().replace("-","").toDouble()+tempRebate
-                    Log.e("dachang","totalMoney${totalMoney}  rebateAmount${item.rebateAmount}")
                     tvBetWin.text = " ₱ ${TextUtil.formatMoney(totalMoney,2)}"
                     tvBetWin.setColors(R.color.color_6D7693)
                     tvWinLabel.text="${context.getString(R.string.lose)}："
