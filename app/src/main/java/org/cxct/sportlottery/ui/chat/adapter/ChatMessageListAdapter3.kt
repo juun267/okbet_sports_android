@@ -1,11 +1,13 @@
 package org.cxct.sportlottery.ui.chat.adapter
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.text.style.UnderlineSpan
+import android.util.Log
 import android.util.SparseArray
 import android.view.Gravity
 import android.view.ViewGroup
@@ -25,6 +27,7 @@ import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatRoomMsg
 import org.cxct.sportlottery.ui.chat.ChatMsgReceiveType
 import org.cxct.sportlottery.ui.chat.bean.ChatDateMsg
 import org.cxct.sportlottery.ui.chat.bean.EmptyMsg
+import org.cxct.sportlottery.ui.chat.bean.UserMessageStyle
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.view.MixFontTextView
 import java.util.*
@@ -99,7 +102,8 @@ class ChatMessageListAdapter3(private val onPhotoClick: (String) -> Unit,
         data: ChatMessageResult,
         imageView: AppCompatImageView,
         textView: MixFontTextView,
-        messageBorder: LinearLayout
+        messageBorder: LinearLayout,
+        isMeLayout:Boolean=false,
     ) {
         val content = data.content
         if (data.type != ChatMsgReceiveType.CHAT_SEND_PIC
@@ -110,6 +114,12 @@ class ChatMessageListAdapter3(private val onPhotoClick: (String) -> Unit,
             textView.isVisible = true
             textView.post { textView.gravity = if (textView.lineCount > 1) Gravity.START else Gravity.CENTER }
             messageBorder.post { messageBorder.gravity = Gravity.CENTER }
+
+            if(isMeLayout){
+                messageBorder.backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.color_025BE8))
+            }else{
+                messageBorder.backgroundTintList =ColorStateList.valueOf(ContextCompat.getColor(context, UserMessageStyle.getBorderColor(data.userType)))
+            }
             return
         }
 
@@ -130,6 +140,26 @@ class ChatMessageListAdapter3(private val onPhotoClick: (String) -> Unit,
             imgUrl = contentString
             textMsg = ""
         }
+
+//            if(isMeLayout){
+//                messageBorder.backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.color_chat_message_border_guest))
+//            }else{
+//                messageBorder.backgroundTintList =ColorStateList.valueOf(ContextCompat.getColor(context, UserMessageStyle.getBorderColor(data.userType)))
+//            }
+
+        if(isMeLayout){
+            Log.e("dachang","length ${textMsg.length}")
+            if(textMsg.isEmpty()){
+                messageBorder.backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.color_chat_message_border_guest))
+            }else{
+                messageBorder.backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.color_025BE8))
+            }
+        }else{
+            messageBorder.backgroundTintList =
+                ColorStateList.valueOf(ContextCompat.getColor(context, UserMessageStyle.getBorderColor(data.userType)))
+        }
+
+
 
         textView.mixFontText = textMsg
         textView.isVisible = textMsg.isNotEmpty()
