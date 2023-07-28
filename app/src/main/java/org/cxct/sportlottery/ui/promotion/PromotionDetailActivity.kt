@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.promotion
 
 import android.content.Context
 import android.content.Intent
-import android.text.Html
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_promotion_detail.*
 import org.cxct.sportlottery.R
@@ -28,31 +27,28 @@ class PromotionDetailActivity :
                 putExtra("ActivityImageList", data)
             })
         }
-
-        fun start(context: Context, activityImageId: String) {
-            context.startActivity(Intent(context, PromotionDetailActivity::class.java).apply {
-                putExtra("activityImageId", activityImageId)
-            })
-        }
     }
 
     private val activityData: ActivityImageList? by lazy { intent?.getParcelableExtra("ActivityImageList") }
-    private val activityId: String? by lazy { intent?.getStringExtra("activityImageId") }
 
     override fun onInitView() {
         setStatusbar(R.color.color_FFFFFF, true)
         binding.customToolBar.setOnBackPressListener {
             onBackPressed()
         }
-        if (activityData != null) {
-            setup(activityData!!)
-        } else if (!activityId.isNullOrEmpty()) {
-            viewModel.getActivityImageListH5()
-        }
-        viewModel.activityImageList.observe(this) {
-            it.firstOrNull { it.activityId == activityId }?.let {
-                setup(it)
+        activityData?.let {
+            setPromotion(activityData!!)
+            it.activityId?.let {
+                viewModel.activityDetailH5(it)
             }
+        }
+//        viewModel.activityImageList.observe(this) {
+//            it.firstOrNull { it.activityId == activityId }?.let {
+//                setPromotion(it)
+//            }
+//        }
+        viewModel.activityDetail.observe(this) {
+             setActivity(it)
         }
         viewModel.activityApply.observe(this) {
             tvDeposit.text = TextUtil.formatMoney(0)
@@ -63,7 +59,7 @@ class PromotionDetailActivity :
         }
     }
 
-    fun setup(activityData: ActivityImageList) {
+    fun setPromotion(activityData: ActivityImageList) {
         if (activityData.contentImage.isNullOrEmpty()){
             binding.ivBanner.gone()
         }else{
@@ -74,29 +70,31 @@ class PromotionDetailActivity :
         val startTime = TimeUtil.timeFormat(activityData.startTime, TimeUtil.EN_DATE_FORMAT, locale = Locale.ENGLISH)
         val endTime = TimeUtil.timeFormat(activityData.endTime, TimeUtil.EN_DATE_FORMAT, locale = Locale.ENGLISH)
         binding.tvTime.text = "$startTime ${getString(R.string.J645)} $endTime"
-        if (activityData.activityId.isNullOrEmpty()) {
+        binding.okWebView.setBackgroundColor(ContextCompat.getColor(this,R.color.color_F9FAFD))
+        binding.okWebView.loadDataWithBaseURL(null,(activityData.contentText?:"").formatHTML(), "text/html", "utf-8",null)
+    }
+    private fun setActivity(activityDetail: ActivityImageList){
+        if (activityDetail.activityId.isNullOrEmpty()) {
             binding.linActivity.gone()
         } else {
             binding.linActivity.show()
-            binding.tvDeposit.text = TextUtil.formatMoney(activityData.amount)
-            if (activityData.activityType == 1) {
+            binding.tvDeposit.text = TextUtil.formatMoney(activityDetail.amount)
+            if (activityDetail.activityType == 1) {
                 tvReward.text = getString(R.string.H019)
             } else {
                 tvReward.text = getString(R.string.deposits)
             }
-            tvReward.text = TextUtil.formatMoney(activityData.reward)
-            if (activityData.reward == 0) {
+            tvReward.text = TextUtil.formatMoney(activityDetail.reward)
+            if (activityDetail.reward == 0) {
                 linApply.isEnabled = false
                 linApply.setBackgroundResource(R.drawable.bg_gray_radius_8)
             } else {
                 linApply.isEnabled = true
                 linApply.setBackgroundResource(R.drawable.bg_blue_radius_8)
                 linApply.setOnClickListener {
-                    viewModel.activityApply(activityData.activityId)
+                    viewModel.activityApply(activityDetail.activityId)
                 }
             }
         }
-        binding.okWebView.setBackgroundColor(ContextCompat.getColor(this,R.color.color_F9FAFD))
-        binding.okWebView.loadDataWithBaseURL(null,(activityData.contentText?:"").formatHTML(), "text/html", "utf-8",null)
     }
 }
