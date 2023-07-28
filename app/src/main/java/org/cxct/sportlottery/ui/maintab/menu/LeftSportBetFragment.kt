@@ -17,6 +17,8 @@ import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.util.startLogin
 import org.cxct.sportlottery.view.onClick
+import org.cxct.sportlottery.view.rumWithSlowRequest
+import org.cxct.sportlottery.view.updateLastRequestTime
 
 class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,FragmentLeftSportBetBinding>() {
     //热门赛事 adapter
@@ -57,6 +59,7 @@ class LeftSportBetFragment:BindingSocketFragment<SportLeftMenuViewModel,Fragment
         getHotMatchesData()
 
         if(viewModel.isLogin()){
+            updateLastRequestTime()
             viewModel.getBetRecordCount()
         }
     }

@@ -23,6 +23,7 @@ import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.view.BetEmptyView
 import org.cxct.sportlottery.view.loadMore
+import org.cxct.sportlottery.view.rumWithSlowRequest
 
 /**
  * 已结单列表
@@ -128,7 +129,10 @@ class SettledFragment : BindingFragment<AccountHistoryViewModel, FragmentSettled
                 }
                 //刷新数据
                 recyclerSettled.gone()
-                viewModel.getSettledList()
+                rumWithSlowRequest(viewModel){
+                    viewModel.getSettledList()
+                }
+
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -146,18 +150,19 @@ class SettledFragment : BindingFragment<AccountHistoryViewModel, FragmentSettled
 //        }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     override fun onInitData() {
         viewModel.pageSettledIndex = 1
         mAdapter.setNewInstance(null)
+        loading()
         getSettledData()
-
     }
 
     private fun getSettledData() {
         //获取结算数据
-        loading()
-        viewModel.getSettledList()
+        rumWithSlowRequest(viewModel){
+            viewModel.getSettledList()
+        }
+
         viewModel.settledData.observe(this) {
             hideLoading()
             initBetValue()

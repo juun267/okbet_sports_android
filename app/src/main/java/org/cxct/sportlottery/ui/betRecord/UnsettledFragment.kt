@@ -17,6 +17,7 @@ import org.cxct.sportlottery.ui.betRecord.dialog.PrintDialog
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.view.BetEmptyView
 import org.cxct.sportlottery.view.loadMore
+import org.cxct.sportlottery.view.rumWithSlowRequest
 
 /**
  * 未结单列表
@@ -68,14 +69,18 @@ class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnset
 
         //加载更多
         recyclerUnsettled.loadMore {
-            viewModel.getUnsettledList()
+            rumWithSlowRequest(viewModel){
+                viewModel.getUnsettledList()
+            }
         }
 
         //待成立倒计时结束刷新数据
         mAdapter.setOnCountTime {
             viewModel.pageIndex = 1
             recyclerUnsettled.postDelayed({
-                viewModel.getUnsettledList()
+                rumWithSlowRequest(viewModel){
+                    viewModel.getUnsettledList()
+                }
             },600)
         }
 
@@ -83,7 +88,9 @@ class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnset
             val it = event.getContentIfNotHandled() ?: return@observe
             if (it.status == Status.UN_DONE.code || it.status == Status.CANCEL.code) {
                recyclerUnsettled.postDelayed({
-                viewModel.getUnsettledList()
+                   rumWithSlowRequest(viewModel){
+                       viewModel.getUnsettledList()
+                   }
             },500)
             }
         }
@@ -124,7 +131,9 @@ class UnsettledFragment : BindingFragment<AccountHistoryViewModel, FragmentUnset
         viewModel.pageIndex = 1
         mAdapter.setList(arrayListOf())
         //获取未结算数据
-        viewModel.getUnsettledList()
+        rumWithSlowRequest(viewModel){
+            viewModel.getUnsettledList()
+        }
     }
 
 
