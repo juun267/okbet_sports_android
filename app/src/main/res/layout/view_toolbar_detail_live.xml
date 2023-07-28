@@ -1,132 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-<!--    <View-->
-<!--        android:id="@+id/v_statusbar_live"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="@dimen/margin_25" />-->
-
-    <FrameLayout
-        android:id="@+id/fl_root"
+    <RelativeLayout
+        android:id="@+id/web_view_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color_000000"
-        android:orientation="vertical"
-        tools:ignore="UseAppTint">
+        android:layout_gravity="center"
+        android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/web_view_layout"
+        <org.cxct.sportlottery.view.OKVideoPlayer
+            android:id="@+id/player_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:orientation="vertical">
+            android:layout_centerInParent="true"
+            android:visibility="visible"
+            tools:visibility="visible" />
 
-            <ImageView
-                android:id="@+id/iv_live_status"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                android:src="@drawable/img_stream_loading" />
+        <org.cxct.sportlottery.view.webView.OkWebView
+            android:id="@+id/web_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:background="@color/color_025BE8"
+            android:overScrollMode="never" />
 
-            <TextView
-                android:id="@+id/tvStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:text="@string/text_cant_play"
-                android:textColor="@color/color_317FFF_0760D4"
-                android:textSize="@dimen/margin_14" />
+        <ImageView
+            android:id="@+id/iv_live_status"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/img_stream_loading" />
 
-            <org.cxct.sportlottery.view.OKVideoPlayer
-                android:id="@+id/player_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:visibility="visible"
-                tools:visibility="visible" />
-
-            <org.cxct.sportlottery.view.webView.OkWebView
-                android:id="@+id/web_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:background="@color/color_025BE8"
-                android:overScrollMode="never" />
-            <ImageView
-                android:id="@+id/iv_live_close"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_margin="@dimen/margin_12"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/ic_trans_close"
-                android:visibility="visible"
-                tools:visibility="visible" />
-        </RelativeLayout>
-
-
-<!--        <LinearLayout-->
-<!--            android:id="@+id/cl_control"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_gravity="right"-->
-<!--            android:gravity="center"-->
-<!--            android:orientation="vertical"-->
-<!--            android:padding="10dp">-->
-
-<!--            <ImageView-->
-<!--                android:id="@+id/iv_live"-->
-<!--                android:layout_width="30dp"-->
-<!--                android:layout_height="30dp"-->
-
-<!--                android:src="@drawable/ic_live_trans"-->
-<!--                android:visibility="gone"-->
-<!--                tools:visibility="visible" />-->
-
-<!--            <ImageView-->
-<!--                android:id="@+id/iv_video"-->
-<!--                android:layout_width="30dp"-->
-<!--                android:layout_height="30dp"-->
-<!--                android:layout_marginTop="20dp"-->
-<!--                android:src="@drawable/ic_video_trans"-->
-<!--                android:visibility="gone"-->
-<!--                tools:visibility="visible" />-->
-
-<!--            <ImageView-->
-<!--                android:id="@+id/iv_animation"-->
-<!--                android:layout_width="30dp"-->
-<!--                android:layout_height="30dp"-->
-<!--                android:layout_marginTop="20dp"-->
-<!--                android:src="@drawable/ic_anime_trans"-->
-<!--                android:visibility="gone"-->
-<!--                tools:visibility="visible" />-->
-
-
-<!--        </LinearLayout>-->
-
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/text_cant_play"
+            android:textColor="@color/color_317FFF_0760D4"
+            android:textSize="@dimen/margin_14" />
 
 
         <ImageView
-            android:id="@+id/iv_live_sound"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="bottom|left"
-            android:layout_marginLeft="@dimen/margin_15"
-            android:layout_marginBottom="@dimen/margin_10"
-            android:src="@drawable/selector_live_sound" />
+            android:id="@+id/iv_live_close"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_margin="@dimen/margin_12"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_trans_close"
+            android:visibility="visible"
+            tools:visibility="visible" />
+    </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/iv_fullscreen"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="@dimen/margin_15"
-            android:padding="@dimen/margin_5"
-            android:visibility="gone"
-            android:src="@drawable/selector_fullscreen" />
-    </FrameLayout>
-</LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_live_sound"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_gravity="bottom|left"
+        android:layout_marginLeft="@dimen/margin_15"
+        android:layout_marginBottom="@dimen/margin_10"
+        android:src="@drawable/selector_live_sound" />
+
+    <ImageView
+        android:id="@+id/iv_fullscreen"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="@dimen/margin_15"
+        android:padding="@dimen/margin_5"
+        android:visibility="gone"
+        android:src="@drawable/selector_fullscreen" />
+
+</merge>
