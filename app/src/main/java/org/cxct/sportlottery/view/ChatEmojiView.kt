@@ -3,6 +3,7 @@ package org.cxct.sportlottery.view
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.GridLayoutManager
@@ -77,11 +78,11 @@ class ChatEmojiView(context: Context, attrs: AttributeSet?): FrameLayout(context
                     binding.recyclerEmoji.adapter=emojiAdapter
                 }
                 else->{
+                    binding.recyclerEmoji.layoutManager=GridLayoutManager(context,4)
                     //配置的图片
                     if(position>gifAdaptersList.size-1){
                         return@setOnItemClickListener
                     }
-                    binding.recyclerEmoji.layoutManager=gridManager4
                     binding.recyclerEmoji.adapter=gifAdaptersList[position]
                 }
             }

@@ -373,7 +373,8 @@ class ChatViewModel(
     }
 
     private fun getInitErrorText(code: Int) = androidContext.getString(R.string.text_cant_play) + "($code)"
-
+    //标记表情包是否初始化
+    private var isInitEmoji=false
     /* 游客、一般用户 */
     private fun chatInit() = launch {
 
@@ -401,7 +402,11 @@ class ChatViewModel(
                     Timber.i("[Chat] 初始化成功 用戶遊客獲取房間列表")
                     userIsSpeak = result?.getData()?.state == 0 //state（0正常、1禁言、2禁止登录)
                     queryList()
-                    getChatSticker()
+                    if(!isInitEmoji){
+                        isInitEmoji=true
+                        getChatSticker()
+                    }
+
                     return@launch
                 } else {
                     sign = null // 置空下次循环从新获取
