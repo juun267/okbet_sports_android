@@ -7,7 +7,7 @@
     android:minWidth="70dp"
     android:textSize="14sp"
     android:gravity="center"
-    android:layout_marginHorizontal="10dp"
     android:paddingHorizontal="15dp"
+    android:layout_marginRight="10dp"
     android:background="@drawable/bg_chat_emoji_column"
     android:layout_height="30dp" />
