@@ -42,7 +42,6 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         switchTabByPosition(0)
-        EventBusUtil.targetLifecycle(this)
     }
 
     private fun switchTabByPosition(position: Int) {

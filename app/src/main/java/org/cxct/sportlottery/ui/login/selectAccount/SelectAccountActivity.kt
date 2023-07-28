@@ -29,11 +29,11 @@ class SelectAccountActivity : BindingActivity<LoginViewModel, ActivitySelectAcco
         clLiveChat.setServiceClick(supportFragmentManager)
         if (type==TYPE_LOGINGLIFE_OR_REGIST){
             btnOkbet.apply {
-                setCompoundDrawablesRelative(ContextCompat.getDrawable(context, R.drawable.ic_glife_round),null,null,null)
+                setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context, R.drawable.ic_glife_round),null,null,null)
                 text = getString(R.string.P176)
             }
             btnGlife.apply {
-                setCompoundDrawablesRelative(ContextCompat.getDrawable(context, R.drawable.ic_okbet_round),null,null,null)
+                setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context, R.drawable.ic_okbet_round),null,null,null)
                 text = getString(R.string.P175)
             }
         }
