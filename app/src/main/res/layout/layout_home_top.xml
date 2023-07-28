@@ -15,6 +15,7 @@
         app:pointSelect="@drawable/indicator_30_blue"
         app:pointTopBottomPadding="2dp" />
 
+
     <LinearLayout
         android:id="@+id/lin_announcement"
         android:layout_width="match_parent"
@@ -281,51 +282,6 @@
 
 <!--    </LinearLayout>-->
 
-<!--<<<<<<< HEAD-->
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="100dp"-->
-<!--        android:layout_marginHorizontal="12dp"-->
-<!--        android:layout_marginTop="8dp"-->
-<!--        android:orientation="horizontal">-->
-<!--        <androidx.cardview.widget.CardView-->
-<!--            android:id="@+id/vWorldCup"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_weight="1"-->
-<!--            android:layout_marginRight="5dp"-->
-<!--            app:cardCornerRadius="12dp"-->
-<!--            app:cardElevation="0dp"-->
-<!--            android:foreground="@drawable/img_worldcup">-->
-
-<!--            <ImageView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:src="@drawable/img_okbingo"-->
-<!--                android:scaleType="centerCrop"/>-->
-
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:background="#90000000"-->
-<!--                android:gravity="center"-->
-<!--                android:textSize="14sp"-->
-<!--                android:textColor="@color/color_FFFFFF"-->
-<!--                android:textStyle="bold"-->
-<!--                android:text="@string/N700"/>-->
-
-<!--        </androidx.cardview.widget.CardView>-->
-<!--        <androidx.cardview.widget.CardView-->
-<!--            android:id="@+id/vBingo"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_marginRight="5dp"-->
-<!--            android:layout_weight="1"-->
-<!--            app:cardCornerRadius="12dp"-->
-<!--            app:cardElevation="0dp"-->
-<!--            android:visibility="gone"-->
-<!--            android:foreground="@drawable/fg_ripple">-->
-<!--=======-->
 <!--    <LinearLayout-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="100dp"-->
@@ -342,7 +298,6 @@
 <!--            android:foreground="@drawable/fg_ripple"-->
 <!--            app:cardCornerRadius="12dp"-->
 <!--            app:cardElevation="0dp">-->
-<!--&gt;>>>>>> developer/OKF-520-首页游戏类别入口排序-->
 
 <!--            <ImageView-->
 <!--                android:layout_width="match_parent"-->

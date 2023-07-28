@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.didichuxing.doraemonkit.util.GsonUtils
 import kotlinx.android.synthetic.main.fragment_bet_receipt.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
@@ -31,6 +32,7 @@ import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.toJson
 import splitties.views.setCompoundDrawables
+import org.cxct.sportlottery.util.setupSportStatusChange
 import timber.log.Timber
 
 

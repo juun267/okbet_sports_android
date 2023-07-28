@@ -133,6 +133,7 @@ class BackService : Service() {
                                 }
                                 LifecycleEvent.Type.CLOSED -> {
                                     Timber.d("Stomp connection closed")
+                                    firstSetNotifyAll=true
                                     reconnectionNum++
                                     if (errorFlag && reconnectionNum < RECONNECT_LIMIT) {
                                         Timber.e("Stomp connection broken, the $reconnectionNum time reconnect.")
@@ -144,6 +145,7 @@ class BackService : Service() {
                                 }
                                 LifecycleEvent.Type.ERROR -> {
                                     errorFlag = true
+                                    firstSetNotifyAll=true
                                     Timber.e("Stomp connection error ==> ${lifecycleEvent.exception}")
 //                                    reconnect()
                                 }
@@ -172,6 +174,7 @@ class BackService : Service() {
 
         } catch (e: Exception) {
             e.printStackTrace()
+            firstSetNotifyAll=true
             when (e) {
                 is SocketTimeoutException -> {
                     Timber.e("連線超時，正在重連")

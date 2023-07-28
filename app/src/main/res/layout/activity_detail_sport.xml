@@ -305,7 +305,9 @@
             android:id="@+id/rv_detail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="false"
+            app:layout_behavior="org.cxct.sportlottery.util.FixScrollingFooterBehavior"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="3"
             tools:listitem="@layout/content_odds_detail_list_group_4_item" />
@@ -321,9 +323,11 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-
-
-
+    <org.cxct.sportlottery.view.DetailSportGuideView
+        android:id="@+id/dsgView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
     <org.cxct.sportlottery.view.ParlayFloatingWindow
         android:id="@+id/parlayFloatWindow"
