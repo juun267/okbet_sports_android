@@ -11,7 +11,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.didichuxing.doraemonkit.util.GsonUtils
 import kotlinx.android.synthetic.main.fragment_bet_receipt.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
