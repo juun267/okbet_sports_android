@@ -121,7 +121,7 @@ public class ExtendedEditText extends TextInputAutoCompleteTextView {
         }
     }
 
-    void setDefaultOnFocusChangeListener(View.OnFocusChangeListener l) {
+    public void setDefaultOnFocusChangeListener(View.OnFocusChangeListener l) {
 
         defaultFocusListener = l;
         focusListener.registerListener(l);

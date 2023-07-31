@@ -15,6 +15,7 @@ import org.cxct.sportlottery.ui.login.foget.ForgetViewModel
 import org.cxct.sportlottery.view.checkRegisterListener
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.boundsEditText.AsteriskPasswordTransformationMethod
+import org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView
 import org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
 
 /**
@@ -48,6 +49,7 @@ class ResetPasswordActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::clas
         bindFinish(btnBack)
         clLiveChat.setServiceClick(supportFragmentManager)
         btnNext.setOnClickListener { onNext() }
+        btnBackToLogin.setOnClickListener { onNext() }
         etLoginPassword.endIconImageButton.setOnClickListener { resetInputTransformationMethod(etLoginPassword, eetLoginPasswordForget) }
         etConfirmPasswordForget.endIconImageButton.setOnClickListener { resetInputTransformationMethod(etConfirmPasswordForget, eetConfirmPasswordForget) }
         eetLoginPasswordForget.checkRegisterListener {
@@ -58,7 +60,7 @@ class ResetPasswordActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::clas
         }
     }
 
-    private fun resetInputTransformationMethod(fieldBox: TextFormFieldBoxes, editText: EditText) {
+    private fun resetInputTransformationMethod(fieldBox: LoginFormFieldView, editText: EditText) {
         if (fieldBox.endIconResourceId == R.drawable.ic_eye_open) {
             editText.transformationMethod = AsteriskPasswordTransformationMethod()
             fieldBox.setEndIcon(R.drawable.ic_eye_close)
@@ -71,9 +73,9 @@ class ResetPasswordActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::clas
         editText.setSelection(editText.text.toString().length)
     }
 
-    private fun checkInput(fieldBox: TextFormFieldBoxes,
+    private fun checkInput(fieldBox: LoginFormFieldView,
                            editText: EditText,
-                           otherFieldBox: TextFormFieldBoxes,
+                           otherFieldBox: LoginFormFieldView,
                            otherEditText: EditText): Boolean {
 
         val input = editText.text.toString()
@@ -150,12 +152,11 @@ class ResetPasswordActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::clas
     }
 
     private fun onResetSuccess(userName: String) = binding.run {
-        tvUserName.text =  getString(R.string.member_name) + ": " + userName
         tvResetSucceed.text = getString(R.string.change_password)+"!"
         clSuccess.visible()
         clPassword.gone()
         clLiveChat.gone()
-        btnNext.setText(R.string.to_back_login)
+        btnNext.gone()
         setResult(Activity.RESULT_OK)
     }
 

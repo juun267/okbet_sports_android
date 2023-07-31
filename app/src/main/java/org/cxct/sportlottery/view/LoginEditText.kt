@@ -17,6 +17,7 @@ import android.view.View.OnClickListener
 import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.annotation.IntDef
 import androidx.core.view.isVisible
@@ -27,12 +28,13 @@ import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.VerifyConstUtil
+import org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView
 import org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
 
 class LoginEditText @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyle: Int = 0
+    defStyle: Int = 0,
 ) : LinearLayout(context, attrs, defStyle) {
 
     private var mVerificationCodeBtnOnClickListener: OnClickListener? = null
@@ -341,7 +343,7 @@ fun EditText.checkRegisterListener(onCheck: (String) -> Unit) {
     this.onFocusChange { onCheck(it) }
 }
 
-fun EditText.checkPhoneNum(textFieldBoxes: TextFormFieldBoxes, onResult: ((String?) -> Unit)?) {
+fun EditText.checkPhoneNum(textFieldBoxes: FrameLayout, onResult: ((String?) -> Unit)?) {
     checkRegisterListener { phoneNum->
         val msg = when {
             phoneNum.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
@@ -350,13 +352,15 @@ fun EditText.checkPhoneNum(textFieldBoxes: TextFormFieldBoxes, onResult: ((Strin
             }
             else -> null
         }
-
-        textFieldBoxes.setError(msg, false)
+        when(textFieldBoxes){
+            is TextFormFieldBoxes-> textFieldBoxes.setError(msg, false)
+            is LoginFormFieldView -> textFieldBoxes.setError(msg, false)
+        }
         onResult?.invoke(if (msg == null) phoneNum else null)
     }
 }
 
-fun EditText.checkSMSCode(textFieldBoxes: TextFormFieldBoxes, onResult: ((String?) -> Unit)?) {
+fun EditText.checkSMSCode(textFieldBoxes: FrameLayout, onResult: ((String?) -> Unit)?) {
     checkRegisterListener { smsCode->
         val msg = when {
             smsCode.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
@@ -364,13 +368,15 @@ fun EditText.checkSMSCode(textFieldBoxes: TextFormFieldBoxes, onResult: ((String
             !VerifyConstUtil.verifySMSCode(smsCode, 4) -> LocalUtils.getString(R.string.error_verification_code_by_sms)
             else -> null
         }
-
-        textFieldBoxes.setError(msg, false)
+        when(textFieldBoxes){
+            is TextFormFieldBoxes-> textFieldBoxes.setError(msg, false)
+            is LoginFormFieldView -> textFieldBoxes.setError(msg, false)
+        }
         onResult?.invoke(if (msg == null) smsCode else null)
     }
 }
 
-fun EditText.checkEmail(textFieldBoxes: TextFormFieldBoxes, onResult: ((String?) -> Unit)?) {
+fun EditText.checkEmail(textFieldBoxes: FrameLayout, onResult: ((String?) -> Unit)?) {
     checkRegisterListener { email->
         val msg = when {
             email.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
@@ -378,7 +384,10 @@ fun EditText.checkEmail(textFieldBoxes: TextFormFieldBoxes, onResult: ((String?)
             else -> null
         }
 
-        textFieldBoxes.setError(msg, false)
+        when(textFieldBoxes){
+            is TextFormFieldBoxes-> textFieldBoxes.setError(msg, false)
+            is LoginFormFieldView -> textFieldBoxes.setError(msg, false)
+        }
         onResult?.invoke(if (msg == null) email else null)
     }
 }

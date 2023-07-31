@@ -1,13 +1,20 @@
 package org.cxct.sportlottery.ui.login.selectAccount
 
+import android.text.Html
+import android.widget.TextView
+import androidx.core.view.isVisible
 import org.cxct.sportlottery.common.event.ForgetPwdSelectAccountEvent
 import org.cxct.sportlottery.common.event.LoginSelectAccountEvent
 import org.cxct.sportlottery.common.extentions.bindFinish
 import org.cxct.sportlottery.databinding.ActivitySelectAccountBinding
 import org.cxct.sportlottery.network.index.login.LoginResult
+import org.cxct.sportlottery.repository.ImageType
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
 import org.cxct.sportlottery.util.EventBusUtil
+import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.getMarketSwitch
 import org.cxct.sportlottery.util.setServiceClick
 
 class SelectAccountActivity : BindingActivity<LoginViewModel, ActivitySelectAccountBinding>() {
@@ -35,6 +42,18 @@ class SelectAccountActivity : BindingActivity<LoginViewModel, ActivitySelectAcco
             when(type){
                 TYPE_LOGIN->EventBusUtil.post(LoginSelectAccountEvent(true))
                 TYPE_FORGET->EventBusUtil.post(ForgetPwdSelectAccountEvent(true))
+            }
+        }
+    }
+    private fun setupSummary(tvsummary: TextView) {
+        sConfigData?.imageList?.firstOrNull {
+            it.imageType == ImageType.LOGIN_SUMMARY.code
+                    && it.lang == LanguageManager.getSelectLanguage(this).key
+                    && !it.imageText1.isNullOrEmpty()
+                    && !getMarketSwitch() }?.imageText1.let {
+            tvsummary.apply {
+                isVisible = !it.isNullOrEmpty()
+                text = Html.fromHtml(it)
             }
         }
     }

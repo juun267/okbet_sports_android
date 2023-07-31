@@ -1,0 +1,132 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:ignore="SpUsage,HardcodedText">
+
+    <RelativeLayout
+        android:id="@+id/rl_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?attr/selectableItemBackground">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/text_field_boxes_imageView"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="@dimen/margin_8"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:contentDescription="icon"
+            android:visibility="visible" />
+
+        <RelativeLayout
+            android:id="@+id/text_field_boxes_right_shell"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/text_field_boxes_imageView">
+
+            <org.cxct.sportlottery.view.boundsEditText.ClipToBoundsView
+                android:id="@+id/text_field_boxes_panel"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:clickable="true"
+                android:focusable="true">
+
+                    <FrameLayout
+                        android:id="@+id/text_field_boxes_editTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="bottom">
+                        <RelativeLayout
+                            android:id="@+id/text_field_boxes_input_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingStart="0dp"
+                            android:paddingEnd="20dp" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical|end"
+                            android:background="@android:color/transparent"
+                            android:gravity="right|bottom"
+                            android:orientation="horizontal">
+
+                            <androidx.appcompat.widget.AppCompatImageButton
+                                android:id="@+id/text_field_boxes_clear_button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="?selectableItemBackgroundBorderless"
+                                android:minWidth="@dimen/clear_button_min_width"
+                                android:minHeight="@dimen/clear_button_min_height"
+                                android:visibility="gone" />
+
+                            <androidx.appcompat.widget.AppCompatImageButton
+                                android:id="@+id/text_field_boxes_end_icon_button"
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:background="?selectableItemBackgroundBorderless"
+                                android:minWidth="@dimen/end_icon_min_width"
+                                android:minHeight="@dimen/end_icon_min_height"
+                                android:visibility="gone"
+                                tools:src="@drawable/ic_eye_close"
+                                tools:visibility="visible" />
+
+                        </LinearLayout>
+
+                    </FrameLayout>
+
+            </org.cxct.sportlottery.view.boundsEditText.ClipToBoundsView>
+
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/bottom_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="32dp"
+        android:layout_below="@id/rl_main"
+        android:background="@color/colorRedLight" />
+
+    <RelativeLayout
+        android:id="@+id/text_field_boxes_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_main"
+        android:paddingStart="32dp"
+        android:paddingEnd="@dimen/upper_panel_paddingEnd"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_field_boxes_helper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="@dimen/helper_marginEnd"
+            android:layout_toStartOf="@+id/text_field_boxes_counter"
+            android:textSize="@dimen/helper_text_size"
+            android:visibility="gone"
+            tools:text="12345567890asddfgghhjjkk"
+            tools:textColor="@color/color_E23434"
+            tools:visibility="visible" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_field_boxes_counter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:textSize="@dimen/counter_text_size"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
+
