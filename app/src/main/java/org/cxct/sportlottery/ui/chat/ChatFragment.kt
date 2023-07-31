@@ -403,14 +403,20 @@ class ChatFragment : BindingSocketFragment<ChatViewModel, FragmentChatBinding>()
 
                 is ChatEvent.SendMessageStatusEvent -> {
                     binding.vChatAction.apply {
-                        //输入框表情icon点击
-                        setOnEmojiClick {
-                            if (binding.chatEmojiView.isVisible()) {
-                                binding.chatEmojiView.gone()
-                            } else {
-                                binding.chatEmojiView.visible()
+                        if(chatEvent.sendTextEnabled){
+                            //输入框表情icon点击
+                            setOnEmojiClick {
+                                if (binding.chatEmojiView.isVisible()) {
+                                    binding.chatEmojiView.gone()
+                                } else {
+                                    binding.chatEmojiView.visible()
+                                }
                             }
+                        }else{
+                            //禁言 需要显示emoji但不能点击
+                            setOnEmojiSilence()
                         }
+
                         setInputMaxLength(chatEvent.textMaxLength)
                         setInputStatus(chatEvent.sendTextEnabled)
                         setSendStatus(
