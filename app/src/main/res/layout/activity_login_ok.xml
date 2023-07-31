@@ -32,43 +32,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <TextView
-        android:id="@+id/tvSummary"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_12"
-        android:textSize="@dimen/textSize14sp"
-        android:textColor="@color/color_0D2245"
-        tools:text="Up to  P500  bonus for new user！"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ivLogo"/>
-    <TextView
-        android:id="@+id/tvSubTitle1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_24"
-        android:textSize="@dimen/textSize16sp"
-        android:textColor="@color/color_0D2245"
-        android:text="@string/P173"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvSummary"/>
-
-    <TextView
-        android:id="@+id/tvSubTitle2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/textSize16sp"
-        android:textColor="@color/color_6D7693"
-        android:layout_marginTop="@dimen/margin_8"
-        android:text="@string/P174"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvSubTitle1"/>
-
-
+   <include
+       android:id="@+id/include_subtitle"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       layout="@layout/include_login_subtitle"
+       app:layout_constraintTop_toBottomOf="@id/ivLogo" />
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
@@ -80,7 +49,7 @@
         android:overScrollMode="never"
         android:scrollbars="none"
         android:fadingEdge="none"
-        app:layout_constraintTop_toBottomOf="@id/tvSubTitle2">
+        app:layout_constraintTop_toBottomOf="@id/include_subtitle">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -91,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="@dimen/margin_12"
-                android:paddingVertical="@dimen/margin_15"
+                android:paddingBottom="@dimen/margin_20"
                 android:background="@drawable/bg_white_radius_8"
                 android:elevation="2dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -104,7 +73,7 @@
                     android:orientation="vertical"
                     android:visibility="visible">
 
-                    <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+                    <org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView
                         android:id="@+id/et_account"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -118,24 +87,22 @@
                         <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
                             android:id="@+id/eet_account"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
+                            android:layout_height="match_parent"
                             android:imeOptions="actionNext"
                             android:inputType="text"
                             android:maxLines="1"
                             android:textColor="@color/color_FFFFFF_DE000000"
                             android:textSize="@dimen/textSize14sp" />
 
-                    </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
+                    </org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView>
 
                     <FrameLayout
                         android:id="@+id/block_valid_code"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="10dp">
+                        android:orientation="horizontal">
 
-                        <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+                        <org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView
                             android:id="@+id/et_verification_code"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -150,7 +117,7 @@
                             <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
                                 android:id="@+id/eet_verification_code"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_marginRight="100dp"
                                 android:ellipsize="end"
                                 android:imeOptions="actionNext"
@@ -161,15 +128,15 @@
                                 android:textColor="@color/color_FFFFFF_DE000000"
                                 android:textSize="@dimen/textSize14sp" />
 
-                        </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
+                        </org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView>
 
                         <Button
                             android:id="@+id/btn_send_sms"
                             style="?android:attr/borderlessButtonStyle"
                             android:layout_width="wrap_content"
-                            android:layout_height="45dp"
+                            android:layout_height="44dp"
+                            android:layout_marginTop="@dimen/margin_8"
                             android:minWidth="85dp"
-                            android:layout_marginTop="2dp"
                             android:layout_gravity="right"
                             android:alpha="0.5"
                             android:background="@drawable/btn_send_sms"
@@ -180,11 +147,10 @@
                             android:textSize="@dimen/textSize14sp" />
                     </FrameLayout>
 
-                    <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+                    <org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView
                         android:id="@+id/et_recommend_code"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
                         android:textSize="@dimen/textSize12sp"
                         android:visibility="gone"
                         app:hintText="@string/hint_referral_code"
@@ -197,7 +163,7 @@
                         <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
                             android:id="@+id/eet_recommend_code"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:imeOptions="actionNext"
                             android:inputType="text"
                             android:maxLines="1"
@@ -205,7 +171,7 @@
                             android:textColor="@color/color_FFFFFF_DE000000"
                             android:textSize="@dimen/textSize14sp" />
 
-                    </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
+                    </org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView>
                 </LinearLayout>
 
                 <LinearLayout
@@ -215,7 +181,7 @@
                     android:orientation="vertical"
                     android:visibility="gone">
 
-                    <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+                    <org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView
                         android:id="@+id/et_username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -229,20 +195,19 @@
                         <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
                             android:id="@+id/eet_username"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:imeOptions="actionNext"
                             android:inputType="text"
                             android:maxLines="1"
                             android:textColor="@color/color_FFFFFF_DE000000"
                             android:textSize="@dimen/textSize14sp" />
 
-                    </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
+                    </org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView>
 
-                    <org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
+                    <org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView
                         android:id="@+id/et_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
                         app:endIcon="@drawable/ic_eye_close"
                         app:hintText="@string/login_password"
                         app:iconSignifier="@drawable/ic_icon_okbet_login_password"
@@ -254,14 +219,14 @@
                         <org.cxct.sportlottery.view.boundsEditText.ExtendedEditText
                             android:id="@+id/eet_password"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:imeOptions="actionNext"
                             android:inputType="textPassword"
                             android:maxLines="1"
                             android:textColor="@color/color_FFFFFF_DE000000"
                             android:textSize="@dimen/textSize14sp" />
 
-                    </org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes>
+                    </org.cxct.sportlottery.view.boundsEditText.LoginFormFieldView>
                 </LinearLayout>
             </FrameLayout>
 

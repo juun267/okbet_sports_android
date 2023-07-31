@@ -4,10 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
+import android.text.Html
 import android.text.InputType
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
+import android.widget.TextView
+import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -31,6 +34,7 @@ import org.cxct.sportlottery.network.index.login.LoginCodeRequest
 import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
+import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.repository.LOGIN_SRC
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
@@ -90,6 +94,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             .init()
         binding = ActivityLoginOkBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setupSummary(binding.includeSubtitle.tvSummary)
         initOnClick()
         setupInvite()
         setupAccount()
@@ -542,6 +547,16 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         binding.etRecommendCode.isVisible =
             viewModel.loginType == LOGIN_TYPE_CODE && viewModel.checkUserExist.value == false
     }
-
-
+   private fun setupSummary(tvsummary: TextView) {
+       sConfigData?.imageList?.firstOrNull {
+               it.imageType == ImageType.LOGIN_SUMMARY.code
+               && it.lang == LanguageManager.getSelectLanguage(this).key
+               && !it.imageText1.isNullOrEmpty()
+               && !getMarketSwitch() }?.imageText1.let {
+           tvsummary.apply {
+               isVisible = !it.isNullOrEmpty()
+               text = Html.fromHtml(it)
+           }
+       }
+   }
 }

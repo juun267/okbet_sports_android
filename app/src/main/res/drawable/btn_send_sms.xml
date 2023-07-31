@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_enabled="true">
+    <item android:state_enabled="false">
         <ripple android:color="#dae2eb">
             <item android:id="@android:id/background">
                 <shape android:shape="rectangle">
@@ -11,7 +11,7 @@
         </ripple>
     </item>
 
-    <item android:state_enabled="false">
+    <item android:state_enabled="true">
         <shape android:shape="rectangle">
             <corners android:radius="8dp" />
             <solid android:color="@color/color_025BE8" />
