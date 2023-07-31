@@ -17,7 +17,7 @@ data class ActivityImageList(
     @Json(name = "activityType")
     val activityType: Int,
     @Json(name = "amount")
-    val amount: Int,
+    val amount: Double,
     @Json(name = "contentImage")
     val contentImage: String?=null,
     @Json(name = "contentText")
@@ -37,7 +37,7 @@ data class ActivityImageList(
     @Json(name = "popImage")
     val popImage: String?=null,
     @Json(name = "reward")
-    val reward: Int,
+    val reward: Double,
     @Json(name = "startTime")
     val startTime: Long,
     @Json(name = "subTitleText")

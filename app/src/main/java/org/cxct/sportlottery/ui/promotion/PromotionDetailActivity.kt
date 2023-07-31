@@ -85,7 +85,7 @@ class PromotionDetailActivity :
                 tvReward.text = getString(R.string.deposits)
             }
             tvReward.text = TextUtil.formatMoney(activityDetail.reward)
-            if (activityDetail.reward == 0) {
+            if (activityDetail.reward == 0.0) {
                 linApply.isEnabled = false
                 linApply.setBackgroundResource(R.drawable.bg_gray_radius_8)
             } else {
