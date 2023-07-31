@@ -6,11 +6,27 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include
-        android:id="@+id/includeLiveAll"
-        layout="@layout/include_view_oklive_all"
+
+    <org.cxct.sportlottery.ui.maintab.games.view.GamesPageView
+        android:id="@+id/gameViewCollect"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:visibility="gone"
+        android:layout_height="wrap_content"/>
+
+
+    <org.cxct.sportlottery.ui.maintab.games.view.GamesPageView
+        android:id="@+id/gameViewRecent"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_games_all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="false"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_game_categroy" />
 
     <LinearLayout
         android:id="@+id/okLiveP3LayoutProvider"

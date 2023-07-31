@@ -45,8 +45,9 @@ class RecyclerVenuesAdapter : BindingAdapter<HomeGameBean, ItemHomeVenuesBinding
                 //oklive
                 HomeTopView.OkLive->{
                     ivSportCover.setImageResource(R.drawable.img_oklive)
-                    tvSportClose.visible()
-                    tvSportClose.text=context.getString(R.string.N700)
+                    tvSportClose.gone()
+//                    tvSportClose.visible()
+//                    tvSportClose.text=context.getString(R.string.N700)
                 }
             }
         }
