@@ -89,11 +89,11 @@ class ChatActionView @JvmOverloads constructor(
             context,
             if (isEnable) R.drawable.bg_chat_input else R.drawable.bg_chat_input_disable
         )
-        ivEmoji.visibility=if(isEnable){
-            View.VISIBLE
-        }else{
-            View.GONE
-        }
+//        ivEmoji.visibility=if(isEnable){
+//            View.VISIBLE
+//        }else{
+//            View.GONE
+//        }
         hint = if(isEnable) {
                 context.getString(R.string.chat_enter_chat_content)
             }  else {
@@ -116,16 +116,22 @@ class ChatActionView @JvmOverloads constructor(
 
 
     var expandEmoji=false
+    //表情按钮点击
     fun setOnEmojiClick(block:()->Unit){
+        ivEmoji.visible()
+        ivEmoji.setImageResource(R.drawable.ic_chat_emoji_press)
         ivEmoji.onClick {
-            expandEmoji = if(expandEmoji){
-                ivEmoji.setImageResource(R.drawable.ic_chat_emoji_normal)
-                false
-            }else{
-                ivEmoji.setImageResource(R.drawable.ic_chat_emoji_press)
-                true
-            }
+            //切换展开状态
+            expandEmoji = !expandEmoji
             block()
+        }
+    }
+
+    //禁言 emoji置灰
+    fun setOnEmojiSilence(){
+        ivEmoji.visible()
+        ivEmoji.setImageResource(R.drawable.ic_chat_emoji_normal)
+        ivEmoji.onClick {
         }
     }
 
