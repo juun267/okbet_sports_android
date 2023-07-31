@@ -45,16 +45,4 @@ class SelectAccountActivity : BindingActivity<LoginViewModel, ActivitySelectAcco
             }
         }
     }
-    private fun setupSummary(tvsummary: TextView) {
-        sConfigData?.imageList?.firstOrNull {
-            it.imageType == ImageType.LOGIN_SUMMARY.code
-                    && it.lang == LanguageManager.getSelectLanguage(this).key
-                    && !it.imageText1.isNullOrEmpty()
-                    && !getMarketSwitch() }?.imageText1.let {
-            tvsummary.apply {
-                isVisible = !it.isNullOrEmpty()
-                text = Html.fromHtml(it)
-            }
-        }
-    }
 }

@@ -1526,5 +1526,6 @@
     <string name="to">至</string>
     <string name="J645">到</string>
     <string name="N417">已拒绝</string>
-    <string name="P172">暂无电竞赛事！</string>
+    <string name="P173">您的手机号码是什么？</string>
+    <string name="P174">我们将把短信验证码发送到您的手机中</string>
 </resources>
