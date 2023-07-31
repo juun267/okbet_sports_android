@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -236,7 +237,8 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             textParams,
             R.string.P160,
             true
-        ) { getMainTabActivity().jumpToOkLive() }
+        ) {
+            getMainTabActivity().jumpToOkLive() }
 
         okLiveItem.group.setVisibilityByMarketSwitch()
 
@@ -382,14 +384,12 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
             lastItem?.clearSelected()
             return
         }
-
         if (isSame || !::okGamesItem.isInitialized) {
             return
         }
 //        if (isSame || !::okLiveItem.isInitialized) {
 //            return
 //        }
-
         binSelected()
     }
 

@@ -619,7 +619,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     fun jumpToOkLive(){
+        backMainHome()
         homeFragment().jumpToOKLive()
+        enableSelectBottomNav(false)
     }
 
     private fun navToPosition(position: Int) {
