@@ -108,7 +108,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         viewModel.focusChangeCheckAllInputComplete()
         EventBusUtil.targetLifecycle(this)
 
-        val loginType = intent.getIntExtra("login_type", LOGIN_TYPE_CODE)
+        val loginType = intent.getIntExtra("login_type", LOGIN_TYPE_PWD)
         if (LOGIN_TYPE_CODE == loginType) {
             switchLoginType(LOGIN_TYPE_CODE)
         } else if (loginType == LOGIN_TYPE_GOOGLE) {
@@ -522,7 +522,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             tv_forget_password.isVisible = !it
             if (it) {
                 binding.btnLogin.text =
-                    "${getString(R.string.btn_login)} / ${getString(R.string.btn_register)}"
+                    "${getString(R.string.btn_register)} / ${getString(R.string.btn_login)}"
                 if (binding.eetAccount.text.isNullOrBlank()) {
                     binding.etAccount.setError(null, false)
                 }
