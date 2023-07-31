@@ -20,6 +20,7 @@ import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.getMarketSwitch
 import org.cxct.sportlottery.util.setServiceClick
+import org.cxct.sportlottery.util.setupSummary
 import org.koin.android.ext.android.bind
 
 class ForgetWaysActivity:  BindingActivity<ForgetViewModel, ActivityForgetWaysBinding>() {
@@ -38,17 +39,4 @@ class ForgetWaysActivity:  BindingActivity<ForgetViewModel, ActivityForgetWaysBi
             finishWithOK()
         }
     }
-    private fun setupSummary(tvsummary: TextView) {
-        sConfigData?.imageList?.firstOrNull {
-            it.imageType == ImageType.LOGIN_SUMMARY.code
-                    && it.lang == LanguageManager.getSelectLanguage(this).key
-                    && !it.imageText1.isNullOrEmpty()
-                    && !getMarketSwitch() }?.imageText1.let {
-            tvsummary.apply {
-                isVisible = !it.isNullOrEmpty()
-                text = Html.fromHtml(it)
-            }
-        }
-    }
-
 }
