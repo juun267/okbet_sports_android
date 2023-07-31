@@ -1445,4 +1445,6 @@
     <string name="N417">Tinanggi</string>
     <string name="P172">Wala pang e-sports event!</string>
     <string name="P149">Mangyaring kumpletuhin ang wagering turnover %s sa pagtaya bago humiling ng withdrawal. (Alinsunod sa mga regulasyon ng PAGCOR, 1x turnover ang kailangan para sa bawat deposito na transaksyon) Para sa assistance, mangyaring makipag-ugnayan sa customer service.</string>
+    <string name="P173">Ano ang numero ng iyong mobile phone?</string>
+    <string name="P174">Magpapadala kami ng OTP code sa numero ng iyong mobi</string>
 </resources>
