@@ -247,7 +247,7 @@ class HomeTopView @JvmOverloads constructor(
 
         sConfigData?.homeGamesList?.forEach {
             //市场开关   okGames和 世界杯
-            if(it.uniqueName== OkGame||(it.uniqueName== OkBingo&&StaticData.worldCupOpened())){
+            if(it.uniqueName== OkGame||it.uniqueName== OkLive||(it.uniqueName== OkBingo&&StaticData.worldCupOpened())){
                 //开关为false
                 if(!getMarketSwitch()){
                     //添加okGames
@@ -267,6 +267,9 @@ class HomeTopView @JvmOverloads constructor(
                 //体育
                 OkSport->{
                     fragment.jumpToInplaySport()
+                }
+                OkLive->{
+                    (fragment.activity as MainTabActivity).jumpToOkLive()
                 }
                 OkGame->{
                     (fragment.activity as MainTabActivity).jumpToOKGames()

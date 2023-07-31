@@ -46,6 +46,7 @@ import org.cxct.sportlottery.ui.betRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.chat.ChatActivity
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
+import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment2
 import org.cxct.sportlottery.ui.maintab.menu.SportLeftMenuFragment
@@ -71,7 +72,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 Pair(SportFragment2::class.java, null),
                 Pair(OKGamesFragment::class.java, null),
                 Pair(OKGamesFragment::class.java, null), // 占坑
-                Pair(ProfileCenterFragment::class.java, null),
+                Pair(ProfileCenterFragment::class.java, null)
             )
         )
     }
@@ -607,6 +608,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             return
         }
         navToPosition(2)
+    }
+
+    fun jumpToOkLive(){
+        homeFragment().jumpToOKLive()
     }
 
     private fun navToPosition(position: Int) {

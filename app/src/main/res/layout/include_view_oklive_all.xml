@@ -9,22 +9,26 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <include
-            android:id="@+id/inclue_collect"
-            layout="@layout/item_game_categroy"
-            android:visibility="gone" />
 
-        <include
-            android:id="@+id/inclue_recent"
-            layout="@layout/item_game_categroy"
-            android:visibility="gone" />
+        <org.cxct.sportlottery.ui.maintab.games.view.GamesPageView
+            android:id="@+id/gameViewCollect"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="wrap_content"/>
+
+
+        <org.cxct.sportlottery.ui.maintab.games.view.GamesPageView
+            android:id="@+id/gameViewRecent"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvLiveAll"
+            android:id="@+id/rv_games_all"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
-            tools:itemCount="1"
+            tools:itemCount="3"
             tools:listitem="@layout/item_game_categroy" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

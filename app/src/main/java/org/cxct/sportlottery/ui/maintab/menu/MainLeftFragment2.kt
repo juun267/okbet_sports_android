@@ -228,17 +228,17 @@ class MainLeftFragment2 : BindingFragment<MainViewModel, FragmentMainLeft2Bindin
         ) { getMainTabActivity().jumpToESport() }
 
 //
-//        okLiveItem = addMenu(index1++,
-//            groupParams,
-//            iconParams,
-//            R.drawable.ic_main_menu_oklive_1,
-//            R.drawable.ic_main_menu_oklive_0,
-//            textParams,
-//            R.string.P160,
-//            true
-//        ) { getMainTabActivity().jumpToOKLive() }
-//
-//        okLiveItem.group.setVisibilityByMarketSwitch()
+        okLiveItem = addMenu(index1++,
+            groupParams,
+            iconParams,
+            R.drawable.ic_main_menu_oklive_1,
+            R.drawable.ic_main_menu_oklive_0,
+            textParams,
+            R.string.P160,
+            true
+        ) { getMainTabActivity().jumpToOkLive() }
+
+        okLiveItem.group.setVisibilityByMarketSwitch()
 
         var index = binding.llMenuRoot.indexOfChild(divider1)
         promotionItem = addMenu(
