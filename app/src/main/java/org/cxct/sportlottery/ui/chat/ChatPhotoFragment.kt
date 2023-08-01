@@ -102,44 +102,27 @@ class ChatPhotoFragment : BaseFragment<ChatViewModel>(ChatViewModel::class) {
     private fun saveToPictureFolder() {
         Thread {
             try {
-//                val bitmap = Glide.with(requireContext())
-//                    .asBitmap()
-//                    .load(photoUrl)
-//                    .submit()
-//                    .get()
-
                 var file =
                     File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
                         "Sport")
                 if (!file.exists() && !file.mkdir()) {
-//                    Log.d(TAG, " DIRECTORY_PICTURES mkdir() fail")
                     file =
                         File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),
                             "Camera")
                     if (!file.exists() && !file.mkdir()) {
-//                        Log.d(TAG, " DIRECTORY_DCIM  mkdir() fail")
                     }
                 }
 
-                val filename =
-                    SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date()) + ".gif"
-                val mediaFile = File(file.path + File.separator + filename)
-                Log.e("dachang","photoUrl ${photoUrl}")
-                Log.e("dachang","file ${file.path + File.separator + filename}")
-//                loading()
-                DownloadUtil.get().download(photoUrl,file.path + File.separator + filename,object : DownloadUtil.OnDownloadListener{
-                    override fun onDownloadSuccess() {
-                        Log.e("dachang","onDownloadSuccess")
-//                        hideLoading()
+
+                DownloadUtil.get().download(photoUrl,file.path ,object : DownloadUtil.OnDownloadListener{
+                    override fun onDownloadSuccess(filePath:String) {
                         //保存图片后发送广播通知更新数据库
-                        MediaScannerConnection.scanFile(context, arrayOf(mediaFile.absolutePath), null,
+                        MediaScannerConnection.scanFile(context, arrayOf(filePath), null,
                             object : MediaScannerConnection.MediaScannerConnectionClient {
                                 override fun onScanCompleted(path: String?, uri: Uri?) {
-//                            Log.d(TAG, "onMediaScannerConnected")
                                 }
 
                                 override fun onMediaScannerConnected() {
-//                            Log.d(TAG, "onMediaScannerConnected")
                                 }
                             }
                         )
@@ -155,21 +138,13 @@ class ChatPhotoFragment : BaseFragment<ChatViewModel>(ChatViewModel::class) {
                     }
 
                     override fun onDownloading(progress: Int) {
-                        Log.e("dachang","onDownloading")
 //                        hideLoading()
                     }
 
                     override fun onDownloadFailed() {
-                        Log.e("dachang","onDownloadFailed")
 //                        hideLoading()
                     }
                 })
-//
-//                val fOut = FileOutputStream(mediaFile)
-//                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut)
-//                fOut.flush()
-//                fOut.close()
-
 
             } catch (e: IOException) {
                 e.printStackTrace()

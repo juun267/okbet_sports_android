@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.util;
 
 import android.os.Environment;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -51,7 +52,7 @@ public class DownloadUtil {
                 int len = 0;
                 FileOutputStream fos = null;
                 // 储存下载文件的目录
-                String savePath = isExistDir(saveDir);
+                String savePath = saveDir;
                 try {
                     is = response.body().byteStream();
                     long total = response.body().contentLength();
@@ -67,7 +68,7 @@ public class DownloadUtil {
                     }
                     fos.flush();
                     // 下载完成
-                    listener.onDownloadSuccess();
+                    listener.onDownloadSuccess(file.getAbsolutePath());
                 } catch (Exception e) {
                     listener.onDownloadFailed();
                 } finally {
@@ -116,7 +117,7 @@ public class DownloadUtil {
         /**
          * 下载成功
          */
-        void onDownloadSuccess();
+        void onDownloadSuccess(String filePath);
 
         /**
          * @param progress

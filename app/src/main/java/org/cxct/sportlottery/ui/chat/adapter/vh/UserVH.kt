@@ -42,8 +42,7 @@ class UserVH(parent: ViewGroup,
         binding.tvTime.text = TimeUtil.timeFormat(curTime, TimeUtil.HM_FORMAT)
 
         if (UserMessageStyle.isAdmin(userType)) {
-            binding.ivAvatar.load(iconUrl,R.drawable.ic_person_avatar)
-//            binding.ivAvatar.setImageResource(R.drawable.ic_chat_admin)
+            binding.ivAvatar.setImageResource(R.drawable.ic_chat_admin)
             binding.messageBorder.setBackgroundResource(R.drawable.bg_chat_pop_admin_circle)
             binding.messageBorder.backgroundTintList = null
         } else {
