@@ -5,6 +5,7 @@ import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.databinding.FragmentChatPhotoBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.util.DownloadUtil
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -71,21 +73,6 @@ class ChatPhotoFragment : BaseFragment<ChatViewModel>(ChatViewModel::class) {
         try {
             if (photoUrl.isNotEmpty()) {
                 binding.ivPhoto.load(photoUrl)
-//                val viewTarget =
-//                    object : CustomViewTarget<PinchImageView, Bitmap>(binding.ivPhoto) {
-//                        override fun onResourceReady(
-//                            resource: Bitmap,
-//                            transition: Transition<in Bitmap?>?,
-//                        ) {
-//                            startPostponedEnterTransition()
-//                            binding.ivPhoto.setImageBitmap(resource)
-//                        }
-//
-//                        override fun onLoadFailed(errorDrawable: Drawable?) {}
-//
-//                        override fun onResourceCleared(placeholder: Drawable?) {}
-//                    }
-//                Glide.with(requireContext()).asBitmap().load(photoUrl).into(viewTarget)
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -115,55 +102,50 @@ class ChatPhotoFragment : BaseFragment<ChatViewModel>(ChatViewModel::class) {
     private fun saveToPictureFolder() {
         Thread {
             try {
-                val bitmap = Glide.with(requireContext())
-                    .asBitmap()
-                    .load(photoUrl)
-                    .submit()
-                    .get()
-
                 var file =
                     File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
                         "Sport")
                 if (!file.exists() && !file.mkdir()) {
-//                    Log.d(TAG, " DIRECTORY_PICTURES mkdir() fail")
                     file =
                         File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),
                             "Camera")
                     if (!file.exists() && !file.mkdir()) {
-//                        Log.d(TAG, " DIRECTORY_DCIM  mkdir() fail")
                     }
                 }
 
-                val filename =
-                    SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date()) + ".jpg"
-                val mediaFile = File(file.path + File.separator + filename)
 
-                val fOut = FileOutputStream(mediaFile)
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut)
-                fOut.flush()
-                fOut.close()
+                DownloadUtil.get().download(photoUrl,file.path ,object : DownloadUtil.OnDownloadListener{
+                    override fun onDownloadSuccess(filePath:String) {
+                        //保存图片后发送广播通知更新数据库
+                        MediaScannerConnection.scanFile(context, arrayOf(filePath), null,
+                            object : MediaScannerConnection.MediaScannerConnectionClient {
+                                override fun onScanCompleted(path: String?, uri: Uri?) {
+                                }
 
-                //保存图片后发送广播通知更新数据库
-                MediaScannerConnection.scanFile(context, arrayOf(mediaFile.absolutePath), null,
-                    object : MediaScannerConnection.MediaScannerConnectionClient {
-                        override fun onScanCompleted(path: String?, uri: Uri?) {
-//                            Log.d(TAG, "onMediaScannerConnected")
-                        }
+                                override fun onMediaScannerConnected() {
+                                }
+                            }
+                        )
 
-                        override fun onMediaScannerConnected() {
-//                            Log.d(TAG, "onMediaScannerConnected")
+                        activity?.runOnUiThread {
+                            showPromptDialog(
+                                title = null,
+                                message = requireContext().getString(R.string.chat_photo_download_done),
+                                buttonText = null,
+                                isShowDivider = false
+                            ) {}
                         }
                     }
-                )
 
-                activity?.runOnUiThread {
-                    showPromptDialog(
-                        title = null,
-                        message = requireContext().getString(R.string.chat_photo_download_done),
-                        buttonText = null,
-                        isShowDivider = false
-                    ) {}
-                }
+                    override fun onDownloading(progress: Int) {
+//                        hideLoading()
+                    }
+
+                    override fun onDownloadFailed() {
+//                        hideLoading()
+                    }
+                })
+
             } catch (e: IOException) {
                 e.printStackTrace()
             }
