@@ -1,58 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="22dp"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="231dp"
-        android:background="@drawable/bg_gradient_bottom_sheet_shadow" />
-
-    <View
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="241dp"
-        android:layout_gravity="bottom"
-        android:layout_marginTop="10dp"
-        android:alpha="0.98"
-        android:background="@drawable/bg_chat_emoji" />
+        android:layout_gravity="bottom">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerEmoji"
-        android:layout_width="match_parent"
-        android:layout_height="191dp"
-        android:scrollbars="vertical"
-        android:background="@color/white"
-        android:scrollbarSize="2dp"
-        android:scrollbarThumbVertical="@color/color_2B2B2B_e2e2e2"
-        android:layout_gravity="bottom"
-        android:paddingStart="15dp"
-        android:paddingEnd="15dp"
-        android:layout_marginBottom="40dp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/color_FFFFFF"
-        android:orientation="vertical">
+        <!--        <View-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="22dp"-->
+        <!--            android:background="@drawable/bg_gradient_bottom_sheet_shadow" />-->
 
-        <View
+        <!--            <View-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginTop="10dp"-->
+        <!--                android:alpha="0.98"-->
+        <!--                android:background="@drawable/bg_chat_emoji" />-->
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/color_chat_action_divider" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerColumn"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingTop="10dp"
-            tools:itemCount="1"
-            tools:listitem="@layout/item_chat_emoji_column" />
+            android:layout_above="@+id/linearBottom">
 
-    </LinearLayout>
+            <View
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:background="@drawable/bg_gradient_bottom_sheet_shadow" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerEmoji"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_chat_emoji"
+                android:paddingStart="15dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="15dp"
+                android:scrollbarSize="2dp"
+                android:scrollbarThumbVertical="@color/color_2B2B2B_e2e2e2"
+                android:scrollbars="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHeight_default="wrap"
+                app:layout_constraintHeight_max="185dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linearBottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_FFFFFF"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color_chat_action_divider" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerColumn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingTop="10dp"
+                tools:itemCount="1"
+                tools:listitem="@layout/item_chat_emoji_column" />
+
+        </LinearLayout>
+    </RelativeLayout>
 </merge>
