@@ -43,7 +43,8 @@ class UserVH(parent: ViewGroup,
 
         if (UserMessageStyle.isAdmin(userType)) {
             binding.ivAvatar.apply {
-                load(iconUrl, R.drawable.ic_chat_admin)
+//                load(iconUrl, R.drawable.ic_chat_admin)
+                load(iconUrl, R.drawable.ic_person_avatar)
                 borderColor = ContextCompat.getColor(context,R.color.color_025BE8)
                 borderWidth = 2f
             }
