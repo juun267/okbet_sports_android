@@ -13,6 +13,7 @@ data class MoneyAddRequest(
     val payerInfo: String?,//充值附加信息
     val depositDate: Long,//充值日期
     var appsFlyerId: String? = null,
+    var appsFlyerKey: String? = null,
     val clientType: Int = 2
 ) {
     var payee: String? = null

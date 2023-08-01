@@ -147,7 +147,7 @@ class MultiLanguagesApplication : Application() {
     }
 
     private fun initAppsFlyerSDK() {
-        AppsFlyerLib.getInstance().init("G7q8UBYftYQfKAxnortTSN", null, this)
+        AppsFlyerLib.getInstance().init(BuildConfig.AF_APPKEY, null, this)
         AppsFlyerLib.getInstance().setDebugLog(BuildConfig.DEBUG);
         AppsFlyerLib.getInstance().start(this);
     }
