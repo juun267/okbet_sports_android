@@ -77,7 +77,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
         fun startRegist(context: Context) {
             val intent = Intent(context, LoginOKActivity::class.java)
-            intent.putExtra("login_type", LOGIN_TYPE_PWD)
+            intent.putExtra("login_type", LOGIN_TYPE_CODE)
             context.startActivity(intent)
         }
     }

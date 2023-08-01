@@ -1127,11 +1127,11 @@ fun Context.dividerView(
     }
 }
  fun setupSummary(tvSummary: TextView) {
-    sConfigData?.imageList?.firstOrNull {
-        it.imageType == ImageType.LOGIN_SUMMARY.code
+    sConfigData?.imageList?.filter {
+                it.imageType == ImageType.LOGIN_SUMMARY.code
                 && it.lang == LanguageManager.getSelectLanguage(tvSummary.context).key
                 && !it.imageText1.isNullOrEmpty()
-                && !getMarketSwitch() }?.imageText1.let {
+                && !getMarketSwitch() }?.sortedByDescending { it.imageSort }?.firstOrNull()?.imageText1.let {
         tvSummary.apply {
             isVisible = !it.isNullOrEmpty()
             text = Html.fromHtml(it?:"")
