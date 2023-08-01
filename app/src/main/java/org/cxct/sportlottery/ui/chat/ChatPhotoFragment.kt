@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.chat
 
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
@@ -10,18 +9,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomViewTarget
-import com.bumptech.glide.request.transition.Transition
 import com.gyf.immersionbar.ImmersionBar
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.databinding.FragmentChatPhotoBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.view.PinchImageView
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 /**
  * @author kevin
@@ -71,21 +70,22 @@ class ChatPhotoFragment : BaseFragment<ChatViewModel>(ChatViewModel::class) {
     private fun initPhoto() {
         try {
             if (photoUrl.isNotEmpty()) {
-                val viewTarget =
-                    object : CustomViewTarget<PinchImageView, Bitmap>(binding.ivPhoto) {
-                        override fun onResourceReady(
-                            resource: Bitmap,
-                            transition: Transition<in Bitmap?>?,
-                        ) {
-                            startPostponedEnterTransition()
-                            binding.ivPhoto.setImageBitmap(resource)
-                        }
-
-                        override fun onLoadFailed(errorDrawable: Drawable?) {}
-
-                        override fun onResourceCleared(placeholder: Drawable?) {}
-                    }
-                Glide.with(requireContext()).asBitmap().load(photoUrl).into(viewTarget)
+                binding.ivPhoto.load(photoUrl)
+//                val viewTarget =
+//                    object : CustomViewTarget<PinchImageView, Bitmap>(binding.ivPhoto) {
+//                        override fun onResourceReady(
+//                            resource: Bitmap,
+//                            transition: Transition<in Bitmap?>?,
+//                        ) {
+//                            startPostponedEnterTransition()
+//                            binding.ivPhoto.setImageBitmap(resource)
+//                        }
+//
+//                        override fun onLoadFailed(errorDrawable: Drawable?) {}
+//
+//                        override fun onResourceCleared(placeholder: Drawable?) {}
+//                    }
+//                Glide.with(requireContext()).asBitmap().load(photoUrl).into(viewTarget)
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -136,8 +136,8 @@ class ChatPhotoFragment : BaseFragment<ChatViewModel>(ChatViewModel::class) {
 
                 val filename =
                     SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date()) + ".jpg"
-
                 val mediaFile = File(file.path + File.separator + filename)
+
                 val fOut = FileOutputStream(mediaFile)
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut)
                 fOut.flush()
