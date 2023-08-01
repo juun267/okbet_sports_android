@@ -144,7 +144,6 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
 
 
     private fun initView() {
-        setTextColorGradient()
         initDateTimeView()
         initAddressPickerView()
         initCityPickerView()
@@ -337,21 +336,6 @@ class RegisterInfoActivity : BaseActivity<RegisterInfoViewModel>(RegisterInfoVie
             .build()
     }
 
-
-    /**
-     * 标题颜色渐变
-     */
-    private fun setTextColorGradient() {
-        val width = binding.tvTitle.paint.measureText(binding.tvTitle.text.toString())
-        val mLinearGradient = LinearGradient(
-            0f, 0f, width, 0f,
-            ContextCompat.getColor(this, R.color.color_71ADFF),
-            ContextCompat.getColor(this, R.color.color_1971FD),
-            Shader.TileMode.CLAMP
-        )
-        binding.tvTitle.paint.shader = mLinearGradient
-        binding.tvTitle.invalidate()
-    }
 
 
 }
