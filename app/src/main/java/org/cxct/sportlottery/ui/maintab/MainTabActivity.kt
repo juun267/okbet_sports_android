@@ -600,6 +600,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     private inline fun homeFragment() = fragmentHelper.getFragment(0) as HomeFragment
 
     fun backMainHome() {
+        enableSelectBottomNav(true)
         homeFragment().backMainHome()
         navToPosition(0)
     }
