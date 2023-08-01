@@ -148,7 +148,6 @@ class ChatMessageListAdapter3(private val onPhotoClick: (String) -> Unit,
 //            }
 
         if(isMeLayout){
-            Log.e("dachang","length ${textMsg.length}")
             if(textMsg.isEmpty()){
                 messageBorder.backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.color_chat_message_border_guest))
             }else{
