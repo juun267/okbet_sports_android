@@ -33,7 +33,7 @@ class WinsDialog(private val betRecode: RecordNewEvent,
     private fun bindInfo() {
 
         if (betRecode.isSportBet()) {
-            var gameIcon = GameType.getGameTypeMenuIcon(betRecode.firmType)
+            var gameIcon = GameType.getSportGameImg(betRecode.firmType)
             if (gameIcon == R.drawable.ic_game_champ) {
                 gameIcon = R.drawable.ic_okgames_nodata
             }
