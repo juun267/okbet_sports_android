@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.common.extentions.toIntS
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseAlertDialog
@@ -18,7 +19,7 @@ import org.cxct.sportlottery.util.drawable.DrawableCreatorUtils
 
 class WinsDialog(private val betRecode: RecordNewEvent,
                  act: AppCompatActivity,
-                 private val onEnterGame: (firmType: String?, gameCode: String?) -> Unit)
+                 private val onEnterGame: (RecordNewEvent) -> Unit)
     : BaseAlertDialog(act), OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,11 +31,19 @@ class WinsDialog(private val betRecode: RecordNewEvent,
     }
 
     private fun bindInfo() {
-        findViewById<ImageView>(R.id.ivGamesIcon)!!.load("", R.drawable.ic_okgames_nodata)
+
+        if (betRecode.isSportBet()) {
+            var gameIcon = GameType.getGameTypeMenuIcon(betRecode.firmType)
+            if (gameIcon == R.drawable.ic_game_champ) {
+                gameIcon = R.drawable.ic_okgames_nodata
+            }
+            findViewById<ImageView>(R.id.ivGamesIcon)!!.setImageResource(gameIcon)
+        } else {
+            findViewById<ImageView>(R.id.ivGamesIcon)!!.load(betRecode.iconUrl)
+        }
 
         setText(R.id.tvGameName, betRecode.games)
         setText(R.id.tvPlayer, "${context.getString(R.string.N710)}: ${betRecode.player}")
-
 
         if (betRecode.betTime != 0L) {
             setText(R.id.tvBetTime, "${context.getString(R.string.I039)}: ${TimeUtil.timeFormat(betRecode.betTime, NEWS_TIME_FORMAT2)}")
@@ -67,7 +76,7 @@ class WinsDialog(private val betRecode: RecordNewEvent,
 
     override fun onClick(v: View) {
         dismiss()
-        onEnterGame.invoke(betRecode.firmType, betRecode.gameCode)
+        onEnterGame.invoke(betRecode)
     }
 
 }

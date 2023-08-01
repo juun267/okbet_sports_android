@@ -18,8 +18,10 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.doOnDestory
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OkGameRecordAdapter
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -177,8 +179,16 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
     }
 
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-        WinsDialog(adapter.getItem(position) as RecordNewEvent, context as AppCompatActivity) { firmType, gameCode ->
-          fragment.viewModel.requestEnterThirdGame("$firmType", "$gameCode", "$firmType", fragment)
+        WinsDialog(adapter.getItem(position) as RecordNewEvent, context as AppCompatActivity) { betRecode ->
+            if (!betRecode.isSportBet()) {
+                fragment.viewModel.requestEnterThirdGame("${betRecode.firmType}", "${betRecode.gameCode}", "${betRecode.firmType}", fragment)
+                return@WinsDialog
+            }
+            val activity = fragment.activity
+            if (activity is MainTabActivity) {
+                GameType.getGameType(betRecode.firmType)?.let { activity.jumpToSport(it) }
+            }
+
         }.show()
     }
 

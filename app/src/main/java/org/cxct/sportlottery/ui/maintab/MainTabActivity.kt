@@ -636,6 +636,13 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
     }
 
+    fun jumpToSport(gameType: GameType) {
+        checkSportStatus(this) {
+            (fragmentHelper.getFragment(1) as SportFragment2).jumpToSport(gameType)
+            navToPosition(1)
+        }
+    }
+
     fun jumpToNews() {
         backMainHome()
         homeFragment().jumpToNews()
