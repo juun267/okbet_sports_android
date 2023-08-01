@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.sport.detail
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
 import android.util.AttributeSet
@@ -15,11 +14,13 @@ import com.shuyu.gsyvideoplayer.GSYVideoManager
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.setViewGone
-import org.cxct.sportlottery.common.extentions.setViewVisible
+import org.cxct.sportlottery.common.extentions.visible
+import org.cxct.sportlottery.common.loading.Gloading
 import org.cxct.sportlottery.databinding.ViewToolbarDetailLiveBinding
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.OKVideoPlayer
 import org.cxct.sportlottery.view.webView.OkWebChromeClient
+import org.cxct.sportlottery.view.webView.OkWebView
 import org.cxct.sportlottery.view.webView.OkWebViewClient
 import org.cxct.sportlottery.view.webView.WebViewCallBack
 
@@ -40,12 +41,13 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     var animeUrl: String? = null
     var isFullScreen = false
 
-    private var animationLoadFinish = false
     private val viewBinding: ViewToolbarDetailLiveBinding
+    private var videoWebView: OkWebView? = null
+    private lateinit var livePlayer: OKVideoPlayer
+    private val loading: Gloading.Holder
 
     interface LiveToolBarListener {
         fun onFullScreen(fullScreen: Boolean)
-        fun onTabClick(position: Int)
         fun onClose()
     }
 
@@ -54,43 +56,112 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     init {
         setBackgroundResource(R.color.color_000000)
         viewBinding = ViewToolbarDetailLiveBinding.inflate(LayoutInflater.from(context), this)
+        loading = Gloading.wrapView(viewBinding.ivLiveStatus)
         initOnclick()
+    }
+
+    private fun setLivePlayerEnable(url: String?) {
+        if (::livePlayer.isInitialized) {
+            livePlayer.visible()
+        } else {
+            livePlayer = OKVideoPlayer(context)
+            addView(livePlayer, 0, LayoutParams(-1, -1))
+        }
+        initializePlayer(url, livePlayer)
+    }
+    private fun disableLivePlayer() {
+        if (::livePlayer.isInitialized) {
+            livePlayer.onVideoPause()
+            livePlayer.gone()
+        }
+    }
+
+    private fun releasePlayer() {
+        if (::livePlayer.isInitialized) {
+            livePlayer.release()
+        }
+    }
+
+    private fun setVideWebViewEnable(url: String): OkWebView {
+        disableLivePlayer()
+        loading.showLoading()
+        viewBinding.run { setViewGone(tvStatus, ivLiveSound, ivFullscreen) }
+
+        if (videoWebView == null) {
+            videoWebView = OkWebView(context)
+            videoWebView!!.setBackgroundResource(R.color.color_025BE8)
+            addView(videoWebView, 0, LayoutParams(-1, -1))
+        } else {
+            videoWebView!!.visible()
+        }
+        openWebView(videoWebView!!, url)
+        return videoWebView!!
+    }
+
+    private fun disableVideoWebView() {
+        videoWebView?.gone()
+    }
+
+    private fun resetPlayHeight() {
+        if (!::livePlayer.isInitialized) {
+            return
+        }
+        var height = ViewGroup.LayoutParams.MATCH_PARENT
+        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            //视频播放器比例，56.25%，来自H5
+            livePlayer.layoutParams.height = MetricsUtil.getScreenWidth() * 720 / 1280
+        }
+        setPlayViewHeight(livePlayer, height)
+    }
+
+    private fun resetVideoWebViewHeight(webView: OkWebView) {
+        var height = ViewGroup.LayoutParams.MATCH_PARENT
+        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            //视频播放器比例，56.25%，来自H5
+            height = (MetricsUtil.getScreenWidth() * 0.5625f).toInt()
+        }
+        setPlayViewHeight(webView, height)
+    }
+
+    private fun resetAnimWebViewHeight(webView: OkWebView) {
+        var height = ViewGroup.LayoutParams.MATCH_PARENT
+        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            height = LiveUtil.getAnimationHeightFromWidth(MetricsUtil.getScreenWidth()).toInt()
+        }
+        setPlayViewHeight(webView, height)
+    }
+
+    private inline fun setPlayViewHeight(view: View, height: Int) {
+        view.layoutParams.height = height
+        loading.wrapper.layoutParams.height = height
+        loading.wrapper.layoutParams = loading.wrapper.layoutParams
     }
 
     fun showLive() {
         curType = LIVE
-        viewBinding.ivFullscreen.gone()
-        showPlayView()
-        switchPlayView(true)
-        setWebViewHeight()
-        liveToolBarListener?.onTabClick(0)
+        setLivePlayerEnable(liveUrl)
+        disableVideoWebView()
+        resetPlayHeight()
 
+        loading.showLoadSuccess()
+        viewBinding.ivLiveSound.visible()
+        viewBinding.run { setViewGone(tvStatus, ivFullscreen) }
+        liveUrl?.let { LogUtil.d(it) }
     }
 
     fun showVideo() {
         curType = VIDEO
-        switchPlayView(false)
-        showPlayView()
-        setWebViewHeight()
-        viewBinding.ivFullscreen.gone()
-        openWebView()
-        liveToolBarListener?.onTabClick(1)
+        resetVideoWebViewHeight(setVideWebViewEnable(videoUrl!!))
     }
 
     fun showAnime() {
         curType = ANIMATION
-        switchPlayView(false)
-        showPlayView()
-        setWebViewHeight()
-        viewBinding.ivFullscreen.gone()
-        openWebView()
-        liveToolBarListener?.onTabClick(2)
+        resetAnimWebViewHeight(setVideWebViewEnable(animeUrl!!))
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     private fun initOnclick() = viewBinding.run {
         ivLiveClose.setOnClickListener {
-            release()
+            stopPlay()
             liveToolBarListener?.let {
                 it.onClose()
             }
@@ -106,52 +177,15 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     }
 
 
-    private fun switchPlayView(open: Boolean) {
-        if (open) {
-            startPlayer()
-        } else {
-            stopPlayer()
-        }
-    }
-
-
-    private fun showPlayView() = viewBinding.run {
-        when (curType) {
-            LIVE -> {
-                setViewVisible(playerView, ivLiveSound)
-                setViewGone(webView, ivLiveStatus, tvStatus)
-                liveUrl?.let { LogUtil.d(it) }
-                ivLiveStatus.setImageResource(R.drawable.bg_no_play)
-            }
-
-            VIDEO -> {
-                setViewVisible(viewBinding.webView)
-                setViewGone(playerView, ivLiveStatus, tvStatus, ivLiveSound)
-//                iv_live.isVisible = !liveUrl.isNullOrEmpty()
-//                iv_live_status.setImageResource(R.drawable.bg_no_play)
-//                iv_animation.isVisible = !animeUrl.isNullOrEmpty()
-            }
-
-            ANIMATION -> {
-                setViewVisible(viewBinding.webView)
-                setViewGone(playerView, ivLiveStatus, ivLiveSound, tvStatus)
-                ivLiveStatus.setImageResource(R.drawable.bg_no_play)
-//                iv_live.isVisible = !liveUrl.isNullOrEmpty()
-//                iv_video.isVisible = !videoUrl.isNullOrEmpty()
-            }
-        }
-    }
-
     fun setupToolBarListener(listener: LiveToolBarListener) {
         liveToolBarListener = listener
     }
 
 
-    private fun initializePlayer(streamUrl: String?) {
+    private fun initializePlayer(streamUrl: String?, playerView: OKVideoPlayer) {
         if (streamUrl == null) {
             return
         }
-        val playerView = viewBinding.playerView
         val ivLiveSound = viewBinding.ivLiveSound
         LogUtil.d("streamUrl=$streamUrl")
         ivLiveSound.isSelected = true
@@ -183,56 +217,38 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         playerView.startPlayLogic()
     }
 
-    private fun releasePlayer() {
-        viewBinding.playerView.release()
-    }
 
-    private fun startPlayer() {
-        if (viewBinding.playerView.isVisible) {
-            initializePlayer(liveUrl)
-        }
-    }
 
-    fun stopPlayer() {
-        if (viewBinding.playerView.isVisible) {
-            viewBinding.playerView.onVideoPause()
-        }
-    }
-
+    private var playRUL: String? = null
     //region 賽事動畫
-    private fun openWebView() {
-//        iv_animation.isSelected = true
-        viewBinding.webView.isVisible = true
-        viewBinding.playerView.gone()
-        viewBinding.webView.okWebChromeClient = OkWebChromeClient()
-        viewBinding.webView.okWebViewClient = object : OkWebViewClient(object : WebViewCallBack {
+    private fun openWebView(webView: OkWebView, videoURL: String) {
+        playRUL = videoURL
+        webView.okWebChromeClient = OkWebChromeClient()
+        webView.okWebViewClient = object : OkWebViewClient(object : WebViewCallBack {
+            override fun onError() { }
             override fun pageStarted(view: View?, url: String?) {}
+
             override fun pageFinished(view: View?, url: String?) {
-                animationLoadFinish = true
-                view?.post {
-                    view.measure(0, 0)
+                if (url == playRUL) {
+                    webView.visible()
+                    loading.showLoadSuccess()
                 }
+                view?.measure(0, 0)
+
             }
-            override fun onError() {}
+
         }) {
-            override fun shouldOverrideUrlLoading(
-                view: WebView?, request: WebResourceRequest?
-            ): Boolean {
+            override fun shouldOverrideUrlLoading( view: WebView?, request: WebResourceRequest?): Boolean {
                 if (curType == VIDEO) {
-                    viewBinding.webView.loadUrl(videoUrl!!)
+                    webView.loadUrl(videoUrl!!)
                 } else if (curType == ANIMATION) {
-                    viewBinding.webView.loadUrl(animeUrl!!)
+                    webView.loadUrl(animeUrl!!)
                 }
                 return false
             }
         }
 
-
-        if (curType == VIDEO) {
-            viewBinding.webView.loadUrl(videoUrl!!)
-        } else if (curType == ANIMATION) {
-            viewBinding.webView.loadUrl(animeUrl!!)
-        }
+        webView.loadUrl(videoURL)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration?) {
@@ -240,10 +256,22 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         if (isVisible) setWebViewHeight()
     }
 
+
+    fun stopPlay() {
+        playRUL = null
+        videoWebView?.loadData("x", null, null)
+        if (::livePlayer.isInitialized && livePlayer.isVisible) {
+            livePlayer.onVideoPause()
+        }
+    }
+
     fun release() {
+        stopPlay()
         releasePlayer()
-        viewBinding.webView.stopLoading()
-        viewBinding.webView.clearCache(true)
+        videoWebView?.let {
+            it.stopLoading()
+            it.clearCache(true)
+        }
     }
 
     fun showFullScreen(fullScreen: Boolean) {
@@ -256,34 +284,9 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
      */
     private fun setWebViewHeight() = viewBinding.run {
         when (curType) {
-            LIVE -> {
-                if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                    val screenWidth = MetricsUtil.getScreenWidth()
-                    //视频播放器比例，56.25%，来自H5
-                    playerView.layoutParams.height = screenWidth * 720 / 1280
-                } else {
-                    playerView.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
-                }
-            }
-
-            VIDEO -> {
-                if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                    val screenWidth = MetricsUtil.getScreenWidth()
-                    //视频播放器比例，56.25%，来自H5
-                    webView.layoutParams.height = (screenWidth * 0.5625f).toInt()
-                } else {
-                    webView.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
-                }
-            }
-
-            ANIMATION -> {
-                if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                    val screenWidth = MetricsUtil.getScreenWidth()
-                    webView.layoutParams.height = LiveUtil.getAnimationHeightFromWidth(screenWidth).toInt()
-                } else {
-                    webView.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
-                }
-            }
+            LIVE -> resetPlayHeight()
+            VIDEO -> videoWebView?.let { resetVideoWebViewHeight(it) }
+            ANIMATION -> videoWebView?.let { resetAnimWebViewHeight(it) }
 
             else -> {}
         }
