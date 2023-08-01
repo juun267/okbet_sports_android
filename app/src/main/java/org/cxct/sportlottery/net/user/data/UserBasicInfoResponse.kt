@@ -1,10 +1,9 @@
 package org.cxct.sportlottery.net.user.data
 
-import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.common.proguards.KeepMembers
 import org.cxct.sportlottery.network.common.BaseResult
 
-@JsonClass(generateAdapter = true) @KeepMembers
+@KeepMembers
 class UserBasicInfoResponse(
     override val code: Int,
     override val msg: String,

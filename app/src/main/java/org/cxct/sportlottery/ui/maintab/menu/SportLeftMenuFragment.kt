@@ -18,6 +18,7 @@ import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.startLogin
 import org.cxct.sportlottery.view.onClick
+import org.cxct.sportlottery.view.rumWithSlowRequest
 import org.cxct.sportlottery.view.setColors
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -81,7 +82,9 @@ class SportLeftMenuFragment:BindingSocketFragment<SportLeftMenuViewModel, Fragme
         //刷新订单数量
         if(sportBettingFragment.isVisible){
             if(viewModel.isLogin()){
-                sportBettingFragment.viewModel.getBetRecordCount()
+                rumWithSlowRequest(viewModel){
+                    sportBettingFragment.viewModel.getBetRecordCount()
+                }
             }
         }
         //刷新滚球列表

@@ -1,11 +1,18 @@
 package org.cxct.sportlottery.view
 
 import android.animation.ObjectAnimator
+import android.content.Context
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import org.cxct.sportlottery.ui.base.BaseViewModel
+import java.util.concurrent.locks.ReentrantLock
 
 object ViewAction {
 
@@ -72,5 +79,30 @@ fun RecyclerView.loadMore(block: () -> Unit){
             lastVisibleItem =manager.findLastVisibleItemPosition()
         }
     })
+}
+
+//上次请求时间
+private var lastRequestTime = 0L
+fun updateLastRequestTime(){
+    lastRequestTime=System.currentTimeMillis()
+}
+fun rumWithSlowRequest(viewModel:BaseViewModel, delayTime:Int=2200,  block : () -> Unit){
+    //当前时间
+    val currentTime=System.currentTimeMillis()
+    //间隔时间
+    val diffTime = currentTime - lastRequestTime
+    //请求前  更新时间
+    lastRequestTime=currentTime+diffTime
+    viewModel.viewModelScope.launch {
+        //间隔少于阈值
+        if(diffTime<delayTime){
+            //挂起
+            delay(delayTime-diffTime)
+        }
+        //执行请求方法
+        block()
+        //请求后 更新时间
+        lastRequestTime=System.currentTimeMillis()
+    }
 }
 
