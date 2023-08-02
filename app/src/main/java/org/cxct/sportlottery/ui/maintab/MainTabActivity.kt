@@ -252,15 +252,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                             }
                         }
                         R.id.i_favorite -> {
-                            if(isOpenChatRoom()){
-                                startActivity(Intent(this@MainTabActivity, ChatActivity::class.java))
-                                return@OnNavigationItemSelectedListener false
-                            }else{
-                                if (viewModel.isLogin.value == false) {
-                                    startLogin()
-                                    return@OnNavigationItemSelectedListener false
-                                }
-                            }
+                            startActivity(Intent(this@MainTabActivity, ChatActivity::class.java))
                         }
                     }
 
