@@ -219,7 +219,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
                     if (mIsEnabled) {
                         avoidFastDoubleClick()
-                        enableSelectBottomNav(true)
+
                         val itemPosition = getMenuItemPosition(menuItem)
                         if (checkMainPosition(itemPosition)) {
                             return@OnNavigationItemSelectedListener false
@@ -248,6 +248,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
                         fragmentHelper.showFragment(itemPosition)
                         if (itemPosition == 0) {
+                            enableSelectBottomNav(true)
                             homeFragment().backMainHome()
                         }
                         setupBetBarVisiblity(itemPosition)
