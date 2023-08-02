@@ -70,7 +70,7 @@
             android:textColor="@android:color/white"
             android:textSize="14sp" />
 
-        <Button
+        <org.cxct.sportlottery.view.StreamerTextView
             android:id="@+id/tvRegist"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
