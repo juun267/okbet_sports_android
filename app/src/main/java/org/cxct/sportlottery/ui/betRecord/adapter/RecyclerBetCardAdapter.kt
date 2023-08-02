@@ -127,7 +127,10 @@ class RecyclerBetCardAdapter(val row: Row,val block:()->Unit) :
                     //处理中
                     tvStatus.setBackgroundResource(R.drawable.bg_bet_status_yellow)
                 }
-
+                1->{
+                    //投注成功
+                    tvStatus.setBackgroundResource(R.drawable.bg_bet_status_green)
+                }
                 7 -> {
                     //已取消
                     tvStatus.setBackgroundResource(R.drawable.bg_bet_status_cancel)
@@ -139,35 +142,28 @@ class RecyclerBetCardAdapter(val row: Row,val block:()->Unit) :
                 }
 
                 else -> {
-                    //投注成功
                     tvStatus.setBackgroundResource(R.drawable.bg_bet_status_green)
                 }
             }
 
-
-
+            tvStatus.setBetReceiptStatus2(row.status, row.cancelledBy)
             if(row.betConfirmTime!=null&&System.currentTimeMillis() <row.betConfirmTime){
                 //订单剩余时间
                 val leftTime = row.betConfirmTime.minus(TimeUtil.getNowTimeStamp())
                 //倒计时投注处理中
                 object : CountDownTimer(leftTime, 1000) {
                     override fun onTick(millisUntilFinished: Long) {
-                        if(binding.tvStatus.isAttachedToWindow){
-                            //倒计时 待成立 x 秒
-                            tvStatus.text = context.getString(R.string.log_state_processing)
-                        }
+//                        if(binding.tvStatus.isAttachedToWindow){
+//                            //倒计时 待成立 x 秒
+////                            tvStatus.text = context.getString(R.string.log_state_processing)
+//                        }
                     }
 
                     override fun onFinish() {
                         //执行监听
                         block()
-//                        if(binding.tvStatus.isAttachedToWindow){
-//                            tvStatus.setBetReceiptStatus2(row.status, row.cancelledBy)
-//                        }
                     }
                 }.start()
-            }else{
-                tvStatus.setBetReceiptStatus2(row.status, row.cancelledBy)
             }
 
 
