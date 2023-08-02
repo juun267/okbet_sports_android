@@ -27,6 +27,24 @@ fun ImageView.load(url: String?, @DrawableRes placeHolder: Int = 0,  @DrawableRe
     }
 }
 
+
+fun ImageView.loadByOverride(url: String?, width:Int,height:Int,@DrawableRes placeHolder: Int = 0,  @DrawableRes error: Int = 0) {
+    runWithCatch {
+        Glide.with(context)
+            .load("$url")
+            .override(width,height)
+            .apply {
+                if (placeHolder != 0) {
+                    placeholder(placeHolder)
+                }
+            }.apply {
+                if (error != 0) {
+                    error(error)
+                }
+            }.into(this)
+    }
+}
+
 fun ImageView.load(url: Int?) {
     runWithCatch { Glide.with(context).load(url).into(this) }
 }
