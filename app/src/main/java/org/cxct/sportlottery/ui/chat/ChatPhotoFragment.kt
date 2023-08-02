@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.ui.chat
 
+import android.Manifest
+import android.content.Intent
 import android.graphics.Bitmap
 import android.media.MediaScannerConnection
 import android.net.Uri
@@ -11,11 +13,15 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.gyf.immersionbar.ImmersionBar
+import com.tbruyelle.rxpermissions2.RxPermissions
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.databinding.FragmentChatPhotoBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.maintab.menu.ScannerActivity
 import org.cxct.sportlottery.util.DownloadUtil
+import org.cxct.sportlottery.util.LocalUtils
+import org.cxct.sportlottery.util.ToastUtil
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -100,56 +106,67 @@ class ChatPhotoFragment : BaseFragment<ChatViewModel>(ChatViewModel::class) {
      * 儲存到圖片庫
      */
     private fun saveToPictureFolder() {
-        Thread {
-            try {
-                var file =
-                    File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                        "Sport")
-                if (!file.exists() && !file.mkdir()) {
-                    file =
-                        File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),
-                            "Camera")
-                    if (!file.exists() && !file.mkdir()) {
-                    }
-                }
+        RxPermissions(this).request(Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe { onNext ->
+            if (onNext) {
+                Thread {
+                    try {
+                        var file =
+                            File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                                "Sport")
+                        if (!file.exists() && !file.mkdir()) {
+                            file =
+                                File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),
+                                    "Camera")
+                            if (!file.exists() && !file.mkdir()) {
+                            }
+                        }
 
 
-                DownloadUtil.get().download(photoUrl,file.path ,object : DownloadUtil.OnDownloadListener{
-                    override fun onDownloadSuccess(filePath:String) {
-                        //保存图片后发送广播通知更新数据库
-                        MediaScannerConnection.scanFile(context, arrayOf(filePath), null,
-                            object : MediaScannerConnection.MediaScannerConnectionClient {
-                                override fun onScanCompleted(path: String?, uri: Uri?) {
-                                }
+                        DownloadUtil.get().download(photoUrl,file.path ,object : DownloadUtil.OnDownloadListener{
+                            override fun onDownloadSuccess(filePath:String) {
+                                //保存图片后发送广播通知更新数据库
+                                MediaScannerConnection.scanFile(context, arrayOf(filePath), null,
+                                    object : MediaScannerConnection.MediaScannerConnectionClient {
+                                        override fun onScanCompleted(path: String?, uri: Uri?) {
+                                        }
 
-                                override fun onMediaScannerConnected() {
+                                        override fun onMediaScannerConnected() {
+                                        }
+                                    }
+                                )
+
+                                activity?.runOnUiThread {
+                                    showPromptDialog(
+                                        title = null,
+                                        message = requireContext().getString(R.string.chat_photo_download_done),
+                                        buttonText = null,
+                                        isShowDivider = false
+                                    ) {}
                                 }
                             }
-                        )
 
-                        activity?.runOnUiThread {
-                            showPromptDialog(
-                                title = null,
-                                message = requireContext().getString(R.string.chat_photo_download_done),
-                                buttonText = null,
-                                isShowDivider = false
-                            ) {}
-                        }
-                    }
-
-                    override fun onDownloading(progress: Int) {
+                            override fun onDownloading(progress: Int) {
 //                        hideLoading()
-                    }
+                            }
 
-                    override fun onDownloadFailed() {
+                            override fun onDownloadFailed() {
 //                        hideLoading()
-                    }
-                })
+                            }
+                        })
 
-            } catch (e: IOException) {
-                e.printStackTrace()
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                }.start()
+            } else {
+//                ToastUtil.showToast(
+//                    requireContext(),
+//                    LocalUtils.getString(R.string.N980)
+//                )
             }
-        }.start()
+        }.isDisposed
+
+
     }
 
     override fun onDestroy() {

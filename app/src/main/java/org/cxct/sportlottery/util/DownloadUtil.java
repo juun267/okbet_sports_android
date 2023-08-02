@@ -56,7 +56,7 @@ public class DownloadUtil {
                 try {
                     is = response.body().byteStream();
                     long total = response.body().contentLength();
-                    File file = new File(savePath, getNameFromUrl(url));
+                    File file = new File(savePath, getNameFromTimestamp(url));
                     fos = new FileOutputStream(file);
                     long sum = 0;
                     while ((len = is.read(buf)) != -1) {
@@ -70,6 +70,7 @@ public class DownloadUtil {
                     // 下载完成
                     listener.onDownloadSuccess(file.getAbsolutePath());
                 } catch (Exception e) {
+                    e.printStackTrace();
                     listener.onDownloadFailed();
                 } finally {
                     try {
@@ -111,6 +112,9 @@ public class DownloadUtil {
     @NonNull
     private String getNameFromUrl(String url) {
         return url.substring(url.lastIndexOf("/") + 1);
+    }
+    private String getNameFromTimestamp(String url) {
+        return System.currentTimeMillis()+url.substring(url.lastIndexOf("/") + 1);
     }
 
     public interface OnDownloadListener {
