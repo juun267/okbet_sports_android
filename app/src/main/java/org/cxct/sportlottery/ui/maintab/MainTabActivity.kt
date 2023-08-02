@@ -235,15 +235,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                             }
 
                             R.id.i_favorite -> {
-                                if (isOpenChatRoom()) {
-                                    start<ChatActivity> {}
-                                    return@OnNavigationItemSelectedListener false
-                                } else {
-                                    if (viewModel.isLogin.value == false) {
-                                        startLogin()
-                                        return@OnNavigationItemSelectedListener false
-                                    }
-                                }
+                                start<ChatActivity> {}
                             }
                         }
 
