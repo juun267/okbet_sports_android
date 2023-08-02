@@ -107,7 +107,7 @@ class ChatEmojiView(context: Context, attrs: AttributeSet?): FrameLayout(context
         gifAdaptersList.clear()
         data.forEach {row->
             val adapter=RecyclerChatGifAdapter()
-            adapter.setList(row.list.sortedBy { it.sort })
+            adapter.setList(row.list)
             gifAdaptersList.add(adapter)
         }
     }
