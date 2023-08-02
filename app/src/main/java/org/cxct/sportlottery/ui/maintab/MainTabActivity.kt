@@ -118,11 +118,12 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         EventBusUtil.targetLifecycle(this)
         LotteryManager.instance.getLotteryInfo()
         ConfigRepository.onNewConfig(this) {
-            if (isOpenChatRoom()) {
-                changeChatTabStatus(getString(R.string.N984), R.drawable.selector_tab_chat)
-            } else {
-                changeChatTabStatus(getString(R.string.main_tab_favorite), R.drawable.selector_tab_fav)
-            }
+            changeChatTabStatus(getString(R.string.N984), R.drawable.selector_tab_chat)
+//            if (isOpenChatRoom()) {
+//                changeChatTabStatus(getString(R.string.N984), R.drawable.selector_tab_chat)
+//            } else {
+//                changeChatTabStatus(getString(R.string.main_tab_favorite), R.drawable.selector_tab_fav)
+//            }
         }
     }
 
@@ -236,6 +237,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
                             R.id.i_favorite -> {
                                 start<ChatActivity> {}
+                                return@OnNavigationItemSelectedListener false
                             }
                         }
 
