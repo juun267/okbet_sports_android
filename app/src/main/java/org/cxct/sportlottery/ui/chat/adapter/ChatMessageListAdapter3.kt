@@ -1,11 +1,13 @@
 package org.cxct.sportlottery.ui.chat.adapter
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.text.style.UnderlineSpan
+import android.util.Log
 import android.util.SparseArray
 import android.view.Gravity
 import android.view.ViewGroup
@@ -19,12 +21,16 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.load
+import org.cxct.sportlottery.common.extentions.loadByOverride
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatMessageResult
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatRoomMsg
 import org.cxct.sportlottery.ui.chat.ChatMsgReceiveType
 import org.cxct.sportlottery.ui.chat.bean.ChatDateMsg
 import org.cxct.sportlottery.ui.chat.bean.EmptyMsg
+import org.cxct.sportlottery.ui.chat.bean.UserMessageStyle
+import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.ScreenUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.view.MixFontTextView
 import java.util.*
@@ -38,7 +44,8 @@ class ChatMessageListAdapter3(private val onPhotoClick: (String) -> Unit,
                               val onUserAvatarClick: (tagUserPair: Pair<String, String>) -> Unit,
                               val onRedEnvelopeClick: (String, Int) -> Unit)
     : BaseQuickAdapter<ChatRoomMsg<*, BaseViewHolder>, BaseViewHolder>(0) {
-
+    private val imageWidth=200.dp
+    private val imageHeight=500.dp
     private val MAX_MSG_SIZE = 500
     private val REMOVE_COUNT = 80
 
@@ -99,7 +106,8 @@ class ChatMessageListAdapter3(private val onPhotoClick: (String) -> Unit,
         data: ChatMessageResult,
         imageView: AppCompatImageView,
         textView: MixFontTextView,
-        messageBorder: LinearLayout
+        messageBorder: LinearLayout,
+        isMeLayout:Boolean=false,
     ) {
         val content = data.content
         if (data.type != ChatMsgReceiveType.CHAT_SEND_PIC
@@ -110,9 +118,14 @@ class ChatMessageListAdapter3(private val onPhotoClick: (String) -> Unit,
             textView.isVisible = true
             textView.post { textView.gravity = if (textView.lineCount > 1) Gravity.START else Gravity.CENTER }
             messageBorder.post { messageBorder.gravity = Gravity.CENTER }
+
+            if(isMeLayout){
+                messageBorder.backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.color_025BE8))
+            }else{
+                messageBorder.backgroundTintList =ColorStateList.valueOf(ContextCompat.getColor(context, UserMessageStyle.getBorderColor(data.userType)))
+            }
             return
         }
-
         imageView.isVisible = true
         //content:[img:{imagePath}]{message}
         // ex:
@@ -131,12 +144,32 @@ class ChatMessageListAdapter3(private val onPhotoClick: (String) -> Unit,
             textMsg = ""
         }
 
+//            if(isMeLayout){
+//                messageBorder.backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.color_chat_message_border_guest))
+//            }else{
+//                messageBorder.backgroundTintList =ColorStateList.valueOf(ContextCompat.getColor(context, UserMessageStyle.getBorderColor(data.userType)))
+//            }
+
+        if(isMeLayout){
+            if(textMsg.isEmpty()){
+                messageBorder.backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.color_chat_message_border_guest))
+            }else{
+                messageBorder.backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.color_025BE8))
+            }
+        }else{
+            messageBorder.backgroundTintList =
+                ColorStateList.valueOf(ContextCompat.getColor(context, UserMessageStyle.getBorderColor(data.userType)))
+        }
+
+
+
         textView.mixFontText = textMsg
         textView.isVisible = textMsg.isNotEmpty()
         textView.post { textView.gravity = Gravity.START } //圖文訊息的情況下要Gravity.START
         messageBorder.post { messageBorder.gravity = Gravity.START }
         val url = if (imgUrl.startsWith("http")) imgUrl else "$resServerHost/$imgUrl"
-        imageView.load(url, R.drawable.ic_image_load)
+
+        imageView.loadByOverride(url, imageWidth,imageHeight,R.drawable.ic_image_load)
         imageView.setOnClickListener { onPhotoClick(url) }
     }
 
