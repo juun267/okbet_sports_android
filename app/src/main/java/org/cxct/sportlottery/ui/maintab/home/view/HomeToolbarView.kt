@@ -17,13 +17,11 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.doOnResume
 import org.cxct.sportlottery.common.extentions.fitsSystemStatus
 import org.cxct.sportlottery.common.extentions.gone
@@ -36,6 +34,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.view.StreamerTextView
 
 class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : LinearLayoutCompat(context, attrs, defStyle) {
@@ -129,8 +128,8 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         tvLogin = createBtnText(R.string.J134, R.drawable.bg_blue_radius_15)
         loginLayout.addView(tvLogin, params)
 
-        tvRegist = createBtnText(R.string.J151, R.drawable.bg_orange_radius_15)
-        loginLayout.addView(tvRegist, params)
+        tvRegist = createRegistBtnText(R.string.J151, R.drawable.bg_orange_radius_15)
+        loginLayout.addView(tvRegist,params)
 
         addView(loginLayout, LayoutParams(0, -2, 1f))
     }
@@ -138,6 +137,25 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     @SuppressLint("RestrictedApi")
     private fun createBtnText(text: Int, background: Int): TextView {
         return AppCompatTextView(context).apply {
+            minWidth = 74.dp
+            maxLines = 1
+            ellipsize = TextUtils.TruncateAt.END
+            gravity = Gravity.CENTER
+            elevation = 2.dp.toFloat()
+            textSize = 14f
+            setText(text)
+            //自动调整大小
+            setAutoSizeTextTypeWithDefaults(TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM)
+            setAutoSizeTextTypeUniformWithConfiguration(10, 14, 1, TypedValue.COMPLEX_UNIT_SP)
+            val padding = 10.dp
+            setPadding(padding, 0, padding, 0)
+            setBackgroundResource(background)
+            setTextColor(resources.getColor(R.color.color_FFFFFF))
+        }
+    }
+    @SuppressLint("RestrictedApi")
+    private fun createRegistBtnText(text: Int, background: Int): TextView {
+        return StreamerTextView(context).apply {
             minWidth = 74.dp
             maxLines = 1
             ellipsize = TextUtils.TruncateAt.END
