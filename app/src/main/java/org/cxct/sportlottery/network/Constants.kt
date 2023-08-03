@@ -366,6 +366,8 @@ object Constants {
 
     const val ACTIVITY_IMAGELIST_H5 = "/api/front/index/activityImageListH5"
 
+    const val ACTIVITY_DETAIL_H5 = "/api/front/agentActivity/detailH5/{activityId}"
+
     const val ACTIVITY_APPLY = "/api/front/agentActivity/apply/{activityId}"
 
 

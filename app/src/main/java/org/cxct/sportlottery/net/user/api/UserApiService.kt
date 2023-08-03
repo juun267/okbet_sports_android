@@ -5,6 +5,7 @@ import org.cxct.sportlottery.net.ApiResult
 import org.cxct.sportlottery.net.user.data.ActivityImageList
 import org.cxct.sportlottery.net.user.data.SendCodeRespnose
 import org.cxct.sportlottery.network.Constants.ACTIVITY_APPLY
+import org.cxct.sportlottery.network.Constants.ACTIVITY_DETAIL_H5
 import org.cxct.sportlottery.network.Constants.ACTIVITY_IMAGELIST_H5
 import org.cxct.sportlottery.network.Constants.INDEX_SENDCODE
 import org.cxct.sportlottery.network.Constants.INDEX_VERIFYORRESET
@@ -28,6 +29,9 @@ interface UserApiService {
 
     @GET(ACTIVITY_IMAGELIST_H5)
     suspend fun activityImageListH5(): ApiResult<List<ActivityImageList>>
+
+    @GET(ACTIVITY_DETAIL_H5)
+    suspend fun activityDetailH5(@Path("activityId") activityId: String): ApiResult<ActivityImageList>
 
     @GET(ACTIVITY_APPLY)
     suspend fun activityApply(@Path("activityId") activityId: String): ApiResult<String>
