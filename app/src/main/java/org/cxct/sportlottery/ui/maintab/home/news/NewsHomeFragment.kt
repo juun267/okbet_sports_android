@@ -12,7 +12,6 @@ import org.cxct.sportlottery.net.news.NewsRepository
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.ui.base.BindingSocketFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.view.tablayout.TabSelectedAdapter
@@ -22,7 +21,6 @@ class NewsHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentNewsHo
     private var categoryId = NewsRepository.NEWS_OKBET_ID
 
     private inline fun getMainTabActivity() = activity as MainTabActivity
-    private inline fun getHomeFragment() = parentFragment as HomeFragment
     private val PAGE_SIZE = 4
     private var currentPage = 1;
 

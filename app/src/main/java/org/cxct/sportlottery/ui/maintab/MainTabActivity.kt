@@ -67,11 +67,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     private val fragmentHelper: FragmentHelper by lazy {
         FragmentHelper(
             supportFragmentManager, R.id.fl_content, arrayOf(
-                Pair(HomeFragment::class.java, null),
-                Pair(SportFragment2::class.java, null),
-                Pair(OKGamesFragment::class.java, null),
-                Pair(OKGamesFragment::class.java, null), // 占坑
-                Pair(ProfileCenterFragment::class.java, null),
+                Param(HomeFragment::class.java),
+                Param(SportFragment2::class.java),
+                Param(OKGamesFragment::class.java),
+                Param(OKGamesFragment::class.java), // 占坑
+                Param(ProfileCenterFragment::class.java),
             )
         )
     }
@@ -234,23 +234,16 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                             }
 
                             R.id.i_favorite -> {
-                                if (isOpenChatRoom()) {
-                                    start<ChatActivity> {}
-                                    return@OnNavigationItemSelectedListener false
-                                } else {
-                                    if (viewModel.isLogin.value == false) {
-                                        startLogin()
-                                        return@OnNavigationItemSelectedListener false
-                                    }
-                                }
+                                start<ChatActivity> {}
+                                return@OnNavigationItemSelectedListener false
                             }
                         }
 
                         fragmentHelper.showFragment(itemPosition)
                         if (itemPosition == 0) {
                             enableSelectBottomNav(true)
-                            homeFragment().backMainHome()
                         }
+                        homeFragment().backMainHome()
                         setupBetBarVisiblity(itemPosition)
                         return@OnNavigationItemSelectedListener true
                     }
@@ -611,7 +604,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     private fun navToPosition(position: Int) {
-        bottom_navigation_view.maxItemCount
         if (bottom_navigation_view.currentItem != position) {
             bottom_navigation_view.currentItem = position
         }
