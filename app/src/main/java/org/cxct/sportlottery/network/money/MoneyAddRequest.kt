@@ -14,6 +14,7 @@ data class MoneyAddRequest(
     val depositDate: Long,//充值日期
     var appsFlyerId: String? = null,
     var appsFlyerKey: String? = null,
+    var appsFlyerPkgName: String? = null,
     val clientType: Int = 2
 ) {
     var payee: String? = null

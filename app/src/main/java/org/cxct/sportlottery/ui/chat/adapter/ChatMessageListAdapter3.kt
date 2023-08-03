@@ -21,6 +21,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.application.MultiLanguagesApplication
 import org.cxct.sportlottery.common.extentions.load
+import org.cxct.sportlottery.common.extentions.loadByOverride
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatMessageResult
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.network.chat.socketResponse.chatMessage.ChatRoomMsg
@@ -28,6 +29,8 @@ import org.cxct.sportlottery.ui.chat.ChatMsgReceiveType
 import org.cxct.sportlottery.ui.chat.bean.ChatDateMsg
 import org.cxct.sportlottery.ui.chat.bean.EmptyMsg
 import org.cxct.sportlottery.ui.chat.bean.UserMessageStyle
+import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.ScreenUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.view.MixFontTextView
 import java.util.*
@@ -41,7 +44,8 @@ class ChatMessageListAdapter3(private val onPhotoClick: (String) -> Unit,
                               val onUserAvatarClick: (tagUserPair: Pair<String, String>) -> Unit,
                               val onRedEnvelopeClick: (String, Int) -> Unit)
     : BaseQuickAdapter<ChatRoomMsg<*, BaseViewHolder>, BaseViewHolder>(0) {
-
+    private val imageWidth=200.dp
+    private val imageHeight=500.dp
     private val MAX_MSG_SIZE = 500
     private val REMOVE_COUNT = 80
 
@@ -122,7 +126,6 @@ class ChatMessageListAdapter3(private val onPhotoClick: (String) -> Unit,
             }
             return
         }
-
         imageView.isVisible = true
         //content:[img:{imagePath}]{message}
         // ex:
@@ -165,7 +168,8 @@ class ChatMessageListAdapter3(private val onPhotoClick: (String) -> Unit,
         textView.post { textView.gravity = Gravity.START } //圖文訊息的情況下要Gravity.START
         messageBorder.post { messageBorder.gravity = Gravity.START }
         val url = if (imgUrl.startsWith("http")) imgUrl else "$resServerHost/$imgUrl"
-        imageView.load(url, R.drawable.ic_image_load)
+
+        imageView.loadByOverride(url, imageWidth,imageHeight,R.drawable.ic_image_load)
         imageView.setOnClickListener { onPhotoClick(url) }
     }
 
