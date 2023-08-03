@@ -291,6 +291,7 @@ class MoneyRechViewModel(
                 AppsFlyerLib.getInstance().getAppsFlyerUID(context)?.let {
                     put("appsFlyerId", it)
                     put("appsFlyerKey", BuildConfig.AF_APPKEY)
+                    put("appsFlyerPkgName",BuildConfig.APPLICATION_ID)
                 }
 
             }
@@ -326,6 +327,7 @@ class MoneyRechViewModel(
                 AppsFlyerLib.getInstance().getAppsFlyerUID(context)?.let {
                     put("appsFlyerId", it)
                     put("appsFlyerKey", BuildConfig.AF_APPKEY)
+                    put("appsFlyerPkgName",BuildConfig.APPLICATION_ID)
                 }
             }
             url += toUrlParamsFormat(queryMap)
