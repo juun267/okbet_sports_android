@@ -227,19 +227,19 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                             return@OnNavigationItemSelectedListener false
                         }
 
-                        when (menuItem.itemId) {
-                            R.id.i_user -> {
-                                if (viewModel.isLogin.value == false) {
-                                    startLogin()
-                                    return@OnNavigationItemSelectedListener false
-                                }
-                            }
 
-                            R.id.i_favorite -> {
-                                start<ChatActivity> {}
+                    when (menuItem.itemId) {
+                        R.id.i_user -> {
+                            if (viewModel.isLogin.value == false) {
+                                startLogin()
                                 return@OnNavigationItemSelectedListener false
                             }
                         }
+                        R.id.i_favorite -> {
+                            startActivity(Intent(this@MainTabActivity, ChatActivity::class.java))
+                            return@OnNavigationItemSelectedListener false
+                        }
+                    }
 
                         fragmentHelper.showFragment(itemPosition)
                         if (itemPosition == 0) {
