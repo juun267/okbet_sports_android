@@ -20,6 +20,7 @@ import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.crypto_pay_fragment.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_icon_and_tick.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
+import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.RechType
 import org.cxct.sportlottery.network.money.MoneyAddRequest
@@ -741,7 +742,8 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             payerBankName = null,
             payerInfo = null,
             depositDate = mCalendar.time.time,
-            appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext())
+            appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext()),
+            appsFlyerKey = BuildConfig.AF_APPKEY
         ).apply {
             payee = txv_payee.text.toString()//充幣地址
             payeeName = txv_account.text.toString()//火幣網
