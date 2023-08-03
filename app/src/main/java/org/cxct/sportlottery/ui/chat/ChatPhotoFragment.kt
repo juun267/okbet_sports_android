@@ -11,15 +11,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.gyf.immersionbar.ImmersionBar
 import com.tbruyelle.rxpermissions2.RxPermissions
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.databinding.FragmentChatPhotoBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.maintab.menu.ScannerActivity
 import org.cxct.sportlottery.util.DownloadUtil
+import org.cxct.sportlottery.util.FileUtil
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.ToastUtil
 import java.io.File
@@ -108,7 +112,8 @@ class ChatPhotoFragment : BaseFragment<ChatViewModel>(ChatViewModel::class) {
     private fun saveToPictureFolder() {
         RxPermissions(this).request(Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe { onNext ->
             if (onNext) {
-                Thread {
+                viewModel.viewModelScope.launch (Dispatchers.IO){
+
                     try {
                         var file =
                             File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
@@ -120,7 +125,6 @@ class ChatPhotoFragment : BaseFragment<ChatViewModel>(ChatViewModel::class) {
                             if (!file.exists() && !file.mkdir()) {
                             }
                         }
-
 
                         DownloadUtil.get().download(photoUrl,file.path ,object : DownloadUtil.OnDownloadListener{
                             override fun onDownloadSuccess(filePath:String) {
@@ -157,7 +161,8 @@ class ChatPhotoFragment : BaseFragment<ChatViewModel>(ChatViewModel::class) {
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }
-                }.start()
+                }
+
             } else {
 //                ToastUtil.showToast(
 //                    requireContext(),
