@@ -22,6 +22,7 @@ object PictureSelectorUtils {
             .openGallery(PictureMimeType.ofImage())
             .imageEngine(GlideEngine.createGlideEngine())
             .setLanguage(getLanguage(activity)) // 设置语言，默认中文
+            .isGif(true)
             .isCamera(false) // 是否显示拍照按钮 true or false
             .selectionMode(if (nums > 1)  PictureConfig.MULTIPLE else PictureConfig.SINGLE) // 多选 or 单选 PictureConfig.MULTIPLE or PictureConfig.SINGLE
             .isEnableCrop(false) // 是否裁剪 true or false
