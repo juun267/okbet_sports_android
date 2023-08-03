@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ViewChatEmojiBinding
 import org.cxct.sportlottery.net.chat.data.ChatSticker
 import org.cxct.sportlottery.net.chat.data.ChatStickerRow
@@ -53,10 +55,14 @@ class ChatEmojiView(context: Context, attrs: AttributeSet?): FrameLayout(context
 
     @SuppressLint("NotifyDataSetChanged")
     fun initColumn(data:List<ChatStickerRow>){
+        if(data.isEmpty()){
+            binding.recyclerColumn.gone()
+        }else{
+            binding.recyclerColumn.visible()
+        }
         //本地emoji数据
         val emojiRow=initEmojiData()
         emojiAdapter.setList(emojiRow.list)
-        //排序拿到的表情列表
         val stickerList=data.toMutableList()
         //添加emoji到第一个
         stickerList.add(0,emojiRow)
