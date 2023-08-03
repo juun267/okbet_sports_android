@@ -117,11 +117,12 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         EventBusUtil.targetLifecycle(this)
         LotteryManager.instance.getLotteryInfo()
         ConfigRepository.onNewConfig(this) {
-            if (isOpenChatRoom()) {
-                changeChatTabStatus(getString(R.string.N984), R.drawable.selector_tab_chat)
-            } else {
-                changeChatTabStatus(getString(R.string.main_tab_favorite), R.drawable.selector_tab_fav)
-            }
+            changeChatTabStatus(getString(R.string.N984), R.drawable.selector_tab_chat)
+//            if (isOpenChatRoom()) {
+//                changeChatTabStatus(getString(R.string.N984), R.drawable.selector_tab_chat)
+//            } else {
+//                changeChatTabStatus(getString(R.string.main_tab_favorite), R.drawable.selector_tab_fav)
+//            }
         }
     }
 
@@ -225,26 +226,19 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                             return@OnNavigationItemSelectedListener false
                         }
 
-                        when (menuItem.itemId) {
-                            R.id.i_user -> {
-                                if (viewModel.isLogin.value == false) {
-                                    startLogin()
-                                    return@OnNavigationItemSelectedListener false
-                                }
-                            }
 
-                            R.id.i_favorite -> {
-                                if (isOpenChatRoom()) {
-                                    start<ChatActivity> {}
-                                    return@OnNavigationItemSelectedListener false
-                                } else {
-                                    if (viewModel.isLogin.value == false) {
-                                        startLogin()
-                                        return@OnNavigationItemSelectedListener false
-                                    }
-                                }
+                    when (menuItem.itemId) {
+                        R.id.i_user -> {
+                            if (viewModel.isLogin.value == false) {
+                                startLogin()
+                                return@OnNavigationItemSelectedListener false
                             }
                         }
+                        R.id.i_favorite -> {
+                            startActivity(Intent(this@MainTabActivity, ChatActivity::class.java))
+                            return@OnNavigationItemSelectedListener false
+                        }
+                    }
 
                         fragmentHelper.showFragment(itemPosition)
                         if (itemPosition == 0) {

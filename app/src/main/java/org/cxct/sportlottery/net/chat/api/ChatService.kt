@@ -6,10 +6,13 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.net.chat.data.UnPacketRow
 import org.cxct.sportlottery.net.chat.data.GuestInitResponse
 import org.cxct.sportlottery.net.chat.data.ChatInitResponse
+import org.cxct.sportlottery.net.chat.data.ChatSticker
+import org.cxct.sportlottery.net.chat.data.ChatStickerRow
 import org.cxct.sportlottery.net.chat.data.JoinRoomResonse
 import org.cxct.sportlottery.net.chat.data.Row
 import org.json.JSONObject
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -18,6 +21,9 @@ interface ChatService {
 
     @POST(Constants.ROOM_QUERY_LIST)
     suspend fun queryList(): ApiResult<List<Row>>
+
+    @GET(Constants.CHAT_GET_STICKER)
+    suspend fun getChatStickers(): ApiResult<List<ChatStickerRow>>
 
     @POST(Constants.PACKET_LUCKY_BAG)
     suspend fun luckyBag(

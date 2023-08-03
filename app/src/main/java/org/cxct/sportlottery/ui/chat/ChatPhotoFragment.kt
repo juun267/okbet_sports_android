@@ -1,27 +1,34 @@
 package org.cxct.sportlottery.ui.chat
 
+import android.Manifest
+import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomViewTarget
-import com.bumptech.glide.request.transition.Transition
 import com.gyf.immersionbar.ImmersionBar
+import com.tbruyelle.rxpermissions2.RxPermissions
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.load
 import org.cxct.sportlottery.databinding.FragmentChatPhotoBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.view.PinchImageView
+import org.cxct.sportlottery.ui.maintab.menu.ScannerActivity
+import org.cxct.sportlottery.util.DownloadUtil
+import org.cxct.sportlottery.util.LocalUtils
+import org.cxct.sportlottery.util.ToastUtil
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 /**
  * @author kevin
@@ -71,21 +78,7 @@ class ChatPhotoFragment : BaseFragment<ChatViewModel>(ChatViewModel::class) {
     private fun initPhoto() {
         try {
             if (photoUrl.isNotEmpty()) {
-                val viewTarget =
-                    object : CustomViewTarget<PinchImageView, Bitmap>(binding.ivPhoto) {
-                        override fun onResourceReady(
-                            resource: Bitmap,
-                            transition: Transition<in Bitmap?>?,
-                        ) {
-                            startPostponedEnterTransition()
-                            binding.ivPhoto.setImageBitmap(resource)
-                        }
-
-                        override fun onLoadFailed(errorDrawable: Drawable?) {}
-
-                        override fun onResourceCleared(placeholder: Drawable?) {}
-                    }
-                Glide.with(requireContext()).asBitmap().load(photoUrl).into(viewTarget)
+                binding.ivPhoto.load(photoUrl)
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -113,61 +106,67 @@ class ChatPhotoFragment : BaseFragment<ChatViewModel>(ChatViewModel::class) {
      * 儲存到圖片庫
      */
     private fun saveToPictureFolder() {
-        Thread {
-            try {
-                val bitmap = Glide.with(requireContext())
-                    .asBitmap()
-                    .load(photoUrl)
-                    .submit()
-                    .get()
-
-                var file =
-                    File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                        "Sport")
-                if (!file.exists() && !file.mkdir()) {
-//                    Log.d(TAG, " DIRECTORY_PICTURES mkdir() fail")
-                    file =
-                        File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),
-                            "Camera")
-                    if (!file.exists() && !file.mkdir()) {
-//                        Log.d(TAG, " DIRECTORY_DCIM  mkdir() fail")
-                    }
-                }
-
-                val filename =
-                    SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date()) + ".jpg"
-
-                val mediaFile = File(file.path + File.separator + filename)
-                val fOut = FileOutputStream(mediaFile)
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut)
-                fOut.flush()
-                fOut.close()
-
-                //保存图片后发送广播通知更新数据库
-                MediaScannerConnection.scanFile(context, arrayOf(mediaFile.absolutePath), null,
-                    object : MediaScannerConnection.MediaScannerConnectionClient {
-                        override fun onScanCompleted(path: String?, uri: Uri?) {
-//                            Log.d(TAG, "onMediaScannerConnected")
+        RxPermissions(this).request(Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe { onNext ->
+            if (onNext) {
+                Thread {
+                    try {
+                        var file =
+                            File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                                "Sport")
+                        if (!file.exists() && !file.mkdir()) {
+                            file =
+                                File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),
+                                    "Camera")
+                            if (!file.exists() && !file.mkdir()) {
+                            }
                         }
 
-                        override fun onMediaScannerConnected() {
-//                            Log.d(TAG, "onMediaScannerConnected")
-                        }
-                    }
-                )
 
-                activity?.runOnUiThread {
-                    showPromptDialog(
-                        title = null,
-                        message = requireContext().getString(R.string.chat_photo_download_done),
-                        buttonText = null,
-                        isShowDivider = false
-                    ) {}
-                }
-            } catch (e: IOException) {
-                e.printStackTrace()
+                        DownloadUtil.get().download(photoUrl,file.path ,object : DownloadUtil.OnDownloadListener{
+                            override fun onDownloadSuccess(filePath:String) {
+                                //保存图片后发送广播通知更新数据库
+                                MediaScannerConnection.scanFile(context, arrayOf(filePath), null,
+                                    object : MediaScannerConnection.MediaScannerConnectionClient {
+                                        override fun onScanCompleted(path: String?, uri: Uri?) {
+                                        }
+
+                                        override fun onMediaScannerConnected() {
+                                        }
+                                    }
+                                )
+
+                                activity?.runOnUiThread {
+                                    showPromptDialog(
+                                        title = null,
+                                        message = requireContext().getString(R.string.chat_photo_download_done),
+                                        buttonText = null,
+                                        isShowDivider = false
+                                    ) {}
+                                }
+                            }
+
+                            override fun onDownloading(progress: Int) {
+//                        hideLoading()
+                            }
+
+                            override fun onDownloadFailed() {
+//                        hideLoading()
+                            }
+                        })
+
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                }.start()
+            } else {
+//                ToastUtil.showToast(
+//                    requireContext(),
+//                    LocalUtils.getString(R.string.N980)
+//                )
             }
-        }.start()
+        }.isDisposed
+
+
     }
 
     override fun onDestroy() {
