@@ -743,7 +743,8 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             payerInfo = null,
             depositDate = mCalendar.time.time,
             appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext()),
-            appsFlyerKey = BuildConfig.AF_APPKEY
+            appsFlyerKey = BuildConfig.AF_APPKEY,
+            appsFlyerPkgName = BuildConfig.APPLICATION_ID
         ).apply {
             payee = txv_payee.text.toString()//充幣地址
             payeeName = txv_account.text.toString()//火幣網

@@ -695,7 +695,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     payerInfo = "",
                     depositDate = mCalendar.time.time,
                     appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext()),
-                    appsFlyerKey = BuildConfig.AF_APPKEY
+                    appsFlyerKey = BuildConfig.AF_APPKEY,
+                    appsFlyerPkgName = BuildConfig.APPLICATION_ID,
                 ).apply {
                     proofImg = imgResultUrl
                 }
@@ -715,7 +716,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     payerInfo = null,
                     depositDate = mCalendar.time.time,
                     appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext()),
-                    appsFlyerKey = BuildConfig.AF_APPKEY
+                    appsFlyerKey = BuildConfig.AF_APPKEY,
+                    appsFlyerPkgName = BuildConfig.APPLICATION_ID,
                 ).apply {
                     proofImg = imgResultUrl
                 }
@@ -735,7 +737,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     payerInfo = et_name.getText(),
                     depositDate = mCalendar.time.time,
                     appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext()),
-                    appsFlyerKey = BuildConfig.AF_APPKEY
+                    appsFlyerKey = BuildConfig.AF_APPKEY,
+                    appsFlyerPkgName = BuildConfig.APPLICATION_ID,
                 ).apply {
                     proofImg = imgResultUrl
                 }
