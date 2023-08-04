@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tvName"
+    android:layout_width="wrap_content"
+    android:text="Emoj"
+    android:textColor="@color/color_025BE8"
+    android:minWidth="70dp"
+    android:textSize="14sp"
+    android:gravity="center"
+    android:paddingHorizontal="15dp"
+    android:layout_marginRight="10dp"
+    android:background="@drawable/bg_chat_emoji_column"
+    android:layout_height="30dp" />

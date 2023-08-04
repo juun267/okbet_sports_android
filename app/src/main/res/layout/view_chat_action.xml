@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/color_chat_action_background">
 
+
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -32,24 +34,46 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:src="@drawable/ic_chat_send_disable" />
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/etInput"
+    <LinearLayout
+        android:id="@+id/linearEdit"
+        android:orientation="horizontal"
         android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:background="@null"
-        android:paddingHorizontal="12dp"
-        android:paddingVertical="1dp"
-        android:textColor="@color/color_chat_action_edittext_text"
-        android:textColorHint="@color/color_chat_action_edittext_hint_text"
-        android:textCursorDrawable="@drawable/cursor_common"
-        android:textSize="@dimen/textSize12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/ivSend"
         app:layout_constraintStart_toEndOf="@+id/ivUploadImage"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="1dp"
         tools:background="@drawable/bg_chat_input_disable"
-        tools:hint="hahkghahsfhahsghshfglshfhfkhfjkshfkljhfkhaskgjhashflhflhsflhsfhashhahkghahsfhahsghshfglshfhfkhf" />
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etInput"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:background="@null"
+            android:layout_weight="1"
+            android:paddingStart="12dp"
+            android:paddingVertical="1dp"
+            android:textColor="@color/color_chat_action_edittext_text"
+            android:textColorHint="@color/color_chat_action_edittext_hint_text"
+            android:textCursorDrawable="@drawable/cursor_common"
+            android:textSize="@dimen/textSize12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivSend"
+            app:layout_constraintStart_toEndOf="@+id/ivUploadImage"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="1dp"
+            tools:hint="hahkghahsfhahsghshfglshfhfkhfjkshfkljhfkhaskgjhashflhflhsflhsfhashhahkghahsfhahsghshfglshfhfkhf" />
+
+
+        <ImageView
+            android:id="@+id/ivEmoji"
+            android:src="@drawable/ic_chat_emoji_press"
+            android:layout_width="40dp"
+            android:paddingEnd="8dp"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:paddingVertical="8dp"
+            android:layout_height="40dp"/>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tvToLoging"
@@ -64,5 +88,4 @@
         android:textSize="12sp"
         android:visibility="gone"
         android:gravity="center"/>
-
 </merge>

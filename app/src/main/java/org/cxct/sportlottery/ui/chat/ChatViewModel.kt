@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.chat
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import com.google.gson.JsonElement
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -8,6 +9,8 @@ import kotlinx.coroutines.flow.asSharedFlow
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.collectWith
 import org.cxct.sportlottery.common.extentions.isEmptyStr
+import org.cxct.sportlottery.net.chat.data.ChatSticker
+import org.cxct.sportlottery.net.chat.data.ChatStickerRow
 import org.cxct.sportlottery.net.chat.data.Row
 import org.cxct.sportlottery.net.chat.data.UnPacketRow
 import org.cxct.sportlottery.network.chat.UserLevelConfigVO
@@ -92,6 +95,14 @@ class ChatViewModel(
 
     fun chatSendMessage(liveMsgEntity: LiveMsgEntity) {
         ChatService.sendMessage(liveMsgEntity)
+    }
+
+
+    fun chatSendPictureMessage(imagePath:String){
+        val msgEvent = LiveMsgEntity()
+        msgEvent.content = imagePath
+        msgEvent.type = ChatType.CHAT_SEND_PIC_MSG.code.toString()
+        chatSendMessage(msgEvent)
     }
 
     private inline fun convertRoomMsg(roomMsg: ChatMessageResult): ChatRoomMsg<*, *> {
@@ -362,7 +373,8 @@ class ChatViewModel(
     }
 
     private fun getInitErrorText(code: Int) = androidContext.getString(R.string.text_cant_play) + "($code)"
-
+    //标记表情包是否初始化
+    private var isInitEmoji=false
     /* 游客、一般用户 */
     private fun chatInit() = launch {
 
@@ -390,6 +402,11 @@ class ChatViewModel(
                     Timber.i("[Chat] 初始化成功 用戶遊客獲取房間列表")
                     userIsSpeak = result?.getData()?.state == 0 //state（0正常、1禁言、2禁止登录)
                     queryList()
+                    if(!isInitEmoji){
+                        isInitEmoji=true
+                        getChatSticker()
+                    }
+
                     return@launch
                 } else {
                     sign = null // 置空下次循环从新获取
@@ -420,6 +437,20 @@ class ChatViewModel(
             }
         }
     }
+
+    /**
+     * 获取聊天表情
+     */
+    val chatStickerEvent:SingleLiveEvent<List<ChatStickerRow>> = SingleLiveEvent()
+    private fun getChatSticker()= launch {
+        val chatStickerResult=ChatRepository.getChatStickers()
+        if(chatStickerResult.succeeded()&&chatStickerResult.getData()!=null){
+            chatStickerEvent.postValue(chatStickerResult.getData())
+        }else{
+            chatStickerEvent.postValue(arrayListOf())
+        }
+    }
+
 
     private suspend fun queryList() = launch {
         val queryListResult = ChatRepository.queryList()
