@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.text.Html
 import androidx.core.content.ContextCompat
-import kotlinx.android.synthetic.main.activity_promotion_detail.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.load
@@ -16,6 +15,7 @@ import org.cxct.sportlottery.ui.base.BindingActivity
 import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.view.dialog.PromotionSuccessDialog
+import org.koin.android.ext.android.bind
 import java.util.*
 
 
@@ -60,30 +60,30 @@ class PromotionDetailActivity :
         }
     }
 
-    fun setPromotion(activityData: ActivityImageList) {
+    fun setPromotion(activityData: ActivityImageList)=binding.run {
         if (activityData.contentImage.isNullOrEmpty()){
-            binding.ivBanner.gone()
+            ivBanner.gone()
         }else{
-            binding.ivBanner.show()
-            binding.ivBanner.load(sConfigData?.resServerHost+activityData.contentImage,R.drawable.img_banner01)
+            ivBanner.show()
+            ivBanner.load(sConfigData?.resServerHost+activityData.contentImage,R.drawable.img_banner01)
         }
-        binding.tvSubTitle.text = activityData.subTitleText
+        tvSubTitle.text = activityData.subTitleText
         val startTime = TimeUtil.timeFormat(activityData.startTime, TimeUtil.EN_DATE_FORMAT, locale = Locale.ENGLISH)
         val endTime = TimeUtil.timeFormat(activityData.endTime, TimeUtil.EN_DATE_FORMAT, locale = Locale.ENGLISH)
-        binding.tvTime.text = "$startTime ${getString(R.string.J645)} $endTime"
-        binding.okWebView.setBackgroundColor(ContextCompat.getColor(this,R.color.color_F9FAFD))
-        binding.okWebView.loadDataWithBaseURL(null,(activityData.contentText?:"").formatHTML(), "text/html", "utf-8",null)
+        tvTime.text = "$startTime ${getString(R.string.J645)} $endTime"
+        okWebView.setBackgroundColor(ContextCompat.getColor(this@PromotionDetailActivity,R.color.color_F9FAFD))
+        okWebView.loadDataWithBaseURL(null,(activityData.contentText?:"").formatHTML(), "text/html", "utf-8",null)
     }
-    private fun setActivity(activityDetail: ActivityImageList){
+    private fun setActivity(activityDetail: ActivityImageList)=binding.run {
         if (activityDetail.activityId.isNullOrEmpty()) {
-            binding.linActivity.gone()
+            linActivity.gone()
         } else {
-            binding.linActivity.show()
-            binding.tvDeposit.text = TextUtil.formatMoney(activityDetail.amount)
-            if (activityDetail.activityType == 1) {
-                tvReward.text = getString(R.string.H019)
-            } else {
-                tvReward.text = getString(R.string.deposits)
+            linActivity.show()
+            tvDeposit.text = TextUtil.formatMoney(activityDetail.amount)
+            tvDepositName.text = when (activityDetail.activityType) {
+                1 -> getString(R.string.H019)
+                2 -> getString(R.string.title_deposit_money)//充值活动
+                else -> getString(R.string.deposits)
             }
             tvReward.text = TextUtil.formatMoney(activityDetail.reward)
             if (activityDetail.reward == 0.0) {
