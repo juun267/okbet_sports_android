@@ -8,7 +8,7 @@ import java.lang.ref.WeakReference
 class FragmentHelper(
     var fragmentManager: FragmentManager,
     private val viewId: Int,
-    private val fragmentClasses: Array<Pair<Class<out Fragment>, Bundle?>>
+    private val fragmentClasses: Array<Param>
 ) {
 
     private var curPos = -1
@@ -20,8 +20,8 @@ class FragmentHelper(
         var fragment = fragments[index]?.get()
         if (fragment == null) {
             val fClass = fragmentClasses[index]
-            fragment = fClass.first.newInstance()
-            fClass.second?.let { fragment!!.arguments = it }
+            fragment = fClass.clazz.newInstance()
+            fClass.bundle?.let { fragment!!.arguments = it }
             fragments[index] = WeakReference(fragment)
         }
         return fragment!!
@@ -34,32 +34,40 @@ class FragmentHelper(
 
         val fragment = getFragment(index)
         if (curPos >= 0) {
-            switchContent(fragments[curPos]?.get(), fragment)
+            switchContent(fragments[curPos]?.get(), fragment, index)
         } else {
-            switchContent(null, fragment)
+            switchContent(null, fragment, index)
         }
 
         curPos = index
         return fragment
     }
 
-    private fun switchContent(from: Fragment?, to: Fragment) {
+    private fun switchContent(from: Fragment?, to: Fragment, index: Int) {
         val transaction = fragmentManager.beginTransaction()
+        val hashCode = to.hashCode()
         if (from == null) {
+            addedFragment.add(hashCode)
             transaction.replace(viewId, to).commitAllowingStateLoss()
-        } else if (from != to) {
-            if (to.isAdded || addedFragment.contains(to.hashCode())) {
-                transaction.hide(from).show(to).commitAllowingStateLoss()
-            } else {
-                addedFragment.add(to.hashCode())
-                transaction.hide(from).add(viewId, to).commitAllowingStateLoss()
-            }
+            return
         }
-    }
 
-    fun getCurrentFragmentByPos(curPos: Int): Fragment {
-        this.curPos = curPos
-        return getFragment(curPos)
+        if (from != to) {
+            val param = fragmentClasses[curPos]
+            if (param.needRemove) {
+                addedFragment.remove(from.hashCode())
+                transaction.remove(from)
+            } else {
+                transaction.hide(from)
+            }
+            if (to.isAdded || addedFragment.contains(hashCode)) {
+                transaction.show(to).commitAllowingStateLoss()
+            } else {
+
+                transaction.add(viewId, to).commitAllowingStateLoss()
+            }
+            addedFragment.add(hashCode)
+        }
     }
 
     fun getFragmentList(): Array<Fragment?> {
@@ -74,3 +82,8 @@ class FragmentHelper(
         return curPos
     }
 }
+
+data class Param(val clazz: Class<out Fragment>,
+                         val bundle: Bundle? = null,     // fragment创建时的bundle
+                         val needRemove: Boolean = false // 当为true时切换到不可见时remove掉
+)

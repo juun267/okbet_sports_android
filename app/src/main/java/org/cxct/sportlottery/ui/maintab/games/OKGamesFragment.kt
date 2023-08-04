@@ -20,11 +20,8 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameLabel
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameTab
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.util.FragmentHelper
-import org.cxct.sportlottery.util.enterThirdGame
-import org.cxct.sportlottery.util.loginedRun
 import org.cxct.sportlottery.view.ObservableScrollView
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.transform.TransformInDialog
@@ -40,7 +37,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
     private val fragmentHelper by lazy {
         FragmentHelper(
             childFragmentManager, R.id.fragmentContainer, arrayOf(
-                Pair(AllGamesFragment::class.java, null), Pair(PartGamesFragment::class.java, null)
+                Param(AllGamesFragment::class.java), Param(PartGamesFragment::class.java)
             )
         )
     }
