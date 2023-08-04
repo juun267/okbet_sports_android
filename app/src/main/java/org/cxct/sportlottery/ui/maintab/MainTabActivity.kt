@@ -46,7 +46,6 @@ import org.cxct.sportlottery.ui.betRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.chat.ChatActivity
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.games.OKGamesFragment
-import org.cxct.sportlottery.ui.maintab.games.OKLiveFragment
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment2
 import org.cxct.sportlottery.ui.maintab.menu.SportLeftMenuFragment
@@ -58,8 +57,6 @@ import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.dialog.ToGcashDialog
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import splitties.activities.start
-import kotlin.reflect.jvm.internal.impl.types.checker.TypeRefinementSupport.Enabled
 import kotlin.system.exitProcess
 
 
@@ -68,11 +65,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     private val fragmentHelper: FragmentHelper by lazy {
         FragmentHelper(
             supportFragmentManager, R.id.fl_content, arrayOf(
-                Pair(HomeFragment::class.java, null),
-                Pair(SportFragment2::class.java, null),
-                Pair(OKGamesFragment::class.java, null),
-                Pair(OKGamesFragment::class.java, null), // 占坑
-                Pair(ProfileCenterFragment::class.java, null)
+                Param(HomeFragment::class.java),
+                Param(SportFragment2::class.java),
+                Param(OKGamesFragment::class.java),
+                Param(OKGamesFragment::class.java), // 占坑
+                Param(ProfileCenterFragment::class.java),
             )
         )
     }
