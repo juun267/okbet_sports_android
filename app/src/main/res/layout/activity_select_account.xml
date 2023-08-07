@@ -55,7 +55,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="15dp"
+        android:layout_marginHorizontal="@dimen/margin_12"
         android:layout_marginTop="80dp"
         android:background="@drawable/bg_white_radius_8"
         android:elevation="1dp"
@@ -63,38 +63,57 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivLogo">
 
-        <TextView
-            android:id="@+id/btnOkbet"
+        <LinearLayout
+            android:id="@+id/linOkbet"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginHorizontal="@dimen/margin_20"
+            android:layout_marginHorizontal="@dimen/margin_15"
             android:layout_marginTop="@dimen/margin_50"
             android:layout_marginBottom="@dimen/margin_20"
+            android:gravity="center_vertical"
             android:background="@drawable/bg_blue_radius_8"
-            android:drawableLeft="@drawable/ic_okbet_round"
-            android:paddingHorizontal="17dp"
-            android:drawablePadding="@dimen/margin_16"
-            android:gravity="start|center_vertical"
-            android:textAllCaps="false"
-            android:text="@string/P131"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/textSize14sp" />
+            android:paddingHorizontal="@dimen/margin_15">
+            <ImageView
+                android:id="@+id/ivOkbet"
+                android:layout_width="@dimen/margin_24"
+                android:layout_height="@dimen/margin_24"
+                android:src="@drawable/ic_okbet_round"
+                android:layout_marginRight="@dimen/margin_8"/>
+            <TextView
+                android:id="@+id/tvOkbet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAllCaps="false"
+                android:text="@string/P176"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/textSize14sp" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/btnGlife"
+
+        <LinearLayout
+            android:id="@+id/linGlife"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginHorizontal="@dimen/margin_20"
-            android:layout_marginBottom="@dimen/margin_30"
+            android:layout_marginHorizontal="@dimen/margin_15"
+            android:layout_marginBottom="@dimen/margin_20"
+            android:gravity="center_vertical"
             android:background="@drawable/bg_blue_radius_8"
-            android:drawableLeft="@drawable/ic_glife_round"
-            android:paddingHorizontal="17dp"
-            android:drawablePadding="@dimen/margin_16"
-            android:gravity="start|center_vertical"
-            android:textAllCaps="false"
-            android:text="@string/P132"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/textSize14sp" />
+            android:paddingHorizontal="@dimen/margin_15">
+            <ImageView
+                android:id="@+id/ivGlife"
+                android:layout_width="@dimen/margin_24"
+                android:layout_height="@dimen/margin_24"
+                android:src="@drawable/ic_glife_round"
+                android:layout_marginRight="@dimen/margin_8"/>
+            <TextView
+                android:id="@+id/tvGlife"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAllCaps="false"
+                android:text="@string/P175"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/textSize14sp" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/cl_live_chat"

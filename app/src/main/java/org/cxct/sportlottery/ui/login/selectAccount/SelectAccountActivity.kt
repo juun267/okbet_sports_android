@@ -28,16 +28,13 @@ class SelectAccountActivity : BindingActivity<LoginViewModel, ActivitySelectAcco
         bindFinish(btnBack)
         clLiveChat.setServiceClick(supportFragmentManager)
         if (type==TYPE_LOGINGLIFE_OR_REGIST){
-            btnOkbet.apply {
-                setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context, R.drawable.ic_glife_round),null,null,null)
-                text = getString(R.string.P176)
-            }
-            btnGlife.apply {
-                setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context, R.drawable.ic_okbet_round),null,null,null)
-                text = getString(R.string.P175)
-            }
+            ivOkbet.setImageResource(R.drawable.ic_glife_round)
+            tvOkbet.text = getString(R.string.P176)
+
+            ivGlife.setImageResource(R.drawable.ic_okbet_round)
+            tvGlife.text = getString(R.string.P175)
         }
-        btnOkbet.setOnClickListener {
+        linOkbet.setOnClickListener {
             finish()
             when(type){
                 TYPE_LOGIN->EventBusUtil.post(LoginSelectAccountEvent(false))
@@ -45,7 +42,7 @@ class SelectAccountActivity : BindingActivity<LoginViewModel, ActivitySelectAcco
                 TYPE_LOGINGLIFE_OR_REGIST->EventBusUtil.post(LoginGlifeOrRegistEvent(true))
             }
         }
-        btnGlife.setOnClickListener {
+        linGlife.setOnClickListener {
             finish()
             when(type){
                 TYPE_LOGIN->EventBusUtil.post(LoginSelectAccountEvent(true))
