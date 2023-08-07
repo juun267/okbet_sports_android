@@ -49,7 +49,7 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
     override fun onInitView(view: View) = binding.run {
         scrollView.setupBackTop(ivBackTop, 180.dp) {
             if (hotMatchView.isVisible) {
-                hotMatchView.firstVisibleRange(this@MainHomeFragment)
+                hotMatchView.resubscribe()
             }
         }
         homeBottumView.bindServiceClick(childFragmentManager)

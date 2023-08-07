@@ -17,6 +17,7 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.games.bean.OKGameLabel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.setTrialPlayGameDataObserve
+import org.cxct.sportlottery.view.loadMore
 
 // 指定类别的三方游戏
 class PartGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesViewModel::class) {
@@ -81,6 +82,7 @@ class PartGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGames
         layoutManager = GridLayoutManager(requireContext(), 3)
         addItemDecoration(GridSpacingItemDecoration(3, 10.dp, false))
         adapter = gameChildAdapter
+        loadMore(::onMoreClick)
         gameChildAdapter.setOnItemClickListener { _, _, position ->
             val okGameBean = gameChildAdapter.getItem(position)
             if (LoginRepository.isLogined()) {
@@ -113,7 +115,7 @@ class PartGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGames
     }
 
 
-    fun onMoreClick() {
+    private fun onMoreClick() {
         if (gameTotal > gameChildAdapter.data.size && !loadingMoreFlag) {
             if (okGamesFragment().loadNextPage(pageIndx)) {
                 loadingMoreFlag = true
