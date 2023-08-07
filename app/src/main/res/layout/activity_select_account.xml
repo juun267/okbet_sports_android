@@ -84,7 +84,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAllCaps="false"
-                android:text="@string/P176"
+                android:text="@string/P131"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/textSize14sp" />
         </LinearLayout>
@@ -110,7 +110,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAllCaps="false"
-                android:text="@string/P175"
+                android:text="@string/P132"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/textSize14sp" />
         </LinearLayout>
