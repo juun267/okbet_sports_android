@@ -59,9 +59,16 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
         onBindPart5View()
         initSportObserve()
         //初始化热门赛事
-        binding.hotMatchView.onCreate(viewModel.publicityRecommend, viewModel.oddsType, this)
+        initHotMatchView()
         binding.okLiveOkGamesView.setOkGamesData(this)
         viewModel.getRecommend()
+    }
+
+    private fun initHotMatchView() {
+        binding.hotMatchView.onCreate(viewModel.publicityRecommend,viewModel.oddsType,this)
+        binding.scrollView.setOnScrollChangeListener { _, _, _, _, _ ->
+            binding.hotMatchView.resubscribe()
+        }
     }
 
     private fun initSportObserve() {

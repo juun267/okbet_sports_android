@@ -77,50 +77,48 @@ class HotMatchView(
     }
 
     private fun initRecyclerView(manager: LinearLayoutManager) {
-        recycler_hot_game.let {
-            manager.orientation = LinearLayoutManager.HORIZONTAL
-            it.layoutManager = manager
-            it.addItemDecoration(
-                DividerItemDecorator(
-                    ContextCompat.getDrawable(
-                        context, R.drawable.divider_trans
-                    )
+        manager.orientation = LinearLayoutManager.HORIZONTAL
+        recycler_hot_game.layoutManager = manager
+        recycler_hot_game.addItemDecoration(
+            DividerItemDecorator(
+                ContextCompat.getDrawable(
+                    context, R.drawable.divider_trans
                 )
             )
-            it.itemAnimator?.changeDuration = 0
-            PagerSnapHelper().attachToRecyclerView(it)
+        )
+        recycler_hot_game.itemAnimator?.changeDuration = 0
+        PagerSnapHelper().attachToRecyclerView(recycler_hot_game)
 
-            //滚动监听   显示/隐藏 左右两个滑动按钮
-            it.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                    val position = manager.findFirstCompletelyVisibleItemPosition()
-                    //屏幕中没有完整的item 前后都能滑动
-                    if (position == -1) {
-                        iv_left.visible()
-                        iv_right.visible()
-                        ivBackPage.alpha = 1.0f
-                        ivForwardPage.alpha = 1.0f
-                    } else {
-                        //检测是否需要隐藏 前进/后退 imageView
-                        scrollImageStatus(position)
+        //滚动监听   显示/隐藏 左右两个滑动按钮
+        recycler_hot_game.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val position = manager.findFirstCompletelyVisibleItemPosition()
+                //屏幕中没有完整的item 前后都能滑动
+                if (position == -1) {
+                    iv_left.visible()
+                    iv_right.visible()
+                    ivBackPage.alpha = 1.0f
+                    ivForwardPage.alpha = 1.0f
+                } else {
+                    //检测是否需要隐藏 前进/后退 imageView
+                    scrollImageStatus(position)
+                }
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (RecyclerView.SCROLL_STATE_DRAGGING == newState) { // 开始滑动
+                    fragment?.let {
+                        unSubscribeChannelHall(it)
+                    }
+                } else if (RecyclerView.SCROLL_STATE_IDLE == newState) { // 滑动停止
+                    fragment?.let {
+                        firstVisibleRange()
                     }
                 }
-
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    super.onScrollStateChanged(recyclerView, newState)
-                    if (RecyclerView.SCROLL_STATE_DRAGGING == newState) { // 开始滑动
-                        fragment?.let {
-                            unSubscribeChannelHall(it)
-                        }
-                    } else if (RecyclerView.SCROLL_STATE_IDLE == newState) { // 滑动停止
-                        fragment?.let {
-                            firstVisibleRange(it)
-                        }
-                    }
-                }
-            })
-        }
+            }
+        })
     }
 
 
@@ -169,7 +167,7 @@ class HotMatchView(
                     unSubscribeChannelHall(fragment)
                 if (isVisible) {
                     adapter?.data = data
-                    recycler_hot_game.post { firstVisibleRange(fragment) }
+                    recycler_hot_game.post { firstVisibleRange() }
                 }
             }
         }
@@ -271,7 +269,7 @@ class HotMatchView(
             it?.let {
                 //先解除全部賽事訂閱
                 unSubscribeChannelHall(fragment)
-                firstVisibleRange(fragment)
+                firstVisibleRange()
             }
         }
 
@@ -473,9 +471,15 @@ class HotMatchView(
         }
     }
 
+    private val delayObserver by lazy { DelayRunable { firstVisibleRange() } }
+
+    fun resubscribe() {
+        delayObserver.doOnDelay(200)
+    }
+
     @SuppressLint("SuspiciousIndentation")
-    fun firstVisibleRange(fragment: BaseFragment<*>): Boolean {
-        if (fragment.activity == null
+    private fun firstVisibleRange(): Boolean {
+        if (fragment?.activity == null
             || recycler_hot_game == null
             || recycler_hot_game.scrollState != RecyclerView.SCROLL_STATE_IDLE) {
             return false
@@ -488,7 +492,7 @@ class HotMatchView(
         recycler_hot_game.getVisibleRangePosition().forEach { position ->
             if (position < adapter.data.size) {
                 val recommend = adapter.data[position]
-                subscribeChannelHall(recommend, fragment)
+                subscribeChannelHall(recommend, fragment!!)
             }
             needSubscribe = true
         }
