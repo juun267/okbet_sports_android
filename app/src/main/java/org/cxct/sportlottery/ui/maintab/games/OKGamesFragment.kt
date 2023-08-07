@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.games
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,7 +36,7 @@ class OKGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesVi
     private val fragmentHelper by lazy {
         FragmentHelper(
             childFragmentManager, R.id.fragmentContainer, arrayOf(
-                Pair(AllGamesFragment::class.java, null), Pair(PartGamesFragment::class.java, null)
+                Param(AllGamesFragment::class.java), Param(PartGamesFragment::class.java)
             )
         )
     }

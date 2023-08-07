@@ -101,9 +101,18 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
 
     private fun toMaintenanceOrShowDialog(result: BaseResult) {
         when (result.code) {
-            HttpError.KICK_OUT_USER.code,
-            HttpError.UNAUTHORIZED.code,
-            HttpError.DO_NOT_HANDLE.code -> { // 鉴权失败、token过期
+//            HttpError.KICK_OUT_USER.code,
+//            HttpError.UNAUTHORIZED.code,
+//            HttpError.DO_NOT_HANDLE.code -> { // 鉴权失败、token过期
+//
+//            }
+
+            HttpError.MAINTENANCE.code -> {
+                startActivity(Intent(this, MaintenanceActivity::class.java))
+                finish()
+            }
+
+            else -> {
                 if (this is MaintenanceActivity
                     || this is SplashActivity) {
                     return
@@ -115,15 +124,6 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>? = null) : AppCo
                         }
                     }
                 }
-            }
-
-            HttpError.MAINTENANCE.code -> {
-                startActivity(Intent(this, MaintenanceActivity::class.java))
-                finish()
-            }
-
-            else -> {
-
             }
         }
     }

@@ -34,7 +34,8 @@ class MeVH (parent: ViewGroup,
             data,
             ivChatImage,
             tvMessage,
-            messageBorder
+            messageBorder,
+            true
         )
 
         tvTime.text = TimeUtil.timeFormat(data.curTime, TimeUtil.HM_FORMAT)
@@ -48,7 +49,7 @@ class MeVH (parent: ViewGroup,
 //            binding.tvMessage.setTextColor(Color.WHITE)
         //0游客、1会员、2管理员(特殊處理)、3訪客
         messageBorder.setBackgroundResource(R.drawable.bg_chat_pop_me_custom_circle_border)
-        messageBorder.backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.color_025BE8))
+//        messageBorder.backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.color_025BE8))
 //        }
     }
 
