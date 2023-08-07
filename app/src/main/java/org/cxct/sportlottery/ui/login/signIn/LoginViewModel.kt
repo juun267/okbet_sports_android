@@ -161,6 +161,18 @@ class LoginViewModel(
             }
         }
     }
+    fun regPlatformUser(token: String,loginRequest: LoginRequest) {
+        loading()
+        viewModelScope.launch {
+            //通过glife账号，注册平台账号
+            doNetwork(androidContext) {
+                loginRepository.regPlatformUser(token,loginRequest)
+            }?.let { loginResult->
+                hideLoading()
+                dealWithLoginResult(loginResult)
+            }
+        }
+    }
     suspend fun dealWithLoginResult(loginResult: LoginResult) {
         if (loginResult.success) {
             //t不为空则t是登录账号，rows里面1个账号就直接登录，2个账号就选择账号
@@ -171,7 +183,7 @@ class LoginViewModel(
                 loginResult.rows?.size==1 -> {
                     val loginData = loginResult.rows[0]
                     // 询问是否登录GLIFE账号，或注册一个 okbet平台账号
-                    if (loginData.vipType==1){
+                    if (loginData.isCreateAccount==1){
                        _loginGlifeOrRegist.postValue(loginResult)
                     }else{
                         dealWithLoginData(loginResult, loginData)

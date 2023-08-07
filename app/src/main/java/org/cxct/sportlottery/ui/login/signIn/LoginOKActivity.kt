@@ -294,7 +294,20 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                         viewModel.dealWithLoginData(loginResult!!,it)
                     }else{
                         //新的注册接口
-//                        viewModel.loginOrReg()
+                        val deviceSn = JPushInterface.getRegistrationID(this@LoginOKActivity)
+                        val deviceId = Settings.Secure.getString(
+                            applicationContext.contentResolver,
+                            Settings.Secure.ANDROID_ID
+                        )
+                        var appVersion = org.cxct.sportlottery.BuildConfig.VERSION_NAME
+                        val loginRequest = LoginRequest(
+                            account = it.userName?:"",
+                            loginSrc = LOGIN_SRC,
+                            deviceSn = deviceSn,
+                            appVersion = appVersion,
+                            loginEnvInfo = deviceId,
+                        )
+                        viewModel.regPlatformUser(it.token?:"",loginRequest)
                     }
                 }
             }

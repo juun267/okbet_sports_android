@@ -370,7 +370,7 @@ object Constants {
 
 
     //登录或注册(新版优化登录注册->使用)
-    const val LOGIN_OR_REG = "/api/front/index/loginOrRegV2"
+    const val LOGIN_OR_REG = "/api/front/index/loginOrRegV3"
 
     //登录或注册获取验证码(新版优化登录注册->使用)
     const val LOGIN_OR_REG_SEND_VALIDCODE = "/api/front/index/loginOrRegSendValidCode"
@@ -392,6 +392,9 @@ object Constants {
 
     //绑定facebook登录(绑定现有账户)
     const val BIND_FACEBOOK = "/api/front/index/bindFacebook"
+
+    //注册平台账号
+    const val REG_PLATFORM_USER = "/api/front/index/regPlatformUser"
 
     //parlay limit
     const val PLAYQUOTACOM_LIST = "/api/front/playQuotaCom/list" //获取所有体育玩法限额
