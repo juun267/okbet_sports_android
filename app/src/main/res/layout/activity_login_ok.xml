@@ -235,24 +235,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/fl_input">
-                <TextView
-                    android:id="@+id/tv_code_login"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:button="@drawable/effect_login_select_checkbox"
-                    android:paddingStart="6dp"
-                    android:text="@string/otp_login"
-                    android:textColor="@color/color_025BE8_025BE8"
-                    android:textSize="@dimen/textSize12sp"
-                    android:visibility="visible"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+
                 <TextView
                     android:id="@+id/tv_forget_password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="12dp"
                     android:background="@null"
                     android:clickable="true"
                     android:focusable="true"
@@ -267,7 +255,7 @@
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="46dp"
-                    android:layout_marginTop="@dimen/margin_24"
+                    android:layout_marginTop="@dimen/margin_20"
                     android:background="@drawable/bg_blue_radius_8"
                     android:text="@string/btn_login"
                     android:textAllCaps="false"
@@ -276,17 +264,33 @@
                     android:alpha="0.5"
                     android:enabled="false"
                     app:layout_constraintTop_toBottomOf="@+id/tv_forget_password" />
+
                 <TextView
                     android:id="@+id/tv_pwd_login"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     android:button="@drawable/effect_login_select_checkbox"
                     android:paddingStart="6dp"
                     android:text="@string/password_login"
                     android:textColor="@color/color_025BE8_025BE8"
                     android:textSize="@dimen/textSize12sp"
                     android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_login" />
+
+                <TextView
+                    android:id="@+id/tv_code_login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:button="@drawable/effect_login_select_checkbox"
+                    android:paddingStart="6dp"
+                    android:text="@string/P181"
+                    android:textColor="@color/color_025BE8_025BE8"
+                    android:textSize="@dimen/textSize12sp"
+                    android:visibility="visible"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/btn_login" />
