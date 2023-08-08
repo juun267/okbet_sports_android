@@ -10,8 +10,11 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
+import androidx.core.view.marginRight
+import androidx.core.view.marginTop
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import cn.jpush.android.api.JPushInterface
@@ -25,16 +28,13 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.crash.FirebaseLog
 import org.cxct.sportlottery.common.event.LoginSelectAccountEvent
 import org.cxct.sportlottery.common.event.RegisterInfoEvent
-import org.cxct.sportlottery.common.extentions.gone
 import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.databinding.ActivityLoginOkBinding
 import org.cxct.sportlottery.common.extentions.startActivity
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.login.LoginCodeRequest
-import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
-import org.cxct.sportlottery.repository.ImageType
 import org.cxct.sportlottery.repository.LOGIN_SRC
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
@@ -47,8 +47,8 @@ import org.cxct.sportlottery.ui.login.selectAccount.SelectAccountActivity
 import org.cxct.sportlottery.ui.login.signUp.info.RegisterInfoActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.boundsEditText.SimpleTextChangedWatcher
-import org.cxct.sportlottery.view.boundsEditText.TextFormFieldBoxes
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import splitties.activities.start
@@ -523,6 +523,10 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             if (it) {
                 binding.btnLogin.text =
                     "${getString(R.string.btn_register)} / ${getString(R.string.btn_login)}"
+                (binding.btnLogin.layoutParams as ConstraintLayout.LayoutParams).apply {
+                    this.topMargin = 24.dp
+                    binding.btnLogin.layoutParams = this
+                }
                 if (binding.eetAccount.text.isNullOrBlank()) {
                     binding.etAccount.setError(null, false)
                 }
@@ -531,6 +535,10 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 }
             } else {
                 binding.btnLogin.text = getString(R.string.btn_login)
+                (binding.btnLogin.layoutParams as ConstraintLayout.LayoutParams).apply {
+                    this.topMargin = 20.dp
+                    binding.btnLogin.layoutParams = this
+                }
                 if (binding.eetUsername.text.isNullOrBlank()) {
                     binding.etUsername.setError(null, false)
                 }

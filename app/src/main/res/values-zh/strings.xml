@@ -1528,4 +1528,5 @@
     <string name="viber">Viber</string>
     <string name="P173">您的手机号码是什么？</string>
     <string name="P174">我们将把短信验证码发送到您的手机中</string>
+    <string name="P181">使用验证码注册或登录</string>
 </resources>
