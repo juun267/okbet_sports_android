@@ -85,7 +85,7 @@ class StaticData {
         }
 
         fun worldCupOpened(): Boolean {
-            return sConfigData?.fibaConfig?.fibaEnable == 1
+            return true
         }
     }
 }
