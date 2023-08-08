@@ -32,12 +32,17 @@ object SvgUtil {
     }
 
     fun getSvgDrawable(context: Context, svgData: String): PictureDrawable? {
-        return svgDataToDrawable(context, svgData)
+        return svgFormatDataDrawable(context, svgData)
     }
 
-    private fun svgDataToDrawable(context: Context, svgData: String): PictureDrawable? {
+    private fun svgFormatDataDrawable(context: Context, svgData: String): PictureDrawable? {
         val data = String.format(context.getString(R.string.svg_format), 48, 48, 24, 24, svgData)
         val svgFile = runCatching { SVG.getFromString(data) }.getOrNull() ?: return null
+        return PictureDrawable(svgFile.renderToPicture())
+    }
+
+    fun getSvgDrawable(svgData: String): PictureDrawable?  {
+        val svgFile = runCatching { SVG.getFromString(svgData) }.getOrNull() ?: return null
         return PictureDrawable(svgFile.renderToPicture())
     }
 }
