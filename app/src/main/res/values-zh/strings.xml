@@ -1531,8 +1531,5 @@
     <string name="P176">继续使用OKBET x Glife会员登陆</string>
     <string name="P175">成为新的OKBET会员</string>
     <string name="P181">使用验证码注册或登录</string>
-    <string name="P150">流水不达标提醒</string>
-    <string name="P149">在请求提款之前，请完成 %s 投注额（根据 PAGCOR 规定，每笔存款交易需要 1 倍流水）。如需帮助，请联系客服。</string>
-    <string name="viber">Viber</string>
     <string name="agent_deposit">"代理充值 "</string>
 </resources>
