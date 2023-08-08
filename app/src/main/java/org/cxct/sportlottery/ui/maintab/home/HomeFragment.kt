@@ -25,7 +25,7 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
             Param(MainHomeFragment::class.java),
             Param(OKGamesFragment::class.java),
             Param(NewsHomeFragment::class.java, needRemove = true),
-            Param(OKLiveFragment::class.java, needRemove = true),
+            Param(OKLiveFragment::class.java),
             Param(WorldCupFragment::class.java, needRemove = true),
             Param(WorldCupGameFragment::class.java, needRemove = true)
         ))
