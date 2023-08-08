@@ -106,12 +106,15 @@ class MultiLanguagesApplication : Application() {
         mInstance = this
 
         asyncInit()
+        AppViewModel.startKoin(this@MultiLanguagesApplication)
         AppManager.init(mInstance)
         AutoSize.initCompatMultiProcess(this)
         setNightMode()
         LanguageManager.init(this)
         RequestManager.init(mInstance)
+
         if (BuildConfig.DEBUG) {
+            Timber.plant(DebugTree())
             CrashHandler.setup(mInstance) //错误日志收集
             DoKit.Builder(mInstance) //性能监控模块
                 .build()
@@ -122,8 +125,6 @@ class MultiLanguagesApplication : Application() {
     // 不需要在主线程初始化的进行异步初始化
     private fun asyncInit() = GlobalScope.async {
 
-        AppViewModel.startKoin(this@MultiLanguagesApplication)
-        setupTimber()
         TimeZone.setDefault(TimeZoneUitl.timeZone)
         //生成UUID作為設備識別碼
         setupDeviceCode()
@@ -146,7 +147,7 @@ class MultiLanguagesApplication : Application() {
     }
 
     private fun initAppsFlyerSDK() {
-        AppsFlyerLib.getInstance().init("G7q8UBYftYQfKAxnortTSN", null, this)
+        AppsFlyerLib.getInstance().init(BuildConfig.AF_APPKEY, null, this)
         AppsFlyerLib.getInstance().setDebugLog(BuildConfig.DEBUG);
         AppsFlyerLib.getInstance().start(this);
     }
@@ -154,12 +155,6 @@ class MultiLanguagesApplication : Application() {
     private fun initJpush() {
         JPushInterface.setDebugMode(BuildConfig.DEBUG)
         JPushInterface.init(this)
-    }
-
-    private fun setupTimber() {
-        if (BuildConfig.DEBUG) {
-            Timber.plant(DebugTree())
-        }
     }
 
     private fun setNightMode(switch:Boolean=false) {
@@ -326,7 +321,7 @@ class MultiLanguagesApplication : Application() {
         open fun showPromotionPopupDialog(activity: AppCompatActivity, onDismiss: ()->Unit) {
             if (activity.isDestroyed
                 || isCreditSystem()
-                || sConfigData?.imageList?.any { it.imageType == ImageType.PROMOTION.code && !it.imageName3.isNullOrEmpty() && !(getMarketSwitch() && it.isHidden) } != true) {
+                || sConfigData?.imageList?.any { it.imageType == ImageType.PROMOTION.code && !it.imageName3.isNullOrEmpty() && (!getMarketSwitch() && !it.isHidden) } != true) {
                 return
             }
 

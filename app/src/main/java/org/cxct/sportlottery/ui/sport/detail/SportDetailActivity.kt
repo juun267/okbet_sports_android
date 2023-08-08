@@ -141,9 +141,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 }
             }
 
-            override fun onTabClick(position: Int) {
 
-            }
             override fun onClose(){
                 avoidFastDoubleClick()
                 iv_back.performClick()
@@ -200,7 +198,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     } else {
                         selectMenuTab(-1)
                         vpContainer.visible()
-                        liveViewToolBar.release()
+                        liveViewToolBar.stopPlay()
                         liveViewToolBar.gone()
                         binding.collapsToolbar.gone()
                         setScrollEnable(true)
@@ -425,6 +423,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
         if (showLive) {
             setOnClickListeners(binding.ivLiveStream, binding.tvLiveStream) {
+                if (binding.ivLiveStream.isSelected) {
+                    return@setOnClickListeners
+                }
                 if (!viewModel.getLoginBoolean() && sConfigData?.noLoginWitchVideoOrAnimation == 1) {
                     AppManager.currentActivity().startLogin()
                     return@setOnClickListeners
@@ -448,6 +449,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
         if (showVideo) {
             setOnClickListeners(binding.ivVideo, binding.tvVideo) {
+                if (binding.ivVideo.isSelected) {
+                    return@setOnClickListeners
+                }
                 if (!viewModel.getLoginBoolean() && sConfigData?.noLoginWitchVideoOrAnimation == 1) {
                     AppManager.currentActivity().startLogin()
                     return@setOnClickListeners
@@ -466,6 +470,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
         if (showAnim) {
             setOnClickListeners(binding.ivAnim, binding.tvAnim) {
+                if (binding.ivAnim.isSelected) {
+                    return@setOnClickListeners
+                }
                 if (!viewModel.getLoginBoolean() && sConfigData?.noLoginWitchVideoOrAnimation == 1) {
                     AppManager.currentActivity().startLogin()
                     return@setOnClickListeners
@@ -609,7 +616,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     override fun onPause() {
         super.onPause()
-        live_view_tool_bar.stopPlayer()
+        live_view_tool_bar.stopPlay()
         cancelTimer()
     }
 
@@ -727,13 +734,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
 
         viewModel.videoUrl.observe(this) { event ->
-            val url = event?.getContentIfNotHandled() ?: return@observe
-            live_view_tool_bar.videoUrl = url
+            event?.getContentIfNotHandled()?.let { live_view_tool_bar.videoUrl = it }
         }
 
         viewModel.animeUrl.observe(this) { event ->
-            val url = event?.getContentIfNotHandled()
-            live_view_tool_bar.animeUrl = url
+            event?.getContentIfNotHandled()?.let { live_view_tool_bar.animeUrl = it }
         }
 
         viewModel.showBetInfoSingle.observe(this) {
@@ -1143,7 +1148,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             }
         }
     }
-   open fun selectMenuTab(position:Int){
+
+    private fun selectMenuTab(position:Int){
         listOf(binding.ivLiveStream,binding.ivVideo,binding.ivAnim).forEachIndexed { index, imageView ->
             imageView.isSelected = position==index
         }

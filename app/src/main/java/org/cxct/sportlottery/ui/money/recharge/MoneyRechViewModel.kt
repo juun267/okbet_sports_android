@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.appsflyer.AppsFlyerLib
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.USER_RECHARGE_ONLINE_PAY
@@ -289,6 +290,8 @@ class MoneyRechViewModel(
                     put("payer", payer)
                 AppsFlyerLib.getInstance().getAppsFlyerUID(context)?.let {
                     put("appsFlyerId", it)
+                    put("appsFlyerKey", BuildConfig.AF_APPKEY)
+                    put("appsFlyerPkgName",BuildConfig.APPLICATION_ID)
                 }
 
             }
@@ -323,6 +326,8 @@ class MoneyRechViewModel(
             ).apply {
                 AppsFlyerLib.getInstance().getAppsFlyerUID(context)?.let {
                     put("appsFlyerId", it)
+                    put("appsFlyerKey", BuildConfig.AF_APPKEY)
+                    put("appsFlyerPkgName",BuildConfig.APPLICATION_ID)
                 }
             }
             url += toUrlParamsFormat(queryMap)

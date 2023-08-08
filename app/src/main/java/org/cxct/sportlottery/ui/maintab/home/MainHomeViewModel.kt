@@ -122,6 +122,10 @@ open class MainHomeViewModel(
         get() = _activityImageList
     private val _activityImageList = MutableLiveData<List<ActivityImageList>>()
 
+    val activityDetail: LiveData<ActivityImageList>
+        get() = _activityDetail
+    private val _activityDetail = MutableLiveData<ActivityImageList>()
+
     val activityApply: LiveData<String>
         get() = _activityApply
     private val _activityApply = MutableLiveData<String>()
@@ -595,6 +599,13 @@ open class MainHomeViewModel(
     fun getActivityImageListH5() = callApi({UserRepository.activityImageListH5()}){
         if (it.succeeded()){
             _activityImageList.postValue(it.getData()?.sortedByDescending { it.imageSort })
+        }else{
+            toast(it.msg)
+        }
+    }
+    fun activityDetailH5(activityId:String) = callApi({UserRepository.activityDetailH5(activityId)}){
+        if (it.succeeded()){
+            _activityDetail.postValue(it.getData())
         }else{
             toast(it.msg)
         }

@@ -11,6 +11,8 @@ data class WithdrawAddRequest(
     val appointmentDate: String?,
     val appointmentHour: String?,
     var appsFlyerId: String? = null,
+    var appsFlyerKey: String? = null,
+    var appsFlyerPkgName: String? = null,
     val clientType: Int = 2,
     val channelMode: Int? = null,
 )

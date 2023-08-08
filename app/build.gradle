@@ -20,8 +20,8 @@ android {
         applicationId "com.okbet.ph"
         minSdk 23
         targetSdk 31
-        versionName "1.2.2"
-        versionCode 94
+        versionName "1.2.3"
+        versionCode 95
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         ndk {
@@ -33,6 +33,7 @@ android {
         buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
         buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
         buildConfigField "String", "SYSTEM_CURREMCY_SIGN", "\"₱\""
+        buildConfigField "String", "AF_APPKEY", "\"G7q8UBYftYQfKAxnortTSN\""
         buildConfigField 'Boolean', 'MOCK', 'false'
         manifestPlaceholders = [CHANNEL                : "default",
                                 NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
@@ -44,7 +45,6 @@ android {
         resValue "string", "facebook_client_token", "45b5e13714025f8083e5d9ae9300fd0f"
         resValue "string", "fb_login_protocol_scheme", "fb2339087372931297"
         resValue "string", "server_client_id", "1037678190731-qqog3vk9ndm5ovjsk7rpm4nqf5cbm071.apps.googleusercontent.com"
-
         resConfigs "xxhdpi"   //三方库只保留指定语言类型的资源 与 xxhdpi的图片资源
         //防止谷歌商店 删除包内的多语言等资源
         bundle {
@@ -106,7 +106,9 @@ android {
         }
         OkbetPH {}
         google {
-            applicationId "come.sport.phok"
+            buildConfigField "String", "AF_APPKEY", "\"wkkMAFUojRhwAMtDpeJtvN\""
+            resValue "string", "server_client_id", "1037678190731-u7ps284ota58f6brq1be4feo5vgs1fbi.apps.googleusercontent.com"
+            applicationId "come.sport.oksport"
             manifestPlaceholders = [CHANNEL: "google",]
         }
         huawei {

@@ -43,6 +43,7 @@ import kotlinx.android.synthetic.main.transfer_pay_fragment.tv_fee_amount
 import kotlinx.android.synthetic.main.transfer_pay_fragment.tv_fee_rate
 import kotlinx.android.synthetic.main.transfer_pay_fragment.tv_remark
 import kotlinx.android.synthetic.main.transfer_pay_fragment.txv_pay_bank
+import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.toIntS
 import org.cxct.sportlottery.network.common.MoneyType
@@ -693,7 +694,9 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     payerBankName = mBottomSheetList[bankPosition].bankName.toString(),
                     payerInfo = "",
                     depositDate = mCalendar.time.time,
-                    appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext())
+                    appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext()),
+                    appsFlyerKey = BuildConfig.AF_APPKEY,
+                    appsFlyerPkgName = BuildConfig.APPLICATION_ID,
                 ).apply {
                     proofImg = imgResultUrl
                 }
@@ -712,7 +715,9 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     payerBankName = null,
                     payerInfo = null,
                     depositDate = mCalendar.time.time,
-                    appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext())
+                    appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext()),
+                    appsFlyerKey = BuildConfig.AF_APPKEY,
+                    appsFlyerPkgName = BuildConfig.APPLICATION_ID,
                 ).apply {
                     proofImg = imgResultUrl
                 }
@@ -731,7 +736,9 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     payerBankName = null,
                     payerInfo = et_name.getText(),
                     depositDate = mCalendar.time.time,
-                    appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext())
+                    appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext()),
+                    appsFlyerKey = BuildConfig.AF_APPKEY,
+                    appsFlyerPkgName = BuildConfig.APPLICATION_ID,
                 ).apply {
                     proofImg = imgResultUrl
                 }

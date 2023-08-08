@@ -8,6 +8,7 @@ import com.appsflyer.AppsFlyerLib
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.toDoubleS
 import org.cxct.sportlottery.network.NetResult
@@ -287,7 +288,9 @@ class WithdrawViewModel(
             bettingStationId = bettingStationId,
             appointmentDate = appointmentDate,
             appointmentHour = appointmentHour,
-            appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(androidContext)
+            appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(androidContext),
+            appsFlyerKey = BuildConfig.AF_APPKEY,
+            appsFlyerPkgName = BuildConfig.APPLICATION_ID,
         )
     }
     //检测消息提示 预约时间提示要做判断 银行卡没有预约时间
