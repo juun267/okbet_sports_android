@@ -8,7 +8,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardGame1"
-        android:layout_width="115dp"
+        android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:elevation="0dp"
         android:visibility="gone"
@@ -28,8 +28,8 @@
 
                 <ImageView
                     android:id="@+id/iv_cover1"
-                    android:layout_width="115dp"
-                    android:layout_height="92dp" />
+                    android:layout_width="110dp"
+                    android:layout_height="88dp" />
 
                 <TextView
                     android:id="@+id/tv_firm_name1"
@@ -97,7 +97,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardGame2"
-        android:layout_width="115dp"
+        android:layout_width="110dp"
         android:layout_toRightOf="@+id/cardGame1"
         android:layout_height="wrap_content"
         android:elevation="0dp"
@@ -119,8 +119,8 @@
 
                 <ImageView
                     android:id="@+id/iv_cover2"
-                    android:layout_width="115dp"
-                    android:layout_height="92dp" />
+                    android:layout_width="110dp"
+                    android:layout_height="88dp" />
 
                 <TextView
                     android:id="@+id/tv_firm_name2"
@@ -190,7 +190,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardGame3"
-        android:layout_width="115dp"
+        android:layout_width="110dp"
         android:layout_toRightOf="@+id/cardGame2"
         android:visibility="gone"
         android:layout_height="wrap_content"
@@ -212,8 +212,8 @@
 
                 <ImageView
                     android:id="@+id/iv_cover3"
-                    android:layout_width="115dp"
-                    android:layout_height="92dp" />
+                    android:layout_width="110dp"
+                    android:layout_height="88dp" />
 
                 <TextView
                     android:id="@+id/tv_firm_name3"
@@ -282,7 +282,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardGame4"
-        android:layout_width="115dp"
+        android:layout_width="110dp"
         android:layout_below="@+id/cardGame1"
         android:visibility="gone"
         android:layout_height="wrap_content"
@@ -304,8 +304,8 @@
 
                 <ImageView
                     android:id="@+id/iv_cover4"
-                    android:layout_width="115dp"
-                    android:layout_height="92dp" />
+                    android:layout_width="110dp"
+                    android:layout_height="88dp" />
 
                 <TextView
                     android:id="@+id/tv_firm_name4"
@@ -374,7 +374,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardGame5"
-        android:layout_width="115dp"
+        android:layout_width="110dp"
         android:layout_below="@+id/cardGame1"
         android:layout_toRightOf="@+id/cardGame4"
         android:layout_marginStart="10dp"
@@ -398,8 +398,8 @@
 
                 <ImageView
                     android:id="@+id/iv_cover5"
-                    android:layout_width="115dp"
-                    android:layout_height="92dp" />
+                    android:layout_width="110dp"
+                    android:layout_height="88dp" />
 
                 <TextView
                     android:id="@+id/tv_firm_name5"
@@ -467,7 +467,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardGame6"
-        android:layout_width="115dp"
+        android:layout_width="110dp"
         android:layout_below="@+id/cardGame1"
         android:layout_toRightOf="@+id/cardGame5"
         android:layout_marginStart="10dp"
@@ -491,8 +491,8 @@
 
                 <ImageView
                     android:id="@+id/iv_cover6"
-                    android:layout_width="115dp"
-                    android:layout_height="92dp" />
+                    android:layout_width="110dp"
+                    android:layout_height="88dp" />
 
                 <TextView
                     android:id="@+id/tv_firm_name6"
