@@ -55,7 +55,7 @@ class Gloading private constructor() {
          * @param adapter adapter to create all status views
          */
         fun initDefault(adapter: Adapter) {
-            default!!.mAdapter = adapter
+            default.mAdapter = adapter
         }
 
         private fun printLog(msg: String) {
@@ -65,7 +65,7 @@ class Gloading private constructor() {
         }
     }
 
-    private lateinit var mAdapter: Adapter
+    private var mAdapter: Adapter = LoadingAdapter()
 
     /**
      * Provides view to show current loading status
