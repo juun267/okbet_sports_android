@@ -44,12 +44,7 @@ data class MatchOdd(
 
     override val oddsEps: EpsOdd? = null
 
-    @Deprecated("不用了")
-    var isExpand = false
-
     var isSelected = true
-
-    var quickPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null //足球快捷玩法的翻譯
 
     fun sortOddsMap() {
         this.oddsMap?.sortOddsMap()

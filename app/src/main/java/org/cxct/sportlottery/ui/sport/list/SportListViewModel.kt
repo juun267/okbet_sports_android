@@ -21,6 +21,7 @@ import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
+import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.maintab.worldcup.FIBAItem
@@ -51,8 +52,7 @@ open class SportListViewModel(
         get() = _oddsListGameHallResult
     private val _oddsListGameHallResult = SingleLiveEvent<Event<OddsListResult?>>()
 
-    var tempDatePosition: Int = 0 //早盤的日期選擇切頁後要記憶的問題，切換球種要清除記憶
-
+    private val _sportMenuResult = SingleLiveEvent<SportMenuResult?>()
 
     val outrightList = MutableLiveData<Event<OutrightOddsListResult?>>()
 
@@ -107,17 +107,6 @@ open class SportListViewModel(
                                 TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
                             matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
 
-                            /* #1 將賽事狀態(先前socket回傳取得)放入當前取得的賽事 */
-                            val mInfo = mFavorMatchOddList.value?.peekContent()?.find { lo ->
-                                lo.league.id == leagueOdd.league.id
-                            }?.matchOdds?.find { mo ->
-                                mo.matchInfo?.id == matchInfo.id
-                            }?.matchInfo
-
-                            matchInfo.socketMatchStatus = mInfo?.socketMatchStatus
-                            matchInfo.statusName18n = mInfo?.statusName18n
-                            matchInfo.homeScore = mInfo?.homeScore
-                            matchInfo.awayScore = mInfo?.awayScore
                         }
 
                         // 过滤掉赔率为空掉对象
@@ -266,7 +255,7 @@ open class SportListViewModel(
         }
     }
 
-    fun switchGameType(matchType: MatchType, item: Item, selectLeagueIdList: ArrayList<String>,selectMatchIdList: ArrayList<String>) {
+    fun switchGameType(matchType: MatchType, item: Item,selectLeagueIdList: ArrayList<String>,selectMatchIdList: ArrayList<String>) {
         if (jobSwitchGameType?.isActive == true) {
             jobSwitchGameType?.cancel()
         }
@@ -279,6 +268,7 @@ open class SportListViewModel(
             }
         }
     }
+
 
     private lateinit var oddsListRequestTag: Any
     private var jobSwitchGameType: Job? = null
