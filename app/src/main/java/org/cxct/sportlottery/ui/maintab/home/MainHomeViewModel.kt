@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.enums.GameEntryType
 import org.cxct.sportlottery.common.extentions.callApi
 import org.cxct.sportlottery.common.extentions.toast
 import org.cxct.sportlottery.net.PageInfo
@@ -18,6 +19,7 @@ import org.cxct.sportlottery.net.news.data.NewsDetail
 import org.cxct.sportlottery.net.news.data.NewsItem
 import org.cxct.sportlottery.net.user.UserRepository
 import org.cxct.sportlottery.net.user.data.ActivityImageList
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.NetResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bettingStation.BettingStation
@@ -218,6 +220,7 @@ open class MainHomeViewModel(
     fun getHomeOKGamesList(
     ) = callApi({
         OKGamesRepository.getHomeOKGamesList(
+            GameEntryType.OKGAMES.key,
             pageIndexLiveData.value ?: 1, pageSizeLiveData.value ?: 1
         )
     }) {
@@ -240,6 +243,7 @@ open class MainHomeViewModel(
     fun getOkLiveOKGamesList(
     ) = callApi({
         OKGamesRepository.getHomeOKGamesList(
+            GameEntryType.OKLIVE.key,
             pageIndexLiveData.value ?: 1, pageSizeOKLiveLD.value ?: 1
         )
     }) {
