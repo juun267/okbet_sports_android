@@ -73,6 +73,7 @@ object OKGamesRepository {
      * 首页okgames列表数据
      */
     suspend fun getHomeOKGamesList(
+        gameEntryType: String,
         page: Int,
         pageSize: Int
     ): ApiResult<List<OKGameBean>> {
@@ -82,16 +83,16 @@ object OKGamesRepository {
         params.addProperty("pageSize", pageSize)
         //首页推荐 1启用,2禁用
         params.addProperty("enableHome", 1)
-
+        params.addProperty("gameEntryType", gameEntryType)
         return okGamesApi.getOKGamesList(params)
     }
 
-    suspend fun getOKLiveList(page: Int, pageSize: Int, gameType: String): ApiResult<List<OKGameBean>> {
+    suspend fun getOKLiveList(page: Int, pageSize: Int, gameEntryType: String): ApiResult<List<OKGameBean>> {
         val params = paramDevice()
         params.addProperty("page", page)
         params.addProperty("pageSize", pageSize)
         params.addProperty("enableHome", 1)
-        params.addProperty("gameEntryType", gameType)
+        params.addProperty("gameEntryType", gameEntryType)
 
         return okGamesApi.getOKGamesList(params)
     }
