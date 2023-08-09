@@ -371,7 +371,7 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
                     enterGame(it)
                 }
                 .setOnMoreClick {
-                    okLiveFragment().changeGameTable(GameTab.TAB_RECENTLY)
+                    okLiveFragment().mainTabActivity().jumpToOKGames()
                 }
         }
     }
