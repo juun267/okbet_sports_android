@@ -24,6 +24,8 @@ import kotlinx.android.synthetic.main.online_crypto_pay_fragment.txv_account
 import kotlinx.android.synthetic.main.online_crypto_pay_fragment.txv_currency
 import kotlinx.android.synthetic.main.online_pay_fragment.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.network.common.RechType
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.config.RechCfg
@@ -275,12 +277,18 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
                     tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount),
                         sConfigData?.systemCurrencySign,
                         "0.00")
+                    tv_fee_rate.gone()
+                    tv_fee_amount.gone()
                 }
                 selectRechCfgs.rebateFee ?: 0.0 > 0.0 ->{
                     tv_fee_rate.text = String.format(getString(R.string.hint_feeback_rate),  ArithUtil.toMoneyFormat(selectRechCfgs?.rebateFee?.times(100))) + "%"
+                    tv_fee_rate.show()
+                    tv_fee_amount.show()
                 }
                 else ->{
                     tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate),  ArithUtil.toMoneyFormat(ArithUtil.mul(abs(selectRechCfgs?.rebateFee ?: 0.0), 100.0))) + "%"
+                    tv_fee_rate.show()
+                    tv_fee_amount.show()
                 }
             }
 
@@ -371,6 +379,11 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
                         tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount),
                             sConfigData?.systemCurrencySign,
                             "0.00")
+                        tv_fee_rate.gone()
+                        tv_fee_amount.gone()
+                    }else{
+                        tv_fee_rate.show()
+                        tv_fee_amount.show()
                     }
                 }
             }
