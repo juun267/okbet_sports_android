@@ -59,7 +59,7 @@ class ProfileModel(
     val userDetail: LiveData<UserInfoDetailsEntity> //使用者餘額
         get() = _userDetail
 
-    lateinit var areaData: AreaAllResult
+    var areaData: AreaAllResult? = null
 
     fun uploadImage(uploadImgRequest: UploadImgRequest) {
         viewModelScope.launch {
@@ -132,21 +132,19 @@ class ProfileModel(
             doNetwork(androidContext) {
                 OneBoSportApi.bettingStationService.getAreaUniversal()
             }?.let {
-                it.let {
-                    areaData = it
-                    var dbde = it.areaAll.countries.find { it.name.contains("PHILIPPINES") }
-                    dbde?.let {
-                        nationalityList.add(DialogBottomDataEntity(dbde.nationality, id = dbde.id))
-                    }
-                    it.areaAll.countries.remove(dbde)
-                    var sortList = it.areaAll.countries.sortedBy { it.nationality.substring(0, 1) }
-                    sortList.forEach {
-                        nationalityList.add(DialogBottomDataEntity(it.nationality, id = it.id))
-                    }
-                    it.areaAll.provinces.forEach {
-                        provincesList.add(DialogBottomDataEntity(it.name, id = it.id))
-                        provincesPList.add(DialogBottomDataEntity(it.name, id = it.id))
-                    }
+                areaData = it
+                var dbde = it.areaAll.countries.find { it.name.contains("PHILIPPINES") }
+                dbde?.let {
+                    nationalityList.add(DialogBottomDataEntity(dbde.nationality, id = dbde.id))
+                }
+                it.areaAll.countries.remove(dbde)
+                var sortList = it.areaAll.countries.sortedBy { it.nationality.substring(0, 1) }
+                sortList.forEach {
+                    nationalityList.add(DialogBottomDataEntity(it.nationality, id = it.id))
+                }
+                it.areaAll.provinces.forEach {
+                    provincesList.add(DialogBottomDataEntity(it.name, id = it.id))
+                    provincesPList.add(DialogBottomDataEntity(it.name, id = it.id))
                 }
             }
 
@@ -166,32 +164,43 @@ class ProfileModel(
                 OneBoSportApi.bettingStationService.userQueryUserInfoDetails()
             }?.let {
                 _userDetail.postValue(it)
+                if (areaData == null) {
+                    return@launch
+                }
+
                 it.t.province?.let { itarea ->
-                    var provincesId = areaData.areaAll.provinces.find { it.name == itarea }?.id
+                    var provincesId = areaData!!.areaAll.provinces.find { it.name == itarea }?.id
                     if (provincesId != null) {
                         updateCityData(provincesId)
                     }
                 }
                 it.t.permanentProvince?.let { itarea ->
-                    var provincesId = areaData.areaAll.provinces.find { it.name == itarea }?.id
+                    var provincesId = areaData!!.areaAll.provinces.find { it.name == itarea }?.id
                     if (provincesId != null) {
                         updateCityPData(provincesId)
                     }
                 }
+
             }
         }
     }
 
     fun updateCityData(id: Int) {
+        if (areaData == null) {
+            return
+        }
         cityList.clear()
-        areaData.areaAll.cities.filter { it.provinceId == id }.forEach {
+        areaData!!.areaAll.cities.filter { it.provinceId == id }.forEach {
             cityList.add(DialogBottomDataEntity(it.name, id = it.id))
         }
     }
 
     fun updateCityPData(id: Int) {
+        if (areaData == null) {
+            return
+        }
         cityPList.clear()
-        areaData.areaAll.cities.filter { it.provinceId == id }.forEach {
+        areaData!!.areaAll.cities.filter { it.provinceId == id }.forEach {
             cityPList.add(DialogBottomDataEntity(it.name, id = it.id))
         }
     }
