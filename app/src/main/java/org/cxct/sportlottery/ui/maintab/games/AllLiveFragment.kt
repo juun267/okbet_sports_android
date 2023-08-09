@@ -21,6 +21,7 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.adapter.RecyclerGameListAdapter
+import org.cxct.sportlottery.ui.maintab.games.adapter.RecyclerLiveListAdapter
 import org.cxct.sportlottery.ui.maintab.games.bean.GameTab
 import org.cxct.sportlottery.ui.maintab.home.HomeFragment
 import org.cxct.sportlottery.util.SpaceItemDecoration
@@ -31,7 +32,7 @@ import org.cxct.sportlottery.view.layoutmanager.SocketLinearManager
 
 // OkGames所有分类
 class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewModel::class) {
-    private val gameListAdapter= RecyclerGameListAdapter()
+    private val gameListAdapter= RecyclerLiveListAdapter()
     private fun getMainTabActivity() = activity as MainTabActivity
     fun jumpToOKGames() = getMainTabActivity().jumpToOKGames()
     private lateinit var binding: FragmentAllOkliveBinding
@@ -60,7 +61,8 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
         initSportObserve()
         //初始化热门赛事
         binding.hotMatchView.onCreate(viewModel.publicityRecommend, viewModel.oddsType, this)
-        binding.okLiveOkGamesView.setOkGamesData(this)
+//        binding.okLiveGameView.initOkLiveGames(this)
+        initRecommendLiveGame()
         viewModel.getRecommend()
     }
 
@@ -343,9 +345,26 @@ class AllLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveView
     }
 
 
-    private fun onCollectClick(view: View, gameData: OKGameBean) {
-        if (okLiveFragment().collectGame(gameData)) {
-            view.animDuang(1.3f)
+    private fun initRecommendLiveGame(){
+        viewModel.getHomeOKGamesList300()
+        viewModel.homeGamesList300.observe(this){
+            binding.okLiveGameView.visible()
+            //初始化最近游戏数据
+            binding.okLiveGameView
+                .setIcon(R.drawable.ic_home_okgames_title)
+                .setIsShowCollect(false)
+                .setMoreGone()
+                .setCategoryName(R.string.N704)
+                .setListData(it,false)
+                .setOnFavoriteClick {
+                    okLiveFragment().collectGame(it)
+                }
+                .setOnGameClick {
+                    enterGame(it)
+                }
+                .setOnMoreClick {
+                    okLiveFragment().changeGameTable(GameTab.TAB_RECENTLY)
+                }
         }
     }
 }

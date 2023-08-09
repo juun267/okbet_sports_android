@@ -265,6 +265,44 @@ open class MainHomeViewModel(
     }
 
 
+    val homeGamesList300: LiveData< List<OKGameBean>>
+        get() = _homeGamesList300
+    private val _homeGamesList300 = MutableLiveData< List<OKGameBean>>()
+    fun getHomeOKGamesList300(
+    ) = callApi({
+        OKGamesRepository.getHomeOKGamesList(
+            GameEntryType.OKGAMES.key,
+             1,  300
+        )
+    }) {
+        if (it.getData() == null) {
+            //hide loading
+            _homeGamesList300.value = arrayListOf()
+        } else {
+            _homeGamesList300.value=it.getData()
+        }
+    }
+
+
+
+    val homeLiveGamesList300: LiveData< List<OKGameBean>>
+        get() = _homeLiveGamesList300
+    private val _homeLiveGamesList300 = MutableLiveData< List<OKGameBean>>()
+    fun getHomeLiveGamesList300(
+    ) = callApi({
+        OKGamesRepository.getHomeOKGamesList(
+            GameEntryType.OKLIVE.key,
+            1,  300
+        )
+    }) {
+        if (it.getData() == null) {
+            //hide loading
+            _homeLiveGamesList300.value = arrayListOf()
+        } else {
+            _homeLiveGamesList300.value=it.getData()
+        }
+    }
+
     /**
      * 进入OKgame游戏
      */
