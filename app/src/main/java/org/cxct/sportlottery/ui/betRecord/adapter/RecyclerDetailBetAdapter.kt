@@ -10,6 +10,7 @@ import org.cxct.sportlottery.common.extentions.visible
 import org.cxct.sportlottery.databinding.ItemBetOrderDetailBinding
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.bet.settledDetailList.ParlayComsDetailVO
+import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.betRecord.ParlayType
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
@@ -39,14 +40,14 @@ class RecyclerDetailBetAdapter(val row: Row) : BindingAdapter<ParlayComsDetailVO
 
 
             //投注金额
-            tvBetTotal.text = " ₱ ${TextUtil.formatMoney(item.stake.toString(),2)}"
+            tvBetTotal.text = " $showCurrencySign ${TextUtil.formatMoney(item.stake.toString(),2)}"
 
 
             //可赢金额
             when(row.status){
                 //未结单  可赢：xxx
                 0,1->{
-                    tvBetWin.text = " ₱ ${TextUtil.formatMoney(item.winMoney.toString().replace("-",""),2)}"
+                    tvBetWin.text = " ${showCurrencySign} ${TextUtil.formatMoney(item.winMoney.toString().replace("-",""),2)}"
                     tvBetWin.setColors(R.color.color_ff0000)
                     when(row.parlayType){
                         //单注 描述用 可赢：
@@ -61,20 +62,20 @@ class RecyclerDetailBetAdapter(val row: Row) : BindingAdapter<ParlayComsDetailVO
                 }
                 //已中奖   赢：xxx
                 2,3->{
-                    tvBetWin.text = " ₱ ${TextUtil.formatMoney(item.winMoney.toString(),2)}"
+                    tvBetWin.text = " ${showCurrencySign} ${TextUtil.formatMoney(item.winMoney.toString(),2)}"
                     tvBetWin.setColors(R.color.color_ff0000)
                     tvWinLabel.text="${context.getString(R.string.win)}："
                 }
                 //未中奖  输：xxx
                 4,5->{
                     //输的金额
-                    tvBetWin.text = " ₱ ${TextUtil.formatMoney(item.winMoney.toString().replace("-",""),2)}"
+                    tvBetWin.text = " ${showCurrencySign} ${TextUtil.formatMoney(item.winMoney.toString().replace("-",""),2)}"
                     tvBetWin.setColors(R.color.color_6D7693)
                     tvWinLabel.text="${context.getString(R.string.lose)}："
                 }
                 //其他  ₱ --
                 else->{
-                    tvBetWin.text = " ₱ --"
+                    tvBetWin.text = " ${showCurrencySign} --"
                     tvBetWin.setColors(R.color.color_6D7693)
                     tvWinLabel.text=""
                 }
@@ -91,14 +92,14 @@ class RecyclerDetailBetAdapter(val row: Row) : BindingAdapter<ParlayComsDetailVO
 
 
             //投注金额
-            tvBetTotal2.text = " ₱ ${TextUtil.formatMoney(row.totalAmount,2)}"
+            tvBetTotal2.text = " ${showCurrencySign} ${TextUtil.formatMoney(row.totalAmount,2)}"
 
             //可赢金额
             when(row.status){
                 //未结单  可赢：xxx
                 0,1->{
                     val tempRebate:Double=row.rebateAmount?:0.0
-                    tvBetWin2.text = " ₱ ${TextUtil.formatMoney(row.winnable+tempRebate,2)}"
+                    tvBetWin2.text = " ${showCurrencySign} ${TextUtil.formatMoney(row.winnable+tempRebate,2)}"
                     tvBetWin2.setColors(R.color.color_ff0000)
                     when(row.parlayType){
                         //单注 描述用 可赢：
@@ -113,7 +114,7 @@ class RecyclerDetailBetAdapter(val row: Row) : BindingAdapter<ParlayComsDetailVO
                 }
                 //已中奖   赢：xxx
                 2,3->{
-                    tvBetWin2.text = " ₱ ${TextUtil.formatMoney(row.win?:0,2)}"
+                    tvBetWin2.text = " ${showCurrencySign} ${TextUtil.formatMoney(row.win?:0,2)}"
                     tvBetWin2.setColors(R.color.color_ff0000)
                     tvWinLabel2.text="${context.getString(R.string.win)}："
                 }
@@ -121,13 +122,13 @@ class RecyclerDetailBetAdapter(val row: Row) : BindingAdapter<ParlayComsDetailVO
                 4,5->{
                     val tempRebate:Double=row.rebateAmount?:0.0
                     val totalMoney=(row.win?:0).toString().replace("-","").toDouble()+tempRebate
-                    tvBetWin2.text = " ₱ ${TextUtil.formatMoney(totalMoney,2)}"
+                    tvBetWin2.text = " ${showCurrencySign} ${TextUtil.formatMoney(totalMoney,2)}"
                     tvBetWin2.setColors(R.color.color_6D7693)
                     tvWinLabel2.text="${context.getString(R.string.lose)}："
                 }
                 //其他  ₱ --
                 else->{
-                    tvBetWin2.text = " ₱ --"
+                    tvBetWin2.text = " ${showCurrencySign} --"
                     tvBetWin2.setColors(R.color.color_6D7693)
                     tvWinLabel2.text=""
                 }
