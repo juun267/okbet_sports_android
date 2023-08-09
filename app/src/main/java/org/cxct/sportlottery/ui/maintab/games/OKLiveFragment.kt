@@ -58,7 +58,7 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
         fragmentHelper.getCurrentFragment().onHiddenChanged(hidden)
     }
 
-    private inline fun mainTabActivity() = activity as MainTabActivity
+     inline fun mainTabActivity() = activity as MainTabActivity
 
     override fun createRootView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
