@@ -17,6 +17,6 @@ data class RecordNewEvent(
     val gameCode: String? = null // 如果gameCode为空则是体育投注
     ) : ServiceEventType {
 
-        fun isSportBet() = gameCode.isEmptyStr()
+        fun isSportBet() = gameCode == null
 
     }

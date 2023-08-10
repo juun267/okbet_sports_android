@@ -3,6 +3,7 @@ package org.cxct.sportlottery.network.common
 import android.content.Context
 import androidx.annotation.StringRes
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.isEmptyStr
 import org.cxct.sportlottery.common.proguards.KeepMembers
 
 @KeepMembers
@@ -188,7 +189,11 @@ enum class GameType(val key: String, @StringRes val string: Int) {
             }
         }
 
-        fun getSportGameImg(gameType: String): Int {
+        fun getSportGameImg(gameType: String?): Int {
+            if (gameType.isEmptyStr()) {
+                return R.drawable.ic_game_champ
+            }
+
             return when (gameType) {
                 FT.key -> R.drawable.img_game_sport_ft
                 BK.key -> R.drawable.img_game_sport_bk
