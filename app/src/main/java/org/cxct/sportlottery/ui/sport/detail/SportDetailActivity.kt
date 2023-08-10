@@ -24,6 +24,9 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_detail_sport.*
+import kotlinx.android.synthetic.main.activity_detail_sport.fl_bet_list
+import kotlinx.android.synthetic.main.activity_detail_sport.parlayFloatWindow
+import kotlinx.android.synthetic.main.activity_main_tab.*
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import kotlinx.android.synthetic.main.content_baseball_status.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_collaps1.*
@@ -516,7 +519,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     override fun updateBetListCount(num: Int) {
         setUpBetBarVisible()
-        binding.parlayFloatWindow.tv_bet_list_count.text = num.toString()
+        binding.parlayFloatWindow.updateCount(num.toString())
         Timber.e("num: $num")
         if (num > 0) viewModel.getMoneyAndTransferOut()
     }

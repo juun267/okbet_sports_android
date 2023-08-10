@@ -8,9 +8,12 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import me.jessyan.autosize.utils.ScreenUtils
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.BetBarLayout2Binding
+import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.ui.betList.BetListFragment
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import timber.log.Timber
 import kotlin.math.abs
@@ -28,12 +31,10 @@ class ParlayFloatingWindow @JvmOverloads constructor(
         initView()
     }
 
-    lateinit var tv_bet_list_count: TextView
     lateinit var binding: BetBarLayout2Binding
 
     private fun initView() {
         binding = BetBarLayout2Binding.inflate(LayoutInflater.from(context), this, true)
-        tv_bet_list_count = binding.tvBetListCount
     }
 
 
@@ -107,8 +108,27 @@ class ParlayFloatingWindow @JvmOverloads constructor(
     }
 
     fun setBetText(string: String) {
-        binding.tvBetList.text = string
+        binding.tvBetList.apply {
+            text = string
+            background = ContextCompat.getDrawable(context,R.drawable.bg_circle_yellow)
+        }
     }
-
+    fun updateCount(count: String){
+        val cannotParlay =
+            BetInfoRepository.currentBetType == BetListFragment.PARLAY
+                    && BetInfoRepository.betInfoList.value?.peekContent()?.any { it.pointMarked }==true
+                    && BetInfoRepository.betIDList.value?.peekContent()?.size?:0>1
+        if (cannotParlay){
+            binding.tvBetListCount.apply {
+                text = ""
+                background = ContextCompat.getDrawable(context,R.drawable.bg_parlay_circle_error)
+            }
+        }else{
+            binding.tvBetListCount.apply {
+                text = count
+                background = ContextCompat.getDrawable(context,R.drawable.bg_circle_yellow)
+            }
+        }
+    }
 
 }

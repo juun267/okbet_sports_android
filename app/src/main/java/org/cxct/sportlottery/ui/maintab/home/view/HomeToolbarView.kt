@@ -62,6 +62,7 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     private lateinit var activity: MainTabActivity
     private lateinit var viewModel: BaseOddButtonViewModel
     private var userModelEnable = true
+    private var onlyShowSeach = true
 
     private fun addChildView() {
         ivMenuLeft = AppCompatImageView(context)
@@ -171,6 +172,12 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
     }
 
     private fun setupLogin() {
+        if (onlyShowSeach){
+            searchView.visible()
+            loginLayout.gone()
+            userMoneyView.gone()
+            return
+        }
         if (viewModel.isLogin.value != true) {
             loginLayout.visible()
             searchView.gone()
@@ -196,12 +203,14 @@ class HomeToolbarView  @JvmOverloads constructor(context: Context, attrs: Attrib
         fragment: Fragment,
         activity: MainTabActivity,
         viewModel: BaseOddButtonViewModel,
-        moneyViewEnable: Boolean = true
+        moneyViewEnable: Boolean = true,
+        onlyShowSeach: Boolean = false,
     ) {
         this.fragment = fragment
         this.activity = activity
         this.viewModel = viewModel
         this.userModelEnable = moneyViewEnable
+        this.onlyShowSeach = onlyShowSeach
 
         initView()
         initObserver()

@@ -199,7 +199,9 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
 
     private fun initGameListView() = binding.gameList.run {
 
-        setupBackTop(binding.ivBackTop, 500.dp, tabCode = matchType.postValue)
+        setupBackTop(binding.ivBackTop, 500.dp, tabCode = matchType.postValue, scrollTopFunc = {
+            (parentFragment as SportFragment2).onScrollTop(it ==0)
+        })
         layoutManager = getGameLayoutManger()
         adapter = getGameListAdapter().apply { setEmptyView(EmptySportGamesView(context())) }
         addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -361,5 +363,6 @@ abstract class BaseSportListFragment<M, VB>: BindingSocketFragment<SportListView
             betPlayCateNameMap = betPlayCateNameMap)
         )
     }
+
 
 }

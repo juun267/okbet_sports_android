@@ -31,6 +31,7 @@ import org.cxct.sportlottery.ui.sport.list.adapter.SportFooterGamesView
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.view.dialog.PopImageDialog
 import org.cxct.sportlottery.view.overScrollView.OverScrollDecoratorHelper
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -91,7 +92,7 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
 
     fun initToolBar() = binding.homeToolbar.run {
         background = null
-        attach(this@SportFragment2, getMainTabActivity(), viewModel, false)
+        attach(this@SportFragment2, getMainTabActivity(), viewModel, moneyViewEnable = false, onlyShowSeach = true)
         searchIcon.setOnClickListener { startActivity(SportSearchtActivity::class.java) }
         ivMenuLeft.setOnClickListener {
             getMainTabActivity().showSportLeftMenu()
@@ -370,5 +371,10 @@ class SportFragment2: BindingSocketFragment<SportTabViewModel, FragmentSport2Bin
             }
         }
     }
-
+    fun onScrollTop(isTop: Boolean){
+        binding.tabShadow.layoutParams.apply {
+            height = if(isTop) 0 else 1.dp
+            binding.tabShadow.layoutParams = this
+        }
+    }
 }
