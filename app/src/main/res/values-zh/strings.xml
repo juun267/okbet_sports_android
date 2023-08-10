@@ -1533,4 +1533,7 @@
     <string name="P181">使用验证码注册或登录</string>
     <string name="agent_deposit">"代理充值 "</string>
     <string name="P184">精选真人游戏</string>
+    <string name="P120">派彩</string>
+    <string name="I031">注单详情</string>
+    <string name="B036">立即游戏</string>
 </resources>

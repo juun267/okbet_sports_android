@@ -1607,6 +1607,9 @@
     <string name="P181">Register Or Login with Verification Code</string>
     <string name="agent_deposit">Agent Deposit</string>
     <string name="P184">Featured OKLive</string>
+    <string name="P120">Payout</string>
+    <string name="I031">Bets Details</string>
+    <string name="B036">Play Now</string>
 
     <string name="N417">Rejected</string>
     <string name="P172">No e-sports events yet!</string>
