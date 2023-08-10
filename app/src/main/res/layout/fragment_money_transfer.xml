@@ -33,12 +33,13 @@
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/view_refresh"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="15dp"
         app:srlDragRate="0.3"
         app:srlEnableLoadMore="true"
         app:srlEnablePureScrollMode="true"
         app:layout_constrainedHeight="true"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintBottom_toTopOf="@+id/btn_recycle"
         app:layout_constraintTop_toBottomOf="@+id/space"
         app:layout_constraintVertical_bias="0"
         app:layout_constraintVertical_chainStyle="packed">
@@ -60,7 +61,8 @@
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="20dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/selector_button_default"
         android:gravity="center"
         android:maxWidth="100dp"
@@ -68,20 +70,20 @@
         android:textAllCaps="false"
         android:textColor="@color/color_FCFCFC"
         android:textSize="@dimen/textSize16sp"
-        app:layout_constraintTop_toBottomOf="@id/view_refresh" />
+        app:layout_constraintBottom_toTopOf="@+id/textView2" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
         android:layout_marginHorizontal="20dp"
         android:text="@string/one_button_click_will_recycle_all_money_into_account"
         android:textColor="@color/color_E23434"
         android:textSize="@dimen/textSize13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_recycle" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
