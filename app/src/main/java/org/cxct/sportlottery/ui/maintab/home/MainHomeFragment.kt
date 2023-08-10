@@ -45,6 +45,7 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
 
     fun jumpToInplaySport() = getMainTabActivity().jumpToInplaySport()
     fun jumpToOKGames() = getMainTabActivity().jumpToOKGames()
+    fun jumpToOKLive() = getMainTabActivity().jumpToOkLive()
 
     override fun onInitView(view: View) = binding.run {
         scrollView.setupBackTop(ivBackTop, 180.dp) {
@@ -80,7 +81,9 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
     override fun onBindViewStatus(view: View) = binding.run {
         homeTopView.setup(this@MainHomeFragment)
         hotMatchView.onCreate(viewModel.publicityRecommend, viewModel.oddsType,this@MainHomeFragment)
-        okGamesView.setOkGamesData(this@MainHomeFragment)
+//        okGamesView.setOkGamesData(this@MainHomeFragment)
+        gameViewOkGame.initOkGames(this@MainHomeFragment)
+        gameViewOkLive.initOkLiveList(this@MainHomeFragment)
         initBetWinsRecodeLayout()
         initObservable()
         binding.winsRankView.loadData()

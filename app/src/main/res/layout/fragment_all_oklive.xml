@@ -9,23 +9,39 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include
-            android:id="@+id/includeLiveAll"
-            layout="@layout/include_view_oklive_all"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
-        <LinearLayout
-            android:id="@+id/okLiveP3LayoutProvider"
-            android:layout_width="match_parent"
-            android:layout_height="24dp"
-            android:layout_marginHorizontal="12dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            tools:visibility="visible">
+    <org.cxct.sportlottery.ui.maintab.games.view.LivePageView
+        android:id="@+id/gameViewCollect"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content"/>
+
+
+    <org.cxct.sportlottery.ui.maintab.games.view.LivePageView
+        android:id="@+id/gameViewRecent"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_games_all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="false"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_game_categroy" />
+
+    <LinearLayout
+        android:id="@+id/okLiveP3LayoutProvider"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible">
 
             <ImageView
                 android:layout_width="24dp"
@@ -81,10 +97,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <org.cxct.sportlottery.ui.maintab.home.view.OKLiveOkGamesView
-            android:id="@+id/okLiveOkGamesView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+<!--    <org.cxct.sportlottery.ui.maintab.home.view.OKLiveOkGamesView-->
+<!--        android:id="@+id/okLiveOkGamesView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content" />-->
+
+
+    <org.cxct.sportlottery.ui.maintab.games.view.GamesPageView
+        android:id="@+id/okLiveGameView"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content"/>
 
         <!--part-5-->
         <org.cxct.sportlottery.ui.maintab.home.view.HomeButtomView

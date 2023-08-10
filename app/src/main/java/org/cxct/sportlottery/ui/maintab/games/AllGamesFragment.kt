@@ -133,6 +133,7 @@ class AllGamesFragment : BaseBottomNavigationFragment<OKGamesViewModel>(OKGamesV
 
             if(viewModel.loginRepository.isLogined()){
                 if(it.second.isNullOrEmpty()){
+                    binding.gameViewCollect.gone()
                     return@observe
                 }
                 binding.gameViewCollect.visible()
