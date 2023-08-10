@@ -7,7 +7,9 @@ import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.text.TextUtils
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.View
+import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -291,59 +293,6 @@ class OddsButtonDetail @JvmOverloads constructor(
     }
 
 
-    fun setupOddForEPS(odd: Odd?, oddsType: OddsType) {
-        tv_name.apply {
-            text = odd?.extInfo?.toDoubleOrNull()?.let { TextUtil.formatForOdd(it) }
-                ?: odd?.extInfo //低賠率會返回在extInfo
-            paint?.flags = Paint.STRIKE_THRU_TEXT_FLAG or Paint.ANTI_ALIAS_FLAG //設置中間線
-        }
-
-        tv_spread.visibility = View.GONE
-
-        tv_odds.apply {
-            setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    R.color.selector_button_odd_bottom_text_eps
-                )
-            )
-            text = TextUtil.formatForOdd(getOdds(odd, oddsType))
-        }
-        val diff = getOdds(odd, oddsType)
-        if (diff < 0.0) {
-            tv_odds.setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    R.color.selector_button_odd_bottom_text_red
-                )
-            )
-            iv_arrow.setImageResource(R.drawable.ic_arrow_odd_down)
-
-        } else if (diff > 0.0) {
-            tv_odds.setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    R.color.selector_button_odd_bottom_text_green
-                )
-            )
-            iv_arrow.setImageResource(R.drawable.ic_arrow_odd_up)
-        } else {
-            tv_odds.setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    R.color.selector_button_odd_bottom_text_eps
-                )
-            )
-            iv_arrow.setImageDrawable(null)
-        }
-
-        isSelected = odd?.isSelected ?: false
-        //[Martin]馬來盤＆印尼盤會有負數的賠率
-        //betStatus = if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
-        betStatus = if (odd == null) BetStatus.LOCKED.code else odd.status
-
-    }
-
     //常駐顯示按鈕 依狀態隱藏鎖頭
     private fun setupBetStatus(betStatus: Int) {
         img_odd_lock.apply {
@@ -381,7 +330,9 @@ class OddsButtonDetail @JvmOverloads constructor(
                 )
                 iv_arrow.apply {
                     setImageResource(R.drawable.icon_odds_up)
+                    (layoutParams as LinearLayout.LayoutParams).gravity = Gravity.TOP
                     visibility = View.VISIBLE
+
                 }
                 status = true
                 isActivated = false
@@ -395,6 +346,7 @@ class OddsButtonDetail @JvmOverloads constructor(
                 )
                 iv_arrow.apply {
                     setImageResource(R.drawable.icon_odds_down)
+                    (layoutParams as LinearLayout.LayoutParams).gravity = Gravity.BOTTOM
                     visibility = View.VISIBLE
                 }
                 status = true
@@ -428,49 +380,6 @@ class OddsButtonDetail @JvmOverloads constructor(
             ll_odd_detail.tag = ll_odd_detail.flashAnimation(1000,2,0.3f)
         }
 //        updateOddsTextColor()
-    }
-
-    /**
-     * 透過當前賠率更新賠率文字顏色
-     */
-    private fun updateOddsTextColor() {
-        //負盤
-        val diff = getOdds(mOdd, mOddsType)
-        if (diff < 0.0) {
-            tv_odds.setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    R.color.selector_button_odd_bottom_text_red
-                )
-            )
-            iv_arrow.apply {
-                setImageResource(R.drawable.selector_odds_arrow_down)
-                visibility = View.VISIBLE
-            }
-        } else if (diff > 0.0) {//正盤
-            tv_odds.setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    R.color.selector_button_odd_bottom_text_green
-                )
-            )
-            iv_arrow.apply {
-                setImageResource(R.drawable.selector_odds_arrow_up)
-                visibility = View.VISIBLE
-            }
-        } else {
-            tv_odds.setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    if (MultiLanguagesApplication.isNightMode) R.color.selector_button_odd_bottom_text_dark
-                    else R.color.selector_button_odd_bottom_text
-                )
-            )
-            iv_arrow.apply {
-                setImageDrawable(null)
-                visibility = GONE
-            }
-        }
     }
 
     /**
