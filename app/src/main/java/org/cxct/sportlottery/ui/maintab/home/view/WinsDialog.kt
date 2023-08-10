@@ -39,7 +39,7 @@ class WinsDialog(private val betRecode: RecordNewEvent,
             }
             findViewById<ImageView>(R.id.ivGamesIcon)!!.setImageResource(gameIcon)
         } else {
-            findViewById<ImageView>(R.id.ivGamesIcon)!!.load(betRecode.iconUrl)
+            findViewById<ImageView>(R.id.ivGamesIcon)!!.load(betRecode.iconUrl, R.drawable.ic_okgames_nodata)
         }
 
         setText(R.id.tvGameName, betRecode.games)
