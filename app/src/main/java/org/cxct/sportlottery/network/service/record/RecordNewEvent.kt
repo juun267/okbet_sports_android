@@ -11,12 +11,12 @@ data class RecordNewEvent(
     val games: String,
     val betAmount: String,
     var profitAmount: String,
-    val iconUrl: String?= null,
+    val h5ImgGame: String?= null,
     val betTime: Long = 0,
     val firmType: String = "",
     val gameCode: String? = null // 如果gameCode为空则是体育投注
     ) : ServiceEventType {
 
-        fun isSportBet() = gameCode == null
-
+        fun isSportBet() = gameCode.isEmptyStr()
+        var isWS = false
     }
