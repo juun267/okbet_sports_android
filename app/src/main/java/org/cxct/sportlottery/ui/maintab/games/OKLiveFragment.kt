@@ -32,13 +32,7 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
     }
 
     private lateinit var binding: FragmentOkgamesBinding
-    private val fragmentHelper by lazy {
-        FragmentHelper(
-            childFragmentManager, R.id.fragmentContainer, arrayOf(
-                Param(AllLiveFragment::class.java), Param(PartLiveFragment::class.java)
-            )
-        )
-    }
+    private lateinit var fragmentHelper: FragmentHelper
 
     private fun isAllTba() = fragmentHelper.getCurrentFragment() is AllLiveFragment
 
@@ -68,7 +62,12 @@ class OKLiveFragment : BaseBottomNavigationFragment<OKLiveViewModel>(OKLiveViewM
     override fun createRootView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        return FragmentOkgamesBinding.inflate(layoutInflater).apply { binding = this }.root
+        binding = FragmentOkgamesBinding.inflate(layoutInflater)
+        fragmentHelper = FragmentHelper(childFragmentManager, R.id.fragmentContainer, arrayOf(
+                Param(AllLiveFragment::class.java), Param(PartLiveFragment::class.java)
+            )
+        )
+        return binding.root
     }
 
     override fun onBindView(view: View) {
