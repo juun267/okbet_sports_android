@@ -6,7 +6,8 @@
     android:layout_height="319dp"
     android:layout_gravity="center"
     android:orientation="horizontal"
-    android:background="@drawable/bg_wins_betdetails">
+    android:background="@drawable/bg_wins_betdetails"
+    android:id="@+id/rootView">
 
     <ImageView
         android:id="@+id/ivTips"
@@ -57,25 +58,28 @@
             android:id="@+id/ivGamesIcon"
             android:layout_width="80dp"
             android:layout_height="80dp"
+            android:scaleType="centerCrop"
             tools:src="@drawable/ic_okgames_nodata"/>
 
     </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/tvGameName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cardGameIcon"
         app:layout_constraintTop_toTopOf="@+id/cardGameIcon"
         android:layout_marginTop="10dp"
         android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
+        android:layout_marginEnd="20dp"
         android:includeFontPadding="false"
-        android:maxLines="2"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:textSize="@dimen/textSize18sp"
         android:textColor="@color/color_0D2245"
         android:textStyle="bold"
-        tools:text="road to uefa" />
+        tools:text="road to uefa road to uefa road to uefa road to uefa road to uefa" />
 
     <TextView
         android:id="@+id/tvPlayer"
@@ -83,8 +87,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@+id/tvGameName"
         app:layout_constraintTop_toBottomOf="@+id/tvGameName"
-        android:layout_marginTop="6dp"
-        android:includeFontPadding="false"
+        android:layout_marginTop="2dp"
         android:textSize="@dimen/textSize13sp"
         android:textColor="@color/color_434C65"
         tools:text="player: nickname"/>
@@ -95,8 +98,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@+id/tvGameName"
         app:layout_constraintTop_toBottomOf="@+id/tvPlayer"
-        android:layout_marginTop="7dp"
-        android:includeFontPadding="false"
         android:textSize="@dimen/textSize13sp"
         android:textColor="@color/color_434C65"
         tools:text="Bet time:  July 25, 2023 11:26:49"/>
@@ -120,7 +121,7 @@
             android:includeFontPadding="false"
             android:textSize="14sp"
             android:textColor="@color/color_BEC7DC"
-            android:text="@string/bet_info_bet_quota"/>
+            android:text="@string/F011"/>
 
         <TextView
             android:id="@+id/tvBet"
