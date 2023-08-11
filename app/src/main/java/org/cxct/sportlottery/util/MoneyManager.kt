@@ -171,7 +171,7 @@ object MoneyManager {
             RechType.GRABPAY.type -> theContext.getString(R.string.recharge_channel_grabpay)
             RechType.PAYMAYA.type -> theContext.getString(R.string.recharge_channel_paymaya)
             RechType.BETTING_STATION.type -> theContext.getString(R.string.betting_station_deposit)
-            RechType.BETTING_STATION_AGENT.type -> theContext.getString(R.string.agent_deposit)
+            RechType.BETTING_STATION_AGENT.type -> theContext.getString(R.string.P183)
             else -> ""
         }
     }
