@@ -21,6 +21,7 @@ import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
+import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.maintab.worldcup.FIBAItem
@@ -50,6 +51,8 @@ open class SportListViewModel(
     val oddsListGameHallResult: LiveData<Event<OddsListResult?>>
         get() = _oddsListGameHallResult
     private val _oddsListGameHallResult = SingleLiveEvent<Event<OddsListResult?>>()
+
+    private val _sportMenuResult = SingleLiveEvent<SportMenuResult?>()
 
     val outrightList = MutableLiveData<Event<OutrightOddsListResult?>>()
 
@@ -252,7 +255,7 @@ open class SportListViewModel(
         }
     }
 
-    fun switchGameType(matchType: MatchType, item: Item, selectLeagueIdList: ArrayList<String>,selectMatchIdList: ArrayList<String>) {
+    fun switchGameType(matchType: MatchType, item: Item,selectLeagueIdList: ArrayList<String>,selectMatchIdList: ArrayList<String>) {
         if (jobSwitchGameType?.isActive == true) {
             jobSwitchGameType?.cancel()
         }
@@ -265,6 +268,7 @@ open class SportListViewModel(
             }
         }
     }
+
 
     private lateinit var oddsListRequestTag: Any
     private var jobSwitchGameType: Job? = null
@@ -541,93 +545,5 @@ open class SportListViewModel(
         sportMenuApiResult.value = sportMenuResult
     }
 
-    private fun SportMenuData.updateSportSelectState(
-        matchType: MatchType?,
-        gameTypeCode: String?,
-    ): SportMenuData {
-        when (matchType) {
-            MatchType.IN_PLAY -> this.menu.inPlay.items.map { sport ->
-                sport.isSelected = when {
-                    (gameTypeCode != null && sport.num > 0) -> {
-                        sport.code == gameTypeCode
-                    }
-                    else -> {
-                        this.menu.inPlay.items.indexOf(sport) == 0
-                    }
-                }
-            }
-            MatchType.TODAY -> this.menu.today.items.map { sport ->
-                sport.isSelected = when {
-                    (gameTypeCode != null && sport.num > 0) -> {
-                        sport.code == gameTypeCode
-                    }
-                    else -> {
-                        this.menu.today.items.indexOf(sport) == 0
-                    }
-                }
-            }
-            MatchType.EARLY -> this.menu.early.items.map { sport ->
-                sport.isSelected = when {
-                    (gameTypeCode != null && sport.num > 0) -> {
-                        sport.code == gameTypeCode
-                    }
-                    else -> {
-                        this.menu.early.items.indexOf(sport) == 0
-                    }
-                }
-            }
-            MatchType.CS -> this.menu.cs.items.map { sport ->
-                sport.isSelected = when {
-                    (gameTypeCode != null && sport.num > 0) -> {
-                        sport.code == gameTypeCode
-                    }
-                    else -> {
-                        this.menu.cs.items.indexOf(sport) == 0
-                    }
-                }
-            }
-            MatchType.PARLAY -> this.menu.parlay.items.map { sport ->
-                sport.isSelected = when {
-                    (gameTypeCode != null && sport.num > 0) -> {
-                        sport.code == gameTypeCode
-                    }
-                    else -> {
-                        this.menu.parlay.items.indexOf(sport) == 0
-                    }
-                }
-            }
-            MatchType.OUTRIGHT -> this.menu.outright.items.map { sport ->
-                sport.isSelected = when {
-                    (gameTypeCode != null && sport.num > 0) -> {
-                        sport.code == gameTypeCode
-                    }
-                    else -> {
-                        this.menu.outright.items.indexOf(sport) == 0
-                    }
-                }
-            }
-            MatchType.AT_START -> this.atStart.items.map { sport ->
-                sport.isSelected = when {
-                    (gameTypeCode != null && sport.num > 0) -> {
-                        sport.code == gameTypeCode
-                    }
-                    else -> {
-                        this.atStart.items.indexOf(sport) == 0
-                    }
-                }
-            }
-            MatchType.EPS -> this.menu.eps?.items?.map { sport ->
-                sport.isSelected = when {
-                    (gameTypeCode != null && sport.num > 0) -> {
-                        sport.code == gameTypeCode
-                    }
-                    else -> {
-                        this.menu.eps.items.indexOf(sport) == 0
-                    }
-                }
-            }
-        }
-        return this
-    }
 
 }

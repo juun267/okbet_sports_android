@@ -5,25 +5,31 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.annotation.DrawableRes
-import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemClickListener
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.common.extentions.doOnDestory
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.service.record.RecordNewEvent
+import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.games.OkGameRecordAdapter
+import org.cxct.sportlottery.ui.maintab.home.MainHomeViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.RCVDecoration
 import kotlin.random.Random
 
 class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
-    : LinearLayout(context, attrs, defStyle) {
+    : LinearLayout(context, attrs, defStyle), OnItemClickListener {
 
     private var winsRequest: (() -> Unit)? = null
     private var betRequest: (() -> Unit)? = null
@@ -32,7 +38,7 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
     private val rbtnLbw by lazy { findViewById<RadioButton>(R.id.rbtn_lbw) }
     private val rvOkgameRecord by lazy { findViewById<RecyclerView>(R.id.rv_okgame_record) }
 
-    private val gameRecordAdapter by lazy { OkGameRecordAdapter() }
+    private val gameRecordAdapter by lazy { OkGameRecordAdapter().apply { setOnItemClickListener(this@WinsRankView) } }
     private val httpBetDataList: MutableList<RecordNewEvent> = mutableListOf()//接口返回的最新投注
     private val wsBetDataList: MutableList<RecordNewEvent> = mutableListOf()//ws的最新投注
     private val betShowingData: MutableList<RecordNewEvent> = mutableListOf()//最新投注显示在界面上的数据
@@ -40,6 +46,7 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
     private val httpWinsDataList: MutableList<RecordNewEvent> = mutableListOf()//接口返回的最新大奖
     private val wsWinsDataList: MutableList<RecordNewEvent> = mutableListOf()//ws的最新大奖
     private val winsShowingData: MutableList<RecordNewEvent> = mutableListOf()//最新大奖显示在界面上的数据
+    private lateinit var fragment: BaseFragment<out MainHomeViewModel>
 
     init {
         LayoutInflater.from(context).inflate(R.layout.layout_wins_rank, this, true)
@@ -75,8 +82,9 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
         }
     }
 
-    fun setUp(fragment: Fragment, blockWinsRequest: () -> Unit, blockBetRequest: () -> Unit) {
+    fun setUp(fragment: BaseFragment<out MainHomeViewModel>, blockWinsRequest: () -> Unit, blockBetRequest: () -> Unit) {
         fragment.doOnDestory { stopPostLoop() }
+        this.fragment = fragment
         winsRequest = blockWinsRequest
         betRequest = blockBetRequest
         postLoop()
@@ -170,6 +178,20 @@ class WinsRankView @JvmOverloads constructor(context: Context, attrs: AttributeS
 
     fun onNewHttpBetData(dataList: List<RecordNewEvent>) {
         httpBetDataList.addAll(dataList)
+    }
+
+    override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
+        WinsDialog(adapter.getItem(position) as RecordNewEvent, context as AppCompatActivity) { betRecode ->
+            if (!betRecode.isSportBet()) {
+                fragment.viewModel.requestEnterThirdGame("${betRecode.firmType}", "${betRecode.gameCode}", "${betRecode.firmType}", fragment)
+                return@WinsDialog
+            }
+            val activity = fragment.activity
+            if (activity is MainTabActivity) {
+                GameType.getGameType(betRecode.firmType)?.let { activity.jumpToSport(it) }
+            }
+
+        }.show()
     }
 
 }

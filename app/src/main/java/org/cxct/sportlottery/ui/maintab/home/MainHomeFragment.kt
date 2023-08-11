@@ -43,8 +43,8 @@ class MainHomeFragment : BindingSocketFragment<MainHomeViewModel, FragmentMainHo
     private fun getMainTabActivity() = activity as MainTabActivity
     private fun getHomeFragment() = parentFragment as HomeFragment
     fun jumpToOKGames() = getMainTabActivity().jumpToOKGames()
-    fun jumpToOKLive() = getMainTabActivity().jumpToOkLive()
     fun jumpToInplaySport() = getMainTabActivity().jumpToInplaySport()
+    fun jumpToOKLive() = getMainTabActivity().jumpToOkLive()
 
     override fun onInitView(view: View) = binding.run {
         scrollView.setupBackTop(ivBackTop, 180.dp) {
