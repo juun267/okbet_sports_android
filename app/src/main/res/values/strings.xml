@@ -1514,8 +1514,6 @@
     <string name="P131">OKBET Member Account</string>
     <string name="P132">OKBET x Glife Member Account</string>
     <string name="P130">Select Your OKBET Account</string>
-    <string name="P150">Reminder of non-compliance</string>
-    <string name="P149">Please complete %s wagering turnover before requesting a withdrawal. (as per PAGCOR regulations, 1x turnover is need for every deposit transaction). For assistance, kindly contact customer service.</string>
     <string name="viber">Viber</string>
     <string name="N064">Remarks</string>
 
@@ -1595,22 +1593,24 @@
     <string name="H019">Total valid bet</string>
     <string name="P169">Promotion Details</string>
     <string name="D045">Details</string>
+    <string name="J645">To</string>
+    <string name="P172">No e-sports events yet!</string>
+    <string name="N417">Rejected</string>
+    <string name="P150">Reminder of turnover</string>
+    <string name="P149">Please complete %s valid turnover before requesting a withdrawal. (as per PAGCOR regulations, 1x turnover is needed for every deposit transaction). For more assistance, kindly contact customer service.</string>
     <string name="P170">you got</string>
     <string name="Congratulations">Congratulations</string>
-    <string name="to">To</string>
-    <string name="J645">To</string>
     <string name="world_cup_2023">FIBA World Cup 2023</string>
     <string name="P173">What’s your mobile number？</string>
     <string name="P174">We’ll send a OTP code to your mobile number</string>
     <string name="P176">Continue as OKBET x Glife member</string>
     <string name="P175">Become a new OKBET member</string>
     <string name="P181">Register Or Login with Verification Code</string>
-    <string name="agent_deposit">Agent Deposit</string>
     <string name="P184">Featured OKLive</string>
+    <string name="N938">Not started</string>
     <string name="P120">Payout</string>
     <string name="I031">Bets Details</string>
     <string name="B036">Play Now</string>
+    <string name="P183">Agent Deposit</string>
 
-    <string name="N417">Rejected</string>
-    <string name="P172">No e-sports events yet!</string>
 </resources>

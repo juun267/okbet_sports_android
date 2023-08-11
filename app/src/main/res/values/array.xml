@@ -67,7 +67,7 @@
         <item>@string/recharge_channel_paymaya</item>
         <item>@string/recharge_channel_admin</item>
         <item>@string/betting_station_deposit</item>
-        <item>@string/agent_deposit</item>
+        <item>@string/P183</item>
     </string-array>
 
     <string-array name="withdraw_state_array">

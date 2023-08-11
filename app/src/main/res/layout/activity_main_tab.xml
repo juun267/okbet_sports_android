@@ -28,7 +28,7 @@
         <org.cxct.sportlottery.view.ParlayFloatingWindow
             android:id="@+id/parlayFloatWindow"
             android:visibility="gone"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="16dp"
             android:layout_width="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.dialog_bottom_sheet_icon_and_tick.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_bet_station.*
 import kotlinx.android.synthetic.main.include_quick_money.*
+import kotlinx.android.synthetic.main.online_crypto_pay_fragment.*
 import kotlinx.android.synthetic.main.online_pay_fragment.*
 import kotlinx.android.synthetic.main.online_pay_fragment.btn_submit
 import kotlinx.android.synthetic.main.online_pay_fragment.includeQuickMoney
@@ -26,11 +27,14 @@ import kotlinx.android.synthetic.main.online_pay_fragment.title_fee_rate
 import kotlinx.android.synthetic.main.online_pay_fragment.tv_currency_type
 import kotlinx.android.synthetic.main.online_pay_fragment.tv_fee_amount
 import kotlinx.android.synthetic.main.online_pay_fragment.tv_fee_rate
+import kotlinx.android.synthetic.main.online_pay_fragment.tv_hint
 import kotlinx.android.synthetic.main.online_pay_fragment.tv_remark
 import kotlinx.android.synthetic.main.online_pay_fragment.txv_pay_bank
 import kotlinx.android.synthetic.main.online_pay_fragment.view.*
 import kotlinx.android.synthetic.main.transfer_pay_fragment.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.OnlineType
 import org.cxct.sportlottery.network.money.config.RechCfg
@@ -282,7 +286,11 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             title_fee_amount.text = getString(R.string.title_fee_amount)
             tv_fee_rate.text = "0.00"
             tv_fee_amount.text = "0.00"
+            tv_fee_rate.gone()
+            tv_fee_amount.gone()
         } else {
+            tv_fee_rate.show()
+            tv_fee_amount.show()
             if (rebateFee < 0.0) {
                 title_fee_rate.text = getString(R.string.title_fee_rate)
                 title_fee_amount.text = getString(R.string.title_fee_amount)

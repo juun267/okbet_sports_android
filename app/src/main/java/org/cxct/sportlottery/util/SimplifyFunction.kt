@@ -67,7 +67,7 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 
-fun RecyclerView.setupBackTop(targetView: View, offset: Int, tabCode: String? = null ) {
+fun RecyclerView.setupBackTop(targetView: View, offset: Int, tabCode: String? = null,scrollTopFunc: ((yDistance: Int)->Unit)? = null ) {
 
     val b = tabCode == MatchType.END_SCORE.postValue
     var targetWidth = 0f
@@ -108,6 +108,7 @@ fun RecyclerView.setupBackTop(targetView: View, offset: Int, tabCode: String? = 
             }
 
             if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                scrollTopFunc?.invoke(computeVerticalScrollOffset().dp)
                 //如果是篮球末位比分,需要特殊处理
                 if (b) {
                     if (getScrollYDistance()) {
@@ -1085,11 +1086,9 @@ fun String.formatHTML(): String {
 }
 fun setExpandArrow(ivArrow: ImageView, isExpanded: Boolean) {
     if (isExpanded) {
-        ivArrow.rotation = 0f
         ivArrow.setImageResource(R.drawable.ic_filter_arrow_up)
     } else {
-        ivArrow.rotation = 180f
-        ivArrow.setImageResource(R.drawable.ic_filter_arrow_up2)
+        ivArrow.setImageResource(R.drawable.ic_filter_arrow_down)
     }
 }
 

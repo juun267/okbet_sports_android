@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="44dp"
     android:background="@color/color_FFFFFF"
     android:orientation="vertical">
 
@@ -11,7 +13,6 @@
         android:id="@+id/cl_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="@dimen/margin_12"
         android:paddingHorizontal="@dimen/margin_12"
         tools:ignore="SpUsage">
 
@@ -30,13 +31,14 @@
             app:layout_constraintEnd_toStartOf="@+id/odd_detail_pin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="进球 : 大小进球 : 大小进球 : 大小进球 : 大小进球 : 大小进球 : 大小" />
+            tools:text="进球 : 大小进球 : 大小进球 " />
 
         <ImageView
             android:id="@+id/odd_detail_pin"
-            android:layout_width="20dp"
+            android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:layout_marginRight="6dp"
+            android:layout_marginRight="12dp"
+            android:adjustViewBounds="true"
             android:scaleType="centerInside"
             android:src="@drawable/selector_item_country_league_pin_v4"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -47,7 +49,7 @@
             android:id="@+id/odd_detail_fold"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/selector_arrow_blue_double"
+            android:src="@drawable/selector_filter_arrow"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

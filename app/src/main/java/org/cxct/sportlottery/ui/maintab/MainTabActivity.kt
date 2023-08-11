@@ -42,6 +42,7 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.betList.BetListFragment
+import org.cxct.sportlottery.ui.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.betRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.chat.ChatActivity
 import org.cxct.sportlottery.ui.maintab.entity.ThirdGameCategory
@@ -218,6 +219,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
                     if (mIsEnabled) {
                         avoidFastDoubleClick()
+                        ImmersionBar.with(this@MainTabActivity)
+                            .statusBarDarkFont(true)
+                            .init()
 
                         val itemPosition = getMenuItemPosition(menuItem)
                         if (checkMainPosition(itemPosition)) {
@@ -458,7 +462,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     override fun updateBetListCount(num: Int) {
         betListCount = num
         setupBetBarVisiblity(bottom_navigation_view.currentItem)
-        parlayFloatWindow.tv_bet_list_count.text = betListCount.toString()
+        parlayFloatWindow.updateCount(betListCount.toString())
         if (num > 0) viewModel.getMoneyAndTransferOut()
     }
 
@@ -478,6 +482,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             if (BetInfoRepository.currentBetType == BetListFragment.PARLAY
             ) {
                 parlayFloatWindow.setBetText(getString(R.string.conspire))
+                parlayFloatWindow.updateCount(betListCount.toString())
             } else {
                 parlayFloatWindow.setBetText(getString(R.string.bet_slip))
             }

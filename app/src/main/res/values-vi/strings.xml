@@ -1384,8 +1384,6 @@
     <string name="P131">TK hội viên OKBET</string>
     <string name="P132">TK hội viên OKBET x Glife</string>
     <string name="P130">Chọn TK OKBET của bạn</string>
-    <string name="P150">Nhắc nhở về doanh thu không hợp lệ.</string>
-    <string name="P149">"Trước khi yêu cầu rút tiền, vui lòng hoàn thành tiền gửi %s(theo quy định của PAGCOR, mỗi giao dịch gửi tiền yêu cầu có gấp đôi doanh thu).  Vui lòng liên hệ CSKH để được hỗ trợ. "</string>
     <string name="viber">Viber</string>
     <string name="N592">Xin lỗi</string>
     <string name="P151">Đổi</string>
@@ -1467,6 +1465,8 @@
     <string name="J645">Đến</string>
     <string name="N417">Đã từ chối</string>
     <string name="P172">Không có sự kiện E-sports nào!</string>
+    <string name="P150">Nhắc nhở về doanh thu không hợp lệ.</string>
+    <string name="P149">Trước khi yêu cầu rút tiền, vui lòng hoàn thành tiền gửi %s(theo quy định của PAGCOR, mỗi giao dịch gửi tiền yêu cầu có gấp đôi doanh thu).  Vui lòng liên hệ CSKH để được hỗ trợ.</string>
     <string name="str_return_last_step">Trở về</string>
     <string name="P170">Nhận được</string>
     <string name="Congratulations">Xin chúc mừng</string>
@@ -1475,9 +1475,10 @@
     <string name="P176">Đăng nhập với OKBET x Glife</string>
     <string name="P175">Trở thành hội viên mới của OKBET</string>
     <string name="P181">Dùng mã OTP đăng ký hoặc đăng nhập</string>
-    <string name="agent_deposit">Agent Deposit</string>
     <string name="P184">OKLive phổ biến</string>
+    <string name="N938">Chưa bắt đầu</string>
     <string name="P120">Mở thưởng</string>
     <string name="I031">Chi tiết đặt cược</string>
     <string name="B036">Chơi ngay</string>
+    <string name="P183">Nạp tiền Đại lý</string>
 </resources>

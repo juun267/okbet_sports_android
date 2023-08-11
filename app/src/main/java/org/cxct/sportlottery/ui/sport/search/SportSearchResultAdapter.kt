@@ -73,7 +73,7 @@ class SportSearchResultAdapter : BaseNodeAdapter() {
             val league = data as SearchResult.SearchResultLeague
             adapter.expandOrCollapse(data, parentPayload = position)
             val ivArrow = helper.getView<ImageView>(R.id.view_arrow_top)
-            ivArrow.setArrowSpin(league.isExpanded, true) { setExpandArrow(ivArrow, league.isExpanded) }
+            setExpandArrow(ivArrow, league.isExpanded)
         }
 
     }

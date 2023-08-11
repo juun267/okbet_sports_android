@@ -72,7 +72,6 @@ class TypeEPSAdapter : RecyclerView.Adapter<TypeEPSAdapter.ViewHolder>() {
             tvName.text = odd?.name
 
             btnOdds?.apply {
-                oddsType?.let { setupOddForEPS(odd, it) }
                 setupOddState(this, odd)
                 setOnClickListener {
                     odd?.let { odd ->

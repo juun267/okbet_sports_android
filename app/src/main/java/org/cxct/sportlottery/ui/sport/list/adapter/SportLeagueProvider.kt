@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.sport.list.adapter
 
 import android.graphics.Typeface
+import android.text.TextUtils
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
@@ -20,6 +21,7 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.setArrowSpin
 import org.cxct.sportlottery.util.setExpandArrow
 import org.cxct.sportlottery.util.setLeagueLogo
+import splitties.views.lines
 
 
 class SportLeagueProvider(
@@ -35,7 +37,7 @@ class SportLeagueProvider(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
 
         val root = FrameLayout(context)
-        root.layoutParams = ViewGroup.LayoutParams(-1, 50.dp)
+        root.layoutParams = ViewGroup.LayoutParams(-1, 44.dp)
         root.setBackgroundResource(R.color.color_FCFDFF)
         root.foreground = ContextCompat.getDrawable(context, R.drawable.fg_ripple)
 
@@ -59,7 +61,8 @@ class SportLeagueProvider(
 
         val tvLeagueName = AppCompatTextView(context).apply {
             id = tvLeagueNameId
-            maxLines = 2
+            lines = 1
+            ellipsize = TextUtils.TruncateAt.END
             typeface = AppFont.helvetica
             setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12f)
             setTextColor(context.getColor(R.color.color_000000))
@@ -108,7 +111,7 @@ class SportLeagueProvider(
         adapter.nodeExpandOrCollapse(item, parentPayload = position)
         val league = item as LeagueOdd
         helper.getView<ImageView>(ivArrowId).apply {
-            setArrowSpin(league.isExpanded, true) { setExpandArrow(this, league.isExpanded) }
+            setExpandArrow(this, league.isExpanded)
         }
     }
 
