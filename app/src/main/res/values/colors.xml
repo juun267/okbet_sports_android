@@ -562,5 +562,7 @@
     <color name="color_A1050B18">#A1050B18</color>
     <color name="color_E1EDFF">#E1EDFF</color>
     <color name="color_F1F5FF">#F1F5FF</color>
+    <color name="color_F4F8FF">#F4F8FF</color>
+    <color name="color_33FFFFFF">#33FFFFFF</color>
 
 </resources>
