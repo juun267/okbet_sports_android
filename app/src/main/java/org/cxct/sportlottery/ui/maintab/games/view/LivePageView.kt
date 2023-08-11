@@ -265,7 +265,7 @@ class LivePageView @JvmOverloads constructor(
         setCategoryName(R.string.P184)
         //数据监听
         fragment.viewModel.homeLiveGamesList300.observe(fragment.viewLifecycleOwner) {
-            this.visible()
+            this.isVisible = !it.isNullOrEmpty()
             mAdapter.setIsShoeCollect(false)
             setListData(it,false)
             setOnGameClick {okGameBean->

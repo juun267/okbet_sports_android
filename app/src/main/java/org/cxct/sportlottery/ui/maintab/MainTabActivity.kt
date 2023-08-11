@@ -68,11 +68,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     private val fragmentHelper: FragmentHelper by lazy {
         FragmentHelper(
             supportFragmentManager, R.id.fl_content, arrayOf(
-                Pair(HomeFragment::class.java, null),
-                Pair(SportFragment2::class.java, null),
-                Pair(OKGamesFragment::class.java, null),
-                Pair(OKGamesFragment::class.java, null), // 占坑
-                Pair(ProfileCenterFragment::class.java, null)
+                Param(HomeFragment::class.java),
+                Param(SportFragment2::class.java),
+                Param(OKGamesFragment::class.java),
+                Param(OKGamesFragment::class.java), // 占坑
+                Param(ProfileCenterFragment::class.java),
             )
         )
     }
@@ -221,6 +221,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
                     if (mIsEnabled) {
                         avoidFastDoubleClick()
+                        ImmersionBar.with(this@MainTabActivity)
+                            .statusBarDarkFont(true)
+                            .init()
 
                         val itemPosition = getMenuItemPosition(menuItem)
                         if (checkMainPosition(itemPosition)) {

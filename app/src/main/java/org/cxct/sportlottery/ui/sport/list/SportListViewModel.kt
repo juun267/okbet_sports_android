@@ -51,8 +51,6 @@ open class SportListViewModel(
         get() = _oddsListGameHallResult
     private val _oddsListGameHallResult = SingleLiveEvent<Event<OddsListResult?>>()
 
-    private val _sportMenuResult = SingleLiveEvent<SportMenuResult?>()
-
     val outrightList = MutableLiveData<Event<OutrightOddsListResult?>>()
 
     fun loadFavoriteGameList() {
@@ -541,14 +539,6 @@ open class SportListViewModel(
 
         sportTypeMenuData.value = Triple(itemList, sportMenuResult.succeeded(), sportMenuResult.msg)
         sportMenuApiResult.value = sportMenuResult
-    }
-
-    private fun SportMenuResult.updateSportSelectState(
-        matchType: MatchType?,
-        gameTypeCode: String?,
-    ) {
-        this.sportMenuData?.updateSportSelectState(matchType, gameTypeCode)
-        _sportMenuResult.postValue(this)
     }
 
     private fun SportMenuData.updateSportSelectState(
