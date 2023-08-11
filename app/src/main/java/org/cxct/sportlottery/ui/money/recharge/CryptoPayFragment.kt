@@ -22,6 +22,8 @@ import kotlinx.android.synthetic.main.dialog_bottom_sheet_icon_and_tick.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.common.extentions.gone
+import org.cxct.sportlottery.common.extentions.show
 import org.cxct.sportlottery.network.common.RechType
 import org.cxct.sportlottery.network.money.MoneyAddRequest
 import org.cxct.sportlottery.network.money.MoneyPayWayData
@@ -33,6 +35,7 @@ import org.cxct.sportlottery.ui.profileCenter.profile.RechargePicSelectorDialog
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.MoneyManager.getCryptoIconByCryptoName
 import org.cxct.sportlottery.view.LoginEditText
+import org.cxct.sportlottery.view.isVisible
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
@@ -511,6 +514,8 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             //手續費率/返利
             when {
                 selectRechCfgs?.rebateFee == 0.0 || selectRechCfgs?.rebateFee == null -> {
+                    tv_fee_rate.gone()
+                    tv_fee_amount.gone()
                     tv_fee_rate.text =
                         String.format(getString(R.string.hint_fee_rate), "0.00") + "%"
                     tv_fee_amount.text = String.format(
@@ -520,12 +525,16 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                     )
                 }
                 selectRechCfgs.rebateFee > 0.0 -> {
+                    tv_fee_rate.show()
+                    tv_fee_amount.show()
                     tv_fee_rate.text = String.format(
                         getString(R.string.hint_feeback_rate),
                         ArithUtil.toMoneyFormat(selectRechCfgs.rebateFee.times(100))
                     ) + "%"
                 }
                 else -> {
+                    tv_fee_rate.show()
+                    tv_fee_amount.show()
                     tv_fee_rate.text = String.format(
                         getString(R.string.hint_fee_rate),
                         ArithUtil.toMoneyFormat(ArithUtil.mul(abs(selectRechCfgs.rebateFee), 100.0))
@@ -574,6 +583,8 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 refreshMoneyDetail(it)
 
                 if (mSelectRechCfgs?.rebateFee == 0.0 || mSelectRechCfgs?.rebateFee == null) {
+                    tv_fee_rate.gone()
+                    tv_fee_amount.gone()
                     tv_fee_rate.text =
                         String.format(getString(R.string.hint_fee_rate), "0.00") + "%"
                     tv_fee_amount.text = String.format(
@@ -581,6 +592,9 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                         sConfigData?.systemCurrencySign,
                         "0.00"
                     )
+                }else{
+                    tv_fee_rate.show()
+                    tv_fee_amount.show()
                 }
             }
 
